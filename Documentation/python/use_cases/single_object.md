@@ -68,10 +68,10 @@ See `SingleObject.__init__` for a complete list of constructor parameters.
 
 #### Arguments
 
-| Argument    | Type | Default          | Description                                           |
-| ----------- | ---- | ---------------- | ----------------------------------------------------- |
-| `--library` | str  | models_core.json | The [model library](../librarian/model_librarian.md). |
-| `--dir`     | str  |                  | The output directory.                                 |
+| Argument    | Type | Default            | Description                                           |
+| ----------- | ---- | ------------------ | ----------------------------------------------------- |
+| `--library` | str  | `models_full.json` | The [model library](../librarian/model_librarian.md). |
+| `--dir`     | str  |                    | The output directory.                                 |
 
 ## How It Works
 

@@ -53,11 +53,8 @@ This changelog is only for the _frontend_ of TDW. If you are a backend developer
 
 ### Python
 
-- Removed `set_gravity` command from various example controllers.
-- `link_tester.py`:
-  - Tests documentation links in both repos (TDWBase and tdw)
-  - Called by `doc_gen.py` (will automatically run after other documentation is generated)
-  - Tests remote (https) URLs
+- Set default `--library` value in `multi_env.py` to `models_full.json` (was `models_core.json`)
+- Slight efficiency improvements in `single_object.py`
 
 ### Documentation
 

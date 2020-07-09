@@ -10,7 +10,7 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--library",
                         type=str,
-                        default="models_core.json",
+                        default="models_full.json",
                         help="The filename of the model library.")
     parser.add_argument("--dir", type=str, help="The full path of the output directory.")
     args = parser.parse_args()

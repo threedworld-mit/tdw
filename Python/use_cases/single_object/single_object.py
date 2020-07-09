@@ -149,12 +149,13 @@ class SingleObject(Controller):
         :return: The Environments data of the scene.
         """
 
-        self.communicate(scene_command)
-        # Create the avatar very high up.
-        self.communicate({"$type": "create_avatar",
-                          "type": "A_Img_Caps_Kinematic",
-                          "id": a,
-                          "envs": [0]})
+        # Initialize the scene.
+        # Add the avatar.
+        commands = [scene_command,
+                    {"$type": "create_avatar",
+                     "type": "A_Img_Caps_Kinematic",
+                     "id": a,
+                     "envs": [0]}]
         # Disable physics.
         # Enable jpgs.
         # Set FOV.
@@ -162,25 +163,25 @@ class SingleObject(Controller):
         # Set AA.
         # Set aperture.
         # Disable vignette.
-        commands = [{"$type": "simulate_physics",
-                     "value": False},
-                    {"$type": "set_img_pass_encoding",
-                     "value": False},
-                    {'$type': 'set_field_of_view',
-                     'avatar_id': 'a',
-                     'field_of_view': 60},
-                    {'$type': 'set_camera_clipping_planes',
-                     'avatar_id': 'a',
-                     'far': 160,
-                     'near': 0.01},
-                    {"$type": "set_anti_aliasing",
-                     "avatar_id": "a",
-                     "mode": "subpixel"},
-                    {"$type": "set_aperture",
-                     "aperture": 70},
-                    {'$type': 'set_vignette',
-                     'enabled': False}
-                    ]
+        commands.extend([{"$type": "simulate_physics",
+                          "value": False},
+                         {"$type": "set_img_pass_encoding",
+                          "value": False},
+                         {'$type': 'set_field_of_view',
+                          'avatar_id': 'a',
+                          'field_of_view': 60},
+                         {'$type': 'set_camera_clipping_planes',
+                          'avatar_id': 'a',
+                          'far': 160,
+                          'near': 0.01},
+                         {"$type": "set_anti_aliasing",
+                          "avatar_id": "a",
+                          "mode": "subpixel"},
+                         {"$type": "set_aperture",
+                          "aperture": 70},
+                         {'$type': 'set_vignette',
+                          'enabled': False}])
+
         # If we're using HDRI skyboxes, send additional favorable post-process commands.
         if self.skyboxes is not None:
             commands.extend([{"$type": "set_post_exposure",
@@ -192,8 +193,7 @@ class SingleObject(Controller):
                              {"$type": "set_screen_space_reflections",
                               "enabled": False},
                              {"$type": "set_shadow_strength",
-                              "strength": 1.0}
-                             ])
+                              "strength": 1.0}])
 
         # Send the commands.
         self.communicate(commands)
@@ -206,7 +206,7 @@ class SingleObject(Controller):
             envs.append(Environment(env_data, i))
         return envs
 
-    def generate_metadata(self, dataset_dir: str, scene_name="tdw_room_2018") -> None:
+    def generate_metadata(self, dataset_dir: str, scene_name: str) -> None:
         """
         Generate a metadata file for this dataset.
 
@@ -237,7 +237,7 @@ class SingleObject(Controller):
         with open(os.path.join(root_dir, "metadata.txt"), "wt") as f:
             json.dump(data, f, sort_keys=True, indent=4)
 
-    def run(self, dataset_dir: str, scene_name="tdw_room_2018") -> None:
+    def run(self, dataset_dir: str, scene_name: str) -> None:
         """
         Generate the dataset.
 
@@ -400,15 +400,22 @@ class SingleObject(Controller):
             file_index = 0
 
         image_positions = []
-        o_id = self.add_object(record.name)
+        o_id = self.get_unique_id()
 
         s = TDWUtils.get_unit_scale(record)
 
+        # Add the object.
         # Set the screen size to 32x32 (to make the build run faster; we only need the average grayscale values).
         # Toggle off pass masks.
         # Set render quality to minimal.
         # Scale the object to "unit size".
-        self.communicate([{"$type": "set_screen_size",
+        self.communicate([{"$type": "add_object",
+                           "name": record.name,
+                           "url": record.get_url(),
+                           "scale_factor": record.scale_factor,
+                           "category": record.wcategory,
+                           "id": o_id},
+                          {"$type": "set_screen_size",
                            "height": 32,
                            "width": 32},
                           {"$type": "set_pass_masks",
@@ -418,8 +425,7 @@ class SingleObject(Controller):
                            "render_quality": 0},
                           {"$type": "scale_object",
                            "id": o_id,
-                           "scale_factor": {"x": s, "y": s, "z": s}},
-                          ])
+                           "scale_factor": {"x": s, "y": s, "z": s}}])
 
         # The index in the HDRI records array.
         hdri_index = 0
@@ -461,8 +467,7 @@ class SingleObject(Controller):
                      "height": self.screen_size,
                      "width": self.screen_size},
                     {"$type": "set_render_quality",
-                     "render_quality": 5}
-                    ]
+                     "render_quality": 5}]
         # Hide the object maybe.
         if not self.show_objects:
             commands.append({"$type": "hide_object",
@@ -491,8 +496,7 @@ class SingleObject(Controller):
                          "position": p.object_position},
                         {"$type": "rotate_object_to",
                          "id": o_id,
-                         "rotation": p.object_rotation}
-                        ]
+                         "rotation": p.object_rotation}]
             # Set the visual materials.
             if self.materials is not None:
                 if record.name not in self.substructures:
@@ -511,7 +515,7 @@ class SingleObject(Controller):
             if self.skyboxes:
                 hdri_index, skybox_count, command = self.set_skybox(self.skyboxes, its_per_skybox, hdri_index, skybox_count)
                 if command:
-                    self.communicate(command)
+                    commands.append(command)
                 commands.append({"$type": "rotate_hdri_skybox_by",
                                  "angle": RNG.uniform(0, 360)})
 
@@ -533,8 +537,7 @@ class SingleObject(Controller):
                            "frequency": "never"},
                           {"$type": "destroy_object",
                            "id": o_id},
-                          {"$type": "unload_asset_bundles"}
-                          ])
+                          {"$type": "unload_asset_bundles"}])
         return t1 - t0
 
     def save_image(self, resp, record: ModelRecord, image_count: int, root_dir: str, wnid: str, train: int, train_count: int) -> None:
@@ -614,8 +617,7 @@ class SingleObject(Controller):
         # Get a random position for the avatar.
         a_p = np.array([RNG.uniform(-e.w / 2, e.w / 2) + e.x,
                         RNG.uniform(0.4, e.h * self.max_height),
-                        RNG.uniform(-e.l / 2, e.l / 2) + e.z
-                        ])
+                        RNG.uniform(-e.l / 2, e.l / 2) + e.z])
 
         # Get a random distance from the avatar.
         d = RNG.uniform(0.8, 3)
@@ -697,8 +699,7 @@ class SingleObject(Controller):
                          {"$type": "send_id_pass_grayscale",
                           "frequency": "once"},
                          {"$type": "send_image_sensors",
-                          "frequency": "once"}
-                         ])
+                          "frequency": "once"}])
 
         resp = self.communicate(commands)
 
@@ -725,8 +726,7 @@ class SingleObject(Controller):
             o_rot = {"x": o_rot[0],
                      "y": o_rot[1],
                      "z": o_rot[2],
-                     "w": o_rot[3],
-                     }
+                     "w": o_rot[3],}
 
         return grayscale, d, a_p, o_p, o_rot, cam_rot
 

@@ -1,0 +1,412 @@
+{
+    "description": "Animations for a Humanoid Avatar",
+    "records": {
+        "archery": {
+            "duration": 6.175,
+            "framerate": 120,
+            "loop": false,
+            "name": "archery",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/archery",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/archery",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/archery"
+            }
+        },
+        "bowling": {
+            "duration": 18.133,
+            "framerate": 30,
+            "loop": false,
+            "name": "bowling",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/bowling",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/bowling",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/bowling"
+            }
+        },
+        "brushing_off_dust": {
+            "duration": 71.73,
+            "framerate": 60,
+            "loop": false,
+            "name": "brushing_off_dust",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/brushing_off_dust",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/brushing_off_dust",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/brushing_off_dust"
+            }
+        },
+        "clean_windows": {
+            "duration": 14.3,
+            "framerate": 30,
+            "loop": false,
+            "name": "clean_windows",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/clean_windows",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/clean_windows",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/clean_windows"
+            }
+        },
+        "climbing_ladder_1": {
+            "duration": 10.467,
+            "framerate": 120,
+            "loop": false,
+            "name": "climbing_ladder_1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/climbing_ladder_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/climbing_ladder_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/climbing_ladder_1"
+            }
+        },
+        "climbing_ladder_2": {
+            "duration": 6.192,
+            "framerate": 120,
+            "loop": false,
+            "name": "climbing_ladder_2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/climbing_ladder_2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/climbing_ladder_2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/climbing_ladder_2"
+            }
+        },
+        "dancing_1": {
+            "duration": 24.333,
+            "framerate": 30,
+            "loop": false,
+            "name": "dancing_1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/dancing_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/dancing_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/dancing_1"
+            }
+        },
+        "dancing_2": {
+            "duration": 12.1,
+            "framerate": 30,
+            "loop": false,
+            "name": "dancing_2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/dancing_2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/dancing_2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/dancing_2"
+            }
+        },
+        "dancing_3": {
+            "duration": 10.7,
+            "framerate": 30,
+            "loop": false,
+            "name": "dancing_3",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/dancing_3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/dancing_3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/dancing_3"
+            }
+        },
+        "doing_crunch": {
+            "duration": 3.267,
+            "framerate": 30,
+            "loop": false,
+            "name": "doing_crunch",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/doing_crunch",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/doing_crunch",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/doing_crunch"
+            }
+        },
+        "fencing": {
+            "duration": 6.417,
+            "framerate": 120,
+            "loop": false,
+            "name": "fencing",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/fencing",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/fencing",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/fencing"
+            }
+        },
+        "hammering": {
+            "duration": 8.633,
+            "framerate": 30,
+            "loop": false,
+            "name": "hammering",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/hammering",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/hammering",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/hammering"
+            }
+        },
+        "kick_ball": {
+            "duration": 6.733,
+            "framerate": 120,
+            "loop": false,
+            "name": "kick_ball",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/kick_ball",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/kick_ball",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/kick_ball"
+            }
+        },
+        "kneeling": {
+            "duration": 13.4,
+            "framerate": 30,
+            "loop": false,
+            "name": "kneeling",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/kneeling",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/kneeling",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/kneeling"
+            }
+        },
+        "limping": {
+            "duration": 9.133,
+            "framerate": 120,
+            "loop": false,
+            "name": "limping",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/limping",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/limping",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/limping"
+            }
+        },
+        "mop_floor": {
+            "duration": 15.3,
+            "framerate": 30,
+            "loop": false,
+            "name": "mop_floor",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/mop_floor",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/mop_floor",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/mop_floor"
+            }
+        },
+        "open_can_drink": {
+            "duration": 8.858,
+            "framerate": 120,
+            "loop": false,
+            "name": "open_can_drink",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/open_can_drink",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/open_can_drink",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/open_can_drink"
+            }
+        },
+        "rollerblading": {
+            "duration": 15.967,
+            "framerate": 30,
+            "loop": false,
+            "name": "rollerblading",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/rollerblading",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/rollerblading",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/rollerblading"
+            }
+        },
+        "running_fast": {
+            "duration": 0.467,
+            "framerate": 30,
+            "loop": true,
+            "name": "running_fast",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/running_fast",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/running_fast",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/running_fast"
+            }
+        },
+        "running_medium": {
+            "duration": 0.79,
+            "framerate": 30,
+            "loop": true,
+            "name": "running_medium",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/running_medium",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/running_medium",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/running_medium"
+            }
+        },
+        "running_slow": {
+            "duration": 0.767,
+            "framerate": 30,
+            "loop": true,
+            "name": "running_slow",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/running_slow",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/running_slow",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/running_slow"
+            }
+        },
+        "searching": {
+            "duration": 24.5,
+            "framerate": 120,
+            "loop": false,
+            "name": "searching",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/searching",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/searching",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/searching"
+            }
+        },
+        "sit_read_drink": {
+            "duration": 25.0,
+            "framerate": 120,
+            "loop": false,
+            "name": "sit_read_drink",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/sit_read_drink",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/sit_read_drink",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/sit_read_drink"
+            }
+        },
+        "sitting_1": {
+            "duration": 15.3,
+            "framerate": 30,
+            "loop": false,
+            "name": "sitting_1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/sitting_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/sitting_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/sitting_1"
+            }
+        },
+        "sitting_2": {
+            "duration": 15.7,
+            "framerate": 30,
+            "loop": false,
+            "name": "sitting_2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/sitting_2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/sitting_2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/sitting_2"
+            }
+        },
+        "sitting_talking_1": {
+            "duration": 19.1,
+            "framerate": 30,
+            "loop": false,
+            "name": "sitting_talking_1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/sitting_talking_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/sitting_talking_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/sitting_talking_1"
+            }
+        },
+        "sitting_talking_2": {
+            "duration": 24.467,
+            "framerate": 30,
+            "loop": false,
+            "name": "sitting_talking_2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/sitting_talking_2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/sitting_talking_2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/sitting_talking_2"
+            }
+        },
+        "skateboarding": {
+            "duration": 17.633,
+            "framerate": 30,
+            "loop": false,
+            "name": "skateboarding",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/skateboarding",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/skateboarding",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/skateboarding"
+            }
+        },
+        "skateboarding_jump": {
+            "duration": 3.667,
+            "framerate": 120,
+            "loop": false,
+            "name": "skateboarding_jump",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/skateboarding_jump",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/skateboarding_jump",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/skateboarding_jump"
+            }
+        },
+        "smoke_cigarette_1": {
+            "duration": 7.858,
+            "framerate": 120,
+            "loop": false,
+            "name": "smoke_cigarette_1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/smoke_cigarette_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/smoke_cigarette_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/smoke_cigarette_1"
+            }
+        },
+        "smoke_cigarette_2": {
+            "duration": 9.042,
+            "framerate": 120,
+            "loop": false,
+            "name": "smoke_cigarette_2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/smoke_cigarette_2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/smoke_cigarette_2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/smoke_cigarette_2"
+            }
+        },
+        "throw_catch_boomerang_man": {
+            "duration": 7.133,
+            "framerate": 30,
+            "loop": false,
+            "name": "throw_catch_boomerang_man",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/throw_catch_boomerang_man",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/throw_catch_boomerang_man",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/throw_catch_boomerang_man"
+            }
+        },
+        "throw_catch_boomerang_woman": {
+            "duration": 5.7,
+            "framerate": 30,
+            "loop": false,
+            "name": "throw_catch_boomerang_woman",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/throw_catch_boomerang_woman",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/throw_catch_boomerang_woman",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/throw_catch_boomerang_woman"
+            }
+        },
+        "wading_through_water": {
+            "duration": 1.7,
+            "framerate": 30,
+            "loop": true,
+            "name": "wading_through_water",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/wading_through_water",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/wading_through_water",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/wading_through_water"
+            }
+        },
+        "walking_1": {
+            "duration": 2.3,
+            "framerate": 30,
+            "loop": true,
+            "name": "walking_1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/walking_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/walking_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/walking_1"
+            }
+        },
+        "walking_2": {
+            "duration": 2.3,
+            "framerate": 30,
+            "loop": true,
+            "name": "walking_2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/walking_2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/walking_2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/walking_2"
+            }
+        },
+        "walking_across_beam": {
+            "duration": 16.867,
+            "framerate": 30,
+            "loop": false,
+            "name": "walking_across_beam",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/walking_across_beam",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/walking_across_beam",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/walking_across_beam"
+            }
+        }
+    }
+}

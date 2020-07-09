@@ -1,0 +1,1042 @@
+{
+    "description": "Free primitive and special-purpose models.",
+    "records": {
+        "cloth_1meter_square": {
+            "asset_bundle_sizes": {
+                "Darwin": 16423490,
+                "Linux": 16624833,
+                "Windows": 16283528
+            },
+            "bounds": {
+                "back": {
+                    "x": 5.960464e-08,
+                    "y": 0.005,
+                    "z": -0.4999999
+                },
+                "bottom": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": 5.960464e-08
+                },
+                "center": {
+                    "x": 5.960464e-08,
+                    "y": 0.005,
+                    "z": 5.960464e-08
+                },
+                "front": {
+                    "x": 5.960464e-08,
+                    "y": 0.005,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.4999999,
+                    "y": 0.005,
+                    "z": 5.960464e-08
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0.005,
+                    "z": 5.960464e-08
+                },
+                "top": {
+                    "x": 5.960464e-08,
+                    "y": 0.01,
+                    "z": 5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": true,
+            "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
+            "flex": true,
+            "name": "cloth_1meter_square",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "linen_woven (Instance)"
+                    ],
+                    "name": "cloth_1meter_square(Clone)"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/cloth_1meter_square",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/cloth_1meter_square",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/cloth_1meter_square"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": "n09999990"
+        },
+        "cloth_square": {
+            "asset_bundle_sizes": {
+                "Darwin": 1173482,
+                "Linux": 1324453,
+                "Windows": 1059738
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -1
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -6.123234e-17,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 1
+                },
+                "left": {
+                    "x": -1,
+                    "y": 0,
+                    "z": 0
+                },
+                "right": {
+                    "x": 1,
+                    "y": 0,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 6.123234e-17,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": true,
+            "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
+            "flex": true,
+            "name": "cloth_square",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "linen_woven"
+                    ],
+                    "name": "cloth_square"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/cloth_square",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/cloth_square",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/cloth_square"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": "n09999990"
+        },
+        "fluid_receptacle1m_round": {
+            "asset_bundle_sizes": {
+                "Darwin": 741113,
+                "Linux": 962005,
+                "Windows": 580435
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.125,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.125,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.125,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0.125,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0.125,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.25,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": true,
+            "do_not_use_reason": "Bad colliders",
+            "flex": true,
+            "name": "fluid_receptacle1m_round",
+            "physics_quality": 0.0,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_beige_french"
+                    ],
+                    "name": "fluid_receptacle1m_round"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/fluid_receptacle1m_round",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fluid_receptacle1m_round",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fluid_receptacle1m_round"
+            },
+            "wcategory": "tub",
+            "wnid": "n02808440"
+        },
+        "fluid_receptacle1x1": {
+            "asset_bundle_sizes": {
+                "Darwin": 1014973,
+                "Linux": 1235696,
+                "Windows": 854238
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1250001,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.125,
+                    "z": 1.862645e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1249999,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0.125,
+                    "z": 2.235174e-08
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0.125,
+                    "z": 2.235174e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.25,
+                    "z": 4.470348e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "fluid_receptacle1x1",
+            "physics_quality": 0.0,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "stone_grey_flat"
+                    ],
+                    "name": "fluid_receptacle1x1"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/fluid_receptacle1x1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fluid_receptacle1x1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fluid_receptacle1x1"
+            },
+            "wcategory": "tub",
+            "wnid": "n02808440"
+        },
+        "fluid_receptacle1x2": {
+            "asset_bundle_sizes": {
+                "Darwin": 1581065,
+                "Linux": 1803114,
+                "Windows": 1405277
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.125,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.125,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.125,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -1,
+                    "y": 0.125,
+                    "z": 0
+                },
+                "right": {
+                    "x": 1,
+                    "y": 0.125,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.25,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "fluid_receptacle1x2",
+            "physics_quality": 0.0,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_black"
+                    ],
+                    "name": "fluid_receptacle1x2"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/fluid_receptacle1x2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fluid_receptacle1x2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fluid_receptacle1x2"
+            },
+            "wcategory": "tub",
+            "wnid": "n02808440"
+        },
+        "new_ramp": {
+            "asset_bundle_sizes": {
+                "Darwin": 10032081,
+                "Linux": 10395343,
+                "Windows": 9776659
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.000451684,
+                    "y": 0.4253002,
+                    "z": -1.507754
+                },
+                "bottom": {
+                    "x": -0.000451684,
+                    "y": 0,
+                    "z": 0.1269988
+                },
+                "center": {
+                    "x": -0.000451684,
+                    "y": 0.4253002,
+                    "z": 0.1269988
+                },
+                "front": {
+                    "x": -0.000451684,
+                    "y": 0.4253002,
+                    "z": 1.761752
+                },
+                "left": {
+                    "x": -0.4509034,
+                    "y": 0.4253002,
+                    "z": 0.1269988
+                },
+                "right": {
+                    "x": 0.45,
+                    "y": 0.4253002,
+                    "z": 0.1269988
+                },
+                "top": {
+                    "x": -0.000451684,
+                    "y": 0.8506005,
+                    "z": 0.1269988
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": true,
+            "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
+            "flex": false,
+            "name": "new_ramp",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "marble_green (Instance)"
+                    ],
+                    "name": "Base"
+                },
+                {
+                    "materials": [
+                        "marble_green (Instance)"
+                    ],
+                    "name": "HorizontalSlide"
+                },
+                {
+                    "materials": [
+                        "granite_white (Instance)"
+                    ],
+                    "name": "RampSlide"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey (Instance)"
+                    ],
+                    "name": "Wall"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey (Instance)"
+                    ],
+                    "name": "Wall001"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey (Instance)"
+                    ],
+                    "name": "Wall002"
+                },
+                {
+                    "materials": [
+                        "iron_anvil_rusty (Instance)"
+                    ],
+                    "name": "shortPillar"
+                },
+                {
+                    "materials": [
+                        "iron_anvil_rusty (Instance)"
+                    ],
+                    "name": "shortPillar2"
+                },
+                {
+                    "materials": [
+                        "iron_anvil_rusty (Instance)"
+                    ],
+                    "name": "tallPillar"
+                },
+                {
+                    "materials": [
+                        "iron_anvil_rusty (Instance)"
+                    ],
+                    "name": "tallPillar2"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2017//new_ramp",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2017//new_ramp",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2017//new_ramp"
+            },
+            "wcategory": "incline",
+            "wnid": "n09999999"
+        },
+        "prim_capsule": {
+            "asset_bundle_sizes": {
+                "Darwin": 56884,
+                "Linux": 95215,
+                "Windows": 27643
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": true,
+            "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
+            "flex": true,
+            "name": "prim_capsule",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "capsuleMaterial"
+                    ],
+                    "name": "PrimCapsule"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2017//prim_capsule",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2017//prim_capsule",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2017//prim_capsule"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": "n09999990"
+        },
+        "prim_cone": {
+            "asset_bundle_sizes": {
+                "Darwin": 63952,
+                "Linux": 103400,
+                "Windows": 32204
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 1.862645e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0.5,
+                    "z": 2.235174e-08
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 2.235174e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 4.470348e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "prim_cone",
+            "physics_quality": 0.9974026751263176,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "No Name"
+                    ],
+                    "name": "prim_cone"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/prim_cone",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/prim_cone",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/prim_cone"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": "n09999990"
+        },
+        "prim_cube": {
+            "asset_bundle_sizes": {
+                "Darwin": 56841,
+                "Linux": 95231,
+                "Windows": 27584
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -0.5,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": true,
+            "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
+            "flex": true,
+            "name": "prim_cube",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "cubeMaterial"
+                    ],
+                    "name": "PrimCube"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2017//prim_cube",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2017//prim_cube",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2017//prim_cube"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": "n09999990"
+        },
+        "prim_cyl": {
+            "asset_bundle_sizes": {
+                "Darwin": 56790,
+                "Linux": 95211,
+                "Windows": 27619
+            },
+            "bounds": {
+                "back": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": -0.5000002
+                },
+                "bottom": {
+                    "x": 5.960464e-08,
+                    "y": -1,
+                    "z": -1.192093e-07
+                },
+                "center": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": -1.192093e-07
+                },
+                "front": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0,
+                    "z": -1.192093e-07
+                },
+                "right": {
+                    "x": 0.5000001,
+                    "y": 0,
+                    "z": -1.192093e-07
+                },
+                "top": {
+                    "x": 5.960464e-08,
+                    "y": 1,
+                    "z": -1.192093e-07
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": true,
+            "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
+            "flex": true,
+            "name": "prim_cyl",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "cylMaterial"
+                    ],
+                    "name": "PrimCyl"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2017//prim_cyl",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2017//prim_cyl",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2017//prim_cyl"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": "n09999990"
+        },
+        "prim_sphere": {
+            "asset_bundle_sizes": {
+                "Darwin": 56955,
+                "Linux": 95341,
+                "Windows": 27706
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -0.5,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "prim_sphere",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "sphereMaterial"
+                    ],
+                    "name": "PrimSphere"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2017//prim_sphere",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2017//prim_sphere",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2017//prim_sphere"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": "n09999990"
+        },
+        "ramp_scene_max": {
+            "asset_bundle_sizes": {
+                "Darwin": 11154695,
+                "Linux": 11510994,
+                "Windows": 10898559
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -0.422213
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -2.784437,
+                    "z": 0.001693904
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0.001693904
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0.4256008
+                },
+                "left": {
+                    "x": -1.850683,
+                    "y": 0,
+                    "z": 0.001693904
+                },
+                "right": {
+                    "x": 1.850683,
+                    "y": 0,
+                    "z": 0.001693904
+                },
+                "top": {
+                    "x": 0,
+                    "y": 2.784437,
+                    "z": 0.001693904
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": true,
+            "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
+            "flex": false,
+            "name": "ramp_scene_max",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "marble_green (Instance)"
+                    ],
+                    "name": "Base"
+                },
+                {
+                    "materials": [
+                        "marble_green (Instance)"
+                    ],
+                    "name": "HorizontalSlide"
+                },
+                {
+                    "materials": [
+                        "granite_white (Instance)"
+                    ],
+                    "name": "RampSlide"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey (Instance)"
+                    ],
+                    "name": "Wall"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey (Instance)"
+                    ],
+                    "name": "Wall001"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey (Instance)"
+                    ],
+                    "name": "Wall002"
+                },
+                {
+                    "materials": [
+                        "steel_brushed (Instance)"
+                    ],
+                    "name": "ground"
+                },
+                {
+                    "materials": [
+                        "iron_anvil_rusty (Instance)"
+                    ],
+                    "name": "shortPillar"
+                },
+                {
+                    "materials": [
+                        "iron_anvil_rusty (Instance)"
+                    ],
+                    "name": "shortPillar2"
+                },
+                {
+                    "materials": [
+                        "iron_anvil_rusty (Instance)"
+                    ],
+                    "name": "tallPillar"
+                },
+                {
+                    "materials": [
+                        "iron_anvil_rusty (Instance)"
+                    ],
+                    "name": "tallPillar2"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2017//ramp_scene_max",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2017//ramp_scene_max",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2017//ramp_scene_max"
+            },
+            "wcategory": "incline",
+            "wnid": "n09999999"
+        },
+        "ramp_with_platform": {
+            "asset_bundle_sizes": {
+                "Darwin": 63270,
+                "Linux": 102816,
+                "Windows": 31475
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5021296,
+                    "z": -3.740199e-08
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.629207e-07,
+                    "z": 0.9999999
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5021294,
+                    "z": 0.9999999
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5021293,
+                    "z": 2
+                },
+                "left": {
+                    "x": -1.75,
+                    "y": 0.5021294,
+                    "z": 0.9999999
+                },
+                "right": {
+                    "x": 1.75,
+                    "y": 0.5021294,
+                    "z": 0.9999999
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1.004259,
+                    "z": 1
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "ramp_with_platform",
+            "physics_quality": 1.0,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "No Name"
+                    ],
+                    "name": "ramp_with_platform"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/ramp_with_platform",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/ramp_with_platform",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/ramp_with_platform"
+            },
+            "wcategory": "incline",
+            "wnid": "n09999999"
+        }
+    }
+}

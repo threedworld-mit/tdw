@@ -1,0 +1,45 @@
+{
+    "description": "Humanoids",
+    "records": {
+        "man_casual_1": {
+            "name": "man_casual_1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoids/osx/2019.2/man_casual_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoids/linux/2019.2/man_casual_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoids/windows/2019.2/man_casual_1"
+            }
+        },
+        "man_suit": {
+            "name": "man_suit",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoids/osx/2019.2/man_suit",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoids/linux/2019.2/man_suit",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoids/windows/2019.2/man_suit"
+            }
+        },
+        "woman_business_1": {
+            "name": "woman_business_1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoids/osx/2019.2/woman_business_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoids/linux/2019.2/woman_business_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoids/windows/2019.2/woman_business_1"
+            }
+        },
+        "woman_business_2": {
+            "name": "woman_business_2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoids/osx/2019.2/woman_business_2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoids/linux/2019.2/woman_business_2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoids/windows/2019.2/woman_business_2"
+            }
+        },
+        "woman_casual_1": {
+            "name": "woman_casual_1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoids/osx/2019.2/woman_casual_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoids/linux/2019.2/woman_casual_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoids/windows/2019.2/woman_casual_1"
+            }
+        }
+    }
+}

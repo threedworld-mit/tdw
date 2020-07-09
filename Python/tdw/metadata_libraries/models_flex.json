@@ -1,0 +1,928 @@
+{
+    "description": "Simple models optimized for NVIDIA Flex",
+    "records": {
+        "bowl": {
+            "asset_bundle_sizes": {
+                "Darwin": 68049,
+                "Linux": 104127,
+                "Windows": 35138
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.189454,
+                    "z": -0.490393
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.189454,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.189454,
+                    "z": 0.490393
+                },
+                "left": {
+                    "x": -0.490393,
+                    "y": 0.189454,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.490393,
+                    "y": 0.189454,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.378908,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "bowl",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "bowl"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/bowl",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/bowl",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/bowl"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "cone": {
+            "asset_bundle_sizes": {
+                "Darwin": 66809,
+                "Linux": 102670,
+                "Windows": 33926
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.494911,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.494911,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "cone",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "cone"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/cone",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/cone",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/cone"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "cube": {
+            "asset_bundle_sizes": {
+                "Darwin": 62318,
+                "Linux": 98242,
+                "Windows": 29315
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "cube",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "cube"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/cube",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/cube",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/cube"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "cylinder": {
+            "asset_bundle_sizes": {
+                "Darwin": 63403,
+                "Linux": 99331,
+                "Windows": 30483
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "cylinder",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "cylinder"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/cylinder",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/cylinder",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/cylinder"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "dumbbell": {
+            "asset_bundle_sizes": {
+                "Darwin": 63349,
+                "Linux": 99348,
+                "Windows": 30395
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.375,
+                    "z": -1.125
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.375,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.375,
+                    "z": 1.125
+                },
+                "left": {
+                    "x": -0.375,
+                    "y": 0.375,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.375,
+                    "y": 0.375,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.75,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "dumbbell",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "dumbbell"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/dumbbell",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/dumbbell",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/dumbbell"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "octahedron": {
+            "asset_bundle_sizes": {
+                "Darwin": 62436,
+                "Linux": 98416,
+                "Windows": 29495
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.75,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.75,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.75,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0.75,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0.75,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1.5,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "octahedron",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "octahedron"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/octahedron",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/octahedron",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/octahedron"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "pentagon": {
+            "asset_bundle_sizes": {
+                "Darwin": 62708,
+                "Linux": 98586,
+                "Windows": 29793
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -0.0477455
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": -0.0477455
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0.404509
+                },
+                "left": {
+                    "x": -0.475528,
+                    "y": 0.5,
+                    "z": -0.0477455
+                },
+                "right": {
+                    "x": 0.475528,
+                    "y": 0.5,
+                    "z": -0.0477455
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1,
+                    "z": -0.0477455
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "pentagon",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "pentagon"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/pentagon",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/pentagon",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/pentagon"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "pipe": {
+            "asset_bundle_sizes": {
+                "Darwin": 64634,
+                "Linux": 100550,
+                "Windows": 31599
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "pipe",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "pipe"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/pipe",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/pipe",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/pipe"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "platonic": {
+            "asset_bundle_sizes": {
+                "Darwin": 62845,
+                "Linux": 98716,
+                "Windows": 29836
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": -0.42532
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0.42532
+                },
+                "left": {
+                    "x": -0.447212,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.447212,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "platonic",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "platonic"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/platonic",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/platonic",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/platonic"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "pyramid": {
+            "asset_bundle_sizes": {
+                "Darwin": 62293,
+                "Linux": 98198,
+                "Windows": 29397
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": -0.53033
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0.53033
+                },
+                "left": {
+                    "x": -0.53033,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.53033,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "pyramid",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "pyramid"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/pyramid",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/pyramid",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/pyramid"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "sphere": {
+            "asset_bundle_sizes": {
+                "Darwin": 70845,
+                "Linux": 106825,
+                "Windows": 37880
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "sphere",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "sphere"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/sphere",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/sphere",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/sphere"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "torus": {
+            "asset_bundle_sizes": {
+                "Darwin": 65297,
+                "Linux": 101078,
+                "Windows": 32295
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.125,
+                    "z": -0.625
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.125,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.125,
+                    "z": 0.625
+                },
+                "left": {
+                    "x": -0.625,
+                    "y": 0.125,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.625,
+                    "y": 0.125,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.25,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "torus",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "torus"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/torus",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/torus",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/torus"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        },
+        "triangular_prism": {
+            "asset_bundle_sizes": {
+                "Darwin": 62228,
+                "Linux": 98008,
+                "Windows": 29251
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.4665065,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.4665065,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.4665065,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.5,
+                    "y": 0.4665065,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.5,
+                    "y": 0.4665065,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.933013,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "triangular_prism",
+            "physics_quality": 1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "None"
+                    ],
+                    "name": "triangular_prism"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/triangular_prism",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/triangular_prism",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/triangular_prism"
+            },
+            "wcategory": "flex_primitive",
+            "wnid": ""
+        }
+    }
+}

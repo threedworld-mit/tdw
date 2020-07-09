@@ -142,5 +142,5 @@
 | [Image dataset](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/single_object.md) | Generate 1.3M photorealistic images.       |
 | [IntPhys (demo)](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/int_phys.md) | Demo of how to simulate IntPhys in TDW.    |
 | [Humanoid videos](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/humanoid_video.md) | Generate a dataset of humanoid animations. |
-| [tdw_sound20k](https://github.com/threedworld-mit/tdw/blob/master/https://github.com/alters-mit/tdw_sound20k)   | Generate an audio dataset.                 |
-| [tdw_physics](https://github.com/threedworld-mit/tdw/blob/master/https://github.com/alters-mit/tdw_physics)     | Generate a physics dataset.                |
+| [tdw_sound20k](https://github.com/alters-mit/tdw_sound20k)   | Generate an audio dataset.                 |
+| [tdw_physics](https://github.com/alters-mit/tdw_physics)     | Generate a physics dataset.                |

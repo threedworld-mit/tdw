@@ -1235,7 +1235,7 @@
                     "materials": [
                         "metal_platinum"
                     ],
-                    "name": "baking_sheet03(Clone)"
+                    "name": "baking_sheet03"
                 }
             ],
             "urls": {
@@ -1306,7 +1306,7 @@
                     "materials": [
                         "metal_platinum"
                     ],
-                    "name": "baking_sheet04(Clone)"
+                    "name": "baking_sheet04"
                 }
             ],
             "urls": {
@@ -1377,7 +1377,7 @@
                     "materials": [
                         "metal_platinum"
                     ],
-                    "name": "baking_sheet05(Clone)"
+                    "name": "baking_sheet05"
                 }
             ],
             "urls": {
@@ -1448,7 +1448,7 @@
                     "materials": [
                         "Aluminum"
                     ],
-                    "name": "baking_sheet06(Clone)"
+                    "name": "baking_sheet06"
                 }
             ],
             "urls": {
@@ -1519,7 +1519,7 @@
                     "materials": [
                         "ApplianceStainlessSteel"
                     ],
-                    "name": "baking_sheet07(Clone)"
+                    "name": "baking_sheet07"
                 }
             ],
             "urls": {
@@ -1590,7 +1590,7 @@
                     "materials": [
                         "Glass"
                     ],
-                    "name": "baking_sheet08(Clone)"
+                    "name": "baking_sheet08"
                 }
             ],
             "urls": {
@@ -1661,7 +1661,7 @@
                     "materials": [
                         "paint+metal"
                     ],
-                    "name": "baking_sheet09(Clone)"
+                    "name": "baking_sheet09"
                 }
             ],
             "urls": {
@@ -1732,7 +1732,7 @@
                     "materials": [
                         "Glass"
                     ],
-                    "name": "baking_sheet10(Clone)"
+                    "name": "baking_sheet10"
                 }
             ],
             "urls": {
@@ -2619,7 +2619,7 @@
                     "materials": [
                         "black_metal"
                     ],
-                    "name": "bookend01(Clone)"
+                    "name": "bookend01"
                 }
             ],
             "urls": {
@@ -2690,7 +2690,7 @@
                     "materials": [
                         "granite_stone_grey"
                     ],
-                    "name": "bookend03(Clone)"
+                    "name": "bookend03"
                 }
             ],
             "urls": {
@@ -2761,7 +2761,7 @@
                     "materials": [
                         "granite_fauske"
                     ],
-                    "name": "bookend04(Clone)"
+                    "name": "bookend04"
                 }
             ],
             "urls": {
@@ -2832,7 +2832,7 @@
                     "materials": [
                         "granite_black"
                     ],
-                    "name": "bookend05(Clone)"
+                    "name": "bookend05"
                 }
             ],
             "urls": {
@@ -2903,7 +2903,7 @@
                     "materials": [
                         "granite_beige_french"
                     ],
-                    "name": "bookend06(Clone)"
+                    "name": "bookend06"
                 }
             ],
             "urls": {
@@ -2974,7 +2974,7 @@
                     "materials": [
                         "limestone_raw_amber"
                     ],
-                    "name": "bookend07(Clone)"
+                    "name": "bookend07"
                 }
             ],
             "urls": {
@@ -8366,7 +8366,7 @@
                         "rubber_used_scratched",
                         "rubber_used_scratched"
                     ],
-                    "name": "lint_roller01(Clone)"
+                    "name": "lint_roller01"
                 }
             ],
             "urls": {
@@ -8439,7 +8439,7 @@
                         "plastic_vinyl_glossy_black",
                         "plastic_vinyl_glossy_black"
                     ],
-                    "name": "lint_roller02(Clone)"
+                    "name": "lint_roller02"
                 }
             ],
             "urls": {
@@ -8512,7 +8512,7 @@
                         "rubber_used_scratched",
                         "ApplianceStainlessSteel"
                     ],
-                    "name": "lint_roller03(Clone)"
+                    "name": "lint_roller03"
                 }
             ],
             "urls": {
@@ -8585,7 +8585,7 @@
                         "plastic_black",
                         "Aluminum"
                     ],
-                    "name": "lint_roller04(Clone)"
+                    "name": "lint_roller04"
                 }
             ],
             "urls": {
@@ -8658,7 +8658,7 @@
                         "Linen_light",
                         "Aluminum"
                     ],
-                    "name": "lint_roller05(Clone)"
+                    "name": "lint_roller05"
                 }
             ],
             "urls": {

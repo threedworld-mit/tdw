@@ -81,7 +81,7 @@ _Returns:_ The average FPS.
 
 ***
 
-#### `clear(self) -> None`
+#### `clear_playback_record(self) -> None`
 
 Clear all recorded data from memory.
 Useful if you want the playback file to exclude previous commands (i.e. in a very long simulation).

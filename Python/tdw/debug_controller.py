@@ -95,7 +95,7 @@ class DebugController(Controller):
             times += time() - t0
         return num_frames / times
 
-    def clear(self) -> None:
+    def clear_playback_record(self) -> None:
         """
         Clear all recorded data from memory.
         Useful if you want the playback file to exclude previous commands (i.e. in a very long simulation).

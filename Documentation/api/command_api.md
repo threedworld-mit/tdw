@@ -2829,9 +2829,14 @@ Teleport an object to a new position.
 {"$type": "teleport_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
 ```
 
+```python
+{"$type": "teleport_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "physics": False}
+```
+
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | New position of the object. | |
+| `"physics"` | bool | This should almost always be False (the default). If True, apply a "physics-based" teleportation to the object. This only works if the object has a rigidbody (i.e. is a model from a model library) and is slightly slower than a non-physics teleport. Set this to True only if you are having persistent and rare physics glitches. | False |
 | `"id"` | int | The unique object ID. | |
 
 # FlexObjectCommand

@@ -117,9 +117,9 @@
             "location": "exterior",
             "name": "roman_villa",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/roman_villa",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/roman_villa",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/roman_villa"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.4/roman_villa",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.4/roman_villa",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.4/roman_villa"
             }
         },
         "ruin": {

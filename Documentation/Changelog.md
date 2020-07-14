@@ -71,7 +71,7 @@ This changelog is only for the _frontend_ of TDW. If you are a backend developer
 | `command_api.md` | _Many_ adjustments to the command descriptions, such as removing obsolete or misleading info, links to other docs, and minor clarifications.<br>Added a reference for all Asset Bundle Commands to their associated wrapper functions (e.g. `add_object` -> `Controller.get_add_object`).<br>Added a note for how to format the URL of a local asset bundle.<br>Clarified which "destroy" commands (e.g. `destroy_object`) retain the cached asset bundle in memory.<br>Grouped humanoid commands into a "Humanoid Command" section.<br>Converted many references to other documents into URLs. |
 | `README.md` | Removed links to backend documentation. |
 | `getting_started.md` | Updated for `v1.6.0` |
-| `command_api_guide.md` | Added a few more examples. |
+| `command_api_guide.md` | Added a few more examples.<br>Added a section explaining default parameter values. |
 | `models_full.md` | Added optional instruction to run the screenshotter. |
 | `doc_gen.md` | Extensive rewrite based on the new functionality. |
 | `machine_performance.md` | Removed links to TDWBase Issues. |

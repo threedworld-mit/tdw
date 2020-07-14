@@ -68,6 +68,18 @@ This is an example of when you *will* need to divided your commands into multipl
 
 You receive [`Bounds` output data](output_data.md) and advance one simulation step. You then interpret that data (using a function that you wrote) to decide what commands to send next. Then, you send those commands.
 
+## Parameters with Default Values
+
+Many commands have parameters with **default values**. If you don't include these parameters in your JSON command, they will default to a value.
+
+For example, in the command `create_avatar`, the default value of `"id"` is `"a"`.
+
+| This...                                            | ...is the same as this.                                      |
+| -------------------------------------------------- | ------------------------------------------------------------ |
+| `{"$type": "create_avatar", "type": "A_Img_Caps"}` | `{"$type": "create_avatar", "type": "A_Img_Caps", "id": "a"}` |
+
+Every command in the [Command API](command_api.md) includes an example of a JSON dictionary with, and without, parameters with default values, along with a parameter table that includes the default values.
+
 ## Example Controllers
 
 We've included many example implementations of the [Command API](command_api.md) as example controllers. Read [this document](../python/example_controllers.md) for a list of all example controllers.

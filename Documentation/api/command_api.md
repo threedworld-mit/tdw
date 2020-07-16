@@ -159,7 +159,7 @@
 | [`rotate_sensor_container_by`](#rotate_sensor_container_by) | Rotate the sensor container of the avatar by a given angle along a given axis. |
 | [`rotate_sensor_container_to`](#rotate_sensor_container_to) | Set the rotation quaternion of the avatar's sensor container. |
 | [`set_anti_aliasing`](#set_anti_aliasing) | Set the anti-aliasing mode for the avatar's camera.  |
-| [`toggle_image_sensor`](#toggle_image_sensor) | Toggle whether the avatar will render any images. This command overrides any pass masks set via set_pass_masks |
+| [`toggle_image_sensor`](#toggle_image_sensor) | Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), and vice-versa. |
 | [`translate_sensor_container_by`](#translate_sensor_container_by) | Translate the sensor container relative to the avatar by a given directional vector. |
 
 **Create Reverb Space Command**
@@ -2238,7 +2238,7 @@ The anti-aliasing mode for the camera.
 
 ## **`toggle_image_sensor`**
 
-Toggle whether the avatar will render any images. This command overrides any pass masks set via set_pass_masks
+Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), and vice-versa.
 
 
 ```python

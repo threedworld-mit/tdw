@@ -255,8 +255,8 @@ class TDWUtils:
     def save_images(images: Images, filename: str, output_directory="dist", resize_to=None, append_pass: bool = True) -> None:
         """
         Save each image in the Images object.
-        The name of the image will be: <pass>_<filename>.<extension>, e.g.: `"0000"` -> `depth_0000.png`
-        The images object includes the <pass> and <extension> information.
+        The name of the image will be: pass_filename.extension, e.g.: `"0000"` -> `depth_0000.png`
+        The images object includes the pass and extension information.
 
         :param images: The Images object. Contains each capture pass plus metadata.
         :param output_directory: The directory to write images to.

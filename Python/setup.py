@@ -9,7 +9,7 @@ setup(
     long_description=Path('../README.md').read_text(encoding='utf-8'),
     long_description_content_type='text/markdown',
     url='https://github.com/threedworld-mit/tdw',
-    download_url='https://github.com/threedworld-mit/tdw/archive/v1.6.0.tar.gz',
+    download_url=f'https://github.com/threedworld-mit/tdw/archive/v{__version__}.tar.gz',
     author_email='alters@mit.edu',
     author='???',
     license='MIT',

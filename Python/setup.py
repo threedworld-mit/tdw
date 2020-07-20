@@ -9,9 +9,9 @@ setup(
     long_description=Path('../README.md').read_text(encoding='utf-8'),
     long_description_content_type='text/markdown',
     url='https://github.com/threedworld-mit/tdw',
+    download_url='https://github.com/threedworld-mit/tdw/archive/v1.6.0.tar.gz',
     author_email='alters@mit.edu',
     author='???',
-    download_url='???',
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -22,6 +22,6 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8'
     ],
-    keywords='unity simulation',
+    keywords='unity simulation ml machine-learning',
     install_requires=['pyzmq', 'pymongo', 'numpy', 'scipy', 'pillow', 'tqdm', 'psutil', 'boto3', 'botocore'],
 )

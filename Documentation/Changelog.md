@@ -56,6 +56,11 @@ This changelog is only for the _frontend_ of TDW. If you are a backend developer
 - Set default `--library` value in `multi_env.py` to `models_full.json` (was `models_core.json`)
 - Slight efficiency improvements in `single_object.py`
 
+### Docker
+
+- Updated Docker file, bash scripts, controller, and documentation for v1.6
+- Docker file always downloads the latest TDW release.
+
 ### Documentation
 
 #### New Documentation

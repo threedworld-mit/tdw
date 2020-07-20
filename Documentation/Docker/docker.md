@@ -29,7 +29,7 @@ xhost +local:root
 
 
 ```bash
-docker build --build_args TDW_VERSION=v1.4.4 -t tdw:v.1.4.4
+docker build -t tdw:v.1.6.0
 ```
 
 4. Launch the container
@@ -41,8 +41,8 @@ docker run -it \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -e DISPLAY=$DISPLAY \
   --network host \
-  tdw:1.4.4 \
-  ./TDW_v1.4.4_Linux/Build/TDW_v1.4.4.x86_64
+  tdw:1.6.0 \
+  ./TDW.TDW.x86_64
 ```
 
 5.  Start controller

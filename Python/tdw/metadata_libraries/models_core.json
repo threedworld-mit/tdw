@@ -886,8 +886,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bag_14",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bag_14"
             },
-            "wcategory": "luggage",
-            "wnid": "n02773838"
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
         },
         "bag_3": {
             "asset_bundle_sizes": {
@@ -957,8 +957,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bag_3",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bag_3"
             },
-            "wcategory": "luggage",
-            "wnid": "n02773838"
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
         },
         "bakerparisfloorlamp03": {
             "asset_bundle_sizes": {
@@ -1101,8 +1101,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2//baking_sheet01",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2//baking_sheet01"
             },
-            "wcategory": "pan",
-            "wnid": "n03880531"
+            "wcategory": "cookie sheet",
+            "wnid": "n03101796"
         },
         "baking_sheet02": {
             "asset_bundle_sizes": {
@@ -1172,8 +1172,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2//baking_sheet02",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2//baking_sheet02"
             },
-            "wcategory": "pan",
-            "wnid": "n03880531"
+            "wcategory": "cookie sheet",
+            "wnid": "n03101796"
         },
         "baking_sheet03": {
             "asset_bundle_sizes": {
@@ -2104,7 +2104,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/baton_table_lamp_dark"
             },
             "wcategory": "table lamp",
-            "wnid": "n04380583"
+            "wnid": "n04380533"
         },
         "bee": {
             "asset_bundle_sizes": {
@@ -2246,7 +2246,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/black_lamp"
             },
             "wcategory": "table lamp",
-            "wnid": "n04380583"
+            "wnid": "n04380533"
         },
         "blue_bag": {
             "asset_bundle_sizes": {
@@ -2328,8 +2328,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/blue_bag",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/blue_bag"
             },
-            "wcategory": "luggage",
-            "wnid": "n02773838"
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
         },
         "blue_club_chair": {
             "asset_bundle_sizes": {
@@ -2484,7 +2484,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/blue_satchal",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/blue_satchal"
             },
-            "wcategory": "luggage",
+            "wcategory": "suitcase",
             "wnid": "n02773838"
         },
         "blue_side_chair": {
@@ -3206,8 +3206,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bronze_purse",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bronze_purse"
             },
-            "wcategory": "luggage",
-            "wnid": "n02773838"
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
         },
         "brown_leather_dining_chair": {
             "asset_bundle_sizes": {
@@ -3656,8 +3656,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/chain_purse",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/chain_purse"
             },
-            "wcategory": "luggage",
-            "wnid": "n02773838"
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
         },
         "chair_annabelle": {
             "asset_bundle_sizes": {
@@ -4183,7 +4183,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_001"
             },
             "wcategory": "coffee maker",
-            "wnid": "n03963338"
+            "wnid": "n03063338"
         },
         "coffee_0023": {
             "asset_bundle_sizes": {
@@ -4258,7 +4258,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_0023"
             },
             "wcategory": "coffee maker",
-            "wnid": "n03963338"
+            "wnid": "n03063338"
         },
         "coffee_005_13": {
             "asset_bundle_sizes": {
@@ -4332,7 +4332,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_005_13"
             },
             "wcategory": "coffee maker",
-            "wnid": "n03963338"
+            "wnid": "n03063338"
         },
         "coffee_maker": {
             "asset_bundle_sizes": {
@@ -4406,7 +4406,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_maker"
             },
             "wcategory": "coffee maker",
-            "wnid": "n03963338"
+            "wnid": "n03063338"
         },
         "coffee_table_glass_round": {
             "asset_bundle_sizes": {
@@ -4477,8 +4477,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffee_table_glass_round",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_table_glass_round"
             },
-            "wcategory": "table",
-            "wnid": "n04379243"
+            "wcategory": "coffee table, cocktail table",
+            "wnid": "n03063968"
         },
         "dark_red_club_chair": {
             "asset_bundle_sizes": {
@@ -4767,7 +4767,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/desk_lamp"
             },
             "wcategory": "table lamp",
-            "wnid": "n04380583"
+            "wnid": "n04380533"
         },
         "dishwasher_4": {
             "asset_bundle_sizes": {
@@ -4926,7 +4926,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/duffle_bag",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/duffle_bag"
             },
-            "wcategory": "luggage",
+            "wcategory": "suitcase",
             "wnid": "n02773838"
         },
         "duffle_bag_sm": {
@@ -5009,7 +5009,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/duffle_bag_sm",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/duffle_bag_sm"
             },
-            "wcategory": "luggage",
+            "wcategory": "suitcase",
             "wnid": "n02773838"
         },
         "easter4": {
@@ -5151,7 +5151,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/elephant_bowl",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/elephant_bowl"
             },
-            "wcategory": "bowl (previously dish)",
+            "wcategory": "bowl",
             "wnid": "n03206908"
         },
         "emeco_navy_chair": {
@@ -5660,7 +5660,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/foscarini_cage_mic_lamp"
             },
             "wcategory": "table lamp",
-            "wnid": "n04380583"
+            "wnid": "n04380533"
         },
         "fridge_large": {
             "asset_bundle_sizes": {
@@ -6019,8 +6019,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/glass_coffee_table_long",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/glass_coffee_table_long"
             },
-            "wcategory": "table",
-            "wnid": "n04379243"
+            "wcategory": "coffee table, cocktail table",
+            "wnid": "n03063968"
         },
         "glass_table": {
             "asset_bundle_sizes": {
@@ -6240,7 +6240,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/green_bag",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/green_bag"
             },
-            "wcategory": "luggage",
+            "wcategory": "suitcase",
             "wnid": "n02773838"
         },
         "green_side_chair": {
@@ -6484,8 +6484,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/hiker_backpack",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/hiker_backpack"
             },
-            "wcategory": "luggage",
-            "wnid": "n02773838"
+            "wcategory": "backpack",
+            "wnid": "n02769748"
         },
         "hp_printer": {
             "asset_bundle_sizes": {
@@ -7329,7 +7329,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/kevin_reilly_pattern_table_lamp"
             },
             "wcategory": "table lamp",
-            "wnid": "n04380583"
+            "wnid": "n04380533"
         },
         "kids_luggage_1": {
             "asset_bundle_sizes": {
@@ -7411,7 +7411,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/kids_luggage_1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/kids_luggage_1"
             },
-            "wcategory": "luggage",
+            "wcategory": "suitcase",
             "wnid": "n02773838"
         },
         "kids_luggage_2": {
@@ -7494,7 +7494,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/kids_luggage_2",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/kids_luggage_2"
             },
-            "wcategory": "luggage",
+            "wcategory": "suitcase",
             "wnid": "n02773838"
         },
         "knife1": {
@@ -7783,7 +7783,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/lamp_02"
             },
             "wcategory": "table lamp",
-            "wnid": "n04380583"
+            "wnid": "n04380533"
         },
         "lapalma_stil_chair": {
             "asset_bundle_sizes": {
@@ -8737,8 +8737,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/live_edge_coffee_table",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/live_edge_coffee_table"
             },
-            "wcategory": "table",
-            "wnid": "n04379243"
+            "wcategory": "coffee table, cocktail table",
+            "wnid": "n03063968"
         },
         "luggage_bag_1": {
             "asset_bundle_sizes": {
@@ -8820,7 +8820,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/luggage_bag_1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/luggage_bag_1"
             },
-            "wcategory": "luggage",
+            "wcategory": "suitcase",
             "wnid": "n02773838"
         },
         "macbook_air": {
@@ -9275,7 +9275,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/metal_briefcase",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/metal_briefcase"
             },
-            "wcategory": "luggage",
+            "wcategory": "suitcase",
             "wnid": "n02773838"
         },
         "metal_sculpture": {
@@ -9650,8 +9650,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/monster_beats_studio",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/monster_beats_studio"
             },
-            "wcategory": "electro-acoustic transducer",
-            "wnid": "n03274561"
+            "wcategory": "headphone",
+            "wnid": "n03261776"
         },
         "mouse_m505_1": {
             "asset_bundle_sizes": {
@@ -10169,8 +10169,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pepper",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pepper"
             },
-            "wcategory": "spice",
-            "wnid": "n04992570"
+            "wcategory": "pepper mill, pepper grinder",
+            "wnid": "n03914337"
         },
         "pillow": {
             "asset_bundle_sizes": {
@@ -11173,8 +11173,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/purse",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/purse"
             },
-            "wcategory": "luggage",
-            "wnid": "n02773838"
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
         },
         "puzzle_box_composite": {
             "asset_bundle_sizes": {
@@ -11463,8 +11463,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/red_bag",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/red_bag"
             },
-            "wcategory": "luggage",
-            "wnid": "n02773838"
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
         },
         "red_lamp": {
             "asset_bundle_sizes": {
@@ -11536,7 +11536,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/red_lamp"
             },
             "wcategory": "table lamp",
-            "wnid": "n04380583"
+            "wnid": "n04380533"
         },
         "red_side_chair": {
             "asset_bundle_sizes": {
@@ -11968,7 +11968,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/rope_table_lamp"
             },
             "wcategory": "table lamp",
-            "wnid": "n04380583"
+            "wnid": "n04380533"
         },
         "salt": {
             "asset_bundle_sizes": {
@@ -12040,8 +12040,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/salt",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/salt"
             },
-            "wcategory": "salt",
-            "wnid": "n05717342"
+            "wcategory": "saltshaker, salt shaker",
+            "wnid": "n04131690"
         },
         "satiro_sculpture": {
             "asset_bundle_sizes": {
@@ -12254,7 +12254,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/serving_bowl",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/serving_bowl"
             },
-            "wcategory": "bowl (previously dish)",
+            "wcategory": "bowl",
             "wnid": "n03206908"
         },
         "servingfork": {
@@ -12902,8 +12902,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/small_purse",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/small_purse"
             },
-            "wcategory": "luggage",
-            "wnid": "n02773838"
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
         },
         "small_table_green_marble": {
             "asset_bundle_sizes": {
@@ -13117,7 +13117,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/spagetti-server",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/spagetti-server"
             },
-            "wcategory": "kitchen",
+            "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
         "spatula": {
@@ -13548,7 +13548,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/spunlight_designermesh_lamp"
             },
             "wcategory": "table lamp",
-            "wnid": "n04380583"
+            "wnid": "n04380533"
         },
         "stack_of_cups_composite": {
             "asset_bundle_sizes": {
@@ -14056,8 +14056,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/tan_purse",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/tan_purse"
             },
-            "wcategory": "luggage",
-            "wnid": "n02773838"
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
         },
         "tan_side_chair": {
             "asset_bundle_sizes": {
@@ -14345,8 +14345,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/trapezoidal_table",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/trapezoidal_table"
             },
-            "wcategory": "table",
-            "wnid": "n04379243"
+            "wcategory": "coffee table, cocktail table",
+            "wnid": "n03063968"
         },
         "trunck": {
             "asset_bundle_sizes": {
@@ -14491,8 +14491,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vase_01",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vase_01"
             },
-            "wcategory": "jar",
-            "wnid": "n03593526"
+            "wcategory": "vase",
+            "wnid": "n04522168"
         },
         "vase_02": {
             "asset_bundle_sizes": {
@@ -14562,8 +14562,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vase_02",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vase_02"
             },
-            "wcategory": "jar",
-            "wnid": "n03593526"
+            "wcategory": "vase",
+            "wnid": "n04522168"
         },
         "vase_03": {
             "asset_bundle_sizes": {
@@ -14633,8 +14633,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vase_03",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vase_03"
             },
-            "wcategory": "jar",
-            "wnid": "n03593526"
+            "wcategory": "vase",
+            "wnid": "n04522168"
         },
         "vase_05": {
             "asset_bundle_sizes": {
@@ -14704,8 +14704,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vase_05",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vase_05"
             },
-            "wcategory": "jar",
-            "wnid": "n03593526"
+            "wcategory": "vase",
+            "wnid": "n04522168"
         },
         "vase_06": {
             "asset_bundle_sizes": {
@@ -14775,8 +14775,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vase_06",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vase_06"
             },
-            "wcategory": "jar",
-            "wnid": "n03593526"
+            "wcategory": "vase",
+            "wnid": "n04522168"
         },
         "vitra_meda_chair": {
             "asset_bundle_sizes": {
@@ -15080,7 +15080,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/white_lamp"
             },
             "wcategory": "table lamp",
-            "wnid": "n04380583"
+            "wnid": "n04380533"
         },
         "white_lounger_chair": {
             "asset_bundle_sizes": {
@@ -15239,7 +15239,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/white_shopping_bag",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/white_shopping_bag"
             },
-            "wcategory": "luggage",
+            "wcategory": "suitcase",
             "wnid": "n02773838"
         },
         "willisau_varion_w3_table": {

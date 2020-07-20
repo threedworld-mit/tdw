@@ -144,3 +144,4 @@
 | [Humanoid videos](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/humanoid_video.md) | Generate a dataset of humanoid animations. |
 | [tdw_sound20k](https://github.com/alters-mit/tdw_sound20k)   | Generate an audio dataset.                 |
 | [tdw_physics](https://github.com/alters-mit/tdw_physics)     | Generate a physics dataset.                |
+| [Rube Goldberg (demo)](Documentation/python/use_cases/rube_goldberg.md) | Demo of complex physical interactions between objects, with PyImpact generation of impact sounds, set in a photorealistic scene.    |

@@ -3,8 +3,6 @@
 
 **ThreeDWorld (TDW)** is a platform for interactive multi-modal physical simulation. With TDW, users can simulate high-fidelity sensory data and physical interactions between mobile agents and objects in a wide variety of rich 3D environments.
 
-# We are still preparing this repo. There will be code and documentation very soon!
-
 ### [Getting Started](https://github.com/threedworld-mit/tdw/blob/master/Documentation/getting_started.md) (Read this first!)
 
 ### [Code of Conduct](https://github.com/threedworld-mit/tdw/blob/master/code_of_conduct.md)

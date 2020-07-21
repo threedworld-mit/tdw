@@ -11,13 +11,13 @@ setup(
     url='https://github.com/threedworld-mit/tdw',
     download_url=f'https://github.com/threedworld-mit/tdw/archive/v{__version__}.tar.gz',
     author_email='alters@mit.edu',
-    author='???',
-    license='MIT',
+    author='Massachusetts Institute of Technology',
+    license='BSD',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Topic :: Software Development',
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8'

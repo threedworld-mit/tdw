@@ -9,6 +9,10 @@
 
 ### [Changelog](https://github.com/threedworld-mit/tdw/blob/master/Documentation/Changelog.md)
 
+### [Website](http://threedworld.org/)
+
+### [License](LICENSE.txt)
+
 # API
 
 #### Commands and Output Data

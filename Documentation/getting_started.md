@@ -24,7 +24,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 **TDW is EXTENSIVELY documented.** For a full list of documents and topics covered, see the [README](../README.md).
 
-## Initial Setup
+## Initial setup
 
 1. Download the [latest release](https://github.com/threedworld-mit/tdw/releases/latest) of TDW. (Unless otherwise directed, ignore any release marked `Pre-release`.) For more information regarding TDW's release and versioning structure, read [this](misc_frontend/releases.md).
 2. Install the `tdw` Python module:
@@ -73,7 +73,7 @@ python3 objects_and_images.py
 <run build>
 ```
 
-## Core Concepts
+## Core concepts
 
 ![network](images/network.png)
 

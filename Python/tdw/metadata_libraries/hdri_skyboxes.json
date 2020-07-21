@@ -1,0 +1,1430 @@
+{
+    "description": "HDRI skyboxes.",
+    "records": {
+        "aft_lounge_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.75,
+            "initial_skybox_rotation": 210,
+            "location": "interior",
+            "name": "aft_lounge_4k",
+            "sun_elevation": 125,
+            "sun_initial_angle": 203,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/aft_lounge_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/aft_lounge_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/aft_lounge_4k"
+            }
+        },
+        "artist_workshop_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.6,
+            "initial_skybox_rotation": 240,
+            "location": "interior",
+            "name": "artist_workshop_4k",
+            "sun_elevation": 58,
+            "sun_initial_angle": 330,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/artist_workshop_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/artist_workshop_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/artist_workshop_4k"
+            }
+        },
+        "autumn_hockey_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 165,
+            "location": "exterior",
+            "name": "autumn_hockey_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 210,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/autumn_hockey_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/autumn_hockey_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/autumn_hockey_4k"
+            }
+        },
+        "bathroom_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.45,
+            "initial_skybox_rotation": 60,
+            "location": "interior",
+            "name": "bathroom_4k",
+            "sun_elevation": 60,
+            "sun_initial_angle": -12,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/bathroom_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/bathroom_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/bathroom_4k"
+            }
+        },
+        "bergen_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.6,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "bergen_4k",
+            "sun_elevation": 150,
+            "sun_initial_angle": 185,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/bergen_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/bergen_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/bergen_4k"
+            }
+        },
+        "blinds_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 135,
+            "location": "interior",
+            "name": "blinds_4k",
+            "sun_elevation": 51,
+            "sun_initial_angle": -4,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/blinds_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/blinds_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/blinds_4k"
+            }
+        },
+        "blue_grotto_8k": {
+            "color_temperature": 6570,
+            "exposure": 1.5,
+            "initial_skybox_rotation": 225,
+            "location": "exterior",
+            "name": "blue_grotto_8k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 128,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/blue_grotto_8k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/blue_grotto_8k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/blue_grotto_8k"
+            }
+        },
+        "bush_restaurant_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.45,
+            "initial_skybox_rotation": 165,
+            "location": "interior",
+            "name": "bush_restaurant_4k",
+            "sun_elevation": 143,
+            "sun_initial_angle": 221,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/bush_restaurant_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/bush_restaurant_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/bush_restaurant_4k"
+            }
+        },
+        "cabin_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 300,
+            "location": "interior",
+            "name": "cabin_4k",
+            "sun_elevation": 76,
+            "sun_initial_angle": -21,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/cabin_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/cabin_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/cabin_4k"
+            }
+        },
+        "cape_hill_8k": {
+            "color_temperature": 6570,
+            "exposure": 0.8,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "cape_hill_8k",
+            "sun_elevation": 153,
+            "sun_initial_angle": 177,
+            "sun_intensity": 0.75,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/cape_hill_8k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/cape_hill_8k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/cape_hill_8k"
+            }
+        },
+        "cave_wall_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 315,
+            "location": "exterior",
+            "name": "cave_wall_4k",
+            "sun_elevation": 109,
+            "sun_initial_angle": 194,
+            "sun_intensity": 0.8,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/cave_wall_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/cave_wall_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/cave_wall_4k"
+            }
+        },
+        "cayley_interior_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 180,
+            "location": "interior",
+            "name": "cayley_interior_4k",
+            "sun_elevation": 101,
+            "sun_initial_angle": 187,
+            "sun_intensity": 1.2,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/cayley_interior_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/cayley_interior_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/cayley_interior_4k"
+            }
+        },
+        "cinema_lobby_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 30,
+            "location": "interior",
+            "name": "cinema_lobby_4k",
+            "sun_elevation": 90,
+            "sun_initial_angle": 0,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/cinema_lobby_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/cinema_lobby_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/cinema_lobby_4k"
+            }
+        },
+        "circus_arena_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 180,
+            "location": "interior",
+            "name": "circus_arena_4k",
+            "sun_elevation": 103,
+            "sun_initial_angle": 188,
+            "sun_intensity": 0.65,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/circus_arena_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/circus_arena_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/circus_arena_4k"
+            }
+        },
+        "delta_2_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 0,
+            "location": "exterior",
+            "name": "delta_2_4k",
+            "sun_elevation": 474,
+            "sun_initial_angle": 32,
+            "sun_intensity": 0.8,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/delta_2_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/delta_2_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/delta_2_4k"
+            }
+        },
+        "en_suite_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 300,
+            "location": "interior",
+            "name": "en_suite_4k",
+            "sun_elevation": 65,
+            "sun_initial_angle": 113,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/en_suite_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/en_suite_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/en_suite_4k"
+            }
+        },
+        "fireplace_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 90,
+            "location": "interior",
+            "name": "fireplace_4k",
+            "sun_elevation": 130,
+            "sun_initial_angle": 175,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/fireplace_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/fireplace_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/fireplace_4k"
+            }
+        },
+        "fish_hoek_beach_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 180,
+            "location": "exterior",
+            "name": "fish_hoek_beach_4k",
+            "sun_elevation": 144,
+            "sun_initial_angle": 173,
+            "sun_intensity": 0.8,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/fish_hoek_beach_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/fish_hoek_beach_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/fish_hoek_beach_4k"
+            }
+        },
+        "flower_road_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 165,
+            "location": "exterior",
+            "name": "flower_road_4k",
+            "sun_elevation": 135,
+            "sun_initial_angle": 225,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/flower_road_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/flower_road_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/flower_road_4k"
+            }
+        },
+        "furry_clouds_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.75,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "furry_clouds_4k",
+            "sun_elevation": 137,
+            "sun_initial_angle": 185,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/furry_clouds_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/furry_clouds_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/furry_clouds_4k"
+            }
+        },
+        "georgentor_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.5,
+            "initial_skybox_rotation": 30,
+            "location": "interior",
+            "name": "georgentor_4k",
+            "sun_elevation": 36,
+            "sun_initial_angle": 366,
+            "sun_intensity": 0.9,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/georgentor_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/georgentor_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/georgentor_4k"
+            }
+        },
+        "glass_passage_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.55,
+            "initial_skybox_rotation": 345,
+            "location": "interior",
+            "name": "glass_passage_4k",
+            "sun_elevation": 37,
+            "sun_initial_angle": 23,
+            "sun_intensity": 0.8,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/glass_passage_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/glass_passage_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/glass_passage_4k"
+            }
+        },
+        "graffiti_shelter_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.4,
+            "initial_skybox_rotation": 135,
+            "location": "interior",
+            "name": "graffiti_shelter_4k",
+            "sun_elevation": 117,
+            "sun_initial_angle": 184,
+            "sun_intensity": 0.6,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/graffiti_shelter_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/graffiti_shelter_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/graffiti_shelter_4k"
+            }
+        },
+        "gray_pier_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 300,
+            "location": "exterior",
+            "name": "gray_pier_4k",
+            "sun_elevation": 122,
+            "sun_initial_angle": 50,
+            "sun_intensity": 0.8,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/gray_pier_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/gray_pier_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/gray_pier_4k"
+            }
+        },
+        "hall_of_finfish_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 330,
+            "location": "interior",
+            "name": "hall_of_finfish_4k",
+            "sun_elevation": 78,
+            "sun_initial_angle": 50,
+            "sun_intensity": 1.1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/hall_of_finfish_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/hall_of_finfish_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/hall_of_finfish_4k"
+            }
+        },
+        "hamburg_hbf_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.7,
+            "initial_skybox_rotation": 30,
+            "location": "interior",
+            "name": "hamburg_hbf_4k",
+            "sun_elevation": 17,
+            "sun_initial_angle": 377,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/hamburg_hbf_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/hamburg_hbf_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/hamburg_hbf_4k"
+            }
+        },
+        "hansaplatz_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 225,
+            "location": "exterior",
+            "name": "hansaplatz_4k",
+            "sun_elevation": 160,
+            "sun_initial_angle": 130,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/hansaplatz_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/hansaplatz_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/hansaplatz_4k"
+            }
+        },
+        "harties_4k": {
+            "color_temperature": 6570,
+            "exposure": 1.5,
+            "initial_skybox_rotation": 270,
+            "location": "exterior",
+            "name": "harties_4k",
+            "sun_elevation": 643,
+            "sun_initial_angle": 98,
+            "sun_intensity": 2,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/harties_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/harties_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/harties_4k"
+            }
+        },
+        "indoor_pool_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.6,
+            "initial_skybox_rotation": 30,
+            "location": "interior",
+            "name": "indoor_pool_4k",
+            "sun_elevation": 91,
+            "sun_initial_angle": 300,
+            "sun_intensity": 2,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/indoor_pool_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/indoor_pool_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/indoor_pool_4k"
+            }
+        },
+        "industrial_sunset_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.65,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "industrial_sunset_4k",
+            "sun_elevation": 145,
+            "sun_initial_angle": 182,
+            "sun_intensity": 0.75,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/industrial_sunset_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/industrial_sunset_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/industrial_sunset_4k"
+            }
+        },
+        "kiara_1_dawn_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.35,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "kiara_1_dawn_4k",
+            "sun_elevation": 155,
+            "sun_initial_angle": 186,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/kiara_1_dawn_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/kiara_1_dawn_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/kiara_1_dawn_4k"
+            }
+        },
+        "kiara_5_noon_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "kiara_5_noon_4k",
+            "sun_elevation": 102,
+            "sun_initial_angle": 247,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/kiara_5_noon_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/kiara_5_noon_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/kiara_5_noon_4k"
+            }
+        },
+        "kiara_8_sunset_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.5,
+            "initial_skybox_rotation": 225,
+            "location": "exterior",
+            "name": "kiara_8_sunset_4k",
+            "sun_elevation": 147,
+            "sun_initial_angle": 175,
+            "sun_intensity": 1.1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/kiara_8_sunset_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/kiara_8_sunset_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/kiara_8_sunset_4k"
+            }
+        },
+        "kiara_interior_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 135,
+            "location": "interior",
+            "name": "kiara_interior_4k",
+            "sun_elevation": 154,
+            "sun_initial_angle": 222,
+            "sun_intensity": 0.8,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/kiara_interior_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/kiara_interior_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/kiara_interior_4k"
+            }
+        },
+        "konzerthaus_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.5,
+            "initial_skybox_rotation": 0,
+            "location": "exterior",
+            "name": "konzerthaus_4k",
+            "sun_elevation": 90,
+            "sun_initial_angle": 15,
+            "sun_intensity": 0.5,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/konzerthaus_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/konzerthaus_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/konzerthaus_4k"
+            }
+        },
+        "lapa_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.35,
+            "initial_skybox_rotation": 135,
+            "location": "exterior",
+            "name": "lapa_4k",
+            "sun_elevation": 138,
+            "sun_initial_angle": 180,
+            "sun_intensity": 0.85,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/lapa_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/lapa_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/lapa_4k"
+            }
+        },
+        "lenong_1_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 195,
+            "location": "exterior",
+            "name": "lenong_1_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 180,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/lenong_1_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/lenong_1_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/lenong_1_4k"
+            }
+        },
+        "lookout_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.45,
+            "initial_skybox_rotation": 90,
+            "location": "interior",
+            "name": "lookout_4k",
+            "sun_elevation": 107,
+            "sun_initial_angle": 188,
+            "sun_intensity": 0.9,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/lookout_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/lookout_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/lookout_4k"
+            }
+        },
+        "lythwood_room_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.6,
+            "initial_skybox_rotation": 210,
+            "location": "interior",
+            "name": "lythwood_room_4k",
+            "sun_elevation": 142,
+            "sun_initial_angle": 208,
+            "sun_intensity": 0.75,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/lythwood_room_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/lythwood_room_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/lythwood_room_4k"
+            }
+        },
+        "machine_shop_02_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 225,
+            "location": "interior",
+            "name": "machine_shop_02_4k",
+            "sun_elevation": 123,
+            "sun_initial_angle": 182,
+            "sun_intensity": 1.1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/machine_shop_02_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/machine_shop_02_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/machine_shop_02_4k"
+            }
+        },
+        "missile_launch_facility_03_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 180,
+            "location": "exterior",
+            "name": "missile_launch_facility_03_4k",
+            "sun_elevation": 90,
+            "sun_initial_angle": 192,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/missile_launch_facility_03_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/missile_launch_facility_03_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/missile_launch_facility_03_4k"
+            }
+        },
+        "misty_pines_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.7,
+            "initial_skybox_rotation": 315,
+            "location": "exterior",
+            "name": "misty_pines_4k",
+            "sun_elevation": 90,
+            "sun_initial_angle": 90,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/misty_pines_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/misty_pines_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/misty_pines_4k"
+            }
+        },
+        "modern_buildings_night_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 60,
+            "location": "exterior",
+            "name": "modern_buildings_night_4k",
+            "sun_elevation": 148,
+            "sun_initial_angle": 189,
+            "sun_intensity": 0.8,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/modern_buildings_night_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/modern_buildings_night_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/modern_buildings_night_4k"
+            }
+        },
+        "moonlit_golf_4k": {
+            "color_temperature": 2995,
+            "exposure": 0.4,
+            "initial_skybox_rotation": 225,
+            "location": "exterior",
+            "name": "moonlit_golf_4k",
+            "sun_elevation": 150,
+            "sun_initial_angle": 185,
+            "sun_intensity": 0.25,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/moonlit_golf_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/moonlit_golf_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/moonlit_golf_4k"
+            }
+        },
+        "mosaic_tunnel_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.35,
+            "initial_skybox_rotation": 195,
+            "location": "interior",
+            "name": "mosaic_tunnel_4k",
+            "sun_elevation": 103,
+            "sun_initial_angle": 231,
+            "sun_intensity": 0.6,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/mosaic_tunnel_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/mosaic_tunnel_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/mosaic_tunnel_4k"
+            }
+        },
+        "museum_of_ethnography_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 210,
+            "location": "interior",
+            "name": "museum_of_ethnography_4k",
+            "sun_elevation": 84,
+            "sun_initial_angle": 6,
+            "sun_intensity": 1.25,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/museum_of_ethnography_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/museum_of_ethnography_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/museum_of_ethnography_4k"
+            }
+        },
+        "music_hall_02_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.6,
+            "initial_skybox_rotation": 180,
+            "location": "interior",
+            "name": "music_hall_02_4k",
+            "sun_elevation": 111,
+            "sun_initial_angle": 228,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/music_hall_02_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/music_hall_02_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/music_hall_02_4k"
+            }
+        },
+        "mutianyu_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.25,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "mutianyu_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 183,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/mutianyu_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/mutianyu_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/mutianyu_4k"
+            }
+        },
+        "ninomaru_teien_4k": {
+            "color_temperature": 3555,
+            "exposure": 1,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "ninomaru_teien_4k",
+            "sun_elevation": 150,
+            "sun_initial_angle": 189,
+            "sun_intensity": 1.25,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/ninomaru_teien_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/ninomaru_teien_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/ninomaru_teien_4k"
+            }
+        },
+        "noon_grass_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.7,
+            "initial_skybox_rotation": 0,
+            "location": "exterior",
+            "name": "noon_grass_4k",
+            "sun_elevation": 90,
+            "sun_initial_angle": 0,
+            "sun_intensity": 1.4,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/noon_grass_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/noon_grass_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/noon_grass_4k"
+            }
+        },
+        "old_apartments_walkway_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.4,
+            "initial_skybox_rotation": 180,
+            "location": "exterior",
+            "name": "old_apartments_walkway_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 135,
+            "sun_intensity": 0.9,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/old_apartments_walkway_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/old_apartments_walkway_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/old_apartments_walkway_4k"
+            }
+        },
+        "old_depot_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.5,
+            "initial_skybox_rotation": 30,
+            "location": "exterior",
+            "name": "old_depot_4k",
+            "sun_elevation": 48,
+            "sun_initial_angle": 17,
+            "sun_intensity": 0.85,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/old_depot_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/old_depot_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/old_depot_4k"
+            }
+        },
+        "paul_lobe_haus_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 195,
+            "location": "exterior",
+            "name": "paul_lobe_haus_4k",
+            "sun_elevation": 90,
+            "sun_initial_angle": 180,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/paul_lobe_haus_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/paul_lobe_haus_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/paul_lobe_haus_4k"
+            }
+        },
+        "phone_shop_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.75,
+            "initial_skybox_rotation": 180,
+            "location": "interior",
+            "name": "phone_shop_4k",
+            "sun_elevation": 114,
+            "sun_initial_angle": 192,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/phone_shop_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/phone_shop_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/phone_shop_4k"
+            }
+        },
+        "piazza_martin_lutero_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.8,
+            "initial_skybox_rotation": 195,
+            "location": "exterior",
+            "name": "piazza_martin_lutero_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 185,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/piazza_martin_lutero_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/piazza_martin_lutero_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/piazza_martin_lutero_4k"
+            }
+        },
+        "pillars_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.5,
+            "initial_skybox_rotation": 195,
+            "location": "exterior",
+            "name": "pillars_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 180,
+            "sun_intensity": 1.2,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/pillars_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/pillars_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/pillars_4k"
+            }
+        },
+        "pink_sunrise_4k": {
+            "color_temperature": 3555,
+            "exposure": 0.65,
+            "initial_skybox_rotation": 240,
+            "location": "exterior",
+            "name": "pink_sunrise_4k",
+            "sun_elevation": 145,
+            "sun_initial_angle": 187,
+            "sun_intensity": 0.5,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/pink_sunrise_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/pink_sunrise_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/pink_sunrise_4k"
+            }
+        },
+        "potsdamer_platz_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 120,
+            "location": "exterior",
+            "name": "potsdamer_platz_4k",
+            "sun_elevation": 100,
+            "sun_initial_angle": 142,
+            "sun_intensity": 0.75,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/potsdamer_platz_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/potsdamer_platz_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/potsdamer_platz_4k"
+            }
+        },
+        "qwantani_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.55,
+            "initial_skybox_rotation": 195,
+            "location": "exterior",
+            "name": "qwantani_4k",
+            "sun_elevation": 138,
+            "sun_initial_angle": 186,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/qwantani_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/qwantani_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/qwantani_4k"
+            }
+        },
+        "reading_room_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.7,
+            "initial_skybox_rotation": 210,
+            "location": "interior",
+            "name": "reading_room_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 188,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/reading_room_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/reading_room_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/reading_room_4k"
+            }
+        },
+        "rooftop_night_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.6,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "rooftop_night_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 180,
+            "sun_intensity": 0.5,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/rooftop_night_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/rooftop_night_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/rooftop_night_4k"
+            }
+        },
+        "royal_esplanade_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 0,
+            "location": "interior",
+            "name": "royal_esplanade_4k",
+            "sun_elevation": 90,
+            "sun_initial_angle": 90,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/royal_esplanade_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/royal_esplanade_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/royal_esplanade_4k"
+            }
+        },
+        "san_giuseppe_bridge_4k": {
+            "color_temperature": 4100,
+            "exposure": 1,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "san_giuseppe_bridge_4k",
+            "sun_elevation": 147,
+            "sun_initial_angle": 187,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/san_giuseppe_bridge_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/san_giuseppe_bridge_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/san_giuseppe_bridge_4k"
+            }
+        },
+        "satara_night_no_lamps_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.45,
+            "initial_skybox_rotation": 0,
+            "location": "exterior",
+            "name": "satara_night_no_lamps_4k",
+            "sun_elevation": 90,
+            "sun_initial_angle": 90,
+            "sun_intensity": 0.5,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/satara_night_no_lamps_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/satara_night_no_lamps_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/satara_night_no_lamps_4k"
+            }
+        },
+        "sculpture_exhibition_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.45,
+            "initial_skybox_rotation": 150,
+            "location": "interior",
+            "name": "sculpture_exhibition_4k",
+            "sun_elevation": 127,
+            "sun_initial_angle": 197,
+            "sun_intensity": 0.9,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/sculpture_exhibition_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/sculpture_exhibition_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/sculpture_exhibition_4k"
+            }
+        },
+        "shanghai_bund_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 30,
+            "location": "exterior",
+            "name": "shanghai_bund_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 197,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/shanghai_bund_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/shanghai_bund_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/shanghai_bund_4k"
+            }
+        },
+        "simons_town_rocks_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.7,
+            "initial_skybox_rotation": 225,
+            "location": "exterior",
+            "name": "simons_town_rocks_4k",
+            "sun_elevation": 142,
+            "sun_initial_angle": 182,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/simons_town_rocks_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/simons_town_rocks_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/simons_town_rocks_4k"
+            }
+        },
+        "sky_white": {
+            "color_temperature": 6570,
+            "exposure": 2,
+            "initial_skybox_rotation": 0,
+            "location": "exterior",
+            "name": "sky_white",
+            "sun_elevation": 90,
+            "sun_initial_angle": 0,
+            "sun_intensity": 1.25,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/sky_white",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/sky_white",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/sky_white"
+            }
+        },
+        "small_empty_house_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.65,
+            "initial_skybox_rotation": 180,
+            "location": "interior",
+            "name": "small_empty_house_4k",
+            "sun_elevation": 134,
+            "sun_initial_angle": 210,
+            "sun_intensity": 0.85,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/small_empty_house_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/small_empty_house_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/small_empty_house_4k"
+            }
+        },
+        "small_hangar_01_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.8,
+            "initial_skybox_rotation": 165,
+            "location": "interior",
+            "name": "small_hangar_01_4k",
+            "sun_elevation": 138,
+            "sun_initial_angle": 179,
+            "sun_intensity": 1.75,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/small_hangar_01_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/small_hangar_01_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/small_hangar_01_4k"
+            }
+        },
+        "snowy_forest_path_02_4k": {
+            "color_temperature": 9380,
+            "exposure": 0.75,
+            "initial_skybox_rotation": 180,
+            "location": "exterior",
+            "name": "snowy_forest_path_02_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 195,
+            "sun_intensity": 1.25,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/snowy_forest_path_02_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/snowy_forest_path_02_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/snowy_forest_path_02_4k"
+            }
+        },
+        "spruit_dawn_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.35,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "spruit_dawn_4k",
+            "sun_elevation": 147,
+            "sun_initial_angle": 184,
+            "sun_intensity": 0.6,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/spruit_dawn_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/spruit_dawn_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/spruit_dawn_4k"
+            }
+        },
+        "stadium_01_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.6,
+            "initial_skybox_rotation": 225,
+            "location": "exterior",
+            "name": "stadium_01_4k",
+            "sun_elevation": 153,
+            "sun_initial_angle": 172,
+            "sun_intensity": 1.5,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/stadium_01_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/stadium_01_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/stadium_01_4k"
+            }
+        },
+        "storeroom_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.6,
+            "initial_skybox_rotation": 105,
+            "location": "interior",
+            "name": "storeroom_4k",
+            "sun_elevation": 118,
+            "sun_initial_angle": 187,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/storeroom_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/storeroom_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/storeroom_4k"
+            }
+        },
+        "subway_entrance_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.5,
+            "initial_skybox_rotation": 345,
+            "location": "interior",
+            "name": "subway_entrance_4k",
+            "sun_elevation": 57,
+            "sun_initial_angle": 11,
+            "sun_intensity": 1.15,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/subway_entrance_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/subway_entrance_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/subway_entrance_4k"
+            }
+        },
+        "sunset_fairway_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.4,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "sunset_fairway_4k",
+            "sun_elevation": 145,
+            "sun_initial_angle": 188,
+            "sun_intensity": 0.6,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/sunset_fairway_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/sunset_fairway_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/sunset_fairway_4k"
+            }
+        },
+        "sunset_in_the_chalk_quarry_4k": {
+            "color_temperature": 3555,
+            "exposure": 0.65,
+            "initial_skybox_rotation": 195,
+            "location": "exterior",
+            "name": "sunset_in_the_chalk_quarry_4k",
+            "sun_elevation": 148,
+            "sun_initial_angle": 188,
+            "sun_intensity": 0.75,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/sunset_in_the_chalk_quarry_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/sunset_in_the_chalk_quarry_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/sunset_in_the_chalk_quarry_4k"
+            }
+        },
+        "syferfontein_18d_clear_8k": {
+            "color_temperature": 6570,
+            "exposure": 0.6,
+            "initial_skybox_rotation": 60,
+            "location": "exterior",
+            "name": "syferfontein_18d_clear_8k",
+            "sun_elevation": 115,
+            "sun_initial_angle": 164,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/syferfontein_18d_clear_8k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/syferfontein_18d_clear_8k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/syferfontein_18d_clear_8k"
+            }
+        },
+        "symmetrical_garden_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.75,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "symmetrical_garden_4k",
+            "sun_elevation": 124,
+            "sun_initial_angle": 187,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/symmetrical_garden_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/symmetrical_garden_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/symmetrical_garden_4k"
+            }
+        },
+        "table_mountain_1_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 195,
+            "location": "exterior",
+            "name": "table_mountain_1_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 197,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/table_mountain_1_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/table_mountain_1_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/table_mountain_1_4k"
+            }
+        },
+        "tears_of_steel_bridge_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "tears_of_steel_bridge_4k",
+            "sun_elevation": 125,
+            "sun_initial_angle": 165,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/tears_of_steel_bridge_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/tears_of_steel_bridge_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/tears_of_steel_bridge_4k"
+            }
+        },
+        "teufelsberg_inner_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.5,
+            "initial_skybox_rotation": 135,
+            "location": "exterior",
+            "name": "teufelsberg_inner_4k",
+            "sun_elevation": 102,
+            "sun_initial_angle": 185,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/teufelsberg_inner_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/teufelsberg_inner_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/teufelsberg_inner_4k"
+            }
+        },
+        "teufelsberg_lookout_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.35,
+            "initial_skybox_rotation": 135,
+            "location": "exterior",
+            "name": "teufelsberg_lookout_4k",
+            "sun_elevation": 102,
+            "sun_initial_angle": 185,
+            "sun_intensity": 0.55,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/teufelsberg_lookout_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/teufelsberg_lookout_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/teufelsberg_lookout_4k"
+            }
+        },
+        "tiergarten_8k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 120,
+            "location": "exterior",
+            "name": "tiergarten_8k",
+            "sun_elevation": 108,
+            "sun_initial_angle": 194,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/tiergarten_8k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/tiergarten_8k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/tiergarten_8k"
+            }
+        },
+        "venetian_crossroads_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 195,
+            "location": "exterior",
+            "name": "venetian_crossroads_4k",
+            "sun_elevation": 137,
+            "sun_initial_angle": 210,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/venetian_crossroads_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/venetian_crossroads_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/venetian_crossroads_4k"
+            }
+        },
+        "venice_dawn_1_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.65,
+            "initial_skybox_rotation": 150,
+            "location": "exterior",
+            "name": "venice_dawn_1_4k",
+            "sun_elevation": 146,
+            "sun_initial_angle": 196,
+            "sun_intensity": 0.6,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/venice_dawn_1_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/venice_dawn_1_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/venice_dawn_1_4k"
+            }
+        },
+        "venice_sunrise_4k": {
+            "color_temperature": 3700,
+            "exposure": 0.5,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "venice_sunrise_4k",
+            "sun_elevation": 150,
+            "sun_initial_angle": 183,
+            "sun_intensity": 0.6,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/venice_sunrise_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/venice_sunrise_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/venice_sunrise_4k"
+            }
+        },
+        "venice_sunset_4k": {
+            "color_temperature": 3700,
+            "exposure": 0.5,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "venice_sunset_4k",
+            "sun_elevation": 161,
+            "sun_initial_angle": 186,
+            "sun_intensity": 0.8,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/venice_sunset_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/venice_sunset_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/venice_sunset_4k"
+            }
+        },
+        "veranda_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.6,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "veranda_4k",
+            "sun_elevation": 140,
+            "sun_initial_angle": 120,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/veranda_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/veranda_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/veranda_4k"
+            }
+        },
+        "vignaioli_night_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.5,
+            "initial_skybox_rotation": 75,
+            "location": "exterior",
+            "name": "vignaioli_night_4k",
+            "sun_elevation": 115,
+            "sun_initial_angle": 210,
+            "sun_intensity": 0.65,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/vignaioli_night_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/vignaioli_night_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/vignaioli_night_4k"
+            }
+        },
+        "vintage_measuring_lab_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.7,
+            "initial_skybox_rotation": 180,
+            "location": "interior",
+            "name": "vintage_measuring_lab_4k",
+            "sun_elevation": 116,
+            "sun_initial_angle": 172,
+            "sun_intensity": 0.63,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/vintage_measuring_lab_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/vintage_measuring_lab_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/vintage_measuring_lab_4k"
+            }
+        },
+        "whipple_creek_gazebo_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "whipple_creek_gazebo_4k",
+            "sun_elevation": 112,
+            "sun_initial_angle": 152,
+            "sun_intensity": 1.5,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/whipple_creek_gazebo_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/whipple_creek_gazebo_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/whipple_creek_gazebo_4k"
+            }
+        },
+        "whipple_creek_regional_park_01_4k": {
+            "color_temperature": 6570,
+            "exposure": 0.75,
+            "initial_skybox_rotation": 0,
+            "location": "exterior",
+            "name": "whipple_creek_regional_park_01_4k",
+            "sun_elevation": 90,
+            "sun_initial_angle": 0,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/whipple_creek_regional_park_01_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/whipple_creek_regional_park_01_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/whipple_creek_regional_park_01_4k"
+            }
+        },
+        "winter_evening_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 0,
+            "location": "exterior",
+            "name": "winter_evening_4k",
+            "sun_elevation": 39,
+            "sun_initial_angle": 57,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/winter_evening_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/winter_evening_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/winter_evening_4k"
+            }
+        },
+        "zhengyang_gate_4k": {
+            "color_temperature": 6570,
+            "exposure": 1,
+            "initial_skybox_rotation": 210,
+            "location": "exterior",
+            "name": "zhengyang_gate_4k",
+            "sun_elevation": 120,
+            "sun_initial_angle": 171,
+            "sun_intensity": 1,
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/osx/2019.1/zhengyang_gate_4k",
+                "Linux": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/linux/2019.1/zhengyang_gate_4k",
+                "Windows": "https://tdw-public.s3.amazonaws.com/hdri_skyboxes/windows/2019.1/zhengyang_gate_4k"
+            }
+        }
+    }
+}

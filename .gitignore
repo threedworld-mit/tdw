@@ -1,0 +1,6 @@
+bin/
+Python/tdw.egg-info/
+*/.idea/*
+.idea/
+__pycache__/
+*/__pycache__/*

@@ -1,0 +1,159 @@
+{
+    "description": "Streamed scenes.",
+    "records": {
+        "abandoned_factory": {
+            "description": "\"An abandoned shell of a factory \"\"mini-scene\"\".\"",
+            "hdri": true,
+            "location": "exterior",
+            "name": "abandoned_factory",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/abandoned_factory",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/abandoned_factory",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/abandoned_factory"
+            }
+        },
+        "archviz_house_2018": {
+            "description": "A very fancy room.",
+            "hdri": true,
+            "location": "interior",
+            "name": "archviz_house_2018",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/archviz_house_2018",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/archviz_house_2018",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/archviz_house_2018"
+            }
+        },
+        "box_room_2018": {
+            "description": "A very simple room with skylights.",
+            "hdri": true,
+            "location": "interior",
+            "name": "box_room_2018",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/box_room_2018",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/box_room_2018",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/box_room_2018"
+            }
+        },
+        "building_site": {
+            "description": "\"An derelict building site \"\"mini-scene\"\".\"",
+            "hdri": true,
+            "location": "exterior",
+            "name": "building_site",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/building_site",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/building_site",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/building_site"
+            }
+        },
+        "dead_grotto": {
+            "description": "An barren exterior space; rocky with tree stumps, logs, water puddles and some ruins.",
+            "hdri": true,
+            "location": "exterior",
+            "name": "dead_grotto",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/dead_grotto",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/dead_grotto",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/dead_grotto"
+            }
+        },
+        "downtown_alleys": {
+            "description": "An urban downtown environment with alleys.",
+            "hdri": false,
+            "location": "exterior",
+            "name": "downtown_alleys",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/downtown_alleys",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/downtown_alleys",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/downtown_alleys"
+            }
+        },
+        "empty_scene": {
+            "description": "\"ModelScreenShotter scene \"\"mini-scene\"\".\"",
+            "hdri": false,
+            "location": "interior",
+            "name": "empty_scene",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/empty_scene",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/empty_scene",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/empty_scene"
+            }
+        },
+        "iceland_beach": {
+            "description": "\"A rocky beach surrounded by rocks\"\"mini-scene\"\".\"",
+            "hdri": true,
+            "location": "exterior",
+            "name": "iceland_beach",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/iceland_beach",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/iceland_beach",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/iceland_beach"
+            }
+        },
+        "lava_field": {
+            "description": "\"A barren volcanic landscape \"\"mini-scene\"\".\"",
+            "hdri": true,
+            "location": "exterior",
+            "name": "lava_field",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/lava_field",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/lava_field",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/lava_field"
+            }
+        },
+        "monkey_physics_room": {
+            "description": "A custom lab-style room for the Monkey Physics project.",
+            "hdri": false,
+            "location": "interior",
+            "name": "monkey_physics_room",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/monkey_physics_room",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/monkey_physics_room",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/monkey_physics_room"
+            }
+        },
+        "roman_villa": {
+            "description": "A Roman villa.",
+            "hdri": false,
+            "location": "exterior",
+            "name": "roman_villa",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/roman_villa",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/roman_villa",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/roman_villa"
+            }
+        },
+        "ruin": {
+            "description": "\"A castle ruin \"\"mini-scene\"\".\"",
+            "hdri": true,
+            "location": "exterior",
+            "name": "ruin",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/ruin",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/ruin",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/ruin"
+            }
+        },
+        "suburb_scene_2018": {
+            "description": "A suburban scene using real-time lighting.",
+            "hdri": false,
+            "location": "exterior",
+            "name": "suburb_scene_2018",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/suburb_scene_2018",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/suburb_scene_2018",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/suburb_scene_2018"
+            }
+        },
+        "tdw_room_2018": {
+            "description": "An interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "tdw_room_2018",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/tdw_room_2018",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/tdw_room_2018",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/tdw_room_2018"
+            }
+        }
+    }
+}

@@ -1,15 +1,16 @@
 from setuptools import setup
-from tdw.version import __version__
 from pathlib import Path
+
+version = Path("tdw/version.py").read_text(encoding="utf-8").split("\n")[0].split(" = ")[1].strip()
 
 setup(
     name='tdw',
-    version=__version__,
+    version=version,
     description='3D simulation environment',
     long_description=Path('../README.md').read_text(encoding='utf-8'),
     long_description_content_type='text/markdown',
     url='https://github.com/threedworld-mit/tdw',
-    download_url=f'https://github.com/threedworld-mit/tdw/archive/v{__version__}.tar.gz',
+    download_url=f'https://github.com/threedworld-mit/tdw/archive/v{version}.tar.gz',
     author_email='alters@mit.edu',
     author='Massachusetts Institute of Technology',
     license='BSD',

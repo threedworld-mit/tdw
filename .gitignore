@@ -4,3 +4,4 @@ Python/tdw.egg-info/
 .idea/
 __pycache__/
 */__pycache__/*
+Python/dist/

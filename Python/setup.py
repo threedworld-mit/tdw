@@ -1,7 +1,7 @@
 from setuptools import setup
 from pathlib import Path
 
-version = "v1.6.0.3"
+version = "1.6.0.4"
 
 setup(
     name='tdw',

@@ -30,7 +30,13 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 2. Install the `tdw` Python module:
 
 ```bash
-pip3 install tdw
+cd path/to/tdw/Python
+```
+
+(Change `path/to` to the actual path.)
+
+```bash
+pip3 install -e .
 ```
 
 3. Read the rest of this document.

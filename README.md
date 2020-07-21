@@ -101,8 +101,8 @@
 | [Model Screenshotter](https://github.com/threedworld-mit/tdw/blob/master/Documentation/utility_applications/model_screenshotter.md) | Generate images of every model in TDW.                       |
 | [Material Screenshotter](https://github.com/threedworld-mit/tdw/blob/master/Documentation/utility_applications/material_screenshotter.md) | Generate images of every material in TDW.                    |
 | [Materials, textures, and colors](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/materials_textures_colors.md) | Defines materials, textures, and colors.                     |
-| [Depth of Field](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth_of_field_and_image_bluriness.md) | Prevent blurry images and increase realism.                  |
-| [Remote rendering](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/xpra.md)      | How to render using xpra.                                    |
+| [Depth of Field](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth_of_field_and_image_blurriness.md) | Prevent blurry images and increase realism.                  |
+| [Remote rendering](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/xpra.md) | How to render using xpra.                                    |
 | [Observation Data](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/observation_data.md) | Different means of determining what an agent is observing.   |
 
 # Scene Setup
@@ -132,12 +132,12 @@
 
 | Document                                                     | Description                                           |
 | ------------------------------------------------------------ | ----------------------------------------------------- |
-| [Debug TDW](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/debug_tdw.md)        | Several strategies for debugging errors in your code. |
-| [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md)  | API for the `DebugController` class.                  |
-| [Depth of Field](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth_of_field_and_image_bluriness.md) | Prevent blurry images and increase realism.           |
+| [Debug TDW](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/debug_tdw.md) | Several strategies for debugging errors in your code. |
+| [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md) | API for the `DebugController` class.                  |
+| [Depth of Field](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth_of_field_and_image_blurriness.md) | Prevent blurry images and increase realism.           |
 | [Performance Optimizations](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/performance_optimizations.md) | Increase simulation speed.                            |
-| [OS X](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/osx.md)                   | Common OS X problems and solutions.                   |
-| [Physics](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/physics.md)            | Common physics problems and solutions.                |
+| [OS X](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/osx.md) | Common OS X problems and solutions.                   |
+| [Physics](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/physics.md) | Common physics problems and solutions.                |
 
 # Use Cases
 

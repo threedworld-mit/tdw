@@ -1,7 +1,7 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 from pathlib import Path
 
-__version__ = "1.6.1"
+__version__ = "1.6.1.1"
 readme_path = Path('../README.md')
 if readme_path.exists():
     long_description = readme_path.read_text(encoding='utf-8')
@@ -15,7 +15,6 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/threedworld-mit/tdw',
-    download_url=f'https://github.com/threedworld-mit/tdw/archive/v1.6.0.tar.gz',
     author_email='alters@mit.edu',
     author='Massachusetts Institute of Technology',
     license='BSD',
@@ -28,6 +27,8 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8'
     ],
+    packages=find_packages(),
+    include_package_data=True,
     keywords='unity simulation ml machine-learning',
-    install_requires=['pyzmq', 'pymongo', 'numpy', 'scipy', 'pillow', 'tqdm', 'psutil', 'boto3', 'botocore'],
+    install_requires=['pyzmq', 'numpy', 'scipy', 'pillow', 'tqdm', 'psutil', 'boto3', 'botocore'],
 )

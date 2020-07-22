@@ -1,8 +1,7 @@
 from setuptools import setup
 from pathlib import Path
-from pkg_resources import get_distribution
-__version__ = get_distribution('tdw').version
 
+__version__ = "1.6.1"
 readme_path = Path('../README.md')
 if readme_path.exists():
     long_description = readme_path.read_text(encoding='utf-8')
@@ -16,7 +15,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/threedworld-mit/tdw',
-    download_url=f'https://github.com/threedworld-mit/tdw/archive/v{__version__}.tar.gz',
+    download_url=f'https://github.com/threedworld-mit/tdw/archive/v1.6.0.tar.gz',
     author_email='alters@mit.edu',
     author='Massachusetts Institute of Technology',
     license='BSD',

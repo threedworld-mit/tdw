@@ -1,16 +1,22 @@
 from setuptools import setup
 from pathlib import Path
+from pkg_resources import get_distribution
+__version__ = get_distribution('tdw').version
 
-version = "1.6.0.4"
+readme_path = Path('../README.md')
+if readme_path.exists():
+    long_description = readme_path.read_text(encoding='utf-8')
+else:
+    long_description = "See: https://github.com/threedworld-mit/tdw"
 
 setup(
     name='tdw',
-    version=version,
+    version=__version__,
     description='3D simulation environment',
-    long_description=Path('README.md').read_text(encoding='utf-8'),
+    long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/threedworld-mit/tdw',
-    download_url=f'https://github.com/threedworld-mit/tdw/archive/v{version}.tar.gz',
+    download_url=f'https://github.com/threedworld-mit/tdw/archive/v{__version__}.tar.gz',
     author_email='alters@mit.edu',
     author='Massachusetts Institute of Technology',
     license='BSD',

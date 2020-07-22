@@ -29,15 +29,9 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 1. Download the [latest release](https://github.com/threedworld-mit/tdw/releases/latest) of TDW. (Unless otherwise directed, ignore any release marked `Pre-release`.) For more information regarding TDW's release and versioning structure, read [this](misc_frontend/releases.md).
 2. Install the `tdw` Python module:
 
-```bash
-cd path/to/tdw/Python
-```
-
-(Change `path/to` to the actual path.)
-
-```bash
-pip3 install -e .
-```
+| Windows                   | OS X and Linux        |
+| ------------------------- | --------------------- |
+| `pip3 install tdw --user` | `sudo pip3 install tdw` |
 
 3. Read the rest of this document.
 

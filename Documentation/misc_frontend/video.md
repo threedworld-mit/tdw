@@ -16,6 +16,8 @@ resp = c.communicate([TDWUtils.create_empty_room(12, 12),
                       {"$type": "create_avatar",
                        "type": "A_Img_Caps_Kinematic",
                        "id": "a"},
+                      {"$type": "set_target_framerate",
+                       "framerate": 60},
                       {"$type": "set_pass_masks",
                        "avatar_id": "a",
                        "pass_masks": ["_img"]},
@@ -34,6 +36,11 @@ for i in range(num_frames): # You will need to define num_frames.
 
 2. After running the controller, stitch the frames together with ffmpeg.
 
+To capture video with **ffmpeg**, which works well on headless servers:
+```
+DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 output.mp4
+```
+
 ## "I want to capture audio (and maybe video too)"
 
 Important guidelines when recording audio:
@@ -43,9 +50,33 @@ Important guidelines when recording audio:
 
 ## "I want to capture video and audio"
 
-Use an external program, such as [OBS](https://obsproject.com) or ffmpeg with [x11grab](https://trac.ffmpeg.org/wiki/Capture/Desktop).
+In your controller, add this command when you initialize the scene:
 
-**OBS** has limited command-line functionality. After installing OBS, you'll need to configure it yourself to get the audio-visual setup you need (there's a lot of documentation and tutorials for OBS online).
+```json
+{"$type": "set_target_framerate", "framerate": 60}
+```
+
+To record video and video, you need to use an external program.
+
+#### On a headless Linux server
+
+1. Install these packages: 
+
+```bash
+sudo apt-get install pulseaudio jackd2 alsa-utils dbus-x11
+```
+
+2. Record with [ffmpeg](https://trac.ffmpeg.org/wiki/Capture/Desktop):
+
+```
+DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 -f pulse -ac 2 -i default output.mp4
+```
+
+#### On a personal computer
+
+See above for instructions for how to use ffmpeg. If you are using Linux, you can probably skip step 1.
+
+You can also use [OBS](https://obsproject.com), which has limited command-line functionality. After installing OBS, you'll need to configure it yourself to get the audio-visual setup you need (there's a lot of documentation and tutorials for OBS online).
 
 If you start OBS with the `--startrecording` flag, OBS will begin recording as soon as it is opened.
 
@@ -73,11 +104,6 @@ chdir(cwd)
 
 # Close OBS and stop recording.
 call(['taskkill', '/F', '/T', '/PID', str(obs.pid)])
-```
-
-To capture with **ffmpeg**, which works well for headless servers:
-```
-DISPLAY=:0 ffmpeg -video_size 256x256 -framerate 120 -f x11grab -i :0.0+0,0 output.mp4
 ```
 
 ## "I want to capture only audio (without video)"

@@ -6,6 +6,11 @@
 
 TDW is a general-purpose tool that allows the user to communicate and manipulate a 3D environment. As such, there's no single "correct" procedure for using TDW. This guide will show you how to start using TDW and how to explore the available options.
 
+## What you need to know
+
+- Some familiarity with running programs from the command line.
+- Beginner Python3 skills.
+
 ## Requirements
 
 - Windows, OS X, or Linux
@@ -24,14 +29,25 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 **TDW is EXTENSIVELY documented.** For a full list of documents and topics covered, see the [README](../README.md).
 
-## Initial setup
+## Installation
 
-1. Download the [latest release](https://github.com/threedworld-mit/tdw/releases/latest) of TDW. (Unless otherwise directed, ignore any release marked `Pre-release`.) For more information regarding TDW's release and versioning structure, read [this](misc_frontend/releases.md).
 2. Install the `tdw` Python module:
 
 | Windows                   | OS X and Linux        |
 | ------------------------- | --------------------- |
 | `pip3 install tdw --user` | `sudo pip3 install tdw` |
+
+3. Run a minimal controller script (this will install the build):
+
+```bash
+cd tdw/Python/example_controllers
+```
+
+Then:
+
+```bash
+python3 minimal.py
+```
 
 3. Read the rest of this document.
 
@@ -39,25 +55,10 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 The **build** is the binary executable that handles the actual simulation (rendering, physics, and so on). As with any application, you can double-click on the build or launch it from a shell.
 
-When this document includes this statement:
+By default, the build will launch when you run any controller. To disable this behavior, set `launch_build` to `False`:
 
-```
-<run build>
-```
-
-...that means that you should run the build executable.
-
-### Minimal simulation
-
-Create a minimal TDW simulation and verify that the basic network structure works on your machine.
-
-```bash
-cd tdw/Python/example_controllers
-python3 minimal.py
-```
-
-```bash
-<run build>
+```python
+c = Controller(port=1071, launch_build=False)
 ```
 
 ### Less-minimal simulation
@@ -66,11 +67,10 @@ Create a basic simulation in which objects are added into the 3D environment and
 
 ```bash
 cd tdw/Python/example_controllers
-python3 objects_and_images.py
 ```
 
 ```bash
-<run build>
+python3 objects_and_images.py
 ```
 
 ## Core concepts
@@ -249,3 +249,11 @@ This image is a numpy array that can be either saved to disk or fed directly int
 ## Restarting a simulation
 
 To restart a simulation, **always kill the controller _and_ the build.** Never recycle a build or controller instance!
+
+Kill the build by sending `{"$type": "terminate"}`:
+
+```python
+c = Controller(launch_build=True) # Launch the build.
+c.communicate({"$type": "terminate"}) # Terminate the build.
+```
+

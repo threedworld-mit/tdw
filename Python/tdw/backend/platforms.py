@@ -21,3 +21,8 @@ UNITY_TO_SYSTEM: Dict[str, str] = {"StandaloneWindows64": "Windows",
 SYSTEM_TO_EXECUTABLE: Dict[str, str] = {"Windows": ".exe",
                                         "Darwin": ".app",
                                         "Linux": ".x86_64"}
+
+# Convert the system platform to the name of the zipped release file on GitHub.
+SYSTEM_TO_RELEASE: Dict[str, str] = {"Windows": "TDW_Windows",
+                                     "Darwin": "TDW_OSX",
+                                     "Linux": "TDW_Linux"}

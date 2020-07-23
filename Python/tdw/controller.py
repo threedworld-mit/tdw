@@ -1,11 +1,13 @@
 import zmq
 import json
 import os
+from subprocess import Popen
 from typing import List, Union, Optional, Tuple
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord
 from tdw.output_data import Version
-from tdw.version import __version__, last_stable_release, PyPiVersion
+from tdw.version import __version__, PyPiVersion, BuildVersion
+from tdw.backend.paths import BUILD_PATH
 
 
 class Controller(object):
@@ -21,12 +23,14 @@ class Controller(object):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """
         Create the network socket and bind the socket to the port.
 
         :param port: The port number.
         :param check_version: If true, the controller will check the version of the build and print the result.
+        :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
+        :param update_build: Remove the existing version of the build, and launch the build (overrides `launch_build`).
         """
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
@@ -52,6 +56,19 @@ class Controller(object):
                           f"pip3 install tdw=={PyPiVersion.get_latest_post_release(stripped_installed_version)}")
                     print(f"Consider upgrading to the latest version of TDW ({stripped_pypi_version}):"
                           f"\npip3 install tdw -U")
+        # Launch the build.
+        if launch_build:
+            # Download the build.
+            if not BUILD_PATH.exists():
+                print(f"Couldn't find build at {BUILD_PATH}\nDownloading now...")
+                success = Controller.download_build()
+                if not success:
+                    print("You need to launch your own build.")
+            else:
+                success = True
+            # Launch the build.
+            if success:
+                Popen(str(BUILD_PATH.resolve()))
 
         context = zmq.Context()
 
@@ -69,12 +86,12 @@ class Controller(object):
 
         # Compare the version of the tdw module to the build version.
         if check_version:
+            v = PyPiVersion.strip_post_release(__version__)
             tdw_version, unity_version = self.get_version()
             print(f"Build version {tdw_version}\nUnity Engine {unity_version}\nPython tdw module version {__version__}")
-            if __version__ != tdw_version:
+            if v != tdw_version:
                 print("WARNING! Your Python code is not the same version as the build. They might not be compatible.")
-                print("Either use the latest prerelease build, or use the last stable release via:\n")
-                print("git checkout v" + last_stable_release)
+                print("To update your build, call: Controller.download_build()")
 
     def communicate(self, commands: Union[dict, List[dict]]) -> list:
         """
@@ -293,3 +310,13 @@ class Controller(object):
         """
 
         return int.from_bytes(frame, byteorder='big')
+
+    @staticmethod
+    def download_build() -> bool:
+        """
+        Delete an existing version of the build (if any). Re-download and extract it.
+
+        :return True if a build was downloaded and extracted.
+        """
+
+        return BuildVersion(__version__).download_and_unzip()

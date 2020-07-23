@@ -1,10 +1,61 @@
 from typing import List
 from subprocess import Popen, PIPE, check_output
+from requests import get, head
+import zipfile
+from pathlib import Path
 import re
-
+from platform import system
+from distutils import dir_util
+from tdw.backend.platforms import SYSTEM_TO_RELEASE
+from tdw.backend.paths import BUILD_ROOT_DIR
 
 __version__ = "1.6.1"
-last_stable_release = "1.6.0"
+
+
+class BuildVersion:
+    """
+    Get the version of the build and the release file.
+    """
+
+    def __init__(self, version: str = __version__[:]):
+        """
+        :param version: The version to download.
+        """
+
+        self.version = version
+        self.url = f"https://github.com/threedworld-mit/tdw/releases/download/v{self.version}/" \
+                   f"{SYSTEM_TO_RELEASE[system()]}.zip"
+        if BUILD_ROOT_DIR.exists():
+            print("Deleted old build.")
+            dir_util.remove_tree(str(BUILD_ROOT_DIR.resolve()))
+
+    def download_and_unzip(self) -> bool:
+        """
+        Download the release corresponding to this version. Move it to the build path and extract it.
+
+        :return: True if the build downloaded.
+        """
+
+        # Check if the build exists.
+        if head(self.url).status_code != 302:
+            print(f"Release not found: {self.url}")
+            return False
+
+        # Download the build.
+        resp = get(self.url).content
+        print("Downloaded the build.")
+        # Save the zip file.
+        zip_path = Path().home().joinpath(f"{SYSTEM_TO_RELEASE[system()]}.zip")
+        zip_path.write_bytes(resp)
+        print("Saved the .zip file.")
+        # Extract the zip file.
+        with zipfile.ZipFile(str(zip_path.resolve()), 'r') as zip_ref:
+            zip_ref.extractall(str(BUILD_ROOT_DIR.resolve()))
+        print("Extracted the .zip file.")
+        # Delete the zip file.
+        zip_path.unlink()
+        print("Deleted the .zip file.")
+        return True
 
 
 class PyPiVersion:

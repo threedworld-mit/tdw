@@ -11,7 +11,7 @@
 
 ### [Website](http://threedworld.org/)
 
-### [C# Code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/releases.md)
+### [C# Code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/c_sharp_sources.md)
 
 ### [License](LICENSE.txt)
 
@@ -89,7 +89,7 @@
 
 | Document | Description |
 | --- | --- |
-| [C# code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/releases.md)  | Access to C# backend source code |
+| [C# code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/c_sharp_sources.md)  | Access to C# backend source code |
 | [Releases](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/releases.md) | Release versioning in TDW.           |
 
 # Remote Server

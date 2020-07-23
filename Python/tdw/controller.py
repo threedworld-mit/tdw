@@ -5,7 +5,7 @@ from typing import List, Union, Optional, Tuple
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord
 from tdw.output_data import Version
-from tdw.version import __version__, last_stable_release
+from tdw.version import __version__, last_stable_release, PyPiVersion
 
 
 class Controller(object):
@@ -28,6 +28,30 @@ class Controller(object):
         :param port: The port number.
         :param check_version: If true, the controller will check the version of the build and print the result.
         """
+
+        # Compare the installed version of the tdw Python module to the latest on PyPi.
+        # If there is a difference, recommend an upgrade.
+        if check_version:
+            installed_tdw_version = PyPiVersion.get_installed_tdw_version()
+            pypi_version = PyPiVersion.get_pypi_version()
+
+            if installed_tdw_version != pypi_version:
+                stripped_installed_version = PyPiVersion.strip_post_release(installed_tdw_version)
+                if stripped_installed_version != __version__:
+                    print(f"ERROR! Your installed version: {stripped_installed_version} "
+                          f"doesn't match the listed version: {__version__} (this should never happen!)")
+                stripped_pypi_version = PyPiVersion.strip_post_release(pypi_version)
+                print(f"You are using TDW {installed_tdw_version} but version {stripped_pypi_version} is available.")
+
+                # Post-release mismatch (e.g. latest is 1.6.3.4 and installed is 1.6.3.2)
+                if stripped_installed_version == stripped_pypi_version:
+                    print(f"Upgrade to the latest version of TDW:\npip3 install tdw -U")
+                # Using a version behind the latest (e.g. latest is 1.6.3 and installed is 1.6.2)
+                else:
+                    print(f"To upgrade to the last version of {stripped_installed_version}:\n"
+                          f"pip3 install tdw=={PyPiVersion.get_latest_post_release(stripped_installed_version)}")
+                    print(f"Consider upgrading to the latest version of TDW ({stripped_pypi_version}):"
+                          f"\npip3 install tdw -U")
 
         context = zmq.Context()
 

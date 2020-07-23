@@ -16,3 +16,8 @@ SYSTEM_TO_UNITY: Dict[str, str] = {"Windows": "StandaloneWindows64",
 UNITY_TO_SYSTEM: Dict[str, str] = {"StandaloneWindows64": "Windows",
                                    "StandaloneOSX": "Darwin",
                                    "StandaloneLinux64": "Linux"}
+
+# Convert the system platform to the build's executable extension.
+SYSTEM_TO_EXECUTABLE: Dict[str, str] = {"Windows": ".exe",
+                                        "Darwin": ".app",
+                                        "Linux": ".x86_64"}

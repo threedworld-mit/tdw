@@ -1,6 +1,9 @@
 from pathlib import Path
 from platform import system
+from tdw.backend.platforms import SYSTEM_TO_EXECUTABLE
 
+
+BUILD_PATH = Path.home().joinpath(f"TDW/TDW{SYSTEM_TO_EXECUTABLE[system()]}")
 ASSET_BUNDLE_VERIFIER_OUTPUT_DIR = Path.home().joinpath("tdw_asset_bundle_verifier")
 VALIDATOR_REPORT_PATH = ASSET_BUNDLE_VERIFIER_OUTPUT_DIR.joinpath("validator_report.json")
 

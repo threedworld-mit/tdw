@@ -1,3 +1,5 @@
+C# Source Code for TDW
+
 The public release of TDW contains all Python code, full documentation and binary executable “builds” of the simulation engine for Linux, OSX and Windows.  However we have chosen not to release the C# source code for the TDW back-end and other underlying aspects pf the platform. Our reasoning is this: TDW has been carefully designed so that the vast majority of use-cases should not require access to any back-end components of the platform. The Python code has been designed so any researcher can work with it easily, and so we can easily support it and accept contributions. The underlying C# components of TDW, on the other hand, require significant low-level programming experience with Unity and advanced C# development in general. However as long as the C# code is closed-source, we can choose to add powerful third-party plugins and accelerate the development of new features.
 
 In summary, we hope and expect that most users will be able to get full value from TDW using the publicly released Python code and simulation engine executables.

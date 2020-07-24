@@ -5,3 +5,4 @@ Python/tdw.egg-info/
 __pycache__/
 */__pycache__/*
 Python/dist/
+Python/tdw/tdw.egg-info/

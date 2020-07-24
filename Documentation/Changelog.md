@@ -2,6 +2,66 @@
 
 # v1.6.x
 
+## v1.6.1
+
+### New Features
+
+- **Added a working pip module.** It is no longer necessary to download the whole repo to use TDW.
+- **The build will automatically launch when you launch a controller.** 
+- When you launch a controller, it will automatically check to make sure that your local TDW install it is up-to-date and, if not, offer suggestions for how to upgrade.
+
+For more information, please read [Getting Started](getting_started.md).
+
+### `tdw` module
+
+- `setup.py` now actually works when doing a `pip install`.
+- Removed `pymongo` requirement.
+- Added `requests` requirement.
+- Added `__init__.py` files in `tdw/` and in subdirectories.
+- Added new scripts:
+    - `tdw/release/build.py` Helper functions for downloading a build from the repo.
+    - `tdw/release/pypi.py` Helper functions for version checks vs. PyPi.
+
+#### `Controller`
+
+- Added new constructor parameters:
+    - `launch_build` If `True`, the controller will automatically launch a build. If there is no build at the expected location, the controller will download one. Default = `True`
+    - `display` If not `None`, and if this is a Linux machine, and if `launch_build == True`, this will launch the build on the matching display.
+- If `check_version == True`:
+    - The controller will compare the installed `tdw` Python module to the latest PyPi version. If there is a mis-match, it will recommend upgrading; the recommendation it gives will depend on the mismatch (`1.6.0` vs. `1.6.1`; `1.6.1` vs. `1.7.0`, etc.)
+    - The controller will compare the version of the downloaded build to the version of the install `tdw` Python module. If they are different versions, it will show the user how to upgrade/downgrade.
+- Added: `Controller.launch_build()` Launch the build. If there is no build in the expected location, download one.
+
+#### `tdw.backend.paths`
+
+- Added: `SYSTEM_TO_EXECUTABLE` and `SYSTEM_TO_RELEASE`
+
+### Example Controllers
+
+- `minimal.py` terminates the build after its test.
+
+### Backend
+
+- Added `MANIFEST.in` to `tdw` module.
+- Removed `Python/README.md` (this was a copy of the repo's README and is not actually needed for PyPi).
+- Removed `tdw.version.last_stable_version` (not needed)
+
+### Documentation
+
+#### New Documentation
+
+| Document | Description |
+| --- | --- |
+| `build.md` | `Build` class API. |
+| `pypi.md` | `PyPi` class API. |
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `getting_started.md` | 1. Added a section for expected coding knowledge.<br>2. Re-wrote instructions for how to install TDW using the pip module.<br>3. Expanded installation instructions for remote servers.<br>4. Explicitly mention when it is required to clone this repo. |
+| `releases.md` | Added a section about how version-checking works. |
+
 ## v1.6.0
 
 This changelog is only for the _frontend_ of TDW. If you are a backend developer, or are looking for changes prior to v1.6.0, please refer to the changelog in TDWBase.

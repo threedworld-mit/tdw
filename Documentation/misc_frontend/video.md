@@ -41,6 +41,10 @@ To capture video with **ffmpeg**, which works well on headless servers:
 DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 output.mp4
 ```
 
+- `DISPLAY` must have a valid display number.
+- `-video_size` must be less than or equal to the size of your display. It will be easier to capture the video if the display size, `video_size`, and TDW application screen size are all the same; otherwise you may need to set pixel offsets (see below).
+- `:0.0+0,0` is the display number (which should match `DISPLAY`) and (x, y) pixel offset (usually this should be `+0,0`).
+
 ## "I want to capture audio (and maybe video too)"
 
 Important guidelines when recording audio:
@@ -72,9 +76,11 @@ sudo apt-get install pulseaudio jackd2 alsa-utils dbus-x11
 DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 -f pulse -ac 2 -i default output.mp4
 ```
 
+See above for instructions for how to use ffmpeg with x11grab; all of video recording suggestions are applicable to video+audio recording.
+
 #### On a personal computer
 
-See above for instructions for how to use ffmpeg. If you are using Linux, you can probably skip step 1.
+See above for instructions for how to use ffmpeg with x11grab. If you are using Linux, you can probably skip step 1.
 
 You can also use [OBS](https://obsproject.com), which has limited command-line functionality. After installing OBS, you'll need to configure it yourself to get the audio-visual setup you need (there's a lot of documentation and tutorials for OBS online).
 

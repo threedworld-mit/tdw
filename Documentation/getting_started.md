@@ -50,6 +50,8 @@ print("Everything is OK!")
 c.communicate({"$type": "terminate"})
 ```
 
+When you launch run this script, the `Controller` will download the **build**, the binary executable application that runs the simulation environment and then launch the build. The controller will also check to see if your version of TDW is the most recent. For more information on what happens when you start a controller, read [this](misc_frontend/releases.md#Updates).
+
 ##### 2b. On a remote Linux server:
 
 1. Set up a virtual display.
@@ -80,11 +82,12 @@ Read [this](https://github.com/threedworld-mit/tdw/blob/v1.6.1/Documentation/Doc
 
 ***
 
-### 3. Less-minimal simulation
+### 3. Download this repo and run a test
 
-Create a basic simulation in which objects are added into the 3D environment and images are routed to the controller and saved to the local disk:`tdw/Python/example_controllers/example_output/`
+This repo contains all of the example controllers and documentation for TDW, as well as the source code for the `tdw` Python module. You can download the repo either as a zip file or by forking the repo.
 
-2. Clone this repo.
+In this test, TDW creates a basic simulation in which objects are added into the 3D environment. Images are routed to the controller and saved to the local disk: `tdw/Python/example_controllers/example_output/`
+
 3. `cd tdw/Python/example_controllers`
 4. `python3 objects_and_images.py`
 

@@ -50,13 +50,17 @@ These releases usually introduce major additions to TDW. They also typically int
 
 ## Updates
 
-When you first run a controller on a machine, it will automatically download a build from the same version. Suppress this behavior by doing:
+When you first run a controller on a machine, it will automatically download a build from the same version.  The build will be downloaded to: `~/tdw_build` (where `~` is your home directory). To prevent the build from launching:
 
 ```python
 c = Controller(launch_build=False)
 ```
 
-The controller will check to make sure that you have an up-to-date version of the `tdw` Python module by querying PyPi. Then, it will compare your version of the installed `tdw` module to the latest PyPi version, as well as to the build version on your machine. Suppress this behavior by doing:
+The controller will check to make sure that you have an up-to-date version of the `tdw` Python module by querying PyPi; if there is a mis-match  (`1.6.0` vs. `1.6.1`; `1.6.1` vs. `1.7.0`, etc.) it will offer suggestions for how to upgrade.
+
+Then, the controller will compare your installed version of TDW to the version of the downloaded build. If the downloaded build is out-of-date, it will be replaced with a newer version.
+
+To suppress all version checks:
 
 ```python
 c = Controller(check_version=False)

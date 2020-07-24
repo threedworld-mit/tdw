@@ -48,6 +48,20 @@ _Example:_ `v1.6.2` → `v1.7.0`
 
 These releases usually introduce major additions to TDW. They also typically introduce API-breaking changes (such as removing or modifying commands).
 
+## Updates
+
+When you first run a controller on a machine, it will automatically download a build from the same version. Suppress this behavior by doing:
+
+```python
+c = Controller(launch_build=False)
+```
+
+The controller will check to make sure that you have an up-to-date version of the `tdw` Python module by querying PyPi. Then, it will compare your version of the installed `tdw` module to the latest PyPi version, as well as to the build version on your machine. Suppress this behavior by doing:
+
+```python
+c = Controller(check_version=False)
+```
+
 ## Changelog
 
 All changes to TDW are recorded in the [changelog](../Changelog.md).

@@ -23,57 +23,70 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 * **The build requires X.** 
 * We have tested the build in Ubuntu 16 and 18.
+* Up-to-date NVIDIA drivers.
 * The server must have 8 or less GPUs. (If there are more, you can temporarily disable them by editing xorg.conf)
-
-## Further documentation
-
-**TDW is EXTENSIVELY documented.** For a full list of documents and topics covered, see the [README](../README.md).
 
 ## Installation
 
-2. Install the `tdw` Python module:
+#### 1. Install the `tdw` Python module
 
 | Windows                   | OS X and Linux        |
 | ------------------------- | --------------------- |
-| `pip3 install tdw --user` | `sudo pip3 install tdw` |
+| **`pip3 install tdw --user`** | **`sudo pip3 install tdw`** |
 
-3. Run a minimal controller script (this will install the build):
+***
 
-```bash
-cd tdw/Python/example_controllers
-```
+#### 2. Run a minimal test
 
-Then:
+##### 2a. On a personal computer:
 
-```bash
-python3 minimal.py
-```
-
-3. Read the rest of this document.
-
-### How to run the build
-
-The **build** is the binary executable that handles the actual simulation (rendering, physics, and so on). As with any application, you can double-click on the build or launch it from a shell.
-
-By default, the build will launch when you run any controller. To disable this behavior, set `launch_build` to `False`:
+Create this Python script and run it:
 
 ```python
-c = Controller(port=1071, launch_build=False)
+from tdw.controller import Controller
+
+c = Controller()
+print("Everything is OK!")
+c.communicate({"$type": "terminate"})
 ```
 
-The build is located at: `~/tdw_build/TDW` (where `~` is your home directory).
+##### 2b. On a remote Linux server:
 
-### Less-minimal simulation
+1. Set up a virtual display.
+
+```bash
+sudo service lightdm stop
+sudo killall Xorg
+sudo nvidia-xconfig -a --use-display-device=None --virtual=256x256
+sudo /usr/bin/X :0&
+```
+
+NOTE: Not all of these commands will be applicable to every server. The last number is the `display_number` which will be used in the script below:
+
+2. Create this Python script and run it:
+
+```python
+from tdw.controller import Controller
+
+display_number = 0 # Set this number to your virtual display.
+c = Controller(display=display_number)
+print("Everything is OK!")
+c.communicate({"$type": "terminate"})
+```
+
+##### 2c. From a Docker container:
+
+Read [this](https://github.com/threedworld-mit/tdw/blob/v1.6.1/Documentation/Docker/docker.md). We recommend first trying TDW on a personal computer to familiarize yourself with the basic setup.
+
+***
+
+### 3. Less-minimal simulation
 
 Create a basic simulation in which objects are added into the 3D environment and images are routed to the controller and saved to the local disk:`tdw/Python/example_controllers/example_output/`
 
-```bash
-cd tdw/Python/example_controllers
-```
-
-```bash
-python3 objects_and_images.py
-```
+2. Clone this repo.
+3. `cd tdw/Python/example_controllers`
+4. `python3 objects_and_images.py`
 
 ## Core concepts
 
@@ -259,3 +272,6 @@ c = Controller(launch_build=True) # Launch the build.
 c.communicate({"$type": "terminate"}) # Terminate the build.
 ```
 
+## Further documentation
+
+**TDW is EXTENSIVELY documented.** For a full list of documents and topics covered, see the [README](../README.md).

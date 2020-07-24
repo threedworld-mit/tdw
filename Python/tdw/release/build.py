@@ -3,6 +3,7 @@ from typing import Tuple
 from platform import system
 from pathlib import Path
 from zipfile import ZipFile
+from distutils import dir_util
 from tdw.version import __version__
 from tdw.backend.platforms import SYSTEM_TO_RELEASE, SYSTEM_TO_EXECUTABLE
 
@@ -46,6 +47,10 @@ class Build:
         url, url_exists = Build.get_url(version)
         if not url_exists:
             return False
+
+        if Build.BUILD_ROOT_DIR.exists():
+            dir_util.remove_tree(str(Build.BUILD_ROOT_DIR.resolve()))
+            print("Deleted old release.")
 
         # Download the build.
         resp = get(url).content

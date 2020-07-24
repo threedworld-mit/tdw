@@ -326,9 +326,8 @@ class Controller(object):
             print(f"To download the correct build:\n\nfrom tdw.release.build import Build\nBuild.download(version={v})")
             print(f"\nTo upgrade your Python module (usually recommended):\n\npip3 install tdw=={pypi_version}")
         elif v > tdw_version:
-            print("WARNING! Your TDW build is older than your tdw Python module. They might not be compatible.")
-            print(f"To update your build:\n\nfrom tdw.release.build import Build\nBuild.download(version={v})")
-            print(f"\nTo downgrade your Python module (not usually recommended):\n\npip3 install tdw=={pypi_version}")
+            print("WARNING! Your TDW build is older than your tdw Python module. Downloading the correct build...")
+            Build.download(v)
 
     @staticmethod
     def _check_pypi_version(v_installed_override: str = None, v_pypi_override: str = None) -> None:

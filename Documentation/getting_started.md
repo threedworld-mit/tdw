@@ -61,6 +61,8 @@ By default, the build will launch when you run any controller. To disable this b
 c = Controller(port=1071, launch_build=False)
 ```
 
+The build is located at: `~/tdw_build/TDW` (where `~` is your home directory).
+
 ### Less-minimal simulation
 
 Create a basic simulation in which objects are added into the 3D environment and images are routed to the controller and saved to the local disk:`tdw/Python/example_controllers/example_output/`

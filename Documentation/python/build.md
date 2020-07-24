@@ -2,7 +2,7 @@
 
 ## `Build`
 
-`from tdw.release/build import Build`
+`from tdw.release.build import Build`
 
 Various helper functions for TDW builds.
 

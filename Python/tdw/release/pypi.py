@@ -41,7 +41,7 @@ class PyPi:
         """
 
         # Get an error from  PyPi which will list all available versions.
-        p = Popen(["pip3", "install", "tdw=="], stderr=PIPE, shell=True, stdout=PIPE)
+        p = Popen(["pip3", "install", "tdw=="], stderr=PIPE, stdout=PIPE)
         p.wait()
         stdout, stderr = p.communicate()
         # From the list of available versions, get the last one (the most recent).
@@ -74,7 +74,7 @@ class PyPi:
         """
 
         # Get info on the tdw module.
-        p = check_output(["pip3", "show", "tdw"], shell=True).decode("utf-8")
+        p = check_output(["pip3", "show", "tdw"]).decode("utf-8")
         # Get the version from the output.
         v = re.search(r"Version: (.*)", p, flags=re.MULTILINE).group(1).strip()
 

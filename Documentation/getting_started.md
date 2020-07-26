@@ -175,7 +175,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelLibrarian
 from tdw.output_data import OutputData, Bounds, Images
 
-lib = ModelLibrarian("models_full.json")
+lib = ModelLibrarian("models_core.json")
 # Get the record for the table.
 table_record = lib.get_record("small_table_green_marble")
 
@@ -199,6 +199,7 @@ resp = c.communicate([{"$type": "load_scene",
                        "category": table_record.wcategory,
                        "id": table_id},
                       {"$type": "send_bounds",
+                       "ids": [table_id],
                        "frequency": "once"}])
 ```
 
@@ -212,16 +213,14 @@ for r in resp[:-1]:
     # Find the bounds data.
     if r_id == "boun":
         b = Bounds(r)
-        # Find the table in the bounds data.
-        for i in range(b.get_num()):
-            if b.get_id(i) == table_id:
-                top_y = b.get_top(i)
+        # We only requested the table, so it is object 0:
+        _, top_y, _ = b.get_top(0)        
 ```
 
 The variable `top_y` can be used to place an object on the table:
 
 ```python
-box_record = lib.get_record("iron_box")
+box_record = lib.get_record("puzzle_box_composite")
 box_id = 1
 c.communicate({"$type": "add_object",
                "name": box_record.name,
@@ -230,7 +229,7 @@ c.communicate({"$type": "add_object",
                "position": {"x": 0, "y": top_y, "z": 0},
                "rotation": {"x": 0, "y": 0, "z": 0},
                "category": box_record.wcategory,
-               "id": 1})
+               "id": box_id})
 ```
 
 Then an **avatar** can be added to the scene. In this case, the avatar is just a camera. The avatar can then send an image:

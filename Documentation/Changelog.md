@@ -4,7 +4,25 @@
 
 ## v1.6.1
 
-### New Features
+### v1.6.1.7
+
+#### `tdw` module
+
+- Fixed: `tdw` module doesn't work in virtualenv.
+
+#### Documentation
+
+##### Modified Documentation
+
+| Document             | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `getting_started.md` | 1. The example uses `models_core.json` so it works for everybody.<br>2. Better explanation for how to get object IDs.<br>3. Added image saving to the example. |
+
+***
+
+### v1.6.1.6
+
+#### New Features
 
 - **Added a working pip module.** It is no longer necessary to download the whole repo to use TDW.
 - **The build will automatically launch when you launch a controller.** 
@@ -12,7 +30,7 @@
 
 For more information, please read [Getting Started](getting_started.md).
 
-### `tdw` module
+#### `tdw` module
 
 - `setup.py` now actually works when doing a `pip install`.
 - Removed `pymongo` requirement.
@@ -22,7 +40,7 @@ For more information, please read [Getting Started](getting_started.md).
     - `tdw/release/build.py` Helper functions for downloading a build from the repo.
     - `tdw/release/pypi.py` Helper functions for version checks vs. PyPi.
 
-#### `Controller`
+##### `Controller`
 
 - Added new constructor parameters:
     - `launch_build` If `True`, the controller will automatically launch a build. If there is no build at the expected location, the controller will download one. Default = `True`
@@ -32,30 +50,30 @@ For more information, please read [Getting Started](getting_started.md).
     - The controller will compare the version of the downloaded build to the version of the install `tdw` Python module. If they are different versions, it will show the user how to upgrade/downgrade.
 - Added: `Controller.launch_build()` Launch the build. If there is no build in the expected location, download one.
 
-#### `tdw.backend.paths`
+##### `tdw.backend.paths`
 
 - Added: `SYSTEM_TO_EXECUTABLE` and `SYSTEM_TO_RELEASE`
 
-### Example Controllers
+#### Example Controllers
 
 - `minimal.py` terminates the build after its test.
 
-### Backend
+#### Backend
 
 - Added `MANIFEST.in` to `tdw` module.
 - Removed `Python/README.md` (this was a copy of the repo's README and is not actually needed for PyPi).
 - Removed `tdw.version.last_stable_version` (not needed)
 
-### Documentation
+#### Documentation
 
-#### New Documentation
+##### New Documentation
 
 | Document | Description |
 | --- | --- |
 | `build.md` | `Build` class API. |
 | `pypi.md` | `PyPi` class API. |
 
-#### Modified Documentation
+##### Modified Documentation
 
 | Document | Modification |
 | --- | --- |

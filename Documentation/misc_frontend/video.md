@@ -4,6 +4,8 @@ There are several ways capture audio or video data in TDW.
 
 ## "I want to capture only video (without audio)"
 
+#### Option B: Use image data
+
 1. Write a controller that receives and saves an image every frame, like the following minimal example:
 
 ```python
@@ -34,18 +36,31 @@ for i in range(num_frames): # You will need to define num_frames.
     resp = c.communicate(commands)
 ```
 
-2. After running the controller, stitch the frames together with ffmpeg.
+2. After running the controller, stitch the frames together with **ffmpeg**.
 
-To capture video with **ffmpeg**, which works well on headless servers:
+#### Option A: Record a video of the build
+
+To record video with ffmpeg on headless a headless server:
+
+- Make sure that xpra isn't running.
+
+- Use **x11grab** (run this outside of a Docker container):
+
 ```
 DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 output.mp4
 ```
 
 - `DISPLAY` must have a valid display number.
+
 - `-video_size` must be the display size.
+
 - The TDW screen size must be less than or equal to the display size.
-- `:0.0+0,0` is the display number (which should match `DISPLAY`) and (x, y) pixel offset.
-- Make sure that xpra isn't running.
+
+- `:0.0+0,0` is the display number (which should match `DISPLAY`) and `+(x,y)` pixel offset. You can get the coordinates of the window with:
+
+  ```
+  xwininfo -tree -root
+  ```
 
 ## "I want to capture audio (and maybe video too)"
 
@@ -59,7 +74,7 @@ Important guidelines when recording audio:
 In your controller, add this command when you initialize the scene:
 
 ```json
-{"$type": "set_target_framerate", "framerate": 60}
+{"$type": "set_target_framerate", "framerate": 30}
 ```
 
 To record video and video, you need to use an external program.
@@ -72,7 +87,19 @@ To record video and video, you need to use an external program.
 sudo apt-get install pulseaudio jackd2 alsa-utils dbus-x11
 ```
 
-2. Record with [ffmpeg](https://trac.ffmpeg.org/wiki/Capture/Desktop):
+2. Start pulseaudio outside of the Docker container:
+
+```bash
+pulseaudio --system
+```
+
+*(Optional)* To check if pulseaudio is working, start an audio file and while its playing:
+
+```bash
+pacmd list-sink-inputs | grep -c 'state: RUNNING'
+```
+
+3. Record with [ffmpeg](https://trac.ffmpeg.org/wiki/Capture/Desktop) (outside of the Docker container):
 
 ```
 DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 -f pulse -ac 2 -i default output.mp4

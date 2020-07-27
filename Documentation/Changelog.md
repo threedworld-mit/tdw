@@ -2,9 +2,7 @@
 
 # v1.6.x
 
-## v1.6.1
-
-### v1.6.1.7
+## v1.6.2
 
 #### `tdw` module
 
@@ -18,9 +16,7 @@
 | -------------------- | ------------------------------------------------------------ |
 | `getting_started.md` | 1. The example uses `models_core.json` so it works for everybody.<br>2. Better explanation for how to get object IDs.<br>3. Added image saving to the example. |
 
-***
-
-### v1.6.1.6
+## v1.6.1
 
 #### New Features
 

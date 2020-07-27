@@ -4,6 +4,7 @@ from platform import system
 from pathlib import Path
 from zipfile import ZipFile
 from distutils import dir_util
+from subprocess import call
 from tdw.version import __version__
 from tdw.backend.platforms import SYSTEM_TO_RELEASE, SYSTEM_TO_EXECUTABLE
 
@@ -33,6 +34,18 @@ class Build:
         else:
             release_exists = True
         return url, release_exists
+
+    @staticmethod
+    def chmod() -> None:
+        """
+        Add execute permissions to the build.
+        :return:
+        """
+
+        if system() == "Darwin":
+            call(["chmod", "+x", str(Build.BUILD_PATH.joinpath("Contents/MacOS/TDW").resolve())])
+        elif system() == "Linux":
+            call(["chmod", "+x", str(Build.BUILD_PATH.resolve())])
 
     @staticmethod
     def download(version: str = __version__) -> bool:
@@ -66,4 +79,7 @@ class Build:
         # Delete the zip file.
         zip_path.unlink()
         print("Deleted the .zip file.")
+
+        # Add execute permissions.
+        Build.chmod()
         return True

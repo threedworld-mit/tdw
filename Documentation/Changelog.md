@@ -7,7 +7,15 @@
 ### `tdw` module
 
 - Fixed: `tdw` module doesn't work in virtualenv.
-- Fixed: Downloaded builds don't have execute permissions in OS X or Linux.
+
+#### `DebugController`
+
+- Added parameters `launch_build` and `display`.
+
+### Build
+
+- Fixed: Downloaded builds don't have execute permissions in OS X or Linux (the downloader now runs `chmod` after extracting the .zip file)
+- Fixed: `NullReferenceException` when Sticky Mitten Avatar tries to put down an object that was never held.
 
 ### Documentation
 

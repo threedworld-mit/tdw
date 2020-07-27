@@ -42,8 +42,10 @@ DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 output.mp4
 ```
 
 - `DISPLAY` must have a valid display number.
-- `-video_size` must be less than or equal to the size of your display. It will be easier to capture the video if the display size, `video_size`, and TDW application screen size are all the same; otherwise you may need to set pixel offsets (see below).
-- `:0.0+0,0` is the display number (which should match `DISPLAY`) and (x, y) pixel offset (usually this should be `+0,0`).
+- `-video_size` must be the display size.
+- The TDW screen size must be less than or equal to the display size.
+- `:0.0+0,0` is the display number (which should match `DISPLAY`) and (x, y) pixel offset.
+- Make sure that xpra isn't running.
 
 ## "I want to capture audio (and maybe video too)"
 

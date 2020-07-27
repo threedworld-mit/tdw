@@ -1,11 +1,15 @@
 import zmq
 import json
 import os
+from subprocess import Popen
+from platform import system
 from typing import List, Union, Optional, Tuple
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord
 from tdw.output_data import Version
-from tdw.version import __version__, last_stable_release
+from tdw.release.build import Build
+from tdw.release.pypi import PyPi
+from tdw.version import __version__
 
 
 class Controller(object):
@@ -21,13 +25,24 @@ class Controller(object):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, display: int = None):
         """
         Create the network socket and bind the socket to the port.
 
         :param port: The port number.
         :param check_version: If true, the controller will check the version of the build and print the result.
+        :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
+        :param display: If launch_build == True, launch the build using this display number (Linux-only).
         """
+
+        # Compare the installed version of the tdw Python module to the latest on PyPi.
+        # If there is a difference, recommend an upgrade.
+        if check_version:
+            self._check_pypi_version()
+
+        # Launch the build.
+        if launch_build:
+            Controller.launch_build(display)
 
         context = zmq.Context()
 
@@ -45,12 +60,7 @@ class Controller(object):
 
         # Compare the version of the tdw module to the build version.
         if check_version:
-            tdw_version, unity_version = self.get_version()
-            print(f"Build version {tdw_version}\nUnity Engine {unity_version}\nPython tdw module version {__version__}")
-            if __version__ != tdw_version:
-                print("WARNING! Your Python code is not the same version as the build. They might not be compatible.")
-                print("Either use the latest prerelease build, or use the last stable release via:\n")
-                print("git checkout v" + last_stable_release)
+            self._check_build_version()
 
     def communicate(self, commands: Union[dict, List[dict]]) -> list:
         """
@@ -269,3 +279,110 @@ class Controller(object):
         """
 
         return int.from_bytes(frame, byteorder='big')
+
+    @staticmethod
+    def launch_build(display: int = None) -> None:
+        """
+        Launch the build. If a build doesn't exist at the expected location, download one to that location.
+
+        :param display: If launch_build == True, launch the build using this display number (Linux-only).
+        """
+
+        # Download the build.
+        if not Build.BUILD_PATH.exists():
+            print(f"Couldn't find build at {Build.BUILD_PATH}\nDownloading now...")
+            success = Build.download()
+            if not success:
+                print("You need to launch your own build.")
+        else:
+            success = True
+        # Launch the build.
+        if success:
+            # Launch on the correct display.
+            if system() == "Linux" and display is not None:
+                Popen([f"DISPLAY=:{display}.0", str(Build.BUILD_PATH.resolve())])
+            else:
+                Popen(str(Build.BUILD_PATH.resolve()))
+
+    def _check_build_version(self, version: str = __version__, build_version: str = None) -> None:
+        """
+        Check the version of the build. If there is no build, download it.
+        If the build is of the wrong version, recommend an upgrade.
+
+
+        :param version: The version of TDW. You can set this to an arbitrary version for testing purposes.
+        :param build_version: If not None, this overrides the expected build version. Only override for debugging.
+        """
+
+        v = PyPi.strip_post_release(version)
+        tdw_version, unity_version = self.get_version()
+        # Override the build version for testing.
+        if build_version is not None:
+            tdw_version = build_version
+        pypi_version = PyPi.get_latest_minor_release(tdw_version)
+        print(f"Build version {tdw_version}\nUnity Engine {unity_version}\nPython tdw module version {version}")
+        if v < tdw_version:
+            print("WARNING! Your TDW build is newer than your tdw Python module. They might not be compatible.")
+            print(f"To download the correct build:\n\nfrom tdw.release.build import Build\nBuild.download(version={v})")
+            print(f"\nTo upgrade your Python module (usually recommended):\n\npip3 install tdw=={pypi_version}")
+        elif v > tdw_version:
+            print("WARNING! Your TDW build is older than your tdw Python module. Downloading the correct build...")
+            Build.download(v)
+
+    @staticmethod
+    def _check_pypi_version(v_installed_override: str = None, v_pypi_override: str = None) -> None:
+        """
+        Compare the version of the tdw Python module to the latest on PyPi.
+        If there is a mismatch, offer an upgrade recommendation.
+
+        :param v_installed_override: Override for the installed version. Change this to debug.
+        :param v_pypi_override: Override for the PyPi version. Change this to debug.
+        """
+
+        # Get the version of the installed tdw module.
+        installed_tdw_version = PyPi.get_installed_tdw_version()
+        # Get the latest version of the tdw module on PyPi.
+        pypi_version = PyPi.get_pypi_version()
+
+        # Apply overrides
+        if v_installed_override is not None:
+            installed_tdw_version = v_installed_override
+        if v_pypi_override is not None:
+            pypi_version = v_pypi_override
+
+        # If there is a mismatch, recommend an upgrade.
+        if installed_tdw_version != pypi_version:
+            # Strip the installed version of the post-release suffix (e.g. 1.6.3.4 to 1.6.3).
+            stripped_installed_version = PyPi.strip_post_release(installed_tdw_version)
+            # This message is here only for debugging.
+            if stripped_installed_version != __version__:
+                print(f"ERROR! Your installed version: {stripped_installed_version} "
+                      f"doesn't match the listed version: {__version__} (this should never happen!)")
+            # Strip the latest PyPi version of the post-release suffix.
+            stripped_pypi_version = PyPi.strip_post_release(pypi_version)
+            print(f"You are using TDW {installed_tdw_version} but version {pypi_version} is available.")
+
+            # If user is behind by a post release, recommend an upgrade to the latest.
+            # (Example: installed version is 1.6.3.4 and PyPi version is 1.6.3.5)
+            if stripped_installed_version == stripped_pypi_version:
+                print(f"Upgrade to the latest version of TDW:\npip3 install tdw -U")
+
+            # Using a version behind the latest (e.g. latest is 1.6.3 and installed is 1.6.2)
+            # If the user is behind by a major or minor release, recommend either upgrading to a minor release
+            # or to a major release.
+            # (Example: installed version is 1.6.3.4 and PyPi version is 1.7.0.0)
+            else:
+                installed_major = PyPi.get_major_release(stripped_installed_version)
+                pypi_minor = PyPi.get_latest_minor_release(stripped_installed_version)
+                # Minor release mis-match.
+                if PyPi.strip_post_release(pypi_minor) != stripped_installed_version:
+                    print(f"To upgrade to the last version of 1.{installed_major}:\n"
+                          f"pip3 install tdw=={pypi_minor}")
+                pypi_major = PyPi.get_major_release(stripped_pypi_version)
+                # Major release mis-match.
+                if installed_major != pypi_major:
+                    # Offer to upgrade to a major release.
+                    print(f"Consider upgrading to the latest version of TDW ({stripped_pypi_version}):"
+                          f"\npip3 install tdw -U")
+        else:
+            print("Your installed tdw Python module is up to date with PyPi.")

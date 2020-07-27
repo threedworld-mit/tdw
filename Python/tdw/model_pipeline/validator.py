@@ -44,7 +44,7 @@ class Validator(Controller):
             print("No build found at: " + build_path)
             print("You need to launch a build manually.")
 
-        super().__init__(port)
+        super().__init__(port, launch_build=False)
 
     def run(self, quiet=True) -> Tuple[bool, List[str]]:
         """

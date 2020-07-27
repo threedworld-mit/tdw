@@ -232,7 +232,7 @@ c.communicate({"$type": "add_object",
                "id": box_id})
 ```
 
-Then an **avatar** can be added to the scene. In this case, the avatar is just a camera. The avatar can then send an image:
+Then an **avatar** can be added to the scene. In this case, the avatar is just a camera. The avatar can then send an image. This image is a numpy array that can be either saved to disk or fed directly into a ML system:
 
 ```python
 avatar_id = "a"
@@ -257,9 +257,24 @@ for r in resp[:-1]:
     # Find the image data.
     if r_id == "imag":
         img = Images(r)
+        
+        # Usually, you'll want to use one of these functions, but not both of them:
+        
+        # Use this to save a .jpg
+        TDWUtils.save_images(img, filename="test_img") 
+        
+        # Use this to convert the image to a PIL image, which can be processed by a ML system at runtime.
+        # The index is 0 because we know that there is only one pass ("_img").
+        pil_img = TDWUtils.get_pil_image(img, index=0)
 ```
 
-This image is a numpy array that can be either saved to disk or fed directly into a ML system. Put together, the example code will create this image:
+To terminate the build once your simulation is done:
+
+```python
+c.communicate({"$type": "terminate"})
+```
+
+Put together, the example code will create this image:
 
 ![](images/box_on_desk.png)
 

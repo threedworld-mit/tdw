@@ -2,6 +2,29 @@
 
 # v1.6.x
 
+## v1.6.2
+
+### `tdw` module
+
+- Fixed: `tdw` module doesn't work in virtualenv.
+
+#### `DebugController`
+
+- Added parameters `launch_build` and `display`.
+
+### Build
+
+- Fixed: Downloaded builds don't have execute permissions in OS X or Linux (the downloader now runs `chmod` after extracting the .zip file)
+- Fixed: `NullReferenceException` when Sticky Mitten Avatar tries to put down an object that was never held.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document             | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `getting_started.md` | 1. The example uses `models_core.json` so it works for everybody.<br>2. Better explanation for how to get object IDs.<br>3. Added image saving to the example. |
+
 ## v1.6.1
 
 ### New Features

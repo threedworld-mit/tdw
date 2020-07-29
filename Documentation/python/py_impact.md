@@ -291,7 +291,12 @@ Update the counter for how many times two objects have collided.
 
 `from tdw.py_impact import CollisionType`
 
-Define the "type" of collision by the motion of the object.
+The "type" of a collision, defined by the motion of the object.
+
+none = No collision
+impact = The object "entered" a collision
+scrape = The object "stayed" in a collision with a low angular velocity.
+roll = The object "stayed" in a collision with a high angular velocity.
 
 Enum values:
 

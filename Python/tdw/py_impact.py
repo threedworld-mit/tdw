@@ -171,7 +171,12 @@ class CollisionInfo:
 
 class CollisionType(Enum):
     """
-    Define the "type" of collision by the motion of the object.
+    The "type" of a collision, defined by the motion of the object.
+
+    none = No collision
+    impact = The object "entered" a collision
+    scrape = The object "stayed" in a collision with a low angular velocity.
+    roll = The object "stayed" in a collision with a high angular velocity.
     """
 
     none = 1,

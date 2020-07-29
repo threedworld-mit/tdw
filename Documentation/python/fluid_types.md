@@ -2,7 +2,7 @@
 
 ## `FluidType`
 
-`from tdw.flex/fluid_types import FluidType`
+`from tdw.flex.fluid_types import FluidType`
 
 Metadata for a single fluid type. Specifies values for Flex fluid containers.
 
@@ -22,7 +22,7 @@ Metadata for a single fluid type. Specifies values for Flex fluid containers.
 
 ## `FluidTypes`
 
-`from tdw.flex/fluid_types import FluidTypes`
+`from tdw.flex.fluid_types import FluidTypes`
 
 Manage data for available fluid types, as defined in JSON data file.
 

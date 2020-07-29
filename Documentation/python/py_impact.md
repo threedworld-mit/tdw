@@ -287,3 +287,69 @@ Update the counter for how many times two objects have collided.
 
 ***
 
+## `CollisionType(Enum)`
+
+`from tdw.py_impact import CollisionType`
+
+Define the "type" of collision by the motion of the object.
+
+Enum values:
+
+- `none`
+- `impact`
+- `scrape`
+- `roll`
+
+***
+
+## `CollisionTypesOnFrame`
+
+`from tdw.py_impact import CollisionTypesOnFrame`
+
+All types of collision (impact, scrape, roll, none) between an object and any other objects or the environment on this frame.
+
+Usage:
+
+```python
+from tdw.controller import Controller
+from tdw.py_impact import CollisionTypesOnFrame
+
+object_id = c.get_unique_id()
+c = Controller()
+c.start()
+
+# Your code here.
+
+# Request the required output data (do this at the start of the simulation, not per frame).
+resp = c.communicate([{"$type": "send_collisions",
+"enter": True,
+"exit": False,
+"stay": True,
+"collision_types": ["obj", "env"]},
+{"$type": "send_rigidbodies",
+"frequency": "always"}])
+
+# Parse the output data and get collision type data.
+ctof = CollisionTypesOnFrame(object_id, resp)
+
+# Read the dictionaries of collidee IDs and collision types.
+for collidee_id in ctof.collisions:
+collision_type = ctof.collisions[collidee_id]
+print(collidee_id, collision_type)
+
+# Check the environment collision.
+print(ctof.env_collision_type)
+```
+
+***
+
+#### `__init__(self, object_id: int, resp: List[bytes])`
+
+
+| Parameter | Description |
+| --- | --- |
+| object_id | The unique ID of the colliding object. |
+| resp | The response from the build. |
+
+***
+

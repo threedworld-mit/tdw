@@ -169,6 +169,17 @@ class CollisionInfo:
         self.count += 1
 
 
+class CollisionType(Enum):
+    """
+    Define the "type" of collision by the motion of the object.
+    """
+
+    none = 1,
+    impact = 2,
+    scrape = 4,
+    roll = 8
+
+
 class PyImpact:
     """
     Generate impact sounds from physics data.
@@ -520,3 +531,6 @@ class PyImpact:
 
         # Clear the object data.
         self.object_modes.clear()
+
+    def get_collision_type(self, rigidbodies: Rigidbodies, collision: Union[Optional[Collision], Optional[EnvironmentCollision]]) -> CollisionType:
+        pass

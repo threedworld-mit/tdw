@@ -4,6 +4,12 @@
 
 ## v1.6.3
 
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: Permissions error when launching the build in OS X.
+
 ### Build
 
 - Fixed: Non-`_img` pass images don't align with the `_img` pass if the screen size isn't a square.

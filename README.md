@@ -39,13 +39,6 @@
 | [BinaryManager](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/binary_manager.md)      | Manage multiple instances of TDW builds on a remote server. |
 | [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md)            | Access different NVIDIA Flex fluid types.                   |
 
-##### Backend
-
-| Document                                                     | Description                                                  |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [Build](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/build.md) | Helper functions for downloading the build.                  |
-| [PyPi](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/pypi.md) | Helper functions for checking the version of the `tdw` module on PyPi. |
-
 # Audio and Video
 
 | Document                                                     | Description                                       |

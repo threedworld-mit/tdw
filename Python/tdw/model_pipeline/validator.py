@@ -22,29 +22,20 @@ class Validator(Controller):
 
     PINK_MATERIALS_REPORT: List[str] = ["This model has missing (pink) materials."]
 
-    def __init__(self, record_path: str, asset_bundle_path: str, build_path: str, port=1071):
+    def __init__(self, record_path: str, asset_bundle_path: str, port=1071):
         """
         :param record_path: The path to the temporary record file.
         :param asset_bundle_path: The path to the local asset bundle.
-        :param build_path: The path to the build executable.
         :param port: The port.
         """
 
         self.record_path: str = record_path
         self.record: ModelRecord = ModelRecord(json.loads(Path(record_path).read_text(encoding="utf-8")))
-        self.build_path: str = build_path
         self.asset_bundle_path: str = asset_bundle_path
         if not self.asset_bundle_path.startswith("file:///"):
             self.asset_bundle_path = "file:///" + self.asset_bundle_path
 
-        try:
-            # Create the build.
-            Popen(build_path)
-        except:
-            print("No build found at: " + build_path)
-            print("You need to launch a build manually.")
-
-        super().__init__(port, launch_build=False)
+        super().__init__(port)
 
     def run(self, quiet=True) -> Tuple[bool, List[str]]:
         """
@@ -90,15 +81,13 @@ class Validator(Controller):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--record_path", type=str, help="The path to the temporary record file")
+    parser.add_argument("--record_path", type=str, help="The path to the temporary record file.")
     parser.add_argument("--asset_bundle_path", type=str, help="The path to the local asset bundle.")
-    parser.add_argument("--build_path", type=str, help="The path to the build executable.")
     args = parser.parse_args()
 
     # Get the physics quality.
     c = Validator(record_path=args.record_path,
-                  asset_bundle_path=args.asset_bundle_path,
-                  build_path=args.build_path)
+                  asset_bundle_path=args.asset_bundle_path)
     ok, reports = c.run()
     report = {"ok": ok,
               "reports": reports}

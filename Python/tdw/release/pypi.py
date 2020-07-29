@@ -1,6 +1,7 @@
 from typing import List
-from subprocess import Popen, PIPE, check_output
+from subprocess import Popen, PIPE
 import re
+from pkg_resources import get_distribution
 
 
 class PyPi:
@@ -19,8 +20,7 @@ class PyPi:
         """
 
         if len(v.split(".")) > 3:
-            # Get the post-release suffix and then return a sliced string using its length.
-            return v[:-len(re.search(r"(?:.(?!\.))+$", v).group(0))]
+            return '.'.join(v.split('.')[:3])
         else:
             return v
 
@@ -73,10 +73,7 @@ class PyPi:
         :return: The version of the tdw Python module installed on this machine.
         """
 
-        # Get info on the tdw module.
-        p = check_output(["pip3", "show", "tdw"]).decode("utf-8")
-        # Get the version from the output.
-        v = re.search(r"Version: (.*)", p, flags=re.MULTILINE).group(1).strip()
+        v = get_distribution("tdw").version
 
         # Strip the post-release suffix.
         if truncate:

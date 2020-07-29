@@ -2,6 +2,12 @@
 
 # v1.6.x
 
+## v1.6.3
+
+### Build
+
+- Fixed: Non-`_img` pass images don't align with the `_img` pass if the screen size isn't a square.
+
 ## v1.6.2
 
 ### `tdw` module

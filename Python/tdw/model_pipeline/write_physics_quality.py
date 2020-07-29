@@ -166,13 +166,11 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--record_path", type=str, help="The path to the temporary record file")
     parser.add_argument("--asset_bundle_path", type=str, help="The path to the local asset bundle.")
-    parser.add_argument("--build_path", type=str, help="The path to the build executable.")
     args = parser.parse_args()
 
     # Get the physics quality.
     c = PhysicsQualityWriter(record_path=args.record_path,
-                             asset_bundle_path=args.asset_bundle_path,
-                             build_path=args.build_path)
+                             asset_bundle_path=args.asset_bundle_path)
     physics_quality = c.get_physics_quality()
 
     # Update the record.

@@ -2,6 +2,16 @@
 
 # v1.6.x
 
+## v1.6.4
+
+### `tdw` module
+
+#### `PyImpact`
+
+- Added backend code for differentiating between an impact, a scrape, and a roll.
+  - `py_impact.CollisionType` An enum of different collision "types"
+  - `py_impact.CollisionTypesOnFrame` Contains each type of  collision that a "collider" object experiences in a given frame (for  example, impacts one object while scraping another)
+
 ## v1.6.3
 
 ### `tdw` module

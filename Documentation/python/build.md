@@ -21,6 +21,14 @@ _Returns:_  The URL of the build release matching the version and the OS of this
 
 ***
 
+#### `chmod() -> None`
+
+_This is a static function._
+
+Add execute permissions to the build.
+
+***
+
 #### `download(version: str = __version__) -> bool`
 
 _This is a static function._

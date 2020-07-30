@@ -12,6 +12,25 @@
   - `py_impact.CollisionType` An enum of different collision "types"
   - `py_impact.CollisionTypesOnFrame` Contains each type of  collision that a "collider" object experiences in a given frame (for  example, impacts one object while scraping another)
 
+#### `AssetBundleCreator`
+
+- Removed parameter `build_path` from `write_physics_quality()` (obsolete; build is launched automatically)
+- Removed parameter `build_path` from `validate()` (obsolete; build is launched automatically)
+
+#### Backend
+
+- Removed parameter `build_path` from `Validator` constructor and `--build_path` command line argument from `validator.py`.
+- Removed `--build_path` command line argument from `write_physics_quality.py`.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document    | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `README.md` | Removed BinaryManager from `tdw` module table (it's not part of the `tdw` module). |
+| `tdw.md`    | Updated for v1.6 and expanded table(s) of contents.          |
+
 ## v1.6.3
 
 ### `tdw` module

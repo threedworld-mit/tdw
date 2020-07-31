@@ -4,6 +4,7 @@ import docker
 import time
 import os
 import subprocess
+from tdw.version import __version__
 
 """
 Using NVIDIA Flex in a docker container, drape a cloth over an object.
@@ -14,7 +15,8 @@ class DockerController(Controller):
     def __init__(self):
         client = docker.from_env()
 
-        client.images.build(path=".", tag="tdw:v1.6.0")
+        client.images.build(path=".", tag=f"tdw:v{__version__}",
+                            build_args={"TDW_VERSION": __version__})
 
         # This method is preferred to subprocess, but the gpu flag is currently
         # not supported by docker-py (see PR: #2419 in the docker-py repo)
@@ -29,7 +31,8 @@ class DockerController(Controller):
                           "-v", "/tmp/.X11-unix:/tmp/.X11-unix",
                           "-e", "DISPLAY={}".format(os.environ["DISPLAY"]),
                           "--network", "host",
-                          "-t", "tdw:1.6.0"],
+                          "-t", f"tdw:{__version__}",
+                          "./TDW/TDW.x86_64"],
                          shell=False)
 
         super().__init__()

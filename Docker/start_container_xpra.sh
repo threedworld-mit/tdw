@@ -1,5 +1,7 @@
 # Build the container
-docker build -t tdw:v1.6.0 .
+VERSION=$(pip3 show tdw | grep 'Version:' | cut -d' ' -f2 | rev | cut -d. -f 2- | rev)
+echo $VERSION
+docker build -t tdw:$VERSION --build-arg TDW_VERSION=v$VERSION .
 
 # Set render target for virtualgl
 DISPLAY=:0
@@ -24,5 +26,5 @@ docker run -it \
   -e DISPLAY=$DISPLAY \
   --network host \
   vglrun -d :0 \
-  tdw:1.6.0 \
+  tdw:$VERSION \
   ./TDW/TDW.x86_64

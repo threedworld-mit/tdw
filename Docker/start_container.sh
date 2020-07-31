@@ -1,5 +1,7 @@
 # Build the container
-docker build -t tdw:v1.6.0 .
+VERSION=$(pip3 show tdw | grep 'Version:' | cut -d' ' -f2 | rev | cut -d. -f 2- | rev)
+echo $VERSION
+docker build -t tdw:$VERSION --build-arg TDW_VERSION=v$VERSION .
 
 # Allow x server to accept local connections
 xhost +local:root
@@ -11,5 +13,5 @@ docker run -it \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -e DISPLAY=$DISPLAY \
   --network host \
-  tdw:1.6.0 \
+  tdw:$VERSION \
   ./TDW/TDW.x86_64

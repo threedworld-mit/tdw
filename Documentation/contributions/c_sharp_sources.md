@@ -8,7 +8,7 @@ However, we do recognize that certain users may need to, or want to, make modifi
 
 If after reading  the FAQ you still feel your use case will require access to the underlying C# code, apply for access by contacting Jeremy Schwartz at [jeremyes@mit.edu](mailto:jeremyes@mit.edu) , describing your use case and why you feel it necessary to have access. We will be happy to discuss your situation with you and will fully consider your application.
 
-Please note that access to the TDW C# source code does NOT include access to the "Full" 3D model library, as described on the TDW web site and [in our documentation](https://github.com/threedworld-mit/tdw/blob/v1.6.0.4/Documentation/misc_frontend/models_full.md). We are still exploring the idea of making that model library generally available; you can help us understand the level of interest in the library by taking the [brief survey on our web site.](https://docs.google.com/forms/d/e/1FAIpQLSeJGR_PXlVRwOis9dcM2SDwP3Jcuf78Yo0TLmgLWLpuQI9Xig/viewform)
+Please note that access to the TDW C# source code does NOT include access to the "Full" 3D model library, as described on the TDW web site and [in our documentation](../misc_frontend/models_full.md). We are still exploring the idea of making that model library generally available; you can help us understand the level of interest in the library by taking the [brief survey on our web site.](https://docs.google.com/forms/d/e/1FAIpQLSeJGR_PXlVRwOis9dcM2SDwP3Jcuf78Yo0TLmgLWLpuQI9Xig/viewform)
 
 ## Technical Requirements and Prerequisites FAQ
 

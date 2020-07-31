@@ -35,6 +35,8 @@ Next, you will generate your access key, which is in the form of a public / priv
 
 This is your _only_ opportunity to save the information for both keys, so you must either download the CSV using the button highlighted below (recommended), or else show the secret access key and make a note of both keys.
 
+Please note: If your secret access key contains a special character (in particuar a "+" or "/") the TDW validator (described below) may fail . Unfortunately, this is a [known AWS bug](https://github.com/aws/aws-cli/issues/602).  Make sure to show your secret access key BEFORE downloading your CSV, and delete
+
 ![](../images/models_full/screen4.jpg)
 
 ### How to set up your credentials file

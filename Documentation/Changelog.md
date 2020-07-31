@@ -6,6 +6,11 @@
 
 ### `tdw` module
 
+#### `Controller`
+
+- Don't check the version of the build or download a new build if `launch_build == False`
+- Edited the message for when you are using code from the tdw repo that is ahead of PyPi.
+
 #### `PyImpact`
 
 - Added backend code for differentiating between an impact, a scrape, and a roll.

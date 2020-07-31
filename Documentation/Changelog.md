@@ -2,6 +2,52 @@
 
 # v1.6.x
 
+## v1.6.4
+
+### `tdw` module
+
+#### `Controller`
+
+- Don't check the version of the build or download a new build if `launch_build == False`
+- Edited the message for when you are using code from the tdw repo that is ahead of PyPi.
+
+#### `PyImpact`
+
+- Added backend code for differentiating between an impact, a scrape, and a roll.
+  - `py_impact.CollisionType` An enum of different collision "types"
+  - `py_impact.CollisionTypesOnFrame` Contains each type of  collision that a "collider" object experiences in a given frame (for  example, impacts one object while scraping another)
+
+#### `AssetBundleCreator`
+
+- Removed parameter `build_path` from `write_physics_quality()` (obsolete; build is launched automatically)
+- Removed parameter `build_path` from `validate()` (obsolete; build is launched automatically)
+
+#### Backend
+
+- Removed parameter `build_path` from `Validator` constructor and `--build_path` command line argument from `validator.py`.
+- Removed `--build_path` command line argument from `write_physics_quality.py`.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document    | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `README.md` | Removed BinaryManager from `tdw` module table (it's not part of the `tdw` module). |
+| `tdw.md`    | Updated for v1.6 and expanded table(s) of contents.          |
+
+## v1.6.3
+
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: Permissions error when launching the build in OS X.
+
+### Build
+
+- Fixed: Non-`_img` pass images don't align with the `_img` pass if the screen size isn't a square.
+
 ## v1.6.2
 
 ### `tdw` module

@@ -16,6 +16,8 @@ class Build:
 
     BUILD_ROOT_DIR = Path.home().joinpath(f"tdw_build")
     BUILD_PATH = BUILD_ROOT_DIR.joinpath(f"TDW/TDW{SYSTEM_TO_EXECUTABLE[system()]}")
+    if system() == "Darwin":
+        BUILD_PATH = BUILD_PATH.joinpath("Contents/MacOS/TDW")
 
     @staticmethod
     def get_url(version: str = __version__) -> Tuple[str, bool]:
@@ -42,9 +44,7 @@ class Build:
         :return:
         """
 
-        if system() == "Darwin":
-            call(["chmod", "+x", str(Build.BUILD_PATH.joinpath("Contents/MacOS/TDW").resolve())])
-        elif system() == "Linux":
+        if system() == "Darwin" or system() == "Linux":
             call(["chmod", "+x", str(Build.BUILD_PATH.resolve())])
 
     @staticmethod

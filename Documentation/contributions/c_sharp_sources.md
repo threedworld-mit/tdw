@@ -43,26 +43,26 @@ Your experience should include most, if not all, of the following:
 
 ### Scenarios Where you DO NOT Need C# Sources
 
-#### “I want to use TDW with OpenAI Gym.” 
+#### "I want to use TDW with OpenAI Gym." 
 Interfacing TDW with OpenAIGym (or similar RL toolkits) can be done completely through the Python API. This has been done already on several projects.
 
-#### “I want to write my own scene setup tools / use my own custom scene data format” 
+#### "I want to write my own scene setup tools / use my own custom scene data format" 
 The TDW Python API can handle a very broad range of scene setup scenarios, both procedural and explicitly scripted, including parsing custom data formats There are a number of examples of how to set up scenes in our Example Controllers, including deserializing JSON files containing scene setup data. Our [Rube Goldberg Demo](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/rube_goldberg.md) is a good example of this; while the controller does make use of “non-free” models, the scene setup logic used is the important point here.
 
-#### “I need to use custom models.” 
+#### "I need to use custom models." 
 [We already support this.](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/add_local_object.md)
 
-#### “I want to add my own custom streamed scene.”
+#### "I want to add my own custom streamed scene."
 We've deliberately restricted the backend pipeline for creating a TDW-compatible scene to the development team because adding scenes is much more complicated than creating a 3D model and requires 3D content-creation tools and experience. If you have a specific requirement for a custom 3D scene, please contact Jeremy Schwartz ([jeremyes@mit.edu](mailto:jeremyes@mit.edu)) and we can discuss your particular situation.
 
  
 
 ### Scenarios Where you MAY Need C# Sources
 
-#### “I want to integrate TDW with ROS / URDF.”
+#### "I want to integrate TDW with ROS / URDF."
 This does require access to the C# sources and Unity project. However integrating with robotic motion control systems and importing URDF format files, with a view towards supporting transfer to real-world robot arms, is high up on our development agenda.  We are open to discussing our plans and progress on this with you.
 
-#### “I want to add support for the Leap Motion VR controller.”
+#### "I want to add support for the Leap Motion VR controller."
 This does require access to the C# sources and Unity project, as well as the relevant Leap Motion VR developer libraries.  We have worked with Leap Motion VR in the past, in TDW, and can discuss what is involved in supporting it.
 
 #### "I need a new command / I need new output data"

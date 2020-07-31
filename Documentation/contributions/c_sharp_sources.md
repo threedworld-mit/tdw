@@ -50,7 +50,7 @@ Interfacing TDW with OpenAIGym (or similar RL toolkits) can be done completely t
 The TDW Python API can handle a very broad range of scene setup scenarios, both procedural and explicitly scripted, including parsing custom data formats There are a number of examples of how to set up scenes in our Example Controllers, including deserializing JSON files containing scene setup data. Our [Rube Goldberg Demo](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/rube_goldberg.md) is a good example of this; while the controller does make use of “non-free” models, the scene setup logic used is the important point here.
 
 #### “I need to use custom models.” 
-We already support this.](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/add_local_object.md)
+[We already support this.](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/add_local_object.md)
 
 #### “I want to add my own custom streamed scene.”
 We've deliberately restricted the backend pipeline for creating a TDW-compatible scene to the development team because adding scenes is much more complicated than creating a 3D model and requires 3D content-creation tools and experience. If you have a specific requirement for a custom 3D scene, please contact Jeremy Schwartz ([jeremyes@mit.edu](mailto:jeremyes@mit.edu)) and we can discuss your particular situation.

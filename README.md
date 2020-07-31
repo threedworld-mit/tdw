@@ -11,7 +11,7 @@
 
 ### [Website](http://threedworld.org/)
 
-### [C# Code](contributions/c_sharp_sources.md)
+### [C# Code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md)
 
 ### [License](LICENSE.txt)
 

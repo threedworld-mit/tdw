@@ -22,6 +22,10 @@
 - Removed parameter `build_path` from `write_physics_quality()` (obsolete; build is launched automatically)
 - Removed parameter `build_path` from `validate()` (obsolete; build is launched automatically)
 
+#### Example Controllers
+
+- In `sticky_mitten_avatar.py`, the avatar now moves after picking up the object and then puts down the object.
+
 #### Backend
 
 - Removed parameter `build_path` from `Validator` constructor and `--build_path` command line argument from `validator.py`.

@@ -79,8 +79,50 @@ class StickyMittenAvatar(Controller):
                            "axis": "pitch"}])
 
         # Let the simulation run for a while to allow the arm joints to bend.
-        for i in range(500):
-            self.communicate({"$type": "do_nothing"})
+        for i in range(100):
+            self.communicate([])
+        # Move the avatar forward.
+        for i in range(20):
+            self.communicate({"$type": "move_avatar_forward_by",
+                              "magnitude": 50})
+        for i in range(100):
+            self.communicate([])
+        # Drop the object and bend the joints down.
+        self.communicate([{"$type": "rotate_head_by",
+                           "axis": "pitch",
+                           "angle": 0},
+                          {"$type": "put_down",
+                           "is_left": True},
+                          {"$type": "bend_arm_joint_to",
+                           "angle": 0,
+                           "joint": "shoulder_left",
+                           "axis": "pitch"},
+                          {"$type": "bend_arm_joint_to",
+                           "angle": 0,
+                           "joint": "shoulder_left",
+                           "axis": "yaw"},
+                          {"$type": "bend_arm_joint_to",
+                           "angle": 0,
+                           "joint": "shoulder_left",
+                           "axis": "roll"},
+                          {"$type": "bend_arm_joint_to",
+                           "angle": 0,
+                           "joint": "elbow_left",
+                           "axis": "pitch"},
+                          {"$type": "bend_arm_joint_to",
+                           "angle": 0,
+                           "joint": "shoulder_right",
+                           "axis": "pitch"},
+                          {"$type": "bend_arm_joint_to",
+                           "angle": 0,
+                           "joint": "shoulder_right",
+                           "axis": "yaw"},
+                          {"$type": "bend_arm_joint_to",
+                           "angle": 0,
+                           "joint": "elbow_right",
+                           "axis": "pitch"}])
+        for i in range(100):
+            self.communicate([])
 
 
 if __name__ == "__main__":

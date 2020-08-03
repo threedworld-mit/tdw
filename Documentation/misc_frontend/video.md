@@ -4,6 +4,8 @@ There are several ways capture audio or video data in TDW.
 
 ## "I want to capture only video (without audio)"
 
+#### Option B: Use image data
+
 1. Write a controller that receives and saves an image every frame, like the following minimal example:
 
 ```python
@@ -16,6 +18,8 @@ resp = c.communicate([TDWUtils.create_empty_room(12, 12),
                       {"$type": "create_avatar",
                        "type": "A_Img_Caps_Kinematic",
                        "id": "a"},
+                      {"$type": "set_target_framerate",
+                       "framerate": 60},
                       {"$type": "set_pass_masks",
                        "avatar_id": "a",
                        "pass_masks": ["_img"]},
@@ -32,7 +36,31 @@ for i in range(num_frames): # You will need to define num_frames.
     resp = c.communicate(commands)
 ```
 
-2. After running the controller, stitch the frames together with ffmpeg.
+2. After running the controller, stitch the frames together with **ffmpeg**.
+
+#### Option A: Record a video of the build
+
+To record video with ffmpeg on headless a headless server:
+
+- Make sure that xpra isn't running.
+
+- Use **x11grab** (run this outside of a Docker container):
+
+```
+DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 output.mp4
+```
+
+- `DISPLAY` must have a valid display number.
+
+- `-video_size` must be the display size.
+
+- The TDW screen size must be less than or equal to the display size.
+
+- `:0.0+0,0` is the display number (which should match `DISPLAY`) and `+(x,y)` pixel offset. You can get the coordinates of the window with:
+
+  ```
+  xwininfo -tree -root
+  ```
 
 ## "I want to capture audio (and maybe video too)"
 
@@ -43,9 +71,47 @@ Important guidelines when recording audio:
 
 ## "I want to capture video and audio"
 
-Use an external program, such as [OBS](https://obsproject.com) or ffmpeg with [x11grab](https://trac.ffmpeg.org/wiki/Capture/Desktop).
+In your controller, add this command when you initialize the scene:
 
-**OBS** has limited command-line functionality. After installing OBS, you'll need to configure it yourself to get the audio-visual setup you need (there's a lot of documentation and tutorials for OBS online).
+```json
+{"$type": "set_target_framerate", "framerate": 30}
+```
+
+To record video and video, you need to use an external program.
+
+#### On a headless Linux server
+
+1. Install these packages: 
+
+```bash
+sudo apt-get install pulseaudio jackd2 alsa-utils dbus-x11
+```
+
+2. Start pulseaudio outside of the Docker container:
+
+```bash
+pulseaudio --system
+```
+
+*(Optional)* To check if pulseaudio is working, start an audio file and while its playing:
+
+```bash
+pacmd list-sink-inputs | grep -c 'state: RUNNING'
+```
+
+3. Record with [ffmpeg](https://trac.ffmpeg.org/wiki/Capture/Desktop) (outside of the Docker container):
+
+```
+DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 -f pulse -ac 2 -i default output.mp4
+```
+
+See above for instructions for how to use ffmpeg with x11grab; all of video recording suggestions are applicable to video+audio recording.
+
+#### On a personal computer
+
+See above for instructions for how to use ffmpeg with x11grab. If you are using Linux, you can probably skip step 1.
+
+You can also use [OBS](https://obsproject.com), which has limited command-line functionality. After installing OBS, you'll need to configure it yourself to get the audio-visual setup you need (there's a lot of documentation and tutorials for OBS online).
 
 If you start OBS with the `--startrecording` flag, OBS will begin recording as soon as it is opened.
 
@@ -73,11 +139,6 @@ chdir(cwd)
 
 # Close OBS and stop recording.
 call(['taskkill', '/F', '/T', '/PID', str(obs.pid)])
-```
-
-To capture with **ffmpeg**, which works well for headless servers:
-```
-DISPLAY=:0 ffmpeg -video_size 256x256 -framerate 120 -f x11grab -i :0.0+0,0 output.mp4
 ```
 
 ## "I want to capture only audio (without video)"

@@ -1,4 +1,6 @@
 FROM nvidia/opengl:1.0-glvnd-devel-ubuntu16.04
+ARG TDW_VERSION
+
 LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
 
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates apt-transport-https gnupg-curl && \
@@ -86,8 +88,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libxv1
 
 RUN curl -fLO https://sourceforge.net/projects/virtualgl/files/2.6.3/virtualgl_2.6.3_amd64.deb && dpkg -i virtualgl_2.6.3_amd64.deb
-
-ARG TDW_VERSION
 
 RUN wget https://github.com/threedworld-mit/tdw/releases/download/v${TDW_VERSION}/TDW_Linux.zip
 RUN unzip TDW_Linux.zip

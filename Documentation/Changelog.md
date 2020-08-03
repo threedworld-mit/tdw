@@ -29,6 +29,12 @@
 
 ### Documentation
 
+#### New Documentation
+
+| Document             | Description                                             |
+| -------------------- | ------------------------------------------------------- |
+| `c_sharp_sources.md` | When, and how, to request access to the C# source code. |
+
 #### Modified Documentation
 
 | Document    | Modification                                                 |

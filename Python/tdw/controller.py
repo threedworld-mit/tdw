@@ -9,7 +9,6 @@ from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDR
 from tdw.output_data import Version
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
-from tdw.release.docker import Docker
 from tdw.version import __version__
 
 
@@ -26,7 +25,7 @@ class Controller(object):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, docker: bool = False, display: int = None):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, display: int = None):
         """
         Create the network socket and bind the socket to the port.
 
@@ -34,7 +33,6 @@ class Controller(object):
         :param check_version: If true, the controller will check the version of the build and print the result.
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
         :param display: If launch_build == True, launch the build using this display number (Linux-only).
-        :param docker: If True and launch_build == True, launch the build in a Docker container from DockerHub.
         """
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
@@ -44,7 +42,7 @@ class Controller(object):
 
         # Launch the build.
         if launch_build:
-            Controller.launch_build(display, docker=docker)
+            Controller.launch_build(display)
 
         context = zmq.Context()
 
@@ -283,21 +281,12 @@ class Controller(object):
         return int.from_bytes(frame, byteorder='big')
 
     @staticmethod
-    def launch_build(display: int = None, docker: bool = False) -> None:
+    def launch_build(display: int = None) -> None:
         """
         Launch the build. If a build doesn't exist at the expected location, download one to that location.
 
         :param display: If launch_build == True, launch the build using this display number (Linux-only).
-        :param docker: If True, launch the build in a Docker container from DockerHub.
         """
-
-        if docker:
-            docker_tag = Docker.get_local_tag()
-            # Pull an image matching this version.
-            if docker_tag == __version__:
-                Docker.pull()
-            Docker.run(display=display)
-            return
 
         # Download the build.
         if not Build.BUILD_PATH.exists():

@@ -59,7 +59,7 @@ class Controller(object):
         self.humanoid_animation_librarian: Optional[HumanoidAnimationLibrarian] = None
 
         # Compare the version of the tdw module to the build version.
-        if check_version:
+        if check_version and launch_build:
             self._check_build_version()
 
     def communicate(self, commands: Union[dict, List[dict]]) -> list:
@@ -356,8 +356,9 @@ class Controller(object):
             stripped_installed_version = PyPi.strip_post_release(installed_tdw_version)
             # This message is here only for debugging.
             if stripped_installed_version != __version__:
-                print(f"ERROR! Your installed version: {stripped_installed_version} "
-                      f"doesn't match the listed version: {__version__} (this should never happen!)")
+                print(f"Your installed version: {stripped_installed_version} "
+                      f"doesn't match tdw.version.__version__: {__version__} "
+                      f"(this may be because you're using code from the tdw repo that is ahead of PyPi).")
             # Strip the latest PyPi version of the post-release suffix.
             stripped_pypi_version = PyPi.strip_post_release(pypi_version)
             print(f"You are using TDW {installed_tdw_version} but version {pypi_version} is available.")

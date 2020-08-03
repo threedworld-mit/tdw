@@ -89,6 +89,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN curl -fLO https://sourceforge.net/projects/virtualgl/files/2.6.3/virtualgl_2.6.3_amd64.deb && dpkg -i virtualgl_2.6.3_amd64.deb
 
+RUN apt-get -qq update && apt-get -qq install -y pulseaudio socat alsa-utils ffmpeg
+
 RUN wget https://github.com/threedworld-mit/tdw/releases/download/v${TDW_VERSION}/TDW_Linux.zip
 RUN unzip TDW_Linux.zip
 RUN chmod +x TDW/TDW.x86_64

@@ -143,7 +143,13 @@ call(['taskkill', '/F', '/T', '/PID', str(obs.pid)])
 
 ## "I want to capture only audio (without video)"
 
+#### On a personal computer
+
 We recommend using our [`AudioUtils`](../python/tdw_utils.md#AudioUtils) class to record audio; see API for a usage example.
 
 Note that `AudioUtils` requires [fmedia](https://stsaz.github.io/fmedia/), which has simpler syntax than ffmpeg for recording audio.
+
+#### In a Docker container
+
+See [Docker documentation](../Docker.md); use `start_container_audio.sh`.
 

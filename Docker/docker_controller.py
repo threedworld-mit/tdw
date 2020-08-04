@@ -1,5 +1,6 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+from tdw.version import __version__
 import docker
 import time
 import os
@@ -14,7 +15,7 @@ class DockerController(Controller):
     def __init__(self):
         client = docker.from_env()
 
-        client.images.build(path=".", tag="tdw:v1.6.0")
+        client.images.pull(path=".", tag=f"tdw:v{__version__}")
 
         # This method is preferred to subprocess, but the gpu flag is currently
         # not supported by docker-py (see PR: #2419 in the docker-py repo)
@@ -29,7 +30,7 @@ class DockerController(Controller):
                           "-v", "/tmp/.X11-unix:/tmp/.X11-unix",
                           "-e", "DISPLAY={}".format(os.environ["DISPLAY"]),
                           "--network", "host",
-                          "-t", "tdw:1.6.0"],
+                          "-t", f"tdw:{__version__}"],
                          shell=False)
 
         super().__init__()

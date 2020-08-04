@@ -59,9 +59,9 @@ All Docker-related bash scripts are in [`tdw/Docker`](https://github.com/threedw
 
 | Script                                                       | Arguments                                                    | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [`start_container.sh DISPLAY`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container.sh) | `DISPLAY` the display number, such as `0`                    | Start the container and run TDW.                             |
-| [`start_container_xpra.sh DISPLAY`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container_xpra.sh) | `DISPLAY` the display number, such as `0`                    | Start the container with [Xpra](../misc_frontend/xpra.md) and run TDW. |
-| [`start_container_audio.sh DISPLAY VOLUME IPADDRESS PORT`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container_audio.sh) | `DISPLAY` the display number, such as `0`<br>`VOLUME` Save audio to this volume<br>`IPADDRESS` The address of the build.<br>`PORT` The port of the build. | [Record audio](../misc_frontend/video.md) from TDW with ffmpeg. |
+| [`start_container.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container.sh) |                                                              | Start the container and run TDW.                             |
+| [`start_container_xpra.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container_xpra.sh) |                                                              | Start the container with [Xpra](../misc_frontend/xpra.md) and run TDW. |
+| [`start_container_audio_video.sh VOLUME IPADDRESS PORT`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container_audio.sh) | `VOLUME` Save audio to this volume<br>`IPADDRESS` The address of the build.<br>`PORT` The port of the build. | [Record audio and video](../misc_frontend/video.md) from TDW. Requires `nvidia-docker` |
 
 ### Other scripts
 
@@ -70,7 +70,7 @@ All Docker-related bash scripts are in [`tdw/Docker`](https://github.com/threedw
 | [`pull.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/pull.sh) | Try to download a Docker container from DockerHub with a tag that matches the version of TDW on this machine. |
 | [`docker_tag.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/docker_tag.sh) | Get the tag of the TDW Docker image.                         |
 | [`tdw_version.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/tdw_version.sh) | Get the version of TDW on this machine.                      |
-| [`record_audio.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/record_audio.sh) | [Record audio](../misc_frontend/video.md) from TDW with ffmpeg. |
+| [`record_audio_video.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/record_audio.sh) | Launch TDW and begin recording audio.                        |
 
 
 ## Docker within Docker

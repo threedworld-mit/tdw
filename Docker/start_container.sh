@@ -1,9 +1,5 @@
 #!/bin/bash
 
-DISPLAY=":${1}"
-
-# Make sure we have the right image.
-$(./pull.sh)
 VERSION=$(./tdw_version.sh)
 
 # Allow x server to accept local connections

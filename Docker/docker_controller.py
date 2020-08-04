@@ -15,7 +15,7 @@ class DockerController(Controller):
     def __init__(self):
         client = docker.from_env()
 
-        client.images.pull(path=".", tag=f"tdw:v{__version__}")
+        client.images.pull("tdw:{__version__}")
 
         # This method is preferred to subprocess, but the gpu flag is currently
         # not supported by docker-py (see PR: #2419 in the docker-py repo)

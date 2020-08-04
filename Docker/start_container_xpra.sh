@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Set render target for virtualgl
-DISPLAY=":${1}"
-
-# Make sure we have the right image.
-$(./pull.sh)
 VERSION=$(./tdw_version.sh)
 
 
@@ -25,7 +20,7 @@ docker run -it \
   --rm \
   --gpus all \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  -e DISPLAY=$1 \
+  -e DISPLAY=$DISPLAY \
   --network host \
   vglrun -d :0 \
   tdw:$VERSION \

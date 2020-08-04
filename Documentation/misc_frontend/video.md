@@ -81,31 +81,12 @@ To record video and video, you need to use an external program.
 
 #### On a headless Linux server
 
-1. Install these packages: 
+1. See [Docker documentation](../Docker.md); use `start_container_audio_video.sh`. You may need to adjust the `-video_size` and pixel offset (`$DISPLAY+1152,672`) parameters.
+2. After recording, you will need to re-encode the video:
 
 ```bash
-sudo apt-get install pulseaudio jackd2 alsa-utils dbus-x11
+ffmpeg -i <.nut file generated above> -c:v libx264 -vf format=yuv420p -crf 18 -strict -2 <output file>.mp4
 ```
-
-2. Start pulseaudio outside of the Docker container:
-
-```bash
-pulseaudio --system
-```
-
-*(Optional)* To check if pulseaudio is working, start an audio file and while its playing:
-
-```bash
-pacmd list-sink-inputs | grep -c 'state: RUNNING'
-```
-
-3. Record with [ffmpeg](https://trac.ffmpeg.org/wiki/Capture/Desktop) (outside of the Docker container):
-
-```
-DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 -f pulse -ac 2 -i default output.mp4
-```
-
-See above for instructions for how to use ffmpeg with x11grab; all of video recording suggestions are applicable to video+audio recording.
 
 #### On a personal computer
 
@@ -143,13 +124,6 @@ call(['taskkill', '/F', '/T', '/PID', str(obs.pid)])
 
 ## "I want to capture only audio (without video)"
 
-#### On a personal computer
-
 We recommend using our [`AudioUtils`](../python/tdw_utils.md#AudioUtils) class to record audio; see API for a usage example.
 
 Note that `AudioUtils` requires [fmedia](https://stsaz.github.io/fmedia/), which has simpler syntax than ffmpeg for recording audio.
-
-#### In a Docker container
-
-See [Docker documentation](../Docker.md); use `start_container_audio.sh`.
-

@@ -3,7 +3,7 @@
 # Check if your Docker image matches your installed TDW version.
 # If not, pull the correct image.
 
-TDW_VERSION=$(./tdw_version.sh)
+TDW_VERSION=$(python3 tdw_version.py)
 DOCKER_TAG=$(./docker_tag.sh)
 
 if [ $TDW_VERSION == $DOCKER_TAG ]

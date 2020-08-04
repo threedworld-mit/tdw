@@ -61,7 +61,7 @@ All Docker-related bash scripts are in [`tdw/Docker`](https://github.com/threedw
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [`start_container.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container.sh) |                                                              | Start the container and run TDW.                             |
 | [`start_container_xpra.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container_xpra.sh) |                                                              | Start the container with [Xpra](../misc_frontend/xpra.md) and run TDW. |
-| [`start_container_audio_video.sh VOLUME IPADDRESS PORT`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container_audio.sh) | `VOLUME` Save audio to this volume<br>`IPADDRESS` The address of the build.<br>`PORT` The port of the build. | [Record audio and video](../misc_frontend/video.md) from TDW. Requires `nvidia-docker` |
+| [`start_container_audio_video.sh VOLUME IPADDRESS PORT`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container_audio.sh) | `VOLUME` Save audio to this volume<br>`IPADDRESS` The address of the build.<br>`PORT` The port of the build. | [Record audio and video](../misc_frontend/video.md) from TDW. |
 
 ### Other scripts
 

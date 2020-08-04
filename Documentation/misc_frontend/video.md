@@ -82,7 +82,8 @@ To record video and video, you need to use an external program.
 #### On a headless Linux server
 
 1. See [Docker documentation](../Docker.md); use `start_container_audio_video.sh`. You may need to adjust the `-video_size` and pixel offset (`$DISPLAY+1152,672`) parameters.
-2. After recording, you will need to re-encode the video:
+2. To stop recording, you will need to stop the Docker container.
+3. After recording, you will need to re-encode the video:
 
 ```bash
 ffmpeg -i <.nut file generated above> -c:v libx264 -vf format=yuv420p -crf 18 -strict -2 <output file>.mp4

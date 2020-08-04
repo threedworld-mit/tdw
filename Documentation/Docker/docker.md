@@ -69,7 +69,7 @@ All Docker-related bash scripts are in [`tdw/Docker`](https://github.com/threedw
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [`pull.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/pull.sh) | Try to download a Docker container from DockerHub with a tag that matches the version of TDW on this machine. |
 | [`docker_tag.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/docker_tag.sh) | Get the tag of the TDW Docker image.                         |
-| [`tdw_version.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/tdw_version.sh) | Get the version of TDW on this machine.                      |
+| [`tdw_version.py`](https://github.com/threedworld-mit/tdw/tree/master/Docker/tdw_version.py) | Get the version of TDW on this machine.                      |
 | [`record_audio_video.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/record_audio.sh) | Launch TDW and begin recording audio.                        |
 
 

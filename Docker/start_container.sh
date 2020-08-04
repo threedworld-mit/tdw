@@ -1,7 +1,10 @@
-# Build the container
-VERSION=$(pip3 show tdw | grep 'Version:' | cut -d' ' -f2 | rev | cut -d. -f 2- | rev)
-echo $VERSION
-docker build -t tdw:$VERSION --build-arg TDW_VERSION=v$VERSION .
+#!/bin/bash
+
+DISPLAY=":${1}"
+
+# Make sure we have the right image.
+$(./pull.sh)
+VERSION=$(./tdw_version.sh)
 
 # Allow x server to accept local connections
 xhost +local:root

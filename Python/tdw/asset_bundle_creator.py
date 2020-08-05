@@ -591,10 +591,7 @@ class AssetBundleCreator:
             print("Wrote the record data to the disk.")
 
         if write_physics:
-            build_path = Path.home().joinpath("TDW/TDW.exe")
-
             self.write_physics_quality(record_path=record_path,
-                                       build_path=build_path,
                                        asset_bundle_path=self.get_local_asset_bundle_path(model_name))
 
         return record_path
@@ -621,32 +618,29 @@ class AssetBundleCreator:
         return urls
 
     @staticmethod
-    def write_physics_quality(record_path: Path, asset_bundle_path: Path, build_path: Path) -> None:
+    def write_physics_quality(record_path: Path, asset_bundle_path: Path) -> None:
         """
         Append the physics quality data to the temporary record file.
         This is an optional record field that records the percentage of the model encapsualted by colliders.
 
         :param record_path: The path to the temporary record file.
         :param asset_bundle_path: The URL to the local asset bundle.
-        :param build_path: The path to the build.
         """
 
         # Get the path to the writer controller.
         writer_path = pkg_resources.resource_filename(__name__, "model_pipeline/write_physics_quality.py")
         writer_call = ["py", "-3", writer_path,
                        "--record_path", str(record_path.resolve()),
-                       "--asset_bundle_path", str(asset_bundle_path.resolve()),
-                       "--build_path", str(build_path.resolve())]
+                       "--asset_bundle_path", str(asset_bundle_path.resolve())]
 
         call(writer_call)
 
-    def validate(self, record_path: Path, asset_bundle_path: Path, build_path: Path) -> Tuple[bool, str]:
+    def validate(self, record_path: Path, asset_bundle_path: Path) -> Tuple[bool, str]:
         """
         Validate the asset bundle.
 
         :param record_path: The path to the temporary record file.
         :param asset_bundle_path: The URL to the local asset bundle.
-        :param build_path: The path to the build.
 
         :return True if there aren't problems, and a string output report.
         """
@@ -657,8 +651,7 @@ class AssetBundleCreator:
         validator_path = pkg_resources.resource_filename(__name__, "model_pipeline/validator.py")
         validator_call = ["py", "-3", validator_path,
                           "--record_path", str(record_path.resolve()),
-                          "--asset_bundle_path", str(asset_bundle_path.resolve()),
-                          "--build_path", str(build_path.resolve())]
+                          "--asset_bundle_path", str(asset_bundle_path.resolve())]
         call(validator_call)
 
         report = json.loads(paths.VALIDATOR_REPORT_PATH.read_text(encoding="utf-8"))

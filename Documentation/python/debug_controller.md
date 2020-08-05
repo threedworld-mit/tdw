@@ -16,13 +16,15 @@ c.start()
 
 ***
 
-#### `__init__(self, port=1071)`
+#### `__init__(self, port: int = 1071, launch_build: bool = True, display: int = None)`
 
 Create the network socket and bind the socket to the port.
 
 | Parameter | Description |
 | --- | --- |
 | port | The port number. |
+| launch_build | If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor. |
+| display | If launch_build == True, launch the build using this display number (Linux-only). |
 
 ***
 

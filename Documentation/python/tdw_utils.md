@@ -224,8 +224,8 @@ _Returns:_  A list of commands: The first creates the exterior walls, and the se
 _This is a static function._
 
 Save each image in the Images object.
-The name of the image will be: <pass>_<filename>.<extension>, e.g.: `"0000"` -> `depth_0000.png`
-The images object includes the <pass> and <extension> information.
+The name of the image will be: pass_filename.extension, e.g.: `"0000"` -> `depth_0000.png`
+The images object includes the pass and extension information.
 
 | Parameter | Description |
 | --- | --- |

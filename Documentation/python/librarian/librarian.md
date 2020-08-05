@@ -2,7 +2,7 @@
 
 ## Asset Bundles
 
-Most objects in TDW are stored as [asset bundles](https://docs.unity3d.com/Manual/AssetBundlesIntro.html). These external binary files can be loaded into the build at runtime. TDW has [four types of asset bundles](../../getting_started.md#Terminology):
+Most objects in TDW are stored as [asset bundles](https://docs.unity3d.com/Manual/AssetBundlesIntro.html). These external binary files can be loaded into the build at runtime. TDW has the following [types of asset bundles](../../getting_started.md#Terminology):
 
 1. Models
 2. Materials

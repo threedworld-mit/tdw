@@ -221,7 +221,7 @@ _Returns:_ A dictionary. Key = OS, Value = Path to the local file.
 
 ***
 
-#### `write_physics_quality(record_path: Path, asset_bundle_path: Path, build_path: Path) -> None`
+#### `write_physics_quality(record_path: Path, asset_bundle_path: Path) -> None`
 
 _This is a static function._
 
@@ -232,11 +232,10 @@ This is an optional record field that records the percentage of the model encaps
 | --- | --- |
 | record_path | The path to the temporary record file. |
 | asset_bundle_path | The URL to the local asset bundle. |
-| build_path | The path to the build. |
 
 ***
 
-#### `validate(self, record_path: Path, asset_bundle_path: Path, build_path: Path) -> Tuple[bool, str]`
+#### `validate(self, record_path: Path, asset_bundle_path: Path) -> Tuple[bool, str]`
 
 Validate the asset bundle.
 
@@ -244,7 +243,6 @@ Validate the asset bundle.
 | --- | --- |
 | record_path | The path to the temporary record file. |
 | asset_bundle_path | The URL to the local asset bundle. |
-| build_path | The path to the build. |
 
 _Returns:_ True if there aren't problems, and a string output report.
 

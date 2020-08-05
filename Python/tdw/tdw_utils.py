@@ -255,8 +255,8 @@ class TDWUtils:
     def save_images(images: Images, filename: str, output_directory="dist", resize_to=None, append_pass: bool = True) -> None:
         """
         Save each image in the Images object.
-        The name of the image will be: <pass>_<filename>.<extension>, e.g.: `"0000"` -> `depth_0000.png`
-        The images object includes the <pass> and <extension> information.
+        The name of the image will be: pass_filename.extension, e.g.: `"0000"` -> `depth_0000.png`
+        The images object includes the pass and extension information.
 
         :param images: The Images object. Contains each capture pass plus metadata.
         :param output_directory: The directory to write images to.
@@ -586,24 +586,19 @@ class TDWUtils:
         if new_config_path:
             config_path.write_text("[default]\nregion = us-east-1\noutput = json")
             print(f"Generated a new config file: {config_path.resolve()}")
-
         try:
             session = boto3.Session(profile_name="tdw")
             s3 = session.resource("s3")
-            tdw_private = False
-            for bucket in s3.buckets.all():
-                if bucket.name == "tdw-private":
-                    tdw_private = True
-            if not tdw_private:
-                print("ERROR! Could not access bucket tdw-private. Make sure you have the right permissions.")
-                return False
+            s3.meta.client.head_object(Bucket='tdw-private', Key='models/windows/2018-2019.1/iron_box')
             return True
         except ProfileNotFound:
             print(f"ERROR! Your AWS credentials file is not set up correctly.")
             print("Your AWS credentials must have a [tdw] profile with valid keys.")
             return False
-        except ClientError:
-            print("Error! Bad S3 credentials.")
+        except ClientError as e:
+            print("ERROR! Could not access bucket tdw-private. Make sure you have the right permissions.")
+            error_code = e.response['Error']['Code']
+            print(e, error_code)
             return False
 
     @staticmethod

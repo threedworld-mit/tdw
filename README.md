@@ -9,6 +9,12 @@
 
 ### [Changelog](https://github.com/threedworld-mit/tdw/blob/master/Documentation/Changelog.md)
 
+### [Website](http://threedworld.org/)
+
+### [C# Code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md)
+
+### [License](LICENSE.txt)
+
 # API
 
 #### Commands and Output Data
@@ -21,17 +27,25 @@
 
 #### Python `tdw` module
 
+##### Frontend
+
 | Document                                                     | Description                                                 |
 | ------------------------------------------------------------ | ----------------------------------------------------------- |
-| [`tdw` module](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/tdw.md)                  | Overview of the Python `tdw` module.                        |
-| [Controller](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/controller.md)             | Base class for all controllers.                             |
-| [TDWUtils](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/tdw_utils.md)                | Utility class.                                              |
+| [`tdw` module](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/tdw.md) | Overview of the Python `tdw` module.                        |
+| [Controller](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/controller.md) | Base class for all controllers.                             |
+| [TDWUtils](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/tdw_utils.md) | Utility class.                                              |
 | [AssetBundleCreator](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/asset_bundle_creator.md) | Covert 3D models into TDW-compatible asset bundles.         |
-| [PyImpact](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/py_impact.md)                | Generate impact sounds at runtime.                          |
-| [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md)  | Child class of `Controller` that has useful debug features. |
-| [Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/librarian.md)     | "Librarians" hold asset bundle metadata records.            |
-| [BinaryManager](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/binary_manager.md)      | Manage multiple instances of TDW builds on a remote server. |
-| [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md)            | Access different NVIDIA Flex fluid types.                   |
+| [PyImpact](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/py_impact.md) | Generate impact sounds at runtime.                          |
+| [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md) | Child class of `Controller` that has useful debug features. |
+| [Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/librarian.md) | "Librarians" hold asset bundle metadata records.            |
+| [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md) | Access different NVIDIA Flex fluid types.                   |
+
+##### Backend
+
+| Document                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [Build](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/build.md) | Helper functions for downloading the build.                  |
+| [PyPi](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/pypi.md) | Helper functions for checking the version of the `tdw` module on PyPi. |
 
 # Audio and Video
 
@@ -70,7 +84,6 @@
 | ------------------------------------------------------------ | ------------------------------------ |
 | [VR](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/vr.md) | VR in TDW.                           |
 | [Humanoids](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/humanoids.md) | Add "humanoids" and play animations. |
-| [Releases](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/releases.md) | Release versioning in TDW.           |
 
 # Physics (PhysX and Flex)
 
@@ -79,6 +92,13 @@
 | [Physics](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/physics.md)  | Common physics problems and solutions.     |
 | [NVIDIA Flex](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/flex.md) | Add soft bodies, cloth, and fluids to TDW. |
 | [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md)  | Access different NVIDIA Flex fluid types.  |
+
+# Releases
+
+| Document | Description |
+| --- | --- |
+| [C# code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md) | Access to C# backend source code |
+| [Releases](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/releases.md) | Release versioning in TDW.           |
 
 # Remote Server
 
@@ -97,8 +117,8 @@
 | [Model Screenshotter](https://github.com/threedworld-mit/tdw/blob/master/Documentation/utility_applications/model_screenshotter.md) | Generate images of every model in TDW.                       |
 | [Material Screenshotter](https://github.com/threedworld-mit/tdw/blob/master/Documentation/utility_applications/material_screenshotter.md) | Generate images of every material in TDW.                    |
 | [Materials, textures, and colors](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/materials_textures_colors.md) | Defines materials, textures, and colors.                     |
-| [Depth of Field](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth_of_field_and_image_bluriness.md) | Prevent blurry images and increase realism.                  |
-| [Remote rendering](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/xpra.md)      | How to render using xpra.                                    |
+| [Depth of Field](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth_of_field_and_image_blurriness.md) | Prevent blurry images and increase realism.                  |
+| [Remote rendering](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/xpra.md) | How to render using xpra.                                    |
 | [Observation Data](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/observation_data.md) | Different means of determining what an agent is observing.   |
 
 # Scene Setup
@@ -128,12 +148,12 @@
 
 | Document                                                     | Description                                           |
 | ------------------------------------------------------------ | ----------------------------------------------------- |
-| [Debug TDW](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/debug_tdw.md)        | Several strategies for debugging errors in your code. |
-| [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md)  | API for the `DebugController` class.                  |
-| [Depth of Field](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth_of_field_and_image_bluriness.md) | Prevent blurry images and increase realism.           |
+| [Debug TDW](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/debug_tdw.md) | Several strategies for debugging errors in your code. |
+| [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md) | API for the `DebugController` class.                  |
+| [Depth of Field](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth_of_field_and_image_blurriness.md) | Prevent blurry images and increase realism.           |
 | [Performance Optimizations](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/performance_optimizations.md) | Increase simulation speed.                            |
-| [OS X](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/osx.md)                   | Common OS X problems and solutions.                   |
-| [Physics](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/physics.md)            | Common physics problems and solutions.                |
+| [OS X](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/osx.md) | Common OS X problems and solutions.                   |
+| [Physics](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/physics.md) | Common physics problems and solutions.                |
 
 # Use Cases
 
@@ -144,3 +164,4 @@
 | [Humanoid videos](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/humanoid_video.md) | Generate a dataset of humanoid animations. |
 | [tdw_sound20k](https://github.com/alters-mit/tdw_sound20k)   | Generate an audio dataset.                 |
 | [tdw_physics](https://github.com/alters-mit/tdw_physics)     | Generate a physics dataset.                |
+| [Rube Goldberg (demo)](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/rube_goldberg.md) | Demo of complex physical interactions between objects, with PyImpact generation of impact sounds, set in a photorealistic scene.    |

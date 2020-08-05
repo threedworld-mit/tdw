@@ -169,6 +169,125 @@ class CollisionInfo:
         self.count += 1
 
 
+class CollisionType(Enum):
+    """
+    The "type" of a collision, defined by the motion of the object.
+
+    none = No collision
+    impact = The object "entered" a collision
+    scrape = The object "stayed" in a collision with a low angular velocity.
+    roll = The object "stayed" in a collision with a high angular velocity.
+    """
+
+    none = 1,
+    impact = 2,
+    scrape = 4,
+    roll = 8
+
+
+class CollisionTypesOnFrame:
+    """
+    All types of collision (impact, scrape, roll, none) between an object and any other objects or the environment on this frame.
+
+    Usage:
+
+    ```python
+    from tdw.controller import Controller
+    from tdw.py_impact import CollisionTypesOnFrame
+
+    object_id = c.get_unique_id()
+    c = Controller()
+    c.start()
+
+    # Your code here.
+
+    # Request the required output data (do this at the start of the simulation, not per frame).
+    resp = c.communicate([{"$type": "send_collisions",
+                           "enter": True,
+                           "exit": False,
+                           "stay": True,
+                           "collision_types": ["obj", "env"]},
+                          {"$type": "send_rigidbodies",
+                           "frequency": "always"}])
+
+    # Parse the output data and get collision type data.
+    ctof = CollisionTypesOnFrame(object_id, resp)
+
+    # Read the dictionaries of collidee IDs and collision types.
+    for collidee_id in ctof.collisions:
+        collision_type = ctof.collisions[collidee_id]
+        print(collidee_id, collision_type)
+
+    # Check the environment collision.
+    print(ctof.env_collision_type)
+    ```
+    """
+
+    def __init__(self, object_id: int, resp: List[bytes]):
+        """
+        :param object_id: The unique ID of the colliding object.
+        :param resp: The response from the build.
+        """
+
+        collisions, env_collisions, rigidbodies = PyImpact.get_collisions(resp)
+
+        # The type of collision with each collidee.
+        self.collisions: Dict[int, CollisionType] = dict()
+        # The type of environment collision, if any.
+        self.env_collision = CollisionType.none
+
+        # If there is no Rigidbodies output data, then nothing can be parsed.
+        if rigidbodies is None:
+            return
+
+        # Get the rigidbody data for this object.
+        for i in range(rigidbodies.get_num()):
+            if rigidbodies.get_id(i) == object_id:
+                # Get the angular velocity of this object.
+                ang_vel = rigidbodies.get_angular_velocity(i)
+
+                # My collisions with other objects on this frame.
+                # Key = the collidee ID. Value = list of states.
+                my_collisions: Dict[int, List[str]] = dict()
+
+                for co in collisions:
+                    if co.get_collider_id() == object_id:
+                        collidee = co.get_collidee_id()
+                        if collidee not in my_collisions:
+                            my_collisions.update({collidee: []})
+                        my_collisions[collidee].append(co.get_state())
+                # Get the collision type.
+                for collidee in my_collisions:
+                    self.collisions[collidee] = self._get_collision_type(ang_vel, my_collisions[collidee])
+                env_collision_states: List[str] = []
+                for co in env_collisions:
+                    env_collision_states.append(co.get_state())
+
+    @staticmethod
+    def _get_collision_type(ang_vel: tuple, states: List[str]) -> CollisionType:
+        """
+        :param ang_vel: The angular velocity of this object.
+
+        :param states: The states of all collisions experienced by this object on this frame.
+
+        :return: The type of collision that the object is experiencing.
+        """
+
+        # If there is any "enter" state in this frame, then it is an impact.
+        if "enter" in states:
+            return CollisionType.impact
+        # If there are "stay" state(s) but no "enter" state, then it is either a roll or a scrape.
+        elif "stay" in states:
+            # If there is a high angular velocity, then it is a roll.
+            if np.linalg.norm(ang_vel) > 1:
+                return CollisionType.roll
+            # Otherwise, it's a scrape.
+            else:
+                return CollisionType.scrape
+        else:
+            return CollisionType.none
+
+
 class PyImpact:
     """
     Generate impact sounds from physics data.

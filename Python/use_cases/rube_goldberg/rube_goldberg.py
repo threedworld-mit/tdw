@@ -5,6 +5,7 @@ from tdw.librarian import ModelLibrarian
 from typing import List, Dict
 from pathlib import Path
 import json
+from argparse import ArgumentParser
 
 """
 Create a "Rube Goldberg machine" from a set of objects that will collide when the first is struck by a ball.
@@ -17,7 +18,6 @@ Note that all scene objects have also been added to the default audio and materi
 (Python/tdw/py_impact/objects.csv), and all required parameters entered including their masses, audio material used,
 bounciness and relative amplitudes. See Documentation/misc_frontend/impact_sounds.md for additional details. 
 """
-
 
 class _ObjectSetup:
     """
@@ -45,40 +45,37 @@ class _ObjectSetup:
 
 
 class RubeGoldbergDemo(Controller):
-    def run(self):
-        """
-        Build a "Rube Goldberg" machine to produce impact sounds.
-        """
 
-        # Initialize PyImpact and pass in the "master gain" amplitude value. This value must be betweem 0 and 1.
-        # The relative amplitudes of all scene objects involved in collisions will be scaled relative to this value.
-        # Note -- if this value is too high, waveform clipping can occur and the resultant audio will be distorted.
-        # For this reason, the value used here is considerably smaller than the corresponding value used in the
-        # impact_sounds.py example controller. Here we have a large number of closely-occuring collisions resulting in
-        # a rapid series of "clustered" impact sounds, as opposed to a single object falling from a height;
-        # using a higher value such as the 0.5 used in the example controller will definitely result in unpleasant
-        # distortion of the audio.
-        p = PyImpact(initial_amp=0.01)
-
+    def __init__(self):
+        self.obj_name_dict: Dict[int, str] = {}
+        
         # Set up the object transform data.
         object_setup_data = json.loads(Path("object_setup.json").read_text())
-        object_setups: List[_ObjectSetup] = []
+        self.object_setups: List[_ObjectSetup] = []
         for o in object_setup_data:
             combo = _ObjectSetup(id=int(o),
                                  model_name=object_setup_data[o]["model_name"],
                                  position=object_setup_data[o]["position"],
                                  rotation=object_setup_data[o]["rotation"],
                                  scale=object_setup_data[o]["scale"])
-            object_setups.append(combo)
+            self.object_setups.append(combo)
 
         # Parse the default objects.csv spreadsheet. 
-        object_audio_data = PyImpact.get_object_info()
+        self.object_audio_data = PyImpact.get_object_info()
 
         # Fetch the ball and board model's records; we will need them later to change its material.
-        special_models = ModelLibrarian(library="models_special.json")
-        full_models = ModelLibrarian(library="models_full.json")
-        ball_record = special_models.get_record("prim_sphere")
-        board_record = full_models.get_record("wood_board")
+        self.special_models = ModelLibrarian(library="models_special.json")
+        self.full_models = ModelLibrarian(library="models_full.json")
+        self.ball_record = self.special_models.get_record("prim_sphere")
+        self.board_record = self.full_models.get_record("wood_board")
+
+        super().__init__()
+ 
+ 
+    def run(self, num_trials: int):
+        """
+        Build a "Rube Goldberg" machine to produce impact sounds.
+        """
 
         # Load the photorealistic "archviz_house" environment.
         self.load_streamed_scene(scene="archviz_house_2018")
@@ -135,22 +132,82 @@ class RubeGoldbergDemo(Controller):
         # Send all of the initialization commands.
         self.communicate(init_commands)
 
+        for i in range(num_trials):
+            self.do_trial()
+            
+
+    def do_trial(self):
+        # Initialize PyImpact and pass in the "master gain" amplitude value. This value must be betweem 0 and 1.
+        # The relative amplitudes of all scene objects involved in collisions will be scaled relative to this value.
+        # Note -- if this value is too high, waveform clipping can occur and the resultant audio will be distorted.
+        # For this reason, the value used here is considerably smaller than the corresponding value used in the
+        # impact_sounds.py example controller. Here we have a large number of closely-occuring collisions resulting in
+        # a rapid series of "clustered" impact sounds, as opposed to a single object falling from a height;
+        # using a higher value such as the 0.5 used in the example controller will definitely result in unpleasant
+        # distortion of the audio.
+        p = PyImpact(initial_amp=0.01)
+
+        self.add_all_objects()
+
+        # "Aim" the ball at the monkey and apply the force.
+        # Note that this force value was arrived at through a number of trial-and-error iterations.
+        resp = self.communicate([{"$type": "object_look_at_position",
+                                  "id": 0,
+                                  "position": {"x": -12.95, "y": 1.591, "z": -5.1}},
+                                 {"$type": "apply_force_magnitude_to_object",
+                                  "id": 0,
+                                  "magnitude": 98.0}])
+
+        for i in range(400):
+            collisions, environment_collision, rigidbodies = PyImpact.get_collisions(resp)
+            # Sort the objects by mass.
+            masses: Dict[int, float] = {}
+            for j in range(rigidbodies.get_num()):
+                masses.update({rigidbodies.get_id(j): rigidbodies.get_mass(j)})
+
+            # If there was a collision, create an impact sound.
+            if len(collisions) > 0 and PyImpact.is_valid_collision(collisions[0]):
+                collider_id = collisions[0].get_collider_id()
+                collidee_id = collisions[0].get_collidee_id()
+                # The "target" object should have less mass than the "other" object.
+                if masses[collider_id] < masses[collidee_id]:
+                    target_id = collider_id
+                    other_id = collidee_id
+                else:
+                    target_id = collidee_id
+                    other_id = collider_id
+
+                target_name = self.obj_name_dict[target_id]
+                other_name = self.obj_name_dict[other_id]
+                impact_sound_command = p.get_impact_sound_command(
+                    collision=collisions[0],
+                    rigidbodies=rigidbodies,
+                    target_id=target_id,
+                    target_mat=self.object_audio_data[target_name].material,
+                    other_id=other_id,
+                    other_mat=self.object_audio_data[other_name].material,
+                    target_amp=self.object_audio_data[target_name].amp,
+                    other_amp=self.object_audio_data[other_name].amp)
+                resp = self.communicate(impact_sound_command)
+            # Continue to run the trial.
+            else:
+                resp = self.communicate([])
+
+        for obj_setup in self.object_setups:
+            self.communicate({"$type": "destroy_object", "id": obj_setup.id})
+
+		
+
+    def add_all_objects(self):
         object_commands = []
         rigidbodies = []
 
-        # Build dictionary of id,,name so we can retrieve object names during collisions.
-        # Cache the ids for objects we need to change materials for later
-        obj_name_dict: Dict[int, str] = {}
-        board_id = 0
-        ball_id = 0
-        table_id = 0
-        coke_can_id = 0
-        camera_box_id = 0
-
         # Set the mass and scale of the objects, from  the data files we parsed earlier.
         # Enable output of collision and rigid body data.
-        for obj_setup in object_setups:
-            obj_name_dict[obj_setup.id] = obj_setup.model_name
+        # Build dictionary of id,,name so we can retrieve object names during collisions.
+        # Cache the ids for objects we need to change materials for later
+        for obj_setup in self.object_setups:
+            self.obj_name_dict[obj_setup.id] = obj_setup.model_name
             rigidbodies.append(obj_setup.id)
             if obj_setup.model_name == "prim_sphere":
                 ball_id = obj_setup.id
@@ -169,10 +226,10 @@ class RubeGoldbergDemo(Controller):
                                     object_id=obj_setup.id,
                                     position=obj_setup.position,
                                     rotation=obj_setup.rotation,
-                                    library=object_audio_data[obj_setup.model_name].library),
+                                    library=self.object_audio_data[obj_setup.model_name].library),
                                     {"$type": "set_mass",
-                                     "id": obj_setup.id,
-                                     "mass": object_audio_data[obj_setup.model_name].mass},
+                                    "id": obj_setup.id,
+                                    "mass": self.object_audio_data[obj_setup.model_name].mass},
                                     {"$type": "scale_object", 
                                      "id":  obj_setup.id, 
                                      "scale_factor": obj_setup.scale}])
@@ -223,58 +280,18 @@ class RubeGoldbergDemo(Controller):
                                  "is_kinematic": True}])
 
         # Set the visual material of the ball to metal and the board to a different wood than the bench.
-        object_commands.extend(TDWUtils.set_visual_material(self, ball_record.substructure, ball_id,
+        object_commands.extend(TDWUtils.set_visual_material(self, self.ball_record.substructure, ball_id,
                                                             "dmd_metallic_fine", quality="high"))
-        object_commands.extend(TDWUtils.set_visual_material(self, board_record.substructure, board_id,
+        object_commands.extend(TDWUtils.set_visual_material(self, self.board_record.substructure, board_id,
                                                             "wood_tropical_hardwood", quality="high"))
 
         # Send all of the object setup commands.
         self.communicate(object_commands)
 
-        # "Aim" the ball at the monkey and apply the force.
-        # Note that this force value was arrived at through a number of trial-and-error iterations.
-        resp = self.communicate([{"$type": "object_look_at_position",
-                                  "id": ball_id,
-                                  "position": {"x": -12.95, "y": 1.591, "z": -5.1}},
-                                 {"$type": "apply_force_magnitude_to_object",
-                                  "id": ball_id,
-                                  "magnitude": 98.0}])
-
-        for i in range(400):
-            collisions, environment_collision, rigidbodies = PyImpact.get_collisions(resp)
-            # Sort the objects by mass.
-            masses: Dict[int, float] = {}
-            for j in range(rigidbodies.get_num()):
-                masses.update({rigidbodies.get_id(j): rigidbodies.get_mass(j)})
-
-            # If there was a collision, create an impact sound.
-            if len(collisions) > 0 and PyImpact.is_valid_collision(collisions[0]):
-                collider_id = collisions[0].get_collider_id()
-                collidee_id = collisions[0].get_collidee_id()
-                # The "target" object should have less mass than the "other" object.
-                if masses[collider_id] < masses[collidee_id]:
-                    target_id = collider_id
-                    other_id = collidee_id
-                else:
-                    target_id = collidee_id
-                    other_id = collider_id
-
-                target_name = obj_name_dict[target_id]
-                other_name = obj_name_dict[other_id]
-                impact_sound_command = p.get_impact_sound_command(
-                    collision=collisions[0],
-                    rigidbodies=rigidbodies,
-                    target_id=target_id,
-                    target_mat=object_audio_data[target_name].material,
-                    other_id=other_id,
-                    other_mat=object_audio_data[other_name].material,
-                    target_amp=object_audio_data[target_name].amp,
-                    other_amp=object_audio_data[other_name].amp)
-                resp = self.communicate(impact_sound_command)
-            # Continue to run the trial.
-            else:
-                resp = self.communicate([])
-
 
 if __name__ == "__main__":
-    RubeGoldbergDemo().run()
+    parser = ArgumentParser()
+    parser.add_argument("--num", type=int, default=5, help="Number of trials.")
+    args = parser.parse_args()
+
+    RubeGoldbergDemo().run(args.num)

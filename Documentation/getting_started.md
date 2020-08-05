@@ -6,6 +6,11 @@
 
 TDW is a general-purpose tool that allows the user to communicate and manipulate a 3D environment. As such, there's no single "correct" procedure for using TDW. This guide will show you how to start using TDW and how to explore the available options.
 
+## What you need to know
+
+- Some familiarity with running programs from the command line.
+- Beginner Python3 skills.
+
 ## Requirements
 
 - Windows, OS X, or Linux
@@ -18,62 +23,75 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 * **The build requires X.** 
 * We have tested the build in Ubuntu 16 and 18.
+* Up-to-date NVIDIA drivers.
 * The server must have 8 or less GPUs. (If there are more, you can temporarily disable them by editing xorg.conf)
 
-## Further documentation
+## Installation
 
-**TDW is EXTENSIVELY documented.** For a full list of documents and topics covered, see the [README](../README.md).
+#### 1. Install the `tdw` Python module
 
-## Initial Setup
+| Windows                   | OS X and Linux        |
+| ------------------------- | --------------------- |
+| **`pip3 install tdw --user`** | **`sudo pip3 install tdw`** |
 
-1. Download the [latest release](https://github.com/threedworld-mit/tdw/releases/latest) of TDW. (Unless otherwise directed, ignore any release marked `Pre-release`.) For more information regarding TDW's release and versioning structure, read [this](misc_frontend/releases.md).
-2. Install the `tdw` Python module:
+***
+
+#### 2. Run a minimal test
+
+##### 2a. On a personal computer:
+
+Create this Python script and run it:
+
+```python
+from tdw.controller import Controller
+
+c = Controller()
+print("Everything is OK!")
+c.communicate({"$type": "terminate"})
+```
+
+When you launch run this script, the `Controller` will download the **build**, the binary executable application that runs the simulation environment and then launch the build. The controller will also check to see if your version of TDW is the most recent. For more information on what happens when you start a controller, read [this](misc_frontend/releases.md#Updates).
+
+##### 2b. On a remote Linux server:
+
+1. Set up a virtual display.
 
 ```bash
-pip3 install tdw
+sudo service lightdm stop
+sudo killall Xorg
+sudo nvidia-xconfig -a --use-display-device=None --virtual=256x256
+sudo /usr/bin/X :0&
 ```
 
-3. Read the rest of this document.
+NOTE: Not all of these commands will be applicable to every server. The last number is the `display_number` which will be used in the script below:
 
-### How to run the build
+2. Create this Python script and run it:
 
-The **build** is the binary executable that handles the actual simulation (rendering, physics, and so on). As with any application, you can double-click on the build or launch it from a shell.
+```python
+from tdw.controller import Controller
 
-When this document includes this statement:
-
-```
-<run build>
-```
-
-...that means that you should run the build executable.
-
-### Minimal simulation
-
-Create a minimal TDW simulation and verify that the basic network structure works on your machine.
-
-```bash
-cd tdw/Python/example_controllers
-python3 minimal.py
+display_number = 0 # Set this number to your virtual display.
+c = Controller(display=display_number)
+print("Everything is OK!")
+c.communicate({"$type": "terminate"})
 ```
 
-```bash
-<run build>
-```
+##### 2c. From a Docker container:
 
-### Less-minimal simulation
+Read [this](https://github.com/threedworld-mit/tdw/blob/v1.6.1/Documentation/Docker/docker.md). We recommend first trying TDW on a personal computer to familiarize yourself with the basic setup.
 
-Create a basic simulation in which objects are added into the 3D environment and images are routed to the controller and saved to the local disk:`tdw/Python/example_controllers/example_output/`
+***
 
-```bash
-cd tdw/Python/example_controllers
-python3 objects_and_images.py
-```
+### 3. Download this repo and run a test
 
-```bash
-<run build>
-```
+This repo contains all of the example controllers and documentation for TDW, as well as the source code for the `tdw` Python module. You can download the repo either as a zip file or by forking the repo.
 
-## Core Concepts
+In this test, TDW creates a basic simulation in which objects are added into the 3D environment. Images are routed to the controller and saved to the local disk: `tdw/Python/example_controllers/dist/`
+
+3. `cd tdw/Python/example_controllers`
+4. `python3 getting_started.py`
+
+## Core concepts
 
 ![network](images/network.png)
 
@@ -147,17 +165,22 @@ resp = c.communicate({"$type": "load_scene",
                       "scene_name": "ProcGenScene"})
 ```
 
-_NOTE:_ In many example controllers, you will see a function `self.start()`. This is a wrapper function for the `load_scene` command.
+In many example controllers, you will see a function `self.start()`. This is a wrapper function for the `load_scene` command.
+
+***
+
+_The full version of the following example can be found [here](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/getting_started.py)._
 
 Commands can be sent in lists of arbitrary length, allowing for arbitrarily complex instructions per frame. The user must explicitly request output data:
 
 ```python
+from pathlib import Path
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelLibrarian
 from tdw.output_data import OutputData, Bounds, Images
 
-lib = ModelLibrarian("models_full.json")
+lib = ModelLibrarian("models_core.json")
 # Get the record for the table.
 table_record = lib.get_record("small_table_green_marble")
 
@@ -172,15 +195,12 @@ table_id = 0
 resp = c.communicate([{"$type": "load_scene",
                        "scene_name": "ProcGenScene"},
                       TDWUtils.create_empty_room(12, 12),
-                      {"$type": "add_object",
-                       "name": table_record.name,
-                       "url": table_record.get_url(),
-                       "scale_factor": table_record.scale_factor,
-                       "position": {"x": 0, "y": 0, "z": 0},
-                       "rotation": {"x": 0, "y": 0, "z": 0},
-                       "category": table_record.wcategory,
-                       "id": table_id},
+                      c.get_add_object(model_name=table_record.name,
+                                       object_id=table_id,
+                                       position={"x": 0, "y": 0, "z": 0},
+                                       rotation={"x": 0, "y": 0, "z": 0}),
                       {"$type": "send_bounds",
+                       "ids": [table_id],
                        "frequency": "once"}])
 ```
 
@@ -194,28 +214,22 @@ for r in resp[:-1]:
     # Find the bounds data.
     if r_id == "boun":
         b = Bounds(r)
-        # Find the table in the bounds data.
-        for i in range(b.get_num()):
-            if b.get_id(i) == table_id:
-                top_y = b.get_top(i)
+        # We only requested the table, so it is object 0:
+        _, top_y, _ = b.get_top(0)        
 ```
 
 The variable `top_y` can be used to place an object on the table:
 
 ```python
-box_record = lib.get_record("iron_box")
+box_record = lib.get_record("puzzle_box_composite")
 box_id = 1
-c.communicate({"$type": "add_object",
-               "name": box_record.name,
-               "url": box_record.get_url(),
-               "scale_factor": box_record.scale_factor,
-               "position": {"x": 0, "y": top_y, "z": 0},
-               "rotation": {"x": 0, "y": 0, "z": 0},
-               "category": box_record.wcategory,
-               "id": 1})
+c.communicate(c.get_add_object(model_name=box_record.name,
+                               object_id=box_id,
+                               position={"x": 0, "y": top_y, "z": 0},
+                               rotation={"x": 0, "y": 0, "z": 0}))
 ```
 
-Then an **avatar** can be added to the scene. In this case, the avatar is just a camera. The avatar can then send an image:
+Then an **avatar** can be added to the scene. In this case, the avatar is just a camera. The avatar can then send an image. This image is a numpy array that can be either saved to disk or fed directly into a ML system:
 
 ```python
 avatar_id = "a"
@@ -223,7 +237,8 @@ resp = c.communicate([{"$type": "create_avatar",
                        "type": "A_Img_Caps_Kinematic",
                        "avatar_id": avatar_id},
                       {"$type": "teleport_avatar_to",
-                       "position": {"x": 1, "y": 2.5, "z": 2}},
+                       "position": {"x": 1, "y": 2.5, "z": 2},
+                       "avatar_id": avatar_id},
                       {"$type": "look_at",
                        "avatar_id": avatar_id,
                        "object_id": box_id},
@@ -240,12 +255,40 @@ for r in resp[:-1]:
     # Find the image data.
     if r_id == "imag":
         img = Images(r)
+        
+        # Usually, you'll want to use one of these functions, but not both of them:
+        
+        # Use this to save a .jpg
+        TDWUtils.save_images(img, filename="test_img") 
+        
+        print(f"Image saved to: {Path('dist/test_img.jpg').resolve()}")
+        
+        # Use this to convert the image to a PIL image, which can be processed by a ML system at runtime.
+        # The index is 0 because we know that there is only one pass ("_img").
+        pil_img = TDWUtils.get_pil_image(img, index=0)
 ```
 
-This image is a numpy array that can be either saved to disk or fed directly into a ML system. Put together, the example code will create this image:
+To terminate the build once your simulation is done:
+
+```python
+c.communicate({"$type": "terminate"})
+```
+
+Put together, the example code will create this image:
 
 ![](images/box_on_desk.png)
 
 ## Restarting a simulation
 
 To restart a simulation, **always kill the controller _and_ the build.** Never recycle a build or controller instance!
+
+Kill the build by sending `{"$type": "terminate"}`:
+
+```python
+c = Controller(launch_build=True) # Launch the build.
+c.communicate({"$type": "terminate"}) # Terminate the build.
+```
+
+## Further documentation
+
+**TDW is EXTENSIVELY documented.** For a full list of documents and topics covered, see the [README](../README.md).

@@ -1,8 +1,7 @@
-# Build the container
-docker build -t tdw:v1.6.0 .
+#!/bin/bash
 
-# Set render target for virtualgl
-DISPLAY=:0
+VERSION=$(./tdw_version.sh)
+
 
 # Allow x server to accept local connections
 xhost +local:root
@@ -24,5 +23,5 @@ docker run -it \
   -e DISPLAY=$DISPLAY \
   --network host \
   vglrun -d :0 \
-  tdw:1.6.0 \
+  alters/tdw:$VERSION \
   ./TDW/TDW.x86_64

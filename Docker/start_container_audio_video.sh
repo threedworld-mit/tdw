@@ -1,16 +1,12 @@
-#!/bin/bash
 
 VERSION=$(./tdw_version.sh)
 
-# Allow x server to accept local connections
-xhost +local:root
-
-# Run the container
 docker run -it \
   --rm \
   --gpus all \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -e DISPLAY=$DISPLAY \
   --network host \
-  alters/tdw:$VERSION \
-  ./TDW/TDW.x86_64
+  --volume "${1}:/audio_data"  \
+  alters/tdw:$VERSION\
+  "sh record_audio_video.sh ${2} ${3} ${4} ${5}"

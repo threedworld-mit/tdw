@@ -35,6 +35,20 @@
 
 - Added `getting_started.py` This is the controller in the Getting Started guide.
 
+### Docker
+
+- Fixed: Docker file doesn't work.
+- Added audio libraries and ffmpeg to the Docker container.
+- Updated `docker_controller.py`
+- [**Added Docker container to DockerHub**](https://hub.docker.com/r/alters/tdw)
+- Added scripts:
+  - `docker_tag.sh`: Get the tag for the Docker image installed on this machine.
+  - `pull.sh`: Check if your Docker image matches your installed TDW version. If not, pull the correct image.
+  - `record_audio_video.sh`: Copied into the container for recording video+audio.
+  - `start_container_audio_video.sh`: Start the container and record video+audio.
+  - `tdw_version.py`: Print the TDW version.
+- Revised `start_container.sh` and `start_container_xpra.sh` to use the new Docker container.
+
 ### Documentation
 
 #### New Documentation
@@ -50,6 +64,8 @@
 | `README.md`          | Removed BinaryManager from `tdw` module table (it's not part of the `tdw` module). |
 | `tdw.md`             | Updated for v1.6 and expanded table(s) of contents.          |
 | `getting_started.md` | The initial test for new users is `getting_started.py` instead of `objects_and_images.py`.<br/>Added a link to `getting_started.py`.<br/>Edited the example controller code (`getting_started.py`) for clarity. |
+| `docker.md` | Rewrote requirements and contents of the container.<br>Added instructions for how to pull the image.<br>Added a list of bash scripts included in the repo. |
+| `video.md` | Added better instructions for setting the simulation framerate.<br>**Added instructions for how to record audio+video on a headless server.**<br>Added instructions for using ffmpeg on Windows and OS X. |
 
 ## v1.6.3
 

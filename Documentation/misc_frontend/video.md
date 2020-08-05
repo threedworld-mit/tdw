@@ -4,7 +4,9 @@ There are several ways capture audio or video data in TDW.
 
 ## "I want to capture only video (without audio)"
 
-#### Option B: Use image data
+Be sure to include `{"$type": "set_target_framerate", "framerate": 30}` or else the video might be too fast.
+
+#### Option A: Use image data
 
 1. Write a controller that receives and saves an image every frame, like the following minimal example:
 
@@ -19,7 +21,7 @@ resp = c.communicate([TDWUtils.create_empty_room(12, 12),
                        "type": "A_Img_Caps_Kinematic",
                        "id": "a"},
                       {"$type": "set_target_framerate",
-                       "framerate": 60},
+                       "framerate": 30},
                       {"$type": "set_pass_masks",
                        "avatar_id": "a",
                        "pass_masks": ["_img"]},
@@ -38,29 +40,37 @@ for i in range(num_frames): # You will need to define num_frames.
 
 2. After running the controller, stitch the frames together with **ffmpeg**.
 
-#### Option A: Record a video of the build
+#### Option B: Record a video with ffmpeg
 
-To record video with ffmpeg on headless a headless server:
+##### Linux:
 
 - Make sure that xpra isn't running.
-
 - Use **x11grab** (run this outside of a Docker container):
 
-```
+```bash
 DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 output.mp4
 ```
 
 - `DISPLAY` must have a valid display number.
-
 - `-video_size` must be the display size.
-
 - The TDW screen size must be less than or equal to the display size.
-
 - `:0.0+0,0` is the display number (which should match `DISPLAY`) and `+(x,y)` pixel offset. You can get the coordinates of the window with:
 
-  ```
-  xwininfo -tree -root
-  ```
+```bash
+xwininfo -tree -root
+```
+
+##### Windows:
+
+```bash
+ffmpeg -f dshow -i video="screen-capture-recorder" output.mkv
+```
+
+##### OS X:
+
+```bash
+ffmpeg -f avfoundation -list_devices true -i ""
+```
 
 ## "I want to capture audio (and maybe video too)"
 
@@ -71,13 +81,9 @@ Important guidelines when recording audio:
 
 ## "I want to capture video and audio"
 
-In your controller, add this command when you initialize the scene:
+Be sure to include `{"$type": "set_target_framerate", "framerate": 30}` or else the video might be too fast.
 
-```json
-{"$type": "set_target_framerate", "framerate": 30}
-```
-
-To record video and video, you need to use an external program.
+To record audio and video, you need to use an external program.
 
 #### On a headless Linux server
 

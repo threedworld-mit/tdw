@@ -16,7 +16,6 @@ The TDW Dockerfile builds an Nvidia container with the following:
 * [nvidia-container-toolkit](https://github.com/NVIDIA/nvidia-docker)
 * nvidia drivers (> 418.xx)
 * An active X server
-* If you are using condas or a similar enviornment, you may need to alias `pip3` (which is used to download a Docker image to match your installed version of TDW)
 
 ## Usage
 

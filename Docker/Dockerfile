@@ -96,7 +96,7 @@ RUN apt-get -qq update && apt-get -qq install -y \
 	                libxfixes3 libxi6 libxrandr2 libxrender1 libxtst6 zlib1g debconf npm xdg-utils lsb-release libpq5 xvfb x11-apps  && \
 			                rm -rf /var/lib/apt/lists/*
 RUN apt-get -qq update && apt-get -qq install -y pulseaudio socat alsa-utils ffmpeg
-COPY record_audio_video.sh
+COPY record_audio_video.sh .
 RUN wget https://github.com/threedworld-mit/tdw/releases/download/v${TDW_VERSION}/TDW_Linux.zip
 RUN unzip TDW_Linux.zip
 RUN chmod +x TDW/TDW.x86_64

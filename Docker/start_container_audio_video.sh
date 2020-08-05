@@ -9,4 +9,4 @@ docker run -it \
   --network host \
   --volume "${1}:/audio_data"  \
   alters/tdw:$VERSION\
-  "sh record_audio_video.sh ${2} ${3}"
+  "sh record_audio_video.sh ${2} ${3} ${4} ${5}"

@@ -86,10 +86,10 @@ Read [this](https://github.com/threedworld-mit/tdw/blob/v1.6.1/Documentation/Doc
 
 This repo contains all of the example controllers and documentation for TDW, as well as the source code for the `tdw` Python module. You can download the repo either as a zip file or by forking the repo.
 
-In this test, TDW creates a basic simulation in which objects are added into the 3D environment. Images are routed to the controller and saved to the local disk: `tdw/Python/example_controllers/example_output/`
+In this test, TDW creates a basic simulation in which objects are added into the 3D environment. Images are routed to the controller and saved to the local disk: `tdw/Python/example_controllers/dist/`
 
 3. `cd tdw/Python/example_controllers`
-4. `python3 objects_and_images.py`
+4. `python3 getting_started.py`
 
 ## Core concepts
 
@@ -165,11 +165,16 @@ resp = c.communicate({"$type": "load_scene",
                       "scene_name": "ProcGenScene"})
 ```
 
-_NOTE:_ In many example controllers, you will see a function `self.start()`. This is a wrapper function for the `load_scene` command.
+In many example controllers, you will see a function `self.start()`. This is a wrapper function for the `load_scene` command.
+
+***
+
+_The full version of the following example can be found [here](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/getting_started.py)._
 
 Commands can be sent in lists of arbitrary length, allowing for arbitrarily complex instructions per frame. The user must explicitly request output data:
 
 ```python
+from pathlib import Path
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelLibrarian
@@ -190,14 +195,10 @@ table_id = 0
 resp = c.communicate([{"$type": "load_scene",
                        "scene_name": "ProcGenScene"},
                       TDWUtils.create_empty_room(12, 12),
-                      {"$type": "add_object",
-                       "name": table_record.name,
-                       "url": table_record.get_url(),
-                       "scale_factor": table_record.scale_factor,
-                       "position": {"x": 0, "y": 0, "z": 0},
-                       "rotation": {"x": 0, "y": 0, "z": 0},
-                       "category": table_record.wcategory,
-                       "id": table_id},
+                      c.get_add_object(model_name=table_record.name,
+                                       object_id=table_id,
+                                       position={"x": 0, "y": 0, "z": 0},
+                                       rotation={"x": 0, "y": 0, "z": 0}),
                       {"$type": "send_bounds",
                        "ids": [table_id],
                        "frequency": "once"}])
@@ -222,14 +223,10 @@ The variable `top_y` can be used to place an object on the table:
 ```python
 box_record = lib.get_record("puzzle_box_composite")
 box_id = 1
-c.communicate({"$type": "add_object",
-               "name": box_record.name,
-               "url": box_record.get_url(),
-               "scale_factor": box_record.scale_factor,
-               "position": {"x": 0, "y": top_y, "z": 0},
-               "rotation": {"x": 0, "y": 0, "z": 0},
-               "category": box_record.wcategory,
-               "id": box_id})
+c.communicate(c.get_add_object(model_name=box_record.name,
+                               object_id=box_id,
+                               position={"x": 0, "y": top_y, "z": 0},
+                               rotation={"x": 0, "y": 0, "z": 0}))
 ```
 
 Then an **avatar** can be added to the scene. In this case, the avatar is just a camera. The avatar can then send an image. This image is a numpy array that can be either saved to disk or fed directly into a ML system:
@@ -240,7 +237,8 @@ resp = c.communicate([{"$type": "create_avatar",
                        "type": "A_Img_Caps_Kinematic",
                        "avatar_id": avatar_id},
                       {"$type": "teleport_avatar_to",
-                       "position": {"x": 1, "y": 2.5, "z": 2}},
+                       "position": {"x": 1, "y": 2.5, "z": 2},
+                       "avatar_id": avatar_id},
                       {"$type": "look_at",
                        "avatar_id": avatar_id,
                        "object_id": box_id},
@@ -262,6 +260,8 @@ for r in resp[:-1]:
         
         # Use this to save a .jpg
         TDWUtils.save_images(img, filename="test_img") 
+        
+        print(f"Image saved to: {Path('dist/test_img.jpg').resolve()}")
         
         # Use this to convert the image to a PIL image, which can be processed by a ML system at runtime.
         # The index is 0 because we know that there is only one pass ("_img").

@@ -20,6 +20,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `flex_fluid_source.py` | Create a Flex FluidSource, or "hose pipe", simulation of a fluid stream. |
 | `flex_soft_body.py` | Create a soft-body object with the NVIDIA Flex physics engine. |
 | `forcefield.py` | Simulate a "forcefield" that objects will bounce off of. |
+| `getting_started.py` | 1. Add a table and place an object on the table.<br>2. Add a camera and receive an image. |
 | `hdri.py` | Create an object and avatar and capture images of the scene, rotating the HDRI skybox by 15 degrees<br>for each image. |
 | `impact_sounds.py` | - Listen for collisions between objects.<br>- Generate an impact sound with py_impact upon impact and play the sound in the build. |
 | `keyboard.py` | Use WASD or arrow keys to move an avatar. |

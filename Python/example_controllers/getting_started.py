@@ -4,6 +4,11 @@ from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelLibrarian
 from tdw.output_data import OutputData, Bounds, Images
 
+"""
+1. Add a table and place an object on the table.
+2. Add a camera and receive an image.
+"""
+
 lib = ModelLibrarian("models_core.json")
 # Get the record for the table.
 table_record = lib.get_record("small_table_green_marble")

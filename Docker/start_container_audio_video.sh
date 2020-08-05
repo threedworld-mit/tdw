@@ -8,5 +8,5 @@ docker run -it \
   -e DISPLAY=$DISPLAY \
   --network host \
   --volume "${1}:/audio_data"  \
-  tdw:$VERSION\
+  alters/tdw:$VERSION\
   "sh record_audio_video.sh ${2} ${3}"

@@ -23,5 +23,5 @@ docker run -it \
   -e DISPLAY=$DISPLAY \
   --network host \
   vglrun -d :0 \
-  tdw:$VERSION \
+  alters/tdw:$VERSION \
   ./TDW/TDW.x86_64

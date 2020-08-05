@@ -31,6 +31,10 @@
 - Removed parameter `build_path` from `Validator` constructor and `--build_path` command line argument from `validator.py`.
 - Removed `--build_path` command line argument from `write_physics_quality.py`.
 
+### Example Controllers
+
+- Added `getting_started.py` This is the controller in the Getting Started guide.
+
 ### Documentation
 
 #### New Documentation
@@ -41,10 +45,11 @@
 
 #### Modified Documentation
 
-| Document    | Modification                                                 |
-| ----------- | ------------------------------------------------------------ |
-| `README.md` | Removed BinaryManager from `tdw` module table (it's not part of the `tdw` module). |
-| `tdw.md`    | Updated for v1.6 and expanded table(s) of contents.          |
+| Document             | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `README.md`          | Removed BinaryManager from `tdw` module table (it's not part of the `tdw` module). |
+| `tdw.md`             | Updated for v1.6 and expanded table(s) of contents.          |
+| `getting_started.md` | The initial test for new users is `getting_started.py` instead of `objects_and_images.py`.<br/>Added a link to `getting_started.py`.<br/>Edited the example controller code (`getting_started.py`) for clarity. |
 
 ## v1.6.3
 

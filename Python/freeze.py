@@ -1,4 +1,4 @@
-from subprocess import call, check_call
+from subprocess import call
 from distutils import dir_util
 from pathlib import Path
 from argparse import ArgumentParser
@@ -61,7 +61,7 @@ if __name__ == "__main__":
               "--add-binary='/System/Library/Frameworks/Tcl.framework/Tcl':'tcl'"])
         exe = "tdw_controller.app"
     elif p == "Windows":
-        q = check_call(["py", "-3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
+        call(["py", "-3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
         exe = "tdw_controller.exe"
     else:
         raise Exception(f"Platform not supported: {p}")

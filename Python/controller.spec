@@ -16,14 +16,11 @@ block_cipher = None
 
 import os
 
-
+datas = copy_metadata("tdw")
 if sys.platform == "darwin":
     files = [str(config_file.resolve())]
-    datas = []
     for f in files:
         datas.append((f, f.split("/")[0]))
-else:
-    datas = copy_metadata("tdw")
 
 hiddenimports = []
 

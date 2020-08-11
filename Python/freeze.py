@@ -56,7 +56,9 @@ if __name__ == "__main__":
         call(["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
         exe = "tdw_controller"
     elif p == "Darwin":
-        call(["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
+        call(["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path,
+              "--add-binary='/System/Library/Frameworks/Tk.framework/Tk':'tk'",
+              "--add-binary='/System/Library/Frameworks/Tcl.framework/Tcl':'tcl'"])
         exe = "tdw_controller.app"
     elif p == "Windows":
         q = check_call(["py", "-3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])

@@ -4,6 +4,7 @@ from pathlib import Path
 from argparse import ArgumentParser
 from platform import system
 from pkg_resources import get_distribution, DistributionNotFound
+from os import getcwd, chdir, mkdir
 
 
 if __name__ == "__main__":
@@ -56,8 +57,7 @@ if __name__ == "__main__":
         call(["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
         exe = "tdw_controller"
     elif p == "Darwin":
-        call(["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path,
-              "--exclude-module",  "tkinter"])
+        call(["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
         exe = "tdw_controller.app"
     elif p == "Windows":
         call(["py", "-3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
@@ -68,6 +68,17 @@ if __name__ == "__main__":
     exe_path = output_dir.joinpath(exe)
     assert exe_path.exists()
     print(f"Created: {exe_path.resolve()}")
+
+    # Add tkinter, for some reason. If you don't do this, many controllers won't work.
+    # Source: https://github.com/pyinstaller/pyinstaller/issues/3753
+    if p == "Darwin":
+        cwd = getcwd()
+        chdir(str(exe_path.joinpath("Contents/MacOS").resolve()))
+        mkdir("tcl")
+        mkdir("tk")
+        for d in ["tcl", "tk", "Tk"]:
+            call(["cp", "-R", f"/Library/Frameworks/Python.framework/Versions/3.7/lib/{d}*", f"{d}/"])
+        chdir(cwd)
 
     # Add a shortcut with args.
     if p == "Windows":

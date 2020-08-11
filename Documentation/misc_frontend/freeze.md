@@ -32,7 +32,7 @@ cd path/to/tdw/Python # Replace path/to with the actual path.
 # Windows
 py -3 freeze.py --controller CONTROLLER
 # OS X and Linux
-python3 freeze.py --controller CONTROLLER --args ARGS
+python3 freeze.py --controller CONTROLLER
 ```
 
 **To add arguments for your controller,** add the `--args` argument:

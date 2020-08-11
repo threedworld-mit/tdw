@@ -5,7 +5,7 @@ from PyInstaller.utils.hooks import copy_metadata
 
 
 # Read the config file.
-config_file = Path.home().joinpath("tdw_build/freeze.ini")
+config_file = Path.home().joinpath("tdw_build/tdw_controller/freeze.ini")
 assert config_file.exists()
 config = config_file.read_text(encoding="utf-8")
 controller = Path(config.split("controller=")[1])

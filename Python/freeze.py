@@ -1,12 +1,9 @@
-from subprocess import call, check_output
-import os
-from shutil import copyfile
+from subprocess import call, check_call
 from distutils import dir_util
 from pathlib import Path
 from argparse import ArgumentParser
 from platform import system
 from pkg_resources import get_distribution, DistributionNotFound
-from sys import argv
 
 
 if __name__ == "__main__":
@@ -19,7 +16,6 @@ if __name__ == "__main__":
     if output_dir.exists():
         dir_util.remove_tree(str(output_dir.resolve()))
     output_dir.mkdir(parents=True)
-
     parser = ArgumentParser()
     parser.add_argument("--args", type=str, help='Arguments for the controller when it launches. '
                                                  'These will be stored in a text file. '
@@ -29,15 +25,16 @@ if __name__ == "__main__":
                              "Example: example_controllers/minimal.py")
     args = parser.parse_args()
     if args.args is None:
-        arguments = '""'
+        arguments = ''
     else:
         arguments = args.args
+    arguments = arguments.replace('"', '')
     controller = Path(args.controller)
     if not controller.exists():
         raise Exception(f"Controller not found: {controller.resolve()}")
     # Write the config text.
     config_text = f"args={arguments}\ncontroller={str(controller.resolve())}"
-    root_dir.joinpath("freeze.ini").write_text(config_text, encoding="utf-8")
+    output_dir.joinpath("freeze.ini").write_text(config_text, encoding="utf-8")
     p = system()
 
     # Install PyInstaller.
@@ -50,75 +47,42 @@ if __name__ == "__main__":
             call(["pip3", "install", "pyinstaller"])
 
     # Create the executable.
+    dist_path = str(output_dir.resolve()).replace("\\", "/")
     if p == "Linux":
-        call(["python3.6", "-m", "PyInstaller", spec, "--onefile"])
+        call(["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
+        exe = "tdw_controller"
     elif p == "Darwin":
-        call(["python3.7", "-m", "PyInstaller", spec, "--onefile", "--windowed"])
+        call(["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
+        exe = "tdw_controller.app"
+    elif p == "Windows":
+        q = check_call(["py", "-3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
+        exe = "tdw_controller.exe"
     else:
-        call(["py", "-3", "-m", "PyInstaller", spec, "--onefile"])
-    exit()
+        raise Exception(f"Platform not supported: {p}")
 
-# Move the executable.
-if p == "windows":
-    azazel_exe = "AZAZEL.exe"
-elif p == "linux":
-    azazel_exe = "AZAZEL"
-else:
-    azazel_exe = "AZAZEL.app"
-exe_dest = output_dir.joinpath(azazel_exe)
-if exe_dest.exists():
-    os.remove(str(exe_dest.resolve()))
-os.rename("dist/" + azazel_exe, str(exe_dest.resolve()))
+    exe_path = output_dir.joinpath(exe)
+    assert exe_path.exists()
+    print(f"Created: {exe_path.resolve()}")
 
-if p != "osx":
-    # Create new directories.
-    for directory in ["data", "sound", "fonts"]:
-        assert os.path.exists(directory)
-        dest = str(output_dir.joinpath(directory).resolve())
-        # Remove existing directories.
-        if os.path.exists(dest):
-            rmtree(dest)
-        os.makedirs(dest)
+    # Add a shortcut with args.
+    if p == "Windows":
+        # Install winshell.
+        for m in ["pypiwin32", "winshell"]:
+            try:
+                get_distribution(m)
+            except DistributionNotFound:
+                call(["pip3", "install", m, "--user"])
+        import winshell
 
-    # Copy the data files.
-    files = ["sound/cool_nidre.ogg",
-             "sound/tokef_loop.mp3",
-             "sound/t_bleat1.ogg",
-             "sound/z_bleat1.ogg",
-             "data/controls.txt",
-             "data/leviticus.txt",
-             "data/splash.txt",
-             "data/wonders.json",
-             "data/icon.png"
-             ]
-    for font in Path("fonts").glob("azazel_*.png"):
-        files.append(f"fonts/{font.name}")
-
-    for file in files:
-        dest = str(output_dir.joinpath(file).resolve())
-        copyfile(file, dest)
-
-# Copy the README file.
-readme = "README.html"
-readme_dest = str(output_dir.joinpath(readme).resolve())
-if os.path.exists(readme_dest):
-    os.remove(readme_dest)
-copyfile(readme, readme_dest)
-
-# Go to the correct butler executable.
-os.chdir(f"itch/butler/{p}")
-
-release_path = Path(f"../../../dist/release/{args.version}")
-assert release_path.exists()
-
-for f in release_path.iterdir():
-    if f.is_dir():
-        if p == "linux":
-            exe = "./butler"
-        elif p == "windows":
-            exe = "./butler.exe"
-        else:
-            exe = "./butler"
-        if not args.dry_run:
-            call([exe, "push", str(f.resolve()), f"subalterngames/azazel:{f.stem}", "--userversion", str(args.version)])
-
+        link_path = str(output_dir.joinpath("tdw_controller.lnk").resolve())
+        with winshell.shortcut(link_path) as link:
+            link.path = str(exe_path.resolve())
+            link.description = "TDW controller executable."
+            # Add arguments.
+            if arguments != "":
+                link.arguments = arguments
+    elif p == "Linux":
+        sh = f"./{str(exe_path.resolve())} {arguments}"
+        sh_path = output_dir.joinpath("tdw_controller.sh")
+        sh_path.write_text(sh, encoding="utf-8")
+        call(["chmod", "+x", str(sh_path.resolve())])

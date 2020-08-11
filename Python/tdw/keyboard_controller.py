@@ -12,9 +12,13 @@ class KeyboardController(Controller):
     ```python
     from tdw.keyboard_controller import KeyboardController
 
+    def stop():
+        done = True
+
+    done = False
     c = KeyboardController()
-    c.listen("esc", {"$type": "terminate"})
-    while True:
+    c.listen(key="esc", commands={"$type": "terminate"}, function=stop)
+    while not done:
         c.step() # Receive data until the Esc key is pressed.
     ```
     """
@@ -60,15 +64,19 @@ class KeyboardController(Controller):
         self.frame_commands.clear()
         return resp
 
-    def listen(self, key: str, commands: Union[dict, List[dict]]) -> None:
+    def listen(self, key: str, commands: Union[dict, List[dict]] = None, function=None) -> None:
         """
         Listen for when a key is pressed and send commands.
 
         :param key: The keyboard key.
         :param commands: Commands to be sent when the key is pressed.
+        :param function: A function to be invoked when the key is pressed.
         """
 
-        keyboard.on_press_key(key, lambda: self._set_frame_commands(commands))
+        if commands is not None:
+            keyboard.on_press_key(key, lambda: self._set_frame_commands(commands))
+        if function is not None:
+            keyboard.on_press_key(key, function)
 
     def _set_frame_commands(self, commands: Union[dict, List[dict]]) -> None:
         """

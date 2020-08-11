@@ -85,7 +85,7 @@ if __name__ == "__main__":
             # Add arguments.
             if arguments != "":
                 link.arguments = arguments
-    elif p == "Linux":
+    else:
         sh = f"./{str(exe_path.resolve())} {arguments}"
         sh_path = output_dir.joinpath("tdw_controller.sh")
         sh_path.write_text(sh, encoding="utf-8")

@@ -30,6 +30,10 @@ if __name__ == "__main__":
         arguments = args.args
     arguments = arguments.replace('"', '')
     controller = Path(args.controller)
+    # Parse ~ as the home directory.
+    if str(controller.resolve())[0] == "~":
+        controller = Path.home().joinpath(str(controller.resolve())[2:])
+
     if not controller.exists():
         raise Exception(f"Controller not found: {controller.resolve()}")
     # Write the config text.

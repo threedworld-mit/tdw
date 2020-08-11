@@ -77,7 +77,7 @@ if __name__ == "__main__":
         mkdir("tcl")
         mkdir("tk")
         for d in ["tcl", "tk", "Tk"]:
-            call(["cp", "-R", f"/Library/Frameworks/Python.framework/Versions/3.7/lib/{d}*", f"{d}/"])
+            call(["cp", "-R", f"/Library/Frameworks/Python.framework/Versions/3.6/lib/{d}*", f"{d}/"])
         chdir(cwd)
 
     # Add a shortcut with args.

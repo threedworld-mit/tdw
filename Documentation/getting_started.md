@@ -56,6 +56,8 @@ c.communicate({"$type": "terminate"})
 | ------------------------ | -------------------------- | --------------------------------------- |
 | `py -3 my_controller.py` | `python3 my_controller.py` | `DISPLAY=:0.0 python3 my_controller.py` |
 
+Note for Linux users: You only need to include `DISPLAY` if the [launch_build parameter in the Controller constructor](python/controller.md) is set to False (by default, it is True).
+
 When you launch run this script, the `Controller` will download the **build**, the binary executable application that runs the simulation environment and then launch the build. The controller will also check to see if your version of TDW is the most recent. For more information on what happens when you start a controller, read [this](misc_frontend/releases.md#Updates).
 
 ##### 2b. On a remote Linux server:
@@ -76,8 +78,7 @@ NOTE: Not all of these commands will be applicable to every server. The last num
 ```python
 from tdw.controller import Controller
 
-display_number = 0 # Set this number to your virtual display.
-c = Controller(display=display_number)
+c = Controller()
 print("Everything is OK!")
 c.communicate({"$type": "terminate"})
 ```

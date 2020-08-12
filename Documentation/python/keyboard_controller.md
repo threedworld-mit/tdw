@@ -20,14 +20,16 @@ c = KeyboardController()
 c.start()
 
 # Quit.
-c.listen(key="esc", commands={"$type": "terminate"}, function=stop)
+c.listen(key="esc", commands=None, function=stop)
 
 # Equivalent to c.start()
 c.listen(key="r", commands={"$type": "load_scene", "scene_name": "ProcGenScene"}, function=None)
 
 while not done:
 # Receive data. Load the scene when r is pressed. Quit when Esc is pressed.
-c.communicate()
+c.communicate([])
+# Stop the build.
+c.communicate({"$type": "terminate"})
 ```
 
 ***

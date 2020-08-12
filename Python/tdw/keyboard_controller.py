@@ -21,14 +21,16 @@ class KeyboardController(Controller):
     c.start()
 
     # Quit.
-    c.listen(key="esc", commands={"$type": "terminate"}, function=stop)
+    c.listen(key="esc", commands=None, function=stop)
 
     # Equivalent to c.start()
     c.listen(key="r", commands={"$type": "load_scene", "scene_name": "ProcGenScene"}, function=None)
 
     while not done:
         # Receive data. Load the scene when r is pressed. Quit when Esc is pressed.
-        c.communicate()
+        c.communicate([])
+    # Stop the build.
+    c.communicate({"$type": "terminate"})
     ```
     """
 
@@ -52,6 +54,8 @@ class KeyboardController(Controller):
                           "framerate": framerate})
 
     def communicate(self, commands: Union[dict, List[dict]]) -> list:
+        if isinstance(commands, dict):
+            commands = [commands]
         # Add commands from key presses.
         commands.extend(self.on_key_commands[:])
         # Clear the on-key commands.
@@ -68,9 +72,9 @@ class KeyboardController(Controller):
         """
 
         if commands is not None:
-            keyboard.on_press_key(key, lambda: self._set_frame_commands(commands))
+            keyboard.on_press_key(key, lambda e: self._set_frame_commands(commands))
         if function is not None:
-            keyboard.on_press_key(key, function)
+            keyboard.on_press_key(key, lambda e: function())
 
     def _set_frame_commands(self, commands: Union[dict, List[dict]]) -> None:
         """

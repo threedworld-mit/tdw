@@ -11,6 +11,7 @@
 #### Backend
 
 - Added `controller.spec` (used for freezing controller code).
+- Adjusted how Flatbuffers imports numpy so that frozen controller code works.
 
 ### Documentation
 

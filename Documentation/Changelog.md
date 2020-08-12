@@ -4,6 +4,12 @@
 
 ## v1.6.5
 
+### `tdw` module
+
+#### `Controller`
+
+- Removed optional `display` parameter. It doesn't actually work; Linux users should instead launch the controller with a `DISPLAY` environment variable.
+
 ### Frontend
 
 - Added `freeze.py`. "Freeze" your controller into a portable binary executable.
@@ -20,6 +26,12 @@
 | Document    | Description                                                  |
 | ----------- | ------------------------------------------------------------ |
 | `freeze.md` | How to freeze your controller code into a binary executable. |
+
+#### Modified Documentation
+
+| Document             | Description                                                |
+| -------------------- | ---------------------------------------------------------- |
+| `getting_started.md` | Fixed instructions for how to start a controller in Linux. |
 
 ## v1.6.4
 

@@ -17,7 +17,7 @@ from . import packer
 from .compat import memoryview_type
 from .compat import import_numpy, NumpyRequiredForThisFeature
 
-np = import_numpy()
+import numpy as np
 
 def Get(packer_type, buf, head):
     """ Get decodes a value at buf[head] using `packer_type`. """

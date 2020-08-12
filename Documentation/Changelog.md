@@ -2,6 +2,25 @@
 
 # v1.6.x
 
+## v1.6.5
+
+### Frontend
+
+- Added `freeze.py`. "Freeze" your controller into a portable binary executable.
+
+#### Backend
+
+- Added `controller.spec` (used for freezing controller code).
+- Adjusted how Flatbuffers imports numpy so that frozen controller code works.
+
+### Documentation
+
+#### New Documentation
+
+| Document    | Description                                                  |
+| ----------- | ------------------------------------------------------------ |
+| `freeze.md` | How to freeze your controller code into a binary executable. |
+
 ## v1.6.4
 
 ### `tdw` module

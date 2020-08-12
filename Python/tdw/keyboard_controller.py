@@ -11,19 +11,28 @@ class KeyboardController(Controller):
 
     ```python
     from tdw.keyboard_controller import KeyboardController
+    from tdw.tdw_utils import TDWUtils
 
     def stop():
         done = True
 
     done = False
     c = KeyboardController()
+    c.start()
+
+    # Quit.
     c.listen(key="esc", commands={"$type": "terminate"}, function=stop)
+
+    # Equivalent to c.start()
+    c.listen(key="r", commands={"$type": "load_scene", "scene_name": "ProcGenScene"}, function=None)
+
     while not done:
-        c.step() # Receive data until the Esc key is pressed.
+        # Receive data. Load the scene when r is pressed. Quit when Esc is pressed.
+        c.communicate()
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, display: int = None,
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True,
                  framerate: int = 30):
         """
         Create the network socket and bind the socket to the port.
@@ -31,38 +40,23 @@ class KeyboardController(Controller):
         :param port: The port number.
         :param check_version: If true, the controller will check the version of the build and print the result.
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
-        :param display: If launch_build == True, launch the build using this display number (Linux-only).
         :param framerate: The build's target frames per second.
         """
 
-        # Commands to send on this frame.
-        self.frame_commands: List[dict] = []
+        # Commands that should be added due to key presses on this frame.
+        self.on_key_commands: List[dict] = []
 
-        super().__init__(port=port, check_version=check_version, launch_build=launch_build, display=display)
+        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
 
         self.communicate({"$type": "set_target_framerate",
                           "framerate": framerate})
 
-    def step(self, commands: Union[dict, List[dict]] = None) -> List[bytes]:
-        """
-        Step the simulation and listen for keyboard input.
-        Call this function after registering your listeners with `listen()`.
-
-        :param commands: Any additional commands to send to the build on this frame.
-
-        :return The response from the build.
-        """
-
-        if commands is not None:
-            if isinstance(commands, dict):
-                self.frame_commands.append(commands)
-            else:
-                self.frame_commands.extend(commands)
-        # Send the commands.
-        resp = self.communicate(self.frame_commands)
-        # Clear the list.
-        self.frame_commands.clear()
-        return resp
+    def communicate(self, commands: Union[dict, List[dict]]) -> list:
+        # Add commands from key presses.
+        commands.extend(self.on_key_commands[:])
+        # Clear the on-key commands.
+        self.on_key_commands.clear()
+        return super().communicate(commands)
 
     def listen(self, key: str, commands: Union[dict, List[dict]] = None, function=None) -> None:
         """
@@ -87,5 +81,5 @@ class KeyboardController(Controller):
 
         if isinstance(commands, dict):
             commands = [commands]
-        self.frame_commands = commands
+        self.on_key_commands = commands
 

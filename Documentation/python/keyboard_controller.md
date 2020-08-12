@@ -10,27 +10,36 @@ Usage:
 
 ```python
 from tdw.keyboard_controller import KeyboardController
+from tdw.tdw_utils import TDWUtils
 
 def stop():
 done = True
 
 done = False
 c = KeyboardController()
+c.start()
+
+# Quit.
 c.listen(key="esc", commands={"$type": "terminate"}, function=stop)
+
+# Equivalent to c.start()
+c.listen(key="r", commands={"$type": "load_scene", "scene_name": "ProcGenScene"}, function=None)
+
 while not done:
-c.step() # Receive data until the Esc key is pressed.
+# Receive data. Load the scene when r is pressed. Quit when Esc is pressed.
+c.communicate()
 ```
 
 ***
 
 #### `stop()`
 
-def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, display: int = None,
+def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True,
 framerate: int = 30):
 
 ***
 
-#### `__init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, display`
+#### `__init__(self, port: int = 1071, check_version: bool = True, launch_build`
 
 Create the network socket and bind the socket to the port.
 
@@ -39,21 +48,19 @@ Create the network socket and bind the socket to the port.
 | port | The port number. |
 | check_version | If true, the controller will check the version of the build and print the result. |
 | launch_build | If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor. |
-| display | If launch_build == True, launch the build using this display number (Linux-only). |
 | framerate | The build's target frames per second. |
 
 ***
 
-#### `step(self, commands: Union[dict, List[dict]] = None) -> List[bytes]`
+#### `communicate(self, commands: Union[dict, List[dict]]) -> list`
 
-Step the simulation and listen for keyboard input.
-Call this function after registering your listeners with `listen()`.
+Listen for when a key is pressed and send commands.
 
 | Parameter | Description |
 | --- | --- |
-| commands | Any additional commands to send to the build on this frame. |
-
-_Returns:_ The response from the build.
+| key | The keyboard key. |
+| commands | Commands to be sent when the key is pressed. |
+| function | A function to be invoked when the key is pressed. |
 
 ***
 

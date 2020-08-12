@@ -42,24 +42,18 @@ if __name__ == "__main__":
 
     # Create the executable.
     dist_path = str(output_dir.resolve()).replace("\\", "/")
-    freeze_call = list()
     spec = "controller.spec"
     if p == "Linux":
-        freeze_call = ["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path]
+        call(["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
         exe = "tdw_controller"
     elif p == "Darwin":
-        freeze_call = ["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path]
+        call(["python3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
         exe = "tdw_controller.app"
     elif p == "Windows":
-        freeze_call = ["py", "-3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path]
+        call(["py", "-3", "-m", "PyInstaller", spec, "--onefile", "--distpath", dist_path])
         exe = "tdw_controller.exe"
     else:
         raise Exception(f"Platform not supported: {p}")
-
-    # tkinter causes problems in OS X and isn't used by TDW. Exclude it.
-    freeze_call.extend(["--exclude-module='FixTk'", "--exclude-module='tcl'", "--exclude-module='tk'",
-                        "--exclude-module='_tkinter'", "--exclude-module='tkinter'", "--exclude-module='Tkinter'"])
-    call(freeze_call)
 
     exe_path = output_dir.joinpath(exe)
     assert exe_path.exists()

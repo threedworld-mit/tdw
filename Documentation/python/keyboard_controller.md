@@ -13,7 +13,7 @@ from tdw.keyboard_controller import KeyboardController
 from tdw.tdw_utils import TDWUtils
 
 def stop():
-done = True
+    done = True
 
 done = False
 c = KeyboardController()
@@ -26,8 +26,8 @@ c.listen(key="esc", commands=None, function=stop)
 c.listen(key="r", commands={"$type": "load_scene", "scene_name": "ProcGenScene"}, function=None)
 
 while not done:
-# Receive data. Load the scene when r is pressed. Quit when Esc is pressed.
-c.communicate([])
+    # Receive data. Load the scene when r is pressed. Quit when Esc is pressed.
+    c.communicate([])
 # Stop the build.
 c.communicate({"$type": "terminate"})
 ```

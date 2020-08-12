@@ -327,20 +327,20 @@ c.start()
 
 # Request the required output data (do this at the start of the simulation, not per frame).
 resp = c.communicate([{"$type": "send_collisions",
-"enter": True,
-"exit": False,
-"stay": True,
-"collision_types": ["obj", "env"]},
-{"$type": "send_rigidbodies",
-"frequency": "always"}])
+                       "enter": True,
+                       "exit": False,
+                       "stay": True,
+                       "collision_types": ["obj", "env"]},
+                      {"$type": "send_rigidbodies",
+                       "frequency": "always"}])
 
 # Parse the output data and get collision type data.
 ctof = CollisionTypesOnFrame(object_id, resp)
 
 # Read the dictionaries of collidee IDs and collision types.
 for collidee_id in ctof.collisions:
-collision_type = ctof.collisions[collidee_id]
-print(collidee_id, collision_type)
+    collision_type = ctof.collisions[collidee_id]
+    print(collidee_id, collision_type)
 
 # Check the environment collision.
 print(ctof.env_collision_type)

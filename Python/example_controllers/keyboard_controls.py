@@ -8,8 +8,8 @@ Use WASD or arrow keys to move an avatar.
 
 
 class KeyboardControls(KeyboardController):
-    def __init__(self, port: int = 1071, framerate: int = 30):
-        super().__init__(port=port, framerate=framerate)
+    def __init__(self, port: int = 1071):
+        super().__init__(port=port)
         self.done = False
 
     def run(self, force=80, torque=100):

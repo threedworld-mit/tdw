@@ -34,24 +34,19 @@ class KeyboardController(Controller):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True,
-                 framerate: int = 30):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """
         Create the network socket and bind the socket to the port.
 
         :param port: The port number.
         :param check_version: If true, the controller will check the version of the build and print the result.
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
-        :param framerate: The build's target frames per second.
         """
 
         # Commands that should be added due to key presses on this frame.
         self.on_key_commands: List[dict] = []
 
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-
-        self.communicate({"$type": "set_target_framerate",
-                          "framerate": framerate})
 
     def communicate(self, commands: Union[dict, List[dict]]) -> list:
         if isinstance(commands, dict):

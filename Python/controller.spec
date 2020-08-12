@@ -3,7 +3,6 @@ import sys
 from pathlib import Path
 from PyInstaller.utils.hooks import copy_metadata
 import os
-from PyInstaller.compat import modname_tkinter
 
 # Read the config file.
 config_file = Path.home().joinpath("tdw_build/tdw_controller/freeze.ini")
@@ -43,7 +42,7 @@ exe = EXE(pyz,
           a.datas,
           [],
           name='tdw_controller',
-          debug=True,
+          debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,

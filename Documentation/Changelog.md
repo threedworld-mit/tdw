@@ -6,26 +6,38 @@
 
 ### `tdw` module
 
+- Added required modules: `pyinstaller` and `keyboard`
+- Added `tdw.keyboard_controller` A controller that can listen to keyboard input.
+
 #### `Controller`
 
 - Removed optional `display` parameter. It doesn't actually work; Linux users should instead launch the controller with a `DISPLAY` environment variable.
 
-### Frontend
-
-- Added `freeze.py`. "Freeze" your controller into a portable binary executable.
-
 #### Backend
 
-- Added `controller.spec` (used for freezing controller code).
 - Adjusted how Flatbuffers imports numpy so that frozen controller code works.
+
+### Example Controllers
+
+- Renamed `keyboard.py` to `keyboard_controller.py` to avoid a name clash with the `keyboard` module. Rewrote the code to use the `KeyboardController` class.
+
+### Build
+
+- Fixed: Segmentation colors are often non-unique.
+
+### Misc.
+
+- Added `freeze.py`. "Freeze" your controller into a portable binary executable.
+  - Added `controller.spec` (used for freezing controller code).
 
 ### Documentation
 
 #### New Documentation
 
-| Document    | Description                                                  |
-| ----------- | ------------------------------------------------------------ |
-| `freeze.md` | How to freeze your controller code into a binary executable. |
+| Document                 | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `freeze.md`              | How to freeze your controller code into a binary executable. |
+| `keyboard_controller.md` | API for KeyboardController.                                  |
 
 #### Modified Documentation
 

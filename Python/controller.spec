@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 from PyInstaller.utils.hooks import copy_metadata
 import os
+from PyInstaller.compat import modname_tkinter
 
 # Read the config file.
 config_file = Path.home().joinpath("tdw_build/tdw_controller/freeze.ini")
@@ -22,20 +23,15 @@ for root, dirs, files in os.walk("tdw"):
     for file in files:
         if ".py" in file:
             continue
-        datas.append((root, file))
-
-hiddenimports = []
+        src = str(Path(root).joinpath(file).resolve())
+        datas.append((src, root))
 
 a = Analysis([controller],
-             pathex=[str(Path(controller).parent.resolve())],
              binaries=[],
              datas=datas,
-             hiddenimports=hiddenimports,
+             hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
-             excludes=[],
-             win_no_prefer_redirects=False,
-             win_private_assemblies=False,
              cipher=block_cipher,
              noarchive=False)
 pyz = PYZ(a.pure, a.zipped_data,
@@ -47,7 +43,7 @@ exe = EXE(pyz,
           a.datas,
           [],
           name='tdw_controller',
-          debug=False,
+          debug=True,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,

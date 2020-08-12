@@ -39,7 +39,7 @@ python3 freeze.py --controller CONTROLLER
 
 `freeze.py` will create an executable located in `~/tdw_build/tdw_controller`, where `~` is your home directory. **You can run it like an other application** by double-clicking it or running it in the terminal. Likewise, you can supply arguments to the executable like you can to a Python controller.
 
-On Linux, you need to supply a `DISPLAY` environment to run the controller: 
+On Linux, you need to supply a `DISPLAY` environment to run the controller if [the launch_build parameter in the Controller constructor is True](../python/controller.md):
 
 ```bash
 DISPLAY=:0.0 ./my_controller

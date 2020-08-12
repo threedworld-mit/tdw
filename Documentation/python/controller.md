@@ -16,7 +16,7 @@ c.start()
 
 ***
 
-#### `__init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, display: int = None)`
+#### `__init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True)`
 
 Create the network socket and bind the socket to the port.
 
@@ -25,7 +25,6 @@ Create the network socket and bind the socket to the port.
 | port | The port number. |
 | check_version | If true, the controller will check the version of the build and print the result. |
 | launch_build | If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor. |
-| display | If launch_build == True, launch the build using this display number (Linux-only). |
 
 ***
 
@@ -191,15 +190,11 @@ _Returns:_ The frame as an integer.
 
 ***
 
-#### `launch_build(display: int = None) -> None`
+#### `launch_build() -> None`
 
 _This is a static function._
 
 Launch the build. If a build doesn't exist at the expected location, download one to that location.
-
-| Parameter | Description |
-| --- | --- |
-| display | If launch_build == True, launch the build using this display number (Linux-only). |
 
 ***
 

@@ -35,26 +35,9 @@ py -3 freeze.py --controller CONTROLLER
 python3 freeze.py --controller CONTROLLER
 ```
 
-**To add arguments for your controller,** add the `--args` argument:
-
-```bash
-cd path/to/tdw/Python # Replace path/to with the actual path.
-
-# Replace CONTROLLER with the path to your controller.
-# Replace ARGS with arguments for the controller. Encapsulate these with double quotes. For example: "--num 10 --size 3"
-
-# Windows
-py -3 freeze.py --controller CONTROLLER --args ARGS
-
-# OS X and Linux
-python3 freeze.py --controller CONTROLLER --args ARGS
-```
-
 ## Result
 
-- `freeze.py` will create an executable located in `~/tdw_build/tdw_controller`, where `~` is your home directory. **You can run it like an other application** by double-clicking it or running it in the terminal.
-- `~/tdw_build/tdw_controller/freeze.ini` is a config file that contains the original path to the controller and the arguments you supplied with `--args` (see above).
-- `freeze.py` will add a shortcut that includes the arguments you supplied with `--args` (see above).
+`freeze.py` will create an executable located in `~/tdw_build/tdw_controller`, where `~` is your home directory. **You can run it like an other application** by double-clicking it or running it in the terminal. Likewise, you can supply arguments to the executable like you can to a Python controller.
 
 ## Limitations
 

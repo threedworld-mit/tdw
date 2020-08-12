@@ -2,7 +2,7 @@
 import sys
 from pathlib import Path
 from PyInstaller.utils.hooks import copy_metadata
-
+import os
 
 # Read the config file.
 config_file = Path.home().joinpath("tdw_build/tdw_controller/freeze.ini")
@@ -14,14 +14,20 @@ controller = str(controller.resolve())
 
 block_cipher = None
 
-import os
-
 datas = copy_metadata("tdw")
+# Add TDW data files.
+for root, dirs, files in os.walk("tdw"):
+    if "tdw.egg-info" in root or "__pycache__" in root:
+        continue
+    for file in files:
+        if ".py" in file:
+            continue
+        datas.append((root, file))
 
 hiddenimports = []
 
 a = Analysis([controller],
-             pathex=[os.getcwd()],
+             pathex=[str(Path(controller).parent.resolve())],
              binaries=[],
              datas=datas,
              hiddenimports=hiddenimports,

@@ -18,19 +18,18 @@ class DebugController(Controller):
     ```
     """
 
-    def __init__(self, port: int = 1071, launch_build: bool = True, display: int = None):
+    def __init__(self, port: int = 1071, launch_build: bool = True):
         """
         Create the network socket and bind the socket to the port.
 
         :param port: The port number.
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
-        :param display: If launch_build == True, launch the build using this display number (Linux-only).
         """
 
         # This will be used to record each list of commands sent to the build.
         self.record = []
 
-        super().__init__(port=port, launch_build=launch_build, display=display)
+        super().__init__(port=port, launch_build=launch_build)
 
     def communicate(self, commands: Union[dict, List[dict]]) -> list:
         """

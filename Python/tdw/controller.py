@@ -25,14 +25,13 @@ class Controller(object):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, display: int = None):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """
         Create the network socket and bind the socket to the port.
 
         :param port: The port number.
         :param check_version: If true, the controller will check the version of the build and print the result.
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
-        :param display: If launch_build == True, launch the build using this display number (Linux-only).
         """
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
@@ -42,7 +41,7 @@ class Controller(object):
 
         # Launch the build.
         if launch_build:
-            Controller.launch_build(display)
+            Controller.launch_build()
 
         context = zmq.Context()
 
@@ -281,11 +280,9 @@ class Controller(object):
         return int.from_bytes(frame, byteorder='big')
 
     @staticmethod
-    def launch_build(display: int = None) -> None:
+    def launch_build() -> None:
         """
         Launch the build. If a build doesn't exist at the expected location, download one to that location.
-
-        :param display: If launch_build == True, launch the build using this display number (Linux-only).
         """
 
         # Download the build.
@@ -298,11 +295,7 @@ class Controller(object):
             success = True
         # Launch the build.
         if success:
-            # Launch on the correct display.
-            if system() == "Linux" and display is not None:
-                Popen([f"DISPLAY=:{display}.0", str(Build.BUILD_PATH.resolve())])
-            else:
-                Popen(str(Build.BUILD_PATH.resolve()))
+            Popen(str(Build.BUILD_PATH.resolve()))
 
     def _check_build_version(self, version: str = __version__, build_version: str = None) -> None:
         """

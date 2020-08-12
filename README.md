@@ -99,6 +99,7 @@
 | --- | --- |
 | [C# code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md) | Access to C# backend source code |
 | [Releases](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/releases.md) | Release versioning in TDW.           |
+| [Freezing your code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/freeze.md) | "Freeze" your controller into a compiled executable. |
 
 # Remote Server
 

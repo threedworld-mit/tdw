@@ -44,6 +44,7 @@
 | Document             | Description                                                |
 | -------------------- | ---------------------------------------------------------- |
 | `getting_started.md` | Fixed instructions for how to start a controller in Linux. |
+| `docker.md`          | Fixed some broken links.                                   |
 
 ## v1.6.4
 

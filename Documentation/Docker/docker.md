@@ -60,7 +60,7 @@ All Docker-related bash scripts are in [`tdw/Docker`](https://github.com/threedw
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [`start_container.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container.sh) |                                                              | Start the container and run TDW.                             |
 | [`start_container_xpra.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container_xpra.sh) |                                                              | Start the container with [Xpra](../misc_frontend/xpra.md) and run TDW. |
-| [`start_container_audio_video.sh VOLUME IPADDRESS PORT`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container_audio.sh) | `VOLUME` Save audio to this volume<br>`IPADDRESS` The address of the build.<br>`PORT` The port of the build. | [Record audio and video](../misc_frontend/video.md) from TDW. |
+| [`start_container_audio_video.sh VOLUME IPADDRESS PORT`](https://github.com/threedworld-mit/tdw/tree/master/Docker/start_container_audio_video.sh) | `VOLUME` Save audio to this volume<br>`IPADDRESS` The address of the build.<br>`PORT` The port of the build. | [Record audio and video](../misc_frontend/video.md) from TDW. |
 
 ### Other scripts
 
@@ -69,7 +69,7 @@ All Docker-related bash scripts are in [`tdw/Docker`](https://github.com/threedw
 | [`pull.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/pull.sh) |                                                              | Try to download a Docker container from DockerHub with a tag that matches the version of TDW on this machine. |
 | [`docker_tag.sh`](https://github.com/threedworld-mit/tdw/tree/master/Docker/docker_tag.sh) |                                                              | Get the tag of the TDW Docker image.                         |
 | [`tdw_version.py`](https://github.com/threedworld-mit/tdw/tree/master/Docker/tdw_version.py) |                                                              | Get the version of TDW on this machine.                      |
-| [`record_audio_video.sh ADDRESS PORT WIDTH HEIGHT`](https://github.com/threedworld-mit/tdw/tree/master/Docker/record_audio.sh) | `ADDRESS` The network address of the build.<br>`PORT` The network port of the build<br> `WIDTH` The desired width of the video in pixels.<br>`HEIGHT` The desired height of the video in pixels. | Launch TDW and begin recording audio.                        |
+| [`record_audio_video.sh ADDRESS PORT WIDTH HEIGHT`](https://github.com/threedworld-mit/tdw/tree/master/Docker/record_audio_video.sh) | `ADDRESS` The network address of the build.<br>`PORT` The network port of the build<br> `WIDTH` The desired width of the video in pixels.<br>`HEIGHT` The desired height of the video in pixels. | Launch TDW and begin recording audio.                        |
 
 
 ## Docker within Docker

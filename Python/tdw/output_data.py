@@ -323,6 +323,12 @@ class AvatarStickyMitten(AvatarNonKinematic):
     def get_held_right(self) -> np.array:
         return self.data.HeldRightAsNumpy()
 
+    def get_angles_left(self) -> np.array:
+        return self.data.AnglesLeftAsNumpy()
+
+    def get_angles_right(self) -> np.array:
+        return self.data.AnglesRightAsNumpy()
+
 
 class SegmentationColors(OutputData):
     def get_data(self) -> Segs.SegmentationColors:

@@ -299,7 +299,7 @@ class AssetBundleCreator:
 
     def obj_to_wrl(self, model_path: Path, vhacd_resolution: int = 8000000) -> Path:
         """
-        Convert a .obj file to a .wrl file with testVHACD.exe
+        Convert a .obj file to a .wrl file with testVHACD
 
         :param model_path: The path to the model.
         :param vhacd_resolution: The V-HACD voxel resolution. A higher number will create more accurate physics colliders, but it will take more time to initially create the asset bundle.
@@ -319,7 +319,11 @@ class AssetBundleCreator:
             print("Running V-HACD on a .obj file (this might take awhile).")
 
         # Run V-HACD.
-        vhacd = pkg_resources.resource_filename(__name__, f"{self.binary_path}/vhacd/testVHACD.exe")
+        vhacd_path = f"{self.binary_path}/vhacd/testVHACD"
+        if platform.system() == "Windows":
+            vhacd_path += ".exe"
+        vhacd = pkg_resources.resource_filename(__name__, vhacd_path)
+        
         assert Path(vhacd).exists(), vhacd
         call([vhacd,
               "--input", obj_path,

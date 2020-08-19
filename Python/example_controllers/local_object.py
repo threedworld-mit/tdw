@@ -27,17 +27,17 @@ class LocalObject:
                 # Launch the controller.
                 c = Controller()
                 c.start()
-                c.communicate({"$type": "create_empty_environment"})
-
-                # Add the local object.
-                c.communicate({"$type": "add_object",
-                               "name": "cube",
-                               "url": url,
-                               "scale_factor": 1,
-                               "id": c.get_unique_id()})
-
+                # Create the environment.
+                # Add the object.
+                commands = [{"$type": "create_empty_environment"},
+                            {"$type": "add_object",
+                             "name": "cube",
+                             "url": url,
+                             "scale_factor": 1,
+                             "id": c.get_unique_id()}]
                 # Create the avatar.
-                c.communicate(TDWUtils.create_avatar(position={"x": 0, "y": 0, "z": -3.6}))
+                commands.extend(TDWUtils.create_avatar(position={"x": 0, "y": 0, "z": -3.6}))
+                c.communicate(commands)
                 return
 
 

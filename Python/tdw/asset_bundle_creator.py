@@ -42,12 +42,26 @@ class AssetBundleCreator:
 
         # Get the binaries path and verify that AssetBundleCreator will work on this platform.
         system = platform.system()
+        self.binaries: Dict[str, str] = dict()
         if system == "Windows":
-            self.binary_path = "binaries/Windows"
+            binary_path = "binaries/Windows"
         elif system == "Darwin":
-            self.binary_path = "binaries/Darwin"
+            binary_path = "binaries/Darwin"
         else:
             raise Exception("AssetBundleCreator only works in Windows and OS X.")
+
+        # Cache the binaries.
+        self.binaries["assimp"] = f"{binary_path}/assimp/assimp"
+        self.binaries["meshconv"] = f"{binary_path}/meshconv/meshconv"
+        self.binaries["vhacd"] = f"{binary_path}/vhacd/testVHACD"
+
+        for binary in self.binaries:
+            # Add the .exe suffix for Windows.
+            if system == "Windows":
+                self.binaries[binary] += ".exe"
+            # Run chmod +x on everything.
+            else:
+                call(["chmod", "+x", pkg_resources.resource_filename(__name__, self.binaries[binary])])
 
         self.quiet = quiet
 
@@ -257,7 +271,7 @@ class AssetBundleCreator:
 
     def fbx_to_obj(self, model_path: Path) -> Tuple[Path, bool]:
         """
-        Convert a .fbx file to a .obj file with assimp.exe
+        Convert a .fbx file to a .obj file with assimp
 
         :param model_path: The path to the model.
 
@@ -276,10 +290,7 @@ class AssetBundleCreator:
         # Create the .obj file.
         obj_filename = model_path.stem + ".obj"
 
-        assimp_path = f"{self.binary_path}/assimp/assimp"
-        if platform.system() == "Windows":
-            assimp_path += ".exe"
-        assimp = pkg_resources.resource_filename(__name__, assimp_path)
+        assimp = pkg_resources.resource_filename(__name__, self.binaries["assimp"])
         assert Path(assimp).exists(), assimp
 
         # Run assimp to create the .obj file.
@@ -322,10 +333,7 @@ class AssetBundleCreator:
             print("Running V-HACD on a .obj file (this might take awhile).")
 
         # Run V-HACD.
-        vhacd_path = f"{self.binary_path}/vhacd/testVHACD"
-        if platform.system() == "Windows":
-            vhacd_path += ".exe"
-        vhacd = pkg_resources.resource_filename(__name__, vhacd_path)
+        vhacd = pkg_resources.resource_filename(__name__, self.binaries["vhacd"])
 
         assert Path(vhacd).exists(), vhacd
         call([vhacd,
@@ -373,10 +381,7 @@ class AssetBundleCreator:
             print("Converting .wrl to .obj")
 
         # Run meshconv.
-        meshconv_path = f"{self.binary_path}/meshconv/meshconv"
-        if platform.system() == "Windows":
-            meshconv_path += ".exe"
-        meshconv = pkg_resources.resource_filename(__name__, meshconv_path)
+        meshconv = pkg_resources.resource_filename(__name__, self.binaries["meshconv"])
         assert Path(meshconv).exists(), meshconv
         call([meshconv,
               str(wrl_filename.resolve()),
@@ -489,16 +494,19 @@ class AssetBundleCreator:
 
         return prefab_path, report
 
-    def prefab_to_asset_bundle(self, prefab_path: Path, model_name: str, platforms: List[str] = ["windows", "osx", "linux"]) -> List[Path]:
+    def prefab_to_asset_bundle(self, prefab_path: Path, model_name: str, platforms: List[str] = None) -> List[Path]:
         """
         Given a .prefab, create asset bundles and write them to disk.
 
         :param prefab_path: The path to the .prefab file.
         :param model_name: The name of the model, minus its file extension.
-        :param platforms: The list of platforms to build asset bundles for. Valid options are "windows", "osx", "linux"
+        :param platforms: Platforms to build asset bundles for. Options: "windows", "osx", "linux". If None, build all.
 
         :return The paths to the asset bundles.
         """
+
+        if platforms is None:
+            platforms = ["windows", "osx", "linux"]
 
         assert prefab_path.exists(), f"Missing prefab: {prefab_path.resolve()}"
 

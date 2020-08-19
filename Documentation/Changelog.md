@@ -2,6 +2,16 @@
 
 # v1.6.x
 
+## v1.6.6
+
+### Documentation
+
+#### Modified Documentation
+
+| Document       | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `debug_tdw.md` | Added a section on common problems when installing TDW. Reorganized the list of player log messages. |
+
 ## v1.6.5
 
 ### `tdw` module

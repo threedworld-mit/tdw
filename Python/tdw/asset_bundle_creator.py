@@ -323,7 +323,7 @@ class AssetBundleCreator:
         if platform.system() == "Windows":
             vhacd_path += ".exe"
         vhacd = pkg_resources.resource_filename(__name__, vhacd_path)
-        
+
         assert Path(vhacd).exists(), vhacd
         call([vhacd,
               "--input", obj_path,
@@ -370,7 +370,10 @@ class AssetBundleCreator:
             print("Converting .wrl to .obj")
 
         # Run meshconv.
-        meshconv = pkg_resources.resource_filename(__name__, f"{self.binary_path}/meshconv/meshconv.exe")
+        meshconv_path = f"{self.binary_path}/meshconv/meshconv"
+        if platform.system() == "Windows":
+            meshconv_path += ".exe"
+        meshconv = pkg_resources.resource_filename(__name__, meshconv_path)
         assert Path(meshconv).exists(), meshconv
         call([meshconv,
               str(wrl_filename.resolve()),

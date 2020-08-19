@@ -154,6 +154,7 @@
 | --- | --- |
 | [`focus_on_object`](#focus_on_object) | Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera.  |
 | [`look_at`](#look_at) | Look at an object (rotate the image sensor to center the object in the frame). |
+| [`look_at_avatar`](#look_at_avatar) | Look at another avatar (rotate the image sensor to center the avatar in the frame). |
 | [`look_at_position`](#look_at_position) | Look at a worldspace position (rotate the image sensor to center the position in the frame). |
 | [`reset_sensor_container_rotation`](#reset_sensor_container_rotation) | Reset the rotation of the avatar's sensor container. |
 | [`rotate_sensor_container_by`](#rotate_sensor_container_by) | Rotate the sensor container of the avatar by a given angle along a given axis. |
@@ -2104,6 +2105,28 @@ Look at an object (rotate the image sensor to center the object in the frame).
 | --- | --- | --- | --- |
 | `"object_id"` | int | The ID of the object we want the avatar to look at. | |
 | `"use_centroid"` | bool | If true, look at the centroid of the object. If false, look at the position of the object (y=0). | |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`look_at_avatar`**
+
+Look at another avatar (rotate the image sensor to center the avatar in the frame).
+
+
+```python
+{"$type": "look_at_avatar", "target_avatar_id": "string", "use_centroid": True}
+```
+
+```python
+{"$type": "look_at_avatar", "target_avatar_id": "string", "use_centroid": True, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"target_avatar_id"` | string | The ID of the avatar we want this avatar to look at. | |
+| `"use_centroid"` | bool | If true, look at the centroid of the avatar. If false, look at the position of the avatar (y=0). | |
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 

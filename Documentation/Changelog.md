@@ -2,6 +2,34 @@
 
 # v1.6.x
 
+## v1.6.6
+
+### Command API
+
+#### New Commands
+
+| Command                               | Description                                       |
+| ------------------------------------- | ------------------------------------------------------------ |
+| `look_at_avatar`                       | Look at another avatar. |
+
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: Controller tries to launch a build, then check the version, and then delete the build if the version is out of date (all builds now include a `version.txt` file that the controller will read before trying to launch a build).
+
+### Build
+
+- Fixed: The `scale_object` command doesn't update the object's `Bounds` data.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document       | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `debug_tdw.md` | Added a section on common problems when installing TDW. Reorganized the list of player log messages. |
+
 ## v1.6.5
 
 ### `tdw` module

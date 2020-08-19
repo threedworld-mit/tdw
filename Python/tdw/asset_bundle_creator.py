@@ -40,8 +40,14 @@ class AssetBundleCreator:
         :param quiet: If true, don't print any messages to console.
         """
 
-        if platform.system() != "Windows":
-            raise Exception("AssetBundleCreator only works in Windows.")
+        # Get the binaries path and verify that AssetBundleCreator will work on this platform.
+        system = platform.system()
+        if system == "Windows":
+            self.binary_path = "binaries/Windows"
+        elif system == "Darwin":
+            self.binary_path = "binaries/Darwin"
+        else:
+            raise Exception("AssetBundleCreator only works in Windows and OS X.")
 
         self.quiet = quiet
 
@@ -161,6 +167,7 @@ class AssetBundleCreator:
             if not editor_path.exists():
                 editor_path = Path('C:/Program Files/Unity Hub/')
         else:
+            # TODO get the OS X location.
             raise Exception(f"Platform not supported: {platform.system()}")
 
         assert editor_path.exists(), f"Unity Hub not found."
@@ -178,6 +185,7 @@ class AssetBundleCreator:
         ds = sorted(ds, key=lambda version: int(re.search(re_pattern, str(version.resolve())).group(1), 16))
         editor_version = ds[-1]
 
+        # TODO get OS X executable.
         editor_path = editor_path.joinpath(editor_version).joinpath("Editor/Unity.exe")
         assert editor_path.exists(), f"Unity Editor {editor_version} not found."
 
@@ -260,7 +268,7 @@ class AssetBundleCreator:
         # Create the .obj file.
         obj_filename = model_path.stem + ".obj"
 
-        assimp = pkg_resources.resource_filename(__name__, "exe/assimp/assimp.exe")
+        assimp = pkg_resources.resource_filename(__name__, f"{self.binary_path}/assimp/assimp.exe")
         assert Path(assimp).exists(), assimp
 
         # Run assimp to create the .obj file.
@@ -303,7 +311,7 @@ class AssetBundleCreator:
             print("Running V-HACD on a .obj file (this might take awhile).")
 
         # Run V-HACD.
-        vhacd = pkg_resources.resource_filename(__name__, "exe/vhacd/testVHACD.exe")
+        vhacd = pkg_resources.resource_filename(__name__, f"{self.binary_path}/vhacd/testVHACD.exe")
         assert Path(vhacd).exists(), vhacd
         call([vhacd,
               "--input", obj_path,
@@ -350,7 +358,7 @@ class AssetBundleCreator:
             print("Converting .wrl to .obj")
 
         # Run meshconv.
-        meshconv = pkg_resources.resource_filename(__name__, "exe/meshconv/meshconv.exe")
+        meshconv = pkg_resources.resource_filename(__name__, f"{self.binary_path}/meshconv/meshconv.exe")
         assert Path(meshconv).exists(), meshconv
         call([meshconv,
               str(wrl_filename.resolve()),

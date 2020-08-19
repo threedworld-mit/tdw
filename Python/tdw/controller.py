@@ -290,7 +290,6 @@ class Controller(object):
         if not Build.BUILD_PATH.exists():
             print(f"Couldn't find build at {Build.BUILD_PATH}\nDownloading now...")
             need_to_download = True
-
         else:
             # Check versions.
             build_version_path = Build.BUILD_ROOT_DIR.joinpath("TDW/version.txt")

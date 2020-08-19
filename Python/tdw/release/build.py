@@ -16,6 +16,7 @@ class Build:
 
     BUILD_ROOT_DIR = Path.home().joinpath(f"tdw_build")
     BUILD_PATH = BUILD_ROOT_DIR.joinpath(f"TDW/TDW{SYSTEM_TO_EXECUTABLE[system()]}")
+    BUILD_VERSION = BUILD_ROOT_DIR.joinpath("TDW/version.txt").read_text().split()
     if system() == "Darwin":
         BUILD_PATH = BUILD_PATH.joinpath("Contents/MacOS/TDW")
 

@@ -4,7 +4,7 @@
 
 #### `AttributeError: module 'enum' has no attribute 'IntFlag'`
 
-If you see this error after [installing the `tdw` module](../getting_started.md#Installation), try running `pip3 uninstall enum34`.
+If you see this error after [installing the `tdw` module](../getting_started.md#Installation), try running `pip3 uninstall enum34`. Then, try installing the `tdw` module again.
 
 #### `ERROR: Could not install packages due to an EnvironmentError: [WinError 5] Access is denied: 'c:\program files\python37\Lib\site-packages\tdw' Consider using the `--user` option or check the permissions.`
 

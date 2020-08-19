@@ -276,7 +276,10 @@ class AssetBundleCreator:
         # Create the .obj file.
         obj_filename = model_path.stem + ".obj"
 
-        assimp = pkg_resources.resource_filename(__name__, f"{self.binary_path}/assimp/assimp.exe")
+        assimp_path = f"{self.binary_path}/assimp/assimp"
+        if platform.system() == "Windows":
+            assimp_path += ".exe"
+        assimp = pkg_resources.resource_filename(__name__, assimp_path)
         assert Path(assimp).exists(), assimp
 
         # Run assimp to create the .obj file.

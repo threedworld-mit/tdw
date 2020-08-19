@@ -4,6 +4,14 @@
 
 ## v1.6.6
 
+### Command API
+
+#### New Commands
+
+| Command                               | Description                                       |
+| ------------------------------------- | ------------------------------------------------------------ |
+| `look_at_avatar`                       | Look at another avatar. |
+
 ### `tdw` module
 
 #### `Controller`

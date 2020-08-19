@@ -193,6 +193,8 @@ class AssetBundleCreator:
             editor_path = editor_path.joinpath("Editor/Unity.exe")
         elif system == "Darwin":
             editor_path = editor_path.joinpath("Unity.app/Contents/MacOS/Unity")
+        else:
+            raise Exception(f"Platform not supported: {system}")
         assert editor_path.exists(), f"Unity Editor {editor_version} not found."
 
         return editor_path

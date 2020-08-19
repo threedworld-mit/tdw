@@ -4,6 +4,12 @@
 
 ## v1.6.6
 
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: Controller tries to launch a build, then check the version, and then delete the build if the version is out of date (all builds now include a `version.txt` file that the controller will read before trying to launch a build).
+
 ### Documentation
 
 #### Modified Documentation

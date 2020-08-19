@@ -286,8 +286,24 @@ class Controller(object):
         """
 
         # Download the build.
+        need_to_download = False
         if not Build.BUILD_PATH.exists():
             print(f"Couldn't find build at {Build.BUILD_PATH}\nDownloading now...")
+            need_to_download = True
+        else:
+            # Check versions.
+            build_version_path = Build.BUILD_ROOT_DIR.joinpath("TDW/version.txt")
+            if build_version_path.exists():
+                build_version = build_version_path.read_text().strip()
+            else:
+                build_version = "(unknown!)"
+            if build_version != __version__:
+                print(f"Python version is {__version__} but the build version is {build_version}.\n"
+                      f"Downloading version {__version__} of the build now...")
+                need_to_download = True
+
+        # Download a new version of the build.
+        if need_to_download:
             success = Build.download()
             if not success:
                 print("You need to launch your own build.")
@@ -307,20 +323,11 @@ class Controller(object):
         :param build_version: If not None, this overrides the expected build version. Only override for debugging.
         """
 
-        v = PyPi.strip_post_release(version)
         tdw_version, unity_version = self.get_version()
         # Override the build version for testing.
         if build_version is not None:
             tdw_version = build_version
-        pypi_version = PyPi.get_latest_minor_release(tdw_version)
         print(f"Build version {tdw_version}\nUnity Engine {unity_version}\nPython tdw module version {version}")
-        if v < tdw_version:
-            print("WARNING! Your TDW build is newer than your tdw Python module. They might not be compatible.")
-            print(f"To download the correct build:\n\nfrom tdw.release.build import Build\nBuild.download(version={v})")
-            print(f"\nTo upgrade your Python module (usually recommended):\n\npip3 install tdw=={pypi_version}")
-        elif v > tdw_version:
-            print("WARNING! Your TDW build is older than your tdw Python module. Downloading the correct build...")
-            Build.download(v)
 
     @staticmethod
     def _check_pypi_version(v_installed_override: str = None, v_pypi_override: str = None) -> None:

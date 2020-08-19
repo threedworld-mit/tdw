@@ -4544,6 +4544,7 @@ Send the names and IDs of each child object in each avatar.
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`AvatarChildrenNames`](output_data.md#AvatarChildrenNames)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "send_avatar_children_names"}

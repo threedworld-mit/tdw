@@ -293,7 +293,11 @@ class Controller(object):
 
         else:
             # Check versions.
-            build_version = Build.BUILD_ROOT_DIR.joinpath("TDW/version.txt").read_text().strip()
+            build_version_path = Build.BUILD_ROOT_DIR.joinpath("TDW/version.txt")
+            if build_version_path.exists():
+                build_version = build_version_path.read_text().strip()
+            else:
+                build_version = "(unknown!)"
             if build_version != __version__:
                 print(f"Python version is {__version__} but the build version is {build_version}.\n"
                       f"Downloading version {__version__} of the build now...")

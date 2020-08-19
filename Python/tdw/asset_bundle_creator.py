@@ -159,16 +159,19 @@ class AssetBundleCreator:
         :return The path to the Unity Editor executable.
         """
 
+        system = platform.system()
+
         # Get the path to the Editor executable.
-        if platform.system() == "Windows":
+        if system == "Windows":
             editor_path = Path('C:/Program Files/Unity/Hub/Editor/')
 
             # Sometimes Unity Hub is installed here instead.
             if not editor_path.exists():
                 editor_path = Path('C:/Program Files/Unity Hub/')
+        elif system == "Darwin":
+            editor_path = Path("/Applications/Unity/Hub/Editor")
         else:
-            # TODO get the OS X location.
-            raise Exception(f"Platform not supported: {platform.system()}")
+            raise Exception(f"Platform not supported: {system}")
 
         assert editor_path.exists(), f"Unity Hub not found."
 
@@ -184,9 +187,12 @@ class AssetBundleCreator:
             ds.append(d)
         ds = sorted(ds, key=lambda version: int(re.search(re_pattern, str(version.resolve())).group(1), 16))
         editor_version = ds[-1]
+        editor_path = editor_path.joinpath(editor_version)
 
-        # TODO get OS X executable.
-        editor_path = editor_path.joinpath(editor_version).joinpath("Editor/Unity.exe")
+        if system == "Windows":
+            editor_path = editor_path.joinpath("Editor/Unity.exe")
+        elif system == "Darwin":
+            editor_path = editor_path.joinpath("Unity.app/Contents/MacOS/Unity")
         assert editor_path.exists(), f"Unity Editor {editor_version} not found."
 
         return editor_path

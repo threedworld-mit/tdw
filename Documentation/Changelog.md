@@ -2,6 +2,78 @@
 
 # v1.6.x
 
+## v1.6.6
+
+### Command API
+
+#### New Commands
+
+| Command                               | Description                                       |
+| ------------------------------------- | ------------------------------------------------------------ |
+| `look_at_avatar`                       | Look at another avatar. |
+
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: Controller tries to launch a build, then check the version, and then delete the build if the version is out of date (all builds now include a `version.txt` file that the controller will read before trying to launch a build).
+
+### Build
+
+- Fixed: The `scale_object` command doesn't update the object's `Bounds` data.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document       | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `debug_tdw.md` | Added a section on common problems when installing TDW. Reorganized the list of player log messages. |
+
+## v1.6.5
+
+### `tdw` module
+
+- Added required modules: `pyinstaller` and `keyboard`
+- Added `tdw.keyboard_controller` A controller that can listen to keyboard input.
+
+#### `Controller`
+
+- Removed optional `display` parameter. It doesn't actually work; Linux users should instead launch the controller with a `DISPLAY` environment variable.
+
+#### Backend
+
+- Adjusted how Flatbuffers imports numpy so that frozen controller code works.
+
+### Example Controllers
+
+- Renamed `keyboard.py` to `keyboard_controller.py` to avoid a name clash with the `keyboard` module. Rewrote the code to use the `KeyboardController` class.
+
+### Build
+
+- Fixed: Segmentation colors are often non-unique.
+
+### Misc.
+
+- Added `freeze.py`. "Freeze" your controller into a portable binary executable.
+  - Added `controller.spec` (used for freezing controller code).
+
+### Documentation
+
+#### New Documentation
+
+| Document                 | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `freeze.md`              | How to freeze your controller code into a binary executable. |
+| `keyboard_controller.md` | API for KeyboardController.                                  |
+
+#### Modified Documentation
+
+| Document             | Description                                                |
+| -------------------- | ---------------------------------------------------------- |
+| `getting_started.md` | Fixed instructions for how to start a controller in Linux. |
+| `docker.md`          | Fixed some broken links.                                   |
+
 ## v1.6.4
 
 ### `tdw` module

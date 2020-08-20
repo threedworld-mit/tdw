@@ -40,7 +40,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 ##### 2a. On a personal computer:
 
-Create this Python script and run it:
+1. Create this Python script and save it as `my_controller.py`:
 
 ```python
 from tdw.controller import Controller
@@ -49,6 +49,14 @@ c = Controller()
 print("Everything is OK!")
 c.communicate({"$type": "terminate"})
 ```
+
+2. Run the controller:
+
+| Windows                  | OS X                       | Linux                                   |
+| ------------------------ | -------------------------- | --------------------------------------- |
+| `py -3 my_controller.py` | `python3 my_controller.py` | `DISPLAY=:0.0 python3 my_controller.py` |
+
+Note for Linux users: You only need to include `DISPLAY` if the [launch_build parameter in the Controller constructor](python/controller.md) is set to False (by default, it is True).
 
 When you launch run this script, the `Controller` will download the **build**, the binary executable application that runs the simulation environment and then launch the build. The controller will also check to see if your version of TDW is the most recent. For more information on what happens when you start a controller, read [this](misc_frontend/releases.md#Updates).
 
@@ -65,15 +73,20 @@ sudo /usr/bin/X :0&
 
 NOTE: Not all of these commands will be applicable to every server. The last number is the `display_number` which will be used in the script below:
 
-2. Create this Python script and run it:
+2. Create this Python script and save it as `my_controller.py`:
 
 ```python
 from tdw.controller import Controller
 
-display_number = 0 # Set this number to your virtual display.
-c = Controller(display=display_number)
+c = Controller()
 print("Everything is OK!")
 c.communicate({"$type": "terminate"})
+```
+
+3. Run the controller:
+
+```bash
+DISPLAY=:0.0 python3 my_controller.py # Your display number might not be 0
 ```
 
 ##### 2c. From a Docker container:

@@ -11,8 +11,8 @@ You can add your own objects to the build by doing the following:
 
 ### Requirements
 
-- Windows 10
-- [Visual C++ 2012 Redistributable](https://www.microsoft.com/en-au/download/confirmation.aspx?id=30679)
+- Windows 10 or OS X
+- (Windows only) [Visual C++ 2012 Redistributable](https://www.microsoft.com/en-au/download/confirmation.aspx?id=30679)
 - The `tdw` module
 - Python 3.6+
 - Unity Hub

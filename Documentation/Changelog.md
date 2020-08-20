@@ -20,6 +20,19 @@
 
 - Fixed: Controller tries to launch a build, then check the version, and then delete the build if the version is out of date (all builds now include a `version.txt` file that the controller will read before trying to launch a build).
 
+#### `AssetBundleCreator`
+
+- **Added support for OS X.**
+
+#### Backend
+
+  - Moved Windows binaries used in `AssetBundleCreator` from `exe/` to `binaries/Windows`
+  - Added OS X binaries for `AssetBundleCreator`: `binaries/Darwin`
+
+### Example Controllers
+
+- `local_object.py` works in OS X (previously it only worked in Windows)
+
 ### Build
 
 - Fixed: The `scale_object` command doesn't update the object's `Bounds` data.
@@ -30,7 +43,9 @@
 
 | Document       | Description                                                  |
 | -------------- | ------------------------------------------------------------ |
-| `debug_tdw.md` | Added a section on common problems when installing TDW. Reorganized the list of player log messages. |
+| `debug_tdw.md` | Added a section on common problems when installing TDW. Reorganized the list of player log messages. Added a section for Unity credential problems. |
+| `add_local_object.md` | Added note that AssetBundleCreator works in OS X. |
+| `shapenet.md` | Added note that shapenet.py runs in OS X. |
 
 ## v1.6.5
 

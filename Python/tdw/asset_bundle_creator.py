@@ -40,8 +40,28 @@ class AssetBundleCreator:
         :param quiet: If true, don't print any messages to console.
         """
 
-        if platform.system() != "Windows":
-            raise Exception("AssetBundleCreator only works in Windows.")
+        # Get the binaries path and verify that AssetBundleCreator will work on this platform.
+        system = platform.system()
+        self.binaries: Dict[str, str] = dict()
+        if system == "Windows":
+            binary_path = "binaries/Windows"
+        elif system == "Darwin":
+            binary_path = "binaries/Darwin"
+        else:
+            raise Exception("AssetBundleCreator only works in Windows and OS X.")
+
+        # Cache the binaries.
+        self.binaries["assimp"] = f"{binary_path}/assimp/assimp"
+        self.binaries["meshconv"] = f"{binary_path}/meshconv/meshconv"
+        self.binaries["vhacd"] = f"{binary_path}/vhacd/testVHACD"
+
+        for binary in self.binaries:
+            # Add the .exe suffix for Windows.
+            if system == "Windows":
+                self.binaries[binary] += ".exe"
+            # Run chmod +x on everything.
+            else:
+                call(["chmod", "+x", pkg_resources.resource_filename(__name__, self.binaries[binary])])
 
         self.quiet = quiet
 
@@ -153,15 +173,19 @@ class AssetBundleCreator:
         :return The path to the Unity Editor executable.
         """
 
+        system = platform.system()
+
         # Get the path to the Editor executable.
-        if platform.system() == "Windows":
+        if system == "Windows":
             editor_path = Path('C:/Program Files/Unity/Hub/Editor/')
 
             # Sometimes Unity Hub is installed here instead.
             if not editor_path.exists():
                 editor_path = Path('C:/Program Files/Unity Hub/')
+        elif system == "Darwin":
+            editor_path = Path("/Applications/Unity/Hub/Editor")
         else:
-            raise Exception(f"Platform not supported: {platform.system()}")
+            raise Exception(f"Platform not supported: {system}")
 
         assert editor_path.exists(), f"Unity Hub not found."
 
@@ -177,8 +201,14 @@ class AssetBundleCreator:
             ds.append(d)
         ds = sorted(ds, key=lambda version: int(re.search(re_pattern, str(version.resolve())).group(1), 16))
         editor_version = ds[-1]
+        editor_path = editor_path.joinpath(editor_version)
 
-        editor_path = editor_path.joinpath(editor_version).joinpath("Editor/Unity.exe")
+        if system == "Windows":
+            editor_path = editor_path.joinpath("Editor/Unity.exe")
+        elif system == "Darwin":
+            editor_path = editor_path.joinpath("Unity.app/Contents/MacOS/Unity")
+        else:
+            raise Exception(f"Platform not supported: {system}")
         assert editor_path.exists(), f"Unity Editor {editor_version} not found."
 
         return editor_path
@@ -241,7 +271,7 @@ class AssetBundleCreator:
 
     def fbx_to_obj(self, model_path: Path) -> Tuple[Path, bool]:
         """
-        Convert a .fbx file to a .obj file with assimp.exe
+        Convert a .fbx file to a .obj file with assimp
 
         :param model_path: The path to the model.
 
@@ -260,7 +290,7 @@ class AssetBundleCreator:
         # Create the .obj file.
         obj_filename = model_path.stem + ".obj"
 
-        assimp = pkg_resources.resource_filename(__name__, "exe/assimp/assimp.exe")
+        assimp = pkg_resources.resource_filename(__name__, self.binaries["assimp"])
         assert Path(assimp).exists(), assimp
 
         # Run assimp to create the .obj file.
@@ -283,7 +313,7 @@ class AssetBundleCreator:
 
     def obj_to_wrl(self, model_path: Path, vhacd_resolution: int = 8000000) -> Path:
         """
-        Convert a .obj file to a .wrl file with testVHACD.exe
+        Convert a .obj file to a .wrl file with testVHACD
 
         :param model_path: The path to the model.
         :param vhacd_resolution: The V-HACD voxel resolution. A higher number will create more accurate physics colliders, but it will take more time to initially create the asset bundle.
@@ -303,7 +333,8 @@ class AssetBundleCreator:
             print("Running V-HACD on a .obj file (this might take awhile).")
 
         # Run V-HACD.
-        vhacd = pkg_resources.resource_filename(__name__, "exe/vhacd/testVHACD.exe")
+        vhacd = pkg_resources.resource_filename(__name__, self.binaries["vhacd"])
+
         assert Path(vhacd).exists(), vhacd
         call([vhacd,
               "--input", obj_path,
@@ -336,7 +367,7 @@ class AssetBundleCreator:
 
     def wrl_to_obj(self, wrl_filename: Path, model_name: str) -> Path:
         """
-        Convert a .wrl file back into a .obj file with meshconv.exe
+        Convert a .wrl file back into a .obj file with meshconv
 
         :param wrl_filename: The to the .wrl file.
         :param model_name: The name of the model (minus its file extension).
@@ -350,7 +381,7 @@ class AssetBundleCreator:
             print("Converting .wrl to .obj")
 
         # Run meshconv.
-        meshconv = pkg_resources.resource_filename(__name__, "exe/meshconv/meshconv.exe")
+        meshconv = pkg_resources.resource_filename(__name__, self.binaries["meshconv"])
         assert Path(meshconv).exists(), meshconv
         call([meshconv,
               str(wrl_filename.resolve()),
@@ -463,16 +494,19 @@ class AssetBundleCreator:
 
         return prefab_path, report
 
-    def prefab_to_asset_bundle(self, prefab_path: Path, model_name: str, platforms: List[str] = ["windows", "osx", "linux"]) -> List[Path]:
+    def prefab_to_asset_bundle(self, prefab_path: Path, model_name: str, platforms: List[str] = None) -> List[Path]:
         """
         Given a .prefab, create asset bundles and write them to disk.
 
         :param prefab_path: The path to the .prefab file.
         :param model_name: The name of the model, minus its file extension.
-        :param platforms: The list of platforms to build asset bundles for. Valid options are "windows", "osx", "linux"
+        :param platforms: Platforms to build asset bundles for. Options: "windows", "osx", "linux". If None, build all.
 
         :return The paths to the asset bundles.
         """
+
+        if platforms is None:
+            platforms = ["windows", "osx", "linux"]
 
         assert prefab_path.exists(), f"Missing prefab: {prefab_path.resolve()}"
 

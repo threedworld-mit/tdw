@@ -98,7 +98,7 @@ _Returns:_ The path to the asset_bundle_creator Unity project.
 
 #### `fbx_to_obj(self, model_path: Path) -> Tuple[Path, bool]`
 
-Convert a .fbx file to a .obj file with assimp.exe
+Convert a .fbx file to a .obj file with assimp
 
 | Parameter | Description |
 | --- | --- |
@@ -110,7 +110,7 @@ _Returns:_ The path to the new object, and True if it's a new file (False if it'
 
 #### `obj_to_wrl(self, model_path: Path, vhacd_resolution: int = 8000000) -> Path`
 
-Convert a .obj file to a .wrl file with testVHACD.exe
+Convert a .obj file to a .wrl file with testVHACD
 
 | Parameter | Description |
 | --- | --- |
@@ -123,7 +123,7 @@ _Returns:_ The path to the .wrl file.
 
 #### `wrl_to_obj(self, wrl_filename: Path, model_name: str) -> Path`
 
-Convert a .wrl file back into a .obj file with meshconv.exe
+Convert a .wrl file back into a .obj file with meshconv
 
 | Parameter | Description |
 | --- | --- |
@@ -162,7 +162,7 @@ _Returns:_ The path to the prefab and the path to the report (if any).
 
 ***
 
-#### `prefab_to_asset_bundle(self, prefab_path: Path, model_name: str, platforms: List[str] = ["windows", "osx", "linux"]) -> List[Path]`
+#### `prefab_to_asset_bundle(self, prefab_path: Path, model_name: str, platforms: List[str] = None) -> List[Path]`
 
 Given a .prefab, create asset bundles and write them to disk.
 
@@ -170,7 +170,7 @@ Given a .prefab, create asset bundles and write them to disk.
 | --- | --- |
 | prefab_path | The path to the .prefab file. |
 | model_name | The name of the model, minus its file extension. |
-| platforms | The list of platforms to build asset bundles for. Valid options are "windows", "osx", "linux" |
+| platforms | Platforms to build asset bundles for. Options: "windows", "osx", "linux". If None, build all. |
 
 _Returns:_ The paths to the asset bundles.
 

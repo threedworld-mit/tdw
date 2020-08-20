@@ -99,6 +99,12 @@ TDW/
 ....TDW.exe
 ```
 
-#### Common OS X Problems
+#### `[warn] kq_init: detected broken kqueue; not using.: Undefined error: 0`
+
+This error can occur when using the [AssetBundleCreator](add_local_object.md) and is caused by problems with your Unity license. 
+
+**Fix:** Make sure you have valid and active Unity credentials.
+
+## Common OS X Problems
 
 See [OS X documentation](osx.md).

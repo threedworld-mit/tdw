@@ -221,6 +221,8 @@ Data of a Sticky Mitten Avatar.
 | `get_rigidbody_part_id(index)` | The ID of the rigidbody part. | `int` |
 | `get_held_left()` | Objects held by the left mitten. | `np.array` |
 | `get_held_right()` | Objects held by the right mitten. | `np.array` |
+| `get_angles_left()` | The angles of each joint in the left arm. Order is: shoulder_left_pitch, shoulder_left_yaw, shoulder_left_roll, elbow_left_pitch, wrist_left_roll, wrist_left_pitch | `np.array` |
+| `get_angles_right()` | The angles of each joint in the right arm. Order is: shoulder_right_pitch, shoulder_right_yaw, shoulder_right_roll, elbow_right_pitch, wrist_right_roll, wrist_right_pitch | `np.array` |
 
 ## AvatarStickyMittenSegmentationColors
 

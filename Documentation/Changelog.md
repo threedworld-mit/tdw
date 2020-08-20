@@ -14,6 +14,26 @@
 | `add_position_marker` | Create a non-physics, non-interactive sphere to mark a position in the scene. |
 | `remove_position_markers` | Remove all position markers from the scene. |
 
+#### Modified Commands
+
+| Command | Modification |
+| --- | --- |
+| `set_stickiness` | Added optional parameter `show`. If true, colorize the sides of the mitten that are sticky. |
+
+#### Deprecated Commands
+
+| Command | Reason |
+| --- | --- |
+| `send_avatar_children_names` | This info can be found via `send_avatar_segmentation_colors` |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification |
+| --- | --- |
+| `AvatarStickyMitten` | Added: `get_angles_left()` and `get_angles_right()` Returns current joint angles. |
+
 ### `tdw` module
 
 #### `Controller`

@@ -11,6 +11,8 @@
 | Command                               | Description                                       |
 | ------------------------------------- | ------------------------------------------------------------ |
 | `look_at_avatar`                       | Look at another avatar. |
+| `add_position_marker` | Create a non-physics, non-interactive sphere to mark a position in the scene. |
+| `remove_position_markers` | Remove all position markers from the scene. |
 
 ### `tdw` module
 

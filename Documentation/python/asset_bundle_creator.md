@@ -123,7 +123,7 @@ _Returns:_ The path to the .wrl file.
 
 #### `wrl_to_obj(self, wrl_filename: Path, model_name: str) -> Path`
 
-Convert a .wrl file back into a .obj file with meshconv.exe
+Convert a .wrl file back into a .obj file with meshconv
 
 | Parameter | Description |
 | --- | --- |

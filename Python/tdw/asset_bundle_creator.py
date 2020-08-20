@@ -367,7 +367,7 @@ class AssetBundleCreator:
 
     def wrl_to_obj(self, wrl_filename: Path, model_name: str) -> Path:
         """
-        Convert a .wrl file back into a .obj file with meshconv.exe
+        Convert a .wrl file back into a .obj file with meshconv
 
         :param wrl_filename: The to the .wrl file.
         :param model_name: The name of the model (minus its file extension).

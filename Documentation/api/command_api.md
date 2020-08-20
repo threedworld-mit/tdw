@@ -319,6 +319,13 @@
 | [`show_painting`](#show_painting) | Show a painting that was hidden. |
 | [`teleport_painting`](#teleport_painting) | Teleport a painting to a new position. |
 
+**Position Marker Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_position_marker`](#add_position_marker) | Create a non-physics, non-interactive sphere to mark a position in the scene.  |
+| [`remove_position_markers`](#remove_position_markers) | Remove all position markers from the scene.  |
+
 **Post Process Command**
 
 | Command | Description |
@@ -3932,6 +3939,44 @@ Teleport a painting to a new position.
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | New position of the painting. | |
 | `"id"` | int | The unique ID of this painting. | |
+
+# PositionMarkerCommand
+
+These commands show or hide position markers. They can be useful for debugging as scene.
+
+***
+
+## **`add_position_marker`**
+
+Create a non-physics, non-interactive sphere to mark a position in the scene. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}, "scale": 0.05, "color": {"r": 1, "g": 0, "b": 0, "a": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | Add a sphere at this position. | |
+| `"scale"` | float | The scale of the sphere. | 0.05 |
+| `"color"` | Color | The color of the sphere. The default color is red. | {"r": 1, "g": 0, "b": 0, "a": 1} |
+
+***
+
+## **`remove_position_markers`**
+
+Remove all position markers from the scene. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "remove_position_markers"}
+```
 
 # PostProcessCommand
 

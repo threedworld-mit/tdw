@@ -3957,13 +3957,13 @@ Create a non-physics, non-interactive sphere to mark a position in the scene.
 ```
 
 ```python
-{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}, "scale": 0.1, "color": {"r": 1, "g": 0, "b": 0, "a": 1}}
+{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}, "scale": 0.05, "color": {"r": 1, "g": 0, "b": 0, "a": 1}}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | Add a sphere at this position. | |
-| `"scale"` | float | The scale of the sphere. | 0.1 |
+| `"scale"` | float | The scale of the sphere. | 0.05 |
 | `"color"` | Color | The color of the sphere. The default color is red. | {"r": 1, "g": 0, "b": 0, "a": 1} |
 
 ***

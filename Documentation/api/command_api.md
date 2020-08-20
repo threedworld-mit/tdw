@@ -1995,13 +1995,14 @@ Set the stickiness of one sub-mitten of the mitten.
 ```
 
 ```python
-{"$type": "set_stickiness", "sub_mitten": "palm", "sticky": True, "is_left": True, "avatar_id": "a"}
+{"$type": "set_stickiness", "sub_mitten": "palm", "sticky": True, "is_left": True, "show": True, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"sub_mitten"` | StickySubMittenType | The sub-mitten of the mitten. | |
 | `"sticky"` | bool | If true, the sub-mitten will be sticky. | |
+| `"show"` | bool | If true, colorize the sides of the mitten that are sticky. | True |
 | `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 

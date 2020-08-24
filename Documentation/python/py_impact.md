@@ -208,6 +208,12 @@ The audio values here are just recommendations; you can apply different values i
 
 A sound encoded as a base64 string.
 
+Fields:
+
+- `bytes` Byte data of the sound.
+- `wav_str` base64 string of the sound. Send this to the build.
+- `length` The length of the byte array.
+
 ***
 
 #### `__init__(self, snd: np.array)`

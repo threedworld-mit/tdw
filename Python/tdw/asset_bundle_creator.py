@@ -642,12 +642,12 @@ class AssetBundleCreator:
 
         urls: Dict[str, str] = {}
         for ap in asset_bundle_paths:
-            ap = "file:///" + str(ap.resolve())
-            if "Windows" in ap:
+            ap = "file:///" + str(ap.resolve()).replace("\\", "/")
+            if "StandaloneWindows64" in ap:
                 urls.update({"Windows": ap})
-            elif "Darwin" in ap:
+            elif "StandaloneOSX" in ap:
                 urls.update({"Darwin": ap})
-            else:
+            elif "StandaloneLinux64" in ap:
                 urls.update({"Linux": ap})
         return urls
 

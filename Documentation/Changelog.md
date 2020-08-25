@@ -6,9 +6,18 @@
 
 ### `tdw` module
 
-#### `Base64Sound` (in `PyImpact`)
+#### `AssetBundleCreator`
+
+- Fixed: `AssetBundleCreator.get_local_urls()` doesn't add the OS X URL.
+- Fixed: `AssetBundleCreator.get_local_urls()` generates paths with `\` instead of `/`.
+
+#### `Base64Sound` (in `tdw.py_impact`)
 
 - Added new field: `bytes` The byte data before it is encoded to base64.
+
+### `asset_bundle_creator` (Unity project)
+
+- Fixed: The names of objects in the substructure data always include the suffix `(Clone)`. To apply this bug fix, delete the directory `~/asset_bundle_creator` where `~` is your home directory. The next time you create a local asset bundle, the Unity project will be recreated.
 
 ## v1.6.6
 

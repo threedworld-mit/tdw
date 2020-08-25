@@ -61,6 +61,12 @@ DENSITIES: Dict[AudioMaterial, float] = {AudioMaterial.ceramic: 2180,
 class Base64Sound:
     """
     A sound encoded as a base64 string.
+
+    Fields:
+
+    - `bytes` Byte data of the sound.
+    - `wav_str` base64 string of the sound. Send this to the build.
+    - `length` The length of the byte array.
     """
 
     def __init__(self, snd: np.array):
@@ -72,6 +78,7 @@ class Base64Sound:
         tst2 = bytes(tst1)
         tst3 = base64.b64encode(tst2).decode('utf-8')
 
+        self.bytes = tst2
         self.wav_str = tst3
         self.length = len(tst2)
 

@@ -2,6 +2,14 @@
 
 # v1.6.x
 
+## v1.6.7
+
+### `tdw` module
+
+#### `Base64Sound` (in `PyImpact`)
+
+- Added new field: `bytes` The byte data before it is encoded to base64.
+
 ## v1.6.6
 
 ### Command API

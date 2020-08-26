@@ -15,6 +15,10 @@
 
 - Added new field: `bytes` The byte data before it is encoded to base64.
 
+#### Librarian (`tdw.librarian`)
+
+- Fixed: Relative URLs in records don't work as expected.
+
 ### `asset_bundle_creator` (Unity project)
 
 - Fixed: The names of objects in the substructure data always include the suffix `(Clone)`. To apply this bug fix, delete the directory `~/asset_bundle_creator` where `~` is your home directory. The next time you create a local asset bundle, the Unity project will be recreated.

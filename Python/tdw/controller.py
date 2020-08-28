@@ -311,7 +311,10 @@ class Controller(object):
             success = True
         # Launch the build.
         if success:
-            Popen(str(Build.BUILD_PATH.resolve()))
+            if system() == "Windows":
+                Popen(str(Build.BUILD_PATH.resolve()), shell=True)
+            else:
+                Popen(str(Build.BUILD_PATH.resolve()))
 
     def _check_build_version(self, version: str = __version__, build_version: str = None) -> None:
         """

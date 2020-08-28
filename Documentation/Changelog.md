@@ -11,6 +11,10 @@
 - Fixed: `AssetBundleCreator.get_local_urls()` doesn't add the OS X URL.
 - Fixed: `AssetBundleCreator.get_local_urls()` generates paths with `\` instead of `/`.
 
+#### `PyImpact`
+
+- Added: `get_impulse_response()` Generate an impulse response from specified modes for two objects.
+
 #### `Base64Sound` (in `tdw.py_impact`)
 
 - Added new field: `bytes` The byte data before it is encoded to base64.

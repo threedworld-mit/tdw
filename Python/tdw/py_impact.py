@@ -537,6 +537,21 @@ class PyImpact:
         return snth, modes_1, modes_2
 
     @staticmethod
+    def get_impulse_response(modes1: Modes, modes2: Modes) -> np.array:
+        """
+        Generate an impulse response from specified modes for two objects.
+
+        :param modes1: Modes of object 1. A numpy array with: column1=mode frequencies (Hz); column2=mode onset powers in dB; column3=mode RT60s in milliseconds;
+        :param modes2: Modes of object 2. Formatted as modes1/modes2.
+
+        :return The impulse response.
+        """
+        h1 = modes1.sum_modes()
+        h2 = modes2.sum_modes()
+        h = Modes.mode_add(h1, h2)
+        return h
+
+    @staticmethod
     def synth_impact_modes(modes1: Modes, modes2: Modes, mass: float) -> np.array:
         """
         Generate an impact sound from specified modes for two objects, and the mass of the smaller object.
@@ -548,9 +563,7 @@ class PyImpact:
         :return The impact sound.
         """
 
-        h1 = modes1.sum_modes()
-        h2 = modes2.sum_modes()
-        h = Modes.mode_add(h1, h2)
+        h = PyImpact.get_impulse_response(modes1, modes2)
         if len(h) == 0:
             return None
         # Convolve with force, with contact time scaled by the object mass.

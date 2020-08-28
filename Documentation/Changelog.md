@@ -6,6 +6,10 @@
 
 ### `tdw` module
 
+#### `Controller`
+
+- Fixed: Build doesn't launch in Windows.
+
 #### `AssetBundleCreator`
 
 - Fixed: `AssetBundleCreator.get_local_urls()` doesn't add the OS X URL.

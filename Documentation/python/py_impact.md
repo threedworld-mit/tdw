@@ -94,6 +94,21 @@ _Returns:_ The sound, and the object modes.
 
 ***
 
+#### `get_impulse_response(modes1: Modes, modes2: Modes) -> np.array`
+
+_This is a static function._
+
+Generate an impulse response from specified modes for two objects.
+
+| Parameter | Description |
+| --- | --- |
+| modes1 | Modes of object 1. A numpy array with: column1=mode frequencies (Hz); column2=mode onset powers in dB; column3=mode RT60s in milliseconds; |
+| modes2 | Modes of object 2. Formatted as modes1/modes2. |
+
+_Returns:_ The impulse response.
+
+***
+
 #### `synth_impact_modes(modes1: Modes, modes2: Modes, mass: float) -> np.array`
 
 _This is a static function._

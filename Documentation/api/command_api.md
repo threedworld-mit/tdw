@@ -319,6 +319,13 @@
 | [`show_painting`](#show_painting) | Show a painting that was hidden. |
 | [`teleport_painting`](#teleport_painting) | Teleport a painting to a new position. |
 
+**Position Marker Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_position_marker`](#add_position_marker) | Create a non-physics, non-interactive sphere to mark a position in the scene.  |
+| [`remove_position_markers`](#remove_position_markers) | Remove all position markers from the scene.  |
+
 **Post Process Command**
 
 | Command | Description |
@@ -1988,13 +1995,14 @@ Set the stickiness of one sub-mitten of the mitten.
 ```
 
 ```python
-{"$type": "set_stickiness", "sub_mitten": "palm", "sticky": True, "is_left": True, "avatar_id": "a"}
+{"$type": "set_stickiness", "sub_mitten": "palm", "sticky": True, "is_left": True, "show": True, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"sub_mitten"` | StickySubMittenType | The sub-mitten of the mitten. | |
 | `"sticky"` | bool | If true, the sub-mitten will be sticky. | |
+| `"show"` | bool | If true, colorize the sides of the mitten that are sticky. | True |
 | `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -3933,6 +3941,44 @@ Teleport a painting to a new position.
 | `"position"` | Vector3 | New position of the painting. | |
 | `"id"` | int | The unique ID of this painting. | |
 
+# PositionMarkerCommand
+
+These commands show or hide position markers. They can be useful for debugging as scene.
+
+***
+
+## **`add_position_marker`**
+
+Create a non-physics, non-interactive sphere to mark a position in the scene. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}, "scale": 0.05, "color": {"r": 1, "g": 0, "b": 0, "a": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | Add a sphere at this position. | |
+| `"scale"` | float | The scale of the sphere. | 0.05 |
+| `"color"` | Color | The color of the sphere. The default color is red. | {"r": 1, "g": 0, "b": 0, "a": 1} |
+
+***
+
+## **`remove_position_markers`**
+
+Remove all position markers from the scene. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "remove_position_markers"}
+```
+
 # PostProcessCommand
 
 These commands adjust post-processing values.
@@ -4567,6 +4613,7 @@ Send the names and IDs of each child object in each avatar.
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`AvatarChildrenNames`](output_data.md#AvatarChildrenNames)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "send_avatar_children_names"}

@@ -23,7 +23,7 @@ You must download and extract the relevant ShapeNet zip files into the following
 - The latest version of Unity 2019.2
 - Python 3.6+
 - The [`tdw` Python module](../python/tdw.md)
-- Windows 10
+- Windows 10 or OS X
 
 ## Usage
 

@@ -391,6 +391,19 @@ Convert Euler angles to a quaternion.
 
 ***
 
+#### `quaternion_to_euler_angles(quaternion: np.array) -> np.array`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| quaternion | A quaternion as a nump array. |
+
+_Returns:_  The Euler angles representation of the quaternion.
+
+***
+
 #### `get_unit_scale(record: ModelRecord) -> float`
 
 _This is a static function._

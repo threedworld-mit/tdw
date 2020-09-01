@@ -2,6 +2,39 @@
 
 # v1.6.x
 
+## v1.6.7
+
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: Build doesn't launch in Windows.
+
+#### `AssetBundleCreator`
+
+- Fixed: `AssetBundleCreator.get_local_urls()` doesn't add the OS X URL.
+- Fixed: `AssetBundleCreator.get_local_urls()` generates paths with `\` instead of `/`.
+
+#### `TDWUtils`
+
+- Added: `quaternion_to_euler_angles()` Convert a quaternion to Euler angles.
+
+#### `PyImpact`
+
+- Added: `get_impulse_response()` Generate an impulse response from specified modes for two objects.
+
+#### `Base64Sound` (in `tdw.py_impact`)
+
+- Added new field: `bytes` The byte data before it is encoded to base64.
+
+#### Librarian (`tdw.librarian`)
+
+- Fixed: Relative URLs in records don't work as expected.
+
+### `asset_bundle_creator` (Unity project)
+
+- Fixed: The names of objects in the substructure data always include the suffix `(Clone)`. To apply this bug fix, delete the directory `~/asset_bundle_creator` where `~` is your home directory. The next time you create a local asset bundle, the Unity project will be recreated.
+
 ## v1.6.6
 
 ### Command API
@@ -11,12 +44,47 @@
 | Command                               | Description                                       |
 | ------------------------------------- | ------------------------------------------------------------ |
 | `look_at_avatar`                       | Look at another avatar. |
+| `add_position_marker` | Create a non-physics, non-interactive sphere to mark a position in the scene. |
+| `remove_position_markers` | Remove all position markers from the scene. |
+
+#### Modified Commands
+
+| Command | Modification |
+| --- | --- |
+| `set_stickiness` | Added optional parameter `show`. If true, colorize the sides of the mitten that are sticky. |
+
+#### Deprecated Commands
+
+| Command | Reason |
+| --- | --- |
+| `send_avatar_children_names` | This info can be found via `send_avatar_segmentation_colors` |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification |
+| --- | --- |
+| `AvatarStickyMitten` | Added: `get_angles_left()` and `get_angles_right()` Returns current joint angles. |
 
 ### `tdw` module
 
 #### `Controller`
 
 - Fixed: Controller tries to launch a build, then check the version, and then delete the build if the version is out of date (all builds now include a `version.txt` file that the controller will read before trying to launch a build).
+
+#### `AssetBundleCreator`
+
+- **Added support for OS X.**
+
+#### Backend
+
+  - Moved Windows binaries used in `AssetBundleCreator` from `exe/` to `binaries/Windows`
+  - Added OS X binaries for `AssetBundleCreator`: `binaries/Darwin`
+
+### Example Controllers
+
+- `local_object.py` works in OS X (previously it only worked in Windows)
 
 ### Build
 
@@ -28,7 +96,9 @@
 
 | Document       | Description                                                  |
 | -------------- | ------------------------------------------------------------ |
-| `debug_tdw.md` | Added a section on common problems when installing TDW. Reorganized the list of player log messages. |
+| `debug_tdw.md` | Added a section on common problems when installing TDW. Reorganized the list of player log messages. Added a section for Unity credential problems. |
+| `add_local_object.md` | Added note that AssetBundleCreator works in OS X. |
+| `shapenet.md` | Added note that shapenet.py runs in OS X. |
 
 ## v1.6.5
 

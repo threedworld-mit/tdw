@@ -30,14 +30,7 @@ class _Record:
         Returns the URL of the asset bundle for this platform. This is a wrapper for record.urls.
         """
 
-        url = self.urls[_Record._PLATFORM]
-        # Return an absolute path.
-        for prefix in ["file:///", "http://", "https://"]:
-            if url.startswith(prefix):
-                return url
-        # Assume this is a relative filepath.
-        else:
-            return "file:///" + str(Path(url).resolve())
+        return self.urls[_Record._PLATFORM]
 
     def get_serializable(self) -> dict:
         """
@@ -210,7 +203,22 @@ class _Librarian(Generic[T]):
 
         self.records: List[T] = []
         for key in self.data["records"]:
-            self.records.append(self._generate_record(self.data["records"][key]))
+            record = self._generate_record(self.data["records"][key])
+            temp_urls = dict()
+            # De-localize URLs
+            for p in record.urls:
+                # Set an absolute path.
+                absolute = False
+                for prefix in ["file:///", "http://", "https://"]:
+                    if record.urls[p].startswith(prefix):
+                        temp_urls[p] = record.urls[p]
+                        absolute = True
+                # De-localize a local path.
+                if not absolute:
+                    temp_urls[p] = f"file:///{str(Path(self.library).parent.joinpath(record.urls[p]).resolve())}"
+                temp_urls[p] = temp_urls[p].replace("\\", "/")
+            record.urls = temp_urls
+            self.records.append(record)
 
     def get_default_library(self) -> str:
         """

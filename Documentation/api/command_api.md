@@ -68,7 +68,7 @@
 | [`rotate_avatar_to`](#rotate_avatar_to) | Set the rotation quaternion of the avatar.  |
 | [`rotate_avatar_to_euler_angles`](#rotate_avatar_to_euler_angles) | Set the rotation of the avatar with Euler angles.  |
 | [`scale_avatar`](#scale_avatar) | Scale the avatar's size by a factor from its current scale. |
-| [`set_avatar_collision_detection_mode`](#set_avatar_collision_detection_mode) | Set the collision mode of all of the avatar's Rigidbodies. This doesn't need to be sent continuously, but does need to be sent per avatar. Right now, this command only exposes a few of the possible collision detection modes. |
+| [`set_avatar_collision_detection_mode`](#set_avatar_collision_detection_mode) | Set the collision mode of all of the avatar's Rigidbodies. This doesn't need to be sent continuously, but does need to be sent per avatar.  |
 | [`set_avatar_color`](#set_avatar_color) | Set the color of an avatar. To allow transparency (the "alpha" channel, or "a" value in the color), first send enable_avatar_transparency |
 | [`set_avatar_forward`](#set_avatar_forward) | Set the forward directional vector of the avatar.  |
 | [`set_camera_clipping_planes`](#set_camera_clipping_planes) | Set the near and far clipping planes of the avatar's camera. |
@@ -247,7 +247,7 @@
 | [`set_color_in_substructure`](#set_color_in_substructure) | Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
 | [`set_mass`](#set_mass) | Set the mass of an object. |
-| [`set_object_collision_detection_mode`](#set_object_collision_detection_mode) | Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object. Right now, this command only exposes a few of the possible collision detection modes. |
+| [`set_object_collision_detection_mode`](#set_object_collision_detection_mode) | Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object.  |
 | [`set_object_drag`](#set_object_drag) | Set the drag of an object's RigidBody. Both drag and angular_drag can be safely changed on-the-fly. |
 | [`set_primitive_visual_material`](#set_primitive_visual_material) | Set the material of an object created via load_primitive_from_resources  |
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
@@ -1187,20 +1187,21 @@ Scale the avatar's size by a factor from its current scale.
 
 ## **`set_avatar_collision_detection_mode`**
 
-Set the collision mode of all of the avatar's Rigidbodies. This doesn't need to be sent continuously, but does need to be sent per avatar. Right now, this command only exposes a few of the possible collision detection modes.
+Set the collision mode of all of the avatar's Rigidbodies. This doesn't need to be sent continuously, but does need to be sent per avatar. 
 
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
 
 ```python
 {"$type": "set_avatar_collision_detection_mode"}
 ```
 
 ```python
-{"$type": "set_avatar_collision_detection_mode", "mode": "continuous_speculative", "avatar_id": "a"}
+{"$type": "set_avatar_collision_detection_mode", "mode": "continuous_dynamic", "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"mode"` | DetectionMode | The collision detection mode. | "continuous_speculative" |
+| `"mode"` | DetectionMode | The collision detection mode. | "continuous_dynamic" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 #### DetectionMode
@@ -1211,6 +1212,8 @@ The detection mode.
 | --- | --- |
 | `"continuous_dynamic"` | (From Unity documentation:) Prevent this Rigidbody from passing through static mesh geometry, and through other Rigidbodies which have continuous collision detection enabled, when it is moving fast. This is the slowest collision detection mode, and should only be used for selected fast moving objects. |
 | `"continuous_speculative"` | (From Unity documentation:) This is a collision detection mode that can be used on both dynamic and kinematic objects. It is generally cheaper than other CCD modes. It also handles angular motion much better. However, in some cases, high speed objects may still tunneling through other geometries. |
+| `"discrete"` | (From Unity documentation: This is the fastest mode.) |
+| `"continuous"` | (From Unity documentation: Collisions will be detected for any static mesh geometry in the path of this Rigidbody, even if the collision occurs between two FixedUpdate steps. Static mesh geometry is any MeshCollider which does not have a Rigidbody attached. This also prevent Rigidbodies set to ContinuousDynamic mode from passing through this Rigidbody. |
 
 ***
 
@@ -3270,20 +3273,21 @@ Set the mass of an object.
 
 ## **`set_object_collision_detection_mode`**
 
-Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object. Right now, this command only exposes a few of the possible collision detection modes.
+Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object. 
 
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
 
 ```python
 {"$type": "set_object_collision_detection_mode", "id": 1}
 ```
 
 ```python
-{"$type": "set_object_collision_detection_mode", "id": 1, "mode": "continuous_speculative"}
+{"$type": "set_object_collision_detection_mode", "id": 1, "mode": "continuous_dynamic"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"mode"` | DetectionMode | The collision detection mode. | "continuous_speculative" |
+| `"mode"` | DetectionMode | The collision detection mode. | "continuous_dynamic" |
 | `"id"` | int | The unique object ID. | |
 
 #### DetectionMode
@@ -3294,6 +3298,8 @@ The detection mode.
 | --- | --- |
 | `"continuous_dynamic"` | (From Unity documentation:) Prevent this Rigidbody from passing through static mesh geometry, and through other Rigidbodies which have continuous collision detection enabled, when it is moving fast. This is the slowest collision detection mode, and should only be used for selected fast moving objects. |
 | `"continuous_speculative"` | (From Unity documentation:) This is a collision detection mode that can be used on both dynamic and kinematic objects. It is generally cheaper than other CCD modes. It also handles angular motion much better. However, in some cases, high speed objects may still tunneling through other geometries. |
+| `"discrete"` | (From Unity documentation: This is the fastest mode.) |
+| `"continuous"` | (From Unity documentation: Collisions will be detected for any static mesh geometry in the path of this Rigidbody, even if the collision occurs between two FixedUpdate steps. Static mesh geometry is any MeshCollider which does not have a Rigidbody attached. This also prevent Rigidbodies set to ContinuousDynamic mode from passing through this Rigidbody. |
 
 ***
 

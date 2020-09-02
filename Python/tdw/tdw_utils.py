@@ -556,6 +556,38 @@ class TDWUtils:
         return [x, y, z, w]
 
     @staticmethod
+    def quaternion_to_euler_angles(quaternion: np.array) -> np.array:
+        """
+        :param quaternion: A quaternion as a nump array.
+
+        :return: The Euler angles representation of the quaternion.
+        """
+
+        x = quaternion[0]
+        y = quaternion[1]
+        z = quaternion[2]
+        w = quaternion[3]
+        ysqr = y * y
+
+        t0 = +2.0 * (w * x + y * z)
+        t1 = +1.0 - 2.0 * (x * x + ysqr)
+        ex = np.degrees(np.arctan2(t0, t1))
+
+        t2 = +2.0 * (w * y - z * x)
+        t2 = np.where(t2 > +1.0, +1.0, t2)
+        # t2 = +1.0 if t2 > +1.0 else t2
+
+        t2 = np.where(t2 < -1.0, -1.0, t2)
+        # t2 = -1.0 if t2 < -1.0 else t2
+        ey = np.degrees(np.arcsin(t2))
+
+        t3 = +2.0 * (w * z + x * y)
+        t4 = +1.0 - 2.0 * (ysqr + z * z)
+        ez = np.degrees(np.arctan2(t3, t4))
+
+        return np.array([ex, ey, ez])
+
+    @staticmethod
     def get_unit_scale(record: ModelRecord) -> float:
         """
         :param record: The model record.

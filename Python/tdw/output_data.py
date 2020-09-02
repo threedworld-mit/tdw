@@ -329,6 +329,24 @@ class AvatarStickyMitten(AvatarNonKinematic):
     def get_angles_right(self) -> np.array:
         return self.data.AnglesRightAsNumpy()
 
+    def get_mitten_center_left_position(self) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.MittenCenterLeft().Position)
+
+    def get_mitten_center_left_forward(self) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.MittenCenterLeft().Forward)
+
+    def get_mitten_center_left_rotation(self) -> Tuple[float, float, float, float]:
+        return OutputData._get_quaternion(self.data.MittenCenterLeft().Rotation)
+
+    def get_mitten_center_right_position(self) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.MittenCenterRight().Position)
+
+    def get_mitten_center_right_forward(self) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.MittenCenterRight().Forward)
+
+    def get_mitten_center_right_rotation(self, index: int) -> Tuple[float, float, float, float]:
+        return OutputData._get_quaternion(self.data.MittenCenterRight(index).Rotation)
+
 
 class SegmentationColors(OutputData):
     def get_data(self) -> Segs.SegmentationColors:

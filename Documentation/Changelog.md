@@ -2,14 +2,36 @@
 
 # v1.6.x
 
+## v1.6.8
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data          | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `AvatarStickyMitten` | Added functions to get the position, rotation, and forward of the center of the mittens (as opposed to the joint location. |
+
 ## v1.6.7
 
 ### `tdw` module
+
+#### `Controller`
+
+- Fixed: Build doesn't launch in Windows.
 
 #### `AssetBundleCreator`
 
 - Fixed: `AssetBundleCreator.get_local_urls()` doesn't add the OS X URL.
 - Fixed: `AssetBundleCreator.get_local_urls()` generates paths with `\` instead of `/`.
+
+#### `TDWUtils`
+
+- Added: `quaternion_to_euler_angles()` Convert a quaternion to Euler angles.
+
+#### `PyImpact`
+
+- Added: `get_impulse_response()` Generate an impulse response from specified modes for two objects.
 
 #### `Base64Sound` (in `tdw.py_impact`)
 

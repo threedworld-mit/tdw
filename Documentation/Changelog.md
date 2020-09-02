@@ -2,6 +2,16 @@
 
 # v1.6.x
 
+## v1.6.8
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data          | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `AvatarStickyMitten` | Added functions to get the position, rotation, and forward of the center of the mittens (as opposed to the joint location. |
+
 ## v1.6.7
 
 ### `tdw` module

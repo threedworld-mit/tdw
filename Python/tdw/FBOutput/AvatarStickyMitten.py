@@ -133,8 +133,27 @@ class AvatarStickyMitten(object):
         return 0
 
     # AvatarStickyMitten
-    def HeldLeft(self, j):
+    def MittenCenters(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(24))
+        if o != 0:
+            x = self._tab.Vector(o)
+            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 40
+            from .SimpleTransform import SimpleTransform
+            obj = SimpleTransform()
+            obj.Init(self._tab.Bytes, x)
+            return obj
+        return None
+
+    # AvatarStickyMitten
+    def MittenCentersLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(24))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # AvatarStickyMitten
+    def HeldLeft(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -142,21 +161,21 @@ class AvatarStickyMitten(object):
 
     # AvatarStickyMitten
     def HeldLeftAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(24))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
         return 0
 
     # AvatarStickyMitten
     def HeldLeftLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(24))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # AvatarStickyMitten
     def HeldRight(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(28))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -164,21 +183,21 @@ class AvatarStickyMitten(object):
 
     # AvatarStickyMitten
     def HeldRightAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(28))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
         return 0
 
     # AvatarStickyMitten
     def HeldRightLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(28))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # AvatarStickyMitten
     def AnglesLeft(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(28))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(30))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -186,21 +205,21 @@ class AvatarStickyMitten(object):
 
     # AvatarStickyMitten
     def AnglesLeftAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(28))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(30))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
         return 0
 
     # AvatarStickyMitten
     def AnglesLeftLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(28))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(30))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # AvatarStickyMitten
     def AnglesRight(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(30))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(32))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -208,19 +227,19 @@ class AvatarStickyMitten(object):
 
     # AvatarStickyMitten
     def AnglesRightAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(30))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(32))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
         return 0
 
     # AvatarStickyMitten
     def AnglesRightLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(30))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(32))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def AvatarStickyMittenStart(builder): builder.StartObject(14)
+def AvatarStickyMittenStart(builder): builder.StartObject(15)
 def AvatarStickyMittenAddId(builder, id): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(id), 0)
 def AvatarStickyMittenAddPosition(builder, position): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(position), 0)
 def AvatarStickyMittenAddRotation(builder, rotation): builder.PrependStructSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(rotation), 0)
@@ -233,12 +252,14 @@ def AvatarStickyMittenAddRigidbodyParts(builder, rigidbodyParts): builder.Prepen
 def AvatarStickyMittenStartRigidbodyPartsVector(builder, numElems): return builder.StartVector(36, numElems, 4)
 def AvatarStickyMittenAddBodyParts(builder, bodyParts): builder.PrependUOffsetTRelativeSlot(9, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(bodyParts), 0)
 def AvatarStickyMittenStartBodyPartsVector(builder, numElems): return builder.StartVector(44, numElems, 4)
-def AvatarStickyMittenAddHeldLeft(builder, heldLeft): builder.PrependUOffsetTRelativeSlot(10, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(heldLeft), 0)
+def AvatarStickyMittenAddMittenCenters(builder, mittenCenters): builder.PrependUOffsetTRelativeSlot(10, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(mittenCenters), 0)
+def AvatarStickyMittenStartMittenCentersVector(builder, numElems): return builder.StartVector(40, numElems, 4)
+def AvatarStickyMittenAddHeldLeft(builder, heldLeft): builder.PrependUOffsetTRelativeSlot(11, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(heldLeft), 0)
 def AvatarStickyMittenStartHeldLeftVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def AvatarStickyMittenAddHeldRight(builder, heldRight): builder.PrependUOffsetTRelativeSlot(11, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(heldRight), 0)
+def AvatarStickyMittenAddHeldRight(builder, heldRight): builder.PrependUOffsetTRelativeSlot(12, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(heldRight), 0)
 def AvatarStickyMittenStartHeldRightVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def AvatarStickyMittenAddAnglesLeft(builder, anglesLeft): builder.PrependUOffsetTRelativeSlot(12, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(anglesLeft), 0)
+def AvatarStickyMittenAddAnglesLeft(builder, anglesLeft): builder.PrependUOffsetTRelativeSlot(13, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(anglesLeft), 0)
 def AvatarStickyMittenStartAnglesLeftVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def AvatarStickyMittenAddAnglesRight(builder, anglesRight): builder.PrependUOffsetTRelativeSlot(13, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(anglesRight), 0)
+def AvatarStickyMittenAddAnglesRight(builder, anglesRight): builder.PrependUOffsetTRelativeSlot(14, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(anglesRight), 0)
 def AvatarStickyMittenStartAnglesRightVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def AvatarStickyMittenEnd(builder): return builder.EndObject()

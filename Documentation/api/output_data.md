@@ -223,9 +223,12 @@ Data of a Sticky Mitten Avatar.
 | `get_held_right()` | Objects held by the right mitten. | `np.array` |
 | `get_angles_left()` | The angles of each joint in the left arm. Order is: shoulder_left_pitch, shoulder_left_yaw, shoulder_left_roll, elbow_left_pitch, wrist_left_roll, wrist_left_pitch | `np.array` |
 | `get_angles_right()` | The angles of each joint in the right arm. Order is: shoulder_right_pitch, shoulder_right_yaw, shoulder_right_roll, elbow_right_pitch, wrist_right_roll, wrist_right_pitch | `np.array` |
-| `get_mitten_center_position(index)` | The position of the mitten center. | `Tuple[float, float, float]` |
-| `get_mitten_center_forward(index)` | The forward of the mitten center. | `Tuple[float, float, float]` |
-| `get_mitten_center_rotation(index)` | The rotation of the mitten center. | `Tuple[float, float, float, float]` |
+| `get_mitten_center_left_position()` | The position of the mitten center left. | `Tuple[float, float, float]` |
+| `get_mitten_center_left_forward()` | The forward of the mitten center left. | `Tuple[float, float, float]` |
+| `get_mitten_center_left_rotation()` | The rotation of the mitten center left. | `Tuple[float, float, float, float]` |
+| `get_mitten_center_right_position()` | The position of the mitten center right. | `Tuple[float, float, float]` |
+| `get_mitten_center_right_forward()` | The forward of the mitten center right. | `Tuple[float, float, float]` |
+| `get_mitten_center_right_rotation(index)` | The rotation of the mitten center right. | `Tuple[float, float, float, float]` |
 
 ## AvatarStickyMittenSegmentationColors
 

@@ -12,6 +12,23 @@
 | -------------------- | ------------------------------------------------------------ |
 | `AvatarStickyMitten` | Added functions to get the position, rotation, and forward of the center of the mittens (as opposed to the joint location. |
 
+### Example Controllers
+
+- Added: `pass_masks.py` Generate each pass mask.
+
+### Build
+
+- Fixed: `_mask` image pass doesn't work.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `command_api.md` | Added explanations and images for each `PassMask` in `set_pass_masks`. |
+| `observation_data.md` | Added a link to `set_pass_masks` documentation in the Command API. |
+
 ## v1.6.7
 
 ### `tdw` module

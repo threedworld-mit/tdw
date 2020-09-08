@@ -9,6 +9,7 @@
 - Fixed: `pick_up` and `pick_up_proximity` sometimes try to pick up StickyMittenAvatar body parts.
 - Fixed: In `AvatarSegmentationColor` output data, the ID of the root object of a StickyMittenAvatar (`A_StickyMitten_Adult(Clone)_<id>_` or `A_StickyMitten_Baby(Clone)_<id>_`) doesn't match `AvatarSegmentationColor.get_id()`.
 - Fixed: Collisions between two body parts of a StickyMittenAvatar are processed as `EnvironmentCollision` output data (they are now ignored).
+- Fixed: `teleport_object` doesn't update the positions of an object's `Bounds` data.
 
 ## v1.6.8
 

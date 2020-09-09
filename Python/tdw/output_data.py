@@ -771,7 +771,7 @@ class Raycast(OutputData):
         return self.data.ObjectId()
 
     def get_normal(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Normal)
+        return OutputData._get_xyz(self.data.Normal())
 
     def get_point(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Point)
+        return OutputData._get_xyz(self.data.Point())

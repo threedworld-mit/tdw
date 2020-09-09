@@ -4771,9 +4771,9 @@
         },
         "dining_room_table": {
             "asset_bundle_sizes": {
-                "Darwin": 4773712,
-                "Linux": 4862846,
-                "Windows": 4699737
+                "Darwin": 6048931,
+                "Linux": 6270623,
+                "Windows": 5871439
             },
             "bounds": {
                 "back": {
@@ -4822,7 +4822,7 @@
             "do_not_use_reason": "",
             "flex": true,
             "name": "dining_room_table",
-            "physics_quality": 0.8447714242731368,
+            "physics_quality": -1,
             "scale_factor": 1,
             "substructure": [
                 {

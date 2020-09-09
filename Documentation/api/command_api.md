@@ -1325,6 +1325,7 @@ Set which types of images the avatar will render. By default, the avatar will re
 | `_category` | ![](../images/pass_masks/category_0.png) The segmentation colors of each semantic object category (note that both jugs on the table have the same color). |
 | `_mask` | ![](../images/pass_masks/mask_0.png) Similar to `_id` and `_category` but every object has the same color. |
 | `_depth` | ![](../images/pass_masks/depth_0.png) Depth values per pixel. The image looks strange because it is using color rather than grayscale to encode more precisely. To decode the image, use [`TDWUtils.get_depth_values()`](../python/tdw_utils.md). |
+| `_depth_simple` | ![](../images/pass_masks/depth_simple_0.png) Depth values per pixel. This grayscale image is less precise than the `_depth` pass but is easier to use and doesn't require a conversion function, making it somewhat faster. |
 | `_normals` | ![](../images/pass_masks/normals_0.png) Surfaces are colored according to their orientation in relation to the camera. |
 | `_flow` | ![](../images/pass_masks/flow_0.png) Pixels are colored according to their motion in relation to the camera. |
 

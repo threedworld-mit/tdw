@@ -10,4 +10,5 @@ class PassMask(object):
     _depth = 16
     _normals = 32
     _flow = 64
+    _depth_simple = 128
 

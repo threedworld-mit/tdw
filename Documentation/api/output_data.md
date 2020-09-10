@@ -73,7 +73,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
-| [Raycast](#Raycast) | Information about a raycast. | `rayc` |
+| [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Rigidbodies](#Rigidbodies) | Rigibody data (velocity, mass, etc.) for objects in the scene. | `rigi` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
@@ -472,7 +472,7 @@ Mesh data from readable objects.
 
 **Identifier:** `rayc`
 
-Information about a raycast.
+A ray cast from an origin to a destination and what, if anything, it hit.
 
 | Function | Description | Return type |
 | --- | --- | --- |

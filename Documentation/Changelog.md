@@ -2,6 +2,16 @@
 
 # v1.6.x
 
+## v1.6.10
+
+### Command API
+
+#### Modified Commands
+
+| Command          | Modification                                                 |
+| ---------------- | ------------------------------------------------------------ |
+| `set_pass_masks` | Added `_depth_simple` pass. This is a grayscale image that is less precise than the `_depth` pass, but is faster and easier to use. |
+
 ## v1.6.9
 
 ### Build

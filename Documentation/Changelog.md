@@ -26,6 +26,13 @@
 | ----------- | ------------------------------------------------------------ |
 | `Raycast`   | A ray cast from an origin to a destination and what, if anything, it hit. |
 
+### Model Libraries
+
+- Added to `models_core.json` and `models_full.json`:
+  - dining_room_table
+  - flat-woven-rug
+  - framed_painting
+
 ## v1.6.9
 
 ### Build

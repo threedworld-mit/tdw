@@ -395,7 +395,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`raycast`](#raycast) | Cast a ray from the origin to the destination.  |
+| [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
 **Send Avatars Command**
@@ -4536,7 +4536,7 @@ These commands send data to the controller.
 
 ***
 
-## **`raycast`**
+## **`send_raycast`**
 
 Cast a ray from the origin to the destination. 
 
@@ -4547,11 +4547,11 @@ Cast a ray from the origin to the destination.
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
 ```python
-{"$type": "raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
 ```
 
 ```python
-{"$type": "raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "raycast_id": 0, "frequency": "once"}
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "raycast_id": 0, "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

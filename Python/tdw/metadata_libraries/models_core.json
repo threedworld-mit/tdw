@@ -5804,6 +5804,77 @@
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
+        "framed_painting": {
+            "asset_bundle_sizes": {
+                "Darwin": 635169,
+                "Linux": 839684,
+                "Windows": 443768
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.002681738,
+                    "y": 0.05328596,
+                    "z": -0.03281527
+                },
+                "bottom": {
+                    "x": 0.002681613,
+                    "y": -0.4517694,
+                    "z": -0.01376527
+                },
+                "center": {
+                    "x": 0.002681738,
+                    "y": 0.05328596,
+                    "z": -0.01376527
+                },
+                "front": {
+                    "x": 0.002681738,
+                    "y": 0.05328596,
+                    "z": 0.00528473
+                },
+                "left": {
+                    "x": -0.7593184,
+                    "y": 0.05328614,
+                    "z": -0.01376527
+                },
+                "right": {
+                    "x": 0.7646818,
+                    "y": 0.05328578,
+                    "z": -0.01376527
+                },
+                "top": {
+                    "x": 0.002681863,
+                    "y": 0.5583413,
+                    "z": -0.01376527
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "framed_painting",
+            "physics_quality": 0.9999953949307397,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "framed_painting"
+                    ],
+                    "name": "framed_painting"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/framed_painting",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/framed_painting",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/framed_painting"
+            },
+            "wcategory": "picture",
+            "wnid": "n03876519"
+        },
         "fridge_large": {
             "asset_bundle_sizes": {
                 "Darwin": 1679345,

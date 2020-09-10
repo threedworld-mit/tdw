@@ -5377,9 +5377,9 @@
         },
         "flat-woven-rug": {
             "asset_bundle_sizes": {
-                "Darwin": 1394828,
-                "Linux": 1620108,
-                "Windows": 1218518
+                "Darwin": 1394823,
+                "Linux": 1620161,
+                "Windows": 1218466
             },
             "bounds": {
                 "back": {

@@ -73,6 +73,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
+| [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Rigidbodies](#Rigidbodies) | Rigibody data (velocity, mass, etc.) for objects in the scene. | `rigi` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
@@ -464,6 +465,22 @@ Mesh data from readable objects.
 | `get_num()` | The number of objects. | `int` |
 | `get_vertices(index)` | The (x, y, z) coordinates of each vertex. | `np.array` |
 | `get_triangles(index)` | Each triangle of the mesh. | `np.array` |
+
+## Raycast
+
+`r = Raycast(byte_array)`
+
+**Identifier:** `rayc`
+
+A ray cast from an origin to a destination and what, if anything, it hit.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_raycast_id()` | The identity of this raycast. | `int` |
+| `get_hit()` | If true, the raycast hit something. | `bool` |
+| `get_object_id()` | The ID of the object hit by the raycast. If None, no object was hit (but something in the environment might have been). | `Optional[int]` |
+| `get_normal()` | The normal of the surface that the raycast hit. | `Tuple[float, float, float]` |
+| `get_point()` | The point that the raycast hit. | `Tuple[float, float, float]` |
 
 ## Rigidbodies
 

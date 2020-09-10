@@ -395,6 +395,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
 **Send Avatars Command**
@@ -1328,6 +1329,7 @@ Set which types of images the avatar will render. By default, the avatar will re
 | `_category` | ![](../images/pass_masks/category_0.png) The segmentation colors of each semantic object category (note that both jugs on the table have the same color). |
 | `_mask` | ![](../images/pass_masks/mask_0.png) Similar to `_id` and `_category` but every object has the same color. |
 | `_depth` | ![](../images/pass_masks/depth_0.png) Depth values per pixel. The image looks strange because it is using color rather than grayscale to encode more precisely. To decode the image, use [`TDWUtils.get_depth_values()`](../python/tdw_utils.md). |
+| `_depth_simple` | ![](../images/pass_masks/depth_simple_0.png) Depth values per pixel. This grayscale image is less precise than the `_depth` pass but is easier to use and doesn't require a conversion function, making it somewhat faster. The depth values aren't normalized. |
 | `_normals` | ![](../images/pass_masks/normals_0.png) Surfaces are colored according to their orientation in relation to the camera. |
 | `_flow` | ![](../images/pass_masks/flow_0.png) Pixels are colored according to their motion in relation to the camera. |
 
@@ -4537,6 +4539,43 @@ Send log messages to the controller.
 # SendDataCommand
 
 These commands send data to the controller.
+
+***
+
+## **`send_raycast`**
+
+Cast a ray from the origin to the destination. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "raycast_id": 0, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"raycast_id"` | int | The identity of this raycast. Use this to map this raycast to the output data. | 0 |
+| `"origin"` | Vector3 | The origin of the raycast. | |
+| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
 
 ***
 

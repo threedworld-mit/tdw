@@ -2,6 +2,46 @@
 
 # v1.6.x
 
+## v1.6.10
+
+### Command API
+
+#### New Commands
+
+| Command        | Description                                    |
+| -------------- | ---------------------------------------------- |
+| `send_raycast` | Cast a ray from the origin to the destination. |
+
+#### Modified Commands
+
+| Command          | Modification                                                 |
+| ---------------- | ------------------------------------------------------------ |
+| `set_pass_masks` | Added `_depth_simple` pass. This is a grayscale image that is less precise than the `_depth` pass, but is faster and easier to use. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description                                                  |
+| ----------- | ------------------------------------------------------------ |
+| `Raycast`   | A ray cast from an origin to a destination and what, if anything, it hit. |
+
+### Model Libraries
+
+- Added to `models_core.json` and `models_full.json`:
+  - dining_room_table
+  - flat-woven-rug
+  - framed_painting
+
+## v1.6.9
+
+### Build
+
+- Fixed: `pick_up` and `pick_up_proximity` sometimes try to pick up StickyMittenAvatar body parts.
+- Fixed: In `AvatarSegmentationColor` output data, the ID of the root object of a StickyMittenAvatar (`A_StickyMitten_Adult(Clone)_<id>_` or `A_StickyMitten_Baby(Clone)_<id>_`) doesn't match `AvatarSegmentationColor.get_id()`.
+- Fixed: Collisions between two body parts of a StickyMittenAvatar are processed as `EnvironmentCollision` output data (they are now ignored).
+- Fixed: `teleport_object` doesn't update the positions of an object's `Bounds` data.
+
 ## v1.6.8
 
 ### Output Data

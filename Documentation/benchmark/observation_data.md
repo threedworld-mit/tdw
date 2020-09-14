@@ -83,7 +83,11 @@ Compare the list of colors in the `_id` pass to the `SegmentationColors` object 
 
 - **The `_id` pass is slow.** In some cases, it's even slower than capturing the `_img` pass.
 
-## 3. `IdPassGrayscale`
+## 3. Other image passes
+
+See: [`set_pass_masks`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_pass_masks)
+
+## 4. `IdPassGrayscale`
 
 ```python
 grayscale = c.communicate({"$type": "send_id_pass_grayscale", "frequency": "always"})
@@ -105,7 +109,7 @@ If you know what grayscale value to expect in the frame, this will tell you how 
 
 - Limited usefulness. This object will tell you the percentage of the frame occupied by _any_ objects, but nothing else.
 
-## 4. `IdPassSegmentationColors`
+## 5. `IdPassSegmentationColors`
 
 ```python
 # Get all segmentation colors.
@@ -137,7 +141,7 @@ Compare the list of observed colors to the `SegmentationColors` object to determ
 - This will only tell you _which_ objects are in the frame, not _to what extent_ they are in the frame; if, for example, only 1 pixel is in the frame, they will still be included in the list of observed object.
 - The build scans an image for unique colors before creating the output data. The more objects are in the image, the slower the process. If there are only a few objects in the frame, `IdPassSegementationColors` is significantly faster than `Images` but it _can_ be slower if there are many objects in the frame.
 
-## 5. `Transforms` and avatar data
+## 6. `Transforms` and avatar data
 
 ```python
 transforms = c.communicate({"$type": "send_transforms", "frequency": "always"})

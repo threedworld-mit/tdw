@@ -29,8 +29,9 @@ from tdw.FBOutput import EnvironmentCollision as EnvCol
 from tdw.FBOutput import Volumes as Vol
 from tdw.FBOutput import AudioSources as Audi
 from tdw.FBOutput import AvatarChildrenNames as AvCN
+from tdw.FBOutput import Raycast as Ray
 import numpy as np
-from typing import Tuple
+from typing import Tuple, Optional
 
 
 class OutputDataUndefinedError(Exception):
@@ -213,7 +214,8 @@ class Images(OutputData):
                   PassMask.PassMask._mask: "_mask",
                   PassMask.PassMask._depth: "_depth",
                   PassMask.PassMask._normals: "_normals",
-                  PassMask.PassMask._flow: "_flow"
+                  PassMask.PassMask._flow: "_flow",
+                  PassMask.PassMask._depth_simple: "_depth_simple"
                   }
 
     def get_data(self) -> Imags.Images:
@@ -754,3 +756,23 @@ class AvatarChildrenNames(OutputData):
 
     def get_child_id(self, index: int) -> int:
         return self.data.ChildIds(index)
+
+
+class Raycast(OutputData):
+    def get_data(self) -> Ray.Raycast:
+        return Ray.Raycast.GetRootAsRaycast(self.bytes, 0)
+
+    def get_raycast_id(self) -> int:
+        return self.data.RaycastId()
+
+    def get_hit(self) -> bool:
+        return self.data.Hit()
+
+    def get_object_id(self) -> Optional[int]:
+        return self.data.ObjectId()
+
+    def get_normal(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Normal())
+
+    def get_point(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Point())

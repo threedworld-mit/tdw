@@ -2408,6 +2408,157 @@
             "wcategory": "bed",
             "wnid": "n02818832"
         },
+        "bed01_red": {
+            "asset_bundle_sizes": {
+                "Darwin": 17712835,
+                "Linux": 18196229,
+                "Windows": 17284950
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5998192,
+                    "z": -1.298669
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -0.0009120103,
+                    "z": -0.009868622
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5998191,
+                    "z": 1.278932
+                },
+                "left": {
+                    "x": -1.09682,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "right": {
+                    "x": 1.09682,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1.20055,
+                    "z": -0.00986857
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "bed01_red",
+            "physics_quality": 0.9614792390198791,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "jersey_printed_stripes"
+                    ],
+                    "name": "blanket"
+                },
+                {
+                    "materials": [
+                        "jersey_printed_stripes"
+                    ],
+                    "name": "browncordorouypillow"
+                },
+                {
+                    "materials": [
+                        "cotton_polyester_jersey_sweatshirt"
+                    ],
+                    "name": "cover002"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "dustruffle002"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "dustruffle003"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "dustruffle004"
+                },
+                {
+                    "materials": [
+                        "cotton_polyester_jersey_sweatshirt",
+                        "bronze_yellow",
+                        "dark_hardwood_blurry"
+                    ],
+                    "name": "headboard"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "mattress"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "mattress001"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "pillow02"
+                },
+                {
+                    "materials": [
+                        "pillow02"
+                    ],
+                    "name": "pillow003"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "sheet001"
+                },
+                {
+                    "materials": [
+                        "cotton_blend_multi_colored_filaments_spotted"
+                    ],
+                    "name": "toppillow"
+                },
+                {
+                    "materials": [
+                        "cotton_blend_multi_colored_filaments_spotted"
+                    ],
+                    "name": "toppillow001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/bed01_red",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bed01_red",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bed01_red"
+            },
+            "wcategory": "bed",
+            "wnid": "n02818832"
+        },
         "bee": {
             "asset_bundle_sizes": {
                 "Darwin": 492996,

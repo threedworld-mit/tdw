@@ -3958,9 +3958,9 @@
         },
         "carpet_rug": {
             "asset_bundle_sizes": {
-                "Darwin": 2545154,
-                "Linux": 2749592,
-                "Windows": 2353062
+                "Darwin": 2544984,
+                "Linux": 2749853,
+                "Windows": 2353441
             },
             "bounds": {
                 "back": {

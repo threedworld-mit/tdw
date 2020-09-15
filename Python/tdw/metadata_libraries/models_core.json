@@ -2257,6 +2257,157 @@
             "wcategory": "bed",
             "wnid": "n02818832"
         },
+        "bed01_blue": {
+            "asset_bundle_sizes": {
+                "Darwin": 5993616,
+                "Linux": 6462913,
+                "Windows": 5590820
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5998192,
+                    "z": -1.298669
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -0.0009120103,
+                    "z": -0.009868622
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5998191,
+                    "z": 1.278932
+                },
+                "left": {
+                    "x": -1.09682,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "right": {
+                    "x": 1.09682,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1.20055,
+                    "z": -0.00986857
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "bed01_blue",
+            "physics_quality": 0.9614792390198791,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "blanket"
+                    ],
+                    "name": "blanket"
+                },
+                {
+                    "materials": [
+                        "cordorouy_color"
+                    ],
+                    "name": "browncordorouypillow"
+                },
+                {
+                    "materials": [
+                        "duvetwrinkles_color"
+                    ],
+                    "name": "cover002"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "dustruffle002"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "dustruffle003"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "dustruffle004"
+                },
+                {
+                    "materials": [
+                        "brown_leather",
+                        "bronze_yellow",
+                        "dark_hardwood_blurry"
+                    ],
+                    "name": "headboard"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "mattress"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "mattress001"
+                },
+                {
+                    "materials": [
+                        "pillow02"
+                    ],
+                    "name": "pillow02"
+                },
+                {
+                    "materials": [
+                        "pillow02"
+                    ],
+                    "name": "pillow003"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "sheet001"
+                },
+                {
+                    "materials": [
+                        "top-left-pillow - copy_color"
+                    ],
+                    "name": "toppillow"
+                },
+                {
+                    "materials": [
+                        "top-left-pillow - copy_color"
+                    ],
+                    "name": "toppillow001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/bed01_blue",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bed01_blue",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bed01_blue"
+            },
+            "wcategory": "bed",
+            "wnid": "n02818832"
+        },
         "bee": {
             "asset_bundle_sizes": {
                 "Darwin": 492996,

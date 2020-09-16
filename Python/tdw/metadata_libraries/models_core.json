@@ -1,6 +1,101 @@
 {
     "description": "A small library of models.",
     "records": {
+        "36_in_wall_cabinet_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 3901040,
+                "Linux": 4123217,
+                "Windows": 3712949
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004367232,
+                    "y": 0.3812218,
+                    "z": -0.3078008
+                },
+                "bottom": {
+                    "x": -0.0004367232,
+                    "y": 4.544563e-09,
+                    "z": -0.1039675
+                },
+                "center": {
+                    "x": -0.0004367232,
+                    "y": 0.3812218,
+                    "z": -0.1039675
+                },
+                "front": {
+                    "x": -0.0004367232,
+                    "y": 0.3812218,
+                    "z": 0.0998659
+                },
+                "left": {
+                    "x": -0.4552296,
+                    "y": 0.3812218,
+                    "z": -0.1039675
+                },
+                "right": {
+                    "x": 0.4543562,
+                    "y": 0.3812218,
+                    "z": -0.1039675
+                },
+                "top": {
+                    "x": -0.0004367232,
+                    "y": 0.7624435,
+                    "z": -0.1039675
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "36_in_wall_cabinet_wood_beach_honey",
+            "physics_quality": 0.9910154488681582,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "36_in_wall_cabinet 1"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_l001"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_r001"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle005"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle006"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/36_in_wall_cabinet_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/36_in_wall_cabinet_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/36_in_wall_cabinet_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "afl_lamp": {
             "asset_bundle_sizes": {
                 "Darwin": 127921,

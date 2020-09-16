@@ -3954,6 +3954,113 @@
             "wcategory": "sculpture",
             "wnid": "n04157320"
         },
+        "cabinet_24_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 4250137,
+                "Linux": 4475781,
+                "Windows": 4100768
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0002901256,
+                    "y": 0.4583918,
+                    "z": -0.3212248
+                },
+                "bottom": {
+                    "x": -0.0002901256,
+                    "y": -1.588253e-15,
+                    "z": 0
+                },
+                "center": {
+                    "x": -0.0002901256,
+                    "y": 0.4583918,
+                    "z": 2.003694e-08
+                },
+                "front": {
+                    "x": -0.0002901256,
+                    "y": 0.4583918,
+                    "z": 0.3212249
+                },
+                "left": {
+                    "x": -0.3039455,
+                    "y": 0.4583918,
+                    "z": 2.003694e-08
+                },
+                "right": {
+                    "x": 0.3033652,
+                    "y": 0.4583918,
+                    "z": 2.003694e-08
+                },
+                "top": {
+                    "x": -0.0002901256,
+                    "y": 0.9167836,
+                    "z": 4.007388e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_wood_beach_honey",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "24_in_cabinet"
+                },
+                {
+                    "materials": [
+                        "granite_black"
+                    ],
+                    "name": "countertop_24"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_l_24"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_r_24"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle2"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "toekick_24"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_24_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "cabinet_36_wood_beach_honey": {
             "asset_bundle_sizes": {
                 "Darwin": 4252649,

@@ -3954,6 +3954,97 @@
             "wcategory": "sculpture",
             "wnid": "n04157320"
         },
+        "cabinet_24_door_drawer_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 4258245,
+                "Linux": 4476077,
+                "Windows": 4074623
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": -0.3212248
+                },
+                "bottom": {
+                    "x": -0.0004368722,
+                    "y": -5.966891e-11,
+                    "z": 0.001365066
+                },
+                "center": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": 0.001365086
+                },
+                "front": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": 0.323955
+                },
+                "left": {
+                    "x": -0.3040921,
+                    "y": 0.4583918,
+                    "z": 0.001365086
+                },
+                "right": {
+                    "x": 0.3032184,
+                    "y": 0.4583918,
+                    "z": 0.001365086
+                },
+                "top": {
+                    "x": -0.0004368722,
+                    "y": 0.9167836,
+                    "z": 0.001365106
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_door_drawer_wood_beach_honey",
+            "physics_quality": 0.9971714248825333,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "24_in_cabinet002"
+                },
+                {
+                    "materials": [
+                        "granite_black"
+                    ],
+                    "name": "countertop_026"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "steel_galvanized"
+                    ],
+                    "name": "door_l_026"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "steel_galvanized"
+                    ],
+                    "name": "drawer"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_24_door_drawer_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_door_drawer_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_door_drawer_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "cabinet_24_singledoor_wood_beach_honey": {
             "asset_bundle_sizes": {
                 "Darwin": 4240226,

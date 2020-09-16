@@ -2410,9 +2410,9 @@
         },
         "bed01_red": {
             "asset_bundle_sizes": {
-                "Darwin": 17712835,
-                "Linux": 18196229,
-                "Windows": 17284950
+                "Darwin": 18314127,
+                "Linux": 18865470,
+                "Windows": 17821106
             },
             "bounds": {
                 "back": {

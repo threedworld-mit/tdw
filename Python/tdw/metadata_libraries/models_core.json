@@ -4905,6 +4905,113 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "cabinet_36_white_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 4183676,
+                "Linux": 4530793,
+                "Windows": 3899290
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004367232,
+                    "y": 0.4585204,
+                    "z": -0.3212248
+                },
+                "bottom": {
+                    "x": -0.0004367232,
+                    "y": -2.361536e-15,
+                    "z": 2.980232e-08
+                },
+                "center": {
+                    "x": -0.0004367232,
+                    "y": 0.4585204,
+                    "z": 4.984489e-08
+                },
+                "front": {
+                    "x": -0.0004367232,
+                    "y": 0.4585204,
+                    "z": 0.3212249
+                },
+                "left": {
+                    "x": -0.4553763,
+                    "y": 0.4585204,
+                    "z": 4.984489e-08
+                },
+                "right": {
+                    "x": 0.4545028,
+                    "y": 0.4585204,
+                    "z": 4.984489e-08
+                },
+                "top": {
+                    "x": -0.0004367232,
+                    "y": 0.9170408,
+                    "z": 6.988745e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_36_white_wood",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "36_in_cabinet"
+                },
+                {
+                    "materials": [
+                        "granite_beige_french"
+                    ],
+                    "name": "countertop"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_l"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_r"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle003"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle004"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "toekick"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_36_white_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_36_white_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_36_white_wood"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "cabinet_36_wood_beach_honey": {
             "asset_bundle_sizes": {
                 "Darwin": 4252649,

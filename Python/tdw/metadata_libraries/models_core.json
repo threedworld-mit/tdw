@@ -4509,6 +4509,97 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "cabinet_24_two_drawer_white_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 4177627,
+                "Linux": 4526062,
+                "Windows": 3899730
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": -0.3137041
+                },
+                "bottom": {
+                    "x": -0.0004368722,
+                    "y": -1.643683e-10,
+                    "z": 0.003760308
+                },
+                "center": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": 0.003760328
+                },
+                "front": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": 0.3212248
+                },
+                "left": {
+                    "x": -0.3040921,
+                    "y": 0.4583918,
+                    "z": 0.003760328
+                },
+                "right": {
+                    "x": 0.3032184,
+                    "y": 0.4583918,
+                    "z": 0.003760328
+                },
+                "top": {
+                    "x": -0.0004368722,
+                    "y": 0.9167836,
+                    "z": 0.003760348
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_two_drawer_white_wood",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "24_in_cabinet003"
+                },
+                {
+                    "materials": [
+                        "granite_beige_french"
+                    ],
+                    "name": "countertop_027"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "bronze_yellow"
+                    ],
+                    "name": "drawer001"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "bronze_yellow"
+                    ],
+                    "name": "drawer002"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_24_two_drawer_white_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_two_drawer_white_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_two_drawer_white_wood"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "cabinet_24_two_drawer_wood_beach_honey": {
             "asset_bundle_sizes": {
                 "Darwin": 4251043,

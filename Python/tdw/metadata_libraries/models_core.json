@@ -5119,6 +5119,84 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "cabinet_full_height_white_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 3720358,
+                "Linux": 4063336,
+                "Windows": 3441723
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0005837977,
+                    "y": 1.034117,
+                    "z": -0.3205672
+                },
+                "bottom": {
+                    "x": -0.0005837977,
+                    "y": 2.974326e-15,
+                    "z": 8.940697e-08
+                },
+                "center": {
+                    "x": -0.0005837977,
+                    "y": 1.034117,
+                    "z": 1.346097e-07
+                },
+                "front": {
+                    "x": -0.0005837977,
+                    "y": 1.034117,
+                    "z": 0.3205675
+                },
+                "left": {
+                    "x": -0.3034712,
+                    "y": 1.034117,
+                    "z": 1.346097e-07
+                },
+                "right": {
+                    "x": 0.3023036,
+                    "y": 1.034117,
+                    "z": 1.346097e-07
+                },
+                "top": {
+                    "x": -0.0005837977,
+                    "y": 2.068235,
+                    "z": 1.798124e-07
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_full_height_white_wood",
+            "physics_quality": 0.9942821220626263,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "24_in_cabinet004"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "bronze_yellow"
+                    ],
+                    "name": "door_l_028"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_full_height_white_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_full_height_white_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_full_height_white_wood"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "cabinet_full_height_wood_beach_honey": {
             "asset_bundle_sizes": {
                 "Darwin": 3891636,

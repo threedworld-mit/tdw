@@ -8009,6 +8009,78 @@
             "wcategory": "refrigerator",
             "wnid": "n04070727"
         },
+        "fruit_basket": {
+            "asset_bundle_sizes": {
+                "Darwin": 822089,
+                "Linux": 1044343,
+                "Windows": 645160
+            },
+            "bounds": {
+                "back": {
+                    "x": -8.563369e-05,
+                    "y": 0.4131247,
+                    "z": -0.02684217
+                },
+                "bottom": {
+                    "x": -8.583069e-05,
+                    "y": 5.331034e-10,
+                    "z": -0.01125968
+                },
+                "center": {
+                    "x": -8.563369e-05,
+                    "y": 0.4131247,
+                    "z": -0.01125966
+                },
+                "front": {
+                    "x": -8.563369e-05,
+                    "y": 0.4131247,
+                    "z": 0.004322852
+                },
+                "left": {
+                    "x": -0.5774764,
+                    "y": 0.413125,
+                    "z": -0.01125966
+                },
+                "right": {
+                    "x": 0.5773051,
+                    "y": 0.4131245,
+                    "z": -0.01125966
+                },
+                "top": {
+                    "x": -8.54367e-05,
+                    "y": 0.8262495,
+                    "z": -0.01125964
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "fruit_basket",
+            "physics_quality": 0.9999985350303543,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_black",
+                        "fruit_basket_painting"
+                    ],
+                    "name": "fruit_basket"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/fruit_basket",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/fruit_basket",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/fruit_basket"
+            },
+            "wcategory": "painting",
+            "wnid": "n00609236"
+        },
         "glass1": {
             "asset_bundle_sizes": {
                 "Darwin": 205549,

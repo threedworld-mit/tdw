@@ -14814,6 +14814,137 @@
             "wcategory": "painting",
             "wnid": "n00609236"
         },
+        "sink_base_white_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 4195484,
+                "Linux": 4539973,
+                "Windows": 3907567
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004091263,
+                    "y": 0.4583918,
+                    "z": -0.3212248
+                },
+                "bottom": {
+                    "x": -0.0004091263,
+                    "y": -1.832119e-15,
+                    "z": 2.980232e-08
+                },
+                "center": {
+                    "x": -0.0004091263,
+                    "y": 0.4583918,
+                    "z": 4.983927e-08
+                },
+                "front": {
+                    "x": -0.0004091263,
+                    "y": 0.4583918,
+                    "z": 0.3212249
+                },
+                "left": {
+                    "x": -0.7588295,
+                    "y": 0.4583918,
+                    "z": 4.983927e-08
+                },
+                "right": {
+                    "x": 0.7580112,
+                    "y": 0.4583918,
+                    "z": 4.983927e-08
+                },
+                "top": {
+                    "x": -0.0004091263,
+                    "y": 0.9167836,
+                    "z": 6.987621e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "sink_base_white_wood",
+            "physics_quality": 0.9960380068762632,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "36_in_cabinet001"
+                },
+                {
+                    "materials": [
+                        "granite_beige_french"
+                    ],
+                    "name": "countertop001"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_l002"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_r002"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_r003"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_r004"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle009"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle010"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle011"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle012"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "toekick001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/sink_base_white_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/sink_base_white_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/sink_base_white_wood"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "sink_base_wood_beach_honey": {
             "asset_bundle_sizes": {
                 "Darwin": 4259426,

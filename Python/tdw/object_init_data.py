@@ -14,9 +14,7 @@ class TransformInitData:
     for _lib_file in ModelLibrarian.get_library_filenames():
         _LIBRARIES[_lib_file] = ModelLibrarian(_lib_file)
 
-    def __init__(self, name: str, library: str = "models_core.json", scale_factor: Dict[str, float] = None,
-                 position: Dict[str, float] = None, rotation: Dict[str, float] = None, kinematic: bool = False,
-                 gravity: bool = True):
+    def __init__(self, name: str, library: str = "models_core.json", scale_factor: Dict[str, float] = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True):
         """
         :param name: The name of the model.
         :param library: The filename of the library containing the model's record.
@@ -85,10 +83,7 @@ class RigidbodyInitData(TransformInitData):
     A subclass of `TransformInitData`. Includes data and commands to set the mass and physic material of the object.
     """
 
-    def __init__(self, name: str, mass: float, dynamic_friction: float, static_friction: float,
-                 bounciness: float, library: str = "models_core.json",
-                 scale_factor: Dict[str, float] = None, position: Dict[str, float] = None,
-                 rotation: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True):
+    def __init__(self, name: str, mass: float, dynamic_friction: float, static_friction: float, bounciness: float, library: str = "models_core.json", scale_factor: Dict[str, float] = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True):
         """
         :param name: The name of the model.
         :param library: The filename of the library containing the model's record.
@@ -142,9 +137,7 @@ class AudioInitData(RigidbodyInitData):
                         AudioMaterial.metal: 0.52}
     AUDIO = PyImpact.get_object_info()
 
-    def __init__(self, name: str, library: str = "models_core.json", scale_factor: Dict[str, float] = None,
-                 position: Dict[str, float] = None, rotation: Dict[str, float] = None, kinematic: bool = False,
-                 gravity: bool = True, audio: ObjectInfo = None):
+    def __init__(self, name: str, library: str = "models_core.json", scale_factor: Dict[str, float] = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, audio: ObjectInfo = None):
         """
         :param name: The name of the model.
         :param library: The filename of the library containing the model's record.

@@ -11,8 +11,8 @@ class TransformInitData:
     """
 
     _LIBRARIES: Dict[str, ModelLibrarian] = dict()
-    for lib_file in ModelLibrarian.get_library_filenames():
-        _LIBRARIES[lib_file] = ModelLibrarian(lib_file)
+    for _lib_file in ModelLibrarian.get_library_filenames():
+        _LIBRARIES[_lib_file] = ModelLibrarian(_lib_file)
 
     def __init__(self, name: str, library: str = "models_core.json", scale_factor: Dict[str, float] = None,
                  position: Dict[str, float] = None, rotation: Dict[str, float] = None, kinematic: bool = False,

@@ -28,9 +28,7 @@ class FloorplanController(Controller):
 
         | `scene` | `layout` |
         | --- | --- |
-        | 2a | 0 |
-        | 2b | 0 |
-        | 2c | 0 |
+        | `"2a"`, `"2b"`, or `"2b"` | 0 |
 
         :param scene: The name of the scene. Corresponds to a record named: `floorplan_[scene]`.
         :param layout: The layout index.

@@ -1,7 +1,7 @@
 from typing import Dict, List, Tuple
-from tdw.librarian import ModelRecord
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
+from tdw.librarian import ModelLibrarian
 from tdw.py_impact import AudioMaterial, PyImpact, ObjectInfo
 
 
@@ -10,15 +10,21 @@ class TransformInitData:
     Basic initialization parameters for an object. Can be converted to and from a list of commands.
     """
 
-    def __init__(self, record: ModelRecord, scale_factor: Dict[str, float] = None, position: Dict[str, float] = None,
-                 rotation: Dict[str, float] = None, kinematic: bool = False, use_gravity: bool = True):
+    _LIBRARIES: Dict[str, ModelLibrarian] = dict()
+    for lib_file in ModelLibrarian.get_library_filenames():
+        _LIBRARIES[lib_file] = ModelLibrarian(lib_file)
+
+    def __init__(self, name: str, library: str = "models_core.json", scale_factor: Dict[str, float] = None,
+                 position: Dict[str, float] = None, rotation: Dict[str, float] = None, kinematic: bool = False,
+                 gravity: bool = True):
         """
-        :param record: The model record.
+        :param name: The name of the model.
+        :param library: The filename of the library containing the model's record.
         :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
         :param position: The initial position. If None, defaults to: `{"x": 0, "y": 0, "z": 0`}.
         :param rotation: The initial rotation as a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}`
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
-        :param use_gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
+        :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
         """
 
         if position is None:
@@ -33,22 +39,25 @@ class TransformInitData:
             self.scale_factor = {"x": 1, "y": 1, "z": 1}
         else:
             self.scale_factor = scale_factor
-        self.record = record
+        self.name = name
+        self.library = library
         self.kinematic = kinematic
-        self.use_gravity = use_gravity
+        self.gravity = gravity
 
     def get_commands(self) -> Tuple[int, List[dict]]:
         """
         :return: The ID of the object, and a list of commands to create the object.
         """
 
+        record = TransformInitData._LIBRARIES[self.library].get_record(name=self.name)
+
         object_id = Controller.get_unique_id()
         commands = [{"$type": "add_object",
-                     "name": self.record.name,
-                     "url": self.record.get_url(),
-                     "scale_factor": self.record.scale_factor,
+                     "name": record.name,
+                     "url": record.get_url(),
+                     "scale_factor": record.scale_factor,
                      "position": self.position,
-                     "category": self.record.wcategory,
+                     "category": record.wcategory,
                      "id": object_id},
                     {"$type": "rotate_object_to",
                      "rotation": self.rotation,
@@ -59,7 +68,7 @@ class TransformInitData:
                     {"$type": "set_kinematic_state",
                      "id": object_id,
                      "is_kinematic": self.kinematic,
-                     "use_gravity": self.use_gravity}]
+                     "use_gravity": self.gravity}]
         # Kinematic objects must be continuous_speculative.
         if self.kinematic:
             detection_mode = "continuous_speculative"
@@ -76,22 +85,24 @@ class RigidbodyInitData(TransformInitData):
     A subclass of `TransformInitData`. Includes data and commands to set the mass and physic material of the object.
     """
 
-    def __init__(self, record: ModelRecord, mass: float, dynamic_friction: float, static_friction: float,
-                 bounciness: float, scale_factor: Dict[str, float] = None, position: Dict[str, float] = None,
-                 rotation: Dict[str, float] = None, kinematic: bool = False, use_gravity: bool = True):
+    def __init__(self, name: str, mass: float, dynamic_friction: float, static_friction: float,
+                 bounciness: float, library: str = "models_core.json",
+                 scale_factor: Dict[str, float] = None, position: Dict[str, float] = None,
+                 rotation: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True):
         """
-        :param record: The model record.
+        :param name: The name of the model.
+        :param library: The filename of the library containing the model's record.
         :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
         :param position: The initial position. If None, defaults to: `{"x": 0, "y": 0, "z": 0`}.
         :param rotation: The initial rotation as a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}`
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
-        :param use_gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
+        :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
         :param mass: The mass of the object.
         :param dynamic_friction: The [dynamic friction](../api/command_api.md#set_physic_material) of the object.
         """
 
-        super().__init__(record=record, scale_factor=scale_factor, position=position, rotation=rotation,
-                         kinematic=kinematic, use_gravity=use_gravity)
+        super().__init__(name=name, library=library, scale_factor=scale_factor, position=position, rotation=rotation,
+                         kinematic=kinematic, gravity=gravity)
         self.mass = mass
         self.dynamic_friction = dynamic_friction
         self.static_friction = static_friction
@@ -131,25 +142,26 @@ class AudioInitData(RigidbodyInitData):
                         AudioMaterial.metal: 0.52}
     AUDIO = PyImpact.get_object_info()
 
-    def __init__(self, record: ModelRecord, scale_factor: Dict[str, float] = None, position: Dict[str, float] = None,
-                 rotation: Dict[str, float] = None, kinematic: bool = False, use_gravity: bool = True,
-                 audio: ObjectInfo = None):
+    def __init__(self, name: str, library: str = "models_core.json", scale_factor: Dict[str, float] = None,
+                 position: Dict[str, float] = None, rotation: Dict[str, float] = None, kinematic: bool = False,
+                 gravity: bool = True, audio: ObjectInfo = None):
         """
-        :param record: The model record.
+        :param name: The name of the model.
+        :param library: The filename of the library containing the model's record.
         :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
         :param position: The initial position. If None, defaults to: `{"x": 0, "y": 0, "z": 0`}.
         :param rotation: The initial rotation as a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}`
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
-        :param use_gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
+        :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
         :param audio: If not None, use these values instead of the default audio values.
         """
 
         if audio is None:
-            self.audio = AudioInitData.AUDIO[record.name]
+            self.audio = AudioInitData.AUDIO[name]
         else:
             self.audio = audio
-        super().__init__(record=record, scale_factor=scale_factor, position=position, rotation=rotation,
-                         kinematic=kinematic, use_gravity=use_gravity, mass=self.audio.mass,
+        super().__init__(name=name, library=library, scale_factor=scale_factor, position=position, rotation=rotation,
+                         kinematic=kinematic, gravity=gravity, mass=self.audio.mass,
                          dynamic_friction=AudioInitData._DYNAMIC_FRICTION[self.audio.material],
                          static_friction=AudioInitData._STATIC_FRICTION[self.audio.material],
                          bounciness=self.audio.bounciness)

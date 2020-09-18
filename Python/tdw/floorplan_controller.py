@@ -42,7 +42,7 @@ class FloorplanController(Controller):
         self.layout = str(layout)
         self.audio = audio
 
-        floorplans = loads(Path(resource_filename(__name__, "floorplans/floorplan_layouts.json")).
+        floorplans = loads(Path(resource_filename(__name__, "floorplan_layouts.json")).
                            read_text(encoding="utf-8"))
         if self.scene not in floorplans:
             raise Exception(f"Floorplan not found: {self.scene}")
@@ -66,5 +66,6 @@ class FloorplanController(Controller):
         commands = [self.get_add_scene(scene_name=f"floorplan_{self.scene}")]
         # Get the commands to initialize each object.
         for o in self.objects:
-            commands.extend(o.get_commands())
+            object_id, object_commands = o.get_commands()
+            commands.extend(object_commands)
         return commands

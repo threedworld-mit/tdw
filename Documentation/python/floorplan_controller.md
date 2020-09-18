@@ -23,6 +23,8 @@ Valid scenes and layouts:
 | `scene` | `layout` |
 | --- | --- |
 | 2a | 0 |
+| 2b | 0 |
+| 2c | 0 |
 
 | Parameter | Description |
 | --- | --- |

@@ -2,6 +2,41 @@
 
 # v1.6.x
 
+## v1.6.11
+
+### Model Library
+
+- Added to `models_core.json` and `models_full.json`:
+  - 24_in_wall_cabinet_white_wood
+  - 24_in_wall_cabinet_wood_beach_honey
+  - 36_in_wall_cabinet_white_wood
+  - 36_in_wall_cabinet_wood_beach_honey
+  - bed01
+  - bed01_blue
+  - bed01_red
+  - blue_rug
+  - cabinet_24_door_drawer_wood_beach_honey
+  - cabinet_24_singledoor_wood_beach_honey
+  - cabinet_24_two_drawer_white_wood
+  - cabinet_24_two_drawer_wood_beach_honey
+  - cabinet_24_white_wood
+  - cabinet_24_wood_beach_honey
+  - cabinet_36_white_wood
+  - cabinet_36_wood_beach_honey
+  - cabinet_full_height_white_wood
+  - cabinet_full_height_wood_beach_honey
+  - carpet_rug
+  - elf_painting
+  - flat_woven_rug
+  - fruit_basket
+  - its_about_time_painting
+  - purple_woven_rug
+  - silver_frame_painting
+  - sink_base_white_wood
+  - sink_base_wood_beach_honey
+- Removed from `models_core.json` and `models_full.json`:
+  - `flat-woven-rug`
+
 ## v1.6.10
 
 ### Command API

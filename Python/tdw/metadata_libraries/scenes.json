@@ -154,6 +154,17 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/tdw_room_2018",
                 "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/tdw_room_2018"
             }
+        },
+		"floorplan_3": {
+            "description": "An multi-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "floorplan_3",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_3"
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ class FloorplanController(Controller):
 
         :param scene: The name of the scene. Corresponds to a record named: `floorplan_[scene]`.
         :param layout: The layout index.
-        :param audio: If True, i..0nstantiate physics values per object from audio properties.
+        :param audio: If True, instantiate physics values per object from audio properties.
 
         :return: A list of commands to initialize the scene and populate it with objects.
         """

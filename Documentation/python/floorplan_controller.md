@@ -28,7 +28,7 @@ Valid scenes and layouts:
 | --- | --- |
 | scene | The name of the scene. Corresponds to a record named: `floorplan_[scene]`. |
 | layout | The layout index. |
-| audio | If True, i..0nstantiate physics values per object from audio properties. |
+| audio | If True, instantiate physics values per object from audio properties. |
 
 _Returns:_  A list of commands to initialize the scene and populate it with objects.
 

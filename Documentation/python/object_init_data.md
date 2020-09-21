@@ -19,7 +19,7 @@ This is similar to [`Controller.get_add_object()`](controller.md) except that it
 | library | The filename of the library containing the model's record. |
 | scale_factor | The [scale factor](../api/command_api.md#scale_object). |
 | position | The initial position. If None, defaults to: `{"x": 0, "y": 0, "z": 0`}. |
-| rotation | The initial rotation as a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}` |
+| rotation | The initial rotation as Euler angles or a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}` |
 | kinematic | If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state). |
 | gravity | If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state). |
 
@@ -48,7 +48,7 @@ A subclass of `TransformInitData`. Includes data and commands to set the mass an
 | library | The filename of the library containing the model's record. |
 | scale_factor | The [scale factor](../api/command_api.md#scale_object). |
 | position | The initial position. If None, defaults to: `{"x": 0, "y": 0, "z": 0`}. |
-| rotation | The initial rotation as a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}` |
+| rotation | The initial rotation as Euler angles or a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}` |
 | kinematic | If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state). |
 | gravity | If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state). |
 | mass | The mass of the object. |
@@ -80,7 +80,7 @@ Physics values are derived from these audio values.
 | library | The filename of the library containing the model's record. |
 | scale_factor | The [scale factor](../api/command_api.md#scale_object). |
 | position | The initial position. If None, defaults to: `{"x": 0, "y": 0, "z": 0`}. |
-| rotation | The initial rotation as a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}` |
+| rotation | The initial rotation as Euler angles or a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}` |
 | kinematic | If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state). |
 | gravity | If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state). |
 | audio | If None, derive physics data from the audio data in `PyImpact.get_object_info()` (if the object isn't in this dictionary, this constructor will throw an error). If not None, use these values instead of the default audio values. |

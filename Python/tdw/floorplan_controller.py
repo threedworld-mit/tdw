@@ -38,16 +38,17 @@ class FloorplanController(Controller):
         """
 
         scene = scene
+        scene_index = scene[0]
         layout = str(layout)
 
         floorplans = loads(Path(resource_filename(__name__, "floorplan_layouts.json")).
                            read_text(encoding="utf-8"))
-        if scene not in floorplans:
-            raise Exception(f"Floorplan not found: {scene}")
-        if layout not in floorplans[scene]:
+        if scene_index not in floorplans:
+            raise Exception(f"Floorplan not found: {scene_index}")
+        if layout not in floorplans[scene_index]:
             raise Exception(f"Layout not found: {layout}")
 
-        objects = floorplans[scene][layout]
+        objects = floorplans[scene_index][layout]
 
         commands = [self.get_add_scene(scene_name=f"floorplan_{scene}"),
                     {"$type": "set_aperture",

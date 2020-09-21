@@ -32,7 +32,7 @@ class ObjectInfo:
     The audio values here are just recommendations; you can apply different values if you want.
     """
 
-    def __init__(self, name: str, amp: float, mass: float, material: AudioMaterial, library: str, bounciness: float, damping: float):
+    def __init__(self, name: str, amp: float, mass: float, material: AudioMaterial, library: str, bounciness: float, resonance: float):
         """
         :param name: The model name.
         :param amp: The sound amplitude.
@@ -40,7 +40,7 @@ class ObjectInfo:
         :param material: The audio material.
         :param library: The path to the model library (see ModelLibrarian documentation).
         :param bounciness: The bounciness value for a Unity physics material.
-        :param damping: The damping value for the object.
+        :param resonance: The resonance value for the object.
         """
 
         self.amp = amp
@@ -49,7 +49,7 @@ class ObjectInfo:
         self.material = material
         self.name = name
         self.bounciness = bounciness
-        self.damping = damping
+        self.resonance = resonance
 
 
 # Density per audio material.
@@ -101,7 +101,7 @@ class Modes:
         self.powers = powers
         self.decay_times = decay_times
 
-    def sum_modes(self, fs: int = 44100, damping: float = 1.0) -> np.array:
+    def sum_modes(self, fs: int = 44100, resonance: float = 1.0) -> np.array:
         """
         Create mode time-series from mode properties and sum them together.
 
@@ -121,7 +121,7 @@ class Modes:
             # synthesize a sinusoid
             mode = np.cos(2 * math.pi * self.frequencies[i] * tt)
             mode = mode * (10 ** (self.powers[i] / 20))
-            dcy = tt * (60 / (self.decay_times[i] * damping / 1e3))
+            dcy = tt * (60 / (self.decay_times[i] * resonance / 1e3))
             env = 10 ** (-dcy / 20)
             mode = mode * env
             if i == 0:
@@ -241,9 +241,6 @@ class CollisionTypesOnFrame:
 
         collisions, env_collisions, rigidbodies = PyImpact.get_collisions(resp)
 
-        self.coll = collisions
-        self.rig = rigidbodies
-
         # The type of collision with each collidee.
         self.collisions: Dict[int, CollisionType] = dict()
         # The type of environment collision, if any.
@@ -299,13 +296,6 @@ class CollisionTypesOnFrame:
                 return CollisionType.scrape
         else:
             return CollisionType.none
-
-
-    def get_coll(self):
-        return self.coll
-
-    def get_rig(self):
-        return self.rig
 
 
 class PyImpact:
@@ -393,7 +383,7 @@ class PyImpact:
                 t = np.append(t, jt * 1e3)
         return Modes(f, p, t)
 
-    def get_sound(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, id1: int, mat1: str, id2: int, mat2: str, amp2re1: float, damping: float) -> Optional[Base64Sound]:
+    def get_sound(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, id1: int, mat1: str, id2: int, mat2: str, amp2re1: float, resonance: float) -> Optional[Base64Sound]:
         """
         Produce sound of two colliding objects as a byte array.
 
@@ -463,13 +453,13 @@ class PyImpact:
         # Re-scale the amplitude.
         if self.object_modes[id2][id1].count == 0:
             # Sample the modes.
-            sound, modes_1, modes_2 = self.make_impact_audio(amp2re1, mass, mat1=mat1, mat2=mat2, id1=id1, id2=id2, damping=damping)
+            sound, modes_1, modes_2 = self.make_impact_audio(amp2re1, mass, mat1=mat1, mat2=mat2, id1=id1, id2=id2, resonance=resonance)
             # Save collision info - we will need for later collisions.
             amp = self.object_modes[id2][id1].amp
             self.object_modes[id2][id1].init_speed = normal_speed
             self.object_modes[id2][id1].obj1_modes = modes_1
             self.object_modes[id2][id1].obj2_modes = modes_2
-            #print("In count 0 block; count = " + str(self.object_modes[id2][id1].count) + ", id1 = " + str(id1) + ", id2 = " + str(id2))
+
         else:
             amp = self.object_modes[id2][id1].amp * normal_speed / self.object_modes[id2][id1].init_speed
             # Adjust modes here so that two successive impacts are not identical.
@@ -477,10 +467,10 @@ class PyImpact:
             modes_2 = self.object_modes[id2][id1].obj2_modes
             modes_1.powers = modes_1.powers + np.random.normal(0, 2, len(modes_1.powers))
             modes_2.powers = modes_2.powers + np.random.normal(0, 2, len(modes_2.powers))
-            sound = PyImpact.synth_impact_modes(modes_1, modes_2, mass, damping)
+            sound = PyImpact.synth_impact_modes(modes_1, modes_2, mass, resonance)
             self.object_modes[id2][id1].obj1_modes = modes_1
             self.object_modes[id2][id1].obj2_modes = modes_2
-            #print("In other block; count = " + str(self.object_modes[id2][id1].count) + ", id1 = " + str(id1) + ", id2 = " + str(id2))
+
         if self.logging == True:
             mode_props = dict()
             self.log_modes(self.object_modes[id2][id1].count, mode_props, id1, id2, modes_1, modes_2, amp, str(mat1), str(mat2))
@@ -499,7 +489,7 @@ class PyImpact:
         sound = amp * sound / np.max(np.abs(sound))
         return Base64Sound(sound)
 
-    def get_impact_sound_command(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, target_id: int, target_mat: str, target_amp: float, other_id: int, other_mat: str, other_amp: float, damping: float, play_audio_data: bool = True) -> dict:
+    def get_impact_sound_command(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, target_id: int, target_mat: str, target_amp: float, other_id: int, other_mat: str, other_amp: float, resonance: float, play_audio_data: bool = True) -> dict:
         """
         Create an impact sound, and return a valid command to play audio data in TDW.
         "target" should usually be the smaller object, which will play the sound.
@@ -520,7 +510,7 @@ class PyImpact:
 
         amp2re1 = other_amp / target_amp
 
-        impact_audio = self.get_sound(collision, rigidbodies, other_id, other_mat, target_id, target_mat, amp2re1, damping)
+        impact_audio = self.get_sound(collision, rigidbodies, other_id, other_mat, target_id, target_mat, amp2re1, resonance)
         if impact_audio is not None:
             return {"$type": "play_audio_data" if play_audio_data else "play_point_source_data",
                     "id": target_id,
@@ -534,7 +524,7 @@ class PyImpact:
             return {"$type": "do_nothing"}
 
 
-    def make_impact_audio(self, amp2re1: float, mass: float, id1: int, id2: int, damping: float, mat1: str = 'cardboard', mat2: str = 'cardboard') -> (np.array, Modes, Modes):
+    def make_impact_audio(self, amp2re1: float, mass: float, id1: int, id2: int, resonance: float, mat1: str = 'cardboard', mat2: str = 'cardboard') -> (np.array, Modes, Modes):
         """
         Generate an impact sound.
 
@@ -561,12 +551,12 @@ class PyImpact:
         modes_2 = self.object_modes[id2][id1].obj2_modes
         # Scale the two sounds as specified.
         modes_2.decay_times = modes_2.decay_times + 20 * np.log10(amp2re1)
-        snth = PyImpact.synth_impact_modes(modes_1, modes_2, mass, damping)
+        snth = PyImpact.synth_impact_modes(modes_1, modes_2, mass, resonance)
         return snth, modes_1, modes_2
 
 
 
-    def get_impulse_response(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, other_id: int, other_mat: str, target_id: int, target_mat: str, amp2re1: float, damping: float) -> np.array:
+    def get_impulse_response(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, other_id: int, other_mat: str, target_id: int, target_mat: str, amp2re1: float, resonance: float) -> np.array:
         """
         Generate an impulse response from the modes for two specified objects.
 
@@ -580,18 +570,18 @@ class PyImpact:
 
         :return The impulse response.
         """
-        self.get_sound(collision, rigidbodies, other_id, other_mat, target_id, target_mat, amp2re1, damping)
+        self.get_sound(collision, rigidbodies, other_id, other_mat, target_id, target_mat, amp2re1, resonance)
 
         modes_1 = self.object_modes[target_id][other_id].obj1_modes
         modes_2 = self.object_modes[target_id][other_id].obj2_modes
-        h1 = modes_1.sum_modes(damping=damping)
-        h2 = modes_2.sum_modes(damping=damping)
+        h1 = modes_1.sum_modes(resonance=resonance)
+        h2 = modes_2.sum_modes(resonance=resonance)
         h = Modes.mode_add(h1, h2)
         return h
 
 
     @staticmethod
-    def synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, damping: float) -> np.array:
+    def synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, resonance: float) -> np.array:
         """
         Generate an impact sound from specified modes for two objects, and the mass of the smaller object.
 
@@ -602,8 +592,8 @@ class PyImpact:
         :return The impact sound.
         """
 
-        h1 = modes1.sum_modes(damping=damping)
-        h2 = modes2.sum_modes(damping=damping)
+        h1 = modes1.sum_modes(resonance=resonance)
+        h2 = modes2.sum_modes(resonance=resonance)
         h = Modes.mode_add(h1, h2)
         if len(h) == 0:
             return None
@@ -646,7 +636,7 @@ class PyImpact:
             for row in reader:
                 o = ObjectInfo(name=row["name"], amp=float(row["amp"]), mass=float(row["mass"]),
                                material=AudioMaterial[row["material"]], library=row["library"],
-                               bounciness=float(row["bounciness"]), damping=float(row["damping"]))
+                               bounciness=float(row["bounciness"]), resonance=float(row["resonance"]))
                 objects.update({o.name: o})
 
         return objects

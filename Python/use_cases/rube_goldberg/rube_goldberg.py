@@ -211,7 +211,7 @@ class RubeGoldbergDemo(Controller):
                     other_mat=self.object_audio_data[other_name].material,
                     target_amp=self.object_audio_data[target_name].amp,
                     other_amp=self.object_audio_data[other_name].amp,
-                    damping=0.15)
+                    resonance=self.object_audio_data[target_name].resonance)
                 resp = self.communicate(impact_sound_command)
             # Continue to run the trial.
             else:

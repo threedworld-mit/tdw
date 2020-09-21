@@ -8,6 +8,8 @@ from tdw.py_impact import AudioMaterial, PyImpact, ObjectInfo
 class TransformInitData:
     """
     Basic initialization parameters for an object. Can be converted to and from a list of commands.
+
+    This is similar to [`Controller.get_add_object()`](controller.md) except that it includes more parameters.
     """
 
     _LIBRARIES: Dict[str, ModelLibrarian] = dict()
@@ -44,7 +46,7 @@ class TransformInitData:
 
     def get_commands(self) -> Tuple[int, List[dict]]:
         """
-        :return: The ID of the object, and a list of commands to create the object.
+        :return: Tuple: The ID of the object; a list of commands to create the object: `[add_object, rotate_object_to, scale_object, set_kinematic_state, set_object_collision_detection_mode]`
         """
 
         record = TransformInitData._LIBRARIES[self.library].get_record(name=self.name)
@@ -104,6 +106,10 @@ class RigidbodyInitData(TransformInitData):
         self.bounciness = bounciness
 
     def get_commands(self) -> Tuple[int, List[dict]]:
+        """
+        :return: Tuple: The ID of the object; a list of commands to create the object: `[add_object, rotate_object_to, scale_object, set_kinematic_state, set_object_collision_detection_mode, set_mass, set_physic_material]`
+        """
+
         object_id, commands = super().get_commands()
         # Set the mass and physic material.
         commands.extend([{"$type": "set_mass",
@@ -120,7 +126,7 @@ class RigidbodyInitData(TransformInitData):
 class AudioInitData(RigidbodyInitData):
     """
     A subclass of `RigidbodyInitData` that includes [audio values](py_impact.md#objectinfo).
-    Physics values are derived from the audio values.
+    Physics values are derived from these audio values.
     """
 
     _DYNAMIC_FRICTION = {AudioMaterial.ceramic: 0.47,
@@ -146,7 +152,7 @@ class AudioInitData(RigidbodyInitData):
         :param rotation: The initial rotation as a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}`
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
         :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
-        :param audio: If not None, use these values instead of the default audio values.
+        :param audio: If None, derive physics data from the audio data in `PyImpact.get_object_info()` (if the object isn't in this dictionary, this constructor will throw an error). If not None, use these values instead of the default audio values.
         """
 
         if audio is None:
@@ -158,3 +164,10 @@ class AudioInitData(RigidbodyInitData):
                          dynamic_friction=AudioInitData._DYNAMIC_FRICTION[self.audio.material],
                          static_friction=AudioInitData._STATIC_FRICTION[self.audio.material],
                          bounciness=self.audio.bounciness)
+
+    def get_commands(self) -> Tuple[int, List[dict]]:
+        """
+        :return: Tuple: The ID of the object; a list of commands to create the object: `[add_object, rotate_object_to, scale_object, set_kinematic_state, set_object_collision_detection_mode, set_mass, set_physic_material]`
+        """
+
+        return super().get_commands()

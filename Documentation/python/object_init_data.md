@@ -6,6 +6,8 @@
 
 Basic initialization parameters for an object. Can be converted to and from a list of commands.
 
+This is similar to [`Controller.get_add_object()`](controller.md) except that it includes more parameters.
+
 ***
 
 #### `__init__(self, name: str, library: str = "models_core.json", scale_factor: Dict[str, float] = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True)`
@@ -25,7 +27,7 @@ Basic initialization parameters for an object. Can be converted to and from a li
 
 #### `get_commands(self) -> Tuple[int, List[dict]]`
 
-_Returns:_  The ID of the object, and a list of commands to create the object.
+_Returns:_  Tuple: The ID of the object; a list of commands to create the object: `[add_object, rotate_object_to, scale_object, set_kinematic_state, set_object_collision_detection_mode]`
 
 ***
 
@@ -56,8 +58,7 @@ A subclass of `TransformInitData`. Includes data and commands to set the mass an
 
 #### `get_commands(self) -> Tuple[int, List[dict]]`
 
-A subclass of `RigidbodyInitData` that includes [audio values](py_impact.md#objectinfo).
-Physics values are derived from the audio values.
+_Returns:_  Tuple: The ID of the object; a list of commands to create the object: `[add_object, rotate_object_to, scale_object, set_kinematic_state, set_object_collision_detection_mode, set_mass, set_physic_material]`
 
 ***
 
@@ -66,7 +67,7 @@ Physics values are derived from the audio values.
 `from tdw.object_init_data import AudioInitData`
 
 A subclass of `RigidbodyInitData` that includes [audio values](py_impact.md#objectinfo).
-Physics values are derived from the audio values.
+Physics values are derived from these audio values.
 
 ***
 
@@ -82,7 +83,13 @@ Physics values are derived from the audio values.
 | rotation | The initial rotation as a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}` |
 | kinematic | If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state). |
 | gravity | If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state). |
-| audio | If not None, use these values instead of the default audio values. |
+| audio | If None, derive physics data from the audio data in `PyImpact.get_object_info()` (if the object isn't in this dictionary, this constructor will throw an error). If not None, use these values instead of the default audio values. |
+
+***
+
+#### `get_commands(self) -> Tuple[int, List[dict]]`
+
+_Returns:_  Tuple: The ID of the object; a list of commands to create the object: `[add_object, rotate_object_to, scale_object, set_kinematic_state, set_object_collision_detection_mode, set_mass, set_physic_material]`
 
 ***
 

@@ -17,6 +17,8 @@ scale for every object in the scene. Each entry in the file is deserialized into
 Note that all scene objects have also been added to the default audio and material data file
 (Python/tdw/py_impact/objects.csv), and all required parameters entered including their masses, audio material used,
 bounciness and relative amplitudes. See Documentation/misc_frontend/impact_sounds.md for additional details. 
+
+This use-case also demonstrates the use of mode properties logging in PyImpact.
 """
 
 class _ObjectSetup:
@@ -63,11 +65,21 @@ class RubeGoldbergDemo(Controller):
         # Parse the default objects.csv spreadsheet. 
         self.object_audio_data = PyImpact.get_object_info()
 
+        self.temp_amp = 0.1
+
+        # Keep track of the current trial number, for logging purposes.
+        self.current_trial_num = 0
+
         # Fetch the ball and board model's records; we will need them later to change its material.
         self.special_models = ModelLibrarian(library="models_special.json")
         self.full_models = ModelLibrarian(library="models_full.json")
         self.ball_record = self.special_models.get_record("prim_sphere")
         self.board_record = self.full_models.get_record("wood_board")
+
+        # Set path to write out logging info.
+        self.root_dest_dir = Path("dist/mode_properties_logs")
+        if not self.root_dest_dir.exists():
+            self.root_dest_dir.mkdir(parents=True)
 
         super().__init__()
  
@@ -145,7 +157,18 @@ class RubeGoldbergDemo(Controller):
         # a rapid series of "clustered" impact sounds, as opposed to a single object falling from a height;
         # using a higher value such as the 0.5 used in the example controller will definitely result in unpleasant
         # distortion of the audio.
-        p = PyImpact(initial_amp=0.01)
+        # Note that logging is also enabled.
+
+        # Keep track of trial number.
+        self.current_trial_num += 1
+
+        # Create folder for this trial's logging info.
+        dest_dir = self.root_dest_dir.joinpath(str(self.current_trial_num))
+        if not dest_dir.exists():
+            dest_dir.mkdir(parents=True)
+        dest_dir_str = str(dest_dir.resolve())
+
+        p = PyImpact(0.025, logging=True)
 
         self.add_all_objects()
 
@@ -187,11 +210,17 @@ class RubeGoldbergDemo(Controller):
                     other_id=other_id,
                     other_mat=self.object_audio_data[other_name].material,
                     target_amp=self.object_audio_data[target_name].amp,
-                    other_amp=self.object_audio_data[other_name].amp)
+                    other_amp=self.object_audio_data[other_name].amp,
+                    damping=0.15)
                 resp = self.communicate(impact_sound_command)
             # Continue to run the trial.
             else:
                 resp = self.communicate([])
+
+        # Get the logging info for this trial and write it out.
+        log = p.get_log()
+        json_dest = dest_dir.joinpath("mode_properties_log.json")
+        json_dest.write_text(json.dumps(log, indent=2))
 
         for obj_setup in self.object_setups:
             self.communicate({"$type": "destroy_object", "id": obj_setup.id})

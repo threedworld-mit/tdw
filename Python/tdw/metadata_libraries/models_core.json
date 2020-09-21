@@ -1,6 +1,386 @@
 {
     "description": "A small library of models.",
     "records": {
+        "24_in_wall_cabinet_white_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 3735318,
+                "Linux": 4077592,
+                "Windows": 3449400
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004367828,
+                    "y": 0.3813176,
+                    "z": -0.1921638
+                },
+                "bottom": {
+                    "x": -0.0004367828,
+                    "y": -3.06788e-10,
+                    "z": 0.007018492
+                },
+                "center": {
+                    "x": -0.0004367828,
+                    "y": 0.3813176,
+                    "z": 0.007018508
+                },
+                "front": {
+                    "x": -0.0004367828,
+                    "y": 0.3813176,
+                    "z": 0.2062008
+                },
+                "left": {
+                    "x": -0.3039454,
+                    "y": 0.3813176,
+                    "z": 0.007018508
+                },
+                "right": {
+                    "x": 0.3030719,
+                    "y": 0.3813176,
+                    "z": 0.007018508
+                },
+                "top": {
+                    "x": -0.0004367828,
+                    "y": 0.7626353,
+                    "z": 0.007018525
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "24_in_wall_cabinet_white_wood",
+            "physics_quality": 0.9901694372343193,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "24_in_wall_cabinet 1"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_l_027"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_r_025"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle007"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle008"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/24_in_wall_cabinet_white_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/24_in_wall_cabinet_white_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/24_in_wall_cabinet_white_wood"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "24_in_wall_cabinet_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 3900847,
+                "Linux": 4129011,
+                "Windows": 3718925
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004367828,
+                    "y": 0.3813176,
+                    "z": -0.1921638
+                },
+                "bottom": {
+                    "x": -0.0004367828,
+                    "y": -3.06788e-10,
+                    "z": 0.007018492
+                },
+                "center": {
+                    "x": -0.0004367828,
+                    "y": 0.3813176,
+                    "z": 0.007018508
+                },
+                "front": {
+                    "x": -0.0004367828,
+                    "y": 0.3813176,
+                    "z": 0.2062008
+                },
+                "left": {
+                    "x": -0.3039454,
+                    "y": 0.3813176,
+                    "z": 0.007018508
+                },
+                "right": {
+                    "x": 0.3030719,
+                    "y": 0.3813176,
+                    "z": 0.007018508
+                },
+                "top": {
+                    "x": -0.0004367828,
+                    "y": 0.7626353,
+                    "z": 0.007018525
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "24_in_wall_cabinet_wood_beach_honey",
+            "physics_quality": 0.9901694372343193,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "24_in_wall_cabinet 1"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_l_027"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_r_025"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle007"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle008"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/24_in_wall_cabinet_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/24_in_wall_cabinet_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/24_in_wall_cabinet_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "36_in_wall_cabinet_white_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 3733537,
+                "Linux": 4076636,
+                "Windows": 3446817
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004367232,
+                    "y": 0.3812218,
+                    "z": -0.3078008
+                },
+                "bottom": {
+                    "x": -0.0004367232,
+                    "y": 4.544563e-09,
+                    "z": -0.1039675
+                },
+                "center": {
+                    "x": -0.0004367232,
+                    "y": 0.3812218,
+                    "z": -0.1039675
+                },
+                "front": {
+                    "x": -0.0004367232,
+                    "y": 0.3812218,
+                    "z": 0.0998659
+                },
+                "left": {
+                    "x": -0.4552296,
+                    "y": 0.3812218,
+                    "z": -0.1039675
+                },
+                "right": {
+                    "x": 0.4543562,
+                    "y": 0.3812218,
+                    "z": -0.1039675
+                },
+                "top": {
+                    "x": -0.0004367232,
+                    "y": 0.7624435,
+                    "z": -0.1039675
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "36_in_wall_cabinet_white_wood",
+            "physics_quality": 0.9910154488681582,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "36_in_wall_cabinet 1"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_l001"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_r001"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle005"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle006"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/36_in_wall_cabinet_white_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/36_in_wall_cabinet_white_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/36_in_wall_cabinet_white_wood"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "36_in_wall_cabinet_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 3901040,
+                "Linux": 4123217,
+                "Windows": 3712949
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004367232,
+                    "y": 0.3812218,
+                    "z": -0.3078008
+                },
+                "bottom": {
+                    "x": -0.0004367232,
+                    "y": 4.544563e-09,
+                    "z": -0.1039675
+                },
+                "center": {
+                    "x": -0.0004367232,
+                    "y": 0.3812218,
+                    "z": -0.1039675
+                },
+                "front": {
+                    "x": -0.0004367232,
+                    "y": 0.3812218,
+                    "z": 0.0998659
+                },
+                "left": {
+                    "x": -0.4552296,
+                    "y": 0.3812218,
+                    "z": -0.1039675
+                },
+                "right": {
+                    "x": 0.4543562,
+                    "y": 0.3812218,
+                    "z": -0.1039675
+                },
+                "top": {
+                    "x": -0.0004367232,
+                    "y": 0.7624435,
+                    "z": -0.1039675
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "36_in_wall_cabinet_wood_beach_honey",
+            "physics_quality": 0.9910154488681582,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "36_in_wall_cabinet 1"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_l001"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_r001"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle005"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle006"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/36_in_wall_cabinet_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/36_in_wall_cabinet_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/36_in_wall_cabinet_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "afl_lamp": {
             "asset_bundle_sizes": {
                 "Darwin": 127921,
@@ -2106,6 +2486,459 @@
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
+        "bed01": {
+            "asset_bundle_sizes": {
+                "Darwin": 6042503,
+                "Linux": 6510330,
+                "Windows": 5637852
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5998192,
+                    "z": -1.298669
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -0.0009120103,
+                    "z": -0.009868622
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5998191,
+                    "z": 1.278932
+                },
+                "left": {
+                    "x": -1.09682,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "right": {
+                    "x": 1.09682,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1.20055,
+                    "z": -0.00986857
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "bed01",
+            "physics_quality": 0.9614792390198791,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "blanket"
+                    ],
+                    "name": "blanket"
+                },
+                {
+                    "materials": [
+                        "cordorouy_color"
+                    ],
+                    "name": "browncordorouypillow"
+                },
+                {
+                    "materials": [
+                        "duvetwrinkles_color"
+                    ],
+                    "name": "cover002"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "dustruffle002"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "dustruffle003"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "dustruffle004"
+                },
+                {
+                    "materials": [
+                        "brown_leather",
+                        "bronze_yellow",
+                        "dark_hardwood_blurry"
+                    ],
+                    "name": "headboard"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "mattress"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "mattress001"
+                },
+                {
+                    "materials": [
+                        "pillow02"
+                    ],
+                    "name": "pillow02"
+                },
+                {
+                    "materials": [
+                        "pillow02"
+                    ],
+                    "name": "pillow003"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "sheet001"
+                },
+                {
+                    "materials": [
+                        "top-left-pillow - copy_color"
+                    ],
+                    "name": "toppillow"
+                },
+                {
+                    "materials": [
+                        "top-left-pillow - copy_color"
+                    ],
+                    "name": "toppillow001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/bed01",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bed01",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bed01"
+            },
+            "wcategory": "bed",
+            "wnid": "n02818832"
+        },
+        "bed01_blue": {
+            "asset_bundle_sizes": {
+                "Darwin": 5997346,
+                "Linux": 6465603,
+                "Windows": 5594765
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5998192,
+                    "z": -1.298669
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -0.0009120103,
+                    "z": -0.009868622
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5998191,
+                    "z": 1.278932
+                },
+                "left": {
+                    "x": -1.09682,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "right": {
+                    "x": 1.09682,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1.20055,
+                    "z": -0.00986857
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "bed01_blue",
+            "physics_quality": 0.9614792390198791,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "blanket"
+                    ],
+                    "name": "blanket"
+                },
+                {
+                    "materials": [
+                        "cordorouy_color"
+                    ],
+                    "name": "browncordorouypillow"
+                },
+                {
+                    "materials": [
+                        "duvetwrinkles_color"
+                    ],
+                    "name": "cover002"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "dustruffle002"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "dustruffle003"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "dustruffle004"
+                },
+                {
+                    "materials": [
+                        "brown_leather",
+                        "bronze_yellow",
+                        "dark_hardwood_blurry"
+                    ],
+                    "name": "headboard"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "mattress"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "mattress001"
+                },
+                {
+                    "materials": [
+                        "pillow02"
+                    ],
+                    "name": "pillow02"
+                },
+                {
+                    "materials": [
+                        "pillow02"
+                    ],
+                    "name": "pillow003"
+                },
+                {
+                    "materials": [
+                        "whitesheets"
+                    ],
+                    "name": "sheet001"
+                },
+                {
+                    "materials": [
+                        "top-left-pillow - copy_color"
+                    ],
+                    "name": "toppillow"
+                },
+                {
+                    "materials": [
+                        "top-left-pillow - copy_color"
+                    ],
+                    "name": "toppillow001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/bed01_blue",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bed01_blue",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bed01_blue"
+            },
+            "wcategory": "bed",
+            "wnid": "n02818832"
+        },
+        "bed01_red": {
+            "asset_bundle_sizes": {
+                "Darwin": 18314127,
+                "Linux": 18865470,
+                "Windows": 17821106
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5998192,
+                    "z": -1.298669
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -0.0009120103,
+                    "z": -0.009868622
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5998191,
+                    "z": 1.278932
+                },
+                "left": {
+                    "x": -1.09682,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "right": {
+                    "x": 1.09682,
+                    "y": 0.5998191,
+                    "z": -0.009868596
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1.20055,
+                    "z": -0.00986857
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "bed01_red",
+            "physics_quality": 0.9614792390198791,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "jersey_printed_stripes"
+                    ],
+                    "name": "blanket"
+                },
+                {
+                    "materials": [
+                        "jersey_printed_stripes"
+                    ],
+                    "name": "browncordorouypillow"
+                },
+                {
+                    "materials": [
+                        "cotton_polyester_jersey_sweatshirt"
+                    ],
+                    "name": "cover002"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "dustruffle002"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "dustruffle003"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "dustruffle004"
+                },
+                {
+                    "materials": [
+                        "cotton_polyester_jersey_sweatshirt",
+                        "bronze_yellow",
+                        "dark_hardwood_blurry"
+                    ],
+                    "name": "headboard"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "mattress"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "mattress001"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "pillow02"
+                },
+                {
+                    "materials": [
+                        "pillow02"
+                    ],
+                    "name": "pillow003"
+                },
+                {
+                    "materials": [
+                        "sheet-white"
+                    ],
+                    "name": "sheet001"
+                },
+                {
+                    "materials": [
+                        "cotton_blend_multi_colored_filaments_spotted"
+                    ],
+                    "name": "toppillow"
+                },
+                {
+                    "materials": [
+                        "cotton_blend_multi_colored_filaments_spotted"
+                    ],
+                    "name": "toppillow001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/bed01_red",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bed01_red",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bed01_red"
+            },
+            "wcategory": "bed",
+            "wnid": "n02818832"
+        },
         "bee": {
             "asset_bundle_sizes": {
                 "Darwin": 492996,
@@ -2403,6 +3236,77 @@
             },
             "wcategory": "chair",
             "wnid": "n03001627"
+        },
+        "blue_rug": {
+            "asset_bundle_sizes": {
+                "Darwin": 2569484,
+                "Linux": 2774212,
+                "Windows": 2378425
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.02182141,
+                    "z": -1.3716
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.01801135,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.02182129,
+                    "z": 1.3716
+                },
+                "left": {
+                    "x": -0.9144,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "right": {
+                    "x": 0.9144,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.02563135,
+                    "z": 3.330808e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "blue_rug",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "blue_rug"
+                    ],
+                    "name": "blue_rug"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/blue_rug",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/blue_rug",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/blue_rug"
+            },
+            "wcategory": "rug",
+            "wnid": "n04118021"
         },
         "blue_satchal": {
             "asset_bundle_sizes": {
@@ -3430,6 +4334,947 @@
             "wcategory": "sculpture",
             "wnid": "n04157320"
         },
+        "cabinet_24_door_drawer_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 4258245,
+                "Linux": 4476077,
+                "Windows": 4074623
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": -0.3212248
+                },
+                "bottom": {
+                    "x": -0.0004368722,
+                    "y": -5.966891e-11,
+                    "z": 0.001365066
+                },
+                "center": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": 0.001365086
+                },
+                "front": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": 0.323955
+                },
+                "left": {
+                    "x": -0.3040921,
+                    "y": 0.4583918,
+                    "z": 0.001365086
+                },
+                "right": {
+                    "x": 0.3032184,
+                    "y": 0.4583918,
+                    "z": 0.001365086
+                },
+                "top": {
+                    "x": -0.0004368722,
+                    "y": 0.9167836,
+                    "z": 0.001365106
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_door_drawer_wood_beach_honey",
+            "physics_quality": 0.9971714248825333,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "24_in_cabinet002"
+                },
+                {
+                    "materials": [
+                        "granite_black"
+                    ],
+                    "name": "countertop_026"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "steel_galvanized"
+                    ],
+                    "name": "door_l_026"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "steel_galvanized"
+                    ],
+                    "name": "drawer"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_24_door_drawer_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_door_drawer_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_door_drawer_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_24_singledoor_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 4240226,
+                "Linux": 4460104,
+                "Windows": 4076771
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004368722,
+                    "y": 0.4583282,
+                    "z": -0.3212249
+                },
+                "bottom": {
+                    "x": -0.0004368722,
+                    "y": 1.546567e-15,
+                    "z": -5.960464e-08
+                },
+                "center": {
+                    "x": -0.0004368722,
+                    "y": 0.4583282,
+                    "z": -3.957048e-08
+                },
+                "front": {
+                    "x": -0.0004368722,
+                    "y": 0.4583282,
+                    "z": 0.3212248
+                },
+                "left": {
+                    "x": -0.3040921,
+                    "y": 0.4583282,
+                    "z": -3.957048e-08
+                },
+                "right": {
+                    "x": 0.3032184,
+                    "y": 0.4583282,
+                    "z": -3.957048e-08
+                },
+                "top": {
+                    "x": -0.0004368722,
+                    "y": 0.9166565,
+                    "z": -1.953632e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_singledoor_wood_beach_honey",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "24_in_cabinet001"
+                },
+                {
+                    "materials": [
+                        "granite_black"
+                    ],
+                    "name": "countertop_025"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "steel_galvanized"
+                    ],
+                    "name": "door_l_025"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_24_singledoor_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_singledoor_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_singledoor_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_24_two_drawer_white_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 4177627,
+                "Linux": 4526062,
+                "Windows": 3899730
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": -0.3137041
+                },
+                "bottom": {
+                    "x": -0.0004368722,
+                    "y": -1.643683e-10,
+                    "z": 0.003760308
+                },
+                "center": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": 0.003760328
+                },
+                "front": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": 0.3212248
+                },
+                "left": {
+                    "x": -0.3040921,
+                    "y": 0.4583918,
+                    "z": 0.003760328
+                },
+                "right": {
+                    "x": 0.3032184,
+                    "y": 0.4583918,
+                    "z": 0.003760328
+                },
+                "top": {
+                    "x": -0.0004368722,
+                    "y": 0.9167836,
+                    "z": 0.003760348
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_two_drawer_white_wood",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "24_in_cabinet003"
+                },
+                {
+                    "materials": [
+                        "granite_beige_french"
+                    ],
+                    "name": "countertop_027"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "bronze_yellow"
+                    ],
+                    "name": "drawer001"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "bronze_yellow"
+                    ],
+                    "name": "drawer002"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_24_two_drawer_white_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_two_drawer_white_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_two_drawer_white_wood"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_24_two_drawer_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 4251043,
+                "Linux": 4470761,
+                "Windows": 4077802
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": -0.3137041
+                },
+                "bottom": {
+                    "x": -0.0004368722,
+                    "y": -1.643683e-10,
+                    "z": 0.003760308
+                },
+                "center": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": 0.003760328
+                },
+                "front": {
+                    "x": -0.0004368722,
+                    "y": 0.4583918,
+                    "z": 0.3212248
+                },
+                "left": {
+                    "x": -0.3040921,
+                    "y": 0.4583918,
+                    "z": 0.003760328
+                },
+                "right": {
+                    "x": 0.3032184,
+                    "y": 0.4583918,
+                    "z": 0.003760328
+                },
+                "top": {
+                    "x": -0.0004368722,
+                    "y": 0.9167836,
+                    "z": 0.003760348
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_two_drawer_wood_beach_honey",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "24_in_cabinet003"
+                },
+                {
+                    "materials": [
+                        "granite_black"
+                    ],
+                    "name": "countertop_027"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "steel_galvanized"
+                    ],
+                    "name": "drawer001"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "steel_galvanized"
+                    ],
+                    "name": "drawer002"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_24_two_drawer_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_two_drawer_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_two_drawer_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_24_white_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 4186308,
+                "Linux": 4529647,
+                "Windows": 3901942
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0002901256,
+                    "y": 0.4583918,
+                    "z": -0.3212248
+                },
+                "bottom": {
+                    "x": -0.0002901256,
+                    "y": -1.588253e-15,
+                    "z": 0
+                },
+                "center": {
+                    "x": -0.0002901256,
+                    "y": 0.4583918,
+                    "z": 2.003694e-08
+                },
+                "front": {
+                    "x": -0.0002901256,
+                    "y": 0.4583918,
+                    "z": 0.3212249
+                },
+                "left": {
+                    "x": -0.3039455,
+                    "y": 0.4583918,
+                    "z": 2.003694e-08
+                },
+                "right": {
+                    "x": 0.3033652,
+                    "y": 0.4583918,
+                    "z": 2.003694e-08
+                },
+                "top": {
+                    "x": -0.0002901256,
+                    "y": 0.9167836,
+                    "z": 4.007388e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_white_wood",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "24_in_cabinet"
+                },
+                {
+                    "materials": [
+                        "granite_beige_french"
+                    ],
+                    "name": "countertop_24"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_l_24"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_r_24"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle2"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "toekick_24"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_24_white_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_white_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_white_wood"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_24_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 4250137,
+                "Linux": 4475781,
+                "Windows": 4100768
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0002901256,
+                    "y": 0.4583918,
+                    "z": -0.3212248
+                },
+                "bottom": {
+                    "x": -0.0002901256,
+                    "y": -1.588253e-15,
+                    "z": 0
+                },
+                "center": {
+                    "x": -0.0002901256,
+                    "y": 0.4583918,
+                    "z": 2.003694e-08
+                },
+                "front": {
+                    "x": -0.0002901256,
+                    "y": 0.4583918,
+                    "z": 0.3212249
+                },
+                "left": {
+                    "x": -0.3039455,
+                    "y": 0.4583918,
+                    "z": 2.003694e-08
+                },
+                "right": {
+                    "x": 0.3033652,
+                    "y": 0.4583918,
+                    "z": 2.003694e-08
+                },
+                "top": {
+                    "x": -0.0002901256,
+                    "y": 0.9167836,
+                    "z": 4.007388e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_wood_beach_honey",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "24_in_cabinet"
+                },
+                {
+                    "materials": [
+                        "granite_black"
+                    ],
+                    "name": "countertop_24"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_l_24"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_r_24"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle2"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "toekick_24"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_24_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_36_white_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 4183676,
+                "Linux": 4530793,
+                "Windows": 3899290
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004367232,
+                    "y": 0.4585204,
+                    "z": -0.3212248
+                },
+                "bottom": {
+                    "x": -0.0004367232,
+                    "y": -2.361536e-15,
+                    "z": 2.980232e-08
+                },
+                "center": {
+                    "x": -0.0004367232,
+                    "y": 0.4585204,
+                    "z": 4.984489e-08
+                },
+                "front": {
+                    "x": -0.0004367232,
+                    "y": 0.4585204,
+                    "z": 0.3212249
+                },
+                "left": {
+                    "x": -0.4553763,
+                    "y": 0.4585204,
+                    "z": 4.984489e-08
+                },
+                "right": {
+                    "x": 0.4545028,
+                    "y": 0.4585204,
+                    "z": 4.984489e-08
+                },
+                "top": {
+                    "x": -0.0004367232,
+                    "y": 0.9170408,
+                    "z": 6.988745e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_36_white_wood",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "36_in_cabinet"
+                },
+                {
+                    "materials": [
+                        "granite_beige_french"
+                    ],
+                    "name": "countertop"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_l"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_r"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle003"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle004"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "toekick"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_36_white_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_36_white_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_36_white_wood"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_36_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 4252649,
+                "Linux": 4477783,
+                "Windows": 4072613
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004367232,
+                    "y": 0.4585204,
+                    "z": -0.3212248
+                },
+                "bottom": {
+                    "x": -0.0004367232,
+                    "y": -2.361536e-15,
+                    "z": 2.980232e-08
+                },
+                "center": {
+                    "x": -0.0004367232,
+                    "y": 0.4585204,
+                    "z": 4.984489e-08
+                },
+                "front": {
+                    "x": -0.0004367232,
+                    "y": 0.4585204,
+                    "z": 0.3212249
+                },
+                "left": {
+                    "x": -0.4553763,
+                    "y": 0.4585204,
+                    "z": 4.984489e-08
+                },
+                "right": {
+                    "x": 0.4545028,
+                    "y": 0.4585204,
+                    "z": 4.984489e-08
+                },
+                "top": {
+                    "x": -0.0004367232,
+                    "y": 0.9170408,
+                    "z": 6.988745e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_36_wood_beach_honey",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "36_in_cabinet"
+                },
+                {
+                    "materials": [
+                        "granite_black"
+                    ],
+                    "name": "countertop"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_l"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_r"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle003"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle004"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "toekick"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_36_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_36_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_36_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_full_height_white_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 3720358,
+                "Linux": 4063336,
+                "Windows": 3441723
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0005837977,
+                    "y": 1.034117,
+                    "z": -0.3205672
+                },
+                "bottom": {
+                    "x": -0.0005837977,
+                    "y": 2.974326e-15,
+                    "z": 8.940697e-08
+                },
+                "center": {
+                    "x": -0.0005837977,
+                    "y": 1.034117,
+                    "z": 1.346097e-07
+                },
+                "front": {
+                    "x": -0.0005837977,
+                    "y": 1.034117,
+                    "z": 0.3205675
+                },
+                "left": {
+                    "x": -0.3034712,
+                    "y": 1.034117,
+                    "z": 1.346097e-07
+                },
+                "right": {
+                    "x": 0.3023036,
+                    "y": 1.034117,
+                    "z": 1.346097e-07
+                },
+                "top": {
+                    "x": -0.0005837977,
+                    "y": 2.068235,
+                    "z": 1.798124e-07
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_full_height_white_wood",
+            "physics_quality": 0.9942821220626263,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "24_in_cabinet004"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "bronze_yellow"
+                    ],
+                    "name": "door_l_028"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_full_height_white_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_full_height_white_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_full_height_white_wood"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_full_height_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 3891636,
+                "Linux": 4103296,
+                "Windows": 3704239
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0005837977,
+                    "y": 1.034117,
+                    "z": -0.3205672
+                },
+                "bottom": {
+                    "x": -0.0005837977,
+                    "y": 2.974326e-15,
+                    "z": 8.940697e-08
+                },
+                "center": {
+                    "x": -0.0005837977,
+                    "y": 1.034117,
+                    "z": 1.346097e-07
+                },
+                "front": {
+                    "x": -0.0005837977,
+                    "y": 1.034117,
+                    "z": 0.3205675
+                },
+                "left": {
+                    "x": -0.3034712,
+                    "y": 1.034117,
+                    "z": 1.346097e-07
+                },
+                "right": {
+                    "x": 0.3023036,
+                    "y": 1.034117,
+                    "z": 1.346097e-07
+                },
+                "top": {
+                    "x": -0.0005837977,
+                    "y": 2.068235,
+                    "z": 1.798124e-07
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_full_height_wood_beach_honey",
+            "physics_quality": 0.9942821220626263,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "24_in_cabinet004"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "steel_galvanized"
+                    ],
+                    "name": "door_l_028"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/cabinet_full_height_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_full_height_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_full_height_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "candle": {
             "asset_bundle_sizes": {
                 "Darwin": 539630,
@@ -3502,6 +5347,77 @@
             },
             "wcategory": "candle",
             "wnid": "n02948072"
+        },
+        "carpet_rug": {
+            "asset_bundle_sizes": {
+                "Darwin": 2544984,
+                "Linux": 2749853,
+                "Windows": 2353441
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.02182141,
+                    "z": -1.3716
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.01801135,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.02182129,
+                    "z": 1.3716
+                },
+                "left": {
+                    "x": -0.9144,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "right": {
+                    "x": 0.9144,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.02563135,
+                    "z": 3.330808e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "carpet_rug",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "carpet_floor"
+                    ],
+                    "name": "carpet_rug"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/carpet_rug",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/carpet_rug",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/carpet_rug"
+            },
+            "wcategory": "rug",
+            "wnid": "n04118021"
         },
         "cerno_lamp": {
             "asset_bundle_sizes": {
@@ -4769,6 +6685,77 @@
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
+        "dining_room_table": {
+            "asset_bundle_sizes": {
+                "Darwin": 6048931,
+                "Linux": 6270623,
+                "Windows": 5871439
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.3675717,
+                    "z": -0.5461
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -5.197076e-17,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.3675717,
+                    "z": 1.606707e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.3675717,
+                    "z": 0.5461
+                },
+                "left": {
+                    "x": -0.5461,
+                    "y": 0.3675717,
+                    "z": 1.606707e-08
+                },
+                "right": {
+                    "x": 0.5461,
+                    "y": 0.3675717,
+                    "z": 1.606707e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.7351434,
+                    "z": 3.213414e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "dining_room_table",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "Table"
+                    ],
+                    "name": "dining_room_table"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/dining_room_table",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/dining_room_table",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/dining_room_table"
+            },
+            "wcategory": "table",
+            "wnid": "n04379243"
+        },
         "dishwasher_4": {
             "asset_bundle_sizes": {
                 "Darwin": 228400,
@@ -5154,6 +7141,78 @@
             "wcategory": "bowl",
             "wnid": "n03206908"
         },
+        "elf_painting": {
+            "asset_bundle_sizes": {
+                "Darwin": 4546296,
+                "Linux": 4764225,
+                "Windows": 4363108
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.01428175,
+                    "y": 0.580502,
+                    "z": 0.9731579
+                },
+                "bottom": {
+                    "x": 0.01428175,
+                    "y": 2.946345e-10,
+                    "z": 0.9932595
+                },
+                "center": {
+                    "x": 0.01428175,
+                    "y": 0.580502,
+                    "z": 0.9932595
+                },
+                "front": {
+                    "x": 0.01428175,
+                    "y": 0.580502,
+                    "z": 1.013361
+                },
+                "left": {
+                    "x": -0.3948725,
+                    "y": 0.580502,
+                    "z": 0.9932595
+                },
+                "right": {
+                    "x": 0.423436,
+                    "y": 0.580502,
+                    "z": 0.9932595
+                },
+                "top": {
+                    "x": 0.01428175,
+                    "y": 1.161004,
+                    "z": 0.9932596
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "elf_painting",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "elf_painting"
+                    ],
+                    "name": "elf_painting"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/elf_painting",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/elf_painting",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/elf_painting"
+            },
+            "wcategory": "painting",
+            "wnid": "n00609236"
+        },
         "emeco_navy_chair": {
             "asset_bundle_sizes": {
                 "Darwin": 2026118,
@@ -5303,6 +7362,77 @@
             },
             "wcategory": "ipod",
             "wnid": "n03584254"
+        },
+        "flat_woven_rug": {
+            "asset_bundle_sizes": {
+                "Darwin": 1394720,
+                "Linux": 1619854,
+                "Windows": 1218474
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.02182141,
+                    "z": -1.3716
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.01801135,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.02182129,
+                    "z": 1.3716
+                },
+                "left": {
+                    "x": -0.9144,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "right": {
+                    "x": 0.9144,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.02563135,
+                    "z": 3.330808e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "flat_woven_rug",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "Rug"
+                    ],
+                    "name": "flat_woven_rug"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/flat_woven_rug",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/flat_woven_rug",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/flat_woven_rug"
+            },
+            "wcategory": "rug",
+            "wnid": "n04118021"
         },
         "fork1": {
             "asset_bundle_sizes": {
@@ -5662,6 +7792,77 @@
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
+        "framed_painting": {
+            "asset_bundle_sizes": {
+                "Darwin": 635169,
+                "Linux": 839684,
+                "Windows": 443768
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.002681738,
+                    "y": 0.05328596,
+                    "z": -0.03281527
+                },
+                "bottom": {
+                    "x": 0.002681613,
+                    "y": -0.4517694,
+                    "z": -0.01376527
+                },
+                "center": {
+                    "x": 0.002681738,
+                    "y": 0.05328596,
+                    "z": -0.01376527
+                },
+                "front": {
+                    "x": 0.002681738,
+                    "y": 0.05328596,
+                    "z": 0.00528473
+                },
+                "left": {
+                    "x": -0.7593184,
+                    "y": 0.05328614,
+                    "z": -0.01376527
+                },
+                "right": {
+                    "x": 0.7646818,
+                    "y": 0.05328578,
+                    "z": -0.01376527
+                },
+                "top": {
+                    "x": 0.002681863,
+                    "y": 0.5583413,
+                    "z": -0.01376527
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "framed_painting",
+            "physics_quality": 0.9999953949307397,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "framed_painting"
+                    ],
+                    "name": "framed_painting"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/framed_painting",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/framed_painting",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/framed_painting"
+            },
+            "wcategory": "picture",
+            "wnid": "n03876519"
+        },
         "fridge_large": {
             "asset_bundle_sizes": {
                 "Darwin": 1679345,
@@ -5736,6 +7937,78 @@
             },
             "wcategory": "refrigerator",
             "wnid": "n04070727"
+        },
+        "fruit_basket": {
+            "asset_bundle_sizes": {
+                "Darwin": 822089,
+                "Linux": 1044343,
+                "Windows": 645160
+            },
+            "bounds": {
+                "back": {
+                    "x": -8.563369e-05,
+                    "y": 0.4131247,
+                    "z": -0.02684217
+                },
+                "bottom": {
+                    "x": -8.583069e-05,
+                    "y": 5.331034e-10,
+                    "z": -0.01125968
+                },
+                "center": {
+                    "x": -8.563369e-05,
+                    "y": 0.4131247,
+                    "z": -0.01125966
+                },
+                "front": {
+                    "x": -8.563369e-05,
+                    "y": 0.4131247,
+                    "z": 0.004322852
+                },
+                "left": {
+                    "x": -0.5774764,
+                    "y": 0.413125,
+                    "z": -0.01125966
+                },
+                "right": {
+                    "x": 0.5773051,
+                    "y": 0.4131245,
+                    "z": -0.01125966
+                },
+                "top": {
+                    "x": -8.54367e-05,
+                    "y": 0.8262495,
+                    "z": -0.01125964
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "fruit_basket",
+            "physics_quality": 0.9999985350303543,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_black",
+                        "fruit_basket_painting"
+                    ],
+                    "name": "fruit_basket"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/fruit_basket",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/fruit_basket",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/fruit_basket"
+            },
+            "wcategory": "painting",
+            "wnid": "n00609236"
         },
         "glass1": {
             "asset_bundle_sizes": {
@@ -6562,6 +8835,78 @@
             },
             "wcategory": "printer",
             "wnid": "n04004767"
+        },
+        "its_about_time_painting": {
+            "asset_bundle_sizes": {
+                "Darwin": 2767665,
+                "Linux": 2991802,
+                "Windows": 2591328
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.01428175,
+                    "y": 0.580502,
+                    "z": 0.9731579
+                },
+                "bottom": {
+                    "x": 0.01428175,
+                    "y": 2.946345e-10,
+                    "z": 0.9932595
+                },
+                "center": {
+                    "x": 0.01428175,
+                    "y": 0.580502,
+                    "z": 0.9932595
+                },
+                "front": {
+                    "x": 0.01428175,
+                    "y": 0.580502,
+                    "z": 1.013361
+                },
+                "left": {
+                    "x": -0.3948725,
+                    "y": 0.580502,
+                    "z": 0.9932595
+                },
+                "right": {
+                    "x": 0.423436,
+                    "y": 0.580502,
+                    "z": 0.9932595
+                },
+                "top": {
+                    "x": 0.01428175,
+                    "y": 1.161004,
+                    "z": 0.9932596
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "its_about_time_painting",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "bronze_yellow",
+                        "ItsAboutTime"
+                    ],
+                    "name": "its_about_time_painting"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/its_about_time_painting",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/its_about_time_painting",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/its_about_time_painting"
+            },
+            "wcategory": "painting",
+            "wnid": "n00609236"
         },
         "jigsaw_puzzle_composite": {
             "asset_bundle_sizes": {
@@ -11104,6 +13449,77 @@
             "wcategory": "printer",
             "wnid": "n04004767"
         },
+        "purple_woven_rug": {
+            "asset_bundle_sizes": {
+                "Darwin": 1413244,
+                "Linux": 1638321,
+                "Windows": 1237000
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.02182141,
+                    "z": -1.3716
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.01801135,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.02182129,
+                    "z": 1.3716
+                },
+                "left": {
+                    "x": -0.9144,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "right": {
+                    "x": 0.9144,
+                    "y": 0.02182135,
+                    "z": 1.665404e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.02563135,
+                    "z": 3.330808e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "purple_woven_rug",
+            "physics_quality": 1.0,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "purple_rug"
+                    ],
+                    "name": "purple_woven_rug"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/purple_woven_rug",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/purple_woven_rug",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/purple_woven_rug"
+            },
+            "wcategory": "rug",
+            "wnid": "n04118021"
+        },
         "purse": {
             "asset_bundle_sizes": {
                 "Darwin": 4312296,
@@ -12471,6 +14887,339 @@
             },
             "wcategory": "table",
             "wnid": "n04379243"
+        },
+        "silver_frame_painting": {
+            "asset_bundle_sizes": {
+                "Darwin": 625637,
+                "Linux": 830155,
+                "Windows": 434303
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.002681738,
+                    "y": 0.05328596,
+                    "z": -0.03281527
+                },
+                "bottom": {
+                    "x": 0.002681613,
+                    "y": -0.4517694,
+                    "z": -0.01376527
+                },
+                "center": {
+                    "x": 0.002681738,
+                    "y": 0.05328596,
+                    "z": -0.01376527
+                },
+                "front": {
+                    "x": 0.002681738,
+                    "y": 0.05328596,
+                    "z": 0.00528473
+                },
+                "left": {
+                    "x": -0.7593184,
+                    "y": 0.05328614,
+                    "z": -0.01376527
+                },
+                "right": {
+                    "x": 0.7646818,
+                    "y": 0.05328578,
+                    "z": -0.01376527
+                },
+                "top": {
+                    "x": 0.002681863,
+                    "y": 0.5583413,
+                    "z": -0.01376527
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "silver_frame_painting",
+            "physics_quality": 0.9999953949307397,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "framed_painting"
+                    ],
+                    "name": "silver_frame_painting"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/silver_frame_painting",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/silver_frame_painting",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/silver_frame_painting"
+            },
+            "wcategory": "painting",
+            "wnid": "n00609236"
+        },
+        "sink_base_white_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 4195484,
+                "Linux": 4539973,
+                "Windows": 3907567
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004091263,
+                    "y": 0.4583918,
+                    "z": -0.3212248
+                },
+                "bottom": {
+                    "x": -0.0004091263,
+                    "y": -1.832119e-15,
+                    "z": 2.980232e-08
+                },
+                "center": {
+                    "x": -0.0004091263,
+                    "y": 0.4583918,
+                    "z": 4.983927e-08
+                },
+                "front": {
+                    "x": -0.0004091263,
+                    "y": 0.4583918,
+                    "z": 0.3212249
+                },
+                "left": {
+                    "x": -0.7588295,
+                    "y": 0.4583918,
+                    "z": 4.983927e-08
+                },
+                "right": {
+                    "x": 0.7580112,
+                    "y": 0.4583918,
+                    "z": 4.983927e-08
+                },
+                "top": {
+                    "x": -0.0004091263,
+                    "y": 0.9167836,
+                    "z": 6.987621e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "sink_base_white_wood",
+            "physics_quality": 0.9960380068762632,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "36_in_cabinet001"
+                },
+                {
+                    "materials": [
+                        "granite_beige_french"
+                    ],
+                    "name": "countertop001"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_l002"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_r002"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_r003"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "door_r004"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle009"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle010"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle011"
+                },
+                {
+                    "materials": [
+                        "bronze_yellow"
+                    ],
+                    "name": "handle012"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "toekick001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/sink_base_white_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/sink_base_white_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/sink_base_white_wood"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "sink_base_wood_beach_honey": {
+            "asset_bundle_sizes": {
+                "Darwin": 4259426,
+                "Linux": 4482251,
+                "Windows": 4076074
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004091263,
+                    "y": 0.4583918,
+                    "z": -0.3212248
+                },
+                "bottom": {
+                    "x": -0.0004091263,
+                    "y": -1.832119e-15,
+                    "z": 2.980232e-08
+                },
+                "center": {
+                    "x": -0.0004091263,
+                    "y": 0.4583918,
+                    "z": 4.983927e-08
+                },
+                "front": {
+                    "x": -0.0004091263,
+                    "y": 0.4583918,
+                    "z": 0.3212249
+                },
+                "left": {
+                    "x": -0.7588295,
+                    "y": 0.4583918,
+                    "z": 4.983927e-08
+                },
+                "right": {
+                    "x": 0.7580112,
+                    "y": 0.4583918,
+                    "z": 4.983927e-08
+                },
+                "top": {
+                    "x": -0.0004091263,
+                    "y": 0.9167836,
+                    "z": 6.987621e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "sink_base_wood_beach_honey",
+            "physics_quality": 0.9960380068762632,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "36_in_cabinet001"
+                },
+                {
+                    "materials": [
+                        "granite_black"
+                    ],
+                    "name": "countertop001"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_l002"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_r002"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_r003"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "door_r004"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle009"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle010"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle011"
+                },
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "handle012"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "toekick001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/sink_base_wood_beach_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/sink_base_wood_beach_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/sink_base_wood_beach_honey"
+            },
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
         },
         "skillet_closed": {
             "asset_bundle_sizes": {

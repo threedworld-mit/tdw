@@ -20,8 +20,10 @@ pip3 install tdw
 | [PyImpact](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/py_impact.md) | Generate impact sounds at runtime.                           |
 | [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md) | Child class of `Controller` that has useful debug features.  |
 | [KeyboardController](keyboard_controller.md)                 | Child class of `Controller` that can listen for keyboard input. |
+| [FloorplanController](floorplan_controller.md)               | Child class of `Controller` that creates an interior environment and populates it with objects. |
 | [Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/librarian.md) | "Librarians" hold asset bundle metadata records.             |
 | [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md) | Access different NVIDIA Flex fluid types.                    |
+| [Object Init Data](object_init_data.md)                      | Wrapper classes for storing object initialization data.      |
 
 ### Backend
 

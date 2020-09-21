@@ -2,6 +2,146 @@
 
 # v1.6.x
 
+## v1.6.11
+
+### `tdw` module
+
+- Added: `FloorplanController`. Load a interior environment scene and populate it with furniture and props.
+- Added: object initialization data classes:
+  - `TransformInitData`: Create object and set their positions, rotations, etc.
+  - `RigidbodyInitData`: Create objects and set their positions, rotations, and physics properties.
+  - `AudioInitData`: Create objects and set their positions, rotations, and physics properties from their PyImpact audio values.
+- Added: `floorplan_layouts.json` Floorplan layouts recipes are stored in this file.
+
+#### `PyImpact`
+
+- Added default audio values for many more objects.
+
+### Model Library
+
+- Added to `models_core.json` and `models_full.json`:
+  - 24_in_wall_cabinet_white_wood
+  - 24_in_wall_cabinet_wood_beach_honey
+  - 36_in_wall_cabinet_white_wood
+  - 36_in_wall_cabinet_wood_beach_honey
+  - bed01
+  - bed01_blue
+  - bed01_red
+  - blue_rug
+  - cabinet_24_door_drawer_wood_beach_honey
+  - cabinet_24_singledoor_wood_beach_honey
+  - cabinet_24_two_drawer_white_wood
+  - cabinet_24_two_drawer_wood_beach_honey
+  - cabinet_24_white_wood
+  - cabinet_24_wood_beach_honey
+  - cabinet_36_white_wood
+  - cabinet_36_wood_beach_honey
+  - cabinet_full_height_white_wood
+  - cabinet_full_height_wood_beach_honey
+  - carpet_rug
+  - elf_painting
+  - flat_woven_rug
+  - fruit_basket
+  - its_about_time_painting
+  - purple_woven_rug
+  - silver_frame_painting
+  - sink_base_white_wood
+  - sink_base_wood_beach_honey
+- Removed from `models_core.json` and `models_full.json`:
+  - `flat-woven-rug`
+
+### Scene Library
+
+- Added new scenes:
+  - floorplan_2a
+  - floorplan_2b
+  - floorplan_2c
+  - floorplan_3a
+  - floorplan_3b
+  - floorplan_3c
+  - floorplan_4a
+  - floorplan_4b
+  - floorplan_4c
+  - floorplan_5a
+  - floorplan_5b
+  - floorplan_5c
+
+### Documentation
+
+#### New Documentation
+
+| Document                  | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `floorplan_controller.md` | API document for `FloorplanController`                       |
+| `object_init_data.md`     | API document for `TransformInitData`, `RigidbodyInitData`, and `AudioInitData` |
+
+## v1.6.10
+
+### Command API
+
+#### New Commands
+
+| Command        | Description                                    |
+| -------------- | ---------------------------------------------- |
+| `send_raycast` | Cast a ray from the origin to the destination. |
+
+#### Modified Commands
+
+| Command          | Modification                                                 |
+| ---------------- | ------------------------------------------------------------ |
+| `set_pass_masks` | Added `_depth_simple` pass. This is a grayscale image that is less precise than the `_depth` pass, but is faster and easier to use. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description                                                  |
+| ----------- | ------------------------------------------------------------ |
+| `Raycast`   | A ray cast from an origin to a destination and what, if anything, it hit. |
+
+### Model Libraries
+
+- Added to `models_core.json` and `models_full.json`:
+  - dining_room_table
+  - flat-woven-rug
+  - framed_painting
+
+## v1.6.9
+
+### Build
+
+- Fixed: `pick_up` and `pick_up_proximity` sometimes try to pick up StickyMittenAvatar body parts.
+- Fixed: In `AvatarSegmentationColor` output data, the ID of the root object of a StickyMittenAvatar (`A_StickyMitten_Adult(Clone)_<id>_` or `A_StickyMitten_Baby(Clone)_<id>_`) doesn't match `AvatarSegmentationColor.get_id()`.
+- Fixed: Collisions between two body parts of a StickyMittenAvatar are processed as `EnvironmentCollision` output data (they are now ignored).
+- Fixed: `teleport_object` doesn't update the positions of an object's `Bounds` data.
+
+## v1.6.8
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data          | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `AvatarStickyMitten` | Added functions to get the position, rotation, and forward of the center of the mittens (as opposed to the joint location. |
+
+### Example Controllers
+
+- Added: `pass_masks.py` Generate each pass mask.
+
+### Build
+
+- Fixed: `_mask` image pass doesn't work.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `command_api.md` | Added explanations and images for each `PassMask` in `set_pass_masks`. |
+| `observation_data.md` | Added a link to `set_pass_masks` documentation in the Command API. |
+
 ## v1.6.7
 
 ### `tdw` module

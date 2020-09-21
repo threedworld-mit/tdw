@@ -2,12 +2,6 @@
 
 # v1.6.x
 
-## v1.6.12
-
-### `tdw` module
-
-- Parameter `rotation` in the constructors of `TransformInitData`, `RigidbodyInitData`, and `AudioInitData` can be Euler angles or a quaternion.
-
 ## v1.6.11
 
 ### `tdw` module

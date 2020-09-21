@@ -12,9 +12,9 @@ class TransformInitData:
     This is similar to [`Controller.get_add_object()`](controller.md) except that it includes more parameters.
     """
 
-    _LIBRARIES: Dict[str, ModelLibrarian] = dict()
+    LIBRARIES: Dict[str, ModelLibrarian] = dict()
     for _lib_file in ModelLibrarian.get_library_filenames():
-        _LIBRARIES[_lib_file] = ModelLibrarian(_lib_file)
+        LIBRARIES[_lib_file] = ModelLibrarian(_lib_file)
 
     def __init__(self, name: str, library: str = "models_core.json", scale_factor: Dict[str, float] = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True):
         """
@@ -22,7 +22,7 @@ class TransformInitData:
         :param library: The filename of the library containing the model's record.
         :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
         :param position: The initial position. If None, defaults to: `{"x": 0, "y": 0, "z": 0`}.
-        :param rotation: The initial rotation as a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}`
+        :param rotation: The initial rotation as Euler angles or a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}`
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
         :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
         """
@@ -49,26 +49,32 @@ class TransformInitData:
         :return: Tuple: The ID of the object; a list of commands to create the object: `[add_object, rotate_object_to, scale_object, set_kinematic_state, set_object_collision_detection_mode]`
         """
 
-        record = TransformInitData._LIBRARIES[self.library].get_record(name=self.name)
+        record = TransformInitData.LIBRARIES[self.library].get_record(name=self.name)
 
         object_id = Controller.get_unique_id()
-        commands = [{"$type": "add_object",
-                     "name": record.name,
-                     "url": record.get_url(),
-                     "scale_factor": record.scale_factor,
-                     "position": self.position,
-                     "category": record.wcategory,
-                     "id": object_id},
-                    {"$type": "rotate_object_to",
-                     "rotation": self.rotation,
-                     "id": object_id},
-                    {"$type": "scale_object",
-                     "scale_factor": self.scale_factor,
-                     "id": object_id},
-                    {"$type": "set_kinematic_state",
-                     "id": object_id,
-                     "is_kinematic": self.kinematic,
-                     "use_gravity": self.gravity}]
+        add_object_command = {"$type": "add_object",
+                              "name": record.name,
+                              "url": record.get_url(),
+                              "scale_factor": record.scale_factor,
+                              "position": self.position,
+                              "category": record.wcategory,
+                              "id": object_id}
+        # The rotation is in Euler angles.
+        if "w" not in self.rotation:
+            add_object_command["rotation"] = self.rotation
+        commands = [add_object_command]
+        # The rotation is a quaternion.
+        if "w" in self.rotation:
+            commands.append({"$type": "rotate_object_to",
+                             "rotation": self.rotation,
+                             "id": object_id})
+        commands.extend([{"$type": "scale_object",
+                          "scale_factor": self.scale_factor,
+                          "id": object_id},
+                         {"$type": "set_kinematic_state",
+                          "id": object_id,
+                          "is_kinematic": self.kinematic,
+                          "use_gravity": self.gravity}])
         # Kinematic objects must be continuous_speculative.
         if self.kinematic:
             detection_mode = "continuous_speculative"
@@ -91,7 +97,7 @@ class RigidbodyInitData(TransformInitData):
         :param library: The filename of the library containing the model's record.
         :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
         :param position: The initial position. If None, defaults to: `{"x": 0, "y": 0, "z": 0`}.
-        :param rotation: The initial rotation as a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}`
+        :param rotation: The initial rotation as Euler angles or a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}`
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
         :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
         :param mass: The mass of the object.
@@ -149,7 +155,7 @@ class AudioInitData(RigidbodyInitData):
         :param library: The filename of the library containing the model's record.
         :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
         :param position: The initial position. If None, defaults to: `{"x": 0, "y": 0, "z": 0`}.
-        :param rotation: The initial rotation as a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}`
+        :param rotation: The initial rotation as Euler angles or a quaternion. If None, defaults to: `{"w": 1, "x": 0, "y": 0, "z": 0}`
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
         :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
         :param audio: If None, derive physics data from the audio data in `PyImpact.get_object_info()` (if the object isn't in this dictionary, this constructor will throw an error). If not None, use these values instead of the default audio values.

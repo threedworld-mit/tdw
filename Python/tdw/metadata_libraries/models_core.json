@@ -15380,6 +15380,77 @@
             "wcategory": "bowl",
             "wnid": "n00104409"
         },
+        "round_bowl_talll_wenge": {
+            "asset_bundle_sizes": {
+                "Darwin": 7129587,
+                "Linux": 7292021,
+                "Windows": 6990799
+            },
+            "bounds": {
+                "back": {
+                    "x": 5.960464e-08,
+                    "y": 0.1840254,
+                    "z": -0.3027368
+                },
+                "bottom": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 5.960464e-08,
+                    "y": 0.1840254,
+                    "z": 8.044005e-09
+                },
+                "front": {
+                    "x": 5.960464e-08,
+                    "y": 0.1840253,
+                    "z": 0.3027368
+                },
+                "left": {
+                    "x": -0.3033353,
+                    "y": 0.1840254,
+                    "z": 8.044005e-09
+                },
+                "right": {
+                    "x": 0.3033354,
+                    "y": 0.1840254,
+                    "z": 8.044005e-09
+                },
+                "top": {
+                    "x": 5.960464e-08,
+                    "y": 0.3680507,
+                    "z": 1.608801e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_bowl_talll_wenge",
+            "physics_quality": 0.9607712383774648,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_wenge"
+                    ],
+                    "name": "round_bowl_talll_wenge"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/round_bowl_talll_wenge",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_talll_wenge",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_talll_wenge"
+            },
+            "wcategory": "bowl",
+            "wnid": "n00104409"
+        },
         "salt": {
             "asset_bundle_sizes": {
                 "Darwin": 3982663,

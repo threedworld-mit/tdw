@@ -14435,8 +14435,8 @@
                 "z": 0
             },
             "composite_object": false,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Colliders are way too big",
             "flex": true,
             "name": "salt",
             "physics_quality": 0.9215153680281509,

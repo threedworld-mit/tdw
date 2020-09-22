@@ -2622,6 +2622,77 @@
             "wcategory": "basket",
             "wnid": "n02801938"
         },
+        "basket_18inx18inx12iin_wood_mesh": {
+            "asset_bundle_sizes": {
+                "Darwin": 1987559,
+                "Linux": 2251488,
+                "Windows": 1763159
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": -0.2285
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 0.2285
+                },
+                "left": {
+                    "x": -0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "right": {
+                    "x": 0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.305,
+                    "z": 1.333197e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "basket_18inx18inx12iin_wood_mesh",
+            "physics_quality": 0.9971961265355677,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_speaker_mesh_organic"
+                    ],
+                    "name": "basket_18inx18inx12iin_wood_mesh"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/basket_18inx18inx12iin_wood_mesh",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/basket_18inx18inx12iin_wood_mesh",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/basket_18inx18inx12iin_wood_mesh"
+            },
+            "wcategory": "basket",
+            "wnid": "n02801938"
+        },
         "bastone_floor_lamp": {
             "asset_bundle_sizes": {
                 "Darwin": 8989513,

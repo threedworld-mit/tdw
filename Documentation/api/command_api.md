@@ -414,8 +414,8 @@
 
 | Command | Description |
 | --- | --- |
-| [`send_boxcast`](#send_boxcast) | Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
 | [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
+| [`send_spherecast`](#send_spherecast) | Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
 
 **Send Single Data Command**
 
@@ -4850,43 +4850,6 @@ These commands cast different types of rays and send the results to the controll
 
 ***
 
-## **`send_boxcast`**
-
-Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
-
-```python
-{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"half_extents"` | Vector3 | Half the size of the box in each dimension. | |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_raycast`**
 
 Cast a ray from the origin to the destination. 
@@ -4908,6 +4871,43 @@ Cast a ray from the origin to the destination.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"raycast_id"` | int | The identity of this raycast. Use this to map this raycast to the output data. | 0 |
+| `"origin"` | Vector3 | The origin of the raycast. | |
+| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_spherecast`**
+
+Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"radius"` | float | The radius of the sphere. | |
 | `"origin"` | Vector3 | The origin of the raycast. | |
 | `"destination"` | Vector3 | The destination of the raycast. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |

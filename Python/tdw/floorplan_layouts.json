@@ -2092,6 +2092,28 @@
         }
       },
       {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "jug05",
+        "position": {
+          "x": -7.017036,
+          "y": 0.612,
+          "z": -4.151012
+        },
+        "rotation": {
+          "w": 1,
+          "x": 1.33134e-05,
+          "y": -5.397252e-06,
+          "z": -8.615824e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",

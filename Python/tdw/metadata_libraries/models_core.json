@@ -15167,6 +15167,77 @@
             "wcategory": "bowl",
             "wnid": "n00104409"
         },
+        "round_bowl_large_thin": {
+            "asset_bundle_sizes": {
+                "Darwin": 2654256,
+                "Linux": 2887055,
+                "Windows": 2487370
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.2030001,
+                    "z": -0.4551309
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 1.302701e-15,
+                    "z": -2.980232e-08
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.203,
+                    "z": -2.092891e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.203,
+                    "z": 0.4551308
+                },
+                "left": {
+                    "x": -0.4551308,
+                    "y": 0.203,
+                    "z": -2.092891e-08
+                },
+                "right": {
+                    "x": 0.4551308,
+                    "y": 0.203,
+                    "z": -2.092891e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.4060001,
+                    "z": -1.20555e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_bowl_large_thin",
+            "physics_quality": 0.9381184350855983,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "metal_galvanized"
+                    ],
+                    "name": "round_bowl_large_thin"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/round_bowl_large_thin",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_large_thin",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_large_thin"
+            },
+            "wcategory": "bowl",
+            "wnid": "n00104409"
+        },
         "salt": {
             "asset_bundle_sizes": {
                 "Darwin": 3982663,

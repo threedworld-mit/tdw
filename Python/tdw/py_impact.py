@@ -10,7 +10,6 @@ from pathlib import Path
 from pkg_resources import resource_filename
 from csv import DictReader
 import io
-from json import JSONEncoder
 
 
 class AudioMaterial(Enum):
@@ -326,6 +325,7 @@ class PyImpact:
         """
         :param initial_amp: The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
         :param prevent_distortion: If True, clamp amp values to <= 0.99
+        :param logging: If True, log mode properties for all colliding objects, as json.
         """
 
         assert 0 < initial_amp < 1, f"initial_amp is {initial_amp} (must be > 0 and < 1)."
@@ -345,8 +345,8 @@ class PyImpact:
             data = json.loads(Path(resource_filename(__name__, f"py_impact/material_data/{path}.json")).read_text())
             self.material_data.update({mat: data})
 
-        if logging == True:
-            self.mode_properties_log = dict()
+        # Create empty dictionary for log.
+        self.mode_properties_log = dict()
 
 
     def get_log(self) -> dict:

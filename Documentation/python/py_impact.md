@@ -34,17 +34,13 @@ c.communicate(p.get_impact_sound_command(arg1, arg2, ... ))
 | --- | --- |
 | initial_amp | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
 | prevent_distortion | If True, clamp amp values to <= 0.99 |
+| logging | If True, log mode properties for all colliding objects, as json. |
 
 ***
 
 #### `get_log(self) -> dict`
 
-
-| Parameter | Description |
-| --- | --- |
-| material | The audio material. |
-
-_Returns:_  The audio modes.
+_Returns:_  The mode properties log.
 
 ***
 
@@ -100,6 +96,7 @@ Generate an impact sound.
 | mass | The mass of the smaller of the two colliding objects. |
 | id1 | The ID for the one of the colliding objects. |
 | id2 | The ID for the other object. |
+| resonance | The resonance between the two objects (see impact_sounds.md) |
 
 _Returns:_ The sound, and the object modes.
 
@@ -134,6 +131,7 @@ Generate an impact sound from specified modes for two objects, and the mass of t
 | modes1 | Modes of object 1. A numpy array with: column1=mode frequencies (Hz); column2=mode onset powers in dB; column3=mode RT60s in milliseconds; |
 | modes2 | Modes of object 2. Formatted as modes1/modes2. |
 | mass | the mass of the smaller of the two colliding objects. |
+| resonance | The resonance of the objects. |
 
 _Returns:_ The impact sound.
 
@@ -194,6 +192,7 @@ Reset PyImpact. This is somewhat faster than creating a new PyImpact object per 
 #### `log_modes(self, count: int, mode_props: dict, id1: int, id2: int, modes_1: Modes, modes_2: Modes, amp: float, mat1: str, mat2: str)`
 
 Log mode properties info for a single collision event.
+2
 
 | Parameter | Description |
 | --- | --- |

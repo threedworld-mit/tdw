@@ -15027,45 +15027,45 @@
         },
         "round_bowl_large_metal_perf": {
             "asset_bundle_sizes": {
-                "Darwin": 2157981,
-                "Linux": 2422533,
-                "Windows": 1932065
+                "Darwin": 467574,
+                "Linux": 732391,
+                "Windows": 242614
             },
             "bounds": {
                 "back": {
-                    "x": 0.5457994,
-                    "y": 0.08282273,
-                    "z": -0.4549356
+                    "x": -2.980232e-08,
+                    "y": 0.2030001,
+                    "z": -0.4549357
                 },
                 "bottom": {
-                    "x": 0.5457994,
-                    "y": -0.2403548,
-                    "z": 2.898068
+                    "x": -2.980232e-08,
+                    "y": 0,
+                    "z": 0
                 },
                 "center": {
-                    "x": 0.5457994,
-                    "y": 0.08282258,
-                    "z": 2.898068
+                    "x": -2.980232e-08,
+                    "y": 0.203,
+                    "z": 8.873413e-09
                 },
                 "front": {
-                    "x": 0.5457994,
-                    "y": 0.08282243,
-                    "z": 6.251071
+                    "x": -2.980232e-08,
+                    "y": 0.203,
+                    "z": 0.4549357
                 },
                 "left": {
                     "x": -0.4549358,
-                    "y": 0.08282258,
-                    "z": 2.898068
+                    "y": 0.203,
+                    "z": 8.873413e-09
                 },
                 "right": {
-                    "x": 1.546535,
-                    "y": 0.08282258,
-                    "z": 2.898068
+                    "x": 0.4549357,
+                    "y": 0.203,
+                    "z": 8.873413e-09
                 },
                 "top": {
-                    "x": 0.5457994,
-                    "y": 0.406,
-                    "z": 2.898068
+                    "x": -2.980232e-08,
+                    "y": 0.4060001,
+                    "z": 1.774683e-08
                 }
             },
             "canonical_rotation": {
@@ -15073,12 +15073,12 @@
                 "y": 0,
                 "z": 0
             },
-            "composite_object": true,
+            "composite_object": false,
             "do_not_use": false,
             "do_not_use_reason": "",
-            "flex": false,
+            "flex": true,
             "name": "round_bowl_large_metal_perf",
-            "physics_quality": 0.9692904022225849,
+            "physics_quality": 0.9475819909865923,
             "scale_factor": 1,
             "substructure": [
                 {
@@ -15086,12 +15086,6 @@
                         "metal_grid_perforated"
                     ],
                     "name": "round_bowl_large_metal_perf"
-                },
-                {
-                    "materials": [
-                        "3d_printed_mesh_square"
-                    ],
-                    "name": "basket_18inx18inx12iin_plastic_lattice"
                 }
             ],
             "urls": {

@@ -4462,6 +4462,77 @@
             "wcategory": "box",
             "wnid": "n02883344"
         },
+        "box_24inx18inx12in_cherry": {
+            "asset_bundle_sizes": {
+                "Darwin": 3517490,
+                "Linux": 3735339,
+                "Windows": 3343312
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": -0.305
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 0.305
+                },
+                "left": {
+                    "x": -0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "right": {
+                    "x": 0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.305,
+                    "z": 1.333197e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "box_24inx18inx12in_cherry",
+            "physics_quality": 0.9935789364076434,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_american_cherry"
+                    ],
+                    "name": "box_24inx18inx12in_cherry"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/box_24inx18inx12in_cherry",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/box_24inx18inx12in_cherry",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/box_24inx18inx12in_cherry"
+            },
+            "wcategory": "box",
+            "wnid": "n02883344"
+        },
         "bronze_purse": {
             "asset_bundle_sizes": {
                 "Darwin": 6584353,

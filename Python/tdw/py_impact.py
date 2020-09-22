@@ -348,10 +348,12 @@ class PyImpact:
         # Create empty dictionary for log.
         self.mode_properties_log = dict()
 
-
     def get_log(self) -> dict:
-        return self.mode_properties_log
+        """
+        :return: The mode properties log.
+        """
 
+        return self.mode_properties_log
 
     def _get_object_modes(self, material: Union[str, AudioMaterial]) -> Modes:
         """
@@ -471,7 +473,7 @@ class PyImpact:
             self.object_modes[id2][id1].obj1_modes = modes_1
             self.object_modes[id2][id1].obj2_modes = modes_2
 
-        if self.logging == True:
+        if self.logging:
             mode_props = dict()
             self.log_modes(self.object_modes[id2][id1].count, mode_props, id1, id2, modes_1, modes_2, amp, str(mat1), str(mat2))
             
@@ -523,7 +525,6 @@ class PyImpact:
         else:
             return {"$type": "do_nothing"}
 
-
     def make_impact_audio(self, amp2re1: float, mass: float, id1: int, id2: int, resonance: float, mat1: str = 'cardboard', mat2: str = 'cardboard') -> (np.array, Modes, Modes):
         """
         Generate an impact sound.
@@ -534,6 +535,7 @@ class PyImpact:
         :param mass: The mass of the smaller of the two colliding objects.
         :param id1: The ID for the one of the colliding objects.
         :param id2: The ID for the other object.
+        :param resonance: The resonance between the two objects (see impact_sounds.md)
 
         :return The sound, and the object modes.
         """
@@ -553,8 +555,6 @@ class PyImpact:
         modes_2.decay_times = modes_2.decay_times + 20 * np.log10(amp2re1)
         snth = PyImpact.synth_impact_modes(modes_1, modes_2, mass, resonance)
         return snth, modes_1, modes_2
-
-
 
     def get_impulse_response(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, other_id: int, other_mat: str, target_id: int, target_mat: str, amp2re1: float, resonance: float) -> np.array:
         """
@@ -579,7 +579,6 @@ class PyImpact:
         h = Modes.mode_add(h1, h2)
         return h
 
-
     @staticmethod
     def synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, resonance: float) -> np.array:
         """
@@ -588,6 +587,7 @@ class PyImpact:
         :param modes1: Modes of object 1. A numpy array with: column1=mode frequencies (Hz); column2=mode onset powers in dB; column3=mode RT60s in milliseconds;
         :param modes2: Modes of object 2. Formatted as modes1/modes2.
         :param mass: the mass of the smaller of the two colliding objects.
+        :param resonance: The resonance of the objects.
 
         :return The impact sound.
         """
@@ -636,7 +636,8 @@ class PyImpact:
             for row in reader:
                 o = ObjectInfo(name=row["name"], amp=float(row["amp"]), mass=float(row["mass"]),
                                material=AudioMaterial[row["material"]], library=row["library"],
-                               bounciness=float(row["bounciness"]), resonance=float(row["resonance"]))
+                               bounciness=float(row["bounciness"]),
+                               resonance=float(row["resonance"]))
                 objects.update({o.name: o})
 
         return objects
@@ -694,7 +695,7 @@ class PyImpact:
     def log_modes(self, count: int, mode_props: dict, id1: int, id2: int, modes_1: Modes, modes_2: Modes, amp: float, mat1: str, mat2: str):
         """
         Log mode properties info for a single collision event.
-
+2
         :param count: Mode count for this material-material collision.
         :param mode_props: Dictionary to log to.
         :param id1: ID of the "other" object.

@@ -2,6 +2,23 @@
 
 # v1.6.x
 
+## v1.6.12
+
+### `tdw module`
+
+#### `PyImpact`
+
+- Added parameter `resonance` to `ObjectInfo`.
+- Added optional parameter `logging` to PyImpact's constructor.
+- Added: `PyImpact.get_log()`
+- Added: `PyImpact.log_modes()`
+- Added parameter `resonance` to `PyImpact.get_sound()`,   `PyImpact.get_impact_sound_command()`, `PyImpact.make_impact_audio()`, `PyImpact.get_impulse_response()`,  and`PyImpact.synth_impact_modes()`
+- Added resonance values to `objects.csv`.
+
+### Use Cases
+
+- `rube_goldberg.py` logs audio mode data.
+
 ## v1.6.11
 
 ### `tdw` module

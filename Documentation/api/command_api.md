@@ -395,7 +395,6 @@
 
 | Command | Description |
 | --- | --- |
-| [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
 **Send Avatars Command**
@@ -410,6 +409,13 @@
 | [`send_id_pass_segmentation_colors`](#send_id_pass_segmentation_colors) | Send all unique colors in an _id pass.  |
 | [`send_images`](#send_images) | Send images and metadata.  |
 | [`send_image_sensors`](#send_image_sensors) | Send data about each of the avatar's ImageSensors.  |
+
+**Send Raycast Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_boxcast`](#send_boxcast) | Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
+| [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
 
 **Send Single Data Command**
 
@@ -4536,43 +4542,6 @@ These commands send data to the controller.
 
 ***
 
-## **`send_raycast`**
-
-Cast a ray from the origin to the destination. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
-
-```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "raycast_id": 0, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"raycast_id"` | int | The identity of this raycast. Use this to map this raycast to the output data. | 0 |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_substructure`**
 
 Send visual material substructure data for a single object. 
@@ -4863,6 +4832,84 @@ Send data about each of the avatar's ImageSensors.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+# SendRaycastCommand
+
+These commands cast different types of rays and send the results to the controller.
+
+***
+
+## **`send_boxcast`**
+
+Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"half_extents"` | Vector3 | Half the size of the box in each dimension. | |
+| `"origin"` | Vector3 | The origin of the raycast. | |
+| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_raycast`**
+
+Cast a ray from the origin to the destination. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "raycast_id": 0, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"raycast_id"` | int | The identity of this raycast. Use this to map this raycast to the output data. | 0 |
+| `"origin"` | Vector3 | The origin of the raycast. | |
+| `"destination"` | Vector3 | The destination of the raycast. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

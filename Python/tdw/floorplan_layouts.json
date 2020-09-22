@@ -577,28 +577,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "rope_table_lamp",
-        "position": {
-          "x": -7.017036,
-          "y": 0.612,
-          "z": -4.151012
-        },
-        "rotation": {
-          "w": 1,
-          "x": 1.33134e-05,
-          "y": -5.397252e-06,
-          "z": -8.615824e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "trapezoidal_table",
         "position": {
           "x": -4.43004,
@@ -643,7 +621,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "jigsaw_puzzle_composite",
+        "name": "puzzle_box_composite",
         "position": {
           "x": -1.978797,
           "y": 0.8850238,
@@ -904,8 +882,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fruit_basket",
         "position": {

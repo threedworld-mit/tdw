@@ -8957,8 +8957,8 @@
                 "z": 0
             },
             "composite_object": true,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "The colliders of this object are too thin, causing it to fall through tables",
             "flex": false,
             "name": "jigsaw_puzzle_composite",
             "physics_quality": 0.9961454754368257,
@@ -14361,8 +14361,8 @@
                 "z": 0
             },
             "composite_object": false,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "This is a composite object and the objects are not connected with a FixedJoint, causing the model to fall apart",
             "flex": false,
             "name": "rope_table_lamp",
             "physics_quality": NaN,

@@ -15025,6 +15025,83 @@
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
+        "round_bowl_large_metal_perf": {
+            "asset_bundle_sizes": {
+                "Darwin": 2157981,
+                "Linux": 2422533,
+                "Windows": 1932065
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.5457994,
+                    "y": 0.08282273,
+                    "z": -0.4549356
+                },
+                "bottom": {
+                    "x": 0.5457994,
+                    "y": -0.2403548,
+                    "z": 2.898068
+                },
+                "center": {
+                    "x": 0.5457994,
+                    "y": 0.08282258,
+                    "z": 2.898068
+                },
+                "front": {
+                    "x": 0.5457994,
+                    "y": 0.08282243,
+                    "z": 6.251071
+                },
+                "left": {
+                    "x": -0.4549358,
+                    "y": 0.08282258,
+                    "z": 2.898068
+                },
+                "right": {
+                    "x": 1.546535,
+                    "y": 0.08282258,
+                    "z": 2.898068
+                },
+                "top": {
+                    "x": 0.5457994,
+                    "y": 0.406,
+                    "z": 2.898068
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "round_bowl_large_metal_perf",
+            "physics_quality": 0.9692904022225849,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "metal_grid_perforated"
+                    ],
+                    "name": "round_bowl_large_metal_perf"
+                },
+                {
+                    "materials": [
+                        "3d_printed_mesh_square"
+                    ],
+                    "name": "basket_18inx18inx12iin_plastic_lattice"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/round_bowl_large_metal_perf",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_large_metal_perf",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_large_metal_perf"
+            },
+            "wcategory": "bowl",
+            "wnid": "n00104409"
+        },
         "salt": {
             "asset_bundle_sizes": {
                 "Darwin": 3982663,

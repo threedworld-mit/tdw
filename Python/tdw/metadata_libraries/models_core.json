@@ -15238,6 +15238,77 @@
             "wcategory": "bowl",
             "wnid": "n00104409"
         },
+        "round_bowl_small_beech": {
+            "asset_bundle_sizes": {
+                "Darwin": 3958821,
+                "Linux": 4187782,
+                "Windows": 3778464
+            },
+            "bounds": {
+                "back": {
+                    "x": 5.960464e-08,
+                    "y": 0.1685953,
+                    "z": -0.2986292
+                },
+                "bottom": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 5.960464e-08,
+                    "y": 0.1685952,
+                    "z": 7.369532e-09
+                },
+                "front": {
+                    "x": 5.960464e-08,
+                    "y": 0.1685952,
+                    "z": 0.2986292
+                },
+                "left": {
+                    "x": -0.2986291,
+                    "y": 0.1685952,
+                    "z": 7.369532e-09
+                },
+                "right": {
+                    "x": 0.2986292,
+                    "y": 0.1685952,
+                    "z": 7.369532e-09
+                },
+                "top": {
+                    "x": 5.960464e-08,
+                    "y": 0.3371905,
+                    "z": 1.473906e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_bowl_small_beech",
+            "physics_quality": 0.968201836217811,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "round_bowl_small_beech"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/round_bowl_small_beech",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_small_beech",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_small_beech"
+            },
+            "wcategory": "bowl",
+            "wnid": "n00104409"
+        },
         "salt": {
             "asset_bundle_sizes": {
                 "Darwin": 3982663,

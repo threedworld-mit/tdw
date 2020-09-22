@@ -27,17 +27,24 @@ c.communicate(p.get_impact_sound_command(arg1, arg2, ... ))
 
 ***
 
-#### `__init__(self, initial_amp: float = 0.5, prevent_distortion: bool = True)`
+#### `__init__(self, initial_amp: float = 0.5, prevent_distortion: bool = True, logging: bool = False)`
 
 
 | Parameter | Description |
 | --- | --- |
 | initial_amp | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
 | prevent_distortion | If True, clamp amp values to <= 0.99 |
+| logging | If True, log mode properties for all colliding objects, as json. |
 
 ***
 
-#### `get_sound(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, id1: int, mat1: str, id2: int, mat2: str, amp2re1: float) -> Optional[Base64Sound]`
+#### `get_log(self) -> dict`
+
+_Returns:_  The mode properties log.
+
+***
+
+#### `get_sound(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, id1: int, mat1: str, id2: int, mat2: str, amp2re1: float, resonance: float) -> Optional[Base64Sound]`
 
 Produce sound of two colliding objects as a byte array.
 
@@ -55,7 +62,7 @@ _Returns:_ Sound data as a Base64Sound object.
 
 ***
 
-#### `get_impact_sound_command(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, target_id: int, target_mat: str, target_amp: float, other_id: int, other_mat: str, other_amp: float, play_audio_data: bool = True) -> dict`
+#### `get_impact_sound_command(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, target_id: int, target_mat: str, target_amp: float, other_id: int, other_mat: str, other_amp: float, resonance: float, play_audio_data: bool = True) -> dict`
 
 Create an impact sound, and return a valid command to play audio data in TDW.
 "target" should usually be the smaller object, which will play the sound.
@@ -77,7 +84,7 @@ _Returns:_ A `play_audio_data` or `play_point_source_data` command that can be s
 
 ***
 
-#### `make_impact_audio(self, amp2re1: float, mass: float, id1: int, id2: int, mat1: str = 'cardboard', mat2: str = 'cardboard') -> (np.array, Modes, Modes)`
+#### `make_impact_audio(self, amp2re1: float, mass: float, id1: int, id2: int, resonance: float, mat1: str = 'cardboard', mat2: str = 'cardboard') -> (np.array, Modes, Modes)`
 
 Generate an impact sound.
 
@@ -89,27 +96,31 @@ Generate an impact sound.
 | mass | The mass of the smaller of the two colliding objects. |
 | id1 | The ID for the one of the colliding objects. |
 | id2 | The ID for the other object. |
+| resonance | The resonance between the two objects (see impact_sounds.md) |
 
 _Returns:_ The sound, and the object modes.
 
 ***
 
-#### `get_impulse_response(modes1: Modes, modes2: Modes) -> np.array`
+#### `get_impulse_response(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, other_id: int, other_mat: str, target_id: int, target_mat: str, amp2re1: float, resonance: float) -> np.array`
 
-_This is a static function._
-
-Generate an impulse response from specified modes for two objects.
+Generate an impulse response from the modes for two specified objects.
 
 | Parameter | Description |
 | --- | --- |
-| modes1 | Modes of object 1. A numpy array with: column1=mode frequencies (Hz); column2=mode onset powers in dB; column3=mode RT60s in milliseconds; |
-| modes2 | Modes of object 2. Formatted as modes1/modes2. |
+| collision | TDW `Collision` or `EnvironmentCollision` output data. |
+| target_mat | The target's audio material. |
+| other_id | The other object's ID. |
+| other_mat | The other object's audio material. |
+| rigidbodies | TDW `Rigidbodies` output data. |
+| target_id | The ID of the object that will play the sound. |
+| amp2re1 | The sound amplitude of object 2 relative to that of object 1. |
 
 _Returns:_ The impulse response.
 
 ***
 
-#### `synth_impact_modes(modes1: Modes, modes2: Modes, mass: float) -> np.array`
+#### `synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, resonance: float) -> np.array`
 
 _This is a static function._
 
@@ -120,6 +131,7 @@ Generate an impact sound from specified modes for two objects, and the mass of t
 | modes1 | Modes of object 1. A numpy array with: column1=mode frequencies (Hz); column2=mode onset powers in dB; column3=mode RT60s in milliseconds; |
 | modes2 | Modes of object 2. Formatted as modes1/modes2. |
 | mass | the mass of the smaller of the two colliding objects. |
+| resonance | The resonance of the objects. |
 
 _Returns:_ The impact sound.
 
@@ -177,6 +189,25 @@ Reset PyImpact. This is somewhat faster than creating a new PyImpact object per 
 
 ***
 
+#### `log_modes(self, count: int, mode_props: dict, id1: int, id2: int, modes_1: Modes, modes_2: Modes, amp: float, mat1: str, mat2: str)`
+
+Log mode properties info for a single collision event.
+2
+
+| Parameter | Description |
+| --- | --- |
+| count | Mode count for this material-material collision. |
+| mode_props | Dictionary to log to. |
+| id1 | ID of the "other" object. |
+| id2 | ID of the "target" object. |
+| modes_1 | Modes of the "other" object. |
+| modes_2 | Modes of the "target" object. |
+| amp | Adjusted amplitude value of collision. |
+| mat1 | Material of the "other" object. |
+| mat2 | Material of the "target" object. |
+
+***
+
 ## `AudioMaterial(Enum)`
 
 `from tdw.py_impact import AudioMaterial`
@@ -203,7 +234,7 @@ The audio values here are just recommendations; you can apply different values i
 
 ***
 
-#### `__init__(self, name: str, amp: float, mass: float, material: AudioMaterial, library: str, bounciness: float)`
+#### `__init__(self, name: str, amp: float, mass: float, material: AudioMaterial, library: str, bounciness: float, resonance: float)`
 
 
 | Parameter | Description |
@@ -214,6 +245,7 @@ The audio values here are just recommendations; you can apply different values i
 | material | The audio material. |
 | library | The path to the model library (see ModelLibrarian documentation). |
 | bounciness | The bounciness value for a Unity physics material. |
+| resonance | The resonance value for the object. |
 
 ***
 
@@ -259,7 +291,7 @@ Resonant mode properties: Frequencies, powers, and times.
 
 ***
 
-#### `sum_modes(self, fs: int = 44100) -> np.array`
+#### `sum_modes(self, fs: int = 44100, resonance: float = 1.0) -> np.array`
 
 Create mode time-series from mode properties and sum them together.
 

@@ -15881,6 +15881,77 @@
             "wcategory": "basket",
             "wnid": "n02801938"
         },
+        "shallow_basket_wicker": {
+            "asset_bundle_sizes": {
+                "Darwin": 15020489,
+                "Linux": 15235237,
+                "Windows": 14835810
+            },
+            "bounds": {
+                "back": {
+                    "x": 2.980232e-08,
+                    "y": 0.07900514,
+                    "z": -0.333909
+                },
+                "bottom": {
+                    "x": 2.980232e-08,
+                    "y": -1.000995e-10,
+                    "z": 0.00229001
+                },
+                "center": {
+                    "x": 2.980232e-08,
+                    "y": 0.07900512,
+                    "z": 0.002290014
+                },
+                "front": {
+                    "x": 2.980232e-08,
+                    "y": 0.07900511,
+                    "z": 0.338489
+                },
+                "left": {
+                    "x": -0.208782,
+                    "y": 0.07900512,
+                    "z": 0.002290014
+                },
+                "right": {
+                    "x": 0.208782,
+                    "y": 0.07900512,
+                    "z": 0.002290014
+                },
+                "top": {
+                    "x": 2.980232e-08,
+                    "y": 0.1580102,
+                    "z": 0.002290017
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "shallow_basket_wicker",
+            "physics_quality": 0.9969252961227338,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wicker_weave"
+                    ],
+                    "name": "shallow_basket_wicker"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/shallow_basket_wicker",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/shallow_basket_wicker",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/shallow_basket_wicker"
+            },
+            "wcategory": "basket",
+            "wnid": "n02801938"
+        },
         "shark": {
             "asset_bundle_sizes": {
                 "Darwin": 1654965,

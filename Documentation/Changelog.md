@@ -55,6 +55,7 @@
   - round_bowl_talll_wenge
   - shallow_basket_white_mesh
   - shallow_basket_wicker
+- In `models_core.json` and `models_full.json`, flagged `rope_table_lamp`, `salt`, and `jigsaw_puzzle_composite` as `do_not_use` due to bad physics behavior.
 
 ### Build
 

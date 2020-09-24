@@ -768,6 +768,9 @@ class Raycast(OutputData):
     def get_hit(self) -> bool:
         return self.data.Hit()
 
+    def get_hit_object(self) -> bool:
+        return self.data.HitObject()
+
     def get_object_id(self) -> Optional[int]:
         return self.data.ObjectId()
 

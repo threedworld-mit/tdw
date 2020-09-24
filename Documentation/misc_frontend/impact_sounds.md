@@ -28,6 +28,8 @@ Deciding what audio material to assign to an object is mostly a common-sense pro
 
 In PyImpact, these object amplitude values are scaled relative to the initial amplitude value passed in via `p = PyImpact(initial_amp=0.5)` (see code example below). This value must be > 0 and < 1. In certain situations, such as multiple closely-packed collision events, distortion of the audio can occur if this value is set too high. For example, the value used in the `impact_sound.py` example controller is 0.5, which is appropriate for a single event involving two objects. However the value used in `rube_goldberg.py` use-case example is much lower — 0.01 — due to the complex collision interactions involved.
 
+The "resonance" values for objects, as set in `tdw/Python/tdw/py_impact/objects.csv`are guidelines and can be altered by the user if desired. Most objects should have values less than 1.0, and small solid objects (e.g. dominos) would have very small values, around 0.15 or thereabouts. Thin-walled objects, especially made from materials such as glass or metal, can have values slightly > 1.0 but going too high can create unnatural-souding resonances.
+
 Here is a minimal demo of a metal spoon dropped on a glass table using default values.
 
 ```python

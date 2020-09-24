@@ -4,6 +4,17 @@
 
 ## v1.6.12
 
+### `tdw module`
+
+#### `PyImpact`
+
+- Added parameter `resonance` to `ObjectInfo`.
+- Added optional parameter `logging` to PyImpact's constructor.
+- Added: `PyImpact.get_log()`
+- Added: `PyImpact.log_modes()`
+- Added parameter `resonance` to `PyImpact.get_sound()`,   `PyImpact.get_impact_sound_command()`, `PyImpact.make_impact_audio()`, `PyImpact.get_impulse_response()`,  and`PyImpact.synth_impact_modes()`
+- Added resonance values to `objects.csv`.
+
 ### Model Library
 
 - Added to `models_core.json` and `models_full.json`:
@@ -25,7 +36,24 @@
   - shallow_basket_white_mesh
   - shallow_basket_wicker
 
+### Use Cases
+
+- `rube_goldberg.py` logs audio mode data.
+
 ## v1.6.11
+
+### `tdw` module
+
+- Added: `FloorplanController`. Load a interior environment scene and populate it with furniture and props.
+- Added: object initialization data classes:
+  - `TransformInitData`: Create object and set their positions, rotations, etc.
+  - `RigidbodyInitData`: Create objects and set their positions, rotations, and physics properties.
+  - `AudioInitData`: Create objects and set their positions, rotations, and physics properties from their PyImpact audio values.
+- Added: `floorplan_layouts.json` Floorplan layouts recipes are stored in this file.
+
+#### `PyImpact`
+
+- Added default audio values for many more objects.
 
 ### Model Library
 
@@ -59,6 +87,31 @@
   - sink_base_wood_beach_honey
 - Removed from `models_core.json` and `models_full.json`:
   - `flat-woven-rug`
+
+### Scene Library
+
+- Added new scenes:
+  - floorplan_2a
+  - floorplan_2b
+  - floorplan_2c
+  - floorplan_3a
+  - floorplan_3b
+  - floorplan_3c
+  - floorplan_4a
+  - floorplan_4b
+  - floorplan_4c
+  - floorplan_5a
+  - floorplan_5b
+  - floorplan_5c
+
+### Documentation
+
+#### New Documentation
+
+| Document                  | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `floorplan_controller.md` | API document for `FloorplanController`                       |
+| `object_init_data.md`     | API document for `TransformInitData`, `RigidbodyInitData`, and `AudioInitData` |
 
 ## v1.6.10
 

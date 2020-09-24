@@ -1,7 +1,9 @@
 name,amp,mass,material,library,bounciness,resonance
 trapezoidal_table,0.5,200,hardwood,models_core.json,0.6,0.65
 glass_table_round,0.6,200,glass,models_core.json,0.6,0.65
+glass_table,0.6,200,glass,models_core.json,0.6,0.65
 yellow_side_chair,0.1,20,wood,models_core.json,0.6,0.65
+red_side_chair,0.1,20,wood,models_core.json,0.6,0.65
 table_square,0.5,200,metal,models_core.json,0.6,0.65
 marble_table,0.2,200,ceramic,models_core.json,0.6,0.65
 vase_06,1,5,ceramic,models_core.json,0.6,0.85
@@ -11,6 +13,7 @@ jug02,0.6,3,ceramic,models_core.json,0.6,0.65
 atmosphere_nodo,0.3,1,cardboard,models_core.json,0.6,0.65
 b05_table_new,0.01,135,wood,models_full.json,0.58,0.65
 chair_willisau_riale,0.02,35,wood,models_core.json,0.58,0.65
+chair_eames_plastic_armchair,0.02,35,wood,models_core.json,0.58,0.65
 iron_box,0.02,5,cardboard,models_full.json,0.5,0.65
 metal_lab_shelf,0.02,330,metal,models_full.json,0.35,0.65
 brown_leather_dining_chair,0.02,35,wood,models_core.json,0.58,0.65
@@ -20,6 +23,7 @@ enzo_industrial_loft_pine_metal_round_dining_table,0.02,200,wood,models_full.jso
 quatre_dining_table,0.01,250,wood,models_full.json,0.58,0.65
 b05_candollarcoin,1,0.2,metal,models_full.json,0.35,0.65
 b04_yamaha_portable_speaker,0.1,8,cardboard,models_full.json,0.7,0.65
+monster_beats_studio,0.1,8,cardboard,models_core.json,0.7,0.65
 small_table_green_marble,0.1,130,ceramic,models_core.json,0.625,0.65
 b04_bottle-2014-2018,1,0.8,glass,models_full.json,0.5,0.65
 b04_ramlosa_bottle_2015_vray,0.1,0.8,glass,models_full.json,0.5,0.65
@@ -121,6 +125,7 @@ bastone_floor_lamp,0.3,5,metal,models_core.json,0.4,0.65
 woven_box,0.1,0.6,wood,models_core.json,0.2,0.65
 sayonara_sofa,0.01,220,cardboard,models_core.json,0.2,0.10
 rope_table_lamp,0.014,1,metal,models_core.json,0.35,0.65
+cerno_lamp,0.014,1,metal,models_core.json,0.35,0.65
 napoleon_iii_sofa,0.01,90,cardboard,models_core.json,0.2,0.10
 blue_side_chair,0.1,20,wood,models_core.json,0.6,0.35
 rh10,0.1,4,wood,models_core.json,0.58,0.65
@@ -135,6 +140,8 @@ coffee_table_glass_round,0.1,80,glass,models_core.json,0.5,0.65
 puzzle_box_composite,0.05,0.2,hardwood,models_core.json,0.2,0.65
 jigsaw_puzzle_composite,0.05,0.2,hardwood,models_core.json,0.2,0.65
 bed01_blue,0.01,250,cardboard,models_core.json,0.2,0.15
+bed01_red,0.01,250,cardboard,models_core.json,0.2,0.15
+bed01,0.01,250,cardboard,models_core.json,0.2,0.15
 24_in_wall_cabinet_white_wood,0.01,70,wood,models_core.json,0.58,0.25
 cabinet_24_two_drawer_white_wood,0.01,70,wood,models_core.json,0.58,0.25
 pot,0.2,12,ceramic,models_core.json,0.625,0.65
@@ -161,6 +168,7 @@ blue_rug,0.01,3,cardboard,models_core.json,0.2,0.10
 jug01,0.6,3,ceramic,models_core.json,0.6,0.85
 metal_briefcase,0.01,4,metal,models_core.json,0.4,0.65
 pillow02,0.01,1,cardboard,models_core.json,0.2,0.10
+notes_02,0.01,1,cardboard,models_core.json,0.2,0.10
 coffee_001,0.01,1,ceramic,models_core.json,0.2,0.65
 purple_woven_rug,0.01,3,cardboard,models_core.json,0.2,0.10
 vase_01,0.6,3,ceramic,models_core.json,0.6,0.85
@@ -172,3 +180,19 @@ kids_luggage_1,0.02,5,hardwood,models_core.json,0.5,0.65
 pepper,0.4,0.4,hardwood,models_core.json,0.5,0.65
 silver_frame_painting,0.2,0.5,glass,models_core.json,0.6,0.65
 cabinet_24_white_wood,0.01,70,wood,models_core.json,0.58,0.50
+ligne_roset_armchair,0.1,40,wood,models_core.json,0.6,0.65
+white_shopping_bag,0.01,1,cardboard,models_core.json,0.2,0.65
+sink_base_white_wood,0.01,70,wood,models_core.json,0.58,0.65
+sink_base_wood_beach_honey,0.01,70,wood,models_core.json,0.58,0.65
+spatula2,1,0.13,cardboard,models_full.json,0.7,0.65
+lapalma_stil_chair,0.1,40,wood,models_core.json,0.6,0.65
+club_house_italia_nautilus_sofa,0.01,180,cardboard,models_core.json,0.2,0.65
+meridiani_freeman_sofa,0.01,180,cardboard,models_core.json,0.2,0.65
+aquostv,0.1,8,cardboard,models_core.json,0.7,0.65
+de_castelli_placas_table,0.01,250,wood,models_full.json,0.58,0.65
+24_in_wall_cabinet_wood_beach_honey,0.01,70,wood,models_core.json,0.58,0.50
+cabinet_24_two_drawer_wood_beach_honey,0.01,70,wood,models_core.json,0.58,0.50
+cabinet_24_wood_beach_honey,0.01,70,wood,models_core.json,0.58,0.50
+cabinet_36_wood_beach_honey,0.01,70,wood,models_core.json,0.58,0.50
+cabinet_full_height_wood_beach_honey,0.01,150,wood,models_core.json,0.58,0.50
+emeco_navy_chair,0.1,20,wood,models_core.json,0.6,0.45

@@ -4,6 +4,22 @@
 
 ## v1.6.12
 
+### Command API
+
+#### New Commands
+
+| Command           | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `send_spherecast` | Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Raycast`   | Added: `get_hit_object()` Returns true if the raycast hit an object. |
+
 ### `tdw module`
 
 #### `PyImpact`
@@ -14,6 +30,35 @@
 - Added: `PyImpact.log_modes()`
 - Added parameter `resonance` to `PyImpact.get_sound()`,   `PyImpact.get_impact_sound_command()`, `PyImpact.make_impact_audio()`, `PyImpact.get_impulse_response()`,  and`PyImpact.synth_impact_modes()`
 - Added resonance values to `objects.csv`.
+
+#### `FloorplanController`
+
+- For scenes `2a`, `2b`, and `2c`, added layouts `1` and `2`
+
+### Model Library
+
+- Added to `models_core.json` and `models_full.json`:
+  - basket_18inx18inx12iin
+  - basket_18inx18inx12iin_bamboo
+  - basket_18inx18inx12iin_plastic_lattice
+  - basket_18inx18inx12iin_wicker
+  - basket_18inx18inx12iin_wood_mesh
+  - box_18inx18inx12in_cardboard
+  - box_24inx18inx12in_cherry
+  - box_tapered_beech
+  - box_tapered_white_mesh
+  - round_bowl_large_metal_perf
+  - round_bowl_large_padauk
+  - round_bowl_large_thin
+  - round_bowl_small_beech
+  - round_bowl_small_walnut
+  - round_bowl_talll_wenge
+  - shallow_basket_white_mesh
+  - shallow_basket_wicker
+
+### Build
+
+- Fixed: `Environments.get_center()` (output data) is sometimes inaccurate. 
 
 ### Use Cases
 

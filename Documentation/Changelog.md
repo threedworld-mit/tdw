@@ -4,6 +4,22 @@
 
 ## v1.6.12
 
+### Command API
+
+#### New Commands
+
+| Command           | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `send_spherecast` | Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Raycast`   | Added: `get_hit_object()` Returns true if the raycast hit an object. |
+
 ### `tdw module`
 
 #### `PyImpact`
@@ -35,6 +51,10 @@
   - round_bowl_talll_wenge
   - shallow_basket_white_mesh
   - shallow_basket_wicker
+
+### Build
+
+- Fixed: `Environments.get_center()` (output data) is sometimes inaccurate. 
 
 ### Use Cases
 

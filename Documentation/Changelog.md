@@ -31,6 +31,10 @@
 - Added parameter `resonance` to `PyImpact.get_sound()`,   `PyImpact.get_impact_sound_command()`, `PyImpact.make_impact_audio()`, `PyImpact.get_impulse_response()`,  and`PyImpact.synth_impact_modes()`
 - Added resonance values to `objects.csv`.
 
+#### `FloorplanController`
+
+- For scenes `2a`, `2b`, and `2c`, added layouts `1` and `2`
+
 ### Model Library
 
 - Added to `models_core.json` and `models_full.json`:

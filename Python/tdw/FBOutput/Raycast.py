@@ -26,22 +26,29 @@ class Raycast(object):
         return False
 
     # Raycast
-    def RaycastId(self):
+    def HitObject(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
+            return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
 
     # Raycast
-    def ObjectId(self):
+    def RaycastId(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
     # Raycast
-    def Normal(self):
+    def ObjectId(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+    # Raycast
+    def Normal(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             x = o + self._tab.Pos
             from .Vector3 import Vector3
@@ -52,7 +59,7 @@ class Raycast(object):
 
     # Raycast
     def Point(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             x = o + self._tab.Pos
             from .Vector3 import Vector3
@@ -61,10 +68,11 @@ class Raycast(object):
             return obj
         return None
 
-def RaycastStart(builder): builder.StartObject(5)
+def RaycastStart(builder): builder.StartObject(6)
 def RaycastAddHit(builder, hit): builder.PrependBoolSlot(0, hit, 0)
-def RaycastAddRaycastId(builder, raycastId): builder.PrependInt32Slot(1, raycastId, 0)
-def RaycastAddObjectId(builder, objectId): builder.PrependInt32Slot(2, objectId, 0)
-def RaycastAddNormal(builder, normal): builder.PrependStructSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(normal), 0)
-def RaycastAddPoint(builder, point): builder.PrependStructSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(point), 0)
+def RaycastAddHitObject(builder, hitObject): builder.PrependBoolSlot(1, hitObject, 0)
+def RaycastAddRaycastId(builder, raycastId): builder.PrependInt32Slot(2, raycastId, 0)
+def RaycastAddObjectId(builder, objectId): builder.PrependInt32Slot(3, objectId, 0)
+def RaycastAddNormal(builder, normal): builder.PrependStructSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(normal), 0)
+def RaycastAddPoint(builder, point): builder.PrependStructSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(point), 0)
 def RaycastEnd(builder): return builder.EndObject()

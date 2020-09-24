@@ -2,6 +2,141 @@
 
 # v1.6.x
 
+## v1.6.12
+
+### Command API
+
+#### New Commands
+
+| Command           | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `send_spherecast` | Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Raycast`   | Added: `get_hit_object()` Returns true if the raycast hit an object. |
+
+### `tdw module`
+
+#### `PyImpact`
+
+- Added parameter `resonance` to `ObjectInfo`.
+- Added optional parameter `logging` to PyImpact's constructor.
+- Added: `PyImpact.get_log()`
+- Added: `PyImpact.log_modes()`
+- Added parameter `resonance` to `PyImpact.get_sound()`,   `PyImpact.get_impact_sound_command()`, `PyImpact.make_impact_audio()`, `PyImpact.get_impulse_response()`,  and`PyImpact.synth_impact_modes()`
+- Added resonance values to `objects.csv`.
+
+#### `FloorplanController`
+
+- For scenes `2a`, `2b`, and `2c`, added layouts `1` and `2`
+
+### Model Library
+
+- Added to `models_core.json` and `models_full.json`:
+  - basket_18inx18inx12iin
+  - basket_18inx18inx12iin_bamboo
+  - basket_18inx18inx12iin_plastic_lattice
+  - basket_18inx18inx12iin_wicker
+  - basket_18inx18inx12iin_wood_mesh
+  - box_18inx18inx12in_cardboard
+  - box_24inx18inx12in_cherry
+  - box_tapered_beech
+  - box_tapered_white_mesh
+  - round_bowl_large_metal_perf
+  - round_bowl_large_padauk
+  - round_bowl_large_thin
+  - round_bowl_small_beech
+  - round_bowl_small_walnut
+  - round_bowl_talll_wenge
+  - shallow_basket_white_mesh
+  - shallow_basket_wicker
+
+### Build
+
+- Fixed: `Environments.get_center()` (output data) is sometimes inaccurate. 
+
+### Use Cases
+
+- `rube_goldberg.py` logs audio mode data.
+
+## v1.6.11
+
+### `tdw` module
+
+- Added: `FloorplanController`. Load a interior environment scene and populate it with furniture and props.
+- Added: object initialization data classes:
+  - `TransformInitData`: Create object and set their positions, rotations, etc.
+  - `RigidbodyInitData`: Create objects and set their positions, rotations, and physics properties.
+  - `AudioInitData`: Create objects and set their positions, rotations, and physics properties from their PyImpact audio values.
+- Added: `floorplan_layouts.json` Floorplan layouts recipes are stored in this file.
+
+#### `PyImpact`
+
+- Added default audio values for many more objects.
+
+### Model Library
+
+- Added to `models_core.json` and `models_full.json`:
+  - 24_in_wall_cabinet_white_wood
+  - 24_in_wall_cabinet_wood_beach_honey
+  - 36_in_wall_cabinet_white_wood
+  - 36_in_wall_cabinet_wood_beach_honey
+  - bed01
+  - bed01_blue
+  - bed01_red
+  - blue_rug
+  - cabinet_24_door_drawer_wood_beach_honey
+  - cabinet_24_singledoor_wood_beach_honey
+  - cabinet_24_two_drawer_white_wood
+  - cabinet_24_two_drawer_wood_beach_honey
+  - cabinet_24_white_wood
+  - cabinet_24_wood_beach_honey
+  - cabinet_36_white_wood
+  - cabinet_36_wood_beach_honey
+  - cabinet_full_height_white_wood
+  - cabinet_full_height_wood_beach_honey
+  - carpet_rug
+  - elf_painting
+  - flat_woven_rug
+  - fruit_basket
+  - its_about_time_painting
+  - purple_woven_rug
+  - silver_frame_painting
+  - sink_base_white_wood
+  - sink_base_wood_beach_honey
+- Removed from `models_core.json` and `models_full.json`:
+  - `flat-woven-rug`
+
+### Scene Library
+
+- Added new scenes:
+  - floorplan_2a
+  - floorplan_2b
+  - floorplan_2c
+  - floorplan_3a
+  - floorplan_3b
+  - floorplan_3c
+  - floorplan_4a
+  - floorplan_4b
+  - floorplan_4c
+  - floorplan_5a
+  - floorplan_5b
+  - floorplan_5c
+
+### Documentation
+
+#### New Documentation
+
+| Document                  | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `floorplan_controller.md` | API document for `FloorplanController`                       |
+| `object_init_data.md`     | API document for `TransformInitData`, `RigidbodyInitData`, and `AudioInitData` |
+
 ## v1.6.10
 
 ### Command API

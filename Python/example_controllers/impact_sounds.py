@@ -103,7 +103,8 @@ class ImpactSounds(Controller):
                     target_amp=objects[obj2_name].amp,
                     other_id=obj1_id,
                     other_amp=objects[obj1_name].amp,
-                    other_mat=objects[obj1_name].material.name)
+                    other_mat=objects[obj1_name].material.name,
+                    resonance=objects[obj1_name].resonance)
                 resp = self.communicate(impact_sound_command)
             # Continue to run the trial.
             else:

@@ -34,6 +34,7 @@
 #### `FloorplanController`
 
 - For scenes `2a`, `2b`, and `2c`, added layouts `1` and `2`
+- Added scenes `4a`, `4b`, and `4c`, which have layouts `1`, `2`, and `3`.
 
 ### Model Library
 

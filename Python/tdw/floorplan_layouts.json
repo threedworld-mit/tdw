@@ -2134,94 +2134,6 @@
           "y": 1,
           "z": 1
         }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "basket_18inx18inx12iin_plastic_lattice",
-        "position": {
-          "x": -6.100256156921386,
-          "y": 0.0,
-          "z": 1.2102859973907472
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 0.5,
-          "y": 0.5,
-          "z": 0.5
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "round_bowl_large_thin",
-        "position": {
-          "x": 8.123232269287113,
-          "y": 0.0,
-          "z": -2.3887262344360356
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 0.5,
-          "y": 0.5,
-          "z": 0.5
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "basket_18inx18inx12iin_wicker",
-        "position": {
-          "x": 6.1232322692871115,
-          "y": 0.0,
-          "z": -1.9887262344360357
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 0.5,
-          "y": 0.5,
-          "z": 0.5
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "round_bowl_small_beech",
-        "position": {
-          "x": 8.923232269287114,
-          "y": 0.0,
-          "z": -1.9887262344360357
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 0.5,
-          "y": 0.5,
-          "z": 0.5
-        }
       }
     ],
     "1": [
@@ -4490,94 +4402,6 @@
           "y": 1,
           "z": 1
         }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "box_tapered_beech",
-        "position": {
-          "x": -4.500256156921385,
-          "y": 0.0,
-          "z": 0.010285997390747093
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 0.5,
-          "y": 0.5,
-          "z": 0.5
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "box_18inx18inx12in_cardboard",
-        "position": {
-          "x": 2.046359348297119,
-          "y": 0.0,
-          "z": -4.425420761108398
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 0.5,
-          "y": 0.5,
-          "z": 0.5
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "round_bowl_talll_wenge",
-        "position": {
-          "x": 0.29974384307861524,
-          "y": 0.0,
-          "z": 0.8102859973907471
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 0.5,
-          "y": 0.5,
-          "z": 0.5
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "round_bowl_small_walnut",
-        "position": {
-          "x": 1.646359348297119,
-          "y": 0.0,
-          "z": -4.025420761108398
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 0.5,
-          "y": 0.5,
-          "z": 0.5
-        }
       }
     ],
     "2": [
@@ -6802,22 +6626,6212 @@
           "y": 1,
           "z": 1
         }
+      }
+    ]
+  },
+  "4": {
+    "0": [
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "live_edge_coffee_table",
+        "position": {
+          "x": -1.23,
+          "y": 0.010326,
+          "z": -3.49
+        },
+        "rotation": {
+          "w": 1,
+          "x": -1.166968e-05,
+          "y": 1.40519e-06,
+          "z": 1.794214e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
       },
       {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "round_bowl_large_metal_perf",
+        "name": "dark_red_club_chair",
         "position": {
-          "x": 7.211483001708984,
-          "y": 0.0,
-          "z": 0.5240310668945313
+          "x": -7.689,
+          "y": 0.004865646,
+          "z": -1.011
+        },
+        "rotation": {
+          "w": -0.3420201,
+          "x": 0,
+          "y": -0.9396927,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "printer_hp_laserjet1321",
+        "position": {
+          "x": -4.310281,
+          "y": 0.6173553,
+          "z": 5.437427
+        },
+        "rotation": {
+          "w": -0.003019219,
+          "x": 0.0001047114,
+          "y": -0.9999954,
+          "z": 0.0003445074
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_billiani_doll",
+        "position": {
+          "x": 5.571398,
+          "y": 0.00299266,
+          "z": -0.1519134
+        },
+        "rotation": {
+          "w": 0.6618531,
+          "x": 2.075778e-05,
+          "y": -0.7496336,
+          "z": 2.428889e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_billiani_doll",
+        "position": {
+          "x": 4.836889,
+          "y": 0.002869308,
+          "z": -0.8201819
+        },
+        "rotation": {
+          "w": 0.997762,
+          "x": 1.101196e-05,
+          "y": 0.06686475,
+          "z": 3.414228e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_billiani_doll",
+        "position": {
+          "x": 4.881073,
+          "y": 0.002987981,
+          "z": 0.6282353
+        },
+        "rotation": {
+          "w": 0.01973759,
+          "x": 1.021475e-05,
+          "y": 0.9998053,
+          "z": -2.82526e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_billiani_doll",
+        "position": {
+          "x": 4.249444,
+          "y": 0.002988964,
+          "z": -0.1630614
+        },
+        "rotation": {
+          "w": 0.7099476,
+          "x": 3.437895e-05,
+          "y": 0.7042544,
+          "z": -9.968876e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "macbook_air",
+        "position": {
+          "x": -5.885814,
+          "y": 0.4804,
+          "z": 4.03766
+        },
+        "rotation": {
+          "w": 0.9928887,
+          "x": 0.0007402253,
+          "y": -0.1190442,
+          "z": 0.0001372501
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "dining_room_table",
+        "position": {
+          "x": 4.887134,
+          "y": -0.002498507,
+          "z": -0.1407579
+        },
+        "rotation": {
+          "w": 1,
+          "x": 1.177797e-05,
+          "y": -8.629206e-06,
+          "z": 4.183326e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "framed_painting",
+        "position": {
+          "x": -5.508,
+          "y": 1.13,
+          "z": 2.611
+        },
+        "rotation": {
+          "w": 0,
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "flat_woven_rug",
+        "position": {
+          "x": -1.220933,
+          "y": 0.00135106,
+          "z": -3.49
+        },
+        "rotation": {
+          "w": 0.7067098,
+          "x": 0.0002061563,
+          "y": 0.7075036,
+          "z": 8.442545e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "yellow_side_chair",
+        "position": {
+          "x": 4.66051,
+          "y": 0.001321584,
+          "z": 2.068
+        },
+        "rotation": {
+          "w": 0.9999999,
+          "x": -4.454875e-06,
+          "y": -0.0004788339,
+          "z": 1.673184e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "side_table_wood",
+        "position": {
+          "x": -4.308,
+          "y": -0.0003988445,
+          "z": 5.429
+        },
+        "rotation": {
+          "w": 1,
+          "x": -0.0002233054,
+          "y": 0.0001745266,
+          "z": 7.942242e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "table_stack",
+        "position": {
+          "x": -6.115417,
+          "y": 0.00823915,
+          "z": 3.92156
+        },
+        "rotation": {
+          "w": 0,
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "de_castelli_placas_table_low",
+        "position": {
+          "x": 4.961728,
+          "y": 0.01050484,
+          "z": 3.930597
+        },
+        "rotation": {
+          "w": 0.7071657,
+          "x": 9.034061e-06,
+          "y": 0.707048,
+          "z": -5.411961e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "black_lamp",
+        "position": {
+          "x": -7.99,
+          "y": 0.9828261,
+          "z": -2.78
+        },
+        "rotation": {
+          "w": 0.3503486,
+          "x": -0.007333155,
+          "y": -0.9364644,
+          "z": -0.01538104
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "poliform_atollo_curved_sofa",
+        "position": {
+          "x": -5.529,
+          "y": 0.005135536,
+          "z": 2.12
+        },
+        "rotation": {
+          "w": 0.0002970546,
+          "x": 0.0007389235,
+          "y": 0.9999997,
+          "z": 0.0003701717
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "arco_lamp",
+        "position": {
+          "x": -8.127457,
+          "y": 0.009333909,
+          "z": 5.39608
+        },
+        "rotation": {
+          "w": 0.9666558,
+          "x": -0.005333182,
+          "y": -0.2560135,
+          "z": -0.002288423
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "arturoalvarez_v_floor_lamp",
+        "position": {
+          "x": 6.048917,
+          "y": 0.005103946,
+          "z": 5.348952
+        },
+        "rotation": {
+          "w": 0.8977323,
+          "x": 0.0006284126,
+          "y": 0.4405408,
+          "z": 0.0001402554
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "alivar_tech_bench_sofa",
+        "position": {
+          "x": -6.27,
+          "y": 0.02705625,
+          "z": 5.32
         },
         "rotation": {
           "w": 1,
           "x": 0,
           "y": 0,
           "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "bastone_floor_lamp",
+        "position": {
+          "x": -6.638908,
+          "y": -0.001588106,
+          "z": 2.413011
+        },
+        "rotation": {
+          "w": 0.4189816,
+          "x": -6.595104e-06,
+          "y": 0.9079947,
+          "z": -1.924241e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "alma_floor_lamp",
+        "position": {
+          "x": 0.47,
+          "y": 0.002200127,
+          "z": -4.92
+        },
+        "rotation": {
+          "w": 0.08715588,
+          "x": 0,
+          "y": 0.9961947,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sayonara_sofa",
+        "position": {
+          "x": 6.549958,
+          "y": 0.005984157,
+          "z": 2.58998
+        },
+        "rotation": {
+          "w": 0.7071178,
+          "x": -0.002190052,
+          "y": -0.7070924,
+          "z": 9.089708e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "jug05",
+        "position": {
+          "x": -4.827001,
+          "y": 0.6132541,
+          "z": -4.958002
+        },
+        "rotation": {
+          "w": 1,
+          "x": -6.350737e-05,
+          "y": -2.388723e-05,
+          "z": 5.665497e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "trapezoidal_table",
+        "position": {
+          "x": -5.507889,
+          "y": 0.003950715,
+          "z": 0.8100061
+        },
+        "rotation": {
+          "w": -9.208918e-06,
+          "x": 6.648785e-06,
+          "y": 1,
+          "z": 5.405216e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "puzzle_box_composite",
+        "position": {
+          "x": -5.510249,
+          "y": 0.3691951,
+          "z": 0.8859689
+        },
+        "rotation": {
+          "w": 0.2781229,
+          "x": -2.411579e-05,
+          "y": 0.9605455,
+          "z": -0.0001157155
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "puzzle_box_composite",
+        "position": {
+          "x": 4.99,
+          "y": 0.3078,
+          "z": 3.96
+        },
+        "rotation": {
+          "w": 0.9861346,
+          "x": 0.004160258,
+          "y": -0.1658952,
+          "z": -0.0003270459
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "trunck",
+        "position": {
+          "x": -7.953628,
+          "y": 0.0008502603,
+          "z": -2.756934
+        },
+        "rotation": {
+          "w": 0.7067274,
+          "x": 0.001862929,
+          "y": 0.7074807,
+          "z": -0.001980902
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "bed01_blue",
+        "position": {
+          "x": -6.1301,
+          "y": -0.001813412,
+          "z": -3.907132
+        },
+        "rotation": {
+          "w": 0.9999977,
+          "x": 0.002183679,
+          "y": -1.511303e-05,
+          "z": 3.322275e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "rh10",
+        "position": {
+          "x": -7.857,
+          "y": 0.006603122,
+          "z": 1.148
+        },
+        "rotation": {
+          "w": 0.9238796,
+          "x": 0,
+          "y": -0.3826834,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "24_in_wall_cabinet_white_wood",
+        "position": {
+          "x": 5.521208,
+          "y": 1.293125,
+          "z": -2.059998
+        },
+        "rotation": {
+          "w": 0.9999976,
+          "x": 0.001040919,
+          "y": -9.958007e-05,
+          "z": -0.001980542
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_24_two_drawer_white_wood",
+        "position": {
+          "x": 2.13661,
+          "y": 0.001352042,
+          "z": -4.869898
+        },
+        "rotation": {
+          "w": 0.006901728,
+          "x": -0.001559511,
+          "y": 0.9999748,
+          "z": -0.0006032884
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_24_white_wood",
+        "position": {
+          "x": 3.352145,
+          "y": 0.003431946,
+          "z": -4.871768
+        },
+        "rotation": {
+          "w": 0.001300861,
+          "x": -0.0003227614,
+          "y": 0.999999,
+          "z": -0.0004960355
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_36_white_wood",
+        "position": {
+          "x": 5.062641,
+          "y": 0.005923718,
+          "z": -4.86417
+        },
+        "rotation": {
+          "w": -0.002749257,
+          "x": 0.002358553,
+          "y": 0.9999934,
+          "z": -0.0003605708
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_full_height_white_wood",
+        "position": {
+          "x": 6.749014,
+          "y": -0.0001317263,
+          "z": -2.174
+        },
+        "rotation": {
+          "w": 1,
+          "x": 4.675021e-07,
+          "y": 4.516193e-06,
+          "z": 3.221503e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "brown_leather_dining_chair",
+        "position": {
+          "x": 6.69,
+          "y": 0.002270818,
+          "z": -3.64
+        },
+        "rotation": {
+          "w": 0.587787,
+          "x": -5.468716e-06,
+          "y": -0.8090158,
+          "z": -1.519916e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "silver_frame_painting",
+        "position": {
+          "x": 5.564,
+          "y": 0.9617563,
+          "z": 1.611986
+        },
+        "rotation": {
+          "w": 0,
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "fruit_basket",
+        "position": {
+          "x": -6.503,
+          "y": 1.132092,
+          "z": -0.21
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "blue_rug",
+        "position": {
+          "x": -6.275379,
+          "y": -1.480523e-05,
+          "z": 4.060949
+        },
+        "rotation": {
+          "w": 0.7071068,
+          "x": 0,
+          "y": -0.7071068,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "carpet_rug",
+        "position": {
+          "x": 5.199991,
+          "y": 0.001460209,
+          "z": 3.72002
+        },
+        "rotation": {
+          "w": 0.7071069,
+          "x": -5.442537e-06,
+          "y": 0.7071066,
+          "z": 8.282067e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "fridge_large",
+        "position": {
+          "x": 4.132259,
+          "y": 0.01560211,
+          "z": -4.831937
+        },
+        "rotation": {
+          "w": -0.9999993,
+          "x": -1.798158e-05,
+          "y": 6.338181e-05,
+          "z": 0.001139111
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "dishwasher_4",
+        "position": {
+          "x": 2.749118,
+          "y": 0.01855767,
+          "z": -4.876156
+        },
+        "rotation": {
+          "w": 0.9999959,
+          "x": -0.002002519,
+          "y": 0.002027338,
+          "z": 0.0004399947
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "coffee_001",
+        "position": {
+          "x": 6.273183,
+          "y": 0.929055,
+          "z": -2.048752
+        },
+        "rotation": {
+          "w": 0.7067486,
+          "x": 0.0001151677,
+          "y": -0.7074648,
+          "z": -6.812159e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "bastone_floor_lamp",
+        "position": {
+          "x": -4.398896,
+          "y": -0.001595497,
+          "z": 2.404025
+        },
+        "rotation": {
+          "w": 0.5801986,
+          "x": -8.058981e-06,
+          "y": 0.8144751,
+          "z": 2.315139e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "fork1",
+        "position": {
+          "x": 4.482709,
+          "y": 0.733188,
+          "z": -0.01469975
+        },
+        "rotation": {
+          "w": 0.02679119,
+          "x": -0.0005963522,
+          "y": 0.9996409,
+          "z": -7.620081e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "fork1",
+        "position": {
+          "x": 5.274,
+          "y": 0.7330951,
+          "z": -0.25
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "fork1",
+        "position": {
+          "x": 5.098101,
+          "y": 0.7330951,
+          "z": 0.2464037
+        },
+        "rotation": {
+          "w": 0.7256393,
+          "x": -3.203694e-08,
+          "y": -0.6880753,
+          "z": 2.840533e-08
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "jug01",
+        "position": {
+          "x": 6.825172,
+          "y": 0.334783,
+          "z": -0.7375233
+        },
+        "rotation": {
+          "w": -0.00427535,
+          "x": 0.01633782,
+          "y": 0.9998574,
+          "z": 0.0003344879
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "knife1",
+        "position": {
+          "x": 4.502101,
+          "y": 0.7330951,
+          "z": -0.3306999
+        },
+        "rotation": {
+          "w": 0.7120743,
+          "x": -1.886291e-09,
+          "y": -0.7021042,
+          "z": 1.804437e-09
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "knife1",
+        "position": {
+          "x": 4.715099,
+          "y": 0.7333422,
+          "z": 0.2503188
+        },
+        "rotation": {
+          "w": 0.9999997,
+          "x": 0.0003587753,
+          "y": 8.891792e-06,
+          "z": 0.0007473739
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "knife1",
+        "position": {
+          "x": 5.258102,
+          "y": 0.7335907,
+          "z": 0.0153749
+        },
+        "rotation": {
+          "w": 0.687336,
+          "x": 0.003199007,
+          "y": 0.7263293,
+          "z": 0.002229335
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "skillet_closed",
+        "position": {
+          "x": 6.642298,
+          "y": 0.904582,
+          "z": -4.629961
+        },
+        "rotation": {
+          "w": -0.01663439,
+          "x": 1.795543e-05,
+          "y": -0.9998617,
+          "z": 2.660695e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "pepper",
+        "position": {
+          "x": 4.832127,
+          "y": 0.7333292,
+          "z": -0.0967196
+        },
+        "rotation": {
+          "w": 0.9999999,
+          "x": -0.0003050197,
+          "y": -1.536714e-05,
+          "z": 0.0002439267
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "spoon1",
+        "position": {
+          "x": 4.754098,
+          "y": 0.7334952,
+          "z": 0.2503217
+        },
+        "rotation": {
+          "w": 0.9999965,
+          "x": 0.001468521,
+          "y": 2.518051e-06,
+          "z": 0.002210584
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "toaster_002",
+        "position": {
+          "x": 5.903993,
+          "y": 0.9179227,
+          "z": -2.006526
+        },
+        "rotation": {
+          "w": -0.0003697374,
+          "x": 2.867819e-05,
+          "y": -0.9999999,
+          "z": 0.0003148839
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "vase_01",
+        "position": {
+          "x": 6.798459,
+          "y": 0.3263117,
+          "z": 0.7419476
+        },
+        "rotation": {
+          "w": -0.0003257281,
+          "x": -0.007024886,
+          "y": 0.9999706,
+          "z": -0.00306244
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass2",
+        "position": {
+          "x": 4.658076,
+          "y": 0.7336388,
+          "z": -0.06071909
+        },
+        "rotation": {
+          "w": 0.9999999,
+          "x": 0.000338056,
+          "y": 2.138337e-05,
+          "z": -0.0001997134
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass2",
+        "position": {
+          "x": 4.658073,
+          "y": 0.7328722,
+          "z": -0.461749
+        },
+        "rotation": {
+          "w": 0.9999999,
+          "x": -0.0002524279,
+          "y": 0.0004507063,
+          "z": 0.0001395635
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass2",
+        "position": {
+          "x": 5.166128,
+          "y": 0.7328441,
+          "z": -0.3487405
+        },
+        "rotation": {
+          "w": 0.9999997,
+          "x": 0.000594524,
+          "y": -0.0004434672,
+          "z": -0.0001836553
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "metal_briefcase",
+        "position": {
+          "x": -4.991,
+          "y": 0.0007847697,
+          "z": 4.688
+        },
+        "rotation": {
+          "w": 0.3809165,
+          "x": 1.510744e-05,
+          "y": 0.9246095,
+          "z": -3.354345e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "kids_luggage_1",
+        "position": {
+          "x": -6.936,
+          "y": 0.01133072,
+          "z": 0.049
+        },
+        "rotation": {
+          "w": -0.4059832,
+          "x": 0.0004917664,
+          "y": 0.9138798,
+          "z": -0.001058132
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "blue_satchal",
+        "position": {
+          "x": 4.240472,
+          "y": 0.002564818,
+          "z": 1.921
+        },
+        "rotation": {
+          "w": 0.3588037,
+          "x": 1.552472e-06,
+          "y": 0.9334131,
+          "z": -9.30615e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "pencil_all",
+        "position": {
+          "x": -5.952,
+          "y": 0.4799,
+          "z": 3.78
+        },
+        "rotation": {
+          "w": 0.9999998,
+          "x": 0.0003262099,
+          "y": 5.245969e-05,
+          "z": -0.0006184657
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "fruit_basket",
+        "position": {
+          "x": 5.558,
+          "y": 1.176057,
+          "z": 1.787
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "elf_painting",
+        "position": {
+          "x": -5.964,
+          "y": 0.968,
+          "z": 2.775
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "its_about_time_painting",
+        "position": {
+          "x": 5.6,
+          "y": 0.9014152,
+          "z": -1.7
+        },
+        "rotation": {
+          "w": 1,
+          "x": 3.681789e-07,
+          "y": -1.341104e-07,
+          "z": -2.74219e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "purple_woven_rug",
+        "position": {
+          "x": -6.07,
+          "y": 0.0002554425,
+          "z": -1.62
+        },
+        "rotation": {
+          "w": 0.7071068,
+          "x": 9.856337e-08,
+          "y": 0.7071068,
+          "z": 6.009999e-08
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass_coffee_table_long",
+        "position": {
+          "x": 6.783593,
+          "y": 0.005336195,
+          "z": -0.03533553
+        },
+        "rotation": {
+          "w": -0.7070222,
+          "x": 0.002808083,
+          "y": 0.7071796,
+          "z": 0.002952528
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "white_lounger_chair",
+        "position": {
+          "x": -4.66,
+          "y": 0.00686264,
+          "z": 3.42
+        },
+        "rotation": {
+          "w": 0.9238343,
+          "x": 0.003786963,
+          "y": -0.3826647,
+          "z": -0.009142539
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "carpet_rug",
+        "position": {
+          "x": -5.55893,
+          "y": -0.0005091429,
+          "z": 0.902
+        },
+        "rotation": {
+          "w": -0.7071183,
+          "x": 0.0008826045,
+          "y": 0.7070946,
+          "z": 0.0005501744
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "linen_dining_chair",
+        "position": {
+          "x": 6.706001,
+          "y": 0.00449425,
+          "z": 1.310015
+        },
+        "rotation": {
+          "w": -0.7071057,
+          "x": -3.242021e-07,
+          "y": 0.7071079,
+          "z": -6.109476e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "linen_dining_chair",
+        "position": {
+          "x": 6.705013,
+          "y": 0.004502773,
+          "z": -1.407986
+        },
+        "rotation": {
+          "w": -0.7071057,
+          "x": -7.26446e-07,
+          "y": 0.7071079,
+          "z": -1.192093e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "side_table_wood",
+        "position": {
+          "x": -4.819963,
+          "y": -0.002785206,
+          "z": -4.947927
+        },
+        "rotation": {
+          "w": 1,
+          "x": -8.818363e-05,
+          "y": 6.570743e-06,
+          "z": 6.631086e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "side_table_wood",
+        "position": {
+          "x": -7.425009,
+          "y": -0.0005405247,
+          "z": -4.934024
+        },
+        "rotation": {
+          "w": 1,
+          "x": 1.321902e-06,
+          "y": 5.133553e-06,
+          "z": -9.926568e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "dark_red_club_chair",
+        "position": {
+          "x": -1.24,
+          "y": 0.0203467,
+          "z": -2.32
+        },
+        "rotation": {
+          "w": 0,
+          "x": 0,
+          "y": -1,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "dark_red_club_chair",
+        "position": {
+          "x": -3.312,
+          "y": 0.00487268,
+          "z": -3.726
+        },
+        "rotation": {
+          "w": 0.7071068,
+          "x": 2.43337e-06,
+          "y": 0.7071068,
+          "z": -2.190469e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "minotti_helion_3_seater_sofa",
+        "position": {
+          "x": -1.21,
+          "y": 0.001393348,
+          "z": -4.7
+        },
+        "rotation": {
+          "w": 0.9999999,
+          "x": -3.349223e-05,
+          "y": 0.0002543593,
+          "z": -0.0003494856
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sayonara_sofa",
+        "position": {
+          "x": 3.686722,
+          "y": 0.007207006,
+          "z": 4.839494
+        },
+        "rotation": {
+          "w": 0.7078903,
+          "x": -0.005739299,
+          "y": 0.7062765,
+          "z": 0.005638093
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sayonara_sofa",
+        "position": {
+          "x": 4.957831,
+          "y": 0.0124118,
+          "z": 5.194802
+        },
+        "rotation": {
+          "w": 0.002515237,
+          "x": -0.006302973,
+          "y": 0.9999713,
+          "z": -0.003363154
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "24_in_wall_cabinet_white_wood",
+        "position": {
+          "x": 6.129776,
+          "y": 1.285054,
+          "z": -2.060001
+        },
+        "rotation": {
+          "w": 0.9999994,
+          "x": 9.155387e-07,
+          "y": -0.0001728721,
+          "z": -0.001118381
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "ligne_roset_armchair",
+        "position": {
+          "x": -7.697,
+          "y": 0.02023458,
+          "z": 0.264
+        },
+        "rotation": {
+          "w": 0.9078767,
+          "x": -0.02166759,
+          "y": 0.4132483,
+          "z": 0.06720287
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "coffee_table_glass_round",
+        "position": {
+          "x": -2.899,
+          "y": -0.001365632,
+          "z": -4.701
+        },
+        "rotation": {
+          "w": 0.9999885,
+          "x": -0.003239892,
+          "y": -0.003476582,
+          "z": -0.0006096152
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "white_shopping_bag",
+        "position": {
+          "x": 4.65,
+          "y": 0.02869613,
+          "z": -2.65001
+        },
+        "rotation": {
+          "w": 0.3809626,
+          "x": -0.378221,
+          "y": 0.6027914,
+          "z": 0.5903041
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sm_table_white",
+        "position": {
+          "x": 6.686525,
+          "y": 0.003863454,
+          "z": -4.600291
+        },
+        "rotation": {
+          "w": 0.7071333,
+          "x": -4.064528e-05,
+          "y": -0.7070802,
+          "z": -8.6274e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sink_base_white_wood",
+        "position": {
+          "x": 5.670002,
+          "y": 0.001148224,
+          "z": -2.177062
+        },
+        "rotation": {
+          "w": 0.9999999,
+          "x": -0.0004809747,
+          "y": 0.0001039505,
+          "z": -2.748432e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "spatula2",
+        "position": {
+          "x": 6.904617,
+          "y": 0.8993024,
+          "z": -4.820733
+        },
+        "rotation": {
+          "w": 0.5239005,
+          "x": 0.004656868,
+          "y": -0.8516968,
+          "z": -0.01090907
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "elf_painting",
+        "position": {
+          "x": -3.771,
+          "y": 0.9380152,
+          "z": -4.032
+        },
+        "rotation": {
+          "w": 0.7071074,
+          "x": 2.960475e-11,
+          "y": 0.7071061,
+          "z": -4.72937e-11
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "framed_painting",
+        "position": {
+          "x": -6.518,
+          "y": 1.040017,
+          "z": -0.399
+        },
+        "rotation": {
+          "w": 0,
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      }
+    ],
+    "1": [
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "napoleon_iii_sofa",
+        "position": {
+          "x": 5.308249,
+          "y": 0.01266187,
+          "z": -1.247255
+        },
+        "rotation": {
+          "w": 0.9999596,
+          "x": 0.008967604,
+          "y": -0.0005428559,
+          "z": -0.0002238563
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "printer_hp_laserjet1321",
+        "position": {
+          "x": -6.937816,
+          "y": 0.5855789,
+          "z": 2.34185
+        },
+        "rotation": {
+          "w": -0.0002944035,
+          "x": -7.5771e-05,
+          "y": -0.9999996,
+          "z": -0.0009376368
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "brown_leather_dining_chair",
+        "position": {
+          "x": 5.778452,
+          "y": 0.01384002,
+          "z": 5.337964
+        },
+        "rotation": {
+          "w": -0.6213401,
+          "x": 0.007722979,
+          "y": -0.7834957,
+          "z": 0.003380552
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "lapalma_stil_chair",
+        "position": {
+          "x": -4.586232,
+          "y": 0.006275177,
+          "z": 1.69215
+        },
+        "rotation": {
+          "w": 0.9947138,
+          "x": 0.002201105,
+          "y": -0.1026378,
+          "z": -0.002242931
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "lapalma_stil_chair",
+        "position": {
+          "x": -5.488738,
+          "y": 0.00700587,
+          "z": 2.242627
+        },
+        "rotation": {
+          "w": -0.4898717,
+          "x": -0.0009128413,
+          "y": -0.871767,
+          "z": -0.006872638
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_billiani_doll",
+        "position": {
+          "x": 2.275998,
+          "y": 0.002963662,
+          "z": -2.173989
+        },
+        "rotation": {
+          "w": 9.505078e-06,
+          "x": 8.592848e-06,
+          "y": 1,
+          "z": -2.57194e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "atmosphere_nodo",
+        "position": {
+          "x": -4.352868,
+          "y": 0.898,
+          "z": 2.374837
+        },
+        "rotation": {
+          "w": -0.614356,
+          "x": -0.001620468,
+          "y": 0.7890233,
+          "z": -0.002505407
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "dining_room_table",
+        "position": {
+          "x": -4.531069,
+          "y": -0.001337945,
+          "z": 3.321009
+        },
+        "rotation": {
+          "w": 0.7072029,
+          "x": -0.0009330125,
+          "y": 0.7070099,
+          "z": -0.0005214512
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "framed_painting",
+        "position": {
+          "x": 5.657,
+          "y": 0.8941039,
+          "z": 1.786
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "flat_woven_rug",
+        "position": {
+          "x": 4.102337,
+          "y": 0.0008672595,
+          "z": 3.80602
+        },
+        "rotation": {
+          "w": 0.0008087388,
+          "x": -0.0003390494,
+          "y": 0.9999996,
+          "z": -0.0003450491
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "yellow_side_chair",
+        "position": {
+          "x": 4.504998,
+          "y": 0.005532742,
+          "z": 1.157009
+        },
+        "rotation": {
+          "w": -0.2743775,
+          "x": -0.0005953839,
+          "y": -0.9616211,
+          "z": 0.001220539
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "arflex_strips_sofa",
+        "position": {
+          "x": -6.343574,
+          "y": 0.01423606,
+          "z": 0.2460876
+        },
+        "rotation": {
+          "w": 0.999999,
+          "x": 0.001104182,
+          "y": -0.0002169539,
+          "z": 0.0008784404
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "side_table_wood",
+        "position": {
+          "x": -4.512988,
+          "y": 0.0005664825,
+          "z": 5.396993
+        },
+        "rotation": {
+          "w": 1,
+          "x": -4.754981e-06,
+          "y": 0.0002854097,
+          "z": 1.86214e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "table_stack",
+        "position": {
+          "x": -5.999049,
+          "y": 0.0115397,
+          "z": -2.579879
+        },
+        "rotation": {
+          "w": 0.7071255,
+          "x": 0.00032327,
+          "y": 0.707088,
+          "z": 2.89455e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "de_castelli_placas_table_low",
+        "position": {
+          "x": 4.984234,
+          "y": 0.01035877,
+          "z": 0.006038631
+        },
+        "rotation": {
+          "w": 0.9999976,
+          "x": -0.002102832,
+          "y": -0.0007172442,
+          "z": -1.897034e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "club_house_italia_nautilus_sofa",
+        "position": {
+          "x": 6.169913,
+          "y": 0.02311525,
+          "z": 0.710769
+        },
+        "rotation": {
+          "w": 0.4073664,
+          "x": 0.00012701,
+          "y": -0.913259,
+          "z": -0.003260791
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "arturoalvarez_v_floor_lamp",
+        "position": {
+          "x": -7.852673,
+          "y": 0,
+          "z": 5.315299
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "alivar_tech_bench_sofa",
+        "position": {
+          "x": -6.196002,
+          "y": 0.0010131,
+          "z": -4.854004
+        },
+        "rotation": {
+          "w": 1,
+          "x": 2.983679e-07,
+          "y": 6.848596e-07,
+          "z": 3.353835e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "bastone_floor_lamp",
+        "position": {
+          "x": 6.710447,
+          "y": 0.002078593,
+          "z": -2.22015
+        },
+        "rotation": {
+          "w": 0.3082891,
+          "x": -0.002779054,
+          "y": -0.9512703,
+          "z": 0.005892375
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "alma_floor_lamp",
+        "position": {
+          "x": 6.676245,
+          "y": 0.006316423,
+          "z": -1.408878
+        },
+        "rotation": {
+          "w": -0.7359537,
+          "x": 0.001931569,
+          "y": -0.6770215,
+          "z": 0.003220637
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "aquostv",
+        "position": {
+          "x": -6.487987,
+          "y": 0.7801383,
+          "z": -0.4288081
+        },
+        "rotation": {
+          "w": -8.371666e-08,
+          "x": 3.252e-05,
+          "y": -1,
+          "z": 0.0001880568
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "jug05",
+        "position": {
+          "x": 1.609947,
+          "y": 0.4550059,
+          "z": -2.199942
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0.0001868263,
+          "y": 3.507034e-05,
+          "z": 0.0001470359
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "de_castelli_placas_table",
+        "position": {
+          "x": 1.608192,
+          "y": 0.001359493,
+          "z": -2.20369
+        },
+        "rotation": {
+          "w": 0.7066227,
+          "x": -4.024804e-05,
+          "y": -0.7075905,
+          "z": 3.403053e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "puzzle_box_composite",
+        "position": {
+          "x": 3.704539,
+          "y": 0.7409874,
+          "z": 3.701386
+        },
+        "rotation": {
+          "w": 0.9999987,
+          "x": 0.001397386,
+          "y": 0.0006746259,
+          "z": 0.0004598988
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "trunck",
+        "position": {
+          "x": -7.807829,
+          "y": 0.007830322,
+          "z": 0.1028988
+        },
+        "rotation": {
+          "w": 0.9999917,
+          "x": -0.002530715,
+          "y": 5.582003e-05,
+          "z": 0.003217765
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "bed01_red",
+        "position": {
+          "x": 5.750177,
+          "y": -0.005091071,
+          "z": -3.510274
+        },
+        "rotation": {
+          "w": 0.707091,
+          "x": 0.002622832,
+          "y": -0.7071123,
+          "z": 0.002758252
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "position": {
+          "x": -3.592339,
+          "y": 1.283696,
+          "z": -4.011076
+        },
+        "rotation": {
+          "w": 0.7074972,
+          "x": -4.362597e-05,
+          "y": -0.7067161,
+          "z": -0.000173793
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "position": {
+          "x": -3.474825,
+          "y": 0.002089262,
+          "z": -3.412402
+        },
+        "rotation": {
+          "w": 0.7058296,
+          "x": 0.0009462895,
+          "y": -0.7083797,
+          "z": -0.001405379
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_24_wood_beach_honey",
+        "position": {
+          "x": -2.352957,
+          "y": 0.001279891,
+          "z": -2.122818
+        },
+        "rotation": {
+          "w": 0.9999999,
+          "x": 3.498079e-06,
+          "y": -0.0001294956,
+          "z": 0.0004404985
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "brown_leather_dining_chair",
+        "position": {
+          "x": 6.508,
+          "y": 0.004032493,
+          "z": 4.579
+        },
+        "rotation": {
+          "w": -0.9997284,
+          "x": 1.050645e-06,
+          "y": 0.02330419,
+          "z": -1.113862e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "silver_frame_painting",
+        "position": {
+          "x": 5.658945,
+          "y": 1.155485,
+          "z": 1.616406
+        },
+        "rotation": {
+          "w": -1.795117e-06,
+          "x": -6.072324e-06,
+          "y": 1,
+          "z": 1.076449e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "fruit_basket",
+        "position": {
+          "x": 2.181,
+          "y": 1.197618,
+          "z": -1.834
+        },
+        "rotation": {
+          "w": 1.020073e-12,
+          "x": 4.449774e-13,
+          "y": 1,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "blue_rug",
+        "position": {
+          "x": -6.119822,
+          "y": 0.001638918,
+          "z": 1.179018
+        },
+        "rotation": {
+          "w": 0.7072054,
+          "x": -1.922144e-06,
+          "y": 0.7070082,
+          "z": -3.420424e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "carpet_rug",
+        "position": {
+          "x": 3.109407,
+          "y": 0.001549116,
+          "z": -3.494232
+        },
+        "rotation": {
+          "w": 0.7069779,
+          "x": 7.899386e-07,
+          "y": 0.7072357,
+          "z": -5.515382e-09
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "dishwasher_4",
+        "position": {
+          "x": -3.482068,
+          "y": 0.006308883,
+          "z": -4.029219
+        },
+        "rotation": {
+          "w": 0.7062526,
+          "x": -0.0003764103,
+          "y": 0.7079598,
+          "z": -0.0002403855
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "coffee_001",
+        "position": {
+          "x": -1.658518,
+          "y": 0.929015,
+          "z": -1.964167
+        },
+        "rotation": {
+          "w": 0.7064732,
+          "x": 0.0005414282,
+          "y": -0.7077397,
+          "z": 0.0002183102
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "bastone_floor_lamp",
+        "position": {
+          "x": 6.751851,
+          "y": 0.003412962,
+          "z": -4.746603
+        },
+        "rotation": {
+          "w": 0.1777779,
+          "x": 0.00786515,
+          "y": -0.9840391,
+          "z": 0.0005448103
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "jug01",
+        "position": {
+          "x": -4.468987,
+          "y": 0.7348126,
+          "z": 3.253378
+        },
+        "rotation": {
+          "w": 0.7074986,
+          "x": -0.0009116817,
+          "y": 0.706714,
+          "z": -0.0006282137
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "skillet_closed",
+        "position": {
+          "x": 0.03753265,
+          "y": 0.9235348,
+          "z": -4.908429
+        },
+        "rotation": {
+          "w": -0.7195708,
+          "x": -0.001484861,
+          "y": -0.6944144,
+          "z": 0.002124556
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "pepper",
+        "position": {
+          "x": -1.486427,
+          "y": 0.920436,
+          "z": -2.040063
+        },
+        "rotation": {
+          "w": 0.0003413573,
+          "x": 0.001170869,
+          "y": -0.9999993,
+          "z": 7.096503e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "toaster_002",
+        "position": {
+          "x": -1.071571,
+          "y": 0.9177832,
+          "z": -1.921784
+        },
+        "rotation": {
+          "w": -0.0002080764,
+          "x": 6.456402e-05,
+          "y": -1,
+          "z": -6.722658e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "vase_01",
+        "position": {
+          "x": -4.691711,
+          "y": 0.7327406,
+          "z": 3.223665
+        },
+        "rotation": {
+          "w": 0.7076746,
+          "x": -0.000942921,
+          "y": 0.7065375,
+          "z": -0.000723451
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass2",
+        "position": {
+          "x": 6.699497,
+          "y": 0.9031764,
+          "z": 5.078549
+        },
+        "rotation": {
+          "w": -0.02082379,
+          "x": 0.005660486,
+          "y": -0.9997633,
+          "z": 0.002817679
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass2",
+        "position": {
+          "x": 4.005741,
+          "y": 0.742526,
+          "z": 3.400785
+        },
+        "rotation": {
+          "w": 0.9996707,
+          "x": 0.006463341,
+          "y": -0.002652028,
+          "z": -0.02469012
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass2",
+        "position": {
+          "x": 6.189997,
+          "y": 0.9052342,
+          "z": 5.361612
+        },
+        "rotation": {
+          "w": -0.02969458,
+          "x": -0.004461351,
+          "y": -0.9993259,
+          "z": -0.02112516
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "pencil_all",
+        "position": {
+          "x": -4.290051,
+          "y": 0.9059572,
+          "z": 2.152998
+        },
+        "rotation": {
+          "w": 0.9999553,
+          "x": 0.0003444169,
+          "y": -0.0003248861,
+          "z": 0.009450593
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "fruit_basket",
+        "position": {
+          "x": -6.689,
+          "y": 1.24313,
+          "z": -0.22
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "elf_painting",
+        "position": {
+          "x": 1.068,
+          "y": 0.8330491,
+          "z": -4.447
+        },
+        "rotation": {
+          "w": 0.707108,
+          "x": 1.034745e-10,
+          "y": -0.7071057,
+          "z": -1.127773e-10
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "its_about_time_painting",
+        "position": {
+          "x": 1.228,
+          "y": 0.7880496,
+          "z": -4.416
+        },
+        "rotation": {
+          "w": 0.7071045,
+          "x": -1.430961e-10,
+          "y": 0.707109,
+          "z": 1.055013e-10
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "purple_woven_rug",
+        "position": {
+          "x": -6.203069,
+          "y": 0.001356302,
+          "z": -2.798812
+        },
+        "rotation": {
+          "w": -1.336954e-06,
+          "x": 2.861251e-05,
+          "y": 1,
+          "z": 8.766026e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass_coffee_table_long",
+        "position": {
+          "x": -6.527776,
+          "y": 0.004459709,
+          "z": -0.6269684
+        },
+        "rotation": {
+          "w": 1,
+          "x": 1.774122e-05,
+          "y": 0.0001682436,
+          "z": 1.535636e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "carpet_rug",
+        "position": {
+          "x": 5.054768,
+          "y": 0.001206997,
+          "z": -0.1354655
+        },
+        "rotation": {
+          "w": 0.7068439,
+          "x": -6.638069e-05,
+          "y": 0.7073696,
+          "z": 0.0001507582
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "linen_dining_chair",
+        "position": {
+          "x": -5.708997,
+          "y": 0.004662454,
+          "z": 3.148047
+        },
+        "rotation": {
+          "w": 1,
+          "x": 9.896854e-07,
+          "y": -5.450856e-06,
+          "z": 1.882596e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "linen_dining_chair",
+        "position": {
+          "x": -4.505663,
+          "y": 0.004813612,
+          "z": 3.956772
+        },
+        "rotation": {
+          "w": -0.001452582,
+          "x": 0.000954603,
+          "y": 0.9999982,
+          "z": 0.000854224
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "side_table_wood",
+        "position": {
+          "x": -7.877866,
+          "y": 0.0006230175,
+          "z": -4.347824
+        },
+        "rotation": {
+          "w": -0.000242919,
+          "x": 1.011216e-05,
+          "y": 1,
+          "z": 5.198456e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "side_table_wood",
+        "position": {
+          "x": -7.844954,
+          "y": 0.003711283,
+          "z": -1.459195
+        },
+        "rotation": {
+          "w": -0.008443041,
+          "x": 0.006397548,
+          "y": 0.9999439,
+          "z": 0.0002692435
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "minotti_helion_3_seater_sofa",
+        "position": {
+          "x": -7.871181,
+          "y": 0.001684368,
+          "z": -2.938795
+        },
+        "rotation": {
+          "w": 0.7071061,
+          "x": 3.476215e-06,
+          "y": 0.7071074,
+          "z": 6.556509e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "small_table_green_marble",
+        "position": {
+          "x": 6.476194,
+          "y": 0.004147649,
+          "z": 5.289242
+        },
+        "rotation": {
+          "w": -0.004371243,
+          "x": -0.0003883189,
+          "y": -0.9999856,
+          "z": 0.003075215
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "position": {
+          "x": -3.592266,
+          "y": 1.279712,
+          "z": -3.403264
+        },
+        "rotation": {
+          "w": 0.7068101,
+          "x": -1.151691e-05,
+          "y": -0.707403,
+          "z": -0.0007291136
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "ligne_roset_armchair",
+        "position": {
+          "x": -4.483638,
+          "y": 0.01928702,
+          "z": -4.556384
+        },
+        "rotation": {
+          "w": 0.9315125,
+          "x": -0.00157348,
+          "y": -0.3636922,
+          "z": 0.00315927
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "coffee_table_glass_round",
+        "position": {
+          "x": 2.640013,
+          "y": 0.004986435,
+          "z": -4.707661
+        },
+        "rotation": {
+          "w": 0.9999798,
+          "x": -0.006346511,
+          "y": 4.8705e-05,
+          "z": 0.0003944262
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "white_shopping_bag",
+        "position": {
+          "x": 0.2553828,
+          "y": 0.0287737,
+          "z": -2.218331
+        },
+        "rotation": {
+          "w": -0.4118472,
+          "x": 0.4012801,
+          "y": 0.5821514,
+          "z": 0.574853
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sm_table_white",
+        "position": {
+          "x": -4.607257,
+          "y": 0.005551755,
+          "z": 2.251031
+        },
+        "rotation": {
+          "w": 9.616331e-05,
+          "x": 0.001000121,
+          "y": 0.9999995,
+          "z": 0.0003630072
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "spatula2",
+        "position": {
+          "x": -0.5080664,
+          "y": 0.9194497,
+          "z": -4.780338
+        },
+        "rotation": {
+          "w": -0.2313785,
+          "x": 0.002180148,
+          "y": -0.972771,
+          "z": -0.01326086
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "elf_painting",
+        "position": {
+          "x": -3.940001,
+          "y": 1.039113,
+          "z": -4.098
+        },
+        "rotation": {
+          "w": 0.707108,
+          "x": 1.034745e-10,
+          "y": -0.7071057,
+          "z": -1.127773e-10
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "framed_painting",
+        "position": {
+          "x": 5.59,
+          "y": 1.029572,
+          "z": -1.886
+        },
+        "rotation": {
+          "w": -6.048717e-12,
+          "x": 8.707306e-06,
+          "y": 1,
+          "z": 8.149073e-10
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "notes_02",
+        "position": {
+          "x": -4.565178,
+          "y": 0.9048959,
+          "z": 2.535392
+        },
+        "rotation": {
+          "w": 1,
+          "x": -0.0001447179,
+          "y": 0.0001411334,
+          "z": -0.0002163716
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "elephant_bowl",
+        "position": {
+          "x": -4.220998,
+          "y": 0.004040837,
+          "z": -3.732002
+        },
+        "rotation": {
+          "w": 1,
+          "x": 1.118518e-06,
+          "y": -2.663059e-06,
+          "z": 6.307382e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "red_side_chair",
+        "position": {
+          "x": 3.744118,
+          "y": 0.003919095,
+          "z": -4.814829
+        },
+        "rotation": {
+          "w": 0.9397833,
+          "x": -0.001795928,
+          "y": -0.3417619,
+          "z": 0.001726501
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "red_side_chair",
+        "position": {
+          "x": 1.56999,
+          "y": 0.002678365,
+          "z": -4.840005
+        },
+        "rotation": {
+          "w": 0.9238792,
+          "x": 4.008762e-07,
+          "y": 0.3826842,
+          "z": -2.011657e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_full_height_wood_beach_honey",
+        "position": {
+          "x": -0.2238331,
+          "y": 2.968311e-05,
+          "z": -2.139034
+        },
+        "rotation": {
+          "w": 1,
+          "x": -0.0003455143,
+          "y": 0.0001848902,
+          "z": -0.00011078
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "monster_beats_studio",
+        "position": {
+          "x": 6.766993,
+          "y": 0.6430311,
+          "z": 2.137928
+        },
+        "rotation": {
+          "w": 0.519922,
+          "x": -0.6262036,
+          "y": 0.3735974,
+          "z": 0.4449442
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "meridiani_freeman_sofa",
+        "position": {
+          "x": -6.239997,
+          "y": 0.00240466,
+          "z": 5.110016
+        },
+        "rotation": {
+          "w": 1.739245e-06,
+          "x": -1.776061e-07,
+          "y": 1,
+          "z": 3.949553e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "table_square",
+        "position": {
+          "x": 6.581612,
+          "y": 0.0009681582,
+          "z": 2.064044
+        },
+        "rotation": {
+          "w": 0.7076749,
+          "x": 8.46586e-05,
+          "y": 0.7065383,
+          "z": 8.511182e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass_table",
+        "position": {
+          "x": 3.723171,
+          "y": 0.008788466,
+          "z": 3.83556
+        },
+        "rotation": {
+          "w": 0.7060013,
+          "x": 0.001568348,
+          "y": 0.7082088,
+          "z": 5.116718e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "marble_table",
+        "position": {
+          "x": -3.322,
+          "y": 0.00503172,
+          "z": 2.970002
+        },
+        "rotation": {
+          "w": 0.7071068,
+          "x": -3.777501e-11,
+          "y": 0.7071068,
+          "z": 1.018631e-09
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_eames_plastic_armchair",
+        "position": {
+          "x": 5.715001,
+          "y": 0.002736837,
+          "z": 2.108987
+        },
+        "rotation": {
+          "w": 1,
+          "x": 7.120179e-07,
+          "y": 7.303897e-07,
+          "z": 4.030298e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_eames_plastic_armchair",
+        "position": {
+          "x": 4.573312,
+          "y": 0.01162288,
+          "z": 3.737785
+        },
+        "rotation": {
+          "w": 0.792699,
+          "x": 0.0003277057,
+          "y": -0.6096124,
+          "z": 0.0009830893
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "elf_painting",
+        "position": {
+          "x": -5.723,
+          "y": 0.9471117,
+          "z": 2.778
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "its_about_time_painting",
+        "position": {
+          "x": 5.308,
+          "y": 0.9477545,
+          "z": -1.72
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "silver_frame_painting",
+        "position": {
+          "x": -5.695021,
+          "y": 1.03189,
+          "z": 2.616305
+        },
+        "rotation": {
+          "w": -1.410979e-07,
+          "x": 1.040396e-05,
+          "y": 1,
+          "z": 1.643784e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sink_base_wood_beach_honey",
+        "position": {
+          "x": -1.289054,
+          "y": 0.001053452,
+          "z": -2.122198
+        },
+        "rotation": {
+          "w": 1,
+          "x": -2.245449e-05,
+          "y": -6.613833e-05,
+          "z": -0.0001892185
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "fridge_large",
+        "position": {
+          "x": -1.396886,
+          "y": 0.01406854,
+          "z": -4.8259
+        },
+        "rotation": {
+          "w": 0.999997,
+          "x": -0.0001507365,
+          "y": -0.002422939,
+          "z": -0.0003392711
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_36_wood_beach_honey",
+        "position": {
+          "x": -2.330251,
+          "y": 0.001344681,
+          "z": -4.86482
+        },
+        "rotation": {
+          "w": 0.001789029,
+          "x": -0.0006911093,
+          "y": 0.999998,
+          "z": 0.0006557349
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sink_base_wood_beach_honey",
+        "position": {
+          "x": -0.1697487,
+          "y": 0.00438562,
+          "z": -4.863869
+        },
+        "rotation": {
+          "w": -0.001101249,
+          "x": 0.002557929,
+          "y": 0.9999962,
+          "z": -6.627664e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_eames_plastic_armchair",
+        "position": {
+          "x": 3.664851,
+          "y": 0.005977333,
+          "z": 5.118832
+        },
+        "rotation": {
+          "w": 0.2585642,
+          "x": -0.001629806,
+          "y": 0.965992,
+          "z": 0.001200259
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_eames_plastic_armchair",
+        "position": {
+          "x": 3.468947,
+          "y": 0.01419339,
+          "z": 2.582259
+        },
+        "rotation": {
+          "w": 0.991292,
+          "x": -0.002884254,
+          "y": 0.1281695,
+          "z": -0.03007612
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "spunlight_designermesh_lamp",
+        "position": {
+          "x": -7.849121,
+          "y": 0.6204151,
+          "z": -1.467034
+        },
+        "rotation": {
+          "w": 0.0001830617,
+          "x": -0.003030245,
+          "y": -0.9999954,
+          "z": 0.0003466821
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "baking_sheet01",
+        "position": {
+          "x": -2.229847,
+          "y": 0.9218342,
+          "z": -4.879623
+        },
+        "rotation": {
+          "w": 0.1242217,
+          "x": 0.00137492,
+          "y": -0.9922535,
+          "z": -0.0003421381
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "box_tapered_beech",
+        "position": {
+          "x": 3.810754,
+          "y": 0.7402916,
+          "z": 4.375838
+        },
+        "rotation": {
+          "w": 0.9750304,
+          "x": 0.0002409315,
+          "y": -0.2220687,
+          "z": -0.001103938
+        },
+        "scale_factor": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "basket_18inx18inx12iin_wood_mesh",
+        "position": {
+          "x": 5.004043,
+          "y": 0.3133347,
+          "z": -0.01332101
+        },
+        "rotation": {
+          "w": 0.9630215,
+          "x": -0.003009281,
+          "y": 0.2694077,
+          "z": -0.0002932965
+        },
+        "scale_factor": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "shallow_basket_wicker",
+        "position": {
+          "x": -6.726,
+          "y": 0.0001897365,
+          "z": 3
+        },
+        "rotation": {
+          "w": 0.7071076,
+          "x": -1.606215e-06,
+          "y": 0.7071061,
+          "z": 8.139759e-07
+        },
+        "scale_factor": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "basket_18inx18inx12iin_plastic_lattice",
+        "position": {
+          "x": -6.130914,
+          "y": 0.3283787,
+          "z": -2.989017
+        },
+        "rotation": {
+          "w": 0.9966425,
+          "x": -0.0002476918,
+          "y": 0.08155601,
+          "z": 0.007239916
+        },
+        "scale_factor": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "basket_18inx18inx12iin_bamboo",
+        "position": {
+          "x": -6.600223,
+          "y": 0.4396207,
+          "z": 0.3699758
+        },
+        "rotation": {
+          "w": 0.9999839,
+          "x": 0.005683717,
+          "y": -0.0001364061,
+          "z": -0.0002005529
+        },
+        "scale_factor": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "box_tapered_beech",
+        "position": {
+          "x": 2.649995,
+          "y": 0.389936,
+          "z": -4.670002
+        },
+        "rotation": {
+          "w": 1,
+          "x": 7.442925e-08,
+          "y": -1.713826e-07,
+          "z": 3.761662e-09
+        },
+        "scale_factor": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "balance_double_doghouse",
+        "position": {
+          "x": 1.421051,
+          "y": 0,
+          "z": 1.951213
+        },
+        "rotation": {
+          "w": 0.7071068,
+          "x": 0,
+          "y": -0.7071068,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "satiro_sculpture",
+        "position": {
+          "x": 2.030003,
+          "y": -0.001971126,
+          "z": 4.760005
+        },
+        "rotation": {
+          "w": 0.3902158,
+          "x": -0.0003335413,
+          "y": -0.9207234,
+          "z": -0.0002944016
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "metal_sculpture",
+        "position": {
+          "x": -0.008219243,
+          "y": -0.02310758,
+          "z": -0.03404813
+        },
+        "rotation": {
+          "w": 0.9911982,
+          "x": -0.1130203,
+          "y": -0.01975885,
+          "z": -0.06604502
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "table_square",
+        "position": {
+          "x": -6.942939,
+          "y": 0.002778471,
+          "z": 2.351853
+        },
+        "rotation": {
+          "w": 0.9999992,
+          "x": 0.001266301,
+          "y": -5.948778e-05,
+          "z": 0.0004013489
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      }
+    ],
+    "2": [
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "baleri_italia_folded_black_table",
+        "position": {
+          "x": -5.889996,
+          "y": 0.01566687,
+          "z": 4.009868
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0.000193644,
+          "y": 1.238705e-05,
+          "z": 2.815272e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "printer_hp_laserjet1321",
+        "position": {
+          "x": 5.911998,
+          "y": 0.6174361,
+          "z": -1.367013
+        },
+        "rotation": {
+          "w": -0.705026,
+          "x": 0.0001700875,
+          "y": 0.7091814,
+          "z": 0.0001195313
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_billiani_doll",
+        "position": {
+          "x": -7.079012,
+          "y": 0.007864237,
+          "z": 0.3184139
+        },
+        "rotation": {
+          "w": 0.7072119,
+          "x": -0.001798708,
+          "y": -0.7069961,
+          "z": 0.002134517
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_billiani_doll",
+        "position": {
+          "x": -5.855999,
+          "y": 0.002983779,
+          "z": -0.6689991
+        },
+        "rotation": {
+          "w": -1.414912e-06,
+          "x": -1.175911e-05,
+          "y": -1,
+          "z": 3.191829e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_billiani_doll",
+        "position": {
+          "x": -7.946001,
+          "y": 0.002998769,
+          "z": 1.097157
+        },
+        "rotation": {
+          "w": 0.2680551,
+          "x": 2.055848e-05,
+          "y": 0.9634036,
+          "z": -2.56896e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "chair_billiani_doll",
+        "position": {
+          "x": -5.341463,
+          "y": 0.00568217,
+          "z": 0.025206
+        },
+        "rotation": {
+          "w": 0.9999935,
+          "x": -0.002207246,
+          "y": -0.002219252,
+          "z": 0.001817998
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "macbook_air",
+        "position": {
+          "x": 6.696166,
+          "y": 0.9035478,
+          "z": -1.018029
+        },
+        "rotation": {
+          "w": -0.9928886,
+          "x": 5.260936e-05,
+          "y": 0.1190479,
+          "z": -1.099706e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "dining_room_table",
+        "position": {
+          "x": -7.762944,
+          "y": -0.000888288,
+          "z": 0.3289199
+        },
+        "rotation": {
+          "w": 0.9999998,
+          "x": -0.0005468933,
+          "y": 8.526356e-05,
+          "z": 0.0005320486
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "framed_painting",
+        "position": {
+          "x": -5.768992,
+          "y": 1.23436,
+          "z": 2.782957
+        },
+        "rotation": {
+          "w": 1,
+          "x": 4.560325e-06,
+          "y": 1.562702e-06,
+          "z": -2.005957e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "flat_woven_rug",
+        "position": {
+          "x": -5.939882,
+          "y": 0.001437795,
+          "z": 4.099663
+        },
+        "rotation": {
+          "w": 0.7070737,
+          "x": -2.964338e-05,
+          "y": 0.7071399,
+          "z": 5.334913e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "yellow_side_chair",
+        "position": {
+          "x": 5.57,
+          "y": 0.002872974,
+          "z": 2.073
+        },
+        "rotation": {
+          "w": 1,
+          "x": 5.949164e-08,
+          "y": 2.241577e-07,
+          "z": -2.164161e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "arflex_strips_sofa",
+        "position": {
+          "x": 2.216021,
+          "y": 0.002429485,
+          "z": -4.685989
+        },
+        "rotation": {
+          "w": 1,
+          "x": 3.203631e-06,
+          "y": -2.353163e-06,
+          "z": 6.55767e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "side_table_wood",
+        "position": {
+          "x": 5.913,
+          "y": 0.0006114244,
+          "z": -1.377
+        },
+        "rotation": {
+          "w": 0.7071068,
+          "x": 0,
+          "y": 0.7071068,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "willisau_varion_w3_table",
+        "position": {
+          "x": -1.400336,
+          "y": 0.008259654,
+          "z": -4.710009
+        },
+        "rotation": {
+          "w": 2.594485e-05,
+          "x": 0.0001143402,
+          "y": 1,
+          "z": -0.0003179712
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "black_lamp",
+        "position": {
+          "x": 6.55338,
+          "y": 0.61,
+          "z": -2.106042
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "minotti_helion_3_seater_sofa",
+        "position": {
+          "x": -5.609039,
+          "y": 0.0059129,
+          "z": 2.186965
+        },
+        "rotation": {
+          "w": -4.516477e-05,
+          "x": 0.001058939,
+          "y": 0.9999983,
+          "z": 0.001510381
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "arco_lamp",
+        "position": {
+          "x": 6.813386,
+          "y": 0.006815493,
+          "z": 1.100045
+        },
+        "rotation": {
+          "w": 0.7497742,
+          "x": -0.001865126,
+          "y": 0.6616908,
+          "z": 0.000604555
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "alivar_tech_bench_sofa",
+        "position": {
+          "x": -1.705473,
+          "y": 0.0001204908,
+          "z": -2.143195
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "bastone_floor_lamp",
+        "position": {
+          "x": -4.191006,
+          "y": -0.001595974,
+          "z": 2.309998
+        },
+        "rotation": {
+          "w": 0.9079894,
+          "x": 2.636138e-06,
+          "y": -0.4189933,
+          "z": -1.16305e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "alma_floor_lamp",
+        "position": {
+          "x": 6.770024,
+          "y": 0.006397486,
+          "z": 2.110983
+        },
+        "rotation": {
+          "w": -0.6427273,
+          "x": 0.007726281,
+          "y": -0.7659431,
+          "z": 0.0131599
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "woven_box",
+        "position": {
+          "x": 5.087999,
+          "y": 0,
+          "z": -1.378
+        },
+        "rotation": {
+          "w": -0.707108,
+          "x": -3.135938e-07,
+          "y": 0.7071057,
+          "z": -4.586764e-08
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sayonara_sofa",
+        "position": {
+          "x": 5.54,
+          "y": 0.002204418,
+          "z": 1.160001
+        },
+        "rotation": {
+          "w": 1.317821e-07,
+          "x": 1.55851e-08,
+          "y": 1,
+          "z": 1.326203e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "jug05",
+        "position": {
+          "x": -7.803,
+          "y": 0.4620129,
+          "z": 5.021
+        },
+        "rotation": {
+          "w": -2.500907e-05,
+          "x": -3.396475e-05,
+          "y": -1,
+          "z": -9.366995e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "trunck",
+        "position": {
+          "x": 3.979996,
+          "y": 0.009599864,
+          "z": 5.32894
+        },
+        "rotation": {
+          "w": -0.001995386,
+          "x": 0.001841645,
+          "y": 0.9999632,
+          "z": -0.008137327
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "bed01",
+        "position": {
+          "x": 5.933932,
+          "y": -3.695488e-06,
+          "z": 4.402029
+        },
+        "rotation": {
+          "w": -2.046918e-05,
+          "x": -1.716577e-05,
+          "y": 0.9999991,
+          "z": -0.001365067
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "rh18",
+        "position": {
+          "x": 1.859973,
+          "y": 0.00447695,
+          "z": -2.329997
+        },
+        "rotation": {
+          "w": 0.258819,
+          "x": -1.67201e-08,
+          "y": -0.9659259,
+          "z": -3.725279e-09
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "position": {
+          "x": -4.106058,
+          "y": 1.292141,
+          "z": -3.573675
+        },
+        "rotation": {
+          "w": -0.7076624,
+          "x": 0.001955428,
+          "y": -0.7065449,
+          "z": 0.002128544
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "position": {
+          "x": -7.955274,
+          "y": 0.002429157,
+          "z": -0.7405466
+        },
+        "rotation": {
+          "w": 0.7011118,
+          "x": 0.001282168,
+          "y": -0.7130492,
+          "z": -0.001215803
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_24_wood_beach_honey",
+        "position": {
+          "x": -7.959599,
+          "y": 0.002874106,
+          "z": -1.956224
+        },
+        "rotation": {
+          "w": 0.707567,
+          "x": 0.0002297628,
+          "y": -0.7066459,
+          "z": 0.0007082336
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_36_wood_beach_honey",
+        "position": {
+          "x": -7.954346,
+          "y": 0.003950953,
+          "z": -3.66654
+        },
+        "rotation": {
+          "w": 0.7074462,
+          "x": -0.00203411,
+          "y": -0.7067616,
+          "z": 0.001971742
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "cabinet_full_height_wood_beach_honey",
+        "position": {
+          "x": -4.231689,
+          "y": -0.0001347065,
+          "z": -4.801105
+        },
+        "rotation": {
+          "w": 0.7071031,
+          "x": 1.888882e-06,
+          "y": 0.7071105,
+          "z": -1.624343e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "brown_leather_dining_chair",
+        "position": {
+          "x": -6.38,
+          "y": 0.003248632,
+          "z": -4.093998
+        },
+        "rotation": {
+          "w": -0.2672389,
+          "x": -6.375835e-06,
+          "y": 0.9636303,
+          "z": 1.66893e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "brown_leather_dining_chair",
+        "position": {
+          "x": 6.535991,
+          "y": 0.004064739,
+          "z": -0.4100033
+        },
+        "rotation": {
+          "w": 0.1564288,
+          "x": 1.827721e-06,
+          "y": 0.9876893,
+          "z": 5.722046e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "silver_frame_painting",
+        "position": {
+          "x": 5.559,
+          "y": 1.014,
+          "z": -1.886
+        },
+        "rotation": {
+          "w": 0,
+          "x": 0,
+          "y": 1,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "fruit_basket",
+        "position": {
+          "x": 5.561,
+          "y": 1.130128,
+          "z": 1.62
+        },
+        "rotation": {
+          "w": 0.0001486987,
+          "x": 1.38626e-10,
+          "y": 1,
+          "z": 1.600711e-10
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "blue_rug",
+        "position": {
+          "x": 5.21,
+          "y": 0.001530271,
+          "z": 3.29
+        },
+        "rotation": {
+          "w": -0.7072706,
+          "x": 4.686807e-06,
+          "y": 0.706943,
+          "z": 8.679838e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "carpet_rug",
+        "position": {
+          "x": -1.419991,
+          "y": 0,
+          "z": -3.490062
+        },
+        "rotation": {
+          "w": 0.7071068,
+          "x": 0,
+          "y": 0.7071068,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "fridge_large",
+        "position": {
+          "x": -7.931056,
+          "y": 0.01483434,
+          "z": -2.738377
+        },
+        "rotation": {
+          "w": -0.7067612,
+          "x": 0.000411154,
+          "y": -0.7074521,
+          "z": 0.0002123153
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "dishwasher_4",
+        "position": {
+          "x": -7.961329,
+          "y": 0.005119056,
+          "z": -1.354799
+        },
+        "rotation": {
+          "w": 0.7070369,
+          "x": 0.0003310171,
+          "y": 0.7071766,
+          "z": -3.766827e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "coffee_001",
+        "position": {
+          "x": -4.061588,
+          "y": 0.9289907,
+          "z": -4.325359
+        },
+        "rotation": {
+          "w": 0.9999998,
+          "x": 0.0001100193,
+          "y": -0.0007156137,
+          "z": 0.0003167682
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "bastone_floor_lamp",
+        "position": {
+          "x": -7.013005,
+          "y": -0.001604378,
+          "z": 2.316998
+        },
+        "rotation": {
+          "w": 0.8144789,
+          "x": 1.087261e-06,
+          "y": -0.5801932,
+          "z": -5.860696e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "fork1",
+        "position": {
+          "x": -6.222,
+          "y": 0.904019,
+          "z": -4.552
+        },
+        "rotation": {
+          "w": -0.6879113,
+          "x": -0.001357515,
+          "y": 0.7257911,
+          "z": 0.001868362
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "fork1",
+        "position": {
+          "x": -7.376291,
+          "y": 0.733052,
+          "z": 0.2194635
+        },
+        "rotation": {
+          "w": 0.9999628,
+          "x": 0.008449444,
+          "y": 0.0003320776,
+          "z": -0.001708932
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "fork1",
+        "position": {
+          "x": -7.552261,
+          "y": 0.7342945,
+          "z": 0.7157719
+        },
+        "rotation": {
+          "w": 0.7259827,
+          "x": -0.00494683,
+          "y": -0.6876349,
+          "z": -0.009110253
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "jug01",
+        "position": {
+          "x": -2.12,
+          "y": 0.753,
+          "z": -4.74
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "knife1",
+        "position": {
+          "x": -6.537797,
+          "y": 0.903969,
+          "z": -4.571347
+        },
+        "rotation": {
+          "w": 0.9999798,
+          "x": 0.0002712589,
+          "y": 0.006273735,
+          "z": 0.001012465
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "knife1",
+        "position": {
+          "x": -7.935306,
+          "y": 0.7346332,
+          "z": 0.7195882
+        },
+        "rotation": {
+          "w": 0.9999914,
+          "x": 0.0002186558,
+          "y": 0.0002277748,
+          "z": -0.004140488
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "knife1",
+        "position": {
+          "x": -7.39198,
+          "y": 0.7342958,
+          "z": 0.4849636
+        },
+        "rotation": {
+          "w": 0.6872561,
+          "x": -0.003245229,
+          "y": 0.7264066,
+          "z": -0.001443533
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "skillet_closed",
+        "position": {
+          "x": -6.468576,
+          "y": 0.9045195,
+          "z": -4.749847
+        },
+        "rotation": {
+          "w": 0.6952974,
+          "x": 0.0007153484,
+          "y": -0.7187217,
+          "z": 0.0003644244
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "pepper",
+        "position": {
+          "x": -7.794329,
+          "y": 0.734414,
+          "z": 0.3728183
+        },
+        "rotation": {
+          "w": 0.9999987,
+          "x": 0.001522518,
+          "y": 0.0003611291,
+          "z": -0.0002629657
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "spoon1",
+        "position": {
+          "x": -7.872323,
+          "y": 0.7348472,
+          "z": 0.719608
+        },
+        "rotation": {
+          "w": 0.9999925,
+          "x": 0.002893943,
+          "y": 0.0002162539,
+          "z": -0.002564217
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "pillow01",
+        "position": {
+          "x": -1.199461,
+          "y": 0.4709239,
+          "z": -1.834165
+        },
+        "rotation": {
+          "w": 0.5639046,
+          "x": -0.01173201,
+          "y": 0.8257204,
+          "z": -0.007728762
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "pillow02",
+        "position": {
+          "x": -1.780781,
+          "y": 0.4534769,
+          "z": -1.798389
+        },
+        "rotation": {
+          "w": 0.703303,
+          "x": -0.02624805,
+          "y": 0.7068873,
+          "z": -0.07061446
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "pillow03",
+        "position": {
+          "x": -2.08901,
+          "y": 0.488,
+          "z": -1.849697
+        },
+        "rotation": {
+          "w": 0.7316585,
+          "x": -0.006913791,
+          "y": 0.6767544,
+          "z": 0.08143503
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "toaster_002",
+        "position": {
+          "x": -4.019361,
+          "y": 0.9180514,
+          "z": -3.956153
+        },
+        "rotation": {
+          "w": 0.7068304,
+          "x": 0.0004922804,
+          "y": -0.7073829,
+          "z": 0.0004440341
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "vase_01",
+        "position": {
+          "x": -0.640857,
+          "y": 0.7464541,
+          "z": -4.707654
+        },
+        "rotation": {
+          "w": 0.7063252,
+          "x": -0.004545046,
+          "y": -0.7078725,
+          "z": 0.0008161974
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass2",
+        "position": {
+          "x": -7.96865,
+          "y": 0.734962,
+          "z": 0.4083269
+        },
+        "rotation": {
+          "w": 0.9999831,
+          "x": 0.004056022,
+          "y": -0.001569798,
+          "z": -0.003868262
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass2",
+        "position": {
+          "x": -6.102611,
+          "y": 0.9034786,
+          "z": -4.707014
+        },
+        "rotation": {
+          "w": 0.9999954,
+          "x": 0.000485457,
+          "y": 0.0001952035,
+          "z": 0.003029991
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass2",
+        "position": {
+          "x": -7.460382,
+          "y": 0.7340413,
+          "z": 0.120636
+        },
+        "rotation": {
+          "w": 0.9999897,
+          "x": 0.003221064,
+          "y": -0.0005065831,
+          "z": -0.003167616
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "metal_briefcase",
+        "position": {
+          "x": 6.620001,
+          "y": 0.002202898,
+          "z": 0.66
+        },
+        "rotation": {
+          "w": 0.939693,
+          "x": 3.041638e-05,
+          "y": 0.3420193,
+          "z": -1.121848e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "kids_luggage_1",
+        "position": {
+          "x": 2.64652,
+          "y": 0.001885414,
+          "z": -2.170842
+        },
+        "rotation": {
+          "w": 0.9128721,
+          "x": 0,
+          "y": -0.408246,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "blue_satchal",
+        "position": {
+          "x": 6.178,
+          "y": 0.004418492,
+          "z": -2.029005
+        },
+        "rotation": {
+          "w": 0.9137348,
+          "x": -1.048773e-05,
+          "y": 0.4063112,
+          "z": 7.614494e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "pencil_all",
+        "position": {
+          "x": 6.471975,
+          "y": 0.9037943,
+          "z": -1.246968
+        },
+        "rotation": {
+          "w": -0.707164,
+          "x": -1.589645e-05,
+          "y": 0.7070495,
+          "z": 0.0001325128
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "fruit_basket",
+        "position": {
+          "x": 1.236,
+          "y": 1.174095,
+          "z": -4.515
+        },
+        "rotation": {
+          "w": 0.7077288,
+          "x": 3.256062e-12,
+          "y": 0.7064842,
+          "z": -1.113222e-09
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "elf_painting",
+        "position": {
+          "x": 5.068,
+          "y": 1.136114,
+          "z": -1.714
+        },
+        "rotation": {
+          "w": -1,
+          "x": 1.338805e-10,
+          "y": -1.147389e-06,
+          "z": 1.631957e-10
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "its_about_time_painting",
+        "position": {
+          "x": 0.2800416,
+          "y": 1.112039,
+          "z": -1.827261
+        },
+        "rotation": {
+          "w": 5.385458e-06,
+          "x": -3.828581e-05,
+          "y": 1,
+          "z": -1.171633e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "purple_woven_rug",
+        "position": {
+          "x": 4.634984,
+          "y": 0.001493082,
+          "z": -3.527017
+        },
+        "rotation": {
+          "w": 1,
+          "x": 6.545305e-06,
+          "y": 4.683116e-07,
+          "z": 3.661967e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "glass_coffee_table_long",
+        "position": {
+          "x": 4.553008,
+          "y": 0.01366794,
+          "z": -3.604995
+        },
+        "rotation": {
+          "w": 0.7071061,
+          "x": -2.682264e-06,
+          "y": 0.7071075,
+          "z": 1.577078e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "barcelona_bench_sofa",
+        "position": {
+          "x": -4.202,
+          "y": 0.003574491,
+          "z": 1.018
+        },
+        "rotation": {
+          "w": 0.7071073,
+          "x": -1.045408e-09,
+          "y": 0.7071062,
+          "z": -6.984875e-10
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "carpet_rug",
+        "position": {
+          "x": -6.109952,
+          "y": 0.001511879,
+          "z": 1.090185
+        },
+        "rotation": {
+          "w": 0.7070905,
+          "x": -0.0001067942,
+          "y": 0.707123,
+          "z": -0.0001995102
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "linen_dining_chair",
+        "position": {
+          "x": -7.02,
+          "y": 0.006741524,
+          "z": 5.340012
+        },
+        "rotation": {
+          "w": 0.0006040483,
+          "x": 0.0001423836,
+          "y": -0.9999977,
+          "z": -0.002110092
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "linen_dining_chair",
+        "position": {
+          "x": -7.943368,
+          "y": 0.004674971,
+          "z": 4.160078
+        },
+        "rotation": {
+          "w": 0.7071043,
+          "x": -3.449532e-07,
+          "y": 0.7071093,
+          "z": 3.799796e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "side_table_wood",
+        "position": {
+          "x": 6.693438,
+          "y": 0.001635492,
+          "z": -2.12065
+        },
+        "rotation": {
+          "w": 0.003521349,
+          "x": 0.01772313,
+          "y": -0.9998357,
+          "z": -0.001468293
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "side_table_wood",
+        "position": {
+          "x": 6.67298,
+          "y": 0.0005722642,
+          "z": -4.933
+        },
+        "rotation": {
+          "w": 1.156834e-05,
+          "x": 6.452206e-06,
+          "y": -1,
+          "z": 1.516193e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "minotti_helion_3_seater_sofa",
+        "position": {
+          "x": 6.548985,
+          "y": 0.001690745,
+          "z": -3.522979
+        },
+        "rotation": {
+          "w": 0.7071068,
+          "x": 1.003221e-06,
+          "y": -0.7071068,
+          "z": -2.652406e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sayonara_sofa",
+        "position": {
+          "x": -4.770513,
+          "y": 0.006767899,
+          "z": 5.211768
+        },
+        "rotation": {
+          "w": 0.001015057,
+          "x": 0.0006769777,
+          "y": 0.9999909,
+          "z": 0.004076518
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sayonara_sofa",
+        "position": {
+          "x": -4.425447,
+          "y": 0.012003,
+          "z": 3.940092
+        },
+        "rotation": {
+          "w": -0.7060202,
+          "x": 0.0003989291,
+          "y": 0.7081783,
+          "z": 0.004343368
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "small_table_green_marble",
+        "position": {
+          "x": 6.613972,
+          "y": 0.003841877,
+          "z": -1.133994
+        },
+        "rotation": {
+          "w": -0.7071066,
+          "x": 6.996088e-06,
+          "y": 0.707107,
+          "z": -2.537295e-05
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "position": {
+          "x": -4.107839,
+          "y": 1.288497,
+          "z": -4.183809
+        },
+        "rotation": {
+          "w": -0.7077623,
+          "x": 0.0005678148,
+          "y": -0.7064503,
+          "z": 0.0004747141
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "ligne_roset_armchair",
+        "position": {
+          "x": 0.5700091,
+          "y": 0.004215539,
+          "z": -2.390084
+        },
+        "rotation": {
+          "w": 0.342033,
+          "x": -0.001351285,
+          "y": -0.9396822,
+          "z": -0.002999924
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "white_shopping_bag",
+        "position": {
+          "x": -6.115036,
+          "y": 0.02879084,
+          "z": -1.138288
+        },
+        "rotation": {
+          "w": -0.380906,
+          "x": 0.3781939,
+          "y": -0.6028505,
+          "z": -0.5902976
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "small_table_green_marble",
+        "position": {
+          "x": -6.438461,
+          "y": 0.00401628,
+          "z": -4.794835
+        },
+        "rotation": {
+          "w": 0.9999998,
+          "x": 0.0003680285,
+          "y": -0.0002590363,
+          "z": 0.0004718756
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sink_base_wood_beach_honey",
+        "position": {
+          "x": -4.223536,
+          "y": 0.001243711,
+          "z": -3.73298
+        },
+        "rotation": {
+          "w": 0.7070898,
+          "x": -0.0002457204,
+          "y": 0.7071237,
+          "z": 0.0002614874
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "spatula2",
+        "position": {
+          "x": -6.659025,
+          "y": 0.9001843,
+          "z": -5.012022
+        },
+        "rotation": {
+          "w": 0.9725627,
+          "x": -0.01049668,
+          "y": -0.2316536,
+          "z": 0.01866215
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "elf_painting",
+        "position": {
+          "x": 1.07,
+          "y": 1.147559,
+          "z": -4.541
+        },
+        "rotation": {
+          "w": 0.7071072,
+          "x": 1.290878e-11,
+          "y": -0.7071064,
+          "z": -2.910381e-11
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "framed_painting",
+        "position": {
+          "x": 2.175,
+          "y": 1.038056,
+          "z": -1.842
+        },
+        "rotation": {
+          "w": 8.366641e-13,
+          "x": 2.629008e-13,
+          "y": 1,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "de_castelli_placas_table",
+        "position": {
+          "x": -7.783268,
+          "y": 0.001116395,
+          "z": 5.022027
+        },
+        "rotation": {
+          "w": 1,
+          "x": -1.862645e-08,
+          "y": 2.030283e-07,
+          "z": -4.321337e-07
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "elf_painting",
+        "position": {
+          "x": -6.266,
+          "y": 1.155032,
+          "z": -0.384
+        },
+        "rotation": {
+          "w": 1.28253e-12,
+          "x": 4.14957e-12,
+          "y": 1,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "its_about_time_painting",
+        "position": {
+          "x": -5.59,
+          "y": 1.018032,
+          "z": 2.617
+        },
+        "rotation": {
+          "w": 3.567813e-12,
+          "x": 3.677059e-12,
+          "y": 1,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": false,
+        "kinematic": true,
+        "library": "models_core.json",
+        "name": "framed_painting",
+        "position": {
+          "x": 5.547,
+          "y": 1.083037,
+          "z": 1.789
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "bow_rake",
+        "position": {
+          "x": 1.432706,
+          "y": 0.074,
+          "z": 0.02147378
+        },
+        "rotation": {
+          "w": 0,
+          "x": 0.9555862,
+          "y": 0,
+          "z": -0.2947119
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "balance_double_doghouse",
+        "position": {
+          "x": -2.32,
+          "y": 0,
+          "z": 2.89
+        },
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "lawnmower",
+        "position": {
+          "x": -0.3,
+          "y": 0.02049625,
+          "z": 3.9
+        },
+        "rotation": {
+          "w": 0.8781358,
+          "x": 0,
+          "y": 0.4784115,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "shallow_basket_wicker",
+        "position": {
+          "x": -4.209151,
+          "y": 0.446,
+          "z": 1.100089
+        },
+        "rotation": {
+          "w": 0.9826235,
+          "x": 0,
+          "y": -0.1856103,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "shallow_basket_white_mesh",
+        "position": {
+          "x": 5.969944,
+          "y": 0.776,
+          "z": 3.802482
+        },
+        "rotation": {
+          "w": 0.9926592,
+          "x": -0.01589717,
+          "y": -0.1198811,
+          "z": -0.001919864
         },
         "scale_factor": {
           "x": 0.5,
@@ -6831,14 +12845,14 @@
         "library": "models_core.json",
         "name": "box_tapered_white_mesh",
         "position": {
-          "x": 6.923232269287112,
-          "y": 0.0,
-          "z": -1.1887262344360359
+          "x": 4.554,
+          "y": 0.332,
+          "z": -4.25
         },
         "rotation": {
-          "w": 1,
+          "w": 0.9925065,
           "x": 0,
-          "y": 0,
+          "y": -0.1221921,
           "z": 0
         },
         "scale_factor": {
@@ -6853,9 +12867,53 @@
         "library": "models_core.json",
         "name": "basket_18inx18inx12iin_wood_mesh",
         "position": {
-          "x": 4.699743843078616,
-          "y": 0.0,
-          "z": 0.8102859973907471
+          "x": -5.487,
+          "y": 0.296,
+          "z": 4.005
+        },
+        "rotation": {
+          "w": 0.9941385,
+          "x": 0,
+          "y": -0.1081144,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "basket_18inx18inx12iin_bamboo",
+        "position": {
+          "x": 4.452,
+          "y": 0,
+          "z": -1.594
+        },
+        "rotation": {
+          "w": 0.7071068,
+          "x": 0,
+          "y": 0.7071068,
+          "z": 0
+        },
+        "scale_factor": {
+          "x": 0.5,
+          "y": 0.5,
+          "z": 0.5
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "round_bowl_large_metal_perf",
+        "position": {
+          "x": -7.884,
+          "y": 0.916,
+          "z": -3.692
         },
         "rotation": {
           "w": 1,
@@ -6873,22 +12931,22 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "round_bowl_large_thin",
+        "name": "baking_sheet10",
         "position": {
-          "x": 8.011483001708985,
-          "y": 1.9985805010946933e-07,
-          "z": 4.124031066894531
+          "x": -1.404033,
+          "y": 0.755,
+          "z": -4.637481
         },
         "rotation": {
-          "w": 1,
+          "w": 0.9991513,
           "x": 0,
-          "y": 0,
+          "y": -0.04119123,
           "z": 0
         },
         "scale_factor": {
-          "x": 0.5,
-          "y": 0.5,
-          "z": 0.5
+          "x": 1,
+          "y": 1,
+          "z": 1
         }
       }
     ]

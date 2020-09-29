@@ -172,3 +172,5 @@ kids_luggage_1,0.02,5,hardwood,models_core.json,0.5,0.65
 pepper,0.4,0.4,hardwood,models_core.json,0.5,0.65
 silver_frame_painting,0.2,0.5,glass,models_core.json,0.6,0.65
 cabinet_24_white_wood,0.01,70,wood,models_core.json,0.58,0.5
+prim_cube,0.5,2,metal,models_special.json,0.6,0.75
+sphere,0.2,2,metal,models_flex.json,0.6,0.75

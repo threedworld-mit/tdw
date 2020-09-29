@@ -239,7 +239,6 @@ class CollisionTypesOnFrame:
         """
 
         collisions, env_collisions, rigidbodies = PyImpact.get_collisions(resp)
-
         # The type of collision with each collidee.
         self.collisions: Dict[int, CollisionType] = dict()
         # The type of environment collision, if any.
@@ -271,6 +270,7 @@ class CollisionTypesOnFrame:
                 env_collision_states: List[str] = []
                 for co in env_collisions:
                     env_collision_states.append(co.get_state())
+
 
     @staticmethod
     def _get_collision_type(ang_vel: tuple, states: List[str]) -> CollisionType:
@@ -438,6 +438,7 @@ class PyImpact:
         # Get indices of objects in collisions
         id1_index = None
         id2_index = None
+
         for i in range(rigidbodies.get_num()):
             if rigidbodies.get_id(i) == id1:
                 id1_index = i
@@ -578,7 +579,7 @@ class PyImpact:
         h1 = modes_1.sum_modes(resonance=resonance)
         h2 = modes_2.sum_modes(resonance=resonance)
         h = Modes.mode_add(h1, h2)
-        return h
+        return h, min(modes_1.frequencies)
 
 
     @staticmethod

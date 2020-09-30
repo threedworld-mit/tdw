@@ -2,6 +2,14 @@
 
 # v1.6.x
 
+## v1.6.13
+
+### `tdw` module
+
+#### `FloorplanController`
+
+- Updated floorplan 4, layout 0
+
 ## v1.6.12
 
 ### Command API

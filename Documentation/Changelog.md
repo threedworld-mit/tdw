@@ -6,9 +6,22 @@
 
 ### `tdw` module
 
+#### `PyImpact`
+
+- Added audio values for more objects.
+
 #### `FloorplanController`
 
 - Updated floorplan 4, layout 0
+- Added scenes `1a`, `1b`, and `1c`, which have layouts `1`, `2`, and `3`.
+- Added scenes `5a`, `5b`, and `5c`, which have layouts `1`, `2`, and `3`.
+
+### Scene Library
+
+- Added scenes:
+  - floorplan_1a
+  - floorplan_1b
+  - floorplan_1c
 
 ## v1.6.12
 

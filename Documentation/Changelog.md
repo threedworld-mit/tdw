@@ -2,6 +2,14 @@
 
 # v1.6.x
 
+## v1.6.14
+
+### `tdw` module
+
+#### `PyImpact`
+
+ - Fixed: audio is often distorted due to a bug with amp values.
+
 ## v1.6.13
 
 ### `tdw` module

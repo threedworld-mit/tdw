@@ -271,7 +271,6 @@ class CollisionTypesOnFrame:
                 for co in env_collisions:
                     env_collision_states.append(co.get_state())
 
-
     @staticmethod
     def _get_collision_type(ang_vel: tuple, states: List[str]) -> CollisionType:
         """
@@ -348,10 +347,12 @@ class PyImpact:
         # Create empty dictionary for log.
         self.mode_properties_log = dict()
 
-
     def get_log(self) -> dict:
-        return self.mode_properties_log
+        """
+        :return: The mode properties log.
+        """
 
+        return self.mode_properties_log
 
     def _get_object_modes(self, material: Union[str, AudioMaterial]) -> Modes:
         """
@@ -395,10 +396,12 @@ class PyImpact:
         :param mat2: The material label for the other object.
         :param other_amp: Sound amplitude of object 2.
         :param target_amp: Sound amplitude of object 1.
+        :param resonance: The resonances of the objects.
 
         :return Sound data as a Base64Sound object.
         """
-        #The sound amplitude of object 2 relative to that of object 1
+
+        # The sound amplitude of object 2 relative to that of object 1.
         amp2re1 = other_amp / target_amp
 
         # Set the object modes.
@@ -474,7 +477,7 @@ class PyImpact:
             self.object_modes[id2][id1].obj1_modes = modes_1
             self.object_modes[id2][id1].obj2_modes = modes_2
 
-        if self.logging == True:
+        if self.logging:
             mode_props = dict()
             self.log_modes(self.object_modes[id2][id1].count, mode_props, id1, id2, modes_1, modes_2, amp, str(mat1), str(mat2))
             
@@ -506,6 +509,7 @@ class PyImpact:
         :param other_mat: The other object's audio material.
         :param rigidbodies: TDW `Rigidbodies` output data.
         :param target_id: The ID of the object that will play the sound.
+        :param resonance: The resonance of the objects.
         :param play_audio_data: If True, return a `play_audio_data` command. If False, return a `play_point_source_data` command (useful only with Resonance Audio; see Command API).
 
         :return A `play_audio_data` or `play_point_source_data` command that can be sent to the build via `Controller.communicate()`.
@@ -534,6 +538,7 @@ class PyImpact:
         :param mass: The mass of the smaller of the two colliding objects.
         :param id1: The ID for the one of the colliding objects.
         :param id2: The ID for the other object.
+        :param resonance: The resonance of the objects.
 
         :return The sound, and the object modes.
         """
@@ -566,6 +571,7 @@ class PyImpact:
         :param target_id: The ID of the object that will play the sound.
         :param other_amp: Sound amplitude of other object.
         :param target_amp: Sound amplitude of target object.
+        :param resonance: The resonance of the objects.
 
         :return The impulse response.
         """
@@ -586,6 +592,7 @@ class PyImpact:
         :param modes1: Modes of object 1. A numpy array with: column1=mode frequencies (Hz); column2=mode onset powers in dB; column3=mode RT60s in milliseconds;
         :param modes2: Modes of object 2. Formatted as modes1/modes2.
         :param mass: the mass of the smaller of the two colliding objects.
+        :param resonance: The resonance of the objects.
 
         :return The impact sound.
         """

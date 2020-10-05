@@ -40,12 +40,7 @@ c.communicate(p.get_impact_sound_command(arg1, arg2, ... ))
 
 #### `get_log(self) -> dict`
 
-
-| Parameter | Description |
-| --- | --- |
-| material | The audio material. |
-
-_Returns:_  The audio modes.
+_Returns:_  The mode properties log.
 
 ***
 
@@ -63,6 +58,7 @@ Produce sound of two colliding objects as a byte array.
 | mat2 | The material label for the other object. |
 | other_amp | Sound amplitude of object 2. |
 | target_amp | Sound amplitude of object 1. |
+| resonance | The resonances of the objects. |
 
 _Returns:_ Sound data as a Base64Sound object.
 
@@ -84,6 +80,7 @@ Create an impact sound, and return a valid command to play audio data in TDW.
 | other_mat | The other object's audio material. |
 | rigidbodies | TDW `Rigidbodies` output data. |
 | target_id | The ID of the object that will play the sound. |
+| resonance | The resonance of the objects. |
 | play_audio_data | If True, return a `play_audio_data` command. If False, return a `play_point_source_data` command (useful only with Resonance Audio; see Command API). |
 
 _Returns:_ A `play_audio_data` or `play_point_source_data` command that can be sent to the build via `Controller.communicate()`.
@@ -102,6 +99,7 @@ Generate an impact sound.
 | mass | The mass of the smaller of the two colliding objects. |
 | id1 | The ID for the one of the colliding objects. |
 | id2 | The ID for the other object. |
+| resonance | The resonance of the objects. |
 
 _Returns:_ The sound, and the object modes.
 
@@ -121,6 +119,7 @@ Generate an impulse response from the modes for two specified objects.
 | target_id | The ID of the object that will play the sound. |
 | other_amp | Sound amplitude of other object. |
 | target_amp | Sound amplitude of target object. |
+| resonance | The resonance of the objects. |
 
 _Returns:_ The impulse response.
 
@@ -137,6 +136,7 @@ Generate an impact sound from specified modes for two objects, and the mass of t
 | modes1 | Modes of object 1. A numpy array with: column1=mode frequencies (Hz); column2=mode onset powers in dB; column3=mode RT60s in milliseconds; |
 | modes2 | Modes of object 2. Formatted as modes1/modes2. |
 | mass | the mass of the smaller of the two colliding objects. |
+| resonance | The resonance of the objects. |
 
 _Returns:_ The impact sound.
 

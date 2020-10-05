@@ -478,8 +478,8 @@ A ray cast from an origin to a destination and what, if anything, it hit.
 | --- | --- | --- |
 | `get_raycast_id()` | The identity of this raycast. | `int` |
 | `get_hit()` | If true, the raycast hit something. | `bool` |
-| `get_hit_object()` | If true, the raycast hit an object. | `bool` |
-| `get_object_id()` | The ID of the object hit by the raycast. Ignore this if hit_object is false. | `Optional[int]` |
+| `get_hit_object()` | The object of the hit. | `bool` |
+| `get_object_id()` | The ID of the object hit by the raycast. If None, no object was hit (but something in the environment might have been). | `Optional[int]` |
 | `get_normal()` | The normal of the surface that the raycast hit. | `Tuple[float, float, float]` |
 | `get_point()` | The point that the raycast hit. | `Tuple[float, float, float]` |
 

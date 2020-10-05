@@ -38,8 +38,11 @@
 | [PyImpact](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/py_impact.md) | Generate impact sounds at runtime.                           |
 | [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md) | Child class of `Controller` that has useful debug features.  |
 | [KeyboardController](Documentation/python/keyboard_controller.md) | Child class of `Controller` that can listen for keyboard input. |
+| [FloorplanController](Documentation/python/floorplan_controller.md) | Child class of `Controller` that creates an interior environment and populates it with objects. |
 | [Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/librarian.md) | "Librarians" hold asset bundle metadata records.             |
 | [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md) | Access different NVIDIA Flex fluid types.                    |
+| [Object Init Data](Documentation/python/object_init_data.md) | Wrapper classes for storing object initialization data.      |
+
 
 ##### Backend
 
@@ -127,11 +130,12 @@
 
 | Document                                                     | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [Scene Setup](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/scene_setup.md)    | Overview of how to set up a scene.                           |
+| [Scene Setup](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/scene_setup.md) | Overview of how to set up a scene.                           |
 | [Asset Bundle Librarians](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/librarian.md) | Overview of what asset bundles are, how to add objects, scenes, materials, HDRI skyboxes, and humanoids, and how to access each asset bundle's metadata. |
 | [Model Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/model_librarian.md) | Overview of how to add objects and access metadata.          |
-| [Rotation](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/rotation.md)          | Different means of rotating objects and agents in a scene.   |
-| [Scene Reset](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/reset_scene.md)    | How to reset a scene.                                        |
+| [Rotation](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/rotation.md) | Different means of rotating objects and agents in a scene.   |
+| [Scene Reset](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/reset_scene.md) | How to reset a scene.                                        |
+| [FloorplanController](Documentation/python/floorplan_controller.md) | Child class of `Controller` that creates an interior environment and populates it with objects. |
 
 # TDW and 3D Objects
 

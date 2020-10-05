@@ -8,7 +8,7 @@
 
 #### `PyImpact`
 
- - Fixed: audio is often distorted due to a bug with amp values.
+ - Fixed:  relative amp values aren't handled correctly.
 
 ## v1.6.13
 

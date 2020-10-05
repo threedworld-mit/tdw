@@ -2338,6 +2338,361 @@
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
+        "basket_18inx18inx12iin": {
+            "asset_bundle_sizes": {
+                "Darwin": 1970444,
+                "Linux": 2192508,
+                "Windows": 1793778
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": -0.2285
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 0.2285
+                },
+                "left": {
+                    "x": -0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "right": {
+                    "x": 0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.305,
+                    "z": 1.333197e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": true,
+            "do_not_use_reason": "Incorrect name. Replaced with same model that has correct name: basket_18inx18inx12iin_bamboo",
+            "flex": true,
+            "name": "basket_18inx18inx12iin",
+            "physics_quality": 0.9971961265355677,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_bamboo"
+                    ],
+                    "name": "basket_18inx18inx12iin"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/basket_18inx18inx12iin",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/basket_18inx18inx12iin",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/basket_18inx18inx12iin"
+            },
+            "wcategory": "basket",
+            "wnid": "n02801938"
+        },
+        "basket_18inx18inx12iin_bamboo": {
+            "asset_bundle_sizes": {
+                "Darwin": 1970632,
+                "Linux": 2192962,
+                "Windows": 1793282
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": -0.2285
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 0.2285
+                },
+                "left": {
+                    "x": -0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "right": {
+                    "x": 0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.305,
+                    "z": 1.333197e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "basket_18inx18inx12iin_bamboo",
+            "physics_quality": 0.9971961265355677,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_bamboo"
+                    ],
+                    "name": "basket_18inx18inx12iin_bamboo"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/basket_18inx18inx12iin_bamboo",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/basket_18inx18inx12iin_bamboo",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/basket_18inx18inx12iin_bamboo"
+            },
+            "wcategory": "basket",
+            "wnid": "n02801938"
+        },
+        "basket_18inx18inx12iin_plastic_lattice": {
+            "asset_bundle_sizes": {
+                "Darwin": 2028504,
+                "Linux": 2293259,
+                "Windows": 1805067
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": -0.2285
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 0.2285
+                },
+                "left": {
+                    "x": -0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "right": {
+                    "x": 0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.305,
+                    "z": 1.333197e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "basket_18inx18inx12iin_plastic_lattice",
+            "physics_quality": 0.9971961265355677,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "3d_printed_mesh_square"
+                    ],
+                    "name": "basket_18inx18inx12iin_plastic_lattice"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/basket_18inx18inx12iin_plastic_lattice",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/basket_18inx18inx12iin_plastic_lattice",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/basket_18inx18inx12iin_plastic_lattice"
+            },
+            "wcategory": "basket",
+            "wnid": "n02801938"
+        },
+        "basket_18inx18inx12iin_wicker": {
+            "asset_bundle_sizes": {
+                "Darwin": 15045207,
+                "Linux": 15232237,
+                "Windows": 14858449
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": -0.2285
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 0.2285
+                },
+                "left": {
+                    "x": -0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "right": {
+                    "x": 0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.305,
+                    "z": 1.333197e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "basket_18inx18inx12iin_wicker",
+            "physics_quality": 0.9971961265355677,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wicker_weave"
+                    ],
+                    "name": "basket_18inx18inx12iin_wicker"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/basket_18inx18inx12iin_wicker",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/basket_18inx18inx12iin_wicker",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/basket_18inx18inx12iin_wicker"
+            },
+            "wcategory": "basket",
+            "wnid": "n02801938"
+        },
+        "basket_18inx18inx12iin_wood_mesh": {
+            "asset_bundle_sizes": {
+                "Darwin": 1987559,
+                "Linux": 2251488,
+                "Windows": 1763159
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": -0.2285
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 0.2285
+                },
+                "left": {
+                    "x": -0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "right": {
+                    "x": 0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.305,
+                    "z": 1.333197e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "basket_18inx18inx12iin_wood_mesh",
+            "physics_quality": 0.9971961265355677,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_speaker_mesh_organic"
+                    ],
+                    "name": "basket_18inx18inx12iin_wood_mesh"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/basket_18inx18inx12iin_wood_mesh",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/basket_18inx18inx12iin_wood_mesh",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/basket_18inx18inx12iin_wood_mesh"
+            },
+            "wcategory": "basket",
+            "wnid": "n02801938"
+        },
         "bastone_floor_lamp": {
             "asset_bundle_sizes": {
                 "Darwin": 8989513,
@@ -4035,6 +4390,290 @@
             },
             "wcategory": "garden rake",
             "wnid": "n03417970"
+        },
+        "box_18inx18inx12in_cardboard": {
+            "asset_bundle_sizes": {
+                "Darwin": 2261365,
+                "Linux": 2483015,
+                "Windows": 2082653
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": -0.2285
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 0.2285
+                },
+                "left": {
+                    "x": -0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "right": {
+                    "x": 0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.305,
+                    "z": 1.333197e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "box_18inx18inx12in_cardboard",
+            "physics_quality": 0.9999440528009113,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cardboard_corrugated"
+                    ],
+                    "name": "box_18inx18inx12in_cardboard"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/box_18inx18inx12in_cardboard",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/box_18inx18inx12in_cardboard",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/box_18inx18inx12in_cardboard"
+            },
+            "wcategory": "box",
+            "wnid": "n02883344"
+        },
+        "box_24inx18inx12in_cherry": {
+            "asset_bundle_sizes": {
+                "Darwin": 3517490,
+                "Linux": 3735339,
+                "Windows": 3343312
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": -0.305
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1525,
+                    "z": 0.305
+                },
+                "left": {
+                    "x": -0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "right": {
+                    "x": 0.2285,
+                    "y": 0.1525,
+                    "z": 6.665987e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.305,
+                    "z": 1.333197e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "box_24inx18inx12in_cherry",
+            "physics_quality": 0.9935789364076434,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_american_cherry"
+                    ],
+                    "name": "box_24inx18inx12in_cherry"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/box_24inx18inx12in_cherry",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/box_24inx18inx12in_cherry",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/box_24inx18inx12in_cherry"
+            },
+            "wcategory": "box",
+            "wnid": "n02883344"
+        },
+        "box_tapered_beech": {
+            "asset_bundle_sizes": {
+                "Darwin": 3886710,
+                "Linux": 4110735,
+                "Windows": 3705899
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.203,
+                    "z": -0.3851737
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.203,
+                    "z": 8.873411e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.203,
+                    "z": 0.3851737
+                },
+                "left": {
+                    "x": -0.3851737,
+                    "y": 0.203,
+                    "z": 8.873411e-09
+                },
+                "right": {
+                    "x": 0.3851737,
+                    "y": 0.203,
+                    "z": 8.873411e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.406,
+                    "z": 1.774682e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "box_tapered_beech",
+            "physics_quality": 0.9847817393120987,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "box_tapered_beech"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/box_tapered_beech",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/box_tapered_beech",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/box_tapered_beech"
+            },
+            "wcategory": "box",
+            "wnid": "n02883344"
+        },
+        "box_tapered_white_mesh": {
+            "asset_bundle_sizes": {
+                "Darwin": 3052225,
+                "Linux": 3301529,
+                "Windows": 2816242
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.203,
+                    "z": -0.3851737
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.203,
+                    "z": 8.873411e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.203,
+                    "z": 0.3851737
+                },
+                "left": {
+                    "x": -0.3851737,
+                    "y": 0.203,
+                    "z": 8.873411e-09
+                },
+                "right": {
+                    "x": 0.3851737,
+                    "y": 0.203,
+                    "z": 8.873411e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.406,
+                    "z": 1.774682e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "box_tapered_white_mesh",
+            "physics_quality": 0.9847817393120987,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "3d_printed_mesh_voronoi"
+                    ],
+                    "name": "box_tapered_white_mesh"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/box_tapered_white_mesh",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/box_tapered_white_mesh",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/box_tapered_white_mesh"
+            },
+            "wcategory": "box",
+            "wnid": "n02883344"
         },
         "bronze_purse": {
             "asset_bundle_sizes": {
@@ -8957,8 +9596,8 @@
                 "z": 0
             },
             "composite_object": true,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "The colliders of this object are too thin, causing it to fall through tables",
             "flex": false,
             "name": "jigsaw_puzzle_composite",
             "physics_quality": 0.9961454754368257,
@@ -14361,8 +15000,8 @@
                 "z": 0
             },
             "composite_object": false,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "This is a composite object and the objects are not connected with a FixedJoint, causing the model to fall apart",
             "flex": false,
             "name": "rope_table_lamp",
             "physics_quality": NaN,
@@ -14385,6 +15024,432 @@
             },
             "wcategory": "table lamp",
             "wnid": "n04380533"
+        },
+        "round_bowl_large_metal_perf": {
+            "asset_bundle_sizes": {
+                "Darwin": 467574,
+                "Linux": 732391,
+                "Windows": 242614
+            },
+            "bounds": {
+                "back": {
+                    "x": -2.980232e-08,
+                    "y": 0.2030001,
+                    "z": -0.4549357
+                },
+                "bottom": {
+                    "x": -2.980232e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": -2.980232e-08,
+                    "y": 0.203,
+                    "z": 8.873413e-09
+                },
+                "front": {
+                    "x": -2.980232e-08,
+                    "y": 0.203,
+                    "z": 0.4549357
+                },
+                "left": {
+                    "x": -0.4549358,
+                    "y": 0.203,
+                    "z": 8.873413e-09
+                },
+                "right": {
+                    "x": 0.4549357,
+                    "y": 0.203,
+                    "z": 8.873413e-09
+                },
+                "top": {
+                    "x": -2.980232e-08,
+                    "y": 0.4060001,
+                    "z": 1.774683e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": true,
+            "do_not_use_reason": "Colliders are way too big",
+            "flex": true,
+            "name": "round_bowl_large_metal_perf",
+            "physics_quality": 0.9475819909865923,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "metal_grid_perforated"
+                    ],
+                    "name": "round_bowl_large_metal_perf"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/round_bowl_large_metal_perf",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_large_metal_perf",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_large_metal_perf"
+            },
+            "wcategory": "bowl",
+            "wnid": "n00104409"
+        },
+        "round_bowl_large_padauk": {
+            "asset_bundle_sizes": {
+                "Darwin": 3086434,
+                "Linux": 3308234,
+                "Windows": 2908655
+            },
+            "bounds": {
+                "back": {
+                    "x": -2.980232e-08,
+                    "y": 0.2030001,
+                    "z": -0.4549357
+                },
+                "bottom": {
+                    "x": -2.980232e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": -2.980232e-08,
+                    "y": 0.203,
+                    "z": 8.873413e-09
+                },
+                "front": {
+                    "x": -2.980232e-08,
+                    "y": 0.203,
+                    "z": 0.4549357
+                },
+                "left": {
+                    "x": -0.4549358,
+                    "y": 0.203,
+                    "z": 8.873413e-09
+                },
+                "right": {
+                    "x": 0.4549357,
+                    "y": 0.203,
+                    "z": 8.873413e-09
+                },
+                "top": {
+                    "x": -2.980232e-08,
+                    "y": 0.4060001,
+                    "z": 1.774683e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_bowl_large_padauk",
+            "physics_quality": 0.9475819909865923,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_burma_padauk"
+                    ],
+                    "name": "round_bowl_large_padauk"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/round_bowl_large_padauk",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_large_padauk",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_large_padauk"
+            },
+            "wcategory": "bowl",
+            "wnid": "n00104409"
+        },
+        "round_bowl_large_thin": {
+            "asset_bundle_sizes": {
+                "Darwin": 2654256,
+                "Linux": 2887055,
+                "Windows": 2487370
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.2030001,
+                    "z": -0.4551309
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 1.302701e-15,
+                    "z": -2.980232e-08
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.203,
+                    "z": -2.092891e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.203,
+                    "z": 0.4551308
+                },
+                "left": {
+                    "x": -0.4551308,
+                    "y": 0.203,
+                    "z": -2.092891e-08
+                },
+                "right": {
+                    "x": 0.4551308,
+                    "y": 0.203,
+                    "z": -2.092891e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.4060001,
+                    "z": -1.20555e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_bowl_large_thin",
+            "physics_quality": 0.9381184350855983,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "metal_galvanized"
+                    ],
+                    "name": "round_bowl_large_thin"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/round_bowl_large_thin",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_large_thin",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_large_thin"
+            },
+            "wcategory": "bowl",
+            "wnid": "n00104409"
+        },
+        "round_bowl_small_beech": {
+            "asset_bundle_sizes": {
+                "Darwin": 3958821,
+                "Linux": 4187782,
+                "Windows": 3778464
+            },
+            "bounds": {
+                "back": {
+                    "x": 5.960464e-08,
+                    "y": 0.1685953,
+                    "z": -0.2986292
+                },
+                "bottom": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 5.960464e-08,
+                    "y": 0.1685952,
+                    "z": 7.369532e-09
+                },
+                "front": {
+                    "x": 5.960464e-08,
+                    "y": 0.1685952,
+                    "z": 0.2986292
+                },
+                "left": {
+                    "x": -0.2986291,
+                    "y": 0.1685952,
+                    "z": 7.369532e-09
+                },
+                "right": {
+                    "x": 0.2986292,
+                    "y": 0.1685952,
+                    "z": 7.369532e-09
+                },
+                "top": {
+                    "x": 5.960464e-08,
+                    "y": 0.3371905,
+                    "z": 1.473906e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_bowl_small_beech",
+            "physics_quality": 0.968201836217811,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "round_bowl_small_beech"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/round_bowl_small_beech",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_small_beech",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_small_beech"
+            },
+            "wcategory": "bowl",
+            "wnid": "n00104409"
+        },
+        "round_bowl_small_walnut": {
+            "asset_bundle_sizes": {
+                "Darwin": 2250408,
+                "Linux": 2413677,
+                "Windows": 2111410
+            },
+            "bounds": {
+                "back": {
+                    "x": 5.960464e-08,
+                    "y": 0.1685953,
+                    "z": -0.2986292
+                },
+                "bottom": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 5.960464e-08,
+                    "y": 0.1685952,
+                    "z": 7.369532e-09
+                },
+                "front": {
+                    "x": 5.960464e-08,
+                    "y": 0.1685952,
+                    "z": 0.2986292
+                },
+                "left": {
+                    "x": -0.2986291,
+                    "y": 0.1685952,
+                    "z": 7.369532e-09
+                },
+                "right": {
+                    "x": 0.2986292,
+                    "y": 0.1685952,
+                    "z": 7.369532e-09
+                },
+                "top": {
+                    "x": 5.960464e-08,
+                    "y": 0.3371905,
+                    "z": 1.473906e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_bowl_small_walnut",
+            "physics_quality": 0.968201836217811,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_black_walnut_striped"
+                    ],
+                    "name": "round_bowl_small_walnut"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/round_bowl_small_walnut",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_small_walnut",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_small_walnut"
+            },
+            "wcategory": "bowl",
+            "wnid": "n00104409"
+        },
+        "round_bowl_talll_wenge": {
+            "asset_bundle_sizes": {
+                "Darwin": 7129587,
+                "Linux": 7292021,
+                "Windows": 6990799
+            },
+            "bounds": {
+                "back": {
+                    "x": 5.960464e-08,
+                    "y": 0.1840254,
+                    "z": -0.3027368
+                },
+                "bottom": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 5.960464e-08,
+                    "y": 0.1840254,
+                    "z": 8.044005e-09
+                },
+                "front": {
+                    "x": 5.960464e-08,
+                    "y": 0.1840253,
+                    "z": 0.3027368
+                },
+                "left": {
+                    "x": -0.3033353,
+                    "y": 0.1840254,
+                    "z": 8.044005e-09
+                },
+                "right": {
+                    "x": 0.3033354,
+                    "y": 0.1840254,
+                    "z": 8.044005e-09
+                },
+                "top": {
+                    "x": 5.960464e-08,
+                    "y": 0.3680507,
+                    "z": 1.608801e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_bowl_talll_wenge",
+            "physics_quality": 0.9607712383774648,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_wenge"
+                    ],
+                    "name": "round_bowl_talll_wenge"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/round_bowl_talll_wenge",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_talll_wenge",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_talll_wenge"
+            },
+            "wcategory": "bowl",
+            "wnid": "n00104409"
         },
         "salt": {
             "asset_bundle_sizes": {
@@ -14744,6 +15809,148 @@
             },
             "wcategory": "carving fork",
             "wnid": "n02973805"
+        },
+        "shallow_basket_white_mesh": {
+            "asset_bundle_sizes": {
+                "Darwin": 1813556,
+                "Linux": 2078086,
+                "Windows": 1590818
+            },
+            "bounds": {
+                "back": {
+                    "x": 2.980232e-08,
+                    "y": 0.07900514,
+                    "z": -0.333909
+                },
+                "bottom": {
+                    "x": 2.980232e-08,
+                    "y": -1.000995e-10,
+                    "z": 0.00229001
+                },
+                "center": {
+                    "x": 2.980232e-08,
+                    "y": 0.07900512,
+                    "z": 0.002290014
+                },
+                "front": {
+                    "x": 2.980232e-08,
+                    "y": 0.07900511,
+                    "z": 0.338489
+                },
+                "left": {
+                    "x": -0.208782,
+                    "y": 0.07900512,
+                    "z": 0.002290014
+                },
+                "right": {
+                    "x": 0.208782,
+                    "y": 0.07900512,
+                    "z": 0.002290014
+                },
+                "top": {
+                    "x": 2.980232e-08,
+                    "y": 0.1580102,
+                    "z": 0.002290017
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "shallow_basket_white_mesh",
+            "physics_quality": 0.9969252961227338,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "3d_printed_mesh_scales"
+                    ],
+                    "name": "shallow_basket_white_mesh"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/shallow_basket_white_mesh",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/shallow_basket_white_mesh",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/shallow_basket_white_mesh"
+            },
+            "wcategory": "basket",
+            "wnid": "n02801938"
+        },
+        "shallow_basket_wicker": {
+            "asset_bundle_sizes": {
+                "Darwin": 15020489,
+                "Linux": 15235237,
+                "Windows": 14835810
+            },
+            "bounds": {
+                "back": {
+                    "x": 2.980232e-08,
+                    "y": 0.07900514,
+                    "z": -0.333909
+                },
+                "bottom": {
+                    "x": 2.980232e-08,
+                    "y": -1.000995e-10,
+                    "z": 0.00229001
+                },
+                "center": {
+                    "x": 2.980232e-08,
+                    "y": 0.07900512,
+                    "z": 0.002290014
+                },
+                "front": {
+                    "x": 2.980232e-08,
+                    "y": 0.07900511,
+                    "z": 0.338489
+                },
+                "left": {
+                    "x": -0.208782,
+                    "y": 0.07900512,
+                    "z": 0.002290014
+                },
+                "right": {
+                    "x": 0.208782,
+                    "y": 0.07900512,
+                    "z": 0.002290014
+                },
+                "top": {
+                    "x": 2.980232e-08,
+                    "y": 0.1580102,
+                    "z": 0.002290017
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "shallow_basket_wicker",
+            "physics_quality": 0.9969252961227338,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wicker_weave"
+                    ],
+                    "name": "shallow_basket_wicker"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2/shallow_basket_wicker",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/shallow_basket_wicker",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/shallow_basket_wicker"
+            },
+            "wcategory": "basket",
+            "wnid": "n02801938"
         },
         "shark": {
             "asset_bundle_sizes": {

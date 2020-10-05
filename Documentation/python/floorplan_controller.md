@@ -22,7 +22,10 @@ Get commands to create a scene and populate it with objects.
 Valid scenes and layouts:
 | `scene` | `layout` |
 | --- | --- |
-| `"2a"`, `"2b"`, or `"2c"` | 0 |
+| 1a, 1b, or 1c | 0, 1, or 2 |
+| 2a, 2b, or 2c | 0, 1, or 2 |
+| 4a, 4b, or 4c | 0, 1, or 2 |
+| 5a, 5b, or 5c | 0, 1, or 2 |
 
 | Parameter | Description |
 | --- | --- |

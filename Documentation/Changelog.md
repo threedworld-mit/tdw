@@ -10,7 +10,10 @@
 
 #### `TDWUtils`
 
-- Moved `euler_to_quaternion()` to `QuaternionUtils` and renamed it to `euler_angles_to_quaternion()`
+- Moved `euler_to_quaternion()` to `QuaternionUtils`
+  - Renamed function to `euler_angles_to_quaternion()`
+  - Parameter `euler` is a numpy array (was a tuple).
+  - Return type is a numpy array (was a list of floats).
 - Moved `quaternion_to_euler_angles()` to `QuaternionUtils`
 
 #### `PyImpact`

@@ -276,17 +276,6 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/monkey_physics_room"
             }
         },
-        "roman_villa": {
-            "description": "A Roman villa.",
-            "hdri": false,
-            "location": "exterior",
-            "name": "roman_villa",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.4/roman_villa",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.4/roman_villa",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.4/roman_villa"
-            }
-        },
         "ruin": {
             "description": "\"A castle ruin \"\"mini-scene\"\".\"",
             "hdri": true,

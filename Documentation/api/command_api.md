@@ -396,6 +396,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_overlap_sphere`](#send_overlap_sphere) | Check what a sphere overlaps with.  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
 **Send Avatars Command**
@@ -4564,6 +4565,41 @@ These commands send data to the controller.
 
 ***
 
+## **`send_overlap_sphere`**
+
+Check what a sphere overlaps with. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`OverlapSphere`](output_data.md#OverlapSphere)</font>
+
+```python
+{"$type": "send_overlap_sphere", "position": {"x": 1.1, "y": 0.0, "z": 0}, "radius": 0.125, "sphere_id": 1}
+```
+
+```python
+{"$type": "send_overlap_sphere", "position": {"x": 1.1, "y": 0.0, "z": 0}, "radius": 0.125, "sphere_id": 1, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The center of the sphere. | |
+| `"radius"` | float | The radius of the sphere. | |
+| `"sphere_id"` | int | The ID of this overlap sphere. Useful for differenting between OverlapSphere output data if you sent this command multiple times on the same frame. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_substructure`**
 
 Send visual material substructure data for a single object. 
@@ -4878,8 +4914,6 @@ Cast a ray from the origin to the destination.
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Exactly once**</font>
-
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
 ```python
@@ -4914,8 +4948,6 @@ Options for when to send data.
 Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
 
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 

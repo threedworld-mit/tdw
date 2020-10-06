@@ -73,6 +73,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
+| [OverlapSphere](#OverlapSphere) | The IDs of every object that a sphere defined by send_overlap_sphere overlaps. | `ovsp` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Rigidbodies](#Rigidbodies) | Rigibody data (velocity, mass, etc.) for objects in the scene. | `rigi` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
@@ -465,6 +466,20 @@ Mesh data from readable objects.
 | `get_num()` | The number of objects. | `int` |
 | `get_vertices(index)` | The (x, y, z) coordinates of each vertex. | `np.array` |
 | `get_triangles(index)` | Each triangle of the mesh. | `np.array` |
+
+## OverlapSphere
+
+`o = OverlapSphere(byte_array)`
+
+**Identifier:** `ovsp`
+
+The IDs of every object that a sphere defined by send_overlap_sphere overlaps.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_sphere_id()` | The ID of the sphere. | `int` |
+| `get_object_ids()` | The IDs of every object in the sphere. | `np.array` |
+| `get_env()` | If true, the overlap sphere includes at least one environment object (such as the floor). | `bool` |
 
 ## Raycast
 

@@ -379,31 +379,6 @@ _Returns:_ a free port.
 
 ***
 
-#### `euler_to_quaternion(euler: Tuple[float, float, float]) -> List[float]`
-
-_This is a static function._
-
-Convert Euler angles to a quaternion.
-
-| Parameter | Description |
-| --- | --- |
-| euler | The Euler angles vector. |
-
-***
-
-#### `quaternion_to_euler_angles(quaternion: np.array) -> np.array`
-
-_This is a static function._
-
-
-| Parameter | Description |
-| --- | --- |
-| quaternion | A quaternion as a nump array. |
-
-_Returns:_  The Euler angles representation of the quaternion.
-
-***
-
 #### `get_unit_scale(record: ModelRecord) -> float`
 
 _This is a static function._
@@ -501,6 +476,105 @@ Stop recording audio (if any fmedia process is running).
 _This is a static function._
 
 _Returns:_  True if the fmedia recording process still exists.
+
+***
+
+## `QuaternionUtils`
+
+`from tdw.tdw_utils import QuaternionUtils`
+
+Helper functions for using quaternions.
+
+Quaternions are always numpy arrays in the following order: `[x, y, z, w]`.
+This is the order returned in all Output Data objects.
+
+Vectors are always numpy arrays in the following order: `[x, y, z]`.
+
+***
+
+#### `multiply(q1: np.array, q2: np.array) -> np.array`
+
+_This is a static function._
+
+Multiply two quaternions.
+Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
+
+| Parameter | Description |
+| --- | --- |
+| q1 | The first quaternion. |
+| q2 | The second quaternion. |
+
+_Returns:_  The multiplied quaternion: `q1 * q2`
+
+***
+
+#### `get_conjugate(q: np.array) -> np.array`
+
+_This is a static function._
+
+Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
+
+| Parameter | Description |
+| --- | --- |
+| q | The quaternion. |
+
+_Returns:_  The conjugate of the quaternion: `[-x, -y, -z, w]`
+
+***
+
+#### `multiply_by_vector(q: np.array, v: np.array) -> np.array`
+
+_This is a static function._
+
+Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
+
+| Parameter | Description |
+| --- | --- |
+| q | The quaternion. |
+| v | The vector. |
+
+_Returns:_  A directional vector calculated from: `q * v`
+
+***
+
+#### `get_up_direction(q: np.array) -> np.array`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| q | The rotation as a quaternion. |
+
+_Returns:_  A directional vector corresponding to the "up" direction from the quaternion.
+
+***
+
+#### `euler_angles_to_quaternion(euler: np.array) -> np.array`
+
+_This is a static function._
+
+Convert Euler angles to a quaternion.
+
+| Parameter | Description |
+| --- | --- |
+| euler | The Euler angles vector. |
+
+_Returns:_  The quaternion representation of the Euler angles.
+
+***
+
+#### `quaternion_to_euler_angles(quaternion: np.array) -> np.array`
+
+_This is a static function._
+
+Convert a quaternion to Euler angles.
+
+| Parameter | Description |
+| --- | --- |
+| quaternion | A quaternion as a nump array. |
+
+_Returns:_  The Euler angles representation of the quaternion.
 
 ***
 

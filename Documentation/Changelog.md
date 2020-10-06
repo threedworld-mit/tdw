@@ -2,6 +2,18 @@
 
 # v1.6.x
 
+## v1.6.14
+
+### `tdw` module
+
+#### `PyImpact`
+
+ - Fixed:  relative amp values aren't handled correctly.
+
+### Python
+
+- Fixed: `screenshotter.py` and `empty_scene` don't work on Linux.
+
 ## v1.6.13
 
 ### `tdw` module

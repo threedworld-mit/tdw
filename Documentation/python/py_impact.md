@@ -44,7 +44,7 @@ _Returns:_  The mode properties log.
 
 ***
 
-#### `get_sound(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, id1: int, mat1: str, id2: int, mat2: str, amp2re1: float, resonance: float) -> Optional[Base64Sound]`
+#### `get_sound(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, id1: int, mat1: str, id2: int, mat2: str, other_amp: float, target_amp: float, resonance: float) -> Optional[Base64Sound]`
 
 Produce sound of two colliding objects as a byte array.
 
@@ -56,7 +56,9 @@ Produce sound of two colliding objects as a byte array.
 | mat1 | The material label for one of the colliding objects. |
 | id2 | The object ID for the other object. |
 | mat2 | The material label for the other object. |
-| amp2re1 | The sound amplitude of object 2 relative to that of object 1. |
+| other_amp | Sound amplitude of object 2. |
+| target_amp | Sound amplitude of object 1. |
+| resonance | The resonances of the objects. |
 
 _Returns:_ Sound data as a Base64Sound object.
 
@@ -78,6 +80,7 @@ Create an impact sound, and return a valid command to play audio data in TDW.
 | other_mat | The other object's audio material. |
 | rigidbodies | TDW `Rigidbodies` output data. |
 | target_id | The ID of the object that will play the sound. |
+| resonance | The resonance of the objects. |
 | play_audio_data | If True, return a `play_audio_data` command. If False, return a `play_point_source_data` command (useful only with Resonance Audio; see Command API). |
 
 _Returns:_ A `play_audio_data` or `play_point_source_data` command that can be sent to the build via `Controller.communicate()`.
@@ -96,13 +99,13 @@ Generate an impact sound.
 | mass | The mass of the smaller of the two colliding objects. |
 | id1 | The ID for the one of the colliding objects. |
 | id2 | The ID for the other object. |
-| resonance | The resonance between the two objects (see impact_sounds.md) |
+| resonance | The resonance of the objects. |
 
 _Returns:_ The sound, and the object modes.
 
 ***
 
-#### `get_impulse_response(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, other_id: int, other_mat: str, target_id: int, target_mat: str, amp2re1: float, resonance: float) -> np.array`
+#### `get_impulse_response(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, other_id: int, other_mat: str, target_id: int, target_mat: str, other_amp: float, target_amp: float, resonance: float) -> np.array`
 
 Generate an impulse response from the modes for two specified objects.
 
@@ -114,7 +117,9 @@ Generate an impulse response from the modes for two specified objects.
 | other_mat | The other object's audio material. |
 | rigidbodies | TDW `Rigidbodies` output data. |
 | target_id | The ID of the object that will play the sound. |
-| amp2re1 | The sound amplitude of object 2 relative to that of object 1. |
+| other_amp | Sound amplitude of other object. |
+| target_amp | Sound amplitude of target object. |
+| resonance | The resonance of the objects. |
 
 _Returns:_ The impulse response.
 
@@ -192,7 +197,6 @@ Reset PyImpact. This is somewhat faster than creating a new PyImpact object per 
 #### `log_modes(self, count: int, mode_props: dict, id1: int, id2: int, modes_1: Modes, modes_2: Modes, amp: float, mat1: str, mat2: str)`
 
 Log mode properties info for a single collision event.
-2
 
 | Parameter | Description |
 | --- | --- |

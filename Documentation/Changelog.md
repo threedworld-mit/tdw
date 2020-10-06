@@ -6,9 +6,23 @@
 
 ### `tdw` module
 
+- Added: `tdw.tdw_utils.QuaternionUtils` Utility functions for quaternions.
+
+#### `TDWUtils`
+
+- Moved `euler_to_quaternion()` to `QuaternionUtils`
+  - Renamed function to `euler_angles_to_quaternion()`
+  - Parameter `euler` is a numpy array (was a tuple).
+  - Return type is a numpy array (was a list of floats).
+- Moved `quaternion_to_euler_angles()` to `QuaternionUtils`
+
 #### `PyImpact`
 
  - Fixed:  relative amp values aren't handled correctly.
+
+### Python
+
+- Fixed: `screenshotter.py` and `empty_scene` don't work on Linux.
 
 ## v1.6.13
 

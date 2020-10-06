@@ -6,6 +6,13 @@
 
 ### `tdw` module
 
+- Added: `tdw.tdw_utils.QuaternionUtils` Utility functions for quaternions.
+
+#### `TDWUtils`
+
+- Moved `euler_to_quaternion()` to `QuaternionUtils` and renamed it to `euler_angles_to_quaternion()`
+- Moved `quaternion_to_euler_angles()` to `QuaternionUtils`
+
 #### `PyImpact`
 
  - Fixed:  relative amp values aren't handled correctly.

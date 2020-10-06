@@ -688,16 +688,16 @@ class QuaternionUtils:
     """
     Helper functions for using quaternions.
 
-    Quaternions are always tuples in the following order: `(x, y, z, w)`.
+    Quaternions are always numpy arrays in the following order: `[x, y, z, w]`.
     This is the order returned in all Output Data objects.
 
-    Vectors are always tuples in the following order: `(x, y, z)`.
+    Vectors are always numpy arrays in the following order: `[x, y, z]`.
     """
 
-    _UP = (0, 1, 0)
+    _UP = np.array([0, 1, 0])
 
     @staticmethod
-    def _multiply(q1: Tuple[float, float, float, float], q2: Tuple[float, float, float, float]) -> Tuple[float, float, float, float]:
+    def multiply(q1: np.array, q2: np.array) -> np.array:
         """
         Multiply two quaternions.
         Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
@@ -706,29 +706,42 @@ class QuaternionUtils:
         :param q2: The second quaternion.
         :return: The multiplied quaternion: `q1 * q2`
         """
-        x1, y1, z1, w1 = q1
-        x2, y2, z2, w2 = q2
+
+        x1 = q1[0]
+        y1 = q1[1]
+        z1 = q1[2]
+        w1 = q1[3]
+
+        x2 = q2[0]
+        y2 = q2[1]
+        z2 = q2[2]
+        w2 = q2[3]
+
         w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
         x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
         y = w1 * y2 + y1 * w2 + z1 * x2 - x1 * z2
         z = w1 * z2 + z1 * w2 + x1 * y2 - y1 * x2
-        return x, y, z, w
+        return np.array([x, y, z, w])
 
     @staticmethod
-    def _get_conjugate(q: Tuple[float, float, float, float]) -> Tuple[float, float, float, float]:
+    def get_conjugate(q: np.array) -> np.array:
         """
         Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
         :param q: The quaternion.
 
-        :return: The conjugate of the quaternion: `(-x, -y, -z, w)`
+        :return: The conjugate of the quaternion: `[-x, -y, -z, w]`
         """
 
-        x, y, z, w = q
-        return -x, -y, -z, w
+        x = q[0]
+        y = q[1]
+        z = q[2]
+        w = q[3]
+
+        return np.array([-x, -y, -z, w])
 
     @staticmethod
-    def multiply_by_vector(q: Tuple[float, float, float, float], v: Tuple[float, float, float]) -> Tuple[float, float, float]:
+    def multiply_by_vector(q: np.array, v: np.array) -> np.array:
         """
         Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
@@ -739,10 +752,10 @@ class QuaternionUtils:
         """
 
         q2 = (v[0], v[1], v[2], 0.0)
-        return QuaternionUtils._multiply(QuaternionUtils._multiply(q, q2), QuaternionUtils._get_conjugate(q))[:-1]
+        return QuaternionUtils.multiply(QuaternionUtils.multiply(q, q2), QuaternionUtils.get_conjugate(q))[:-1]
 
     @staticmethod
-    def get_up_direction(q: Tuple[float, float, float, float]) -> Tuple[float, float, float]:
+    def get_up_direction(q: np.array) -> np.array:
         """
         :param q: The rotation as a quaternion.
 
@@ -752,14 +765,18 @@ class QuaternionUtils:
         return QuaternionUtils.multiply_by_vector(q, QuaternionUtils._UP)
 
     @staticmethod
-    def euler_to_quaternion(euler: Tuple[float, float, float]) -> Tuple[float, float, float, float]:
+    def euler_angles_to_quaternion(euler: np.array) -> np.array:
         """
         Convert Euler angles to a quaternion.
 
         :param euler: The Euler angles vector.
+
+        :return: The quaternion representation of the Euler angles.
         """
 
-        roll, pitch, yaw = euler
+        roll = euler[0]
+        pitch = euler[1]
+        yaw = euler[2]
         cy = np.cos(yaw * 0.5)
         sy = np.sin(yaw * 0.5)
         cp = np.cos(pitch * 0.5)
@@ -771,18 +788,17 @@ class QuaternionUtils:
         x = cy * cp * sr - sy * sp * cr
         y = sy * cp * sr + cy * sp * cr
         z = sy * cp * cr - cy * sp * sr
-        return x, y, z, w
+        return np.array([x, y, z, w])
 
     @staticmethod
-    def quaternion_to_euler_angles(quaternion: Union[Tuple[float, float, float, float], np.array]) -> np.array:
+    def quaternion_to_euler_angles(quaternion: np.array) -> np.array:
         """
+        Convert a quaternion to Euler angles.
+
         :param quaternion: A quaternion as a nump array.
 
         :return: The Euler angles representation of the quaternion.
         """
-
-        if isinstance(quaternion, tuple):
-            quaternion = np.array(quaternion)
 
         x = quaternion[0]
         y = quaternion[1]
@@ -796,10 +812,8 @@ class QuaternionUtils:
 
         t2 = +2.0 * (w * y - z * x)
         t2 = np.where(t2 > +1.0, +1.0, t2)
-        # t2 = +1.0 if t2 > +1.0 else t2
 
         t2 = np.where(t2 < -1.0, -1.0, t2)
-        # t2 = -1.0 if t2 < -1.0 else t2
         ey = np.degrees(np.arcsin(t2))
 
         t3 = +2.0 * (w * z + x * y)

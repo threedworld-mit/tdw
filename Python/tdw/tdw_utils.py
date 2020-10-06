@@ -697,7 +697,7 @@ class QuaternionUtils:
     _UP = (0, 1, 0)
 
     @staticmethod
-    def multiply(q1: Tuple[float, float, float, float], q2: Tuple[float, float, float, float]) -> Tuple[float, float, float, float]:
+    def _multiply(q1: Tuple[float, float, float, float], q2: Tuple[float, float, float, float]) -> Tuple[float, float, float, float]:
         """
         Multiply two quaternions.
         Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
@@ -715,7 +715,7 @@ class QuaternionUtils:
         return x, y, z, w
 
     @staticmethod
-    def get_conjugate(q: Tuple[float, float, float, float]) -> Tuple[float, float, float, float]:
+    def _get_conjugate(q: Tuple[float, float, float, float]) -> Tuple[float, float, float, float]:
         """
         Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
@@ -735,11 +735,11 @@ class QuaternionUtils:
         :param q: The quaternion.
         :param v: The vector.
 
-        :return: A directional vector calculated from `q * v`
+        :return: A directional vector calculated from: `q * v`
         """
 
         q2 = (v[0], v[1], v[2], 0.0)
-        return QuaternionUtils.multiply(QuaternionUtils.multiply(q, q2), QuaternionUtils.get_conjugate(q))[:-1]
+        return QuaternionUtils._multiply(QuaternionUtils._multiply(q, q2), QuaternionUtils._get_conjugate(q))[:-1]
 
     @staticmethod
     def get_up_direction(q: Tuple[float, float, float, float]) -> Tuple[float, float, float]:

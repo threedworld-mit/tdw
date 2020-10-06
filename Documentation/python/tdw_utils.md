@@ -379,31 +379,6 @@ _Returns:_ a free port.
 
 ***
 
-#### `euler_to_quaternion(euler: Tuple[float, float, float]) -> List[float]`
-
-_This is a static function._
-
-Convert Euler angles to a quaternion.
-
-| Parameter | Description |
-| --- | --- |
-| euler | The Euler angles vector. |
-
-***
-
-#### `quaternion_to_euler_angles(quaternion: np.array) -> np.array`
-
-_This is a static function._
-
-
-| Parameter | Description |
-| --- | --- |
-| quaternion | A quaternion as a nump array. |
-
-_Returns:_  The Euler angles representation of the quaternion.
-
-***
-
 #### `get_unit_scale(record: ModelRecord) -> float`
 
 _This is a static function._
@@ -501,6 +476,72 @@ Stop recording audio (if any fmedia process is running).
 _This is a static function._
 
 _Returns:_  True if the fmedia recording process still exists.
+
+***
+
+## `QuaternionUtils`
+
+`from tdw.tdw_utils import QuaternionUtils`
+
+Helper functions for using quaternions.
+
+Quaternions are always tuples in the following order: `(x, y, z, w)`.
+This is the order returned in all Output Data objects.
+
+Vectors are always tuples in the following order: `(x, y, z)`.
+
+***
+
+#### `multiply_by_vector(q: Tuple[float, float, float, float], v: Tuple[float, float, float]) -> Tuple[float, float, float]`
+
+_This is a static function._
+
+Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
+
+| Parameter | Description |
+| --- | --- |
+| q | The quaternion. |
+| v | The vector. |
+
+_Returns:_  A directional vector calculated from: `q * v`
+
+***
+
+#### `get_up_direction(q: Tuple[float, float, float, float]) -> Tuple[float, float, float]`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| q | The rotation as a quaternion. |
+
+_Returns:_  A directional vector corresponding to the "up" direction from the quaternion.
+
+***
+
+#### `euler_to_quaternion(euler: Tuple[float, float, float]) -> Tuple[float, float, float, float]`
+
+_This is a static function._
+
+Convert Euler angles to a quaternion.
+
+| Parameter | Description |
+| --- | --- |
+| euler | The Euler angles vector. |
+
+***
+
+#### `quaternion_to_euler_angles(quaternion: Union[Tuple[float, float, float, float], np.array]) -> np.array`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| quaternion | A quaternion as a nump array. |
+
+_Returns:_  The Euler angles representation of the quaternion.
 
 ***
 

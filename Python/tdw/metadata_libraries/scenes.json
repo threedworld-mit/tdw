@@ -73,9 +73,9 @@
             "location": "interior",
             "name": "empty_scene",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/empty_scene",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/empty_scene",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/empty_scene"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/empty_scene",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/empty_scene",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/empty_scene"
             }
         },
         "floorplan_1a": {

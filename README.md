@@ -104,6 +104,7 @@
 | [C# code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md) | Access to C# backend source code |
 | [Releases](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/releases.md) | Release versioning in TDW.           |
 | [Freezing your code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/freeze.md) | "Freeze" your controller into a compiled executable. |
+| [v1.6 to v1.7](Documentation/1.6_to_1.7.md) | How to upgrade from TDW v1.6 to TDW v1.7 |
 
 # Remote Server
 

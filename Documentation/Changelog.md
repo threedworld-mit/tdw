@@ -24,6 +24,14 @@
 
 - Fixed: `screenshotter.py` and `empty_scene` don't work on Linux.
 
+### Scene Library
+
+- Fixed: `box_room_2018` doesn't have colliders on the walls or ceiling.
+
+### Build
+
+- Fixed: `send_collisions` doesn't reset correctly when sent multiple times with different values for `enter`, `exit`, or `stay`.
+
 ## v1.6.13
 
 ### `tdw` module

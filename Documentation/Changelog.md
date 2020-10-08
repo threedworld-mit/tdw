@@ -1,5 +1,35 @@
 # CHANGELOG
 
+# v1.7.x
+
+To upgrade from TDW v1.6 to v1.6, read [this guide](Documentation/v1.6_to_v1.7).
+
+## v1.7.0
+
+### Command API
+
+#### Modified Commands
+
+| Command                               | Modification                                                 |
+| ------------------------------------- | ------------------------------------------------------------ |
+| `set_avatar_collision_detection_mode` | Default value of `mode` is `"continuous_dynamic"` (was `"continuous_speculative"`).<br>Added additional values for `mode`: `"continuous"` and `"discrete"`. |
+| `set_object_collision_detection_mode` | Default value of `mode` is `"continuous_dynamic"` (was `"continuous_speculative"`).<br/>Added additional values for `mode`: `"continuous"` and `"discrete"`. |
+
+### Build
+
+- **Upgraded Unity3D Engine from 2019.2 to 2019.4**
+  - Upgrade PhysX, which overall improves the quality of physics simulations.
+  - Enabled "Enhanced Determinism". Physics is much more deterministic.
+- Set the default collision detection mode of all objects and avatars to `continuous_dynamic` (was`continuous_speculative`, which is less accurate.)
+
+### Documentation
+
+#### New Documentation
+
+| Document          | Description    |
+| ----------------- | -------------- |
+| `v1.6_to_v1.7.md` | Upgrade guide. |
+
 # v1.6.x
 
 ## v1.6.14

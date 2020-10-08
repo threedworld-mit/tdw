@@ -15,6 +15,20 @@ To upgrade from TDW v1.6 to v1.6, read [this guide](Documentation/v1.6_to_v1.7).
 | `set_avatar_collision_detection_mode` | Default value of `mode` is `"continuous_dynamic"` (was `"continuous_speculative"`).<br>Added additional values for `mode`: `"continuous"` and `"discrete"`. |
 | `set_object_collision_detection_mode` | Default value of `mode` is `"continuous_dynamic"` (was `"continuous_speculative"`).<br/>Added additional values for `mode`: `"continuous"` and `"discrete"`. |
 
+### `tdw` module
+
+#### `AssetBundleCreator`
+
+- Upgraded the `asset_bundle_creator` Unity project from Unity 2019.2 to Unity 2019.4 (see `v1.6_to_v1.7.md`).
+
+### Scene Library
+
+- Removed: `roman_villa`
+
+### Use Cases
+
+- Removed `roman_villa` from scenes that `humanoid_video.py` will use.
+
 ### Build
 
 - **Upgraded Unity3D Engine from 2019.2 to 2019.4**

@@ -18,6 +18,7 @@
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
+| [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
 | [`set_gravity_vector`](#set_gravity_vector) | Set the gravity vector in the scene. |
 | [`set_physics_solver_iterations`](#set_physics_solver_iterations) | Set the number of physics solver iterations, which affects the overall accuracy of the physics engine. |
 | [`set_render_quality`](#set_render_quality) | Set the render quality level. The highest render quality level enables near-photorealism runtime rendering. The lowest render quality has "flat" rendering, no shadows, etc. The lower the render quality, the faster the simulation will run, especially in scenes with complex lighting. |
@@ -635,6 +636,27 @@ Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry
 | --- | --- | --- | --- |
 | `"timeout"` | int | The time in seconds until the asset bundle download request will timeout. | 1800 |
 | `"retry"` | bool | If true, if a download times out, the build will try to download it again. | True |
+
+***
+
+## **`set_floorplan_roof`**
+
+Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "set_floorplan_roof"}
+```
+
+```python
+{"$type": "set_floorplan_roof", "show": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"show"` | bool | If true, show the roof. | True |
 
 ***
 

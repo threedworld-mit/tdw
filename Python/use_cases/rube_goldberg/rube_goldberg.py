@@ -168,7 +168,7 @@ class RubeGoldbergDemo(Controller):
             dest_dir.mkdir(parents=True)
         dest_dir_str = str(dest_dir.resolve())
 
-        p = PyImpact(0.025, logging=True)
+        p = PyImpact(0.25, logging=True)
 
         self.add_all_objects()
 
@@ -202,6 +202,7 @@ class RubeGoldbergDemo(Controller):
 
                 target_name = self.obj_name_dict[target_id]
                 other_name = self.obj_name_dict[other_id]
+
                 impact_sound_command = p.get_impact_sound_command(
                     collision=collisions[0],
                     rigidbodies=rigidbodies,

@@ -2,6 +2,57 @@
 
 # v1.6.x
 
+## v1.6.14
+
+### `tdw` module
+
+- Added: `tdw.tdw_utils.QuaternionUtils` Utility functions for quaternions.
+
+#### `TDWUtils`
+
+- Moved `euler_to_quaternion()` to `QuaternionUtils`
+  - Renamed function to `euler_angles_to_quaternion()`
+  - Parameter `euler` is a numpy array (was a tuple).
+  - Return type is a numpy array (was a list of floats).
+- Moved `quaternion_to_euler_angles()` to `QuaternionUtils`
+
+#### `PyImpact`
+
+ - Fixed:  relative amp values aren't handled correctly.
+
+### Python
+
+- Fixed: `screenshotter.py` and `empty_scene` don't work on Linux.
+
+### Scene Library
+
+- Fixed: `box_room_2018` doesn't have colliders on the walls or ceiling.
+
+### Build
+
+- Fixed: `send_collisions` doesn't reset correctly when sent multiple times with different values for `enter`, `exit`, or `stay`.
+
+## v1.6.13
+
+### `tdw` module
+
+#### `PyImpact`
+
+- Added audio values for more objects.
+
+#### `FloorplanController`
+
+- Updated floorplan 4, layout 0
+- Added scenes `1a`, `1b`, and `1c`, which have layouts `1`, `2`, and `3`.
+- Added scenes `5a`, `5b`, and `5c`, which have layouts `1`, `2`, and `3`.
+
+### Scene Library
+
+- Added scenes:
+  - floorplan_1a
+  - floorplan_1b
+  - floorplan_1c
+
 ## v1.6.12
 
 ### Command API
@@ -34,6 +85,7 @@
 #### `FloorplanController`
 
 - For scenes `2a`, `2b`, and `2c`, added layouts `1` and `2`
+- Added scenes `4a`, `4b`, and `4c`, which have layouts `1`, `2`, and `3`.
 
 ### Model Library
 
@@ -55,6 +107,7 @@
   - round_bowl_talll_wenge
   - shallow_basket_white_mesh
   - shallow_basket_wicker
+- In `models_core.json` and `models_full.json`, flagged `rope_table_lamp`, `salt`, and `jigsaw_puzzle_composite` as `do_not_use` due to bad physics behavior.
 
 ### Build
 

@@ -54,6 +54,10 @@ To upgrade from TDW v1.6 to v1.6, read [this guide](Documentation/v1.6_to_v1.7).
 
 - Fixed: `screenshotter.py` and `empty_scene` don't work on Linux.
 
+### Scene Library
+
+- Fixed: `box_room_2018` doesn't have colliders on the walls or ceiling.
+
 ### Build
 
 - Fixed: `send_collisions` doesn't reset correctly when sent multiple times with different values for `enter`, `exit`, or `stay`.

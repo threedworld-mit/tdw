@@ -44,6 +44,12 @@ To upgrade from TDW v1.6 to v1.6, read [this guide](Documentation/v1.6_to_v1.7).
 | ----------------- | -------------- |
 | `v1.6_to_v1.7.md` | Upgrade guide. |
 
+#### Modified Documentation
+
+| Document       | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `debug_tdw.md` | Clarified where to find the player log.<br>Added a section for network errors. |
+
 # v1.6.x
 
 ## v1.6.14

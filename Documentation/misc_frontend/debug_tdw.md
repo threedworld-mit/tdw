@@ -34,7 +34,7 @@ See `Python/example_controllers/debug.py` for example implementation.
 
 ### 3. Read the player log for errors
 
-**To locate the player log:** https://docs.unity3d.com/Manual/LogFiles.html.
+**To locate the player log:** https://docs.unity3d.com/Manual/LogFiles.html. This will be found on the machine or docker container running the build.
 
 This will contain all messages, warnings, errors, and exceptions logged by the Editor or standalone player (the build).
 
@@ -104,6 +104,12 @@ TDW/
 This error can occur when using the [AssetBundleCreator](add_local_object.md) and is caused by problems with your Unity license. 
 
 **Fix:** Make sure you have valid and active Unity credentials.
+
+### 4. Network Problems
+
+#### `zmq.error.ZMQError: Address in use`
+
+There is another process (probably another controller) currently running and using the same port that your controller is trying to use. Kill that process in order to run your controller.
 
 ## Common OS X Problems
 

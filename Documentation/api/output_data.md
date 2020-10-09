@@ -52,7 +52,6 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | --- | --- | --- |
 | [ArrivedAtNavMeshDestination](#ArrivedAtNavMeshDestination) | Sent when a NavMeshAvatar arrives at its destination. | `anmd` |
 | [AudioSources](#AudioSources) | Audio data for each object in a scene. Note that this will only tell you if any audio is playing; it won't return the audio itself (use an external program to record audio). | `audi` |
-| [AvatarChildrenNames](#AvatarChildrenNames) | The names of each child object of an avatar. | `avcn` |
 | [AvatarKinematic](#AvatarKinematic) | Data of a kinematic (non-physics) avatar. | `avki` |
 | [AvatarNonKinematic](#AvatarNonKinematic) | Data of a non-kinematic (physics-enabled) avatar with a single body object. | `avnk` |
 | [AvatarSegmentationColor](#AvatarSegmentationColor) | Color segmentation data for an avatar. | `avsc` |
@@ -73,6 +72,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
+| [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Rigidbodies](#Rigidbodies) | Rigibody data (velocity, mass, etc.) for objects in the scene. | `rigi` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
@@ -108,21 +108,6 @@ Audio data for each object in a scene. Note that this will only tell you if any 
 | `get_num()` | The number of objects. | `int` |
 | `get_object_id(index)` | The ID of the object. | `int` |
 | `get_is_playing(index)` | If true, the audio source is currently playing a sound. | `bool` |
-
-## AvatarChildrenNames
-
-`a = AvatarChildrenNames(byte_array)`
-
-**Identifier:** `avcn`
-
-The names of each child object of an avatar.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_avatar_id()` | The ID of the avatar. | `str` |
-| `get_num_children()` | The number of children. | `int` |
-| `get_child_name(index)` | The name of the child. | `str` |
-| `get_child_id(index)` | The ID of the child. | `int` |
 
 ## AvatarKinematic
 
@@ -465,6 +450,20 @@ Mesh data from readable objects.
 | `get_num()` | The number of objects. | `int` |
 | `get_vertices(index)` | The (x, y, z) coordinates of each vertex. | `np.array` |
 | `get_triangles(index)` | Each triangle of the mesh. | `np.array` |
+
+## Overlap
+
+`o = Overlap(byte_array)`
+
+**Identifier:** `over`
+
+The IDs of every object that a shape overlaps.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The identity of this overlap (useful if you've requested multiple Overlap objects). | `int` |
+| `get_object_ids()` | The IDs of every object in the overlap shape. | `np.array` |
+| `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
 
 ## Raycast
 

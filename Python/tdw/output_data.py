@@ -28,8 +28,8 @@ from tdw.FBOutput import Version as Ver
 from tdw.FBOutput import EnvironmentCollision as EnvCol
 from tdw.FBOutput import Volumes as Vol
 from tdw.FBOutput import AudioSources as Audi
-from tdw.FBOutput import AvatarChildrenNames as AvCN
 from tdw.FBOutput import Raycast as Ray
+from tdw.FBOutput import Overlap as Over
 import numpy as np
 from typing import Tuple, Optional
 
@@ -741,23 +741,6 @@ class AudioSources(OutputData):
         return self.data.Objects(index).IsPlaying()
 
 
-class AvatarChildrenNames(OutputData):
-    def get_data(self) -> AvCN.AvatarChildrenNames:
-        return AvCN.AvatarChildrenNames.GetRootAsAvatarChildrenNames(self.bytes, 0)
-
-    def get_avatar_id(self) -> str:
-        return self.data.Id().decode('utf-8')
-
-    def get_num_children(self) -> int:
-        return self.data.ChildIdsLength()
-
-    def get_child_name(self, index: int) -> str:
-        return self.data.ChildNames(index).decode('utf-8')
-
-    def get_child_id(self, index: int) -> int:
-        return self.data.ChildIds(index)
-
-
 class Raycast(OutputData):
     def get_data(self) -> Ray.Raycast:
         return Ray.Raycast.GetRootAsRaycast(self.bytes, 0)
@@ -779,3 +762,17 @@ class Raycast(OutputData):
 
     def get_point(self) -> Tuple[float, float, float]:
         return OutputData._get_xyz(self.data.Point())
+
+
+class Overlap(OutputData):
+    def get_data(self) -> Over.Overlap:
+        return Over.Overlap.GetRootAsOverlap(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_object_ids(self) -> np.array:
+        return self.data.ObjectIdsAsNumpy()
+
+    def get_env(self) -> bool:
+        return self.data.Env()

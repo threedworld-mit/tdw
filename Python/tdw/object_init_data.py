@@ -77,12 +77,10 @@ class TransformInitData:
                           "use_gravity": self.gravity}])
         # Kinematic objects must be continuous_speculative.
         if self.kinematic:
-            detection_mode = "continuous_speculative"
-        else:
-            detection_mode = "continuous_dynamic"
-        commands.append({"$type": "set_object_collision_detection_mode",
-                         "id": object_id,
-                         "mode": detection_mode})
+            commands.append({"$type": "set_object_collision_detection_mode",
+                             "id": object_id,
+                             "mode": "continuous_speculative"})
+
         return object_id, commands
 
 

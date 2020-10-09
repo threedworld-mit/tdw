@@ -1,5 +1,71 @@
 # CHANGELOG
 
+# v1.7.x
+
+To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
+
+## v1.7.0
+
+### Command API
+
+#### New Commands
+
+| Command                | Description                                      |
+| ---------------------- | ------------------------------------------------ |
+| `send_overlap_box`     | Check what a box-shaped space overlaps with.     |
+| `send_overlap_capsule` | Check what a capsule-shaped space overlaps with. |
+| `send_overlap_sphere`  | Check what a sphere-shaped space overlaps with.  |
+
+#### Modified Commands
+
+| Command                               | Modification                                                 |
+| ------------------------------------- | ------------------------------------------------------------ |
+| `set_avatar_collision_detection_mode` | Default value of `mode` is `"continuous_dynamic"` (was `"continuous_speculative"`).<br>Added additional values for `mode`: `"continuous"` and `"discrete"`. |
+| `set_object_collision_detection_mode` | Default value of `mode` is `"continuous_dynamic"` (was `"continuous_speculative"`).<br/>Added additional values for `mode`: `"continuous"` and `"discrete"`. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description                                    |
+| ----------- | ---------------------------------------------- |
+| `Overlap`   | The IDs of every object that a shape overlaps. |
+
+### `tdw` module
+
+#### `AssetBundleCreator`
+
+- Upgraded the `asset_bundle_creator` Unity project from Unity 2019.2 to Unity 2019.4 (see `v1.6_to_v1.7.md`).
+
+### Scene Library
+
+- Removed: `roman_villa`
+
+### Use Cases
+
+- Removed `roman_villa` from scenes that `humanoid_video.py` will use.
+
+### Build
+
+- **Upgraded Unity3D Engine from 2019.2 to 2019.4**
+  - Upgrade PhysX, which overall improves the quality of physics simulations.
+  - Enabled "Enhanced Determinism". Physics is much more deterministic.
+- Set the default collision detection mode of all objects and avatars to `continuous_dynamic` (was`continuous_speculative`, which is less accurate.)
+
+### Documentation
+
+#### New Documentation
+
+| Document          | Description    |
+| ----------------- | -------------- |
+| `v1.6_to_v1.7.md` | Upgrade guide. |
+
+#### Modified Documentation
+
+| Document       | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `debug_tdw.md` | Clarified where to find the player log.<br>Added a section for network errors. |
+
 # v1.6.x
 
 ## v1.6.14

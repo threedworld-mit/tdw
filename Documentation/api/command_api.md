@@ -69,7 +69,7 @@
 | [`rotate_avatar_to`](#rotate_avatar_to) | Set the rotation quaternion of the avatar.  |
 | [`rotate_avatar_to_euler_angles`](#rotate_avatar_to_euler_angles) | Set the rotation of the avatar with Euler angles.  |
 | [`scale_avatar`](#scale_avatar) | Scale the avatar's size by a factor from its current scale. |
-| [`set_avatar_collision_detection_mode`](#set_avatar_collision_detection_mode) | Set the collision mode of all of the avatar's Rigidbodies. This doesn't need to be sent continuously, but does need to be sent per avatar. Right now, this command only exposes a few of the possible collision detection modes. |
+| [`set_avatar_collision_detection_mode`](#set_avatar_collision_detection_mode) | Set the collision mode of all of the avatar's Rigidbodies. This doesn't need to be sent continuously, but does need to be sent per avatar.  |
 | [`set_avatar_color`](#set_avatar_color) | Set the color of an avatar. To allow transparency (the "alpha" channel, or "a" value in the color), first send enable_avatar_transparency |
 | [`set_avatar_forward`](#set_avatar_forward) | Set the forward directional vector of the avatar.  |
 | [`set_camera_clipping_planes`](#set_camera_clipping_planes) | Set the near and far clipping planes of the avatar's camera. |
@@ -231,7 +231,6 @@
 | [`rotate_flex_object_by_quaternion`](#rotate_flex_object_by_quaternion) | Rotate a Flex object by a given quaternion.  |
 | [`rotate_flex_object_to`](#rotate_flex_object_to) | Rotate a Flex object to a new rotation.  |
 | [`set_flex_object_mass`](#set_flex_object_mass) | Set the mass of the Flex object. The mass is distributed equally across all particles. Thus the particle mass equals mass divided by number of particles.  |
-| [`set_flex_object_scale`](#set_flex_object_scale) | Resize the Flex object in each dimension independently. Flex asset must contain a rescalable mesh.  |
 | [`set_flex_particles_mass`](#set_flex_particles_mass) | Set the mass of all particles in the Flex object. Thus, the total object mass equals the number of particles times the particle mass.  |
 | [`set_flex_particle_fixed`](#set_flex_particle_fixed) | Fix the particle in the Flex object, such that it does not move.  |
 | [`teleport_and_rotate_flex_object`](#teleport_and_rotate_flex_object) | Teleport a Flex object to a new position and rotation.  |
@@ -248,7 +247,7 @@
 | [`set_color_in_substructure`](#set_color_in_substructure) | Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
 | [`set_mass`](#set_mass) | Set the mass of an object. |
-| [`set_object_collision_detection_mode`](#set_object_collision_detection_mode) | Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object. Right now, this command only exposes a few of the possible collision detection modes. |
+| [`set_object_collision_detection_mode`](#set_object_collision_detection_mode) | Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object.  |
 | [`set_object_drag`](#set_object_drag) | Set the drag of an object's RigidBody. Both drag and angular_drag can be safely changed on-the-fly. |
 | [`set_primitive_visual_material`](#set_primitive_visual_material) | Set the material of an object created via load_primitive_from_resources  |
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
@@ -403,13 +402,20 @@
 | Command | Description |
 | --- | --- |
 | [`send_avatars`](#send_avatars) | Send data for avatars in the scene.  |
-| [`send_avatar_children_names`](#send_avatar_children_names) | Send the names and IDs of each child object in each avatar.  |
 | [`send_avatar_segmentation_colors`](#send_avatar_segmentation_colors) | Send avatar segmentation color data.  |
 | [`send_camera_matrices`](#send_camera_matrices) | Send camera matrix data for each camera.  |
 | [`send_id_pass_grayscale`](#send_id_pass_grayscale) | Send the average grayscale value of an _id pass.  |
 | [`send_id_pass_segmentation_colors`](#send_id_pass_segmentation_colors) | Send all unique colors in an _id pass.  |
 | [`send_images`](#send_images) | Send images and metadata.  |
 | [`send_image_sensors`](#send_image_sensors) | Send data about each of the avatar's ImageSensors.  |
+
+**Send Overlap Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_overlap_box`](#send_overlap_box) | Check which objects a box-shaped space overlaps with.  |
+| [`send_overlap_capsule`](#send_overlap_capsule) | Check which objects a capsule-shaped space overlaps with.  |
+| [`send_overlap_sphere`](#send_overlap_sphere) | Check which objects a sphere-shaped space overlaps with.  |
 
 **Send Raycast Command**
 
@@ -1216,20 +1222,21 @@ Scale the avatar's size by a factor from its current scale.
 
 ## **`set_avatar_collision_detection_mode`**
 
-Set the collision mode of all of the avatar's Rigidbodies. This doesn't need to be sent continuously, but does need to be sent per avatar. Right now, this command only exposes a few of the possible collision detection modes.
+Set the collision mode of all of the avatar's Rigidbodies. This doesn't need to be sent continuously, but does need to be sent per avatar. 
 
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
 
 ```python
 {"$type": "set_avatar_collision_detection_mode"}
 ```
 
 ```python
-{"$type": "set_avatar_collision_detection_mode", "mode": "continuous_speculative", "avatar_id": "a"}
+{"$type": "set_avatar_collision_detection_mode", "mode": "continuous_dynamic", "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"mode"` | DetectionMode | The collision detection mode. | "continuous_speculative" |
+| `"mode"` | DetectionMode | The collision detection mode. | "continuous_dynamic" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 #### DetectionMode
@@ -1240,6 +1247,8 @@ The detection mode.
 | --- | --- |
 | `"continuous_dynamic"` | (From Unity documentation:) Prevent this Rigidbody from passing through static mesh geometry, and through other Rigidbodies which have continuous collision detection enabled, when it is moving fast. This is the slowest collision detection mode, and should only be used for selected fast moving objects. |
 | `"continuous_speculative"` | (From Unity documentation:) This is a collision detection mode that can be used on both dynamic and kinematic objects. It is generally cheaper than other CCD modes. It also handles angular motion much better. However, in some cases, high speed objects may still tunneling through other geometries. |
+| `"discrete"` | (From Unity documentation: This is the fastest mode.) |
+| `"continuous"` | (From Unity documentation: Collisions will be detected for any static mesh geometry in the path of this Rigidbody, even if the collision occurs between two FixedUpdate steps. Static mesh geometry is any MeshCollider which does not have a Rigidbody attached. This also prevent Rigidbodies set to ContinuousDynamic mode from passing through this Rigidbody. |
 
 ***
 
@@ -3070,25 +3079,6 @@ Set the mass of the Flex object. The mass is distributed equally across all part
 
 ***
 
-## **`set_flex_object_scale`**
-
-Resize the Flex object in each dimension independently. Flex asset must contain a rescalable mesh. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_flex_object_scale", "scale": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale"` | Vector3 | Set the scale of the Flex object to this value. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_flex_particles_mass`**
 
 Set the mass of all particles in the Flex object. Thus, the total object mass equals the number of particles times the particle mass. 
@@ -3300,20 +3290,21 @@ Set the mass of an object.
 
 ## **`set_object_collision_detection_mode`**
 
-Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object. Right now, this command only exposes a few of the possible collision detection modes.
+Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object. 
 
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
 
 ```python
 {"$type": "set_object_collision_detection_mode", "id": 1}
 ```
 
 ```python
-{"$type": "set_object_collision_detection_mode", "id": 1, "mode": "continuous_speculative"}
+{"$type": "set_object_collision_detection_mode", "id": 1, "mode": "continuous_dynamic"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"mode"` | DetectionMode | The collision detection mode. | "continuous_speculative" |
+| `"mode"` | DetectionMode | The collision detection mode. | "continuous_dynamic" |
 | `"id"` | int | The unique object ID. | |
 
 #### DetectionMode
@@ -3324,6 +3315,8 @@ The detection mode.
 | --- | --- |
 | `"continuous_dynamic"` | (From Unity documentation:) Prevent this Rigidbody from passing through static mesh geometry, and through other Rigidbodies which have continuous collision detection enabled, when it is moving fast. This is the slowest collision detection mode, and should only be used for selected fast moving objects. |
 | `"continuous_speculative"` | (From Unity documentation:) This is a collision detection mode that can be used on both dynamic and kinematic objects. It is generally cheaper than other CCD modes. It also handles angular motion much better. However, in some cases, high speed objects may still tunneling through other geometries. |
+| `"discrete"` | (From Unity documentation: This is the fastest mode.) |
+| `"continuous"` | (From Unity documentation: Collisions will be detected for any static mesh geometry in the path of this Rigidbody, even if the collision occurs between two FixedUpdate steps. Static mesh geometry is any MeshCollider which does not have a Rigidbody attached. This also prevent Rigidbodies set to ContinuousDynamic mode from passing through this Rigidbody. |
 
 ***
 
@@ -4636,40 +4629,6 @@ Options for when to send data.
 
 ***
 
-## **`send_avatar_children_names`**
-
-Send the names and IDs of each child object in each avatar. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`AvatarChildrenNames`](output_data.md#AvatarChildrenNames)</font>
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "send_avatar_children_names"}
-```
-
-```python
-{"$type": "send_avatar_children_names", "ids": [], "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_avatar_segmentation_colors`**
 
 Send avatar segmentation color data. 
@@ -4866,6 +4825,117 @@ Options for when to send data.
 | `"always"` | Send the data every frame. |
 | `"never"` | Never send the data. |
 
+# SendOverlapCommand
+
+These commands create an overlap shape and then check which objects are within that shape.
+
+***
+
+## **`send_overlap_box`**
+
+Check which objects a box-shaped space overlaps with. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "send_overlap_box", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_overlap_box", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"half_extents"` | Vector3 | Half of the extents of the box (i.e. half the scale of an object). | |
+| `"rotation"` | Quaternion | The rotation of the box. | |
+| `"position"` | Vector3 | The center of the shape. | |
+| `"id"` | int | The ID of this overlap shape. Useful for differenting between Overlap output data objects received on the same frame. | 0 |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_overlap_capsule`**
+
+Check which objects a capsule-shaped space overlaps with. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "send_overlap_capsule", "end": {"x": 1.1, "y": 0.0, "z": 0}, "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_overlap_capsule", "end": {"x": 1.1, "y": 0.0, "z": 0}, "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"end"` | Vector3 | The center of the sphere at the end of the capsule. (Position is the center of the sphere at the start of the capsule.) | |
+| `"radius"` | float | The radius of the capsule. | |
+| `"position"` | Vector3 | The center of the shape. | |
+| `"id"` | int | The ID of this overlap shape. Useful for differenting between Overlap output data objects received on the same frame. | 0 |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_overlap_sphere`**
+
+Check which objects a sphere-shaped space overlaps with. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "send_overlap_sphere", "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_overlap_sphere", "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"radius"` | float | The radius of the sphere. | |
+| `"position"` | Vector3 | The center of the shape. | |
+| `"id"` | int | The ID of this overlap shape. Useful for differenting between Overlap output data objects received on the same frame. | 0 |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
 # SendRaycastCommand
 
 These commands cast different types of rays and send the results to the controller.
@@ -4877,8 +4947,6 @@ These commands cast different types of rays and send the results to the controll
 Cast a ray from the origin to the destination. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
 
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
@@ -4914,8 +4982,6 @@ Options for when to send data.
 Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
 
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 

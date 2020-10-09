@@ -72,6 +72,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
+| [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Rigidbodies](#Rigidbodies) | Rigibody data (velocity, mass, etc.) for objects in the scene. | `rigi` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
@@ -449,6 +450,20 @@ Mesh data from readable objects.
 | `get_num()` | The number of objects. | `int` |
 | `get_vertices(index)` | The (x, y, z) coordinates of each vertex. | `np.array` |
 | `get_triangles(index)` | Each triangle of the mesh. | `np.array` |
+
+## Overlap
+
+`o = Overlap(byte_array)`
+
+**Identifier:** `over`
+
+The IDs of every object that a shape overlaps.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The identity of this overlap (useful if you've requested multiple Overlap objects). | `int` |
+| `get_object_ids()` | The IDs of every object in the overlap shape. | `np.array` |
+| `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
 
 ## Raycast
 

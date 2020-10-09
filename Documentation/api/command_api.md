@@ -416,6 +416,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_overlap_box`](#send_overlap_box) | Check what a box-shaped space overlaps with.  |
+| [`send_overlap_capsule`](#send_overlap_capsule) | Check what a capsule-shaped space overlaps with.  |
 | [`send_overlap_sphere`](#send_overlap_sphere) | Check what a sphere-shaped space overlaps with.  |
 
 **Send Raycast Command**
@@ -4899,6 +4900,42 @@ Check what a box-shaped space overlaps with.
 | --- | --- | --- | --- |
 | `"half_extents"` | Vector3 | Half of the extents of the box (i.e. half the scale of an object). | |
 | `"rotation"` | Quaternion | The rotation of the box. | |
+| `"position"` | Vector3 | The center of the shape. | |
+| `"id"` | int | The ID of this overlap shape. Useful for differenting between Overlap output data objects received on the same frame. | 0 |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_overlap_capsule`**
+
+Check what a capsule-shaped space overlaps with. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "send_overlap_capsule", "end": {"x": 1.1, "y": 0.0, "z": 0}, "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_overlap_capsule", "end": {"x": 1.1, "y": 0.0, "z": 0}, "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"end"` | Vector3 | The center of the sphere at the end of the capsule. (Position is the center of the sphere at the start of the capsule.) | |
+| `"radius"` | float | The radius of the capsule. | |
 | `"position"` | Vector3 | The center of the shape. | |
 | `"id"` | int | The ID of this overlap shape. Useful for differenting between Overlap output data objects received on the same frame. | 0 |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |

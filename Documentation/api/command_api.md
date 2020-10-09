@@ -413,9 +413,9 @@
 
 | Command | Description |
 | --- | --- |
-| [`send_overlap_box`](#send_overlap_box) | Check what a box-shaped space overlaps with.  |
-| [`send_overlap_capsule`](#send_overlap_capsule) | Check what a capsule-shaped space overlaps with.  |
-| [`send_overlap_sphere`](#send_overlap_sphere) | Check what a sphere-shaped space overlaps with.  |
+| [`send_overlap_box`](#send_overlap_box) | Check which objects a box-shaped space overlaps with.  |
+| [`send_overlap_capsule`](#send_overlap_capsule) | Check which objects a capsule-shaped space overlaps with.  |
+| [`send_overlap_sphere`](#send_overlap_sphere) | Check which objects a sphere-shaped space overlaps with.  |
 
 **Send Raycast Command**
 
@@ -4833,7 +4833,7 @@ These commands create an overlap shape and then check which objects are within t
 
 ## **`send_overlap_box`**
 
-Check what a box-shaped space overlaps with. 
+Check which objects a box-shaped space overlaps with. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
@@ -4869,7 +4869,7 @@ Options for when to send data.
 
 ## **`send_overlap_capsule`**
 
-Check what a capsule-shaped space overlaps with. 
+Check which objects a capsule-shaped space overlaps with. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
@@ -4905,7 +4905,7 @@ Options for when to send data.
 
 ## **`send_overlap_sphere`**
 
-Check what a sphere-shaped space overlaps with. 
+Check which objects a sphere-shaped space overlaps with. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 

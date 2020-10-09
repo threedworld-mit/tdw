@@ -33,6 +33,10 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 ### `tdw` module
 
+#### `TDWUtils`
+
+- Fixed: `get_depth_values()` is inaccurate due to overflow errors.
+
 #### `AssetBundleCreator`
 
 - Upgraded the `asset_bundle_creator` Unity project from Unity 2019.2 to Unity 2019.4 (see `v1.6_to_v1.7.md`).
@@ -50,7 +54,7 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 - **Upgraded Unity3D Engine from 2019.2 to 2019.4**
   - Upgrade PhysX, which overall improves the quality of physics simulations.
   - Enabled "Enhanced Determinism". Physics is much more deterministic.
-- Set the default collision detection mode of all objects and avatars to `continuous_dynamic` (was`continuous_speculative`, which is less accurate.)
+- Set the default collision detection mode of all objects and avatars to `continuous_dynamic` (was `continuous_speculative`, which is less accurate.)
 
 ### Documentation
 

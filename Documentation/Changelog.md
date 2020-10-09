@@ -8,12 +8,28 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 ### Command API
 
+#### New Commands
+
+| Command                | Description                                      |
+| ---------------------- | ------------------------------------------------ |
+| `send_overlap_box`     | Check what a box-shaped space overlaps with.     |
+| `send_overlap_capsule` | Check what a capsule-shaped space overlaps with. |
+| `send_overlap_sphere`  | Check what a sphere-shaped space overlaps with.  |
+
 #### Modified Commands
 
 | Command                               | Modification                                                 |
 | ------------------------------------- | ------------------------------------------------------------ |
 | `set_avatar_collision_detection_mode` | Default value of `mode` is `"continuous_dynamic"` (was `"continuous_speculative"`).<br>Added additional values for `mode`: `"continuous"` and `"discrete"`. |
 | `set_object_collision_detection_mode` | Default value of `mode` is `"continuous_dynamic"` (was `"continuous_speculative"`).<br/>Added additional values for `mode`: `"continuous"` and `"discrete"`. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description                                    |
+| ----------- | ---------------------------------------------- |
+| `Overlap`   | The IDs of every object that a shape overlaps. |
 
 ### `tdw` module
 

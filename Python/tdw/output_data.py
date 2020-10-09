@@ -28,7 +28,6 @@ from tdw.FBOutput import Version as Ver
 from tdw.FBOutput import EnvironmentCollision as EnvCol
 from tdw.FBOutput import Volumes as Vol
 from tdw.FBOutput import AudioSources as Audi
-from tdw.FBOutput import AvatarChildrenNames as AvCN
 from tdw.FBOutput import Raycast as Ray
 import numpy as np
 from typing import Tuple, Optional
@@ -739,23 +738,6 @@ class AudioSources(OutputData):
 
     def get_is_playing(self, index: int) -> bool:
         return self.data.Objects(index).IsPlaying()
-
-
-class AvatarChildrenNames(OutputData):
-    def get_data(self) -> AvCN.AvatarChildrenNames:
-        return AvCN.AvatarChildrenNames.GetRootAsAvatarChildrenNames(self.bytes, 0)
-
-    def get_avatar_id(self) -> str:
-        return self.data.Id().decode('utf-8')
-
-    def get_num_children(self) -> int:
-        return self.data.ChildIdsLength()
-
-    def get_child_name(self, index: int) -> str:
-        return self.data.ChildNames(index).decode('utf-8')
-
-    def get_child_id(self, index: int) -> int:
-        return self.data.ChildIds(index)
 
 
 class Raycast(OutputData):

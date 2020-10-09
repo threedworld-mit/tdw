@@ -231,7 +231,6 @@
 | [`rotate_flex_object_by_quaternion`](#rotate_flex_object_by_quaternion) | Rotate a Flex object by a given quaternion.  |
 | [`rotate_flex_object_to`](#rotate_flex_object_to) | Rotate a Flex object to a new rotation.  |
 | [`set_flex_object_mass`](#set_flex_object_mass) | Set the mass of the Flex object. The mass is distributed equally across all particles. Thus the particle mass equals mass divided by number of particles.  |
-| [`set_flex_object_scale`](#set_flex_object_scale) | Resize the Flex object in each dimension independently. Flex asset must contain a rescalable mesh.  |
 | [`set_flex_particles_mass`](#set_flex_particles_mass) | Set the mass of all particles in the Flex object. Thus, the total object mass equals the number of particles times the particle mass.  |
 | [`set_flex_particle_fixed`](#set_flex_particle_fixed) | Fix the particle in the Flex object, such that it does not move.  |
 | [`teleport_and_rotate_flex_object`](#teleport_and_rotate_flex_object) | Teleport a Flex object to a new position and rotation.  |
@@ -403,7 +402,6 @@
 | Command | Description |
 | --- | --- |
 | [`send_avatars`](#send_avatars) | Send data for avatars in the scene.  |
-| [`send_avatar_children_names`](#send_avatar_children_names) | Send the names and IDs of each child object in each avatar.  |
 | [`send_avatar_segmentation_colors`](#send_avatar_segmentation_colors) | Send avatar segmentation color data.  |
 | [`send_camera_matrices`](#send_camera_matrices) | Send camera matrix data for each camera.  |
 | [`send_id_pass_grayscale`](#send_id_pass_grayscale) | Send the average grayscale value of an _id pass.  |
@@ -3073,25 +3071,6 @@ Set the mass of the Flex object. The mass is distributed equally across all part
 
 ***
 
-## **`set_flex_object_scale`**
-
-Resize the Flex object in each dimension independently. Flex asset must contain a rescalable mesh. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_flex_object_scale", "scale": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale"` | Vector3 | Set the scale of the Flex object to this value. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_flex_particles_mass`**
 
 Set the mass of all particles in the Flex object. Thus, the total object mass equals the number of particles times the particle mass. 
@@ -4623,40 +4602,6 @@ Send data for avatars in the scene.
 
 ```python
 {"$type": "send_avatars", "ids": [], "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_avatar_children_names`**
-
-Send the names and IDs of each child object in each avatar. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`AvatarChildrenNames`](output_data.md#AvatarChildrenNames)</font>
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "send_avatar_children_names"}
-```
-
-```python
-{"$type": "send_avatar_children_names", "ids": [], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

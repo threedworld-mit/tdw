@@ -379,7 +379,7 @@ class TDWUtils:
         """
 
         # Convert the image to a 2D image array.
-        image = np.array(Image.open(io.BytesIO(image)))
+        image = np.array(Image.open(io.BytesIO(image)), dtype=float)
 
         depth = np.array((image[:, :, 0] * 256 * 256 + image[:, :, 1] * 256 + image[:, :, 2]) /
                          (256 * 256 * 256) * 100.1)

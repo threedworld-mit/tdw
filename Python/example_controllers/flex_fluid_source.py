@@ -37,7 +37,12 @@ class FlexFluid(Controller):
 
         # Add the fluid source object, rotated so the fluid hits the wall.
         self.fluid_id = self.get_unique_id()
-        self.communicate({"$type": "load_flex_fluid_source_from_resources", "id": self.fluid_id, "orientation": {"x": 44, "y": 0, "z": 0}, "position": {"x": 0, "y": 1.0, "z": 0}})
+        self.communicate([{"$type": "load_flex_fluid_source_from_resources",
+                           "id": self.fluid_id, "orientation": {"x": 44, "y": 0, "z": 0},
+                           "position": {"x": 0, "y": 1.0, "z": 0}},
+                          {"$type": "scale_object",
+                           "id": self.fluid_id,
+                           "scale_factor": {"x": 0.4, "y": 0.4, "z": 1}}])
 
         # Create the fluid source actor, assign its container and set the Flex object scale to a reasonable size for a water jet.
         self.communicate([{"$type": "create_flex_fluid_source_actor",
@@ -50,11 +55,6 @@ class FlexFluid(Controller):
                            "id": self.fluid_id,
                            "container_id": 0, "fluid_container": True},
                           ])
-
-        # Set scale of fluid source to create a suitable stream of fluid.
-        self.communicate({"$type": "set_flex_object_scale",
-                          "id": self.fluid_id,
-                          "scale": {"x": 0.4, "y": 0.4, "z": 1}})
 
         # Start an infinite loop to allow the build to simulate physics.
         while True:

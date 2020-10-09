@@ -60,18 +60,6 @@
         "z": 0
       }
     },
-    "roman_villa": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
     "ruin": {
       "position": {
         "x": 0,
@@ -159,18 +147,6 @@
       }
     },
     "lava_field": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
-    "roman_villa": {
       "position": {
         "x": 0,
         "y": 0,
@@ -280,18 +256,6 @@
         "z": 0
       }
     },
-    "roman_villa": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
     "ruin": {
       "position": {
         "x": 0,
@@ -379,18 +343,6 @@
       }
     },
     "lava_field": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
-    "roman_villa": {
       "position": {
         "x": 0,
         "y": 0,
@@ -500,18 +452,6 @@
         "z": 0
       }
     },
-    "roman_villa": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
     "ruin": {
       "position": {
         "x": -1.5,
@@ -599,18 +539,6 @@
       }
     },
     "lava_field": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": -90,
-        "z": 0
-      }
-    },
-    "roman_villa": {
       "position": {
         "x": 0,
         "y": 0,
@@ -720,18 +648,6 @@
         "z": 0
       }
     },
-    "roman_villa": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
     "ruin": {
       "position": {
         "x": 0,
@@ -830,18 +746,6 @@
         "z": 0
       }
     },
-    "roman_villa": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
     "ruin": {
       "position": {
         "x": -4,
@@ -929,18 +833,6 @@
       }
     },
     "lava_field": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
-    "roman_villa": {
       "position": {
         "x": 0,
         "y": 0,
@@ -1076,18 +968,6 @@
         "z": 0
       }
     },
-    "roman_villa": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
     "ruin": {
       "position": {
         "x": -2,
@@ -1212,18 +1092,6 @@
         "z": 0
       }
     },
-    "roman_villa": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
     "ruin": {
       "position": {
         "x": 0,
@@ -1311,18 +1179,6 @@
       }
     },
     "lava_field": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 180,
-        "z": 0
-      }
-    },
-    "roman_villa": {
       "position": {
         "x": 0,
         "y": 0,
@@ -1432,18 +1288,6 @@
         "z": 0
       }
     },
-    "roman_villa": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": -90,
-        "z": 0
-      }
-    },
     "ruin": {
       "position": {
         "x": -2,
@@ -1531,18 +1375,6 @@
       }
     },
     "lava_field": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
-    "roman_villa": {
       "position": {
         "x": 0,
         "y": 0,
@@ -1652,18 +1484,6 @@
         "z": 0
       }
     },
-    "roman_villa": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
     "ruin": {
       "position": {
         "x": -2,
@@ -1751,18 +1571,6 @@
       }
     },
     "lava_field": {
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "rotation": {
-        "x": 0,
-        "y": -45,
-        "z": 0
-      }
-    },
-    "roman_villa": {
       "position": {
         "x": 0,
         "y": 0,

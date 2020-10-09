@@ -52,7 +52,6 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | --- | --- | --- |
 | [ArrivedAtNavMeshDestination](#ArrivedAtNavMeshDestination) | Sent when a NavMeshAvatar arrives at its destination. | `anmd` |
 | [AudioSources](#AudioSources) | Audio data for each object in a scene. Note that this will only tell you if any audio is playing; it won't return the audio itself (use an external program to record audio). | `audi` |
-| [AvatarChildrenNames](#AvatarChildrenNames) | The names of each child object of an avatar. | `avcn` |
 | [AvatarKinematic](#AvatarKinematic) | Data of a kinematic (non-physics) avatar. | `avki` |
 | [AvatarNonKinematic](#AvatarNonKinematic) | Data of a non-kinematic (physics-enabled) avatar with a single body object. | `avnk` |
 | [AvatarSegmentationColor](#AvatarSegmentationColor) | Color segmentation data for an avatar. | `avsc` |
@@ -108,21 +107,6 @@ Audio data for each object in a scene. Note that this will only tell you if any 
 | `get_num()` | The number of objects. | `int` |
 | `get_object_id(index)` | The ID of the object. | `int` |
 | `get_is_playing(index)` | If true, the audio source is currently playing a sound. | `bool` |
-
-## AvatarChildrenNames
-
-`a = AvatarChildrenNames(byte_array)`
-
-**Identifier:** `avcn`
-
-The names of each child object of an avatar.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_avatar_id()` | The ID of the avatar. | `str` |
-| `get_num_children()` | The number of children. | `int` |
-| `get_child_name(index)` | The name of the child. | `str` |
-| `get_child_id(index)` | The ID of the child. | `int` |
 
 ## AvatarKinematic
 

@@ -6,12 +6,10 @@ This document includes common questions or problems users have encountered when 
 
 These [commands](../api/command_api.md) can improve the overall physics quality of your simulation:
 
-| Command                               | Effect                                                       |
-| ------------------------------------- | ------------------------------------------------------------ |
-| `set_physics_solver_iterations`       | Set the number of physics solver iterations, which affects the overall accuracy of the physics engine. |
-| `set_time_step`                       | Set the physics time step per frame. The actual affect though isn't totally intuitive; see [documentation](../api/command_api.md#set_time_step). |
-| `set_avatar_collision_detection_mode` | Set the collision detection mode for the avatar; different detection modes are optimized for different situations.<br>(Note: This only affects physics-based avatars, e.g. the [sticky mitten avatar](sticky_mitten_avatar.md)) |
-| `set_object_collision_detection_mode` | Set the collision detection mode for the object; different detection modes are optimized for different situations. |
+| Command                         | Effect                                                       |
+| ------------------------------- | ------------------------------------------------------------ |
+| `set_physics_solver_iterations` | Set the number of physics solver iterations, which affects the overall accuracy of the physics engine. |
+| `set_time_step`                 | Set the physics time step per frame. The actual affect though isn't totally intuitive; see [documentation](../api/command_api.md#set_time_step). |
 
 ### "Objects are not behaving realistically."
 
@@ -61,3 +59,4 @@ This [output data](../api/output_data.md) may be useful:
 | `Rigidbodies` | `send_rigidbodies` | Velocities, masses, etc.                |
 | `Collision`   | `send_collisions`  | Relative velocity, contact points, etc. |
 
+Additionally, see the [TDW Physics repo](https://github.com/alters-mit/tdw_physics) for a useful set of controllers for generating physics datasets.

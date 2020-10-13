@@ -165,7 +165,6 @@ class PyScrape:
 
         # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
         db = np.interp(mag, [0, self.max_vel], [-120, -12])
-        print(db)
 
         # We want the filter "window" to change continuously, otherwise we are generating unwanted reverberation.
         lowcut = (mag / self.start_velo_dict[scrape_key] ) * self.initial_lowcut 
@@ -185,7 +184,6 @@ class PyScrape:
 
         # Generate the chunk of band-pass filtered noise
         noise1 = WhiteNoise().to_audio_segment(duration=100)
-        #bp_noise = self.butter_bandpass_filter(noise1.get_array_of_samples(), max(lowcut, 598), max(highcut, 4782), self.samplerate, order=6)
         bp_noise = self.butter_bandpass_filter(noise1.get_array_of_samples(), lowcut, highcut, self.samplerate, order=6)
 
         # Apply second filter that gets rid of all sound less than the frequency of the lowest IR mode.

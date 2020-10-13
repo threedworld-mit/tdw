@@ -260,6 +260,9 @@ class RubeGoldbergDemo(Controller):
                                     {"$type": "set_mass",
                                     "id": obj_setup.id,
                                     "mass": self.object_audio_data[obj_setup.model_name].mass},
+                                    {"$type": "set_object_collision_detection_mode", 
+                                    "id": obj_setup.id, 
+                                    "mode": "continuous_speculative"},
                                     {"$type": "scale_object", 
                                      "id":  obj_setup.id, 
                                      "scale_factor": obj_setup.scale}])

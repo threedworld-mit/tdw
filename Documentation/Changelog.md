@@ -14,7 +14,13 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 | --------------------------- | ------------------------------------------------------------ |
 | `set_sticky_mitten_profile` | Fixed: This command doesn't work.<br>Removed `mitten` (redundant because of `wrist_pitch`). |
 
-### Benchmarking
+### Python
+
+#### Use Cases
+
+- Fixed: `rube_goldberg.py` doesn't work.
+
+#### Benchmarking
 
 - Added: `struct_deserialization.py` Test the speed of deserializing structs such as Vector3 and Quaternion.
 

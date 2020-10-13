@@ -37,9 +37,9 @@ python3 do_nothing.py
 
 The test controller `struct_deserialization.py` deserializing a Vector3 and a Quaternion per frame for 5000 frames. The build responds with an empty frame. 
 
-The commands sent per frame are 163 bytes. This can be compared to `do_nothing.py`'s results (200 bytes) to gauge slowdown due to struct deserialization.
+This test can't be directly compared to the `do_nothing.py` test because it adds an object to a room, as opposed to testing an empty scene with no room and no objects.
 
-**Result: 621 FPS** _(Note: This was tested on a different machine than the do_nothing.py test; running the tests on the same machine resulted in 736 FPS for do_nothing.py at 200 bytes.)_
+**Result: 621 FPS**
 
 ### How to run this test
 

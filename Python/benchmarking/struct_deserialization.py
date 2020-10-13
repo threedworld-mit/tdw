@@ -1,4 +1,3 @@
-from json import dumps
 from time import time
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
@@ -16,7 +15,6 @@ if __name__ == "__main__":
             {"$type": "rotate_object_to",
              "rotation": {"w": 1, "x": 0, "y": 0, "z": 0},
              "id": o_id}]
-    print(f"Byte size: {len(dumps(cmds).encode('utf-8'))}")
 
     c = Controller()
 

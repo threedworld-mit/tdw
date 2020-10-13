@@ -2,11 +2,9 @@
 
 The build receives [commands](../api/command_api_guide.md) as JSON string and deserializes them into objects. This is an _innately slow process_, albeit highly optimized within TDW.
 
-### Why are commands JSON strings?
-
 JSON is known to be slower than other serialization formats. However, on the backend, JSON allows us to rapidly iterate, fix, and create commands. Switching to a different serialization format would take a tremendous amount of time and result in a faster but much more fragile API; we've decided that this is not a good tradeoff.
 
-### To what extent does deserialization affect performance?
+## 1. To what extent does deserialization affect performance?
 
 The test controller `do_nothing.py` sends increasing quantities of the command `{"$type": "do_nothing"}` for 1000 iterations. The build responds with an empty frame.
 
@@ -29,10 +27,26 @@ The test controller `do_nothing.py` sends increasing quantities of the command `
 
 ```bash
 cd <root>/Python/benchmarking
-python3 do_nothing.py
 ```
 
 ```bash
-<run build>
+python3 do_nothing.py
 ```
 
+## 2. How does the deserialization of structs affect performance?
+
+The test controller `struct_deserialization.py` deserializing a Vector3 and a Quaternion per frame for 5000 frames. The build responds with an empty frame. 
+
+This test can't be directly compared to the `do_nothing.py` test because it adds an object to a room, as opposed to testing an empty scene with no room and no objects.
+
+**Result: 621 FPS**
+
+### How to run this test
+
+```bash
+cd <root>/Python/benchmarking
+```
+
+```bash
+python3 struct_deserialization.py
+```

@@ -4,6 +4,32 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.1
+
+### Command API
+
+#### Modified Commands
+
+| Command                     | Modification                                                 |
+| --------------------------- | ------------------------------------------------------------ |
+| `set_sticky_mitten_profile` | Fixed: This command doesn't work.<br>Removed `mitten` (redundant because of `wrist_pitch`). |
+
+### Benchmarking
+
+- Added: `struct_deserialization.py` Test the speed of deserializing structs such as Vector3 and Quaternion.
+
+### Build
+
+- Increased deserialization speed of many commands.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                                 |
+| ---------------------------- | -------------------------------------------- |
+| `command_deserialization.md` | Added results of `struct_deserialization.py` |
+
 ## v1.7.0
 
 ### Command API

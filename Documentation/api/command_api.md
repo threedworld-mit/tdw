@@ -124,8 +124,12 @@
 
 | Command | Description |
 | --- | --- |
+| [`adjust_joint_angular_drag`](#adjust_joint_angular_drag) | Adjust the angular drag of the joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower. |
 | [`adjust_joint_damper_by`](#adjust_joint_damper_by) | Adjust the current damper of a joint by a given delta. A higher damper value will cause the joint to slow down faster. |
 | [`adjust_joint_force_by`](#adjust_joint_force_by) | Adjust the current force of a joint by a given delta. |
+| [`set_joint_angular_drag`](#set_joint_angular_drag) | Set the angular drag of the joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower. |
+| [`set_joint_damper`](#set_joint_damper) | Set the current damper of a joint. A higher damper value will cause the joint to slow down faster. |
+| [`set_joint_force`](#set_joint_force) | Set the force of a joint.. |
 | [`stop_arm_joint`](#stop_arm_joint) | Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself. |
 
 **Bend Arm Joint Command**
@@ -1772,6 +1776,51 @@ These commands affect a single joint, around a single rotational axis, of a Stic
 
 ***
 
+## **`adjust_joint_angular_drag`**
+
+Adjust the angular drag of the joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower.
+
+
+```python
+{"$type": "adjust_joint_angular_drag", "joint": "shoulder_left", "axis": "pitch"}
+```
+
+```python
+{"$type": "adjust_joint_angular_drag", "joint": "shoulder_left", "axis": "pitch", "delta": 0, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"delta"` | float | Adjust the current angular drag of the joint by this delta. By default, the angular joints of all joints is 0. | 0 |
+| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+#### JointType
+
+A joint in a Stick Mitten Avatar.
+
+| Value | Description |
+| --- | --- |
+| `"shoulder_left"` | Valid axes: pitch, yaw. |
+| `"elbow_left"` | Valid axis: pitch. |
+| `"wrist_left"` | Valid axis: pitch. |
+| `"shoulder_right"` | Valid axes: pitch, yaw. |
+| `"elbow_right"` | Valid axis: pitch. |
+| `"wrist_right"` | Valid axis: pitch. |
+
+***
+
 ## **`adjust_joint_damper_by`**
 
 Adjust the current damper of a joint by a given delta. A higher damper value will cause the joint to slow down faster.
@@ -1833,6 +1882,141 @@ Adjust the current force of a joint by a given delta.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"delta"` | float | Adjust the current force of the joint by this delta. | |
+| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+#### JointType
+
+A joint in a Stick Mitten Avatar.
+
+| Value | Description |
+| --- | --- |
+| `"shoulder_left"` | Valid axes: pitch, yaw. |
+| `"elbow_left"` | Valid axis: pitch. |
+| `"wrist_left"` | Valid axis: pitch. |
+| `"shoulder_right"` | Valid axes: pitch, yaw. |
+| `"elbow_right"` | Valid axis: pitch. |
+| `"wrist_right"` | Valid axis: pitch. |
+
+***
+
+## **`set_joint_angular_drag`**
+
+Set the angular drag of the joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower.
+
+
+```python
+{"$type": "set_joint_angular_drag", "joint": "shoulder_left", "axis": "pitch"}
+```
+
+```python
+{"$type": "set_joint_angular_drag", "joint": "shoulder_left", "axis": "pitch", "angular_drag": 0, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angular_drag"` | float | The angular drag for the joint. | 0 |
+| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+#### JointType
+
+A joint in a Stick Mitten Avatar.
+
+| Value | Description |
+| --- | --- |
+| `"shoulder_left"` | Valid axes: pitch, yaw. |
+| `"elbow_left"` | Valid axis: pitch. |
+| `"wrist_left"` | Valid axis: pitch. |
+| `"shoulder_right"` | Valid axes: pitch, yaw. |
+| `"elbow_right"` | Valid axis: pitch. |
+| `"wrist_right"` | Valid axis: pitch. |
+
+***
+
+## **`set_joint_damper`**
+
+Set the current damper of a joint. A higher damper value will cause the joint to slow down faster.
+
+
+```python
+{"$type": "set_joint_damper", "damper": 0.125, "joint": "shoulder_left", "axis": "pitch"}
+```
+
+```python
+{"$type": "set_joint_damper", "damper": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"damper"` | float | The new damper value. | |
+| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+#### JointType
+
+A joint in a Stick Mitten Avatar.
+
+| Value | Description |
+| --- | --- |
+| `"shoulder_left"` | Valid axes: pitch, yaw. |
+| `"elbow_left"` | Valid axis: pitch. |
+| `"wrist_left"` | Valid axis: pitch. |
+| `"shoulder_right"` | Valid axes: pitch, yaw. |
+| `"elbow_right"` | Valid axis: pitch. |
+| `"wrist_right"` | Valid axis: pitch. |
+
+***
+
+## **`set_joint_force`**
+
+Set the force of a joint..
+
+
+```python
+{"$type": "set_joint_force", "force": 0.125, "joint": "shoulder_left", "axis": "pitch"}
+```
+
+```python
+{"$type": "set_joint_force", "force": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | float | The new force. | |
 | `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |

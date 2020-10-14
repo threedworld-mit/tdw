@@ -106,7 +106,25 @@ For either of these commands, you can send an optional `"object_ids"` parameter.
 **If you want to adjust the arm parameters on the fly**, send [`set_sticky_mitten_profile`](../api/command_api.md#set_sticky_mitten_profile.md). Example:
 
 ```python
-{"$type": "set_sticky_mitten_profile", "avatar_id": "uniqueid0", "profile": {"mass": 80.0, "arm_left": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0}, "mitten": {"mass": 1.0}}, "arm_right": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0}, "mitten": {"mass": 1.0}}}
+{
+  "mass": 80.0,
+  "arm_left": {
+    "shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5},
+    "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, 
+    "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5},
+    "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5},
+    "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5},
+    "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}
+  },
+  "arm_right": {
+    "shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5},
+    "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5},
+    "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5},
+    "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5},
+    "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5},
+    "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}
+  }
+}
 ```
 
 ### Recommended algorithm for adjusting arm parameters

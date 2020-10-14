@@ -4,6 +4,33 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.2
+
+### Command API
+
+#### New Commands
+
+| Command                        | Description                                                  |
+| ------------------------------ | ------------------------------------------------------------ |
+| `adjust_joint_angular_drag_by` | Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. |
+| `set_joint_angular_drag`       | Set the angular drag of a joint of a Sticky Mitten Avatar.   |
+| `set_joint_damper`             | Set the current damper of a joint of a Sticky Mitten Avatar. |
+| `set_joint_force`              | Set the force of a joint of a Sticky Mitten Avatar.          |
+
+#### Modified Commands
+
+| Command                     | Modification                                  |
+| --------------------------- | --------------------------------------------- |
+| `set_sticky_mitten_profile` | Added parameter `angular_drag` to each joint. |
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                  | Modification                                        |
+| ------------------------- | --------------------------------------------------- |
+| `sticky_mitten_avatar.md` | Updated example JSON for the sticky mitten profile. |
+
 ## v1.7.1
 
 ### Command API

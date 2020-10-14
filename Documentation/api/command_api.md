@@ -137,8 +137,8 @@
 
 | Command | Description |
 | --- | --- |
-| [`adjust_joint_angular_drag_by`](#adjust_joint_angular_drag_by) | Adjust the angular drag of the joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower. |
-| [`set_joint_angular_drag`](#set_joint_angular_drag) | Set the angular drag of the joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower. |
+| [`adjust_joint_angular_drag_by`](#adjust_joint_angular_drag_by) | Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower. |
+| [`set_joint_angular_drag`](#set_joint_angular_drag) | Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower. |
 
 **Joint Spring Command**
 
@@ -1924,13 +1924,13 @@ A joint in a Stick Mitten Avatar.
 
 # JointAngularDragCommand
 
-Set the angular drag of a joint.
+Set the angular drag of a joint of a Sticky Mitten Avatar.
 
 ***
 
 ## **`adjust_joint_angular_drag_by`**
 
-Adjust the angular drag of the joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower.
+Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower.
 
 
 ```python
@@ -1975,7 +1975,7 @@ A joint in a Stick Mitten Avatar.
 
 ## **`set_joint_angular_drag`**
 
-Set the angular drag of the joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower.
+Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower.
 
 
 ```python

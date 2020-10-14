@@ -144,10 +144,10 @@
 
 | Command | Description |
 | --- | --- |
-| [`adjust_joint_damper_by`](#adjust_joint_damper_by) | Adjust the current damper of a joint by a given delta. A higher damper value will cause the joint to slow down faster. |
-| [`adjust_joint_force_by`](#adjust_joint_force_by) | Adjust the current force of a joint by a given delta. |
-| [`set_joint_damper`](#set_joint_damper) | Set the current damper of a joint. A higher damper value will cause the joint to slow down faster. |
-| [`set_joint_force`](#set_joint_force) | Set the force of a joint. |
+| [`adjust_joint_damper_by`](#adjust_joint_damper_by) | Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster. |
+| [`adjust_joint_force_by`](#adjust_joint_force_by) | Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta. |
+| [`set_joint_damper`](#set_joint_damper) | Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster. |
+| [`set_joint_force`](#set_joint_force) | Set the force of a joint of a Sticky Mitten Avatar. |
 
 **Use Mitten Command**
 
@@ -2024,7 +2024,7 @@ These commands adjust the values of the joint spring (force and damper).
 
 ## **`adjust_joint_damper_by`**
 
-Adjust the current damper of a joint by a given delta. A higher damper value will cause the joint to slow down faster.
+Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster.
 
 
 ```python
@@ -2069,7 +2069,7 @@ A joint in a Stick Mitten Avatar.
 
 ## **`adjust_joint_force_by`**
 
-Adjust the current force of a joint by a given delta.
+Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta.
 
 
 ```python
@@ -2114,7 +2114,7 @@ A joint in a Stick Mitten Avatar.
 
 ## **`set_joint_damper`**
 
-Set the current damper of a joint. A higher damper value will cause the joint to slow down faster.
+Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster.
 
 
 ```python
@@ -2159,7 +2159,7 @@ A joint in a Stick Mitten Avatar.
 
 ## **`set_joint_force`**
 
-Set the force of a joint.
+Set the force of a joint of a Sticky Mitten Avatar.
 
 
 ```python

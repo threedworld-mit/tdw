@@ -559,7 +559,7 @@ class PyImpact:
         snth = PyImpact.synth_impact_modes(modes_1, modes_2, mass, resonance)
         return snth, modes_1, modes_2
 
-    def get_impulse_response(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, other_id: int, other_mat: str, target_id: int, target_mat: str, other_amp: float, target_amp: float, resonance: float) -> np.array:
+    def get_impulse_response(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, other_id: int, other_mat: str, target_id: int, target_mat: str, other_amp: float, target_amp: float, resonance: float) -> (np.array, float):
         """
         Generate an impulse response from the modes for two specified objects.
 

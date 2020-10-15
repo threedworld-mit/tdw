@@ -9227,6 +9227,148 @@
             "wcategory": "chair",
             "wnid": "n03001627"
         },
+        "h-shape_wood_block": {
+            "asset_bundle_sizes": {
+                "Darwin": 1193242,
+                "Linux": 1414007,
+                "Windows": 1032104
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0003457256,
+                    "y": 0.03810893,
+                    "z": -0.01491004
+                },
+                "bottom": {
+                    "x": -0.0003457256,
+                    "y": -7.475246e-09,
+                    "z": 0.0005642753
+                },
+                "center": {
+                    "x": -0.0003457256,
+                    "y": 0.03810893,
+                    "z": 0.0005642772
+                },
+                "front": {
+                    "x": -0.0003457256,
+                    "y": 0.03810893,
+                    "z": 0.0160386
+                },
+                "left": {
+                    "x": -0.0301908,
+                    "y": 0.03810893,
+                    "z": 0.0005642772
+                },
+                "right": {
+                    "x": 0.02949934,
+                    "y": 0.03810893,
+                    "z": 0.0005642772
+                },
+                "top": {
+                    "x": -0.0003457256,
+                    "y": 0.07621787,
+                    "z": 0.000564279
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "h-shape_wood_block",
+            "physics_quality": 1.0,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_green"
+                    ],
+                    "name": "h-shape_wood_block"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/h-shape_wood_block",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/h-shape_wood_block",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/h-shape_wood_block"
+            },
+            "wcategory": "toy",
+            "wnid": "n04461879"
+        },
+        "half_circle_wood_block": {
+            "asset_bundle_sizes": {
+                "Darwin": 1197751,
+                "Linux": 1417797,
+                "Windows": 1036514
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0005791485,
+                    "y": 0.01947407,
+                    "z": -0.009701959
+                },
+                "bottom": {
+                    "x": 0.0005791485,
+                    "y": -1.964481e-08,
+                    "z": 0.003014982
+                },
+                "center": {
+                    "x": 0.0005791485,
+                    "y": 0.01947407,
+                    "z": 0.003014988
+                },
+                "front": {
+                    "x": 0.0005791485,
+                    "y": 0.01947407,
+                    "z": 0.01573194
+                },
+                "left": {
+                    "x": -0.03836901,
+                    "y": 0.01947407,
+                    "z": 0.003014988
+                },
+                "right": {
+                    "x": 0.03952731,
+                    "y": 0.01947407,
+                    "z": 0.003014988
+                },
+                "top": {
+                    "x": 0.0005791485,
+                    "y": 0.03894816,
+                    "z": 0.003014995
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "half_circle_wood_block",
+            "physics_quality": 1.0,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_red"
+                    ],
+                    "name": "half_circle_wood_block"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/half_circle_wood_block",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/half_circle_wood_block",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/half_circle_wood_block"
+            },
+            "wcategory": "toy",
+            "wnid": "n04461879"
+        },
         "heart": {
             "asset_bundle_sizes": {
                 "Darwin": 1494634,
@@ -10693,6 +10835,77 @@
             },
             "wcategory": "knife",
             "wnid": "n03624134"
+        },
+        "l-shape_wood_block": {
+            "asset_bundle_sizes": {
+                "Darwin": 1192758,
+                "Linux": 1413169,
+                "Windows": 1031225
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.000301769,
+                    "y": 0.03820851,
+                    "z": -0.01497718
+                },
+                "bottom": {
+                    "x": 0.0003017709,
+                    "y": -2.233177e-08,
+                    "z": 0.0005375918
+                },
+                "center": {
+                    "x": 0.0003017676,
+                    "y": 0.03820851,
+                    "z": 0.0005375925
+                },
+                "front": {
+                    "x": 0.0003017671,
+                    "y": 0.03820851,
+                    "z": 0.01605237
+                },
+                "left": {
+                    "x": -0.03390825,
+                    "y": 0.03820851,
+                    "z": 0.0005375894
+                },
+                "right": {
+                    "x": 0.03451179,
+                    "y": 0.03820851,
+                    "z": 0.0005375957
+                },
+                "top": {
+                    "x": 0.0003017653,
+                    "y": 0.07641704,
+                    "z": 0.0005375929
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "l-shape_wood_block",
+            "physics_quality": 0.9999993416548164,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_green"
+                    ],
+                    "name": "l-shape_wood_block"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/l-shape_wood_block",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/l-shape_wood_block",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/l-shape_wood_block"
+            },
+            "wcategory": "toy",
+            "wnid": "n04461879"
         },
         "lamp_02": {
             "asset_bundle_sizes": {
@@ -13083,6 +13296,77 @@
             "wcategory": "pencil",
             "wnid": "n03908204"
         },
+        "pentagon_wood_block": {
+            "asset_bundle_sizes": {
+                "Darwin": 976822,
+                "Linux": 1197473,
+                "Windows": 815409
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.000478439,
+                    "y": 0.03830718,
+                    "z": -0.01394409
+                },
+                "bottom": {
+                    "x": -0.000478439,
+                    "y": 1.270076e-11,
+                    "z": -0.0002905596
+                },
+                "center": {
+                    "x": -0.000478439,
+                    "y": 0.03830718,
+                    "z": -0.0002905577
+                },
+                "front": {
+                    "x": -0.000478439,
+                    "y": 0.03830718,
+                    "z": 0.01336297
+                },
+                "left": {
+                    "x": -0.04056883,
+                    "y": 0.03830718,
+                    "z": -0.0002905577
+                },
+                "right": {
+                    "x": 0.03961195,
+                    "y": 0.03830718,
+                    "z": -0.0002905577
+                },
+                "top": {
+                    "x": -0.000478439,
+                    "y": 0.07661436,
+                    "z": -0.0002905559
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "pentagon_wood_block",
+            "physics_quality": 1.0,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_blue"
+                    ],
+                    "name": "pentagon_wood_block"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/pentagon_wood_block",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pentagon_wood_block",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pentagon_wood_block"
+            },
+            "wcategory": "toy",
+            "wnid": "n04461879"
+        },
         "pepper": {
             "asset_bundle_sizes": {
                 "Darwin": 7010354,
@@ -14448,6 +14732,77 @@
             },
             "wcategory": "basket",
             "wnid": "n02801938"
+        },
+        "rectangle_wood_block": {
+            "asset_bundle_sizes": {
+                "Darwin": 8028093,
+                "Linux": 8160868,
+                "Windows": 7921927
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0002196003,
+                    "y": 0.03804272,
+                    "z": -0.01470743
+                },
+                "bottom": {
+                    "x": 0.0002196021,
+                    "y": -2.147021e-11,
+                    "z": 0.0004911812
+                },
+                "center": {
+                    "x": 0.0002196021,
+                    "y": 0.03804272,
+                    "z": 0.0004911831
+                },
+                "front": {
+                    "x": 0.000219604,
+                    "y": 0.03804272,
+                    "z": 0.0156898
+                },
+                "left": {
+                    "x": -0.02464987,
+                    "y": 0.03804272,
+                    "z": 0.0004911872
+                },
+                "right": {
+                    "x": 0.02508907,
+                    "y": 0.03804272,
+                    "z": 0.0004911784
+                },
+                "top": {
+                    "x": 0.0002196021,
+                    "y": 0.07608543,
+                    "z": 0.0004911844
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "rectangle_wood_block",
+            "physics_quality": 1.0,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "rectangle_wood_block"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/rectangle_wood_block",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/rectangle_wood_block",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/rectangle_wood_block"
+            },
+            "wcategory": "toy",
+            "wnid": "n04461879"
         },
         "red_bag": {
             "asset_bundle_sizes": {
@@ -17506,6 +17861,77 @@
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
+        "square_wood_block": {
+            "asset_bundle_sizes": {
+                "Darwin": 1192952,
+                "Linux": 1412891,
+                "Windows": 1030549
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0004647858,
+                    "y": 0.03802247,
+                    "z": -0.01489609
+                },
+                "bottom": {
+                    "x": 0.0004647858,
+                    "y": -0.0005441792,
+                    "z": 0.0005088281
+                },
+                "center": {
+                    "x": 0.0004647858,
+                    "y": 0.03802247,
+                    "z": 0.00050883
+                },
+                "front": {
+                    "x": 0.0004647858,
+                    "y": 0.03802247,
+                    "z": 0.01591375
+                },
+                "left": {
+                    "x": -0.03804743,
+                    "y": 0.03802247,
+                    "z": 0.00050883
+                },
+                "right": {
+                    "x": 0.038977,
+                    "y": 0.03802247,
+                    "z": 0.00050883
+                },
+                "top": {
+                    "x": 0.0004647858,
+                    "y": 0.07658911,
+                    "z": 0.0005088318
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "square_wood_block",
+            "physics_quality": 1.0,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_yellow"
+                    ],
+                    "name": "square_wood_block"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/square_wood_block",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/square_wood_block",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/square_wood_block"
+            },
+            "wcategory": "toy",
+            "wnid": "n04461879"
+        },
         "stack_of_cups_composite": {
             "asset_bundle_sizes": {
                 "Darwin": 528199,
@@ -17615,6 +18041,148 @@
                 "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2//stack_of_cups_composite",
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2//stack_of_cups_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2//stack_of_cups_composite"
+            },
+            "wcategory": "toy",
+            "wnid": "n04461879"
+        },
+        "star_wood_block": {
+            "asset_bundle_sizes": {
+                "Darwin": 1200742,
+                "Linux": 1421574,
+                "Windows": 1039230
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0005103461,
+                    "y": 0.03839072,
+                    "z": -0.01512059
+                },
+                "bottom": {
+                    "x": 0.0005103461,
+                    "y": 1.309619e-12,
+                    "z": -2.996065e-05
+                },
+                "center": {
+                    "x": 0.0005103461,
+                    "y": 0.03839072,
+                    "z": -2.995878e-05
+                },
+                "front": {
+                    "x": 0.0005103461,
+                    "y": 0.03839072,
+                    "z": 0.01506068
+                },
+                "left": {
+                    "x": -0.0375337,
+                    "y": 0.03839072,
+                    "z": -2.995878e-05
+                },
+                "right": {
+                    "x": 0.03855439,
+                    "y": 0.03839072,
+                    "z": -2.995878e-05
+                },
+                "top": {
+                    "x": 0.0005103461,
+                    "y": 0.07678144,
+                    "z": -2.995692e-05
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "star_wood_block",
+            "physics_quality": 0.9999605606588747,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_red"
+                    ],
+                    "name": "star_wood_block"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/star_wood_block",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/star_wood_block",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/star_wood_block"
+            },
+            "wcategory": "toy",
+            "wnid": "n04461879"
+        },
+        "t-shape_wood_block": {
+            "asset_bundle_sizes": {
+                "Darwin": 8029001,
+                "Linux": 8161796,
+                "Windows": 7922389
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001102239,
+                    "y": 0.03739376,
+                    "z": -0.01497477
+                },
+                "bottom": {
+                    "x": -0.0001102239,
+                    "y": -0.0005441867,
+                    "z": 0.0004301125
+                },
+                "center": {
+                    "x": -0.0001102239,
+                    "y": 0.03739376,
+                    "z": 0.0004301142
+                },
+                "front": {
+                    "x": -0.0001102239,
+                    "y": 0.03739376,
+                    "z": 0.015835
+                },
+                "left": {
+                    "x": -0.03011731,
+                    "y": 0.03739376,
+                    "z": 0.0004301141
+                },
+                "right": {
+                    "x": 0.02989686,
+                    "y": 0.03739376,
+                    "z": 0.0004301143
+                },
+                "top": {
+                    "x": -0.0001102239,
+                    "y": 0.07533172,
+                    "z": 0.000430116
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "t-shape_wood_block",
+            "physics_quality": 1.0,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "t-shape_wood_block"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/t-shape_wood_block",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/t-shape_wood_block",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/t-shape_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"

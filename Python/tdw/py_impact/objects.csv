@@ -8,6 +8,7 @@ red_side_chair,0.1,20,wood,models_core.json,0.6,0.65
 table_square,0.5,200,metal,models_core.json,0.6,0.65
 marble_table,0.2,200,ceramic,models_core.json,0.6,0.65
 vase_06,1,5,ceramic,models_core.json,0.6,0.85
+vase_02,1,5,ceramic,models_core.json,0.6,0.85
 spoon1,0.6,0.2,metal,models_core.json,0.6,0.65
 glass3,0.7,2,glass,models_core.json,0.6,1.15
 jug02,0.6,3,ceramic,models_core.json,0.6,0.65
@@ -61,14 +62,15 @@ wood_board,0.3,0.6,wood,models_full.json,0.2,0.65
 camera_box,0.4,0.5,cardboard,models_full.json,0.6,0.65
 toy_monkey_medium,0.25,0.75,ceramic,models_full.json,0.4,0.35
 102_pepsi_can_12_fl_oz_vray,0.35,0.2,metal,models_full.json,0.2,0.65
-h-shape_wood_block,0.2,0.1,hardwood,models_full.json,0.2,0.15
-half_circle_wood_block,0.2,0.1,hardwood,models_full.json,0.2,0.15
-pentagon_wood_block,0.2,0.1,hardwood,models_full.json,0.2,0.15
-t-shape_wood_block,0.2,0.1,hardwood,models_full.json,0.2,0.15
-square_wood_block,0.2,0.1,hardwood,models_full.json,0.2,0.15
-star_wood_block,0.2,0.1,hardwood,models_full.json,0.2,0.15
-rectangle_wood_block,0.2,0.1,hardwood,models_full.json,0.2,0.15
-l-shape_wood_block,0.2,0.1,hardwood,models_full.json,0.2,0.15
+h-shape_wood_block,0.2,0.1,hardwood,models_core.json,0.2,0.15
+half_circle_wood_block,0.2,0.1,hardwood,models_core.json,0.2,0.15
+pentagon_wood_block,0.2,0.1,hardwood,models_core.json,0.2,0.15
+t-shape_wood_block,0.2,0.1,hardwood,models_core.json,0.2,0.15
+square_wood_block,0.2,0.1,hardwood,models_core.json,0.2,0.15
+star_wood_block,0.2,0.1,hardwood,models_core.json,0.2,0.15
+rectangle_wood_block,0.2,0.1,hardwood,models_core.json,0.2,0.15
+l-shape_wood_block,0.2,0.1,hardwood,models_core.json,0.2,0.15
+lint_roller01,0.2,0.1,hardwood,models_core.json,0.2,0.15
 prim_sphere,0.3,4,metal,models_special.json,0.2,0.35
 golf,0.3,0.25,cardboard,models_full.json,0.6,0.65
 868580_pliers_max2016,0.4,0.5,metal,models_full.json,0.7,0.65
@@ -246,3 +248,5 @@ barcelona_bench_sofa,0.01,90,cardboard,models_core.json,0.2,0.1
 bow_rake,0.2,12,ceramic,models_core.json,0.625,0.1
 lawnmower,0.01,300,metal,models_core.json,0.35,0.1
 naughtone_pinch_stool_chair,0.02,35,wood,models_core.json,0.58,0.65
+round_bowl_large_metal_perf,1,2,metal,models_core.json,0.625,0.65
+shallow_basket_white_mesh,0.02,5,cardboard,models_core.json,0.5,0.65

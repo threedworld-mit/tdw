@@ -14954,116 +14954,6 @@
           "y": 1,
           "z": 1
         }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "satiro_sculpture",
-        "position": {
-          "x": -0.35,
-          "y": -0.0009735227,
-          "z": 3.49
-        },
-        "rotation": {
-          "w": 0,
-          "x": 0,
-          "y": 1,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "elephant_bowl",
-        "position": {
-          "x": 1.7,
-          "y": -0.01397109,
-          "z": 4.36
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "elephant_bowl",
-        "position": {
-          "x": -2.15,
-          "y": -0.01342249,
-          "z": 4.32
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "elephant_bowl",
-        "position": {
-          "x": -2.22,
-          "y": -0.01756868,
-          "z": 0.1286973
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "elephant_bowl",
-        "position": {
-          "x": 1.74,
-          "y": -0.02381384,
-          "z": 0.08810504
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
       }
     ],
     "1": [
@@ -16721,28 +16611,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "marble_table",
-        "position": {
-          "x": -3.322,
-          "y": 0.00503172,
-          "z": 2.970002
-        },
-        "rotation": {
-          "w": 0.7071068,
-          "x": -3.777501e-11,
-          "y": 0.7071068,
-          "z": 1.018631e-09
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "chair_eames_plastic_armchair",
         "position": {
           "x": 5.715001,
@@ -17024,52 +16892,7 @@
           "y": 1,
           "z": 1
         }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "balance_double_doghouse",
-        "position": {
-          "x": 1.421051,
-          "y": 0,
-          "z": 1.951213
-        },
-        "rotation": {
-          "w": 0.7071068,
-          "x": 0,
-          "y": -0.7071068,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "satiro_sculpture",
-        "position": {
-          "x": 2.030003,
-          "y": -0.001971126,
-          "z": 4.760005
-        },
-        "rotation": {
-          "w": 0.3902158,
-          "x": -0.0003335413,
-          "y": -0.9207234,
-          "z": -0.0002944016
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
+      },      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -19087,72 +18910,6 @@
           "w": 1,
           "x": 0,
           "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "bow_rake",
-        "position": {
-          "x": 1.432706,
-          "y": 0.074,
-          "z": 0.02147378
-        },
-        "rotation": {
-          "w": 0,
-          "x": 0.9555862,
-          "y": 0,
-          "z": -0.2947119
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "balance_double_doghouse",
-        "position": {
-          "x": -2.32,
-          "y": 0,
-          "z": 2.89
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "lawnmower",
-        "position": {
-          "x": -0.3,
-          "y": 0.02049625,
-          "z": 3.9
-        },
-        "rotation": {
-          "w": 0.8781358,
-          "x": 0,
-          "y": 0.4784115,
           "z": 0
         },
         "scale_factor": {

@@ -4,20 +4,6 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
-## v1.7.3
-
-### Model Library
-
-- Added to `models_core.json`:
-  - h-shape_wood_block
-  - half_circle_wood_block
-  - pentagon_wood_block
-  - t-shape_wood_block
-  - square_wood_block
-  - star_wood_block
-  - rectangle_wood_block
-  - l-shape_wood_block
-
 ## v1.7.2
 
 ### Command API
@@ -36,6 +22,25 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 | Command                     | Modification                                  |
 | --------------------------- | --------------------------------------------- |
 | `set_sticky_mitten_profile` | Added parameter `angular_drag` to each joint. |
+
+### `tdw` module
+
+#### `FloorplanController`
+
+- Removed the floor and objects from the "patio" area of floorplan_4a, floorplan_4b, and floorplan_4c
+- Removed "container" objects from all layouts.
+
+### Model Library
+
+- Added to `models_core.json`:
+  - h-shape_wood_block
+  - half_circle_wood_block
+  - pentagon_wood_block
+  - t-shape_wood_block
+  - square_wood_block
+  - star_wood_block
+  - rectangle_wood_block
+  - l-shape_wood_block
 
 ### Documentation
 

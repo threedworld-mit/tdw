@@ -454,7 +454,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_flex_particles`](#send_flex_particles) | Send Flex particles data.  |
-| [`send_meshes`](#send_meshes) | Send mesh data. All requested objects MUST have readable meshes; otherwise, this command will throw unhandled C++ errors. To determine whether an object has a readable mesh, check record["flex_mode"] == "TRUE"  |
+| [`send_meshes`](#send_meshes) | Send mesh data. All requested objects MUST have readable meshes; otherwise, this command will throw unhandled C++ errors. To determine whether an object has a readable mesh, check if: record.flex == True For more information, read: Documentation/python/librarian/model_librarian.md  |
 
 **Send Objects Data Command**
 
@@ -5454,7 +5454,7 @@ Options for when to send data.
 
 ## **`send_meshes`**
 
-Send mesh data. All requested objects MUST have readable meshes; otherwise, this command will throw unhandled C++ errors. To determine whether an object has a readable mesh, check record["flex_mode"] == "TRUE" 
+Send mesh data. All requested objects MUST have readable meshes; otherwise, this command will throw unhandled C++ errors. To determine whether an object has a readable mesh, check if: record.flex == True For more information, read: Documentation/python/librarian/model_librarian.md 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>

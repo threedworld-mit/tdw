@@ -106,10 +106,12 @@ class PyScrape:
         self.summed_master_dict: Dict[str, AudioSegment] = dict()
         
         # Initialize an empty array; this will hold the impulse response data for later convolution.
-        self.scraping_ir = np.empty
+        self.scraping_ir = np.array([])
     
         # Starting velocity magnitude of scraping object; use in calculating changing band-pass filter
-        self.start_velo_dict: Dict[str, float] = dict()  
+        self.start_velo_dict: Dict[str, float] = dict() 
+
+        self.min_mode_freq = 1.0
 
         # Starting band-pass filter parameters
         self.initial_lowcut = 2000
@@ -121,7 +123,9 @@ class PyScrape:
         # Initialize the scraping event counter.
         self.scrape_event_count_dict: Dict[str, int] = dict()
 
-    def get_scrape_sound_command(self, p: PyImpact, rbody, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, target_id: int, target_mat: str, target_amp: float, other_id: int, other_mat: str, other_amp: float, resonance: float, play_audio_data: bool = True) -> dict:
+
+
+    def get_scrape_sound(self, p: PyImpact, rbody, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, target_id: int, target_mat: str, target_amp: float, other_id: int, other_mat: str, other_amp: float, resonance: float) -> bytes:
         """
         Create a scrape sound, and return a valid command to play audio data in TDW.
         "target" should usually be the smaller object, which will play the sound.
@@ -137,21 +141,22 @@ class PyScrape:
         :param target_id: The ID of the object that will play the sound.
         :param play_audio_data: If True, return a `play_audio_data` command. If False, return a `play_point_source_data` command (useful only with Resonance Audio; see Command API).
 
-        :return A `play_audio_data` or `play_point_source_data` command that can be sent to the build via `Controller.communicate()`.
+        :return byte array of audio data.
         """   
         # Create dictionary key for this object-to-object scrape
         scrape_key = str(target_id) + "_" + str(other_id)
 
-        # Initialize scrape variables; if this is an in=process scrape, these will be replaced bu te stored values.
+        # Initialize scrape variables.
         summed_master = AudioSegment.silent(duration=0, frame_rate=self.samplerate)
         scrape_event_count = 0
 
         # Is this a new scrape?
         if scrape_key in self.summed_master_dict:
+            # No - this is an in=process scrape, so replace with the stored values.
             summed_master = self.summed_master_dict[scrape_key]
             scrape_event_count = self.scrape_event_count_dict[scrape_key]
         else:
-            # No -- add initialized values to dictionaries.
+            # Yes -- add initialized values to dictionaries.
             self.summed_master_dict[scrape_key] = summed_master
             self.scrape_event_count_dict[scrape_key] = scrape_event_count
         
@@ -164,15 +169,19 @@ class PyScrape:
             self.start_velo_dict[scrape_key] = mag
 
         # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
-        db = np.interp(mag, [0, self.max_vel], [-120, -12])
+        db = np.interp(mag, [0, self.max_vel], [-90, -12])
 
         # We want the filter "window" to change continuously, otherwise we are generating unwanted reverberation.
-        lowcut = (mag / self.start_velo_dict[scrape_key] ) * self.initial_lowcut 
-        highcut = (mag / self.start_velo_dict[scrape_key] ) * self.initial_highcut
+        # Set range of filter cutoffs to be between 0.01 and initial values
+        lowcut = min(max( ((mag / self.start_velo_dict[scrape_key] ) * self.initial_lowcut), 0.01), self.initial_lowcut)
+        highcut = min(max( ((mag / self.start_velo_dict[scrape_key] ) * self.initial_highcut), 0.01), self.initial_highcut)
 
         # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
         # We also get the lowest-frequency IR mode, which we use to set the high-pass filter cutoff below.
-        self.scraping_ir, min_mode_freq = p.get_impulse_response(collision=collision,
+        # Note we pnly need to fetch the impulse response once per scrape event
+        #min_mode_freq = 10.0
+        if self.scraping_ir.size == 0:
+            self.scraping_ir, self.min_mode_freq = p.get_impulse_response(collision=collision,
                                                                  rigidbodies=rigidbodies,
                                                                  target_id=target_id,
                                                                  target_mat=target_mat,
@@ -184,10 +193,10 @@ class PyScrape:
 
         # Generate the chunk of band-pass filtered noise
         noise1 = WhiteNoise().to_audio_segment(duration=100)
-        bp_noise = self.butter_bandpass_filter(noise1.get_array_of_samples(), lowcut, highcut, self.samplerate, order=6)
+        bp_noise = self.butter_bandpass_filter(noise1.get_array_of_samples(), lowcut, highcut, self.samplerate, order=8)
 
         # Apply second filter that gets rid of all sound less than the frequency of the lowest IR mode.
-        bp_noise2 = self.butter_highpass_filter(bp_noise, min_mode_freq, self.samplerate, order=6)
+        bp_noise2 = self.butter_highpass_filter(bp_noise, self.min_mode_freq, self.samplerate, order=6)
 
         # Turn it into an AudioSegment, so we can gain adjust it.
         normalized_noise_ints = bp_noise2.astype(np.int32)
@@ -243,12 +252,35 @@ class PyScrape:
         scrape_event_count += 1
         self.scrape_event_count_dict[scrape_key] = scrape_event_count
 
+        return unity_chunk.raw_data
+
+    def get_scrape_sound_command(self, p: PyImpact, rbody, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, target_id: int, target_mat: str, target_amp: float, other_id: int, other_mat: str, other_amp: float, resonance: float, play_audio_data: bool = True) -> dict:
+        """
+        Create a scrape sound, and return a valid command to play audio data in TDW.
+        "target" should usually be the smaller object, which will play the sound.
+        "other" should be the larger (stationary) object.
+
+        :param collision: TDW `Collision` or `EnvironmentCollision` output data.
+        :param target_amp: The target's amp value.
+        :param target_mat: The target's audio material.
+        :param other_amp: The other object's amp value.
+        :param other_id: The other object's ID.
+        :param other_mat: The other object's audio material.
+        :param rigidbodies: TDW `Rigidbodies` output data.
+        :param target_id: The ID of the object that will play the sound.
+        :param play_audio_data: If True, return a `play_audio_data` command. If False, return a `play_point_source_data` command (useful only with Resonance Audio; see Command API).
+
+        :return A `play_audio_data` or `play_point_source_data` command that can be sent to the build via `Controller.communicate()`.
+        """   
+       
+        scrape_audio = self.get_scrape_sound(p, rbody, collision, rigidbodies, target_id, target_mat, target_amp, other_id, other_mat, other_amp, resonance)
+
         # Convert to base64 for transfer to Unity.
-        b64_data = base64.b64encode(unity_chunk.raw_data).decode()
+        b64_data = base64.b64encode(scrape_audio).decode()
 
         return {"$type": "play_audio_data" if play_audio_data else "play_point_source_data",
                 "id": target_id,
-                "num_frames": len(unity_chunk.raw_data),
+                "num_frames": len(scrape_audio),
                 "num_channels": self.channels,
                 "frame_rate": self.samplerate,
                 "wav_data": b64_data,
@@ -262,5 +294,14 @@ class PyScrape:
         del self.scrape_event_count_dict[scrape_key]
         del self.summed_master_dict[scrape_key]
         del self.start_velo_dict[scrape_key]
+        self.scraping_ir = np.array([])
+
+
+    def reset(self, max_vel: float = 5.0):
+        self.scrape_event_count_dict.clear()
+        self.summed_master_dict.clear()
+        self.start_velo_dict.clear()
+        self.scraping_ir = np.array([])
+        self.max_vel = max_vel
  
 

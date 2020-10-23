@@ -9440,6 +9440,77 @@
             "wcategory": "toy",
             "wnid": "n04461879"
         },
+        "hexagonal_toy": {
+            "asset_bundle_sizes": {
+                "Darwin": 340327,
+                "Linux": 507526,
+                "Windows": 216990
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0003259778,
+                    "y": 0.205343,
+                    "z": -0.2049295
+                },
+                "bottom": {
+                    "x": -0.0003259778,
+                    "y": 4.440892e-16,
+                    "z": -1.043081e-07
+                },
+                "center": {
+                    "x": -0.0003259778,
+                    "y": 0.205343,
+                    "z": -9.685755e-08
+                },
+                "front": {
+                    "x": -0.0003259778,
+                    "y": 0.205343,
+                    "z": 0.2049294
+                },
+                "left": {
+                    "x": -0.1919845,
+                    "y": 0.205343,
+                    "z": -9.685755e-08
+                },
+                "right": {
+                    "x": 0.1913326,
+                    "y": 0.205343,
+                    "z": -9.685755e-08
+                },
+                "top": {
+                    "x": -0.0003259778,
+                    "y": 0.4106859,
+                    "z": -8.940697e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "hexagonal_toy",
+            "physics_quality": 0.9843061009818189,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_black"
+                    ],
+                    "name": "hexagonal_toy"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/hexagonal_toy",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/hexagonal_toy",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/hexagonal_toy"
+            },
+            "wcategory": "toy",
+            "wnid": "n04461879"
+        },
         "hiker_backpack": {
             "asset_bundle_sizes": {
                 "Darwin": 9508405,

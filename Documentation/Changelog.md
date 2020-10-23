@@ -6,6 +6,11 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 ## v1.7.3
 
+### Model Library
+
+- Added to `models_core.json`:
+  - hexagonal_toy
+
 ### Build
 
 - Fixed: The objects created by `add_position_marker` initially have colliders, potentially causing physics interactions.

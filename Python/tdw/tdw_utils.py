@@ -605,7 +605,7 @@ class TDWUtils:
         """
         :param hashable: A hashable integer representing an RGB color.
 
-        :return: A color as a numpy array of integers between 0 and 255: [r, g, b]
+        :return: A color as a numpy array of integers between 0 and 255: `[r, g, b]`
         """
 
         return np.array([(hashable >> 16) & 255, (hashable >> 8) & 255, hashable & 255], dtype=int)

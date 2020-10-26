@@ -437,7 +437,7 @@ _This is a static function._
 | --- | --- |
 | hashable | A hashable integer representing an RGB color. |
 
-_Returns:_  A color as a numpy array of integers between 0 and 255: [r, g, b]
+_Returns:_  A color as a numpy array of integers between 0 and 255: `[r, g, b]`
 
 ***
 

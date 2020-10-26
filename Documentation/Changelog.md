@@ -6,6 +6,13 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 ## v1.7.3
 
+### `tdw` module
+
+#### `TDWUtils`
+
+- Added: `color_to_hashable()`. Convert a color to a hashable integer.
+- Added: `hashable_to_color()`. Convert a hashable integer to a color.
+
 ### Model Library
 
 - Added to `models_core.json`:

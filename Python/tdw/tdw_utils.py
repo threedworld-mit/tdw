@@ -590,6 +590,26 @@ class TDWUtils:
         forces = np.array(forces, dtype=np.float32)
         return base64.b64encode(forces).decode()
 
+    @staticmethod
+    def color_to_hashable(color: Union[np.array, Tuple[int, int, int]]) -> int:
+        """
+        :param color: The color as an RGB array or tuple, where each value is between 0 and 255.
+
+        :return: A hashable integer representation of the color array.
+        """
+
+        return (color[0] << 16) + (color[1] << 8) + color[2]
+
+    @staticmethod
+    def hashable_to_color(hashable: int) -> np.array:
+        """
+        :param hashable: A hashable integer representing an RGB color.
+
+        :return: A color as a numpy array of integers between 0 and 255: `[r, g, b]`
+        """
+
+        return np.array([(hashable >> 16) & 255, (hashable >> 8) & 255, hashable & 255], dtype=int)
+
 
 class AudioUtils:
     """

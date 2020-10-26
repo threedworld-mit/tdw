@@ -415,6 +415,32 @@ _Returns:_  An array of Flex particle forces encoded in base64.
 
 ***
 
+#### `color_to_hashable(color: Union[np.array, Tuple[int, int, int]]) -> int`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| color | The color as an RGB array or tuple, where each value is between 0 and 255. |
+
+_Returns:_  A hashable integer representation of the color array.
+
+***
+
+#### `hashable_to_color(hashable: int) -> np.array`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| hashable | A hashable integer representing an RGB color. |
+
+_Returns:_  A color as a numpy array of integers between 0 and 255: `[r, g, b]`
+
+***
+
 ## `AudioUtils`
 
 `from tdw.tdw_utils import AudioUtils`

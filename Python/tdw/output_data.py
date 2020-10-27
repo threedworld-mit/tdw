@@ -792,3 +792,6 @@ class NavMeshPath(OutputData):
 
     def get_path(self) -> np.array:
         return self.data.PathAsNumpy().view(dtype=np.float32).reshape(-1, 3)
+
+    def get_id(self) -> int:
+        return self.data.Id()

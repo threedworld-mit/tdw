@@ -47,8 +47,16 @@ class NavMeshPath(object):
             return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
         return 1
 
-def NavMeshPathStart(builder): builder.StartObject(2)
+    # NavMeshPath
+    def Id(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+def NavMeshPathStart(builder): builder.StartObject(3)
 def NavMeshPathAddPath(builder, path): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(path), 0)
 def NavMeshPathStartPathVector(builder, numElems): return builder.StartVector(1, numElems, 1)
 def NavMeshPathAddState(builder, state): builder.PrependUint8Slot(1, state, 1)
+def NavMeshPathAddId(builder, id): builder.PrependInt32Slot(2, id, 0)
 def NavMeshPathEnd(builder): return builder.EndObject()

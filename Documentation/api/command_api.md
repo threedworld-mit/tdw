@@ -410,7 +410,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination. You must send bake_nav_mesh exactly once before sending this command.  |
+| [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
 **Send Avatars Command**
@@ -4795,7 +4795,7 @@ These commands send data to the controller.
 
 ## **`send_nav_mesh_path`**
 
-Tell the build to send data of a path on the NavMesh from the origin to the destination. You must send bake_nav_mesh exactly once before sending this command. 
+Tell the build to send data of a path on the NavMesh from the origin to the destination. 
 
 - <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>

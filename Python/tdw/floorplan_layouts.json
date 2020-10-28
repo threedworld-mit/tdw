@@ -8507,28 +8507,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "meridiani_belmondo_bench_sofa",
-        "position": {
-          "x": -3.369224,
-          "y": 0.002513111,
-          "z": 3.883976
-        },
-        "rotation": {
-          "w": 0.9945588,
-          "x": 3.349501e-06,
-          "y": -0.1041766,
-          "z": -5.626818e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "lapalma_stil_chair",
         "position": {
           "x": -4.400265,

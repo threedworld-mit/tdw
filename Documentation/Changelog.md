@@ -6,6 +6,12 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 ## v1.7.4
 
+### `tdw` module
+
+#### `FloorplanController`
+
+- Replaced some furniture in floorplan layouts.
+
 ### Command API
 
 #### New Commands

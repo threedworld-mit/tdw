@@ -222,6 +222,7 @@
 | Command | Description |
 | --- | --- |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
+| [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
 | [`rotate_object_by`](#rotate_object_by) | Rotate an object by a given angle around a given axis. |
@@ -409,6 +410,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
 **Send Avatars Command**
@@ -568,7 +570,7 @@ Create an Oculus VR rig. For more information, see: Documentation/misc_frontend/
 Destroy all objects and avatars in the scene. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instaniate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
 
 ```python
 {"$type": "destroy_all_objects"}
@@ -2881,7 +2883,7 @@ How objects in the scene will "carve" the NavMesh.
 
 Given a position, try to get the nearest position on the NavMesh. 
 
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Exactly once**</font>
@@ -2912,7 +2914,7 @@ Manipulate an object that is already in the scene.
 Destroy an object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instaniate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
 
 ```python
 {"$type": "destroy_object", "id": 1}
@@ -2921,6 +2923,38 @@ Destroy an object.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
+
+***
+
+## **`make_nav_mesh_obstacle`**
+
+Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command. 
+
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+
+```python
+{"$type": "make_nav_mesh_obstacle", "id": 1}
+```
+
+```python
+{"$type": "make_nav_mesh_obstacle", "id": 1, "carve_type": "all", "scale": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"carve_type"` | CarveType | How the object will "carve" holes in the NavMesh. | "all" |
+| `"scale"` | float | The scale of the obstacle relative to the size of the object. Set this lower to account for the additional space that the object will carve. | 1 |
+| `"id"` | int | The unique object ID. | |
+
+#### CarveType
+
+How objects in the scene will "carve" the NavMesh.
+
+| Value | Description |
+| --- | --- |
+| `"all"` | Each object will carve a large hole in the NavMesh. If an object moves, the hole will move too. This is the most performance-intensive option. |
+| `"stationary"` | Each object will initially carve a large hole in the NavMesh. If an objects moves, it won't "re-carve" the NavMesh. A small hole will remain in its original position. |
+| `"none"` | Each object will carve small holes in the NavMesh. If an objects moves, it won't "re-carve" the NavMesh. A small hole will remain in its original position. |
 
 ***
 
@@ -3184,7 +3218,7 @@ Assign the FlexContainer of the object.
 Destroy the Flex object. This will leak memory (due to a bug in the Flex library that we can't fix), but will leak <emphasis>less</emphasis> memory than destroying a Flex-enabled object with <computeroutput>destroy_object</computeroutput>. 
 
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instaniate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
 
 ```python
 {"$type": "destroy_flex_object", "id": 1}
@@ -3621,7 +3655,7 @@ These commands affect humanoids currently in the scene. To add a humanoid, see a
 
 Destroy a humanoid. 
 
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instaniate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
 
 ```python
 {"$type": "destroy_humanoid", "id": 1}
@@ -4756,6 +4790,42 @@ Send log messages to the controller.
 # SendDataCommand
 
 These commands send data to the controller.
+
+***
+
+## **`send_nav_mesh_path`**
+
+Tell the build to send data of a path on the NavMesh from the origin to the destination. 
+
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`NavMeshPath`](output_data.md#NavMeshPath)</font>
+
+```python
+{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"origin"` | Vector3 | The origin of the path. | |
+| `"destination"` | Vector3 | The destination of the path. | |
+| `"id"` | int | The ID of the path. The output data will contain a matching ID. | 0 |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
 
 ***
 

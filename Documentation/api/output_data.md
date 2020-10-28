@@ -72,6 +72,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
+| [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Rigidbodies](#Rigidbodies) | Rigibody data (velocity, mass, etc.) for objects in the scene. | `rigi` |
@@ -450,6 +451,20 @@ Mesh data from readable objects.
 | `get_num()` | The number of objects. | `int` |
 | `get_vertices(index)` | The (x, y, z) coordinates of each vertex. | `np.array` |
 | `get_triangles(index)` | Each triangle of the mesh. | `np.array` |
+
+## NavMeshPath
+
+`n = NavMeshPath(byte_array)`
+
+**Identifier:** `path`
+
+A path on the scene's NavMesh.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_state()` | The state of the path: "complete", "partial", or "invalid". | `str` |
+| `get_path()` | Waypoints on the path as a numpy array of (x, y, z) coordinates. | `np.array` |
+| `get_id()` | The ID of this path. Use this to differentiate between different NavMeshPaths. | `int` |
 
 ## Overlap
 

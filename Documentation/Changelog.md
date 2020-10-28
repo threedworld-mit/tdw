@@ -21,6 +21,13 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 | `make_nav_mesh_obstacle` | Make a specific object a NavMesh obstacle.                   |
 | `send_nav_mesh_path`     | Tell the build to send data of a path on the NavMesh from the origin to the destination. |
 
+#### Modified Commands
+
+| Command           | Modification                            |
+| ----------------- | --------------------------------------- |
+| `send_spherecast` | Added optional parameter `id`.          |
+| `send_raycast`    | Renamed parameter `raycast_id` to `id`. |
+
 ### Output Data
 
 #### New Output Data

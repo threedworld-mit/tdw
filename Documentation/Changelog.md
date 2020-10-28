@@ -23,9 +23,10 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 #### Modified Commands
 
-| Command           | Modification                   |
-| ----------------- | ------------------------------ |
-| `send_spherecast` | Added optional parameter `id`. |
+| Command           | Modification                            |
+| ----------------- | --------------------------------------- |
+| `send_spherecast` | Added optional parameter `id`.          |
+| `send_raycast`    | Renamed parameter `raycast_id` to `id`. |
 
 ### Output Data
 

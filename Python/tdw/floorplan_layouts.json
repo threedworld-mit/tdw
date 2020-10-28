@@ -6015,28 +6015,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "hiker_backpack",
-        "position": {
-          "x": -4.39,
-          "y": 0.04505795,
-          "z": 1.48
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "sm_table_white",
         "position": {
           "x": -2.091717,
@@ -6756,28 +6734,6 @@
           "x": -0.004589814,
           "y": -0.2560343,
           "z": -0.00206745
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "arturoalvarez_v_floor_lamp",
-        "position": {
-          "x": 1.481532,
-          "y": 0.004223585,
-          "z": 4.38695
-        },
-        "rotation": {
-          "w": 0.946292,
-          "x": 0.0003616144,
-          "y": -0.3233124,
-          "z": 0.0005989429
         },
         "scale_factor": {
           "x": 1,
@@ -11171,28 +11127,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arturoalvarez_v_floor_lamp",
-        "position": {
-          "x": 1.481818,
-          "y": 0.002124548,
-          "z": 7.080165
-        },
-        "rotation": {
-          "w": 0.9462921,
-          "x": 0.0003615604,
-          "y": -0.3233124,
-          "z": 0.0005990475
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "alivar_tech_bench_sofa",
         "position": {
           "x": -8.829962,
@@ -14596,28 +14530,6 @@
           "x": 2.609436e-06,
           "y": 1.148292e-06,
           "z": -4.467285e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "dark_red_club_chair",
-        "position": {
-          "x": -1.24,
-          "y": 0.01936492,
-          "z": -2.32
-        },
-        "rotation": {
-          "w": 8.731149e-11,
-          "x": 0,
-          "y": -1,
-          "z": 0
         },
         "scale_factor": {
           "x": 1,

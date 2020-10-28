@@ -247,7 +247,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "alivar_tech_bench_sofa",
+        "name": "arflex_strips_sofa",
         "position": {
           "x": -8.070012,
           "y": 0.002412468,
@@ -456,6 +456,28 @@
           "x": -0.09883256,
           "y": -0.9605316,
           "z": -0.01847819
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sayonara_sofa",
+        "position": {
+          "x": 3.622001,
+          "y": 0.002194136,
+          "z": -3.387989
+        },
+        "rotation": {
+          "w": -0.7071075,
+          "x": -1.402848e-06,
+          "y": 0.7071061,
+          "z": 1.296401e-06
         },
         "scale_factor": {
           "x": 1,
@@ -1828,6 +1850,28 @@
         }
       },
       {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "de_castelli_placas_table",
+        "position": {
+          "x": -3.601079,
+          "y": 0.005773455,
+          "z": 4.742237
+        },
+        "rotation": {
+          "w": 0.7092554,
+          "x": -0.00896553,
+          "y": 0.7048762,
+          "z": 0.005093716
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
@@ -1943,7 +1987,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "dark_red_club_chair",
+        "name": "napoleon_iii_sofa",
         "position": {
           "x": -11.5,
           "y": 0.001802653,
@@ -2185,7 +2229,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "barcelona_bench_sofa",
+        "name": "arflex_strips_sofa",
         "position": {
           "x": 2.609998,
           "y": 0.002377629,
@@ -5531,7 +5575,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "alivar_tech_bench_sofa",
+        "name": "molteni_turner_sofa",
         "position": {
           "x": 10.64393,
           "y": 0.01247662,
@@ -8551,7 +8595,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "meridiani_belmondo_bench_sofa",
+        "name": "lapalma_stil_chair",
         "position": {
           "x": -3.369224,
           "y": 0.002513111,
@@ -8727,7 +8771,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "trunck",
+        "name": "arflex_strips_sofa",
         "position": {
           "x": -7.460035,
           "y": 0.00241971,
@@ -9915,7 +9959,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "meridiani_belmondo_bench_sofa",
+        "name": "minotti_helion_3_seater_sofa",
         "position": {
           "x": -8.242108,
           "y": 0.001723677,
@@ -10753,7 +10797,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "side_table_wood",
+        "name": "live_edge_coffee_table",
         "position": {
           "x": 6.689785,
           "y": 0.005978465,
@@ -12601,7 +12645,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "alivar_tech_bench_sofa",
+        "name": "minotti_helion_3_seater_sofa",
         "position": {
           "x": -6.477015,
           "y": 0.001699746,
@@ -13463,7 +13507,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "barcelona_bench_sofa",
+        "name": "sayonara_sofa",
         "position": {
           "x": 6.549961,
           "y": 0.006757289,
@@ -14917,7 +14961,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "meridiani_belmondo_bench_sofa",
+        "name": "napoleon_iii_sofa",
         "position": {
           "x": 5.308249,
           "y": 0.01266187,
@@ -16171,7 +16215,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "coffee_table_glass_round",
+        "name": "small_table_green_marble",
         "position": {
           "x": 6.476194,
           "y": 0.004147649,
@@ -17140,7 +17184,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "alivar_tech_bench_sofa",
+        "name": "arflex_strips_sofa",
         "position": {
           "x": 2.216021,
           "y": 0.002429485,
@@ -19146,6 +19190,28 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
+        "name": "arflex_strips_sofa",
+        "position": {
+          "x": -6.109,
+          "y": 0.002429485,
+          "z": -3.64734
+        },
+        "rotation": {
+          "w": 0.7071062,
+          "x": 1.801616e-06,
+          "y": -0.7071075,
+          "z": 2.729004e-06
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
         "name": "side_table_wood",
         "position": {
           "x": -10.71101,
@@ -20906,7 +20972,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "barcelona_bench_sofa",
+        "name": "molteni_turner_sofa",
         "position": {
           "x": 4.629,
           "y": 0.02049625,
@@ -22648,6 +22714,28 @@
         "library": "models_core.json",
         "name": "sayonara_sofa",
         "position": {
+          "x": -6.230949,
+          "y": 0.00848192,
+          "z": -4.929663
+        },
+        "rotation": {
+          "w": 0.7045856,
+          "x": -0.006559976,
+          "y": -0.7095563,
+          "z": -0.006789781
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+      {
+        "gravity": true,
+        "kinematic": false,
+        "library": "models_core.json",
+        "name": "sayonara_sofa",
+        "position": {
           "x": -7.484709,
           "y": 0.06192887,
           "z": -5.286581
@@ -23066,7 +23154,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "trunck",
+        "name": "napoleon_iii_sofa",
         "position": {
           "x": -8.57036,
           "y": 0.01167729,
@@ -23352,7 +23440,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "coffee_table_glass_round",
+        "name": "table_stack",
         "position": {
           "x": -2.403028,
           "y": 0.009560674,
@@ -24694,7 +24782,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "trapezoidal_table",
+        "name": "glass_table",
         "position": {
           "x": -3.168209,
           "y": 0.006108463,

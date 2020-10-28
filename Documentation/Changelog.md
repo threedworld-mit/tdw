@@ -4,6 +4,25 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.4
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `make_nav_mesh_obstacle` | Make a specific object a NavMesh obstacle.                   |
+| `send_nav_mesh_path`     | Tell the build to send data of a path on the NavMesh from the origin to the destination. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data   | Description                    |
+| ------------- | ------------------------------ |
+| `NavMeshPath` | A path on the scene's NavMesh. |
+
 ## v1.7.3
 
 ### `tdw` module

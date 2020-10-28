@@ -5227,14 +5227,14 @@ Cast a ray from the origin to the destination.
 ```
 
 ```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "raycast_id": 0, "frequency": "once"}
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"raycast_id"` | int | The identity of this raycast. Use this to map this raycast to the output data. | 0 |
 | `"origin"` | Vector3 | The origin of the raycast. | |
 | `"destination"` | Vector3 | The destination of the raycast. | |
+| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -5262,7 +5262,7 @@ Cast a sphere along a direction and return the results. The can be multiple hits
 ```
 
 ```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "frequency": "once"}
+{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5270,6 +5270,7 @@ Cast a sphere along a direction and return the results. The can be multiple hits
 | `"radius"` | float | The radius of the sphere. | |
 | `"origin"` | Vector3 | The origin of the raycast. | |
 | `"destination"` | Vector3 | The destination of the raycast. | |
+| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

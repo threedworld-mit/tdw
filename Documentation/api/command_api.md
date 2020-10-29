@@ -17,6 +17,7 @@
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
+| [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
 | [`set_gravity_vector`](#set_gravity_vector) | Set the gravity vector in the scene. |
@@ -167,6 +168,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`enable_image_sensor`](#enable_image_sensor) | Turn a sensor on or off. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), |
 | [`focus_on_object`](#focus_on_object) | Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera.  |
 | [`look_at`](#look_at) | Look at an object (rotate the image sensor to center the object in the frame). |
 | [`look_at_avatar`](#look_at_avatar) | Look at another avatar (rotate the image sensor to center the avatar in the frame). |
@@ -175,7 +177,7 @@
 | [`rotate_sensor_container_by`](#rotate_sensor_container_by) | Rotate the sensor container of the avatar by a given angle along a given axis. |
 | [`rotate_sensor_container_to`](#rotate_sensor_container_to) | Set the rotation quaternion of the avatar's sensor container. |
 | [`set_anti_aliasing`](#set_anti_aliasing) | Set the anti-aliasing mode for the avatar's camera.  |
-| [`toggle_image_sensor`](#toggle_image_sensor) | Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), and vice-versa. |
+| [`toggle_image_sensor`](#toggle_image_sensor) | Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off),  |
 | [`translate_sensor_container_by`](#translate_sensor_container_by) | Translate the sensor container relative to the avatar by a given directional vector. |
 
 **Create Reverb Space Command**
@@ -410,7 +412,6 @@
 
 | Command | Description |
 | --- | --- |
-| [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
 **Send Avatars Command**
@@ -638,6 +639,31 @@ Rotate the HDRI skybox by a given value and the sun light by the same value in t
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The value to rotate the HDRI skybox by. Skyboxes are always rotated in a positive direction; values are clamped between 0 and 360, and any negative values are forced positive. | |
+
+***
+
+## **`send_nav_mesh_path`**
+
+Tell the build to send data of a path on the NavMesh from the origin to the destination. 
+
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`NavMeshPath`](output_data.md#NavMeshPath)</font>
+
+```python
+{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"origin"` | Vector3 | The origin of the path. | |
+| `"destination"` | Vector3 | The destination of the path. | |
+| `"id"` | int | The ID of the path. The output data will contain a matching ID. | 0 |
 
 ***
 
@@ -2316,6 +2342,27 @@ These commands adjust an avatar's image sensor container. All avatars have at le
 
 ***
 
+## **`enable_image_sensor`**
+
+Turn a sensor on or off. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off),
+
+
+```python
+{"$type": "enable_image_sensor"}
+```
+
+```python
+{"$type": "enable_image_sensor", "enable": True, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"enable"` | bool | If true, enable the image sensor. | True |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
 ## **`focus_on_object`**
 
 Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera. 
@@ -2512,8 +2559,9 @@ The anti-aliasing mode for the camera.
 
 ## **`toggle_image_sensor`**
 
-Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), and vice-versa.
+Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "toggle_image_sensor"}
@@ -4790,42 +4838,6 @@ Send log messages to the controller.
 # SendDataCommand
 
 These commands send data to the controller.
-
-***
-
-## **`send_nav_mesh_path`**
-
-Tell the build to send data of a path on the NavMesh from the origin to the destination. 
-
-- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`NavMeshPath`](output_data.md#NavMeshPath)</font>
-
-```python
-{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"origin"` | Vector3 | The origin of the path. | |
-| `"destination"` | Vector3 | The destination of the path. | |
-| `"id"` | int | The ID of the path. The output data will contain a matching ID. | 0 |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
 
 ***
 

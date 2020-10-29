@@ -4,6 +4,28 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.5
+
+### Command API
+
+#### New Commands
+
+| Command               | Modification             |
+| --------------------- | ------------------------ |
+| `enable_image_sensor` | Turn a sensor on or off. |
+
+#### Modified Commands
+
+| Command              | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `send_nav_mesh_path` | Removed parameter `frequency`.<br/>Fixed: Can only receive one `NavMeshPath` output data object. |
+
+#### Deprecated Commands
+
+| Command               | Reason                                                       |
+| --------------------- | ------------------------------------------------------------ |
+| `toggle_image_sensor` | Functionality can be replicated with `enable_image_sensor` (which is easier to use). |
+
 ## v1.7.4
 
 ### `tdw` module

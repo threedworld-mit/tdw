@@ -312,7 +312,7 @@ class PyScrape:
         """
         Clean up after a given scrape event has ended.
         """
-        scrape_key = str(target_id) + "_" + str(other_id)
+        scrape_key = IdPair(target_id, other_id)
         del self.scrape_event_count_dict[scrape_key]
         del self.summed_master_dict[scrape_key]
         del self.start_velo_dict[scrape_key]

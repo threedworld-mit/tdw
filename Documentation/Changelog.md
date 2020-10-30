@@ -4,6 +4,23 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.6
+
+### Command API
+
+#### New Commands
+
+| Command                            | Description                                              |
+| ---------------------------------- | -------------------------------------------------------- |
+| `set_avatar_rigidbody_constraints` | Set the rigidbody constraints of a Sticky Mitten Avatar. |
+| `add_fixed_joint`                  | Attach one object to another.                            |
+
+#### Modified Commands
+
+| Command            | Modification                        |
+| ------------------ | ----------------------------------- |
+| `rotate_object_to` | Added optional `physics` parameter. |
+
 ## v1.7.5
 
 ### Command API

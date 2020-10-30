@@ -10,6 +10,30 @@ from tdw.py_impact import PyImpact
 from typing import Dict, Union
 
 
+class IdPair:
+    """
+    A pair of unordered object IDs.
+    """
+    def __init__(self, id1: int, id2: int):
+        """
+        :param id1: The first ID.
+        :param id2: The second ID.
+        """
+        self.id1 = id1
+        self.id2 = id2
+
+    def __eq__(self, other):
+        if not isinstance(other, IdPair):
+            return False
+        return (other.id1 == self.id1 and other.id2 == self.id2) or (other.id1 == self.id2 and other.id2 == self.id1)
+
+    def __hash__(self):
+        if self.id1 > self.id2:
+            return hash((self.id1, self.id2))
+        else:
+            return hash((self.id2, self.id1))
+
+
 class PyScrape:
     """
     Generate scraping sounds from physics data.
@@ -123,8 +147,6 @@ class PyScrape:
         # Initialize the scraping event counter.
         self.scrape_event_count_dict: Dict[str, int] = dict()
 
-
-
     def get_scrape_sound(self, p: PyImpact, rbody, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, target_id: int, target_mat: str, target_amp: float, other_id: int, other_mat: str, other_amp: float, resonance: float) -> bytes:
         """
         Create a scrape sound, and return a valid command to play audio data in TDW.
@@ -144,7 +166,7 @@ class PyScrape:
         :return byte array of audio data.
         """   
         # Create dictionary key for this object-to-object scrape
-        scrape_key = str(target_id) + "_" + str(other_id)
+        scrape_key = IdPair(target_id, other_id)
 
         # Initialize scrape variables.
         summed_master = AudioSegment.silent(duration=0, frame_rate=self.samplerate)

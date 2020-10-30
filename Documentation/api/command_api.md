@@ -102,7 +102,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`set_rigidbody_constraints`](#set_rigidbody_constraints) | Set the rigidbody constraints of a Sticky Mitten Avatar. |
+| [`set_avatar_rigidbody_constraints`](#set_avatar_rigidbody_constraints) | Set the rigidbody constraints of a Sticky Mitten Avatar. |
 
 **Nav Mesh Avatar Command**
 
@@ -1658,17 +1658,17 @@ These commands work only for the specified avatar subclass.
 
 ***
 
-## **`set_rigidbody_constraints`**
+## **`set_avatar_rigidbody_constraints`**
 
 Set the rigidbody constraints of a Sticky Mitten Avatar.
 
 
 ```python
-{"$type": "set_rigidbody_constraints"}
+{"$type": "set_avatar_rigidbody_constraints"}
 ```
 
 ```python
-{"$type": "set_rigidbody_constraints", "rotate": True, "translate": True, "avatar_id": "a"}
+{"$type": "set_avatar_rigidbody_constraints", "rotate": True, "translate": True, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |

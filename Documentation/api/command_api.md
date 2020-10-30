@@ -100,6 +100,10 @@
 
 **Avatar Type Command**
 
+| Command | Description |
+| --- | --- |
+| [`set_rigidbody_constraints`](#set_rigidbody_constraints) | Set the rigidbody constraints of a Sticky Mitten Avatar. |
+
 **Nav Mesh Avatar Command**
 
 | Command | Description |
@@ -258,6 +262,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_constant_force`](#add_constant_force) | Add a constant force to an object. Every frame, this force will be applied to the Rigidbody. Unlike other force commands, this command will provide gradual acceleration rather than immediate impulse; it is thus more useful for animation than a deterministic physics simulation. |
+| [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint. |
 | [`apply_force_at_position`](#apply_force_at_position) | Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large. |
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
@@ -1650,6 +1655,27 @@ Apply a relative torque to the avatar.
 # AvatarTypeCommand
 
 These commands work only for the specified avatar subclass.
+
+***
+
+## **`set_rigidbody_constraints`**
+
+Set the rigidbody constraints of a Sticky Mitten Avatar.
+
+
+```python
+{"$type": "set_rigidbody_constraints"}
+```
+
+```python
+{"$type": "set_rigidbody_constraints", "rotate": True, "translate": True, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rotate"` | bool | If true, let the avatar rotate. | True |
+| `"translate"` | bool | If true, let the avatar translate. | True |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 # NavMeshAvatarCommand
 
@@ -3079,9 +3105,14 @@ Set the rotation quaternion of the object.
 {"$type": "rotate_object_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
 ```
 
+```python
+{"$type": "rotate_object_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1, "physics": False}
+```
+
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"rotation"` | Quaternion | The rotation quaternion. | |
+| `"physics"` | bool | This should almost always be False (the default). If True, apply a "physics-based" rotation to the object. This only works if the object has a rigidbody (i.e. is a model from a model library) and is slightly slower than a non-physics rotation. Set this to True only if you are having persistent and rare physics glitches. | False |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -3457,6 +3488,28 @@ Add a constant force to an object. Every frame, this force will be applied to th
 | `"relative_force"` | Vector3 | The vector of a force to be applied in the object's local space. | {"x": 0, "y": 0, "z": 0} |
 | `"torque"` | Vector3 | The vector of a torque, applied in world space. | {"x": 0, "y": 0, "z": 0} |
 | `"relative_torque"` | Vector3 | The vector of a torque, applied in local space. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`add_fixed_joint`**
+
+Attach the object to a parent object using a FixedJoint.
+
+
+```python
+{"$type": "add_fixed_joint", "parent_id": 1, "id": 1}
+```
+
+```python
+{"$type": "add_fixed_joint", "parent_id": 1, "id": 1, "break_force": -1, "break_torque": -1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"parent_id"` | int | The ID of the parent object. | |
+| `"break_force"` | float | The break force. If -1, defaults to infinity. | -1 |
+| `"break_torque"` | float | The break torque. If -1, defaults to infinity. | -1 |
 | `"id"` | int | The unique object ID. | |
 
 ***

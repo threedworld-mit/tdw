@@ -27,10 +27,10 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 - Added: `get_collisions()` Returns a list of collisions on this frame.
 - Added: `get_bounds_dict()` Converts bounds data to a dictionary.
-- Added: `get_closest_point_in_bounds()` The point on the object bounds closest to `origin`.
-- Added: `get_angle()` The angle in degrees between `forward` and the direction vector from `origin` to `position`.
-- Added: `get_angle_between()` The angle in degrees between two directional vectors.
-- Added: `rotate_position_around()` Rotate a position by a given angle around a given origin.
+- Added: `get_closest_position_in_bounds()` Returns the position on the object bounds closest to `origin`.
+- Added: `get_angle()` Returns the angle in degrees between `forward` and the direction vector from `origin` to `position`.
+- Added: `get_angle_between()` Returns the angle in degrees between two directional vectors.
+- Added: `rotate_position_around()` Returns a position rotated by a given angle around a given origin.
 
 ## v1.7.5
 

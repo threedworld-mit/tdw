@@ -4,6 +4,77 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.6
+
+### Command API
+
+#### New Commands
+
+| Command                            | Description                                              |
+| ---------------------------------- | -------------------------------------------------------- |
+| `set_avatar_rigidbody_constraints` | Set the rigidbody constraints of a Sticky Mitten Avatar. |
+| `add_fixed_joint`                  | Attach one object to another.                            |
+
+#### Modified Commands
+
+| Command            | Modification                        |
+| ------------------ | ----------------------------------- |
+| `rotate_object_to` | Added optional `physics` parameter. |
+
+## v1.7.5
+
+### Command API
+
+#### New Commands
+
+| Command               | Modification             |
+| --------------------- | ------------------------ |
+| `enable_image_sensor` | Turn a sensor on or off. |
+
+#### Modified Commands
+
+| Command              | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `send_nav_mesh_path` | Removed parameter `frequency`.<br/>Fixed: Can only receive one `NavMeshPath` output data object. |
+
+#### Deprecated Commands
+
+| Command               | Reason                                                       |
+| --------------------- | ------------------------------------------------------------ |
+| `toggle_image_sensor` | Functionality can be replicated with `enable_image_sensor` (which is easier to use). |
+
+## v1.7.4
+
+### `tdw` module
+
+#### `FloorplanController`
+
+- Replaced some furniture in floorplan layouts.
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `make_nav_mesh_obstacle` | Make a specific object a NavMesh obstacle.                   |
+| `send_nav_mesh_path`     | Tell the build to send data of a path on the NavMesh from the origin to the destination. |
+
+#### Modified Commands
+
+| Command           | Modification                            |
+| ----------------- | --------------------------------------- |
+| `send_spherecast` | Added optional parameter `id`.          |
+| `send_raycast`    | Renamed parameter `raycast_id` to `id`. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data   | Description                    |
+| ------------- | ------------------------------ |
+| `NavMeshPath` | A path on the scene's NavMesh. |
+
 ## v1.7.3
 
 ### `tdw` module

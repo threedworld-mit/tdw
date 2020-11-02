@@ -17,6 +17,7 @@
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
+| [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
 | [`set_gravity_vector`](#set_gravity_vector) | Set the gravity vector in the scene. |
@@ -99,6 +100,10 @@
 
 **Avatar Type Command**
 
+| Command | Description |
+| --- | --- |
+| [`set_avatar_rigidbody_constraints`](#set_avatar_rigidbody_constraints) | Set the rigidbody constraints of a Sticky Mitten Avatar. |
+
 **Nav Mesh Avatar Command**
 
 | Command | Description |
@@ -167,6 +172,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`enable_image_sensor`](#enable_image_sensor) | Turn a sensor on or off. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), |
 | [`focus_on_object`](#focus_on_object) | Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera.  |
 | [`look_at`](#look_at) | Look at an object (rotate the image sensor to center the object in the frame). |
 | [`look_at_avatar`](#look_at_avatar) | Look at another avatar (rotate the image sensor to center the avatar in the frame). |
@@ -175,7 +181,7 @@
 | [`rotate_sensor_container_by`](#rotate_sensor_container_by) | Rotate the sensor container of the avatar by a given angle along a given axis. |
 | [`rotate_sensor_container_to`](#rotate_sensor_container_to) | Set the rotation quaternion of the avatar's sensor container. |
 | [`set_anti_aliasing`](#set_anti_aliasing) | Set the anti-aliasing mode for the avatar's camera.  |
-| [`toggle_image_sensor`](#toggle_image_sensor) | Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), and vice-versa. |
+| [`toggle_image_sensor`](#toggle_image_sensor) | Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off),  |
 | [`translate_sensor_container_by`](#translate_sensor_container_by) | Translate the sensor container relative to the avatar by a given directional vector. |
 
 **Create Reverb Space Command**
@@ -222,6 +228,7 @@
 | Command | Description |
 | --- | --- |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
+| [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
 | [`rotate_object_by`](#rotate_object_by) | Rotate an object by a given angle around a given axis. |
@@ -255,6 +262,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_constant_force`](#add_constant_force) | Add a constant force to an object. Every frame, this force will be applied to the Rigidbody. Unlike other force commands, this command will provide gradual acceleration rather than immediate impulse; it is thus more useful for animation than a deterministic physics simulation. |
+| [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint. |
 | [`apply_force_at_position`](#apply_force_at_position) | Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large. |
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
@@ -568,7 +576,7 @@ Create an Oculus VR rig. For more information, see: Documentation/misc_frontend/
 Destroy all objects and avatars in the scene. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instaniate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
 
 ```python
 {"$type": "destroy_all_objects"}
@@ -636,6 +644,31 @@ Rotate the HDRI skybox by a given value and the sun light by the same value in t
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The value to rotate the HDRI skybox by. Skyboxes are always rotated in a positive direction; values are clamped between 0 and 360, and any negative values are forced positive. | |
+
+***
+
+## **`send_nav_mesh_path`**
+
+Tell the build to send data of a path on the NavMesh from the origin to the destination. 
+
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`NavMeshPath`](output_data.md#NavMeshPath)</font>
+
+```python
+{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"origin"` | Vector3 | The origin of the path. | |
+| `"destination"` | Vector3 | The destination of the path. | |
+| `"id"` | int | The ID of the path. The output data will contain a matching ID. | 0 |
 
 ***
 
@@ -1623,6 +1656,27 @@ Apply a relative torque to the avatar.
 
 These commands work only for the specified avatar subclass.
 
+***
+
+## **`set_avatar_rigidbody_constraints`**
+
+Set the rigidbody constraints of a Sticky Mitten Avatar.
+
+
+```python
+{"$type": "set_avatar_rigidbody_constraints"}
+```
+
+```python
+{"$type": "set_avatar_rigidbody_constraints", "rotate": True, "translate": True, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rotate"` | bool | If true, let the avatar rotate. | True |
+| `"translate"` | bool | If true, let the avatar translate. | True |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
 # NavMeshAvatarCommand
 
 These commands allow a NavMeshAvatar to utilize Unity's built-in pathfinding system (see "Nav Mesh Command").
@@ -2314,6 +2368,27 @@ These commands adjust an avatar's image sensor container. All avatars have at le
 
 ***
 
+## **`enable_image_sensor`**
+
+Turn a sensor on or off. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off),
+
+
+```python
+{"$type": "enable_image_sensor"}
+```
+
+```python
+{"$type": "enable_image_sensor", "enable": True, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"enable"` | bool | If true, enable the image sensor. | True |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
 ## **`focus_on_object`**
 
 Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera. 
@@ -2510,8 +2585,9 @@ The anti-aliasing mode for the camera.
 
 ## **`toggle_image_sensor`**
 
-Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), and vice-versa.
+Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "toggle_image_sensor"}
@@ -2881,7 +2957,7 @@ How objects in the scene will "carve" the NavMesh.
 
 Given a position, try to get the nearest position on the NavMesh. 
 
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Exactly once**</font>
@@ -2912,7 +2988,7 @@ Manipulate an object that is already in the scene.
 Destroy an object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instaniate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
 
 ```python
 {"$type": "destroy_object", "id": 1}
@@ -2921,6 +2997,38 @@ Destroy an object.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
+
+***
+
+## **`make_nav_mesh_obstacle`**
+
+Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command. 
+
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+
+```python
+{"$type": "make_nav_mesh_obstacle", "id": 1}
+```
+
+```python
+{"$type": "make_nav_mesh_obstacle", "id": 1, "carve_type": "all", "scale": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"carve_type"` | CarveType | How the object will "carve" holes in the NavMesh. | "all" |
+| `"scale"` | float | The scale of the obstacle relative to the size of the object. Set this lower to account for the additional space that the object will carve. | 1 |
+| `"id"` | int | The unique object ID. | |
+
+#### CarveType
+
+How objects in the scene will "carve" the NavMesh.
+
+| Value | Description |
+| --- | --- |
+| `"all"` | Each object will carve a large hole in the NavMesh. If an object moves, the hole will move too. This is the most performance-intensive option. |
+| `"stationary"` | Each object will initially carve a large hole in the NavMesh. If an objects moves, it won't "re-carve" the NavMesh. A small hole will remain in its original position. |
+| `"none"` | Each object will carve small holes in the NavMesh. If an objects moves, it won't "re-carve" the NavMesh. A small hole will remain in its original position. |
 
 ***
 
@@ -2997,9 +3105,14 @@ Set the rotation quaternion of the object.
 {"$type": "rotate_object_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
 ```
 
+```python
+{"$type": "rotate_object_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1, "physics": False}
+```
+
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"rotation"` | Quaternion | The rotation quaternion. | |
+| `"physics"` | bool | This should almost always be False (the default). If True, apply a "physics-based" rotation to the object. This only works if the object has a rigidbody (i.e. is a model from a model library) and is slightly slower than a non-physics rotation. Set this to True only if you are having persistent and rare physics glitches. | False |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -3184,7 +3297,7 @@ Assign the FlexContainer of the object.
 Destroy the Flex object. This will leak memory (due to a bug in the Flex library that we can't fix), but will leak <emphasis>less</emphasis> memory than destroying a Flex-enabled object with <computeroutput>destroy_object</computeroutput>. 
 
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instaniate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
 
 ```python
 {"$type": "destroy_flex_object", "id": 1}
@@ -3375,6 +3488,28 @@ Add a constant force to an object. Every frame, this force will be applied to th
 | `"relative_force"` | Vector3 | The vector of a force to be applied in the object's local space. | {"x": 0, "y": 0, "z": 0} |
 | `"torque"` | Vector3 | The vector of a torque, applied in world space. | {"x": 0, "y": 0, "z": 0} |
 | `"relative_torque"` | Vector3 | The vector of a torque, applied in local space. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`add_fixed_joint`**
+
+Attach the object to a parent object using a FixedJoint.
+
+
+```python
+{"$type": "add_fixed_joint", "parent_id": 1, "id": 1}
+```
+
+```python
+{"$type": "add_fixed_joint", "parent_id": 1, "id": 1, "break_force": -1, "break_torque": -1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"parent_id"` | int | The ID of the parent object. | |
+| `"break_force"` | float | The break force. If -1, defaults to infinity. | -1 |
+| `"break_torque"` | float | The break torque. If -1, defaults to infinity. | -1 |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -3621,7 +3756,7 @@ These commands affect humanoids currently in the scene. To add a humanoid, see a
 
 Destroy a humanoid. 
 
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instaniate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
 
 ```python
 {"$type": "destroy_humanoid", "id": 1}
@@ -5157,14 +5292,14 @@ Cast a ray from the origin to the destination.
 ```
 
 ```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "raycast_id": 0, "frequency": "once"}
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"raycast_id"` | int | The identity of this raycast. Use this to map this raycast to the output data. | 0 |
 | `"origin"` | Vector3 | The origin of the raycast. | |
 | `"destination"` | Vector3 | The destination of the raycast. | |
+| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -5192,7 +5327,7 @@ Cast a sphere along a direction and return the results. The can be multiple hits
 ```
 
 ```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "frequency": "once"}
+{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5200,6 +5335,7 @@ Cast a sphere along a direction and return the results. The can be multiple hits
 | `"radius"` | float | The radius of the sphere. | |
 | `"origin"` | Vector3 | The origin of the raycast. | |
 | `"destination"` | Vector3 | The destination of the raycast. | |
+| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

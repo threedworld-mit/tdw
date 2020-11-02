@@ -1,4 +1,4 @@
-from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform
+from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState
 from tdw.FBOutput import Environments as Envs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
@@ -30,6 +30,7 @@ from tdw.FBOutput import Volumes as Vol
 from tdw.FBOutput import AudioSources as Audi
 from tdw.FBOutput import Raycast as Ray
 from tdw.FBOutput import Overlap as Over
+from tdw.FBOutput import NavMeshPath as Path
 import numpy as np
 from typing import Tuple, Optional
 
@@ -776,3 +777,21 @@ class Overlap(OutputData):
 
     def get_env(self) -> bool:
         return self.data.Env()
+
+
+class NavMeshPath(OutputData):
+    _STATES = {PathState.PathState.complete: "complete",
+               PathState.PathState.invalid: "invalid",
+               PathState.PathState.partial: "partial"}
+
+    def get_data(self) -> Path.NavMeshPath:
+        return Path.NavMeshPath.GetRootAsNavMeshPath(self.bytes, 0)
+
+    def get_state(self) -> str:
+        return NavMeshPath._STATES[self.data.State()]
+
+    def get_path(self) -> np.array:
+        return self.data.PathAsNumpy().view(dtype=np.float32).reshape(-1, 3)
+
+    def get_id(self) -> int:
+        return self.data.Id()

@@ -468,7 +468,7 @@ _Returns:_  A dictionary of the bounds. Key = the name of the position. Value = 
 
 ***
 
-#### `get_closest_point_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array`
+#### `get_closest_position_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array`
 
 _This is a static function._
 
@@ -479,7 +479,7 @@ _This is a static function._
 | bounds | Bounds output data. |
 | index | The index in `bounds` of the target object. |
 
-_Returns:_  The point on the object bounds closests to `origin`.
+_Returns:_  The position on the object bounds that is closest to `origin`.
 
 ***
 
@@ -512,17 +512,19 @@ _Returns:_  The angle in degrees between two directional vectors.
 
 ***
 
-#### `rotate_point_around(point: np.array, angle: float, origin: np.array = None) -> np.array`
+#### `rotate_position_around(position: np.array, angle: float, origin: np.array = None) -> np.array`
 
 _This is a static function._
 
-Rotate a point counterclockwise by a given angle around a given origin.
+Rotate a position by a given angle around a given origin.
 
 | Parameter | Description |
 | --- | --- |
-| origin | The origin position. |
-| point | The point being rotated. |
+| origin | The origin position.  If None, the origin is `[0, 0, 0]` |
+| position | The point being rotated. |
 | angle | The angle in degrees. |
+
+_Returns:_  The rotated position.
 
 ***
 

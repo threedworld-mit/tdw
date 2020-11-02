@@ -645,13 +645,13 @@ class TDWUtils:
                 "back": np.array(bounds.get_back(index))}
 
     @staticmethod
-    def get_closest_point_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array:
+    def get_closest_position_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array:
         """
         :param origin: The origin from which the distance is calculated.
         :param bounds: Bounds output data.
         :param index: The index in `bounds` of the target object.
 
-        :return: The point on the object bounds closests to `origin`.
+        :return: The position on the object bounds that is closest to `origin`.
         """
 
         object_bounds = TDWUtils.get_bounds_dict(bounds=bounds, index=index)
@@ -704,20 +704,22 @@ class TDWUtils:
         return np.rad2deg((ang1 - ang2) % (2 * np.pi))
 
     @staticmethod
-    def rotate_point_around(point: np.array, angle: float, origin: np.array = None) -> np.array:
+    def rotate_position_around(position: np.array, angle: float, origin: np.array = None) -> np.array:
         """
-        Rotate a point counterclockwise by a given angle around a given origin.
+        Rotate a position by a given angle around a given origin.
 
-        :param origin: The origin position.
-        :param point: The point being rotated.
+        :param origin: The origin position.  If None, the origin is `[0, 0, 0]`
+        :param position: The point being rotated.
         :param angle: The angle in degrees.
+
+        :return: The rotated position.
         """
 
         if origin is None:
             origin = np.array([0, 0, 0])
 
         radians = np.deg2rad(angle)
-        x, y = point[0], point[2]
+        x, y = position[0], position[2]
         offset_x, offset_y = origin[0], origin[2]
         adjusted_x = (x - offset_x)
         adjusted_y = (y - offset_y)
@@ -726,7 +728,7 @@ class TDWUtils:
         qx = offset_x + cos_rad * adjusted_x + sin_rad * adjusted_y
         qy = offset_y + -sin_rad * adjusted_x + cos_rad * adjusted_y
 
-        return np.array([qx, point[1], qy])
+        return np.array([qx, position[1], qy])
 
 
 class AudioUtils:

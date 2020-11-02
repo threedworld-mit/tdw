@@ -441,6 +441,93 @@ _Returns:_  A color as a numpy array of integers between 0 and 255: `[r, g, b]`
 
 ***
 
+#### `get_collisions(resp: List[bytes]) -> Tuple[List[Collision], List[EnvironmentCollision]]`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| resp | The response from the build (a byte array). |
+
+_Returns:_  Tuple: A list of collisions; a list of environment collisions.
+
+***
+
+#### `get_bounds_dict(bounds: Bounds, index: int) -> Dict[str, np.array]`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| bounds | Bounds output data. |
+| index | The index in `bounds` of the target object. |
+
+_Returns:_  A dictionary of the bounds. Key = the name of the position. Value = the position as a numpy array.
+
+***
+
+#### `get_closest_position_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| origin | The origin from which the distance is calculated. |
+| bounds | Bounds output data. |
+| index | The index in `bounds` of the target object. |
+
+_Returns:_  The position on the object bounds that is closest to `origin`.
+
+***
+
+#### `get_angle(forward: np.array, origin: np.array, position: np.array) -> float`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| position | The target position. |
+| origin | The origin position of the directional vector. |
+| forward | The forward directional vector. |
+
+_Returns:_  The angle in degrees between `forward` and the direction vector from `origin` to `position`.
+
+***
+
+#### `get_angle_between(v1: np.array, v2: np.array) -> float`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| v1 | The first directional vector. |
+| v2 | The second directional vector. |
+
+_Returns:_  The angle in degrees between two directional vectors.
+
+***
+
+#### `rotate_position_around(position: np.array, angle: float, origin: np.array = None) -> np.array`
+
+_This is a static function._
+
+Rotate a position by a given angle around a given origin.
+
+| Parameter | Description |
+| --- | --- |
+| origin | The origin position.  If None, the origin is `[0, 0, 0]` |
+| position | The point being rotated. |
+| angle | The angle in degrees. |
+
+_Returns:_  The rotated position.
+
+***
+
 ## `AudioUtils`
 
 `from tdw.tdw_utils import AudioUtils`

@@ -34,7 +34,7 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 ### Benchmarking
 
-- `benchmarker.py` no longer automatically launches the build.
+- Benchmark controllers no longer automatically launches the build.
 
 ## v1.7.5
 

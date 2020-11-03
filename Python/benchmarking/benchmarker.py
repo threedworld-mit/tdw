@@ -10,6 +10,9 @@ Use this script to benchmark TDW.
 
 
 class Benchmarker(Controller):
+    def __init__(self, port: int = 1071, check_version: bool = True):
+        super().__init__(port=port, check_version=check_version, launch_build=False)
+
     def run(self, boxes=False, hi_res=False, passes="none", png=False, transforms=False, rigidbodies=False,
             collisions=False, bounds=False, size=256, junk=0, images=False, id_colors=False, id_grayscale=False,
             collision_enter=True, collision_exit=True, collision_stay=True, env_collisions=False,
@@ -141,7 +144,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Run the benchmark.
-    b = Benchmarker(launch_build=False)
+    b = Benchmarker()
     b.start()
     fps = b.run(boxes=args.boxes, hi_res=args.hi_res, passes=args.passes, png=args.png, transforms=args.transforms,
                 rigidbodies=args.rigidbodies, collisions=args.collisions, bounds=args.bounds, size=args.size,

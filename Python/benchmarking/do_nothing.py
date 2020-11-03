@@ -15,7 +15,7 @@ This way, it is possible to gauge the effect that Command deserialization has on
 """
 
 if __name__ == "__main__":
-    c = Controller()
+    c = Controller(launch_build=False)
 
     c.start()
     c.communicate({"$type": "create_empty_environment"})

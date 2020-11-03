@@ -37,7 +37,7 @@ class RealWorldController(Controller):
         self.comm_times = []
 
         # Start the controller.
-        super().__init__(port)
+        super().__init__(port, launch_build=False)
 
     def next(self):
         """

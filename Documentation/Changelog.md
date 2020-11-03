@@ -32,6 +32,10 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 - Added: `get_angle_between()` Returns the angle in degrees between two directional vectors.
 - Added: `rotate_position_around()` Returns a position rotated by a given angle around a given origin.
 
+### Benchmarking
+
+- Benchmark controllers no longer automatically launches the build.
+
 ## v1.7.5
 
 ### Command API

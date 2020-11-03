@@ -141,7 +141,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Run the benchmark.
-    b = Benchmarker()
+    b = Benchmarker(launch_build=False)
     b.start()
     fps = b.run(boxes=args.boxes, hi_res=args.hi_res, passes=args.passes, png=args.png, transforms=args.transforms,
                 rigidbodies=args.rigidbodies, collisions=args.collisions, bounds=args.bounds, size=args.size,

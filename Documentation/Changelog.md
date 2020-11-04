@@ -10,6 +10,7 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 - When the build fails to deserialize a list of commands, the error message is more informative.
 - Fixed: Various graphics glitches when enabling/disabling cameras.
+- Fixed: `Bounds` output data is incorrect.
 
 ### Documentation
 

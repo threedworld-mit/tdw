@@ -642,7 +642,8 @@ class TDWUtils:
                 "left": np.array(bounds.get_left(index)),
                 "right": np.array(bounds.get_right(index)),
                 "front": np.array(bounds.get_front(index)),
-                "back": np.array(bounds.get_back(index))}
+                "back": np.array(bounds.get_back(index)),
+                "center": np.array(bounds.get_center(index))}
 
     @staticmethod
     def get_closest_position_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array:

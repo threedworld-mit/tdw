@@ -24,6 +24,8 @@ c.communicate({"$type": "send_log_messages"})
 
 If you send this [command](../api/command_api.md), you will receive [Log Messages](../api/output_data.md) per frame. These messages will help tell you if you've made a mistake. They _won't_ tell you if the build has crashed (because in that case, the build can't send anything!)
 
+The player log (see below) contains all of these messages, plus any others that weren't handled by the TDW logger (such as an unhandled exception in the Unity Engine).
+
 ### 2. Use the DebugController class
 
 [`DebugController`](../python/debug_controller.md) is a subclass of [`Controller`](../python/controller.md) that will record every list of commands sent to the build. You can review these commands to reproduce bugs or identify problems.
@@ -104,6 +106,10 @@ TDW/
 This error can occur when using the [AssetBundleCreator](add_local_object.md) and is caused by problems with your Unity license. 
 
 **Fix:** Make sure you have valid and active Unity credentials.
+
+#### `Newtonsoft.Json.JsonSerializationException`
+
+One or more of the commands you sent isn't formatted correctly. This message should indicate the position of the error in the JSON string.
 
 ### 4. Network Problems
 

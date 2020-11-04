@@ -10,6 +10,14 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 - When the build fails to deserialize a list of commands, the error message is more informative.
 
+### Documentation
+
+#### Modified Documentation
+
+| Document       | Modification                                       |
+| -------------- | -------------------------------------------------- |
+| `debug_tdw.md` | Added a section for JSON serialization exceptions. |
+
 ## v1.7.6
 
 ### Command API

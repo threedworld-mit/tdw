@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.8
+
+### Build
+
+- Fixed: Output from the NavMeshAvatar isn't synced with TDW's simulation steps.
+
 ## v1.7.7
 
 ### Build

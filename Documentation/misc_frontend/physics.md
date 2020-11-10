@@ -11,6 +11,8 @@ These [commands](../api/command_api.md) can improve the overall physics quality 
 | `set_physics_solver_iterations` | Set the number of physics solver iterations, which affects the overall accuracy of the physics engine. |
 | `set_time_step`                 | Set the physics time step per frame. The actual affect though isn't totally intuitive; see [documentation](../api/command_api.md#set_time_step). |
 
+See [Physics Determinism](../benchmark/determinism.md) for a benchmark.
+
 ### "Objects are not behaving realistically."
 
 Try these commands:

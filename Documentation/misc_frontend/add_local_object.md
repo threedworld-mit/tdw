@@ -11,7 +11,7 @@ You can add your own objects to the build by doing the following:
 
 ### Requirements
 
-- Windows 10 or OS X
+- Windows 10, OS X, or Linux
 - (Windows only) [Visual C++ 2012 Redistributable](https://www.microsoft.com/en-au/download/confirmation.aspx?id=30679)
 - The `tdw` module
 - Python 3.6+

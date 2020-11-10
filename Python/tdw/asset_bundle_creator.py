@@ -47,6 +47,8 @@ class AssetBundleCreator:
             binary_path = "binaries/Windows"
         elif system == "Darwin":
             binary_path = "binaries/Darwin"
+        elif system == "Linux":
+            binary_path = "binaries/Linux"
         else:
             raise Exception("AssetBundleCreator only works in Windows and OS X.")
 

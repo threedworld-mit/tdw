@@ -10,6 +10,25 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 - Fixed: Output from the NavMeshAvatar isn't synced with TDW's simulation steps.
 
+### Benchmark
+
+- Added: `benchmarking/variance.py` Test how deterministic the physics simulation is.
+- Added: `benchmarking/variance_avatar.py` Test how deterministic the physics simulation with a Sticky Mitten Avatar is.
+
+### Documentation
+
+#### New Documentation
+
+| Document         | Description                    |
+| ---------------- | ------------------------------ |
+| `determinism.md` | Physics determinism benchmark. |
+
+#### Modified Documentation
+
+| Document    | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `README.md` | Fixed: Some links aren't full URLs (this is ok for GitHub but results in dead links on the PyPi page). |
+
 ## v1.7.7
 
 ### Build

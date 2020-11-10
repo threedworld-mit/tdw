@@ -13,9 +13,9 @@
 
 ### [C# Code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md)
 
-### [License](LICENSE.txt)
+### [License](https://github.com/threedworld-mit/tdw/blob/LICENSE.txt)
 
-### [How to upgrade from TDW v1.6 to v1.7](Documentation/v1.6_to_v1.7.md)
+### [How to upgrade from TDW v1.6 to v1.7](https://github.com/threedworld-mit/tdw/blob/master/Documentation/v1.6_to_v1.7.md)
 
 # API
 
@@ -39,11 +39,11 @@
 | [AssetBundleCreator](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/asset_bundle_creator.md) | Covert 3D models into TDW-compatible asset bundles.          |
 | [PyImpact](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/py_impact.md) | Generate impact sounds at runtime.                           |
 | [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md) | Child class of `Controller` that has useful debug features.  |
-| [KeyboardController](Documentation/python/keyboard_controller.md) | Child class of `Controller` that can listen for keyboard input. |
-| [FloorplanController](Documentation/python/floorplan_controller.md) | Child class of `Controller` that creates an interior environment and populates it with objects. |
+| [KeyboardController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/keyboard_controller.md) | Child class of `Controller` that can listen for keyboard input. |
+| [FloorplanController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/floorplan_controller.md) | Child class of `Controller` that creates an interior environment and populates it with objects. |
 | [Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/librarian.md) | "Librarians" hold asset bundle metadata records.             |
 | [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md) | Access different NVIDIA Flex fluid types.                    |
-| [Object Init Data](Documentation/python/object_init_data.md) | Wrapper classes for storing object initialization data.      |
+| [Object Init Data](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/object_init_data.md) | Wrapper classes for storing object initialization data.      |
 
 
 ##### Backend
@@ -67,8 +67,9 @@
 | Document                                                     | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [Observation Data](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/observation_data.md) | Different means of determining what an agent is observing.   |
-| [The Sticky Mitten Avatar](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/sticky_mitten_avatar.md) | Comprehensive documentation for a physics-driven agent with "sticky mittens". |
 | [Avatar Movement](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/avatar_movement.md) | Different techniques for moving agents.                      |
+| [Sticky Mitten Avatar (low-level)](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/sticky_mitten_avatar.md) | Comprehensive documentation for a physics-driven agent with "sticky mittens". |
+| [Sticky Mitten Avatar (high-level)](https://github.com/alters-mit/sticky_mitten_avatar) | High-level API for the Sticky Mitten Avatar.                 |
 
 # Benchmarks and Speed
 
@@ -93,11 +94,15 @@
 
 # Physics (PhysX and Flex)
 
-| Document                                           | Description                                |
-| -------------------------------------------------- | ------------------------------------------ |
-| [Physics](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/physics.md)  | Common physics problems and solutions.     |
+| Document                                                     | Description                                |
+| ------------------------------------------------------------ | ------------------------------------------ |
+| [Physics](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/physics.md) | Common physics problems and solutions.     |
 | [NVIDIA Flex](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/flex.md) | Add soft bodies, cloth, and fluids to TDW. |
-| [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md)  | Access different NVIDIA Flex fluid types.  |
+| [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md) | Access different NVIDIA Flex fluid types.  |
+| [Physics Determinism](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/determinism.md) | Benchmark of PhysX physics determinism.    |
+| [tdw_physics](https://github.com/alters-mit/sticky_mitten_avatar)     | Generate a physics dataset.                |
+| [Sticky Mitten Avatar API](https://github.com/alters-mit/sticky_mitten_avatar) | High-level API for the Sticky Mitten Avatar. |
+| [Rube Goldberg (demo)](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/rube_goldberg.md) | Demo of complex physical interactions between objects, with PyImpact generation of impact sounds, set in a photorealistic scene.    |
 
 # Releases
 
@@ -106,7 +111,7 @@
 | [C# code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md) | Access to C# backend source code |
 | [Releases](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/releases.md) | Release versioning in TDW.           |
 | [Freezing your code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/freeze.md) | "Freeze" your controller into a compiled executable. |
-| [v1.6 to v1.7](Documentation/v1.6_to_v1.7.md) | How to upgrade from TDW v1.6 to TDW v1.7 |
+| [v1.6 to v1.7](https://github.com/threedworld-mit/tdw/blob/master/Documentation/v1.6_to_v1.7.md) | How to upgrade from TDW v1.6 to TDW v1.7 |
 
 # Remote Server
 
@@ -174,3 +179,4 @@
 | [tdw_sound20k](https://github.com/alters-mit/tdw_sound20k)   | Generate an audio dataset.                 |
 | [tdw_physics](https://github.com/alters-mit/tdw_physics)     | Generate a physics dataset.                |
 | [Rube Goldberg (demo)](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/rube_goldberg.md) | Demo of complex physical interactions between objects, with PyImpact generation of impact sounds, set in a photorealistic scene.    |
+| [Sticky Mitten Avatar API](https://github.com/alters-mit/sticky_mitten_avatar) | High-level API for the Sticky Mitten Avatar. |

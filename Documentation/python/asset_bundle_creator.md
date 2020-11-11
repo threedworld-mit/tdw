@@ -22,12 +22,13 @@ For more information, see: `Documentation/misc_frontend/add_local_object.md`.
 
 ***
 
-#### `__init__(self, quiet: bool = False)`
+#### `__init__(self, quiet: bool = False, display: str = ":0")`
 
 
 | Parameter | Description |
 | --- | --- |
 | quiet | If true, don't print any messages to console. |
+| display | The display to launch Unity Editor on. Ignored if this isn't Linux. |
 
 ***
 

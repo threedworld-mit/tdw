@@ -43,30 +43,25 @@ class AssetBundleCreator:
 
         # Get the binaries path and verify that AssetBundleCreator will work on this platform.
         system = platform.system()
-        self.binaries: Dict[str, str] = dict()
-        if system == "Windows":
-            binary_path = "binaries/Windows"
-        elif system == "Darwin":
-            binary_path = "binaries/Darwin"
-        elif system == "Linux":
-            binary_path = "binaries/Linux"
-            # libgconf needs to be installed the Editor to work.
+
+        self.env = os.environ.copy()
+
+        # libgconf needs to be installed the Editor to work.
+        if system == "Linux":
             try:
                 check_output(["dpkg", "-l", "libgconf-2-4"])
             except CalledProcessError as e:
                 raise Exception(f"{e}\n\nRun: sudo apt install libgconf-2-4")
-        else:
-            raise Exception("AssetBundleCreator only works in Windows and OS X.")
+            # Set the display for Linux.
+            self.env["DISPLAY"] = display
+
+        self.binaries: Dict[str, str] = dict()
+        binary_path = f"binaries/{system}"
 
         # Cache the binaries.
         self.binaries["assimp"] = f"{binary_path}/assimp/assimp"
         self.binaries["meshconv"] = f"{binary_path}/meshconv/meshconv"
         self.binaries["vhacd"] = f"{binary_path}/vhacd/testVHACD"
-
-        # Set the display for Linux.
-        self.env = os.environ.copy()
-        if platform.system() == "Linux":
-            self.env["DISPLAY"] = display
 
         for binary in self.binaries:
             # Add the .exe suffix for Windows.

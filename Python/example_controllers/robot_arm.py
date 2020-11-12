@@ -10,6 +10,10 @@ class RobotArm(Controller):
     Add a robot to TDW and bend its arm.
     """
 
+    def __init__(self, port: int = 1071, launch_build: bool = True):
+        self.robot_id = 0
+        super().__init__(port=port, launch_build=launch_build)
+
     def do_arm_motion(self) -> None:
         """
         Wait for the joints to stop moving.
@@ -24,10 +28,13 @@ class RobotArm(Controller):
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
                 if r_id == "robo":
-                    robot = Robot(resp[i])
-                    break
+                    r = Robot(resp[i])
+                    if r.get_id() == self.robot_id:
+                        robot = r
+                        break
             assert robot is not None, f"No robot data: {resp}"
 
+            # Check if the joints are done moving.
             done = True
             for i in range(robot.get_num_body_parts()):
                 if robot.get_body_part_sleeping(i):
@@ -37,12 +44,15 @@ class RobotArm(Controller):
 
     def run(self) -> None:
         self.start()
-        robot_id = 0
+
         # Create the scene. Add a robot.
+        # Request static robot data for this frame only.
+        # Request dynamic robot data per frame.
         commands = [TDWUtils.create_empty_room(12, 12),
                     {"$type": "add_robot",
-                     "id": robot_id},
-                    {"$type": "send_static_robots"},
+                     "id": self.robot_id},
+                    {"$type": "send_static_robots",
+                     "frequency": "once"},
                     {"$type": "send_robots",
                      "frequency": "always"}]
         # Add an avatar to render the scene.
@@ -59,8 +69,10 @@ class RobotArm(Controller):
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "srob":
-                static_robot = StaticRobot(resp[i])
-                break
+                r = StaticRobot(resp[i])
+                if r.get_id() == self.robot_id:
+                    static_robot = r
+                    break
         assert static_robot is not None, f"No static robot data: {resp}"
 
         # Get the IDs of the shoulder and the elbow.
@@ -79,12 +91,12 @@ class RobotArm(Controller):
         # Rotate the shoulder and the elbow for two motions.
         for angles in [[70, 90], [-30, -25]]:
             self.communicate([{"$type": "rotate_robot_joint_to",
-                               "id": robot_id,
+                               "id": self.robot_id,
                                "joint_id": shoulder_id,
                                "force_limit": 5,
                                "angle": angles[0]},
                               {"$type": "rotate_robot_joint_to",
-                               "id": robot_id,
+                               "id": self.robot_id,
                                "joint_id": elbow_id,
                                "force_limit": 5,
                                "angle": angles[1]}])

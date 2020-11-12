@@ -81,10 +81,12 @@ class RobotArm(Controller):
             self.communicate([{"$type": "rotate_robot_joint_to",
                                "id": robot_id,
                                "joint_id": shoulder_id,
+                               "force_limit": 5,
                                "angle": angles[0]},
                               {"$type": "rotate_robot_joint_to",
                                "id": robot_id,
                                "joint_id": elbow_id,
+                               "force_limit": 5,
                                "angle": angles[1]}])
             # Wait for the joints to stop moving.
             self.do_arm_motion()

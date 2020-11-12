@@ -1,4 +1,5 @@
-from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState
+from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState, \
+    JointType
 from tdw.FBOutput import Environments as Envs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
@@ -31,6 +32,8 @@ from tdw.FBOutput import AudioSources as Audi
 from tdw.FBOutput import Raycast as Ray
 from tdw.FBOutput import Overlap as Over
 from tdw.FBOutput import NavMeshPath as Path
+from tdw.FBOutput import StaticRobot as StRobo
+from tdw.FBOutput import Robot as Robo
 import numpy as np
 from typing import Tuple, Optional
 
@@ -795,3 +798,105 @@ class NavMeshPath(OutputData):
 
     def get_id(self) -> int:
         return self.data.Id()
+
+
+class StaticRobot(OutputData):
+    _JOINT_TYPE = {JointType.JointType.non_moveable: "fixed",
+                   JointType.JointType.prismatic: "prismatic",
+                   JointType.JointType.revolute: "revolute",
+                   JointType.JointType.spherical: "spherical"}
+
+    def get_data(self) -> StRobo.StaticRobot:
+        return StRobo.StaticRobot.GetRootAsStaticRobot(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_num_body_parts(self) -> int:
+        return self.data.BodyPartsLength()
+
+    def get_body_part_id(self, index: int) -> int:
+        return self.data.BodyParts(index).Id()
+
+    def get_body_part_segmentation_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.BodyParts(index).SegmentationColor())
+
+    def get_body_part_mass(self, index: int) -> float:
+        return self.data.BodyParts(index).mass()
+
+    def get_is_body_part_immovable(self, index: int) -> bool:
+        return self.data.BodyParts(index).Immovable()
+
+    def get_is_body_part_root(self, index: int) -> bool:
+        return self.data.BodyParts(index).Root()
+
+    def get_body_part_parent_id(self, index: int) -> int:
+        return self.data.BodyParts(index).ParentId()
+
+    def get_body_part_name(self, index: int) -> str:
+        return self.data.BodyParts(index).Name().decode('utf-8')
+
+    def get_body_part_linear_damping(self, index: int) -> float:
+        return self.data.BodyParts(index).LinearDamping()
+
+    def get_body_part_angular_damping(self, index: int) -> float:
+        return self.data.BodyParts(index).AngularDamping()
+
+    def get_body_part_joint_friction(self, index: int) -> float:
+        return self.data.BodyParts(index).JointFriction()
+
+    def get_body_part_joint_type(self, index: int) -> str:
+        return StaticRobot._JOINT_TYPE[self.data.BodyParts(index).JointType()]
+
+    def get_body_drive_damping(self, index: int) -> float:
+        return self.data.BodyParts(index).DriveDamping()
+
+    def get_body_drive_stiffness(self, index: int) -> float:
+        return self.data.BodyParts(index).DriveStiffness()
+
+    def get_body_drive_force_limit(self, index: int) -> float:
+        return self.data.BodyParts(index).DriveForceLimit()
+
+
+class Robot(OutputData):
+    def get_data(self) -> Robo.Robot:
+        return Robo.Robot.GetRootAsRobot(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_position(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Position())
+
+    def get_rotation(self) -> Tuple[float, float, float, float]:
+        return OutputData._get_xyzw(self.data.Rotation())
+
+    def get_forward(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Forward())
+
+    def get_num_body_parts(self) -> int:
+        return self.data.BodyPartsTransformLength()
+
+    def get_body_part_id(self, index: int) -> int:
+        return self.data.BodyPartsTransform(index).Id()
+
+    def get_body_part_position(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.BodyPartsTransform(index).Position)
+
+    def get_body_part_rotation(self, index: int) -> Tuple[float, float, float, float]:
+        return OutputData._get_quaternion(self.data.BodyPartsTransform(index).Rotation)
+
+    def get_body_part_forward(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.BodyPartsTransform(index).Forward)
+
+    def get_body_part_velocity(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.BodyPartsPhysics(index).Velocity)
+
+    def get_body_part_angular_velocity(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.BodyPartsPhysics(index).AngularVelocity)
+
+    def get_body_part_mass(self, index: int) -> float:
+        return self.data.BodyPartsPhysics(index).Mass()
+
+    def get_body_part_sleeping(self, index: int) -> bool:
+        return self.data.BodyPartsPhysics(index).Sleeping()

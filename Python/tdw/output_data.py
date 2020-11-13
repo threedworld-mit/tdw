@@ -836,27 +836,6 @@ class StaticRobot(OutputData):
     def get_body_part_name(self, index: int) -> str:
         return self.data.BodyParts(index).Name().decode('utf-8')
 
-    def get_body_part_linear_damping(self, index: int) -> float:
-        return self.data.BodyParts(index).LinearDamping()
-
-    def get_body_part_angular_damping(self, index: int) -> float:
-        return self.data.BodyParts(index).AngularDamping()
-
-    def get_body_part_joint_friction(self, index: int) -> float:
-        return self.data.BodyParts(index).JointFriction()
-
-    def get_body_part_joint_type(self, index: int) -> str:
-        return StaticRobot._JOINT_TYPE[self.data.BodyParts(index).JointType()]
-
-    def get_body_drive_damping(self, index: int) -> float:
-        return self.data.BodyParts(index).DriveDamping()
-
-    def get_body_drive_stiffness(self, index: int) -> float:
-        return self.data.BodyParts(index).DriveStiffness()
-
-    def get_body_drive_force_limit(self, index: int) -> float:
-        return self.data.BodyParts(index).DriveForceLimit()
-
 
 class Robot(OutputData):
     def get_data(self) -> Robo.Robot:
@@ -894,9 +873,6 @@ class Robot(OutputData):
 
     def get_body_part_angular_velocity(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_vector3(self.data.BodyPartsPhysics(index).AngularVelocity)
-
-    def get_body_part_mass(self, index: int) -> float:
-        return self.data.BodyPartsPhysics(index).Mass()
 
     def get_body_part_sleeping(self, index: int) -> bool:
         return self.data.BodyPartsPhysics(index).Sleeping()

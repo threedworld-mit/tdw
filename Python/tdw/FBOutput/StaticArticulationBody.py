@@ -71,56 +71,7 @@ class StaticArticulationBody(object):
             return self._tab.String(o + self._tab.Pos)
         return None
 
-    # StaticArticulationBody
-    def LinearDamping(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
-        return 0.0
-
-    # StaticArticulationBody
-    def AngularDamping(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
-        return 0.0
-
-    # StaticArticulationBody
-    def JointFriction(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(22))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
-        return 0.0
-
-    # StaticArticulationBody
-    def JointType(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(24))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
-        return 1
-
-    # StaticArticulationBody
-    def DriveDamping(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
-        return 0.0
-
-    # StaticArticulationBody
-    def DriveStiffness(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(28))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
-        return 0.0
-
-    # StaticArticulationBody
-    def DriveForceLimit(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(30))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
-        return 0.0
-
-def StaticArticulationBodyStart(builder): builder.StartObject(14)
+def StaticArticulationBodyStart(builder): builder.StartObject(7)
 def StaticArticulationBodyAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
 def StaticArticulationBodyAddSegmentationColor(builder, segmentationColor): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(segmentationColor), 0)
 def StaticArticulationBodyAddMass(builder, mass): builder.PrependFloat32Slot(2, mass, 0.0)
@@ -128,11 +79,4 @@ def StaticArticulationBodyAddImmovable(builder, immovable): builder.PrependBoolS
 def StaticArticulationBodyAddRoot(builder, root): builder.PrependBoolSlot(4, root, 0)
 def StaticArticulationBodyAddParentId(builder, parentId): builder.PrependInt32Slot(5, parentId, 0)
 def StaticArticulationBodyAddName(builder, name): builder.PrependUOffsetTRelativeSlot(6, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
-def StaticArticulationBodyAddLinearDamping(builder, linearDamping): builder.PrependFloat32Slot(7, linearDamping, 0.0)
-def StaticArticulationBodyAddAngularDamping(builder, angularDamping): builder.PrependFloat32Slot(8, angularDamping, 0.0)
-def StaticArticulationBodyAddJointFriction(builder, jointFriction): builder.PrependFloat32Slot(9, jointFriction, 0.0)
-def StaticArticulationBodyAddJointType(builder, jointType): builder.PrependUint8Slot(10, jointType, 1)
-def StaticArticulationBodyAddDriveDamping(builder, driveDamping): builder.PrependFloat32Slot(11, driveDamping, 0.0)
-def StaticArticulationBodyAddDriveStiffness(builder, driveStiffness): builder.PrependFloat32Slot(12, driveStiffness, 0.0)
-def StaticArticulationBodyAddDriveForceLimit(builder, driveForceLimit): builder.PrependFloat32Slot(13, driveForceLimit, 0.0)
 def StaticArticulationBodyEnd(builder): return builder.EndObject()

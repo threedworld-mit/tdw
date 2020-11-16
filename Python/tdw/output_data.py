@@ -32,14 +32,11 @@ from tdw.FBOutput import AudioSources as Audi
 from tdw.FBOutput import Raycast as Ray
 from tdw.FBOutput import Overlap as Over
 from tdw.FBOutput import NavMeshPath as Path
-<<<<<<< HEAD
 from tdw.FBOutput import StaticRobot as StRobo
 from tdw.FBOutput import Robot as Robo
-=======
 from tdw.FBOutput import Keyboard as Key
->>>>>>> master
 import numpy as np
-from typing import Tuple, Optional, List
+from typing import Tuple, Optional
 
 
 class OutputDataUndefinedError(Exception):

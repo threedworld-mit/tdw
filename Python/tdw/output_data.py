@@ -33,7 +33,7 @@ from tdw.FBOutput import Overlap as Over
 from tdw.FBOutput import NavMeshPath as Path
 from tdw.FBOutput import Keyboard as Key
 import numpy as np
-from typing import Tuple, Optional, List
+from typing import Tuple, Optional
 
 
 class OutputDataUndefinedError(Exception):
@@ -817,5 +817,5 @@ class Keyboard(OutputData):
     def get_num_released(self) -> int:
         return self.data.ReleasedLength()
 
-    def get_released(self) -> str:
+    def get_released(self, index: int) -> str:
         return self.data.Released(index).decode('utf-8')

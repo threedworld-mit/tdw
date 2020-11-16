@@ -32,10 +32,14 @@ from tdw.FBOutput import AudioSources as Audi
 from tdw.FBOutput import Raycast as Ray
 from tdw.FBOutput import Overlap as Over
 from tdw.FBOutput import NavMeshPath as Path
+<<<<<<< HEAD
 from tdw.FBOutput import StaticRobot as StRobo
 from tdw.FBOutput import Robot as Robo
+=======
+from tdw.FBOutput import Keyboard as Key
+>>>>>>> master
 import numpy as np
-from typing import Tuple, Optional
+from typing import Tuple, Optional, List
 
 
 class OutputDataUndefinedError(Exception):
@@ -876,3 +880,26 @@ class Robot(OutputData):
 
     def get_body_part_sleeping(self, index: int) -> bool:
         return self.data.BodyPartsPhysics(index).Sleeping()
+
+
+class Keyboard(OutputData):
+    def get_data(self) -> Key.Keyboard:
+        return Key.Keyboard.GetRootAsKeyboard(self.bytes, 0)
+
+    def get_num_pressed(self) -> int:
+        return self.data.PressedLength()
+
+    def get_pressed(self, index: int) -> str:
+        return self.data.Pressed(index).decode('utf-8')
+
+    def get_num_held(self) -> int:
+        return self.data.HeldLength()
+
+    def get_held(self, index: int) -> str:
+        return self.data.Held(index).decode('utf-8')
+
+    def get_num_released(self) -> int:
+        return self.data.ReleasedLength()
+
+    def get_released(self, index: int) -> str:
+        return self.data.Released(index).decode('utf-8')

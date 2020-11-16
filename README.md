@@ -13,7 +13,7 @@
 
 ### [C# Code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md)
 
-### [License](https://github.com/threedworld-mit/tdw/blob/LICENSE.txt)
+### [License](https://github.com/threedworld-mit/tdw/blob/master/LICENSE.txt)
 
 ### [How to upgrade from TDW v1.6 to v1.7](https://github.com/threedworld-mit/tdw/blob/master/Documentation/v1.6_to_v1.7.md)
 

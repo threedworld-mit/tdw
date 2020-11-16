@@ -4,6 +4,24 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.9
+
+### Command API
+
+#### New Commands
+
+| Command         | Description                  |
+| --------------- | ---------------------------- |
+| `send_keyboard` | Request keyboard input data. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description          |
+| ----------- | -------------------- |
+| `Keyboard`  | Keyboard input data. |
+
 ## v1.7.8
 
 ### Python

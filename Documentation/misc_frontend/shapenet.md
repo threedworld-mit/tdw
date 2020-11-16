@@ -20,15 +20,15 @@ You must download and extract the relevant ShapeNet zip files into the following
 
 **Additional requirements:**
 
-- The latest version of Unity 2019.2
+- The latest version of Unity 2019.4
 - Python 3.6+
 - The [`tdw` Python module](../python/tdw.md)
-- Windows 10 or OS X
+- Windows 10, Linux, or OS X
 
 ## Usage
 
 ```bash
-py -3 shapenet.py [OPTIONS]
+python shapenet.py [OPTIONS]
 ```
 
 #### Arguments

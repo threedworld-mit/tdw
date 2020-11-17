@@ -36,10 +36,12 @@ record = RobotRecord(data=data) # Creates a record from JSON data.
 
 ### Fields
 
-| Field  | Type           | Description                                                  |
-| ------ | -------------- | ------------------------------------------------------------ |
-| `name` | str            | The name of the robot.                                       |
-| `urls` | Dict[str, str] | A dictionary of URLs or local filepaths of asset bundles per platform. See: `RobotRecord.get_url()` |
+| Field       | Type           | Description                                                  |
+| ----------- | -------------- | ------------------------------------------------------------ |
+| `name`      | str            | The name of the robot.                                       |
+| `urls`      | Dict[str, str] | A dictionary of URLs or local filepaths of asset bundles per platform. See: `RobotRecord.get_url()` |
+| `source`    | str            | The source URL of the robot model or .urdf file.             |
+| `immovable` | bool           | If true, the base of the robot is immovable and can't change position once added to the scene. |
 
 ### Functions
 
@@ -103,7 +105,7 @@ Returns the filename of the default library (which is always the first element i
 ```python
 default_library = RobotLibrarian.get_default_library()
 
-print(default_library) # robot_librarian.json
+print(default_library) # robots.json
 ```
 
 ### Functions
@@ -114,9 +116,9 @@ Returns a record with the specified name. If that record can't be found, returns
 
 ```python
 lib = RobotLibrarian()
-record = lib.get_record("archery")
+record = lib.get_record("ur3")
 
-print(record.name) # archery
+print(record.name) # ur3
 ```
 
 | Parameter | Type | Description             |
@@ -131,10 +133,10 @@ Returns a list of records whose names include the search keyword.
 
 ```python
 lib = RobotLibrarian()
-records = lib.search_records("woman")
+records = lib.search_records("ur3")
 
 for record in records:
-    print(record.name) # woman_casual_1, etc.
+    print(record.name) # ur3
 ```
 
 | Parameter | Type | Description                                 |
@@ -177,7 +179,7 @@ lib.remove_record(record) # Returns False.
 ```python
 lib = RobotLibrarian()
 
-lib.remove_record("woman_casual_1") # Returns True.
+lib.remove_record("ur3") # Returns True.
 ```
 
 | Parameter | Type                 | Description                                                  |
@@ -204,20 +206,20 @@ Generates a valid record name. Returns: true if the name is good as-is, the new 
 ```python
 lib = RobotLibrarian()
 
-ok, name, problems = lib.get_valid_record_name("tdw_room_2018", True)
+ok, name, problems = lib.get_valid_record_name("ur3", True)
 
 print(ok) # True
-print(name) # tdw_room_2018
+print(name) # ur3
 ```
 
 ```python
 lib = RobotLibrarian()
 
-ok, name, problems = lib.get_valid_record_name("woman_casual_1", False)
+ok, name, problems = lib.get_valid_record_name("ur3", False)
 
 print(ok) # False
-print(name) # woman_casual_1abcd
-print(problems) # ["A record named woman_casual_1 already exists, and we don't want to overwrite it."]
+print(name) # ur3
+print(problems) # ["A record named ur3 already exists, and we don't want to overwrite it."]
 ```
 
 | Parameter   | Type | Description                                                  |

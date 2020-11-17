@@ -1,5 +1,4 @@
-from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState, \
-    JointType
+from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState
 from tdw.FBOutput import Environments as Envs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
@@ -802,11 +801,6 @@ class NavMeshPath(OutputData):
 
 
 class StaticRobot(OutputData):
-    _JOINT_TYPE = {JointType.JointType.non_moveable: "fixed",
-                   JointType.JointType.prismatic: "prismatic",
-                   JointType.JointType.revolute: "revolute",
-                   JointType.JointType.spherical: "spherical"}
-
     def get_data(self) -> StRobo.StaticRobot:
         return StRobo.StaticRobot.GetRootAsStaticRobot(self.bytes, 0)
 

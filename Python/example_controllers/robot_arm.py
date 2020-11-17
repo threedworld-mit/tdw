@@ -10,24 +10,20 @@ class RobotArm(Controller):
     Add a robot to TDW and bend its arm.
     """
 
-    def __init__(self, port: int = 1071, launch_build: bool = True):
-        self.robot_id = 0
-        super().__init__(port=port, launch_build=launch_build)
-
     def run(self) -> None:
+        robot_id = 0
         self.start()
 
         # Create the scene. Add a robot.
         # Request static robot data for this frame only.
         # Request dynamic robot data per frame.
         commands = [TDWUtils.create_empty_room(12, 12),
-                    {"$type": "add_robot",
-                     "id": self.robot_id},
+                    self.get_add_robot(robot_name="ur3", robot_id=robot_id),
                     {"$type": "send_static_robots",
                      "frequency": "once"},
                     {"$type": "send_robots",
                      "frequency": "always"}]
-        # Add an avatar to render the scene.
+        # Add an avatar to render the scene (just for demo purposes).
         commands.extend(TDWUtils.create_avatar(look_at=TDWUtils.VECTOR3_ZERO,
                                                position={"x": -0.881, "y": 0.836, "z": -1.396}))
         # This command is here just for demo purposes (so that the arm moves at a realistic speed).
@@ -42,7 +38,7 @@ class RobotArm(Controller):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "srob":
                 r = StaticRobot(resp[i])
-                if r.get_id() == self.robot_id:
+                if r.get_id() == robot_id:
                     static_robot = r
                     break
         assert static_robot is not None, f"No static robot data: {resp}"
@@ -58,13 +54,13 @@ class RobotArm(Controller):
 
         # Rotate the shoulder and the elbow for two motions.
         for angles in [[70, 90], [-30, -25]]:
-            resp = self.communicate([{"$type": "rotate_robot_joint_to",
-                                      "id": self.robot_id,
+            resp = self.communicate([{"$type": "revolve_robot_joint_to",
+                                      "id": robot_id,
                                       "joint_id": body_part_ids["Shoulder"],
                                       "force_limit": 5,
                                       "angle": angles[0]},
-                                     {"$type": "rotate_robot_joint_to",
-                                      "id": self.robot_id,
+                                     {"$type": "revolve_robot_joint_to",
+                                      "id": robot_id,
                                       "joint_id": body_part_ids["Elbow"],
                                       "force_limit": 5,
                                       "angle": angles[1]}])
@@ -77,7 +73,7 @@ class RobotArm(Controller):
                     r_id = OutputData.get_data_type_id(resp[i])
                     if r_id == "robo":
                         r = Robot(resp[i])
-                        if r.get_id() == self.robot_id:
+                        if r.get_id() == robot_id:
                             robot = r
                             break
                 assert robot is not None, f"No robot data: {resp}"

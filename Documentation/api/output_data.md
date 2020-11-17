@@ -439,7 +439,7 @@ Keyboard input. Note that in order to receive keyboard input, the build must be 
 | `get_num_held()` | The number of held. | `int` |
 | `get_held(index)` | Keys that are being pressed down. | `str` |
 | `get_num_released()` | The number of released. | `int` |
-| `get_released()` | Keys that were released between the previous frame and this frame. | `str` |
+| `get_released(index)` | Keys that were released between the previous frame and this frame. | `str` |
 
 ## LogMessage
 

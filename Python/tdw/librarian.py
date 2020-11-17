@@ -182,6 +182,7 @@ class RobotRecord(_Record):
     def __init__(self, data: Optional[dict] = None):
         super().__init__(data)
         self.source = data["source"]
+        self.immovable = data["immovable"]
 
 
 T = TypeVar("T", bound=_Record)

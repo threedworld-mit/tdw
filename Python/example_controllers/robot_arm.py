@@ -53,6 +53,8 @@ class RobotArm(Controller):
         assert "Elbow" in body_part_ids
 
         # Rotate the shoulder and the elbow for two motions.
+        # The values in this array are for the angle that the [shoulder, elbow] should rotate to per action.
+        # For more complex actions, you will probably want to organize your commands differently.
         for angles in [[70, 90], [-30, -25]]:
             resp = self.communicate([{"$type": "revolve_robot_joint_to",
                                       "id": robot_id,

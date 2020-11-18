@@ -22,6 +22,14 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 | ----------- | -------------------- |
 | `Keyboard`  | Keyboard input data. |
 
+### `tdw` module
+
+- Removed `keyboard` as a required module.
+
+#### `KeyboardController`
+
+- Controller now uses `Keyboard` output data from the simulator to detect keyboard input instead of the Python `keyboard` module, which is less reliable and doesn't work on OS X.
+
 ## v1.7.8
 
 ### Python

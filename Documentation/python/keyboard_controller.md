@@ -6,6 +6,11 @@
 
 Listen for keyboard input to send commands.
 
+Keyboard input is registered _from the build, not the controller._ For this controller to work, you must:
+
+- Run the build on the same machine as the keyboard.
+- Have the build window as the focused window (i.e. not minimized).
+
 Usage:
 
 ```python
@@ -14,22 +19,21 @@ from tdw.tdw_utils import TDWUtils
 
 def stop():
     done = True
+    c.communicate({"$type": "terminate"})
 
 done = False
 c = KeyboardController()
 c.start()
 
 # Quit.
-c.listen(key="esc", commands=None, function=stop)
+c.listen(key="esc", function=stop)
 
 # Equivalent to c.start()
-c.listen(key="r", commands={"$type": "load_scene", "scene_name": "ProcGenScene"}, function=None)
+c.listen(key="r", commands={"$type": "load_scene", "scene_name": "ProcGenScene"})
 
 while not done:
     # Receive data. Load the scene when r is pressed. Quit when Esc is pressed.
     c.communicate([])
-# Stop the build.
-c.communicate({"$type": "terminate"})
 ```
 
 ***
@@ -52,7 +56,7 @@ Create the network socket and bind the socket to the port.
 
 ***
 
-#### `communicate(self, commands: Union[dict, List[dict]]) -> list`
+#### `communicate(self, commands: Union[dict, List[dict]]) -> List[bytes]`
 
 Listen for when a key is pressed and send commands.
 
@@ -60,11 +64,12 @@ Listen for when a key is pressed and send commands.
 | --- | --- |
 | key | The keyboard key. |
 | commands | Commands to be sent when the key is pressed. |
-| function | A function to be invoked when the key is pressed. |
+| function | Function to invoke when the key is pressed. |
+| events | Listen to these keyboard events for this `key`. Options: `"press"`, `"hold"`, `"release"`. If None, this defaults to `["press"]`. |
 
 ***
 
-#### `listen(self, key: str, commands: Union[dict, List[dict]] = None, function=None) -> None`
+#### `listen(self, key: str, commands: Union[dict, List[dict]] = None, function=None, events: List[str] = None) -> None`
 
 Listen for when a key is pressed and send commands.
 
@@ -72,7 +77,8 @@ Listen for when a key is pressed and send commands.
 | --- | --- |
 | key | The keyboard key. |
 | commands | Commands to be sent when the key is pressed. |
-| function | A function to be invoked when the key is pressed. |
+| function | Function to invoke when the key is pressed. |
+| events | Listen to these keyboard events for this `key`. Options: `"press"`, `"hold"`, `"release"`. If None, this defaults to `["press"]`. |
 
 ***
 

@@ -1,4 +1,4 @@
-from typing import List, Union, Dict
+from typing import List, Union
 from tdw.controller import Controller
 from tdw.output_data import OutputData, Keyboard
 

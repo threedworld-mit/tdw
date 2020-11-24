@@ -4,28 +4,28 @@
 
 import tdw.flatbuffers
 
-class StaticArticulationBody(object):
+class StaticRobotJoint(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsStaticArticulationBody(cls, buf, offset):
+    def GetRootAsStaticRobotJoint(cls, buf, offset):
         n = tdw.flatbuffers.encode.Get(tdw.flatbuffers.packer.uoffset, buf, offset)
-        x = StaticArticulationBody()
+        x = StaticRobotJoint()
         x.Init(buf, n + offset)
         return x
 
-    # StaticArticulationBody
+    # StaticRobotJoint
     def Init(self, buf, pos):
         self._tab = tdw.flatbuffers.table.Table(buf, pos)
 
-    # StaticArticulationBody
+    # StaticRobotJoint
     def Id(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-    # StaticArticulationBody
+    # StaticRobotJoint
     def SegmentationColor(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
@@ -36,55 +36,55 @@ class StaticArticulationBody(object):
             return obj
         return None
 
-    # StaticArticulationBody
+    # StaticRobotJoint
     def Mass(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
-    # StaticArticulationBody
+    # StaticRobotJoint
     def Immovable(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
-    # StaticArticulationBody
+    # StaticRobotJoint
     def Root(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
-    # StaticArticulationBody
+    # StaticRobotJoint
     def ParentId(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-    # StaticArticulationBody
+    # StaticRobotJoint
     def JointType(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
         return 1
 
-    # StaticArticulationBody
+    # StaticRobotJoint
     def Name(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
         if o != 0:
             return self._tab.String(o + self._tab.Pos)
         return None
 
-def StaticArticulationBodyStart(builder): builder.StartObject(8)
-def StaticArticulationBodyAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
-def StaticArticulationBodyAddSegmentationColor(builder, segmentationColor): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(segmentationColor), 0)
-def StaticArticulationBodyAddMass(builder, mass): builder.PrependFloat32Slot(2, mass, 0.0)
-def StaticArticulationBodyAddImmovable(builder, immovable): builder.PrependBoolSlot(3, immovable, 0)
-def StaticArticulationBodyAddRoot(builder, root): builder.PrependBoolSlot(4, root, 0)
-def StaticArticulationBodyAddParentId(builder, parentId): builder.PrependInt32Slot(5, parentId, 0)
-def StaticArticulationBodyAddJointType(builder, jointType): builder.PrependUint8Slot(6, jointType, 1)
-def StaticArticulationBodyAddName(builder, name): builder.PrependUOffsetTRelativeSlot(7, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
-def StaticArticulationBodyEnd(builder): return builder.EndObject()
+def StaticRobotJointStart(builder): builder.StartObject(8)
+def StaticRobotJointAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
+def StaticRobotJointAddSegmentationColor(builder, segmentationColor): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(segmentationColor), 0)
+def StaticRobotJointAddMass(builder, mass): builder.PrependFloat32Slot(2, mass, 0.0)
+def StaticRobotJointAddImmovable(builder, immovable): builder.PrependBoolSlot(3, immovable, 0)
+def StaticRobotJointAddRoot(builder, root): builder.PrependBoolSlot(4, root, 0)
+def StaticRobotJointAddParentId(builder, parentId): builder.PrependInt32Slot(5, parentId, 0)
+def StaticRobotJointAddJointType(builder, jointType): builder.PrependUint8Slot(6, jointType, 1)
+def StaticRobotJointAddName(builder, name): builder.PrependUOffsetTRelativeSlot(7, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
+def StaticRobotJointEnd(builder): return builder.EndObject()

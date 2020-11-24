@@ -37,26 +37,27 @@ class Robot(object):
         return None
 
     # Robot
-    def BodyPartsPhysics(self, j):
+    def Joints(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             x = self._tab.Vector(o)
-            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 36
-            from .RigidbodyData import RigidbodyData
-            obj = RigidbodyData()
+            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 4
+            x = self._tab.Indirect(x)
+            from .RobotJoint import RobotJoint
+            obj = RobotJoint()
             obj.Init(self._tab.Bytes, x)
             return obj
         return None
 
     # Robot
-    def BodyPartsPhysicsLength(self):
+    def JointsLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # Robot
-    def BodyPartsTransform(self, j):
+    def NonMoving(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             x = self._tab.Vector(o)
@@ -68,7 +69,7 @@ class Robot(object):
         return None
 
     # Robot
-    def BodyPartsTransformLength(self):
+    def NonMovingLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.VectorLen(o)
@@ -77,8 +78,8 @@ class Robot(object):
 def RobotStart(builder): builder.StartObject(4)
 def RobotAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
 def RobotAddTransform(builder, transform): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(transform), 0)
-def RobotAddBodyPartsPhysics(builder, bodyPartsPhysics): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(bodyPartsPhysics), 0)
-def RobotStartBodyPartsPhysicsVector(builder, numElems): return builder.StartVector(36, numElems, 4)
-def RobotAddBodyPartsTransform(builder, bodyPartsTransform): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(bodyPartsTransform), 0)
-def RobotStartBodyPartsTransformVector(builder, numElems): return builder.StartVector(44, numElems, 4)
+def RobotAddJoints(builder, joints): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(joints), 0)
+def RobotStartJointsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def RobotAddNonMoving(builder, nonMoving): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(nonMoving), 0)
+def RobotStartNonMovingVector(builder, numElems): return builder.StartVector(44, numElems, 4)
 def RobotEnd(builder): return builder.EndObject()

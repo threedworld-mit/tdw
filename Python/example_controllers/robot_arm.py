@@ -56,16 +56,14 @@ class RobotArm(Controller):
         # The values in this array are for the angle that the [shoulder, elbow] should rotate to per action.
         # For more complex actions, you will probably want to organize your commands differently.
         for angles in [[70, 90], [-30, -25]]:
-            resp = self.communicate([{"$type": "revolve_robot_joint_to",
+            resp = self.communicate([{"$type": "set_revolute_target",
                                       "id": robot_id,
                                       "joint_id": body_part_ids["Shoulder"],
-                                      "force_limit": 5,
-                                      "angle": angles[0]},
-                                     {"$type": "revolve_robot_joint_to",
+                                      "target": angles[0]},
+                                     {"$type": "set_revolute_target",
                                       "id": robot_id,
                                       "joint_id": body_part_ids["Elbow"],
-                                      "force_limit": 5,
-                                      "angle": angles[1]}])
+                                      "target": angles[1]}])
             # Wait for the joints to stop moving.
             done = False
             while not done:

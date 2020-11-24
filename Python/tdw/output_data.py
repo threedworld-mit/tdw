@@ -807,70 +807,94 @@ class StaticRobot(OutputData):
     def get_id(self) -> int:
         return self.data.Id()
 
-    def get_num_body_parts(self) -> int:
-        return self.data.BodyPartsLength()
+    def get_num_joints(self) -> int:
+        return self.data.JointsLength()
 
-    def get_body_part_id(self, index: int) -> int:
-        return self.data.BodyParts(index).Id()
+    def get_joint_id(self, index: int) -> int:
+        return self.data.Joints(index).Id()
 
-    def get_body_part_segmentation_color(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_rgb(self.data.BodyParts(index).SegmentationColor())
+    def get_joint_segmentation_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.Joints(index).SegmentationColor())
 
-    def get_body_part_mass(self, index: int) -> float:
-        return self.data.BodyParts(index).mass()
+    def get_joint_mass(self, index: int) -> float:
+        return self.data.Joints(index).Mass()
 
-    def get_is_body_part_immovable(self, index: int) -> bool:
-        return self.data.BodyParts(index).Immovable()
+    def get_is_joint_immovable(self, index: int) -> bool:
+        return self.data.Joints(index).Immovable()
 
-    def get_is_body_part_root(self, index: int) -> bool:
-        return self.data.BodyParts(index).Root()
+    def get_is_joint_root(self, index: int) -> bool:
+        return self.data.Joints(index).Root()
 
-    def get_body_part_parent_id(self, index: int) -> int:
-        return self.data.BodyParts(index).ParentId()
+    def get_joint_parent_id(self, index: int) -> int:
+        return self.data.Joints(index).ParentId()
 
-    def get_body_part_name(self, index: int) -> str:
-        return self.data.BodyParts(index).Name().decode('utf-8')
+    def get_joint_name(self, index: int) -> str:
+        return self.data.Joints(index).Name().decode('utf-8')
+
+    def get_num_non_moving(self) -> int:
+        return self.data.NonMovingLength()
+
+    def get_non_moving_id(self, index: int) -> int:
+        return self.data.NonMoving(index).Id()
+
+    def get_non_moving_name(self, index: int) -> str:
+        return self.data.NonMoving(index).Name().decode('utf-8')
+
+    def get_non_moving_segmentation_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.NonMoving(index).SegmentationColor())
 
 
 class Robot(OutputData):
     def get_data(self) -> Robo.Robot:
         return Robo.Robot.GetRootAsRobot(self.bytes, 0)
-
+    
     def get_id(self) -> int:
         return self.data.Id()
 
     def get_position(self) -> Tuple[float, float, float]:
-        return OutputData._get_xyz(self.data.Position())
+        return OutputData._get_vector3(self.data.Transform().Position)
 
     def get_rotation(self) -> Tuple[float, float, float, float]:
-        return OutputData._get_xyzw(self.data.Rotation())
+        return OutputData._get_quaternion(self.data.Transform().Rotation)
 
     def get_forward(self) -> Tuple[float, float, float]:
-        return OutputData._get_xyz(self.data.Forward())
+        return OutputData._get_vector3(self.data.Transform().Forward)
 
-    def get_num_body_parts(self) -> int:
-        return self.data.BodyPartsTransformLength()
+    def get_num_joints(self) -> int:
+        return self.data.JointsLength()
 
-    def get_body_part_id(self, index: int) -> int:
-        return self.data.BodyPartsTransform(index).Id()
+    def get_joint_id(self, index: int) -> int:
+        return self.data.Joints(index).Id()
 
-    def get_body_part_position(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.BodyPartsTransform(index).Position)
+    def get_joint_position(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Joints(index).Transform().Position)
 
-    def get_body_part_rotation(self, index: int) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.BodyPartsTransform(index).Rotation)
+    def get_joint_rotation(self, index: int) -> Tuple[float, float, float, float]:
+        return OutputData._get_quaternion(self.data.Joints(index).Transform().Rotation)
 
-    def get_body_part_forward(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.BodyPartsTransform(index).Forward)
+    def get_joint_forward(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Joints(index).Transform().Forward)
 
-    def get_body_part_velocity(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.BodyPartsPhysics(index).Velocity)
+    def get_joint_targets(self, index: int) -> np.array:
+        return self.data.Joints(index).TargetsAsNumpy()
 
-    def get_body_part_angular_velocity(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.BodyPartsPhysics(index).AngularVelocity)
+    def get_joint_positions(self, index: int) -> np.array:
+        return self.data.Joints(index).PositionsAsNumpy()
 
-    def get_body_part_sleeping(self, index: int) -> bool:
-        return self.data.BodyPartsPhysics(index).Sleeping()
+    def get_num_non_moving(self) -> int:
+        return self.data.NonMovingLength()
+
+    def get_non_moving_id(self, index: int) -> int:
+        return self.data.NonMoving(index).Id()
+
+    def get_non_moving_position(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.NonMoving(index).Position)
+
+    def get_non_moving_rotation(self, index: int) -> Tuple[float, float, float, float]:
+        return OutputData._get_quaternion(self.data.NonMoving(index).Rotation)
+
+    def get_non_moving_forward(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.NonMoving(index).Forward)
 
 
 class Keyboard(OutputData):

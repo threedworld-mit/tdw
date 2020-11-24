@@ -3,8 +3,9 @@
 # namespace: FBOutput
 
 class JointType(object):
-    fixed_joint = 1
-    revolute = 2
-    prismatic = 4
-    spherical = 8
+    none = 1
+    fixed_joint = 2
+    revolute = 4
+    prismatic = 8
+    spherical = 16
 

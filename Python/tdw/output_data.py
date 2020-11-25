@@ -34,6 +34,7 @@ from tdw.FBOutput import NavMeshPath as Path
 from tdw.FBOutput import StaticRobot as StRobo
 from tdw.FBOutput import Robot as Robo
 from tdw.FBOutput import Keyboard as Key
+from tdw.FBOutput import Magnebot as Mag
 import numpy as np
 from typing import Tuple, Optional
 
@@ -918,3 +919,17 @@ class Keyboard(OutputData):
 
     def get_released(self, index: int) -> str:
         return self.data.Released(index).decode('utf-8')
+
+
+class Magnebot(OutputData):
+    def get_data(self) -> Mag.Magnebot:
+        return Mag.Magnebot.GetRootAsMagnebot(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_held_left(self) -> np.array:
+        return self.data.HeldLeftAsNumpy()
+
+    def get_held_right(self) -> np.array:
+        self.data.HeldRightAsNumpy()

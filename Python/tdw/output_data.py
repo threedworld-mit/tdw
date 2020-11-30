@@ -876,9 +876,6 @@ class Robot(OutputData):
     def get_joint_forward(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_vector3(self.data.Joints(index).Transform().Forward)
 
-    def get_joint_targets(self, index: int) -> np.array:
-        return self.data.Joints(index).TargetsAsNumpy()
-
     def get_joint_positions(self, index: int) -> np.array:
         return self.data.Joints(index).PositionsAsNumpy()
 

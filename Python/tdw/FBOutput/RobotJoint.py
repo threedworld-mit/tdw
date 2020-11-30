@@ -37,30 +37,8 @@ class RobotJoint(object):
         return None
 
     # RobotJoint
-    def Targets(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            a = self._tab.Vector(o)
-            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
-        return 0
-
-    # RobotJoint
-    def TargetsAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
-        return 0
-
-    # RobotJoint
-    def TargetsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            return self._tab.VectorLen(o)
-        return 0
-
-    # RobotJoint
     def Positions(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -68,23 +46,21 @@ class RobotJoint(object):
 
     # RobotJoint
     def PositionsAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
         return 0
 
     # RobotJoint
     def PositionsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def RobotJointStart(builder): builder.StartObject(4)
+def RobotJointStart(builder): builder.StartObject(3)
 def RobotJointAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
 def RobotJointAddTransform(builder, transform): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(transform), 0)
-def RobotJointAddTargets(builder, targets): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(targets), 0)
-def RobotJointStartTargetsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def RobotJointAddPositions(builder, positions): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(positions), 0)
+def RobotJointAddPositions(builder, positions): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(positions), 0)
 def RobotJointStartPositionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def RobotJointEnd(builder): return builder.EndObject()

@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.10
+
+### Build
+
+- Fixed: `set_visual_material` doesn't wait for the materials to update, resulting in graphical glitches.
+
 ## v1.7.9
 
 ### Command API

@@ -70,6 +70,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Images](#Images) | The images and associated metadata that were captured by an avatar. | `imag` |
 | [ImageSensors](#ImageSensors) | The names of each ImageSensor component attached to an avatar, and whether they are enabled. | `imse` |
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
+| [Keyboard](#Keyboard) | Keyboard input. Note that in order to receive keyboard input, the build must be the focused window and running on the same computer as the keyboard. | `keyb` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
@@ -422,6 +423,23 @@ Data regarding whether a position is on the NavMesh. Invoked by first sending th
 | --- | --- | --- |
 | `get_position()` | If is_on == False, this is (inf, inf inf). If is_on == True, this is a valid position on the NavMesh. | `Tuple[float, float, float]` |
 | `get_is_on()` | True if `position` is a valid position on the NavMesh. | `bool` |
+
+## Keyboard
+
+`k = Keyboard(byte_array)`
+
+**Identifier:** `keyb`
+
+Keyboard input. Note that in order to receive keyboard input, the build must be the focused window and running on the same computer as the keyboard.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num_pressed()` | The number of pressed. | `int` |
+| `get_pressed(index)` | Keys that were first pressed between the previous frame and this frame. | `str` |
+| `get_num_held()` | The number of held. | `int` |
+| `get_held(index)` | Keys that are being pressed down. | `str` |
+| `get_num_released()` | The number of released. | `int` |
+| `get_released(index)` | Keys that were released between the previous frame and this frame. | `str` |
 
 ## LogMessage
 

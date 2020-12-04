@@ -454,6 +454,7 @@
 | [`send_environments`](#send_environments) | Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) load_streamed_scene  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
+| [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -5472,6 +5473,38 @@ Send junk data.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"length"` | int | The amount of junk. | 100000 |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_keyboard`**
+
+Request keyboard input data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Keyboard`](output_data.md#Keyboard)</font>
+
+```python
+{"$type": "send_keyboard"}
+```
+
+```python
+{"$type": "send_keyboard", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

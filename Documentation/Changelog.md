@@ -4,6 +4,80 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.9
+
+### Command API
+
+#### New Commands
+
+| Command         | Description                  |
+| --------------- | ---------------------------- |
+| `send_keyboard` | Request keyboard input data. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description          |
+| ----------- | -------------------- |
+| `Keyboard`  | Keyboard input data. |
+
+### `tdw` module
+
+- Removed `keyboard` as a required module.
+
+#### `KeyboardController`
+
+- Controller now uses `Keyboard` output data from the simulator to detect keyboard input instead of the Python `keyboard` module, which is less reliable and doesn't work on OS X.
+
+## v1.7.8
+
+### Python
+
+#### `AssetBundleCreator`
+
+- **`AssetBundleCreator` works on Linux.**
+- Added optional `display` parameter to constructor.
+
+### Build
+
+- Fixed: Output from the NavMeshAvatar isn't synced with TDW's simulation steps.
+
+### Benchmark
+
+- Added: `benchmarking/variance.py` Test how deterministic the physics simulation is.
+- Added: `benchmarking/variance_avatar.py` Test how deterministic the physics simulation with a Sticky Mitten Avatar is.
+
+### Documentation
+
+#### New Documentation
+
+| Document         | Description                    |
+| ---------------- | ------------------------------ |
+| `determinism.md` | Physics determinism benchmark. |
+
+#### Modified Documentation
+
+| Document    | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `README.md` | Fixed: Some links aren't full URLs (this is ok for GitHub but results in dead links on the PyPi page). |
+
+## v1.7.7
+
+### Build
+
+- When the build fails to deserialize a list of commands, the error message is more informative.
+- Fixed: Various graphics glitches when enabling/disabling cameras.
+- Fixed: `Bounds` output data is incorrect.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document       | Modification                                       |
+| -------------- | -------------------------------------------------- |
+| `debug_tdw.md` | Added a section for JSON serialization exceptions. |
+
 ## v1.7.6
 
 ### Command API
@@ -31,6 +105,10 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 - Added: `get_angle()` Returns the angle in degrees between `forward` and the direction vector from `origin` to `position`.
 - Added: `get_angle_between()` Returns the angle in degrees between two directional vectors.
 - Added: `rotate_position_around()` Returns a position rotated by a given angle around a given origin.
+
+### Benchmarking
+
+- Benchmark controllers no longer automatically launches the build.
 
 ## v1.7.5
 

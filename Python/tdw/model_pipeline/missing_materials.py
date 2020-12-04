@@ -173,6 +173,7 @@ class MissingMaterials:
                                {"$type": "unload_asset_bundles"}])
                 pbar.update(1)
             pbar.close()
+        c.communicate({"$type": "terminate"})
 
 
 if __name__ == "__main__":

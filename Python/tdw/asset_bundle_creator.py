@@ -1,7 +1,7 @@
 from pathlib import Path
 import platform
 from typing import List, Dict, Optional, Tuple, Union
-from subprocess import call
+from subprocess import call, check_output, CalledProcessError
 import os
 import shutil
 from tdw.librarian import ModelRecord
@@ -35,20 +35,28 @@ class AssetBundleCreator:
 
     UNITY_VERSION = "2019.4"
 
-    def __init__(self, quiet: bool = False):
+    def __init__(self, quiet: bool = False, display: str = ":0"):
         """
         :param quiet: If true, don't print any messages to console.
+        :param display: The display to launch Unity Editor on. Ignored if this isn't Linux.
         """
 
         # Get the binaries path and verify that AssetBundleCreator will work on this platform.
         system = platform.system()
+
+        self.env = os.environ.copy()
+
+        # libgconf needs to be installed the Editor to work.
+        if system == "Linux":
+            try:
+                check_output(["dpkg", "-l", "libgconf-2-4"])
+            except CalledProcessError as e:
+                raise Exception(f"{e}\n\nRun: sudo apt install libgconf-2-4")
+            # Set the display for Linux.
+            self.env["DISPLAY"] = display
+
         self.binaries: Dict[str, str] = dict()
-        if system == "Windows":
-            binary_path = "binaries/Windows"
-        elif system == "Darwin":
-            binary_path = "binaries/Darwin"
-        else:
-            raise Exception("AssetBundleCreator only works in Windows and OS X.")
+        binary_path = f"binaries/{system}"
 
         # Cache the binaries.
         self.binaries["assimp"] = f"{binary_path}/assimp/assimp"
@@ -184,10 +192,12 @@ class AssetBundleCreator:
                 editor_path = Path('C:/Program Files/Unity Hub/')
         elif system == "Darwin":
             editor_path = Path("/Applications/Unity/Hub/Editor")
+        elif system == "Linux":
+            editor_path = Path.home().joinpath("Unity/Hub/Editor")
         else:
             raise Exception(f"Platform not supported: {system}")
 
-        assert editor_path.exists(), f"Unity Hub not found."
+        assert editor_path.exists(), f"Unity Hub not found: {editor_path}"
 
         # Get the expected Unity version.
         ds = []
@@ -207,6 +217,8 @@ class AssetBundleCreator:
             editor_path = editor_path.joinpath("Editor/Unity.exe")
         elif system == "Darwin":
             editor_path = editor_path.joinpath("Unity.app/Contents/MacOS/Unity")
+        elif system == "Linux":
+            editor_path = editor_path.joinpath("Editor/Unity")
         else:
             raise Exception(f"Platform not supported: {system}")
         assert editor_path.exists(), f"Unity Editor {editor_version} not found."
@@ -239,13 +251,12 @@ class AssetBundleCreator:
 
         if not self.quiet:
             print(f"Creating: {unity_project_path.resolve()}")
-
+            
         call([str(AssetBundleCreator.get_editor_path().resolve()),
               "-createProject",
               str(unity_project_path.resolve()),
               "-quit",
-              "-batchmode"
-              ])
+              "-batchmode"], env=self.env)
         assert unity_project_path.exists(), unity_project_path.resolve()
         if not self.quiet:
             print(f"Created new Unity project: {str(unity_project_path.resolve())}")
@@ -262,8 +273,7 @@ class AssetBundleCreator:
               "-importPackage",
               filepath,
               "-quit",
-              "-batchmode"
-              ])
+              "-batchmode"], env=self.env)
         if not self.quiet:
             print("Imported asset_bundle_creator.unitypackage into the new project.")
 
@@ -481,7 +491,7 @@ class AssetBundleCreator:
                             "-extension=" + model_extension,
                             "-colliders=" + colliders
                             ])
-        call(prefab_call)
+        call(prefab_call, env=self.env)
         prefab_path = self.get_resources_directory().joinpath(f"prefab/{model_name}.prefab")
         assert prefab_path.exists(), "Failed to create prefab."
 
@@ -522,7 +532,7 @@ class AssetBundleCreator:
                                   "-modelname=" + model_name,
                                   "-platforms=" + platforms_call
                                   ])
-        call(asset_bundle_call)
+        call(asset_bundle_call, env=self.env)
         new_asset_bundles_directory = self.get_assets_directory().joinpath("NewAssetBundles")
         new_asset_bundles_directory = new_asset_bundles_directory.joinpath(model_name)
         assert new_asset_bundles_directory.exists(), f"No asset bundles found: {new_asset_bundles_directory.resolve()}"
@@ -613,7 +623,7 @@ class AssetBundleCreator:
                             "RecordCreator.WriteRecord",
                             "-modelname=" + model_name,
                             "-scale=" + str(scale)])
-        call(record_call)
+        call(record_call, env=self.env)
 
         # Test the record.
         try:

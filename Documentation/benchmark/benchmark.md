@@ -184,7 +184,8 @@ python3 real_world_benchmark.py --main --machine <machine name>
 	- [Observation Data](observation_data.md)
 	- [Machine Performance](machine_performance.md)
 	- [Unity Performance](unity_loop.md)
-
+    - [Physics Determinism](determinism.md)
+	
 5. Run the Flex benchmark:
 
 ```bash

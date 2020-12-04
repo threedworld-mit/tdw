@@ -161,7 +161,7 @@ if __name__ == "__main__":
     parser.add_argument('--machine', type=str, default='legion_lenovo', choices=['legion_lenovo', 'braintree', 'node11'])
     args = parser.parse_args()
 
-    b = FlexBenchmarker()
+    b = FlexBenchmarker(launch_build=False)
     fps = b.run()
     print(fps)
 

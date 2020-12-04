@@ -11,4 +11,5 @@ class PassMask(object):
     _normals = 32
     _flow = 64
     _depth_simple = 128
+    _albedo = 512
 

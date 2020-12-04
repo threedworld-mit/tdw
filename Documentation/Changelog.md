@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.10
+
+### Command API
+
+#### Modified Commands
+
+| Command          | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| `set_pass_masks` | Added `_albedo` pass. This only color and texture,  as if lit with only ambient light. |
+
 ## v1.7.9
 
 ### Command API

@@ -8,6 +8,12 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 ### Command API
 
+#### New Commands
+
+| Command             | Description                                     |
+| ------------------- | ----------------------------------------------- |
+| `set_ambient_color` | Set the ambient color of the scene environment. |
+
 #### Modified Commands
 
 | Command          | Description                                                  |

@@ -18,6 +18,7 @@
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
+| [`set_ambient_color`](#set_ambient_color) | Set the ambient color of the scene environment. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
 | [`set_gravity_vector`](#set_gravity_vector) | Set the gravity vector in the scene. |
@@ -670,6 +671,21 @@ Tell the build to send data of a path on the NavMesh from the origin to the dest
 | `"origin"` | Vector3 | The origin of the path. | |
 | `"destination"` | Vector3 | The destination of the path. | |
 | `"id"` | int | The ID of the path. The output data will contain a matching ID. | 0 |
+
+***
+
+## **`set_ambient_color`**
+
+Set the ambient color of the scene environment.
+
+
+```python
+{"$type": "set_ambient_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"color"` | Color | The ambient color. | |
 
 ***
 

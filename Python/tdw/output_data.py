@@ -220,7 +220,8 @@ class Images(OutputData):
                   PassMask.PassMask._depth: "_depth",
                   PassMask.PassMask._normals: "_normals",
                   PassMask.PassMask._flow: "_flow",
-                  PassMask.PassMask._depth_simple: "_depth_simple"
+                  PassMask.PassMask._depth_simple: "_depth_simple",
+                  PassMask.PassMask._albedo: "_albedo"
                   }
 
     def get_data(self) -> Imags.Images:

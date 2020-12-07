@@ -22,7 +22,7 @@ class ImagePass(object):
     def PassMask(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 1
 
     # ImagePass
@@ -55,7 +55,7 @@ class ImagePass(object):
         return 1
 
 def ImagePassStart(builder): builder.StartObject(3)
-def ImagePassAddPassMask(builder, passMask): builder.PrependUint8Slot(0, passMask, 1)
+def ImagePassAddPassMask(builder, passMask): builder.PrependInt32Slot(0, passMask, 1)
 def ImagePassAddImage(builder, image): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(image), 0)
 def ImagePassStartImageVector(builder, numElems): return builder.StartVector(1, numElems, 1)
 def ImagePassAddExtension(builder, extension): builder.PrependUint8Slot(2, extension, 1)

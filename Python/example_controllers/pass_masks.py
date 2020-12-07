@@ -27,7 +27,7 @@ class PassMasks(Controller):
         # Enable all pass masks. Request an image for this frame only.
         commands.extend([{"$type": "set_pass_masks",
                           "pass_masks": ["_img", "_id", "_category", "_mask", "_depth", "_normals", "_flow",
-                                         "_depth_simple"],
+                                         "_depth_simple", "_albedo"],
                           "avatar_id": "a"},
                          {"$type": "send_images",
                           "ids": ["a"],
@@ -63,4 +63,4 @@ class PassMasks(Controller):
 
 
 if __name__ == "__main__":
-    PassMasks().run()
+    PassMasks(launch_build=False).run()

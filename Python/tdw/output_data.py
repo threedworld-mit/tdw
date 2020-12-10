@@ -930,4 +930,4 @@ class Magnebot(OutputData):
         return self.data.HeldLeftAsNumpy()
 
     def get_held_right(self) -> np.array:
-        self.data.HeldRightAsNumpy()
+        return self.data.HeldRightAsNumpy()

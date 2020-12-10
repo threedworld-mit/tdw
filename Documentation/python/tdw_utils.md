@@ -691,3 +691,18 @@ _Returns:_  The Euler angles representation of the quaternion.
 
 ***
 
+#### `get_y_angle(q1: np.array, q2: np.array) -> float`
+
+_This is a static function._
+
+Source: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+
+| Parameter | Description |
+| --- | --- |
+| q1 | The first quaternion. |
+| q2 | The second quaternion. |
+
+_Returns:_  The angle between the two quaternions in degrees around the y axis.
+
+***
+

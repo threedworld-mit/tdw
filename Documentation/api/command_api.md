@@ -345,7 +345,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`add_position_marker`](#add_position_marker) | Create a non-physics, non-interactive sphere to mark a position in the scene.  |
+| [`add_position_marker`](#add_position_marker) | Create a non-physics, non-interactive marker at a position in the scene.  |
 | [`remove_position_markers`](#remove_position_markers) | Remove all position markers from the scene.  |
 
 **Post Process Command**
@@ -4311,7 +4311,7 @@ These commands show or hide position markers. They can be useful for debugging a
 
 ## **`add_position_marker`**
 
-Create a non-physics, non-interactive sphere to mark a position in the scene. 
+Create a non-physics, non-interactive marker at a position in the scene. 
 
 - <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
 
@@ -4320,14 +4320,24 @@ Create a non-physics, non-interactive sphere to mark a position in the scene.
 ```
 
 ```python
-{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}, "scale": 0.05, "color": {"r": 1, "g": 0, "b": 0, "a": 1}}
+{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}, "scale": 0.05, "color": {"r": 1, "g": 0, "b": 0, "a": 1}, "shape": "sphere"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"position"` | Vector3 | Add a sphere at this position. | |
-| `"scale"` | float | The scale of the sphere. | 0.05 |
-| `"color"` | Color | The color of the sphere. The default color is red. | {"r": 1, "g": 0, "b": 0, "a": 1} |
+| `"position"` | Vector3 | Add a marker at this position. | |
+| `"scale"` | float | The scale of the marker. | 0.05 |
+| `"color"` | Color | The color of the marker. The default color is red. | {"r": 1, "g": 0, "b": 0, "a": 1} |
+| `"shape"` | Shape | The shape of the position marker object. | "sphere" |
+
+#### Shape
+
+The shape of the marker.
+
+| Value | Description |
+| --- | --- |
+| `"cube"` |  |
+| `"sphere"` |  |
 
 ***
 

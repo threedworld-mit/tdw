@@ -962,3 +962,18 @@ class QuaternionUtils:
         ez = np.degrees(np.arctan2(t3, t4))
 
         return np.array([ex, ey, ez])
+
+    @staticmethod
+    def get_y_angle(q1: np.array, q2: np.array) -> float:
+        """
+        Source: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+
+        :param q1: The first quaternion.
+        :param q2: The second quaternion.
+
+        :return: The angle between the two quaternions in degrees around the y axis.
+        """
+
+        qd = QuaternionUtils.multiply(QuaternionUtils.get_conjugate(q1), q2)
+
+        return np.rad2deg(2 * np.arcsin(qd[1]))

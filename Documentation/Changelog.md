@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.11
+
+### Command API
+
+#### Modified Commands
+
+| Command               | Modification                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| `add_position_marker` | Fixed: The `a` value of `color` doesn't adjust the transparency.<br>Added: optional parameter `shape`. |
+
 ## v1.7.10
 
 ### Command API
@@ -13,6 +23,12 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 | Command          | Description                                                  |
 | ---------------- | ------------------------------------------------------------ |
 | `set_pass_masks` | Added `_albedo` pass. This only color and texture,  as if lit with only ambient light. |
+
+### `tdw` module
+
+#### `QuaternionUtils`
+
+- Added: `get_y_angle()` The angle between two quaternions in degrees around the y axis.
 
 ## v1.7.9
 

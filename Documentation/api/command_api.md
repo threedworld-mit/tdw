@@ -430,6 +430,7 @@
 | [`send_id_pass_segmentation_colors`](#send_id_pass_segmentation_colors) | Send all unique colors in an _id pass.  |
 | [`send_images`](#send_images) | Send images and metadata.  |
 | [`send_image_sensors`](#send_image_sensors) | Send data about each of the avatar's ImageSensors.  |
+| [`send_screen_positions`](#send_screen_positions) | Given a list of worldspace positions, return the screenspace positions according to each of the avatar's camera.  |
 
 **Send Overlap Command**
 
@@ -5161,6 +5162,41 @@ Send data about each of the avatar's ImageSensors.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_screen_positions`**
+
+Given a list of worldspace positions, return the screenspace positions according to each of the avatar's camera. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`ScreenPosition`](output_data.md#ScreenPosition)</font>
+
+```python
+{"$type": "send_screen_positions", "position_ids": [0, 1, 2], "positions": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}]}
+```
+
+```python
+{"$type": "send_screen_positions", "position_ids": [0, 1, 2], "positions": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position_ids"` | int [] | The unique IDs of each screen position output data. Use this to map the output data to the original worldspace position. | |
+| `"positions"` | Vector3 [] | The worldspace positions. | |
 | `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 

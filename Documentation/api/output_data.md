@@ -77,6 +77,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Rigidbodies](#Rigidbodies) | Rigibody data (velocity, mass, etc.) for objects in the scene. | `rigi` |
+| [ScreenPosition](#ScreenPosition) | A position on the screen converted from a worldspace position. | `scre` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
 | [Transforms](#Transforms) | Data about the Transform component of objects (position and rotation). | `tran` |
@@ -531,6 +532,22 @@ Rigibody data (velocity, mass, etc.) for objects in the scene.
 | `get_angular_velocity(index)` | The angular velocity. | `Tuple[float, float, float]` |
 | `get_mass(index)` | The mass. | `float` |
 | `get_sleeping(index)` | True if the rigidbody is sleeping. | `bool` |
+
+## ScreenPosition
+
+`s = ScreenPosition(byte_array)`
+
+**Identifier:** `scre`
+
+A position on the screen converted from a worldspace position.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_avatar_id()` | The ID of the avatar that is rendered the screen. | `str` |
+| `get_sensor_name()` | The name of the sensor that rendered the screen. | `str` |
+| `get_id()` | An identifier for the screen position to help you map it back to the original world position. | `int` |
+| `get_screen()` | The position in screenspace coordinates. From the [Unity documentation:](https: | `Tuple[float, float, float]` |
+| `get_world()` | The position in worldspace coordinates. | `Tuple[float, float, float]` |
 
 ## SegmentationColors
 

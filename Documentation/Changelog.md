@@ -8,11 +8,25 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 ### Command API
 
+#### New Commands
+
+| Command                 | Description                                                  |
+| ----------------------- | ------------------------------------------------------------ |
+| `send_screen_positions` | Given a list of worldspace positions, return the screenspace positions according to each of the avatar's camera. |
+
 #### Modified Commands
 
 | Command               | Modification                                                 |
 | --------------------- | ------------------------------------------------------------ |
 | `add_position_marker` | Fixed: The `a` value of `color` doesn't adjust the transparency.<br>Added: optional parameter `shape`. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data      | Description                                       |
+| ---------------- | ------------------------------------------------- |
+| `ScreenPosition` | A worldspace position in screenspace coordinates. |
 
 ## v1.7.10
 

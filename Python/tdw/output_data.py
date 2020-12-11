@@ -32,6 +32,7 @@ from tdw.FBOutput import Raycast as Ray
 from tdw.FBOutput import Overlap as Over
 from tdw.FBOutput import NavMeshPath as Path
 from tdw.FBOutput import Keyboard as Key
+from tdw.FBOutput import ScreenPosition as Screen
 import numpy as np
 from typing import Tuple, Optional
 
@@ -820,3 +821,23 @@ class Keyboard(OutputData):
 
     def get_released(self, index: int) -> str:
         return self.data.Released(index).decode('utf-8')
+
+
+class ScreenPosition(OutputData):
+    def get_data(self) -> Screen.ScreenPosition:
+        return Screen.ScreenPosition.GetRootAsScreenPosition(self.bytes, 0)
+
+    def get_avatar_id(self) -> str:
+        return self.data.AvatarId().decode('utf-8')
+
+    def get_sensor_name(self) -> str:
+        return self.data.SensorName().decode('utf-8')
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_screen(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Screen())
+
+    def get_world(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.World())

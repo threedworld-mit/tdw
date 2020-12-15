@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.12
+
+### Command API
+
+#### New Commands
+
+| Command         | Description                                                  |
+| --------------- | ------------------------------------------------------------ |
+| `follow_object` | Teleport the avatar to a position relative to a target. This must be sent per-frame to continuously follow the target. |
+
 ## v1.7.11
 
 ### Command API

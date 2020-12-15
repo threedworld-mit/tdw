@@ -836,6 +836,27 @@ class QuaternionUtils:
     """
 
     _UP = np.array([0, 1, 0])
+    IDENTITY = np.array([0, 0, 0, 1])
+
+    @staticmethod
+    def get_inverse(q: np.array) -> np.array:
+        """
+        Source: https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Quaternion.cs
+
+        :param q: The quaternion.
+
+        :return: The inverse of the quaternion.
+        """
+
+        x = q[0]
+        y = q[1]
+        z = q[2]
+        w = q[3]
+
+        ls = x * x + y * y + z * z + w * w
+        inv = 1.0 / ls
+
+        return np.array([-x * inv, -y * inv, -z * inv, w * inv])
 
     @staticmethod
     def multiply(q1: np.array, q2: np.array) -> np.array:
@@ -884,6 +905,7 @@ class QuaternionUtils:
     @staticmethod
     def multiply_by_vector(q: np.array, v: np.array) -> np.array:
         """
+        Multiply a quaternion by a vector.
         Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
         :param q: The quaternion.
@@ -894,6 +916,21 @@ class QuaternionUtils:
 
         q2 = (v[0], v[1], v[2], 0.0)
         return QuaternionUtils.multiply(QuaternionUtils.multiply(q, q2), QuaternionUtils.get_conjugate(q))[:-1]
+
+    @staticmethod
+    def world_to_local_vector(position: np.array, origin: np.array, rotation: np.array) -> np.array:
+        """
+        Convert a vector position in absolute world coordinates to relative local coordinates.
+        Source: https://answers.unity.com/questions/601062/what-inversetransformpoint-does-need-explanation-p.html
+
+        :param position: The position vector in world coordinates.
+        :param origin: The origin vector of the local space in world coordinates.
+        :param rotation: The rotation quaternion of the local coordinate space.
+
+        :return: `position` in local coordinates.
+        """
+
+        return QuaternionUtils.multiply_by_vector(q=QuaternionUtils.get_inverse(q=rotation), v=position - origin)
 
     @staticmethod
     def get_up_direction(q: np.array) -> np.array:

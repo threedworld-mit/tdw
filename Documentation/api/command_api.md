@@ -66,6 +66,7 @@
 | --- | --- |
 | [`destroy_avatar`](#destroy_avatar) | Destroy an avatar.  |
 | [`enable_avatar_transparency`](#enable_avatar_transparency) | Enable transparency (the "alpha" channel, or "a" value in the color) on the avatar's visual materials. To set the color of an avatar, send set_avatar_color |
+| [`follow_object`](#follow_object) | Teleport the avatar to a position relative to a target. This must be sent per-frame to continuously follow the target. |
 | [`rotate_avatar_by`](#rotate_avatar_by) | Rotate the avatar by a given angle around a given axis.  |
 | [`rotate_avatar_to`](#rotate_avatar_to) | Set the rotation quaternion of the avatar.  |
 | [`rotate_avatar_to_euler_angles`](#rotate_avatar_to_euler_angles) | Set the rotation of the avatar with Euler angles.  |
@@ -1169,6 +1170,27 @@ Enable transparency (the "alpha" channel, or "a" value in the color) on the avat
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`follow_object`**
+
+Teleport the avatar to a position relative to a target. This must be sent per-frame to continuously follow the target.
+
+
+```python
+{"$type": "follow_object"}
+```
+
+```python
+{"$type": "follow_object", "object_id": 0, "offset": {"x": 0, "y": 0, "z": 0}, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the object that the avatar will follow. | 0 |
+| `"offset"` | Vector3 | The relative position to the avatar to the object. | {"x": 0, "y": 0, "z": 0} |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***

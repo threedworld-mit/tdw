@@ -1,17 +1,6 @@
 {
     "description": "Robot asset bundles",
     "records": {
-        "fetch": {
-            "camera": "head_camera_link",
-            "immovable": false,
-            "name": "fetch",
-            "source": "https://raw.githubusercontent.com/openai/roboschool/master/roboschool/models_robot/fetch_description/robots/fetch.urdf",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/fetch",
-                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/fetch",
-                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/fetch"
-            }
-        },
         "ur3": {
             "camera": null,
             "immovable": true,

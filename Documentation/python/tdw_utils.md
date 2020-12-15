@@ -605,6 +605,20 @@ Vectors are always numpy arrays in the following order: `[x, y, z]`.
 
 ***
 
+#### `get_inverse(q: np.array) -> np.array`
+
+_This is a static function._
+
+Source: https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Quaternion.cs
+
+| Parameter | Description |
+| --- | --- |
+| q | The quaternion. |
+
+_Returns:_  The inverse of the quaternion.
+
+***
+
 #### `multiply(q1: np.array, q2: np.array) -> np.array`
 
 _This is a static function._
@@ -639,6 +653,7 @@ _Returns:_  The conjugate of the quaternion: `[-x, -y, -z, w]`
 
 _This is a static function._
 
+Multiply a quaternion by a vector.
 Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
 | Parameter | Description |
@@ -647,6 +662,23 @@ Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-v
 | v | The vector. |
 
 _Returns:_  A directional vector calculated from: `q * v`
+
+***
+
+#### `world_to_local_vector(position: np.array, origin: np.array, rotation: np.array) -> np.array`
+
+_This is a static function._
+
+Convert a vector position in absolute world coordinates to relative local coordinates.
+Source: https://answers.unity.com/questions/601062/what-inversetransformpoint-does-need-explanation-p.html
+
+| Parameter | Description |
+| --- | --- |
+| position | The position vector in world coordinates. |
+| origin | The origin vector of the local space in world coordinates. |
+| rotation | The rotation quaternion of the local coordinate space. |
+
+_Returns:_  `position` in local coordinates.
 
 ***
 

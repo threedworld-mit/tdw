@@ -124,51 +124,51 @@
 
 | Command | Description |
 | --- | --- |
-| [`rotate_head_by`](#rotate_head_by) | Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85. |
-| [`rotate_waist`](#rotate_waist) | Rotate the waist of a StickyMittenAvatar. |
-| [`set_sticky_mitten_profile`](#set_sticky_mitten_profile) | Set the parameters of the avatar, arms, and mittens. |
+| [`rotate_head_by`](#rotate_head_by) | Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85.  |
+| [`rotate_waist`](#rotate_waist) | Rotate the waist of a StickyMittenAvatar.  |
+| [`set_sticky_mitten_profile`](#set_sticky_mitten_profile) | Set the parameters of the avatar, arms, and mittens.  |
 
 **Arm Joint Command**
 
 | Command | Description |
 | --- | --- |
-| [`stop_arm_joint`](#stop_arm_joint) | Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself. |
+| [`stop_arm_joint`](#stop_arm_joint) | Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself.  |
 
 **Bend Arm Joint Command**
 
 | Command | Description |
 | --- | --- |
-| [`bend_arm_joint_by`](#bend_arm_joint_by) | Bend the arm joint by an angle. The angle is added to the current joint angle. |
-| [`bend_arm_joint_to`](#bend_arm_joint_to) | Bend the arm joint to the target angle. |
+| [`bend_arm_joint_by`](#bend_arm_joint_by) | Bend the arm joint by an angle. The angle is added to the current joint angle.  |
+| [`bend_arm_joint_to`](#bend_arm_joint_to) | Bend the arm joint to the target angle.  |
 
 **Joint Angular Drag Command**
 
 | Command | Description |
 | --- | --- |
-| [`adjust_joint_angular_drag_by`](#adjust_joint_angular_drag_by) | Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower. |
-| [`set_joint_angular_drag`](#set_joint_angular_drag) | Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower. |
+| [`adjust_joint_angular_drag_by`](#adjust_joint_angular_drag_by) | Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower.  |
+| [`set_joint_angular_drag`](#set_joint_angular_drag) | Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower.  |
 
 **Joint Spring Command**
 
 | Command | Description |
 | --- | --- |
-| [`adjust_joint_damper_by`](#adjust_joint_damper_by) | Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster. |
-| [`adjust_joint_force_by`](#adjust_joint_force_by) | Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta. |
-| [`set_joint_damper`](#set_joint_damper) | Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster. |
-| [`set_joint_force`](#set_joint_force) | Set the force of a joint of a Sticky Mitten Avatar. |
+| [`adjust_joint_damper_by`](#adjust_joint_damper_by) | Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster.  |
+| [`adjust_joint_force_by`](#adjust_joint_force_by) | Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta.  |
+| [`set_joint_damper`](#set_joint_damper) | Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster.  |
+| [`set_joint_force`](#set_joint_force) | Set the force of a joint of a Sticky Mitten Avatar.  |
 
 **Use Mitten Command**
 
 | Command | Description |
 | --- | --- |
-| [`put_down`](#put_down) | Put down all objects held by the mitten. |
-| [`set_stickiness`](#set_stickiness) | Set the stickiness of one sub-mitten of the mitten. |
+| [`put_down`](#put_down) | Put down all objects held by the mitten.  |
+| [`set_stickiness`](#set_stickiness) | Set the stickiness of one sub-mitten of the mitten.  |
 
 **Pick Up Command**
 
 | Command | Description |
 | --- | --- |
-| [`pick_up`](#pick_up) | Pick up all objects that any sticky side of the mitten is touching. |
+| [`pick_up`](#pick_up) | Pick up all objects that any sticky side of the mitten is touching.  |
 | [`pick_up_proximity`](#pick_up_proximity) | Pick up all objects within an emitted volume defined by a radius and a distance. See Sticky Mitten Avatar documentation for more information.  |
 
 **Sensor Container Command**
@@ -1866,8 +1866,9 @@ These commands are only valid for a StickyMittenAvatar.
 
 ## **`rotate_head_by`**
 
-Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85.
+Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "rotate_head_by", "axis": "pitch", "angle": 0.125}
@@ -1897,8 +1898,9 @@ An axis of rotation.
 
 ## **`rotate_waist`**
 
-Rotate the waist of a StickyMittenAvatar.
+Rotate the waist of a StickyMittenAvatar. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "rotate_waist", "rotation": {"x": 1.1, "y": 0.0, "z": 0}}
@@ -1917,8 +1919,9 @@ Rotate the waist of a StickyMittenAvatar.
 
 ## **`set_sticky_mitten_profile`**
 
-Set the parameters of the avatar, arms, and mittens.
+Set the parameters of the avatar, arms, and mittens. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_sticky_mitten_profile", "profile": {"mass": 80.0, "arm_left": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}, "arm_right": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}}}
@@ -1941,8 +1944,9 @@ These commands affect a single joint, around a single rotational axis, of a Stic
 
 ## **`stop_arm_joint`**
 
-Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself.
+Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "stop_arm_joint", "joint": "shoulder_left", "axis": "pitch"}
@@ -1989,8 +1993,9 @@ These commands bend arm joints of a Sticky Mitten Avatar.
 
 ## **`bend_arm_joint_by`**
 
-Bend the arm joint by an angle. The angle is added to the current joint angle.
+Bend the arm joint by an angle. The angle is added to the current joint angle. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "bend_arm_joint_by", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -2034,8 +2039,9 @@ A joint in a Stick Mitten Avatar.
 
 ## **`bend_arm_joint_to`**
 
-Bend the arm joint to the target angle.
+Bend the arm joint to the target angle. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "bend_arm_joint_to", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -2083,8 +2089,9 @@ Set the angular drag of a joint of a Sticky Mitten Avatar.
 
 ## **`adjust_joint_angular_drag_by`**
 
-Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower.
+Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "adjust_joint_angular_drag_by", "joint": "shoulder_left", "axis": "pitch"}
@@ -2128,8 +2135,9 @@ A joint in a Stick Mitten Avatar.
 
 ## **`set_joint_angular_drag`**
 
-Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower.
+Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_joint_angular_drag", "joint": "shoulder_left", "axis": "pitch"}
@@ -2177,8 +2185,9 @@ These commands adjust the values of the joint spring (force and damper).
 
 ## **`adjust_joint_damper_by`**
 
-Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster.
+Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "adjust_joint_damper_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -2222,8 +2231,9 @@ A joint in a Stick Mitten Avatar.
 
 ## **`adjust_joint_force_by`**
 
-Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta.
+Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "adjust_joint_force_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -2267,8 +2277,9 @@ A joint in a Stick Mitten Avatar.
 
 ## **`set_joint_damper`**
 
-Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster.
+Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_joint_damper", "damper": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -2312,8 +2323,9 @@ A joint in a Stick Mitten Avatar.
 
 ## **`set_joint_force`**
 
-Set the force of a joint of a Sticky Mitten Avatar.
+Set the force of a joint of a Sticky Mitten Avatar. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_joint_force", "force": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -2361,8 +2373,9 @@ These commands utilize a StickyMitten.
 
 ## **`put_down`**
 
-Put down all objects held by the mitten.
+Put down all objects held by the mitten. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "put_down", "is_left": True}
@@ -2381,8 +2394,9 @@ Put down all objects held by the mitten.
 
 ## **`set_stickiness`**
 
-Set the stickiness of one sub-mitten of the mitten.
+Set the stickiness of one sub-mitten of the mitten. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_stickiness", "sub_mitten": "palm", "sticky": True, "is_left": True}
@@ -2418,8 +2432,9 @@ These commands involve picking something up with a StickyMitten. Any objects tha
 
 ## **`pick_up`**
 
-Pick up all objects that any sticky side of the mitten is touching.
+Pick up all objects that any sticky side of the mitten is touching. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "pick_up", "grip": 0.125, "is_left": True}
@@ -2443,6 +2458,7 @@ Pick up all objects that any sticky side of the mitten is touching.
 Pick up all objects within an emitted volume defined by a radius and a distance. See Sticky Mitten Avatar documentation for more information. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "pick_up_proximity", "distance": 0.125, "grip": 0.125, "is_left": True}

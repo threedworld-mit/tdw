@@ -72,13 +72,16 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
 | [Keyboard](#Keyboard) | Keyboard input. Note that in order to receive keyboard input, the build must be the focused window and running on the same computer as the keyboard. | `keyb` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
+| [Magnebot](#Magnebot) | Data for a Magnebot. | `magn` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Rigidbodies](#Rigidbodies) | Rigibody data (velocity, mass, etc.) for objects in the scene. | `rigi` |
+| [Robot](#Robot) | Data for a robot in the scene. See also: `StaticRobot` | `robo` |
 | [ScreenPosition](#ScreenPosition) | A position on the screen converted from a worldspace position. | `scre` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
+| [StaticRobot](#StaticRobot) | Static data for a robot in the scene. | `srob` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
 | [Transforms](#Transforms) | Data about the Transform component of objects (position and rotation). | `tran` |
 | [Version](#Version) | The build version and Unity version. | `vers` |
@@ -456,6 +459,20 @@ A log message sent by the build.
 | `get_message_type()` | The type of message. | `str` |
 | `get_object_type()` | The type of object that logged this message. | `str` |
 
+## Magnebot
+
+`m = Magnebot(byte_array)`
+
+**Identifier:** `magn`
+
+Data for a Magnebot.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The unique ID of the Magnebot. | `int` |
+| `get_held_left()` | The IDs of the objects held by the left magnet. | `np.array` |
+| `get_held_right()` | The IDs of the objects held by the right magnet. | `np.array` |
+
 ## Meshes
 
 `m = Meshes(byte_array)`
@@ -533,6 +550,32 @@ Rigibody data (velocity, mass, etc.) for objects in the scene.
 | `get_mass(index)` | The mass. | `float` |
 | `get_sleeping(index)` | True if the rigidbody is sleeping. | `bool` |
 
+## Robot
+
+`r = Robot(byte_array)`
+
+**Identifier:** `robo`
+
+Data for a robot in the scene. See also: `StaticRobot`
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The ID of the robot. | `int` |
+| `get_position()` | The position. | `Tuple[float, float, float]` |
+| `get_rotation()` | The rotation. | `Tuple[float, float, float, float]` |
+| `get_forward()` | The forward. | `Tuple[float, float, float]` |
+| `get_num_joints()` | The number of joints. | `int` |
+| `get_joint_id(index)` | The ID of the joint. | `int` |
+| `get_joint_position(index)` | The position of the joint. | `Tuple[float, float, float]` |
+| `get_joint_rotation(index)` | The rotation of the joint. | `Tuple[float, float, float, float]` |
+| `get_joint_forward(index)` | The forward of the joint. | `Tuple[float, float, float]` |
+| `get_joint_positions(index)` | The positions of the joint. | `np.array` |
+| `get_num_non_moving()` | The number of non moving. | `int` |
+| `get_non_moving_id(index)` | The ID of the non moving. | `int` |
+| `get_non_moving_position(index)` | The position of the non moving. | `Tuple[float, float, float]` |
+| `get_non_moving_rotation(index)` | The rotation of the non moving. | `Tuple[float, float, float, float]` |
+| `get_non_moving_forward(index)` | The forward of the non moving. | `Tuple[float, float, float]` |
+
 ## ScreenPosition
 
 `s = ScreenPosition(byte_array)`
@@ -563,6 +606,30 @@ Color segmentation data for objects in the scene.
 | `get_object_id(index)` | The ID of the object. | `int` |
 | `get_object_color(index)` | The color of the object. | `Tuple[float, float, float]` |
 | `get_object_name(index)` | The name of the object. | `str` |
+
+## StaticRobot
+
+`s = StaticRobot(byte_array)`
+
+**Identifier:** `srob`
+
+Static data for a robot in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The ID of this robot. | `int` |
+| `get_num_joints()` | The number of joints. | `int` |
+| `get_joint_id(index)` | The ID of the joint. | `int` |
+| `get_joint_segmentation_color(index)` | The color of the joint segmentation. | `Tuple[float, float, float]` |
+| `get_joint_mass(index)` | The mass of the joint. | `float` |
+| `get_is_joint_immovable(index)` | The immovable of the is joint. | `bool` |
+| `get_is_joint_root(index)` | The root of the is joint. | `bool` |
+| `get_joint_parent_id(index)` | The ID of the joint parent. | `int` |
+| `get_joint_name(index)` | The name of the joint. | `str` |
+| `get_num_non_moving()` | The number of non moving. | `int` |
+| `get_non_moving_id(index)` | The ID of the non moving. | `int` |
+| `get_non_moving_name(index)` | The name of the non moving. | `str` |
+| `get_non_moving_segmentation_color(index)` | The color of the non moving segmentation. | `Tuple[float, float, float]` |
 
 ## Substructure
 

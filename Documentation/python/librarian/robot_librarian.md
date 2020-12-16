@@ -12,11 +12,42 @@ from tdw.librarian import RobotLibrarian
 # These constructors will load the same records database.
 lib = RobotLibrarian()
 lib = RobotLibrarian(library="robots.json")
+
+# Get the names of all records in the library.
+for record in lib.records:
+    print(record.name)
 ```
 
 ## Command API
 
-Send the `add_robot` command to add a robot to the scene. **TODO add an example and more commands**
+Send the `add_robot` command to add a robot to the scene or use the wrapper function `Controller.get_add_robot()`:
+
+```python
+from platform import system
+from tdw.backend.platforms import SYSTEM_TO_S3
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+if __name__ == "__main__":
+    c = Controller(launch_build=False)
+    c.start()
+    
+    commands = [TDWUtils.create_empty_room(12, 12)]
+    
+    # Add a robot to the scene.
+    commands.append({"$type": "add_robot",
+                     "id": 0,
+                     "position": {"x": 1, "y": 0, "z": 0},
+                     "rotation": 0,
+                     "name": "ur3",
+                     "url": f"https://tdw-public.s3.amazonaws.com/robots/{SYSTEM_TO_S3[system()]}/2020.2/ur3"})
+    # This is identical to the `add_robot` command, but uses a simpler wrapper function.
+    commands.append(c.get_add_robot(name="ur3",
+                                    robot_id=1,
+                                    position={"x": -1, "y": 0, "z": 0},
+                                    rotation=0))
+    c.communicate(commands)
+```
 
 ## RobotRecord API
 

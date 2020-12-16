@@ -68,8 +68,7 @@
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [Observation Data](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/observation_data.md) | Different means of determining what an agent is observing.   |
 | [Avatar Movement](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/avatar_movement.md) | Different techniques for moving agents.                      |
-| [Sticky Mitten Avatar (low-level)](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/sticky_mitten_avatar.md) | Comprehensive documentation for a physics-driven agent with "sticky mittens". |
-| [Sticky Mitten Avatar (high-level)](https://github.com/alters-mit/sticky_mitten_avatar) | High-level API for the Sticky Mitten Avatar.                 |
+| [Magnebot](https://github.com/alters-mit/magnebot)           | High-level Magnebot API.                      |
 
 # Benchmarks and Speed
 
@@ -94,15 +93,14 @@
 
 # Physics (PhysX and Flex)
 
-| Document                                                     | Description                                |
-| ------------------------------------------------------------ | ------------------------------------------ |
-| [Physics](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/physics.md) | Common physics problems and solutions.     |
-| [NVIDIA Flex](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/flex.md) | Add soft bodies, cloth, and fluids to TDW. |
-| [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md) | Access different NVIDIA Flex fluid types.  |
-| [Physics Determinism](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/determinism.md) | Benchmark of PhysX physics determinism.    |
-| [tdw_physics](https://github.com/alters-mit/sticky_mitten_avatar)     | Generate a physics dataset.                |
-| [Sticky Mitten Avatar API](https://github.com/alters-mit/sticky_mitten_avatar) | High-level API for the Sticky Mitten Avatar. |
-| [Rube Goldberg (demo)](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/rube_goldberg.md) | Demo of complex physical interactions between objects, with PyImpact generation of impact sounds, set in a photorealistic scene.    |
+| Document                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [Physics](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/physics.md) | Common physics problems and solutions.                       |
+| [NVIDIA Flex](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/flex.md) | Add soft bodies, cloth, and fluids to TDW.                   |
+| [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md) | Access different NVIDIA Flex fluid types.                    |
+| [Physics Determinism](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/determinism.md) | Benchmark of PhysX physics determinism.                      |
+| [tdw_physics](https://github.com/alters-mit/tdw_physics)     | Generate a physics dataset.                                  |
+| [Rube Goldberg (demo)](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/rube_goldberg.md) | Demo of complex physical interactions between objects, with PyImpact generation of impact sounds, set in a photorealistic scene. |
 
 # Releases
 
@@ -134,6 +132,14 @@
 | [Remote rendering](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/xpra.md) | How to render using xpra.                                    |
 | [Observation Data](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/observation_data.md) | Different means of determining what an agent is observing.   |
 
+## Robotics
+
+| Document                                                     | Description                                   |
+| ------------------------------------------------------------ | --------------------------------------------- |
+| [Robots](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/robots.md) | Overview of robotics and the Magnebot in TDW. |
+| [Robot Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/model_librarian.md) | API for accessing robot metadata.             |
+| [Magnebot](https://github.com/alters-mit/magnebot)           | High-level Magnebot API.                      |
+
 # Scene Setup
 
 | Document                                                     | Description                                                  |
@@ -153,10 +159,10 @@
 | [Model Screenshotter](https://github.com/threedworld-mit/tdw/blob/master/Documentation/utility_applications/model_screenshotter.md) | Generate images of every model in TDW.                       |
 | [Non-free models](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/models_full.md) | Access the TDW "full model library".                         |
 | [Local 3D models](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/add_local_object.md) | Add your own objects to TDW.                                 |
-| [ShapeNet models](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/shapenet.md)   | Convert ShapeNET models into TDW objects.                    |
+| [ShapeNet models](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/shapenet.md) | Convert ShapeNET models into TDW objects.                    |
 | [Composite Objects](Documentation/composite_objects/composite_objects.md)<br>[Creating Composite Objects](https://github.com/threedworld-mit/tdw/blob/master/Documentation/composite_objects/creating_composite_objects.md) | Use and create "composite objects".                          |
 | [AssetBundleCreator](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/asset_bundle_creator.md) | API for the `AssetBundleCreator` class (used to convert 3D models into TDW-compatible asset bundles). |
-| [Rotation](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/rotation.md)          | Different means of rotating objects and agents in a scene.   |
+| [Rotation](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/rotation.md) | Different means of rotating objects and agents in a scene.   |
 
 # Troubleshooting TDW
 
@@ -179,4 +185,4 @@
 | [tdw_sound20k](https://github.com/alters-mit/tdw_sound20k)   | Generate an audio dataset.                 |
 | [tdw_physics](https://github.com/alters-mit/tdw_physics)     | Generate a physics dataset.                |
 | [Rube Goldberg (demo)](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/rube_goldberg.md) | Demo of complex physical interactions between objects, with PyImpact generation of impact sounds, set in a photorealistic scene.    |
-| [Sticky Mitten Avatar API](https://github.com/alters-mit/sticky_mitten_avatar) | High-level API for the Sticky Mitten Avatar. |
+| [Magnebot](https://github.com/alters-mit/magnebot)           | High-level Magnebot API.                      |

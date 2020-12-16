@@ -8,6 +8,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`add_magnebot`](#add_magnebot) | Add a Magnebot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: <ulink url="https://github.com/alters-mit/magnebot">https://github.com/alters-mit/magnebot</ulink> |
 | [`apply_force`](#apply_force) | Apply a force into the world to an target position. The force will impact any objects between the origin and the target position. |
 | [`create_avatar`](#create_avatar) | Create an avatar (agent). |
 | [`create_empty_environment`](#create_empty_environment) | Create an empty environment. This must be called after load_scene.  |
@@ -45,6 +46,7 @@
 | [`add_hdri_skybox`](#add_hdri_skybox) | Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange.  |
 | [`add_humanoid`](#add_humanoid) | Add a humanoid model to the scene.  |
 | [`add_humanoid_animation`](#add_humanoid_animation) | Load an animation clip asset bundle into memory.  |
+| [`add_robot`](#add_robot) | Add a robot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md  |
 
 **Add Material Command**
 
@@ -407,6 +409,29 @@
 | [`create_interior_walls`](#create_interior_walls) | Create the interior walls.  |
 | [`set_proc_gen_walls_scale`](#set_proc_gen_walls_scale) | Set the scale of proc-gen wall sections. |
 
+**Robot Command**
+
+| Command | Description |
+| --- | --- |
+| [`destroy_robot`](#destroy_robot) | Destroy a robot in the scene. |
+| [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
+| [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
+
+**Magnebot Command**
+
+| Command | Description |
+| --- | --- |
+| [`drop_from_magnet`](#drop_from_magnet) | Drop an object held by a Magnebot magnet. |
+| [`set_magnet_targets`](#set_magnet_targets) | Set the objects that the Magnebot magnet will try to pick up. |
+
+**Robot Joint Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_prismatic_target`](#set_prismatic_target) | Set the target angle of a prismatic robot joint. Per frame, the joint will move towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target position. |
+| [`set_revolute_target`](#set_revolute_target) | Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle. |
+| [`set_spherical_target`](#set_spherical_target) | Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles. |
+
 **Singleton Subscriber Command**
 
 | Command | Description |
@@ -418,6 +443,9 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
+| [`send_robots`](#send_robots) | Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. See also: send_static_robots  |
+| [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
 **Send Avatars Command**
@@ -489,6 +517,27 @@
 # Command
 
 Abstract class for a message sent from the controller to the build.
+
+***
+
+## **`add_magnebot`**
+
+Add a Magnebot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: <ulink url="https://github.com/alters-mit/magnebot">https://github.com/alters-mit/magnebot</ulink>
+
+
+```python
+{"$type": "add_magnebot"}
+```
+
+```python
+{"$type": "add_magnebot", "id": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the Magnebot. | 0 |
+| `"position"` | Vector3 | The initial position of the Magnebot. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | float | The initial rotation of the Magnebot around the y axis in degrees. | 0 |
 
 ***
 
@@ -1020,6 +1069,31 @@ Load an animation clip asset bundle into memory.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
+## **`add_robot`**
+
+Add a robot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/robot_librarian.md`</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_robot` in the [Controller API](../python/controller.md).</font>
+
+```python
+{"$type": "add_robot", "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_robot", "name": "string", "url": "string", "id": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the robot. | 0 |
+| `"position"` | Vector3 | The initial position of the robot. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | float | The initial rotation of the Magnebot around the y axis in degrees. | 0 |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
@@ -1880,7 +1954,7 @@ Set the target angle of a joint to the current angle, stopping rotation. If the 
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -1894,7 +1968,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -1929,7 +2003,7 @@ Bend the arm joint by an angle. The angle is added to the current joint angle.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The target angle. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -1943,7 +2017,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -1974,7 +2048,7 @@ Bend the arm joint to the target angle.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The target angle. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -1988,7 +2062,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2023,7 +2097,7 @@ Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A highe
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"delta"` | float | Adjust the current angular drag of the joint by this delta. By default, the angular joints of all joints is 0. | 0 |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2037,7 +2111,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2068,7 +2142,7 @@ Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angular_drag"` | float | The angular drag for the joint. | 0 |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2082,7 +2156,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2117,7 +2191,7 @@ Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"delta"` | float | Adjust the current damper of the joint by this delta. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2131,7 +2205,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2162,7 +2236,7 @@ Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"delta"` | float | Adjust the current force of the joint by this delta. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2176,7 +2250,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2207,7 +2281,7 @@ Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"damper"` | float | The new damper value. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2221,7 +2295,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2252,7 +2326,7 @@ Set the force of a joint of a Sticky Mitten Avatar.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"force"` | float | The new force. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2266,7 +2340,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -4880,6 +4954,202 @@ Set the scale of proc-gen wall sections.
 | `"scale"` | Vector3 | The new scale of each wall section. By default, the scale of a wall section is (1, 1, 1). | {"x": 1, "y": 1, "z": 1} |
 | `"walls"` | GridPoint[] | List of walls as (x, y) points on a grid. | |
 
+# RobotCommand
+
+These commands affect robots currently in the scene. To add a robot, send the add_robot command. For further documentation, see: Documentation/misc_frontend/robots.md
+
+***
+
+## **`destroy_robot`**
+
+Destroy a robot in the scene.
+
+
+```python
+{"$type": "destroy_robot"}
+```
+
+```python
+{"$type": "destroy_robot", "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`parent_avatar_to_robot`**
+
+Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot.
+
+
+```python
+{"$type": "parent_avatar_to_robot", "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "parent_avatar_to_robot", "position": {"x": 1.1, "y": 0.0, "z": 0}, "avatar_id": "a", "body_part": "", "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
+| `"position"` | Vector3 | The position of the avatar relative to the robot. | |
+| `"body_part"` | string | Parent the avatar to a body part with this name. If empty, parent to the root object. | "" |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_immovable`**
+
+Set whether or not the root object of the robot is immovable. Its joints will still be moveable.
+
+
+```python
+{"$type": "set_immovable"}
+```
+
+```python
+{"$type": "set_immovable", "immovable": True, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"immovable"` | bool | If true, the root object of the robot is immovable. | True |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+# MagnebotCommand
+
+These commands are for a Magnebot currently in the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: <ulink url="https://github.com/alters-mit/magnebot">https://github.com/alters-mit/magnebot</ulink>
+
+***
+
+## **`drop_from_magnet`**
+
+Drop an object held by a Magnebot magnet.
+
+
+```python
+{"$type": "drop_from_magnet", "object_id": 1}
+```
+
+```python
+{"$type": "drop_from_magnet", "object_id": 1, "arm": "left", "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"arm"` | Arm | The magnet's arm. | "left" |
+| `"object_id"` | int | The ID of the held object. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`set_magnet_targets`**
+
+Set the objects that the Magnebot magnet will try to pick up.
+
+
+```python
+{"$type": "set_magnet_targets"}
+```
+
+```python
+{"$type": "set_magnet_targets", "arm": "left", "targets": [], "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"arm"` | Arm | The magnet's arm. | "left" |
+| `"targets"` | int[] | The IDs of the target objects. If a magnet collides with an object, it'll "stick" only if the object ID is in this list. If the magnet is holding an object not in this list, it will continue to do hold it. | [] |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+# RobotJointCommand
+
+These commands set joints of a robot in the scene.
+
+***
+
+## **`set_prismatic_target`**
+
+Set the target angle of a prismatic robot joint. Per frame, the joint will move towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target position.
+
+
+```python
+{"$type": "set_prismatic_target", "target": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_prismatic_target", "target": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"target"` | float | The target position on the prismatic joint. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_revolute_target`**
+
+Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle.
+
+
+```python
+{"$type": "set_revolute_target", "target": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_revolute_target", "target": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"target"` | float | The target angle in degrees. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_spherical_target`**
+
+Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles.
+
+
+```python
+{"$type": "set_spherical_target", "target": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1}
+```
+
+```python
+{"$type": "set_spherical_target", "target": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"target"` | Vector3 | The target angles in degrees for the (x, y, z) drives. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
 # SingletonSubscriberCommand
 
 These commands act as singletons and can subscribe to events.
@@ -4926,6 +5196,103 @@ Send log messages to the controller.
 # SendDataCommand
 
 These commands send data to the controller.
+
+***
+
+## **`send_magnebots`**
+
+Send data for each Magnebot in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Magnebot`](output_data.md#Magnebot)</font>
+
+```python
+{"$type": "send_magnebots"}
+```
+
+```python
+{"$type": "send_magnebots", "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int[] | The IDs of the Magnebots. If this list is undefined or empty, the build will return data for all Magnebots. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_robots`**
+
+Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. See also: send_static_robots 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Robot`](output_data.md#Robot)</font>
+
+```python
+{"$type": "send_robots"}
+```
+
+```python
+{"$type": "send_robots", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_robots`**
+
+Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticRobot`](output_data.md#StaticRobot)</font>
+
+```python
+{"$type": "send_static_robots"}
+```
+
+```python
+{"$type": "send_static_robots", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
 
 ***
 

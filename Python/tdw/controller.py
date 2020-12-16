@@ -215,35 +215,33 @@ class Controller(object):
                 "name": humanoid_animation_name,
                 "url": record.get_url()}, record
 
-    def get_add_robot(self, robot_name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
+    def get_add_robot(self, name: str, robot_id: int, position: Dict[str, float] = None, rotation: float = 0, library: str = "") -> dict:
         """
         Returns a valid add_robot command.
 
-        :param robot_name: The name of the robot.
+        :param name: The name of the robot.
         :param robot_id: A unique ID for the robot.
         :param position: The initial position of the robot. If None, the position will be (0, 0, 0).
-        :param rotation: The initial rotation of the robot in Euler angles. If None, the rotation will be (0, 0, 0).
+        :param rotation: The initial rotation of the robot around the y axis in degrees.
         :param library: The path to the records file. If left empty, the default library will be selected. See `RobotLibrarian.get_library_filenames()` and `RobotLibrarian.get_default_library()`.
 
-        :return An add_robot command that the controller can then send.
+        :return An `add_robot` command that the controller can then send.
         """
 
         if self.robot_librarian is None:
             self.robot_librarian = RobotLibrarian(library=library)
 
-        record = self.robot_librarian.get_record(robot_name)
+        record = self.robot_librarian.get_record(name)
 
         if position is None:
             position = {"x": 0, "y": 0, "z": 0}
-        if rotation is None:
-            rotation = {"x": 0, "y": 0, "z": 0}
 
-        assert record is not None, f"Robot metadata record not found: {robot_name}"
+        assert record is not None, f"Robot metadata record not found: {name}"
         return {"$type": "add_robot",
                 "id": robot_id,
                 "position": position,
                 "rotation": rotation,
-                "name": robot_name,
+                "name": name,
                 "url": record.get_url()}
 
     def load_streamed_scene(self, scene="tdw_room_2018") -> None:

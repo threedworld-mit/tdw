@@ -2,7 +2,6 @@
     "description": "Robot asset bundles",
     "records": {
         "ur3": {
-            "camera": null,
             "immovable": true,
             "name": "ur3",
             "source": "https://github.com/Unity-Technologies/articulations-robot-demo",

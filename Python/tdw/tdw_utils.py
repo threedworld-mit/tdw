@@ -817,7 +817,17 @@ class QuaternionUtils:
     Vectors are always numpy arrays in the following order: `[x, y, z]`.
     """
 
-    _UP = np.array([0, 1, 0])
+    """:class_var
+    The global up directional vector.
+    """
+    UP = np.array([0, 1, 0])
+    """:class_var
+    The global forward directional vector.
+    """
+    FORWARD: np.array = np.array([0, 0, 1])
+    """:class_var
+    The quaternion identity rotation.
+    """
     IDENTITY = np.array([0, 0, 0, 1])
 
     @staticmethod
@@ -922,7 +932,7 @@ class QuaternionUtils:
         :return: A directional vector corresponding to the "up" direction from the quaternion.
         """
 
-        return QuaternionUtils.multiply_by_vector(q, QuaternionUtils._UP)
+        return QuaternionUtils.multiply_by_vector(q, QuaternionUtils.UP)
 
     @staticmethod
     def euler_angles_to_quaternion(euler: np.array) -> np.array:

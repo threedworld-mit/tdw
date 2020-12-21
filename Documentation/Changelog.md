@@ -4,6 +4,18 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.13
+
+### `tdw` module
+
+#### `TDWUtils`
+
+- Added optional parameter `depth_pass` to `get_depth_values()` to allow the function to decode data from a `_depth_simple` pass.
+
+### Build
+
+- Fixed: `_depth` and `_depth_simple` passes are inaccurate.
+
 ## v1.7.12
 
 ### Command API

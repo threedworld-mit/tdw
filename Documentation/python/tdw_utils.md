@@ -305,7 +305,7 @@ _Returns:_ A list of commands to set ALL visual materials on an object to a sing
 
 ***
 
-#### `get_depth_values(image: np.array) -> np.array`
+#### `get_depth_values(image: np.array, depth_pass: str = "_depth") -> np.array`
 
 _This is a static function._
 
@@ -316,6 +316,7 @@ The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
 | Parameter | Description |
 | --- | --- |
 | image | The image pass as a numpy array. |
+| depth_pass | The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`. |
 
 _Returns:_ An array of depth values.
 

@@ -367,23 +367,28 @@ class TDWUtils:
         return commands
 
     @staticmethod
-    def get_depth_values(image: np.array) -> np.array:
+    def get_depth_values(image: np.array, depth_pass: str = "_depth") -> np.array:
         """
         Get the depth values of each pixel in a _depth image pass.
         The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
         (This is due to how the depth shader is implemented.)
 
         :param image: The image pass as a numpy array.
+        :param depth_pass: The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`.
 
         :return An array of depth values.
         """
 
         # Convert the image to a 2D image array.
-        image = np.array(Image.open(io.BytesIO(image)), dtype=float)
+        image = np.array(Image.open(io.BytesIO(image)), dtype=np.float32)
 
-        depth = np.array((image[:, :, 0] * 256 * 256 + image[:, :, 1] * 256 + image[:, :, 2]) /
-                         (256 * 256 * 256) * 100.1)
-        return depth
+        if depth_pass == "_depth":
+            return np.array((image[:, :, 0] * 256 * 256 + image[:, :, 1] * 256 + image[:, :, 2]) /
+                            (256 * 256 * 256))
+        elif depth_pass == "_depth_simple":
+            return image[:, :, 0] / 255.0
+        else:
+            raise Exception(f"Invalid depth pass: {depth_pass}")
 
     @staticmethod
     def create_avatar(avatar_type="A_Img_Caps_Kinematic", avatar_id="a", position=None, look_at=None) -> List[dict]:

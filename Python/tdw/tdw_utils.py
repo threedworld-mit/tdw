@@ -386,7 +386,7 @@ class TDWUtils:
             return np.array((image[:, :, 0] * 256 * 256 + image[:, :, 1] * 256 + image[:, :, 2]) /
                             (256 * 256 * 256))
         elif depth_pass == "_depth_simple":
-            return image[:, :, 0] / 255.0
+            return image[:, :, 0] / 256.0
         else:
             raise Exception(f"Invalid depth pass: {depth_pass}")
 

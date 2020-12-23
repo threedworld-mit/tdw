@@ -36,6 +36,11 @@ class TDWUtils:
 
     VECTOR3_ZERO = {"x": 0, "y": 0, "z": 0}
 
+    # Cached values used during point cloud generation.
+    __WIDTH: int = -1
+    __HEIGHT: int = -1
+    __CAM_TO_IMG_MAT: Optional[np.array] = None
+
     @staticmethod
     def vector3_to_array(vector3: Dict[str, float]) -> np.array:
         """
@@ -389,6 +394,70 @@ class TDWUtils:
             return image[:, :, 0] / 256.0
         else:
             raise Exception(f"Invalid depth pass: {depth_pass}")
+
+    @staticmethod
+    def get_point_cloud(depth, camera_matrix: Union[np.array, tuple], vfov: float = 54.43222, filename: str = None) -> np.array:
+        """
+        Create a point cloud from an numpy array of depth values.
+
+        :param depth: Depth values converted from a depth pass. See: `TDWUtils.get_depth_values()`
+        :param camera_matrix: The camera matrix as a tuple or numpy array. See: [`send_camera_matrices`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#send_camera_matrices).
+        :param vfov: The field of view. See: [`set_field_of_view`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_field_of_view)
+        :param filename: If not None, the point cloud data will be written to this file.
+
+        :return: An point cloud as a numpy array of `[x, y, z]` coordinates.
+        """
+
+        if isinstance(camera_matrix, tuple):
+            camera_matrix = np.array(camera_matrix)
+        camera_matrix = np.linalg.inv(camera_matrix.reshape((4, 4)))
+
+        # Different from real-world camera coordinate system.
+        # OpenGL uses negative z axis as the camera front direction.
+        # x axes are same, hence y axis is reversed as well.
+        # Source: https://learnopengl.com/Getting-started/Camera
+        rot = np.array([[1, 0, 0, 0],
+                        [0, -1, 0, 0],
+                        [0, 0, -1, 0],
+                        [0, 0, 0, 1]])
+        camera_matrix = np.dot(camera_matrix, rot)
+
+        # Cache some calculations we'll need to use every time.
+        if TDWUtils.__HEIGHT != depth.shape[0] or TDWUtils.__WIDTH != depth.shape[1]:
+            TDWUtils.__HEIGHT = depth.shape[0]
+            TDWUtils.__WIDTH = depth.shape[1]
+
+            img_pixs = np.mgrid[0: depth.shape[0], 0: depth.shape[1]].reshape(2, -1)
+            # Swap (v, u) into (u, v).
+            img_pixs[[0, 1], :] = img_pixs[[1, 0], :]
+            img_pix_ones = np.concatenate((img_pixs, np.ones((1, img_pixs.shape[1]))))
+
+            # Calculate the intrinsic matrix from vertical_fov.
+            # Motice that hfov and vfov are different if height != width
+            # We can also get the intrinsic matrix from opengl's perspective matrix.
+            # http://kgeorge.github.io/2014/03/08/calculating-opengl-perspective-matrix-from-opencv-intrinsic-matrix
+            vfov = vfov / 180.0 * np.pi
+            tan_half_vfov = np.tan(vfov / 2.0)
+            tan_half_hfov = tan_half_vfov * TDWUtils.__WIDTH / float(TDWUtils.__HEIGHT)
+            fx = TDWUtils.__WIDTH / 2.0 / tan_half_hfov  # focal length in pixel space
+            fy = TDWUtils.__HEIGHT / 2.0 / tan_half_vfov
+            intrinsics = np.array([[fx, 0, TDWUtils.__WIDTH / 2.0],
+                                   [0, fy, TDWUtils.__HEIGHT / 2.0],
+                                   [0, 0, 1]])
+            img_inv = np.linalg.inv(intrinsics[:3, :3])
+            TDWUtils.__CAM_TO_IMG_MAT = np.dot(img_inv, img_pix_ones)
+
+        points_in_cam = np.multiply(TDWUtils.__CAM_TO_IMG_MAT, depth.reshape(-1))
+        points_in_cam = np.concatenate((points_in_cam, np.ones((1, points_in_cam.shape[1]))), axis=0)
+        points_in_world = np.dot(camera_matrix, points_in_cam)
+        points_in_world = points_in_world[:3, :].reshape(3, TDWUtils.__WIDTH, TDWUtils.__HEIGHT)
+        if filename is not None:
+            f = open(filename, 'w')
+            for i in range(points_in_world.shape[1]):
+                for j in range(points_in_world.shape[2]):
+                    if points_in_world[2, i, j] < 99:
+                        f.write(f'{points_in_world[0, i, j]} {points_in_world[1, i, j]} {points_in_world[2, i, j]}\n')
+        return points_in_world
 
     @staticmethod
     def create_avatar(avatar_type="A_Img_Caps_Kinematic", avatar_id="a", position=None, look_at=None) -> List[dict]:

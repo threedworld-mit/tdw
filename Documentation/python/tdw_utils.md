@@ -322,6 +322,23 @@ _Returns:_ An array of depth values.
 
 ***
 
+#### `get_point_cloud(depth, camera_matrix: Union[np.array, tuple], vfov: float = 54.43222, filename: str = None) -> np.array`
+
+_This is a static function._
+
+Create a point cloud from an numpy array of depth values.
+
+| Parameter | Description |
+| --- | --- |
+| depth | Depth values converted from a depth pass. See: `TDWUtils.get_depth_values()` |
+| camera_matrix | The camera matrix as a tuple or numpy array. See: [`send_camera_matrices`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#send_camera_matrices). |
+| vfov | The field of view. See: [`set_field_of_view`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_field_of_view) |
+| filename | If not None, the point cloud data will be written to this file. |
+
+_Returns:_  An point cloud as a numpy array of `[x, y, z]` coordinates.
+
+***
+
 #### `create_avatar(avatar_type="A_Img_Caps_Kinematic", avatar_id="a", position=None, look_at=None) -> List[dict]`
 
 _This is a static function._

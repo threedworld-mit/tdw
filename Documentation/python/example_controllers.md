@@ -11,6 +11,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `avatar_drag.py` | Set the avatar's drag values to control its speed while in mid-air. |
 | `avatar_movement.py` | A basic example of how to move a physics-enabled (non-kinematic) avatar. |
 | `cloth_drape.py` | Using NVIDIA Flex, drape a cloth over an object. |
+| `collisions.py` | Receive collision output data and read it as a `Collisions` object. |
 | `collisions_and_friction.py` | - Listen for collisions between objects.<br>- Adjust the friction values of objects. |
 | `composite_object.py` | Create a composite object from a local asset bundle.<br>Test that the object loaded correctly.<br>Apply sub-object commands to the sub-objects. |
 | `debug.py` | Create a debug controller. After running a simple physics simulation, play back all of the commands. |

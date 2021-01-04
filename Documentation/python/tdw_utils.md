@@ -442,19 +442,6 @@ _Returns:_  A color as a numpy array of integers between 0 and 255: `[r, g, b]`
 
 ***
 
-#### `get_collisions(resp: List[bytes]) -> Tuple[List[Collision], List[EnvironmentCollision]]`
-
-_This is a static function._
-
-
-| Parameter | Description |
-| --- | --- |
-| resp | The response from the build (a byte array). |
-
-_Returns:_  Tuple: A list of collisions; a list of environment collisions.
-
-***
-
 #### `get_bounds_dict(bounds: Bounds, index: int) -> Dict[str, np.array]`
 
 _This is a static function._

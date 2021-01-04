@@ -29,6 +29,10 @@ class CollisionObjObj:
         The relative velocity of the objects.
         """
         self.relative_velocity = np.array(collision.get_relative_velocity())
+        """:field
+        The state of the collision.
+        """
+        self.state = collision.get_state()
 
 
 class CollisionObjEnv:
@@ -66,33 +70,23 @@ class Collisions:
 
         """:field
         All collisions between two objects that occurred on the frame.
-        Key = The collision state: `"enter"`, `"stay"`, or `"exit"`.
-        Value = A dictionary of collisions. Key = An `IntPair` (a pair of object IDs). Value = The collision.
+        Key = An `IntPair` (a pair of object IDs). Value = The collision.
         """
-        self.obj_collisions: Dict[str, Dict[IntPair, CollisionObjObj]] = dict()
+        self.obj_collisions: Dict[IntPair, CollisionObjObj] = dict()
         """:field
         All collisions between an object and the environment that occurred on the frame.
-        Key = The collision state: `"enter"`, `"stay"`, or `"exit"`.
-        Value = A dictionary of collisions. Key = the object ID. Value = The collision.
+        Key = the object ID. Value = The collision.
         """
-        self.env_collisions: Dict[str, Dict[int, CollisionObjEnv]] = dict()
+        self.env_collisions: Dict[int, CollisionObjEnv] = dict()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "coll":
                 collision = Collision(resp[i])
-                # Get the collision state.
-                state = collision.get_state()
-                if state not in self.obj_collisions:
-                    self.obj_collisions[state] = dict()
                 # Get the pair of IDs in this collision and use it as a key.
                 ids = IntPair(int1=collision.get_collider_id(), int2=collision.get_collidee_id())
                 coo = CollisionObjObj(collision=collision)
-                self.obj_collisions[state][ids] = coo
+                self.obj_collisions[ids] = coo
             elif r_id == "enco":
                 collision = EnvironmentCollision(resp[i])
-                # Get the collision state.
-                state = collision.get_state()
-                if state not in self.env_collisions:
-                    self.env_collisions[state] = dict()
-                    coe = CollisionObjEnv(collision=collision)
-                    self.env_collisions[state][collision.get_object_id()] = coe
+                coe = CollisionObjEnv(collision=collision)
+                self.env_collisions[collision.get_object_id()] = coe

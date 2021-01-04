@@ -80,6 +80,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [ScreenPosition](#ScreenPosition) | A position on the screen converted from a worldspace position. | `scre` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
+| [SystemInfo](#SystemInfo) | System information for this computer and operating system. | `sysi` |
 | [Transforms](#Transforms) | Data about the Transform component of objects (position and rotation). | `tran` |
 | [Version](#Version) | The build version and Unity version. | `vers` |
 | [Volumes](#Volumes) | Spatial volume data for objects in the scene. | `volu` |
@@ -578,6 +579,23 @@ The substructure of a model. This should be used mainly for backend debugging.
 | `get_sub_object_name(index)` | The name of the sub object. | `str` |
 | `get_num_sub_object_materials(index)` | The number of sub object materials. | `int` |
 | `get_sub_object_material(index, material_index)` | The material of the sub object. | `str` |
+
+## SystemInfo
+
+`s = SystemInfo(byte_array)`
+
+**Identifier:** `sysi`
+
+System information for this computer and operating system.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_gpu()` | The name of the GPU. | `str` |
+| `get_os()` | The operating system. | `str` |
+| `get_supports_audio()` | If true, there is a valid audio device. | `bool` |
+| `get_uv_starts_at_top()` | If true, UVs for images start at the top of the image. | `bool` |
+| `get_width()` | The width of the screen in pixels. | `int` |
+| `get_height()` | The height of the screen in pixels. | `int` |
 
 ## Transforms
 

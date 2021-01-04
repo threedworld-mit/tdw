@@ -372,7 +372,7 @@ class TDWUtils:
         return commands
 
     @staticmethod
-    def get_depth_values(image: np.array, depth_pass: str = "_depth") -> np.array:
+    def get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256, uv_starts_on_top: bool = True) -> np.array:
         """
         Get the depth values of each pixel in a _depth image pass.
         The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
@@ -380,16 +380,20 @@ class TDWUtils:
 
         :param image: The image pass as a numpy array.
         :param depth_pass: The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`.
+        :param width: The width of the screen in pixels.
+        :param height: The height of the screen in pixels.
+        :param uv_starts_on_top: If True, UV coordinates start at the top of the image. See the command `send_system_info`.
 
         :return An array of depth values.
         """
 
         # Convert the image to a 2D image array.
-        image = np.array(Image.open(io.BytesIO(image)), dtype=np.float32)
-
+        image = np.reshape(image, (width, height, 3))
+        # Flip the image if the UV coordinates are reversed.
+        if uv_starts_on_top:
+            image = np.flip(image, 0)
         if depth_pass == "_depth":
-            return np.array((image[:, :, 0] * 256 * 256 + image[:, :, 1] * 256 + image[:, :, 2]) /
-                            (256 * 256 * 256))
+            return np.array((image[:, :, 0] * 256.0 ** 2 + image[:, :, 1] * 256.0 + image[:, :, 2])) / (256.0 ** 3)
         elif depth_pass == "_depth_simple":
             return image[:, :, 0] / 256.0
         else:

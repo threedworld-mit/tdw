@@ -305,7 +305,7 @@ _Returns:_ A list of commands to set ALL visual materials on an object to a sing
 
 ***
 
-#### `get_depth_values(image: np.array, depth_pass: str = "_depth") -> np.array`
+#### `get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256, uv_starts_on_top: bool = True) -> np.array`
 
 _This is a static function._
 
@@ -317,6 +317,9 @@ The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
 | --- | --- |
 | image | The image pass as a numpy array. |
 | depth_pass | The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`. |
+| width | The width of the screen in pixels. |
+| height | The height of the screen in pixels. |
+| uv_starts_on_top | If True, UV coordinates start at the top of the image. See the command `send_system_info`. |
 
 _Returns:_ An array of depth values.
 

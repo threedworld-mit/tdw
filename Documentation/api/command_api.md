@@ -413,6 +413,7 @@
 | --- | --- |
 | [`send_collisions`](#send_collisions) | Send collision data for all objects and avatars <emphasis>currently</emphasis> in the scene.  |
 | [`send_log_messages`](#send_log_messages) | Send log messages to the controller.  |
+| [`send_system_info`](#send_system_info) | Send information about the system and its rendering.  |
 
 **Send Data Command**
 
@@ -4921,6 +4922,22 @@ Send log messages to the controller.
 
 ```python
 {"$type": "send_log_messages"}
+```
+
+***
+
+## **`send_system_info`**
+
+Send information about the system and its rendering. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`SystemInfo`](output_data.md#SystemInfo)</font>
+
+```python
+{"$type": "send_system_info"}
 ```
 
 # SendDataCommand

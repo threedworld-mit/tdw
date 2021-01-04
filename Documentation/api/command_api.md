@@ -265,7 +265,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_constant_force`](#add_constant_force) | Add a constant force to an object. Every frame, this force will be applied to the Rigidbody. Unlike other force commands, this command will provide gradual acceleration rather than immediate impulse; it is thus more useful for animation than a deterministic physics simulation. |
-| [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint. |
+| [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint.  |
 | [`apply_force_at_position`](#apply_force_at_position) | Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large. |
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
@@ -530,14 +530,14 @@ Add a Magnebot to the scene. For further documentation, see: Documentation/misc_
 ```
 
 ```python
-{"$type": "add_magnebot", "id": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": 0}
+{"$type": "add_magnebot", "id": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | int | The unique ID of the Magnebot. | 0 |
 | `"position"` | Vector3 | The initial position of the Magnebot. | {"x": 0, "y": 0, "z": 0} |
-| `"rotation"` | float | The initial rotation of the Magnebot around the y axis in degrees. | 0 |
+| `"rotation"` | Vector3 | The initial rotation of the Magnebot in Euler angles. | {"x": 0, "y": 0, "z": 0} |
 
 ***
 
@@ -1086,14 +1086,14 @@ Add a robot to the scene. For further documentation, see: Documentation/misc_fro
 ```
 
 ```python
-{"$type": "add_robot", "name": "string", "url": "string", "id": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": 0}
+{"$type": "add_robot", "name": "string", "url": "string", "id": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | int | The unique ID of the robot. | 0 |
 | `"position"` | Vector3 | The initial position of the robot. | {"x": 0, "y": 0, "z": 0} |
-| `"rotation"` | float | The initial rotation of the Magnebot around the y axis in degrees. | 0 |
+| `"rotation"` | Vector3 | The initial rotation of the robot in Euler angles. | {"x": 0, "y": 0, "z": 0} |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
@@ -3609,8 +3609,9 @@ Add a constant force to an object. Every frame, this force will be applied to th
 
 ## **`add_fixed_joint`**
 
-Attach the object to a parent object using a FixedJoint.
+Attach the object to a parent object using a FixedJoint. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "add_fixed_joint", "parent_id": 1, "id": 1}
@@ -5001,18 +5002,18 @@ Parent an avatar to a robot. The avatar's position and rotation will always be r
 
 
 ```python
-{"$type": "parent_avatar_to_robot", "position": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "parent_avatar_to_robot", "position": {"x": 1.1, "y": 0.0, "z": 0}, "body_part_id": 1}
 ```
 
 ```python
-{"$type": "parent_avatar_to_robot", "position": {"x": 1.1, "y": 0.0, "z": 0}, "avatar_id": "a", "body_part": "", "id": 0}
+{"$type": "parent_avatar_to_robot", "position": {"x": 1.1, "y": 0.0, "z": 0}, "body_part_id": 1, "avatar_id": "a", "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
 | `"position"` | Vector3 | The position of the avatar relative to the robot. | |
-| `"body_part"` | string | Parent the avatar to a body part with this name. If empty, parent to the root object. | "" |
+| `"body_part_id"` | int | Parent the avatar to a body part of this robot with this ID. Send send_static_robots to get the IDs and names of this robot's body parts. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
 ***

@@ -33,7 +33,6 @@ from tdw.FBOutput import Overlap as Over
 from tdw.FBOutput import NavMeshPath as Path
 from tdw.FBOutput import Keyboard as Key
 from tdw.FBOutput import ScreenPosition as Screen
-from tdw.FBOutput import SystemInfo as SysInfo
 import numpy as np
 from typing import Tuple, Optional
 
@@ -243,6 +242,15 @@ class Images(OutputData):
 
     def get_extension(self, index: int) -> str:
         return "png" if self.data.Passes(index).Extension() == 1 else "jpg"
+
+    def get_width(self) -> int:
+        return self.data.Width()
+
+    def get_height(self) -> int:
+        return self.data.Height()
+
+    def get_uv_starts_at_top(self) -> bool:
+        return self.data.UvStartsAtTop()
 
 
 class AvatarKinematic(OutputData):
@@ -842,26 +850,3 @@ class ScreenPosition(OutputData):
 
     def get_world(self) -> Tuple[float, float, float]:
         return OutputData._get_xyz(self.data.World())
-
-
-class SystemInfo(OutputData):
-    def get_data(self) -> SysInfo.SystemInfo:
-        return SysInfo.SystemInfo.GetRootAsSystemInfo(self.bytes, 0)
-
-    def get_gpu(self) -> str:
-        return self.data.Gpu().decode('utf-8')
-
-    def get_os(self) -> str:
-        return self.data.Os().decode('utf-8')
-
-    def get_supports_audio(self) -> bool:
-        return self.data.SupportsAudio()
-
-    def get_uv_starts_at_top(self) -> bool:
-        return self.data.UvStartsAtTop()
-
-    def get_width(self) -> int:
-        return self.data.Width()
-
-    def get_height(self) -> int:
-        return self.data.Height()

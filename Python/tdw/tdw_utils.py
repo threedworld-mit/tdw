@@ -257,7 +257,7 @@ class TDWUtils:
                  "walls": interior_walls}]
 
     @staticmethod
-    def save_images(images: Images, filename: str, output_directory="dist", resize_to=None, append_pass: bool = True, width: int = 256, height: int = 256) -> None:
+    def save_images(images: Images, filename: str, output_directory="dist", resize_to=None, append_pass: bool = True) -> None:
         """
         Save each image in the Images object.
         The name of the image will be: pass_filename.extension, e.g.: `"0000"` -> `depth_0000.png`
@@ -268,8 +268,6 @@ class TDWUtils:
         :param filename: The filename of each image, minus the extension. The image pass will be appended as a prefix.
         :param resize_to: Specify a (width, height) tuple to resize the images to. This is slower than saving as-is.
         :param append_pass: If false, the image pass will _not_ be appended to the filename as a prefix, e.g.: `"0000"`: -> "`0000.jpg"`
-        :param width: The expected width in pixels of the image. This is only relevant to the `_depth` and `_depth_simple` passes.
-        :param height: The expected height in pixels of the image. This is only relevant to the `_depth` and `_depth_simple` passes.
         """
 
         if not os.path.isdir(output_directory):
@@ -289,8 +287,12 @@ class TDWUtils:
                 path = os.path.join(output_directory, fi)
                 # The depth passes aren't png files, so we need to convert them.
                 if pass_mask == "_depth" or pass_mask == "_depth_simple":
-                    img = Image.fromarray(np.reshape(images.get_image(i), (width, height, 3)))
-                    img.save(path)
+                    arr = np.reshape(images.get_image(i), (images.get_width(), images.get_height(), 3))
+                    # Flip the UVs.
+                    if images.get_uv_starts_at_top():
+                        arr = np.flip(arr, 0)
+                    # Save the image.
+                    Image.fromarray(arr).save(path)
                 # Every other pass can be saved directly to disk.
                 else:
                     with open(path, "wb") as f:
@@ -382,7 +384,7 @@ class TDWUtils:
         return commands
 
     @staticmethod
-    def get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256, uv_starts_on_top: bool = True) -> np.array:
+    def get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256, uv_starts_at_top: bool = True) -> np.array:
         """
         Get the depth values of each pixel in a _depth image pass.
         The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
@@ -390,9 +392,9 @@ class TDWUtils:
 
         :param image: The image pass as a numpy array.
         :param depth_pass: The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`.
-        :param width: The width of the screen in pixels.
-        :param height: The height of the screen in pixels.
-        :param uv_starts_on_top: If True, UV coordinates start at the top of the image. See the command `send_system_info`.
+        :param width: The width of the screen in pixels. See `Images.get_width()` in the output data documentation.
+        :param height: The height of the screen in pixels. See `Images.get_height()` in the output data documentation.
+        :param uv_starts_on_top: If True, UV coordinates start at the top of the image. See `Images.get_uv_starts_at_top()` in the output data documentation.
 
         :return An array of depth values.
         """
@@ -400,7 +402,7 @@ class TDWUtils:
         # Convert the image to a 2D image array.
         image = np.reshape(image, (width, height, 3))
         # Flip the image if the UV coordinates are reversed.
-        if uv_starts_on_top:
+        if uv_starts_at_top:
             image = np.flip(image, 0)
         if depth_pass == "_depth":
             return np.array((image[:, :, 0] * 256.0 ** 2 + image[:, :, 1] * 256.0 + image[:, :, 2])) / (256.0 ** 3)

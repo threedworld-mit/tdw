@@ -85,6 +85,12 @@ There are also additional commands that are specific to the Magnebot:
 | `drop_from_magnet`   | Drop an object held by a Magnebot magnet.                    |
 | `send_magnebots`     | [Send data for each Magnebot in the scene.](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/output_data.md#Magnebot) This includes the IDs of any held objects. |
 
+### Picking up objects with magnets
+
+The Magnebot's magnets "picks up" objects by first colliding with a target object (see `set_magnet_targets`), then caching Rigidbody data (mass, angular drag, etc.), adding the object's mass to the magnet's mass, then destroying the Rigidbody component, then parenting the object to the magnet. The Magnebot "puts down" the object by recreating the Rigidbody, subtracting the mass, and unparenting the object. This is to ensure maximum physics stability.
+
+The upshot is that rigidbody commands such as `set_mass` will throw an error if the object is being held by a Magnebot magnet. Data returned by `send_rigidbodies` will be 0s if the object is being held (for example, the mass will be 0).
+
 ## Example controllers
 
 [**See the high-level Magnebot API for additional examples.**](https://github.com/alters-mit/magnebot)

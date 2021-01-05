@@ -319,7 +319,7 @@ The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
 | depth_pass | The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`. |
 | width | The width of the screen in pixels. See `Images.get_width()` in the output data documentation. |
 | height | The height of the screen in pixels. See `Images.get_height()` in the output data documentation. |
-| uv_starts_on_top | If True, UV coordinates start at the top of the image. See `Images.get_uv_starts_at_top()` in the output data documentation. |
+| uv_starts_at_top | If True, UV coordinates start at the top of the image. See `Images.get_uv_starts_at_top()` in the output data documentation. |
 
 _Returns:_ An array of depth values.
 

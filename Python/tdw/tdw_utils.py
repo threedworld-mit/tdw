@@ -257,7 +257,7 @@ class TDWUtils:
                  "walls": interior_walls}]
 
     @staticmethod
-    def save_images(images: Images, filename: str, output_directory="dist", resize_to=None, append_pass: bool = True) -> None:
+    def save_images(images: Images, filename: str, output_directory="dist", resize_to=None, append_pass: bool = True, width: int = 256, height: int = 256) -> None:
         """
         Save each image in the Images object.
         The name of the image will be: pass_filename.extension, e.g.: `"0000"` -> `depth_0000.png`
@@ -268,6 +268,8 @@ class TDWUtils:
         :param filename: The filename of each image, minus the extension. The image pass will be appended as a prefix.
         :param resize_to: Specify a (width, height) tuple to resize the images to. This is slower than saving as-is.
         :param append_pass: If false, the image pass will _not_ be appended to the filename as a prefix, e.g.: `"0000"`: -> "`0000.jpg"`
+        :param width: The expected width in pixels of the image. This is only relevant to the `_depth` and `_depth_simple` passes.
+        :param height: The expected height in pixels of the image. This is only relevant to the `_depth` and `_depth_simple` passes.
         """
 
         if not os.path.isdir(output_directory):
@@ -283,8 +285,16 @@ class TDWUtils:
                 TDWUtils.get_pil_image(images, i).resize((resize_to[0], resize_to[1]), Image.LANCZOS)\
                     .save(os.path.join(output_directory, fi))
             else:
-                with open(os.path.join(output_directory, fi), "wb") as f:
-                    f.write(images.get_image(i))
+                pass_mask = images.get_pass_mask(i)
+                path = os.path.join(output_directory, fi)
+                # The depth passes aren't png files, so we need to convert them.
+                if pass_mask == "_depth" or pass_mask == "_depth_simple":
+                    img = Image.fromarray(np.reshape(images.get_image(i), (width, height, 3)))
+                    img.save(path)
+                # Every other pass can be saved directly to disk.
+                else:
+                    with open(path, "wb") as f:
+                        f.write(images.get_image(i))
 
     @staticmethod
     def zero_padding(integer: int, width=4) -> str:

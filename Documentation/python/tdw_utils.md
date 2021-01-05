@@ -219,7 +219,7 @@ _Returns:_  A list of commands: The first creates the exterior walls, and the se
 
 ***
 
-#### `save_images(images: Images, filename: str, output_directory="dist", resize_to=None, append_pass: bool = True) -> None`
+#### `save_images(images: Images, filename: str, output_directory="dist", resize_to=None, append_pass: bool = True, width: int = 256, height: int = 256) -> None`
 
 _This is a static function._
 
@@ -234,6 +234,8 @@ The images object includes the pass and extension information.
 | filename | The filename of each image, minus the extension. The image pass will be appended as a prefix. |
 | resize_to | Specify a (width, height) tuple to resize the images to. This is slower than saving as-is. |
 | append_pass | If false, the image pass will _not_ be appended to the filename as a prefix, e.g.: `"0000"`: -> "`0000.jpg"` |
+| width | The expected width in pixels of the image. This is only relevant to the `_depth` and `_depth_simple` passes. |
+| height | The expected height in pixels of the image. This is only relevant to the `_depth` and `_depth_simple` passes. |
 
 ***
 

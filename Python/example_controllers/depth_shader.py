@@ -17,7 +17,11 @@ class DepthShader(Controller):
         depth_pass = "_depth"
 
         # Create an empty room.
-        commands = [TDWUtils.create_empty_room(12, 12)]
+        # Set the screen size.
+        commands = [TDWUtils.create_empty_room(12, 12),
+                    {"$type": "set_screen_size",
+                     "width": 512,
+                     "height": 512}]
         # Add the avatar.
         commands.extend(TDWUtils.create_avatar(position={"x": 1.57, "y": 3, "z": 3.56},
                                                look_at=TDWUtils.VECTOR3_ZERO))
@@ -35,6 +39,7 @@ class DepthShader(Controller):
         depth_image = None
         system_info = None
         camera_matrix = None
+        images = None
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Get the image.
@@ -49,10 +54,16 @@ class DepthShader(Controller):
             # Get the camera matrix.
             elif r_id == "cama":
                 camera_matrix = CameraMatrices(resp[i]).get_camera_matrix()
+        # Save the image. Note that because we're using depth images, the width and height must be defined.
+        # (The width and height default to 256x256, which is TDW's default screen size.)
+        width = system_info.get_width()
+        height = system_info.get_height()
+        TDWUtils.save_images(images=images, output_directory="D:/depth_shader", filename="0", append_pass=True,
+                             width=width, height=height)
         # Get the depth values of each pixel.
         depth = TDWUtils.get_depth_values(image=depth_image,
-                                          width=system_info.get_width(),
-                                          height=system_info.get_height(),
+                                          width=width,
+                                          height=height,
                                           uv_starts_on_top=system_info.get_uv_starts_at_top())
         print(depth)
         # Get a point cloud and write it to disk.

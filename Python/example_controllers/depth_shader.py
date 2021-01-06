@@ -53,8 +53,7 @@ class DepthShader(Controller):
         # Get the depth values of each pixel.
         depth = TDWUtils.get_depth_values(image=depth_image,
                                           width=images.get_width(),
-                                          height=images.get_height(),
-                                          uv_starts_at_top=images.get_uv_starts_at_top())
+                                          height=images.get_height())
         print(depth)
         # Get a point cloud and write it to disk.
         point_cloud_filename = "point_cloud.txt"

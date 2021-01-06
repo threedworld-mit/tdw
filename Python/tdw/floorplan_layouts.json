@@ -200,28 +200,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": 10.92918,
-          "y": 0.001531998,
-          "z": -3.419991
-        },
-        "rotation": {
-          "w": -0.7072034,
-          "x": -1.861892e-06,
-          "y": 0.7070101,
-          "z": -3.817478e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -742,50 +720,6 @@
           "x": 1.382006e-12,
           "y": -1,
           "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": -11.155,
-          "y": 0.001531976,
-          "z": 3.333007
-        },
-        "rotation": {
-          "w": 0.7069411,
-          "x": 1.468029e-06,
-          "y": 0.7072725,
-          "z": -5.504292e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 6.226031,
-          "y": 0.001535913,
-          "z": -3.945989
-        },
-        "rotation": {
-          "w": 0.7071051,
-          "x": 3.479443e-07,
-          "y": 0.7071085,
-          "z": -6.563017e-07
         },
         "scale_factor": {
           "x": 1,
@@ -1432,28 +1366,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": -5.64596,
-          "y": 0.0015195,
-          "z": 2.73703
-        },
-        "rotation": {
-          "w": 0.7070936,
-          "x": -4.041156e-06,
-          "y": 0.70712,
-          "z": 8.232667e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -1490,28 +1402,6 @@
           "x": 4.291236e-05,
           "y": -1.122809e-05,
           "z": 1.101266e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": -0.7398832,
-          "y": 0.001521748,
-          "z": -4.152179
-        },
-        "rotation": {
-          "w": 0.7070701,
-          "x": 4.506117e-07,
-          "y": 0.7071435,
-          "z": -3.344997e-06
         },
         "scale_factor": {
           "x": 1,
@@ -2138,28 +2028,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": 0.2386446,
-          "y": 0.001723271,
-          "z": 2.766889
-        },
-        "rotation": {
-          "w": 0.7070802,
-          "x": 0.0001002126,
-          "y": 0.7071334,
-          "z": -3.998867e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -2776,50 +2644,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": 2.840047,
-          "y": 0.001494677,
-          "z": -3.920086
-        },
-        "rotation": {
-          "w": 1,
-          "x": 4.442438e-05,
-          "y": 1.195876e-06,
-          "z": 5.985623e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 10.10001,
-          "y": 0.001548619,
-          "z": -2.677938
-        },
-        "rotation": {
-          "w": 1,
-          "x": -8.2454e-07,
-          "y": 3.83832e-06,
-          "z": -7.977443e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -3216,28 +3040,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": 6.530023,
-          "y": 0.001426861,
-          "z": -3.649161
-        },
-        "rotation": {
-          "w": 0.7071134,
-          "x": -2.281065e-05,
-          "y": 0.7071002,
-          "z": 4.411948e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -3252,28 +3054,6 @@
           "x": 4.316546e-06,
           "y": 0.7071576,
           "z": 1.545413e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": -11.43908,
-          "y": 0.001490729,
-          "z": 2.417625
-        },
-        "rotation": {
-          "w": 0.7071397,
-          "x": -2.7393e-06,
-          "y": 0.7070739,
-          "z": -5.35255e-05
         },
         "scale_factor": {
           "x": 1,
@@ -4450,28 +4230,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": -5.950871,
-          "y": 0.001534888,
-          "z": 2.056462
-        },
-        "rotation": {
-          "w": 0.7066897,
-          "x": -1.215158e-06,
-          "y": 0.7075238,
-          "z": 1.135289e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -5066,50 +4824,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": -11.21649,
-          "y": 0.001346674,
-          "z": 2.049932
-        },
-        "rotation": {
-          "w": -0.7070852,
-          "x": 8.292015e-05,
-          "y": -0.7071284,
-          "z": 0.0001501431
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 11.154,
-          "y": 0.0004992485,
-          "z": -2.438
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -5660,28 +5374,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": 6.640688,
-          "y": 0.00140049,
-          "z": -2.57007
-        },
-        "rotation": {
-          "w": 0.7070344,
-          "x": 2.490028e-06,
-          "y": 0.7071792,
-          "z": 6.683419e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -5718,28 +5410,6 @@
           "x": -1.341099e-07,
           "y": 0.965926,
           "z": -3.576265e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 0.2799953,
-          "y": 0.0005160791,
-          "z": 3.178994
-        },
-        "rotation": {
-          "w": 0.7071016,
-          "x": 0.0009311148,
-          "y": 0.7071112,
-          "z": 0.0004082655
         },
         "scale_factor": {
           "x": 1,
@@ -6544,28 +6214,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": 0.2919814,
-          "y": 0.00154522,
-          "z": -3.456
-        },
-        "rotation": {
-          "w": 0.7071059,
-          "x": 1.452634e-06,
-          "y": 0.7071077,
-          "z": 6.991374e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -7218,50 +6866,6 @@
           "x": -1.284768e-10,
           "y": -0.7072105,
           "z": -2.182787e-11
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": -4.770026,
-          "y": 0.001010458,
-          "z": 3.349864
-        },
-        "rotation": {
-          "w": -0.7071152,
-          "x": -0.0002837563,
-          "y": 0.7070984,
-          "z": -1.832088e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 3.769985,
-          "y": 0.001235747,
-          "z": 3.640993
-        },
-        "rotation": {
-          "w": 0.7071062,
-          "x": -2.196654e-07,
-          "y": 0.7071074,
-          "z": -3.74533e-08
         },
         "scale_factor": {
           "x": 1,
@@ -7930,28 +7534,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": -8.260036,
-          "y": 0.001236443,
-          "z": -0.6000012
-        },
-        "rotation": {
-          "w": 0.7071068,
-          "x": 9.856338e-08,
-          "y": 0.7071069,
-          "z": 6.009999e-08
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -7988,28 +7570,6 @@
           "x": 5.003531e-06,
           "y": 0.3826861,
           "z": -5.051494e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": -4.37898,
-          "y": 0.001454562,
-          "z": -2.401994
-        },
-        "rotation": {
-          "w": 0.7070968,
-          "x": -0.0005039186,
-          "y": 0.7071167,
-          "z": -7.343997e-05
         },
         "scale_factor": {
           "x": 1,
@@ -8606,28 +8166,6 @@
           "x": -1.409103e-10,
           "y": 0.7071061,
           "z": -2.910382e-11
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": 3.900097,
-          "y": 0.001082154,
-          "z": 3.64969
-        },
-        "rotation": {
-          "w": 0.7071095,
-          "x": -0.0003046609,
-          "y": 0.707104,
-          "z": 8.179983e-05
         },
         "scale_factor": {
           "x": 1,
@@ -9252,50 +8790,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": -8.920044,
-          "y": 0.001544195,
-          "z": 2.51
-        },
-        "rotation": {
-          "w": 1,
-          "x": 3.911257e-08,
-          "y": 5.603997e-07,
-          "z": -9.582405e-09
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 0.3499772,
-          "y": 0.001545365,
-          "z": -1.890006
-        },
-        "rotation": {
-          "w": 0.7071064,
-          "x": 6.842841e-08,
-          "y": 0.7071072,
-          "z": 1.911352e-08
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -9692,28 +9186,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": -8.350012,
-          "y": 0.001449844,
-          "z": -2.45805
-        },
-        "rotation": {
-          "w": 0.7071157,
-          "x": 7.675456e-05,
-          "y": 0.7070979,
-          "z": 4.52709e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -9728,28 +9200,6 @@
           "x": 2.381893e-05,
           "y": 0.7071541,
           "z": -1.540349e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": -4.379008,
-          "y": 0.001544659,
-          "z": -2.401945
-        },
-        "rotation": {
-          "w": 0.707095,
-          "x": -3.544926e-07,
-          "y": 0.7071186,
-          "z": 1.431525e-07
         },
         "scale_factor": {
           "x": 1,
@@ -10904,28 +10354,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": -0.7196839,
-          "y": 0.00106481,
-          "z": 3.119879
-        },
-        "rotation": {
-          "w": 0.7070309,
-          "x": -0.0001389339,
-          "y": 0.7071826,
-          "z": 0.0002526414
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -11578,50 +11006,6 @@
           "x": -2.157883e-10,
           "y": -0.7072105,
           "z": -2.182787e-11
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": -8.790363,
-          "y": 0.001472254,
-          "z": 3.348703
-        },
-        "rotation": {
-          "w": -0.7072706,
-          "x": 2.377008e-05,
-          "y": 0.706943,
-          "z": 4.0588e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 0.6999919,
-          "y": 0.001533108,
-          "z": -2.500002
-        },
-        "rotation": {
-          "w": 1,
-          "x": 9.708237e-08,
-          "y": -2.100933e-08,
-          "z": -3.939185e-10
         },
         "scale_factor": {
           "x": 1,
@@ -12290,28 +11674,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": -8.391018,
-          "y": 0.001286645,
-          "z": -2.462017
-        },
-        "rotation": {
-          "w": 1,
-          "x": 3.232784e-05,
-          "y": 7.402423e-07,
-          "z": 0.0001831953
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -12348,28 +11710,6 @@
           "x": 6.638467e-06,
           "y": -0.7968214,
           "z": -1.095235e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 3.55002,
-          "y": 0.0006803772,
-          "z": 3.299977
-        },
-        "rotation": {
-          "w": 0.707093,
-          "x": -0.0004371601,
-          "y": 0.7071201,
-          "z": -0.0007613829
         },
         "scale_factor": {
           "x": 1,
@@ -13108,28 +12448,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": -1.221001,
-          "y": 0.001581275,
-          "z": -3.48982
-        },
-        "rotation": {
-          "w": 0.7067354,
-          "x": 2.66547e-05,
-          "y": 0.707478,
-          "z": -8.270181e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -13724,50 +13042,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": -6.275418,
-          "y": 0.0008459163,
-          "z": 4.06091
-        },
-        "rotation": {
-          "w": 0.7071006,
-          "x": 0.0001840931,
-          "y": -0.7071129,
-          "z": 8.274526e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 5.199996,
-          "y": 0.0007183801,
-          "z": 3.719903
-        },
-        "rotation": {
-          "w": 0.7071128,
-          "x": -0.0001934214,
-          "y": 0.7071007,
-          "z": 0.0002904382
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -14340,28 +13614,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": -6.069962,
-          "y": 0.001292088,
-          "z": -1.619932
-        },
-        "rotation": {
-          "w": 0.7071031,
-          "x": 4.474373e-07,
-          "y": 0.7071106,
-          "z": -1.981556e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -14398,28 +13650,6 @@
           "x": 0.003300404,
           "y": -0.3827955,
           "z": -0.007700786
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": -5.558906,
-          "y": 0.0001680302,
-          "z": 0.9019687
-        },
-        "rotation": {
-          "w": -0.7071254,
-          "x": -0.0003473638,
-          "y": 0.7070881,
-          "z": -8.383052e-05
         },
         "scale_factor": {
           "x": 1,
@@ -15002,28 +14232,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": 4.102337,
-          "y": 0.0008672595,
-          "z": 3.80602
-        },
-        "rotation": {
-          "w": 0.0008087388,
-          "x": -0.0003390494,
-          "y": 0.9999996,
-          "z": -0.0003450491
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -15508,50 +14716,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": -6.119822,
-          "y": 0.001638918,
-          "z": 1.179018
-        },
-        "rotation": {
-          "w": 0.7072054,
-          "x": -1.922144e-06,
-          "y": 0.7070082,
-          "z": -3.420424e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 3.109407,
-          "y": 0.001549116,
-          "z": -3.494232
-        },
-        "rotation": {
-          "w": 0.7069779,
-          "x": 7.899386e-07,
-          "y": 0.7072357,
-          "z": -5.515382e-09
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -15882,28 +15046,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": -6.203069,
-          "y": 0.001356302,
-          "z": -2.798812
-        },
-        "rotation": {
-          "w": -1.336954e-06,
-          "x": 2.861251e-05,
-          "y": 1,
-          "z": 8.766026e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -15918,28 +15060,6 @@
           "x": 1.774122e-05,
           "y": 0.0001682436,
           "z": 1.535636e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 5.054768,
-          "y": 0.001206997,
-          "z": -0.1354655
-        },
-        "rotation": {
-          "w": 0.7068439,
-          "x": -6.638069e-05,
-          "y": 0.7073696,
-          "z": 0.0001507582
         },
         "scale_factor": {
           "x": 1,
@@ -16738,7 +15858,8 @@
           "y": 1,
           "z": 1
         }
-      },      {
+      },
+      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -16975,28 +16096,6 @@
           "x": 4.560325e-06,
           "y": 1.562702e-06,
           "z": -2.005957e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": -5.939882,
-          "y": 0.001437795,
-          "z": 4.099663
-        },
-        "rotation": {
-          "w": 0.7070737,
-          "x": -2.964338e-05,
-          "y": 0.7071399,
-          "z": 5.334913e-05
         },
         "scale_factor": {
           "x": 1,
@@ -17547,50 +16646,6 @@
           "x": 1.38626e-10,
           "y": 1,
           "z": 1.600711e-10
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": 5.21,
-          "y": 0.001530271,
-          "z": 3.29
-        },
-        "rotation": {
-          "w": -0.7072706,
-          "x": 4.686807e-06,
-          "y": 0.706943,
-          "z": 8.679838e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": -1.419991,
-          "y": 0,
-          "z": -3.490062
-        },
-        "rotation": {
-          "w": 0.7071068,
-          "x": 0,
-          "y": 0.7071068,
-          "z": 0
         },
         "scale_factor": {
           "x": 1,
@@ -18237,28 +17292,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": 4.634984,
-          "y": 0.001493082,
-          "z": -3.527017
-        },
-        "rotation": {
-          "w": 1,
-          "x": 6.545305e-06,
-          "y": 4.683116e-07,
-          "z": 3.661967e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -18295,28 +17328,6 @@
           "x": -1.045408e-09,
           "y": 0.7071062,
           "z": -6.984875e-10
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": -6.109952,
-          "y": 0.001511879,
-          "z": 1.090185
-        },
-        "rotation": {
-          "w": 0.7070905,
-          "x": -0.0001067942,
-          "y": 0.707123,
-          "z": -0.0001995102
         },
         "scale_factor": {
           "x": 1,
@@ -18989,28 +18000,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": 3.341,
-          "y": 0.001437783,
-          "z": 2.568
-        },
-        "rotation": {
-          "w": -0.7071378,
-          "x": 5.334904e-05,
-          "y": 0.7070758,
-          "z": 2.964353e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -19530,50 +18519,6 @@
           "w": 0.7071068,
           "x": 0,
           "y": -0.7071068,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": -2.26088,
-          "y": 0.00153029,
-          "z": 2.568662
-        },
-        "rotation": {
-          "w": 0.7071078,
-          "x": 0,
-          "y": -0.7071058,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 3.522131,
-          "y": 0,
-          "z": -4.078403
-        },
-        "rotation": {
-          "w": 0.7071068,
-          "x": 0,
-          "y": 0.7071068,
           "z": 0
         },
         "scale_factor": {
@@ -20221,28 +19166,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": -8.220909,
-          "y": 0.001493096,
-          "z": -2.275743
-        },
-        "rotation": {
-          "w": 0.7071081,
-          "x": -2.126575e-05,
-          "y": -0.7071055,
-          "z": 3.052228e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -20279,28 +19202,6 @@
           "x": -1.045408e-09,
           "y": 0.7071062,
           "z": -6.984875e-10
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": -2.431879,
-          "y": 0.001511879,
-          "z": -3.89734
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
         },
         "scale_factor": {
           "x": 1,
@@ -21059,28 +19960,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": 3.35913,
-          "y": 0.001534888,
-          "z": -4.113538
-        },
-        "rotation": {
-          "w": 0.7066897,
-          "x": -1.215158e-06,
-          "y": 0.7075238,
-          "z": 1.135289e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -21675,50 +20554,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": 8.047021,
-          "y": 0.001346707,
-          "z": -3.72437
-        },
-        "rotation": {
-          "w": 2.910196e-05,
-          "x": 0.0001648005,
-          "y": -1,
-          "z": 4.753404e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": -7.652439,
-          "y": 0.0004992699,
-          "z": -3.838484
-        },
-        "rotation": {
-          "w": 0.7070854,
-          "x": 0.0004794234,
-          "y": -0.707128,
-          "z": 0.0002073546
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -22291,28 +21126,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": 3.43503,
-          "y": -0.004038464,
-          "z": 2.206996
-        },
-        "rotation": {
-          "w": -0.0001008958,
-          "x": 4.901957e-05,
-          "y": 1,
-          "z": 4.549827e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -22349,28 +21162,6 @@
           "x": -3.4771e-07,
           "y": 0.8660258,
           "z": -1.580506e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": -2.64152,
-          "y": 0.000516057,
-          "z": -4.004912
-        },
-        "rotation": {
-          "w": 0.7071133,
-          "x": -0.000408262,
-          "y": -0.7070996,
-          "z": 0.0009311142
         },
         "scale_factor": {
           "x": 1,
@@ -23151,28 +21942,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "flat_woven_rug",
-        "position": {
-          "x": -3.17993,
-          "y": 0,
-          "z": 4.182585
-        },
-        "rotation": {
-          "w": 0.7071068,
-          "x": 0,
-          "y": 0.7071068,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -23657,50 +22426,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "blue_rug",
-        "position": {
-          "x": 3.060011,
-          "y": 0.001659845,
-          "z": -3.080063
-        },
-        "rotation": {
-          "w": 0.7071745,
-          "x": 2.215112e-05,
-          "y": 0.7070391,
-          "z": -3.064298e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": 8.404064,
-          "y": 0.001363474,
-          "z": -4.189996
-        },
-        "rotation": {
-          "w": 1,
-          "x": 1.528713e-06,
-          "y": 0.000185719,
-          "z": -9.90296e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -24031,28 +22756,6 @@
         }
       },
       {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "purple_woven_rug",
-        "position": {
-          "x": -2.607069,
-          "y": 0,
-          "z": -3.345813
-        },
-        "rotation": {
-          "w": 2.808803e-07,
-          "x": 0,
-          "y": 1,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
@@ -24067,28 +22770,6 @@
           "x": 1.20694e-05,
           "y": -0.7069758,
           "z": 1.233266e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": false,
-        "kinematic": true,
-        "library": "models_core.json",
-        "name": "carpet_rug",
-        "position": {
-          "x": -8.568048,
-          "y": 0.001069971,
-          "z": -2.779869
-        },
-        "rotation": {
-          "w": 0.7071254,
-          "x": -1.942518e-06,
-          "y": 0.7070882,
-          "z": 2.66182e-06
         },
         "scale_factor": {
           "x": 1,

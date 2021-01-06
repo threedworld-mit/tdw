@@ -26,7 +26,7 @@ class DepthShader(Controller):
         commands.extend(TDWUtils.create_avatar(position={"x": 1.57, "y": 3, "z": 3.56},
                                                look_at=TDWUtils.VECTOR3_ZERO))
         # Add an object.
-        # Request images, system info, and camera matrices.
+        # Request images and camera matrices.
         commands.extend([self.get_add_object("trunck", object_id=0),
                          {"$type": "set_pass_masks",
                           "pass_masks": ["_img", depth_pass]},

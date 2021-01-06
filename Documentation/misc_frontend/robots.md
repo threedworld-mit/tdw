@@ -40,7 +40,7 @@ You will get the following behavior:
 1. Joint turns 720 degrees
 2. Joint turns -720 degrees
 
-### Avatars and cameras
+## Robots and Avatars
 
 TDW has a built-in concept of what an "Avatar" is, which has implications for which commands can be sent to which objects in the scene. Robots are *not* avatar; they are *robots*.
 

@@ -243,6 +243,15 @@ class Images(OutputData):
     def get_extension(self, index: int) -> str:
         return "png" if self.data.Passes(index).Extension() == 1 else "jpg"
 
+    def get_width(self) -> int:
+        return self.data.Width()
+
+    def get_height(self) -> int:
+        return self.data.Height()
+
+    def get_uv_starts_at_top(self) -> bool:
+        return self.data.UvStartsAtTop()
+
 
 class AvatarKinematic(OutputData):
     def get_data(self) -> AvKi.AvatarKinematic:

@@ -36,6 +36,11 @@ class TDWUtils:
 
     VECTOR3_ZERO = {"x": 0, "y": 0, "z": 0}
 
+    # Cached values used during point cloud generation.
+    __WIDTH: int = -1
+    __HEIGHT: int = -1
+    __CAM_TO_IMG_MAT: Optional[np.array] = None
+
     @staticmethod
     def vector3_to_array(vector3: Dict[str, float]) -> np.array:
         """
@@ -278,8 +283,34 @@ class TDWUtils:
                 TDWUtils.get_pil_image(images, i).resize((resize_to[0], resize_to[1]), Image.LANCZOS)\
                     .save(os.path.join(output_directory, fi))
             else:
-                with open(os.path.join(output_directory, fi), "wb") as f:
-                    f.write(images.get_image(i))
+                pass_mask = images.get_pass_mask(i)
+                path = os.path.join(output_directory, fi)
+                # The depth passes aren't png files, so we need to convert them.
+                if pass_mask == "_depth" or pass_mask == "_depth_simple":
+                    # Save the image.
+                    Image.fromarray(TDWUtils.get_shaped_depth_pass(images=images, index=i)).save(path)
+                # Every other pass can be saved directly to disk.
+                else:
+                    with open(path, "wb") as f:
+                        f.write(images.get_image(i))
+
+    @staticmethod
+    def get_shaped_depth_pass(images: Images, index: int) -> np.array:
+        """
+        The `_depth` and `_depth_simple` passes are a 1D array of RGB values, as oppposed to a png or jpg like every other pass.
+        This function reshapes the array into a 2D array of RGB values.
+
+        :param images: The `Images` output data.
+        :param index: The index in `Images` of the depth pass. See: `Images.get_pass_mask()`.
+
+        :return: A reshaped depth pass. Shape is: `(width, height, 3)`.
+        """
+
+        arr = np.reshape(images.get_image(index), (images.get_width(), images.get_height(), 3))
+        # Flip the UVs.
+        if images.get_uv_starts_at_top():
+            arr = np.flip(arr, 0)
+        return arr
 
     @staticmethod
     def zero_padding(integer: int, width=4) -> str:
@@ -367,7 +398,7 @@ class TDWUtils:
         return commands
 
     @staticmethod
-    def get_depth_values(image: np.array, depth_pass: str = "_depth") -> np.array:
+    def get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256, uv_starts_at_top: bool = True) -> np.array:
         """
         Get the depth values of each pixel in a _depth image pass.
         The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
@@ -375,20 +406,88 @@ class TDWUtils:
 
         :param image: The image pass as a numpy array.
         :param depth_pass: The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`.
+        :param width: The width of the screen in pixels. See `Images.get_width()`.
+        :param height: The height of the screen in pixels. See `Images.get_height()`.
+        :param uv_starts_at_top: If True, UV coordinates start at the top of the image. See `Images.get_uv_starts_at_top()`.
 
         :return An array of depth values.
         """
 
         # Convert the image to a 2D image array.
-        image = np.array(Image.open(io.BytesIO(image)), dtype=np.float32)
-
+        image = np.reshape(image, (width, height, 3))
+        # Flip the image if the UV coordinates are reversed.
+        if uv_starts_at_top:
+            image = np.flip(image, 0)
         if depth_pass == "_depth":
-            return np.array((image[:, :, 0] * 256 * 256 + image[:, :, 1] * 256 + image[:, :, 2]) /
-                            (256 * 256 * 256))
+            return np.array((image[:, :, 0] * 256.0 ** 2 + image[:, :, 1] * 256.0 + image[:, :, 2])) / (256.0 ** 3)
         elif depth_pass == "_depth_simple":
             return image[:, :, 0] / 256.0
         else:
             raise Exception(f"Invalid depth pass: {depth_pass}")
+
+    @staticmethod
+    def get_point_cloud(depth, camera_matrix: Union[np.array, tuple], vfov: float = 54.43222, filename: str = None) -> np.array:
+        """
+        Create a point cloud from an numpy array of depth values.
+
+        :param depth: Depth values converted from a depth pass. See: `TDWUtils.get_depth_values()`
+        :param camera_matrix: The camera matrix as a tuple or numpy array. See: [`send_camera_matrices`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#send_camera_matrices).
+        :param vfov: The field of view. See: [`set_field_of_view`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_field_of_view)
+        :param filename: If not None, the point cloud data will be written to this file.
+
+        :return: An point cloud as a numpy array of `[x, y, z]` coordinates.
+        """
+
+        if isinstance(camera_matrix, tuple):
+            camera_matrix = np.array(camera_matrix)
+        camera_matrix = np.linalg.inv(camera_matrix.reshape((4, 4)))
+
+        # Different from real-world camera coordinate system.
+        # OpenGL uses negative z axis as the camera front direction.
+        # x axes are same, hence y axis is reversed as well.
+        # Source: https://learnopengl.com/Getting-started/Camera
+        rot = np.array([[1, 0, 0, 0],
+                        [0, -1, 0, 0],
+                        [0, 0, -1, 0],
+                        [0, 0, 0, 1]])
+        camera_matrix = np.dot(camera_matrix, rot)
+
+        # Cache some calculations we'll need to use every time.
+        if TDWUtils.__HEIGHT != depth.shape[0] or TDWUtils.__WIDTH != depth.shape[1]:
+            TDWUtils.__HEIGHT = depth.shape[0]
+            TDWUtils.__WIDTH = depth.shape[1]
+
+            img_pixs = np.mgrid[0: depth.shape[0], 0: depth.shape[1]].reshape(2, -1)
+            # Swap (v, u) into (u, v).
+            img_pixs[[0, 1], :] = img_pixs[[1, 0], :]
+            img_pix_ones = np.concatenate((img_pixs, np.ones((1, img_pixs.shape[1]))))
+
+            # Calculate the intrinsic matrix from vertical_fov.
+            # Motice that hfov and vfov are different if height != width
+            # We can also get the intrinsic matrix from opengl's perspective matrix.
+            # http://kgeorge.github.io/2014/03/08/calculating-opengl-perspective-matrix-from-opencv-intrinsic-matrix
+            vfov = vfov / 180.0 * np.pi
+            tan_half_vfov = np.tan(vfov / 2.0)
+            tan_half_hfov = tan_half_vfov * TDWUtils.__WIDTH / float(TDWUtils.__HEIGHT)
+            fx = TDWUtils.__WIDTH / 2.0 / tan_half_hfov  # focal length in pixel space
+            fy = TDWUtils.__HEIGHT / 2.0 / tan_half_vfov
+            intrinsics = np.array([[fx, 0, TDWUtils.__WIDTH / 2.0],
+                                   [0, fy, TDWUtils.__HEIGHT / 2.0],
+                                   [0, 0, 1]])
+            img_inv = np.linalg.inv(intrinsics[:3, :3])
+            TDWUtils.__CAM_TO_IMG_MAT = np.dot(img_inv, img_pix_ones)
+
+        points_in_cam = np.multiply(TDWUtils.__CAM_TO_IMG_MAT, depth.reshape(-1))
+        points_in_cam = np.concatenate((points_in_cam, np.ones((1, points_in_cam.shape[1]))), axis=0)
+        points_in_world = np.dot(camera_matrix, points_in_cam)
+        points_in_world = points_in_world[:3, :].reshape(3, TDWUtils.__WIDTH, TDWUtils.__HEIGHT)
+        if filename is not None:
+            f = open(filename, 'w')
+            for i in range(points_in_world.shape[1]):
+                for j in range(points_in_world.shape[2]):
+                    if points_in_world[2, i, j] < 99:
+                        f.write(f'{points_in_world[0, i, j]} {points_in_world[1, i, j]} {points_in_world[2, i, j]}\n')
+        return points_in_world
 
     @staticmethod
     def create_avatar(avatar_type="A_Img_Caps_Kinematic", avatar_id="a", position=None, look_at=None) -> List[dict]:

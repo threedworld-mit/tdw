@@ -4,6 +4,32 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.14
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Images`    | Added: `get_width()`, `get_height()`, and `get_uv_starts_at_top()`<br>The `_depth` and `_depth_simple` passes are now raw RGB render texture data instead of png files (they can still be saved as png files via `TDWUtils.save_images()`). |
+
+### `tdw` module
+
+#### `TDWUtils`
+
+- Added optional parameters `width`, `height`, and `uv_starts_at_top` to `get_depth_values()`.
+- Added: `get_point_cloud()`. Create a point cloud from an numpy array of depth values.
+- Added: `get_shaped_depth_pass()`. Reshape a depth pass into a 2D RGB array.
+
+### Build
+
+- Fixed: `_depth` and `_depth_simple` passes are (still) inaccurate.
+
+### Example Controllers
+
+- `depth_shader.py` generates a depth values plot and saves out a point cloud file.
+
 ## v1.7.13
 
 ### `tdw` module

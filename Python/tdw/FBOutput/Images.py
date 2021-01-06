@@ -33,8 +33,29 @@ class Images(object):
         return None
 
     # Images
-    def Passes(self, j):
+    def UvStartsAtTop(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
+
+    # Images
+    def Width(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+    # Images
+    def Height(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+    # Images
+    def Passes(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             x = self._tab.Vector(o)
             x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 4
@@ -47,14 +68,17 @@ class Images(object):
 
     # Images
     def PassesLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def ImagesStart(builder): builder.StartObject(3)
+def ImagesStart(builder): builder.StartObject(6)
 def ImagesAddAvatarId(builder, avatarId): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(avatarId), 0)
 def ImagesAddSensorName(builder, sensorName): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(sensorName), 0)
-def ImagesAddPasses(builder, passes): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(passes), 0)
+def ImagesAddUvStartsAtTop(builder, uvStartsAtTop): builder.PrependBoolSlot(2, uvStartsAtTop, 0)
+def ImagesAddWidth(builder, width): builder.PrependInt32Slot(3, width, 0)
+def ImagesAddHeight(builder, height): builder.PrependInt32Slot(4, height, 0)
+def ImagesAddPasses(builder, passes): builder.PrependUOffsetTRelativeSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(passes), 0)
 def ImagesStartPassesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def ImagesEnd(builder): return builder.EndObject()

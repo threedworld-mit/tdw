@@ -249,7 +249,7 @@ This function reshapes the array into a 2D array of RGB values.
 | images | The `Images` output data. |
 | index | The index in `Images` of the depth pass. See: `Images.get_pass_mask()`. |
 
-_Returns:_  A reshaped depth pass. Shape is: `(width, height, 3)`.
+_Returns:_  A reshaped depth pass. Shape is: `(height, width, 3)`.
 
 ***
 
@@ -321,7 +321,7 @@ _Returns:_ A list of commands to set ALL visual materials on an object to a sing
 
 ***
 
-#### `get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256, uv_starts_at_top: bool = True) -> np.array`
+#### `get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256) -> np.array`
 
 _This is a static function._
 
@@ -335,7 +335,6 @@ The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
 | depth_pass | The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`. |
 | width | The width of the screen in pixels. See `Images.get_width()`. |
 | height | The height of the screen in pixels. See `Images.get_height()`. |
-| uv_starts_at_top | If True, UV coordinates start at the top of the image. See `Images.get_uv_starts_at_top()`. |
 
 _Returns:_ An array of depth values.
 

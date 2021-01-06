@@ -303,14 +303,10 @@ class TDWUtils:
         :param images: The `Images` output data.
         :param index: The index in `Images` of the depth pass. See: `Images.get_pass_mask()`.
 
-        :return: A reshaped depth pass. Shape is: `(width, height, 3)`.
+        :return: A reshaped depth pass. Shape is: `(height, width, 3)`.
         """
 
-        arr = np.reshape(images.get_image(index), (images.get_width(), images.get_height(), 3))
-        # Flip the UVs.
-        if images.get_uv_starts_at_top():
-            arr = np.flip(arr, 0)
-        return arr
+        return np.flip(np.reshape(images.get_image(index), (images.get_height(), images.get_width(), 3)), 0)
 
     @staticmethod
     def zero_padding(integer: int, width=4) -> str:
@@ -398,7 +394,7 @@ class TDWUtils:
         return commands
 
     @staticmethod
-    def get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256, uv_starts_at_top: bool = True) -> np.array:
+    def get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256) -> np.array:
         """
         Get the depth values of each pixel in a _depth image pass.
         The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
@@ -408,16 +404,12 @@ class TDWUtils:
         :param depth_pass: The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`.
         :param width: The width of the screen in pixels. See `Images.get_width()`.
         :param height: The height of the screen in pixels. See `Images.get_height()`.
-        :param uv_starts_at_top: If True, UV coordinates start at the top of the image. See `Images.get_uv_starts_at_top()`.
 
         :return An array of depth values.
         """
 
         # Convert the image to a 2D image array.
-        image = np.reshape(image, (width, height, 3))
-        # Flip the image if the UV coordinates are reversed.
-        if uv_starts_at_top:
-            image = np.flip(image, 0)
+        image = np.flip(np.reshape(image, (height, width, 3)), 0)
         if depth_pass == "_depth":
             return np.array((image[:, :, 0] * 256.0 ** 2 + image[:, :, 1] * 256.0 + image[:, :, 2])) / (256.0 ** 3)
         elif depth_pass == "_depth_simple":

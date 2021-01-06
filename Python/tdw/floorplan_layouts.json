@@ -1787,50 +1787,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arflex_strips_sofa",
-        "position": {
-          "x": -8.070012,
-          "y": 0.002412468,
-          "z": 2.275994
-        },
-        "rotation": {
-          "w": 0.7071128,
-          "x": 2.502842e-06,
-          "y": 0.7071007,
-          "z": 1.47149e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "sayonara_sofa",
-        "position": {
-          "x": 3.622001,
-          "y": 0.002194136,
-          "z": -3.387989
-        },
-        "rotation": {
-          "w": -0.7071075,
-          "x": -1.402848e-06,
-          "y": 0.7071061,
-          "z": 1.296401e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "de_castelli_placas_table",
         "position": {
           "x": -3.601079,
@@ -3879,7 +3835,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arflex_strips_sofa",
+        "name": "barcelona_bench_sofa",
         "position": {
           "x": 2.609998,
           "y": 0.002377629,
@@ -18729,7 +18685,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "molteni_turner_sofa",
+        "name": "barcelona_bench_sofa",
         "position": {
           "x": 4.629,
           "y": 0.02049625,

@@ -27,7 +27,6 @@ class DepthShader(Controller):
                                                look_at=TDWUtils.VECTOR3_ZERO))
         # Add an object.
         # Request images, system info, and camera matrices.
-        # You only need to request system info once.
         commands.extend([self.get_add_object("trunck", object_id=0),
                          {"$type": "set_pass_masks",
                           "pass_masks": ["_img", depth_pass]},

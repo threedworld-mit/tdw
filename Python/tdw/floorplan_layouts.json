@@ -445,28 +445,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": -10.30017,
-          "y": 0.9876404,
-          "z": 0.7189085
-        },
-        "rotation": {
-          "w": 0.9999963,
-          "x": 0.001492096,
-          "y": 0.000486699,
-          "z": 0.00226121
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "trunck",
         "position": {
           "x": -10.29434,
@@ -1237,28 +1215,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "kids_luggage_1",
-        "position": {
-          "x": -11.04084,
-          "y": 0.01133934,
-          "z": 3.814025
-        },
-        "rotation": {
-          "w": 0.9341453,
-          "x": 0.0004087333,
-          "y": 0.3568927,
-          "z": -1.131906e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "blue_satchal",
         "position": {
           "x": -4.147997,
@@ -1833,28 +1789,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "dark_red_club_chair",
-        "position": {
-          "x": -11.5,
-          "y": 0.001802653,
-          "z": 0.9099671
-        },
-        "rotation": {
-          "w": 1,
-          "x": 4.988032e-07,
-          "y": -6.3295e-06,
-          "z": -8.277129e-08
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "printer_hp_laserjet1321",
         "position": {
           "x": -0.6979957,
@@ -2053,28 +1987,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "barcelona_bench_sofa",
-        "position": {
-          "x": 2.609998,
-          "y": 0.002377629,
-          "z": 2.900011
-        },
-        "rotation": {
-          "w": 0.7071065,
-          "x": 1.947682e-06,
-          "y": -0.7071072,
-          "z": -2.000481e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "side_table_wood",
         "position": {
           "x": 9.609973,
@@ -2152,28 +2064,6 @@
           "x": 0.0001788925,
           "y": -0.7072011,
           "z": -0.001060785
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "club_house_italia_nautilus_sofa",
-        "position": {
-          "x": 11.09546,
-          "y": 0.01951981,
-          "z": -4.991282
-        },
-        "rotation": {
-          "w": 0.9999999,
-          "x": 0.0002613499,
-          "y": 0.0003116699,
-          "z": -8.898322e-06
         },
         "scale_factor": {
           "x": 1,
@@ -2306,28 +2196,6 @@
           "x": 2.048328e-09,
           "y": -0.7071076,
           "z": -1.862645e-08
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": -13.14826,
-          "y": 0.4550297,
-          "z": 4.729666
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0.0001161047,
-          "y": 1.492726e-05,
-          "z": 0.0001081769
         },
         "scale_factor": {
           "x": 1,
@@ -3703,28 +3571,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "cerno_lamp",
-        "position": {
-          "x": 1.659026,
-          "y": 0.002424955,
-          "z": 4.227818
-        },
-        "rotation": {
-          "w": 0.8351799,
-          "x": -0.0005501733,
-          "y": 0.5499764,
-          "z": 0.0003263801
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "monster_beats_studio",
         "position": {
           "x": -0.2799651,
@@ -4233,28 +4079,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "yellow_side_chair",
-        "position": {
-          "x": -0.777,
-          "y": 0.002777845,
-          "z": -0.223
-        },
-        "rotation": {
-          "w": -0.0004791768,
-          "x": 3.715685e-07,
-          "y": -0.9999999,
-          "z": -3.546476e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "side_table_wood",
         "position": {
           "x": -13.18404,
@@ -4365,50 +4189,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arco_lamp",
-        "position": {
-          "x": 2.770036,
-          "y": 0.01187736,
-          "z": 4.827404
-        },
-        "rotation": {
-          "w": 0.9372166,
-          "x": -0.01396767,
-          "y": 0.3483884,
-          "z": 0.007449672
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "arturoalvarez_v_floor_lamp",
-        "position": {
-          "x": 12.82,
-          "y": 0.002887964,
-          "z": -2.97
-        },
-        "rotation": {
-          "w": 0.2588184,
-          "x": 0.002183226,
-          "y": 0.9659234,
-          "z": 0.0005849937
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "alivar_tech_bench_sofa",
         "position": {
           "x": -11.22354,
@@ -4486,28 +4266,6 @@
           "x": 0,
           "y": -0.7071068,
           "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": 7.883,
-          "y": 0.617533,
-          "z": -5.365012
-        },
-        "rotation": {
-          "w": 1,
-          "x": 2.896073e-05,
-          "y": 9.874946e-06,
-          "z": 5.06881e-05
         },
         "scale_factor": {
           "x": 1,
@@ -4618,28 +4376,6 @@
           "x": 0.002473429,
           "y": -2.974895e-05,
           "z": 2.052763e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "rh10",
-        "position": {
-          "x": -2.018569,
-          "y": 0.001649022,
-          "z": 2.454107
-        },
-        "rotation": {
-          "w": -0.07845781,
-          "x": -3.008675e-05,
-          "y": 0.9969175,
-          "z": 3.086519e-06
         },
         "scale_factor": {
           "x": 1,
@@ -5212,28 +4948,6 @@
           "x": -1.455191e-11,
           "y": -5.215155e-08,
           "z": 3.768945e-09
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "metal_briefcase",
-        "position": {
-          "x": -12.50086,
-          "y": 0.01106688,
-          "z": 1.422914
-        },
-        "rotation": {
-          "w": 0.9246739,
-          "x": 0.001654805,
-          "y": -0.3807527,
-          "z": 0.001720336
         },
         "scale_factor": {
           "x": 1,
@@ -5839,28 +5553,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "white_club_chair",
-        "position": {
-          "x": -1.890001,
-          "y": 0.006146193,
-          "z": 3.476421
-        },
-        "rotation": {
-          "w": 0.607033,
-          "x": 7.074996e-07,
-          "y": 0.7946767,
-          "z": 6.258488e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "bakerparisfloorlamp03",
         "position": {
           "x": -9.46,
@@ -6371,28 +6063,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arco_lamp",
-        "position": {
-          "x": -6.622069,
-          "y": 0.007112563,
-          "z": 4.684753
-        },
-        "rotation": {
-          "w": 0.9666546,
-          "x": -0.004589814,
-          "y": -0.2560343,
-          "z": -0.00206745
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "alivar_tech_bench_sofa",
         "position": {
           "x": -4.729973,
@@ -6514,28 +6184,6 @@
           "x": 1.224798e-06,
           "y": -0.7071047,
           "z": -1.654029e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": -7.017036,
-          "y": 0.612,
-          "z": -4.151012
-        },
-        "rotation": {
-          "w": 1,
-          "x": 1.33134e-05,
-          "y": -5.397252e-06,
-          "z": -8.615824e-06
         },
         "scale_factor": {
           "x": 1,
@@ -7823,28 +7471,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "ligne_roset_armchair",
-        "position": {
-          "x": 2.890583,
-          "y": 0.03303304,
-          "z": -1.229376
-        },
-        "rotation": {
-          "w": 0.3501427,
-          "x": -0.003402648,
-          "y": -0.9366897,
-          "z": 0.0009353088
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "coffee_table_glass_round",
         "position": {
           "x": -8.780071,
@@ -8177,28 +7803,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "yellow_side_chair",
-        "position": {
-          "x": -5.440007,
-          "y": 0.01207042,
-          "z": -1.610043
-        },
-        "rotation": {
-          "w": -0.2750789,
-          "x": 0.0001899895,
-          "y": -0.9614217,
-          "z": -0.0001691133
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "trunck",
         "position": {
           "x": -7.460035,
@@ -8452,28 +8056,6 @@
           "x": 7.023856e-10,
           "y": -0.7071072,
           "z": -7.916241e-09
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": -2.31299,
-          "y": 0.455015,
-          "z": 4.531087
-        },
-        "rotation": {
-          "w": 1,
-          "x": -4.32551e-05,
-          "y": 9.177632e-06,
-          "z": 8.433183e-05
         },
         "scale_factor": {
           "x": 1,
@@ -9299,28 +8881,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "meridiani_belmondo_bench_sofa",
-        "position": {
-          "x": -8.242108,
-          "y": 0.001723677,
-          "z": -3.971965
-        },
-        "rotation": {
-          "w": 1,
-          "x": -8.814136e-07,
-          "y": 8.081913e-05,
-          "z": 1.8444e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "sayonara_sofa",
         "position": {
           "x": -10.32055,
@@ -9409,28 +8969,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "ligne_roset_armchair",
-        "position": {
-          "x": -10.28481,
-          "y": 0.02616832,
-          "z": -1.349691
-        },
-        "rotation": {
-          "w": -0.4821663,
-          "x": -0.002927117,
-          "y": -0.8760727,
-          "z": -0.001971334
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "coffee_table_glass_round",
         "position": {
           "x": -0.8077658,
@@ -9442,28 +8980,6 @@
           "x": 0.0005933249,
           "y": -1.70469e-05,
           "z": 0.0003169969
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "white_shopping_bag",
-        "position": {
-          "x": -9.500024,
-          "y": 0.02879665,
-          "z": -0.9700143
-        },
-        "rotation": {
-          "w": 0.7027233,
-          "x": -0.6900862,
-          "y": -0.1212394,
-          "z": -0.123539
         },
         "scale_factor": {
           "x": 1,
@@ -9838,28 +9354,6 @@
           "x": -0.0007502161,
           "y": -0.001232918,
           "z": -0.001330414
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "cerno_lamp",
-        "position": {
-          "x": 5.409981,
-          "y": 0.002777696,
-          "z": 4.040115
-        },
-        "rotation": {
-          "w": 0.8352003,
-          "x": -0.0003358188,
-          "y": 0.5499458,
-          "z": 0.0002114623
         },
         "scale_factor": {
           "x": 1,
@@ -10654,28 +10148,6 @@
           "x": 2.030177e-06,
           "y": 9.649665e-06,
           "z": -2.121523e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": -10.44403,
-          "y": 0.6174635,
-          "z": -3.689973
-        },
-        "rotation": {
-          "w": 1,
-          "x": -9.366829e-05,
-          "y": -2.776576e-05,
-          "z": 3.396247e-05
         },
         "scale_factor": {
           "x": 1,
@@ -12583,28 +12055,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arco_lamp",
-        "position": {
-          "x": -8.127493,
-          "y": 0.01005626,
-          "z": 5.396179
-        },
-        "rotation": {
-          "w": 0.966638,
-          "x": -0.005746095,
-          "y": -0.2560715,
-          "z": -0.002324354
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "arturoalvarez_v_floor_lamp",
         "position": {
           "x": 6.049074,
@@ -12682,50 +12132,6 @@
           "x": -0.002795036,
           "y": 0.9961743,
           "z": -0.00499511
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "barcelona_bench_sofa",
-        "position": {
-          "x": 6.549961,
-          "y": 0.006757289,
-          "z": 2.589972
-        },
-        "rotation": {
-          "w": 0.7071164,
-          "x": -0.002742696,
-          "y": -0.7070919,
-          "z": 0.0001212806
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": -4.827014,
-          "y": 0.6168722,
-          "z": -4.957981
-        },
-        "rotation": {
-          "w": 1,
-          "x": -0.0001544525,
-          "y": -1.357551e-05,
-          "z": -7.307083e-05
         },
         "scale_factor": {
           "x": 1,
@@ -12836,28 +12242,6 @@
           "x": 0.002654166,
           "y": -2.152092e-05,
           "z": 9.594471e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "rh10",
-        "position": {
-          "x": -7.857026,
-          "y": 0.005614832,
-          "z": 1.148006
-        },
-        "rotation": {
-          "w": 0.9238796,
-          "x": -6.479223e-09,
-          "y": -0.3826835,
-          "z": 2.753215e-07
         },
         "scale_factor": {
           "x": 1,
@@ -13485,50 +12869,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "kids_luggage_1",
-        "position": {
-          "x": -6.936,
-          "y": 0.01035023,
-          "z": 0.04899999
-        },
-        "rotation": {
-          "w": -0.4059833,
-          "x": 0.0004917704,
-          "y": 0.9138798,
-          "z": -0.001058134
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "blue_satchal",
-        "position": {
-          "x": 4.240471,
-          "y": 0.004056171,
-          "z": 1.921
-        },
-        "rotation": {
-          "w": 0.3588057,
-          "x": 2.194724e-06,
-          "y": 0.9334123,
-          "z": -6.793067e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "pencil_all",
         "position": {
           "x": -5.951753,
@@ -13859,28 +13199,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "ligne_roset_armchair",
-        "position": {
-          "x": -7.696406,
-          "y": 0.03499237,
-          "z": 0.2631363
-        },
-        "rotation": {
-          "w": 0.9081587,
-          "x": -0.01582319,
-          "y": 0.4145074,
-          "z": 0.05640081
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "coffee_table_glass_round",
         "position": {
           "x": -2.89898,
@@ -14033,28 +13351,6 @@
       }
     ],
     "1": [
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "meridiani_belmondo_bench_sofa",
-        "position": {
-          "x": 5.308249,
-          "y": 0.01266187,
-          "z": -1.247255
-        },
-        "rotation": {
-          "w": 0.9999596,
-          "x": 0.008967604,
-          "y": -0.0005428559,
-          "z": -0.0002238563
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
       {
         "gravity": true,
         "kinematic": false,
@@ -14466,28 +13762,6 @@
           "x": 3.252e-05,
           "y": -1,
           "z": 0.0001880568
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": 1.609947,
-          "y": 0.4550059,
-          "z": -2.199942
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0.0001868263,
-          "y": 3.507034e-05,
-          "z": 0.0001470359
         },
         "scale_factor": {
           "x": 1,
@@ -15214,28 +14488,6 @@
           "x": -1.151691e-05,
           "y": -0.707403,
           "z": -0.0007291136
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "ligne_roset_armchair",
-        "position": {
-          "x": -4.483638,
-          "y": 0.01928702,
-          "z": -4.556384
-        },
-        "rotation": {
-          "w": 0.9315125,
-          "x": -0.00157348,
-          "y": -0.3636922,
-          "z": 0.00315927
         },
         "scale_factor": {
           "x": 1,
@@ -16239,28 +15491,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arco_lamp",
-        "position": {
-          "x": 6.813386,
-          "y": 0.006815493,
-          "z": 1.100045
-        },
-        "rotation": {
-          "w": 0.7497742,
-          "x": -0.001865126,
-          "y": 0.6616908,
-          "z": 0.000604555
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "alivar_tech_bench_sofa",
         "position": {
           "x": -1.705473,
@@ -16360,28 +15590,6 @@
           "x": 1.55851e-08,
           "y": 1,
           "z": 1.326203e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": -7.803,
-          "y": 0.4620129,
-          "z": 5.021
-        },
-        "rotation": {
-          "w": -2.500907e-05,
-          "x": -3.396475e-05,
-          "y": -1,
-          "z": -9.366995e-05
         },
         "scale_factor": {
           "x": 1,
@@ -18113,28 +17321,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arco_lamp",
-        "position": {
-          "x": -8.30188,
-          "y": 0.006815493,
-          "z": -5.63734
-        },
-        "rotation": {
-          "w": 0.5150381,
-          "x": 0,
-          "y": -0.8571673,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "alivar_tech_bench_sofa",
         "position": {
           "x": 3.236651,
@@ -18234,28 +17420,6 @@
           "x": 0,
           "y": 0.7071068,
           "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": -0.2090898,
-          "y": 0.4620129,
-          "z": 0.8956869
-        },
-        "rotation": {
-          "w": 1,
-          "x": -9.366999e-05,
-          "y": -2.788007e-05,
-          "z": 3.396446e-05
         },
         "scale_factor": {
           "x": 1,
@@ -20227,28 +19391,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": 0.64009,
-          "y": 0.612094,
-          "z": 0.964678
-        },
-        "rotation": {
-          "w": 0.7071009,
-          "x": 5.63202e-05,
-          "y": 0.7071127,
-          "z": 1.536366e-05
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "trapezoidal_table",
         "position": {
           "x": -2.692549,
@@ -20997,28 +20139,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "kids_luggage_1",
-        "position": {
-          "x": -1.27,
-          "y": 0.01247662,
-          "z": -3.13
-        },
-        "rotation": {
-          "w": 0.9289722,
-          "x": 0.0009179973,
-          "y": 0.3701436,
-          "z": -0.001880719
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "blue_satchal",
         "position": {
           "x": 8.849998,
@@ -21580,28 +20700,6 @@
           "x": 0,
           "y": 0.9170601,
           "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "white_club_chair",
-        "position": {
-          "x": -0.47153,
-          "y": 0.006146193,
-          "z": -4.302347
-        },
-        "rotation": {
-          "w": 0.7946784,
-          "x": -6.25847e-07,
-          "y": -0.6070307,
-          "z": 7.075016e-07
         },
         "scale_factor": {
           "x": 1,
@@ -22176,28 +21274,6 @@
           "x": -0.0001099829,
           "y": -0.7071077,
           "z": 0.0001559736
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "jug05",
-        "position": {
-          "x": 6.734973,
-          "y": 0.4548471,
-          "z": -3.818989
-        },
-        "rotation": {
-          "w": 0.7071499,
-          "x": -2.540083e-05,
-          "y": -0.7070636,
-          "z": 0.0002779531
         },
         "scale_factor": {
           "x": 1,
@@ -23254,28 +22330,6 @@
           "x": -0.0005105877,
           "y": -0.001015641,
           "z": -0.0004018504
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "trapezoidal_table",
-        "position": {
-          "x": -3.168209,
-          "y": 0.006108463,
-          "z": 4.56116
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0.0002313147,
-          "y": -2.154319e-05,
-          "z": 4.534586e-05
         },
         "scale_factor": {
           "x": 1,

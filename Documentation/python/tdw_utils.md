@@ -237,6 +237,22 @@ The images object includes the pass and extension information.
 
 ***
 
+#### `get_shaped_depth_pass(images: Images, index: int) -> np.array`
+
+_This is a static function._
+
+The `_depth` and `_depth_simple` passes are a 1D array of RGB values, as oppposed to a png or jpg like every other pass.
+This function reshapes the array into a 2D array of RGB values.
+
+| Parameter | Description |
+| --- | --- |
+| images | The `Images` output data. |
+| index | The index in `Images` of the depth pass. See: `Images.get_pass_mask()`. |
+
+_Returns:_  A reshaped depth pass. Shape is: `(width, height, 3)`.
+
+***
+
 #### `zero_padding(integer: int, width=4) -> str`
 
 _This is a static function._

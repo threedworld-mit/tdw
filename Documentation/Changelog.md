@@ -20,6 +20,7 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
 - Added optional parameters `width`, `height`, and `uv_starts_at_top` to `get_depth_values()`.
 - Added: `get_point_cloud()`. Create a point cloud from an numpy array of depth values.
+- Added: `get_shaped_depth_pass()`. Reshape a depth pass into a 2D RGB array.
 
 ### Build
 

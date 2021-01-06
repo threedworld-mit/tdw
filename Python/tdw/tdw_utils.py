@@ -287,16 +287,30 @@ class TDWUtils:
                 path = os.path.join(output_directory, fi)
                 # The depth passes aren't png files, so we need to convert them.
                 if pass_mask == "_depth" or pass_mask == "_depth_simple":
-                    arr = np.reshape(images.get_image(i), (images.get_width(), images.get_height(), 3))
-                    # Flip the UVs.
-                    if images.get_uv_starts_at_top():
-                        arr = np.flip(arr, 0)
                     # Save the image.
-                    Image.fromarray(arr).save(path)
+                    Image.fromarray(TDWUtils.get_shaped_depth_pass(images=images, index=i)).save(path)
                 # Every other pass can be saved directly to disk.
                 else:
                     with open(path, "wb") as f:
                         f.write(images.get_image(i))
+
+    @staticmethod
+    def get_shaped_depth_pass(images: Images, index: int) -> np.array:
+        """
+        The `_depth` and `_depth_simple` passes are a 1D array of RGB values, as oppposed to a png or jpg like every other pass.
+        This function reshapes the array into a 2D array of RGB values.
+
+        :param images: The `Images` output data.
+        :param index: The index in `Images` of the depth pass. See: `Images.get_pass_mask()`.
+
+        :return: A reshaped depth pass. Shape is: `(width, height, 3)`.
+        """
+
+        arr = np.reshape(images.get_image(index), (images.get_width(), images.get_height(), 3))
+        # Flip the UVs.
+        if images.get_uv_starts_at_top():
+            arr = np.flip(arr, 0)
+        return arr
 
     @staticmethod
     def zero_padding(integer: int, width=4) -> str:

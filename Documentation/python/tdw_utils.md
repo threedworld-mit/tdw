@@ -237,6 +237,22 @@ The images object includes the pass and extension information.
 
 ***
 
+#### `get_shaped_depth_pass(images: Images, index: int) -> np.array`
+
+_This is a static function._
+
+The `_depth` and `_depth_simple` passes are a 1D array of RGB values, as oppposed to a png or jpg like every other pass.
+This function reshapes the array into a 2D array of RGB values.
+
+| Parameter | Description |
+| --- | --- |
+| images | The `Images` output data. |
+| index | The index in `Images` of the depth pass. See: `Images.get_pass_mask()`. |
+
+_Returns:_  A reshaped depth pass. Shape is: `(width, height, 3)`.
+
+***
+
 #### `zero_padding(integer: int, width=4) -> str`
 
 _This is a static function._
@@ -305,7 +321,7 @@ _Returns:_ A list of commands to set ALL visual materials on an object to a sing
 
 ***
 
-#### `get_depth_values(image: np.array, depth_pass: str = "_depth") -> np.array`
+#### `get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256, uv_starts_at_top: bool = True) -> np.array`
 
 _This is a static function._
 
@@ -317,8 +333,28 @@ The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
 | --- | --- |
 | image | The image pass as a numpy array. |
 | depth_pass | The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`. |
+| width | The width of the screen in pixels. See `Images.get_width()`. |
+| height | The height of the screen in pixels. See `Images.get_height()`. |
+| uv_starts_at_top | If True, UV coordinates start at the top of the image. See `Images.get_uv_starts_at_top()`. |
 
 _Returns:_ An array of depth values.
+
+***
+
+#### `get_point_cloud(depth, camera_matrix: Union[np.array, tuple], vfov: float = 54.43222, filename: str = None) -> np.array`
+
+_This is a static function._
+
+Create a point cloud from an numpy array of depth values.
+
+| Parameter | Description |
+| --- | --- |
+| depth | Depth values converted from a depth pass. See: `TDWUtils.get_depth_values()` |
+| camera_matrix | The camera matrix as a tuple or numpy array. See: [`send_camera_matrices`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#send_camera_matrices). |
+| vfov | The field of view. See: [`set_field_of_view`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_field_of_view) |
+| filename | If not None, the point cloud data will be written to this file. |
+
+_Returns:_  An point cloud as a numpy array of `[x, y, z]` coordinates.
 
 ***
 

@@ -7,3 +7,4 @@ __pycache__/
 Python/dist/
 Python/tdw/tdw.egg-info/
 Python/build/
+Python/example_controllers/point_cloud.txt

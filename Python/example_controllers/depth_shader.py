@@ -48,7 +48,7 @@ class DepthShader(Controller):
             # Get the camera matrix.
             elif r_id == "cama":
                 camera_matrix = CameraMatrices(resp[i]).get_camera_matrix()
-        # Save the image. Note that because we're using depth images, the width and height must be defined.
+        # Save the image.
         TDWUtils.save_images(images=images, output_directory="D:/depth_shader", filename="0", append_pass=True)
         # Get the depth values of each pixel.
         depth = TDWUtils.get_depth_values(image=depth_image,

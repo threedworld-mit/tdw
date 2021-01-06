@@ -335,7 +335,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arturoalvarez_v_floor_lamp",
+        "name": "alma_floor_lamp",
         "position": {
           "x": 3.562668,
           "y": 0.006495595,
@@ -2141,7 +2141,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arturoalvarez_v_floor_lamp",
+        "name": "alma_floor_lamp",
         "position": {
           "x": 3.710326,
           "y": 0.006398678,
@@ -5680,50 +5680,6 @@
           "y": 1,
           "z": 1
         }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "molteni_turner_sofa",
-        "position": {
-          "x": 10.64393,
-          "y": 0.01247662,
-          "z": -4.52
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 2.950429e-06,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "hiker_backpack",
-        "position": {
-          "x": -4.39,
-          "y": 0.04505795,
-          "z": 1.48
-        },
-        "rotation": {
-          "w": 1,
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
       }
     ]
   },
@@ -7625,7 +7581,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arturoalvarez_v_floor_lamp",
+        "name": "alma_floor_lamp",
         "position": {
           "x": 1.481532,
           "y": 0.004223585,
@@ -7957,7 +7913,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arturoalvarez_v_floor_lamp",
+        "name": "alma_floor_lamp",
         "position": {
           "x": -7.390744,
           "y": 0.00558269,
@@ -8311,9 +8267,9 @@
         "library": "models_core.json",
         "name": "brown_leather_dining_chair",
         "position": {
-          "x": 8.321,
+          "x": 7.495,
           "y": 0.004068077,
-          "z": -4.798032
+          "z": -4.836
         },
         "rotation": {
           "w": -0.02330764,
@@ -9629,28 +9585,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arflex_strips_sofa",
-        "position": {
-          "x": -7.460035,
-          "y": 0.00241971,
-          "z": 2.380015
-        },
-        "rotation": {
-          "w": 0.7071054,
-          "x": 1.377745e-06,
-          "y": -0.7071083,
-          "z": -3.177672e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "minotti_helion_3_seater_sofa",
         "position": {
           "x": -8.242108,
@@ -9671,28 +9605,6 @@
       }
     ],
     "2": [
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "side_table_wood",
-        "position": {
-          "x": 6.689785,
-          "y": 0.005978465,
-          "z": 3.268983
-        },
-        "rotation": {
-          "w": 0.7074169,
-          "x": -0.001936034,
-          "y": 0.7067932,
-          "z": 0.0009929537
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
       {
         "gravity": true,
         "kinematic": false,
@@ -10095,9 +10007,9 @@
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
-          "x": -3.265155,
-          "y": 0.0008735657,
-          "z": -4.128778
+          "x": -3.659,
+          "y": 0,
+          "z": -3.725
         },
         "rotation": {
           "w": 0.751223,
@@ -11738,28 +11650,6 @@
           "y": 1,
           "z": 1
         }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "minotti_helion_3_seater_sofa",
-        "position": {
-          "x": -6.477015,
-          "y": 0.001699746,
-          "z": -2.457987
-        },
-        "rotation": {
-          "w": 0.7071071,
-          "x": -6.377831e-09,
-          "y": -0.7071066,
-          "z": -3.263354e-06
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
       }
     ]
   },
@@ -12121,7 +12011,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arturoalvarez_v_floor_lamp",
+        "name": "alma_floor_lamp",
         "position": {
           "x": 6.049074,
           "y": 0.005288005,
@@ -13045,28 +12935,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "white_lounger_chair",
-        "position": {
-          "x": -4.66007,
-          "y": 0.01022023,
-          "z": 3.420133
-        },
-        "rotation": {
-          "w": 0.9237952,
-          "x": 0.003300404,
-          "y": -0.3827955,
-          "z": -0.007700786
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "linen_dining_chair",
         "position": {
           "x": 6.706001,
@@ -13707,7 +13575,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arturoalvarez_v_floor_lamp",
+        "name": "alma_floor_lamp",
         "position": {
           "x": -7.852673,
           "y": 0,
@@ -14466,28 +14334,6 @@
           "x": 3.476215e-06,
           "y": 0.7071074,
           "z": 6.556509e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "coffee_table_glass_round",
-        "position": {
-          "x": 6.476194,
-          "y": 0.004147649,
-          "z": 5.289242
-        },
-        "rotation": {
-          "w": -0.004371243,
-          "x": -0.0003883189,
-          "y": -0.9999856,
-          "z": 0.003075215
         },
         "scale_factor": {
           "x": 1,
@@ -17026,28 +16872,6 @@
           "y": 1,
           "z": 1
         }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "arflex_strips_sofa",
-        "position": {
-          "x": 2.216021,
-          "y": 0.002429485,
-          "z": -4.685989
-        },
-        "rotation": {
-          "w": 1,
-          "x": 3.203631e-06,
-          "y": -2.353163e-06,
-          "z": 6.55767e-07
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
       }
     ]
   },
@@ -17310,28 +17134,6 @@
           "x": 0.0001143402,
           "y": 1,
           "z": -0.0003179712
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "black_lamp",
-        "position": {
-          "x": -9.641878,
-          "y": 0.61,
-          "z": -0.3573401
-        },
-        "rotation": {
-          "w": 0.7071078,
-          "x": 0,
-          "y": -0.7071058,
-          "z": 0
         },
         "scale_factor": {
           "x": 1,
@@ -18883,28 +18685,6 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "barcelona_bench_sofa",
-        "position": {
-          "x": 4.629,
-          "y": 0.02049625,
-          "z": 4.007
-        },
-        "rotation": {
-          "w": 2.950429e-06,
-          "x": 0,
-          "y": 1,
-          "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
         "name": "baking_sheet10",
         "position": {
           "x": 3.53809,
@@ -19325,7 +19105,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arturoalvarez_v_floor_lamp",
+        "name": "alma_floor_lamp",
         "position": {
           "x": -8.503799,
           "y": 0.002887964,
@@ -21219,7 +20999,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "arturoalvarez_v_floor_lamp",
+        "name": "alma_floor_lamp",
         "position": {
           "x": 1.078001,
           "y": 0.03610623,
@@ -22726,50 +22506,6 @@
           "x": 0,
           "y": 0,
           "z": 0
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "napoleon_iii_sofa",
-        "position": {
-          "x": -8.57036,
-          "y": 0.01167729,
-          "z": -0.513061
-        },
-        "rotation": {
-          "w": -0.0005707321,
-          "x": 9.910555e-05,
-          "y": -0.9999677,
-          "z": 0.00802091
-        },
-        "scale_factor": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        }
-      },
-      {
-        "gravity": true,
-        "kinematic": false,
-        "library": "models_core.json",
-        "name": "table_stack",
-        "position": {
-          "x": -2.403028,
-          "y": 0.009560674,
-          "z": -3.126861
-        },
-        "rotation": {
-          "w": 0.707125,
-          "x": 0.0003078346,
-          "y": 0.7070885,
-          "z": -9.369108e-06
         },
         "scale_factor": {
           "x": 1,

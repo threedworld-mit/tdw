@@ -406,9 +406,9 @@ class TDWUtils:
 
         :param image: The image pass as a numpy array.
         :param depth_pass: The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`.
-        :param width: The width of the screen in pixels. See `Images.get_width()` in the output data documentation.
-        :param height: The height of the screen in pixels. See `Images.get_height()` in the output data documentation.
-        :param uv_starts_at_top: If True, UV coordinates start at the top of the image. See `Images.get_uv_starts_at_top()` in the output data documentation.
+        :param width: The width of the screen in pixels. See `Images.get_width()`.
+        :param height: The height of the screen in pixels. See `Images.get_height()`.
+        :param uv_starts_at_top: If True, UV coordinates start at the top of the image. See `Images.get_uv_starts_at_top()`.
 
         :return An array of depth values.
         """

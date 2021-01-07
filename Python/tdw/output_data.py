@@ -888,7 +888,7 @@ class Robot(OutputData):
         return OutputData._get_vector3(self.data.Joints(index).Transform().Forward)
 
     def get_joint_positions(self, index: int) -> np.array:
-        return self.data.Joints(index).PositionsAsNumpy()
+        return np.degrees(self.data.Joints(index).PositionsAsNumpy())
 
     def get_num_non_moving(self) -> int:
         return self.data.NonMovingLength()

@@ -105,7 +105,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`set_avatar_rigidbody_constraints`](#set_avatar_rigidbody_constraints) | Set the rigidbody constraints of a Sticky Mitten Avatar. |
+| [`set_avatar_rigidbody_constraints`](#set_avatar_rigidbody_constraints) | Set the rigidbody constraints of a Sticky Mitten Avatar.  |
 
 **Nav Mesh Avatar Command**
 
@@ -184,7 +184,6 @@
 | [`rotate_sensor_container_by`](#rotate_sensor_container_by) | Rotate the sensor container of the avatar by a given angle along a given axis. |
 | [`rotate_sensor_container_to`](#rotate_sensor_container_to) | Set the rotation quaternion of the avatar's sensor container. |
 | [`set_anti_aliasing`](#set_anti_aliasing) | Set the anti-aliasing mode for the avatar's camera.  |
-| [`toggle_image_sensor`](#toggle_image_sensor) | Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off),  |
 | [`translate_sensor_container_by`](#translate_sensor_container_by) | Translate the sensor container relative to the avatar by a given directional vector. |
 
 **Create Reverb Space Command**
@@ -1759,8 +1758,9 @@ These commands work only for the specified avatar subclass.
 
 ## **`set_avatar_rigidbody_constraints`**
 
-Set the rigidbody constraints of a Sticky Mitten Avatar.
+Set the rigidbody constraints of a Sticky Mitten Avatar. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_avatar_rigidbody_constraints"}
@@ -2695,27 +2695,6 @@ The anti-aliasing mode for the camera.
 | `"none"` | No antialiasing. |
 | `"subpixel"` | A higher quality, more expensive technique than fast. |
 | `"temporal"` | The highest-quality technique. Expensive. Adds motion blurring based on camera history. By default, all cameras in TDW are set to temporal. If you are frequently teleporting the avatar (and camera), do NOT use this mode. |
-
-***
-
-## **`toggle_image_sensor`**
-
-Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "toggle_image_sensor"}
-```
-
-```python
-{"$type": "toggle_image_sensor", "sensor_name": "SensorContainer", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***
 

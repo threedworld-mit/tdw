@@ -26,7 +26,7 @@ Add robots to the scene using either [the `add_robot` command or `Controller.get
 | prismatic  | 1                  | meters  |
 | spherical  | 3                  | degrees |
 
-Once the target is set, the joint still needs to move to the target. You can determine if joints are still moving by checking the [`Robot.get_joint_positions()`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/output_data.md#Robot). See `robot_arm.py` for example implementation. Note that in the output data, revolute and spherical angles are in radians.
+Once the target is set, the joint still needs to move to the target. You can determine if joints are still moving by checking the [`Robot.get_joint_positions()`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/output_data.md#Robot). See `robot_arm.py` for example implementation.
 
 Targets are always *cumulative*, not deltas. If you do this:
 

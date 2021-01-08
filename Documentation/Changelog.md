@@ -4,6 +4,36 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.15
+
+### Command API
+
+#### New Commands
+
+| Command                 | Description                                                  |
+| ----------------------- | ------------------------------------------------------------ |
+| `send_viewport_raycast` | Get a raycast along the forward directional vector of an ImageSensor. This can be used to un-normalize depth maps. |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Images`    | Removed: `get_uv_starts_at_top()` (it's not actually useful). |
+
+### Example Controllers
+
+- `depth_shader.py` includes code to un-normalize a depth map.
+
+### Documentation
+
+#### New Documentation
+
+| Document   | Description                   |
+| ---------- | ----------------------------- |
+| `depth.md` | How to use depth maps in TDW. |
+
 ## v1.7.14
 
 ### Output Data

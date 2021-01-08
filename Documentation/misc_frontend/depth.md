@@ -1,6 +1,6 @@
 # Depth Maps
 
-Depth passes are image that include depth information into pixel colors. To receive a depth pass, you need to add an avatar to the scene, set the pass masks to include `_depth`, and then request images:
+Depth passes are image that encode depth information into pixel colors. To receive a depth pass, you need to add an avatar to the scene, set the pass masks to include `_depth`, and then request images:
 
 ```python
 import numpy as np

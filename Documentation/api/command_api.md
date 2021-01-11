@@ -415,6 +415,7 @@
 | [`destroy_robot`](#destroy_robot) | Destroy a robot in the scene. |
 | [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
 | [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
+| [`teleport_robot`](#teleport_robot) | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
 
 **Magnebot Command**
 
@@ -5013,6 +5014,27 @@ Set whether or not the root object of the robot is immovable. Its joints will st
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"immovable"` | bool | If true, the root object of the robot is immovable. | True |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`teleport_robot`**
+
+Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over).
+
+
+```python
+{"$type": "teleport_robot"}
+```
+
+```python
+{"$type": "teleport_robot", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"w": 1, "x": 0, "y": 0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the robot. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Quaternion | The rotation of the robot. | {"w": 1, "x": 0, "y": 0, "z": 0} |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
 # MagnebotCommand

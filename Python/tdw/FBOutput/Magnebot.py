@@ -69,10 +69,22 @@ class Magnebot(object):
             return self._tab.VectorLen(o)
         return 0
 
-def MagnebotStart(builder): builder.StartObject(3)
+    # Magnebot
+    def Top(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            x = o + self._tab.Pos
+            from .Vector3 import Vector3
+            obj = Vector3()
+            obj.Init(self._tab.Bytes, x)
+            return obj
+        return None
+
+def MagnebotStart(builder): builder.StartObject(4)
 def MagnebotAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
 def MagnebotAddHeldLeft(builder, heldLeft): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(heldLeft), 0)
 def MagnebotStartHeldLeftVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def MagnebotAddHeldRight(builder, heldRight): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(heldRight), 0)
 def MagnebotStartHeldRightVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def MagnebotAddTop(builder, top): builder.PrependStructSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(top), 0)
 def MagnebotEnd(builder): return builder.EndObject()

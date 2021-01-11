@@ -475,6 +475,7 @@ Data for a Magnebot.
 | `get_id()` | The unique ID of the Magnebot. | `int` |
 | `get_held_left()` | The IDs of the objects held by the left magnet. | `np.array` |
 | `get_held_right()` | The IDs of the objects held by the right magnet. | `np.array` |
+| `get_top()` | The position of the top point of the Magnebot. | `Tuple[float, float, float]` |
 
 ## Meshes
 

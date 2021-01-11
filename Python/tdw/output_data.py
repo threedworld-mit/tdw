@@ -961,3 +961,6 @@ class Magnebot(OutputData):
 
     def get_held_right(self) -> np.array:
         return self.data.HeldRightAsNumpy()
+
+    def get_top(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Top())

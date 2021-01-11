@@ -16,6 +16,8 @@ class DepthShader(Controller):
         self.start()
 
         depth_pass = "_depth"
+        near_plane = 0.1
+        far_plane = 20
 
         # Create an empty room.
         # Set the screen size.
@@ -34,15 +36,14 @@ class DepthShader(Controller):
                           "pass_masks": [depth_pass]},
                          {"$type": "send_images"},
                          {"$type": "send_camera_matrices"},
-                         {"$type": "send_viewport_raycast"},
-                         {"$type": "send_avatars"}])
+                         {"$type": "set_camera_clipping_planes",
+                          "near": near_plane,
+                          "far": far_plane}])
         resp = self.communicate(commands)
 
         depth_image = None
         camera_matrix = None
         images = None
-        raycast = None
-        avatar = None
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Get the image.
@@ -54,23 +55,15 @@ class DepthShader(Controller):
             # Get the camera matrix.
             elif r_id == "cama":
                 camera_matrix = CameraMatrices(resp[i]).get_camera_matrix()
-            # Get the raycast.
-            elif r_id == "rayc":
-                raycast = Raycast(resp[i])
-            elif r_id == "avki":
-                avatar = AvatarKinematic(resp[i])
         # Save the image.
         TDWUtils.save_images(images=images, output_directory="D:/depth_shader", filename="0", append_pass=True)
         # Get the depth values of each pixel.
-        depth = TDWUtils.get_depth_values(image=depth_image, width=images.get_width(),  height=images.get_height())
-
-        # Un-normalize the depth values by getting the distance from the avatar to the raycast point.
-        avatar_position = np.array(avatar.get_position())
-        raycast_point = np.array(raycast.get_point())
-        distance_to_raycast_point = np.linalg.norm(avatar_position - raycast_point)
-        unnormalized = distance_to_raycast_point / depth[int(images.get_height() / 2)][int(images.get_width() / 2)]
-        depth *= unnormalized
+        depth = TDWUtils.get_depth_values(image=depth_image, width=images.get_width(),  height=images.get_height(),
+                                          near_plane=near_plane, far_plane=far_plane)
+        print(np.min(depth), np.max(depth))
         print(depth)
+        np.save("depth", depth)
+        np.save("camera_matrix", camera_matrix)
 
         # Get a point cloud and write it to disk.
         point_cloud_filename = "point_cloud.txt"

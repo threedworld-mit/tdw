@@ -482,7 +482,7 @@ class TDWUtils:
             for i in range(points_in_world.shape[1]):
                 for j in range(points_in_world.shape[2]):
                     if points_in_world[2, i, j] < 99:
-                        f.write(f'{points_in_world[0, i, j]};{points_in_world[1, i, j]};{points_in_world[2, i, j]}\n')
+                        f.write(f'{points_in_world[0, i, j]} {points_in_world[1, i, j]} {points_in_world[2, i, j]}\n')
         return points_in_world
 
     @staticmethod

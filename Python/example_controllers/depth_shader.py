@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.output_data import OutputData, Images, CameraMatrices, Raycast, AvatarKinematic
+from tdw.output_data import OutputData, Images, CameraMatrices
 
 
 """
@@ -16,8 +16,6 @@ class DepthShader(Controller):
         self.start()
 
         depth_pass = "_depth"
-        near_plane = 0.1
-        far_plane = 20
 
         # Create an empty room.
         # Set the screen size.
@@ -29,16 +27,11 @@ class DepthShader(Controller):
         commands.extend(TDWUtils.create_avatar(position={"x": 1.57, "y": 3, "z": 3.56}, look_at=TDWUtils.VECTOR3_ZERO))
         # Add an object.
         # Request images and camera matrices.
-        # Get a raycast from at the center of the camera viewport.
-        # Request avatar data to get the avatar position (you'll need this if the avatar is moving).
         commands.extend([self.get_add_object("trunck", object_id=0),
                          {"$type": "set_pass_masks",
                           "pass_masks": [depth_pass]},
                          {"$type": "send_images"},
-                         {"$type": "send_camera_matrices"},
-                         {"$type": "set_camera_clipping_planes",
-                          "near": near_plane,
-                          "far": far_plane}])
+                         {"$type": "send_camera_matrices"}])
         resp = self.communicate(commands)
 
         depth_image = None
@@ -58,8 +51,7 @@ class DepthShader(Controller):
         # Save the image.
         TDWUtils.save_images(images=images, output_directory="D:/depth_shader", filename="0", append_pass=True)
         # Get the depth values of each pixel.
-        depth = TDWUtils.get_depth_values(image=depth_image, width=images.get_width(),  height=images.get_height(),
-                                          near_plane=near_plane, far_plane=far_plane)
+        depth = TDWUtils.get_depth_values(image=depth_image, width=images.get_width(),  height=images.get_height())
         print(np.min(depth), np.max(depth))
         print(depth)
         np.save("depth", depth)

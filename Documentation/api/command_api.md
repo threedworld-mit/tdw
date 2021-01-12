@@ -181,7 +181,6 @@
 | [`reset_sensor_container_rotation`](#reset_sensor_container_rotation) | Reset the rotation of the avatar's sensor container. |
 | [`rotate_sensor_container_by`](#rotate_sensor_container_by) | Rotate the sensor container of the avatar by a given angle along a given axis. |
 | [`rotate_sensor_container_to`](#rotate_sensor_container_to) | Set the rotation quaternion of the avatar's sensor container. |
-| [`send_viewport_raycast`](#send_viewport_raycast) | Send a raycast from the camera along its forward directional vector. This is the center of the screen. This command can be used to un-normalize a depth map.  |
 | [`set_anti_aliasing`](#set_anti_aliasing) | Set the anti-aliasing mode for the avatar's camera.  |
 | [`toggle_image_sensor`](#toggle_image_sensor) | Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off),  |
 | [`translate_sensor_container_by`](#translate_sensor_container_by) | Translate the sensor container relative to the avatar by a given directional vector. |
@@ -2571,32 +2570,6 @@ Set the rotation quaternion of the avatar's sensor container.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"rotation"` | Quaternion | The rotation quaternion. | |
-| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
-## **`send_viewport_raycast`**
-
-Send a raycast from the camera along its forward directional vector. This is the center of the screen. This command can be used to un-normalize a depth map. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
-
-```python
-{"$type": "send_viewport_raycast"}
-```
-
-```python
-{"$type": "send_viewport_raycast", "raycast_id": 0, "sensor_name": "SensorContainer", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"raycast_id"` | int | The unique ID of the raycast. The output data will include this a matching ID. | 0 |
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 

@@ -484,7 +484,7 @@ class TDWUtils:
             f = open(filename, 'w')
             for i in range(points_in_world.shape[1]):
                 for j in range(points_in_world.shape[2]):
-                    if points_in_cam[2, i, j] < (far_plane - 1):
+                    if points_in_cam[2, i, j] < (far_plane - near_plane):
                         f.write(f'{points_in_world[0, i, j]};{points_in_world[1, i, j]};{points_in_world[2, i, j]}\n')
         return points_in_world
 

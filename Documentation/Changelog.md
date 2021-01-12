@@ -4,6 +4,35 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.15
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Images`    | Removed: `get_uv_starts_at_top()` (it's not actually useful). |
+
+### `tdw` module
+
+#### `TDWUtils`
+
+- Added optional parameters `far_plane` and `near_plane` to `get_depth_values()`.
+- Added optional parameters `far_plane` and `near_plane` to `get_point_cloud()`.
+
+### Build
+
+- **Fixed: `_depth` and `_depth_simple` passes are inaccurate.** Both passes now correctly encode depth values.
+
+### Documentation
+
+#### New Documentation
+
+| Document   | Description                   |
+| ---------- | ----------------------------- |
+| `depth.md` | How to use depth maps in TDW. |
+
 ## v1.7.14
 
 ### Output Data

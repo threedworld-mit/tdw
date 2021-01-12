@@ -400,7 +400,6 @@ The images and associated metadata that were captured by an avatar.
 | `get_extension(index)` | The image file extension (.png or .jpg). | `str` |
 | `get_width()` | The width of the screen in pixels. | `int` |
 | `get_height()` | The height of the screen in pixels. | `int` |
-| `get_uv_starts_at_top()` | If true, UVs for images start at the top of the image. | `bool` |
 
 ## ImageSensors
 

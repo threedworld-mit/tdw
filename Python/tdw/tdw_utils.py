@@ -394,7 +394,7 @@ class TDWUtils:
         return commands
 
     @staticmethod
-    def get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256) -> np.array:
+    def get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256, near_plane: float = 0.1, far_plane: float = 100) -> np.array:
         """
         Get the depth values of each pixel in a _depth image pass.
         The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
@@ -402,8 +402,10 @@ class TDWUtils:
 
         :param image: The image pass as a numpy array.
         :param depth_pass: The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`.
-        :param width: The width of the screen in pixels. See `Images.get_width()`.
-        :param height: The height of the screen in pixels. See `Images.get_height()`.
+        :param width: The width of the screen in pixels. See output data `Images.get_width()`.
+        :param height: The height of the screen in pixels. See output data `Images.get_height()`.
+        :param near_plane: The near clipping plane. See command `set_camera_clipping_planes`. The default value in this function is the default value of the near clipping plane.
+        :param far_plane: The far clipping plane. See command `set_camera_clipping_planes`. The default value in this function is the default value of the far clipping plane.
 
         :return An array of depth values.
         """
@@ -411,14 +413,16 @@ class TDWUtils:
         # Convert the image to a 2D image array.
         image = np.flip(np.reshape(image, (height, width, 3)), 0)
         if depth_pass == "_depth":
-            return np.array((image[:, :, 0] * 256.0 ** 2 + image[:, :, 1] * 256.0 + image[:, :, 2])) / (256.0 ** 3)
+            depth_values = np.array((image[:, :, 0] + image[:, :, 1] / 256.0 + image[:, :, 2] / (256.0 ** 2)))
         elif depth_pass == "_depth_simple":
-            return image[:, :, 0] / 256.0
+            depth_values = image[:, :, 0] / 256.0
         else:
             raise Exception(f"Invalid depth pass: {depth_pass}")
+        # Un-normalize the depth values.
+        return (depth_values * ((far_plane - near_plane) / 256.0)).astype(np.float32)
 
     @staticmethod
-    def get_point_cloud(depth, camera_matrix: Union[np.array, tuple], vfov: float = 54.43222, filename: str = None) -> np.array:
+    def get_point_cloud(depth, camera_matrix: Union[np.array, tuple], vfov: float = 54.43222, filename: str = None, near_plane: float = 0.1, far_plane: float = 100) -> np.array:
         """
         Create a point cloud from an numpy array of depth values.
 
@@ -426,6 +430,8 @@ class TDWUtils:
         :param camera_matrix: The camera matrix as a tuple or numpy array. See: [`send_camera_matrices`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#send_camera_matrices).
         :param vfov: The field of view. See: [`set_field_of_view`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_field_of_view)
         :param filename: If not None, the point cloud data will be written to this file.
+        :param near_plane: The near clipping plane. See command `set_camera_clipping_planes`. The default value in this function is the default value of the near clipping plane.
+        :param far_plane: The far clipping plane. See command `set_camera_clipping_planes`. The default value in this function is the default value of the far clipping plane.
 
         :return: An point cloud as a numpy array of `[x, y, z]` coordinates.
         """
@@ -473,12 +479,13 @@ class TDWUtils:
         points_in_cam = np.concatenate((points_in_cam, np.ones((1, points_in_cam.shape[1]))), axis=0)
         points_in_world = np.dot(camera_matrix, points_in_cam)
         points_in_world = points_in_world[:3, :].reshape(3, TDWUtils.__WIDTH, TDWUtils.__HEIGHT)
+        points_in_cam = points_in_cam[:3, :].reshape(3, TDWUtils.__WIDTH, TDWUtils.__HEIGHT)
         if filename is not None:
             f = open(filename, 'w')
             for i in range(points_in_world.shape[1]):
                 for j in range(points_in_world.shape[2]):
-                    if points_in_world[2, i, j] < 99:
-                        f.write(f'{points_in_world[0, i, j]} {points_in_world[1, i, j]} {points_in_world[2, i, j]}\n')
+                    if points_in_cam[2, i, j] < (far_plane - near_plane):
+                        f.write(f'{points_in_world[0, i, j]};{points_in_world[1, i, j]};{points_in_world[2, i, j]}\n')
         return points_in_world
 
     @staticmethod

@@ -252,9 +252,6 @@ class Images(OutputData):
     def get_height(self) -> int:
         return self.data.Height()
 
-    def get_uv_starts_at_top(self) -> bool:
-        return self.data.UvStartsAtTop()
-
 
 class AvatarKinematic(OutputData):
     def get_data(self) -> AvKi.AvatarKinematic:

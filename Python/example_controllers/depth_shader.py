@@ -1,4 +1,5 @@
 from pathlib import Path
+import numpy as np
 import matplotlib.pyplot as plt
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
@@ -23,13 +24,12 @@ class DepthShader(Controller):
                      "width": 512,
                      "height": 512}]
         # Add the avatar.
-        commands.extend(TDWUtils.create_avatar(position={"x": 1.57, "y": 3, "z": 3.56},
-                                               look_at=TDWUtils.VECTOR3_ZERO))
+        commands.extend(TDWUtils.create_avatar(position={"x": 1.57, "y": 3, "z": 3.56}, look_at=TDWUtils.VECTOR3_ZERO))
         # Add an object.
         # Request images and camera matrices.
         commands.extend([self.get_add_object("trunck", object_id=0),
                          {"$type": "set_pass_masks",
-                          "pass_masks": ["_img", depth_pass]},
+                          "pass_masks": [depth_pass]},
                          {"$type": "send_images"},
                          {"$type": "send_camera_matrices"}])
         resp = self.communicate(commands)
@@ -43,7 +43,7 @@ class DepthShader(Controller):
             if r_id == "imag":
                 images = Images(resp[i])
                 for j in range(images.get_num_passes()):
-                    if images.get_pass_mask(j) == "_depth":
+                    if images.get_pass_mask(j) == depth_pass:
                         depth_image = images.get_image(j)
             # Get the camera matrix.
             elif r_id == "cama":
@@ -51,10 +51,12 @@ class DepthShader(Controller):
         # Save the image.
         TDWUtils.save_images(images=images, output_directory="D:/depth_shader", filename="0", append_pass=True)
         # Get the depth values of each pixel.
-        depth = TDWUtils.get_depth_values(image=depth_image,
-                                          width=images.get_width(),
-                                          height=images.get_height())
+        depth = TDWUtils.get_depth_values(image=depth_image, width=images.get_width(),  height=images.get_height())
+        print(np.min(depth), np.max(depth))
         print(depth)
+        np.save("depth", depth)
+        np.save("camera_matrix", camera_matrix)
+
         # Get a point cloud and write it to disk.
         point_cloud_filename = "point_cloud.txt"
         print(f"Point cloud saved to: {Path(point_cloud_filename)}")

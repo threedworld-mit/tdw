@@ -479,11 +479,12 @@ class TDWUtils:
         points_in_cam = np.concatenate((points_in_cam, np.ones((1, points_in_cam.shape[1]))), axis=0)
         points_in_world = np.dot(camera_matrix, points_in_cam)
         points_in_world = points_in_world[:3, :].reshape(3, TDWUtils.__WIDTH, TDWUtils.__HEIGHT)
+        points_in_cam = points_in_cam[:3, :].reshape(3, TDWUtils.__WIDTH, TDWUtils.__HEIGHT)
         if filename is not None:
             f = open(filename, 'w')
             for i in range(points_in_world.shape[1]):
                 for j in range(points_in_world.shape[2]):
-                    if points_in_world[2, i, j] < (far_plane - near_plane):
+                    if points_in_cam[2, i, j] < (far_plane - 1):
                         f.write(f'{points_in_world[0, i, j]};{points_in_world[1, i, j]};{points_in_world[2, i, j]}\n')
         return points_in_world
 

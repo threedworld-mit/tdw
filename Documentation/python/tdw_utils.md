@@ -342,7 +342,7 @@ _Returns:_ An array of depth values.
 
 ***
 
-#### `get_point_cloud(depth, camera_matrix: Union[np.array, tuple], vfov: float = 54.43222, filename: str = None) -> np.array`
+#### `get_point_cloud(depth, camera_matrix: Union[np.array, tuple], vfov: float = 54.43222, filename: str = None, near_plane: float = 0.1, far_plane: float = 100) -> np.array`
 
 _This is a static function._
 
@@ -354,6 +354,8 @@ Create a point cloud from an numpy array of depth values.
 | camera_matrix | The camera matrix as a tuple or numpy array. See: [`send_camera_matrices`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#send_camera_matrices). |
 | vfov | The field of view. See: [`set_field_of_view`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_field_of_view) |
 | filename | If not None, the point cloud data will be written to this file. |
+| near_plane | The near clipping plane. See command `set_camera_clipping_planes`. The default value in this function is the default value of the near clipping plane. |
+| far_plane | The far clipping plane. See command `set_camera_clipping_planes`. The default value in this function is the default value of the far clipping plane. |
 
 _Returns:_  An point cloud as a numpy array of `[x, y, z]` coordinates.
 

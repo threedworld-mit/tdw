@@ -19,6 +19,7 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 #### `TDWUtils`
 
 - Added optional parameters `far_plane` and `near_plane` to `get_depth_values()`.
+- Added optional parameters `far_plane` and `near_plane` to `get_point_cloud()`.
 
 ### Build
 

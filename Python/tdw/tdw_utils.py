@@ -422,7 +422,7 @@ class TDWUtils:
         return (depth_values * ((far_plane - near_plane) / 256.0)).astype(np.float32)
 
     @staticmethod
-    def get_point_cloud(depth, camera_matrix: Union[np.array, tuple], vfov: float = 54.43222, filename: str = None) -> np.array:
+    def get_point_cloud(depth, camera_matrix: Union[np.array, tuple], vfov: float = 54.43222, filename: str = None, near_plane: float = 0.1, far_plane: float = 100) -> np.array:
         """
         Create a point cloud from an numpy array of depth values.
 
@@ -430,6 +430,8 @@ class TDWUtils:
         :param camera_matrix: The camera matrix as a tuple or numpy array. See: [`send_camera_matrices`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#send_camera_matrices).
         :param vfov: The field of view. See: [`set_field_of_view`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_field_of_view)
         :param filename: If not None, the point cloud data will be written to this file.
+        :param near_plane: The near clipping plane. See command `set_camera_clipping_planes`. The default value in this function is the default value of the near clipping plane.
+        :param far_plane: The far clipping plane. See command `set_camera_clipping_planes`. The default value in this function is the default value of the far clipping plane.
 
         :return: An point cloud as a numpy array of `[x, y, z]` coordinates.
         """
@@ -481,8 +483,8 @@ class TDWUtils:
             f = open(filename, 'w')
             for i in range(points_in_world.shape[1]):
                 for j in range(points_in_world.shape[2]):
-                    if points_in_world[2, i, j] < 99:
-                        f.write(f'{points_in_world[0, i, j]} {points_in_world[1, i, j]} {points_in_world[2, i, j]}\n')
+                    if points_in_world[2, i, j] < (far_plane - near_plane):
+                        f.write(f'{points_in_world[0, i, j]};{points_in_world[1, i, j]};{points_in_world[2, i, j]}\n')
         return points_in_world
 
     @staticmethod

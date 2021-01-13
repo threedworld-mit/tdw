@@ -2204,8 +2204,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "aquostv",
         "position": {
@@ -7954,8 +7954,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "aquostv",
         "position": {
@@ -13616,8 +13616,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "aquostv",
         "position": {
@@ -21018,8 +21018,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "aquostv",
         "position": {

@@ -33,6 +33,12 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 | ---------- | ----------------------------- |
 | `depth.md` | How to use depth maps in TDW. |
 
+#### Modified Documentation
+
+| Document             | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `getting_started.md` | Fixed: Instructions for how to run TDW on a remote server are incorrect. |
+
 ## v1.7.14
 
 ### Output Data

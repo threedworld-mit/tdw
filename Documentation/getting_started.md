@@ -71,7 +71,7 @@ sudo nvidia-xconfig -a --use-display-device=None --virtual=256x256
 sudo /usr/bin/X :0&
 ```
 
-NOTE: Not all of these commands will be applicable to every server. The `:0` is the display number, which might vary between servers.
+Not all of these commands will be applicable to every server. The `:0` is the display number, which might vary between servers.
 
 2. Download [the latest build of TDW](https://github.com/threedworld-mit/tdw/releases/latest/) and extract the zip file.
 
@@ -97,7 +97,7 @@ python3 my_controller.py
 cd path/to/the/build/TDW
 ```
 
-(Replace `path/to/the/build` with the actual path.)
+Replace `path/to/the/build` with the actual path.
 
 6. Launch the build with the `DISPLAY` parameter. This should match the display number you set in step 1.
 

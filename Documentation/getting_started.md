@@ -52,15 +52,15 @@ c.communicate({"$type": "terminate"})
 
 2. Run the controller:
 
-| Windows                  | OS X                       | Linux                                   |
-| ------------------------ | -------------------------- | --------------------------------------- |
-| `py -3 my_controller.py` | `python3 my_controller.py` | `DISPLAY=:0.0 python3 my_controller.py` |
-
-Note for Linux users: You only need to include `DISPLAY` if the [launch_build parameter in the Controller constructor](python/controller.md) is set to False (by default, it is True).
+| Windows                  | OS X                       | Linux                      |
+| ------------------------ | -------------------------- | -------------------------- |
+| `py -3 my_controller.py` | `python3 my_controller.py` | `python3 my_controller.py` |
 
 When you launch run this script, the `Controller` will download the **build**, the binary executable application that runs the simulation environment and then launch the build. The controller will also check to see if your version of TDW is the most recent. For more information on what happens when you start a controller, read [this](misc_frontend/releases.md#Updates).
 
 ##### 2b. On a remote Linux server:
+
+These instructions assume that the build and controller are on the same machine.
 
 1. Set up a virtual display.
 
@@ -71,23 +71,41 @@ sudo nvidia-xconfig -a --use-display-device=None --virtual=256x256
 sudo /usr/bin/X :0&
 ```
 
-NOTE: Not all of these commands will be applicable to every server. The last number is the `display_number` which will be used in the script below:
+NOTE: Not all of these commands will be applicable to every server. The `:0` is the display number, which might vary between servers.
 
-2. Create this Python script and save it as `my_controller.py`:
+2. Download [the latest build of TDW](https://github.com/threedworld-mit/tdw/releases/latest/) and extract the zip file.
+
+3. Create this Python script and save it as `my_controller.py`:
 
 ```python
 from tdw.controller import Controller
 
-c = Controller()
+c = Controller(launch_build=False, port=1071) # This is the default port.
 print("Everything is OK!")
 c.communicate({"$type": "terminate"})
 ```
 
-3. Run the controller:
+4. Run the controller:
 
 ```bash
-DISPLAY=:0.0 python3 my_controller.py # Your display number might not be 0
+python3 my_controller.py
 ```
+
+5. In another terminal window, navigate to the directory with the build:
+
+```bash
+cd path/to/the/build/TDW
+```
+
+(Replace `path/to/the/build` with the actual path.)
+
+6. Launch the build with the `DISPLAY` parameter. This should match the display number you set in step 1.
+
+```bash
+DISPLAY=:0.0 ./TDW.x86_64 -port=1071
+```
+
+If the build and the controller are on different machines, you can add `-address=controller_address` (replace `controller_address` with the address of the machine running the controller). 
 
 ##### 2c. From a Docker container:
 

@@ -30,6 +30,8 @@ class MissingMaterials:
         :param c: The controller.
         """
 
+        print(f"Results will be saved to: {MissingMaterials.OUTPUT_FILE}")
+
         c.start()
 
         c.communicate([{"$type": "simulate_physics",
@@ -177,4 +179,4 @@ class MissingMaterials:
 
 
 if __name__ == "__main__":
-    MissingMaterials.run(Controller())
+    MissingMaterials.run(Controller(launch_build=False))

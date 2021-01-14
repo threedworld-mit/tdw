@@ -78,7 +78,27 @@ class StaticRobotJoint(object):
             return self._tab.String(o + self._tab.Pos)
         return None
 
-def StaticRobotJointStart(builder): builder.StartObject(8)
+    # StaticRobotJoint
+    def Drives(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
+        if o != 0:
+            x = self._tab.Vector(o)
+            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 4
+            x = self._tab.Indirect(x)
+            from .JointDrive import JointDrive
+            obj = JointDrive()
+            obj.Init(self._tab.Bytes, x)
+            return obj
+        return None
+
+    # StaticRobotJoint
+    def DrivesLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def StaticRobotJointStart(builder): builder.StartObject(9)
 def StaticRobotJointAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
 def StaticRobotJointAddSegmentationColor(builder, segmentationColor): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(segmentationColor), 0)
 def StaticRobotJointAddMass(builder, mass): builder.PrependFloat32Slot(2, mass, 0.0)
@@ -87,4 +107,6 @@ def StaticRobotJointAddRoot(builder, root): builder.PrependBoolSlot(4, root, 0)
 def StaticRobotJointAddParentId(builder, parentId): builder.PrependInt32Slot(5, parentId, 0)
 def StaticRobotJointAddJointType(builder, jointType): builder.PrependUint8Slot(6, jointType, 1)
 def StaticRobotJointAddName(builder, name): builder.PrependUOffsetTRelativeSlot(7, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
+def StaticRobotJointAddDrives(builder, drives): builder.PrependUOffsetTRelativeSlot(8, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(drives), 0)
+def StaticRobotJointStartDrivesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def StaticRobotJointEnd(builder): return builder.EndObject()

@@ -36,6 +36,7 @@ from tdw.FBOutput import Robot as Robo
 from tdw.FBOutput import Keyboard as Key
 from tdw.FBOutput import Magnebot as Mag
 from tdw.FBOutput import ScreenPosition as Screen
+from tdw.FBOutput import DriveAxis
 import numpy as np
 from typing import Tuple, Optional
 
@@ -810,6 +811,10 @@ class NavMeshPath(OutputData):
 
 
 class StaticRobot(OutputData):
+    _AXES = {DriveAxis.DriveAxis.x: "x",
+             DriveAxis.DriveAxis.y: "y",
+             DriveAxis.DriveAxis.z: "z"}
+
     def get_data(self) -> StRobo.StaticRobot:
         return StRobo.StaticRobot.GetRootAsStaticRobot(self.bytes, 0)
 
@@ -839,6 +844,30 @@ class StaticRobot(OutputData):
 
     def get_joint_name(self, index: int) -> str:
         return self.data.Joints(index).Name().decode('utf-8')
+
+    def get_joint_num_drives(self, index: int) -> int:
+        return self.data.Joints(index).DrivesLength()
+
+    def get_joint_drive_axis(self, index: int, drive_index: int) -> str:
+        return StaticRobot._AXES[self.data.Joints(index).Drives(drive_index).Axis()]
+
+    def get_joint_drive_limits(self, index: int, drive_index: int) -> bool:
+        return self.data.Joints(index).Drives(drive_index).Limits()
+
+    def get_joint_drive_lower_limit(self, index: int, drive_index: int) -> float:
+        return self.data.Joints(index).Drives(drive_index).LowerLimit()
+
+    def get_joint_drive_upper_limit(self, index: int, drive_index: int) -> float:
+        return self.data.Joints(index).Drives(drive_index).UpperLimit()
+
+    def get_joint_drive_force_limit(self, index: int, drive_index: int) -> float:
+        return self.data.Joints(index).Drives(drive_index).ForceLimit()
+
+    def get_joint_drive_stiffness(self, index: int, drive_index: int) -> float:
+        return self.data.Joints(index).Drives(drive_index).Stiffness()
+
+    def get_joint_drive_damping(self, index: int, drive_index: int) -> float:
+        return self.data.Joints(index).Drives(drive_index).Damping()
 
     def get_num_non_moving(self) -> int:
         return self.data.NonMovingLength()

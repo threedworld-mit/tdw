@@ -629,6 +629,14 @@ Static data for a robot in the scene.
 | `get_is_joint_root(index)` | The root of the is joint. | `bool` |
 | `get_joint_parent_id(index)` | The ID of the joint parent. | `int` |
 | `get_joint_name(index)` | The name of the joint. | `str` |
+| `get_joint_num_drives(index)` | The drives of the joint num. | `int` |
+| `get_joint_drive_axis(index, drive_index)` | The axis of the joint drive. | `str` |
+| `get_joint_drive_limits(index, drive_index)` | The limits of the joint drive. | `bool` |
+| `get_joint_drive_lower_limit(index, drive_index)` | The limit of the joint drive lower. | `float` |
+| `get_joint_drive_upper_limit(index, drive_index)` | The limit of the joint drive upper. | `float` |
+| `get_joint_drive_force_limit(index, drive_index)` | The limit of the joint drive force. | `float` |
+| `get_joint_drive_stiffness(index, drive_index)` | The stiffness of the joint drive. | `float` |
+| `get_joint_drive_damping(index, drive_index)` | The damping of the joint drive. | `float` |
 | `get_num_non_moving()` | The number of non moving. | `int` |
 | `get_non_moving_id(index)` | The ID of the non moving. | `int` |
 | `get_non_moving_name(index)` | The name of the non moving. | `str` |

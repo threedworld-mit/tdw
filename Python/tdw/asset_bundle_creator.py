@@ -33,7 +33,7 @@ class AssetBundleCreator:
     For more information, see: `Documentation/misc_frontend/add_local_object.md`.
     """
 
-    UNITY_VERSION = "2019.4"
+    UNITY_VERSION = "2020.2"
 
     def __init__(self, quiet: bool = False, display: str = ":0"):
         """

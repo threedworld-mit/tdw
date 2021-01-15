@@ -16,7 +16,7 @@ You can add your own objects to the build by doing the following:
 - The `tdw` module
 - Python 3.6+
 - Unity Hub
-- Unity Editor 2019.4 (installed via Unity Hub)
+- Unity Editor 2020.2 (installed via Unity Hub)
   - Build options must enabled for Windows, OS X, and Linux (these can  be set when installing Unity).
 - A .fbx or .obj+.mtl model
 

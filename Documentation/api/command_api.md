@@ -415,7 +415,6 @@
 | [`destroy_robot`](#destroy_robot) | Destroy a robot in the scene. |
 | [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
 | [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
-| [`set_robot_mass`](#set_robot_mass) | Set the mass of the root object (see StaticRobots output data) of a robot. |
 | [`teleport_robot`](#teleport_robot) | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
 
 **Magnebot Command**
@@ -429,9 +428,15 @@
 
 | Command | Description |
 | --- | --- |
+| [`set_robot_joint_drive`](#set_robot_joint_drive) | Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are. |
+| [`set_robot_joint_mass`](#set_robot_joint_mass) | Set the mass of a robot joint. To get the default mass, see the StaticRobot output data. |
+
+**Robot Joint Target Command**
+
+| Command | Description |
+| --- | --- |
 | [`set_prismatic_target`](#set_prismatic_target) | Set the target angle of a prismatic robot joint. Per frame, the joint will move towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target position. |
 | [`set_revolute_target`](#set_revolute_target) | Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle. |
-| [`set_robot_joint_drive`](#set_robot_joint_drive) | Set static joint drive parameters for a robot joint. Use the StaticRobots output data to determine which drives (x, y, and z) the joint has and what their default values are. |
 | [`set_spherical_target`](#set_spherical_target) | Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles. |
 
 **Singleton Subscriber Command**
@@ -5020,26 +5025,6 @@ Set whether or not the root object of the robot is immovable. Its joints will st
 
 ***
 
-## **`set_robot_mass`**
-
-Set the mass of the root object (see StaticRobots output data) of a robot.
-
-
-```python
-{"$type": "set_robot_mass", "mass": 0.125}
-```
-
-```python
-{"$type": "set_robot_mass", "mass": 0.125, "id": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"mass"` | float | The mass of the root object. | |
-| `"id"` | int | The ID of the robot in the scene. | 0 |
-
-***
-
 ## **`teleport_robot`**
 
 Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over).
@@ -5125,7 +5110,66 @@ A left or right arm.
 
 # RobotJointCommand
 
-These commands set joints of a robot in the scene.
+These commands set joint targets or parameters for a robot in the scene.
+
+***
+
+## **`set_robot_joint_drive`**
+
+Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are.
+
+
+```python
+{"$type": "set_robot_joint_drive", "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_drive", "joint_id": 1, "axis": "x", "lower_limit": 0, "upper_limit": 0, "force_limit": 3, "stiffness": 1000, "damping": 300, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | DriveAxis | The axis of the drive. | "x" |
+| `"lower_limit"` | float | The lower limit of the drive in degrees. If this and upper_limit are 0, the joint movement is unlimited. | 0 |
+| `"upper_limit"` | float | The upper limit of the drive in degrees. If this and lower_limit are 0, the joint movement is unlimited. | 0 |
+| `"force_limit"` | float | The force limit. | 3 |
+| `"stiffness"` | float | The stiffness of the drive. | 1000 |
+| `"damping"` | float | The damping of the drive. | 300 |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+#### DriveAxis
+
+| Value | Description |
+| --- | --- |
+| `"x"` |  |
+| `"y"` |  |
+| `"z"` |  |
+
+***
+
+## **`set_robot_joint_mass`**
+
+Set the mass of a robot joint. To get the default mass, see the StaticRobot output data.
+
+
+```python
+{"$type": "set_robot_joint_mass", "mass": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_mass", "mass": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"mass"` | float | The mass of the joint. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+# RobotJointTargetCommand
+
+These commands set target angles for each of the joint's drives. To get the type of joint and its drives, see the send_static_robots command and the StaticRobot output data.
 
 ***
 
@@ -5168,40 +5212,6 @@ Set the target angle of a revolute robot joint. Per frame, the joint will revolv
 | `"target"` | float | The target angle in degrees. | |
 | `"joint_id"` | int | The ID of the joint. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
-
-***
-
-## **`set_robot_joint_drive`**
-
-Set static joint drive parameters for a robot joint. Use the StaticRobots output data to determine which drives (x, y, and z) the joint has and what their default values are.
-
-
-```python
-{"$type": "set_robot_joint_drive", "joint_id": 1}
-```
-
-```python
-{"$type": "set_robot_joint_drive", "joint_id": 1, "axis": "x", "lower_limit": 0, "upper_limit": 0, "force_limit": 3, "stiffness": 1000, "damping": 300, "id": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"axis"` | DriveAxis | The axis of the drive. See StaticRobots output data. | "x" |
-| `"lower_limit"` | float | The lower limit of the drive in degrees. If this and upper_limit are 0, the joint movement is unlimited. | 0 |
-| `"upper_limit"` | float | The upper limit of the drive in degrees. If this and lower_limit are 0, the joint movement is unlimited. | 0 |
-| `"force_limit"` | float | The force limit. | 3 |
-| `"stiffness"` | float | The stiffness of the drive. | 1000 |
-| `"damping"` | float | The damping of the drive. | 300 |
-| `"joint_id"` | int | The ID of the joint. | |
-| `"id"` | int | The ID of the robot in the scene. | 0 |
-
-#### DriveAxis
-
-| Value | Description |
-| --- | --- |
-| `"x"` |  |
-| `"y"` |  |
-| `"z"` |  |
 
 ***
 

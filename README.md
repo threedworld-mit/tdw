@@ -15,7 +15,7 @@
 
 ### [License](https://github.com/threedworld-mit/tdw/blob/master/LICENSE.txt)
 
-### [How to upgrade from TDW v1.6 to v1.7](https://github.com/threedworld-mit/tdw/blob/master/Documentation/v1.6_to_v1.7.md)
+### [How to upgrade from TDW v1.7 to v1.8](https://github.com/threedworld-mit/tdw/blob/master/Documentation/upgrade_guides/v1.7_to_v1.8.md)
 
 # API
 
@@ -134,7 +134,7 @@
 | [Remote rendering](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/xpra.md) | How to render using xpra.                                    |
 | [Observation Data](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/observation_data.md) | Different means of determining what an agent is observing.   |
 
-## Robotics
+# Robotics
 
 | Document                                                     | Description                                   |
 | ------------------------------------------------------------ | --------------------------------------------- |

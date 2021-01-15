@@ -8,14 +8,18 @@ Add robots to the scene using either [the `add_robot` command or `Controller.get
 
 | Command                  | Description                                                  |
 | ------------------------ | ------------------------------------------------------------ |
+| `add_robot`              | Add a robot to the scene.                                    |
 | `destroy_robot`          | Destroys a robot in the scene.                               |
 | `set_immovable`          | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
-| `set_prismatic_target`   | Set the target angle of a prismatic robot joint. Per frame, the joint will move towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target position. |
+| `set_prismatic_target`   | Set the target position of a prismatic robot joint. Per frame, the joint will move towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target position. |
 | `set_revolute_target`    | Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle. |
 | `set_spherical_target`   | Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles. |
 | `send_robots`            | [Send data for each robot in the scene](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/output_data.md#Robot) (including Magnebots). |
 | `send_static_robots`     | [Send static data for each robot in the scene](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/output_data.md#StaticRobot) (including Magnebots). |
 | `parent_avatar_to_robot` | Parent an avatar to a robot.                                 |
+| `set_robot_joint_drive`  | Set static joint drive parameters.                           |
+| `set_robot_joint_mass`   | Set the mass of a robot joint.                               |
+| `teleport_robot`         | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
 
 ### Joint targets
 
@@ -56,7 +60,9 @@ The Magnebot is a specialized robot in TDW that can use "magnets" to pick up obj
 
 Add a Magnebot to the scene with the `add_magnebot` command (`add_robot` will *not* add a Magnebot!). With the except of `add_robot`, all other commands in the Robotics API are compatible with the Magnebot. 
 
-<img src="../images/robots/magnebot_front.jpg" style="zoom: 67%;" /><img src="../images/robots/magnebot_back.jpg" style="zoom:67%;" />
+<img src="../images/robots/magnebot_front.jpg" style="zoom: 67%;" />
+
+<img src="../images/robots/magnebot_back.jpg" style="zoom:67%;" />
 
 | Joint               | Command                |
 | ------------------- | ---------------------- |

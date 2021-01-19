@@ -3176,7 +3176,7 @@ Rotate an object by a given angle around a given axis.
 ```
 
 ```python
-{"$type": "rotate_object_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
+{"$type": "rotate_object_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True, "use_centroid": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -3184,6 +3184,7 @@ Rotate an object by a given angle around a given axis.
 | `"axis"` | Axis | The axis of rotation. | "yaw" |
 | `"angle"` | float | The angle of rotation. | |
 | `"is_world"` | bool | If true, the object will rotate via "global" directions and angles. If false, the object will rotate locally. | True |
+| `"use_centroid"` | bool | If true, rotate around the centroid of the object. If false, rotate around the bottom-center position of the object. This overrides is_world | False |
 | `"id"` | int | The unique object ID. | |
 
 #### Axis

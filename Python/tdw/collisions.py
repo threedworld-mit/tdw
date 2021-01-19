@@ -28,11 +28,11 @@ class CollisionObjObj:
         """:field
         The relative velocity of the objects.
         """
-        self.relative_velocity = np.array(collision.get_relative_velocity())
+        self.relative_velocity: np.array = np.array(collision.get_relative_velocity())
         """:field
         The state of the collision.
         """
-        self.state = collision.get_state()
+        self.state: str = collision.get_state()
 
 
 class CollisionObjEnv:
@@ -56,6 +56,10 @@ class CollisionObjEnv:
         for i in range(collision.get_num_contacts()):
             self.points.append(np.array(collision.get_contact_point(i)))
             self.normals.append(np.array(collision.get_contact_normal(i)))
+        """:field
+        The state of the collision.
+        """
+        self.state: str = collision.get_state()
 
 
 class Collisions:

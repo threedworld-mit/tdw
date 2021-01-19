@@ -16,7 +16,7 @@ if __name__ == "__main__":
                           {"$type": "add_magnebot",
                            "id": robot_id,
                            "position": {"x": 0, "y": 0, "z": 0},
-                           "rotation": 0},
+                           "rotation": {"x": 0, "y": 0, "z": 0}},
                           {"$type": "send_static_robots",
                            "ids": [robot_id],
                            "frequency": "once"}]

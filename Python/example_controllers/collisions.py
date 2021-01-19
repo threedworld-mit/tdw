@@ -26,18 +26,15 @@ if __name__ == "__main__":
             print(f"Frame {i}")
             if len(collisions.obj_collisions) > 0:
                 print("\tObject-object collisions")
-                for state in collisions.obj_collisions:
-                    if len(collisions.obj_collisions[state]) > 0:
-                        print(f"\t\t{state}")
-                        for ids in collisions.obj_collisions[state]:
-                            print(f"\t\t\t{ids}")
+                for ids in collisions.obj_collisions:
+                    state = collisions.obj_collisions[ids].state
+                    print(f"\t\t{ids}\t{state}")
             if len(collisions.env_collisions) > 0:
                 print("\tObject-environment collisions")
-                for state in collisions.env_collisions:
-                    if len(collisions.env_collisions[state]) > 0:
-                        print(f"\t\t{state}")
-                        for object_id in collisions.env_collisions[state]:
-                            print(f"\t\t\t{object_id}")
+                for object_id in collisions.env_collisions:
+                    state = collisions.env_collisions[object_id].state
+                    print(f"\t\t{object_id}\t{state}")
+
         # Advance another frame.
         resp = c.communicate([])
     c.communicate({"$type": "terminate"})

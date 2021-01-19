@@ -134,7 +134,7 @@ _Returns:_ An add_humanoid_animation command that the controller can then send.
 
 ***
 
-#### `get_add_robot(self, name: str, robot_id: int, position: Dict[str, float] = None, rotation: float = 0, library: str = "") -> dict`
+#### `get_add_robot(self, name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict`
 
 Returns a valid add_robot command.
 
@@ -143,7 +143,7 @@ Returns a valid add_robot command.
 | name | The name of the robot. |
 | robot_id | A unique ID for the robot. |
 | position | The initial position of the robot. If None, the position will be (0, 0, 0). |
-| rotation | The initial rotation of the robot around the y axis in degrees. |
+| rotation | The initial rotation of the robot in Euler angles. |
 | library | The path to the records file. If left empty, the default library will be selected. See `RobotLibrarian.get_library_filenames()` and `RobotLibrarian.get_default_library()`. |
 
 _Returns:_ An `add_robot` command that the controller can then send.

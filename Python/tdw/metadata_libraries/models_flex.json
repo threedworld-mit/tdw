@@ -65,9 +65,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/bowl",
-                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/bowl",
-                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/bowl"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.4/bowl",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.4/bowl",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.4/bowl"
             },
             "wcategory": "flex_primitive",
             "wnid": ""
@@ -562,9 +562,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/pipe",
-                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/pipe",
-                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/pipe"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.4/pipe",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.4/pipe",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.4/pipe"
             },
             "wcategory": "flex_primitive",
             "wnid": ""
@@ -846,9 +846,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/torus",
-                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/torus",
-                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/torus"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.4/torus",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.4/torus",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.4/torus"
             },
             "wcategory": "flex_primitive",
             "wnid": ""

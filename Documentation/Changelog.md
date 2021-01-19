@@ -4,6 +4,26 @@
 
 To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
 
+## v1.7.16
+
+### Command API
+
+#### Modified Commands
+
+| Command            | Modification                            |
+| ------------------ | --------------------------------------- |
+| `rotate_object_by` | Added optional parameter `use_centroid` |
+
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: Crash at start in certain Pyhon environments because there is no version number at the expected position of a string from PyPi.
+
+#### Model Library
+
+- Fixed: The colliders of pipe, torus, and bowl in `models.flex.json` are single convex meshes instead of a group of convex hulls.
+
 ## v1.7.15
 
 ### Output Data

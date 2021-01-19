@@ -1,6 +1,6 @@
+from json import loads
+from requests import get
 from typing import List
-from subprocess import Popen, PIPE
-import re
 from pkg_resources import get_distribution
 
 
@@ -40,13 +40,11 @@ class PyPi:
         :return: A list of all available PyPi releases.
         """
 
-        # Get an error from  PyPi which will list all available versions.
-        p = Popen(["pip3", "install", "tdw=="], stderr=PIPE, stdout=PIPE)
-        p.wait()
-        stdout, stderr = p.communicate()
-        # From the list of available versions, get the last one (the most recent).
-        versions = re.search(r"\(from versions: (.*)\)", stderr.decode("utf-8")).group(1).split(",")
-        return [v.strip() for v in versions]
+        resp = get("https://pypi.org/pypi/tdw/json")
+        data = loads(resp.content)
+        versions = list(data["releases"].keys())
+        versions.sort(key=lambda s: list(map(int, s.split('.'))))
+        return versions
 
     @staticmethod
     def get_pypi_version(truncate: bool = False) -> str:

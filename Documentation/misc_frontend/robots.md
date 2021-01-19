@@ -88,7 +88,7 @@ There are also additional commands that are specific to the Magnebot:
 | Command              | Description                                                  |
 | -------------------- | ------------------------------------------------------------ |
 | `set_magnet_targets` | Set the objects that the Magnebot magnet will try to pick up. If the magnet collides with any of these objects, the Magnebot will pick up them up. |
-| `drop_from_magnet`   | Drop an object held by a Magnebot magnet.                    |
+| `detach_from_magnet` | Detach an object from a Magnebot magnet.                     |
 | `send_magnebots`     | [Send data for each Magnebot in the scene.](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/output_data.md#Magnebot) This includes the IDs of any held objects. |
 
 ### Picking up objects with magnets

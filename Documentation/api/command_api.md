@@ -421,7 +421,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`drop_from_magnet`](#drop_from_magnet) | Drop an object held by a Magnebot magnet. |
+| [`detach_from_magnet`](#detach_from_magnet) | Detach an object from a Magnebot magnet. |
 | [`set_magnet_targets`](#set_magnet_targets) | Set the objects that the Magnebot magnet will try to pick up. |
 
 **Robot Joint Command**
@@ -5050,17 +5050,17 @@ These commands are for a Magnebot currently in the scene. For further documentat
 
 ***
 
-## **`drop_from_magnet`**
+## **`detach_from_magnet`**
 
-Drop an object held by a Magnebot magnet.
+Detach an object from a Magnebot magnet.
 
 
 ```python
-{"$type": "drop_from_magnet", "object_id": 1}
+{"$type": "detach_from_magnet", "object_id": 1}
 ```
 
 ```python
-{"$type": "drop_from_magnet", "object_id": 1, "arm": "left", "id": 0}
+{"$type": "detach_from_magnet", "object_id": 1, "arm": "left", "id": 0}
 ```
 
 | Parameter | Type | Description | Default |

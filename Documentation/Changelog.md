@@ -26,7 +26,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `parent_avatar_to_robot` | Parent an avatar to a robot.                                 |
 | `set_immovable`          | Set whether or not the root object of the robot is immovable. |
 | `teleport_robot`         | Teleport the robot to a new position and rotation.           |
-| `drop_from_magnet`       | Drop an object held by a Magnebot magnet.                    |
+| `detach_from_magnet`     | Detach an object from a Magnebot magnet.                     |
 | `set_magnet_targets`     | Set the objects that the Magnebot magnet will try to pick up. |
 | `set_robot_joint_drive`  | Set static joint drive parameters for a robot joint.         |
 | `set_robot_joint_mass`   | Set the mass of a robot joint.                               |

@@ -99,6 +99,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Added: `robot_camera.py` Add a camera to a Magnebot.
 - Removed: `open_box.py` (it uses the Sticky Mitten Avatar, which has been deprecated).
 - Removed: `sticky_mitten_avatar.py`
+- Fixed: `avatar_drag.py` doesn't work.
 
 ### Documentation
 

@@ -66,6 +66,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Added: `get_add_robot()`. Returns a valid `add_robot` command.
 
+#### `FloorplanController`
+
+- Updated floorplans to allow the Magnebot to move around. Removed rugs.
+- Made some more objects kinematic.
+- Replaced white_shopping_bag with blue_satchal.
+
 #### `TDWUtils`
 
 - Removed: `get_collisions()`
@@ -85,11 +91,11 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Added: `int_pair.py` A pair of unordered hashable integers. Use this class for dictionary keys.
 - Added: `RobotLibrarian` and `RobotRecord`.
 - Fixed: `missing_materials.py` will launch the build (which isn't useful for tests).
-- Updated floorplan layouts to make it easier for the Magnebot to move around them.
 
 ### Build
 
 - Fixed: Many models don't cast shadows or reflect light correctly.
+- Fixed: The bounds of objects aren't set correctly if `add_object["rotation"]` isn't (0, 0, 0)
 
 ### Example Controllers
 

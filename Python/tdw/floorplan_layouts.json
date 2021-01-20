@@ -530,8 +530,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -1545,7 +1545,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "white_shopping_bag",
+        "name": "blue_satchal",
         "position": {
           "x": -1.48,
           "y": 0.0280751,
@@ -1586,8 +1586,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -3153,7 +3153,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "white_shopping_bag",
+        "name": "blue_satchal",
         "position": {
           "x": -2.310227,
           "y": 0.03730135,
@@ -3194,8 +3194,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -3436,8 +3436,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -5374,8 +5374,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_white_wood",
         "position": {
@@ -7405,7 +7405,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "white_shopping_bag",
+        "name": "blue_satchal",
         "position": {
           "x": 6.684983,
           "y": 0.02847556,
@@ -7446,8 +7446,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_white_wood",
         "position": {
@@ -8922,8 +8922,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -9186,8 +9186,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -11369,7 +11369,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "white_shopping_bag",
+        "name": "blue_satchal",
         "position": {
           "x": 6.684993,
           "y": 0.02885017,
@@ -11410,8 +11410,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -13111,7 +13111,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "white_shopping_bag",
+        "name": "blue_satchal",
         "position": {
           "x": 4.649998,
           "y": 0.02873792,
@@ -13152,8 +13152,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_white_wood",
         "position": {
@@ -14345,7 +14345,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "white_shopping_bag",
+        "name": "blue_satchal",
         "position": {
           "x": 0.2553828,
           "y": 0.0287737,
@@ -14782,8 +14782,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -14848,8 +14848,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -16591,7 +16591,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "white_shopping_bag",
+        "name": "blue_satchal",
         "position": {
           "x": -6.115036,
           "y": 0.02879084,
@@ -16632,8 +16632,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -18377,7 +18377,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "white_shopping_bag",
+        "name": "blue_satchal",
         "position": {
           "x": 9.434187,
           "y": 0.02879083,
@@ -18418,8 +18418,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -20356,8 +20356,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_white_wood",
         "position": {
@@ -21791,7 +21791,7 @@
         "gravity": true,
         "kinematic": false,
         "library": "models_core.json",
-        "name": "white_shopping_bag",
+        "name": "blue_satchal",
         "position": {
           "x": 5.588989,
           "y": 0.3140168,
@@ -22206,8 +22206,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {
@@ -22272,8 +22272,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "sink_base_wood_beach_honey",
         "position": {

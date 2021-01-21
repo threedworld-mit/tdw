@@ -146,7 +146,7 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/upgrade_guides
 
 #### Model Library
 
-- Fixed: The colliders of pipe, torus, and bowl in `models.flex.json` are single convex meshes instead of a group of convex hulls.
+- Fixed: The colliders of pipe, torus, bowl, and dumbbell in `models.flex.json` are single convex meshes instead of a group of convex hulls.
 
 ## v1.7.15
 

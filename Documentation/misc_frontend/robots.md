@@ -81,7 +81,7 @@ Add a Magnebot to the scene with the `add_magnebot` command (`add_robot` will *n
 | `wheel_left_back`   | `set_revolute_target`  |
 | `wheel_right_back`  | `set_revolute_target`  |
 
-To get the corresponding name and object ID of each joint:
+To get the corresponding name and object ID of each joint, see `send_static_robots`.
 
 There are also additional commands that are specific to the Magnebot:
 

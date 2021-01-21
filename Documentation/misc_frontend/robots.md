@@ -46,7 +46,7 @@ You will get the following behavior:
 
 ## Robots and Avatars
 
-TDW has a built-in concept of what an "Avatar" is, which has implications for which commands can be sent to which objects in the scene. Robots are *not* avatar; they are *robots*.
+TDW has a built-in concept of what an "Avatar" is, which has implications for which commands can be sent to which objects in the scene. Robots are *not* avatars; they are *robots*.
 
 Robots by default don't have cameras. However, you can add a camera to a robot by first creating an avatar and then parenting that avatar to the robot. See: `example_controllers/robot_camera.py` for example implementation.
 
@@ -58,7 +58,7 @@ The Magnebot is a specialized robot in TDW that can use "magnets" to pick up obj
 
 ![](../images/robots/grasp_high.gif)
 
-Add a Magnebot to the scene with the `add_magnebot` command (`add_robot` will *not* add a Magnebot!). With the except of `add_robot`, all other commands in the Robotics API are compatible with the Magnebot. 
+Add a Magnebot to the scene with the `add_magnebot` command (`add_robot` will *not* add a Magnebot!). With the exception of `add_robot`, all other commands in the Robotics API are compatible with the Magnebot. 
 
 <img src="../images/robots/magnebot_front.jpg" style="zoom: 67%;" />
 
@@ -95,7 +95,7 @@ There are also additional commands that are specific to the Magnebot:
 
 The Magnebot's magnets "picks up" objects by first colliding with a target object (see `set_magnet_targets`), then caching Rigidbody data (mass, angular drag, etc.), adding the object's mass to the magnet's mass, then destroying the Rigidbody component, then parenting the object to the magnet. The Magnebot "puts down" the object by recreating the Rigidbody, subtracting the mass, and unparenting the object. This is to ensure maximum physics stability.
 
-The upshot is that rigidbody commands such as `set_mass` will throw an error if the object is being held by a Magnebot magnet. Data returned by `send_rigidbodies` will be 0s if the object is being held (for example, the mass will be 0).
+The upshot is that Rigidbody commands such as `set_mass` will throw an error if the object is being held by a Magnebot magnet. Data returned by `send_rigidbodies` will be 0s if the object is being held (for example, the mass will be 0).
 
 ## Example controllers
 

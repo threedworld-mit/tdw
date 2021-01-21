@@ -84,6 +84,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [StaticRobot](#StaticRobot) | Static data for a robot in the scene. | `srob` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
 | [Transforms](#Transforms) | Data about the Transform component of objects (position and rotation). | `tran` |
+| [TriggerCollision](#TriggerCollision) | Data for a non-physics trigger collision event. | `trco` |
 | [Version](#Version) | The build version and Unity version. | `vers` |
 | [Volumes](#Volumes) | Spatial volume data for objects in the scene. | `volu` |
 | [VRRig](#VRRig) | Data about the VR rig currently in the scene. | `vrri` |
@@ -672,6 +673,20 @@ Data about the Transform component of objects (position and rotation).
 | `get_position(index)` | The local bottom-center position of the object. | `Tuple[float, float, float]` |
 | `get_forward(index)` | The forward directional vector of the object. | `Tuple[float, float, float]` |
 | `get_rotation(index)` | The current rotation of the object. | `Tuple[float, float, float, float]` |
+
+## TriggerCollision
+
+`t = TriggerCollision(byte_array)`
+
+**Identifier:** `trco`
+
+Data for a non-physics trigger collision event.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_collidee_id()` | The ID of the object that collided with the trigger collider. | `int` |
+| `get_collider_id()` | The ID of the object that has the trigger collider. | `int` |
+| `get_state()` | The state of the collision. | `str` |
 
 ## Version
 

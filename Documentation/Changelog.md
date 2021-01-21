@@ -36,6 +36,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `send_magnebots`         | Send data for each Magnebot in the scene.                    |
 | `send_robots`            | Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. |
 | `send_static_robots`     | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. |
+| `add_trigger_color`      | Add a non-physics trigger collider to an object.             |
 
 #### Removed Commands
 
@@ -54,11 +55,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 #### New Output Data
 
-| Output Data   | Description              |
-| ------------- | ------------------------ |
-| `Magnebot`    | Data for a Magnebot.     |
-| `Robot`       | Data for a robot.        |
-| `StaticRobot` | Static data for a robot. |
+| Output Data        | Description                                     |
+| ------------------ | ----------------------------------------------- |
+| `Magnebot`         | Data for a Magnebot.                            |
+| `Robot`            | Data for a robot.                               |
+| `StaticRobot`      | Static data for a robot.                        |
+| `TriggerCollision` | Data for a non-physics trigger collision event. |
 
 ### `tdw` module
 

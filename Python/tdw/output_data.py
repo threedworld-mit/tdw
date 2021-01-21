@@ -36,6 +36,7 @@ from tdw.FBOutput import Robot as Robo
 from tdw.FBOutput import Keyboard as Key
 from tdw.FBOutput import Magnebot as Mag
 from tdw.FBOutput import ScreenPosition as Screen
+from tdw.FBOutput import TriggerCollision as Trigger
 from tdw.FBOutput import DriveAxis
 import numpy as np
 from typing import Tuple, Optional
@@ -990,3 +991,23 @@ class Magnebot(OutputData):
 
     def get_top(self) -> Tuple[float, float, float]:
         return OutputData._get_xyz(self.data.Top())
+
+
+class TriggerCollision(OutputData):
+    def get_data(self) -> Trigger.TriggerCollision:
+        return Trigger.TriggerCollision.GetRootAsTriggerCollision(self.bytes, 0)
+
+    def get_collidee_id(self) -> int:
+        return self.data.CollideeId()
+
+    def get_collider_id(self) -> int:
+        return self.data.ColliderId()
+
+    def get_state(self) -> str:
+        state = self.data.State()
+        if state == 1:
+            return "enter"
+        elif state == 2:
+            return "stay"
+        else:
+            return "exit"

@@ -229,6 +229,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
@@ -3082,6 +3083,41 @@ Given a position, try to get the nearest position on the NavMesh.
 # ObjectCommand
 
 Manipulate an object that is already in the scene.
+
+***
+
+## **`add_trigger_collider`**
+
+Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`TriggerCollision`](output_data.md#TriggerCollision)</font>
+
+```python
+{"$type": "add_trigger_collider", "id": 1}
+```
+
+```python
+{"$type": "add_trigger_collider", "id": 1, "shape": "cube", "enter": False, "stay": False, "exit": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"shape"` | TriggerShape | The shape of the collider. | "cube" |
+| `"enter"` | bool | If True, this collider will listen for enter events. | False |
+| `"stay"` | bool | If True, this collider will listen for stay events. | False |
+| `"exit"` | bool | If True, this collider will listen for exit events. | False |
+| `"id"` | int | The unique object ID. | |
+
+#### TriggerShape
+
+The shape of the trigger collider.
+
+| Value | Description |
+| --- | --- |
+| `"cube"` |  |
+| `"sphere"` |  |
 
 ***
 

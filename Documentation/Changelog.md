@@ -98,6 +98,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Fixed: Many models don't cast shadows or reflect light correctly.
 - Fixed: The bounds of objects aren't set correctly if `add_object["rotation"]` isn't (0, 0, 0)
+- Fixed: OS X and Linux builds don't have executable flags.
 
 ### Example Controllers
 

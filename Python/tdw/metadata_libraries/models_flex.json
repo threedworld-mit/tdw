@@ -349,9 +349,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.2/dumbbell",
-                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/dumbbell",
-                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/dumbbell"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/osx/2019.4/dumbbell",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.4/dumbbell",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.4/dumbbell"
             },
             "wcategory": "flex_primitive",
             "wnid": ""

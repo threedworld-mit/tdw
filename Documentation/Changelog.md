@@ -18,25 +18,33 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 #### New Commands
 
-| Command                  | Description                                                  |
-| ------------------------ | ------------------------------------------------------------ |
-| `add_magnebot`           | Add a Magnebot to the scene.                                 |
-| `add_robot`              | Add a robot to the scene.                                    |
-| `destroy_robot`          | Destroy a robot in the scene.                                |
-| `parent_avatar_to_robot` | Parent an avatar to a robot.                                 |
-| `set_immovable`          | Set whether or not the root object of the robot is immovable. |
-| `teleport_robot`         | Teleport the robot to a new position and rotation.           |
-| `detach_from_magnet`     | Detach an object from a Magnebot magnet.                     |
-| `set_magnet_targets`     | Set the objects that the Magnebot magnet will try to pick up. |
-| `set_robot_joint_drive`  | Set static joint drive parameters for a robot joint.         |
-| `set_robot_joint_mass`   | Set the mass of a robot joint.                               |
-| `set_prismatic_target`   | Set the target position of a prismatic robot joint.          |
-| `set_revolute_target`    | Set the target angle of a revolute robot joint.              |
-| `set_spherical_target`   | Set the target angles (x, y, z) of a spherical robot joint.  |
-| `send_magnebots`         | Send data for each Magnebot in the scene.                    |
-| `send_robots`            | Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. |
-| `send_static_robots`     | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. |
-| `add_trigger_color`      | Add a non-physics trigger collider to an object.             |
+| Command                    | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| `add_magnebot`             | Add a Magnebot to the scene.                                 |
+| `add_robot`                | Add a robot to the scene.                                    |
+| `destroy_robot`            | Destroy a robot in the scene.                                |
+| `parent_avatar_to_robot`   | Parent an avatar to a robot.                                 |
+| `set_immovable`            | Set whether or not the root object of the robot is immovable. |
+| `teleport_robot`           | Teleport the robot to a new position and rotation.           |
+| `detach_from_magnet`       | Detach an object from a Magnebot magnet.                     |
+| `set_magnet_targets`       | Set the objects that the Magnebot magnet will try to pick up. |
+| `set_robot_joint_drive`    | Set static joint drive parameters for a robot joint.         |
+| `set_robot_joint_mass`     | Set the mass of a robot joint.                               |
+| `set_prismatic_target`     | Set the target position of a prismatic robot joint.          |
+| `set_revolute_target`      | Set the target angle of a revolute robot joint.              |
+| `set_spherical_target`     | Set the target angles (x, y, z) of a spherical robot joint.  |
+| `send_magnebots`           | Send data for each Magnebot in the scene.                    |
+| `send_robots`              | Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. |
+| `send_static_robots`       | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. |
+| `add_trigger_color`        | Add a non-physics trigger collider to an object.             |
+| `set_legacy_shaders`       | Set whether TDW should use legacy shaders (pre-v1.8) for its models. |
+| `enable_reflection_probes` | Enable or disable the reflection probes in the scene.        |
+
+#### Modified Commands
+
+| Command | Modification |
+| --- | --- |
+| `set_vingette` | By default, the post-processing vignette is disabled, i.e. the parameter  `enabled = False` (was `True`). |
 
 #### Removed Commands
 
@@ -50,6 +58,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `set_avatar_rigidbody_constraints`<br>`rotate_head_by`<br>`rotate_waist`<br>`set_sticky_mitten_profile`<br>`stop_arm_joint`<br>`bend_arm_joint_by`<br>`bend_arm_joint_to`<br>`adjust_joint_angular_drag_by`<br>`set_joint_angular_drag`<br>`adjust_joint_damper_by`<br>`adjust_joint_force_by`<br>`set_joint_damper`<br>`set_joint_force`<br>`put_down`<br>`set_stickiness`<br>`pick_up`<br>`pick_up_proximity` | The Sticky Mitten Avatar has been deprecated (see "Features"). |
 | `add_fixed_joint`                                            | Very buggy and used only in the Sticky Mitten Avatar high-level API, which has been deprecated. |
+| `set_proc_gen_reflection_probe`                              | Use `enable_reflection_probes` instead.                      |
 
 ### Output Data
 
@@ -99,6 +108,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Fixed: Many models don't cast shadows or reflect light correctly.
 - Fixed: The bounds of objects aren't set correctly if `add_object["rotation"]` isn't (0, 0, 0)
 - Fixed: OS X and Linux builds don't have executable flags.
+- Log messages written to the player log (and console log in Unity Editor) include the type of object that logged the message. This doesn't affect the text sent by `send_log_messages`.
 
 ### Example Controllers
 

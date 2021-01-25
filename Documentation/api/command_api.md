@@ -15,6 +15,7 @@
 | [`create_vr_rig`](#create_vr_rig) | Create an Oculus VR rig. For more information, see: Documentation/misc_frontend/vr.md |
 | [`destroy_all_objects`](#destroy_all_objects) | Destroy all objects and avatars in the scene.  |
 | [`do_nothing`](#do_nothing) | Do nothing. Useful for benchmarking.  |
+| [`enable_reflection_probes`](#enable_reflection_probes) | Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation. |
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
@@ -205,6 +206,7 @@
 | Command | Description |
 | --- | --- |
 | [`set_img_pass_encoding`](#set_img_pass_encoding) | Toggle the _img pass of all avatars' cameras to be either png or jpg. True = png, False = jpg, Initial value = True (png) |
+| [`set_legacy_shaders`](#set_legacy_shaders) | Set whether TDW will correctly set each object's shaders.) |
 | [`set_post_process`](#set_post_process) | Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled) |
 | [`simulate_physics`](#simulate_physics) | Toggle whether to simulate physics per list of sent commands (i.e. per frame). If false, the simulation won't step the physics forward. Initial value = True (simulate physics per frame). |
 
@@ -375,7 +377,7 @@
 | [`set_proc_gen_ceiling_color`](#set_proc_gen_ceiling_color) | Set the albedo RGBA color of the ceiling.  |
 | [`set_proc_gen_ceiling_height`](#set_proc_gen_ceiling_height) | Set the height of all ceiling tiles in a proc-gen room. |
 | [`set_proc_gen_ceiling_texture_scale`](#set_proc_gen_ceiling_texture_scale) | Set the scale of the tiling of the ceiling material's main texture. |
-| [`set_proc_gen_reflection_probe`](#set_proc_gen_reflection_probe) | Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates. |
+| [`set_proc_gen_reflection_probe`](#set_proc_gen_reflection_probe) | Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates.  |
 | [`set_proc_gen_walls_color`](#set_proc_gen_walls_color) | Set the albedo RGBA color of the walls. |
 | [`set_proc_gen_walls_texture_scale`](#set_proc_gen_walls_texture_scale) | Set the texture scale of all walls in a proc-gen room. |
 
@@ -653,6 +655,25 @@ Do nothing. Useful for benchmarking.
 ```python
 {"$type": "do_nothing"}
 ```
+
+***
+
+## **`enable_reflection_probes`**
+
+Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation.
+
+
+```python
+{"$type": "enable_reflection_probes"}
+```
+
+```python
+{"$type": "enable_reflection_probes", "enable": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"enable"` | bool | If True, the reflection probes will be enabled. | True |
 
 ***
 
@@ -2906,6 +2927,21 @@ Toggle the _img pass of all avatars' cameras to be either png or jpg. True = png
 
 ***
 
+## **`set_legacy_shaders`**
+
+Set whether TDW will correctly set each object's shaders.)
+
+
+```python
+{"$type": "set_legacy_shaders", "value": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"value"` | bool | Boolean value. | |
+
+***
+
 ## **`set_post_process`**
 
 Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled)
@@ -4659,12 +4695,12 @@ Enable or disable the vignette, which darkens the image at the edges.
 ```
 
 ```python
-{"$type": "set_vignette", "enabled": True}
+{"$type": "set_vignette", "enabled": False}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"enabled"` | bool | If true, vignette is enabled. | True |
+| `"enabled"` | bool | If true, vignette is enabled. | False |
 
 # ProcGenRoomCommand
 
@@ -4763,8 +4799,9 @@ Set the scale of the tiling of the ceiling material's main texture.
 
 ## **`set_proc_gen_reflection_probe`**
 
-Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates.
+Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_proc_gen_reflection_probe"}

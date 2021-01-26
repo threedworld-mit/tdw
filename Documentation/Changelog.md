@@ -71,6 +71,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `StaticRobot`      | Static data for a robot.                        |
 | `TriggerCollision` | Data for a non-physics trigger collision event. |
 
+### Modified Output Data
+
+| Output Data            | Modification            |
+| ---------------------- | ----------------------- |
+| `EnvironmentCollision` | Added: `get_is_floor()` |
+
 ### `tdw` module
 
 #### `Controller`
@@ -108,6 +114,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Fixed: Many models don't cast shadows or reflect light correctly.
 - Fixed: The bounds of objects aren't set correctly if `add_object["rotation"]` isn't (0, 0, 0)
 - Fixed: OS X and Linux builds don't have executable flags.
+- Fixed: The build often returns `EnvironmentCollision` data when it should return `Collision` data.
 - Log messages written to the player log (and console log in Unity Editor) include the type of object that logged the message. This doesn't affect the text sent by `send_log_messages`.
 
 ### Example Controllers

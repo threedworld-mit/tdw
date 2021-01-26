@@ -60,6 +60,10 @@ class CollisionObjEnv:
         The state of the collision.
         """
         self.state: str = collision.get_state()
+        """:field
+        True if this is a collision with the floor.
+        """
+        self.floor: bool = collision.get_is_floor()
 
 
 class Collisions:

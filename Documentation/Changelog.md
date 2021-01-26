@@ -109,6 +109,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Added: `RobotLibrarian` and `RobotRecord`.
 - Fixed: `missing_materials.py` will launch the build (which isn't useful for tests).
 
+### Scene Library
+
+- Updated the asset bundle for `archviz_house_2018` and renamed it to `archviz_house`.
+
 ### Build
 
 - Fixed: Many models don't cast shadows or reflect light correctly.

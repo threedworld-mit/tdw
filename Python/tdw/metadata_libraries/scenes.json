@@ -12,15 +12,15 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/abandoned_factory"
             }
         },
-        "archviz_house_2018": {
+        "archviz_house": {
             "description": "A very fancy room.",
             "hdri": true,
             "location": "interior",
-            "name": "archviz_house_2018",
+            "name": "archviz_house",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/archviz_house_2018",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/archviz_house_2018",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/archviz_house_2018"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/archviz_house",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/archviz_house",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/archviz_house"
             }
         },
         "box_room_2018": {

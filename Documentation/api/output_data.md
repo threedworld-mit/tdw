@@ -687,6 +687,7 @@ Data for a non-physics trigger collision event.
 | --- | --- | --- |
 | `get_collidee_id()` | The ID of the object that collided with the trigger collider. | `int` |
 | `get_collider_id()` | The ID of the object that has the trigger collider. | `int` |
+| `get_trigger_id()` | The ID of the trigger collider. | `int` |
 | `get_state()` | The state of the collision. | `str` |
 
 ## Version

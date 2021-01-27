@@ -33,14 +33,22 @@ class TriggerCollision(object):
         return 0
 
     # TriggerCollision
-    def State(self):
+    def TriggerId(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+    # TriggerCollision
+    def State(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
         return 1
 
-def TriggerCollisionStart(builder): builder.StartObject(3)
+def TriggerCollisionStart(builder): builder.StartObject(4)
 def TriggerCollisionAddColliderId(builder, colliderId): builder.PrependInt32Slot(0, colliderId, 0)
 def TriggerCollisionAddCollideeId(builder, collideeId): builder.PrependInt32Slot(1, collideeId, 0)
-def TriggerCollisionAddState(builder, state): builder.PrependUint8Slot(2, state, 1)
+def TriggerCollisionAddTriggerId(builder, triggerId): builder.PrependInt32Slot(2, triggerId, 0)
+def TriggerCollisionAddState(builder, state): builder.PrependUint8Slot(3, state, 1)
 def TriggerCollisionEnd(builder): return builder.EndObject()

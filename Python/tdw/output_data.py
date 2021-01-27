@@ -1006,6 +1006,9 @@ class TriggerCollision(OutputData):
     def get_collider_id(self) -> int:
         return self.data.ColliderId()
 
+    def get_trigger_id(self) -> int:
+        return self.data.TriggerId()
+
     def get_state(self) -> str:
         state = self.data.State()
         if state == 1:

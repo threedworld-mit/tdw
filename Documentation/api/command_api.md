@@ -3135,7 +3135,7 @@ Add a trigger collider to an object. Trigger colliders are non-physics colliders
 ```
 
 ```python
-{"$type": "add_trigger_collider", "id": 1, "shape": "cube", "enter": False, "stay": False, "exit": False}
+{"$type": "add_trigger_collider", "id": 1, "shape": "cube", "enter": False, "stay": False, "exit": False, "trigger_id": 0, "scale": {"x": 1, "y": 1, "z": 1}, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -3144,6 +3144,10 @@ Add a trigger collider to an object. Trigger colliders are non-physics colliders
 | `"enter"` | bool | If True, this collider will listen for enter events. | False |
 | `"stay"` | bool | If True, this collider will listen for stay events. | False |
 | `"exit"` | bool | If True, this collider will listen for exit events. | False |
+| `"trigger_id"` | int | The ID of this trigger collider. This can be used to differentiate between multiple trigger colliders attached to the same object. | 0 |
+| `"scale"` | Vector3 | The scale of the trigger collider. | {"x": 1, "y": 1, "z": 1} |
+| `"position"` | Vector3 | The position of the trigger collider relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the trigger collider in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
 | `"id"` | int | The unique object ID. | |
 
 #### TriggerShape

@@ -13,6 +13,11 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
   - Deprecated the Sticky Mitten Avatar (see [upgrade guide](Documentation/upgrade_guides/v1.7_to_v1.8)).
 - Significant graphics improvements in certain scenes because many models didn't cast shadows or reflect light correctly.
 - Updated Unity Engine from 2019.4 to 2020.2
+- Fixed: OS X and Linux builds don't have executable flags. In order to preserve permissions, they are now stored online as .tar.gz files instead of .zip files.
+
+### Known Issues
+
+- It's currently not possible to draw Flex particles (`"draw_particles"` in the Command API) in Linux. Attempting to create a build with the Flex particle shaders for Linux results in a crash-to-desktop. This is new as of Unity 2020.2.2 and it is likely that a future Unity Engine upgrade (i.e. to Unity 2020.2.x) will fix it. As a matter of course, we apply minor Unity Engine updates to TDW whenever they're available. Should one of these updates fix this particular issue, we'll note it in the changelog.
 
 ### Command API
 
@@ -108,6 +113,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Added: `int_pair.py` A pair of unordered hashable integers. Use this class for dictionary keys.
 - Added: `RobotLibrarian` and `RobotRecord`.
 - Fixed: `missing_materials.py` will launch the build (which isn't useful for tests).
+- Updated `build.py` to download OS X and Linux builds correctly. Removed the `chmod()` function because it's no longer needed.
 
 ### Scene Library
 
@@ -117,7 +123,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Fixed: Many models don't cast shadows or reflect light correctly.
 - Fixed: The bounds of objects aren't set correctly if `add_object["rotation"]` isn't (0, 0, 0)
-- Fixed: OS X and Linux builds don't have executable flags.
 - Fixed: The build often returns `EnvironmentCollision` data when it should return `Collision` data.
 - Log messages written to the player log (and console log in Unity Editor) include the type of object that logged the message. This doesn't affect the text sent by `send_log_messages`.
 

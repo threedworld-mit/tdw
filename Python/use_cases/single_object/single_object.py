@@ -760,7 +760,7 @@ class SingleObject(Controller):
 if __name__ == "__main__":
     from argparse import ArgumentParser
     parser = ArgumentParser()
-    parser.add_argument("--scene_name", type=str, default="tdw_room_2018",
+    parser.add_argument("--scene_name", type=str, default="tdw_room",
                         help="The name of the scene. For a complete list: librarian.fetch_all_scene_records()")
     parser.add_argument("--output_dir", type=str, default="D:/Test",
                         help="The absolute path to the output directory.")

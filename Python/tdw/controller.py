@@ -246,7 +246,7 @@ class Controller(object):
                 "name": name,
                 "url": record.get_url()}
 
-    def load_streamed_scene(self, scene="tdw_room_2018") -> None:
+    def load_streamed_scene(self, scene="tdw_room") -> None:
         """
         Load a streamed scene. This is equivalent to: `c.communicate(c.get_add_scene(scene))`
 

@@ -298,15 +298,15 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/suburb_scene_2018"
             }
         },
-        "tdw_room_2018": {
+        "tdw_room": {
             "description": "An interior space lit by sunlight from outside.",
             "hdri": true,
             "location": "interior",
-            "name": "tdw_room_2018",
+            "name": "tdw_room",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/tdw_room_2018",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/tdw_room_2018",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/tdw_room_2018"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/tdw_room",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/tdw_room",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/tdw_room"
             }
         }
     }

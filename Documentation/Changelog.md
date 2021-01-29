@@ -118,6 +118,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Scene Library
 
 - Updated the asset bundle for `archviz_house_2018` and renamed it to `archviz_house`.
+- Updated the asset bundle for `tdw_room_2018` and renamed it to `tdw_room`.
 
 ### Build
 

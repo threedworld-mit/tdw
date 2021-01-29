@@ -11,7 +11,7 @@ class VRFlex(Controller):
 
     def run(self):
         # Load the streamed scene and add controller rig.
-        self.load_streamed_scene(scene="tdw_room_2018")
+        self.load_streamed_scene(scene="tdw_room")
 
         # Create the container.
         self.communicate({"$type": "create_flex_container",

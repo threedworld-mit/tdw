@@ -9,7 +9,7 @@ Using NVIDIA Flex, drape a cloth over an object.
 class ClothDrape(Controller):
     def run(self):
         # Load a nice-looking room.
-        self.load_streamed_scene(scene="tdw_room_2018")
+        self.load_streamed_scene(scene="tdw_room")
 
         # Create the Flex container.
         self.communicate({"$type": "create_flex_container",

@@ -21,7 +21,7 @@ class HumanoidAnimation(Controller):
         h_id = 0
 
         # Load the streamed scene.
-        self.load_streamed_scene(scene="tdw_room_2018")
+        self.load_streamed_scene(scene="tdw_room")
 
         # Create the avatar.
         self.communicate(TDWUtils.create_avatar(position={"x": -4.42, "y": 1.5, "z": 5.95}, look_at={"x": 0, "y": 1.0, "z": -3}))

@@ -4,7 +4,6 @@ from time import sleep
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import Images
-import random
 
 
 """

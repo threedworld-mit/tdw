@@ -19,6 +19,7 @@ class ObjectsAndImages(Controller):
             shutil.rmtree(output_directory)
             sleep(0.5)
             os.mkdir(output_directory)
+        print(f"Images will be saved to: {output_directory}")
 
         self.start()
         # Create an empty room.

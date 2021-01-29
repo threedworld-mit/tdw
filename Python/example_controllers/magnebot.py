@@ -4,11 +4,12 @@ from tdw.tdw_utils import TDWUtils
 
 """
 Add a Magnebot and move it around the scene.
-For a high-level API, please see: https://github.com/alters-mit/magnebot
 """
 
 if __name__ == "__main__":
     c = Controller(launch_build=False)
+    print("This controller demonstrates low-level controls for the Magnebot")
+    print("For a high-level API, please see: https://github.com/alters-mit/magnebot")
     c.start()
     robot_id = 0
     # Add a Magnebot to the scene and request static data.

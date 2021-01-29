@@ -50,6 +50,8 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | Command | Modification |
 | --- | --- |
 | `set_vingette` | By default, the post-processing vignette is disabled, i.e. the parameter  `enabled = False` (was `True`). |
+| `rotate_object_to_euler_angles` | Added optional parameter `use_centroid` |
+| `rotate_object_to` | Added optional parameter `use_centroid` |
 
 #### Removed Commands
 

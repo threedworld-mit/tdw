@@ -151,6 +151,7 @@ It's currently not possible to draw Flex particles (`"draw_particles"` in the Co
 - Removed: `open_box.py` (it uses the Sticky Mitten Avatar, which has been deprecated).
 - Removed: `sticky_mitten_avatar.py`
 - Fixed: `avatar_drag.py` doesn't work.
+- Fixed: `composite_object.py` doesn't work on OS X.
 
 ### Documentation
 

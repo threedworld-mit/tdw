@@ -114,4 +114,4 @@ class CompositeObject(Controller):
 
 
 if __name__ == "__main__":
-    CompositeObject().run()
+    CompositeObject(launch_build=False).run()

@@ -3260,7 +3260,7 @@ Rotate an object by a given angle around a given axis.
 | `"axis"` | Axis | The axis of rotation. | "yaw" |
 | `"angle"` | float | The angle of rotation. | |
 | `"is_world"` | bool | If true, the object will rotate via "global" directions and angles. If false, the object will rotate locally. | True |
-| `"use_centroid"` | bool | If true, rotate around the centroid of the object. If false, rotate around the bottom-center position of the object. This overrides is_world | False |
+| `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). This overrides is_world | False |
 | `"id"` | int | The unique object ID. | |
 
 #### Axis
@@ -3285,13 +3285,14 @@ Set the rotation quaternion of the object.
 ```
 
 ```python
-{"$type": "rotate_object_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1, "physics": False}
+{"$type": "rotate_object_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1, "physics": False, "use_centroid": False}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"rotation"` | Quaternion | The rotation quaternion. | |
 | `"physics"` | bool | This should almost always be False (the default). If True, apply a "physics-based" rotation to the object. This only works if the object has a rigidbody (i.e. is a model from a model library) and is slightly slower than a non-physics rotation. Set this to True only if you are having persistent and rare physics glitches. | False |
+| `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). | False |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -3306,9 +3307,14 @@ Set the rotation of the object with Euler angles.
 {"$type": "rotate_object_to_euler_angles", "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
 ```
 
+```python
+{"$type": "rotate_object_to_euler_angles", "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "use_centroid": False}
+```
+
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"euler_angles"` | Vector3 | The new Euler angles of the object. | |
+| `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). | False |
 | `"id"` | int | The unique object ID. | |
 
 ***

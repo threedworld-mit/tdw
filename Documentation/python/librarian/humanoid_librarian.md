@@ -204,15 +204,6 @@ Generates a valid record name. Returns: true if the name is good as-is, the new 
 ```python
 lib = HumanoidLibrarian()
 
-ok, name, problems = lib.get_valid_record_name("tdw_room_2018", True)
-
-print(ok) # True
-print(name) # tdw_room_2018
-```
-
-```python
-lib = HumanoidLibrarian()
-
 ok, name, problems = lib.get_valid_record_name("woman_casual_1", False)
 
 print(ok) # False

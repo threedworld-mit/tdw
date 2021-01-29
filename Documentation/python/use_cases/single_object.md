@@ -27,7 +27,7 @@ Standard datasets have 1300000 "train" images and 50000 "val" images. A full dat
 
 | Argument           | Type  | Default          | Description                                                  |
 | ------------------ | ----- | ---------------- | ------------------------------------------------------------ |
-| `--scene_name`     | str   | tdw_room_2018    | The name of the scene. See [SceneLibrarian documentation](../librarian/scene_librarian.md). |
+| `--scene_name`     | str   | tdw_room         | The name of the scene. See [SceneLibrarian documentation](../librarian/scene_librarian.md). |
 | `--output_dir`     | str   | D:/Test          | The absolute path to the output directory.                   |
 | `--materials`      |       |                  | Set random visual materials per frame.                       |
 | `--new`            |       |                  | Start a new dataset (erases the log of completed models).    |

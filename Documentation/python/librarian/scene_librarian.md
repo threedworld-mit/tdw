@@ -155,9 +155,9 @@ Returns a record with the specified name. If that record can't be found, returns
 
 ```python
 lib = SceneLibrarian()
-record = lib.get_record("tdw_room_2018")
+record = lib.get_record("tdw_room")
 
-print(record.name) # tdw_room_2018
+print(record.name) # tdw_room
 ```
 
 | Parameter | Type | Description             |
@@ -218,7 +218,7 @@ lib.remove_record(record) # Returns False.
 ```python
 lib = SceneLibrarian()
 
-lib.remove_record("tdw_room_2018") # Returns True.
+lib.remove_record("tdw_room") # Returns True.
 ```
 
 | Parameter | Type                 | Description                                                  |
@@ -245,20 +245,20 @@ Generates a valid record name. Returns: true if the name is good as-is, the new 
 ```python
 lib = SceneLibrarian()
 
-ok, name, problems = lib.get_valid_record_name("tdw_room_2018", True)
+ok, name, problems = lib.get_valid_record_name("tdw_room", True)
 
 print(ok) # True
-print(name) # tdw_room_2018
+print(name) # tdw_room
 ```
 
 ```python
 lib = SceneLibrarian()
 
-ok, name, problems = lib.get_valid_record_name("tdw_room_2018", False)
+ok, name, problems = lib.get_valid_record_name("tdw_room", False)
 
 print(ok) # False
-print(name) # tdw_room_2018abcd
-print(problems) # ["A record named tdw_room_2018 already exists, and we don't want to overwrite it."]
+print(name) # tdw_roomabcd
+print(problems) # ["A record named tdw_room already exists, and we don't want to overwrite it."]
 ```
 
 | Parameter   | Type | Description                                                  |

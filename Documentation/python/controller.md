@@ -150,7 +150,7 @@ _Returns:_ An `add_robot` command that the controller can then send.
 
 ***
 
-#### `load_streamed_scene(self, scene="tdw_room_2018") -> None`
+#### `load_streamed_scene(self, scene="tdw_room") -> None`
 
 Load a streamed scene. This is equivalent to: `c.communicate(c.get_add_scene(scene))`
 

@@ -15,9 +15,17 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Updated Unity Engine from 2019.4 to 2020.2
 - Fixed: OS X and Linux builds don't have executable flags. In order to preserve permissions, they are now stored online as .tar.gz files instead of .zip files.
 
-### Known Issues
+### Known bugs
 
-- It's currently not possible to draw Flex particles (`"draw_particles"` in the Command API) in Linux. Attempting to create a build with the Flex particle shaders for Linux results in a crash-to-desktop. This is new as of Unity 2020.2.2 and it is likely that a future Unity Engine upgrade (i.e. to Unity 2020.2.x) will fix it. As a matter of course, we apply minor Unity Engine updates to TDW whenever they're available. Should one of these updates fix this particular issue, we'll note it in the changelog.
+#### Bug: Can't create a Linux build without deleting some Flex shader files
+
+_(This is relevant only to users who have access to the C# source code in the private TDWBase repo.)_
+
+To create a Linux build, delete all Flex shaders located in `TDWBase/Assets/NVIDIA/Flex/Resources/Shaders` that have `DrawParticles` or `Fluid` in their name. Otherwise, the Editor will crash to desktop. This is handled automatically when we build and upload TDW releases to GitHub.
+
+#### Bug: Can't draw Flex particles on Linux
+
+It's currently not possible to draw Flex particles (`"draw_particles"` in the Command API) in Linux. Attempting to create a build with the Flex particle shaders for Linux results in a crash-to-desktop. This is new as of Unity 2020.2.2 and it is likely that a future Unity Engine upgrade (i.e. to Unity 2020.2.x) will fix it. As a matter of course, we apply minor Unity Engine updates to TDW whenever they're available. Should one of these updates fix this particular issue, we'll note it in the changelog.
 
 ### Command API
 
@@ -116,6 +124,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Added: `RobotLibrarian` and `RobotRecord`.
 - Fixed: `missing_materials.py` will launch the build (which isn't useful for tests).
 - Updated `build.py` to download OS X and Linux builds correctly. Removed the `chmod()` function because it's no longer needed.
+
+### Model Library
+
+- Fixed: sixty-four models in `models_full.json`(*not* `models_core.json`) have `flex == True` in the metadata record but have non-readable meshes (meaning that they can't be used in Flex). They now have `flex == False` in the metadata record. 
 
 ### Scene Library
 

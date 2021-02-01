@@ -26,7 +26,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `impact_sounds.py` | - Listen for collisions between objects.<br>- Generate an impact sound with py_impact upon impact and play the sound in the build. |
 | `keyboard_controls.py` | Use WASD or arrow keys to move an avatar. |
 | `local_object.py` | Create a local asset bundle and load it into TDW.<br><br>See `Documentation/misc_frontend/add_local_object.md` for how to run the Asset Bundle Creator. |
-| `magnebot.py` | Add a Magnebot and move it around the scene.<br>For a high-level API, please see: https://github.com/alters-mit/magnebot |
+| `magnebot.py` | Add a Magnebot and move it around the scene. |
 | `minimal.py` | A minimal example of how to connect to the build and receive data. |
 | `minimal_remote.py` | A minimal example of how to use the launch binaries daemon to<br>start and connect to a build on a remote node. Note: the remote<br>must be running launch_binaries.py. |
 | `nav_mesh.py` | - Create a NavMeshAvatar and a simple procedurally-generated room.<br>- Tell the avatar to navigate to different destinations. |

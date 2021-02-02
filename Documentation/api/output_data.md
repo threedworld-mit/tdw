@@ -566,20 +566,13 @@ Data for a robot in the scene. See also: `StaticRobot`
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_id()` | The ID of the robot. | `int` |
-| `get_position()` | The position. | `Tuple[float, float, float]` |
+| `get_position()` | The (x, y, z) position of this body part. | `Tuple[float, float, float]` |
 | `get_rotation()` | The rotation. | `Tuple[float, float, float, float]` |
 | `get_forward()` | The forward. | `Tuple[float, float, float]` |
 | `get_num_joints()` | The number of joints. | `int` |
 | `get_joint_id(index)` | The ID of the joint. | `int` |
-| `get_joint_position(index)` | The position of the joint. | `Tuple[float, float, float]` |
-| `get_joint_rotation(index)` | The rotation of the joint. | `Tuple[float, float, float, float]` |
-| `get_joint_forward(index)` | The forward of the joint. | `Tuple[float, float, float]` |
+| `get_joint_position(index)` | The position of the joint. | `np.array` |
 | `get_joint_positions(index)` | The positions of the joint. | `np.array` |
-| `get_num_non_moving()` | The number of non moving. | `int` |
-| `get_non_moving_id(index)` | The ID of the non moving. | `int` |
-| `get_non_moving_position(index)` | The position of the non moving. | `Tuple[float, float, float]` |
-| `get_non_moving_rotation(index)` | The rotation of the non moving. | `Tuple[float, float, float, float]` |
-| `get_non_moving_forward(index)` | The forward of the non moving. | `Tuple[float, float, float]` |
 
 ## ScreenPosition
 
@@ -631,6 +624,7 @@ Static data for a robot in the scene.
 | `get_is_joint_root(index)` | The root of the is joint. | `bool` |
 | `get_joint_parent_id(index)` | The ID of the joint parent. | `int` |
 | `get_joint_name(index)` | The name of the joint. | `str` |
+| `get_joint_type(index)` | The type of joint. | `str` |
 | `get_joint_num_drives(index)` | The drives of the joint num. | `int` |
 | `get_joint_drive_axis(index, drive_index)` | The axis of the joint drive. | `str` |
 | `get_joint_drive_limits(index, drive_index)` | The limits of the joint drive. | `bool` |

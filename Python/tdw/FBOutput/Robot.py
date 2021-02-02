@@ -56,30 +56,9 @@ class Robot(object):
             return self._tab.VectorLen(o)
         return 0
 
-    # Robot
-    def NonMoving(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
-        if o != 0:
-            x = self._tab.Vector(o)
-            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 44
-            from .TransformData import TransformData
-            obj = TransformData()
-            obj.Init(self._tab.Bytes, x)
-            return obj
-        return None
-
-    # Robot
-    def NonMovingLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
-        if o != 0:
-            return self._tab.VectorLen(o)
-        return 0
-
-def RobotStart(builder): builder.StartObject(4)
+def RobotStart(builder): builder.StartObject(3)
 def RobotAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
 def RobotAddTransform(builder, transform): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(transform), 0)
 def RobotAddJoints(builder, joints): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(joints), 0)
 def RobotStartJointsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def RobotAddNonMoving(builder, nonMoving): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(nonMoving), 0)
-def RobotStartNonMovingVector(builder, numElems): return builder.StartVector(44, numElems, 4)
 def RobotEnd(builder): return builder.EndObject()

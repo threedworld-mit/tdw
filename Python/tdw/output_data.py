@@ -37,7 +37,7 @@ from tdw.FBOutput import Keyboard as Key
 from tdw.FBOutput import Magnebot as Mag
 from tdw.FBOutput import ScreenPosition as Screen
 from tdw.FBOutput import TriggerCollision as Trigger
-from tdw.FBOutput import DriveAxis
+from tdw.FBOutput import DriveAxis, JointType
 import numpy as np
 from typing import Tuple, Optional
 
@@ -818,6 +818,10 @@ class StaticRobot(OutputData):
     _AXES = {DriveAxis.DriveAxis.x: "x",
              DriveAxis.DriveAxis.y: "y",
              DriveAxis.DriveAxis.z: "z"}
+    _JOINT_TYPES = {JointType.JointType.revolute: "revolute",
+                    JointType.JointType.spherical: "spherical",
+                    JointType.JointType.prismatic: "prismatic",
+                    JointType.JointType.fixed_joint: "fixed_joint"}
 
     def get_data(self) -> StRobo.StaticRobot:
         return StRobo.StaticRobot.GetRootAsStaticRobot(self.bytes, 0)
@@ -848,6 +852,9 @@ class StaticRobot(OutputData):
 
     def get_joint_name(self, index: int) -> str:
         return self.data.Joints(index).Name().decode('utf-8')
+
+    def get_joint_type(self, index: int) -> str:
+        return StaticRobot._JOINT_TYPES[self.data.Joints(index).JointType()]
 
     def get_joint_num_drives(self, index: int) -> int:
         return self.data.Joints(index).DrivesLength()
@@ -908,32 +915,11 @@ class Robot(OutputData):
     def get_joint_id(self, index: int) -> int:
         return self.data.Joints(index).Id()
 
-    def get_joint_position(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Joints(index).Transform().Position)
-
-    def get_joint_rotation(self, index: int) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.Joints(index).Transform().Rotation)
-
-    def get_joint_forward(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Joints(index).Transform().Forward)
+    def get_joint_position(self, index: int) -> np.array:
+        return self.data.Joints(index).PositionAsNumpy()
 
     def get_joint_positions(self, index: int) -> np.array:
         return np.degrees(self.data.Joints(index).PositionsAsNumpy())
-
-    def get_num_non_moving(self) -> int:
-        return self.data.NonMovingLength()
-
-    def get_non_moving_id(self, index: int) -> int:
-        return self.data.NonMoving(index).Id()
-
-    def get_non_moving_position(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.NonMoving(index).Position)
-
-    def get_non_moving_rotation(self, index: int) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.NonMoving(index).Rotation)
-
-    def get_non_moving_forward(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.NonMoving(index).Forward)
 
 
 class Keyboard(OutputData):

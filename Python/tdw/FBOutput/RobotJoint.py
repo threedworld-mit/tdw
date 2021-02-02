@@ -26,15 +26,26 @@ class RobotJoint(object):
         return 0
 
     # RobotJoint
-    def Transform(self):
+    def Position(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
-            x = o + self._tab.Pos
-            from .SimpleTransform import SimpleTransform
-            obj = SimpleTransform()
-            obj.Init(self._tab.Bytes, x)
-            return obj
-        return None
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # RobotJoint
+    def PositionAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
+        return 0
+
+    # RobotJoint
+    def PositionLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
 
     # RobotJoint
     def Positions(self, j):
@@ -60,7 +71,8 @@ class RobotJoint(object):
 
 def RobotJointStart(builder): builder.StartObject(3)
 def RobotJointAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
-def RobotJointAddTransform(builder, transform): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(transform), 0)
+def RobotJointAddPosition(builder, position): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(position), 0)
+def RobotJointStartPositionVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def RobotJointAddPositions(builder, positions): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(positions), 0)
 def RobotJointStartPositionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def RobotJointEnd(builder): return builder.EndObject()

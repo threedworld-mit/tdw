@@ -136,11 +136,12 @@ It's currently not possible to draw Flex particles (`"draw_particles"` in the Co
 
 ### Build
 
+- Image capture is slightly faster.
+- Log messages written to the player log (and console log in Unity Editor) include the type of object that logged the message. This doesn't affect the text sent by `send_log_messages`.
 - Fixed: Many models don't cast shadows or reflect light correctly.
 - Fixed: The bounds of objects aren't set correctly if `add_object["rotation"]` isn't (0, 0, 0)
 - Fixed: The build often returns `EnvironmentCollision` data when it should return `Collision` data.
 - Fixed: `_normals` pass is inaccurate.
-- Log messages written to the player log (and console log in Unity Editor) include the type of object that logged the message. This doesn't affect the text sent by `send_log_messages`.
 
 ### Example Controllers
 

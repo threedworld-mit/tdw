@@ -27,6 +27,15 @@
 | [Command API Guide](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api_guide.md) | Overview of how to send commands to the build.               |
 | [Output Data](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/output_data.md)             | API for all output data a controller can receive from the build. |
 
+#### High-Level APIs
+
+| API                                                          | Description                                    |
+| ------------------------------------------------------------ | ---------------------------------------------- |
+| [Image dataset](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/use_cases/single_object.md) | Generate 1.3M photorealistic images.           |
+| [tdw_physics](https://github.com/alters-mit/tdw_physics)     | Generate physics datasets.                     |
+| [Magnebot](https://github.com/alters-mit/magnebot)           | High-level Magnebot robotics API.              |
+| [Transport Challenge](https://github.com/alters-mit/transport_challenge) | A higher-level API that uses the Magnebot API. |
+
 #### Python `tdw` module
 
 ##### Frontend

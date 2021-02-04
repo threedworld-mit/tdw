@@ -323,7 +323,7 @@ Data for a collision between and object and the scene environment on this frame.
 | `get_num_contacts()` | The number of contacts. | `int` |
 | `get_contact_normal(index)` | The normal of the contact. | `Tuple[float, float, float]` |
 | `get_contact_point(index)` | The point of the contact. | `Tuple[float, float, float]` |
-| `get_is_floor()` | The floor of the is. | `bool` |
+| `get_floor()` | If True, this is the floor. | `bool` |
 
 ## Environments
 

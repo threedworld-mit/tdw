@@ -727,7 +727,7 @@ class EnvironmentCollision(OutputData):
     def get_contact_point(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_vector3(self.data.Contacts(index).Point)
 
-    def get_is_floor(self) -> bool:
+    def get_floor(self) -> bool:
         return self.data.Floor()
 
 

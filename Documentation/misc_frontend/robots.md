@@ -56,7 +56,7 @@ The Magnebot is a specialized robot in TDW that can use "magnets" to pick up obj
 
 [**Get the high-level Magnebot API here.**](https://github.com/alters-mit/magnebot)
 
-![](../images/robots/grasp_high.gif)
+![](../images/robots/reach_high.gif)
 
 Add a Magnebot to the scene with the `add_magnebot` command (`add_robot` will *not* add a Magnebot!). With the exception of `add_robot`, all other commands in the Robotics API are compatible with the Magnebot. 
 

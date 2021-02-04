@@ -856,7 +856,7 @@ class StaticRobot(OutputData):
     def get_joint_type(self, index: int) -> str:
         return StaticRobot._JOINT_TYPES[self.data.Joints(index).JointType()]
 
-    def get_joint_num_drives(self, index: int) -> int:
+    def get_num_joint_drives(self, index: int) -> int:
         return self.data.Joints(index).DrivesLength()
 
     def get_joint_drive_axis(self, index: int, drive_index: int) -> str:

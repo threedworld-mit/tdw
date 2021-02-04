@@ -150,7 +150,7 @@ It's currently not possible to draw Flex particles (`"draw_particles"` in the Co
 - Added: `robot_arm.py` Add a robot to the scene and bend its arm.
 - Added: `robot_camera.py` Add a camera to a Magnebot.
 - Removed: `open_box.py` (it uses the Sticky Mitten Avatar, which has been deprecated).
-- Removed: `sticky_mitten_avatar.py`
+- Removed: `sticky_mitten_avatar.py` (it uses the Sticky Mitten Avatar, which has been deprecated).
 - Fixed: `avatar_drag.py` doesn't work.
 - Fixed: `composite_object.py` doesn't work on OS X.
 

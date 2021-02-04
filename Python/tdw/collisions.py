@@ -63,7 +63,7 @@ class CollisionObjEnv:
         """:field
         True if this is a collision with the floor.
         """
-        self.floor: bool = collision.get_is_floor()
+        self.floor: bool = collision.get_floor()
 
 
 class Collisions:

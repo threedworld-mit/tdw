@@ -27,7 +27,7 @@ class Build:
         :return: The URL of the build release matching the version and the OS of this machine, True if the URL exists.
         """
 
-        url = f"https://github.com/threedworld-mit/tdw/releases/download/v{version}/" \
+        url = f"https://github.com/threedworld-mit/tdw/releases/download/{version}/" \
               f"{SYSTEM_TO_RELEASE[system()]}"
         if system() == "Windows":
             url += ".zip"
@@ -42,14 +42,18 @@ class Build:
         return url, release_exists
 
     @staticmethod
-    def download(version: str = __version__) -> bool:
+    def download(version: str = __version__, v_prefix: bool = True) -> bool:
         """
         Download the release corresponding to this version. Move it to the build path and extract it.
 
         :param version: The version of the build. Default = the installed version of TDW.
+        :param v_prefix: If True, add a `v` to the start of the `version` string.
 
         :return: True if the build downloaded.
         """
+
+        if v_prefix:
+            version = "v" + version
 
         url, url_exists = Build.get_url(version)
         if not url_exists:

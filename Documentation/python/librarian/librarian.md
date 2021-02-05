@@ -10,6 +10,7 @@ Most objects in TDW are stored as [asset bundles](https://docs.unity3d.com/Manua
 4. HDRI Skyboxes
 5. Humanoid Animations
 6. Humanoids
+7. Robots
 
 TDW has large **libraries** of each of these categories stored on a remote server.
 
@@ -37,6 +38,7 @@ The `tdw` module includes Python class wrappers for the different types of libra
 | HDRI Skybox | `HDRISkyboxLibrarian` | `HDRISkyboxRecord` | `add_hdri_skybox` |
 | Humanoid Animation | `HumanoidAnimationLibrarian` | `HumanoidAnimationRecord` | `add_humanoid_animation` |
 | Humanoid | `HumanoidLibrarian` | `HumanoidRecord` | `add_humanoid` |
+| Robot | `RobotLibrarian` | `RobotRecord` | `add_robot` |
 
 The `tdw` module includes one or more .json records files for each type of asset bundle for each TDW asset bundle stored on a remote server.
 
@@ -93,3 +95,4 @@ lib = ModelLibrarian(library=path)
 - [HDRI Skybox Librarian](hdri_skybox_librarian.md)
 - [Humanoid Animation Librarian](humanoid_animation_librarian.md)
 - [Humanoid Librarian](humanoid_librarian.md)
+- [Robot Librarian](robot_librarian.md)

@@ -58,7 +58,7 @@ class Audio(Controller):
         pos_4 = {"x": 0, "y": 0, "z": 0}
 
         # Load the streamed scene.
-        self.load_streamed_scene(scene="tdw_room_2018")
+        self.load_streamed_scene(scene="tdw_room")
         # Create the objects.
         id_0 = self.add_object("satiro_sculpture",
                                position=pos_0,

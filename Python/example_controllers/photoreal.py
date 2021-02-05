@@ -18,7 +18,7 @@ class Photoreal(Controller):
             output_directory.mkdir()
 
         # Load the streamed scene.
-        self.load_streamed_scene(scene="archviz_house_2018")
+        self.load_streamed_scene(scene="archviz_house")
 
         # Add the objects.
         self.add_object("live_edge_coffee_table",

@@ -4,7 +4,7 @@ from platform import system
 from pathlib import Path
 from zipfile import ZipFile
 from distutils import dir_util
-from subprocess import call
+import tarfile
 from tdw.version import __version__
 from tdw.backend.platforms import SYSTEM_TO_RELEASE, SYSTEM_TO_EXECUTABLE
 
@@ -27,8 +27,12 @@ class Build:
         :return: The URL of the build release matching the version and the OS of this machine, True if the URL exists.
         """
 
-        url = f"https://github.com/threedworld-mit/tdw/releases/download/v{version}/" \
-              f"{SYSTEM_TO_RELEASE[system()]}.zip"
+        url = f"https://github.com/threedworld-mit/tdw/releases/download/{version}/" \
+              f"{SYSTEM_TO_RELEASE[system()]}"
+        if system() == "Windows":
+            url += ".zip"
+        else:
+            url += ".tar.gz"
         # Check if the URL exists.
         if head(url).status_code != 302:
             print(f"Release not found: {url}")
@@ -38,24 +42,18 @@ class Build:
         return url, release_exists
 
     @staticmethod
-    def chmod() -> None:
-        """
-        Add execute permissions to the build.
-        :return:
-        """
-
-        if system() == "Darwin" or system() == "Linux":
-            call(["chmod", "+x", str(Build.BUILD_PATH.resolve())])
-
-    @staticmethod
-    def download(version: str = __version__) -> bool:
+    def download(version: str = __version__, v_prefix: bool = True) -> bool:
         """
         Download the release corresponding to this version. Move it to the build path and extract it.
 
         :param version: The version of the build. Default = the installed version of TDW.
+        :param v_prefix: If True, add a `v` to the start of the `version` string.
 
         :return: True if the build downloaded.
         """
+
+        if v_prefix:
+            version = "v" + version
 
         url, url_exists = Build.get_url(version)
         if not url_exists:
@@ -69,17 +67,27 @@ class Build:
         resp = get(url).content
         print("Downloaded the build.")
         # Save the zip file.
-        zip_path = Path().home().joinpath(f"{SYSTEM_TO_RELEASE[system()]}.zip")
+        platform = system()
+        filename = f"{SYSTEM_TO_RELEASE[platform]}"
+        if platform == "Windows":
+            filename += ".zip"
+        else:
+            filename += ".tar.gz"
+        zip_path = Path().home().joinpath(filename)
         zip_path.write_bytes(resp)
-        print("Saved the .zip file.")
+        print("Saved the file.")
+
+        dst = str(Build.BUILD_ROOT_DIR.resolve())
         # Extract the zip file.
-        with ZipFile(str(zip_path.resolve()), 'r') as zip_ref:
-            zip_ref.extractall(str(Build.BUILD_ROOT_DIR.resolve()))
-        print(f"Extracted the .zip file to: {Build.BUILD_ROOT_DIR.resolve()}")
+        if platform == "Windows":
+            with ZipFile(str(zip_path.resolve()), 'r') as zip_ref:
+                zip_ref.extractall(dst)
+        else:
+            tar = tarfile.open(str(zip_path.resolve()))
+            tar.extractall(dst)
+            tar.close()
+        print(f"Extracted the file to: {dst}")
         # Delete the zip file.
         zip_path.unlink()
-        print("Deleted the .zip file.")
-
-        # Add execute permissions.
-        Build.chmod()
+        print("Deleted the download file.")
         return True

@@ -124,16 +124,33 @@ _Returns:_ An add_humanoid command that the controller can then send.
 #### `get_add_humanoid_animation(self, humanoid_animation_name: str, library="") -> (dict, HumanoidAnimationRecord)`
 
 Returns a valid add_humanoid_animation command and the record (which you will need to play an animation).
-return An add_humanoid_animation command that the controller can then send.
 
 | Parameter | Description |
 | --- | --- |
 | humanoid_animation_name | The name of the animation. |
 | library | The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`. |
 
+_Returns:_ An add_humanoid_animation command that the controller can then send.
+
 ***
 
-#### `load_streamed_scene(self, scene="tdw_room_2018") -> None`
+#### `get_add_robot(self, name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict`
+
+Returns a valid add_robot command.
+
+| Parameter | Description |
+| --- | --- |
+| name | The name of the robot. |
+| robot_id | A unique ID for the robot. |
+| position | The initial position of the robot. If None, the position will be (0, 0, 0). |
+| rotation | The initial rotation of the robot in Euler angles. |
+| library | The path to the records file. If left empty, the default library will be selected. See `RobotLibrarian.get_library_filenames()` and `RobotLibrarian.get_default_library()`. |
+
+_Returns:_ An `add_robot` command that the controller can then send.
+
+***
+
+#### `load_streamed_scene(self, scene="tdw_room") -> None`
 
 Load a streamed scene. This is equivalent to: `c.communicate(c.get_add_scene(scene))`
 

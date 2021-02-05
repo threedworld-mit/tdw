@@ -36,7 +36,8 @@ class AvatarDrag(Controller):
                                   "frequency": "always"},
                                  {"$type": "apply_force_to_avatar",
                                   "avatar_id": "a",
-                                  "force": {"x": 900, "y": 1000, "z": 0}}])
+                                  "direction": {"x": 0.3, "y": 0.7, "z": 0},
+                                  "magnitude": 900}])
 
         for i in range(500):
             x, y, z = AvatarSimpleBody(resp[0]).get_position()

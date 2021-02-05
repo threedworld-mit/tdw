@@ -45,7 +45,7 @@ This is by far the easiest way to optimize your controller.
 - Smaller images are always faster to encode and send than larger images. Adjust the image size with `set_screen_size`.
 - Cameras that aren't sending data can still be _enabled_ and rendering to the GPU.
 	- Send `set_pass_masks` and set `"passes"` to `[]`.
-	- Toggle off the sensor entirely with `toggle_sensor` if you aren't capturing images. 
+	- Toggle off the sensor entirely with `enable_image_sensor` if you aren't capturing images. 
 - There are many ways to get "observation data" that are much faster than images. See [Observation Data](observation_data.md).
 
 ### Render Quality

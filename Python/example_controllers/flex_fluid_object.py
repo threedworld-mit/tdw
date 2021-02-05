@@ -13,7 +13,7 @@ class FlexFluid(Controller):
     def run(self):
         if system() != "Windows":
             raise Exception("Flex fluids are only supported in Windows (see Documentation/misc_frontend/flex.md)")
-        self.load_streamed_scene(scene="tdw_room_2018")
+        self.load_streamed_scene(scene="tdw_room")
 
         # Create the container, set up for fluids.
         self.communicate({"$type": "create_flex_container",

@@ -1,8 +1,176 @@
 # CHANGELOG
 
+# v1.8.x
+
+To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
+
+## v1.8.0
+
+### New Features
+
+- Added a [robotics API](misc_frontend/robots.md) to TDW. For now, the total number of robots is small, but we'll add more over time.
+  - Added the [Magnebot](misc_frontend/magnebot.md) to TDW.
+  - Deprecated the Sticky Mitten Avatar (see [upgrade guide](Documentation/upgrade_guides/v1.7_to_v1.8)).
+- Significant graphics improvements in certain scenes because many models didn't cast shadows or reflect light correctly.
+- Updated Unity Engine from 2019.4 to 2020.2
+- Fixed: OS X and Linux builds don't have executable flags. In order to preserve permissions, they are now stored online as .tar.gz files instead of .zip files.
+
+### Known bugs
+
+#### Bug: Can't create a Linux build without deleting some Flex shader files
+
+_(This is relevant only to users who have access to the C# source code in the private TDWBase repo.)_
+
+To create a Linux build, delete all Flex shaders located in `TDWBase/Assets/NVIDIA/Flex/Resources/Shaders` that have `DrawParticles` or `Fluid` in their name. Otherwise, the Editor will crash to desktop. This is handled automatically when we build and upload TDW releases to GitHub.
+
+#### Bug: Can't draw Flex particles on Linux
+
+It's currently not possible to draw Flex particles (`"draw_particles"` in the Command API) in Linux. Attempting to create a build with the Flex particle shaders for Linux results in a crash-to-desktop. This is new as of Unity 2020.2.2 and it is likely that a future Unity Engine upgrade (i.e. to Unity 2020.2.x) will fix it. As a matter of course, we apply minor Unity Engine updates to TDW whenever they're available. Should one of these updates fix this particular issue, we'll note it in the changelog.
+
+### Command API
+
+#### New Commands
+
+| Command                    | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| `add_magnebot`             | Add a Magnebot to the scene.                                 |
+| `add_robot`                | Add a robot to the scene.                                    |
+| `destroy_robot`            | Destroy a robot in the scene.                                |
+| `parent_avatar_to_robot`   | Parent an avatar to a robot.                                 |
+| `set_immovable`            | Set whether or not the root object of the robot is immovable. |
+| `teleport_robot`           | Teleport the robot to a new position and rotation.           |
+| `detach_from_magnet`       | Detach an object from a Magnebot magnet.                     |
+| `set_magnet_targets`       | Set the objects that the Magnebot magnet will try to pick up. |
+| `set_robot_joint_drive`    | Set static joint drive parameters for a robot joint.         |
+| `set_robot_joint_mass`     | Set the mass of a robot joint.                               |
+| `set_prismatic_target`     | Set the target position of a prismatic robot joint.          |
+| `set_revolute_target`      | Set the target angle of a revolute robot joint.              |
+| `set_spherical_target`     | Set the target angles (x, y, z) of a spherical robot joint.  |
+| `send_magnebots`           | Send data for each Magnebot in the scene.                    |
+| `send_robots`              | Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. |
+| `send_static_robots`       | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. |
+| `add_trigger_color`        | Add a non-physics trigger collider to an object.             |
+| `set_legacy_shaders`       | Set whether TDW should use legacy shaders (pre-v1.8) for its models. |
+| `enable_reflection_probes` | Enable or disable the reflection probes in the scene.        |
+
+#### Modified Commands
+
+| Command | Modification |
+| --- | --- |
+| `set_vingette` | By default, the post-processing vignette is disabled, i.e. the parameter  `enabled = False` (was `True`). |
+| `rotate_object_to_euler_angles` | Added optional parameter `use_centroid` |
+| `rotate_object_to` | Added optional parameter `use_centroid` |
+
+#### Removed Commands
+
+| Command               | Reason                                                   |
+| --------------------- | -------------------------------------------------------- |
+| `toggle_image_sensor` | Deprecated in v1.7<br>Use `enable_image_sensor` instead. |
+
+#### Deprecated Commands
+
+| Command                                                      | Reason                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `set_avatar_rigidbody_constraints`<br>`rotate_head_by`<br>`rotate_waist`<br>`set_sticky_mitten_profile`<br>`stop_arm_joint`<br>`bend_arm_joint_by`<br>`bend_arm_joint_to`<br>`adjust_joint_angular_drag_by`<br>`set_joint_angular_drag`<br>`adjust_joint_damper_by`<br>`adjust_joint_force_by`<br>`set_joint_damper`<br>`set_joint_force`<br>`put_down`<br>`set_stickiness`<br>`pick_up`<br>`pick_up_proximity` | The Sticky Mitten Avatar has been deprecated (see "Features"). |
+| `add_fixed_joint`                                            | Very buggy and used only in the Sticky Mitten Avatar high-level API, which has been deprecated. |
+| `set_proc_gen_reflection_probe`                              | Use `enable_reflection_probes` instead.                      |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data        | Description                                     |
+| ------------------ | ----------------------------------------------- |
+| `Magnebot`         | Data for a Magnebot.                            |
+| `Robot`            | Data for a robot.                               |
+| `StaticRobot`      | Static data for a robot.                        |
+| `TriggerCollision` | Data for a non-physics trigger collision event. |
+
+### Modified Output Data
+
+| Output Data            | Modification            |
+| ---------------------- | ----------------------- |
+| `EnvironmentCollision` | Added: `get_is_floor()` |
+
+### `tdw` module
+
+#### `Controller`
+
+- Added: `get_add_robot()`. Returns a valid `add_robot` command.
+
+#### `FloorplanController`
+
+- Updated floorplans to allow the Magnebot to move around. Removed rugs.
+- Made some more objects kinematic.
+- Replaced white_shopping_bag with blue_satchal.
+
+#### `TDWUtils`
+
+- Removed: `get_collisions()`
+
+#### `QuaternionUtils`
+
+- Renamed `_UP` to `UP`
+- Added: `FORWARD` and `IDENTITY`
+
+#### `AssetBundleCreator`
+
+- Now requires Unity 2020.2
+
+#### Misc.
+
+- Added: `collisions.py` A useful wrapper for collision data.
+- Added: `int_pair.py` A pair of unordered hashable integers. Use this class for dictionary keys.
+- Added: `RobotLibrarian` and `RobotRecord`.
+- Fixed: `missing_materials.py` will launch the build (which isn't useful for tests).
+- Updated `build.py` to download OS X and Linux builds correctly. Removed the `chmod()` function because it's no longer needed.
+
+### Model Library
+
+- Fixed: sixty-four models in `models_full.json`(*not* `models_core.json`) have `flex == True` in the metadata record but have non-readable meshes (meaning that they can't be used in Flex). They now have `flex == False` in the metadata record. 
+
+### Scene Library
+
+- Updated the asset bundle for `archviz_house_2018` and renamed it to `archviz_house`.
+- Updated the asset bundle for `tdw_room_2018` and renamed it to `tdw_room`.
+
+### Build
+
+- Image capture is slightly faster.
+- Log messages written to the player log (and console log in Unity Editor) include the type of object that logged the message. This doesn't affect the text sent by `send_log_messages`.
+- Fixed: Many models don't cast shadows or reflect light correctly.
+- Fixed: The bounds of objects aren't set correctly if `add_object["rotation"]` isn't (0, 0, 0)
+- Fixed: The build often returns `EnvironmentCollision` data when it should return `Collision` data.
+- Fixed: `_normals` pass is inaccurate.
+
+### Example Controllers
+
+- Added: `collisions.py`  Receive collision output data and read it as a `Collisions` object.
+- Added: `magnebot.py` Example of how to use the Magnebot.
+- Added: `robot_arm.py` Add a robot to the scene and bend its arm.
+- Added: `robot_camera.py` Add a camera to a Magnebot.
+- Removed: `open_box.py` (it uses the Sticky Mitten Avatar, which has been deprecated).
+- Removed: `sticky_mitten_avatar.py` (it uses the Sticky Mitten Avatar, which has been deprecated).
+- Fixed: `avatar_drag.py` doesn't work.
+- Fixed: `composite_object.py` doesn't work on OS X.
+
+### Documentation
+
+#### New Documentation
+
+| Document             | Description                             |
+| -------------------- | --------------------------------------- |
+| `v1.7_to_v1.8.md`    | Upgrade guide.                          |
+| `robots.md`          | Overview of the robotics API.           |
+| `robot_librarian.md` | API documentation for `RobotLibrarian`. |
+
+### Benchmarking
+
+- Removed `variance_avatar.py` test because the Sticky Mitten Avatar has been deprecated.
+
 # v1.7.x
 
-To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/v1.6_to_v1.7).
+To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/upgrade_guides/v1.6_to_v1.7).
 
 ## v1.7.16
 

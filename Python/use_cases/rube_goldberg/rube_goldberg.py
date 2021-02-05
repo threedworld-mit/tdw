@@ -90,7 +90,7 @@ class RubeGoldbergDemo(Controller):
         """
 
         # Load the photorealistic "archviz_house" environment.
-        self.load_streamed_scene(scene="archviz_house_2018")
+        self.load_streamed_scene(scene="archviz_house")
 
         # Organize all initialization commands into a single list.
         # Set global values, including the desired screen size and aspect ratio (720P).

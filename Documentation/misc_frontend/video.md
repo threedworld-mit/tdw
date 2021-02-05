@@ -113,7 +113,7 @@ from tdw.controller import Controller
 from os import getcwd, chdir
 
 c = Controller()
-c.load_streamed_scene(scene="tdw_room_2018")
+c.load_streamed_scene(scene="tdw_room")
 
 cwd = getcwd()
 # Required for running OBS correctly!

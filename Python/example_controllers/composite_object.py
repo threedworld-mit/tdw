@@ -18,7 +18,7 @@ class CompositeObject(Controller):
         self.communicate(TDWUtils.create_empty_room(12, 12))
 
         # Find the local asset bundle for this platform.
-        url = str(Path("composite_objects/" + platform.system() + "/test_composite_object").resolve())
+        url = "file:///" + str(Path("composite_objects/" + platform.system() + "/test_composite_object").resolve())
 
         # Add the local object.
         o_id = self.get_unique_id()
@@ -114,4 +114,4 @@ class CompositeObject(Controller):
 
 
 if __name__ == "__main__":
-    CompositeObject().run()
+    CompositeObject(launch_build=False).run()

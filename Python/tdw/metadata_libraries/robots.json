@@ -1,0 +1,15 @@
+{
+    "description": "Robot asset bundles",
+    "records": {
+        "ur3": {
+            "immovable": true,
+            "name": "ur3",
+            "source": "https://github.com/Unity-Technologies/articulations-robot-demo",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur3"
+            }
+        }
+    }
+}

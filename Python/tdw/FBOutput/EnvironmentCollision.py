@@ -51,9 +51,17 @@ class EnvironmentCollision(object):
             return self._tab.VectorLen(o)
         return 0
 
-def EnvironmentCollisionStart(builder): builder.StartObject(3)
+    # EnvironmentCollision
+    def Floor(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
+
+def EnvironmentCollisionStart(builder): builder.StartObject(4)
 def EnvironmentCollisionAddObjectId(builder, objectId): builder.PrependInt32Slot(0, objectId, 0)
 def EnvironmentCollisionAddState(builder, state): builder.PrependUint8Slot(1, state, 1)
 def EnvironmentCollisionAddContacts(builder, contacts): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(contacts), 0)
 def EnvironmentCollisionStartContactsVector(builder, numElems): return builder.StartVector(24, numElems, 4)
+def EnvironmentCollisionAddFloor(builder, floor): builder.PrependBoolSlot(3, floor, 0)
 def EnvironmentCollisionEnd(builder): return builder.EndObject()

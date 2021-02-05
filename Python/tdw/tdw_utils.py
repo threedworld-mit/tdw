@@ -714,24 +714,6 @@ class TDWUtils:
         return np.array([(hashable >> 16) & 255, (hashable >> 8) & 255, hashable & 255], dtype=int)
 
     @staticmethod
-    def get_collisions(resp: List[bytes]) -> Tuple[List[Collision], List[EnvironmentCollision]]:
-        """
-        :param resp: The response from the build (a byte array).
-
-        :return: Tuple: A list of collisions; a list of environment collisions.
-        """
-
-        collisions: List[Collision] = list()
-        env_collisions: List[EnvironmentCollision] = list()
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "coll":
-                collisions.append(Collision(resp[i]))
-            elif r_id == "enco":
-                env_collisions.append(EnvironmentCollision(resp[i]))
-        return collisions, env_collisions
-
-    @staticmethod
     def get_bounds_dict(bounds: Bounds, index: int) -> Dict[str, np.array]:
         """
         :param bounds: Bounds output data.
@@ -938,7 +920,17 @@ class QuaternionUtils:
     Vectors are always numpy arrays in the following order: `[x, y, z]`.
     """
 
-    _UP = np.array([0, 1, 0])
+    """:class_var
+    The global up directional vector.
+    """
+    UP = np.array([0, 1, 0])
+    """:class_var
+    The global forward directional vector.
+    """
+    FORWARD: np.array = np.array([0, 0, 1])
+    """:class_var
+    The quaternion identity rotation.
+    """
     IDENTITY = np.array([0, 0, 0, 1])
 
     @staticmethod
@@ -1043,7 +1035,7 @@ class QuaternionUtils:
         :return: A directional vector corresponding to the "up" direction from the quaternion.
         """
 
-        return QuaternionUtils.multiply_by_vector(q, QuaternionUtils._UP)
+        return QuaternionUtils.multiply_by_vector(q, QuaternionUtils.UP)
 
     @staticmethod
     def euler_angles_to_quaternion(euler: np.array) -> np.array:

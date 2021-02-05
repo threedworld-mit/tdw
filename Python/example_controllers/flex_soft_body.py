@@ -10,7 +10,7 @@ Create a soft-body object with the NVIDIA Flex physics engine.
 
 class FlexSoftBody(Controller):
     def run(self):
-        self.load_streamed_scene(scene="tdw_room_2018")
+        self.load_streamed_scene(scene="tdw_room")
 
         self.communicate({"$type": "set_time_step", "time_step": 0.02})
 

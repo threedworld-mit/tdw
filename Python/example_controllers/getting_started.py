@@ -13,6 +13,7 @@ lib = ModelLibrarian("models_core.json")
 # Get the record for the table.
 table_record = lib.get_record("small_table_green_marble")
 
+# If you're running the TDW build on a remote server, replace this with c = Controller(launch_build=False)
 c = Controller()
 
 table_id = 0

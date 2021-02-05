@@ -2,10 +2,9 @@ import zmq
 import json
 import os
 from subprocess import Popen
-from platform import system
-from typing import List, Union, Optional, Tuple
+from typing import List, Union, Optional, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
-    HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord
+    HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian
 from tdw.output_data import Version
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
@@ -56,6 +55,7 @@ class Controller(object):
         self.hdri_skybox_librarian: Optional[HDRISkyboxLibrarian] = None
         self.humanoid_librarian: Optional[HumanoidLibrarian] = None
         self.humanoid_animation_librarian: Optional[HumanoidAnimationLibrarian] = None
+        self.robot_librarian: Optional[RobotLibrarian] = None
 
         # Compare the version of the tdw module to the build version.
         if check_version and launch_build:
@@ -204,7 +204,7 @@ class Controller(object):
         :param humanoid_animation_name: The name of the animation.
         :param library: The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`.
 
-        return An add_humanoid_animation command that the controller can then send.
+        :return An add_humanoid_animation command that the controller can then send.
         """
 
         if self.humanoid_animation_librarian is None:
@@ -215,7 +215,38 @@ class Controller(object):
                 "name": humanoid_animation_name,
                 "url": record.get_url()}, record
 
-    def load_streamed_scene(self, scene="tdw_room_2018") -> None:
+    def get_add_robot(self, name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
+        """
+        Returns a valid add_robot command.
+
+        :param name: The name of the robot.
+        :param robot_id: A unique ID for the robot.
+        :param position: The initial position of the robot. If None, the position will be (0, 0, 0).
+        :param rotation: The initial rotation of the robot in Euler angles.
+        :param library: The path to the records file. If left empty, the default library will be selected. See `RobotLibrarian.get_library_filenames()` and `RobotLibrarian.get_default_library()`.
+
+        :return An `add_robot` command that the controller can then send.
+        """
+
+        if self.robot_librarian is None:
+            self.robot_librarian = RobotLibrarian(library=library)
+
+        record = self.robot_librarian.get_record(name)
+
+        if position is None:
+            position = {"x": 0, "y": 0, "z": 0}
+        if rotation is None:
+            rotation = {"x": 0, "y": 0, "z": 0}
+
+        assert record is not None, f"Robot metadata record not found: {name}"
+        return {"$type": "add_robot",
+                "id": robot_id,
+                "position": position,
+                "rotation": rotation,
+                "name": name,
+                "url": record.get_url()}
+
+    def load_streamed_scene(self, scene="tdw_room") -> None:
         """
         Load a streamed scene. This is equivalent to: `c.communicate(c.get_add_scene(scene))`
 

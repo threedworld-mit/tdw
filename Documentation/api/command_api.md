@@ -8,12 +8,14 @@
 
 | Command | Description |
 | --- | --- |
+| [`add_magnebot`](#add_magnebot) | Add a Magnebot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: <ulink url="https://github.com/alters-mit/magnebot">https://github.com/alters-mit/magnebot</ulink> |
 | [`apply_force`](#apply_force) | Apply a force into the world to an target position. The force will impact any objects between the origin and the target position. |
 | [`create_avatar`](#create_avatar) | Create an avatar (agent). |
 | [`create_empty_environment`](#create_empty_environment) | Create an empty environment. This must be called after load_scene.  |
 | [`create_vr_rig`](#create_vr_rig) | Create an Oculus VR rig. For more information, see: Documentation/misc_frontend/vr.md |
 | [`destroy_all_objects`](#destroy_all_objects) | Destroy all objects and avatars in the scene.  |
 | [`do_nothing`](#do_nothing) | Do nothing. Useful for benchmarking.  |
+| [`enable_reflection_probes`](#enable_reflection_probes) | Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation. |
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
@@ -45,6 +47,7 @@
 | [`add_hdri_skybox`](#add_hdri_skybox) | Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange.  |
 | [`add_humanoid`](#add_humanoid) | Add a humanoid model to the scene.  |
 | [`add_humanoid_animation`](#add_humanoid_animation) | Load an animation clip asset bundle into memory.  |
+| [`add_robot`](#add_robot) | Add a robot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md  |
 
 **Add Material Command**
 
@@ -103,7 +106,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`set_avatar_rigidbody_constraints`](#set_avatar_rigidbody_constraints) | Set the rigidbody constraints of a Sticky Mitten Avatar. |
+| [`set_avatar_rigidbody_constraints`](#set_avatar_rigidbody_constraints) | Set the rigidbody constraints of a Sticky Mitten Avatar.  |
 
 **Nav Mesh Avatar Command**
 
@@ -122,51 +125,51 @@
 
 | Command | Description |
 | --- | --- |
-| [`rotate_head_by`](#rotate_head_by) | Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85. |
-| [`rotate_waist`](#rotate_waist) | Rotate the waist of a StickyMittenAvatar. |
-| [`set_sticky_mitten_profile`](#set_sticky_mitten_profile) | Set the parameters of the avatar, arms, and mittens. |
+| [`rotate_head_by`](#rotate_head_by) | Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85.  |
+| [`rotate_waist`](#rotate_waist) | Rotate the waist of a StickyMittenAvatar.  |
+| [`set_sticky_mitten_profile`](#set_sticky_mitten_profile) | Set the parameters of the avatar, arms, and mittens.  |
 
 **Arm Joint Command**
 
 | Command | Description |
 | --- | --- |
-| [`stop_arm_joint`](#stop_arm_joint) | Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself. |
+| [`stop_arm_joint`](#stop_arm_joint) | Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself.  |
 
 **Bend Arm Joint Command**
 
 | Command | Description |
 | --- | --- |
-| [`bend_arm_joint_by`](#bend_arm_joint_by) | Bend the arm joint by an angle. The angle is added to the current joint angle. |
-| [`bend_arm_joint_to`](#bend_arm_joint_to) | Bend the arm joint to the target angle. |
+| [`bend_arm_joint_by`](#bend_arm_joint_by) | Bend the arm joint by an angle. The angle is added to the current joint angle.  |
+| [`bend_arm_joint_to`](#bend_arm_joint_to) | Bend the arm joint to the target angle.  |
 
 **Joint Angular Drag Command**
 
 | Command | Description |
 | --- | --- |
-| [`adjust_joint_angular_drag_by`](#adjust_joint_angular_drag_by) | Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower. |
-| [`set_joint_angular_drag`](#set_joint_angular_drag) | Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower. |
+| [`adjust_joint_angular_drag_by`](#adjust_joint_angular_drag_by) | Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower.  |
+| [`set_joint_angular_drag`](#set_joint_angular_drag) | Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower.  |
 
 **Joint Spring Command**
 
 | Command | Description |
 | --- | --- |
-| [`adjust_joint_damper_by`](#adjust_joint_damper_by) | Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster. |
-| [`adjust_joint_force_by`](#adjust_joint_force_by) | Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta. |
-| [`set_joint_damper`](#set_joint_damper) | Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster. |
-| [`set_joint_force`](#set_joint_force) | Set the force of a joint of a Sticky Mitten Avatar. |
+| [`adjust_joint_damper_by`](#adjust_joint_damper_by) | Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster.  |
+| [`adjust_joint_force_by`](#adjust_joint_force_by) | Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta.  |
+| [`set_joint_damper`](#set_joint_damper) | Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster.  |
+| [`set_joint_force`](#set_joint_force) | Set the force of a joint of a Sticky Mitten Avatar.  |
 
 **Use Mitten Command**
 
 | Command | Description |
 | --- | --- |
-| [`put_down`](#put_down) | Put down all objects held by the mitten. |
-| [`set_stickiness`](#set_stickiness) | Set the stickiness of one sub-mitten of the mitten. |
+| [`put_down`](#put_down) | Put down all objects held by the mitten.  |
+| [`set_stickiness`](#set_stickiness) | Set the stickiness of one sub-mitten of the mitten.  |
 
 **Pick Up Command**
 
 | Command | Description |
 | --- | --- |
-| [`pick_up`](#pick_up) | Pick up all objects that any sticky side of the mitten is touching. |
+| [`pick_up`](#pick_up) | Pick up all objects that any sticky side of the mitten is touching.  |
 | [`pick_up_proximity`](#pick_up_proximity) | Pick up all objects within an emitted volume defined by a radius and a distance. See Sticky Mitten Avatar documentation for more information.  |
 
 **Sensor Container Command**
@@ -182,7 +185,6 @@
 | [`rotate_sensor_container_by`](#rotate_sensor_container_by) | Rotate the sensor container of the avatar by a given angle along a given axis. |
 | [`rotate_sensor_container_to`](#rotate_sensor_container_to) | Set the rotation quaternion of the avatar's sensor container. |
 | [`set_anti_aliasing`](#set_anti_aliasing) | Set the anti-aliasing mode for the avatar's camera.  |
-| [`toggle_image_sensor`](#toggle_image_sensor) | Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off),  |
 | [`translate_sensor_container_by`](#translate_sensor_container_by) | Translate the sensor container relative to the avatar by a given directional vector. |
 
 **Create Reverb Space Command**
@@ -204,6 +206,7 @@
 | Command | Description |
 | --- | --- |
 | [`set_img_pass_encoding`](#set_img_pass_encoding) | Toggle the _img pass of all avatars' cameras to be either png or jpg. True = png, False = jpg, Initial value = True (png) |
+| [`set_legacy_shaders`](#set_legacy_shaders) | Set whether TDW should use legacy shaders. Prior to TDW v1.8 there was a bug and this command would result in lower image quality. Since then, TDW has far better rendering quality (at no speed penalty). Send this command only if you began your project in an earlier version of TDW and need to ensure that the rendering doesn't change. Initial value = False. (TDW will correctly set each object's shaders.) |
 | [`set_post_process`](#set_post_process) | Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled) |
 | [`simulate_physics`](#simulate_physics) | Toggle whether to simulate physics per list of sent commands (i.e. per frame). If false, the simulation won't step the physics forward. Initial value = True (simulate physics per frame). |
 
@@ -228,6 +231,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
@@ -263,7 +267,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_constant_force`](#add_constant_force) | Add a constant force to an object. Every frame, this force will be applied to the Rigidbody. Unlike other force commands, this command will provide gradual acceleration rather than immediate impulse; it is thus more useful for animation than a deterministic physics simulation. |
-| [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint. |
+| [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint.  |
 | [`apply_force_at_position`](#apply_force_at_position) | Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large. |
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
@@ -373,7 +377,7 @@
 | [`set_proc_gen_ceiling_color`](#set_proc_gen_ceiling_color) | Set the albedo RGBA color of the ceiling.  |
 | [`set_proc_gen_ceiling_height`](#set_proc_gen_ceiling_height) | Set the height of all ceiling tiles in a proc-gen room. |
 | [`set_proc_gen_ceiling_texture_scale`](#set_proc_gen_ceiling_texture_scale) | Set the scale of the tiling of the ceiling material's main texture. |
-| [`set_proc_gen_reflection_probe`](#set_proc_gen_reflection_probe) | Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates. |
+| [`set_proc_gen_reflection_probe`](#set_proc_gen_reflection_probe) | Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates.  |
 | [`set_proc_gen_walls_color`](#set_proc_gen_walls_color) | Set the albedo RGBA color of the walls. |
 | [`set_proc_gen_walls_texture_scale`](#set_proc_gen_walls_texture_scale) | Set the texture scale of all walls in a proc-gen room. |
 
@@ -407,6 +411,37 @@
 | [`create_interior_walls`](#create_interior_walls) | Create the interior walls.  |
 | [`set_proc_gen_walls_scale`](#set_proc_gen_walls_scale) | Set the scale of proc-gen wall sections. |
 
+**Robot Command**
+
+| Command | Description |
+| --- | --- |
+| [`destroy_robot`](#destroy_robot) | Destroy a robot in the scene. |
+| [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
+| [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
+| [`teleport_robot`](#teleport_robot) | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
+
+**Magnebot Command**
+
+| Command | Description |
+| --- | --- |
+| [`detach_from_magnet`](#detach_from_magnet) | Detach an object from a Magnebot magnet. |
+| [`set_magnet_targets`](#set_magnet_targets) | Set the objects that the Magnebot magnet will try to pick up. |
+
+**Robot Joint Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_robot_joint_drive`](#set_robot_joint_drive) | Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are. |
+| [`set_robot_joint_mass`](#set_robot_joint_mass) | Set the mass of a robot joint. To get the default mass, see the StaticRobot output data. |
+
+**Robot Joint Target Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_prismatic_target`](#set_prismatic_target) | Set the target position of a prismatic robot joint. Per frame, the joint will move towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target position. |
+| [`set_revolute_target`](#set_revolute_target) | Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle. |
+| [`set_spherical_target`](#set_spherical_target) | Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles. |
+
 **Singleton Subscriber Command**
 
 | Command | Description |
@@ -418,6 +453,9 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
+| [`send_robots`](#send_robots) | Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. See also: send_static_robots  |
+| [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
 **Send Avatars Command**
@@ -489,6 +527,27 @@
 # Command
 
 Abstract class for a message sent from the controller to the build.
+
+***
+
+## **`add_magnebot`**
+
+Add a Magnebot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: <ulink url="https://github.com/alters-mit/magnebot">https://github.com/alters-mit/magnebot</ulink>
+
+
+```python
+{"$type": "add_magnebot"}
+```
+
+```python
+{"$type": "add_magnebot", "id": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the Magnebot. | 0 |
+| `"position"` | Vector3 | The initial position of the Magnebot. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The initial rotation of the Magnebot in Euler angles. | {"x": 0, "y": 0, "z": 0} |
 
 ***
 
@@ -596,6 +655,25 @@ Do nothing. Useful for benchmarking.
 ```python
 {"$type": "do_nothing"}
 ```
+
+***
+
+## **`enable_reflection_probes`**
+
+Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation.
+
+
+```python
+{"$type": "enable_reflection_probes"}
+```
+
+```python
+{"$type": "enable_reflection_probes", "enable": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"enable"` | bool | If True, the reflection probes will be enabled. | True |
 
 ***
 
@@ -1020,6 +1098,31 @@ Load an animation clip asset bundle into memory.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
+## **`add_robot`**
+
+Add a robot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/robot_librarian.md`</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_robot` in the [Controller API](../python/controller.md).</font>
+
+```python
+{"$type": "add_robot", "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_robot", "name": "string", "url": "string", "id": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the robot. | 0 |
+| `"position"` | Vector3 | The initial position of the robot. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The initial rotation of the robot in Euler angles. | {"x": 0, "y": 0, "z": 0} |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
@@ -1685,8 +1788,9 @@ These commands work only for the specified avatar subclass.
 
 ## **`set_avatar_rigidbody_constraints`**
 
-Set the rigidbody constraints of a Sticky Mitten Avatar.
+Set the rigidbody constraints of a Sticky Mitten Avatar. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_avatar_rigidbody_constraints"}
@@ -1792,8 +1896,9 @@ These commands are only valid for a StickyMittenAvatar.
 
 ## **`rotate_head_by`**
 
-Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85.
+Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "rotate_head_by", "axis": "pitch", "angle": 0.125}
@@ -1823,8 +1928,9 @@ An axis of rotation.
 
 ## **`rotate_waist`**
 
-Rotate the waist of a StickyMittenAvatar.
+Rotate the waist of a StickyMittenAvatar. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "rotate_waist", "rotation": {"x": 1.1, "y": 0.0, "z": 0}}
@@ -1843,8 +1949,9 @@ Rotate the waist of a StickyMittenAvatar.
 
 ## **`set_sticky_mitten_profile`**
 
-Set the parameters of the avatar, arms, and mittens.
+Set the parameters of the avatar, arms, and mittens. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_sticky_mitten_profile", "profile": {"mass": 80.0, "arm_left": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}, "arm_right": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}}}
@@ -1867,8 +1974,9 @@ These commands affect a single joint, around a single rotational axis, of a Stic
 
 ## **`stop_arm_joint`**
 
-Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself.
+Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "stop_arm_joint", "joint": "shoulder_left", "axis": "pitch"}
@@ -1880,7 +1988,7 @@ Set the target angle of a joint to the current angle, stopping rotation. If the 
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -1894,7 +2002,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -1915,8 +2023,9 @@ These commands bend arm joints of a Sticky Mitten Avatar.
 
 ## **`bend_arm_joint_by`**
 
-Bend the arm joint by an angle. The angle is added to the current joint angle.
+Bend the arm joint by an angle. The angle is added to the current joint angle. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "bend_arm_joint_by", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -1929,7 +2038,7 @@ Bend the arm joint by an angle. The angle is added to the current joint angle.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The target angle. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -1943,7 +2052,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -1960,8 +2069,9 @@ A joint in a Stick Mitten Avatar.
 
 ## **`bend_arm_joint_to`**
 
-Bend the arm joint to the target angle.
+Bend the arm joint to the target angle. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "bend_arm_joint_to", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -1974,7 +2084,7 @@ Bend the arm joint to the target angle.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The target angle. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -1988,7 +2098,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2009,8 +2119,9 @@ Set the angular drag of a joint of a Sticky Mitten Avatar.
 
 ## **`adjust_joint_angular_drag_by`**
 
-Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower.
+Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "adjust_joint_angular_drag_by", "joint": "shoulder_left", "axis": "pitch"}
@@ -2023,7 +2134,7 @@ Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A highe
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"delta"` | float | Adjust the current angular drag of the joint by this delta. By default, the angular joints of all joints is 0. | 0 |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2037,7 +2148,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2054,8 +2165,9 @@ A joint in a Stick Mitten Avatar.
 
 ## **`set_joint_angular_drag`**
 
-Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower.
+Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_joint_angular_drag", "joint": "shoulder_left", "axis": "pitch"}
@@ -2068,7 +2180,7 @@ Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angular_drag"` | float | The angular drag for the joint. | 0 |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2082,7 +2194,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2103,8 +2215,9 @@ These commands adjust the values of the joint spring (force and damper).
 
 ## **`adjust_joint_damper_by`**
 
-Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster.
+Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "adjust_joint_damper_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -2117,7 +2230,7 @@ Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"delta"` | float | Adjust the current damper of the joint by this delta. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2131,7 +2244,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2148,8 +2261,9 @@ A joint in a Stick Mitten Avatar.
 
 ## **`adjust_joint_force_by`**
 
-Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta.
+Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "adjust_joint_force_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -2162,7 +2276,7 @@ Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"delta"` | float | Adjust the current force of the joint by this delta. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2176,7 +2290,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2193,8 +2307,9 @@ A joint in a Stick Mitten Avatar.
 
 ## **`set_joint_damper`**
 
-Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster.
+Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_joint_damper", "damper": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -2207,7 +2322,7 @@ Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"damper"` | float | The new damper value. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2221,7 +2336,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2238,8 +2353,9 @@ A joint in a Stick Mitten Avatar.
 
 ## **`set_joint_force`**
 
-Set the force of a joint of a Sticky Mitten Avatar.
+Set the force of a joint of a Sticky Mitten Avatar. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_joint_force", "force": 0.125, "joint": "shoulder_left", "axis": "pitch"}
@@ -2252,7 +2368,7 @@ Set the force of a joint of a Sticky Mitten Avatar.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"force"` | float | The new force. | |
-| `"joint"` | JointType | The type of joint. This will be parsed into an enum. | |
+| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
 | `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2266,7 +2382,7 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
-#### JointType
+#### StickyMittenAvatarJoint
 
 A joint in a Stick Mitten Avatar.
 
@@ -2287,8 +2403,9 @@ These commands utilize a StickyMitten.
 
 ## **`put_down`**
 
-Put down all objects held by the mitten.
+Put down all objects held by the mitten. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "put_down", "is_left": True}
@@ -2307,8 +2424,9 @@ Put down all objects held by the mitten.
 
 ## **`set_stickiness`**
 
-Set the stickiness of one sub-mitten of the mitten.
+Set the stickiness of one sub-mitten of the mitten. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_stickiness", "sub_mitten": "palm", "sticky": True, "is_left": True}
@@ -2344,8 +2462,9 @@ These commands involve picking something up with a StickyMitten. Any objects tha
 
 ## **`pick_up`**
 
-Pick up all objects that any sticky side of the mitten is touching.
+Pick up all objects that any sticky side of the mitten is touching. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "pick_up", "grip": 0.125, "is_left": True}
@@ -2369,6 +2488,7 @@ Pick up all objects that any sticky side of the mitten is touching.
 Pick up all objects within an emitted volume defined by a radius and a distance. See Sticky Mitten Avatar documentation for more information. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "pick_up_proximity", "distance": 0.125, "grip": 0.125, "is_left": True}
@@ -2608,27 +2728,6 @@ The anti-aliasing mode for the camera.
 
 ***
 
-## **`toggle_image_sensor`**
-
-Toggle a sensor from off to on, or vice versa. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "toggle_image_sensor"}
-```
-
-```python
-{"$type": "toggle_image_sensor", "sensor_name": "SensorContainer", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
 ## **`translate_sensor_container_by`**
 
 Translate the sensor container relative to the avatar by a given directional vector.
@@ -2828,6 +2927,21 @@ Toggle the _img pass of all avatars' cameras to be either png or jpg. True = png
 
 ***
 
+## **`set_legacy_shaders`**
+
+Set whether TDW should use legacy shaders. Prior to TDW v1.8 there was a bug and this command would result in lower image quality. Since then, TDW has far better rendering quality (at no speed penalty). Send this command only if you began your project in an earlier version of TDW and need to ensure that the rendering doesn't change. Initial value = False. (TDW will correctly set each object's shaders.)
+
+
+```python
+{"$type": "set_legacy_shaders", "value": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"value"` | bool | Boolean value. | |
+
+***
+
 ## **`set_post_process`**
 
 Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled)
@@ -3008,6 +3122,45 @@ Manipulate an object that is already in the scene.
 
 ***
 
+## **`add_trigger_collider`**
+
+Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`TriggerCollision`](output_data.md#TriggerCollision)</font>
+
+```python
+{"$type": "add_trigger_collider", "id": 1}
+```
+
+```python
+{"$type": "add_trigger_collider", "id": 1, "shape": "cube", "enter": False, "stay": False, "exit": False, "trigger_id": 0, "scale": {"x": 1, "y": 1, "z": 1}, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"shape"` | TriggerShape | The shape of the collider. | "cube" |
+| `"enter"` | bool | If True, this collider will listen for enter events. | False |
+| `"stay"` | bool | If True, this collider will listen for stay events. | False |
+| `"exit"` | bool | If True, this collider will listen for exit events. | False |
+| `"trigger_id"` | int | The ID of this trigger collider. This can be used to differentiate between multiple trigger colliders attached to the same object. | 0 |
+| `"scale"` | Vector3 | The scale of the trigger collider. | {"x": 1, "y": 1, "z": 1} |
+| `"position"` | Vector3 | The position of the trigger collider relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the trigger collider in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
+#### TriggerShape
+
+The shape of the trigger collider.
+
+| Value | Description |
+| --- | --- |
+| `"cube"` |  |
+| `"sphere"` |  |
+
+***
+
 ## **`destroy_object`**
 
 Destroy an object. 
@@ -3107,7 +3260,7 @@ Rotate an object by a given angle around a given axis.
 | `"axis"` | Axis | The axis of rotation. | "yaw" |
 | `"angle"` | float | The angle of rotation. | |
 | `"is_world"` | bool | If true, the object will rotate via "global" directions and angles. If false, the object will rotate locally. | True |
-| `"use_centroid"` | bool | If true, rotate around the centroid of the object. If false, rotate around the bottom-center position of the object. This overrides is_world | False |
+| `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). This overrides is_world | False |
 | `"id"` | int | The unique object ID. | |
 
 #### Axis
@@ -3132,13 +3285,14 @@ Set the rotation quaternion of the object.
 ```
 
 ```python
-{"$type": "rotate_object_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1, "physics": False}
+{"$type": "rotate_object_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1, "physics": False, "use_centroid": False}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"rotation"` | Quaternion | The rotation quaternion. | |
 | `"physics"` | bool | This should almost always be False (the default). If True, apply a "physics-based" rotation to the object. This only works if the object has a rigidbody (i.e. is a model from a model library) and is slightly slower than a non-physics rotation. Set this to True only if you are having persistent and rare physics glitches. | False |
+| `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). | False |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -3153,9 +3307,14 @@ Set the rotation of the object with Euler angles.
 {"$type": "rotate_object_to_euler_angles", "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
 ```
 
+```python
+{"$type": "rotate_object_to_euler_angles", "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "use_centroid": False}
+```
+
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"euler_angles"` | Vector3 | The new Euler angles of the object. | |
+| `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). | False |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -3520,8 +3679,9 @@ Add a constant force to an object. Every frame, this force will be applied to th
 
 ## **`add_fixed_joint`**
 
-Attach the object to a parent object using a FixedJoint.
+Attach the object to a parent object using a FixedJoint. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "add_fixed_joint", "parent_id": 1, "id": 1}
@@ -4545,12 +4705,12 @@ Enable or disable the vignette, which darkens the image at the edges.
 ```
 
 ```python
-{"$type": "set_vignette", "enabled": True}
+{"$type": "set_vignette", "enabled": False}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"enabled"` | bool | If true, vignette is enabled. | True |
+| `"enabled"` | bool | If true, vignette is enabled. | False |
 
 # ProcGenRoomCommand
 
@@ -4649,8 +4809,9 @@ Set the scale of the tiling of the ceiling material's main texture.
 
 ## **`set_proc_gen_reflection_probe`**
 
-Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates.
+Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_proc_gen_reflection_probe"}
@@ -4881,6 +5042,282 @@ Set the scale of proc-gen wall sections.
 | `"scale"` | Vector3 | The new scale of each wall section. By default, the scale of a wall section is (1, 1, 1). | {"x": 1, "y": 1, "z": 1} |
 | `"walls"` | GridPoint[] | List of walls as (x, y) points on a grid. | |
 
+# RobotCommand
+
+These commands affect robots currently in the scene. To add a robot, send the add_robot command. For further documentation, see: Documentation/misc_frontend/robots.md
+
+***
+
+## **`destroy_robot`**
+
+Destroy a robot in the scene.
+
+
+```python
+{"$type": "destroy_robot"}
+```
+
+```python
+{"$type": "destroy_robot", "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`parent_avatar_to_robot`**
+
+Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot.
+
+
+```python
+{"$type": "parent_avatar_to_robot", "position": {"x": 1.1, "y": 0.0, "z": 0}, "body_part_id": 1}
+```
+
+```python
+{"$type": "parent_avatar_to_robot", "position": {"x": 1.1, "y": 0.0, "z": 0}, "body_part_id": 1, "avatar_id": "a", "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
+| `"position"` | Vector3 | The position of the avatar relative to the robot. | |
+| `"body_part_id"` | int | Parent the avatar to a body part of this robot with this ID. Send send_static_robots to get the IDs and names of this robot's body parts. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_immovable`**
+
+Set whether or not the root object of the robot is immovable. Its joints will still be moveable.
+
+
+```python
+{"$type": "set_immovable"}
+```
+
+```python
+{"$type": "set_immovable", "immovable": True, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"immovable"` | bool | If true, the root object of the robot is immovable. | True |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`teleport_robot`**
+
+Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over).
+
+
+```python
+{"$type": "teleport_robot"}
+```
+
+```python
+{"$type": "teleport_robot", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"w": 1, "x": 0, "y": 0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the robot. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Quaternion | The rotation of the robot. | {"w": 1, "x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+# MagnebotCommand
+
+These commands are for a Magnebot currently in the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: <ulink url="https://github.com/alters-mit/magnebot">https://github.com/alters-mit/magnebot</ulink>
+
+***
+
+## **`detach_from_magnet`**
+
+Detach an object from a Magnebot magnet.
+
+
+```python
+{"$type": "detach_from_magnet", "object_id": 1}
+```
+
+```python
+{"$type": "detach_from_magnet", "object_id": 1, "arm": "left", "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"arm"` | Arm | The magnet's arm. | "left" |
+| `"object_id"` | int | The ID of the held object. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`set_magnet_targets`**
+
+Set the objects that the Magnebot magnet will try to pick up.
+
+
+```python
+{"$type": "set_magnet_targets"}
+```
+
+```python
+{"$type": "set_magnet_targets", "arm": "left", "targets": [], "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"arm"` | Arm | The magnet's arm. | "left" |
+| `"targets"` | int[] | The IDs of the target objects. If a magnet collides with an object, it'll "stick" only if the object ID is in this list. If the magnet is holding an object not in this list, it will continue to do hold it. | [] |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+# RobotJointCommand
+
+These commands set joint targets or parameters for a robot in the scene.
+
+***
+
+## **`set_robot_joint_drive`**
+
+Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are.
+
+
+```python
+{"$type": "set_robot_joint_drive", "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_drive", "joint_id": 1, "axis": "x", "lower_limit": 0, "upper_limit": 0, "force_limit": 3, "stiffness": 1000, "damping": 300, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | DriveAxis | The axis of the drive. | "x" |
+| `"lower_limit"` | float | The lower limit of the drive in degrees. If this and upper_limit are 0, the joint movement is unlimited. | 0 |
+| `"upper_limit"` | float | The upper limit of the drive in degrees. If this and lower_limit are 0, the joint movement is unlimited. | 0 |
+| `"force_limit"` | float | The force limit. | 3 |
+| `"stiffness"` | float | The stiffness of the drive. | 1000 |
+| `"damping"` | float | The damping of the drive. | 300 |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+#### DriveAxis
+
+| Value | Description |
+| --- | --- |
+| `"x"` |  |
+| `"y"` |  |
+| `"z"` |  |
+
+***
+
+## **`set_robot_joint_mass`**
+
+Set the mass of a robot joint. To get the default mass, see the StaticRobot output data.
+
+
+```python
+{"$type": "set_robot_joint_mass", "mass": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_mass", "mass": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"mass"` | float | The mass of the joint. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+# RobotJointTargetCommand
+
+These commands set target angles for each of the joint's drives. To get the type of joint and its drives, see the send_static_robots command and the StaticRobot output data.
+
+***
+
+## **`set_prismatic_target`**
+
+Set the target position of a prismatic robot joint. Per frame, the joint will move towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target position.
+
+
+```python
+{"$type": "set_prismatic_target", "target": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_prismatic_target", "target": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"target"` | float | The target position on the prismatic joint. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_revolute_target`**
+
+Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle.
+
+
+```python
+{"$type": "set_revolute_target", "target": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_revolute_target", "target": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"target"` | float | The target angle in degrees. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_spherical_target`**
+
+Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles.
+
+
+```python
+{"$type": "set_spherical_target", "target": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1}
+```
+
+```python
+{"$type": "set_spherical_target", "target": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"target"` | Vector3 | The target angles in degrees for the (x, y, z) drives. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
 # SingletonSubscriberCommand
 
 These commands act as singletons and can subscribe to events.
@@ -4927,6 +5364,103 @@ Send log messages to the controller.
 # SendDataCommand
 
 These commands send data to the controller.
+
+***
+
+## **`send_magnebots`**
+
+Send data for each Magnebot in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Magnebot`](output_data.md#Magnebot)</font>
+
+```python
+{"$type": "send_magnebots"}
+```
+
+```python
+{"$type": "send_magnebots", "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int[] | The IDs of the Magnebots. If this list is undefined or empty, the build will return data for all Magnebots. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_robots`**
+
+Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. See also: send_static_robots 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Robot`](output_data.md#Robot)</font>
+
+```python
+{"$type": "send_robots"}
+```
+
+```python
+{"$type": "send_robots", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_robots`**
+
+Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticRobot`](output_data.md#StaticRobot)</font>
+
+```python
+{"$type": "send_static_robots"}
+```
+
+```python
+{"$type": "send_static_robots", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
 
 ***
 

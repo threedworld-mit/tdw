@@ -31,8 +31,13 @@ from tdw.FBOutput import AudioSources as Audi
 from tdw.FBOutput import Raycast as Ray
 from tdw.FBOutput import Overlap as Over
 from tdw.FBOutput import NavMeshPath as Path
+from tdw.FBOutput import StaticRobot as StRobo
+from tdw.FBOutput import Robot as Robo
 from tdw.FBOutput import Keyboard as Key
+from tdw.FBOutput import Magnebot as Mag
 from tdw.FBOutput import ScreenPosition as Screen
+from tdw.FBOutput import TriggerCollision as Trigger
+from tdw.FBOutput import DriveAxis, JointType
 import numpy as np
 from typing import Tuple, Optional
 
@@ -722,6 +727,9 @@ class EnvironmentCollision(OutputData):
     def get_contact_point(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_vector3(self.data.Contacts(index).Point)
 
+    def get_floor(self) -> bool:
+        return self.data.Floor()
+
 
 class Volumes(OutputData):
     def get_data(self) -> Vol.Volumes:
@@ -806,6 +814,114 @@ class NavMeshPath(OutputData):
         return self.data.Id()
 
 
+class StaticRobot(OutputData):
+    _AXES = {DriveAxis.DriveAxis.x: "x",
+             DriveAxis.DriveAxis.y: "y",
+             DriveAxis.DriveAxis.z: "z"}
+    _JOINT_TYPES = {JointType.JointType.revolute: "revolute",
+                    JointType.JointType.spherical: "spherical",
+                    JointType.JointType.prismatic: "prismatic",
+                    JointType.JointType.fixed_joint: "fixed_joint"}
+
+    def get_data(self) -> StRobo.StaticRobot:
+        return StRobo.StaticRobot.GetRootAsStaticRobot(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_num_joints(self) -> int:
+        return self.data.JointsLength()
+
+    def get_joint_id(self, index: int) -> int:
+        return self.data.Joints(index).Id()
+
+    def get_joint_segmentation_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.Joints(index).SegmentationColor())
+
+    def get_joint_mass(self, index: int) -> float:
+        return self.data.Joints(index).Mass()
+
+    def get_is_joint_immovable(self, index: int) -> bool:
+        return self.data.Joints(index).Immovable()
+
+    def get_is_joint_root(self, index: int) -> bool:
+        return self.data.Joints(index).Root()
+
+    def get_joint_parent_id(self, index: int) -> int:
+        return self.data.Joints(index).ParentId()
+
+    def get_joint_name(self, index: int) -> str:
+        return self.data.Joints(index).Name().decode('utf-8')
+
+    def get_joint_type(self, index: int) -> str:
+        return StaticRobot._JOINT_TYPES[self.data.Joints(index).JointType()]
+
+    def get_num_joint_drives(self, index: int) -> int:
+        return self.data.Joints(index).DrivesLength()
+
+    def get_joint_drive_axis(self, index: int, drive_index: int) -> str:
+        return StaticRobot._AXES[self.data.Joints(index).Drives(drive_index).Axis()]
+
+    def get_joint_drive_limits(self, index: int, drive_index: int) -> bool:
+        return self.data.Joints(index).Drives(drive_index).Limits()
+
+    def get_joint_drive_lower_limit(self, index: int, drive_index: int) -> float:
+        return self.data.Joints(index).Drives(drive_index).LowerLimit()
+
+    def get_joint_drive_upper_limit(self, index: int, drive_index: int) -> float:
+        return self.data.Joints(index).Drives(drive_index).UpperLimit()
+
+    def get_joint_drive_force_limit(self, index: int, drive_index: int) -> float:
+        return self.data.Joints(index).Drives(drive_index).ForceLimit()
+
+    def get_joint_drive_stiffness(self, index: int, drive_index: int) -> float:
+        return self.data.Joints(index).Drives(drive_index).Stiffness()
+
+    def get_joint_drive_damping(self, index: int, drive_index: int) -> float:
+        return self.data.Joints(index).Drives(drive_index).Damping()
+
+    def get_num_non_moving(self) -> int:
+        return self.data.NonMovingLength()
+
+    def get_non_moving_id(self, index: int) -> int:
+        return self.data.NonMoving(index).Id()
+
+    def get_non_moving_name(self, index: int) -> str:
+        return self.data.NonMoving(index).Name().decode('utf-8')
+
+    def get_non_moving_segmentation_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.NonMoving(index).SegmentationColor())
+
+
+class Robot(OutputData):
+    def get_data(self) -> Robo.Robot:
+        return Robo.Robot.GetRootAsRobot(self.bytes, 0)
+    
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_position(self) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Transform().Position)
+
+    def get_rotation(self) -> Tuple[float, float, float, float]:
+        return OutputData._get_quaternion(self.data.Transform().Rotation)
+
+    def get_forward(self) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Transform().Forward)
+
+    def get_num_joints(self) -> int:
+        return self.data.JointsLength()
+
+    def get_joint_id(self, index: int) -> int:
+        return self.data.Joints(index).Id()
+
+    def get_joint_position(self, index: int) -> np.array:
+        return self.data.Joints(index).PositionAsNumpy()
+
+    def get_joint_positions(self, index: int) -> np.array:
+        return np.degrees(self.data.Joints(index).PositionsAsNumpy())
+
+
 class Keyboard(OutputData):
     def get_data(self) -> Key.Keyboard:
         return Key.Keyboard.GetRootAsKeyboard(self.bytes, 0)
@@ -847,3 +963,43 @@ class ScreenPosition(OutputData):
 
     def get_world(self) -> Tuple[float, float, float]:
         return OutputData._get_xyz(self.data.World())
+
+
+class Magnebot(OutputData):
+    def get_data(self) -> Mag.Magnebot:
+        return Mag.Magnebot.GetRootAsMagnebot(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_held_left(self) -> np.array:
+        return self.data.HeldLeftAsNumpy()
+
+    def get_held_right(self) -> np.array:
+        return self.data.HeldRightAsNumpy()
+
+    def get_top(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Top())
+
+
+class TriggerCollision(OutputData):
+    def get_data(self) -> Trigger.TriggerCollision:
+        return Trigger.TriggerCollision.GetRootAsTriggerCollision(self.bytes, 0)
+
+    def get_collidee_id(self) -> int:
+        return self.data.CollideeId()
+
+    def get_collider_id(self) -> int:
+        return self.data.ColliderId()
+
+    def get_trigger_id(self) -> int:
+        return self.data.TriggerId()
+
+    def get_state(self) -> str:
+        state = self.data.State()
+        if state == 1:
+            return "enter"
+        elif state == 2:
+            return "stay"
+        else:
+            return "exit"

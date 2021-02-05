@@ -8,7 +8,7 @@ Create a Flex FluidSource, or "hose pipe", simulation of a fluid stream.
 
 class FlexFluid(Controller):
     def run(self):
-        self.load_streamed_scene(scene="tdw_room_2018")
+        self.load_streamed_scene(scene="tdw_room")
 
         # Create the container, set up for fluids, and a "hose pipe" stream in particular.
         self.communicate({"$type": "create_flex_container",

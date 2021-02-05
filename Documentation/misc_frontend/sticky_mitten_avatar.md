@@ -1,5 +1,7 @@
 # Sticky Mitten Avatar
 
+**The Sticky Mitten Avatar has been deprecated. See [TDW robotics](robots.md) for an improved system. For a high-level API replacement, see the [Magnebot API](https://github.com/alters-mit/magnebot).**
+
 The Sticky Mitten Avatar is a specialized TDW avatar. It has arms that can move, and it can pick up and put down objects.
 
 ## 1. Creating the Avatar

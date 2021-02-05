@@ -52,21 +52,22 @@ class TransformInitData:
         record = TransformInitData.LIBRARIES[self.library].get_record(name=self.name)
 
         object_id = Controller.get_unique_id()
-        add_object_command = {"$type": "add_object",
-                              "name": record.name,
-                              "url": record.get_url(),
-                              "scale_factor": record.scale_factor,
-                              "position": self.position,
-                              "category": record.wcategory,
-                              "id": object_id}
-        # The rotation is in Euler angles.
-        if "w" not in self.rotation:
-            add_object_command["rotation"] = self.rotation
-        commands = [add_object_command]
+        commands = [{"$type": "add_object",
+                     "name": record.name,
+                     "url": record.get_url(),
+                     "scale_factor": record.scale_factor,
+                     "position": self.position,
+                     "category": record.wcategory,
+                     "id": object_id}]
         # The rotation is a quaternion.
         if "w" in self.rotation:
             commands.append({"$type": "rotate_object_to",
                              "rotation": self.rotation,
+                             "id": object_id})
+        # The rotation is in Euler angles.
+        else:
+            commands.append({"$type": "rotate_object_to_euler_angles",
+                             "euler_angles": self.rotation,
                              "id": object_id})
         commands.extend([{"$type": "scale_object",
                           "scale_factor": self.scale_factor,

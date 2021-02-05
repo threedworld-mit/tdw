@@ -97,6 +97,6 @@ RUN apt-get -qq update && apt-get -qq install -y \
 			                rm -rf /var/lib/apt/lists/*
 RUN apt-get -qq update && apt-get -qq install -y pulseaudio socat alsa-utils ffmpeg
 COPY record_audio_video.sh .
-RUN wget https://github.com/threedworld-mit/tdw/releases/download/v${TDW_VERSION}/TDW_Linux.zip
-RUN unzip TDW_Linux.zip
+RUN wget https://github.com/threedworld-mit/tdw/releases/download/v${TDW_VERSION}/TDW_Linux.tar.gz
+RUN tar xf TDW_Linux.tar.gz
 RUN chmod +x TDW/TDW.x86_64

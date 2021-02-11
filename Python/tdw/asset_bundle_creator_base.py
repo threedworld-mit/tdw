@@ -147,11 +147,22 @@ class AssetBundleCreatorBase(ABC):
         if not self.quiet:
             print(f"Created new Unity project: {str(unity_project_path.resolve())}")
 
+        # Import the package.
+        self.import_unity_package(unity_project_path=unity_project_path)
+
+        return unity_project_path
+
+    def import_unity_package(self, unity_project_path: Path) -> None:
+        """
+        Import the .unitypackage file into the Unity project.
+
+        :param unity_project_path: The path to the Unity project.
+        """
+
         # Add the .unitypackage to the new project.
         package_name = self.get_unity_package()
         filepath = pkg_resources.resource_filename(__name__, package_name)
         assert Path(filepath).exists(), filepath
-
         # Import the package.
         call([str(AssetBundleCreatorBase.get_editor_path().resolve()),
               "-projectPath",
@@ -163,7 +174,6 @@ class AssetBundleCreatorBase(ABC):
         if not self.quiet:
             print(f"Imported {package_name} into the new project.")
 
-        return unity_project_path
 
     @staticmethod
     @abstractmethod

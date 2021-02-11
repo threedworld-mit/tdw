@@ -4,7 +4,7 @@ import math
 import zmq
 import time
 from scipy.spatial import distance
-from tdw.output_data import OutputData, IsOnNavMesh, Images, Collision, EnvironmentCollision, Bounds
+from tdw.output_data import IsOnNavMesh, Images, Bounds
 from PIL import Image
 import io
 import os

@@ -348,11 +348,7 @@ class RobotCreator(AssetBundleCreatorBase):
         repo_path = RobotCreator.TEMP_ROOT.joinpath(url.split("/")[-1])
         assert repo_path.exists(), f"Can't find: {repo_path.resolve()}"
         return repo_path
-
-    @staticmethod
-    def get_record(name: str, source: str, immovable: bool):
-        raise Exception("TODO")
-
+    
     @staticmethod
     def get_unity_package() -> str:
         return "robot_creator.unitypackage"

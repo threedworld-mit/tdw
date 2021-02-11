@@ -11,6 +11,7 @@ from distutils.dir_util import remove_tree
 import pkg_resources
 from requests import get, head
 from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
+from tdw.librarian import RobotRecord
 from tdw.backend.paths import EDITOR_LOG_PATH
 from tdw.backend.platforms import UNITY_TO_SYSTEM
 
@@ -42,39 +43,48 @@ class RobotCreator(AssetBundleCreatorBase):
     if not TEMP_ROOT.exists():
         TEMP_ROOT.mkdir(parents=True)
 
-    def import_unity_package(self, unity_project_path: Path) -> None:
+    def create_asset_bundles(self, url: str, source: str = "", xacro_args: Dict[str, str] = None, immovable: bool = True, up: str = "y") -> RobotRecord:
         """
-        Import the .unitypackage file into the Unity project. Add the .urdf importer package.
+        Given the URL of a .urdf file or a .xacro file, create asset bundles of the robot.
 
-        :param unity_project_path: The path to the Unity project.
-        """
+        This is a wrapper function for:
 
-        urdf_call = self.get_base_unity_call()[:]
-        urdf_call.extend(["-executeMethod", "RosImporter.Import"])
-        call(urdf_call)
-        super().import_unity_package(unity_project_path=unity_project_path)
+        1. `download_urdf()` _or_ `xacro_to_urdf()` (Depending on whether the URL points to a .urdf or a .xacro file)
+        2. `download_meshes()`
+        3. `urdf_to_prefab()`
+        4. `prefab_to_asset_bundles()`
 
-    @staticmethod
-    def download_repo(url: str) -> Path:
-        """
-        Download the repo to a temporary directory.
+        :param url: The URL of a .urdf or a .xacro file.
+        :param source: The source repo. This will be included in the record for the sake of attribution.
+        :param xacro_args: Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file).
+        :param immovable: If True, the base of the robot is immovable.
+        :param up: The up direction. Used when importing the robot into Unity. Options: `"y"` or `"z"`.
 
-        :param url: The repo URL.
-
-        :return: The temporary directory.
+        :return: A `RobotRecord` object. The `urls` field contains the paths to each asset bundle.
         """
 
-        # Get or create the temporary directory.
-
-        # Change directory.
-        cwd = getcwd()
-        chdir(str(RobotCreator.TEMP_ROOT.resolve()))
-        # Clone the repo.
-        call(["git", "clone", url])
-        chdir(cwd)
-        repo_path = RobotCreator.TEMP_ROOT.joinpath(url.split("/")[-1])
-        assert repo_path.exists(), f"Can't find: {repo_path.resolve()}"
-        return repo_path
+        suffix = Path(url).suffix
+        # Download the .urdf file.
+        if suffix == ".urdf":
+            urdf_path = self.download_urdf(url=url)
+        # Download and convert the .xacro file.
+        elif suffix == ".xacro":
+            urdf_path = self.xacro_to_urdf(url=url, args=xacro_args)
+        else:
+            raise Exception(f"Invalid URL: {url}")
+        # Download the meshes.
+        self.download_meshes(urdf_path=urdf_path)
+        # Create the prefab.
+        prefab = self.urdf_to_prefab(urdf_path=urdf_path, immovable=immovable, up=up)
+        name = prefab.name.replace(".prefab", "")
+        # Create the asset bundles.
+        asset_bundles = self.prefab_to_asset_bundle(name=name)
+        # Create the record.
+        record_data = {"name": name,
+                       "source": source,
+                       "immovable": immovable,
+                       "urls": asset_bundles}
+        return RobotRecord(data=record_data)
 
     def xacro_to_urdf(self, url: str, args: Dict[str, str] = None) -> Path:
         """
@@ -205,7 +215,14 @@ class RobotCreator(AssetBundleCreatorBase):
             print("...Done!")
         return prefab_path
 
-    def prefab_to_asset_bundle(self, name: str) -> List[Path]:
+    def prefab_to_asset_bundle(self, name: str) -> Dict[str, Path]:
+        """
+        Create asset bundles from a prefab.
+
+        :param name: The name of the robot (minus the .prefab extension).
+
+        :return: A dictionary. Key = The system platform. Value = The path to the asset bundle as a Path object.
+        """
         asset_bundles_call = self.get_base_unity_call()[:]
         asset_bundles_call.extend(["-executeMethod", "Creator.CreateAssetBundles",
                                    f"-robot='{name}'"])
@@ -215,12 +232,12 @@ class RobotCreator(AssetBundleCreatorBase):
         RobotCreator.check_log()
         # Verify that the asset bundles exist.
         asset_bundles_root_dir = self.project_path.joinpath(f"Assets/asset_bundles/{name}")
-        asset_bundle_paths: List[Path] = list()
+        asset_bundle_paths: Dict[str, Path] = dict()
         for build_target in UNITY_TO_SYSTEM:
             asset_bundle_path = asset_bundles_root_dir.joinpath(f"{build_target}/{name}")
             asset_bundle_path = Path(str(Path(asset_bundle_path.resolve())))
             assert asset_bundle_path.exists(), f"Couldn't find asset bundle: {asset_bundle_path.resolve()}"
-            asset_bundle_paths.append(asset_bundle_path)
+            asset_bundle_paths[UNITY_TO_SYSTEM[build_target]] = asset_bundle_path
         if not self.quiet:
             print("...Done!")
         return asset_bundle_paths
@@ -298,6 +315,40 @@ class RobotCreator(AssetBundleCreatorBase):
             if not self.quiet:
                 print("...Done!")
 
+    def import_unity_package(self, unity_project_path: Path) -> None:
+        """
+        Import the .unitypackage file into the Unity project. Add the .urdf importer package.
+
+        :param unity_project_path: The path to the Unity project.
+        """
+
+        urdf_call = self.get_base_unity_call()[:]
+        urdf_call.extend(["-executeMethod", "RosImporter.Import"])
+        call(urdf_call)
+        super().import_unity_package(unity_project_path=unity_project_path)
+
+    @staticmethod
+    def download_repo(url: str) -> Path:
+        """
+        Download the repo to a temporary directory.
+
+        :param url: The repo URL.
+
+        :return: The temporary directory.
+        """
+
+        # Get or create the temporary directory.
+
+        # Change directory.
+        cwd = getcwd()
+        chdir(str(RobotCreator.TEMP_ROOT.resolve()))
+        # Clone the repo.
+        call(["git", "clone", url])
+        chdir(cwd)
+        repo_path = RobotCreator.TEMP_ROOT.joinpath(url.split("/")[-1])
+        assert repo_path.exists(), f"Can't find: {repo_path.resolve()}"
+        return repo_path
+
     @staticmethod
     def get_record(name: str, source: str, immovable: bool):
         raise Exception("TODO")
@@ -323,11 +374,11 @@ class RobotCreator(AssetBundleCreatorBase):
 
 if __name__ == "__main__":
     r = RobotCreator()
-
-    up = r.xacro_to_urdf("https://raw.githubusercontent.com/RethinkRobotics/sawyer_robot/master/"
-                         "sawyer_description/urdf/sawyer.urdf.xacro",
-                         args={"electric_gripper": "true"})
-    r.download_meshes(urdf_path=up)
-    prefab = r.urdf_to_prefab(urdf_path=up)
-    asset_bundles = r.prefab_to_asset_bundle("sawyer")
-    print(asset_bundles)
+    record = r.create_asset_bundles(url="https://raw.githubusercontent.com/RethinkRobotics/sawyer_robot/master/"
+                                        "sawyer_description/urdf/sawyer.urdf.xacro",
+                                    xacro_args={"electric_gripper": "true"},
+                                    source="https://github.com/RethinkRobotics/sawyer_robot",
+                                    immovable=True,
+                                    up="y")
+    print(record.name)
+    print(record.urls)

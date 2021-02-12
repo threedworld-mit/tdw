@@ -193,7 +193,7 @@ class RobotCreator(AssetBundleCreatorBase):
             repo_url = RobotCreator._get_repo_url(url=url)
         # This is the base URL of the repo. Parse it accordingly.
         else:
-            local_repo_path = RobotCreator.TEMP_ROOT.joinpath(url.split("/")[-1])
+            local_repo_path = RobotCreator.TEMP_ROOT.joinpath(Path(url).name)
             repo_url = url
         if local_repo_path.exists():
             return local_repo_path
@@ -246,17 +246,25 @@ class RobotCreator(AssetBundleCreatorBase):
 
         # Read the .urdf file.
         urdf = urdf_dst.read_text(encoding="utf-8")
+        # Remove gazebo stuff.
+        urdf = re.sub(r"<gazebo reference(.*?)>((.|\n)*?)</gazebo>", "", urdf)
+        urdf_dst.write_text(urdf, encoding="utf-8")
         # Copy the meshes.
         for m in re.findall(r"filename=\"package://((.*)\.(DAE|dae|stl|STL))\"", urdf):
             mesh_description = m[0].split("/")[0]
             mesh_repo: Optional[Path] = None
+            mesh_desc = ""
             for k_desc in repo_paths:
                 if mesh_description in k_desc:
                     mesh_repo: Path = repo_paths[k_desc]
+                    mesh_desc = k_desc
                     break
             if mesh_repo is None:
                 raise Exception(f"Couldn't find local repo for: {m[0]}")
-            mesh_src = mesh_repo.joinpath(m[0])
+            if "/" in mesh_desc:
+                mesh_src = mesh_repo.joinpath(mesh_desc.replace(mesh_desc.split("/")[-1], "")).joinpath(m[0])
+            else:
+                mesh_src = mesh_repo.joinpath(m[0])
             assert mesh_src.exists(), f"Not found: {mesh_src}"
             mesh_dst = dst_root.joinpath(m[0])
             if not mesh_dst.parent.exists():
@@ -282,7 +290,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
         # Set the args.
         if args is None:
-            args = {"gazebo": '"false"'}
+            args = {"gazebo": 'false'}
         for k in args:
             xacro = re.sub('<xacro:arg name="' + k + '" default="(.*)"',
                            f'<xacro:arg name="{k}" default="{args[k]}"', xacro)
@@ -298,6 +306,7 @@ class RobotCreator(AssetBundleCreatorBase):
         checked: List[Path] = []
         while len(xacros) > 0:
             xp = xacros.pop(0)
+            checked.append(xp)
             xacro = xp.read_text(encoding="utf-8")
             for description in re.findall(r"\$\(find (.*?)\)", xacro, flags=re.MULTILINE):
                 xacro_repo: Optional[Path] = None
@@ -316,9 +325,8 @@ class RobotCreator(AssetBundleCreatorBase):
                             dst = xacro_dir.joinpath(src.name)
                             if not dst.exists():
                                 copy_file(src=str(src.resolve()), dst=str(dst.resolve()))
-                            if src not in checked:
+                            if src not in xacros and src not in checked:
                                 xacros.append(src)
-                                checked.append(xp)
         if not self.quiet:
             print("Copied all required xacro files to a temp directory.")
         # "Repair" all of the required .xacro files.
@@ -376,7 +384,6 @@ class RobotCreator(AssetBundleCreatorBase):
         if not self.quiet:
             print("Creating a .prefab from a .urdf file...")
         call(urdf_call)
-        RobotCreator.check_log()
         prefab_path = self.project_path.joinpath(f"Assets/prefabs/{name}.prefab")
         assert prefab_path.exists(), f"Prefab not found: {prefab_path}"
         if not self.quiet:
@@ -397,7 +404,7 @@ class RobotCreator(AssetBundleCreatorBase):
         if not self.quiet:
             print("Creating asset bundles...")
         call(asset_bundles_call)
-        RobotCreator.check_log()
+        RobotCreator._check_log()
         # Verify that the asset bundles exist.
         asset_bundles_root_dir = self.project_path.joinpath(f"Assets/asset_bundles/{name}")
         asset_bundle_paths: Dict[str, Path] = dict()
@@ -431,13 +438,13 @@ class RobotCreator(AssetBundleCreatorBase):
         return Path.home().joinpath("robot_creator")
 
     @staticmethod
-    def check_log() -> None:
+    def _check_log() -> None:
         """
         Check the Editor log for errors.
         """
 
         log = EDITOR_LOG_PATH.read_text(encoding="utf-8")
-        if "error" in log.lower() or "failure" in log.lower():
+        if "error" in log.lower() or "failure" in log.lower() or "exception" in log.lower():
             raise Exception(f"There are errors in the Editor log!\n\n{log}")
 
     @staticmethod
@@ -519,7 +526,7 @@ class RobotCreator(AssetBundleCreatorBase):
         page = RobotCreator._raw_to_page(url=url)
         s = re.search(r"(.*)/blob/master/(.*)/urdf", page)
         if s is None:
-            return re.search(r"https://github\.com/(.*?)/(.*)", page).group(2)
+            return re.search(r"(.*)/blob/master/((.*)_description)/", page).group(2)
         else:
             return s.group(2)
 

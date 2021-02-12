@@ -1,136 +1,314 @@
-from typing import List, Dict
-from os.path import join
+from typing import List, Dict, Optional
 from os import getcwd, chdir, walk, devnull
-from csv import DictReader
 import re
 from platform import system
 from pathlib import Path
 from subprocess import call
 from distutils.file_util import copy_file, move_file
 from distutils.dir_util import remove_tree
-import pkg_resources
-from requests import get, head
 from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
 from tdw.librarian import RobotRecord
 from tdw.backend.paths import EDITOR_LOG_PATH
 from tdw.backend.platforms import UNITY_TO_SYSTEM
 
 
-class RobotRepo:
-    def __init__(self, url: str, description: str):
+class _RobotRepo:
+    """
+    A simple container for robot repo metadata.
+    """
+
+    def __init__(self, url: str, description: str, path_to_description: str):
         """
         :param url: The URL of the repo.
         :param description: The name of the folder with the urdfs and meshes.
+        :param path_to_description: An infix between the URL and the description.
         """
 
         self.url: str = url
         self.description: str = description
+        self.path_to_description: str = path_to_description
 
 
 class RobotCreator(AssetBundleCreatorBase):
-    # Descriptions per repo. Key = The description string. Value = The repo name.
-    DESCRIPTIONS: Dict[str, str] = dict()
-    # All known remote repos.
-    REMOTE_REPOS: Dict[str, RobotRepo] = dict()
-    # Load all known repo URLs.
-    with open(pkg_resources.resource_filename(__name__, "robotics/repos.csv")) as f:
-        __reader = DictReader(f)
-        for __row in __reader:
-            REMOTE_REPOS[__row["url"].split("/")[-1]] = RobotRepo(url=__row["url"], description=__row["description"])
-            DESCRIPTIONS[__row["description"]] = __row["url"].split("/")[-1]
+    """
+    Download a .urdf or .xacro file and convert it into an asset bundle that is usable by TDW.
+
+    # Requirements
+
+    - Windows 10, OS X, or Linux
+      - On a remote Linux server, you'll need a valid virtual display (see the `display` parameter of the constructor)
+    - Unity Editor 2020.2 (must be installed via Unity Editor)
+    - Python3 and the `tdw` module.
+
+    ### ROS and .xacro file requirements
+
+    If you want to use a .xacro file, `RobotCreator` can convert it to a usable .urdf file, provided that you first install ROS.
+
+    On Linux:
+
+    - [Install ROS base](http://wiki.ros.org/Installation/Ubuntu) (Melodic version)
+    - `sudo apt-get install rosbash`
+    - `sudo apt-get install ros-melodic-xacro`
+
+    On Windows:
+
+    - Install Ubuntu 18 on WSL 2
+    - [Install ROS base on WSL 2](http://wiki.ros.org/Installation/Ubuntu) (Melodic version)
+    - `wsl sudo apt-get install rosbash`
+    - `wsl sudo apt-get install ros-melodic-xacro`
+
+    # Usage
+
+    To create an asset bundle of the Sawyer robot:
+
+    ```python
+    from tdw.robot_creator import RobotCreator
+
+    r = RobotCreator()
+    record = r.create_asset_bundles(
+        urdf_url="https://github.com/RethinkRobotics/sawyer_robot/blob/master/sawyer_description/urdf/sawyer.urdf.xacro",
+        xacro_args={"electric_gripper": "true"},
+        required_repo_urls={"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"},
+        immovable=True,
+        up="y")
+    print(record.name)
+    print(record.urls)
+    ```
+
+    ### Storing metadata
+
+    `RobotCreator.create_asset_bundles()` returns a `RobotRecord` metadata object, which contains the files paths to the asset bundle.
+    You can store a `RobotRecord` object in a `RobotLibrarian`, which is saved as a JSON file.
+
+    To create a `RobotLibrarian`:
+
+    ```python
+    from tdw.librarian import RobotLibrarian
+
+    RobotLibrarian.create_library(path="my_robot_librarian.json", description="Custom Robot Librarian")
+    ```
+
+    To create asset bundles and save the `RobotRecord` metadata:
+
+    ```python
+    from tdw.robot_creator import RobotCreator
+    from tdw.librarian import RobotLibrarian
+
+    r = RobotCreator()
+
+    # Create the asset bundles and generate a metadata record.
+    record = r.create_asset_bundles(
+        urdf_url="https://github.com/RethinkRobotics/sawyer_robot/blob/master/sawyer_description/urdf/sawyer.urdf.xacro",
+        xacro_args={"electric_gripper": "true"},
+        required_repo_urls={"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"},
+        immovable=True,
+        up="y")
+
+    # Add the record to the local library.
+    lib = RobotLibrarian("my_robot_librarian.json")
+    lib.add_or_overwrite_record(record=record, overwrite=False, write=True)
+    ```
+
+    ***
+
+    """
+
     # The root temporary directory.
     TEMP_ROOT = Path.home().joinpath("robot_creator/temp_robots")
     if not TEMP_ROOT.exists():
         TEMP_ROOT.mkdir(parents=True)
 
-    def create_asset_bundles(self, url: str, source: str = "", xacro_args: Dict[str, str] = None, immovable: bool = True, up: str = "y") -> RobotRecord:
+    def __init__(self, quiet: bool = False, display: str = ":0"):
+        """
+        :param quiet: If true, don't print any messages to console.
+        :param display: The display to launch Unity Editor on. Ignored if this isn't Linux.
+        """
+
+        super().__init__(quiet=quiet, display=display)
+
+    def create_asset_bundles(self, urdf_url: str, required_repo_urls: Dict[str, str] = None, xacro_args: Dict[str, str] = None, immovable: bool = True, up: str = "y") -> RobotRecord:
         """
         Given the URL of a .urdf file or a .xacro file, create asset bundles of the robot.
 
         This is a wrapper function for:
 
-        1. `download_urdf()` _or_ `xacro_to_urdf()` (Depending on whether the URL points to a .urdf or a .xacro file)
-        2. `download_meshes()`
+        1. `clone_repo()`
+        2. `copy_files()`
         3. `urdf_to_prefab()`
         4. `prefab_to_asset_bundles()`
 
-        :param url: The URL of a .urdf or a .xacro file.
-        :param source: The source repo. This will be included in the record for the sake of attribution.
-        :param xacro_args: Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file).
+        :param urdf_url: The URL of a .urdf or a .xacro file.
+        :param required_repo_urls: A dictionary of description folder names and repo URLs outside of the robot's repo that are required to create the robot. This is only required for .xacro files that reference outside repos. For example, the Sawyer robot requires this to add the gripper: `{"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"}`
+        :param xacro_args: Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file). For example, the Sawyer robot requires this to add the gripper: `{"electric_gripper": "true"}`
         :param immovable: If True, the base of the robot is immovable.
-        :param up: The up direction. Used when importing the robot into Unity. Options: `"y"` or `"z"`.
+        :param up: The up direction. Used when importing the robot into Unity. Options: `"y"` or `"z"`. Usually, this should be the default value (`"y"`).
 
         :return: A `RobotRecord` object. The `urls` field contains the paths to each asset bundle.
         """
 
-        suffix = Path(url).suffix
-        # Download the .urdf file.
-        if suffix == ".urdf":
-            urdf_path = self.download_urdf(url=url)
-        # Download and convert the .xacro file.
-        elif suffix == ".xacro":
-            urdf_path = self.xacro_to_urdf(url=url, args=xacro_args)
-        else:
-            raise Exception(f"Invalid URL: {url}")
-        # Download the meshes.
-        self.download_meshes(urdf_path=urdf_path)
+        if required_repo_urls is None:
+            required_repo_urls = list()
+
+        # Clone the repo.
+        repo_paths: Dict[str, Path] = dict()
+        local_repo_path = self.clone_repo(url=urdf_url)
+        repo_paths[RobotCreator._get_description_infix(url=urdf_url)] = local_repo_path
+
+        # Clone the required repos.
+        for description in required_repo_urls:
+            required_repo_url = required_repo_urls[description]
+            required_local_repo_path = self.clone_repo(url=required_repo_url)
+            repo_paths[description] = required_local_repo_path
+
+        # Copy the files, create a .urdf file (if needed), and creator collider objects.
+        urdf_path = self.copy_files(urdf_url=urdf_url, local_repo_path=local_repo_path, repo_paths=repo_paths,
+                                    xacro_args=xacro_args)
+
         # Create the prefab.
         prefab = self.urdf_to_prefab(urdf_path=urdf_path, immovable=immovable, up=up)
         name = prefab.name.replace(".prefab", "")
+
         # Create the asset bundles.
         asset_bundles = self.prefab_to_asset_bundle(name=name)
+
         # Create the record.
         record_data = {"name": name,
-                       "source": source,
+                       "source": RobotCreator._get_repo_url(url=urdf_url),
                        "immovable": immovable,
                        "urls": asset_bundles}
         return RobotRecord(data=record_data)
 
-    def xacro_to_urdf(self, url: str, args: Dict[str, str] = None) -> Path:
+    def clone_repo(self, url: str) -> Path:
         """
-        Download a .xacro file and all of its dependencies and convert it to a .urdf file.
+        Clone a repo to a temporary directory.
 
-        :param url: The URL to the .xacro file. This must be the "raw" file, not a GitHub html page.
+        :param url: The URL to the .urdf or .xacro file or the repo.
+
+        :return: The temporary directory.
+        """
+
+        # This is a .urdf or .xacro file. Parse the repo URL accordingly.
+        if url.endswith(".xacro") or url.endswith(".urdf"):
+            local_repo_path = RobotCreator._get_local_repo_path(url=url)
+            repo_url = RobotCreator._get_repo_url(url=url)
+        # This is the base URL of the repo. Parse it accordingly.
+        else:
+            local_repo_path = RobotCreator.TEMP_ROOT.joinpath(url.split("/")[-1])
+            repo_url = url
+        if local_repo_path.exists():
+            return local_repo_path
+
+        # Change directory.
+        cwd = getcwd()
+        chdir(str(RobotCreator.TEMP_ROOT.resolve()))
+        if not self.quiet:
+            print(f"Cloning: {repo_url}")
+        # Clone the repo.
+        call(["git", "clone", repo_url],
+             stderr=open(devnull, "wb"))
+        chdir(cwd)
+        assert local_repo_path.exists(), f"Can't find: {local_repo_path.resolve()}"
+        if not self.quiet:
+            print("...Done!")
+        return local_repo_path
+
+    def copy_files(self, urdf_url: str, local_repo_path: Path, repo_paths: Dict[str, Path], xacro_args: Dict[str, str] = None) -> Path:
+        """
+        Copy and convert files required to create a prefab.
+
+        1. If this is a .xacro file, convert it to a .urdf file.
+        2. Copy the .urdf file to the Unity project.
+        3. Copy all associated meshes to the .urdf project.
+
+        :param urdf_url: The URL to the remote .urdf or .xacro file.
+        :param local_repo_path: The path to the local repo.
+        :param repo_paths: A dictionary of required repos (including the one that the .urdf or .xacro is in). Key = The description path infix, e.g. "sawyer_description". Value = The path to the local repo.
+        :param xacro_args: Names and values for the `arg` tags in the .xacro file. Can be None for a .urdf or .xacro file and always ignored for a .urdf file.
+
+        :return: The path to the .urdf file in the Unity project.
+        """
+
+        page_url = self._raw_to_page(url=urdf_url)
+        repo_path = re.search(r"(.*)/blob/master/(.*)", page_url).group(2)
+        urdf_path = local_repo_path.joinpath(repo_path)
+        dst_root = self.project_path.joinpath(f"Assets/robots")
+        if not dst_root.exists():
+            dst_root.mkdir(parents=True)
+        # Convert the .xacro file to a .urdf file.
+        if Path(urdf_url).suffix == ".xacro":
+            urdf_dst = self.xacro_to_urdf(xacro_path=urdf_path, repo_paths=repo_paths, args=xacro_args)
+        # Move the existing .urdf file.
+        else:
+            assert urdf_path.exists(), f"Not found: {urdf_path.resolve()}"
+            # Copy the .urdf file.
+            urdf_dst = dst_root.joinpath(Path(urdf_url).name)
+            copy_file(src=str(urdf_path.resolve()), dst=str(urdf_dst.resolve()))
+
+        # Read the .urdf file.
+        urdf = urdf_dst.read_text(encoding="utf-8")
+        # Copy the meshes.
+        for m in re.findall(r"filename=\"package://((.*)\.(DAE|dae|stl|STL))\"", urdf):
+            mesh_description = m[0].split("/")[0]
+            mesh_repo: Optional[Path] = None
+            for k_desc in repo_paths:
+                if mesh_description in k_desc:
+                    mesh_repo: Path = repo_paths[k_desc]
+                    break
+            if mesh_repo is None:
+                raise Exception(f"Couldn't find local repo for: {m[0]}")
+            mesh_src = mesh_repo.joinpath(m[0])
+            assert mesh_src.exists(), f"Not found: {mesh_src}"
+            mesh_dst = dst_root.joinpath(m[0])
+            if not mesh_dst.parent.exists():
+                mesh_dst.parent.mkdir(parents=True)
+            # Copy the mesh file to the Unity project.
+            copy_file(src=str(mesh_src.resolve()), dst=str(mesh_dst.resolve()))
+        if not self.quiet:
+            print("Copied the .urdf and the meshes to the Unity project.")
+        return urdf_dst
+
+    def xacro_to_urdf(self, xacro_path: Path, repo_paths: Dict[str, Path], args: Dict[str, str] = None) -> Path:
+        """
+        Convert a local .xacro file to a .urdf file.
+
+        :param xacro_path: The path to the local .xacro file.
         :param args: Names and values for the `arg` tags in the .xacro file.
+        :param repo_paths: Local paths to all required repos. Key = The description infix. Value = The local repo path.
 
         :return: The path to the .urdf file.
         """
 
-        resp = get(url)
-        assert resp.status_code == 200, f"Tried to download {url} but got error code {resp.status_code}"
-        xacro = resp.content.decode("utf-8")
-        if not self.quiet:
-            print(f"Got {url}")
-
-        if args is None:
-            args = {"gazebo": '"false"'}
+        xacro = xacro_path.read_text(encoding="utf-8")
 
         # Set the args.
-        if args is not None:
-            for k in args:
-                xacro = re.sub('<xacro:arg name="' + k + '" default="(.*)"',
-                               f'<xacro:arg name="{k}" default="{args[k]}"', xacro)
+        if args is None:
+            args = {"gazebo": '"false"'}
+        for k in args:
+            xacro = re.sub('<xacro:arg name="' + k + '" default="(.*)"',
+                           f'<xacro:arg name="{k}" default="{args[k]}"', xacro)
+
+        # Put all required .xacro files in a temporary directory.
         xacro_dir = RobotCreator.TEMP_ROOT.joinpath("xacro")
         if not xacro_dir.exists():
             xacro_dir.mkdir(parents=True)
-
-        x = xacro_dir.joinpath(Path(url).name)
+        x = xacro_dir.joinpath(xacro_path.name)
         x.write_text(xacro, encoding="utf-8")
+
         xacros: List[Path] = [x]
         checked: List[Path] = []
         while len(xacros) > 0:
             xp = xacros.pop(0)
             xacro = xp.read_text(encoding="utf-8")
-            for find in re.findall(r"\$\(find (.*?)\)", xacro, flags=re.MULTILINE):
-                repo_name = RobotCreator.DESCRIPTIONS[find]
-                local_repo = RobotCreator.TEMP_ROOT.joinpath(repo_name)
-                if not local_repo.exists():
-                    if not self.quiet:
-                        print(f"Couldn't find {local_repo}. Cloning...")
-                    RobotCreator.download_repo(RobotCreator.REMOTE_REPOS[repo_name].url)
-                    if not self.quiet:
-                        print("...Done!")
-                src_urdf_dir = local_repo.joinpath(RobotCreator.REMOTE_REPOS[repo_name].description + "/urdf")
+            for description in re.findall(r"\$\(find (.*?)\)", xacro, flags=re.MULTILINE):
+                xacro_repo: Optional[Path] = None
+                desc = ""
+                for k_desc in repo_paths:
+                    if description in k_desc:
+                        xacro_repo = repo_paths[k_desc]
+                        desc = k_desc
+                        break
+                assert xacro_repo is not None, f"Couldn't find: {description} in {xacro_repo} for {xp}"
+                src_urdf_dir = xacro_repo.joinpath(desc).joinpath("urdf")
                 for root_dir, dirs, files in walk(str(src_urdf_dir.resolve())):
                     for f in files:
                         src = Path(root_dir).joinpath(f)
@@ -168,22 +346,8 @@ class RobotCreator(AssetBundleCreatorBase):
         chdir(cwd)
         # Delete temp xacro files.
         remove_tree(str(xacro_dir.resolve()))
+        assert urdf_path.exists(), f"Not found: {urdf_path.resolve()}"
         return urdf_path.resolve()
-
-    def download_urdf(self, url: str) -> Path:
-        """
-        Download a .urdf file to the robot_creator project.
-
-        :param url:  The URL to the .urdf file. This must be the "raw" file, not a GitHub html page.
-
-        :return: The local path of the downloaded file.
-        """
-
-        resp = get(url)
-        assert resp.status_code == 200, f"Tried to download {url} but got error code {resp.status_code}"
-        p = self.project_path.joinpath(f"Assets/robots/{url.split('/')[-1]}")
-        p.write_text(resp.content.decode("utf-8"), encoding="utf-8")
-        return p
 
     def urdf_to_prefab(self, urdf_path: Path, immovable: bool = True, up: str = "y") -> Path:
         """
@@ -200,6 +364,10 @@ class RobotCreator(AssetBundleCreatorBase):
         :return: The path to the .prefab file.
         """
 
+        # Get the expected name of the robot.
+        urdf = urdf_path.read_text(encoding="utf-8")
+        name = re.search(r'<robot name="(.*?)"', urdf, flags=re.MULTILINE).group(1).strip()
+
         urdf_call = self.get_base_unity_call()[:]
         urdf_call.extend(["-executeMethod", "Creator.CreatePrefab",
                           f"-urdf='{str(urdf_path.resolve())}'",
@@ -209,7 +377,7 @@ class RobotCreator(AssetBundleCreatorBase):
             print("Creating a .prefab from a .urdf file...")
         call(urdf_call)
         RobotCreator.check_log()
-        prefab_path = self.project_path.joinpath(f"Assets/prefabs/{urdf_path.name.replace('urdf', 'prefab')}")
+        prefab_path = self.project_path.joinpath(f"Assets/prefabs/{name}.prefab")
         assert prefab_path.exists(), f"Prefab not found: {prefab_path}"
         if not self.quiet:
             print("...Done!")
@@ -242,79 +410,6 @@ class RobotCreator(AssetBundleCreatorBase):
             print("...Done!")
         return asset_bundle_paths
 
-    def download_meshes(self, urdf_path: Path) -> None:
-        """
-        Download all mesh files referenced by the .urdf file.
-        From this mesh file, create a hull colliders .obj file.
-
-        :param urdf_path: The path to the .urdf file.
-        """
-
-        urdf = urdf_path.read_text(encoding="utf-8")
-        dst = self.project_path.joinpath("Assets/robots")
-        if not dst.exists():
-            dst.mkdir(parents=True)
-
-        # We'll use these binaries to create colliders.
-        assimp = pkg_resources.resource_filename(__name__, self.binaries["assimp"])
-        vhacd = pkg_resources.resource_filename(__name__, self.binaries["vhacd"])
-        meshconv = pkg_resources.resource_filename(__name__, self.binaries["meshconv"])
-
-        for m in re.findall(r"filename=\"package://((.*)\.(DAE|dae|stl|STL))\"", urdf):
-            description = m[0].split("/")[0]
-            repo_name = RobotCreator.DESCRIPTIONS[description]
-            mesh_src = f"https://raw.githubusercontent.com/" \
-                       f"{RobotCreator.REMOTE_REPOS[repo_name].url.replace('https://github.com/', '')}/master"
-            mesh_src = join(mesh_src, m[0]).replace("\\", "/")
-            resp = head(mesh_src)
-            if resp.status_code != 200:
-                raise Exception(f"Got error code {resp.status_code} for {mesh_src}")
-            # Create the local directory for the mesh.
-            mesh_dst = dst.joinpath(m[0])
-            if not mesh_dst.parent.exists():
-                mesh_dst.parent.mkdir(parents=True)
-            # Save the mesh.
-            mesh_dst.write_bytes(get(mesh_src).content)
-            if not self.quiet:
-                print(f"Downloaded: {mesh_dst}")
-                print("Creating the colliders .obj file...")
-
-            # Convert the dae to obj.
-            mesh_obj = str(mesh_dst.resolve())[:-4] + ".obj"
-            call([assimp,
-                  "export",
-                  str(mesh_dst.resolve()),
-                  mesh_obj],
-                 stdout=open(devnull, "wb"))
-            # Remove the useless .mtl file.
-            mtl_path = Path(str(mesh_dst.resolve())[:-4] + ".mtl")
-            if mtl_path.exists():
-                mtl_path.unlink()
-            # Create the .wrl file.
-            wrl_path = str(mesh_dst.resolve())[:-4] + ".wrl"
-            call([vhacd,
-                  "--input", mesh_obj,
-                  "--resolution", str(100000),
-                  "--output", wrl_path],
-                 stdout=open(devnull, "wb"))
-            # Remove an unwanted log file.
-            log_file = Path("log.txt")
-            if log_file.exists():
-                log_file.unlink()
-            # Convert the .wrl back to .obj
-            call([meshconv,
-                  wrl_path,
-                  "-c",
-                  "obj",
-                  "-o",
-                  mesh_obj[:-4],
-                  "-sg"],
-                 stdout=open(devnull, "wb"))
-            # Remove the .wrl file.
-            Path(wrl_path).unlink()
-            if not self.quiet:
-                print("...Done!")
-
     def import_unity_package(self, unity_project_path: Path) -> None:
         """
         Import the .unitypackage file into the Unity project. Add the .urdf importer package.
@@ -327,28 +422,6 @@ class RobotCreator(AssetBundleCreatorBase):
         call(urdf_call)
         super().import_unity_package(unity_project_path=unity_project_path)
 
-    @staticmethod
-    def download_repo(url: str) -> Path:
-        """
-        Download the repo to a temporary directory.
-
-        :param url: The repo URL.
-
-        :return: The temporary directory.
-        """
-
-        # Get or create the temporary directory.
-
-        # Change directory.
-        cwd = getcwd()
-        chdir(str(RobotCreator.TEMP_ROOT.resolve()))
-        # Clone the repo.
-        call(["git", "clone", url])
-        chdir(cwd)
-        repo_path = RobotCreator.TEMP_ROOT.joinpath(url.split("/")[-1])
-        assert repo_path.exists(), f"Can't find: {repo_path.resolve()}"
-        return repo_path
-    
     @staticmethod
     def get_unity_package() -> str:
         return "robot_creator.unitypackage"
@@ -367,14 +440,97 @@ class RobotCreator(AssetBundleCreatorBase):
         if "error" in log.lower() or "failure" in log.lower():
             raise Exception(f"There are errors in the Editor log!\n\n{log}")
 
+    @staticmethod
+    def _page_to_raw(url: str) -> str:
+        """
+        Convert the URL of a GitHub page to the URL of the corresponding text file.
+
+        :param url: A URL to a GitHub page.
+
+        :return: The URL to the corresponding text file.
+        """
+
+        if "https://github.com" in url:
+            return re.sub(r"https://github\.com/(.*)/blob/(.*)", r"https://raw.githubusercontent.com/\1/\2", url)
+        elif "https://raw.githubusercontent.com" in url:
+            return url
+        else:
+            raise Exception(f"Unexpected URL: {url}")
+
+    @staticmethod
+    def _raw_to_page(url: str):
+        """
+        Convert the URL of a raw text file to the corresponding GitHub page.
+
+        :param url: A URL to a text file page.
+
+        :return: The URL to the corresponding GitHub page.
+        """
+
+        if "https://github.com" in url:
+            return url
+        elif "https://raw.githubusercontent.com" in url:
+            return re.sub(r"https://raw\.githubusercontent\.com/(.*)/master/(.*)",
+                          r"https://github.com/\1/blob/master/\2", url)
+        else:
+            raise Exception(f"Unexpected URL: {url}")
+
+    @staticmethod
+    def _get_repo_url(url: str) -> str:
+        """
+        :param url: The URL of the .urdf or .xacro file.
+
+        :return: The base repo of a .urdf or .xacro file.
+        """
+
+        page_url = RobotCreator._raw_to_page(url=url)
+        return re.sub(r"https://github\.com/(.*)/blob/(.*)", r"https://github.com/\1", page_url)
+
+    @staticmethod
+    def _get_repo_name(repo_url: str) -> str:
+        """
+        :param repo_url: The base URL of a repo.
+
+        :return: The expected name of the repo.
+        """
+
+        return repo_url.split("/")[-1]
+
+    @staticmethod
+    def _get_local_repo_path(url: str) -> Path:
+        """
+        :param url: The URL of the .urdf or .xacro file.
+
+        :return: The path to the local repo.
+        """
+
+        repo_url = RobotCreator._get_repo_url(url=url)
+        repo_name = RobotCreator._get_repo_name(repo_url=repo_url)
+        return RobotCreator.TEMP_ROOT.joinpath(repo_name)
+
+    @staticmethod
+    def _get_description_infix(url: str) -> str:
+        """
+        :param url: The URL of the .urdf or .xacro file.
+
+        :return: The string between the repo URL and the /urdf/ directory.
+        """
+
+        page = RobotCreator._raw_to_page(url=url)
+        s = re.search(r"(.*)/blob/master/(.*)/urdf", page)
+        if s is None:
+            return re.search(r"https://github\.com/(.*?)/(.*)", page).group(2)
+        else:
+            return s.group(2)
+
 
 if __name__ == "__main__":
     r = RobotCreator()
-    record = r.create_asset_bundles(url="https://raw.githubusercontent.com/RethinkRobotics/sawyer_robot/master/"
-                                        "sawyer_description/urdf/sawyer.urdf.xacro",
-                                    xacro_args={"electric_gripper": "true"},
-                                    source="https://github.com/RethinkRobotics/sawyer_robot",
-                                    immovable=True,
-                                    up="y")
+    record = r.create_asset_bundles(
+        urdf_url="https://github.com/RethinkRobotics/sawyer_robot/blob/master/sawyer_description/urdf/sawyer.urdf.xacro",
+        xacro_args={"electric_gripper": "true"},
+        required_repo_urls={"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"},
+        immovable=True,
+        up="y")
     print(record.name)
     print(record.urls)

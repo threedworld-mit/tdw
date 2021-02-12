@@ -183,6 +183,7 @@ class RobotRecord(_Record):
         super().__init__(data)
         self.source = data["source"]
         self.immovable = data["immovable"]
+        self.y = data["y"]
 
 
 T = TypeVar("T", bound=_Record)

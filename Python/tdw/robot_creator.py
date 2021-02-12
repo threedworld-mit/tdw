@@ -170,11 +170,19 @@ class RobotCreator(AssetBundleCreatorBase):
 
         # Create the asset bundles.
         asset_bundles = self.prefab_to_asset_bundle(name=name)
+        temp = dict()
+        for k in asset_bundles:
+            temp[k] = "file:///" + str(asset_bundles[k].resolve()).replace("\\", "/")
+        asset_bundles = temp
+
+        # Get the y value.
+        y: float = float(self.project_path.joinpath(f"y_values/{name}.txt").read_text(encoding="utf-8").split(",")[1])
 
         # Create the record.
         record_data = {"name": name,
                        "source": RobotCreator._get_repo_url(url=urdf_url),
                        "immovable": immovable,
+                       "y": y,
                        "urls": asset_bundles}
         return RobotRecord(data=record_data)
 

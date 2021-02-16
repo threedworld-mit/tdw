@@ -41,6 +41,16 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/sawyer"
             }
         },
+        "shadowhand": {
+            "immovable": true,
+            "name": "shadowhand",
+            "source": "https://github.com/shadow-robot/simox_ros",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/shadowhand",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/shadowhand",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/shadowhand"
+            }
+        },
         "ur10": {
             "immovable": true,
             "name": "ur10",

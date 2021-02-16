@@ -20,7 +20,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Robot Library
 
-- Added new robots: Baxter, Sawyer, Niryo One, Fetch, UR5, and UR 10
+- Added new robots: Baxter, Sawyer, Niryo One, Fetch, Shadowhand, UR5, and UR 10
 
 ### Documentation
 

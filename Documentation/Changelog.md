@@ -4,6 +4,39 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.1
+
+### `tdw` module
+
+#### `RobotCreator`
+
+- Added: `robot_creator.py` **Frontend users can now add robots to TDW.** See: `tdw/Documenation/misc_frontend/robotics.md` and `tdw/Documentation/python/robot_creator.md`
+
+#### `AssetBundleCreator`
+
+#### Backend
+
+- Added: `asset_bundle_creator_base.py` Shared code between `asset_bundle_creator.py` and `robot_creator.py`
+
+### Robot Library
+
+- Added new robots: Baxter, Sawyer, Niryo One, Fetch, UR5, and UR 10
+
+### Documentation
+
+#### New Documentation
+
+| Document | Description |
+| --- | --- |
+| `robot_creator.md`             | API documentation for `RobotCreator` as well as installation instructions and troubleshooting tips. |
+| `asset_bundle_creator_base.md` | API documentation for `AssetBundleCreatorBase`               |
+
+#### Modified Documentation
+
+| Document                       | Modification                                                 |
+| ------------------------------ | ------------------------------------------------------------ |
+| `robots.md`                    | Added a section for how to start using the new `RobotCreator` |
+
 ## v1.8.0
 
 ### New Features

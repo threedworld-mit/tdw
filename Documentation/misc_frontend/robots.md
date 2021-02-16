@@ -50,6 +50,59 @@ TDW has a built-in concept of what an "Avatar" is, which has implications for wh
 
 Robots by default don't have cameras. However, you can add a camera to a robot by first creating an avatar and then parenting that avatar to the robot. See: `example_controllers/robot_camera.py` for example implementation.
 
+## Robots Currently in TDW
+
+TDW include many real-world robots by default. Metadata records of each robot are stored in a [`RobotLibrarian`](../python/librarian/robot_librarian.md).
+
+ To get a list of available robots:
+
+```python
+from tdw.librarian import RobotLibrarian
+
+lib = RobotLibrarian()
+for record in lib.records:
+    print(record.name)
+```
+
+To search for a robot:
+
+```python
+from tdw.librarian import RobotLibrarian
+
+lib = RobotLibrarian()
+
+record = lib.get_record("ur3")
+if record is not None:
+    print(record.name, record.urls)
+    
+records = lib.search_records("ur3")
+for record in records:
+    print(record)
+```
+
+To add a robot:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.librarian import RobotLibrarian
+
+c = Controller(launch_build=False)
+c.start()
+
+lib = RobotLibrarian()
+record = lib.get_record(name="ur3")
+
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_robot(name=record.name,
+                               robot_id=0,
+                               position={"x": 0.5, "y": 0, "z": 2})])
+```
+
+## How to Add a Robot to TDW
+
+**It is possible to import any robot into TDW, given a .urdf or .xacro file.** To do so, use a `RobotCreator`. [Read this document to learn more about the API and installation requirements](../python/robot_creator.md).
+
 ## Magnebot API
 
 The Magnebot is a specialized robot in TDW that can use "magnets" to pick up objects.

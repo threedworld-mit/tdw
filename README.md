@@ -148,7 +148,8 @@
 | Document                                                     | Description                                   |
 | ------------------------------------------------------------ | --------------------------------------------- |
 | [Robots](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/robots.md) | Overview of robotics and the Magnebot in TDW. |
-| [Robot Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/model_librarian.md) | API for accessing robot metadata.             |
+| [Robot Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/robot_librarian.md) | API for accessing robot metadata.             |
+| [Robot Creator](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/robot_creator.md) | API for adding your own robots to TDW.        |
 | [Magnebot](https://github.com/alters-mit/magnebot)           | High-level Magnebot API.                      |
 
 # Scene Setup

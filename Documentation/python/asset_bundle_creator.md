@@ -1,6 +1,6 @@
 # `asset_bundle_creator.py`
 
-## `AssetBundleCreator`
+## `AssetBundleCreator(AssetBundleCreatorBase)`
 
 `from tdw.asset_bundle_creator import AssetBundleCreator`
 
@@ -94,6 +94,34 @@ _Returns:_ The call to launch Unity Editor silently in batchmode, execute someth
 Build the asset_bundle_creator Unity project.
 
 _Returns:_ The path to the asset_bundle_creator Unity project.
+
+***
+
+#### `get_project_path() -> Path`
+
+_This is a static function._
+
+Convert a .fbx file to a .obj file with assimp
+
+| Parameter | Description |
+| --- | --- |
+| model_path | The path to the model. |
+
+_Returns:_ The path to the new object, and True if it's a new file (False if it's the existing base file).
+
+***
+
+#### `get_unity_package() -> str`
+
+_This is a static function._
+
+Convert a .fbx file to a .obj file with assimp
+
+| Parameter | Description |
+| --- | --- |
+| model_path | The path to the model. |
+
+_Returns:_ The path to the new object, and True if it's a new file (False if it's the existing base file).
 
 ***
 

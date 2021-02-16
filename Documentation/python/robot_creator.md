@@ -1,0 +1,270 @@
+# `robot_creator.py`
+
+#### `__init__(self, url: str, description: str, path_to_description: str)`
+
+
+| Parameter | Description |
+| --- | --- |
+| url | The URL of the repo. |
+| description | The name of the folder with the urdfs and meshes. |
+| path_to_description | An infix between the URL and the description. |
+
+***
+
+## `RobotCreator(AssetBundleCreatorBase)`
+
+`from tdw.robot_creator import RobotCreator`
+
+Download a .urdf or .xacro file and convert it into an asset bundle that is usable by TDW.
+
+# Requirements
+
+- Windows 10, OS X, or Linux
+  - On a remote Linux server, you'll need a valid virtual display (see the `display` parameter of the constructor)
+- Unity Editor 2020.2 (must be installed via Unity Editor)
+- Python3 and the `tdw` module.
+
+### ROS and .xacro file requirements
+
+If you want to use a .xacro file, `RobotCreator` can convert it to a usable .urdf file, provided that you first install ROS.
+
+On Linux:
+
+- [Install ROS base](http://wiki.ros.org/Installation/Ubuntu) (Melodic version)
+- `sudo apt-get install rosbash`
+- `sudo apt-get install ros-melodic-xacro`
+
+On Windows:
+
+- Install Ubuntu 18 on WSL 2
+- [Install ROS base on WSL 2](http://wiki.ros.org/Installation/Ubuntu) (Melodic version)
+- `wsl sudo apt-get install rosbash`
+- `wsl sudo apt-get install ros-melodic-xacro`
+
+# Usage
+
+To create an asset bundle of the Sawyer robot:
+
+```python
+from tdw.robot_creator import RobotCreator
+
+r = RobotCreator()
+record = r.create_asset_bundles(
+    urdf_url="https://github.com/RethinkRobotics/sawyer_robot/blob/master/sawyer_description/urdf/sawyer.urdf.xacro",
+    xacro_args={"electric_gripper": "true"},
+    required_repo_urls={"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"},
+    immovable=True,
+    up="y")
+print(record.name)
+print(record.urls)
+```
+
+### Storing metadata
+
+`RobotCreator.create_asset_bundles()` returns a `RobotRecord` metadata object, which contains the files paths to the asset bundle.
+You can store a `RobotRecord` object in a `RobotLibrarian`, which is saved as a JSON file.
+
+To create a `RobotLibrarian`:
+
+```python
+from tdw.librarian import RobotLibrarian
+
+RobotLibrarian.create_library(path="my_robot_librarian.json", description="Custom Robot Librarian")
+```
+
+To create asset bundles and save the `RobotRecord` metadata:
+
+```python
+from tdw.robot_creator import RobotCreator
+from tdw.librarian import RobotLibrarian
+
+r = RobotCreator()
+
+# Create the asset bundles and generate a metadata record.
+record = r.create_asset_bundles(
+    urdf_url="https://github.com/RethinkRobotics/sawyer_robot/blob/master/sawyer_description/urdf/sawyer.urdf.xacro",
+    xacro_args={"electric_gripper": "true"},
+    required_repo_urls={"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"},
+    immovable=True,
+    up="y")
+
+# Add the record to the local library.
+lib = RobotLibrarian("my_robot_librarian.json")
+lib.add_or_overwrite_record(record=record, overwrite=False, write=True)
+```
+
+### Testing your robot
+
+1. Create a prefab of the robot.
+2. Open robot_creator Unity project in Unity 2020.2; the project is located at `~/robot_creator` (where `~` is your home directory).
+3. In the Unity Editor project window, double-click `Scenes -> SampleScene`
+4. In the Unity Editor project window, search for the name of the robot. Click the file and drag it into the scene view.
+5. Press play.
+
+#### Common problems and solutions:
+
+Before prefab creation:
+
+| Problem | Solution |
+| --- | --- |
+| Prefab creation seems to hang. | This is because sometimes the physics hull collider meshes are very complicated and require more time to generate. Let the process run. |
+| Got an error during prefab creation: `Root object of the robot doesn't have an ArticulationBody.` | Open the project, double-click the prefab, and add an ArticulationBody to the root object. Adjust the parenting hierarchy of the robot such that the ArticulationBodies beneath the root are direct children. This is bad: `root -> non-articulation -> articulation` and this is good: `root -> articulation` |
+
+While testing in the Unity Editor project:
+
+| Problem | Solution |
+| --- | --- |
+| Arms are flailing. | Usually this is because the colliders are parented to the wrong object. Double-click the prefab and make sure each `Collisions` object is parented to the matching ArticulationBody object. |
+| Robot falls apart and there are `AABB` errors | You have too many ArticulationBodies. Unity supports a maximum of 65 (1 parent, 64 children). Double-click the prefab and delete any redundant ArticulationBodies. |
+| The base of the robot is below (0, 0, 0) | Double-click the prefab and adjust the y position of the child objects. |
+| Joints snap to a weird angle. | Usually this is because there are overlapping physics colliders. Double-click the prefab and in the Hierarchy view click the root object. The green wireframe meshes in the Scene View are the physics colliders. Try deleting or disabling colliders near the glitching joint. |
+
+***
+
+***
+
+#### `__init__(self, quiet: bool = False, display: str = ":0")`
+
+
+| Parameter | Description |
+| --- | --- |
+| quiet | If true, don't print any messages to console. |
+| display | The display to launch Unity Editor on. Ignored if this isn't Linux. |
+
+***
+
+#### `create_asset_bundles(self, urdf_url: str, required_repo_urls: Dict[str, str] = None, xacro_args: Dict[str, str] = None, immovable: bool = True, up: str = "y") -> RobotRecord`
+
+Given the URL of a .urdf file or a .xacro file, create asset bundles of the robot.
+This is a wrapper function for:
+1. `clone_repo()`
+2. `copy_files()`
+3. `urdf_to_prefab()`
+4. `prefab_to_asset_bundles()`
+
+| Parameter | Description |
+| --- | --- |
+| urdf_url | The URL of a .urdf or a .xacro file. |
+| required_repo_urls | A dictionary of description folder names and repo URLs outside of the robot's repo that are required to create the robot. This is only required for .xacro files that reference outside repos. For example, the Sawyer robot requires this to add the gripper: `{"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"}` |
+| xacro_args | Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file). For example, the Sawyer robot requires this to add the gripper: `{"electric_gripper": "true"}` |
+| immovable | If True, the base of the robot is immovable. |
+| up | The up direction. Used when importing the robot into Unity. Options: `"y"` or `"z"`. Usually, this should be the default value (`"y"`). |
+
+_Returns:_  A `RobotRecord` object. The `urls` field contains the paths to each asset bundle.
+
+***
+
+#### `get_record(name: str, urdf_url: str, immovable: bool, asset_bundles: Dict[str, str]) -> RobotRecord`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| name | The name of the robot. |
+| urdf_url | The URL to the .urdf or .xacro file. |
+| immovable | If True, the base of the robot is immovable. |
+| asset_bundles | The paths to the asset bundles. See `prefab_to_asset_bundle()`. |
+
+_Returns:_  A `RobotRecord` metadata object.
+
+***
+
+#### `clone_repo(self, url: str) -> Path`
+
+Clone a repo to a temporary directory.
+
+| Parameter | Description |
+| --- | --- |
+| url | The URL to the .urdf or .xacro file or the repo. |
+
+_Returns:_  The temporary directory.
+
+***
+
+#### `copy_files(self, urdf_url: str, local_repo_path: Path, repo_paths: Dict[str, Path], xacro_args: Dict[str, str] = None) -> Path`
+
+Copy and convert files required to create a prefab.
+1. If this is a .xacro file, convert it to a .urdf file.
+2. Copy the .urdf file to the Unity project.
+3. Copy all associated meshes to the .urdf project.
+
+| Parameter | Description |
+| --- | --- |
+| urdf_url | The URL to the remote .urdf or .xacro file. |
+| local_repo_path | The path to the local repo. |
+| repo_paths | A dictionary of required repos (including the one that the .urdf or .xacro is in). Key = The description path infix, e.g. "sawyer_description". Value = The path to the local repo. |
+| xacro_args | Names and values for the `arg` tags in the .xacro file. Can be None for a .urdf or .xacro file and always ignored for a .urdf file. |
+
+_Returns:_  The path to the .urdf file in the Unity project.
+
+***
+
+#### `xacro_to_urdf(self, xacro_path: Path, repo_paths: Dict[str, Path], args: Dict[str, str] = None) -> Path`
+
+Convert a local .xacro file to a .urdf file.
+
+| Parameter | Description |
+| --- | --- |
+| xacro_path | The path to the local .xacro file. |
+| args | Names and values for the `arg` tags in the .xacro file. |
+| repo_paths | Local paths to all required repos. Key = The description infix. Value = The local repo path. |
+
+_Returns:_  The path to the .urdf file.
+
+***
+
+#### `urdf_to_prefab(self, urdf_path: Path, immovable: bool = True, up: str = "y") -> Path`
+
+Convert a .urdf file to Unity prefab.
+The .urdf file must already exist on this machine and its meshes must be at the expected locations.
+See: `download_urdf()`, `download_and_convert_xacro()`, and `download_meshes()`.
+
+| Parameter | Description |
+| --- | --- |
+| urdf_path | The path to the .urdf file. |
+| immovable | If True, the base of the robot will be immovable by default (see the `set_immovable` command). |
+| up | The up direction. Used for importing the .urdf into Unity. Options: "y" or "z". |
+
+_Returns:_  The path to the .prefab file.
+
+***
+
+#### `prefab_to_asset_bundle(self, name: str) -> Dict[str, Path]`
+
+Create asset bundles from a prefab.
+
+| Parameter | Description |
+| --- | --- |
+| name | The name of the robot (minus the .prefab extension). |
+
+_Returns:_  A dictionary. Key = The system platform. Value = The path to the asset bundle as a Path object.
+
+***
+
+#### `import_unity_package(self, unity_project_path: Path) -> None`
+
+Import the .unitypackage file into the Unity project. Add the .urdf importer package.
+
+| Parameter | Description |
+| --- | --- |
+| unity_project_path | The path to the Unity project. |
+
+***
+
+#### `get_unity_package() -> str`
+
+_This is a static function._
+
+Check the Editor log for errors.
+
+***
+
+#### `get_project_path() -> Path`
+
+_This is a static function._
+
+Check the Editor log for errors.
+
+***
+

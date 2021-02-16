@@ -109,6 +109,32 @@ class RobotCreator(AssetBundleCreatorBase):
     lib.add_or_overwrite_record(record=record, overwrite=False, write=True)
     ```
 
+    ### Testing your robot
+
+    1. Create a prefab of the robot.
+    2. Open robot_creator Unity project in Unity 2020.2; the project is located at `~/robot_creator` (where `~` is your home directory).
+    3. In the Unity Editor project window, double-click `Scenes -> SampleScene`
+    4. In the Unity Editor project window, search for the name of the robot. Click the file and drag it into the scene view.
+    5. Press play.
+
+    #### Common problems and solutions:
+
+    Before prefab creation:
+
+    | Problem | Solution |
+    | --- | --- |
+    | Prefab creation seems to hang. | This is because sometimes the physics hull collider meshes are very complicated and require more time to generate. Let the process run. |
+    | Got an error during prefab creation: `Root object of the robot doesn't have an ArticulationBody.` | Open the project, double-click the prefab, and add an ArticulationBody to the root object. Adjust the parenting hierarchy of the robot such that the ArticulationBodies beneath the root are direct children. This is bad: `root -> non-articulation -> articulation` and this is good: `root -> articulation` |
+
+    While testing in the Unity Editor project:
+
+    | Problem | Solution |
+    | --- | --- |
+    | Arms are flailing. | Usually this is because the colliders are parented to the wrong object. Double-click the prefab and make sure each `Collisions` object is parented to the matching ArticulationBody object. |
+    | Robot falls apart and there are `AABB` errors | You have too many ArticulationBodies. Unity supports a maximum of 65 (1 parent, 64 children). Double-click the prefab and delete any redundant ArticulationBodies. |
+    | The base of the robot is below (0, 0, 0) | Double-click the prefab and adjust the y position of the child objects. |
+    | Joints snap to a weird angle. | Usually this is because there are overlapping physics colliders. Double-click the prefab and in the Hierarchy view click the root object. The green wireframe meshes in the Scene View are the physics colliders. Try deleting or disabling colliders near the glitching joint. |
+
     ***
 
     """
@@ -176,6 +202,19 @@ class RobotCreator(AssetBundleCreatorBase):
         asset_bundles = temp
 
         # Create the record.
+        return RobotCreator.get_record(name=name, urdf_url=urdf_url, immovable=immovable, asset_bundles=asset_bundles)
+
+    @staticmethod
+    def get_record(name: str, urdf_url: str, immovable: bool, asset_bundles: Dict[str, str]) -> RobotRecord:
+        """
+        :param name: The name of the robot.
+        :param urdf_url: The URL to the .urdf or .xacro file.
+        :param immovable: If True, the base of the robot is immovable.
+        :param asset_bundles: The paths to the asset bundles. See `prefab_to_asset_bundle()`.
+
+        :return: A `RobotRecord` metadata object.
+        """
+
         record_data = {"name": name,
                        "source": RobotCreator._get_repo_url(url=urdf_url),
                        "immovable": immovable,
@@ -252,6 +291,8 @@ class RobotCreator(AssetBundleCreatorBase):
         urdf = urdf_dst.read_text(encoding="utf-8")
         # Remove gazebo stuff.
         urdf = re.sub(r"<gazebo reference(.*?)>((.|\n)*?)</gazebo>", "", urdf)
+        urdf = re.sub(r"<gazebo>((.|\n)*?)</gazebo>", "", urdf)
+        urdf = re.sub(r"<transmission((.|\n)*?)</transmission>", "", urdf)
         urdf_dst.write_text(urdf, encoding="utf-8")
         # Copy the meshes.
         for m in re.findall(r"filename=\"package://((.*)\.(DAE|dae|stl|STL))\"", urdf):
@@ -388,6 +429,7 @@ class RobotCreator(AssetBundleCreatorBase):
         if not self.quiet:
             print("Creating a .prefab from a .urdf file...")
         call(urdf_call)
+        RobotCreator._check_log()
         prefab_path = self.project_path.joinpath(f"Assets/prefabs/{name}.prefab")
         assert prefab_path.exists(), f"Prefab not found: {prefab_path}"
         if not self.quiet:

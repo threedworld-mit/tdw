@@ -4,7 +4,6 @@
         "ur3": {
             "immovable": true,
             "name": "ur3",
-            "y": 0,
             "source": "https://github.com/Unity-Technologies/articulations-robot-demo",
             "urls": {
                 "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur3",

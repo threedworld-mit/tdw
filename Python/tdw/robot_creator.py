@@ -293,6 +293,7 @@ class RobotCreator(AssetBundleCreatorBase):
         urdf = re.sub(r"<gazebo reference(.*?)>((.|\n)*?)</gazebo>", "", urdf)
         urdf = re.sub(r"<gazebo>((.|\n)*?)</gazebo>", "", urdf)
         urdf = re.sub(r"<transmission((.|\n)*?)</transmission>", "", urdf)
+        urdf = re.sub(r'<xacro:include (.*)gazebo(.*)/>', "", urdf)
         urdf_dst.write_text(urdf, encoding="utf-8")
         # Copy the meshes.
         for m in re.findall(r"filename=\"package://((.*)\.(DAE|dae|stl|STL))\"", urdf):
@@ -339,6 +340,7 @@ class RobotCreator(AssetBundleCreatorBase):
         for k in args:
             xacro = re.sub('<xacro:arg name="' + k + '" default="(.*)"',
                            f'<xacro:arg name="{k}" default="{args[k]}"', xacro)
+        xacro = re.sub(r'<xacro:include (.*)gazebo(.*?)/>', "", xacro)
 
         # Put all required .xacro files in a temporary directory.
         xacro_dir = RobotCreator.TEMP_ROOT.joinpath("xacro")
@@ -383,7 +385,7 @@ class RobotCreator(AssetBundleCreatorBase):
         # Finally, create the .urdf file.
         cwd = getcwd()
         chdir(str(RobotCreator.TEMP_ROOT.joinpath("xacro").resolve()))
-        urdf_name = x.name.replace(".xacro", "")
+        urdf_name = x.name.replace(".urdf.xacro", ".urdf").replace(".xacro", ".urdf")
         xacro_call = ["source", "/opt/ros/melodic/setup.bash", "&&",
                       "rosrun", "xacro", "xacro", "-o", urdf_name, x.name]
         if system() == "Windows":
@@ -392,7 +394,7 @@ class RobotCreator(AssetBundleCreatorBase):
         urdf_path = Path(f"../../Assets/robots/{urdf_name}")
         if urdf_path.exists():
             urdf_path.unlink()
-        move_file(src=str(Path(urdf_name).resolve()), dst=str(urdf_path.resolve()))
+        move_file(src=str(x.parent.joinpath(urdf_name).resolve()), dst=str(urdf_path.resolve()))
         if not self.quiet:
             print(f"Created {str(urdf_path.resolve())}")
         urdf_path = Path(str(urdf_path.resolve()))

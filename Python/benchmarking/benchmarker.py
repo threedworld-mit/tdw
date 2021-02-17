@@ -109,8 +109,6 @@ class Benchmarker(Controller):
         num_trials = 0
         t0 = time()
         while num_trials < 50000:
-            if num_trials % 200 == 0:
-                print('num_trials=%d' % num_trials)
             self.communicate([])
             num_trials += 1
 

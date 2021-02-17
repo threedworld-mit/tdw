@@ -117,6 +117,18 @@ One or more of the commands you sent isn't formatted correctly. This message sho
 
 There is another process (probably another controller) currently running and using the same port that your controller is trying to use. Kill that process in order to run your controller.
 
+### The controller pauses while sending a message to the build
+
+Occasionally, the synchronous send-receive socket pattern between the controller and the build will fail. This seems to be an inevitable on Linux servers; we've never seen this problem on Windows.
+
+Should the connection fail, the build will automatically reconnect after a certain timeout duration and ask the controller to re-send the last message. This won't advance the simulation's physics or rendering state but there will be a several-second pause between messages.
+
+To adjust the timeout duration, send [`set_socket_timeout`](../api/command_api#set_socket_timeout).
+
+### The controller hangs indefinitely
+
+This is usually because another process (such as another instance of a TDW build) that is using the same port and received a message intended for the TDW build. Either stop all TDW build processes before launching TDW, or launch TDW on a unique port (see [Getting Started](../getting_started.md)).
+
 ## Common OS X Problems
 
 See [OS X documentation](osx.md).

@@ -75,13 +75,22 @@ class Controller(object):
         else:
             msg = [json.dumps([commands]).encode('utf-8')]
 
+        # Send the commands.
         self.socket.send_multipart(msg)
-
-        # If the connection timed out, try to send again.
+        # Receive output data.
         resp = self.socket.recv_multipart()
+
+        # Occasionally, the build's socket will stop receiving messages.
+        # If that happens, it will close the socket, create a new socket, and send a dummy output data object.
+        # The ID of the dummy object is "ftre" (FailedToReceive).
+        # If the controller receives the dummy object, it should re-send its commands.
+        # The dummy object is always in an array: [ftre, 0]
+        # This way, the controller can easily differentiate it from a response that just has the frame count.
         while len(resp) > 1 and OutputData.get_data_type_id(resp[0]) == "ftre":
             self.socket.send_multipart(msg)
             resp = self.socket.recv_multipart()
+
+        # Return the output data from the build.
         return resp
 
     def start(self, scene="ProcGenScene") -> None:

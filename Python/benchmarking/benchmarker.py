@@ -108,13 +108,16 @@ class Benchmarker(Controller):
         # Run the trials.
         num_trials = 0
         t0 = time()
-        while num_trials < 10000:
+        while num_trials < 50000:
+            if num_trials % 200 == 0:
+                print('num_trials=%d' % num_trials)
             self.communicate([])
             num_trials += 1
 
         # Calculate the FPS.
         fps = (num_trials / (time() - t0))
 
+        print("")
         if return_row:
             return "| `" + row + "` | " + str(round(fps)) + " |"
         else:

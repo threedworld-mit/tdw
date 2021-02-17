@@ -4,6 +4,39 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.1
+
+### Command API
+
+#### New Commands
+
+| Command              | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `set_socket_timeout` | Set the timeout duration for the socket used to communicate with the controller. |
+
+### `tdw` module
+
+#### `Controller`
+
+- **Fixed: The connection to the build will occasionally fail, causing the controller to hang indefinitely.** Now, the build will close its socket, open a new socket, and alert the controller that it should re-send the previous message. This won't advance the simulation in any way but you might notice a few-second hiccup between messages.
+
+### Benchmarking
+
+- Increased the default number of trials from `benchmarker.py` from 10,000 to 50,000
+- Fixed: `build_simulator.py` doesn't terminate automatically.
+- Fixed: `controller_simulator.py` doesn't work.
+- Removed: `req_test_controller.py` because ReqTest isn't supported in TDW anymore.
+- Removed: `req_test_builder.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document        | Modification                                                 |
+| --------------- | ------------------------------------------------------------ |
+| `unity_loop.md` | Removed test results that involve ReqTest because they aren't actually that meaningful. |
+| `debug_tdw.md`  | Added some information about what to do if the network connection hangs. |
+
 ## v1.8.0
 
 ### New Features

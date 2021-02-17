@@ -115,7 +115,6 @@ class Benchmarker(Controller):
         # Calculate the FPS.
         fps = (num_trials / (time() - t0))
 
-        print("")
         if return_row:
             return "| `" + row + "` | " + str(round(fps)) + " |"
         else:

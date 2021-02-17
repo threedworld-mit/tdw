@@ -25,8 +25,11 @@ if __name__ == "__main__":
     sock.connect("tcp://localhost:1071")
 
     key = 1
-    while True:
+    done = False
+    while not done:
         sock.send_multipart([outputs[key]])
         resp = loads(sock.recv_multipart()[0])[0]
-        if resp["$type"] == "send_junk":
+        if "stop" in resp:
+            done = True
+        elif resp["$type"] == "send_junk":
             key = resp["length"]

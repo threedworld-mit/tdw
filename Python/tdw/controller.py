@@ -5,7 +5,7 @@ from subprocess import Popen
 from typing import List, Union, Optional, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian
-from tdw.output_data import Version
+from tdw.output_data import OutputData, Version
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
@@ -70,12 +70,19 @@ class Controller(object):
         :return The output data from the build.
         """
 
-        if not isinstance(commands, list):
-            commands = [commands]
+        if isinstance(commands, list):
+            msg = [json.dumps(commands).encode('utf-8')]
+        else:
+            msg = [json.dumps([commands]).encode('utf-8')]
 
-        self.socket.send_multipart([json.dumps(commands).encode('utf-8')])
+        self.socket.send_multipart(msg)
 
-        return self.socket.recv_multipart()
+        # If the connection timed out, try to send again.
+        resp = self.socket.recv_multipart()
+        while len(resp) > 1 and OutputData.get_data_type_id(resp[0]) == "ftre":
+            self.socket.send_multipart(msg)
+            resp = self.socket.recv_multipart()
+        return resp
 
     def start(self, scene="ProcGenScene") -> None:
         """

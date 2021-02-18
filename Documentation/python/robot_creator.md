@@ -43,21 +43,35 @@ On Windows:
 
 # Usage
 
-To create an asset bundle of the Sawyer robot:
+To create an asset bundle of the UR5 robot:
 
 ```python
 from tdw.robot_creator import RobotCreator
 
 r = RobotCreator()
 record = r.create_asset_bundles(
-    urdf_url="https://github.com/RethinkRobotics/sawyer_robot/blob/master/sawyer_description/urdf/sawyer.urdf.xacro",
-    xacro_args={"electric_gripper": "true"},
-    required_repo_urls={"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"},
+    urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf",
+    xacro_args=None,
+    required_repo_urls=None,
     immovable=True,
     up="y")
 print(record.name)
 print(record.urls)
 ```
+
+Note that most of the parameters are optional, so this can be simplified to:
+
+```python
+from tdw.robot_creator import RobotCreator
+
+r = RobotCreator()
+record = r.create_asset_bundles(
+    urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
+print(record.name)
+print(record.urls)
+```
+
+The first time that this script is run, it will create a new `robot_creator` Unity project from a file in the `tdw` Python module. The original repo is [here](https://github.com/alters-mit/robot_creator).
 
 ### Storing metadata
 
@@ -82,11 +96,7 @@ r = RobotCreator()
 
 # Create the asset bundles and generate a metadata record.
 record = r.create_asset_bundles(
-    urdf_url="https://github.com/RethinkRobotics/sawyer_robot/blob/master/sawyer_description/urdf/sawyer.urdf.xacro",
-    xacro_args={"electric_gripper": "true"},
-    required_repo_urls={"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"},
-    immovable=True,
-    up="y")
+    urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
 
 # Add the record to the local library.
 lib = RobotLibrarian("my_robot_librarian.json")

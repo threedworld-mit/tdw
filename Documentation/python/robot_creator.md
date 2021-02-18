@@ -73,7 +73,6 @@ It's usually worth testing and editing the prefab before finalizing the asset bu
 4. In the Unity Editor project window, search for the name of the robot. Click the file and drag it into the scene view.
 5. Press play.
 
-
 Common problems and solutions during prefab creation:
 
 | Problem | Solution |

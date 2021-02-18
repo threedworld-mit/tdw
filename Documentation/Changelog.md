@@ -10,9 +10,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 #### `RobotCreator`
 
-- Added: `robot_creator.py` **Frontend users can now add robots to TDW.** See: `tdw/Documenation/misc_frontend/robotics.md` and `tdw/Documentation/python/robot_creator.md`
-
-#### `AssetBundleCreator`
+- Added: `robot_creator.py` **Frontend users can now add robots to TDW, given the URL of a .urdf or .xacro file.** See: `tdw/Documenation/misc_frontend/robotics.md` and `tdw/Documentation/python/robot_creator.md`
 
 #### Backend
 
@@ -73,7 +71,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | --------------- | ------------------------------------------------------------ |
 | `unity_loop.md` | Removed test results that involve ReqTest because they aren't actually that meaningful. |
 | `debug_tdw.md`  | Added some information about what to do if the network connection hangs. |
->>>>>>> master
 
 ## v1.8.0
 

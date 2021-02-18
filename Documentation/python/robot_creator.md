@@ -1,16 +1,5 @@
 # `robot_creator.py`
 
-#### `__init__(self, url: str, description: str, path_to_description: str)`
-
-
-| Parameter | Description |
-| --- | --- |
-| url | The URL of the repo. |
-| description | The name of the folder with the urdfs and meshes. |
-| path_to_description | An infix between the URL and the description. |
-
-***
-
 ## `RobotCreator(AssetBundleCreatorBase)`
 
 `from tdw.robot_creator import RobotCreator`
@@ -131,6 +120,8 @@ While testing in the Unity Editor project:
 | The robot tips over. | Set `immovable=True` in `create_asset_bundles()`. If that doesn't work, double-click the prefab. In the Hierarchy panel, click the ArticulationBody that you think is causing the robot to tilt. In the Inspector panel, click "Add Component". Add: `Center Of Mass`. Adjust the center of mass in the Inspector until the robot stops tipping. |
 
 ***
+
+# Functions
 
 ***
 

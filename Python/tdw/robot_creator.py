@@ -12,23 +12,6 @@ from tdw.backend.paths import EDITOR_LOG_PATH
 from tdw.backend.platforms import UNITY_TO_SYSTEM
 
 
-class _RobotRepo:
-    """
-    A simple container for robot repo metadata.
-    """
-
-    def __init__(self, url: str, description: str, path_to_description: str):
-        """
-        :param url: The URL of the repo.
-        :param description: The name of the folder with the urdfs and meshes.
-        :param path_to_description: An infix between the URL and the description.
-        """
-
-        self.url: str = url
-        self.description: str = description
-        self.path_to_description: str = path_to_description
-
-
 class RobotCreator(AssetBundleCreatorBase):
     """
     Download a .urdf or .xacro file and convert it into an asset bundle that is usable by TDW.
@@ -147,6 +130,8 @@ class RobotCreator(AssetBundleCreatorBase):
     | The robot tips over. | Set `immovable=True` in `create_asset_bundles()`. If that doesn't work, double-click the prefab. In the Hierarchy panel, click the ArticulationBody that you think is causing the robot to tilt. In the Inspector panel, click "Add Component". Add: `Center Of Mass`. Adjust the center of mass in the Inspector until the robot stops tipping. |
 
     ***
+
+    # Functions
 
     """
 

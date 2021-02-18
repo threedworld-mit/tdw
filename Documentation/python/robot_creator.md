@@ -219,7 +219,6 @@ _Returns:_  The path to the .urdf file.
 
 Convert a .urdf file to Unity prefab.
 The .urdf file must already exist on this machine and its meshes must be at the expected locations.
-See: `download_urdf()`, `download_and_convert_xacro()`, and `download_meshes()`.
 
 | Parameter | Description |
 | --- | --- |
@@ -257,7 +256,7 @@ Import the .unitypackage file into the Unity project. Add the .urdf importer pac
 
 _This is a static function._
 
-Check the Editor log for errors.
+_Returns:_  The name of the .unitypackage file.
 
 ***
 
@@ -265,7 +264,7 @@ Check the Editor log for errors.
 
 _This is a static function._
 
-Check the Editor log for errors.
+_Returns:_  The expected path of the Unity project.
 
 ***
 

@@ -411,8 +411,6 @@ class RobotCreator(AssetBundleCreatorBase):
 
         The .urdf file must already exist on this machine and its meshes must be at the expected locations.
 
-        See: `download_urdf()`, `download_and_convert_xacro()`, and `download_meshes()`.
-
         :param urdf_path: The path to the .urdf file.
         :param immovable: If True, the base of the robot will be immovable by default (see the `set_immovable` command).
         :param up: The up direction. Used for importing the .urdf into Unity. Options: "y" or "z".

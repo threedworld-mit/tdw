@@ -102,7 +102,7 @@ c = Controller(launch_build=False)
 c.start()
 robot_id = 0
 commands = [TDWUtils.create_empty_room(12, 12),
-            c.get_add_robot(name="ur5", robot_id=0, library="my_robot_librarian.json")]
+            c.get_add_robot(name="ur5", robot_id=robot_id, library="my_robot_librarian.json")]
 commands.extend(TDWUtils.create_avatar(look_at=TDWUtils.VECTOR3_ZERO, position={"x": -0.881, "y": 0.836, "z": -1.396}))
 c.communicate(commands)
 ```

@@ -92,6 +92,23 @@ lib = RobotLibrarian("my_robot_librarian.json")
 lib.add_or_overwrite_record(record=record, overwrite=False, write=True)
 ```
 
+To add the robot to a TDW scene:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller(launch_build=False)
+c.start()
+robot_id = 0
+commands = [TDWUtils.create_empty_room(12, 12),
+            c.get_add_robot(name="ur5", robot_id=0, library="my_robot_librarian.json")]
+commands.extend(TDWUtils.create_avatar(look_at=TDWUtils.VECTOR3_ZERO, position={"x": -0.881, "y": 0.836, "z": -1.396}))
+c.communicate(commands)
+```
+
+For a more complete example, see: `twd/Python/example_controllers/robot_arm.py` Note that in this example, the `library` parameter isn't explicitly set. This is because UR5 is in the default TDW library already.
+
 ### Testing your robot
 
 1. Create a prefab of the robot.

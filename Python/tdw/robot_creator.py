@@ -447,6 +447,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
         :return: A dictionary. Key = The system platform. Value = The path to the asset bundle as a Path object.
         """
+
         asset_bundles_call = self.get_base_unity_call()[:]
         asset_bundles_call.extend(["-executeMethod", "Creator.CreateAssetBundles",
                                    f"-robot='{name}'"])
@@ -480,10 +481,18 @@ class RobotCreator(AssetBundleCreatorBase):
 
     @staticmethod
     def get_unity_package() -> str:
+        """
+        :return: The name of the .unitypackage file.
+        """
+        
         return "robot_creator.unitypackage"
 
     @staticmethod
     def get_project_path() -> Path:
+        """
+        :return: The expected path of the Unity project.
+        """
+
         return Path.home().joinpath("robot_creator")
 
     @staticmethod

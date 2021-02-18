@@ -101,13 +101,7 @@ _Returns:_ The path to the asset_bundle_creator Unity project.
 
 _This is a static function._
 
-Convert a .fbx file to a .obj file with assimp
-
-| Parameter | Description |
-| --- | --- |
-| model_path | The path to the model. |
-
-_Returns:_ The path to the new object, and True if it's a new file (False if it's the existing base file).
+_Returns:_  The expected path of the Unity project.
 
 ***
 
@@ -115,13 +109,7 @@ _Returns:_ The path to the new object, and True if it's a new file (False if it'
 
 _This is a static function._
 
-Convert a .fbx file to a .obj file with assimp
-
-| Parameter | Description |
-| --- | --- |
-| model_path | The path to the model. |
-
-_Returns:_ The path to the new object, and True if it's a new file (False if it's the existing base file).
+_Returns:_  The name of the .unitypackage file.
 
 ***
 

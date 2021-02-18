@@ -1,18 +1,11 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 import platform
-from typing import List, Dict, Optional, Tuple, Union
+from typing import List
 from subprocess import call, check_output, CalledProcessError
 import os
-import shutil
-from tdw.librarian import ModelRecord
-from tdw.backend import paths
-import json
 import pkg_resources
 import re
-import distutils.dir_util
-import distutils.file_util
-from tdw.backend.platforms import S3_TO_UNITY, SYSTEM_TO_UNITY, UNITY_TO_SYSTEM
 
 
 class AssetBundleCreatorBase(ABC):
@@ -41,22 +34,6 @@ class AssetBundleCreatorBase(ABC):
                 raise Exception(f"{e}\n\nRun: sudo apt install libgconf-2-4")
             # Set the display for Linux.
             self.env["DISPLAY"] = display
-
-        self.binaries: Dict[str, str] = dict()
-        binary_path = f"binaries/{system}"
-
-        # Cache the binaries.
-        self.binaries["assimp"] = f"{binary_path}/assimp/assimp"
-        self.binaries["meshconv"] = f"{binary_path}/meshconv/meshconv"
-        self.binaries["vhacd"] = f"{binary_path}/vhacd/testVHACD"
-
-        for binary in self.binaries:
-            # Add the .exe suffix for Windows.
-            if system == "Windows":
-                self.binaries[binary] += ".exe"
-            # Run chmod +x on everything.
-            else:
-                call(["chmod", "+x", pkg_resources.resource_filename(__name__, self.binaries[binary])])
 
         self.quiet = quiet
 
@@ -173,7 +150,6 @@ class AssetBundleCreatorBase(ABC):
               "-batchmode"], env=self.env)
         if not self.quiet:
             print(f"Imported {package_name} into the new project.")
-
 
     @staticmethod
     @abstractmethod

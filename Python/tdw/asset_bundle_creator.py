@@ -1,14 +1,13 @@
 from pathlib import Path
 import platform
 from typing import List, Dict, Optional, Tuple, Union
-from subprocess import call, check_output, CalledProcessError
+from subprocess import call
 import os
 import shutil
 from tdw.librarian import ModelRecord
 from tdw.backend import paths
 import json
 import pkg_resources
-import re
 import distutils.dir_util
 import distutils.file_util
 from tdw.backend.platforms import S3_TO_UNITY, SYSTEM_TO_UNITY, UNITY_TO_SYSTEM
@@ -41,6 +40,23 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         """
 
         super().__init__(quiet=quiet, display=display)
+
+        system = platform.system()
+        self.binaries: Dict[str, str] = dict()
+        binary_path = f"binaries/{system}"
+
+        # Cache the binaries.
+        self.binaries["assimp"] = f"{binary_path}/assimp/assimp"
+        self.binaries["meshconv"] = f"{binary_path}/meshconv/meshconv"
+        self.binaries["vhacd"] = f"{binary_path}/vhacd/testVHACD"
+
+        for binary in self.binaries:
+            # Add the .exe suffix for Windows.
+            if system == "Windows":
+                self.binaries[binary] += ".exe"
+            # Run chmod +x on everything.
+            else:
+                call(["chmod", "+x", pkg_resources.resource_filename(__name__, self.binaries[binary])])
 
     def create_asset_bundle(self, model_path: Union[Path, str], cleanup: bool, wnid: int = -1, wcategory: str = "", scale: float = 1) -> (List[Path], Path):
         """
@@ -165,10 +181,18 @@ class AssetBundleCreator(AssetBundleCreatorBase):
 
     @staticmethod
     def get_project_path() -> Path:
+        """
+        :return: The expected path of the Unity project.
+        """
+
         return Path.home().joinpath("asset_bundle_creator")
 
     @staticmethod
     def get_unity_package() -> str:
+        """
+        :return: The name of the .unitypackage file.
+        """
+
         return "asset_bundle_creator.unitypackage"
 
     def fbx_to_obj(self, model_path: Path) -> Tuple[Path, bool]:

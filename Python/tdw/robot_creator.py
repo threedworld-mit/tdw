@@ -64,15 +64,14 @@ class RobotCreator(AssetBundleCreatorBase):
     from tdw.robot_creator import RobotCreator
 
     r = RobotCreator()
-    record = r.create_asset_bundles(
-        urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
+    record = r.create_asset_bundles(urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
     print(record.name)
     print(record.urls)
     ```
 
     The first time that this script is run, it will create a new `robot_creator` Unity project from a file in the `tdw` Python module. The original repo is [here](https://github.com/alters-mit/robot_creator).
 
-    ### Editing the prefab
+    ### Edit the prefab
 
     `RobotCreator.create_asset_bundles()` creates a .prefab file in the `robot_creator` Unity project. This is an intermediate file that is required for building the asset bundle.
 
@@ -85,16 +84,14 @@ class RobotCreator(AssetBundleCreatorBase):
     5. Press play.
 
 
-    #### Common problems and solutions:
-
-    Before prefab creation:
+    Common problems and solutions during prefab creation:
 
     | Problem | Solution |
     | --- | --- |
     | Prefab creation seems to hang. | This is because sometimes the physics hull collider meshes are very complicated and require more time to generate. Let the process run. |
     | Got an error during prefab creation: `Root object of the robot doesn't have an ArticulationBody.` | Open the project, double-click the prefab, and add an ArticulationBody to the root object. Adjust the parenting hierarchy of the robot such that the ArticulationBodies beneath the root are direct children. This is bad: `root -> non-articulation -> articulation` and this is good: `root -> articulation` |
 
-    While testing in the Unity Editor project:
+    Common problems and solutions while testing a prefab in the Unity Editor project:
 
     | Problem | Solution |
     | --- | --- |
@@ -104,7 +101,7 @@ class RobotCreator(AssetBundleCreatorBase):
     | Joints snap to a weird angle. | Usually this is because there are overlapping physics colliders. Double-click the prefab and in the Hierarchy panel click the root object. The green wireframe meshes in the Scene View are the physics colliders. Try deleting or disabling colliders near the glitching joint. |
     | The robot tips over. | Set `immovable=True` in `create_asset_bundles()`. If that doesn't work, double-click the prefab. In the Hierarchy panel, click the ArticulationBody that you think is causing the robot to tilt. In the Inspector panel, click "Add Component". Add: `Center Of Mass`. Adjust the center of mass in the Inspector until the robot stops tipping. |
 
-    #### Create an asset bundle from a prefab
+    ### Create an asset bundle from a prefab
 
     Once the robot prefab is working correctly, you can create asset bundles without overwriting the prefab:
 
@@ -121,7 +118,7 @@ class RobotCreator(AssetBundleCreatorBase):
     record = RobotCreator.get_record(name=record.name, urdf_url=urdf_url, immovable=True, asset_bundles=asset_bundles)
     ```
 
-    ### Storing metadata
+    ### Store metadata
 
     `RobotCreator.create_asset_bundles()` returns a `RobotRecord` metadata object, which contains the files paths to the asset bundle.
     You can store a `RobotRecord` object in a `RobotLibrarian`, which is saved as a JSON file.
@@ -143,13 +140,14 @@ class RobotCreator(AssetBundleCreatorBase):
     r = RobotCreator()
 
     # Create the asset bundles and generate a metadata record.
-    record = r.create_asset_bundles(
-        urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
+    record = r.create_asset_bundles(urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
 
     # Add the record to the local library.
     lib = RobotLibrarian("my_robot_librarian.json")
     lib.add_or_update_record(record=record, overwrite=False, write=True)
     ```
+
+    ### Load the robot into TDW
 
     To add the robot to a TDW scene:
 
@@ -171,8 +169,7 @@ class RobotCreator(AssetBundleCreatorBase):
     # If there isn't a metadata record yet for this robot, create asset bundles and add the record.
     if lib.get_record(robot_name) is None:
         r = RobotCreator()
-        record = r.create_asset_bundles(
-            urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
+        record = r.create_asset_bundles(urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
         # Add the record if it doesn't already exist.
         lib.add_or_update_record(record=record, overwrite=False, write=True)
 
@@ -186,7 +183,7 @@ class RobotCreator(AssetBundleCreatorBase):
     c.communicate(commands)
     ```
 
-    For an example of how to use the robot in TDW, see: `twd/Python/example_controllers/robot_arm.py` Note that in this example, the `library` parameter isn't explicitly set. This is because UR5 is in the default TDW library already.
+    For a more complete example of how to use the robot in TDW (i.e. find all of its joints and set target angles or positions), see: `twd/Python/example_controllers/robot_arm.py` Note that in this example, there isn't any code to build the asset bundles or update the metadata. This is because UR5 is already in the default TDW robot library (on our remote S3 server) and the metadata record is already stored in the default metadata librarian.
 
     ***
 

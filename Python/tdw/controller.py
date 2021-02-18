@@ -5,7 +5,7 @@ from subprocess import Popen
 from typing import List, Union, Optional, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian
-from tdw.output_data import Version
+from tdw.output_data import OutputData, Version
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
@@ -70,12 +70,28 @@ class Controller(object):
         :return The output data from the build.
         """
 
-        if not isinstance(commands, list):
-            commands = [commands]
+        if isinstance(commands, list):
+            msg = [json.dumps(commands).encode('utf-8')]
+        else:
+            msg = [json.dumps([commands]).encode('utf-8')]
 
-        self.socket.send_multipart([json.dumps(commands).encode('utf-8')])
+        # Send the commands.
+        self.socket.send_multipart(msg)
+        # Receive output data.
+        resp = self.socket.recv_multipart()
 
-        return self.socket.recv_multipart()
+        # Occasionally, the build's socket will stop receiving messages.
+        # If that happens, it will close the socket, create a new socket, and send a dummy output data object.
+        # The ID of the dummy object is "ftre" (FailedToReceive).
+        # If the controller receives the dummy object, it should re-send its commands.
+        # The dummy object is always in an array: [ftre, 0]
+        # This way, the controller can easily differentiate it from a response that just has the frame count.
+        while len(resp) > 1 and OutputData.get_data_type_id(resp[0]) == "ftre":
+            self.socket.send_multipart(msg)
+            resp = self.socket.recv_multipart()
+
+        # Return the output data from the build.
+        return resp
 
     def start(self, scene="ProcGenScene") -> None:
         """

@@ -197,8 +197,6 @@ class RobotCreator(AssetBundleCreatorBase):
 
     # The root temporary directory.
     TEMP_ROOT = Path.home().joinpath("robot_creator/temp_robots")
-    if not TEMP_ROOT.exists():
-        TEMP_ROOT.mkdir(parents=True)
 
     def __init__(self, quiet: bool = False, display: str = ":0"):
         """
@@ -285,6 +283,9 @@ class RobotCreator(AssetBundleCreatorBase):
 
         :return: The temporary directory.
         """
+
+        if not RobotCreator.TEMP_ROOT.exists():
+            RobotCreator.TEMP_ROOT.mkdir(parents=True)
 
         # This is a .urdf or .xacro file. Parse the repo URL accordingly.
         if url.endswith(".xacro") or url.endswith(".urdf"):
@@ -387,6 +388,9 @@ class RobotCreator(AssetBundleCreatorBase):
 
         :return: The path to the .urdf file.
         """
+
+        if not RobotCreator.TEMP_ROOT.exists():
+            RobotCreator.TEMP_ROOT.mkdir(parents=True)
 
         xacro = xacro_path.read_text(encoding="utf-8")
 
@@ -623,6 +627,9 @@ class RobotCreator(AssetBundleCreatorBase):
 
         :return: The path to the local repo.
         """
+
+        if not RobotCreator.TEMP_ROOT.exists():
+            RobotCreator.TEMP_ROOT.mkdir(parents=True)
 
         repo_url = RobotCreator._get_repo_url(url=url)
         repo_name = RobotCreator._get_repo_name(repo_url=repo_url)

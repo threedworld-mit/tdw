@@ -99,6 +99,7 @@ class AssetBundleCreatorBase(ABC):
 
         return editor_path
 
+    @abstractmethod
     def get_unity_project(self) -> Path:
         """
         Build the asset_bundle_creator Unity project.
@@ -106,50 +107,7 @@ class AssetBundleCreatorBase(ABC):
         :return The path to the asset_bundle_creator Unity project.
         """
 
-        unity_project_path = self.get_project_path()
-
-        # If the project already exists, stop.
-        if unity_project_path.exists():
-            return unity_project_path
-
-        if not self.quiet:
-            print(f"Creating: {unity_project_path.resolve()}")
-
-        call([str(AssetBundleCreatorBase.get_editor_path().resolve()),
-              "-createProject",
-              str(unity_project_path.resolve()),
-              "-quit",
-              "-batchmode"], env=self.env)
-        assert unity_project_path.exists(), unity_project_path.resolve()
-        if not self.quiet:
-            print(f"Created new Unity project: {str(unity_project_path.resolve())}")
-
-        # Import the package.
-        self.import_unity_package(unity_project_path=unity_project_path)
-
-        return unity_project_path
-
-    def import_unity_package(self, unity_project_path: Path) -> None:
-        """
-        Import the .unitypackage file into the Unity project.
-
-        :param unity_project_path: The path to the Unity project.
-        """
-
-        # Add the .unitypackage to the new project.
-        package_name = self.get_unity_package()
-        filepath = pkg_resources.resource_filename(__name__, package_name)
-        assert Path(filepath).exists(), filepath
-        # Import the package.
-        call([str(AssetBundleCreatorBase.get_editor_path().resolve()),
-              "-projectPath",
-              str(unity_project_path.resolve()),
-              "-importPackage",
-              filepath,
-              "-quit",
-              "-batchmode"], env=self.env)
-        if not self.quiet:
-            print(f"Imported {package_name} into the new project.")
+        raise Exception()
 
     @staticmethod
     @abstractmethod
@@ -159,13 +117,3 @@ class AssetBundleCreatorBase(ABC):
         """
 
         raise Exception()
-
-    @staticmethod
-    @abstractmethod
-    def get_unity_package() -> str:
-        """
-        :return: The name of the .unitypackage file.
-        """
-
-        raise Exception()
-

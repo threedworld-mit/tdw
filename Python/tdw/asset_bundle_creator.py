@@ -177,7 +177,37 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :return The path to the asset_bundle_creator Unity project.
         """
 
-        return super().get_unity_project()
+        unity_project_path = self.get_project_path()
+
+        # If the project already exists, stop.
+        if unity_project_path.exists():
+            return unity_project_path
+
+        if not self.quiet:
+            print(f"Creating: {unity_project_path.resolve()}")
+
+        call([str(AssetBundleCreatorBase.get_editor_path().resolve()),
+              "-createProject",
+              str(unity_project_path.resolve()),
+              "-quit",
+              "-batchmode"], env=self.env)
+        assert unity_project_path.exists(), unity_project_path.resolve()
+        if not self.quiet:
+            print(f"Created new Unity project: {str(unity_project_path.resolve())}")
+        # Add the .unitypackage to the new project.
+        package_name = "asset_bundle_creator.unitypackage"
+        filepath = pkg_resources.resource_filename(__name__, package_name)
+        assert Path(filepath).exists(), filepath
+        # Import the package.
+        call([str(AssetBundleCreatorBase.get_editor_path().resolve()),
+              "-projectPath",
+              str(unity_project_path.resolve()),
+              "-importPackage",
+              filepath,
+              "-quit",
+              "-batchmode"], env=self.env)
+        if not self.quiet:
+            print(f"Imported {package_name} into the new project.")
 
     @staticmethod
     def get_project_path() -> Path:
@@ -186,14 +216,6 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         """
 
         return Path.home().joinpath("asset_bundle_creator")
-
-    @staticmethod
-    def get_unity_package() -> str:
-        """
-        :return: The name of the .unitypackage file.
-        """
-
-        return "asset_bundle_creator.unitypackage"
 
     def fbx_to_obj(self, model_path: Path) -> Tuple[Path, bool]:
         """

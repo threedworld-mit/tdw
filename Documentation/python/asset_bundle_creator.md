@@ -105,14 +105,6 @@ _Returns:_  The expected path of the Unity project.
 
 ***
 
-#### `get_unity_package() -> str`
-
-_This is a static function._
-
-_Returns:_  The name of the .unitypackage file.
-
-***
-
 #### `fbx_to_obj(self, model_path: Path) -> Tuple[Path, bool]`
 
 Convert a .fbx file to a .obj file with assimp

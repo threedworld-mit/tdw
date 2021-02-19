@@ -42,25 +42,9 @@ _Returns:_ The path to the asset_bundle_creator Unity project.
 
 ***
 
-#### `import_unity_package(self, unity_project_path: Path) -> None`
-
-Import the .unitypackage file into the Unity project.
-
-| Parameter | Description |
-| --- | --- |
-| unity_project_path | The path to the Unity project. |
-
-***
-
 #### `get_project_path() -> Path`
 
 _Returns:_  The expected path of the Unity project.
-
-***
-
-#### `get_unity_package() -> str`
-
-_Returns:_  The name of the .unitypackage file.
 
 ***
 

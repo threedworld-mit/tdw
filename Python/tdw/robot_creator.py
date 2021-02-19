@@ -22,6 +22,7 @@ class RobotCreator(AssetBundleCreatorBase):
       - On a remote Linux server, you'll need a valid virtual display (see the `display` parameter of the constructor)
     - Unity Editor 2020.2 (must be installed via Unity Hub)
     - Python3 and the `tdw` module.
+    - git
 
     ### ROS and .xacro file requirements
 
@@ -73,7 +74,7 @@ class RobotCreator(AssetBundleCreatorBase):
     print(record.urls)
     ```
 
-    The first time that this script is run, it will create a new `robot_creator` Unity project from a file in the `tdw` Python module. The original repo is [here](https://github.com/alters-mit/robot_creator).
+    The first time that this script is run, it clone [the robot_creator repo](https://github.com/alters-mit/robot_creator) (a Unity project used for creating robots) to your home directory.
 
     ### Edit the prefab
 
@@ -519,25 +520,26 @@ class RobotCreator(AssetBundleCreatorBase):
             print("...Done!")
         return asset_bundle_paths
 
-    def import_unity_package(self, unity_project_path: Path) -> None:
+    def get_unity_project(self) -> Path:
         """
-        Import the .unitypackage file into the Unity project. Add the .urdf importer package.
+        Build the asset_bundle_creator Unity project.
 
-        :param unity_project_path: The path to the Unity project.
+        :return The path to the asset_bundle_creator Unity project.
         """
 
-        urdf_call = self.get_base_unity_call()[:]
-        urdf_call.extend(["-executeMethod", "RosImporter.Import"])
-        call(urdf_call)
-        super().import_unity_package(unity_project_path=unity_project_path)
+        unity_project_path = self.get_project_path()
 
-    @staticmethod
-    def get_unity_package() -> str:
-        """
-        :return: The name of the .unitypackage file.
-        """
-        
-        return "robot_creator.unitypackage"
+        # If the project already exists, stop.
+        if unity_project_path.exists():
+            return unity_project_path
+
+        # Clone the repo.
+        cwd = getcwd()
+        chdir(str(Path.home().resolve()))
+        call(["git", "clone", "https://github.com/alters-mit/robot_creator"])
+        chdir(cwd)
+        assert unity_project_path.exists(), f"Can't find project path: {unity_project_path}"
+        return unity_project_path
 
     @staticmethod
     def get_project_path() -> Path:

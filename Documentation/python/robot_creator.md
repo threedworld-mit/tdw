@@ -12,6 +12,7 @@ Download a .urdf or .xacro file and convert it into an asset bundle that is usab
   - On a remote Linux server, you'll need a valid virtual display (see the `display` parameter of the constructor)
 - Unity Editor 2020.2 (must be installed via Unity Hub)
 - Python3 and the `tdw` module.
+- git
 
 ### ROS and .xacro file requirements
 
@@ -63,7 +64,7 @@ print(record.name)
 print(record.urls)
 ```
 
-The first time that this script is run, it will create a new `robot_creator` Unity project from a file in the `tdw` Python module. The original repo is [here](https://github.com/alters-mit/robot_creator).
+The first time that this script is run, it clone [the robot_creator repo](https://github.com/alters-mit/robot_creator) (a Unity project used for creating robots) to your home directory.
 
 ### Edit the prefab
 
@@ -302,21 +303,11 @@ _Returns:_  A dictionary. Key = The system platform. Value = The path to the ass
 
 ***
 
-#### `import_unity_package(self, unity_project_path: Path) -> None`
+#### `get_unity_project(self) -> Path`
 
-Import the .unitypackage file into the Unity project. Add the .urdf importer package.
+Build the asset_bundle_creator Unity project.
 
-| Parameter | Description |
-| --- | --- |
-| unity_project_path | The path to the Unity project. |
-
-***
-
-#### `get_unity_package() -> str`
-
-_This is a static function._
-
-_Returns:_  The name of the .unitypackage file.
+_Returns:_ The path to the asset_bundle_creator Unity project.
 
 ***
 

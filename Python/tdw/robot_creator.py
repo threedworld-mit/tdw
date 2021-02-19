@@ -560,7 +560,7 @@ class RobotCreator(AssetBundleCreatorBase):
         Check the Editor log for errors.
         """
 
-        log = EDITOR_LOG_PATH.read_text(encoding="utf-8").lower
+        log = EDITOR_LOG_PATH.read_text(encoding="utf-8")
         if "failure" in log.lower() or "exception" in log.lower():
             raise Exception(f"There are errors in the Editor log!")
 

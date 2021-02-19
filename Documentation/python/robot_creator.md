@@ -30,6 +30,10 @@ On Windows:
 - `wsl sudo apt-get install rosbash`
 - `wsl sudo apt-get install ros-melodic-xacro`
 
+On OS X:
+
+ROS isn't adequately supported on OS X. You can try following installation instructions [here](http://wiki.ros.org/Installation/).
+
 # Usage
 
 To create an asset bundle of the UR5 robot:

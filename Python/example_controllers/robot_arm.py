@@ -90,7 +90,7 @@ class RobotArm(Controller):
         # Rotate the shoulder and the elbow for two motions.
         # The values in this array are for the angle that the [shoulder, elbow] should rotate to per action.
         # For more complex actions, you will probably want to organize your commands differently.
-        for angles in [[70, 90], [-30, -25]]:
+        for angles in [[70, -45], [-35, -90]]:
             resp = self.communicate([{"$type": "set_revolute_target",
                                       "id": robot_id,
                                       "joint_id": body_part_ids[shoulder_name],

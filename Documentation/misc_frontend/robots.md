@@ -52,7 +52,7 @@ Robots by default don't have cameras. However, you can add a camera to a robot b
 
 ## Robots Currently in TDW
 
-TDW include many real-world robots by default. Metadata records of each robot are stored in a [`RobotLibrarian`](../python/librarian/robot_librarian.md).
+TDW includes many real-world robots by default. Metadata records of each robot are stored in a [`RobotLibrarian`](../python/librarian/robot_librarian.md).
 
  To get a list of available robots:
 

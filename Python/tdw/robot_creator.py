@@ -20,7 +20,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
     - Windows 10, OS X, or Linux
       - On a remote Linux server, you'll need a valid virtual display (see the `display` parameter of the constructor)
-    - Unity Editor 2020.2 (must be installed via Unity Editor)
+    - Unity Editor 2020.2 (must be installed via Unity Hub)
     - Python3 and the `tdw` module.
 
     ### ROS and .xacro file requirements

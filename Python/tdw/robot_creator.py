@@ -21,7 +21,7 @@ class RobotCreator(AssetBundleCreatorBase):
     - Windows 10, OS X, or Linux
       - On a remote Linux server, you'll need a valid virtual display (see the `display` parameter of the constructor)
     - Unity Editor 2020.2 (must be installed via Unity Hub)
-    - Python3 and the `tdw` module.
+    - Python3 and the `tdw` module
     - git
 
     ### ROS and .xacro file requirements
@@ -43,7 +43,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
     On OS X:
 
-    ROS isn't adequately supported on OS X. You can try following installation instructions [here](http://wiki.ros.org/Installation/).
+    ROS isn't well-supported on OS X. You can try following installation instructions [here](http://wiki.ros.org/Installation/).
 
     # Usage
 

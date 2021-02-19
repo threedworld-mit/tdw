@@ -531,6 +531,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
         # If the project already exists, stop.
         if unity_project_path.exists():
+            assert unity_project_path.joinpath("Assets").exists(), f"There is a directory at {unity_project_path} but it's not a Unity project."
             return unity_project_path
 
         # Clone the repo.
@@ -557,7 +558,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
         log = EDITOR_LOG_PATH.read_text(encoding="utf-8")
         if "error" in log.lower() or "failure" in log.lower() or "exception" in log.lower():
-            raise Exception(f"There are errors in the Editor log!\n\n{log}")
+            raise Exception(f"There are errors in the Editor log!")
 
     @staticmethod
     def _page_to_raw(url: str) -> str:

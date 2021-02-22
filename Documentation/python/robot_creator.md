@@ -18,7 +18,7 @@ Download a .urdf or .xacro file and convert it into an asset bundle that is usab
 
 If you want to use a .xacro file, `RobotCreator` can convert it to a usable .urdf file, provided that you first install ROS. If you already have a .urdf file, you don't need to install ROS.
 
-[This is the source of the installation instructions.](http://wiki.ros.org/Installation/Ubuntu)
+[This is the source of the installation instructions listed below.](http://wiki.ros.org/Installation/Ubuntu)
 
 On Linux:
 

@@ -20,9 +20,13 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Added new robots: Baxter, Sawyer, Niryo One, Fetch, Shadowhand, UR5, and UR10
 
+### Build
+
+- Upgraded to Unity 2020.2.5
+
 ### Example Controllers
 
-- `robot_arm.py` uses the UR5 robot instead of the UR3 robot.
+- `robot_arm.py` uses the UR5 robot instead of the UR3 robot
 
 ### Documentation
 

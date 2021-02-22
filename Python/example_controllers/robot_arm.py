@@ -1,3 +1,4 @@
+from time import sleep
 import numpy as np
 from typing import Optional, Dict, List
 from tdw.controller import Controller
@@ -53,7 +54,7 @@ class RobotArm(Controller):
         # Request static robot data for this frame only.
         # Request dynamic robot data per frame.
         commands = [TDWUtils.create_empty_room(12, 12),
-                    self.get_add_robot(name="ur3", robot_id=robot_id),
+                    self.get_add_robot(name="ur5", robot_id=robot_id),
                     {"$type": "send_static_robots",
                      "frequency": "once"},
                     {"$type": "send_robots",
@@ -75,26 +76,28 @@ class RobotArm(Controller):
                     break
         assert static_robot is not None, f"No static robot data: {resp}"
 
+        shoulder_name = "shoulder_link"
+        elbow_name = "forearm_link"
         # Get the IDs of the shoulder and the elbow.
         body_part_ids: Dict[str, int] = dict()
         for i in range(static_robot.get_num_joints()):
             b_id = static_robot.get_joint_id(i)
             b_name = static_robot.get_joint_name(i)
             body_part_ids[b_name] = b_id
-        assert "Shoulder" in body_part_ids
-        assert "Elbow" in body_part_ids
+        assert shoulder_name in body_part_ids
+        assert elbow_name in body_part_ids
 
         # Rotate the shoulder and the elbow for two motions.
         # The values in this array are for the angle that the [shoulder, elbow] should rotate to per action.
         # For more complex actions, you will probably want to organize your commands differently.
-        for angles in [[70, 90], [-30, -25]]:
+        for angles in [[70, -45], [-35, -90]]:
             resp = self.communicate([{"$type": "set_revolute_target",
                                       "id": robot_id,
-                                      "joint_id": body_part_ids["Shoulder"],
+                                      "joint_id": body_part_ids[shoulder_name],
                                       "target": angles[0]},
                                      {"$type": "set_revolute_target",
                                       "id": robot_id,
-                                      "joint_id": body_part_ids["Elbow"],
+                                      "joint_id": body_part_ids[elbow_name],
                                       "target": angles[1]}])
             # Get the robot output data.
             robot = self.get_robot(resp=resp)
@@ -111,6 +114,8 @@ class RobotArm(Controller):
                         moving = True
                         break
                 angles_0 = angles_1
+        sleep(3)
+        self.communicate({"$type": "terminate"})
 
 
 if __name__ == "__main__":

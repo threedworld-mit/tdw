@@ -4,6 +4,49 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.2
+
+### `tdw` module
+
+### `Controller`
+
+- Fixed: When checking for TDW updates, the recommendation to upgrade gives the incorrect release version if the third number in the version is above 9 (e.g. 1.7.16)
+
+#### `RobotCreator`
+
+- Added: `robot_creator.py` **Frontend users can now add robots to TDW, given the URL of a .urdf or .xacro file.** See: `tdw/Documenation/misc_frontend/robotics.md` and `tdw/Documentation/python/robot_creator.md`
+
+#### Backend
+
+- Added: `asset_bundle_creator_base.py` Shared code between `asset_bundle_creator.py` and `robot_creator.py`
+
+### Robot Library
+
+- Added new robots: Baxter, Sawyer, Niryo One, Fetch, Shadowhand, UR5, and UR10
+
+### Build
+
+- Upgraded to Unity 2020.2.5
+
+### Example Controllers
+
+- `robot_arm.py` uses the UR5 robot instead of the UR3 robot
+
+### Documentation
+
+#### New Documentation
+
+| Document | Description |
+| --- | --- |
+| `robot_creator.md`             | API documentation for `RobotCreator` as well as installation instructions and troubleshooting tips. |
+| `asset_bundle_creator_base.md` | API documentation for `AssetBundleCreatorBase`               |
+
+#### Modified Documentation
+
+| Document                       | Modification                                                 |
+| ------------------------------ | ------------------------------------------------------------ |
+| `robots.md`                    | Added a section for how to start using the new `RobotCreator` |
+
 ## v1.8.1
 
 ### Command API

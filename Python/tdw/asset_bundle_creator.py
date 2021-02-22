@@ -1,20 +1,20 @@
 from pathlib import Path
 import platform
 from typing import List, Dict, Optional, Tuple, Union
-from subprocess import call, check_output, CalledProcessError
+from subprocess import call
 import os
 import shutil
 from tdw.librarian import ModelRecord
 from tdw.backend import paths
 import json
 import pkg_resources
-import re
 import distutils.dir_util
 import distutils.file_util
 from tdw.backend.platforms import S3_TO_UNITY, SYSTEM_TO_UNITY, UNITY_TO_SYSTEM
+from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
 
 
-class AssetBundleCreator:
+class AssetBundleCreator(AssetBundleCreatorBase):
     """
     Given a .fbx file or a .obj file, and (optionally) Materials and/or Textures folder adjacent to that file,
     create asset bundles for Windows, OS X, and Linux.
@@ -33,28 +33,15 @@ class AssetBundleCreator:
     For more information, see: `Documentation/misc_frontend/add_local_object.md`.
     """
 
-    UNITY_VERSION = "2020.2"
-
     def __init__(self, quiet: bool = False, display: str = ":0"):
         """
         :param quiet: If true, don't print any messages to console.
         :param display: The display to launch Unity Editor on. Ignored if this isn't Linux.
         """
 
-        # Get the binaries path and verify that AssetBundleCreator will work on this platform.
+        super().__init__(quiet=quiet, display=display)
+
         system = platform.system()
-
-        self.env = os.environ.copy()
-
-        # libgconf needs to be installed the Editor to work.
-        if system == "Linux":
-            try:
-                check_output(["dpkg", "-l", "libgconf-2-4"])
-            except CalledProcessError as e:
-                raise Exception(f"{e}\n\nRun: sudo apt install libgconf-2-4")
-            # Set the display for Linux.
-            self.env["DISPLAY"] = display
-
         self.binaries: Dict[str, str] = dict()
         binary_path = f"binaries/{system}"
 
@@ -70,13 +57,6 @@ class AssetBundleCreator:
             # Run chmod +x on everything.
             else:
                 call(["chmod", "+x", pkg_resources.resource_filename(__name__, self.binaries[binary])])
-
-        self.quiet = quiet
-
-        self.project_path = self.get_unity_project()
-        assert self.project_path.exists(), self.project_path
-
-        self.unity_call = self.get_base_unity_call()
 
     def create_asset_bundle(self, model_path: Union[Path, str], cleanup: bool, wnid: int = -1, wcategory: str = "", scale: float = 1) -> (List[Path], Path):
         """
@@ -181,60 +161,14 @@ class AssetBundleCreator:
         :return The path to the Unity Editor executable.
         """
 
-        system = platform.system()
-
-        # Get the path to the Editor executable.
-        if system == "Windows":
-            editor_path = Path('C:/Program Files/Unity/Hub/Editor/')
-
-            # Sometimes Unity Hub is installed here instead.
-            if not editor_path.exists():
-                editor_path = Path('C:/Program Files/Unity Hub/')
-        elif system == "Darwin":
-            editor_path = Path("/Applications/Unity/Hub/Editor")
-        elif system == "Linux":
-            editor_path = Path.home().joinpath("Unity/Hub/Editor")
-        else:
-            raise Exception(f"Platform not supported: {system}")
-
-        assert editor_path.exists(), f"Unity Hub not found: {editor_path}"
-
-        # Get the expected Unity version.
-        ds = []
-        re_pattern = AssetBundleCreator.UNITY_VERSION + ".(.*)"
-        for d in editor_path.iterdir():
-            if AssetBundleCreator.UNITY_VERSION not in d.stem:
-                continue
-            re_search = re.search(re_pattern, str(d.resolve()))
-            if re_search is None:
-                continue
-            ds.append(d)
-        ds = sorted(ds, key=lambda version: int(re.search(re_pattern, str(version.resolve())).group(1), 16))
-        editor_version = ds[-1]
-        editor_path = editor_path.joinpath(editor_version)
-
-        if system == "Windows":
-            editor_path = editor_path.joinpath("Editor/Unity.exe")
-        elif system == "Darwin":
-            editor_path = editor_path.joinpath("Unity.app/Contents/MacOS/Unity")
-        elif system == "Linux":
-            editor_path = editor_path.joinpath("Editor/Unity")
-        else:
-            raise Exception(f"Platform not supported: {system}")
-        assert editor_path.exists(), f"Unity Editor {editor_version} not found."
-
-        return editor_path
+        return super().get_editor_path()
 
     def get_base_unity_call(self) -> List[str]:
         """
         :return The call to launch Unity Editor silently in batchmode, execute something, and then quit.
         """
 
-        return [str(AssetBundleCreator.get_editor_path().resolve()),
-                "-projectpath",
-                str(self.project_path.resolve()),
-                "-quit",
-                "-batchmode"]
+        return super().get_base_unity_call()
 
     def get_unity_project(self) -> Path:
         """
@@ -243,7 +177,7 @@ class AssetBundleCreator:
         :return The path to the asset_bundle_creator Unity project.
         """
 
-        unity_project_path = Path.home().joinpath("asset_bundle_creator")
+        unity_project_path = self.get_project_path()
 
         # If the project already exists, stop.
         if unity_project_path.exists():
@@ -251,8 +185,8 @@ class AssetBundleCreator:
 
         if not self.quiet:
             print(f"Creating: {unity_project_path.resolve()}")
-            
-        call([str(AssetBundleCreator.get_editor_path().resolve()),
+
+        call([str(AssetBundleCreatorBase.get_editor_path().resolve()),
               "-createProject",
               str(unity_project_path.resolve()),
               "-quit",
@@ -260,14 +194,12 @@ class AssetBundleCreator:
         assert unity_project_path.exists(), unity_project_path.resolve()
         if not self.quiet:
             print(f"Created new Unity project: {str(unity_project_path.resolve())}")
-
         # Add the .unitypackage to the new project.
         package_name = "asset_bundle_creator.unitypackage"
         filepath = pkg_resources.resource_filename(__name__, package_name)
         assert Path(filepath).exists(), filepath
-
         # Import the package.
-        call([str(AssetBundleCreator.get_editor_path().resolve()),
+        call([str(AssetBundleCreatorBase.get_editor_path().resolve()),
               "-projectPath",
               str(unity_project_path.resolve()),
               "-importPackage",
@@ -275,9 +207,15 @@ class AssetBundleCreator:
               "-quit",
               "-batchmode"], env=self.env)
         if not self.quiet:
-            print("Imported asset_bundle_creator.unitypackage into the new project.")
+            print(f"Imported {package_name} into the new project.")
 
-        return unity_project_path
+    @staticmethod
+    def get_project_path() -> Path:
+        """
+        :return: The expected path of the Unity project.
+        """
+
+        return Path.home().joinpath("asset_bundle_creator")
 
     def fbx_to_obj(self, model_path: Path) -> Tuple[Path, bool]:
         """

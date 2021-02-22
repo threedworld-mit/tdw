@@ -119,7 +119,6 @@
 | [C# code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md) | Access to C# backend source code |
 | [Releases](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/releases.md) | Release versioning in TDW.           |
 | [Freezing your code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/freeze.md) | "Freeze" your controller into a compiled executable. |
-| [v1.6 to v1.7](https://github.com/threedworld-mit/tdw/blob/master/Documentation/v1.6_to_v1.7.md) | How to upgrade from TDW v1.6 to TDW v1.7 |
 
 # Remote Server
 
@@ -148,7 +147,8 @@
 | Document                                                     | Description                                   |
 | ------------------------------------------------------------ | --------------------------------------------- |
 | [Robots](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/robots.md) | Overview of robotics and the Magnebot in TDW. |
-| [Robot Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/model_librarian.md) | API for accessing robot metadata.             |
+| [Robot Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/robot_librarian.md) | API for accessing robot metadata.             |
+| [Robot Creator](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/robot_creator.md) | API for adding your own robots to TDW.        |
 | [Magnebot](https://github.com/alters-mit/magnebot)           | High-level Magnebot API.                      |
 
 # Scene Setup

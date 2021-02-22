@@ -88,7 +88,8 @@ class PyPi:
         """
 
         releases = PyPi._get_pypi_releases()
-        releases = sorted([r for r in releases if r.startswith(v)])
+        releases = sorted([r for r in releases if r.startswith(v)],
+                          key=lambda r: bytes([int(n) for n in r.split(".")]))
         if len(releases) == 0:
             return ""
         return releases[-1]
@@ -103,7 +104,9 @@ class PyPi:
 
         version = PyPi.strip_post_release(v)
         releases = PyPi._get_pypi_releases()
-        releases = sorted([r for r in releases if r.startswith("1." + PyPi.get_major_release(version))])
+        # Sort the list by the byte array representation to put double-digit version numbers in the correct order.
+        releases = sorted([r for r in releases if r.startswith("1." + PyPi.get_major_release(version))],
+                          key=lambda r: bytes([int(n) for n in r.split(".")]))
         if len(releases) == 0:
             return ""
         return releases[-1]

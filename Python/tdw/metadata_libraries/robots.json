@@ -1,6 +1,66 @@
 {
     "description": "Robot asset bundles",
     "records": {
+        "baxter": {
+            "immovable": true,
+            "name": "baxter",
+            "source": "https://github.com/RethinkRobotics/baxter_common",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/baxter",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/baxter",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/baxter"
+            }
+        },
+        "fetch": {
+            "immovable": false,
+            "name": "fetch",
+            "source": "https://github.com/openai/roboschool",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/fetch",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/fetch",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/fetch"
+            }
+        },
+        "niryo_one": {
+            "immovable": true,
+            "name": "niryo_one",
+            "source": "https://github.com/NiryoRobotics/niryo_one_ros",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/niryo_one",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/niryo_one",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/niryo_one"
+            }
+        },
+        "sawyer": {
+            "immovable": true,
+            "name": "sawyer",
+            "source": "https://github.com/RethinkRobotics/sawyer_robot",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/sawyer",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/sawyer",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/sawyer"
+            }
+        },
+        "shadowhand": {
+            "immovable": true,
+            "name": "shadowhand",
+            "source": "https://github.com/shadow-robot/simox_ros",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/shadowhand",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/shadowhand",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/shadowhand"
+            }
+        },
+        "ur10": {
+            "immovable": true,
+            "name": "ur10",
+            "source": "https://github.com/ros-industrial/robot_movement_interface",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur10",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur10",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur10"
+            }
+        },
         "ur3": {
             "immovable": true,
             "name": "ur3",
@@ -9,6 +69,16 @@
                 "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur3",
                 "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur3",
                 "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur3"
+            }
+        },
+        "ur5": {
+            "immovable": true,
+            "name": "ur5",
+            "source": "https://github.com/ros-industrial/robot_movement_interface",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur5",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur5",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur5"
             }
         }
     }

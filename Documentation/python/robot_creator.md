@@ -18,16 +18,22 @@ Download a .urdf or .xacro file and convert it into an asset bundle that is usab
 
 If you want to use a .xacro file, `RobotCreator` can convert it to a usable .urdf file, provided that you first install ROS. If you already have a .urdf file, you don't need to install ROS.
 
+[This is the source of the installation instructions.](http://wiki.ros.org/Installation/Ubuntu)
+
 On Linux:
 
-- [Install ROS base](http://wiki.ros.org/Installation/Ubuntu) (Melodic version)
+- `sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654`
+- `curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | sudo apt-key add -`
+- `sudo ros-melodic-ros-base`
 - `sudo apt-get install rosbash`
 - `sudo apt-get install ros-melodic-xacro`
 
 On Windows:
 
 - Install Ubuntu 18 on WSL 2
-- [Install ROS base on WSL 2](http://wiki.ros.org/Installation/Ubuntu) (Melodic version)
+- `wsl sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654`
+- `wsl curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | sudo apt-key add -`
+- `wsl sudo ros-melodic-ros-base`
 - `wsl sudo apt-get install rosbash`
 - `wsl sudo apt-get install ros-melodic-xacro`
 

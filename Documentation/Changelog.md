@@ -8,6 +8,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### `tdw` module
 
+### `Controller`
+
+- Fixed: When checking for TDW updates, the recommendation to upgrade gives the incorrect release version if the third number in the version is above 9 (e.g. 1.7.16)
+
 #### `RobotCreator`
 
 - Added: `robot_creator.py` **Frontend users can now add robots to TDW, given the URL of a .urdf or .xacro file.** See: `tdw/Documenation/misc_frontend/robotics.md` and `tdw/Documentation/python/robot_creator.md`

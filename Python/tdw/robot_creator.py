@@ -26,7 +26,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
     ### ROS and .xacro file requirements
 
-    If you want to use a .xacro file, `RobotCreator` can convert it to a usable .urdf file, provided that you first install ROS.
+    If you want to use a .xacro file, `RobotCreator` can convert it to a usable .urdf file, provided that you first install ROS. If you already have a .urdf file, you don't need to install ROS.
 
     On Linux:
 

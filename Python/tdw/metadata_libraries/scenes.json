@@ -265,6 +265,17 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/lava_field"
             }
         },
+		"mm_kitchen_1_a": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_kitchen_1_a",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1_a",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1_a",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1_a"
+            }
+        },
         "monkey_physics_room": {
             "description": "A custom lab-style room for the Monkey Physics project.",
             "hdri": false,

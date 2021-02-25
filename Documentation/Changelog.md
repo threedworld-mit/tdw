@@ -4,6 +4,17 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.3
+
+### Command API
+
+#### Modified Commands
+
+| Command                                                | Modification                                |
+| ------------------------------------------------------ | ------------------------------------------- |
+| `set_reverb_space_expert`<br>`set_reverb_space_simple` | Added new materials: `"metal"` and `"wood"` |
+| `add_position_marker`                                  | Added new shapes: `"circle"` and `"square"` |
+
 ## v1.8.2
 
 ### `tdw` module

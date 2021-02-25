@@ -10,10 +10,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 #### Modified Commands
 
-| Command                                                | Modification                                |
-| ------------------------------------------------------ | ------------------------------------------- |
-| `set_reverb_space_expert`<br>`set_reverb_space_simple` | Added new materials: `"metal"` and `"wood"` |
-| `add_position_marker`                                  | Added new shapes: `"circle"` and `"square"` |
+| Command                                                | Modification                                                 |
+| ------------------------------------------------------ | ------------------------------------------------------------ |
+| `set_reverb_space_expert`<br>`set_reverb_space_simple` | Added new materials: `"metal"` and `"wood"`<br>Set the default value of `env_id` to -1 (was 0).<br>If `env_id == -1`, the reverb space will encapsulate the entire scene. |
+| `add_position_marker`                                  | Added new shapes: `"circle"` and `"square"`                  |
 
 ## v1.8.2
 

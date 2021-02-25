@@ -381,6 +381,117 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "4ft_shelf_metal": {
+            "asset_bundle_sizes": {
+                "Darwin": 741947,
+                "Linux": 939573,
+                "Windows": 634616
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.192093e-07,
+                    "y": 0.6095999,
+                    "z": -0.472584
+                },
+                "bottom": {
+                    "x": -1.192093e-07,
+                    "y": -0.0002043247,
+                    "z": 8.940697e-08
+                },
+                "center": {
+                    "x": -1.192093e-07,
+                    "y": 0.6095999,
+                    "z": 8.940697e-08
+                },
+                "front": {
+                    "x": -1.192093e-07,
+                    "y": 0.6095999,
+                    "z": 0.4725842
+                },
+                "left": {
+                    "x": -0.1928852,
+                    "y": 0.6095999,
+                    "z": 8.940697e-08
+                },
+                "right": {
+                    "x": 0.192885,
+                    "y": 0.6095999,
+                    "z": 8.940697e-08
+                },
+                "top": {
+                    "x": -1.192093e-07,
+                    "y": 1.219404,
+                    "z": 8.940697e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "4ft_shelf_metal",
+            "physics_quality": 0.9639830616871669,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg01"
+                },
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg02"
+                },
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg03"
+                },
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg03 1"
+                },
+                {
+                    "materials": [
+                        "metal"
+                    ],
+                    "name": "shelf01"
+                },
+                {
+                    "materials": [
+                        "metal"
+                    ],
+                    "name": "shelf02"
+                },
+                {
+                    "materials": [
+                        "metal"
+                    ],
+                    "name": "shelf03"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.4/4ft_shelf_metal",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.4/4ft_shelf_metal",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.4/4ft_shelf_metal"
+            },
+            "wcategory": "shelf",
+            "wnid": "n04190052"
+        },
         "afl_lamp": {
             "asset_bundle_sizes": {
                 "Darwin": 127921,

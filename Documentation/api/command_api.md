@@ -2816,6 +2816,8 @@ List of surface material types.
 | `"brick"` |  |
 | `"tile"` |  |
 | `"acousticTile"` |  |
+| `"metal"` |  |
+| `"wood"` |  |
 
 ***
 
@@ -2858,6 +2860,8 @@ List of surface material types.
 | `"brick"` |  |
 | `"tile"` |  |
 | `"acousticTile"` |  |
+| `"metal"` |  |
+| `"wood"` |  |
 
 # FlexContainerCommand
 
@@ -4542,6 +4546,8 @@ The shape of the marker.
 | --- | --- |
 | `"cube"` |  |
 | `"sphere"` |  |
+| `"circle"` |  |
+| `"square"` |  |
 
 ***
 

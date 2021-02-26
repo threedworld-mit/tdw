@@ -38,7 +38,7 @@ moet_chandon_bottle_vray,0.1,1.25,glass,models_full.json,0.5,0.65
 034_vray,0.1,12,cardboard,models_full.json,0.7,0.65
 display_cabinet_1_2012,0.01,275,wood,models_full.json,0.58,0.65
 fetap611_telephone_(max_2011___v-ray),1,6,metal,models_full.json,0.35,0.65
-serving_bowl,1,2,ceramic,models_core.json,0.625,0.65
+servserving_bowl,1,2,ceramic,models_core.json,0.625,0.65
 b006_clyde-clock_vray,0.1,2,metal,models_full.json,0.35,0.65
 vray_004,0.1,1,cardboard,models_full.json,0.7,0.65
 iphone_5_vr_white,1,0.13,cardboard,models_full.json,0.7,0.65
@@ -251,3 +251,6 @@ lawnmower,0.01,300,metal,models_core.json,0.35,0.1
 naughtone_pinch_stool_chair,0.02,35,wood,models_core.json,0.58,0.65
 round_bowl_large_metal_perf,1,2,metal,models_core.json,0.625,0.65
 shallow_basket_white_mesh,0.02,5,cardboard,models_core.json,0.5,0.65
+servingfork,0.5,0.2,metal,models_core.json,0.6,0.65
+4ft_shelf_metal,0.02,330,metal,models_core.json,0.35,0.65
+skillet_open,0.2,12,ceramic,models_core.json,0.625,0.65

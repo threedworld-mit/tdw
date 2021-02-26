@@ -251,3 +251,6 @@ lawnmower,0.01,300,metal,models_core.json,0.35,0.1
 naughtone_pinch_stool_chair,0.02,35,wood,models_core.json,0.58,0.65
 round_bowl_large_metal_perf,1,2,metal,models_core.json,0.625,0.65
 shallow_basket_white_mesh,0.02,5,cardboard,models_core.json,0.5,0.65
+servingfork,0.5,0.2,metal,models_core.json,0.6,0.65
+4ft_shelf_metal,0.02,330,metal,models_core.json,0.35,0.65
+skillet_open,0.2,12,ceramic,models_core.json,0.625,0.65

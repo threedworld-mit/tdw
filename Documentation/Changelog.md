@@ -8,6 +8,13 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Command API
 
+### New Commands
+
+| Command                    | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| `set_ambient_light`        | Set how much the ambient light fom the source affects the scene. |
+| `set_hdri_skybox_exposure` | Set the exposure of the HDRI skybox to a given value.        |
+
 #### Modified Commands
 
 | Command                                                | Modification                                                 |

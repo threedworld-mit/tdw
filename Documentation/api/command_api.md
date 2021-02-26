@@ -20,9 +20,11 @@
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
+| [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
 | [`set_gravity_vector`](#set_gravity_vector) | Set the gravity vector in the scene. |
+| [`set_hdri_skybox_exposure`](#set_hdri_skybox_exposure) | Set the exposure of the HDRI skybox to a given value. |
 | [`set_physics_solver_iterations`](#set_physics_solver_iterations) | Set the number of physics solver iterations, which affects the overall accuracy of the physics engine. |
 | [`set_render_quality`](#set_render_quality) | Set the render quality level. The highest render quality level enables near-photorealism runtime rendering. The lowest render quality has "flat" rendering, no shadows, etc. The lower the render quality, the faster the simulation will run, especially in scenes with complex lighting. |
 | [`set_screen_size`](#set_screen_size) | Set the screen size. Any images the build creates will also be this size. |
@@ -754,6 +756,25 @@ Tell the build to send data of a path on the NavMesh from the origin to the dest
 
 ***
 
+## **`set_ambient_intensity`**
+
+Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels.
+
+
+```python
+{"$type": "set_ambient_intensity"}
+```
+
+```python
+{"$type": "set_ambient_intensity", "intensity": 1.0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"intensity"` | float | The intensity of the ambient lighting in the scene. | 1.0 |
+
+***
+
 ## **`set_download_timeout`**
 
 Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow.
@@ -811,6 +832,21 @@ Set the gravity vector in the scene.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"gravity"` | Vector3 | The gravity vector. | {"x": 0, "y": -9.81, "z": 0} |
+
+***
+
+## **`set_hdri_skybox_exposure`**
+
+Set the exposure of the HDRI skybox to a given value.
+
+
+```python
+{"$type": "set_hdri_skybox_exposure", "exposure": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"exposure"` | float | The value to set the HDRI exposure to. | |
 
 ***
 
@@ -2783,7 +2819,7 @@ Create a ResonanceAudio Room, sized to the dimensions of the current room enviro
 ```
 
 ```python
-{"$type": "set_reverb_space_expert", "reflectivity": 1.0, "reverb_brightness": 0.5, "reverb_gain": 0, "reverb_time": 1.0, "env_id": -1, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
+{"$type": "set_reverb_space_expert", "reflectivity": 1.0, "reverb_brightness": 0.5, "reverb_gain": 0, "reverb_time": 1.0, "env_id": 0, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -2792,7 +2828,7 @@ Create a ResonanceAudio Room, sized to the dimensions of the current room enviro
 | `"reverb_brightness"` | float | Balance the amount of low or high frequencies by providing different reverb decay rates at different frequencies. | 0.5 |
 | `"reverb_gain"` | float | Adjust room effect loudness, compared to direct sound coming from Resonance Audio sources in a scene. | 0 |
 | `"reverb_time"` | float | Increases or decreases reverb length; the value is a multiplier on the reverb time calculated from the surface materials and room dimensions of the room. | 1.0 |
-| `"env_id"` | int | The ID of the environment (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room. | -1 |
+| `"env_id"` | int | The ID of the environment (room) to enable reverberation in. | 0 |
 | `"reverb_floor_material"` | SurfaceMaterial | The surface material of the reverb space floor. | "parquet" |
 | `"reverb_ceiling_material"` | SurfaceMaterial | The surface material of the reverb space ceiling. | "acousticTile" |
 | `"reverb_front_wall_material"` | SurfaceMaterial | The surface material of the reverb space front wall. | "smoothPlaster" |
@@ -2816,8 +2852,6 @@ List of surface material types.
 | `"brick"` |  |
 | `"tile"` |  |
 | `"acousticTile"` |  |
-| `"metal"` |  |
-| `"wood"` |  |
 
 ***
 
@@ -2831,12 +2865,12 @@ Create a ResonanceAudio Room, sized to the dimensions of the current room enviro
 ```
 
 ```python
-{"$type": "set_reverb_space_simple", "env_id": -1, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
+{"$type": "set_reverb_space_simple", "env_id": 0, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"env_id"` | int | The ID of the environment (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room. | -1 |
+| `"env_id"` | int | The ID of the environment (room) to enable reverberation in. | 0 |
 | `"reverb_floor_material"` | SurfaceMaterial | The surface material of the reverb space floor. | "parquet" |
 | `"reverb_ceiling_material"` | SurfaceMaterial | The surface material of the reverb space ceiling. | "acousticTile" |
 | `"reverb_front_wall_material"` | SurfaceMaterial | The surface material of the reverb space front wall. | "smoothPlaster" |
@@ -2860,8 +2894,6 @@ List of surface material types.
 | `"brick"` |  |
 | `"tile"` |  |
 | `"acousticTile"` |  |
-| `"metal"` |  |
-| `"wood"` |  |
 
 # FlexContainerCommand
 
@@ -4546,8 +4578,6 @@ The shape of the marker.
 | --- | --- |
 | `"cube"` |  |
 | `"sphere"` |  |
-| `"circle"` |  |
-| `"square"` |  |
 
 ***
 

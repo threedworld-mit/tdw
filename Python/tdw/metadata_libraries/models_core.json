@@ -16560,6 +16560,77 @@
             "wcategory": "toy",
             "wnid": "n04461879"
         },
+        "shoebox_fused": {
+            "asset_bundle_sizes": {
+                "Darwin": 2404687,
+                "Linux": 2645422,
+                "Windows": 2391211
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.1102815,
+                    "y": 0.1056794,
+                    "z": -0.1289752
+                },
+                "bottom": {
+                    "x": 0.1102815,
+                    "y": 5.000086e-05,
+                    "z": 0.08299169
+                },
+                "center": {
+                    "x": 0.1102815,
+                    "y": 0.1056794,
+                    "z": 0.0829917
+                },
+                "front": {
+                    "x": 0.1102815,
+                    "y": 0.1056794,
+                    "z": 0.2949586
+                },
+                "left": {
+                    "x": -0.02606011,
+                    "y": 0.1056794,
+                    "z": 0.0829917
+                },
+                "right": {
+                    "x": 0.2466232,
+                    "y": 0.1056794,
+                    "z": 0.0829917
+                },
+                "top": {
+                    "x": 0.1102815,
+                    "y": 0.2113088,
+                    "z": 0.0829917
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "shoebox_fused",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cardboard_corrugated"
+                    ],
+                    "name": "shoebox_fused"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/shoebox_fused",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/shoebox_fused",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/shoebox_fused"
+            },
+            "wcategory": "box",
+            "wnid": "n02883344"
+        },
         "side_table_wood": {
             "asset_bundle_sizes": {
                 "Darwin": 1120011,

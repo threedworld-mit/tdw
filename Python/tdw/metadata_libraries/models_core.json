@@ -18759,6 +18759,78 @@
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
+        "square_coaster_001_cork": {
+            "asset_bundle_sizes": {
+                "Darwin": 6292788,
+                "Linux": 6531994,
+                "Windows": 6280228
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.007250002,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007249997,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.0145,
+                    "z": 6.338152e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "square_coaster_001_cork",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cork_compact",
+                        "rubber_black"
+                    ],
+                    "name": "square_coaster_001_cork"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/square_coaster_001_cork",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_001_cork",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_001_cork"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
         "square_coaster_001_marble": {
             "asset_bundle_sizes": {
                 "Darwin": 5400934,

@@ -16561,6 +16561,78 @@
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
+        "round_coaster_stone_dark": {
+            "asset_bundle_sizes": {
+                "Darwin": 6034153,
+                "Linux": 6274352,
+                "Windows": 6015170
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.007250002,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007249997,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.0145,
+                    "z": 6.338152e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_coaster_stone_dark",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "marble_new_emperador_dark",
+                        "rubber_black"
+                    ],
+                    "name": "round_coaster_stone_dark"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/round_coaster_stone_dark",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_stone_dark",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_stone_dark"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
         "salt": {
             "asset_bundle_sizes": {
                 "Darwin": 3982663,

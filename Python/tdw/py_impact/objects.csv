@@ -254,3 +254,9 @@ shallow_basket_white_mesh,0.02,5,cardboard,models_core.json,0.5,0.65
 servingfork,0.5,0.2,metal,models_core.json,0.6,0.65
 4ft_shelf_metal,0.02,330,metal,models_core.json,0.35,0.65
 skillet_open,0.2,12,ceramic,models_core.json,0.625,0.65
+fork2,0.6,0.2,metal,models_core.json,0.6,0.65
+fork3,0.6,0.2,metal,models_core.json,0.6,0.65
+fork4,0.6,0.2,metal,models_core.json,0.6,0.65
+knife2,0.6,0.2,metal,models_core.json,0.6,0.65
+knife3,0.6,0.2,metal,models_core.json,0.6,0.65
+spoon2,0.6,0.2,metal,models_core.json,0.6,0.65

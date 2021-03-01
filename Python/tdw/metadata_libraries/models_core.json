@@ -16273,6 +16273,78 @@
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
+        "round_coaster_indent_rubber": {
+            "asset_bundle_sizes": {
+                "Darwin": 3132729,
+                "Linux": 3375581,
+                "Windows": 3118315
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.00714952,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007149516,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.01429904,
+                    "z": 6.250308e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_coaster_indent_rubber",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "rubber_black",
+                        "rubber_black"
+                    ],
+                    "name": "round_coaster_indent_rubber"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/round_coaster_indent_rubber",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_indent_rubber",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_indent_rubber"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
         "salt": {
             "asset_bundle_sizes": {
                 "Darwin": 3982663,

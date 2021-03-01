@@ -10639,6 +10639,77 @@
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
+        "key_shiny": {
+            "asset_bundle_sizes": {
+                "Darwin": 106005,
+                "Linux": 293033,
+                "Windows": 94480
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999909,
+                    "z": -0.0266767
+                },
+                "bottom": {
+                    "x": -0.0001550401,
+                    "y": 7.96371e-11,
+                    "z": -0.001914257
+                },
+                "center": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "front": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999886,
+                    "z": 0.02284819
+                },
+                "left": {
+                    "x": -0.0081061,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "right": {
+                    "x": 0.00779602,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "top": {
+                    "x": -0.0001550401,
+                    "y": 0.001999979,
+                    "z": -0.001914257
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "key_shiny",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "key_shiny"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/key_shiny",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/key_shiny",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/key_shiny"
+            },
+            "wcategory": "key",
+            "wnid": "n03613294"
+        },
         "kids_luggage_1": {
             "asset_bundle_sizes": {
                 "Darwin": 318333,

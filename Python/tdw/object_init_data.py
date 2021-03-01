@@ -1,7 +1,7 @@
 from typing import Dict, List, Tuple
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
-from tdw.librarian import ModelLibrarian
+from tdw.librarian import ModelLibrarian, ModelRecord
 from tdw.py_impact import AudioMaterial, PyImpact, ObjectInfo
 
 
@@ -49,7 +49,7 @@ class TransformInitData:
         :return: Tuple: The ID of the object; a list of commands to create the object: `[add_object, rotate_object_to, scale_object, set_kinematic_state, set_object_collision_detection_mode]`
         """
 
-        record = TransformInitData.LIBRARIES[self.library].get_record(name=self.name)
+        record = self._get_record()
 
         object_id = Controller.get_unique_id()
         commands = [{"$type": "add_object",
@@ -84,6 +84,12 @@ class TransformInitData:
 
         return object_id, commands
 
+    def _get_record(self) -> ModelRecord:
+        """
+        :return: The model metadata record for this object.
+        """
+
+        return TransformInitData.LIBRARIES[self.library].get_record(name=self.name)
 
 class RigidbodyInitData(TransformInitData):
     """

@@ -260,3 +260,4 @@ fork4,0.6,0.2,metal,models_core.json,0.6,0.65
 knife2,0.6,0.2,metal,models_core.json,0.6,0.65
 knife3,0.6,0.2,metal,models_core.json,0.6,0.65
 spoon2,0.6,0.2,metal,models_core.json,0.6,0.65
+juicer,0.01,1,ceramic,models_core.json,0.2,0.65

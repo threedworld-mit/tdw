@@ -5510,6 +5510,77 @@
             "wcategory": "button",
             "wnid": "n02928608"
         },
+        "button_two_hole_green_mottled": {
+            "asset_bundle_sizes": {
+                "Darwin": 2403506,
+                "Linux": 2646007,
+                "Windows": 2389142
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001410044,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 8.141881e-17,
+                    "z": -1.862645e-09
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001410043,
+                    "z": -1.80101e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001410043,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001410043,
+                    "z": -1.80101e-09
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001410043,
+                    "z": -1.80101e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.002820086,
+                    "z": -1.739375e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_two_hole_green_mottled",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "marble_green"
+                    ],
+                    "name": "button_two_hole_green_mottled"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_two_hole_green_mottled",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_green_mottled",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_green_mottled"
+            },
+            "wcategory": "button",
+            "wnid": "n02928608"
+        },
         "cabinet_24_door_drawer_wood_beach_honey": {
             "asset_bundle_sizes": {
                 "Darwin": 4258245,

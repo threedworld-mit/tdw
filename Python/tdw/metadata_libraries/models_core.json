@@ -492,6 +492,79 @@
             "wcategory": "shelf",
             "wnid": "n04190052"
         },
+        "aaa_battery": {
+            "asset_bundle_sizes": {
+                "Darwin": 1179313,
+                "Linux": 1421575,
+                "Windows": 1165006
+            },
+            "bounds": {
+                "back": {
+                    "x": -9.313226e-10,
+                    "y": 0.02473284,
+                    "z": -0.004999999
+                },
+                "bottom": {
+                    "x": -9.313226e-10,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": -9.313226e-10,
+                    "y": 0.02473284,
+                    "z": 1.081107e-09
+                },
+                "front": {
+                    "x": -9.313226e-10,
+                    "y": 0.02473284,
+                    "z": 0.005000001
+                },
+                "left": {
+                    "x": -0.005000002,
+                    "y": 0.02473284,
+                    "z": 1.081107e-09
+                },
+                "right": {
+                    "x": 0.005,
+                    "y": 0.02473284,
+                    "z": 1.081107e-09
+                },
+                "top": {
+                    "x": -9.313226e-10,
+                    "y": 0.04946568,
+                    "z": 2.162214e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "aaa_battery",
+            "physics_quality": 0.9780307386111923,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "brass 1",
+                        "plastic_vinyl_glossy_black",
+                        "chrome_v_shiny"
+                    ],
+                    "name": "aaa_battery"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/aaa_battery",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/aaa_battery",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/aaa_battery"
+            },
+            "wcategory": "flashlight battery",
+            "wnid": "n03359285"
+        },
         "afl_lamp": {
             "asset_bundle_sizes": {
                 "Darwin": 127921,

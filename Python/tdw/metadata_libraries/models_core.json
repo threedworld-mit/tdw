@@ -8212,6 +8212,77 @@
             "wcategory": "bottle cork",
             "wnid": "n03108853"
         },
+        "cork_plastic_black": {
+            "asset_bundle_sizes": {
+                "Darwin": 3097987,
+                "Linux": 3341065,
+                "Windows": 3083746
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": 0.009999999
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.042,
+                    "z": -5.00679e-09
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": -0.01
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "cork_plastic_black",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "cork_plastic_black"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/cork_plastic_black",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/cork_plastic_black",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/cork_plastic_black"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
+        },
         "dark_red_club_chair": {
             "asset_bundle_sizes": {
                 "Darwin": 1427448,

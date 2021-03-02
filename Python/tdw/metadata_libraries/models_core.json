@@ -5297,6 +5297,77 @@
             "wcategory": "button",
             "wnid": "n02928608"
         },
+        "button_four_hole_red_plastic": {
+            "asset_bundle_sizes": {
+                "Darwin": 2471477,
+                "Linux": 2714761,
+                "Windows": 2455725
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001725529,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.003451056,
+                    "z": 1.508505e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_four_hole_red_plastic",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "clip_resin_wet"
+                    ],
+                    "name": "button_four_hole_red_plastic"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_four_hole_red_plastic",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_red_plastic",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_red_plastic"
+            },
+            "wcategory": "button",
+            "wnid": "n02928608"
+        },
         "cabinet_24_door_drawer_wood_beach_honey": {
             "asset_bundle_sizes": {
                 "Darwin": 4258245,

@@ -2449,6 +2449,77 @@
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
+        "basic_cork": {
+            "asset_bundle_sizes": {
+                "Darwin": 3264929,
+                "Linux": 3507015,
+                "Windows": 3251026
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.019,
+                    "z": 0.011
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.019,
+                    "z": -2.264976e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.038,
+                    "z": -4.529953e-09
+                },
+                "left": {
+                    "x": -0.011,
+                    "y": 0.019,
+                    "z": -2.264976e-09
+                },
+                "right": {
+                    "x": 0.011,
+                    "y": 0.019,
+                    "z": -2.264976e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.019,
+                    "z": -0.011
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "basic_cork",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cork_compact 1"
+                    ],
+                    "name": "basic_cork"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/basic_cork",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/basic_cork",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/basic_cork"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
+        },
         "basket_18inx18inx12iin": {
             "asset_bundle_sizes": {
                 "Darwin": 1970444,

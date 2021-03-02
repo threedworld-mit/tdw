@@ -8141,6 +8141,77 @@
             "wcategory": "coffee table, cocktail table",
             "wnid": "n03063968"
         },
+        "cork_plastic": {
+            "asset_bundle_sizes": {
+                "Darwin": 534251,
+                "Linux": 776456,
+                "Windows": 519928
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": 0.009999999
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.042,
+                    "z": -5.00679e-09
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": -0.01
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "cork_plastic",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_cream"
+                    ],
+                    "name": "cork_plastic"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/cork_plastic",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/cork_plastic",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/cork_plastic"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
+        },
         "dark_red_club_chair": {
             "asset_bundle_sizes": {
                 "Darwin": 1427448,

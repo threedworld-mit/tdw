@@ -5226,6 +5226,77 @@
             "wcategory": "sculpture",
             "wnid": "n04157320"
         },
+        "bung": {
+            "asset_bundle_sizes": {
+                "Darwin": 3183515,
+                "Linux": 3425478,
+                "Windows": 3169286
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.023,
+                    "z": 0.02656457
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.023,
+                    "z": -2.741813e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.046,
+                    "z": -5.483627e-09
+                },
+                "left": {
+                    "x": -0.02656457,
+                    "y": 0.023,
+                    "z": -2.741813e-09
+                },
+                "right": {
+                    "x": 0.02656457,
+                    "y": 0.023,
+                    "z": -2.741813e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.023,
+                    "z": -0.02656457
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "bung",
+            "physics_quality": 0.9011610583838597,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cork_heavy 1"
+                    ],
+                    "name": "bung"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/bung",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/bung",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/bung"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
+        },
         "button_four_hole_large_black": {
             "asset_bundle_sizes": {
                 "Darwin": 3132661,

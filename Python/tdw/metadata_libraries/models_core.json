@@ -5563,7 +5563,7 @@
             "do_not_use_reason": "",
             "flex": true,
             "name": "button_two_hole_green_mottled",
-            "physics_quality": -1,
+            "physics_quality": 0.9972113431301229,
             "scale_factor": 1,
             "substructure": [
                 {

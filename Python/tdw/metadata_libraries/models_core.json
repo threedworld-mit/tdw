@@ -381,6 +381,264 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "4ft_shelf_metal": {
+            "asset_bundle_sizes": {
+                "Darwin": 741947,
+                "Linux": 939573,
+                "Windows": 634616
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.192093e-07,
+                    "y": 0.6095999,
+                    "z": -0.472584
+                },
+                "bottom": {
+                    "x": -1.192093e-07,
+                    "y": -0.0002043247,
+                    "z": 8.940697e-08
+                },
+                "center": {
+                    "x": -1.192093e-07,
+                    "y": 0.6095999,
+                    "z": 8.940697e-08
+                },
+                "front": {
+                    "x": -1.192093e-07,
+                    "y": 0.6095999,
+                    "z": 0.4725842
+                },
+                "left": {
+                    "x": -0.1928852,
+                    "y": 0.6095999,
+                    "z": 8.940697e-08
+                },
+                "right": {
+                    "x": 0.192885,
+                    "y": 0.6095999,
+                    "z": 8.940697e-08
+                },
+                "top": {
+                    "x": -1.192093e-07,
+                    "y": 1.219404,
+                    "z": 8.940697e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "4ft_shelf_metal",
+            "physics_quality": 0.9639830616871669,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg01"
+                },
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg02"
+                },
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg03"
+                },
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg03 1"
+                },
+                {
+                    "materials": [
+                        "metal"
+                    ],
+                    "name": "shelf01"
+                },
+                {
+                    "materials": [
+                        "metal"
+                    ],
+                    "name": "shelf02"
+                },
+                {
+                    "materials": [
+                        "metal"
+                    ],
+                    "name": "shelf03"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.4/4ft_shelf_metal",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.4/4ft_shelf_metal",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.4/4ft_shelf_metal"
+            },
+            "wcategory": "bookshelf",
+            "wnid": "n04190052"
+        },
+        "9v_battery": {
+            "asset_bundle_sizes": {
+                "Darwin": 4232570,
+                "Linux": 4474963,
+                "Windows": 4218412
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.000235473,
+                    "y": 0.02624253,
+                    "z": -0.009006671
+                },
+                "bottom": {
+                    "x": -0.0002354737,
+                    "y": 1.029288e-11,
+                    "z": 1.313268e-07
+                },
+                "center": {
+                    "x": -0.0002354726,
+                    "y": 0.02624253,
+                    "z": 1.313268e-07
+                },
+                "front": {
+                    "x": -0.0002354722,
+                    "y": 0.02624253,
+                    "z": 0.009006933
+                },
+                "left": {
+                    "x": -0.0137152,
+                    "y": 0.02624253,
+                    "z": 1.31916e-07
+                },
+                "right": {
+                    "x": 0.01324425,
+                    "y": 0.02624253,
+                    "z": 1.307376e-07
+                },
+                "top": {
+                    "x": -0.0002354714,
+                    "y": 0.05248506,
+                    "z": 1.313268e-07
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "9v_battery",
+            "physics_quality": 0.9989609562195643,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_black",
+                        "rubber_black",
+                        "brass 1",
+                        "chrome_v_shiny"
+                    ],
+                    "name": "9v_battery"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/9v_battery",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/9v_battery",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/9v_battery"
+            },
+            "wcategory": "flashlight battery",
+            "wnid": "n03359285"
+        },
+        "aaa_battery": {
+            "asset_bundle_sizes": {
+                "Darwin": 1179313,
+                "Linux": 1421575,
+                "Windows": 1165006
+            },
+            "bounds": {
+                "back": {
+                    "x": -9.313226e-10,
+                    "y": 0.02473284,
+                    "z": -0.004999999
+                },
+                "bottom": {
+                    "x": -9.313226e-10,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": -9.313226e-10,
+                    "y": 0.02473284,
+                    "z": 1.081107e-09
+                },
+                "front": {
+                    "x": -9.313226e-10,
+                    "y": 0.02473284,
+                    "z": 0.005000001
+                },
+                "left": {
+                    "x": -0.005000002,
+                    "y": 0.02473284,
+                    "z": 1.081107e-09
+                },
+                "right": {
+                    "x": 0.005,
+                    "y": 0.02473284,
+                    "z": 1.081107e-09
+                },
+                "top": {
+                    "x": -9.313226e-10,
+                    "y": 0.04946568,
+                    "z": 2.162214e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "aaa_battery",
+            "physics_quality": 0.9780307386111923,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "brass 1",
+                        "plastic_vinyl_glossy_black",
+                        "chrome_v_shiny"
+                    ],
+                    "name": "aaa_battery"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/aaa_battery",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/aaa_battery",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/aaa_battery"
+            },
+            "wcategory": "flashlight battery",
+            "wnid": "n03359285"
+        },
         "afl_lamp": {
             "asset_bundle_sizes": {
                 "Darwin": 127921,
@@ -2337,6 +2595,148 @@
             },
             "wcategory": "sofa",
             "wnid": "n04256520"
+        },
+        "basic_cork": {
+            "asset_bundle_sizes": {
+                "Darwin": 3264929,
+                "Linux": 3507015,
+                "Windows": 3251026
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.019,
+                    "z": 0.011
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.019,
+                    "z": -2.264976e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.038,
+                    "z": -4.529953e-09
+                },
+                "left": {
+                    "x": -0.011,
+                    "y": 0.019,
+                    "z": -2.264976e-09
+                },
+                "right": {
+                    "x": 0.011,
+                    "y": 0.019,
+                    "z": -2.264976e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.019,
+                    "z": -0.011
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "basic_cork",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cork_compact 1"
+                    ],
+                    "name": "basic_cork"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/basic_cork",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/basic_cork",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/basic_cork"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
+        },
+        "basic_cork_2": {
+            "asset_bundle_sizes": {
+                "Darwin": 3177075,
+                "Linux": 3419217,
+                "Windows": 3162399
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.019,
+                    "z": 0.011
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.019,
+                    "z": -2.264976e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.038,
+                    "z": -4.529953e-09
+                },
+                "left": {
+                    "x": -0.011,
+                    "y": 0.019,
+                    "z": -2.264976e-09
+                },
+                "right": {
+                    "x": 0.011,
+                    "y": 0.019,
+                    "z": -2.264976e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.019,
+                    "z": -0.011
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "basic_cork_2",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cork_heavy 1"
+                    ],
+                    "name": "basic_cork_2"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/basic_cork_2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/basic_cork_2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/basic_cork_2"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
         },
         "basket_18inx18inx12iin": {
             "asset_bundle_sizes": {
@@ -4973,6 +5373,787 @@
             "wcategory": "sculpture",
             "wnid": "n04157320"
         },
+        "bung": {
+            "asset_bundle_sizes": {
+                "Darwin": 3183515,
+                "Linux": 3425478,
+                "Windows": 3169286
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.023,
+                    "z": 0.02656457
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.023,
+                    "z": -2.741813e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.046,
+                    "z": -5.483627e-09
+                },
+                "left": {
+                    "x": -0.02656457,
+                    "y": 0.023,
+                    "z": -2.741813e-09
+                },
+                "right": {
+                    "x": 0.02656457,
+                    "y": 0.023,
+                    "z": -2.741813e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.023,
+                    "z": -0.02656457
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "bung",
+            "physics_quality": 0.9011610583838597,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cork_heavy 1"
+                    ],
+                    "name": "bung"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/bung",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/bung",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/bung"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
+        },
+        "button_four_hole_large_black": {
+            "asset_bundle_sizes": {
+                "Darwin": 3132661,
+                "Linux": 3375745,
+                "Windows": 3118306
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001443886,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 8.141881e-17,
+                    "z": -1.862645e-09
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001443886,
+                    "z": -1.799531e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001443885,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001443886,
+                    "z": -1.799531e-09
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001443886,
+                    "z": -1.799531e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.002887772,
+                    "z": -1.736417e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_four_hole_large_black",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "button_four_hole_large_black"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_four_hole_large_black",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_large_black",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_large_black"
+            },
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
+        },
+        "button_four_hole_large_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 2956082,
+                "Linux": 3198434,
+                "Windows": 2941740
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001443886,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 8.141881e-17,
+                    "z": -1.862645e-09
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001443886,
+                    "z": -1.799531e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001443885,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001443886,
+                    "z": -1.799531e-09
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001443886,
+                    "z": -1.799531e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.002887772,
+                    "z": -1.736417e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_four_hole_large_wood",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "button_four_hole_large_wood"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_four_hole_large_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_large_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_large_wood"
+            },
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
+        },
+        "button_four_hole_mottled": {
+            "asset_bundle_sizes": {
+                "Darwin": 3037804,
+                "Linux": 3260663,
+                "Windows": 3004995
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001725529,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.003451056,
+                    "z": 1.508505e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_four_hole_mottled",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "marble_new_emperador_dark"
+                    ],
+                    "name": "button_four_hole_mottled"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_four_hole_mottled",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_mottled",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_mottled"
+            },
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
+        },
+        "button_four_hole_red_plastic": {
+            "asset_bundle_sizes": {
+                "Darwin": 2471477,
+                "Linux": 2714761,
+                "Windows": 2455725
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001725529,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.003451056,
+                    "z": 1.508505e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_four_hole_red_plastic",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "clip_resin_wet"
+                    ],
+                    "name": "button_four_hole_red_plastic"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_four_hole_red_plastic",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_red_plastic",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_red_plastic"
+            },
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
+        },
+        "button_four_hole_white_plastic": {
+            "asset_bundle_sizes": {
+                "Darwin": 2436359,
+                "Linux": 2679833,
+                "Windows": 2422248
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001725529,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.003451056,
+                    "z": 1.508505e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_four_hole_white_plastic",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "plastic_translucent"
+                    ],
+                    "name": "button_four_hole_white_plastic"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_four_hole_white_plastic",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_white_plastic",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_white_plastic"
+            },
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
+        },
+        "button_four_hole_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 3909262,
+                "Linux": 4158172,
+                "Windows": 3900985
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001725529,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.003451056,
+                    "z": 1.508505e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_four_hole_wood",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_natural"
+                    ],
+                    "name": "button_four_hole_wood"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_four_hole_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_wood"
+            },
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
+        },
+        "button_two_hole_green_mottled": {
+            "asset_bundle_sizes": {
+                "Darwin": 2403506,
+                "Linux": 2646007,
+                "Windows": 2389142
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001410044,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 8.141881e-17,
+                    "z": -1.862645e-09
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001410043,
+                    "z": -1.80101e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001410043,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001410043,
+                    "z": -1.80101e-09
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001410043,
+                    "z": -1.80101e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.002820086,
+                    "z": -1.739375e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_two_hole_green_mottled",
+            "physics_quality": 0.9972113431301229,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "marble_green"
+                    ],
+                    "name": "button_two_hole_green_mottled"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_two_hole_green_mottled",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_green_mottled",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_green_mottled"
+            },
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
+        },
+        "button_two_hole_grey": {
+            "asset_bundle_sizes": {
+                "Darwin": 575924,
+                "Linux": 818442,
+                "Windows": 561646
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001410044,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 8.141881e-17,
+                    "z": -1.862645e-09
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001410043,
+                    "z": -1.80101e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001410043,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001410043,
+                    "z": -1.80101e-09
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001410043,
+                    "z": -1.80101e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.002820086,
+                    "z": -1.739375e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_two_hole_grey",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "resin_polyurethane_gloss"
+                    ],
+                    "name": "button_two_hole_grey"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_two_hole_grey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_grey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_grey"
+            },
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
+        },
+        "button_two_hole_red_mottled": {
+            "asset_bundle_sizes": {
+                "Darwin": 3456830,
+                "Linux": 3704070,
+                "Windows": 3444841
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001725529,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.003451056,
+                    "z": 1.508505e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_two_hole_red_mottled",
+            "physics_quality": 0.9889121728991,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "marble_griotte"
+                    ],
+                    "name": "button_two_hole_red_mottled"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_two_hole_red_mottled",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_red_mottled",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_red_mottled"
+            },
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
+        },
+        "button_two_hole_red_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 2810306,
+                "Linux": 3052268,
+                "Windows": 2794991
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.001725529,
+                    "z": -0.01
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.001725528,
+                    "z": 0.01
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.001725528,
+                    "z": 7.542523e-11
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.003451056,
+                    "z": 1.508505e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "button_two_hole_red_wood",
+            "physics_quality": 0.9889121728991,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_burma_padauk"
+                    ],
+                    "name": "button_two_hole_red_wood"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/button_two_hole_red_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_red_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_red_wood"
+            },
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
+        },
         "cabinet_24_door_drawer_wood_beach_honey": {
             "asset_bundle_sizes": {
                 "Darwin": 4258245,
@@ -6522,6 +7703,78 @@
             "wcategory": "chair",
             "wnid": "n03001627"
         },
+        "champagne_cork": {
+            "asset_bundle_sizes": {
+                "Darwin": 6204823,
+                "Linux": 6447511,
+                "Windows": 6189680
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": -2.328307e-10,
+                    "z": -0.0002539062
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.01737999,
+                    "z": 0.01104898
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.01737998,
+                    "z": -0.0002539083
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.03475997,
+                    "z": -0.0002539104
+                },
+                "left": {
+                    "x": -0.01130289,
+                    "y": 0.01737998,
+                    "z": -0.0002539083
+                },
+                "right": {
+                    "x": 0.01130289,
+                    "y": 0.01737998,
+                    "z": -0.0002539083
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.01737998,
+                    "z": -0.0115568
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "champagne_cork",
+            "physics_quality": 0.8844579908437691,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "iron_forged",
+                        "cork_heavy 1"
+                    ],
+                    "name": "champagne_cork"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/champagne_cork",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/champagne_cork",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/champagne_cork"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
+        },
         "chista_slice_of_teak_table": {
             "asset_bundle_sizes": {
                 "Darwin": 3577563,
@@ -7034,6 +8287,148 @@
             },
             "wcategory": "coffee table, cocktail table",
             "wnid": "n03063968"
+        },
+        "cork_plastic": {
+            "asset_bundle_sizes": {
+                "Darwin": 534251,
+                "Linux": 776456,
+                "Windows": 519928
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": 0.009999999
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.042,
+                    "z": -5.00679e-09
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": -0.01
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "cork_plastic",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_cream"
+                    ],
+                    "name": "cork_plastic"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/cork_plastic",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/cork_plastic",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/cork_plastic"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
+        },
+        "cork_plastic_black": {
+            "asset_bundle_sizes": {
+                "Darwin": 3097987,
+                "Linux": 3341065,
+                "Windows": 3083746
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": 0.009999999
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.042,
+                    "z": -5.00679e-09
+                },
+                "left": {
+                    "x": -0.01,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "right": {
+                    "x": 0.01,
+                    "y": 0.021,
+                    "z": -2.503395e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.021,
+                    "z": -0.01
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "cork_plastic_black",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "cork_plastic_black"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/cork_plastic_black",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/cork_plastic_black",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/cork_plastic_black"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
         },
         "dark_red_club_chair": {
             "asset_bundle_sizes": {
@@ -10527,6 +11922,219 @@
             },
             "wcategory": "table lamp",
             "wnid": "n04380533"
+        },
+        "key_brass": {
+            "asset_bundle_sizes": {
+                "Darwin": 134919,
+                "Linux": 288263,
+                "Windows": 123207
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999909,
+                    "z": -0.0266767
+                },
+                "bottom": {
+                    "x": -0.0001550401,
+                    "y": 7.96371e-11,
+                    "z": -0.001914257
+                },
+                "center": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "front": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999886,
+                    "z": 0.02284819
+                },
+                "left": {
+                    "x": -0.0081061,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "right": {
+                    "x": 0.00779602,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "top": {
+                    "x": -0.0001550401,
+                    "y": 0.001999979,
+                    "z": -0.001914257
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "key_brass",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "brass 1"
+                    ],
+                    "name": "key_brass"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/key_brass",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/key_brass",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/key_brass"
+            },
+            "wcategory": "key",
+            "wnid": "n03613294"
+        },
+        "key_dull_metal": {
+            "asset_bundle_sizes": {
+                "Darwin": 2398706,
+                "Linux": 2640938,
+                "Windows": 2384063
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999909,
+                    "z": -0.0266767
+                },
+                "bottom": {
+                    "x": -0.0001550401,
+                    "y": 7.96371e-11,
+                    "z": -0.001914257
+                },
+                "center": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "front": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999886,
+                    "z": 0.02284819
+                },
+                "left": {
+                    "x": -0.0081061,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "right": {
+                    "x": 0.00779602,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "top": {
+                    "x": -0.0001550401,
+                    "y": 0.001999979,
+                    "z": -0.001914257
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "key_dull_metal",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "metal_galvanized"
+                    ],
+                    "name": "key_dull_metal"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/key_dull_metal",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/key_dull_metal",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/key_dull_metal"
+            },
+            "wcategory": "key",
+            "wnid": "n03613294"
+        },
+        "key_shiny": {
+            "asset_bundle_sizes": {
+                "Darwin": 106005,
+                "Linux": 293033,
+                "Windows": 94480
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999909,
+                    "z": -0.0266767
+                },
+                "bottom": {
+                    "x": -0.0001550401,
+                    "y": 7.96371e-11,
+                    "z": -0.001914257
+                },
+                "center": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "front": {
+                    "x": -0.0001550401,
+                    "y": 0.0009999886,
+                    "z": 0.02284819
+                },
+                "left": {
+                    "x": -0.0081061,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "right": {
+                    "x": 0.00779602,
+                    "y": 0.0009999898,
+                    "z": -0.001914257
+                },
+                "top": {
+                    "x": -0.0001550401,
+                    "y": 0.001999979,
+                    "z": -0.001914257
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "key_shiny",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "steel_galvanized"
+                    ],
+                    "name": "key_shiny"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/key_shiny",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/key_shiny",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/key_shiny"
+            },
+            "wcategory": "key",
+            "wnid": "n03613294"
         },
         "kids_luggage_1": {
             "asset_bundle_sizes": {
@@ -15877,6 +17485,438 @@
             "wcategory": "bowl",
             "wnid": "n00104409"
         },
+        "round_coaster_cherry": {
+            "asset_bundle_sizes": {
+                "Darwin": 6338685,
+                "Linux": 6581078,
+                "Windows": 6324347
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.007250002,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007249997,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.0145,
+                    "z": 6.338152e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_coaster_cherry",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_american_cherry",
+                        "rubber_black"
+                    ],
+                    "name": "round_coaster_cherry"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/round_coaster_cherry",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_cherry",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_cherry"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
+        "round_coaster_indent_rubber": {
+            "asset_bundle_sizes": {
+                "Darwin": 3132729,
+                "Linux": 3375581,
+                "Windows": 3118315
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.00714952,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007149516,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.01429904,
+                    "z": 6.250308e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_coaster_indent_rubber",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "rubber_black",
+                        "rubber_black"
+                    ],
+                    "name": "round_coaster_indent_rubber"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/round_coaster_indent_rubber",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_indent_rubber",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_indent_rubber"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
+        "round_coaster_indent_stone": {
+            "asset_bundle_sizes": {
+                "Darwin": 3132641,
+                "Linux": 3375619,
+                "Windows": 3118279
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.00714952,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007149516,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.01429904,
+                    "z": 6.250308e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_coaster_indent_stone",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "rubber_black",
+                        "rubber_black"
+                    ],
+                    "name": "round_coaster_indent_stone"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/round_coaster_indent_stone",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_indent_stone",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_indent_stone"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
+        "round_coaster_indent_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 5601985,
+                "Linux": 5844593,
+                "Windows": 5588129
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.00714952,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007149516,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007149518,
+                    "z": 3.125153e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.01429904,
+                    "z": 6.250308e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_coaster_indent_wood",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_black_walnut_striped",
+                        "rubber_black"
+                    ],
+                    "name": "round_coaster_indent_wood"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/round_coaster_indent_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_indent_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_indent_wood"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
+        "round_coaster_stone": {
+            "asset_bundle_sizes": {
+                "Darwin": 4743423,
+                "Linux": 4983972,
+                "Windows": 4711450
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.007250002,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007249997,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.0145,
+                    "z": 6.338152e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_coaster_stone",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_beige_french",
+                        "rubber_black"
+                    ],
+                    "name": "round_coaster_stone"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/round_coaster_stone",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_stone",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_stone"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
+        "round_coaster_stone_dark": {
+            "asset_bundle_sizes": {
+                "Darwin": 6034153,
+                "Linux": 6274352,
+                "Windows": 6015170
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.007250002,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007249997,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.0145,
+                    "z": 6.338152e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "round_coaster_stone_dark",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "marble_new_emperador_dark",
+                        "rubber_black"
+                    ],
+                    "name": "round_coaster_stone_dark"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/round_coaster_stone_dark",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_stone_dark",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_stone_dark"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
         "salt": {
             "asset_bundle_sizes": {
                 "Darwin": 3982663,
@@ -16448,6 +18488,77 @@
             },
             "wcategory": "toy",
             "wnid": "n04461879"
+        },
+        "shoebox_fused": {
+            "asset_bundle_sizes": {
+                "Darwin": 2404687,
+                "Linux": 2645422,
+                "Windows": 2391211
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.1102815,
+                    "y": 0.1056794,
+                    "z": -0.1289752
+                },
+                "bottom": {
+                    "x": 0.1102815,
+                    "y": 5.000086e-05,
+                    "z": 0.08299169
+                },
+                "center": {
+                    "x": 0.1102815,
+                    "y": 0.1056794,
+                    "z": 0.0829917
+                },
+                "front": {
+                    "x": 0.1102815,
+                    "y": 0.1056794,
+                    "z": 0.2949586
+                },
+                "left": {
+                    "x": -0.02606011,
+                    "y": 0.1056794,
+                    "z": 0.0829917
+                },
+                "right": {
+                    "x": 0.2466232,
+                    "y": 0.1056794,
+                    "z": 0.0829917
+                },
+                "top": {
+                    "x": 0.1102815,
+                    "y": 0.2113088,
+                    "z": 0.0829917
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "shoebox_fused",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cardboard_corrugated"
+                    ],
+                    "name": "shoebox_fused"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/shoebox_fused",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/shoebox_fused",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/shoebox_fused"
+            },
+            "wcategory": "box",
+            "wnid": "n02883344"
         },
         "side_table_wood": {
             "asset_bundle_sizes": {
@@ -17932,6 +20043,438 @@
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
+        "square_coaster_001_cork": {
+            "asset_bundle_sizes": {
+                "Darwin": 6292788,
+                "Linux": 6531994,
+                "Windows": 6280228
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.007250002,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007249997,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.0145,
+                    "z": 6.338152e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "square_coaster_001_cork",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cork_compact",
+                        "rubber_black"
+                    ],
+                    "name": "square_coaster_001_cork"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/square_coaster_001_cork",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_001_cork",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_001_cork"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
+        "square_coaster_001_marble": {
+            "asset_bundle_sizes": {
+                "Darwin": 5400934,
+                "Linux": 5643360,
+                "Windows": 5386273
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.007250002,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007249997,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.0145,
+                    "z": 6.338152e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "square_coaster_001_marble",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "marble_green",
+                        "rubber_black"
+                    ],
+                    "name": "square_coaster_001_marble"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/square_coaster_001_marble",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_001_marble",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_001_marble"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
+        "square_coaster_001_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 4802560,
+                "Linux": 5044559,
+                "Windows": 4788280
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.007250002,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007249997,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.0145,
+                    "z": 6.338152e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "square_coaster_001_wood",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_bamboo",
+                        "rubber_black"
+                    ],
+                    "name": "square_coaster_001_wood"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/square_coaster_001_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_001_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_001_wood"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
+        "square_coaster_rubber": {
+            "asset_bundle_sizes": {
+                "Darwin": 5232585,
+                "Linux": 5469299,
+                "Windows": 5210987
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.007250002,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007249997,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.0145,
+                    "z": 6.338152e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "square_coaster_rubber",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "rubber_floor_speckles",
+                        "rubber_black"
+                    ],
+                    "name": "square_coaster_rubber"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/square_coaster_rubber",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_rubber",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_rubber"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
+        "square_coaster_stone": {
+            "asset_bundle_sizes": {
+                "Darwin": 4726645,
+                "Linux": 4962711,
+                "Windows": 4700040
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.007250002,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007249997,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.0145,
+                    "z": 6.338152e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "square_coaster_stone",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_beige_french",
+                        "rubber_black"
+                    ],
+                    "name": "square_coaster_stone"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/square_coaster_stone",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_stone",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_stone"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
+        "square_coaster_wood": {
+            "asset_bundle_sizes": {
+                "Darwin": 6482272,
+                "Linux": 6725750,
+                "Windows": 6468416
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.007250002,
+                    "z": -0.05
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.862645e-09,
+                    "z": -8.141881e-17
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.007249997,
+                    "z": 0.05
+                },
+                "left": {
+                    "x": -0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "right": {
+                    "x": 0.05,
+                    "y": 0.007249999,
+                    "z": 3.169075e-10
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.0145,
+                    "z": 6.338152e-10
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "square_coaster_wood",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_mid_brown",
+                        "rubber_black"
+                    ],
+                    "name": "square_coaster_wood"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/square_coaster_wood",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_wood",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_wood"
+            },
+            "wcategory": "coaster",
+            "wnid": "n03056701"
+        },
         "square_wood_block": {
             "asset_bundle_sizes": {
                 "Darwin": 1192952,
@@ -18726,6 +21269,148 @@
             },
             "wcategory": "chair",
             "wnid": "n03001627"
+        },
+        "tapered_cork": {
+            "asset_bundle_sizes": {
+                "Darwin": 3183128,
+                "Linux": 3424857,
+                "Windows": 3168765
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.01963693,
+                    "z": 0.01111431
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.01963693,
+                    "z": -2.340904e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.03927385,
+                    "z": -4.681807e-09
+                },
+                "left": {
+                    "x": -0.01111431,
+                    "y": 0.01963693,
+                    "z": -2.340904e-09
+                },
+                "right": {
+                    "x": 0.01111431,
+                    "y": 0.01963693,
+                    "z": -2.340904e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.01963693,
+                    "z": -0.01111431
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "tapered_cork",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cork_heavy 1"
+                    ],
+                    "name": "tapered_cork"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/tapered_cork",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/tapered_cork",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/tapered_cork"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
+        },
+        "tapered_cork_w_hole": {
+            "asset_bundle_sizes": {
+                "Darwin": 3184043,
+                "Linux": 3426099,
+                "Windows": 3169654
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0.01963693,
+                    "z": 0.01111431
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.01963693,
+                    "z": -2.340904e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.03927385,
+                    "z": -4.681807e-09
+                },
+                "left": {
+                    "x": -0.01111431,
+                    "y": 0.01963693,
+                    "z": -2.340904e-09
+                },
+                "right": {
+                    "x": 0.01111431,
+                    "y": 0.01963693,
+                    "z": -2.340904e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.01963693,
+                    "z": -0.01111431
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "tapered_cork_w_hole",
+            "physics_quality": -1,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cork_heavy 1"
+                    ],
+                    "name": "tapered_cork_w_hole"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/tapered_cork_w_hole",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/tapered_cork_w_hole",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/tapered_cork_w_hole"
+            },
+            "wcategory": "bottle cork",
+            "wnid": "n03108853"
         },
         "toaster_002": {
             "asset_bundle_sizes": {

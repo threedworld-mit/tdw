@@ -22,6 +22,14 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `set_reverb_space_expert`<br>`set_reverb_space_simple` | Added new materials: `"metal"` and `"wood"`<br>Set the default value of `env_id` to -1 (was 0).<br>If `env_id == -1`, the reverb space will encapsulate the entire scene. |
 | `add_position_marker`                                  | Added new shapes: `"circle"` and `"square"`                  |
 
+### Build
+
+- **Fixed: A major bug that causes the build to hang. You are STRONGLY encouraged to upgrade to this version of TDW!**
+
+### Model Library
+
+- Added: basic_cork_2, button_two_hole_green_mottled, square_coaster_001_cork, shoebox_fused, key_dull_metal, round_coaster_indent_wood, square_coaster_001_marble, button_two_hole_red_wood, round_coaster_cherry, button_two_hole_grey, square_coaster_rubber, 4ft_shelf_metal, button_four_hole_red_plastic, key_shiny, tapered_cork, cork_plastic_black, square_coaster_wood, button_four_hole_wood, champagne_cork, round_coaster_indent_stone, aaa_battery, square_coaster_stone, button_four_hole_white_plastic, button_four_hole_mottled, button_four_hole_large_black, bung, basic_cork, round_coaster_indent_rubber, round_coaster_stone, square_coaster_001_wood, 9v_battery, button_four_hole_large_wood, key_brass, tapered_cork_w_hole, round_coaster_stone_dark, button_two_hole_red_mottled, cork_plastic
+
 ### Scene Library
 
 - Added: mm_kitchen_1a

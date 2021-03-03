@@ -489,7 +489,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.4/4ft_shelf_metal",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.4/4ft_shelf_metal"
             },
-            "wcategory": "shelf",
+            "wcategory": "bookshelf",
             "wnid": "n04190052"
         },
         "9v_battery": {
@@ -5512,8 +5512,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_large_black",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_large_black"
             },
-            "wcategory": "button",
-            "wnid": "n02928608"
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
         },
         "button_four_hole_large_wood": {
             "asset_bundle_sizes": {
@@ -5583,8 +5583,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_large_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_large_wood"
             },
-            "wcategory": "button",
-            "wnid": "n02928608"
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
         },
         "button_four_hole_mottled": {
             "asset_bundle_sizes": {
@@ -5654,8 +5654,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_mottled",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_mottled"
             },
-            "wcategory": "button",
-            "wnid": "n02928608"
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
         },
         "button_four_hole_red_plastic": {
             "asset_bundle_sizes": {
@@ -5725,8 +5725,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_red_plastic",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_red_plastic"
             },
-            "wcategory": "button",
-            "wnid": "n02928608"
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
         },
         "button_four_hole_white_plastic": {
             "asset_bundle_sizes": {
@@ -5796,8 +5796,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_white_plastic",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_white_plastic"
             },
-            "wcategory": "button",
-            "wnid": "n02928608"
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
         },
         "button_four_hole_wood": {
             "asset_bundle_sizes": {
@@ -5867,8 +5867,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_wood"
             },
-            "wcategory": "button",
-            "wnid": "n02928608"
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
         },
         "button_two_hole_green_mottled": {
             "asset_bundle_sizes": {
@@ -5938,8 +5938,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_green_mottled",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_green_mottled"
             },
-            "wcategory": "button",
-            "wnid": "n02928608"
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
         },
         "button_two_hole_grey": {
             "asset_bundle_sizes": {
@@ -6009,8 +6009,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_grey",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_grey"
             },
-            "wcategory": "button",
-            "wnid": "n02928608"
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
         },
         "button_two_hole_red_mottled": {
             "asset_bundle_sizes": {
@@ -6080,8 +6080,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_red_mottled",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_red_mottled"
             },
-            "wcategory": "button",
-            "wnid": "n02928608"
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
         },
         "button_two_hole_red_wood": {
             "asset_bundle_sizes": {
@@ -6151,8 +6151,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_red_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_red_wood"
             },
-            "wcategory": "button",
-            "wnid": "n02928608"
+            "wcategory": "shirt button",
+            "wnid": "n04197781"
         },
         "cabinet_24_door_drawer_wood_beach_honey": {
             "asset_bundle_sizes": {

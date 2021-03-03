@@ -306,20 +306,7 @@ class PyImpact:
 
     For a general guide on impact sounds in TDW, read [this](../misc_frontend/impact_sounds.md).
 
-    Usage:
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.py_impact import PyImpact
-
-    p = PyImpact()
-    c = Controller()
-    c.start()
-
-    # Your code here.
-
-    c.communicate(p.get_impact_sound_command(arg1, arg2, ... ))
-    ```
+    For example usage, see: `tdw/Python/example_controllers/impact_sounds.py`
     """
 
     def __init__(self, initial_amp: float = 0.5, prevent_distortion: bool = True, logging: bool = False):
@@ -356,14 +343,14 @@ class PyImpact:
         # A dummy ID for the environment. See: `set_default_audio_info()`
         self.env_id: int = -1
 
-    def set_default_audio_info(self, objects: Dict[int, str]) -> None:
+    def set_default_audio_info(self, object_names: Dict[int, str]) -> None:
         """
         Set the default audio info for each object in the scene.
 
-        :param objects: A dictionary of objects in the scene. Key = The object ID. Value = The name of the model.
+        :param object_names: A dictionary of objects in the scene. Key = The object ID. Value = The name of the model.
         """
 
-        self.object_names = objects
+        self.object_names = object_names
         self.object_info = PyImpact.get_object_info()
         self.env_id = int.from_bytes(urandom(3), byteorder='big')
 
@@ -386,53 +373,61 @@ class PyImpact:
 
         commands = []
         collisions, env_collisions, rigidbodies = self.get_collisions(resp=resp)
-        # Get the mass of each object.
+        # Get the mass and speed of each object.
         masses: Dict[int, float] = dict()
+        speeds: Dict[int, float] = dict()
         for i in range(rigidbodies.get_num()):
-            masses[rigidbodies.get_id(i)] = rigidbodies.get_mass(i)
+            object_id = rigidbodies.get_id(i)
+            masses[object_id] = rigidbodies.get_mass(i)
+            speeds[object_id] = np.linalg.norm(rigidbodies.get_velocity(i))
         # Play sounds from collisions.
         for collision in collisions:
-            if collision.get_state() == "enter" and self.is_valid_collision(collision=collision):
-                collider_id = collision.get_collider_id()
-                collidee_id = collision.get_collidee_id()
-                # The target object is the one with less mass.
-                if masses[collider_id] < masses[collidee_id]:
-                    target = collider_id
-                    other = collidee_id
-                else:
-                    target = collidee_id
-                    other = collider_id
-                target_audio = self.object_info[self.object_names[target]]
-                other_audio = self.object_info[self.object_names[other]]
-                commands.append(self.get_impact_sound_command(collision=collision,
-                                                              rigidbodies=rigidbodies,
-                                                              target_id=target,
-                                                              target_amp=target_audio.amp,
-                                                              target_mat=target_audio.material.name,
-                                                              other_id=other,
-                                                              other_amp=other_audio.amp,
-                                                              other_mat=other_audio.material.name,
-                                                              resonance=target_audio.resonance,
-                                                              play_audio_data=not resonance_audio))
+            # Ignore invalid collisions.
+            if collision.get_state() != "enter" or not self.is_valid_collision(collision=collision):
+                continue
+            collider_id = collision.get_collider_id()
+            collidee_id = collision.get_collidee_id()
+            # The target object is the one with less mass.
+            if masses[collider_id] < masses[collidee_id]:
+                target = collider_id
+                other = collidee_id
+            else:
+                target = collidee_id
+                other = collider_id
+            # Skip objects that for some reason aren't in the cached data.
+            if target not in self.object_names or other not in self.object_names:
+                continue
+            target_audio = self.object_info[self.object_names[target]]
+            other_audio = self.object_info[self.object_names[other]]
+            commands.append(self.get_impact_sound_command(collision=collision,
+                                                          rigidbodies=rigidbodies,
+                                                          target_id=target,
+                                                          target_amp=target_audio.amp,
+                                                          target_mat=target_audio.material.name,
+                                                          other_id=other,
+                                                          other_amp=other_audio.amp,
+                                                          other_mat=other_audio.material.name,
+                                                          resonance=target_audio.resonance,
+                                                          play_audio_data=not resonance_audio))
         # Play sounds from collisions with the environment.
         for collision in env_collisions:
-            if collision.get_state() == "enter":
-                target = collision.get_object_id()
-                audio = self.object_info[self.object_names[target]]
-                if collision.get_floor():
-                    env_mat = floor
-                else:
-                    env_mat = wall
-                commands.append(self.get_impact_sound_command(collision=collision,
-                                                              rigidbodies=rigidbodies,
-                                                              target_id=target,
-                                                              target_amp=audio.amp,
-                                                              target_mat=audio.material.name,
-                                                              other_id=self.env_id,
-                                                              other_amp=0.01,
-                                                              other_mat=env_mat.name,
-                                                              resonance=audio.resonance,
-                                                              play_audio_data=False))
+            target = collision.get_object_id()
+            # Ignore collisions that aren't enter, that aren't in the cached data, or that are too slow.
+            # When objects are initially spawned they collide with the environment at very slow speeds,
+            # resulting in a "click" sound that we don't actually want.
+            if collision.get_state() != "enter" or target not in self.object_names or speeds[target] < 0.01:
+                continue
+            audio = self.object_info[self.object_names[target]]
+            commands.append(self.get_impact_sound_command(collision=collision,
+                                                          rigidbodies=rigidbodies,
+                                                          target_id=target,
+                                                          target_amp=audio.amp,
+                                                          target_mat=audio.material.name,
+                                                          other_id=self.env_id,
+                                                          other_amp=0.01,
+                                                          other_mat=floor.name if collision.get_floor() else wall.name,
+                                                          resonance=audio.resonance,
+                                                          play_audio_data=False))
         return commands
 
     def get_log(self) -> dict:

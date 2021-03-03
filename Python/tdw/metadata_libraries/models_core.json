@@ -20184,8 +20184,8 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_001_marble",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_001_marble"
             },
-            "wcategory": "kitchen utensil",
-            "wnid": "n03621049"
+            "wcategory": "coaster",
+            "wnid": "n03056701"
         },
         "square_coaster_001_wood": {
             "asset_bundle_sizes": {

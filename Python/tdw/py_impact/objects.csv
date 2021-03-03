@@ -1,4 +1,4 @@
-name,amp,mass,material,library,bounciness,resonance
+﻿name,amp,mass,material,library,bounciness,resonance
 trapezoidal_table,0.5,200,hardwood,models_core.json,0.6,0.65
 chista_slice_of_teak_table,0.5,180,hardwood,models_core.json,0.6,0.65
 glass_table_round,0.6,200,glass,models_core.json,0.6,0.65

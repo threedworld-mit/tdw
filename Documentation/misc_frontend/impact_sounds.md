@@ -10,6 +10,168 @@ There are several ways to generate impact sounds in TDW:
 
 The PyImpact class contains scripts to synthesize novel plausible impact sounds for any object. The sound synthesis method roughly follows that described in [Traer,Cusimano and McDermott, A PERCEPTUALLY INSPIRED GENERATIVE MODEL OF RIGID-BODY CONTACT SOUNDS, Digital Audio Effects, (DAFx), 2019](http://dafx2019.bcu.ac.uk/papers/DAFx2019_paper_57.pdf). Upon every call the sound resonant modes will be randomly sampled and the impacts will sound slightly different.  Thus, two different objects in the same scene with the same material will create similar but unique sounds.  And the same scene run repeatedly will generate similar but unique sounds at every run.  This is designed to emulate the real world, where tapping the same object repeatedly yields slightly different sounds on each impact.
 
+## Simple usage
+
+The "simple" version of PyImpact loads default physics and audio values for each object in the scene and automatically generates impact sounds.
+
+At minimum, you need to:
+
+1. Create a scene, initialize PyImpact, and set the target framerate to 60:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.py_impact import PyImpact, AudioMaterial
+from tdw.object_init_data import AudioInitData
+
+c = Controller()
+c.start()
+p = PyImpact(initial_amp=0.5)
+commands = [TDWUtils.create_empty_room(12, 12),
+            {"$type": "set_target_framerate",
+             "framerate": 60}]
+```
+
+2. Set the floor and wall audio materials. These will be used whenever an object collides with a floor or wall:
+
+```python
+floor = AudioMaterial.ceramic
+wall = AudioMaterial.wood
+```
+
+3. Add an avatar and give it an audio sensor:
+
+```python
+commands.extend(TDWUtils.create_avatar(avatar_type="A_Img_Caps_Kinematic",
+                                       position={"x": 1, "y": 1.2, "z": 1.2},
+                                       look_at=TDWUtils.VECTOR3_ZERO))
+commands.append({"$type": "add_audio_sensor"})
+```
+
+4. Add objects. You should create objects using the [`AudioInitData` class](../python/object_init_data.md), which will automatically assign physics values such as mass and friction:
+
+```python
+surface_name = "glass_table_round"
+obj_name = "spoon1"
+# Get initialization data from the default audio data (which includes mass, friction values, etc.).
+surface_init_data = AudioInitData(name=surface_name,
+                                  position={"x": 0, "y": 0, "z": 0})
+obj_init_data = AudioInitData(name=obj_name,
+                              position={"x": 0.1, "y": 2, "z": 0},
+                              rotation={"x": 34, "y": 0.4, "z": 135})
+# Convert the initialization data to commands.
+surface_id, surface_commands = surface_init_data.get_commands()
+obj_id, obj_commands = obj_init_data.get_commands()
+# Add the objects.
+commands.extend(surface_commands)
+commands.extend(obj_commands)
+```
+
+5. Cache the names and objects in PyImpact. This will allow PyImpact to locate audio values given an object ID:
+
+```python
+object_names = {surface_id: surface_name,
+                obj_id: obj_name}
+p.set_default_audio_info(object_names=object_names)
+```
+
+6. Optionally, apply a force to an object (it will also fall due to gravity):
+
+```python
+commands.append( {"$type": "apply_force_to_object",
+                  "force": {"x": 0, "y": -0.01, "z": 0},
+                  "id": obj_id})
+```
+
+7. Request collision and rigidbody output data:
+
+```python
+commands.extend([{"$type": "send_collisions",
+                  "enter": True,
+                  "stay": False,
+                  "exit": False,
+                  "collision_types": ["obj", "env"]},
+                 {"$type": "send_rigidbodies",
+                  "frequency": "always"}])
+```
+
+8. Let the simulation run. Per-frame, PyImpact will try to create commands that play audio, given the output data from the build (which includes whether or not objects are colliding):
+
+```python
+# Send the commands.
+resp = c.communicate(commands)
+# Let the object fall.
+for i in range(200):
+    # Get impact sounds.
+    commands = p.get_audio_commands(resp=resp, floor=floor, wall=wall)
+    resp = c.communicate(commands)
+c.communicate({"$type": "terminate"})
+```
+
+### Example controller
+
+For a slightly more complicated example controller, see: `tdw/Python/example_controllers/impact_sounds.md`
+
+### Resonance Audio
+
+Resonance Audio will add reverberation to the audio playback. To set up a scene with Resonance Audio, make the following changes:
+
+1. After adding the objects, include this command:
+
+```python
+commands.append({"$type": "set_reverb_space_simple",
+                 "env": -1,
+                 "reverb_floor_material": "marble"})
+```
+
+2. Replace `{"$type": "add_audio_sensor"}` with `{"$type": "add_environ_audio_sensor"}`
+3. In the loop, set `resonance_audio=True`:
+
+```python
+# Send the commands.
+resp = c.communicate(commands)
+# Let the object fall.
+for i in range(200):
+    # Get impact sounds.
+    commands = p.get_audio_commands(resp=resp, floor=floor, wall=wall, resonance_audio=True)
+    resp = c.communicate(commands)
+c.communicate({"$type": "terminate"})
+```
+
+## Resetting PyImpact
+
+You need to reset PyImpact between trials; otherwise, sounds will be "sharper" and higher pitched over time. There are two ways to reset:
+
+1. Instantiate a new PyImpact object per trial:
+
+```python
+def trial():
+    p = PyImpact()
+    
+    # Your code here.
+```
+
+2. Call the `reset()` function:
+
+```python
+p = PyImpact()
+
+def trial():
+    p.reset()
+    
+    # Your code here.
+```
+
+These two methods are functionally equivalent; however, because PyImpact's constructor reads files off the disk and then caches the data, calling `reset()` is more efficient.
+
+Be sure to also call re-build the `object_names` dictionary (see above example) and call `p.set_default_audio_info(object_names)`.
+
+## Advanced usage
+
+It's possible to use PyImpact without applying default values. In these cases, you don't need to call `p.set_default_audio_info(object_names)` and you can use `p.get_impact_sound_command()` to manually set parameters.
+
+For example implementation, see: `tdw/Python/use_cases/rube_goldberg/rube_goldberg.py`
+
 ### Inputs
 
 TDW uses material, mass, and sound amplitudes (relative to an arbitrary standard) to create unique synthetic impact sounds.
@@ -28,58 +190,7 @@ Deciding what audio material to assign to an object is mostly a common-sense pro
 
 In PyImpact, these object amplitude values are scaled relative to the initial amplitude value passed in via `p = PyImpact(initial_amp=0.5)` (see code example below). This value must be > 0 and < 1. In certain situations, such as multiple closely-packed collision events, distortion of the audio can occur if this value is set too high. For example, the value used in the `impact_sound.py` example controller is 0.5, which is appropriate for a single event involving two objects. However the value used in `rube_goldberg.py` use-case example is much lower — 0.01 — due to the complex collision interactions involved.
 
-The "resonance" values for objects, as set in `tdw/Python/tdw/py_impact/objects.csv`are guidelines and can be altered by the user if desired. Most objects should have values less than 1.0, and small solid objects (e.g. dominos) would have very small values, around 0.15 or thereabouts. Thin-walled objects, especially made from materials such as glass or metal, can have values slightly > 1.0 but going too high can create unnatural-souding resonances.
-
-Here is a minimal demo of a metal spoon dropped on a glass table using default values.
-
-```python
-from tdw.py_impact import PyImpact
-from tdw.controller import Controller
-
-c = Controller()
-# Initialize PyImpact.
-p = PyImpact(initial_amp=0.5)
-# Get object properties for two objects.
-object_info = p.get_object_info()
-obj1 = object_info["spoon1"]
-obj2 = object_info["glass_table_round"]
-
-
-# TDW code here to create scene, objects, and start motion.
-# ...
-
-commands = get_commands() # Your code here.
-
-# Listen for collisions and rigidbodies.
-commands.extend([{"$type": "send_collisions",
-                  "enter": True,
-                  "stay": False,
-                  "exit": False, 
-                  "collision_types": ["obj"]}, # Listen for object-object collisions.
-                 {"$type": "send_rigidbodies",
-                  "frequency": "always"}])
-
-# If a collision occurs we create sound.
-resp = c.communicate(commands)
-
-# Parse the response from the build for collision and rigidbody data.
-collisions, environment_collisions, rigidbodies = PyImpact.get_collisions(resp)
-
-if len(collisions) == 0 and PyImpact.is_valid_collision(collision):
-    # Create an impact sound command from the output data.
-    impact_sound_command = p.get_impact_sound_command(
-        collision=collision,
-        rigidbodies=rigidbodies,
-        target_id=obj2_id,
-        target_mat=obj2.material,
-        target_amp=obj2.amp,
-        other_id=obj1_id,
-        other_mat=obj2.material,
-        other_amp=obj2.amp)
-
-    # Send audio to TDW.
-    resp = c.communicate(impact_sound_command)
-```
+The "resonance" values for objects, as set in `tdw/Python/tdw/py_impact/objects.csv`are guidelines and can be altered by the user if desired. Most objects should have values less than 1.0, and small solid objects (e.g. dominos) would have very small values, around 0.15 or thereabouts. Thin-walled objects, especially made from materials such as glass or metal, can have values slightly > 1.0 but going too high can create unnatural-sounding resonances.
 
 Default values of material or relative amplitude can be overwritten in the `impact_sound_command = p.get_impact_sound_command(...)` command. 
 
@@ -123,49 +234,6 @@ PyImpact requires audio drivers and therefore might not work on most Linux serve
 #### Silence
 
 Very occasionally, a low-resonant object will have a very "unlucky" sampling, resulting in an empty audio byte array. In these cases, `PyImpact.get_impact_sound_command` will return a `do_nothing` command (which does nothing) rather than an audio command.
-
-## Resetting PyImpact
-
-You need to reset PyImpact between trials; otherwise, sounds will be "sharper" and higher pitched over time. There are two ways to reset:
-
-1. Instantiate a new PyImpact object per trial:
-
-```python
-def trial():
-    p = PyImpact()
-    
-    # Your code here.
-```
-
-2. Call the `reset()` function:
-
-```python
-p = PyImpact()
-
-def trial():
-    p.reset()
-    
-    # Your code here.
-```
-
-These two methods are functionally equivalent; however, because PyImpact's constructor reads files off the disk and then caches the data, calling `reset()` is more efficient.
-
-## How to Set Up an Audio Scene
-
-Audio scenes require the following initialization [commands](../api/command_api.md):
-
-- An avatar (via `create_avatar`)
-- An _audio sensor_ attached to the avatar (via `add_audio_sensor`)
-
-Additionally, impact sounds require the following types of [Output Data](../api/output_data.md):
-
-- Rigidbodies (via `send_rigidbodies`)
-- Collision (via `send_collisions`)
-
-In order for objects to have realistic collisions, you'll probably need to send these commands as well:
-
-- `set_mass` 
-- `set_physic_material` (You can use the `ObjectInfo.bounciness` value here; see [PyImpact API](../python/py_impact.md).)
 
 ## Using pre-recorded audio samples
 

@@ -30,17 +30,14 @@ class ImpactSounds(Controller):
                      "width": 1024,
                      "height": 1024},
                     {"$type": "set_target_framerate",
-                     "framerate": 120}]
+                     "framerate": 60}]
         # Create the avatar.
         commands.extend(TDWUtils.create_avatar(avatar_type="A_Img_Caps_Kinematic",
                                                position={"x": 1, "y": 1.2, "z": 1.2},
                                                look_at=TDWUtils.VECTOR3_ZERO))
         # Add the audio sensor.
-        # Set the target framerate.
         commands.extend([{"$type": "add_audio_sensor",
                           "avatar_id": "a"},
-                         {"$type": "set_target_framerate",
-                          "framerate": 60},
                          {"$type": "set_focus_distance",
                           "focus_distance": 2}])
 

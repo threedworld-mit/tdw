@@ -4,6 +4,29 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.4
+
+### `tdw` module
+
+#### `PyImpact`
+
+- Added: `get_audio_commands(resp, wall, floor)`. This *greatly* simplifies PyImpact by doing all collision detection and command creation under the hood using default audio values.
+- Added: `set_default_audio_info(object_names)`. Set the default audio values and cache the names of each object in the scene.  
+- Added fields: `object_info` (cached default object info), `object_names` (cached object IDs and their names in the current scene), `env_id` (dummy ID for the environment)
+- Fixed: Objects not present in the Rigidbody output data don't create audio. (This can happen if  your controller set the `ids` value in `send_rigidbodies` to exclude some objects, or if there is a robot in the scene.) As a fallback, PyImpact will try to use default audio values.
+
+### Example Controllers
+
+- Re-wrote `impact_sounds.py` to use the simplified PyImpact API (i.e. `get_audio_commands()`).
+
+### Documentation
+
+#### Modified Documentation
+
+| Document           | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `impact_sounds.md` | Added a "simple usage" section and updated the example controller code. |
+
 ## v1.8.3
 
 ### Command API

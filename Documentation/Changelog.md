@@ -30,6 +30,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Build
 
 - Fixed: If `set_kinematic_state` is sent more than once in a row to the same object with `kinematic=True`, the collision detection mode will be set incorrectly.
+- Fixed: Audio glitches when using Resonance Audio because the playback is doubled.
 
 ### Documentation
 

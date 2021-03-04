@@ -6,6 +6,14 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ## v1.8.4
 
+### Command API
+
+#### Modified Commands
+
+| Command                   | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `set_reverb_space_simple` | Added optional parameters `min_room_volume` and `max_room_volume`. |
+
 ### `tdw` module
 
 #### `PyImpact`
@@ -18,6 +26,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Example Controllers
 
 - Re-wrote `impact_sounds.py` to use the simplified PyImpact API (i.e. `get_audio_commands()`).
+
+### Build
+
+- Fixed: If `set_kinematic_state` is sent more than once in a row to the same object with `kinematic=True`, the collision detection mode will be set incorrectly.
 
 ### Documentation
 

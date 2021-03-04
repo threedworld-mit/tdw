@@ -374,11 +374,9 @@ class PyImpact:
         commands = []
         collisions, env_collisions, rigidbodies = self.get_collisions(resp=resp)
         # Get the mass and speed of each object.
-        masses: Dict[int, float] = dict()
         speeds: Dict[int, float] = dict()
         for i in range(rigidbodies.get_num()):
             object_id = rigidbodies.get_id(i)
-            masses[object_id] = rigidbodies.get_mass(i)
             speeds[object_id] = np.linalg.norm(rigidbodies.get_velocity(i))
         # Play sounds from collisions.
         for collision in collisions:
@@ -387,16 +385,18 @@ class PyImpact:
                 continue
             collider_id = collision.get_collider_id()
             collidee_id = collision.get_collidee_id()
+            # Skip objects that for some reason aren't in the cached data.
+            if collider_id not in self.object_names or collidee_id not in self.object_names:
+                continue
             # The target object is the one with less mass.
-            if masses[collider_id] < masses[collidee_id]:
+            if self.object_info[self.object_names[collider_id]].mass < \
+                    self.object_info[self.object_names[collidee_id]].mass:
                 target = collider_id
                 other = collidee_id
             else:
                 target = collidee_id
                 other = collider_id
-            # Skip objects that for some reason aren't in the cached data.
-            if target not in self.object_names or other not in self.object_names:
-                continue
+
             target_audio = self.object_info[self.object_names[target]]
             other_audio = self.object_info[self.object_names[other]]
             commands.append(self.get_impact_sound_command(collision=collision,
@@ -427,7 +427,7 @@ class PyImpact:
                                                           other_amp=0.01,
                                                           other_mat=floor.name if collision.get_floor() else wall.name,
                                                           resonance=audio.resonance,
-                                                          play_audio_data=False))
+                                                          play_audio_data=not resonance_audio))
         return commands
 
     def get_log(self) -> dict:
@@ -521,7 +521,7 @@ class PyImpact:
             tmp = speed * np.cos(tmp)
             nspd.append(tmp)
         normal_speed = np.mean(nspd)
-        # Get indices of objects in collisions
+        # Get indices of objects in collisions.
         id1_index = None
         id2_index = None
 
@@ -531,12 +531,22 @@ class PyImpact:
             if rigidbodies.get_id(i) == id2:
                 id2_index = i
 
-        # Make sure both IDs were found. If they aren't, don't return a sound.
-        if obj_col and (id1_index is None or id2_index is None):
+        # Use default values for environment collisions.
+        if not obj_col:
+            m1 = 1
+            m2 = rigidbodies.get_mass(id2_index)
+        # Use the Rigidbody masses.
+        elif id1_index is not None and id2_index is not None:
+            m1 = rigidbodies.get_mass(id1_index)
+            m2 = rigidbodies.get_mass(id2_index)
+        # Fallback: Try to use default mass values if the ID's aren't in the Rigidbody data.
+        elif id1 in self.object_names and id2 in self.object_names and self.object_names[id1] in self.object_info and \
+                self.object_names[id2] in self.object_info:
+            m1 = self.object_info[self.object_names[id1]].mass
+            m2 = self.object_info[self.object_names[id2]].mass
+        # Failed to generate a sound.
+        else:
             return None
-
-        m1 = rigidbodies.get_mass(id1_index) if obj_col else 1000
-        m2 = rigidbodies.get_mass(id2_index)
         mass = np.min([m1, m2])
 
         # Re-scale the amplitude.

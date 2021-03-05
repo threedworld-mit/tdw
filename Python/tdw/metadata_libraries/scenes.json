@@ -265,7 +265,7 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/lava_field"
             }
         },
-		"mm_kitchen_1a": {
+        "mm_kitchen_1a": {
             "description": "An single-room interior space lit by sunlight from outside.",
             "hdri": true,
             "location": "interior",
@@ -274,6 +274,83 @@
                 "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1a",
                 "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1a",
                 "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1a"
+            }
+        },
+        "mm_kitchen_1b": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_kitchen_1b",
+            "urls": {
+                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1b",
+                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1b",
+                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1b"
+            }
+        },
+        "mm_kitchen_2a": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_kitchen_2a",
+            "urls": {
+                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2a",
+                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2a",
+                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2a"
+            }
+        },
+        "mm_kitchen_2b": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_kitchen_2b",
+            "urls": {
+                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2b",
+                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2b",
+                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2b"
+            }
+        },
+        "mm_kitchen_3a": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_kitchen_3a",
+            "urls": {
+                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3a",
+                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3a",
+                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3a"
+            }
+        },
+        "mm_kitchen_3b": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_kitchen_3b",
+            "urls": {
+                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3b",
+                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3b",
+                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3b"
+            }
+        },
+        "mm_kitchen_4a": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_kitchen_4a",
+            "urls": {
+                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4a",
+                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4a",
+                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4a"
+            }
+        },
+        "mm_kitchen_4b": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_kitchen_4b",
+            "urls": {
+                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4b",
+                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4b",
+                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4b"
             }
         },
         "monkey_physics_room": {

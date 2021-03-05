@@ -26,7 +26,7 @@ from tdw.object_init_data import AudioInitData
 
 c = Controller()
 c.start()
-p = PyImpact(initial_amp=0.5)
+p = PyImpact(initial_amp=0.25)
 commands = [TDWUtils.create_empty_room(12, 12),
             {"$type": "set_target_framerate",
              "framerate": 100}]

@@ -30,7 +30,7 @@ class ImpactSounds(Controller):
                      "width": 1024,
                      "height": 1024},
                     {"$type": "set_target_framerate",
-                     "framerate": 60}]
+                     "framerate": 100}]
         # Create the avatar.
         commands.extend(TDWUtils.create_avatar(avatar_type="A_Img_Caps_Kinematic",
                                                position={"x": 1, "y": 1.2, "z": 1.2},

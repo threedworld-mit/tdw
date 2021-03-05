@@ -16,7 +16,7 @@ The "simple" version of PyImpact loads default physics and audio values for each
 
 At minimum, you need to:
 
-1. Create a scene, initialize PyImpact, and set the target framerate to 60:
+1. Create a scene, initialize PyImpact, and set the target framerate to 100 (to align with the default physics timestep of 0.01 seconds):
 
 ```python
 from tdw.controller import Controller
@@ -29,7 +29,7 @@ c.start()
 p = PyImpact(initial_amp=0.5)
 commands = [TDWUtils.create_empty_room(12, 12),
             {"$type": "set_target_framerate",
-             "framerate": 60}]
+             "framerate": 100}]
 ```
 
 2. Set the floor and wall audio materials. These will be used whenever an object collides with a floor or wall:

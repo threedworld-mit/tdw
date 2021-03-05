@@ -116,7 +116,7 @@ For a slightly more complicated example controller, see: `tdw/Python/example_con
 
 Resonance Audio will add reverberation to the audio playback. To set up a scene with Resonance Audio, make the following changes:
 
-1. After adding the objects, include this command:
+1. After adding the objects, include the `set_reverb_space_simple` command. (There are many other materials available. You can also set the wall materials. For a more thorough description, [read this](../api/command_api.md#set_reverb_space_simple).)
 
 ```python
 commands.append({"$type": "set_reverb_space_simple",

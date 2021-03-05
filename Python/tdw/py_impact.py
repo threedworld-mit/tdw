@@ -505,6 +505,9 @@ class PyImpact:
             for i in range(rigidbodies.get_num()):
                 if rigidbodies.get_id(i) == id2:
                     vel = rigidbodies.get_velocity(i)
+                    # If the y coordinate of the velocity is negative, it implies a scrape or roll along the floor.
+                    if vel[1] < 0:
+                        return None
                     break
         vel = np.asarray(vel)
         speed = np.square(vel)

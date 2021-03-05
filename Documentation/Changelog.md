@@ -23,7 +23,8 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Added fields: `object_info` (cached default object info), `object_names` (cached object IDs and their names in the current scene), `env_id` (dummy ID for the environment)
 - Fixed: Objects not present in the Rigidbody output data don't create audio. (This can happen if  your controller set the `ids` value in `send_rigidbodies` to exclude some objects, or if there is a robot in the scene.) As a fallback, PyImpact will try to use default audio values.
 - Fixed: Distorted sound if an object scrapes along a wall. Now, scrapes on walls are ignored.
-- Fixed: Distorted sound if amp <= -1
+- Fixed: Distorted sound if the sound's amp is <= -1
+- Fixed: Distorted sound if an object scrapes along a floor.
 
 ### Example Controllers
 

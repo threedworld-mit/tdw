@@ -424,7 +424,7 @@ class PyImpact:
                                                           target_amp=audio.amp,
                                                           target_mat=audio.material.name,
                                                           other_id=self.env_id,
-                                                          other_amp=0.1,
+                                                          other_amp=0.5,
                                                           other_mat=floor.name,
                                                           resonance=audio.resonance,
                                                           play_audio_data=not resonance_audio))
@@ -533,7 +533,7 @@ class PyImpact:
 
         # Use default values for environment collisions.
         if not obj_col:
-            m1 = 1
+            m1 = 100
             m2 = rigidbodies.get_mass(id2_index)
         # Use the Rigidbody masses.
         elif id1_index is not None and id2_index is not None:

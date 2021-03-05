@@ -297,3 +297,11 @@ shoebox_fused,0.2,0.4,cardboard,models_core.json,0.6,0.65
 key_brass,0.2,0.35,metal,models_core.json,0.6,0.65
 key_dull_metal,0.2,0.35,metal,models_core.json,0.6,0.65
 key_shiny,0.2,0.35,metal,models_core.json,0.6,0.65
+36_in_wall_cabinet_wood_beach_honey,0.01,70,wood,models_core.json,0.58,0.25
+green_bag,0.01,1,cardboard,models_core.json,0.2,0.45
+vase_03,1,5,ceramic,models_core.json,0.6,0.85
+vase_05,1,5,ceramic,models_core.json,0.6,0.85
+wood_chair,0.1,20,wood,models_core.json,0.6,0.65
+skillet_open_no_lid,0.2,12,ceramic,models_core.json,0.625,0.65
+microwave,0.1,20,metal,models_core.json,0.625,0.65
+bork_vacuum,0.1,8,metal,models_core.json,0.6,0.65

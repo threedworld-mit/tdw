@@ -411,10 +411,11 @@ class PyImpact:
         # Play sounds from collisions with the environment.
         for collision in env_collisions:
             target = collision.get_object_id()
-            # Ignore collisions that aren't enter, that aren't in the cached data, or that are too slow.
+            # Ignore collisions that aren't enter, not a floor, that aren't in the cached data, or that are too slow.
             # When objects are initially spawned they collide with the environment at very slow speeds,
             # resulting in a "click" sound that we don't actually want.
-            if collision.get_state() != "enter" or target not in self.object_names or speeds[target] < 0.01:
+            if collision.get_state() != "enter" or not collision.get_floor() or target not in self.object_names or \
+                    speeds[target] < 0.01:
                 continue
             audio = self.object_info[self.object_names[target]]
             commands.append(self.get_impact_sound_command(collision=collision,
@@ -423,8 +424,8 @@ class PyImpact:
                                                           target_amp=audio.amp,
                                                           target_mat=audio.material.name,
                                                           other_id=self.env_id,
-                                                          other_amp=0.01,
-                                                          other_mat=floor.name if collision.get_floor() else wall.name,
+                                                          other_amp=0.1,
+                                                          other_mat=floor.name,
                                                           resonance=audio.resonance,
                                                           play_audio_data=not resonance_audio))
         return commands

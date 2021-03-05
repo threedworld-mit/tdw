@@ -582,7 +582,7 @@ class PyImpact:
         self.object_modes[id2][id1].count_collisions()
 
         # Prevent distortion by clamping the amp.
-        if self.prevent_distortion and amp > 0.99:
+        if self.prevent_distortion and np.abs(amp) > 0.99:
             amp = 0.99
 
         sound = amp * sound / np.max(np.abs(sound))

@@ -1,7 +1,8 @@
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.py_impact import PyImpact
+from tdw.py_impact import PyImpact, AudioMaterial
+from tdw.object_init_data import AudioInitData
 
 """
 - Listen for collisions between objects.
@@ -15,112 +16,81 @@ class ImpactSounds(Controller):
         Select random objects and collide them to produce impact sounds.
         """
 
-        p = PyImpact(initial_amp=0.5)
+        p = PyImpact(initial_amp=0.25)
+        # Set the environment audio materials.
+        floor = AudioMaterial.ceramic
+        wall = AudioMaterial.wood
 
-        # Destroy all objects currently in the scene.
+        # Create an empty room.
         # Set the screen size.
-        # Adjust physics timestep for more real-time physics behavior.
-        commands = [{"$type": "destroy_all_objects"},
+        # Adjust framerate so that physics is closer to realtime.
+        commands = [TDWUtils.create_empty_room(12, 12),
+                    {"$type": "destroy_all_objects"},
                     {"$type": "set_screen_size",
                      "width": 1024,
                      "height": 1024},
-                    {"$type": "set_time_step",
-                     "time_step": 0.02}]
+                    {"$type": "set_target_framerate",
+                     "framerate": 100}]
         # Create the avatar.
         commands.extend(TDWUtils.create_avatar(avatar_type="A_Img_Caps_Kinematic",
                                                position={"x": 1, "y": 1.2, "z": 1.2},
                                                look_at=TDWUtils.VECTOR3_ZERO))
-
         # Add the audio sensor.
-        # Set the target framerate.
-        # Make sure that post-processing is enabled and render quality is set to max.
         commands.extend([{"$type": "add_audio_sensor",
                           "avatar_id": "a"},
-                         {"$type": "set_target_framerate",
-                          "framerate": 60},
-                         {"$type": "set_post_process",
-                          "value": True},
                          {"$type": "set_focus_distance",
-                          "focus_distance": 2},
-                         {"$type": "set_render_quality",
-                          "render_quality": 5}])
+                          "focus_distance": 2}])
 
         # Select a random pair of objects.
-        objects = PyImpact.get_object_info()
         obj1_names = ["trapezoidal_table", "glass_table_round", "yellow_side_chair", "table_square", "marble_table"]
         obj2_names = ["vase_06", "spoon1", "glass3", "jug02"]
         obj1_name = random.choice(obj1_names)
         obj2_name = random.choice(obj2_names)
-        obj1_id = 0
-        obj2_id = 1
+
+        # Get initialization data from the default audio data (which includes mass, friction values, etc.).
+        obj1_init_data = AudioInitData(name=obj1_name)
+        obj2_init_data = AudioInitData(name=obj2_name,
+                                       position={"x": 0, "y": 2, "z": 0},
+                                       rotation={"x": 135, "y": 0, "z": 30})
+        # Convert the initialization data to commands.
+        obj1_id, obj1_commands = obj1_init_data.get_commands()
+        obj2_id, obj2_commands = obj2_init_data.get_commands()
+
+        # Cache the IDs and names of each object for PyImpact.
+        object_names = {obj1_id: obj1_name,
+                        obj2_id: obj2_name}
+        p.set_default_audio_info(object_names=object_names)
 
         # Add the objects.
-        # Set their masses from the audio info data.
-        # Set a physics material for the second object.
-        # Apply a force to the second object.
-        # Listen for collisions, and object properties.
-        commands.extend([self.get_add_object(model_name=obj1_name, object_id=obj1_id,
-                                             library=objects[obj1_name].library),
-                         {"$type": "set_mass",
-                          "id": obj1_id,
-                          "mass": objects[obj1_name].mass},
-                         self.get_add_object(model_name=obj2_name, object_id=obj2_id,
-                                             library=objects[obj2_name].library,
-                                             rotation={"x": 135, "y": 0, "z": 30},
-                                             position={"x": 0, "y": 2, "z": 0}),
-                         {"$type": "set_mass",
-                          "id": obj2_id,
-                          "mass": objects[obj2_name].mass},
-                         {"$type": "set_physic_material",
-                          "id": obj2_id,
-                          "bounciness": objects[obj2_name].bounciness,
-                          "dynamic_friction": 0.8},
-                         {"$type": "apply_force_to_object",
+        commands.extend(obj1_commands)
+        commands.extend(obj2_commands)
+        # Apply a small force to the dropped object.
+        # Request collision and rigidbody output data.
+        commands.extend([{"$type": "apply_force_to_object",
                           "force": {"x": 0, "y": -0.01, "z": 0},
                           "id": obj2_id},
                          {"$type": "send_collisions",
                           "enter": True,
                           "stay": False,
-                          "exit": False},
+                          "exit": False,
+                          "collision_types": ["obj", "env"]},
                          {"$type": "send_rigidbodies",
                           "frequency": "always",
                           "ids": [obj2_id, obj1_id]}])
-
         # Send all of the commands.
         resp = self.communicate(commands)
 
         # Iterate through 200 frames.
         # Every frame, listen for collisions, and parse the output data.
         for i in range(200):
-            collisions, environment_collision, rigidbodies = PyImpact.get_collisions(resp)
-            # If there was a collision, create an impact sound.
-            if len(collisions) > 0 and PyImpact.is_valid_collision(collisions[0]):
-                impact_sound_command = p.get_impact_sound_command(
-                    collision=collisions[0],
-                    rigidbodies=rigidbodies,
-                    target_id=obj2_id,
-                    target_mat=objects[obj2_name].material.name,
-                    target_amp=objects[obj2_name].amp,
-                    other_id=obj1_id,
-                    other_amp=objects[obj1_name].amp,
-                    other_mat=objects[obj1_name].material.name,
-                    resonance=objects[obj1_name].resonance)
-                resp = self.communicate(impact_sound_command)
-            # Continue to run the trial.
-            else:
-                resp = self.communicate([])
-
-        # Stop listening for collisions and rigidbodies.
-        self.communicate([{"$type": "send_collisions",
-                          "frequency": "never"},
-                         {"$type": "send_rigidbodies",
-                          "frequency": "never"}])
+            # Use PyImpact to generate audio from the output data and then convert the audio to TDW commands.
+            # If no audio is generated, then `commands` is an empty list.
+            commands = p.get_audio_commands(resp=resp, floor=floor, wall=wall)
+            # Send the commands to TDW in order to play the audio.
+            resp = self.communicate(commands)
 
     def run(self):
         self.start()
-
-        # Create the room.
-        self.communicate(TDWUtils.create_empty_room(12, 12))
 
         # Run a series of trials.
         for j in range(5):
@@ -132,4 +102,3 @@ class ImpactSounds(Controller):
 
 if __name__ == "__main__":
     ImpactSounds().run()
-

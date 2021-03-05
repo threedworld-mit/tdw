@@ -26,6 +26,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Fixed: Distorted sound if the sound's amp is <= -1
 - Fixed: Distorted sound if an object scrapes along a floor.
 
+### Scene Library
+
+- Added: mm_kitchen_1b, mm_kitchen_2a, mm_kitchen_2b, mm_kitchen_3a, mm_kitchen_3b, mm_kitchen_4a, mm_kitchen_4b
+
 ### Example Controllers
 
 - Re-wrote `impact_sounds.py` to use the simplified PyImpact API (i.e. `get_audio_commands()`).

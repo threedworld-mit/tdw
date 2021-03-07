@@ -327,7 +327,7 @@ class PyImpact:
         # Cache the material data. This is use to reset the material modes.
         self.material_data: Dict[str, dict] = {}
         for mat, path in zip(["ceramic", "hardwood", "metal", "glass", "wood", "cardboard"],
-                             ["Ceramic_mm", "Poplar_mm", "MetalStrip_mm", "Mirror_mm", "BalsaWood_mm", "Cardboard_mm"]):
+                             ["wood_hard_3_mm", "wood_hard_3_mm", "wood_hard_3_mm", "wood_hard_3_mm", "wood_hard_3_mm", "wood_hard_3_mm"]):
             # Load the JSON data.
             data = json.loads(Path(resource_filename(__name__, f"py_impact/material_data/{path}.json")).read_text())
             self.material_data.update({mat: data})

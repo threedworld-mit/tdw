@@ -32,7 +32,7 @@ class ObjectInfo:
     The audio values here are just recommendations; you can apply different values if you want.
     """
 
-    def __init__(self, name: str, amp: float, mass: float, material: AudioMaterial, library: str, bounciness: float, resonance: float):
+    def __init__(self, name: str, amp: float, mass: float, material: AudioMaterial, library: str, bounciness: float, resonance: float, size: int):
         """
         :param name: The model name.
         :param amp: The sound amplitude.
@@ -41,6 +41,7 @@ class ObjectInfo:
         :param library: The path to the model library (see ModelLibrarian documentation).
         :param bounciness: The bounciness value for a Unity physics material.
         :param resonance: The resonance value for the object.
+        :param size: Integer representing the size "bucket" this obejct be;longs to (0-6).
         """
 
         self.amp = amp
@@ -50,14 +51,23 @@ class ObjectInfo:
         self.name = name
         self.bounciness = bounciness
         self.resonance = resonance
+        self.size = size
 
 
 # Density per audio material.
 DENSITIES: Dict[AudioMaterial, float] = {AudioMaterial.ceramic: 2180,
                                          AudioMaterial.glass: 2500,
+                                         AudioMaterial.stone: 2000,
                                          AudioMaterial.metal: 8450,
-                                         AudioMaterial.hardwood: 900,
-                                         AudioMaterial.wood: 690,
+                                         AudioMaterial.wood_hard: 900,
+                                         AudioMaterial.wood_medium: 690,
+                                         AudioMaterial.wood_soft: 600,
+                                         AudioMaterial.fabric: 600,
+                                         AudioMaterial.leather: 600,
+                                         AudioMaterial.plastic_hard: 600,
+                                         AudioMaterial.plastic_soft_foam: 600,
+                                         AudioMaterial.rubber: 600,
+                                         AudioMaterial.paper: 600,
                                          AudioMaterial.cardboard: 698}
 
 
@@ -326,11 +336,13 @@ class PyImpact:
 
         # Cache the material data. This is use to reset the material modes.
         self.material_data: Dict[str, dict] = {}
-        for mat, path in zip(["ceramic", "hardwood", "metal", "glass", "wood", "cardboard"],
-                             ["wood_hard_3_mm", "wood_hard_3_mm", "wood_hard_3_mm", "wood_hard_3_mm", "wood_hard_3_mm", "wood_hard_3_mm"]):
-            # Load the JSON data.
-            data = json.loads(Path(resource_filename(__name__, f"py_impact/material_data/{path}.json")).read_text())
-            self.material_data.update({mat: data})
+        material_list = ["ceramic", "wood_hard", "wood_medium", "wood_soft", "metal", "glass", "paper", "cardboard", "leather", "fabric", "plastic_hard", "plastic_soft_foam", "rubber", "stone"]
+        for mat in material_list:
+            for i in range(7)
+                # Load the JSON data.
+                path = mat + "_" + str(i) + "_mm"
+                data = json.loads(Path(resource_filename(__name__, f"py_impact/material_data/{path}.json")).read_text())
+                self.material_data.update({mat: data})
 
         # Create empty dictionary for log.
         self.mode_properties_log = dict()
@@ -402,10 +414,10 @@ class PyImpact:
                                                           rigidbodies=rigidbodies,
                                                           target_id=target,
                                                           target_amp=target_audio.amp,
-                                                          target_mat=target_audio.material.name,
+                                                          target_mat=target_audio.material.name + "_" + str(target_audio.size),
                                                           other_id=other,
                                                           other_amp=other_audio.amp,
-                                                          other_mat=other_audio.material.name,
+                                                          other_mat=other_audio.material.name + "_" + str(other_audio.size),
                                                           resonance=target_audio.resonance,
                                                           play_audio_data=not resonance_audio))
         # Play sounds from collisions with the environment.
@@ -422,7 +434,7 @@ class PyImpact:
                                                           rigidbodies=rigidbodies,
                                                           target_id=target,
                                                           target_amp=audio.amp,
-                                                          target_mat=audio.material.name,
+                                                          target_mat=audio.material.name + "_" + str(audio.size),
                                                           other_id=self.env_id,
                                                           other_amp=0.5,
                                                           other_mat=floor.name,

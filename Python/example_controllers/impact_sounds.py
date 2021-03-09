@@ -19,7 +19,7 @@ class ImpactSounds(Controller):
         p = PyImpact(initial_amp=0.25)
         # Set the environment audio materials.
         floor = AudioMaterial.ceramic
-        wall = AudioMaterial.wood
+        wall = AudioMaterial.wood_soft
 
         # Create an empty room.
         # Set the screen size.
@@ -43,7 +43,7 @@ class ImpactSounds(Controller):
 
         # Select a random pair of objects.
         obj1_names = ["trapezoidal_table", "glass_table_round", "yellow_side_chair", "table_square", "marble_table"]
-        obj2_names = ["vase_06", "spoon1", "glass3", "jug02"]
+        obj2_names = ["vase_06", "spoon1", "glass3", "jug02", "pillow02", "basic_cork_2"]
         obj1_name = random.choice(obj1_names)
         obj2_name = random.choice(obj2_names)
 
@@ -93,7 +93,7 @@ class ImpactSounds(Controller):
         self.start()
 
         # Run a series of trials.
-        for j in range(5):
+        for j in range(10):
             self.trial()
 
         # Terminate the build.

@@ -21,9 +21,17 @@ class AudioMaterial(Enum):
     ceramic = 0
     glass = 1
     metal = 2
-    hardwood = 3
-    wood = 4
-    cardboard = 5
+    wood_hard = 3
+    wood_medium = 4
+    wood_soft = 5
+    cardboard = 6
+    plastic_hard = 7
+    plastic_soft_foam = 8
+    paper = 9
+    rubber = 10
+    fabric = 11
+    leather = 12
+    stone = 12
 
 
 class ObjectInfo:
@@ -338,11 +346,13 @@ class PyImpact:
         self.material_data: Dict[str, dict] = {}
         material_list = ["ceramic", "wood_hard", "wood_medium", "wood_soft", "metal", "glass", "paper", "cardboard", "leather", "fabric", "plastic_hard", "plastic_soft_foam", "rubber", "stone"]
         for mat in material_list:
-            for i in range(7)
+            # Just do 0-5 for now, for testing
+            for i in range(5):
                 # Load the JSON data.
-                path = mat + "_" + str(i) + "_mm"
+                mat_name = mat + "_" + str(i)
+                path = mat_name + "_mm"
                 data = json.loads(Path(resource_filename(__name__, f"py_impact/material_data/{path}.json")).read_text())
-                self.material_data.update({mat: data})
+                self.material_data.update({mat_name: data})
 
         # Create empty dictionary for log.
         self.mode_properties_log = dict()
@@ -437,7 +447,9 @@ class PyImpact:
                                                           target_mat=audio.material.name + "_" + str(audio.size),
                                                           other_id=self.env_id,
                                                           other_amp=0.5,
-                                                          other_mat=floor.name,
+                                                          # We probably need dedicated wall and floor materials, or maybe they are in size category #6?
+                                                          # Setting to "4" for now, for general debugging purposes
+                                                          other_mat=floor.name + "_4",
                                                           resonance=audio.resonance,
                                                           play_audio_data=not resonance_audio))
         return commands
@@ -749,7 +761,7 @@ class PyImpact:
             for row in reader:
                 o = ObjectInfo(name=row["name"], amp=float(row["amp"]), mass=float(row["mass"]),
                                material=AudioMaterial[row["material"]], library=row["library"],
-                               bounciness=float(row["bounciness"]), resonance=float(row["resonance"]))
+                               bounciness=float(row["bounciness"]), resonance=float(row["resonance"]), size=int(row["size"]))
                 objects.update({o.name: o})
 
         return objects

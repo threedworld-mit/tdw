@@ -15,7 +15,7 @@ from PIL import Image, ImageFont, ImageDraw
 
 
 class ImpactSounds(Controller):
-    def trial(self, test_material_name):
+    def trial(self, test_material_name, output_directory):
         """
         Select random objects and collide them to produce impact sounds.
         """
@@ -50,7 +50,12 @@ class ImpactSounds(Controller):
                          {"$type": "set_focus_distance",
                           "focus_distance": 2},
                          {"$type": "set_render_quality",
-                          "render_quality": 5}])
+                          "render_quality": 5},
+                         {"$type": "set_pass_masks",
+                           "avatar_id": "a",
+                           "pass_masks": ["_img", "_id"]},
+                          {"$type": "send_images",
+                           "frequency": "always"}])
 
         # Select a random pair of objects.
         objects = PyImpact.get_object_info()
@@ -113,6 +118,22 @@ class ImpactSounds(Controller):
                     other_mat=objects[obj1_name].material.name + "_" + str(objects[obj1_name].size),
                     resonance=objects[obj2_name].resonance)
                 resp = self.communicate(impact_sound_command)
+                for i in range(len(resp) - 1):
+                    r_id = OutputData.get_data_type_id(resp[i])
+                    if r_id == "imag":
+                        images = Images(resp[i])
+                        for j in range(images.get_num_passes()):
+                            pass_mask = images.get_pass_mask(j)
+                            if pass_mask == "_img":
+                                pil_image = TDWUtils.get_pil_image(images=images, index=j)
+                                # Get a drawing context
+                                draw = ImageDraw.Draw(pil_image)
+                                # drawing text size 
+                                font = ImageFont.truetype(r'C:\Users\jeremyes\Desktop\DejaVuSansMono.ttf', 20)
+                                # Draw text over image 
+                                draw.text((800, 20), "Testing material " + test_material_name, font = font, align ="left")
+                                # Save the image.
+                                TDWUtils.save_images(images, TDWUtils.zero_padding(i), output_directory=output_directory)
             # Continue to run the trial.
             else:
                 resp = self.communicate([])
@@ -124,6 +145,14 @@ class ImpactSounds(Controller):
                           "frequency": "never"}])
 
     def run(self):
+        # Create the output directory.
+        output_directory = "example_output"
+        if os.path.exists(output_directory):
+            shutil.rmtree(output_directory)
+            sleep(0.5)
+            os.mkdir(output_directory)
+        print(f"Images will be saved to: {output_directory}")
+
         self.start()
 
         # Create the room.
@@ -135,7 +164,7 @@ class ImpactSounds(Controller):
             # Just do 0-4 for now, for testing
             for i in range(5):
                 mat_n = mat + "_" + str(i)
-                self.trial(mat_n)
+                self.trial(mat_n, output_directory)
 
         # Terminate the build.
         self.communicate({"$type": "terminate"})

@@ -17,7 +17,7 @@ b05_table_new,0.01,135,wood_medium,models_full.json,0.58,0.65,3
 chair_willisau_riale,0.02,35,wood_medium,models_core.json,0.58,0.65,4
 chair_annabelle,0.02,35,wood_medium,models_core.json,0.58,0.65,4
 chair_eames_plastic_armchair,0.02,35,wood_medium,models_core.json,0.58,0.65,4
-iron_box,0.02,5,cardboard,models_full.json,0.5,0.65,3
+iron_box,0.1,5,cardboard,models_full.json,0.5,0.25,3
 metal_lab_shelf,0.02,330,metal,models_full.json,0.35,0.65,4
 brown_leather_dining_chair,0.02,35,leather,models_core.json,0.58,0.65,4
 int_kitchen_accessories_le_creuset_bowl_30cm,0.2,12,ceramic,models_full.json,0.625,0.65,3

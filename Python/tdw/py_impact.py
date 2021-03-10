@@ -467,7 +467,6 @@ class PyImpact:
 
         :return: The audio modes.
         """
-
         data = self.material_data[material] if isinstance(material, str) else self.material_data[material.name]
         # Load the mode properties.
         f = -1

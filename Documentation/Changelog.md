@@ -40,9 +40,9 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Fixed: `rotate_sensor_container_by` rotations around a local axis instead of a world axis
 - Fixed: If `set_kinematic_state` is sent more than once in a row to the same object with `kinematic=True`, the collision detection mode will be set incorrectly.
 - Fixed: Audio glitches when using Resonance Audio because the playback is doubled.
-- Fixed: Rare socket hanging if the build can't send a message.
 - Fixed: ZMQ error if the build is launched a few seconds before the controller is launched.
 - Fixed: Can't draw Flex particles in Linux (see note in upgrade guide).
+- Fixed: A potential rare infinite loop if a JSON message can't be deserialized.
 
 ### Documentation
 

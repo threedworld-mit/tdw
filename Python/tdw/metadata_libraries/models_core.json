@@ -16749,8 +16749,8 @@
                 "z": 0
             },
             "composite_object": false,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "colldiers are rotated 90 degrees",
             "flex": false,
             "name": "refridgerator_slim",
             "physics_quality": -1,

@@ -37,6 +37,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Build
 
 - Upgraded to Unity 2020.2.7
+- Fixed: `rotate_sensor_container_by` rotations around a local axis instead of a world axis
 - Fixed: If `set_kinematic_state` is sent more than once in a row to the same object with `kinematic=True`, the collision detection mode will be set incorrectly.
 - Fixed: Audio glitches when using Resonance Audio because the playback is doubled.
 - Fixed: Rare socket hanging if the build can't send a message.

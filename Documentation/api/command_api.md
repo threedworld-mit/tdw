@@ -6200,11 +6200,12 @@ Receive data about the build version.
 ```
 
 ```python
-{"$type": "send_version", "frequency": "once"}
+{"$type": "send_version", "log": True, "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"log"` | bool | If True, log the TDW version in the Player or Editor log. | True |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

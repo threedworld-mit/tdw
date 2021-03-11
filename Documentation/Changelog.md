@@ -6,6 +6,14 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ## v1.8.5
 
+### Command API
+
+#### Modified Commands
+
+| Command        | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `send_version` | Added optional parameter `log` to log the TDW version in the Player or Editor log (default value is True). |
+
 ### Model Library
 
 - Marked refridgerator_slim as do_not_use (colliders are rotated)

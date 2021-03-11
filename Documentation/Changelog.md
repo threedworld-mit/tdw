@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.5
+
+### Model Library
+
+- Marked refridgerator_slim as do_not_use (colliders are rotated)
+
+### Scene Library
+
+- Added: mm_craftroom_1a, mm_craftroom_1b, mm_craftroom_2a, mm_craftroom_2b, mm_craftroom_3a, mm_craftroom_3b, mm_craftroom_4a, mm_craftroom_4b
+
 ## v1.8.4
 
 ### Command API

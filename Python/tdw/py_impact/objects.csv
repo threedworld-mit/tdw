@@ -305,3 +305,7 @@ wood_chair,0.1,20,wood,models_core.json,0.6,0.65
 skillet_open_no_lid,0.2,12,ceramic,models_core.json,0.625,0.65
 microwave,0.1,20,metal,models_core.json,0.625,0.65
 bork_vacuum,0.1,8,metal,models_core.json,0.6,0.65
+jug03,0.1,3,ceramic,models_core.json,0.6,0.85
+red_bag,0.01,1,cardboard,models_core.json,0.2,0.45
+baton_table_lamp_dark,1,5,metal,models_core.json,0.35,0.65
+luggage_bag_1,0.02,10,cardboard,models_core.json,0.5,0.35

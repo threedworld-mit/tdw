@@ -17,6 +17,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Model Library
 
 - Marked refridgerator_slim as do_not_use (colliders are rotated)
+- Added: 4ft_wood_shelving, 5ft_shelf_metal, 5ft_wood_shelving, 6ft_shelf_metal, 6ft_wood_shelving
 
 ### Scene Library
 

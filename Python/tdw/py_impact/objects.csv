@@ -309,3 +309,8 @@ jug03,0.1,3,ceramic,models_core.json,0.6,0.85
 red_bag,0.01,1,cardboard,models_core.json,0.2,0.45
 baton_table_lamp_dark,1,5,metal,models_core.json,0.35,0.65
 luggage_bag_1,0.02,10,cardboard,models_core.json,0.5,0.35
+5ft_shelf_metal,0.2,25,metal,models_core.json,0.6,0.65
+6ft_shelf_metal,0.2,30,metal,models_core.json,0.6,0.65
+4ft_wood_shelving,0.2,24,wood,models_core.json,0.6,0.65
+5ft_wood_shelving,0.2,32,wood,models_core.json,0.6,0.65
+6ft_wood_shelving,0.2,36,wood,models_core.json,0.6,0.65

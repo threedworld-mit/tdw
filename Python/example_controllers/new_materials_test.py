@@ -54,7 +54,7 @@ class ImpactSounds(Controller):
 
         # Select a random pair of objects.
         objects = PyImpact.get_object_info()
-        obj1_names = ["trapezoidal_table"]
+        obj1_names = ["marble_table"]
         obj2_names = ["iron_box"]
         obj1_name = random.choice(obj1_names)
         obj2_name = random.choice(obj2_names)

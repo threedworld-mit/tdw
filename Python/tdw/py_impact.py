@@ -25,13 +25,13 @@ class AudioMaterial(Enum):
     wood_medium = 4
     wood_soft = 5
     cardboard = 6
-    plastic_hard = 7
-    plastic_soft_foam = 8
-    paper = 9
+    paper = 7
+    plastic_hard = 8
+    plastic_soft_foam = 9
     rubber = 10
     fabric = 11
     leather = 12
-    stone = 12
+    stone = 13
 
 
 class ObjectInfo:
@@ -67,15 +67,15 @@ DENSITIES: Dict[AudioMaterial, float] = {AudioMaterial.ceramic: 2180,
                                          AudioMaterial.glass: 2500,
                                          AudioMaterial.stone: 2000,
                                          AudioMaterial.metal: 8450,
-                                         AudioMaterial.wood_hard: 900,
-                                         AudioMaterial.wood_medium: 690,
-                                         AudioMaterial.wood_soft: 600,
-                                         AudioMaterial.fabric: 600,
-                                         AudioMaterial.leather: 600,
-                                         AudioMaterial.plastic_hard: 600,
-                                         AudioMaterial.plastic_soft_foam: 600,
-                                         AudioMaterial.rubber: 600,
-                                         AudioMaterial.paper: 600,
+                                         AudioMaterial.wood_hard: 1200,
+                                         AudioMaterial.wood_medium: 700,
+                                         AudioMaterial.wood_soft: 400,
+                                         AudioMaterial.fabric: 1540,
+                                         AudioMaterial.leather: 860,
+                                         AudioMaterial.plastic_hard: 1150,
+                                         AudioMaterial.plastic_soft_foam: 285,
+                                         AudioMaterial.rubber: 1522,
+                                         AudioMaterial.paper: 1200,
                                          AudioMaterial.cardboard: 698}
 
 

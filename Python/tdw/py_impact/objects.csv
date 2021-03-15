@@ -6,7 +6,7 @@ glass_table,0.6,200,glass,models_core.json,0.6,0.65,5
 yellow_side_chair,0.1,20,wood_soft,models_core.json,0.6,0.65,4
 red_side_chair,0.1,20,wood_soft,models_core.json,0.6,0.65,4
 table_square,0.5,200,metal,models_core.json,0.6,0.65,4
-marble_table,0.2,200,stone,models_core.json,0.6,0.65,4
+marble_table,0.2,200,ceramic,models_core.json,0.6,0.35,4
 vase_06,1,5,ceramic,models_core.json,0.6,0.85,3
 vase_02,1,5,ceramic,models_core.json,0.6,0.85,2
 spoon1,0.6,0.2,metal,models_core.json,0.6,0.65,1

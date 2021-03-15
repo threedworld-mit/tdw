@@ -16,7 +16,7 @@ class ImpactSounds(Controller):
         Select random objects and collide them to produce impact sounds.
         """
 
-        p = PyImpact(initial_amp=0.25)
+        p = PyImpact(initial_amp=0.5)
         # Set the environment audio materials.
         floor = AudioMaterial.ceramic
         wall = AudioMaterial.wood_soft

@@ -960,6 +960,129 @@
             "wcategory": "shelf",
             "wnid": "n04190052"
         },
+        "6ft_wood_shelving": {
+            "asset_bundle_sizes": {
+                "Darwin": 6241604,
+                "Linux": 6657931,
+                "Windows": 6219004
+            },
+            "bounds": {
+                "back": {
+                    "x": -3.576279e-07,
+                    "y": 0.9144,
+                    "z": -0.4725839
+                },
+                "bottom": {
+                    "x": -3.576279e-07,
+                    "y": -0.0002043247,
+                    "z": -8.931522e-12
+                },
+                "center": {
+                    "x": -3.576279e-07,
+                    "y": 0.9144,
+                    "z": 3.996969e-08
+                },
+                "front": {
+                    "x": -3.576279e-07,
+                    "y": 0.9144,
+                    "z": 0.4725839
+                },
+                "left": {
+                    "x": -0.1928861,
+                    "y": 0.9144,
+                    "z": 3.996969e-08
+                },
+                "right": {
+                    "x": 0.1928854,
+                    "y": 0.9144,
+                    "z": 3.996969e-08
+                },
+                "top": {
+                    "x": -3.576279e-07,
+                    "y": 1.829004,
+                    "z": 7.994832e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "6ft_wood_shelving",
+            "physics_quality": 0.9803622654700469,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg01"
+                },
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg02"
+                },
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg03"
+                },
+                {
+                    "materials": [
+                        "metal_grid_perforated",
+                        "metal"
+                    ],
+                    "name": "leg04"
+                },
+                {
+                    "materials": [
+                        "wood_beech_natural_horizontal_grain"
+                    ],
+                    "name": "shelf01"
+                },
+                {
+                    "materials": [
+                        "wood_beech_natural_horizontal_grain"
+                    ],
+                    "name": "shelf02"
+                },
+                {
+                    "materials": [
+                        "wood_beech_natural_horizontal_grain"
+                    ],
+                    "name": "shelf03"
+                },
+                {
+                    "materials": [
+                        "wood_beech_natural_horizontal_grain"
+                    ],
+                    "name": "shelf04"
+                },
+                {
+                    "materials": [
+                        "wood_beech_natural_horizontal_grain"
+                    ],
+                    "name": "shelf05"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.2/6ft_wood_shelving",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/6ft_wood_shelving",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/6ft_wood_shelving"
+            },
+            "wcategory": "shelf",
+            "wnid": "n04190052"
+        },
         "9v_battery": {
             "asset_bundle_sizes": {
                 "Darwin": 4232570,

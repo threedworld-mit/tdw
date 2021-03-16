@@ -10,9 +10,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 #### Modified Commands
 
-| Command        | Description                                                  |
-| -------------- | ------------------------------------------------------------ |
-| `send_version` | Added optional parameter `log` to log the TDW version in the Player or Editor log (default value is True). |
+| Command           | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `send_version`    | Added optional parameter `log` to log the TDW version in the Player or Editor log (default value is True). |
+| `add_fixed_joint` | Un-deprecated because it's still being used                  |
 
 ### Model Library
 

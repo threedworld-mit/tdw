@@ -605,9 +605,9 @@
         },
         "5ft_shelf_metal": {
             "asset_bundle_sizes": {
-                "Darwin": 1163426,
-                "Linux": 1453862,
-                "Windows": 1144022
+                "Darwin": 406620,
+                "Linux": 696929,
+                "Windows": 387483
             },
             "bounds": {
                 "back": {

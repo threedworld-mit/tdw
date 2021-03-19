@@ -314,3 +314,15 @@ luggage_bag_1,0.02,10,cardboard,models_core.json,0.5,0.35
 4ft_wood_shelving,0.2,24,wood,models_core.json,0.6,0.65
 5ft_wood_shelving,0.2,32,wood,models_core.json,0.6,0.65
 6ft_wood_shelving,0.2,36,wood,models_core.json,0.6,0.65
+jug04,0.1,3,ceramic,models_core.json,0.6,0.85
+candle,0.5,2,metal,models_core.json,0.4,0.65
+zenblocks,0.05,0.2,hardwood,models_core.json,0.2,0.65
+small_purse,0.04,1,cardboard,models_core.json,0.2,0.65
+tan_purse,0.04,1,cardboard,models_core.json,0.2,0.65
+bookend05,0.3,0.6,wood,models_full.json,0.2,0.65
+desk_lamp,1,5,metal,models_core.json,0.35,0.65
+red_lamp,1,5,metal,models_core.json,0.35,0.65
+marble_table_white,0.2,200,ceramic,models_core.json,0.6,0.65
+brown_leather_side_chair,0.1,20,wood,models_core.json,0.6,0.65
+on_the_rocks_sofa,0.01,220,cardboard,models_core.json,0.2,0.1
+blue_club_chair,0.1,20,wood,models_core.json,0.6,0.45

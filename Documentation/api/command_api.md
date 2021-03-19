@@ -274,6 +274,7 @@
 | [`apply_force_at_position`](#apply_force_at_position) | Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large. |
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
+| [`apply_torque_to_object`](#apply_torque_to_object) | Apply a torque to the object's rigidbody. |
 | [`set_color_in_substructure`](#set_color_in_substructure) | Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
 | [`set_mass`](#set_mass) | Set the mass of an object. |
@@ -3814,6 +3815,26 @@ Applies a directional force to the object's rigidbody.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"force"` | Vector3 | The directional force. | {"x": 0, "y": 0, "z": 1} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_torque_to_object`**
+
+Apply a torque to the object's rigidbody.
+
+
+```python
+{"$type": "apply_torque_to_object", "id": 1}
+```
+
+```python
+{"$type": "apply_torque_to_object", "id": 1, "torque": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"torque"` | Vector3 | The torque force. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The unique object ID. | |
 
 ***

@@ -605,9 +605,9 @@
         },
         "5ft_shelf_metal": {
             "asset_bundle_sizes": {
-                "Darwin": 1094626,
-                "Linux": 1385029,
-                "Windows": 1075514
+                "Darwin": 406620,
+                "Linux": 696929,
+                "Windows": 387483
             },
             "bounds": {
                 "back": {
@@ -656,7 +656,7 @@
             "do_not_use_reason": "",
             "flex": false,
             "name": "5ft_shelf_metal",
-            "physics_quality": 0.9318968532070288,
+            "physics_quality": -1,
             "scale_factor": 1,
             "substructure": [
                 {
@@ -839,9 +839,9 @@
         },
         "6ft_shelf_metal": {
             "asset_bundle_sizes": {
-                "Darwin": 1097303,
-                "Linux": 1392021,
-                "Windows": 1077969
+                "Darwin": 408711,
+                "Linux": 703417,
+                "Windows": 389532
             },
             "bounds": {
                 "back": {
@@ -890,7 +890,7 @@
             "do_not_use_reason": "",
             "flex": false,
             "name": "6ft_shelf_metal",
-            "physics_quality": 0.9803622654700469,
+            "physics_quality": -1,
             "scale_factor": 1,
             "substructure": [
                 {

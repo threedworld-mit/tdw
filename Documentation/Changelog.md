@@ -8,6 +8,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Command API
 
+#### New Commands
+
+| Command                  | Description                              |
+| ------------------------ | ---------------------------------------- |
+| `apply_torque_to_object` | Apply a torque to an object's rigidbody. |
+
 #### Modified Commands
 
 | Command           | Description                                                  |

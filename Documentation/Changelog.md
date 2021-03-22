@@ -31,6 +31,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Added: mm_craftroom_1a, mm_craftroom_1b, mm_craftroom_2a, mm_craftroom_2b, mm_craftroom_3a, mm_craftroom_3b, mm_craftroom_4a, mm_craftroom_4b
 
+### `tdw` module
+
+#### `PyImpact`
+
+- Added and update many object audio values in objects.csv
+
 ## v1.8.4
 
 ### Command API

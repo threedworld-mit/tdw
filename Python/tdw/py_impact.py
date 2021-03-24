@@ -386,9 +386,8 @@ class PyImpact:
                 continue
             collider_id = collision.get_collider_id()
             collidee_id = collision.get_collidee_id()
-            ids = (collider_id, collidee_id)
             # Ignore collisions if there is a "stay" event, because this can create a droning effect.
-            if ids in stays:
+            if (collider_id, collidee_id) in stays:
                 continue
             # Skip objects that for some reason aren't in the cached data.
             if collider_id not in self.object_names or collidee_id not in self.object_names:

@@ -36,6 +36,15 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 #### `PyImpact`
 
 - Added and update many object audio values in objects.csv
+- Fixed: PyImpact sometimes creates a droning audio effect. To prevent this, PyImpact will ignore collision events if the same pair of objects registers an `enter` and `stay` collision event on the same frame.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document           | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `impact_sounds.md` | Added a section and code example for how to prevent audio droning. |
 
 ## v1.8.4
 

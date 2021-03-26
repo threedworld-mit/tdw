@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.6
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data    | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `ImageSensors` | Added: `get_forward()` Returns the forward directional vector of the sensor. |
+
 ## v1.8.5
 
 ### Command API

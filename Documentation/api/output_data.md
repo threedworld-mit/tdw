@@ -418,6 +418,7 @@ The names of each ImageSensor component attached to an avatar, and whether they 
 | `get_sensor_name(index)` | The name of the sensor. | `str` |
 | `get_sensor_on(index)` | The on of the sensor. | `bool` |
 | `get_sensor_rotation(index)` | The rotation of the sensor. | `Tuple[float, float, float, float]` |
+| `get_sensor_forward(index)` | The forward of the sensor. | `Tuple[float, float, float]` |
 
 ## IsOnNavMesh
 

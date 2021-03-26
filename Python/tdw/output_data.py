@@ -489,6 +489,9 @@ class ImageSensors(OutputData):
     def get_sensor_rotation(self, index: int) -> Tuple[float, float, float, float]:
         return OutputData._get_xyzw(self.data.Sensors(index).Rotation())
 
+    def get_sensor_forward(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Sensors(index).Forward())
+
 
 class CameraMatrices(OutputData):
     def get_data(self) -> CaMa.CameraMatrices:

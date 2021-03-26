@@ -12,6 +12,14 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Fixed: PyImpact sometimes creates a droning audio effect or distorts audio due to the same object having more than one collision in a given frame. PyImpact will only select one collision event per object per frame, and can filter out events in which (`enter` and `stay`) or (`enter` and `exit`) occurred on the same frame for the same object.
 
+### Output Data
+
+#### Modified Output Data
+
+| Output Data    | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `ImageSensors` | Added: `get_sensor_forward()` Returns the forward directional vector of the sensor. |
+
 ## v1.8.5
 
 ### Command API

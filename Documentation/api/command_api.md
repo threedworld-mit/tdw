@@ -270,10 +270,11 @@
 | Command | Description |
 | --- | --- |
 | [`add_constant_force`](#add_constant_force) | Add a constant force to an object. Every frame, this force will be applied to the Rigidbody. Unlike other force commands, this command will provide gradual acceleration rather than immediate impulse; it is thus more useful for animation than a deterministic physics simulation. |
-| [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint.  |
+| [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint. |
 | [`apply_force_at_position`](#apply_force_at_position) | Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large. |
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
+| [`apply_torque_to_object`](#apply_torque_to_object) | Apply a torque to the object's rigidbody. |
 | [`set_color_in_substructure`](#set_color_in_substructure) | Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
 | [`set_mass`](#set_mass) | Set the mass of an object. |
@@ -3741,9 +3742,8 @@ Add a constant force to an object. Every frame, this force will be applied to th
 
 ## **`add_fixed_joint`**
 
-Attach the object to a parent object using a FixedJoint. 
+Attach the object to a parent object using a FixedJoint.
 
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "add_fixed_joint", "parent_id": 1, "id": 1}
@@ -3815,6 +3815,26 @@ Applies a directional force to the object's rigidbody.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"force"` | Vector3 | The directional force. | {"x": 0, "y": 0, "z": 1} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_torque_to_object`**
+
+Apply a torque to the object's rigidbody.
+
+
+```python
+{"$type": "apply_torque_to_object", "id": 1}
+```
+
+```python
+{"$type": "apply_torque_to_object", "id": 1, "torque": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"torque"` | Vector3 | The torque force. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -6200,11 +6220,12 @@ Receive data about the build version.
 ```
 
 ```python
-{"$type": "send_version", "frequency": "once"}
+{"$type": "send_version", "log": True, "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"log"` | bool | If True, log the TDW version in the Player or Editor log. | True |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

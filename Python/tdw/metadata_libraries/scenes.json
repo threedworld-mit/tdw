@@ -265,6 +265,94 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/lava_field"
             }
         },
+        "mm_craftroom_1a": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_craftroom_1a",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_1a",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_1a",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_1a"
+            }
+        },
+        "mm_craftroom_1b": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_craftroom_1b",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_1b",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_1b",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_1b"
+            }
+        },
+        "mm_craftroom_2a": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_craftroom_2a",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2a",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2a",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_2a"
+            }
+        },
+        "mm_craftroom_2b": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_craftroom_2b",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2b",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2b",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_2b"
+            }
+        },
+        "mm_craftroom_3a": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_craftroom_3a",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3a",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3a",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_3a"
+            }
+        },
+        "mm_craftroom_3b": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_craftroom_3b",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3b",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3b",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_3b"
+            }
+        },
+        "mm_craftroom_4a": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_craftroom_4a",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_4a",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_4a",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_4a"
+            }
+        },
+        "mm_craftroom_4b": {
+            "description": "An single-room interior space lit by sunlight from outside.",
+            "hdri": true,
+            "location": "interior",
+            "name": "mm_craftroom_4b",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_4b",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_4b",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_4b"
+            }
+        },
         "mm_kitchen_1a": {
             "description": "An single-room interior space lit by sunlight from outside.",
             "hdri": true,
@@ -282,9 +370,9 @@
             "location": "interior",
             "name": "mm_kitchen_1b",
             "urls": {
-                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1b",
-                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1b",
-                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1b"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1b",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1b",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1b"
             }
         },
         "mm_kitchen_2a": {
@@ -293,9 +381,9 @@
             "location": "interior",
             "name": "mm_kitchen_2a",
             "urls": {
-                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2a",
-                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2a",
-                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2a"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2a",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2a",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2a"
             }
         },
         "mm_kitchen_2b": {
@@ -304,9 +392,9 @@
             "location": "interior",
             "name": "mm_kitchen_2b",
             "urls": {
-                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2b",
-                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2b",
-                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2b"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2b",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2b",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2b"
             }
         },
         "mm_kitchen_3a": {
@@ -315,9 +403,9 @@
             "location": "interior",
             "name": "mm_kitchen_3a",
             "urls": {
-                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3a",
-                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3a",
-                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3a"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3a",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3a",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3a"
             }
         },
         "mm_kitchen_3b": {
@@ -326,9 +414,9 @@
             "location": "interior",
             "name": "mm_kitchen_3b",
             "urls": {
-                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3b",
-                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3b",
-                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3b"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3b",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3b",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3b"
             }
         },
         "mm_kitchen_4a": {
@@ -337,9 +425,9 @@
             "location": "interior",
             "name": "mm_kitchen_4a",
             "urls": {
-                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4a",
-                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4a",
-                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4a"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4a",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4a",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4a"
             }
         },
         "mm_kitchen_4b": {
@@ -348,9 +436,9 @@
             "location": "interior",
             "name": "mm_kitchen_4b",
             "urls": {
-                "linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4b",
-                "osx": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4b",
-                "windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4b"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4b",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4b",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4b"
             }
         },
         "monkey_physics_room": {

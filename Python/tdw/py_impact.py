@@ -399,6 +399,8 @@ class PyImpact:
         for i in range(rigidbodies.get_num()):
             object_id = rigidbodies.get_id(i)
             speeds[object_id] = np.linalg.norm(rigidbodies.get_velocity(i))
+        # Get all stays.
+        stays = [(c.get_collider_id(), c.get_collidee_id()) for c in collisions if c.get_state() == "stay"]
         # Play sounds from collisions.
         for collision in collisions:
             # Ignore invalid collisions.
@@ -406,6 +408,9 @@ class PyImpact:
                 continue
             collider_id = collision.get_collider_id()
             collidee_id = collision.get_collidee_id()
+            # Ignore collisions if there is a "stay" event, because this can create a droning effect.
+            if (collider_id, collidee_id) in stays:
+                continue
             # Skip objects that for some reason aren't in the cached data.
             if collider_id not in self.object_names or collidee_id not in self.object_names:
                 continue

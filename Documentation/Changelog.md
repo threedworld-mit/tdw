@@ -4,6 +4,48 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.5
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                              |
+| ------------------------ | ---------------------------------------- |
+| `apply_torque_to_object` | Apply a torque to an object's rigidbody. |
+
+#### Modified Commands
+
+| Command              | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `send_version`       | Added optional parameter `log` to log the TDW version in the Player or Editor log (default value is True). |
+| `add_fixed_joint`    | Un-deprecated because it's still being used.                 |
+| `detach_from_magnet` | Fixed: Kinematic objects attached to the magnet become non-kinematic when dropped. |
+
+### Model Library
+
+- Marked refridgerator_slim as do_not_use (colliders are rotated)
+- Added: 4ft_wood_shelving, 5ft_shelf_metal, 5ft_wood_shelving, 6ft_shelf_metal, 6ft_wood_shelving
+
+### Scene Library
+
+- Added: mm_craftroom_1a, mm_craftroom_1b, mm_craftroom_2a, mm_craftroom_2b, mm_craftroom_3a, mm_craftroom_3b, mm_craftroom_4a, mm_craftroom_4b
+
+### `tdw` module
+
+#### `PyImpact`
+
+- Added and update many object audio values in objects.csv
+- Fixed: PyImpact sometimes creates a droning audio effect. To prevent this, PyImpact will ignore collision events if the same pair of objects registers an `enter` and `stay` collision event on the same frame.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document           | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `impact_sounds.md` | Added a section and code example for how to prevent audio droning. |
+
 ## v1.8.4
 
 ### Command API
@@ -36,8 +78,13 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Build
 
+- Upgraded to Unity 2020.2.7
+- Fixed: `rotate_sensor_container_by` rotations around a local axis instead of a world axis
 - Fixed: If `set_kinematic_state` is sent more than once in a row to the same object with `kinematic=True`, the collision detection mode will be set incorrectly.
 - Fixed: Audio glitches when using Resonance Audio because the playback is doubled.
+- Fixed: ZMQ error if the build is launched a few seconds before the controller is launched.
+- Fixed: Can't draw Flex particles in Linux (see note in upgrade guide).
+- Fixed: A potential rare infinite loop if a JSON message can't be deserialized.
 
 ### Documentation
 

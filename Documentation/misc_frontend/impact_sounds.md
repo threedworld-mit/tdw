@@ -138,6 +138,59 @@ for i in range(200):
 c.communicate({"$type": "terminate"})
 ```
 
+### Avoiding "droning" effects
+
+Occasionally, a vibrating object will create a "droning" audio effect. This seems to occur more often for certain objects and scenarios than others.
+
+To prevent audio droning, listen for `stay` collision events. If you listen for `stay` events, PyImpact won't generate audio if there is a `enter` *and* `stay` event for the same pair of objects. However, the build will often generate many `stay` events per frame; this can be quite performance-intensive for complex scenes. To avoid this, you can add objects to the scene, let them settle into place, and *then* listen for `stay` events. The build listens for `stay` events only if it also listens for `enter` events; so if it doesn't listen for `enter` events as the objects settle into place, it won't hear any `stay` events either (which in this case you want).
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.output_data import OutputData, Rigidbodies
+
+c = Controller(launch_build=False)
+c.start()
+commands = [TDWUtils.create_empty_room(12, 12)]
+
+add_object_commands = []  # Your code here.
+
+commands.extend(add_object_commands)
+# Get rigidbody data.
+commands.append({"$type": "send_rigidbodies",
+                 "frequency": "always"})
+resp = c.communicate(add_object_commands)
+
+# Wait for all objects to settle.
+sleeping = False
+count = 0
+while not sleeping and count < 200:
+    sleeping = True
+    for i in range(len(resp) - 1):
+        # Get the rigidbody data and check if all objects are sleeping.
+        r_id = OutputData.get_data_type_id(resp[i])
+        if r_id == "rigi":
+            rigidbodies = Rigidbodies(resp[i])
+            for j in range(rigidbodies.get_num()):
+                if not rigidbodies.get_sleeping(j):
+                    sleeping = False
+    count += 1
+
+commands = [] # Add an object that you want to drop, the avatar, the audio sensor, etc.
+
+# Get rigidbody data for all objects, including the dropping object.
+commands.append({"$type": "send_rigidbodies",
+                 "frequency": "always"})
+
+# Listen for enter and stay events.
+commands.append({"$type": "send_collisions",
+                 "enter": True,
+                 "exit": False,
+                 "stay": True,
+                 "collision_types": ["obj", "env"]})
+resp = c.communicate(commands)
+```
+
 ## Resetting PyImpact
 
 You need to reset PyImpact between trials; otherwise, sounds will be "sharper" and higher pitched over time. There are two ways to reset:

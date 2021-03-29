@@ -85,7 +85,6 @@ glass1,0.5,0.4,glass,models_core.json,0.6,1.1,2
 glass2,0.7,2,glass,models_core.json,0.6,1.15,2
 glass3,0.4,2,glass,models_core.json,0.6,1.15,2
 moet_chandon_bottle_vray,0.1,1.25,glass,models_full.json,0.5,0.65,2
-ramp_with_platform,0.02,500,hardwood,models_special.json,0.5,0.65,5
 alivar_tech_bench_sofa,0.01,150,leather,models_core.json,0.2,0.1,5
 blue_club_chair,0.1,20,leather,models_core.json,0.6,0.45,4
 blue_satchal,0.01,1,leather,models_core.json,0.2,0.45,3
@@ -224,9 +223,10 @@ satiro_sculpture,0.01,100,stone,models_core.json,0.1,0.65,5
 small_table_green_marble,0.1,130,stone,models_core.json,0.625,0.65,4
 square_coaster_001_marble,0.35,0.4,stone,models_core.json,0.5,0.65,1
 square_coaster_stone,0.3,0.4,stone,models_core.json,0.5,0.65,1
-5ft_wood_shelving,0.2,32,wood,models_core.json,0.6,0.65,4
-6ft_wood_shelving,0.2,36,wood,models_core.json,0.6,0.65,5
-yellow_side_chair,0.1,20,wood,models_core.json,0.6,0.65,4
+5ft_wood_shelving,0.2,32,wood_soft,models_core.json,0.6,0.65,4
+6ft_wood_shelving,0.2,36,wood_soft,models_core.json,0.6,0.65,5
+yellow_side_chair,0.1,20,wood_soft,models_core.json,0.6,0.65,4
+ramp_with_platform,0.02,500,wood_hard,models_special.json,0.5,0.65,5
 b04_baseball_bat,0.4,1.25,wood_hard,models_full.json,0.3,0.65,3
 button_four_hole_large_wood,0.15,0.1,wood_hard,models_core.json,0.7,0.35,0
 button_four_hole_wood,0.15,0.1,wood_hard,models_core.json,0.7,0.35,0

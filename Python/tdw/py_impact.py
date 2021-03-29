@@ -346,7 +346,7 @@ class PyImpact:
         self.material_data: Dict[str, dict] = {}
         material_list = ["ceramic", "wood_hard", "wood_medium", "wood_soft", "metal", "glass", "paper", "cardboard", "leather", "fabric", "plastic_hard", "plastic_soft_foam", "rubber", "stone"]
         for mat in material_list:
-            # Just do 0-5 for now, for testing
+            # Just do 0-4 for now, for testing
             for i in range(5):
                 # Load the JSON data.
                 mat_name = mat + "_" + str(i)

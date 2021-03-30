@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 from pathlib import Path
 
-__version__ = "1.8.6.0"
+__version__ = "1.8.7.0"
 readme_path = Path('../README.md')
 if readme_path.exists():
     long_description = readme_path.read_text(encoding='utf-8')

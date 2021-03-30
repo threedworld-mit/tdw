@@ -49,7 +49,7 @@ class ObjectInfo:
         :param library: The path to the model library (see ModelLibrarian documentation).
         :param bounciness: The bounciness value for a Unity physics material.
         :param resonance: The resonance value for the object.
-        :param size: Integer representing the size "bucket" this obejct be;longs to (0-6).
+        :param size: Integer representing the size "bucket" this obejct belongs to (0-6).
         """
 
         self.amp = amp
@@ -453,8 +453,8 @@ class PyImpact:
                                                           other_id=self.env_id,
                                                           other_amp=0.5,
                                                           # We probably need dedicated wall and floor materials, or maybe they are in size category #6?
-                                                          # Setting to "4" for now, for general debugging purposes
-                                                          other_mat=floor.name + "_4",
+                                                          # Setting to "0" for now, for general debugging purposes
+                                                          other_mat=floor.name + "_0",
                                                           resonance=audio.resonance,
                                                           play_audio_data=not resonance_audio))
         return commands

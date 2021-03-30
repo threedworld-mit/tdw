@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.7
+
+### Command API
+
+#### Modified Commands
+
+| Command         | Modification                                                 |
+| --------------- | ------------------------------------------------------------ |
+| `follow_object` | Added optional parameter `rotation`. If True, set the avatar's rotation to the object's rotation. |
+
 ## v1.8.6
 
 ### `tdw` module

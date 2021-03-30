@@ -1344,13 +1344,14 @@ Teleport the avatar to a position relative to a target. This must be sent per-fr
 ```
 
 ```python
-{"$type": "follow_object", "object_id": 0, "position": {"x": 0, "y": 0, "z": 0}, "avatar_id": "a"}
+{"$type": "follow_object", "object_id": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": False, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"object_id"` | int | The ID of the object that the avatar will follow. | 0 |
 | `"position"` | Vector3 | The relative position to the avatar to the object. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | bool | If True, set the avatar's rotation to the object's rotation. | False |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***

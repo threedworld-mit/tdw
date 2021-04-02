@@ -429,12 +429,10 @@ class PyImpact:
                                                           rigidbodies=rigidbodies,
                                                           target_id=target,
                                                           target_amp=target_audio.amp,
-                                                          #target_mat=target_audio.material.name + "_4",
-                                                          target_mat="metal" + "_3",
+                                                          target_mat=target_audio.material.name + str(target_audio.size),
                                                           other_id=other,
                                                           other_amp=other_audio.amp,
-                                                          #other_mat=other_audio.material.name + "_4",
-                                                          other_mat="metal" + "_3",
+                                                          other_mat=other_audio.material.name + str(other_audio.size),
                                                           resonance=target_audio.resonance,
                                                           play_audio_data=not resonance_audio))
         # Play sounds from collisions with the environment.
@@ -455,8 +453,8 @@ class PyImpact:
                                                           other_id=self.env_id,
                                                           other_amp=0.5,
                                                           # We probably need dedicated wall and floor materials, or maybe they are in size category #6?
-                                                          # Setting to "0" for now, for general debugging purposes
-                                                          other_mat=floor.name + "_0",
+                                                          # Setting to "4" for now, for general debugging purposes
+                                                          other_mat=floor.name + "_4",
                                                           resonance=audio.resonance,
                                                           play_audio_data=not resonance_audio))
         return commands

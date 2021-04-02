@@ -16,7 +16,7 @@ camera_box,0.4,0.5,cardboard,models_full.json,0.6,0.65,3
 cgaxis_models_65_14_vray,0.1,0.4,cardboard,models_full.json,0.1,0.65,3
 champagne_cork,0.2,0.1,cardboard,models_core.json,0.5,0.25,0
 fruit_basket,0.01,1,cardboard,models_core.json,0.2,0.35,3
-iron_box,0.02,5,cardboard,models_full.json,0.5,0.65,3
+iron_box,0.02,5,cardboard,models_full.json,0.5,0.3,3
 lint_roller01,0.2,0.1,cardboard,models_core.json,0.2,0.15,3
 shoebox_fused,0.2,0.4,cardboard,models_core.json,0.4,0.45,3
 square_coaster_001_cork,0.2,0.2,cardboard,models_core.json,0.5,0.25,1
@@ -323,6 +323,6 @@ rh10,0.1,4,wood_soft,models_core.json,0.58,0.65,3
 rh18,0.1,4,wood_soft,models_core.json,0.58,0.65,3
 side_table_wood,0.5,150,wood_soft,models_core.json,0.6,0.65,4
 table_stack,0.5,200,wood_soft,models_core.json,0.6,0.65,3
-trapezoidal_table,0.5,200,wood_soft,models_core.json,0.6,0.65,4
+trapezoidal_table,0.5,200,wood_soft,models_core.json,0.6,0.45,4
 willisau_varion_w3_table,0.2,150,wood_soft,models_core.json,0.6,0.65,4
 woven_box,0.1,0.6,wood_soft,models_core.json,0.2,0.65,3

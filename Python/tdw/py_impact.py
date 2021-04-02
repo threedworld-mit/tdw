@@ -429,10 +429,12 @@ class PyImpact:
                                                           rigidbodies=rigidbodies,
                                                           target_id=target,
                                                           target_amp=target_audio.amp,
-                                                          target_mat=target_audio.material.name + "_" + str(target_audio.size),
+                                                          #target_mat=target_audio.material.name + "_4",
+                                                          target_mat="metal" + "_3",
                                                           other_id=other,
                                                           other_amp=other_audio.amp,
-                                                          other_mat=other_audio.material.name + "_" + str(other_audio.size),
+                                                          #other_mat=other_audio.material.name + "_4",
+                                                          other_mat="metal" + "_3",
                                                           resonance=target_audio.resonance,
                                                           play_audio_data=not resonance_audio))
         # Play sounds from collisions with the environment.

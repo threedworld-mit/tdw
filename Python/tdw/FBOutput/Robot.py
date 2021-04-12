@@ -26,8 +26,15 @@ class Robot(object):
         return 0
 
     # Robot
-    def Transform(self):
+    def Immovable(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
+
+    # Robot
+    def Transform(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             x = o + self._tab.Pos
             from .SimpleTransform import SimpleTransform
@@ -38,7 +45,7 @@ class Robot(object):
 
     # Robot
     def Joints(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             x = self._tab.Vector(o)
             x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 4
@@ -51,14 +58,15 @@ class Robot(object):
 
     # Robot
     def JointsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def RobotStart(builder): builder.StartObject(3)
+def RobotStart(builder): builder.StartObject(4)
 def RobotAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
-def RobotAddTransform(builder, transform): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(transform), 0)
-def RobotAddJoints(builder, joints): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(joints), 0)
+def RobotAddImmovable(builder, immovable): builder.PrependBoolSlot(1, immovable, 0)
+def RobotAddTransform(builder, transform): builder.PrependStructSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(transform), 0)
+def RobotAddJoints(builder, joints): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(joints), 0)
 def RobotStartJointsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def RobotEnd(builder): return builder.EndObject()

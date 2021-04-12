@@ -924,6 +924,9 @@ class Robot(OutputData):
     def get_joint_positions(self, index: int) -> np.array:
         return np.degrees(self.data.Joints(index).PositionsAsNumpy())
 
+    def get_immovable(self) -> bool:
+        return self.data.Immovable()
+
 
 class Keyboard(OutputData):
     def get_data(self) -> Key.Keyboard:

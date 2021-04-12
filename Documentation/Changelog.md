@@ -4,6 +4,25 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.8
+
+### Command API
+
+#### Modified Commands
+
+| Command                | Modification                                                 |
+| ---------------------- | ------------------------------------------------------------ |
+| `unload_asset_bundles` | Does a garbage collector call on the same frame (which can fix apparent memory leaks when quickly loading and unloading big asset bundles) |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification                       |
+| ----------- | ---------------------------------- |
+| `Robots`    | Added: `get_immovable()`           |
+| `Magnebots` | Fixed: `get_id()` always returns 0 |
+
 ## v1.8.7
 
 ### Command API

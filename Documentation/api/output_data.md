@@ -574,6 +574,7 @@ Data for a robot in the scene. See also: `StaticRobot`
 | `get_joint_id(index)` | The ID of the joint. | `int` |
 | `get_joint_position(index)` | The position of the joint. | `np.array` |
 | `get_joint_positions(index)` | The positions of the joint. | `np.array` |
+| `get_immovable()` | True if the root object of the robot is currently immovable. | `bool` |
 
 ## ScreenPosition
 

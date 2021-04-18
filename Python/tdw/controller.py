@@ -40,7 +40,8 @@ class Controller(object):
 
         # Launch the build.
         if launch_build:
-            Controller.launch_build()
+            Controller.launch_build(port = port)
+
 
         context = zmq.Context()
 
@@ -327,7 +328,7 @@ class Controller(object):
         return int.from_bytes(frame, byteorder='big')
 
     @staticmethod
-    def launch_build() -> None:
+    def launch_build(port = 1071) -> None:
         """
         Launch the build. If a build doesn't exist at the expected location, download one to that location.
         """
@@ -358,7 +359,7 @@ class Controller(object):
             success = True
         # Launch the build.
         if success:
-            Popen([str(Build.BUILD_PATH.resolve())])
+            Popen([str(Build.BUILD_PATH.resolve()), "-port "+str(port)])
 
     def _check_build_version(self, version: str = __version__, build_version: str = None) -> None:
         """

@@ -14,6 +14,14 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | ---------------------- | ------------------------------------------------------------ |
 | `set_flex_cloth_actor` | Added optional parameter `mesh_scale` to set the scale of the object's mesh. Default value: (1, 1, 1). This fixes a bug in which it was impossible to scale a Flex cloth object. |
 
+### `tdw` module
+
+- Fixed: Controller doesn't pass port number to the build if `launch_build == True`
+
+### Docker
+
+- Fixed: `pull.sh` fails with error: `unary operator expected`
+
 ### Documentation
 
 #### Modified Documentation

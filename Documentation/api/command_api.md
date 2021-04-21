@@ -4293,7 +4293,7 @@ Create or adjust a FlexClothActor for the object.
 ```
 
 ```python
-{"$type": "set_flex_cloth_actor", "id": 1, "mesh_tesselation": 1, "stretch_stiffness": 0.1, "bend_stiffness": 0.1, "tether_stiffness": 0.0, "tether_give": 0.0, "pressure": 0.0, "self_collide": False, "mass_scale": 1, "draw_particles": False}
+{"$type": "set_flex_cloth_actor", "id": 1, "mesh_tesselation": 1, "stretch_stiffness": 0.1, "bend_stiffness": 0.1, "tether_stiffness": 0.0, "tether_give": 0.0, "pressure": 0.0, "self_collide": False, "mesh_scale": {"x": 1, "y": 1, "z": 1}, "mass_scale": 1, "draw_particles": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -4305,6 +4305,7 @@ Create or adjust a FlexClothActor for the object.
 | `"tether_give"` | float | Because tether constraints are so effective at reducing stiffness, it can be useful to allow a small amount of extension before the constraint activates. | 0.0 |
 | `"pressure"` | float | If > 0.0f then a volume (pressure) constraint will also be added to the asset. The rest volume and stiffness will be automatically computed by this function. | 0.0 |
 | `"self_collide"` | bool | If true, the object will handle self-collisions. | False |
+| `"mesh_scale"` | Vector3 | The scale of the mesh. Adjust this instead of the object scale (via the add_object or scale_object commands). | {"x": 1, "y": 1, "z": 1} |
 | `"mass_scale"` | float | The mass scale factor. | 1 |
 | `"draw_particles"` | bool | Debug drawing of particles. | False |
 | `"id"` | int | The unique object ID. | |

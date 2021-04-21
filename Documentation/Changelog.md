@@ -4,6 +4,24 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.9
+
+### Command API
+
+#### Modified Commands
+
+| Command                | Modification                                                 |
+| ---------------------- | ------------------------------------------------------------ |
+| `set_flex_cloth_actor` | Added optional parameter `mesh_scale` to set the scale of the object's mesh. Default value: (1, 1, 1). This fixes a bug in which it was impossible to scale a Flex cloth object. |
+
+### Documentation
+
+#### Modified Documentation
+
+| Document  | Modification                                                 |
+| --------- | ------------------------------------------------------------ |
+| `flex.md` | Updated example lists of commands.<br>Added a section for scaling objects.<br>Added a note about collision detection. |
+
 ## v1.8.8
 
 ### Command API

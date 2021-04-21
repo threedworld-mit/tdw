@@ -4,7 +4,7 @@
 
 TDW's robots are handled very similarly to how 3D models are handled. They are stored in a robot library and have [corresponding metadata records](../python/librarian/robot_librarian.md). 
 
-Add robots to the scene using either [the `add_robot` command or `Controller.get_add_robot()`](../python/librarian/robot_librarian.md#Command API).
+Add robots to the scene using either [the `add_robot` command or `Controller.get_add_robot()`](../python/librarian/robot_librarian.md#command-api).
 
 | Command                  | Description                                                  |
 | ------------------------ | ------------------------------------------------------------ |

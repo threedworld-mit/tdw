@@ -6,7 +6,7 @@
 TDW_VERSION=$(python3 tdw_version.py)
 DOCKER_TAG=$(./docker_tag.sh)
 
-if [ $TDW_VERSION != $DOCKER_TAG ]
+if [ "$TDW_VERSION" != "$DOCKER_TAG" ]
   then
     echo "No Docker image found that matches TDW v${TDW_VERSION}. Trying to pull now..."
     docker pull alters/tdw:$TDW_VERSION

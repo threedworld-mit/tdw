@@ -16,7 +16,9 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### `tdw` module
 
-- Fixed: Controller doesn't pass port number to the build if `launch_build == True`
+#### `Controller`
+
+- Fixed: Constructor doesn't pass port number to the build if `launch_build == True`
 
 ### Docker
 

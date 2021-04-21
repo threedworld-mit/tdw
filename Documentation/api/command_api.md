@@ -188,6 +188,7 @@
 | [`rotate_sensor_container_by`](#rotate_sensor_container_by) | Rotate the sensor container of the avatar by a given angle along a given axis. |
 | [`rotate_sensor_container_to`](#rotate_sensor_container_to) | Set the rotation quaternion of the avatar's sensor container. |
 | [`set_anti_aliasing`](#set_anti_aliasing) | Set the anti-aliasing mode for the avatar's camera.  |
+| [`set_render_order`](#set_render_order) | Set the order in which this camera will render relative to other cameras in the scene. This can prevent flickering on the screen when there are multiple cameras. |
 | [`translate_sensor_container_by`](#translate_sensor_container_by) | Translate the sensor container relative to the avatar by a given directional vector. |
 
 **Create Reverb Space Command**
@@ -2783,6 +2784,27 @@ The anti-aliasing mode for the camera.
 | `"none"` | No antialiasing. |
 | `"subpixel"` | A higher quality, more expensive technique than fast. |
 | `"temporal"` | The highest-quality technique. Expensive. Adds motion blurring based on camera history. By default, all cameras in TDW are set to temporal. If you are frequently teleporting the avatar (and camera), do NOT use this mode. |
+
+***
+
+## **`set_render_order`**
+
+Set the order in which this camera will render relative to other cameras in the scene. This can prevent flickering on the screen when there are multiple cameras.
+
+
+```python
+{"$type": "set_render_order"}
+```
+
+```python
+{"$type": "set_render_order", "render_order": 0, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"render_order"` | int | The render order. Cameras are rendered in order from lowest number to highest. | 0 |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***
 

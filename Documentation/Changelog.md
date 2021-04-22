@@ -4,6 +4,26 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.9
+
+### Command API
+
+#### New Commands
+
+| Command            | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `set_render_order` | Set the order in which the avatar's camera will render relative to other cameras in the scene. |
+
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: Constructor doesn't pass port number to the build if `launch_build == True`
+
+### Docker
+
+- Fixed: `pull.sh` fails with error: `unary operator expected`
+
 ## v1.8.8
 
 ### Command API

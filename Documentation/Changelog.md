@@ -8,6 +8,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Command API
 
+#### New Commands
+
+| Command            | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `set_render_order` | Set the order in which the avatar's camera will render relative to other cameras in the scene. |
+
 #### Modified Commands
 
 | Command                | Modification                                                 |

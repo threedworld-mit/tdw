@@ -20,6 +20,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Fixed: Constructor doesn't pass port number to the build if `launch_build == True`
 
+### Build
+
+- Fixed: Can't double-click TDW.app in OS X because the file is damaged. The OS X version of TDW is now a .zip instead of .tar.gz (like it was prior to v1.8).
+
 ### Docker
 
 - Fixed: `pull.sh` fails with error: `unary operator expected`

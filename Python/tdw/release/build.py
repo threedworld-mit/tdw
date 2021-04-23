@@ -1,3 +1,5 @@
+from os import getcwd, chdir
+from subprocess import call
 from requests import get, head
 from typing import Tuple
 from platform import system
@@ -86,6 +88,13 @@ class Build:
             tar = tarfile.open(str(zip_path.resolve()))
             tar.extractall(dst)
             tar.close()
+        # Run this to fixed "Damaged App" errors.
+        # Source: https://www.google.com/search?client=firefox-b-1-d&q=unity+damaged+app
+        if platform == "Darwin":
+            cwd = getcwd()
+            chdir(str(Build.BUILD_ROOT_DIR.joinpath("TDW").resolve()))
+            call(["xattr", "-r", "-d", "com.apple.quarantine", "TDW.app"])
+            chdir(cwd)
         print(f"Extracted the file to: {dst}")
         # Delete the zip file.
         zip_path.unlink()

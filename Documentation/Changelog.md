@@ -20,6 +20,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Fixed: Constructor doesn't pass port number to the build if `launch_build == True`
 
+### Build
+
+- **Fixed: Can't launch TDW.app by double-clicking it.** If you download the build from the Releases page on the repo, you can run `setup.sh` (located in the same directory as `TDW.app`). If you download the build by launching a controller, i.e. `c = Controller()`, the controller will automatically fix TDW.app before launching it.
+
 ### Docker
 
 - Fixed: `pull.sh` fails with error: `unary operator expected`

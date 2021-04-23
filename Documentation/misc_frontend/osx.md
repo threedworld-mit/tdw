@@ -20,6 +20,10 @@ As with all OS X programs, the .app can't be directly opened in the shell. Inste
 
 If you aren't using command-line arguments, you can double-click and run the .app like any other.
 
+## "When I double-click TDW.app I get an error: `TDW.app is damaged and can't be opened`"
+
+This is a [known Unity bug](https://issuetracker.unity3d.com/issues/macos-builds-now-contain-a-quarantine-attribute) and it will occur if you download the build from TDW's releases page. To fix it, run `setup.sh` (located in the same directory as `TDW.app`).
+
 ## "I'm receiving `localhost` errors"
 
 The build might fail to do anything because `localhost` isn't a listed host. In Unity Editor, you'll see an error like this:

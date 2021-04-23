@@ -328,9 +328,11 @@ class Controller(object):
         return int.from_bytes(frame, byteorder='big')
 
     @staticmethod
-    def launch_build(port = 1071) -> None:
+    def launch_build(port: int = 1071) -> None:
         """
         Launch the build. If a build doesn't exist at the expected location, download one to that location.
+
+        :param port: The socket port.
         """
 
         # Download the build.

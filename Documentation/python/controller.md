@@ -207,11 +207,15 @@ _Returns:_ The frame as an integer.
 
 ***
 
-#### `launch_build(port = 1071) -> None`
+#### `launch_build(port: int = 1071) -> None`
 
 _This is a static function._
 
 Launch the build. If a build doesn't exist at the expected location, download one to that location.
+
+| Parameter | Description |
+| --- | --- |
+| port | The socket port. |
 
 ***
 

@@ -1,5 +1,6 @@
 from requests import get, head
 from typing import Tuple
+from subprocess import call
 from platform import system
 from pathlib import Path
 from zipfile import ZipFile
@@ -29,10 +30,10 @@ class Build:
 
         url = f"https://github.com/threedworld-mit/tdw/releases/download/{version}/" \
               f"{SYSTEM_TO_RELEASE[system()]}"
-        if system() == "Windows":
-            url += ".zip"
-        else:
+        if system() == "Linux":
             url += ".tar.gz"
+        else:
+            url += ".zip"
         # Check if the URL exists.
         if head(url).status_code != 302:
             print(f"Release not found: {url}")
@@ -69,19 +70,22 @@ class Build:
         # Save the zip file.
         platform = system()
         filename = f"{SYSTEM_TO_RELEASE[platform]}"
-        if platform == "Windows":
-            filename += ".zip"
-        else:
+        if platform == "Linux":
             filename += ".tar.gz"
+        else:
+            filename += ".zip"
         zip_path = Path().home().joinpath(filename)
         zip_path.write_bytes(resp)
         print("Saved the file.")
 
         dst = str(Build.BUILD_ROOT_DIR.resolve())
         # Extract the zip file.
-        if platform == "Windows":
+        if platform == "Windows" or platform == "Darwin":
             with ZipFile(str(zip_path.resolve()), 'r') as zip_ref:
                 zip_ref.extractall(dst)
+            # Set executable permissions.
+            if platform == "Darwin":
+                call(["chmod", "+x", str(Build.BUILD_PATH.resolve())])
         else:
             tar = tarfile.open(str(zip_path.resolve()))
             tar.extractall(dst)

@@ -438,6 +438,7 @@
 | --- | --- |
 | [`set_robot_joint_drive`](#set_robot_joint_drive) | Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are. |
 | [`set_robot_joint_mass`](#set_robot_joint_mass) | Set the mass of a robot joint. To get the default mass, see the StaticRobot output data. |
+| [`set_robot_joint_physic_material`](#set_robot_joint_physic_material) | Set the physic material of a robot joint and apply friction and bounciness values to the joint. These settings can be overriden by sending the command again. |
 
 **Robot Joint Target Command**
 
@@ -5355,6 +5356,29 @@ Set the mass of a robot joint. To get the default mass, see the StaticRobot outp
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"mass"` | float | The mass of the joint. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_robot_joint_physic_material`**
+
+Set the physic material of a robot joint and apply friction and bounciness values to the joint. These settings can be overriden by sending the command again.
+
+
+```python
+{"$type": "set_robot_joint_physic_material", "dynamic_friction": 0.125, "static_friction": 0.125, "bounciness": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_physic_material", "dynamic_friction": 0.125, "static_friction": 0.125, "bounciness": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dynamic_friction"` | float | Friction when the joint is already moving. A higher value means that the joint will come to rest very quickly. Must be between 0 and 1. | |
+| `"static_friction"` | float | Friction when the joint is not moving. A higher value means that a lot of force will be needed to make the joint start moving. Must be between 0 and 1. | |
+| `"bounciness"` | float | The bounciness of the joint. A higher value means that the joint will bounce without losing much energy. Must be between 0 and 1. | |
 | `"joint_id"` | int | The ID of the joint. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 

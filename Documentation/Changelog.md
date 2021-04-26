@@ -10,9 +10,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 #### New Commands
 
-| Command            | Description                                                  |
-| ------------------ | ------------------------------------------------------------ |
-| `set_render_order` | Set the order in which the avatar's camera will render relative to other cameras in the scene. |
+| Command                           | Description                                                  |
+| --------------------------------- | ------------------------------------------------------------ |
+| `set_render_order`                | Set the order in which the avatar's camera will render relative to other cameras in the scene. |
+| `set_robot_joint_physic_material` | Set the physic material of a robot joint.                    |
 
 ### `tdw` module
 

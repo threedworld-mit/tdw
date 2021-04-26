@@ -188,6 +188,7 @@
 | [`rotate_sensor_container_by`](#rotate_sensor_container_by) | Rotate the sensor container of the avatar by a given angle along a given axis. |
 | [`rotate_sensor_container_to`](#rotate_sensor_container_to) | Set the rotation quaternion of the avatar's sensor container. |
 | [`set_anti_aliasing`](#set_anti_aliasing) | Set the anti-aliasing mode for the avatar's camera.  |
+| [`set_render_order`](#set_render_order) | Set the order in which this camera will render relative to other cameras in the scene. This can prevent flickering on the screen when there are multiple cameras. This doesn't affect image capture; it only affects what the simulation application screen is displaying at runtime. |
 | [`translate_sensor_container_by`](#translate_sensor_container_by) | Translate the sensor container relative to the avatar by a given directional vector. |
 
 **Create Reverb Space Command**
@@ -1344,13 +1345,14 @@ Teleport the avatar to a position relative to a target. This must be sent per-fr
 ```
 
 ```python
-{"$type": "follow_object", "object_id": 0, "position": {"x": 0, "y": 0, "z": 0}, "avatar_id": "a"}
+{"$type": "follow_object", "object_id": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": False, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"object_id"` | int | The ID of the object that the avatar will follow. | 0 |
 | `"position"` | Vector3 | The relative position to the avatar to the object. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | bool | If True, set the avatar's rotation to the object's rotation. | False |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***
@@ -2782,6 +2784,27 @@ The anti-aliasing mode for the camera.
 | `"none"` | No antialiasing. |
 | `"subpixel"` | A higher quality, more expensive technique than fast. |
 | `"temporal"` | The highest-quality technique. Expensive. Adds motion blurring based on camera history. By default, all cameras in TDW are set to temporal. If you are frequently teleporting the avatar (and camera), do NOT use this mode. |
+
+***
+
+## **`set_render_order`**
+
+Set the order in which this camera will render relative to other cameras in the scene. This can prevent flickering on the screen when there are multiple cameras. This doesn't affect image capture; it only affects what the simulation application screen is displaying at runtime.
+
+
+```python
+{"$type": "set_render_order"}
+```
+
+```python
+{"$type": "set_render_order", "render_order": 0, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"render_order"` | int | The render order. The highest number will the be camera rendered in the application window. By default, all TDW cameras have the same render order number. | 0 |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***
 

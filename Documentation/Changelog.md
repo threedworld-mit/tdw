@@ -4,7 +4,66 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.9
+
+### Command API
+
+#### New Commands
+
+| Command            | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `set_render_order` | Set the order in which the avatar's camera will render relative to other cameras in the scene. |
+
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: Constructor doesn't pass port number to the build if `launch_build == True`
+
+### Build
+
+- **Fixed: Can't launch TDW.app by double-clicking it.** If you download the build from the Releases page on the repo, you can run `setup.sh` (located in the same directory as `TDW.app`). If you download the build by launching a controller, i.e. `c = Controller()`, the controller will automatically fix TDW.app before launching it.
+
+### Docker
+
+- Fixed: `pull.sh` fails with error: `unary operator expected`
+
+## v1.8.8
+
+### Command API
+
+#### Modified Commands
+
+| Command                | Modification                                                 |
+| ---------------------- | ------------------------------------------------------------ |
+| `unload_asset_bundles` | Does a garbage collector call on the same frame (which can fix apparent memory leaks when quickly loading and unloading big asset bundles) |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification                       |
+| ----------- | ---------------------------------- |
+| `Robots`    | Added: `get_immovable()`           |
+| `Magnebots` | Fixed: `get_id()` always returns 0 |
+
+## v1.8.7
+
+### Command API
+
+#### Modified Commands
+
+| Command         | Modification                                                 |
+| --------------- | ------------------------------------------------------------ |
+| `follow_object` | Added optional parameter `rotation`. If True, set the avatar's rotation to the object's rotation. |
+
 ## v1.8.6
+
+### `tdw` module
+
+#### `PyImpact`
+
+- Fixed: PyImpact sometimes creates a droning audio effect or distorts audio due to the same object having more than one collision in a given frame. PyImpact will only select one collision event per object per frame, and can filter out events in which (`enter` and `stay`) or (`enter` and `exit`) occurred on the same frame for the same object.
 
 ### Output Data
 

@@ -140,9 +140,11 @@ c.communicate({"$type": "terminate"})
 
 ### Avoiding "droning" effects
 
-Occasionally, a vibrating object will create a "droning" audio effect. This seems to occur more often for certain objects and scenarios than others.
+Occasionally, a vibrating object will create a "droning" or distorted audio effect. This happens because there are sometimes multiple collisions per object on the same frame (for example, the object collides with a chair, a table leg, and the floor).
 
-To prevent audio droning, listen for `stay` collision events. If you listen for `stay` events, PyImpact won't generate audio if there is a `enter` *and* `stay` event for the same pair of objects. However, the build will often generate many `stay` events per frame; this can be quite performance-intensive for complex scenes. To avoid this, you can add objects to the scene, let them settle into place, and *then* listen for `stay` events. The build listens for `stay` events only if it also listens for `enter` events; so if it doesn't listen for `enter` events as the objects settle into place, it won't hear any `stay` events either (which in this case you want).
+`PyImpact.get_audio_commands()` will try to allow only one collision per object per frame. You can improve this filter by listening for `enter`, `stay`, and `exit` collision events (rather than just `enter`); PyImpact will ignore a collision if there is more than one event on the same frame (for example, if the object entered and stayed on the same other object).
+
+However, the build will often generate many `stay` events per frame; this can be quite performance-intensive for complex scenes. To avoid this, you can add objects to the scene, let them settle into place, and *then* listen for `stay` events. The build listens for `stay` events only if it also listens for `enter` events; so if it doesn't listen for `enter` events as the objects settle into place, it won't hear any `stay` events either (which in this case you want).
 
 ```python
 from tdw.controller import Controller
@@ -185,7 +187,7 @@ commands.append({"$type": "send_rigidbodies",
 # Listen for enter and stay events.
 commands.append({"$type": "send_collisions",
                  "enter": True,
-                 "exit": False,
+                 "exit": True,
                  "stay": True,
                  "collision_types": ["obj", "env"]})
 resp = c.communicate(commands)

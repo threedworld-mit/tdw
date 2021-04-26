@@ -399,8 +399,12 @@ class PyImpact:
         for i in range(rigidbodies.get_num()):
             object_id = rigidbodies.get_id(i)
             speeds[object_id] = np.linalg.norm(rigidbodies.get_velocity(i))
-        # Get all stays.
-        stays = [(c.get_collider_id(), c.get_collidee_id()) for c in collisions if c.get_state() == "stay"]
+        # Get all stays and exits.
+        stays_and_exits: List[int] = list()
+        for c in collisions:
+            if c.get_state() == "stay" or c.get_state() == "exit":
+                stays_and_exits.extend([c.get_collider_id(), c.get_collidee_id()])
+        colliders: List[int] = list()
         # Play sounds from collisions.
         for collision in collisions:
             # Ignore invalid collisions.
@@ -409,8 +413,11 @@ class PyImpact:
             collider_id = collision.get_collider_id()
             collidee_id = collision.get_collidee_id()
             # Ignore collisions if there is a "stay" event, because this can create a droning effect.
-            if (collider_id, collidee_id) in stays:
+            if collider_id in stays_and_exits or collidee_id in stays_and_exits or\
+                    collider_id in colliders or collidee_id in colliders:
                 continue
+            colliders.append(collider_id)
+            colliders.append(collidee_id)
             # Skip objects that for some reason aren't in the cached data.
             if collider_id not in self.object_names or collidee_id not in self.object_names:
                 continue
@@ -436,14 +443,17 @@ class PyImpact:
                                                           resonance=target_audio.resonance,
                                                           play_audio_data=not resonance_audio))
         # Play sounds from collisions with the environment.
+        stays_and_exits.extend([c.get_object_id() for c in env_collisions if
+                                c.get_state() == "stay" or c.get_state() == "exit"])
         for collision in env_collisions:
             target = collision.get_object_id()
             # Ignore collisions that aren't enter, not a floor, that aren't in the cached data, or that are too slow.
             # When objects are initially spawned they collide with the environment at very slow speeds,
             # resulting in a "click" sound that we don't actually want.
             if collision.get_state() != "enter" or not collision.get_floor() or target not in self.object_names or \
-                    speeds[target] < 0.01:
+                    speeds[target] < 0.01 or target in colliders or target in stays_and_exits:
                 continue
+            colliders.append(target)
             audio = self.object_info[self.object_names[target]]
             commands.append(self.get_impact_sound_command(collision=collision,
                                                           rigidbodies=rigidbodies,

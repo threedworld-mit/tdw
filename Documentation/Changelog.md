@@ -24,6 +24,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Build
 
 - **Fixed: Can't launch TDW.app by double-clicking it.** If you download the build from the Releases page on the repo, you can run `setup.sh` (located in the same directory as `TDW.app`). If you download the build by launching a controller, i.e. `c = Controller()`, the controller will automatically fix TDW.app before launching it.
+- Fixed a potential memory leak in `set_physic_material` and `set_avatar_physic_material`.
 
 ### Docker
 

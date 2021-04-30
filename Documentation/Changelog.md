@@ -18,7 +18,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 | Command                             | Modification                                                 |
 | ----------------------------------- | ------------------------------------------------------------ |
-| `send_raycast`<br>`send_spherecast` | Fixed: Only the last raycast command in the list returns data. |
+| `send_raycast`<br>`send_spherecast` | Fixed: Only the last raycast command in the list returns data.<br>Removed parameter `frequency`. These commands will always function as if `"frequency" == "once"`. |
 
 ## v1.8.9
 

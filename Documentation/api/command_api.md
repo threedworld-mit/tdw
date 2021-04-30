@@ -448,6 +448,14 @@
 | [`set_revolute_target`](#set_revolute_target) | Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle. |
 | [`set_spherical_target`](#set_spherical_target) | Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles. |
 
+**Send Raycast Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_boxcast`](#send_boxcast) | Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
+| [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
+| [`send_spherecast`](#send_spherecast) | Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
+
 **Singleton Subscriber Command**
 
 | Command | Description |
@@ -484,13 +492,6 @@
 | [`send_overlap_box`](#send_overlap_box) | Check which objects a box-shaped space overlaps with.  |
 | [`send_overlap_capsule`](#send_overlap_capsule) | Check which objects a capsule-shaped space overlaps with.  |
 | [`send_overlap_sphere`](#send_overlap_sphere) | Check which objects a sphere-shaped space overlaps with.  |
-
-**Send Raycast Command**
-
-| Command | Description |
-| --- | --- |
-| [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
-| [`send_spherecast`](#send_spherecast) | Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
 
 **Send Single Data Command**
 
@@ -5449,6 +5450,84 @@ Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint
 | `"joint_id"` | int | The ID of the joint. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
+# SendRaycastCommand
+
+These commands cast different types of rays and send the results to the controller.
+
+***
+
+## **`send_boxcast`**
+
+Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"half_extents"` | Vector3 | The half-extents of the box. | |
+| `"origin"` | Vector3 | The origin of the raycast. | |
+| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
+
+***
+
+## **`send_raycast`**
+
+Cast a ray from the origin to the destination. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"origin"` | Vector3 | The origin of the raycast. | |
+| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
+
+***
+
+## **`send_spherecast`**
+
+Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"radius"` | float | The radius of the sphere. | |
+| `"origin"` | Vector3 | The origin of the raycast. | |
+| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
+
 # SingletonSubscriberCommand
 
 These commands act as singletons and can subscribe to events.
@@ -5997,81 +6076,6 @@ Check which objects a sphere-shaped space overlaps with.
 | `"radius"` | float | The radius of the sphere. | |
 | `"position"` | Vector3 | The center of the shape. | |
 | `"id"` | int | The ID of this overlap shape. Useful for differenting between Overlap output data objects received on the same frame. | 0 |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-# SendRaycastCommand
-
-These commands cast different types of rays and send the results to the controller.
-
-***
-
-## **`send_raycast`**
-
-Cast a ray from the origin to the destination. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
-
-```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
-| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_spherecast`**
-
-Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
-
-```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"radius"` | float | The radius of the sphere. | |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
-| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

@@ -4,15 +4,32 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.10
+
+### Command API
+
+#### New Commands
+
+| Command        | Description                                          |
+| -------------- | ---------------------------------------------------- |
+| `send_boxcast` | Cast a box along a direction and return the results. |
+
+#### Modified Commands
+
+| Command                             | Modification                                                 |
+| ----------------------------------- | ------------------------------------------------------------ |
+| `send_raycast`<br>`send_spherecast` | Fixed: Only the last raycast command in the list returns data.<br>Removed parameter `frequency`. These commands will always function as if `"frequency" == "once"`. |
+
 ## v1.8.9
 
 ### Command API
 
 #### New Commands
 
-| Command            | Description                                                  |
-| ------------------ | ------------------------------------------------------------ |
-| `set_render_order` | Set the order in which the avatar's camera will render relative to other cameras in the scene. |
+| Command                           | Description                                                  |
+| --------------------------------- | ------------------------------------------------------------ |
+| `set_render_order`                | Set the order in which the avatar's camera will render relative to other cameras in the scene. |
+| `set_robot_joint_physic_material` | Set the physic material of a robot joint.                    |
 
 ### `tdw` module
 
@@ -23,6 +40,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Build
 
 - **Fixed: Can't launch TDW.app by double-clicking it.** If you download the build from the Releases page on the repo, you can run `setup.sh` (located in the same directory as `TDW.app`). If you download the build by launching a controller, i.e. `c = Controller()`, the controller will automatically fix TDW.app before launching it.
+- Fixed a potential memory leak in `set_physic_material` and `set_avatar_physic_material`.
 
 ### Docker
 

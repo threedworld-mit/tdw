@@ -438,6 +438,7 @@
 | --- | --- |
 | [`set_robot_joint_drive`](#set_robot_joint_drive) | Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are. |
 | [`set_robot_joint_mass`](#set_robot_joint_mass) | Set the mass of a robot joint. To get the default mass, see the StaticRobot output data. |
+| [`set_robot_joint_physic_material`](#set_robot_joint_physic_material) | Set the physic material of a robot joint and apply friction and bounciness values to the joint. These settings can be overriden by sending the command again. |
 
 **Robot Joint Target Command**
 
@@ -446,6 +447,14 @@
 | [`set_prismatic_target`](#set_prismatic_target) | Set the target position of a prismatic robot joint. Per frame, the joint will move towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target position. |
 | [`set_revolute_target`](#set_revolute_target) | Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle. |
 | [`set_spherical_target`](#set_spherical_target) | Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles. |
+
+**Send Raycast Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_boxcast`](#send_boxcast) | Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
+| [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
+| [`send_spherecast`](#send_spherecast) | Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
 
 **Singleton Subscriber Command**
 
@@ -483,13 +492,6 @@
 | [`send_overlap_box`](#send_overlap_box) | Check which objects a box-shaped space overlaps with.  |
 | [`send_overlap_capsule`](#send_overlap_capsule) | Check which objects a capsule-shaped space overlaps with.  |
 | [`send_overlap_sphere`](#send_overlap_sphere) | Check which objects a sphere-shaped space overlaps with.  |
-
-**Send Raycast Command**
-
-| Command | Description |
-| --- | --- |
-| [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
-| [`send_spherecast`](#send_spherecast) | Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
 
 **Send Single Data Command**
 
@@ -5358,6 +5360,29 @@ Set the mass of a robot joint. To get the default mass, see the StaticRobot outp
 | `"joint_id"` | int | The ID of the joint. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
+***
+
+## **`set_robot_joint_physic_material`**
+
+Set the physic material of a robot joint and apply friction and bounciness values to the joint. These settings can be overriden by sending the command again.
+
+
+```python
+{"$type": "set_robot_joint_physic_material", "dynamic_friction": 0.125, "static_friction": 0.125, "bounciness": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_physic_material", "dynamic_friction": 0.125, "static_friction": 0.125, "bounciness": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dynamic_friction"` | float | Friction when the joint is already moving. A higher value means that the joint will come to rest very quickly. Must be between 0 and 1. | |
+| `"static_friction"` | float | Friction when the joint is not moving. A higher value means that a lot of force will be needed to make the joint start moving. Must be between 0 and 1. | |
+| `"bounciness"` | float | The bounciness of the joint. A higher value means that the joint will bounce without losing much energy. Must be between 0 and 1. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
 # RobotJointTargetCommand
 
 These commands set target angles for each of the joint's drives. To get the type of joint and its drives, see the send_static_robots command and the StaticRobot output data.
@@ -5424,6 +5449,84 @@ Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint
 | `"target"` | Vector3 | The target angles in degrees for the (x, y, z) drives. | |
 | `"joint_id"` | int | The ID of the joint. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
+
+# SendRaycastCommand
+
+These commands cast different types of rays and send the results to the controller.
+
+***
+
+## **`send_boxcast`**
+
+Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"half_extents"` | Vector3 | The half-extents of the box. | |
+| `"origin"` | Vector3 | The origin of the raycast. | |
+| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
+
+***
+
+## **`send_raycast`**
+
+Cast a ray from the origin to the destination. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"origin"` | Vector3 | The origin of the raycast. | |
+| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
+
+***
+
+## **`send_spherecast`**
+
+Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"radius"` | float | The radius of the sphere. | |
+| `"origin"` | Vector3 | The origin of the raycast. | |
+| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
 
 # SingletonSubscriberCommand
 
@@ -5973,81 +6076,6 @@ Check which objects a sphere-shaped space overlaps with.
 | `"radius"` | float | The radius of the sphere. | |
 | `"position"` | Vector3 | The center of the shape. | |
 | `"id"` | int | The ID of this overlap shape. Useful for differenting between Overlap output data objects received on the same frame. | 0 |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-# SendRaycastCommand
-
-These commands cast different types of rays and send the results to the controller.
-
-***
-
-## **`send_raycast`**
-
-Cast a ray from the origin to the destination. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
-
-```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
-| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_spherecast`**
-
-Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
-
-```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"radius"` | float | The radius of the sphere. | |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
-| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

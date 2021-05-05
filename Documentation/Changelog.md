@@ -4,6 +4,17 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.11
+
+### Command API
+
+#### Modified Commands
+
+| Command              | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `send_collisions`    | Fixed: collision data can be sent from an object after it's destroyed, resulting in warnings in the player log. |
+| `set_floorplan_roof` | Fixed: The roof can be re-enabled after being disabled.      |
+
 ## v1.8.10
 
 ### Command API

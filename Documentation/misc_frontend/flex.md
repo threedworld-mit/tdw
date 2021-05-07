@@ -67,10 +67,9 @@ c.communicate({"$type": "add_scene",
 
 ### Adding a Flex Object
 
-One can then load an object into the scene and make it a Flex object, i. e. attach a Flex solid, soft, or cloth actor. It is important to disable regular physics by setting the kinematic state before doing so:
+One can then load an object into the scene and make it a Flex object, i.e. attach a Flex solid, soft, or cloth actor:
 
 - `add_object`
-- `set_kinematic_state`
 - `set_flex_solid_actor` / `set_flex_soft_actor` / `set_flex_cloth_actor`
 - `assign_flex_container`
 
@@ -78,10 +77,8 @@ One can then load an object into the scene and make it a Flex object, i. e. atta
 
 ### Manipulating Flex Objects
 
-One can then manipulate the created Flex object by dynamically resetting it's mass, scale, teleporting it, rotate it or applying a force to it. Each of the following commands requires the object id as input:
+One can then manipulate the created Flex object by dynamically. Each of the following commands requires the object id as input:
 
-- `resize_flex_object`
-- `set_mass_flex_object`
 - `teleport_flex_object`
 - `rotate_flex_object_to`
 - `apply_force_to_flex_object`
@@ -89,17 +86,24 @@ One can then manipulate the created Flex object by dynamically resetting it's ma
 
 A force can be either applied to an entire Flex object, in which case `particle_id` should be set to `-1` or to a particular particle of the Flex object, in which case `particle_id` should equal the `id` of the respective particle.
 
-### Requesting Flex Data
+#### Scaling Flex Objects
 
-`send_flex_particles` sends [`FlexParticles`](../api/output_data.md#FlexParticles) data.
+- Solid and soft Flex objects can only be scaled *before* being Flex-ified (via `add_object` or `scale_object`).
+- Cloth objects *cannot be scaled*. Instead, set the `mesh_scale` parameter in `set_cloth_actor`, which will scale the mesh itself, not the object.
+
+## Flex Output Data
+
+- [`send_flex_particles`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#send_flex_particles) sends [`FlexParticles`](../api/output_data.md#FlexParticles) data.
+- TDW supports limited collision detection for Flex objects [`send_collisions`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#send_collisions) returns [`Collision`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/output_data.md#Collision) and [`EnvironmentCollision`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/output_data.md#environmentcollision) data. Collision detection is handled via Rigidbody colliders just like non-Flex models. These colliders will always be the same shape, size, position, etc. as a Flex solid object. However, they won't bend to fit the shape of cloth or soft body objects. Collision detection will be somewhat inaccurate for most soft body objects and very inaccurate for most cloth objects.
+
+## Examples
 
 ### Bad Example A
 
 1. `load_scene`
 2. `create_exterior_walls`
 3. `add_object`
-4. `set_kinematic_state`
-5. `create_solid_flex_actor`
+5. `set_solid_flex_actor`
 6. `create_flex_container`
 7. `assign_flex_container`
 
@@ -111,27 +115,40 @@ Creating a Flex Actor *before* without having a flex container in the scene will
 2. `create_exterior_walls`
 3. `create_flex_container`
 4. `add_object`
-5. `create_solid_flex_actor`
-6. `assign_flex_container`
+6. `set_solid_flex_actor`
+6. `scale_object`
+7. `assign_flex_container`
 
-Not setting an object to kinematic *before* creating a Flex actor will lead to *unphysical* behavior!
+You should send `scale_object` *before* sending `set_solid_flex_actor` or `set_soft_flex_actor`.
 
-### Good Example C
+### Bad Example C
 
 1. `load_scene`
 2. `create_exterior_walls`
 3. `create_flex_container`
 4. `add_object`
-5. `set_kinematic_state`
-6. `create_solid_flex_actor`
+5. `scale_object`
+6. `set_cloth_flex_actor`
+7. `scale_object`
+8. `assign_flex_container`
+
+You shouldn't scale cloth objects. Remove `scale_object` and set the `mesh_scale` parameter of `set_cloth_flex_actor`.
+
+### Good Example D
+
+1. `load_scene`
+2. `create_exterior_walls`
+3. `create_flex_container`
+4. `add_object`
+6. `set_solid_flex_actor`
 7. `assign_flex_container`
 8. `send_flex_particles`
 9. `apply_force_to_flex_object`
 10. ...
 
-The correct way to setup a Flex scene is to first create a Flex container, then add objects and set them to kinematic, and then to create Flex actors for them. One can then start requesting Flex data, and observe how the Flex particle states change as one manipulates the Flex object by for instance applying a force.
+The correct way to setup a Flex scene is to first create a Flex container, then add objects, and then to create Flex actors for them. One can then start requesting Flex data, and observe how the Flex particle states change as one manipulates the Flex object by for instance applying a force.
 
-### Flex Particle IDs
+## Flex Particle IDs
 
 Some Flex commands such as `apply_forces_to_flex_object_base64` and `set_flexparticle_fixed` require _Flex particle IDs_. These are the indices of the particle data array returned in [`FlexParticles`](../api/output_data.md#FlexParticles).
 

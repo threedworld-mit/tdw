@@ -1,6 +1,89 @@
 {
     "description": "A small library of models.",
     "records": {
+        "102_pepsi_can_12_fl_oz_vray": {
+            "asset_bundle_sizes": {
+                "Darwin": 6427401,
+                "Linux": 6727092,
+                "Windows": 6191372
+            },
+            "bounds": {
+                "back": {
+                    "x": 3.72529e-09,
+                    "y": 0.06326565,
+                    "z": -0.03303153
+                },
+                "bottom": {
+                    "x": 3.72529e-09,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 3.72529e-09,
+                    "y": 0.06326565,
+                    "z": 0
+                },
+                "front": {
+                    "x": 3.72529e-09,
+                    "y": 0.06326565,
+                    "z": 0.03303153
+                },
+                "left": {
+                    "x": -0.03303152,
+                    "y": 0.06326565,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.03303153,
+                    "y": 0.06326565,
+                    "z": 0
+                },
+                "top": {
+                    "x": 3.72529e-09,
+                    "y": 0.1265313,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": -90.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "102_pepsi_can_12_fl_oz_vray",
+            "physics_quality": 0.8224480649701084,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "can_part_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "can_ring01"
+                },
+                {
+                    "materials": [
+                        "bottle_sticker"
+                    ],
+                    "name": "obj44235936__138178P01"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/102_pepsi_can_12_fl_oz_vray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/102_pepsi_can_12_fl_oz_vray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/102_pepsi_can_12_fl_oz_vray"
+            },
+            "wcategory": "soda can",
+            "wnid": "n04255586"
+        },
         "24_in_wall_cabinet_white_wood": {
             "asset_bundle_sizes": {
                 "Darwin": 3735318,
@@ -2046,6 +2129,970 @@
             },
             "wcategory": "globe",
             "wnid": "n03440512"
+        },
+        "b03_toothbrush": {
+            "asset_bundle_sizes": {
+                "Darwin": 7328084,
+                "Linux": 7484042,
+                "Windows": 7189624
+            },
+            "bounds": {
+                "back": {
+                    "x": -2.421439e-08,
+                    "y": 0.09255897,
+                    "z": -0.01171457
+                },
+                "bottom": {
+                    "x": -2.421439e-08,
+                    "y": 0,
+                    "z": -6.519258e-09
+                },
+                "center": {
+                    "x": -2.421439e-08,
+                    "y": 0.09255897,
+                    "z": -6.519258e-09
+                },
+                "front": {
+                    "x": -2.421439e-08,
+                    "y": 0.09255897,
+                    "z": 0.01171455
+                },
+                "left": {
+                    "x": -0.007278011,
+                    "y": 0.09255897,
+                    "z": -6.519258e-09
+                },
+                "right": {
+                    "x": 0.007277963,
+                    "y": 0.09255897,
+                    "z": -6.519258e-09
+                },
+                "top": {
+                    "x": -2.421439e-08,
+                    "y": 0.1851179,
+                    "z": -6.519258e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b03_toothbrush",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "fibres_2",
+                        "fibres_1"
+                    ],
+                    "name": "B03_ToothBrush"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_toothbrush",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_toothbrush",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_toothbrush"
+            },
+            "wcategory": "toothbrush",
+            "wnid": "n04453156"
+        },
+        "b04_ramlosa_bottle_2015_vray": {
+            "asset_bundle_sizes": {
+                "Darwin": 11229960,
+                "Linux": 11565356,
+                "Windows": 10981604
+            },
+            "bounds": {
+                "back": {
+                    "x": 7.450581e-09,
+                    "y": 0.1114076,
+                    "z": -0.03169743
+                },
+                "bottom": {
+                    "x": 7.450581e-09,
+                    "y": 0,
+                    "z": -3.72529e-09
+                },
+                "center": {
+                    "x": 7.450581e-09,
+                    "y": 0.1114076,
+                    "z": -3.72529e-09
+                },
+                "front": {
+                    "x": 7.450581e-09,
+                    "y": 0.1114076,
+                    "z": 0.03169742
+                },
+                "left": {
+                    "x": -0.03161654,
+                    "y": 0.1114076,
+                    "z": -3.72529e-09
+                },
+                "right": {
+                    "x": 0.03161656,
+                    "y": 0.1114076,
+                    "z": -3.72529e-09
+                },
+                "top": {
+                    "x": 7.450581e-09,
+                    "y": 0.2228153,
+                    "z": -3.72529e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_ramlosa_bottle_2015_vray",
+            "physics_quality": 0.6448140002461159,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "bottle_cap"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "bottle_plastic"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "bottle_water"
+                },
+                {
+                    "materials": [
+                        "Material_29"
+                    ],
+                    "name": "label_back"
+                },
+                {
+                    "materials": [
+                        "Material_27"
+                    ],
+                    "name": "label_front"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_ramlosa_bottle_2015_vray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_ramlosa_bottle_2015_vray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_ramlosa_bottle_2015_vray"
+            },
+            "wcategory": "bottle",
+            "wnid": "n02876657"
+        },
+        "b04_whiskeybottle": {
+            "asset_bundle_sizes": {
+                "Darwin": 613891,
+                "Linux": 867610,
+                "Windows": 399131
+            },
+            "bounds": {
+                "back": {
+                    "x": 2.607703e-08,
+                    "y": 0.1423067,
+                    "z": -0.05980464
+                },
+                "bottom": {
+                    "x": 2.607703e-08,
+                    "y": 0,
+                    "z": 0.0003194325
+                },
+                "center": {
+                    "x": 2.607703e-08,
+                    "y": 0.1423067,
+                    "z": 0.0003194325
+                },
+                "front": {
+                    "x": 2.607703e-08,
+                    "y": 0.1423067,
+                    "z": 0.0604435
+                },
+                "left": {
+                    "x": -0.06012404,
+                    "y": 0.1423067,
+                    "z": 0.0003194325
+                },
+                "right": {
+                    "x": 0.06012409,
+                    "y": 0.1423067,
+                    "z": 0.0003194325
+                },
+                "top": {
+                    "x": 2.607703e-08,
+                    "y": 0.2846134,
+                    "z": 0.0003194325
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_whiskeybottle",
+            "physics_quality": 0.7371186159789849,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "bottle_vertical01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "bottle_vertical02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "bottle_vertical06"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "bottle_vertical08"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_whiskeybottle",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_whiskeybottle",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_whiskeybottle"
+            },
+            "wcategory": "bottle",
+            "wnid": "n02876657"
+        },
+        "b05_calculator": {
+            "asset_bundle_sizes": {
+                "Darwin": 1550201,
+                "Linux": 1713448,
+                "Windows": 1416082
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.009673617,
+                    "z": -0.04110926
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -3.72529e-09,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.009673617,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.009673617,
+                    "z": 0.04110926
+                },
+                "left": {
+                    "x": -0.03111421,
+                    "y": 0.009673617,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.03111421,
+                    "y": 0.009673617,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.01934724,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 180.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b05_calculator",
+            "physics_quality": 0.9969597351099271,
+            "scale_factor": 0.001,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_32",
+                        "SolidTiles_Opaque",
+                        "Material_37"
+                    ],
+                    "name": "B05_calculator"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b05_calculator",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_calculator",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_calculator"
+            },
+            "wcategory": "calculator",
+            "wnid": "n02938886"
+        },
+        "b05_executive_pen": {
+            "asset_bundle_sizes": {
+                "Darwin": 30125284,
+                "Linux": 30281088,
+                "Windows": 29985041
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.006654229,
+                    "z": -0.00580395
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -3.72529e-09
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.006654229,
+                    "z": -3.72529e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.006654229,
+                    "z": 0.005803942
+                },
+                "left": {
+                    "x": -0.04432561,
+                    "y": 0.006654229,
+                    "z": -3.72529e-09
+                },
+                "right": {
+                    "x": 0.04432561,
+                    "y": 0.006654229,
+                    "z": -3.72529e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.01330846,
+                    "z": -3.72529e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b05_executive_pen",
+            "physics_quality": 0.8504348652585015,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Cap"
+                    ],
+                    "name": "Cap"
+                },
+                {
+                    "materials": [
+                        "Wood"
+                    ],
+                    "name": "Cap Wood"
+                },
+                {
+                    "materials": [
+                        "Clip"
+                    ],
+                    "name": "Clip"
+                },
+                {
+                    "materials": [
+                        "Ink"
+                    ],
+                    "name": "Ink"
+                },
+                {
+                    "materials": [
+                        "Wood"
+                    ],
+                    "name": "Main Assembly Wood"
+                },
+                {
+                    "materials": [
+                        "Main_Pen_Assembly"
+                    ],
+                    "name": "Main Pen Assembly"
+                },
+                {
+                    "materials": [
+                        "Rear_Main_Assemley_Cap"
+                    ],
+                    "name": "Rear Main Assemley Cap"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b05_executive_pen",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_executive_pen",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_executive_pen"
+            },
+            "wcategory": "pen",
+            "wnid": "n03906997"
+        },
+        "b05_tag_heuer_max2014": {
+            "asset_bundle_sizes": {
+                "Darwin": 23744016,
+                "Linux": 24014817,
+                "Windows": 23526934
+            },
+            "bounds": {
+                "back": {
+                    "x": 3.72529e-09,
+                    "y": 0.03930724,
+                    "z": -0.03433352
+                },
+                "bottom": {
+                    "x": 3.72529e-09,
+                    "y": 0,
+                    "z": 3.72529e-09
+                },
+                "center": {
+                    "x": 3.72529e-09,
+                    "y": 0.03930724,
+                    "z": 3.72529e-09
+                },
+                "front": {
+                    "x": 3.72529e-09,
+                    "y": 0.03930724,
+                    "z": 0.03433353
+                },
+                "left": {
+                    "x": -0.02285224,
+                    "y": 0.03930724,
+                    "z": 3.72529e-09
+                },
+                "right": {
+                    "x": 0.02285224,
+                    "y": 0.03930724,
+                    "z": 3.72529e-09
+                },
+                "top": {
+                    "x": 3.72529e-09,
+                    "y": 0.07861449,
+                    "z": 3.72529e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b05_tag_heuer_max2014",
+            "physics_quality": 0.9439172192999351,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "arrow axis"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "arrow hour"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "arrow min"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "arrow sec"
+                },
+                {
+                    "materials": [
+                        "Material_7"
+                    ],
+                    "name": "back cover"
+                },
+                {
+                    "materials": [
+                        "Material_6"
+                    ],
+                    "name": "body1"
+                },
+                {
+                    "materials": [
+                        "Material_6"
+                    ],
+                    "name": "body2"
+                },
+                {
+                    "materials": [
+                        "Material_6"
+                    ],
+                    "name": "buttons"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "carrera"
+                },
+                {
+                    "materials": [
+                        "Material_4"
+                    ],
+                    "name": "clockface1"
+                },
+                {
+                    "materials": [
+                        "Material_1"
+                    ],
+                    "name": "clockface2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder_008_Cylinder_007"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder_009_Cylinder_008"
+                },
+                {
+                    "materials": [
+                        "Material_2"
+                    ],
+                    "name": "date1"
+                },
+                {
+                    "materials": [
+                        "Material_2"
+                    ],
+                    "name": "date2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "glass"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link01"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link02"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link03"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link04"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link05"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link06"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link07"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link08"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link09"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link10"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link11"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link12"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link13"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link14"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link15"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link16"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link17"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link18"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link19"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link20"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link21"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link22"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link23"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link24"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link25"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link26"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link27"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link28"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link29"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link30"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link31"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link32"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link33"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link34"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link35"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link36"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link37"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link38"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link39"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link40"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link41"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link42"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link43"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link44"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link45"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link46"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link47"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link48"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link49"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link50"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link51"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link52"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link53"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link54"
+                },
+                {
+                    "materials": [
+                        "Material_5"
+                    ],
+                    "name": "link55"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "logo"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "numbers"
+                },
+                {
+                    "materials": [
+                        "Material_6"
+                    ],
+                    "name": "roller"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "small arrow1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "small arrow2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "small arrow3"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b05_tag_heuer_max2014",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_tag_heuer_max2014",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_tag_heuer_max2014"
+            },
+            "wcategory": "watch",
+            "wnid": "n04555897"
         },
         "bag_14": {
             "asset_bundle_sizes": {
@@ -7686,6 +8733,77 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "camera_box": {
+            "asset_bundle_sizes": {
+                "Darwin": 523409,
+                "Linux": 680816,
+                "Windows": 381131
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.001569629,
+                    "y": 0.04579663,
+                    "z": -0.1448154
+                },
+                "bottom": {
+                    "x": -0.001569629,
+                    "y": 0,
+                    "z": 0.007777616
+                },
+                "center": {
+                    "x": -0.001569629,
+                    "y": 0.04579663,
+                    "z": 0.007777616
+                },
+                "front": {
+                    "x": -0.001569629,
+                    "y": 0.04579663,
+                    "z": 0.1603706
+                },
+                "left": {
+                    "x": -0.1480785,
+                    "y": 0.04579663,
+                    "z": 0.007777616
+                },
+                "right": {
+                    "x": 0.1449393,
+                    "y": 0.04579663,
+                    "z": 0.007777616
+                },
+                "top": {
+                    "x": -0.001569629,
+                    "y": 0.09159327,
+                    "z": 0.007777616
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "camera_box",
+            "physics_quality": 0.618832619502752,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_#13"
+                    ],
+                    "name": "foto"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/camera_box",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/camera_box",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/camera_box"
+            },
+            "wcategory": "box",
+            "wnid": "n02883344"
+        },
         "candle": {
             "asset_bundle_sizes": {
                 "Darwin": 539630,
@@ -7755,6 +8873,77 @@
                 "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/candle",
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/candle",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/candle"
+            },
+            "wcategory": "candle",
+            "wnid": "n02948072"
+        },
+        "candlestick1": {
+            "asset_bundle_sizes": {
+                "Darwin": 669488,
+                "Linux": 828293,
+                "Windows": 527279
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.490116e-08,
+                    "y": 0.126119,
+                    "z": -0.03924389
+                },
+                "bottom": {
+                    "x": -1.490116e-08,
+                    "y": 0,
+                    "z": -2.980232e-08
+                },
+                "center": {
+                    "x": -1.490116e-08,
+                    "y": 0.126119,
+                    "z": -2.980232e-08
+                },
+                "front": {
+                    "x": -1.490116e-08,
+                    "y": 0.126119,
+                    "z": 0.03924383
+                },
+                "left": {
+                    "x": -0.03924618,
+                    "y": 0.126119,
+                    "z": -2.980232e-08
+                },
+                "right": {
+                    "x": 0.03924615,
+                    "y": 0.126119,
+                    "z": -2.980232e-08
+                },
+                "top": {
+                    "x": -1.490116e-08,
+                    "y": 0.2522379,
+                    "z": -2.980232e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "candlestick1",
+            "physics_quality": 0.6694849881646906,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "19_-_Default"
+                    ],
+                    "name": "candlestick"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/candlestick1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/candlestick1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/candlestick1"
             },
             "wcategory": "candle",
             "wnid": "n02948072"
@@ -8878,6 +10067,77 @@
             },
             "wcategory": "coffee table, cocktail table",
             "wnid": "n03063968"
+        },
+        "coffeemug": {
+            "asset_bundle_sizes": {
+                "Darwin": 24101436,
+                "Linux": 24329413,
+                "Windows": 23998142
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.490116e-08,
+                    "y": 0.06213474,
+                    "z": -0.04680983
+                },
+                "bottom": {
+                    "x": -1.490116e-08,
+                    "y": 0,
+                    "z": -7.450581e-09
+                },
+                "center": {
+                    "x": -1.490116e-08,
+                    "y": 0.06213474,
+                    "z": -7.450581e-09
+                },
+                "front": {
+                    "x": -1.490116e-08,
+                    "y": 0.06213474,
+                    "z": 0.04680981
+                },
+                "left": {
+                    "x": -0.06810167,
+                    "y": 0.06213474,
+                    "z": -7.450581e-09
+                },
+                "right": {
+                    "x": 0.06810164,
+                    "y": 0.06213474,
+                    "z": -7.450581e-09
+                },
+                "top": {
+                    "x": -1.490116e-08,
+                    "y": 0.1242695,
+                    "z": -7.450581e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "coffeemug",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "CoffeeMug"
+                    ],
+                    "name": "CoffeeMug"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/coffeemug",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffeemug",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffeemug"
+            },
+            "wcategory": "cup",
+            "wnid": "n03147509"
         },
         "cork_plastic": {
             "asset_bundle_sizes": {
@@ -11064,6 +12324,77 @@
             "wcategory": "table",
             "wnid": "n04379243"
         },
+        "golf": {
+            "asset_bundle_sizes": {
+                "Darwin": 714017,
+                "Linux": 876119,
+                "Windows": 581008
+            },
+            "bounds": {
+                "back": {
+                    "x": -3.72529e-09,
+                    "y": 0.01955602,
+                    "z": -0.01954324
+                },
+                "bottom": {
+                    "x": -3.72529e-09,
+                    "y": 0,
+                    "z": -1.862645e-09
+                },
+                "center": {
+                    "x": -3.72529e-09,
+                    "y": 0.01955602,
+                    "z": -1.862645e-09
+                },
+                "front": {
+                    "x": -3.72529e-09,
+                    "y": 0.01955602,
+                    "z": 0.01954323
+                },
+                "left": {
+                    "x": -0.01953973,
+                    "y": 0.01955602,
+                    "z": -1.862645e-09
+                },
+                "right": {
+                    "x": 0.01953972,
+                    "y": 0.01955602,
+                    "z": -1.862645e-09
+                },
+                "top": {
+                    "x": -3.72529e-09,
+                    "y": 0.03911203,
+                    "z": -1.862645e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "golf",
+            "physics_quality": -1,
+            "scale_factor": 1.3,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Golf"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/golf",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/golf",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/golf"
+            },
+            "wcategory": "golf ball",
+            "wnid": "n03445777"
+        },
         "green_bag": {
             "asset_bundle_sizes": {
                 "Darwin": 407498,
@@ -11673,6 +13004,77 @@
             },
             "wcategory": "printer",
             "wnid": "n04004767"
+        },
+        "iron_box": {
+            "asset_bundle_sizes": {
+                "Darwin": 471163,
+                "Linux": 628584,
+                "Windows": 328901
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.002360463,
+                    "y": 0.1102043,
+                    "z": -0.2935017
+                },
+                "bottom": {
+                    "x": 0.002360463,
+                    "y": 0,
+                    "z": 0.009795487
+                },
+                "center": {
+                    "x": 0.002360463,
+                    "y": 0.1102043,
+                    "z": 0.009795487
+                },
+                "front": {
+                    "x": 0.002360463,
+                    "y": 0.1102043,
+                    "z": 0.3130926
+                },
+                "left": {
+                    "x": -0.3009367,
+                    "y": 0.1102043,
+                    "z": 0.009795487
+                },
+                "right": {
+                    "x": 0.3056576,
+                    "y": 0.1102043,
+                    "z": 0.009795487
+                },
+                "top": {
+                    "x": 0.002360463,
+                    "y": 0.2204086,
+                    "z": 0.009795487
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "iron_box",
+            "physics_quality": 0.9122600111519611,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_#9"
+                    ],
+                    "name": "ir"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/iron_box",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/iron_box",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/iron_box"
+            },
+            "wcategory": "box",
+            "wnid": "n02883344"
         },
         "its_about_time_painting": {
             "asset_bundle_sizes": {
@@ -14963,6 +16365,119 @@
             },
             "wcategory": "sofa",
             "wnid": "n04256520"
+        },
+        "moet_chandon_bottle_vray": {
+            "asset_bundle_sizes": {
+                "Darwin": 16047269,
+                "Linux": 16215509,
+                "Windows": 15912186
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.117587e-08,
+                    "y": 0.1493767,
+                    "z": -0.04054906
+                },
+                "bottom": {
+                    "x": 1.117587e-08,
+                    "y": 0,
+                    "z": -3.72529e-09
+                },
+                "center": {
+                    "x": 1.117587e-08,
+                    "y": 0.1493767,
+                    "z": -3.72529e-09
+                },
+                "front": {
+                    "x": 1.117587e-08,
+                    "y": 0.1493767,
+                    "z": 0.04054905
+                },
+                "left": {
+                    "x": -0.04155351,
+                    "y": 0.1493767,
+                    "z": -3.72529e-09
+                },
+                "right": {
+                    "x": 0.04155353,
+                    "y": 0.1493767,
+                    "z": -3.72529e-09
+                },
+                "top": {
+                    "x": 1.117587e-08,
+                    "y": 0.2987533,
+                    "z": -3.72529e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "moet_chandon_bottle_vray",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Moet_big_label"
+                    ],
+                    "name": "moet big label"
+                },
+                {
+                    "materials": [
+                        "heineken_bottle_glass_no_drops"
+                    ],
+                    "name": "moet bottle"
+                },
+                {
+                    "materials": [
+                        "moet_cork"
+                    ],
+                    "name": "moet cork"
+                },
+                {
+                    "materials": [
+                        "moet_corkcap"
+                    ],
+                    "name": "moet corkcap"
+                },
+                {
+                    "materials": [
+                        "moet_goldenpaper"
+                    ],
+                    "name": "moet goldenpaper"
+                },
+                {
+                    "materials": [
+                        "moet_looplabel"
+                    ],
+                    "name": "moet looplabel"
+                },
+                {
+                    "materials": [
+                        "moet_redlabel"
+                    ],
+                    "name": "moet redlabel"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "moet wire"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/moet_chandon_bottle_vray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/moet_chandon_bottle_vray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/moet_chandon_bottle_vray"
+            },
+            "wcategory": "bottle",
+            "wnid": "n02876657"
         },
         "molteni_turner_sofa": {
             "asset_bundle_sizes": {

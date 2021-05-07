@@ -15,6 +15,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `send_collisions`    | Fixed: collision data can be sent from an object after it's destroyed, resulting in warnings in the player log. |
 | `set_floorplan_roof` | Fixed: The roof can be re-enabled after being disabled.      |
 
+### Model Library
+
+- Added to `models_core.json`: camera_box, iron_box, coffeemug, b04_ramlosa_bottle_2015_vray, moet_chandon_bottle_vray, b04_whiskeybottle, 102_pepsi_can_12_fl_oz_vray, candlestick1, golf, b03_toothbrush, b05_calculator, b05_tag_heuer_max2014, b05_executive_pen
+
 ## v1.8.10
 
 ### Command API

@@ -19,6 +19,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Added to `models_core.json`: camera_box, iron_box, coffeemug, b04_ramlosa_bottle_2015_vray, moet_chandon_bottle_vray, b04_whiskeybottle, 102_pepsi_can_12_fl_oz_vray, candlestick1, golf, b03_toothbrush, b05_calculator, b05_tag_heuer_max2014, b05_executive_pen
 
+### `tdw` module
+
+- Added: `TDWUtils.get_bounds_extents()` Returns the width, length, height of an object's bounds.
+
 ## v1.8.10
 
 ### Command API

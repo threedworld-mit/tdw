@@ -731,6 +731,19 @@ class TDWUtils:
                 "center": np.array(bounds.get_center(index))}
 
     @staticmethod
+    def get_bounds_extents(bounds: Bounds, index: int) -> np.array:
+        """
+        :param bounds: Bounds output data.
+        :param index: The index in `bounds` of the target object.
+
+        :return: The width (left to right), length (front to back), and height (top to bottom) of the bounds as a numpy array.
+        """
+
+        return np.array([np.linalg.norm(np.array(bounds.get_left(index)) - np.array(bounds.get_right(index))),
+                         np.linalg.norm(np.array(bounds.get_front(index)) - np.array(bounds.get_back(index))),
+                         np.linalg.norm(np.array(bounds.get_top(index)) - np.array(bounds.get_bottom(index)))])
+
+    @staticmethod
     def get_closest_position_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array:
         """
         :param origin: The origin from which the distance is calculated.

@@ -1009,3 +1009,23 @@ class TriggerCollision(OutputData):
             return "stay"
         else:
             return "exit"
+
+
+class LocalTransforms(OutputData):
+    def get_data(self) -> Trans.Transforms:
+        return Trans.Transforms.GetRootAsTransforms(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.ObjectsLength()
+
+    def get_id(self, index: int) -> int:
+        return self.data.Objects(index).Id()
+
+    def get_position(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Objects(index).Position)
+
+    def get_local_eulers(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Objects(index).Forward)
+
+    def get_rotation(self, index: int) -> Tuple[float, float, float, float]:
+        return OutputData._get_quaternion(self.data.Objects(index).Rotation)

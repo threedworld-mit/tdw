@@ -495,6 +495,20 @@ _Returns:_  A dictionary of the bounds. Key = the name of the position. Value = 
 
 ***
 
+#### `get_bounds_extents(bounds: Bounds, index: int) -> np.array`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| bounds | Bounds output data. |
+| index | The index in `bounds` of the target object. |
+
+_Returns:_  The width (left to right), length (front to back), and height (top to bottom) of the bounds as a numpy array.
+
+***
+
 #### `get_closest_position_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array`
 
 _This is a static function._

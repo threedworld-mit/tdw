@@ -4,6 +4,25 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.12
+
+### Command API
+
+### New Commands
+
+| Command                          | Description                               |
+| -------------------------------- | ----------------------------------------- |
+| `make_robot_nav_mesh_obstacle`   | Make a robot a NavMesh obstacle.          |
+| `remove_nav_mesh_obstacle`       | Remove a NavMesh obstacle from an object. |
+| `remove_robot_nav_mesh_obstacle` | Remove a NavMesh obstacle from a robot.   |
+
+#### Modified Commands
+
+| Command                  | Modification                                                 |
+| ------------------------ | ------------------------------------------------------------ |
+| `bake_nav_mesh`          | Added optional parameter `ignore`: Ignore objects or robots in this list.<br>Fixed: Unhandled exception if collider meshes are read-only; read-only meshes are now ignored. |
+| `make_nav_mesh_obstacle` | Added optional parameter `shape`: The shape of the carver.   |
+
 ## v1.8.11
 
 ### Command API

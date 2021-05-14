@@ -41,6 +41,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### `tdw` module
 
 - Added: `TDWUtils.get_bounds_extents()` Returns the width, length, height of an object's bounds.
+- Updated many audio values in `objects.csv`.
 
 ## v1.8.10
 

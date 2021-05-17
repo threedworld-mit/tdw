@@ -71,6 +71,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [ImageSensors](#ImageSensors) | The names of each ImageSensor component attached to an avatar, and whether they are enabled. | `imse` |
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
 | [Keyboard](#Keyboard) | Keyboard input. Note that in order to receive keyboard input, the build must be the focused window and running on the same computer as the keyboard. | `keyb` |
+| [LocalTransforms](#LocalTransforms) | Data about the Transform component of objects (position and rotation) relative to its parent objects. | `ltra` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Magnebot](#Magnebot) | Data for a Magnebot. | `magn` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
@@ -449,6 +450,23 @@ Keyboard input. Note that in order to receive keyboard input, the build must be 
 | `get_held(index)` | Keys that are being pressed down. | `str` |
 | `get_num_released()` | The number of released. | `int` |
 | `get_released(index)` | Keys that were released between the previous frame and this frame. | `str` |
+
+## LocalTransforms
+
+`l = LocalTransforms(byte_array)`
+
+**Identifier:** `ltra`
+
+Data about the Transform component of objects (position and rotation) relative to its parent objects.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The unique ID of this object. | `int` |
+| `get_position(index)` | The local bottom-center position of the object. | `Tuple[float, float, float]` |
+| `get_forward(index)` | The forward directional vector of the object. | `Tuple[float, float, float]` |
+| `get_eulers(index)` | The local rotation of the object expressed in Euler angles. | `Tuple[float, float, float]` |
+| `get_rotation(index)` | The local rotation of the object. | `Tuple[float, float, float, float]` |
 
 ## LogMessage
 

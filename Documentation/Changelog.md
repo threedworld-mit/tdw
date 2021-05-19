@@ -4,6 +4,14 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.13
+
+### Build
+
+- Fixed: Unhandled PhysX errors after sending `set_physic_material` or `set_robot_joint_physic_material` many times because there are more than 64k physic materials in memory.
+- Fixed: Potential memory leak when sending `destroy_all_objects` due to object assets not being cleaned up correctly.
+- Fixed: Potential memory leak when loading a new scene because mesh data is still in memory.
+
 ## v1.8.12
 
 ### Command API

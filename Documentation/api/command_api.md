@@ -240,6 +240,7 @@
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
+| [`remove_nav_mesh_obstacle`](#remove_nav_mesh_obstacle) | Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle).  |
 | [`rotate_object_by`](#rotate_object_by) | Rotate an object by a given angle around a given axis. |
 | [`rotate_object_to`](#rotate_object_to) | Set the rotation quaternion of the object. |
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
@@ -421,7 +422,9 @@
 | Command | Description |
 | --- | --- |
 | [`destroy_robot`](#destroy_robot) | Destroy a robot in the scene. |
+| [`make_robot_nav_mesh_obstacle`](#make_robot_nav_mesh_obstacle) | Make a specific robot a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties.  |
 | [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
+| [`remove_robot_nav_mesh_obstacle`](#remove_robot_nav_mesh_obstacle) | Remove a NavMesh obstacle from a robot (see make_robot_nav_mesh_obstacle).  |
 | [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
 | [`teleport_robot`](#teleport_robot) | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
 
@@ -3160,13 +3163,14 @@ Bake the NavMesh, enabling Unity pathfinding. This must be sent before any other
 ```
 
 ```python
-{"$type": "bake_nav_mesh", "voxel_size": 0.1666667, "carve_type": "all"}
+{"$type": "bake_nav_mesh", "voxel_size": 0.1666667, "carve_type": "all", "ignore": []}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"voxel_size"` | float | The voxel size. A lower value means higher fidelity and a longer bake. | 0.1666667 |
 | `"carve_type"` | CarveType | How each object in the scene will "carve" holes in the NavMesh. | "all" |
+| `"ignore"` | int [] | A list of object or robot IDs that will be ignored when baking the NavMesh. | [] |
 
 #### CarveType
 
@@ -3277,14 +3281,24 @@ Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, 
 ```
 
 ```python
-{"$type": "make_nav_mesh_obstacle", "id": 1, "carve_type": "all", "scale": 1}
+{"$type": "make_nav_mesh_obstacle", "id": 1, "carve_type": "all", "scale": 1, "shape": "box"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"carve_type"` | CarveType | How the object will "carve" holes in the NavMesh. | "all" |
 | `"scale"` | float | The scale of the obstacle relative to the size of the object. Set this lower to account for the additional space that the object will carve. | 1 |
+| `"shape"` | CarveShape | The shape of the carver. | "box" |
 | `"id"` | int | The unique object ID. | |
+
+#### CarveShape
+
+The shape of a NavMesh carver.
+
+| Value | Description |
+| --- | --- |
+| `"box"` |  |
+| `"capsule"` |  |
 
 #### CarveType
 
@@ -3326,6 +3340,22 @@ Set the object's rotation such that its forward directional vector points toward
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | The target position that the object will look at. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`remove_nav_mesh_obstacle`**
+
+Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle). 
+
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+
+```python
+{"$type": "remove_nav_mesh_obstacle", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -5176,6 +5206,48 @@ Destroy a robot in the scene.
 
 ***
 
+## **`make_robot_nav_mesh_obstacle`**
+
+Make a specific robot a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. 
+
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+
+```python
+{"$type": "make_robot_nav_mesh_obstacle"}
+```
+
+```python
+{"$type": "make_robot_nav_mesh_obstacle", "carve_type": "all", "scale": 1, "shape": "box", "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"carve_type"` | CarveType | How the robot will "carve" holes in the NavMesh. | "all" |
+| `"scale"` | float | The scale of the obstacle relative to the size of the robot. Set this lower to account for the additional space that the robot will carve. | 1 |
+| `"shape"` | CarveShape | The shape of the carver. | "box" |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+#### CarveShape
+
+The shape of a NavMesh carver.
+
+| Value | Description |
+| --- | --- |
+| `"box"` |  |
+| `"capsule"` |  |
+
+#### CarveType
+
+How objects in the scene will "carve" the NavMesh.
+
+| Value | Description |
+| --- | --- |
+| `"all"` | Each object will carve a large hole in the NavMesh. If an object moves, the hole will move too. This is the most performance-intensive option. |
+| `"stationary"` | Each object will initially carve a large hole in the NavMesh. If an objects moves, it won't "re-carve" the NavMesh. A small hole will remain in its original position. |
+| `"none"` | Each object will carve small holes in the NavMesh. If an objects moves, it won't "re-carve" the NavMesh. A small hole will remain in its original position. |
+
+***
+
 ## **`parent_avatar_to_robot`**
 
 Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot.
@@ -5194,6 +5266,26 @@ Parent an avatar to a robot. The avatar's position and rotation will always be r
 | `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
 | `"position"` | Vector3 | The position of the avatar relative to the robot. | |
 | `"body_part_id"` | int | Parent the avatar to a body part of this robot with this ID. Send send_static_robots to get the IDs and names of this robot's body parts. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`remove_robot_nav_mesh_obstacle`**
+
+Remove a NavMesh obstacle from a robot (see make_robot_nav_mesh_obstacle). 
+
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+
+```python
+{"$type": "remove_robot_nav_mesh_obstacle"}
+```
+
+```python
+{"$type": "remove_robot_nav_mesh_obstacle", "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
 ***

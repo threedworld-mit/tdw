@@ -49,7 +49,7 @@ class ObjectInfo:
         :param library: The path to the model library (see ModelLibrarian documentation).
         :param bounciness: The bounciness value for a Unity physics material.
         :param resonance: The resonance value for the object.
-        :param size: Integer representing the size "bucket" this obejct belongs to (0-6).
+        :param size: Integer representing the size "bucket" this object belongs to (0-5).
         """
 
         self.amp = amp
@@ -346,8 +346,7 @@ class PyImpact:
         self.material_data: Dict[str, dict] = {}
         material_list = ["ceramic", "wood_hard", "wood_medium", "wood_soft", "metal", "glass", "paper", "cardboard", "leather", "fabric", "plastic_hard", "plastic_soft_foam", "rubber", "stone"]
         for mat in material_list:
-            # Just do 0-4 for now, for testing
-            for i in range(5):
+            for i in range(6):
                 # Load the JSON data.
                 mat_name = mat + "_" + str(i)
                 path = mat_name + "_mm"

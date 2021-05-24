@@ -6565,7 +6565,7 @@ Send Transform (position and rotation) data of objects in the scene relative to 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`LocalTransforms`](output_data.md#LocalTransforms)</font>
-- <font style="color:red">**Rarely used**: This command is meant for several very specific purposes. It's unlikely that this is the command you want to use.</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
 
     - <font style="color:red">**Use this command instead:** `send_transforms`</font>
 

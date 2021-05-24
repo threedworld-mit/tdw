@@ -4,6 +4,26 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.14
+
+### Command API
+
+### New Commands
+
+| Command                 | Description                                                  |
+| ----------------------- | ------------------------------------------------------------ |
+| `send_local_transforms` | Send Transform (position and rotation) data of objects in the scene relative to their parent object. |
+
+### New Output Data
+
+| Output Data       | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `LocalTransforms` | Data about the Transform component of objects (position and rotation) relative to its parent objects. |
+
+### `tdw` module
+
+- Added: `TDWUtils.euler_angles_to_rpy(euler_angles)` Convert Euler angles to ROS RPY values.
+
 ## v1.8.13
 
 ### Build

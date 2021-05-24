@@ -829,6 +829,19 @@ class TDWUtils:
 
         return np.array([qx, position[1], qy])
 
+    @staticmethod
+    def euler_angles_to_rpy(euler_angles: np.array) -> np.array:
+        """
+        Convert Euler angles to ROS RPY angles.
+
+        :param euler_angles: A numpy array: `[x, y, z]` Euler angles in degrees.
+
+        :return: A numpy array: `[r, p, y]` angles in radians.
+        """
+
+        # Source: https://github.com/Unity-Technologies/URDF-Importer/blob/c41208565419b04907496baa93ad1b675d41dc20/com.unity.robotics.urdf-importer/Runtime/Extensions/TransformExtensions.cs#L85-L92
+        return np.radians(np.array([-euler_angles[2], euler_angles[0], -euler_angles[1]]))
+
 
 class AudioUtils:
     """

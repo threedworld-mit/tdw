@@ -37,6 +37,7 @@ from tdw.FBOutput import Keyboard as Key
 from tdw.FBOutput import Magnebot as Mag
 from tdw.FBOutput import ScreenPosition as Screen
 from tdw.FBOutput import TriggerCollision as Trigger
+from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
 import numpy as np
 from typing import Tuple, Optional
@@ -1009,3 +1010,26 @@ class TriggerCollision(OutputData):
             return "stay"
         else:
             return "exit"
+
+
+class LocalTransforms(OutputData):
+    def get_data(self) -> LocalTran.LocalTransforms:
+        return LocalTran.LocalTransforms.GetRootAsLocalTransforms(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.ObjectsLength()
+
+    def get_id(self, index: int) -> int:
+        return self.data.Objects(index).Id()
+
+    def get_position(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Objects(index).Position)
+
+    def get_forward(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Objects(index).Forward)
+
+    def get_eulers(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Objects(index).Eulers)
+
+    def get_rotation(self, index: int) -> Tuple[float, float, float, float]:
+        return OutputData._get_quaternion(self.data.Objects(index).Rotation)

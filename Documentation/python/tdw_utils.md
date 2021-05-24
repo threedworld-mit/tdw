@@ -569,6 +569,20 @@ _Returns:_  The rotated position.
 
 ***
 
+#### `euler_angles_to_rpy(euler_angles: np.array) -> np.array`
+
+_This is a static function._
+
+Convert Euler angles to ROS RPY angles.
+
+| Parameter | Description |
+| --- | --- |
+| euler_angles | A numpy array: `[x, y, z]` Euler angles in degrees. |
+
+_Returns:_  A numpy array: `[r, p, y]` angles in radians.
+
+***
+
 ## `AudioUtils`
 
 `from tdw.tdw_utils import AudioUtils`

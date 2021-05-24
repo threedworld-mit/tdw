@@ -521,6 +521,7 @@
 | --- | --- |
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_bounds`](#send_bounds) | Send rotated bounds data of objects in the scene.  |
+| [`send_local_transforms`](#send_local_transforms) | Send Transform (position and rotation) data of objects in the scene relative to their parent object.  |
 | [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, mass, etc.) data of objects in the scene.  |
 | [`send_segmentation_colors`](#send_segmentation_colors) | Send segmentation color data for objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
@@ -6538,6 +6539,42 @@ Send rotated bounds data of objects in the scene.
 
 ```python
 {"$type": "send_bounds", "ids": [1, 2, 3], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_local_transforms`**
+
+Send Transform (position and rotation) data of objects in the scene relative to their parent object. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`LocalTransforms`](output_data.md#LocalTransforms)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_transforms`</font>
+
+```python
+{"$type": "send_local_transforms", "ids": [1, 2, 3]}
+```
+
+```python
+{"$type": "send_local_transforms", "ids": [1, 2, 3], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

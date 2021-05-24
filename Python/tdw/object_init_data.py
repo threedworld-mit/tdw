@@ -91,6 +91,7 @@ class TransformInitData:
 
         return TransformInitData.LIBRARIES[self.library].get_record(name=self.name)
 
+
 class RigidbodyInitData(TransformInitData):
     """
     A subclass of `TransformInitData`. Includes data and commands to set the mass and physic material of the object.
@@ -141,17 +142,33 @@ class AudioInitData(RigidbodyInitData):
     """
 
     _DYNAMIC_FRICTION = {AudioMaterial.ceramic: 0.47,
-                         AudioMaterial.hardwood: 0.35,
-                         AudioMaterial.wood: 0.35,
-                         AudioMaterial.cardboard: 0.47,
+                         AudioMaterial.wood_hard: 0.35,
+                         AudioMaterial.wood_medium: 0.35,
+                         AudioMaterial.wood_soft: 0.35,
+                         AudioMaterial.cardboard: 0.45,
+                         AudioMaterial.paper: 0.47,
                          AudioMaterial.glass: 0.65,
+                         AudioMaterial.fabric: 0.65,
+                         AudioMaterial.leather: 0.4,
+                         AudioMaterial.stone: 0.7,
+                         AudioMaterial.rubber: 0.75,
+                         AudioMaterial.plastic_hard: 0.3,
+                         AudioMaterial.plastic_soft_foam: 0.45,					 
                          AudioMaterial.metal: 0.43}
     _STATIC_FRICTION = {AudioMaterial.ceramic: 0.47,
-                        AudioMaterial.hardwood: 0.4,
-                        AudioMaterial.wood: 0.4,
-                        AudioMaterial.cardboard: 0.47,
-                        AudioMaterial.glass: 0.65,
-                        AudioMaterial.metal: 0.52}
+                        AudioMaterial.wood_hard: 0.37,
+                        AudioMaterial.wood_medium: 0.37,
+                        AudioMaterial.wood_soft: 0.37,
+                        AudioMaterial.cardboard: 0.48,
+                        AudioMaterial.paper: 0.5,
+                        AudioMaterial.glass: 0.68,
+                        AudioMaterial.fabric: 0.67,
+                        AudioMaterial.leather: 0.43,
+                        AudioMaterial.stone: 0.72,
+                        AudioMaterial.rubber: 0.8,
+                        AudioMaterial.plastic_hard: 0.35,
+                        AudioMaterial.plastic_soft_foam: 0.47,
+                        AudioMaterial.metal: 0.47}
     AUDIO = PyImpact.get_object_info()
 
     def __init__(self, name: str, library: str = "models_core.json", scale_factor: Dict[str, float] = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, audio: ObjectInfo = None):

@@ -840,7 +840,7 @@ class TDWUtils:
         """
 
         # Source: https://github.com/Unity-Technologies/URDF-Importer/blob/c41208565419b04907496baa93ad1b675d41dc20/com.unity.robotics.urdf-importer/Runtime/Extensions/TransformExtensions.cs#L85-L92
-        return np.radians(np.array([euler_angles[2], -euler_angles[0], euler_angles[1]]))
+        return np.radians(np.array([-euler_angles[2], euler_angles[0], -euler_angles[1]]))
 
 
 class AudioUtils:

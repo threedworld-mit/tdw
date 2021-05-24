@@ -207,9 +207,9 @@ class RubeGoldbergDemo(Controller):
                     collision=collisions[0],
                     rigidbodies=rigidbodies,
                     target_id=target_id,
-                    target_mat=self.object_audio_data[target_name].material,
+                    target_mat=self.object_audio_data[target_name].material.name + "_" + str(self.object_audio_data[target_name].size),
                     other_id=other_id,
-                    other_mat=self.object_audio_data[other_name].material,
+                    other_mat=self.object_audio_data[other_name].material.name + "_" + str(self.object_audio_data[other_name].size),
                     target_amp=self.object_audio_data[target_name].amp,
                     other_amp=self.object_audio_data[other_name].amp,
                     resonance=self.object_audio_data[target_name].resonance)

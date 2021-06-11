@@ -58,6 +58,7 @@ class Environment:
 class SingleObject(Controller):
     def __init__(self,
                  port=1071,
+                 launch_build=False,
                  visual_material_swapping=False,
                  new=False,
                  screen_size=256,
@@ -76,6 +77,7 @@ class SingleObject(Controller):
                  library="models_full.json"):
         """
         :param port: The port used to connect to the build.
+        :param launch_build: If True, automatically launch the build. Always set this to False on a Linux server.
         :param visual_material_swapping: If true, set random visual materials per frame.
         :param new: If true, clear the list of models that have already been used.
         :param screen_size: The screen size of the build.
@@ -115,7 +117,7 @@ class SingleObject(Controller):
 
         self.new = new
 
-        super().__init__(port=port)
+        super().__init__(port=port, launch_build=launch_build)
 
         self.model_librarian = ModelLibrarian(library=library)
         self.material_librarian = MaterialLibrarian("materials_high.json")
@@ -773,6 +775,9 @@ if __name__ == "__main__":
     parser.add_argument("--clamp_rotation", action="store_true",
                         help="Clamp rotation to +/- 30 degrees on each axis, rather than totally random.")
     parser.add_argument("--port", type=int, default=1071, help="The port for the controller and build.")
+    parser.add_argument("--launch_build", action="store_true",
+                        help="Automatically launch the build. "
+                             "Don't add this if you're running the script on a Linux server.")
     parser.add_argument("--max_height", type=float, default=1,
                         help="Objects and avatars can be at this percentage of the scene bounds height. Must be between 0 and 1.")
     parser.add_argument("--grayscale", type=float, default=0.5,
@@ -789,6 +794,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     s = SingleObject(port=args.port,
+                     launch_build=args.launch_build,
                      visual_material_swapping=args.materials,
                      new=args.new,
                      screen_size=args.screen_size,

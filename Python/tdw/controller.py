@@ -1,4 +1,8 @@
+import socket
+from threading import Thread
+from time import sleep
 import zmq
+from psutil import pids
 import json
 import os
 from subprocess import Popen
@@ -40,15 +44,35 @@ class Controller(object):
 
         # Launch the build.
         if launch_build:
-            Controller.launch_build(port = port)
-
-
+            Controller.launch_build(port=port)
         context = zmq.Context()
 
         self.socket = context.socket(zmq.REP)
         self.socket.bind('tcp://*:' + str(port))
 
         self.socket.recv()
+
+        # Start a UDP heartbeat.
+        self.udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # Set the socket to non-blocking so that it can time out.
+        self.udp_socket.setblocking(False)
+        # Wait thirty seconds for the UDP socket to timeout.
+        self.udp_socket.settimeout(30)
+        # Bind the socket. This will set a random  free port.
+        self.udp_socket.bind(("", 0))
+
+        # Set error handling to default values (the build will try to quit on errors and exceptions).
+        # Start the UDP heartbeat.
+        self.communicate([{"$type": "set_error_handling"},
+                          {"$type": "start_udp",
+                          "port": int(self.udp_socket.getsockname()[1])}])
+
+        # The ID of this process. This is used in the UDP thread.
+        self.pid: int = os.getpid()
+        # Start the UDP heartbeat in a thread.
+        t = Thread(target=self.udp)
+        t.daemon = True
+        t.start()
 
         self.model_librarian: Optional[ModelLibrarian] = None
         self.scene_librarian: Optional[SceneLibrarian] = None
@@ -303,7 +327,26 @@ class Controller(object):
                 return v.get_tdw_version(), v.get_unity_version()
         if len(resp) == 1:
             raise Exception("Tried receiving version output data but didn't receive anything!")
-        raise Exception(f"Expected output data with ID vers but got: " + Version.get_data_type_id(resp[0]))
+        raise Exception(f"Expected output data with ID version but got: " + Version.get_data_type_id(resp[0]))
+
+    def udp(self) -> None:
+        try:
+            done = False
+            while not done:
+                # If the main thread is down, stop.
+                if self.pid not in pids():
+                    done = True
+                    continue
+                sleep(0.1)
+                # Get the heartbeat.
+                try:
+                    self.udp_socket.recv(4)
+                # Timeout. Stop listening.
+                except socket.timeout:
+                    raise Exception("UDP heartbeat timeout. The build is probably down. "
+                                    "Check the player log: https://docs.unity3d.com/Manual/LogFiles.html")
+        finally:
+            self.udp_socket.close()
 
     @staticmethod
     def get_unique_id() -> int:

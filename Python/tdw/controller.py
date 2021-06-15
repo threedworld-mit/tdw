@@ -9,6 +9,7 @@ from subprocess import Popen
 from typing import List, Union, Optional, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian
+from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH
 from tdw.output_data import OutputData, Version
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
@@ -53,24 +54,34 @@ class Controller(object):
         self.socket.recv()
 
         # Start a UDP heartbeat.
-        self.udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         # Set the socket to non-blocking so that it can time out.
-        self.udp_socket.setblocking(False)
+        udp_socket.setblocking(False)
         # Wait thirty seconds for the UDP socket to timeout.
-        self.udp_socket.settimeout(30)
+        udp_socket.settimeout(30)
         # Bind the socket. This will set a random  free port.
-        self.udp_socket.bind(("", 0))
+        udp_socket.bind(("", 0))
 
         # Set error handling to default values (the build will try to quit on errors and exceptions).
         # Start the UDP heartbeat.
-        self.communicate([{"$type": "set_error_handling"},
-                          {"$type": "start_udp",
-                          "port": int(self.udp_socket.getsockname()[1])}])
+        # Request the version to log it in the player log and remember here if the Editor is being used.
+        resp = self.communicate([{"$type": "set_error_handling"},
+                                 {"$type": "start_udp",
+                                  "port": int(udp_socket.getsockname()[1])},
+                                 {"$type": "send_version"}])
+        is_standalone: bool = False
+        tdw_version: str = ""
+        unity_version: str = ""
+        for r in resp[:-1]:
+            if Version.get_data_type_id(r) == "vers":
+                v = Version(r)
+                tdw_version = v.get_tdw_version()
+                unity_version = v.get_unity_version()
+                is_standalone = v.get_standalone()
+                break
 
-        # The ID of this process. This is used in the UDP thread.
-        self.pid: int = os.getpid()
         # Start the UDP heartbeat in a thread.
-        t = Thread(target=self.udp)
+        t = Thread(target=Controller._udp, args=([udp_socket, is_standalone]))
         t.daemon = True
         t.start()
 
@@ -84,7 +95,7 @@ class Controller(object):
 
         # Compare the version of the tdw module to the build version.
         if check_version and launch_build:
-            self._check_build_version()
+            self._check_build_version(tdw_version=tdw_version, unity_version=unity_version)
 
     def communicate(self, commands: Union[dict, List[dict]]) -> list:
         """
@@ -329,25 +340,6 @@ class Controller(object):
             raise Exception("Tried receiving version output data but didn't receive anything!")
         raise Exception(f"Expected output data with ID version but got: " + Version.get_data_type_id(resp[0]))
 
-    def udp(self) -> None:
-        try:
-            done = False
-            while not done:
-                # If the main thread is down, stop.
-                if self.pid not in pids():
-                    done = True
-                    continue
-                sleep(0.1)
-                # Get the heartbeat.
-                try:
-                    self.udp_socket.recv(4)
-                # Timeout. Stop listening.
-                except socket.timeout:
-                    raise Exception("UDP heartbeat timeout. The build is probably down. "
-                                    "Check the player log: https://docs.unity3d.com/Manual/LogFiles.html")
-        finally:
-            self.udp_socket.close()
-
     @staticmethod
     def get_unique_id() -> int:
         """
@@ -406,21 +398,63 @@ class Controller(object):
         if success:
             Popen([str(Build.BUILD_PATH.resolve()), "-port "+str(port)])
 
-    def _check_build_version(self, version: str = __version__, build_version: str = None) -> None:
+    @staticmethod
+    def _check_build_version(tdw_version: str, unity_version: str,
+                             version: str = __version__, build_version: str = None) -> None:
         """
         Check the version of the build. If there is no build, download it.
         If the build is of the wrong version, recommend an upgrade.
 
-
+        :param tdw_version: The version of the Python TDW module.
+        :param unity_version: The version of the build according to Unity.
         :param version: The version of TDW. You can set this to an arbitrary version for testing purposes.
         :param build_version: If not None, this overrides the expected build version. Only override for debugging.
         """
 
-        tdw_version, unity_version = self.get_version()
         # Override the build version for testing.
         if build_version is not None:
             tdw_version = build_version
         print(f"Build version {tdw_version}\nUnity Engine {unity_version}\nPython tdw module version {version}")
+
+    @staticmethod
+    def _udp(s: socket.socket, is_standalone: bool) -> None:
+        """
+        Do a UDP heartbeat. This is handled in a thread that is launched in the constructor.
+
+        :param s: The UDP listening socket.
+        :param is_standalone: If True, the build is a standalone player. This is used to guess where the log is.
+        """
+
+        # The ID of this process. This is used in the UDP thread.
+        pid: int = os.getpid()
+        try:
+            done = False
+            while not done:
+                # If the main thread is down, stop.
+                if pid not in pids():
+                    done = True
+                    continue
+                sleep(0.1)
+                # Get the heartbeat.
+                try:
+                    s.recv(4)
+                # Timeout. Stop listening.
+                except socket.timeout:
+                    print("UDP heartbeat timeout. The build is probably down. Check the Player log for more info.")
+                    if is_standalone:
+                        log_path = PLAYER_LOG_PATH
+                    else:
+                        log_path = EDITOR_LOG_PATH
+                    print(f"If the build is on the same machine as this controller, the Player log path is probably "
+                          f"{str(log_path.resolve())}")
+                    print(f"If the build is on a remote Linux server, the Player log path is probably"
+                          f" ~/.config/unity3d/MIT/TDW/Player.log (where ~ is your home directory).")
+                    done = True
+        finally:
+            # Close the socket.
+            s.close()
+            # Kill the controller process.
+            os.kill(pid, 9)
 
     @staticmethod
     def _check_pypi_version(v_installed_override: str = None, v_pypi_override: str = None) -> None:

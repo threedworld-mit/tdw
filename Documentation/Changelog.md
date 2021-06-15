@@ -4,6 +4,35 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.15
+
+### Command API
+
+#### New Commands
+
+| Command              | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `set_error_handling` | Set whether TDW will quit when it logs different types of messages. |
+| `start_udp`          | Start a UDP heartbeat. The heartbeat will continue until the build process is killed. This command is always sent by the controller as soon as it receives an initial message from the build. In nearly all cases, you shouldn't send this command again while TDW is running. If you do send this command again, it will override the previous UDP heartbeat. |
+
+### `tdw` module
+
+#### `Controller`
+
+- The controller will always send `[set_error_handling, start_udp, send_version]` as an initial message to the build.
+- (Backend) Added `Controller._udp()` which is automatically called after the build launches. This is handled in a separate thread and it listens to the UDP heartbeat signal from the build.
+- (Backend) `Controller._check_build_version()` is now a static function and has two additional parameters: `tdw_version` and `unity_version`. It requires `send_version` to have already been sent (and doesn't send the command itself).
+
+### Documentation
+
+#### Modified Documentation
+
+| Document             | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `getting_started.md` | Updated network diagram to include the UDP heartbeat.<br>Added a section explaining the UDP heartbeat. |
+
+
+
 ## v1.8.14
 
 

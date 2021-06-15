@@ -22,6 +22,7 @@
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
+| [`set_error_handling`](#set_error_handling) | Set whether TDW will quit when it logs different types of messages. |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
 | [`set_gravity_vector`](#set_gravity_vector) | Set the gravity vector in the scene. |
 | [`set_hdri_skybox_exposure`](#set_hdri_skybox_exposure) | Set the exposure of the HDRI skybox to a given value. |
@@ -33,6 +34,7 @@
 | [`set_socket_timeout`](#set_socket_timeout) | Set the timeout duration for the socket used to communicate with the controller. Occasionally, the build's socket will stop receiving messages from the controller. This is an inevitable consequence of how synchronous receive-response sockets work. When this happens, it will wait until the socket times out, close the socket, and alert the controller that it needs to re-send its message. The timeout duration shouldn't be less than the time required to send/receive commands, or the build will never receive anything! You should only send this command if it takes longer than the default timeout to send/receive commands. |
 | [`set_target_framerate`](#set_target_framerate) | Set the target render framerate of the build. For more information: <ulink url="https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html">https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html</ulink> |
 | [`set_time_step`](#set_time_step) | Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). NOTE: Doubling the time_step is NOT equivalent to advancing two physics steps. For more information, see: <ulink url="https://docs.unity3d.com/Manual/TimeFrameManagement.html">https://docs.unity3d.com/Manual/TimeFrameManagement.html</ulink> |
+| [`start_udp`](#start_udp) | Start a UDP heartbeat. The heartbeat will continue until the build process is killed. This command is always sent by the controller as soon as it receives an initial message from the build. In nearly all cases, you shouldn't send this command again while TDW is running. If you do send this command again, it will override the previous UDP heartbeat. |
 | [`step_physics`](#step_physics) | Step through the physics without triggering new avatar output, or new commands. |
 | [`terminate`](#terminate) | Terminate the build. |
 | [`unload_asset_bundles`](#unload_asset_bundles) | Unloads all AssetBundles. Send this command only after destroying all objects in the scene. This command should be used only to free up memory. After sending it, you will need to re-download any objects you want to add to a scene.  |
@@ -803,6 +805,26 @@ Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry
 
 ***
 
+## **`set_error_handling`**
+
+Set whether TDW will quit when it logs different types of messages.
+
+
+```python
+{"$type": "set_error_handling"}
+```
+
+```python
+{"$type": "set_error_handling", "error": True, "warning": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"error"` | bool | If True, the build will try to quit when it logs an error. | True |
+| `"warning"` | bool | If True, the build will quit when it logs a warning. This should almost always be False. | False |
+
+***
+
 ## **`set_floorplan_roof`**
 
 Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc. 
@@ -1008,6 +1030,26 @@ Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"time_step"` | float | Time.fixedDeltaTime | 0.01 |
+
+***
+
+## **`start_udp`**
+
+Start a UDP heartbeat. The heartbeat will continue until the build process is killed. This command is always sent by the controller as soon as it receives an initial message from the build. In nearly all cases, you shouldn't send this command again while TDW is running. If you do send this command again, it will override the previous UDP heartbeat.
+
+
+```python
+{"$type": "start_udp", "port": 1}
+```
+
+```python
+{"$type": "start_udp", "port": 1, "rate": 0.1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rate"` | float | The interval between each sent message in seconds. | 0.1 |
+| `"port"` | int | The UDP socket port. | |
 
 ***
 

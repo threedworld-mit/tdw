@@ -39,6 +39,7 @@ from tdw.FBOutput import ScreenPosition as Screen
 from tdw.FBOutput import TriggerCollision as Trigger
 from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
+from tdw.FBOutput import QuitSignal as QuitSig
 import numpy as np
 from typing import Tuple, Optional
 
@@ -1033,3 +1034,11 @@ class LocalTransforms(OutputData):
 
     def get_rotation(self, index: int) -> Tuple[float, float, float, float]:
         return OutputData._get_quaternion(self.data.Objects(index).Rotation)
+
+
+class QuitSignal(OutputData):
+    def get_data(self) -> QuitSig.QuitSignal:
+        return QuitSig.QuitSignal.GetRootAsQuitSignal(self.bytes, 0)
+
+    def get_ok(self) -> bool:
+        return self.data.Ok()

@@ -15,13 +15,31 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `set_error_handling` | Set whether TDW will quit when it logs different types of messages. |
 | `start_udp`          | Start a UDP heartbeat. The heartbeat will continue until the build process is killed. This command is always sent by the controller as soon as it receives an initial message from the build. In nearly all cases, you shouldn't send this command again while TDW is running. If you do send this command again, it will override the previous UDP heartbeat. |
 
+#### Modified Output Data
+
+| Command     | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `terminate` | Sends a `QuitSignal` indicating that the build quit gracefully. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data  | Description                              |
+| ------------ | ---------------------------------------- |
+| `QuitSignal` | A signal indicating that the build quit. |
+
 ### `tdw` module
 
 #### `Controller`
 
 - The controller will always send `[set_error_handling, start_udp, send_version]` as an initial message to the build.
-- (Backend) Added `Controller._udp()` which is automatically called after the build launches. This is handled in a separate thread and it listens to the UDP heartbeat signal from the build.
+- Per `communicate()` call, the controller will check for a `QuitSignal`. If there is one, it will quit. 
+- (Backend) Added `self._udp()` which is automatically called after the build launches. This is handled in a separate thread and it listens to the UDP heartbeat signal from the build.
 - (Backend) `Controller._check_build_version()` is now a static function and has two additional parameters: `tdw_version` and `unity_version`. It requires `send_version` to have already been sent (and doesn't send the command itself).
+- (Backend) Added `self._print_build_log()` Prints the expected location of the build log.
+- (Backend) Added `self._is_standalone` field to remember whether the build is a standalone player so that the controller can guess where the log is.
+- (Backend) Added `self._done` Boolean flag used for the UDP heartbeat thread.
 
 ### Documentation
 

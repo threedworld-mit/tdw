@@ -10,7 +10,7 @@ from typing import List, Union, Optional, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian
 from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH
-from tdw.output_data import OutputData, Version
+from tdw.output_data import OutputData, Version, QuitSignal
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
@@ -58,18 +58,19 @@ class Controller(object):
         # Set the socket to non-blocking so that it can time out.
         udp_socket.setblocking(False)
         # Wait thirty seconds for the UDP socket to timeout.
-        udp_socket.settimeout(30)
+        udp_socket.settimeout(5)
         # Bind the socket. This will set a random  free port.
         udp_socket.bind(("", 0))
 
         # Set error handling to default values (the build will try to quit on errors and exceptions).
         # Start the UDP heartbeat.
-        # Request the version to log it in the player log and remember here if the Editor is being used.
+        # Request the version to log it and remember here if the Editor is being used.
         resp = self.communicate([{"$type": "set_error_handling"},
                                  {"$type": "start_udp",
                                   "port": int(udp_socket.getsockname()[1])},
                                  {"$type": "send_version"}])
-        is_standalone: bool = False
+        self._is_standalone: bool = False
+        self._done: bool = False
         tdw_version: str = ""
         unity_version: str = ""
         for r in resp[:-1]:
@@ -77,11 +78,11 @@ class Controller(object):
                 v = Version(r)
                 tdw_version = v.get_tdw_version()
                 unity_version = v.get_unity_version()
-                is_standalone = v.get_standalone()
+                self._is_standalone = v.get_standalone()
                 break
 
         # Start the UDP heartbeat in a thread.
-        t = Thread(target=Controller._udp, args=([udp_socket, is_standalone]))
+        t = Thread(target=self._udp, args=([udp_socket]))
         t.daemon = True
         t.start()
 
@@ -125,6 +126,15 @@ class Controller(object):
         while len(resp) > 1 and OutputData.get_data_type_id(resp[0]) == "ftre":
             self.socket.send_multipart(msg)
             resp = self.socket.recv_multipart()
+
+        # Check if we've received a quit signal. If we have, check if there was an error.
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "quit":
+                self._done = True
+                if not QuitSignal(resp[i]).get_ok():
+                    print("The build quit due to an error. Check the build log for more info.")
+                    self._print_build_log()
 
         # Return the output data from the build.
         return resp
@@ -416,23 +426,20 @@ class Controller(object):
             tdw_version = build_version
         print(f"Build version {tdw_version}\nUnity Engine {unity_version}\nPython tdw module version {version}")
 
-    @staticmethod
-    def _udp(s: socket.socket, is_standalone: bool) -> None:
+    def _udp(self, s: socket.socket) -> None:
         """
         Do a UDP heartbeat. This is handled in a thread that is launched in the constructor.
 
         :param s: The UDP listening socket.
-        :param is_standalone: If True, the build is a standalone player. This is used to guess where the log is.
         """
 
         # The ID of this process. This is used in the UDP thread.
         pid: int = os.getpid()
         try:
-            done = False
-            while not done:
+            while not self._done:
                 # If the main thread is down, stop.
                 if pid not in pids():
-                    done = True
+                    self._done = True
                     continue
                 sleep(0.1)
                 # Get the heartbeat.
@@ -440,21 +447,29 @@ class Controller(object):
                     s.recv(4)
                 # Timeout. Stop listening.
                 except socket.timeout:
-                    print("UDP heartbeat timeout. The build is probably down. Check the Player log for more info.")
-                    if is_standalone:
-                        log_path = PLAYER_LOG_PATH
-                    else:
-                        log_path = EDITOR_LOG_PATH
-                    print(f"If the build is on the same machine as this controller, the Player log path is probably "
-                          f"{str(log_path.resolve())}")
-                    print(f"If the build is on a remote Linux server, the Player log path is probably"
-                          f" ~/.config/unity3d/MIT/TDW/Player.log (where ~ is your home directory).")
-                    done = True
+                    print("UDP heartbeat timeout. The build is probably down due to an unhandled exception."
+                          " Check the build log for more info.")
+                    self._print_build_log()
+                    self._done = True
         finally:
             # Close the socket.
             s.close()
             # Kill the controller process.
             os.kill(pid, 9)
+
+    def _print_build_log(self) -> None:
+        """
+        Print a message indicating where the build log is located.
+        """
+
+        if self._is_standalone:
+            log_path = PLAYER_LOG_PATH
+        else:
+            log_path = EDITOR_LOG_PATH
+        print(f"If the build is on the same machine as this controller, the log path is probably "
+              f"{str(log_path.resolve())}")
+        print(f"If the build is on a remote Linux server, the log path is probably"
+              f" ~/.config/unity3d/MIT/TDW/Player.log (where ~ is your home directory)")
 
     @staticmethod
     def _check_pypi_version(v_installed_override: str = None, v_pypi_override: str = None) -> None:

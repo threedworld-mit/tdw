@@ -77,6 +77,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
+| [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Rigidbodies](#Rigidbodies) | Rigibody data (velocity, mass, etc.) for objects in the scene. | `rigi` |
 | [Robot](#Robot) | Data for a robot in the scene. See also: `StaticRobot` | `robo` |
@@ -539,6 +540,18 @@ The IDs of every object that a shape overlaps.
 | `get_id()` | The identity of this overlap (useful if you've requested multiple Overlap objects). | `int` |
 | `get_object_ids()` | The IDs of every object in the overlap shape. | `np.array` |
 | `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
+
+## QuitSignal
+
+`q = QuitSignal(byte_array)`
+
+**Identifier:** `quit`
+
+A message sent by the build when it quits.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_ok()` | If True, the build quit gracefully. If False, the build quit because there was an error or exception. | `bool` |
 
 ## Raycast
 

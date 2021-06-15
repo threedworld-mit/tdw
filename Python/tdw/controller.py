@@ -29,13 +29,14 @@ class Controller(object):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, udp: bool = True):
         """
         Create the network socket and bind the socket to the port.
 
         :param port: The port number.
         :param check_version: If true, the controller will check the version of the build and print the result.
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
+        :param udp: If True, start a UDP heartbeat with the build. If the heartbeat stops, the controller will quit.
         """
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
@@ -53,22 +54,26 @@ class Controller(object):
 
         self.socket.recv()
 
-        # Start a UDP heartbeat.
-        udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        # Set the socket to non-blocking so that it can time out.
-        udp_socket.setblocking(False)
-        # Wait thirty seconds for the UDP socket to timeout.
-        udp_socket.settimeout(5)
-        # Bind the socket. This will set a random  free port.
-        udp_socket.bind(("", 0))
+        udp_socket: Optional[socket.socket] = None
 
         # Set error handling to default values (the build will try to quit on errors and exceptions).
-        # Start the UDP heartbeat.
         # Request the version to log it and remember here if the Editor is being used.
-        resp = self.communicate([{"$type": "set_error_handling"},
-                                 {"$type": "start_udp",
-                                  "port": int(udp_socket.getsockname()[1])},
-                                 {"$type": "send_version"}])
+        start_commands = [{"$type": "set_error_handling"},
+                          {"$type": "send_version"}]
+        # Start the UDP heartbeat.
+        if udp:
+            # Start a UDP heartbeat.
+            udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            # Set the socket to non-blocking so that it can time out.
+            udp_socket.setblocking(False)
+            # Wait thirty seconds for the UDP socket to timeout.
+            udp_socket.settimeout(5)
+            # Bind the socket. This will set a random  free port.
+            udp_socket.bind(("", 0))
+            start_commands.append({"$type": "start_udp",
+                                  "port": int(udp_socket.getsockname()[1])})
+
+        resp = self.communicate(start_commands)
         self._is_standalone: bool = False
         self._done: bool = False
         tdw_version: str = ""
@@ -80,11 +85,11 @@ class Controller(object):
                 unity_version = v.get_unity_version()
                 self._is_standalone = v.get_standalone()
                 break
-
         # Start the UDP heartbeat in a thread.
-        t = Thread(target=self._udp, args=([udp_socket]))
-        t.daemon = True
-        t.start()
+        if udp:
+            t = Thread(target=self._udp, args=([udp_socket]))
+            t.daemon = True
+            t.start()
 
         self.model_librarian: Optional[ModelLibrarian] = None
         self.scene_librarian: Optional[SceneLibrarian] = None

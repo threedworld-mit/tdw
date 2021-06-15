@@ -35,6 +35,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - The controller will always send `[set_error_handling, start_udp, send_version]` as an initial message to the build.
 - Per `communicate()` call, the controller will check for a `QuitSignal`. If there is one, it will quit. 
+- Added optional `udp` parameter to the constructor.
 - (Backend) Added `self._udp()` which is automatically called after the build launches. This is handled in a separate thread and it listens to the UDP heartbeat signal from the build.
 - (Backend) `Controller._check_build_version()` is now a static function and has two additional parameters: `tdw_version` and `unity_version`. It requires `send_version` to have already been sent (and doesn't send the command itself).
 - (Backend) Added `self._print_build_log()` Prints the expected location of the build log.

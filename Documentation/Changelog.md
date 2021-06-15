@@ -31,8 +31,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | -------------------- | ------------------------------------------------------------ |
 | `getting_started.md` | Updated network diagram to include the UDP heartbeat.<br>Added a section explaining the UDP heartbeat. |
 
-
-
 ## v1.8.14
 
 

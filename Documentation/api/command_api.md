@@ -36,6 +36,7 @@
 | [`step_physics`](#step_physics) | Step through the physics without triggering new avatar output, or new commands. |
 | [`terminate`](#terminate) | Terminate the build. |
 | [`unload_asset_bundles`](#unload_asset_bundles) | Unloads all AssetBundles. Send this command only after destroying all objects in the scene. This command should be used only to free up memory. After sending it, you will need to re-download any objects you want to add to a scene.  |
+| [`unload_unused_assets`](#unload_unused_assets) | Unload lingering assets (scenes, models, textures, etc.) from memory. Send this command if you're rapidly adding and removing objects or scenes in order to prevent apparent memory leaks. |
 
 **Asset Bundle Command**
 
@@ -1067,6 +1068,17 @@ The type of cached asset bundle.
 | `"skyboxes"` | HDRI skybox asset bundles. |
 | `"humanoids"` | Humanoid character asset bundles. |
 | `"humanoid_animations"` | Humanoid animation asset bundles. |
+
+***
+
+## **`unload_unused_assets`**
+
+Unload lingering assets (scenes, models, textures, etc.) from memory. Send this command if you're rapidly adding and removing objects or scenes in order to prevent apparent memory leaks.
+
+
+```python
+{"$type": "unload_unused_assets"}
+```
 
 # AssetBundleCommand
 

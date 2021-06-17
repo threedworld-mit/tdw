@@ -10,13 +10,50 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 #### New Commands
 
-| Command                | Description                                                  |
-| ---------------------- | ------------------------------------------------------------ |
+| Command              | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `set_error_handling` | Set whether TDW will quit when it logs different types of messages. |
+| `start_udp`          | Start a UDP heartbeat. The heartbeat will continue until the build process is killed. This command is always sent by the controller as soon as it receives an initial message from the build. In nearly all cases, you shouldn't send this command again while TDW is running. If you do send this command again, it will override the previous UDP heartbeat. |
 | `unload_unused_assets` | Unload lingering assets (scenes, models, textures, etc.) from memory. Send this command if you're rapidly adding and removing objects or scenes in order to prevent apparent memory leaks. |
+
+#### Modified Commands
+
+| Command     | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `terminate` | Sends a `QuitSignal` indicating that the build quit gracefully. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data  | Description                              |
+| ------------ | ---------------------------------------- |
+| `QuitSignal` | A signal indicating that the build quit. |
+
+### `tdw` module
+
+#### `Controller`
+
+- The controller will always send `[set_error_handling, start_udp, send_version]` as an initial message to the build.
+- Per `communicate()` call, the controller will check for a `QuitSignal`. If there is one, it will quit. 
+- Added optional `udp` parameter to the constructor.
+- (Backend) Added `self._udp()` which is automatically called after the build launches. This is handled in a separate thread and it listens to the UDP heartbeat signal from the build.
+- (Backend) `Controller._check_build_version()` no longer needs to send `send_version` in a `communicate()` call.
+- (Backend) Added `self._print_build_log()` Prints the expected location of the build log.
+- (Backend) Added `self._is_standalone`, `self._tdw_version`, and `self._unity_version` fields.
+- (Backend) Added `self._done` Boolean flag used for the UDP heartbeat thread.
 
 ### Build
 
 - Fixed: For most commands involving objects, if `"id"` is set to an ID not currently in the cache, the build will have an infinite loop of NullReferenceExceptions rather than logging an error only once.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document             | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `getting_started.md` | Updated network diagram to include the UDP heartbeat.<br>Added a section explaining the UDP heartbeat. |
 
 ## v1.8.14
 

@@ -140,6 +140,7 @@ class Controller(object):
                 if not QuitSignal(resp[i]).get_ok():
                     print("The build quit due to an error. Check the build log for more info.")
                     self._print_build_log()
+                    break
 
         # Return the output data from the build.
         return resp

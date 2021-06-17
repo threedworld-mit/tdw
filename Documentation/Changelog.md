@@ -4,18 +4,34 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.15
+
+### Command API
+
+#### New Commands
+
+| Command                | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| `unload_unused_assets` | Unload lingering assets (scenes, models, textures, etc.) from memory. Send this command if you're rapidly adding and removing objects or scenes in order to prevent apparent memory leaks. |
+
+### Build
+
+- Fixed: For most commands involving objects, if `"id"` is set to an ID not currently in the cache, the build will have an infinite loop of NullReferenceExceptions rather than logging an error only once.
+
 ## v1.8.14
 
 
 ### Command API
 
-### New Commands
+#### New Commands
 
 | Command                 | Description                                                  |
 | ----------------------- | ------------------------------------------------------------ |
 | `send_local_transforms` | Send Transform (position and rotation) data of objects in the scene relative to their parent object. |
 
-### New Output Data
+### Output Data
+
+#### New Output Data
 
 | Output Data       | Description                                                  |
 | ----------------- | ------------------------------------------------------------ |

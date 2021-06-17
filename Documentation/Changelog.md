@@ -14,8 +14,9 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | -------------------- | ------------------------------------------------------------ |
 | `set_error_handling` | Set whether TDW will quit when it logs different types of messages. |
 | `start_udp`          | Start a UDP heartbeat. The heartbeat will continue until the build process is killed. This command is always sent by the controller as soon as it receives an initial message from the build. In nearly all cases, you shouldn't send this command again while TDW is running. If you do send this command again, it will override the previous UDP heartbeat. |
+| `unload_unused_assets` | Unload lingering assets (scenes, models, textures, etc.) from memory. Send this command if you're rapidly adding and removing objects or scenes in order to prevent apparent memory leaks. |
 
-#### Modified Output Data
+#### Modified Commands
 
 | Command     | Modification                                                 |
 | ----------- | ------------------------------------------------------------ |
@@ -42,6 +43,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - (Backend) Added `self._is_standalone` field to remember whether the build is a standalone player so that the controller can guess where the log is.
 - (Backend) Added `self._done` Boolean flag used for the UDP heartbeat thread.
 
+### Build
+
+- Fixed: For most commands involving objects, if `"id"` is set to an ID not currently in the cache, the build will have an infinite loop of NullReferenceExceptions rather than logging an error only once.
+
 ### Documentation
 
 #### Modified Documentation
@@ -55,13 +60,15 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Command API
 
-### New Commands
+#### New Commands
 
 | Command                 | Description                                                  |
 | ----------------------- | ------------------------------------------------------------ |
 | `send_local_transforms` | Send Transform (position and rotation) data of objects in the scene relative to their parent object. |
 
-### New Output Data
+### Output Data
+
+#### New Output Data
 
 | Output Data       | Description                                                  |
 | ----------------- | ------------------------------------------------------------ |

@@ -435,7 +435,7 @@ class Controller(object):
         :param s: The UDP listening socket.
         """
 
-        # The ID of this process. This is used in the UDP thread.
+        # Get the ID of the controller process.
         pid: int = os.getpid()
         try:
             while not self._done:

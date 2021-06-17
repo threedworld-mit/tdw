@@ -38,9 +38,9 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 - Per `communicate()` call, the controller will check for a `QuitSignal`. If there is one, it will quit. 
 - Added optional `udp` parameter to the constructor.
 - (Backend) Added `self._udp()` which is automatically called after the build launches. This is handled in a separate thread and it listens to the UDP heartbeat signal from the build.
-- (Backend) `Controller._check_build_version()` is now a static function and has two additional parameters: `tdw_version` and `unity_version`. It requires `send_version` to have already been sent (and doesn't send the command itself).
+- (Backend) `Controller._check_build_version()` no longer needs to send `send_version` in a `communicate()` call.
 - (Backend) Added `self._print_build_log()` Prints the expected location of the build log.
-- (Backend) Added `self._is_standalone` field to remember whether the build is a standalone player so that the controller can guess where the log is.
+- (Backend) Added `self._is_standalone`, `self._tdw_version`, and `self._unity_version` fields.
 - (Backend) Added `self._done` Boolean flag used for the UDP heartbeat thread.
 
 ### Build

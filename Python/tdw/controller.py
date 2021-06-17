@@ -75,14 +75,14 @@ class Controller(object):
 
         resp = self.communicate(start_commands)
         self._is_standalone: bool = False
+        self._tdw_version: str = ""
+        self._unity_version: str = ""
         self._done: bool = False
-        tdw_version: str = ""
-        unity_version: str = ""
         for r in resp[:-1]:
             if Version.get_data_type_id(r) == "vers":
                 v = Version(r)
-                tdw_version = v.get_tdw_version()
-                unity_version = v.get_unity_version()
+                self._tdw_version = v.get_tdw_version()
+                self._unity_version = v.get_unity_version()
                 self._is_standalone = v.get_standalone()
                 break
         # Start the UDP heartbeat in a thread.
@@ -101,7 +101,7 @@ class Controller(object):
 
         # Compare the version of the tdw module to the build version.
         if check_version and launch_build:
-            self._check_build_version(tdw_version=tdw_version, unity_version=unity_version)
+            self._check_build_version()
 
     def communicate(self, commands: Union[dict, List[dict]]) -> list:
         """
@@ -413,23 +413,20 @@ class Controller(object):
         if success:
             Popen([str(Build.BUILD_PATH.resolve()), "-port "+str(port)])
 
-    @staticmethod
-    def _check_build_version(tdw_version: str, unity_version: str,
-                             version: str = __version__, build_version: str = None) -> None:
+    def _check_build_version(self, version: str = __version__, build_version: str = None) -> None:
         """
         Check the version of the build. If there is no build, download it.
         If the build is of the wrong version, recommend an upgrade.
 
-        :param tdw_version: The version of the Python TDW module.
-        :param unity_version: The version of the build according to Unity.
         :param version: The version of TDW. You can set this to an arbitrary version for testing purposes.
         :param build_version: If not None, this overrides the expected build version. Only override for debugging.
         """
 
         # Override the build version for testing.
         if build_version is not None:
-            tdw_version = build_version
-        print(f"Build version {tdw_version}\nUnity Engine {unity_version}\nPython tdw module version {version}")
+            self._tdw_version = build_version
+        print(f"Build version {self._tdw_version}\nUnity Engine {self._unity_version}\n"
+              f"Python tdw module version {version}")
 
     def _udp(self, s: socket.socket) -> None:
         """

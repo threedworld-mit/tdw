@@ -1,17 +1,12 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.camera.camera import Camera
-from tdw.camera.move_target import MoveTarget
-from tdw.camera.rotate_target import RotateTarget
-from tdw.camera.focus_target import FocusTarget
+from tdw.cinematic_camera import CinematicCamera
 
 
 class ThirdPersonCamera(Controller):
     def run(self) -> None:
         self.start()
 
-        avatar_id = "c"
-        cam = Camera(avatar_id=avatar_id)
         object_id = 0
         commands = [{"$type": "set_target_framerate",
                      "framerate": 60},
@@ -20,50 +15,39 @@ class ThirdPersonCamera(Controller):
                     self.get_add_object(model_name="iron_box",
                                         object_id=object_id,
                                         position={"x": 0, "y": 0, "z": 0.5})]
-        # Set a teleport and look at target, rotation, and focus.
-        cam.move_target = MoveTarget(avatar_id="c",
-                                     target={"x": -3, "y": 2, "z": 0})
-        cam.rotate_target = RotateTarget(avatar_id="c",
-                                         target={"r": 0, "p": 70, "y": -120},
-                                         resp=[])
-        commands.extend(cam.get_commands([]))
+        # Create a camera object.
+        avatar_id = "c"
+        cam = CinematicCamera(avatar_id=avatar_id, position={"x": -3, "y": 2, "z": 0},
+                              rotation={"x": 0, "y": 34, "z": -120})
+        # Add the camera initialization commands.
+        commands.extend(cam.init_commands)
         # Initialize the scene.
         resp = self.communicate(commands)
 
-        # Move the camera towards the object.
-        cam.move_target = MoveTarget(avatar_id="c",
-                                     target={"x": 1, "y": 1.5, "z": -0.5},
-                                     speed=0.1)
-        cam.rotate_target = RotateTarget(avatar_id="c",
-                                         target=object_id,
-                                         centroid=True,
-                                         speed=2,
-                                         resp=resp)
-        cam.focus_target = FocusTarget(avatar_id="c",
-                                       target=object_id,
-                                       is_object=True,
-                                       speed=0.3)
+        # Move and rotate towards the object. Focus on the object.
+        cam.move_to_object(target=object_id, offset_distance=2, min_y=1.5, centroid=True)
+        cam.rotate_to_object(target=object_id, centroid=True)
+        cam.focus_on_object(target=object_id, centroid=True)
+
         for i in range(100):
             resp = self.communicate(cam.get_commands(resp=resp))
+
+        # Move back to center.
+        cam.move_to_position(target={"x": 0, "y": 2, "z": 0})
         # Apply a force to the object.
         commands = [{"$type": "apply_force_to_object",
                      "id": object_id,
                      "force": {"x": 0, "y": 4, "z": 8}}]
-        # Move towards the target.
-        cam.move_target = MoveTarget(avatar_id="c",
-                                     target=object_id,
-                                     speed=0.02)
         commands.extend(cam.get_commands(resp=resp))
-        self.communicate(commands)
+        resp = self.communicate(commands)
+
         for i in range(200):
             resp = self.communicate(cam.get_commands(resp=resp))
-        # Stop moving the camera.
-        cam.move_target = MoveTarget(avatar_id="c")
-        # Look away.
-        cam.rotate_target = RotateTarget(avatar_id="c",
-                                         target={"r": 0, "p": 5, "y": -20},
-                                         speed=3,
-                                         resp=resp)
+
+        cam.stop_moving()
+        # Pan right.
+        cam.rotate_by_rpy(target={"x": 0, "y": 45, "z": 0})
+
         for i in range(100):
             resp = self.communicate(cam.get_commands(resp=resp))
 

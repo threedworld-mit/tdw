@@ -1,4 +1,4 @@
-from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState
+from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState, CameraMotion
 from tdw.FBOutput import Environments as Envs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
@@ -40,6 +40,7 @@ from tdw.FBOutput import TriggerCollision as Trigger
 from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
 from tdw.FBOutput import QuitSignal as QuitSig
+from tdw.FBOutput import CameraMotionComplete as CamMot
 import numpy as np
 from typing import Tuple, Optional
 
@@ -1042,3 +1043,22 @@ class QuitSignal(OutputData):
 
     def get_ok(self) -> bool:
         return self.data.Ok()
+
+
+class CameraMotionComplete(OutputData):
+    def get_data(self) -> CamMot.CameraMotionComplete:
+        return CamMot.CameraMotionComplete.GetRootAsCameraMotionComplete(self.bytes, 0)
+
+    def get_avatar_id(self) -> str:
+        return self.data.AvatarId().decode('utf-8')
+
+    def get_motion(self) -> str:
+        motion = self.data.Motion()
+        if motion == 1:
+            return "move"
+        elif motion == 2:
+            return "rotate"
+        elif motion == 4:
+            return "focus"
+        else:
+            return "fov"

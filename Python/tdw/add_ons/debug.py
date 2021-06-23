@@ -1,10 +1,11 @@
 from pathlib import Path
 from typing import List, Union
 from json import load, dump
-from tdw.controller_module.controller_module import ControllerModule
+from tdw.output_data import OutputData, LogMessage
+from tdw.add_ons.add_on import AddOn
 
 
-class Debug(ControllerModule):
+class Debug(AddOn):
     """
     Use this module to record and playback every command sent to the build.
     """
@@ -52,9 +53,15 @@ class Debug(ControllerModule):
         else:
             if len(self.playback) > 0:
                 self.commands = self.playback.pop(0)
+        # Print any messages from the build.
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "logm":
+                log = LogMessage(resp[i])
+                print(f"[FROM BUILD] {log.get_message_type()} from {log.get_object_type()}: {log.get_message()}")
 
     def get_initialization_commands(self) -> List[dict]:
-        return []
+        return [{"$type": "send_log_messages"}]
 
     def save(self) -> None:
         """

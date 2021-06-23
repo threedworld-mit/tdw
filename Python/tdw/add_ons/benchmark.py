@@ -1,15 +1,15 @@
 from time import time
 from typing import List
-from tdw.controller_module.controller_module import ControllerModule
+from tdw.add_ons.add_on import AddOn
 
 
-class Benchmark(ControllerModule):
+class Benchmark(AddOn):
     """
     Benchmark the FPS over a given number of frames.
 
     ```python
     from tdw.controller import Controller
-    from tdw.controller_module.benchmark import Benchmark
+    from tdw.add_ons.benchmark import Benchmark
 
     c = Controller()
     b = Benchmark(num_frames=2000)

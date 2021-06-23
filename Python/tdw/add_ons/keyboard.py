@@ -1,10 +1,10 @@
 from typing import List, Union, Callable, Optional, Dict
 from tdw.output_data import OutputData
 from tdw.output_data import Keyboard as KBoard
-from tdw.controller_module.controller_module import ControllerModule
+from tdw.add_ons.add_on import AddOn
 
 
-class Keyboard(ControllerModule):
+class Keyboard(AddOn):
     """
     Use this module to add keyboard controls to a TDW scene.
     """

@@ -1,5 +1,5 @@
 from tdw.controller import Controller
-from tdw.controller_module.benchmark import Benchmark
+from tdw.add_ons.benchmark import Benchmark
 from argparse import ArgumentParser
 from platform import system
 from benchmark_utils import PATH
@@ -154,7 +154,7 @@ class FlexBenchmarker(Controller):
                            'position': {'x': -0.8337750147387952, 'y': 0.3888592806405162, 'z': -0.9812865902869348},
                            'rotation': {'x': 0.2648241162596214, 'y': 0.23805685090753817, 'z': 0.263751099599952, 'w': 0.896455509572624}}])
         b = Benchmark(num_frames=2000)
-        self.modules.append(b)
+        self.add_ons.append(b)
         while b.fps < 0:
             self.communicate([])
         return b.fps

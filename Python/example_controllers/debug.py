@@ -1,6 +1,6 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.controller_module.debug import Debug as DBug
+from tdw.add_ons.debug import Debug as DBug
 from time import sleep
 
 
@@ -14,7 +14,7 @@ class Debug(Controller):
     def run(self):
         # Add a debug module.
         d = DBug(record=True, path="")
-        self.modules.append(d)
+        self.add_ons.append(d)
         self.start()
         self.communicate(TDWUtils.create_empty_room(12, 12))
 

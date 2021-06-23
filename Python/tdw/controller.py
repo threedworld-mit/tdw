@@ -14,7 +14,7 @@ from tdw.output_data import OutputData, Version, QuitSignal
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
-from tdw.controller_module.controller_module import ControllerModule
+from tdw.add_ons.add_on import AddOn
 
 
 class Controller(object):
@@ -41,7 +41,7 @@ class Controller(object):
         """
 
         # A list of modules that will add commands on `communicate()`.
-        self.modules: List[ControllerModule] = list()
+        self.add_ons: List[AddOn] = list()
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
         # If there is a difference, recommend an upgrade.
@@ -119,7 +119,7 @@ class Controller(object):
         if isinstance(commands, dict):
             commands = [commands]
 
-        for m in self.modules:
+        for m in self.add_ons:
             # Initialize a module.
             if not m.initialized:
                 commands.extend(m.get_initialization_commands())
@@ -157,7 +157,7 @@ class Controller(object):
                     break
 
         # Get commands per module for the next frame.
-        for m in self.modules:
+        for m in self.add_ons:
             m.on_communicate(resp=resp, commands=commands)
 
         # Return the output data from the build.

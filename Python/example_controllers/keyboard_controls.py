@@ -1,6 +1,6 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.controller_module.keyboard import Keyboard
+from tdw.add_ons.keyboard import Keyboard
 
 """
 Use WASD or arrow keys to move an avatar.
@@ -24,7 +24,7 @@ class KeyboardControls(Controller):
         k.listen(key="S", commands=self.turn(direction=1), events=["press", "hold"])
         k.listen(key="RightArrow", commands=self.turn(direction=1), events=["press", "hold"])
         k.listen(key="Escape", function=self.stop, events=["press"])
-        self.modules.append(k)
+        self.add_ons.append(k)
 
     def move(self, direction: int, force: float = 80) -> dict:
         """

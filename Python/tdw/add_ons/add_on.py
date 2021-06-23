@@ -2,9 +2,9 @@ from typing import List
 from abc import ABC, abstractmethod
 
 
-class ControllerModule(ABC):
+class AddOn(ABC):
     """
-    Controller modules can be added to any controller to add functionality into the `communicate()` function.
+    Controller add-ons can be added to any controller to add functionality into the `communicate()` function.
     """
 
     def __init__(self):

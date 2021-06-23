@@ -1,4 +1,4 @@
-from typing import List, Union, Optional
+from typing import List, Union
 from pathlib import Path
 from tdw.add_ons.add_on import AddOn
 from tdw.tdw_utils import TDWUtils

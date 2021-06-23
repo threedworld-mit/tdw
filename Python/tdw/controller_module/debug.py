@@ -20,35 +20,38 @@ class Debug(ControllerModule):
         # We don't need to initialize anything.
         self.initialized = True
 
-        self._record: bool = record
+        """:field
+        If True, record each command. If False, play back an existing record.
+        """
+        self.record: bool = record
 
         # Get or create the playback file path.
         if isinstance(path, str):
             self._path: Path = Path(path)
         else:
             self._path: Path = path
-        if not path.parent.exists:
-            path.parent.mkdir(parents=True)
+        if not self._path.parent.exists:
+            self._path.parent.mkdir(parents=True)
 
         # Start a new playback file.
-        if self._record:
+        if self.record:
             """:field
             A record of each list of commands sent to the build.
             """
-            self._playback: List[List[dict]] = list()
+            self.playback: List[List[dict]] = list()
         # Load an existing .json file.
         else:
             with path.open("rt", encoding="utf-8") as f:
-                self._playback = load(f)
+                self.playback = load(f)
 
     def on_communicate(self, resp: List[bytes], commands: List[dict]) -> None:
         # Record the commands that were just sent.
-        if self._record:
-            self._playback.append(commands[:])
+        if self.record:
+            self.playback.append(commands[:])
         # Prepare to send the next list of commands.
         else:
-            if len(self._playback) > 0:
-                self.commands = self._playback.pop(0)
+            if len(self.playback) > 0:
+                self.commands = self.playback.pop(0)
 
     def get_initialization_commands(self) -> List[dict]:
         return []
@@ -59,4 +62,4 @@ class Debug(ControllerModule):
         """
 
         with self._path.open("wt", encoding="utf-8") as f:
-            dump(self.commands, f)
+            dump(self.playback, f)

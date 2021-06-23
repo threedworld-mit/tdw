@@ -14,6 +14,7 @@ from tdw.output_data import OutputData, Version, QuitSignal
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
+from tdw.controller_module.controller_module import ControllerModule
 
 
 class Controller(object):
@@ -38,6 +39,9 @@ class Controller(object):
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
         :param udp: If True, start a UDP heartbeat with the build. If the heartbeat stops, the controller will quit.
         """
+
+        # A list of modules that will add commands on `communicate()`.
+        self.modules: List[ControllerModule] = list()
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
         # If there is a difference, recommend an upgrade.
@@ -112,11 +116,21 @@ class Controller(object):
         :return The output data from the build.
         """
 
-        if isinstance(commands, list):
-            msg = [json.dumps(commands).encode('utf-8')]
-        else:
-            msg = [json.dumps([commands]).encode('utf-8')]
+        if isinstance(commands, dict):
+            commands = [commands]
 
+        for m in self.modules:
+            # Initialize a module.
+            if not m.initialized:
+                commands.extend(m.get_initialization_commands())
+                m.initialized = True
+            # Append the module's commands.
+            else:
+                commands.extend(m.commands)
+                m.commands.clear()
+
+        # Serialize the message.
+        msg = [json.dumps(commands).encode('utf-8')]
         # Send the commands.
         self.socket.send_multipart(msg)
         # Receive output data.
@@ -141,6 +155,10 @@ class Controller(object):
                     print("The build quit due to an error. Check the build log for more info.")
                     self._print_build_log()
                     break
+
+        # Get commands per module for the next frame.
+        for m in self.modules:
+            m.on_communicate(resp=resp, commands=commands)
 
         # Return the output data from the build.
         return resp

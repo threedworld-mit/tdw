@@ -8,7 +8,7 @@ class Keyboard(ControllerModule):
     """
     Use this module to add keyboard controls to a TDW scene.
     """
-    
+
     def __init__(self):
         super().__init__()
         self._press: Dict[str, Optional[Union[Callable, List[dict]]]] = dict()

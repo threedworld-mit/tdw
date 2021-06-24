@@ -45,6 +45,33 @@ class ThirdPersonCamera(AddOn):
     The `ThirdPersonCamera` is a wrapper class for a standard `A_Img_Caps_Kinematic` TDW avatar. All non-physics avatar commands may be sent for this camera.
 
     In this document, the words "camera" and "avatar" may be used interchangeably.
+
+    ## Multiple cameras
+
+    Unlike most `AddOn` objects, it is possible to add multiple `ThirdPersonCamera`s to the scene:
+
+    ```python
+    from tdw.controller import Controller
+    from tdw.tdw_utils import TDWUtils
+    from tdw.add_ons.third_person_camera import ThirdPersonCamera
+    from tdw.add_ons.image_capture import ImageCapture
+
+    c = Controller(launch_build=False)
+    c.start()
+
+    # Add two cameras.
+    cam_0 = ThirdPersonCamera(avatar_id="c0",
+                              position={"x": 1, "y": 2.2, "z": -0.5},
+                              rotation={"x": 0, "y": -45, "z": 0})
+    cam_1 = ThirdPersonCamera(avatar_id="c1",
+                              position={"x": 2, "y": 1, "z": -5})
+
+    # Enable image capture for both cameras.
+    cap = ImageCapture(path="images", avatar_ids=["c0", "c1"])
+
+    c.add_ons.extend([cam_0, cam_1, cap])
+    c.communicate(TDWUtils.create_empty_room(12, 12))
+    ```
     """
 
     # The render order. Third person cameras will always render "on top" of any other cameras.

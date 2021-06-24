@@ -56,7 +56,7 @@ class ThirdPersonCamera(AddOn):
                  framerate: int = None):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
-        :param position: The initial position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param position: If None, defaults to `{"x": 0, "y": 0, "z": 0}`. If not None and `follow_object` is None, this is the initial position of the camera. If not None and `follow_object` is not None this is the relative position from the target object.
         :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param look_at: If not None, rotate look at this target every frame. Overrides `rotation`. Can be an int (an object ID) or an `(x, y, z)` dictionary (a position).
         :param fov: If not None, this is the initial field of view. Otherwise, defaults to 35.
@@ -82,12 +82,21 @@ class ThirdPersonCamera(AddOn):
                                             "id": self.avatar_id},
                                            {"$type": "set_pass_masks",
                                             "pass_masks": pass_masks,
+                                            "avatar_id": self.avatar_id},
+                                           {"$type": "set_render_order",
+                                            "render_order": ThirdPersonCamera._RENDER_ORDER,
                                             "avatar_id": self.avatar_id}]
+        ThirdPersonCamera._RENDER_ORDER += 1
+        """:field
+        If None, defaults to `{"x": 0, "y": 0, "z": 0}`. If not None and `follow_object` is None, this is the initial position of the camera. If not None and `follow_object` is not None this is the relative position from the target object.
+        """
         self.position: Optional[Dict[str, float]] = position
+        # Set the initial position.
         if self.position is not None and follow_object is None:
             self._init_commands.append({"$type": "teleport_avatar_to",
                                         "position": self.position,
                                         "avatar_id": self.avatar_id})
+        # Set the initial rotation.
         if rotation is not None:
             if isinstance(rotation, dict):
                 if "w" in rotation:
@@ -101,6 +110,9 @@ class ThirdPersonCamera(AddOn):
                                                     "angle": rotation[q],
                                                     "avatar_id": self.avatar_id})
         # Maybe look at a target (overrides rotation).
+        """:field
+        The target object or position that the camera will look at. Can be None (the camera won't look at a target).
+        """
         self.look_at_target: Optional[Union[int, Dict[str, float]]] = look_at
         self._init_commands.extend(self._get_look_at_commands())
         if fov is not None:
@@ -108,29 +120,26 @@ class ThirdPersonCamera(AddOn):
                                         "field_of_view": fov,
                                         "avatar_id": self.avatar_id})
         """:field
-        The ID of the follow target, if any.
+        The ID of the object the camera will try to follow. Can be None (the camera won't follow an object).
         """
         self.follow_object: Optional[int] = follow_object
         """:field
-        If `self.follow is not None`, this determines whether the camera will follow the object's rotation.
+        If `follow_object` is not None, this determines whether the camera will follow the object's rotation.
         """
         self.follow_rotate: bool = follow_rotate
-
+        # Set the simulation framerate.
         if framerate is not None:
             self._init_commands.append({"$type": "set_target_framerate",
                                         "framerate": framerate})
-
-        self._init_commands.append({"$type": "set_render_order",
-                                    "render_order": ThirdPersonCamera._RENDER_ORDER,
-                                    "avatar_id": self.avatar_id})
-        ThirdPersonCamera._RENDER_ORDER += 1
 
     def get_initialization_commands(self) -> List[dict]:
         return self._init_commands
 
     def on_communicate(self, resp: List[bytes], commands: List[dict]) -> None:
+        # Look at and focus on a target object or position.
         if self.look_at_target is not None:
             self.commands.extend(self._get_look_at_commands())
+        # Follow a target object.
         if self.follow_object is not None and self.position is not None:
             self.commands.append({"$type": "follow_object",
                                   "object_id": self.follow_object,

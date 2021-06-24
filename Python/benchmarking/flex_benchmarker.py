@@ -1,4 +1,5 @@
-from tdw.debug_controller import DebugController
+from tdw.controller import Controller
+from tdw.add_ons.benchmark import Benchmark
 from argparse import ArgumentParser
 from platform import system
 from benchmark_utils import PATH
@@ -9,7 +10,7 @@ Benchmark a basic Flex simulation.
 """
 
 
-class FlexBenchmarker(DebugController):
+class FlexBenchmarker(Controller):
     def run(self) -> float:
         self.communicate([{'$type': 'load_scene',
                            'scene_name': 'ProcGenScene'},
@@ -152,7 +153,11 @@ class FlexBenchmarker(DebugController):
                            'id': 3,
                            'position': {'x': -0.8337750147387952, 'y': 0.3888592806405162, 'z': -0.9812865902869348},
                            'rotation': {'x': 0.2648241162596214, 'y': 0.23805685090753817, 'z': 0.263751099599952, 'w': 0.896455509572624}}])
-        return self.get_benchmark(2000)
+        b = Benchmark(num_frames=2000)
+        self.add_ons.append(b)
+        while b.fps < 0:
+            self.communicate([])
+        return b.fps
 
 
 if __name__ == "__main__":

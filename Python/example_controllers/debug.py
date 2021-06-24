@@ -1,15 +1,20 @@
+from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.debug_controller import DebugController
+from tdw.add_ons.debug import Debug as DBug
 from time import sleep
 
 
 """
-Create a debug controller. After running a simple physics simulation, play back all of the commands.
+Create a controller with a `Debug` module.
+After running a simple physics simulation, play back all of the commands.
 """
 
 
-class Debug(DebugController):
+class Debug(Controller):
     def run(self):
+        # Add a debug module.
+        d = DBug(record=True, path="")
+        self.add_ons.append(d)
         self.start()
         self.communicate(TDWUtils.create_empty_room(12, 12))
 
@@ -30,15 +35,17 @@ class Debug(DebugController):
             self.communicate({"$type": "look_at",
                               "avatar_id": "a",
                               "object_id": o_id})
-
         sleep(1)
-
         # Print the recorded commands to the console.
-        for commands in self.record:
+        for commands in d.playback:
             print(commands)
 
         # Play back all of the commands.
-        self.playback()
+        d.record = False
+        while len(d.playback) > 0:
+            print(d.playback)
+            self.communicate([])
+        self.communicate({"$type": "terminate"})
 
 
 if __name__ == "__main__":

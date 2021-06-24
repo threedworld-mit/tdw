@@ -1058,7 +1058,5 @@ class CameraMotionComplete(OutputData):
             return "move"
         elif motion == 2:
             return "rotate"
-        elif motion == 4:
-            return "focus"
         else:
-            return "fov"
+            return "focus"

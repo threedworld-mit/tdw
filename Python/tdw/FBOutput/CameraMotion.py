@@ -6,5 +6,4 @@ class CameraMotion(object):
     move = 1
     rotate = 2
     focus = 4
-    fov = 8
 

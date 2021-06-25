@@ -6,6 +6,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | --- | --- |
 | `add_materials.py` | Different ways to add the same material to a scene. |
 | `add_objects.py` | Different ways to add the same object to a scene. |
+| `add_ons.py` | Add multiple add-ons to a controller. |
 | `animate_humanoid.py` | Create a humanoid and play some animations. |
 | `audio.py` | - Create a scene with a reverb space and audio sensor.<br>- Test how object positions can affect reverb. |
 | `avatar_drag.py` | Set the avatar's drag values to control its speed while in mid-air. |
@@ -14,7 +15,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `collisions.py` | Receive collision output data and read it as a `Collisions` object. |
 | `collisions_and_friction.py` | - Listen for collisions between objects.<br>- Adjust the friction values of objects. |
 | `composite_object.py` | Create a composite object from a local asset bundle.<br>Test that the object loaded correctly.<br>Apply sub-object commands to the sub-objects. |
-| `debug.py` | Create a debug controller. After running a simple physics simulation, play back all of the commands. |
+| `debug.py` | Create a controller with a `Debug` module.<br>After running a simple physics simulation, play back all of the commands. |
 | `depth_shader.py` | Capture a _depth image and calculate the depth values of each pixel. |
 | `flex_cloth_fixed_particle.py` | Create a Flex cloth object and "fix" one of its corners in mid-air. |
 | `flex_fluid_object.py` | Create a fluid "container" with the NVIDIA Flex physics engine. Run several trials, dropping ball objects of increasing mass into the fluid. |

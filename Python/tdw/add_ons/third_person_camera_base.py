@@ -1,5 +1,5 @@
 from secrets import token_urlsafe
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import List, Dict, Optional
 from overrides import final
 from tdw.add_ons.add_on import AddOn
@@ -80,6 +80,30 @@ class ThirdPersonCameraBase(AddOn, ABC):
             self._init_commands.append({"$type": "set_target_framerate",
                                         "framerate": framerate})
 
+    @abstractmethod
+    def on_communicate(self, resp: List[bytes]) -> None:
+        """
+        This is called after commands are sent to the build and a response is received.
+
+        :param resp: The response from the build.
+        """
+
+        raise Exception()
+
     @final
     def get_initialization_commands(self) -> List[dict]:
+        """
+        :return: A list of commands that will initialize this module.
+        """
+
         return self._init_commands
+
+    @final
+    def previous_commands(self, commands: List[dict]) -> None:
+        """
+        Do something with the commands that were just sent to the build. By default, this function doesn't do anything.
+
+        :param commands: The commands that were just sent to the build.
+        """
+
+        pass

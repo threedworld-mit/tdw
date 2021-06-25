@@ -41,7 +41,7 @@ class ImageCapture(AddOn):
         return [{"$type": "set_img_pass_encoding",
                  "value": self._png}]
 
-    def on_communicate(self, resp: List[bytes], commands: List[dict]) -> None:
+    def on_communicate(self, resp: List[bytes]) -> None:
         self.commands.append({"$type": "send_images",
                               "frequency": "once",
                               "ids": self.avatar_ids})

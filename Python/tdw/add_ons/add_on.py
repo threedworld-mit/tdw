@@ -4,7 +4,41 @@ from abc import ABC, abstractmethod
 
 class AddOn(ABC):
     """
-    Controller add-ons can be added to any controller to add functionality into the `communicate()` function.
+    Controller add-ons can be "attached" to any controller to add functionality into the `communicate()` function.
+
+    See the README for a complete list of add-ons.
+
+    To attach an add-on, append it to the `add_ons` list.
+    Every time `communicate()` is called, the add-on will evaluate the response from the build. The add-on can send additional commands to the build on the next frame or do something within its own state (such as update an ongoing log):
+
+    ```python
+    from tdw.controller import Controller
+    from tdw.add_ons.debug import Debug
+
+    c = Controller(launch_build=False)
+    d = Debug(record=True, path="log.json")
+    c.add_ons.append(d)
+    # The debug add-on will log this command.
+    c.communicate({"$type": "do_nothing"})
+    # The debug add-on will log this command and generate a log.json file.
+    c.communicate({"$type": "terminate"})
+    ```
+
+    ## Add-ons
+
+    - [Benchmark](benchmark.md)
+    - [CinematicCamera](cinematic_camera.md)
+    - [Debug](debug.md)
+    - [ImageCapture](image_capture.md)
+    - [Keyboard](keyboard.md)
+    - [ThirdPersonCamera](third_person_camera.md)
+
+    ## Example controllers
+
+    - `tdw/Python/example_controllers/add_ons.py` How to add multiple add-ons to the controller.
+    - `tdw/Python/example_controller/debug.py` Example implementation of a `Debug` add-on.
+    - `tdw/Python/example_controllers/keyboard_controls.py` Example implementation of a `Keyboard` add-on.
+    - `tdw/Python/example_controllers/cinematic_camera_controls.py` Example implementation of a `CinematicCamera` add-on.
     """
 
     def __init__(self):
@@ -30,12 +64,20 @@ class AddOn(ABC):
         raise Exception()
 
     @abstractmethod
-    def on_communicate(self, resp: List[bytes], commands: List[dict]) -> None:
+    def on_communicate(self, resp: List[bytes]) -> None:
         """
         This is called after commands are sent to the build and a response is received.
 
         :param resp: The response from the build.
-        :param commands: All of the commands that were just sent to the build.
         """
 
         raise Exception()
+
+    def previous_commands(self, commands: List[dict]) -> None:
+        """
+        Do something with the commands that were just sent to the build. By default, this function doesn't do anything.
+
+        :param commands: The commands that were just sent to the build.
+        """
+
+        pass

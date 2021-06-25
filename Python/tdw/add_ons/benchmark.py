@@ -42,7 +42,7 @@ class Benchmark(AddOn):
     def get_initialization_commands(self) -> List[dict]:
         return[]
 
-    def on_communicate(self, resp: List[bytes], commands: List[dict]) -> None:
+    def on_communicate(self, resp: List[bytes]) -> None:
         # We're done benchmarking.
         if self._frame >= self._num_frames:
             return

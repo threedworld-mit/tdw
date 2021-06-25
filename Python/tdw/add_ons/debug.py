@@ -8,6 +8,19 @@ from tdw.add_ons.add_on import AddOn
 class Debug(AddOn):
     """
     Use this module to record and playback every command sent to the build.
+
+    ```python
+    from tdw.controller import Controller
+    from tdw.add_ons.debug import Debug
+
+    c = Controller(launch_build=False)
+    d = Debug(record=True, path="log.json")
+    c.add_ons.append(d)
+    # The debug add-on will log this command.
+    c.communicate({"$type": "do_nothing"})
+    # The debug add-on will log this command and generate a log.json file.
+    c.communicate({"$type": "terminate"})
+    ```
     """
 
     def __init__(self, record: bool, path: Union[str, Path]):
@@ -45,23 +58,28 @@ class Debug(AddOn):
             with path.open("rt", encoding="utf-8") as f:
                 self.playback = load(f)
 
-    def on_communicate(self, resp: List[bytes], commands: List[dict]) -> None:
-        # Record the commands that were just sent.
-        if self.record:
-            self.playback.append(commands[:])
+    def on_communicate(self, resp: List[bytes]) -> None:
         # Prepare to send the next list of commands.
-        else:
+        if not self.record:
             if len(self.playback) > 0:
                 self.commands = self.playback.pop(0)
-        # Print any messages from the build.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
+            # Print a log message.
             if r_id == "logm":
                 log = LogMessage(resp[i])
                 print(f"[FROM BUILD] {log.get_message_type()} from {log.get_object_type()}: {log.get_message()}")
+            # If we get a quit signal and we're recording, save the log file.
+            elif r_id == "quit" and self.record:
+                self.save()
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_log_messages"}]
+
+    def previous_commands(self, commands: List[dict]) -> None:
+        # Record the commands that were just sent.
+        if self.record:
+            self.playback.append(commands[:])
 
     def save(self) -> None:
         """

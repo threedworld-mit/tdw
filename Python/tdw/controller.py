@@ -158,7 +158,8 @@ class Controller(object):
 
         # Get commands per module for the next frame.
         for m in self.add_ons:
-            m.on_communicate(resp=resp, commands=commands)
+            m.on_communicate(resp=resp)
+            m.previous_commands(commands=commands)
 
         # Return the output data from the build.
         return resp

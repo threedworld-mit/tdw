@@ -47,13 +47,17 @@
 | [TDWUtils](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/tdw_utils.md) | Utility class.                                               |
 | [AssetBundleCreator](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/asset_bundle_creator.md) | Covert 3D models into TDW-compatible asset bundles.          |
 | [PyImpact](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/py_impact.md) | Generate impact sounds at runtime.                           |
-| [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md) | Child class of `Controller` that has useful debug features.  |
-| [KeyboardController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/keyboard_controller.md) | Child class of `Controller` that can listen for keyboard input. |
 | [FloorplanController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/floorplan_controller.md) | Child class of `Controller` that creates an interior environment and populates it with objects. |
 | [Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/librarian.md) | "Librarians" hold asset bundle metadata records.             |
 | [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md) | Access different NVIDIA Flex fluid types.                    |
 | [Object Init Data](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/object_init_data.md) | Wrapper classes for storing object initialization data.      |
-
+| [AddOn](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/add_on.md) | Overview of how add-ons work and API documentation for the abstract `AddOn` class. |
+| [Benchmark](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/benchmark.md) | An add-on that can be used to benchmark your controller. |
+| [CinematicCamera](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds a "cinematic" camera to the scene. |
+| [Debug](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that can help debug your controller. |
+| [ImageCapture](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that will save images to disk per-frame. |
+| [Keyboard](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds keyboard controls. |
+| [ThirdPersonCamera](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds a third-person camera to the scene. |
 
 ##### Backend
 
@@ -180,7 +184,6 @@
 | Document                                                     | Description                                           |
 | ------------------------------------------------------------ | ----------------------------------------------------- |
 | [Debug TDW](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/debug_tdw.md) | Several strategies for debugging errors in your code. |
-| [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md) | API for the `DebugController` class.                  |
 | [Depth of Field](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth_of_field_and_image_blurriness.md) | Prevent blurry images and increase realism.           |
 | [Performance Optimizations](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/performance_optimizations.md) | Increase simulation speed.                            |
 | [OS X](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/osx.md) | Common OS X problems and solutions.                   |

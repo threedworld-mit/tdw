@@ -134,3 +134,5 @@ call(['taskkill', '/F', '/T', '/PID', str(obs.pid)])
 We recommend using our [`AudioUtils`](../python/tdw_utils.md#AudioUtils) class to record audio; see API for a usage example.
 
 Note that `AudioUtils` requires [fmedia](https://stsaz.github.io/fmedia/), which has simpler syntax than ffmpeg for recording audio.
+
+For an example of how to generate an audio-only dataset, see: `tdw/Python/example_controllers/minimal_audio_dataset.py`

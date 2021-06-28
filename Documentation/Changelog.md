@@ -6,6 +6,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ## v1.8.16
 
+### `tdw` module
+
+#### `Controller`
+
+- Set the default value of the `udp` parameter of the constructor to `False` (was `True`). This is a hotfix; there are known bugs with the UDP heartbeat that we're still in the process of fixing.
+
 ### Build
 
 - Fixed: `set_visual_material` doesn't work after sending `set_flex_soft_actor`.

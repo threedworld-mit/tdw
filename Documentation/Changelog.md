@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.16
+
+### Build
+
+- Fixed: `set_visual_material` doesn't work after sending `set_flex_soft_actor`.
+
 ## v1.8.15
 
 ### Command API

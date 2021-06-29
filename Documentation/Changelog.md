@@ -16,8 +16,11 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### `tdw` module
 
+#### `Controller`
+
 - Removed `udp` parameter from the constructor
 - Removed UDP heartbeat. Replaced it with a simpler heartbeat that checks whether the build process is up (assuming that the build process is running locally; if not, the controller doesn't start the heartbeat)
+- Added `check_build_process` parameter to the constructor, which handles the check described above
 
 ### Build
 

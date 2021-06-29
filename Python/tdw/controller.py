@@ -29,13 +29,14 @@ class Controller(object):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = True):
         """
         Create the network socket and bind the socket to the port.
 
         :param port: The port number.
         :param check_version: If true, the controller will check the version of the build and print the result.
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
+        :param check_build_process: If True and the build is on the same machine as this controller, continuously check whether the build process is still up.
         """
 
         # True if a local build process is currently running.
@@ -57,25 +58,26 @@ class Controller(object):
         self.socket.recv()
 
         # Get the expected name of the process.
-        ps = platform.system()
-        if ps == "Windows":
-            process_name = "TDW.exe"
-        elif ps == "Darwin":
-            process_name = "TDW.app"
-        else:
-            process_name = "TDW.x86_64"
-        # Get the process ID, if any.
-        for q in psutil.process_iter():
-            if q.name() == process_name:
-                self._local_build_is_running = True
-                build_pid: int = q.pid
-                # Get the ID of the controller process.
-                controller_pid: int = os.getpid()
-                # Start listening for the build process.
-                t = Thread(target=self._build_process_heartbeat, args=([build_pid, controller_pid]))
-                t.daemon = True
-                t.start()
-                break
+        if check_build_process:
+            ps = platform.system()
+            if ps == "Windows":
+                process_name = "TDW.exe"
+            elif ps == "Darwin":
+                process_name = "TDW.app"
+            else:
+                process_name = "TDW.x86_64"
+            # Get the process ID, if any.
+            for q in psutil.process_iter():
+                if q.name() == process_name:
+                    self._local_build_is_running = True
+                    build_pid: int = q.pid
+                    # Get the ID of the controller process.
+                    controller_pid: int = os.getpid()
+                    # Start listening for the build process.
+                    t = Thread(target=self._build_process_heartbeat, args=([build_pid, controller_pid]))
+                    t.daemon = True
+                    t.start()
+                    break
 
         # Set error handling to default values (the build will try to quit on errors and exceptions).
         # Request the version to log it and remember here if the Editor is being used.

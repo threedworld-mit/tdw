@@ -6,6 +6,19 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ## v1.8.16
 
+### Command API
+
+#### Removed Commands
+
+| Command     | Reason                                                       |
+| ----------- | ------------------------------------------------------------ |
+| `start_udp` | It's very unreliable and works differently depending on the OS (see below for replacement) |
+
+### `tdw` module
+
+- Removed `udp` parameter from the constructor
+- Removed UDP heartbeat. Replaced it with a simpler heartbeat that checks whether the build process is up (assuming that the build process is running locally; if not, the controller doesn't start the heartbeat)
+
 ### Build
 
 - Fixed: `set_visual_material` doesn't work after sending `set_flex_soft_actor`.
@@ -21,6 +34,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | Document    | Modification                                                 |
 | ----------- | ------------------------------------------------------------ |
 | `README.md` | Removed link to tdw_sound20k                                 |
+| `getting_started.md` | Removed paragraph about UDP heartbeat and reverted network diagram. |
 | `video.md`  | Added a sentence directing the reader to minimal_audio_dataset.py |
 
 ## v1.8.15

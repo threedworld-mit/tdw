@@ -135,4 +135,4 @@ We recommend using our [`AudioUtils`](../python/tdw_utils.md#AudioUtils) class t
 
 Note that `AudioUtils` requires [fmedia](https://stsaz.github.io/fmedia/), which has simpler syntax than ffmpeg for recording audio.
 
-For an example of how to generate an audio-only dataset, see: `tdw/Python/example_controllers/minimal_audio_dataset.py`
+For an example of how to generate an audio-only dataset, see: `tdw/Python/example_controllers/minimal_audio_dataset.py` For more information regarding PyImpact (which is used in the controller), [read this](impact_sounds.md).

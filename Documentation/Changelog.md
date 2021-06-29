@@ -27,6 +27,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Added: `minimal_audio_dataset.py` Minimal example of how to generate an audio dataset.
 
+### Use Cases
+
+- `single_object.py` is set to `launch_build=False` (was `True`)
+
 ### Documentation
 
 #### Modified Documentation

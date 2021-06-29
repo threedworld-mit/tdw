@@ -69,14 +69,19 @@ class Controller(object):
             # Get the process ID, if any.
             for q in psutil.process_iter():
                 if q.name() == process_name:
-                    self._local_build_is_running = True
-                    build_pid: int = q.pid
-                    # Get the ID of the controller process.
-                    controller_pid: int = os.getpid()
-                    # Start listening for the build process.
-                    t = Thread(target=self._build_process_heartbeat, args=([build_pid, controller_pid]))
-                    t.daemon = True
-                    t.start()
+                    # Get the instance of TDW on the correct port.
+                    for connection in q.connections():
+                        if connection.raddr.port == port:
+                            print("HERE")
+                            self._local_build_is_running = True
+                            build_pid: int = q.pid
+                            # Get the ID of the controller process.
+                            controller_pid: int = os.getpid()
+                            # Start listening for the build process.
+                            t = Thread(target=self._build_process_heartbeat, args=([build_pid, controller_pid]))
+                            t.daemon = True
+                            t.start()
+                            break
                     break
 
         # Set error handling to default values (the build will try to quit on errors and exceptions).

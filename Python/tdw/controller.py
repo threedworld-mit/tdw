@@ -1,8 +1,8 @@
-import socket
 from threading import Thread
+import platform
 from time import sleep
 import zmq
-from psutil import pids
+import psutil
 import json
 import os
 from subprocess import Popen
@@ -29,15 +29,17 @@ class Controller(object):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, udp: bool = True):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """
         Create the network socket and bind the socket to the port.
 
         :param port: The port number.
         :param check_version: If true, the controller will check the version of the build and print the result.
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
-        :param udp: If True, start a UDP heartbeat with the build. If the heartbeat stops, the controller will quit.
         """
+
+        # True if a local build process is currently running.
+        self._local_build_is_running: bool = False
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
         # If there is a difference, recommend an upgrade.
@@ -54,30 +56,34 @@ class Controller(object):
 
         self.socket.recv()
 
-        udp_socket: Optional[socket.socket] = None
+        # Get the expected name of the process.
+        ps = platform.system()
+        if ps == "Windows":
+            process_name = "TDW.exe"
+        elif ps == "Darwin":
+            process_name = "TDW.app"
+        else:
+            process_name = "TDW.x86_64"
+        # Get the process ID, if any.
+        for q in psutil.process_iter():
+            if q.name() == process_name:
+                self._local_build_is_running = True
+                build_pid: int = q.pid
+                # Get the ID of the controller process.
+                controller_pid: int = os.getpid()
+                # Start listening for the build process.
+                t = Thread(target=self._build_process_heartbeat, args=([build_pid, controller_pid]))
+                t.daemon = True
+                t.start()
+                break
 
         # Set error handling to default values (the build will try to quit on errors and exceptions).
         # Request the version to log it and remember here if the Editor is being used.
-        start_commands = [{"$type": "set_error_handling"},
-                          {"$type": "send_version"}]
-        # Start the UDP heartbeat.
-        if udp:
-            # Start a UDP heartbeat.
-            udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            # Set the socket to non-blocking so that it can time out.
-            udp_socket.setblocking(False)
-            # Wait thirty seconds for the UDP socket to timeout.
-            udp_socket.settimeout(5)
-            # Bind the socket. This will set a random  free port.
-            udp_socket.bind(("", 0))
-            start_commands.append({"$type": "start_udp",
-                                  "port": int(udp_socket.getsockname()[1])})
-
-        resp = self.communicate(start_commands)
+        resp = self.communicate([{"$type": "set_error_handling"},
+                                 {"$type": "send_version"}])
         self._is_standalone: bool = False
         self._tdw_version: str = ""
         self._unity_version: str = ""
-        self._done: bool = False
         for r in resp[:-1]:
             if Version.get_data_type_id(r) == "vers":
                 v = Version(r)
@@ -85,12 +91,6 @@ class Controller(object):
                 self._unity_version = v.get_unity_version()
                 self._is_standalone = v.get_standalone()
                 break
-        # Start the UDP heartbeat in a thread.
-        if udp:
-            t = Thread(target=self._udp, args=([udp_socket]))
-            t.daemon = True
-            t.start()
-
         self.model_librarian: Optional[ModelLibrarian] = None
         self.scene_librarian: Optional[SceneLibrarian] = None
         self.material_librarian: Optional[MaterialLibrarian] = None
@@ -136,7 +136,7 @@ class Controller(object):
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "quit":
-                self._done = True
+                self._local_build_is_running = True
                 if not QuitSignal(resp[i]).get_ok():
                     print("The build quit due to an error. Check the build log for more info.")
                     self._print_build_log()
@@ -429,36 +429,30 @@ class Controller(object):
         print(f"Build version {self._tdw_version}\nUnity Engine {self._unity_version}\n"
               f"Python tdw module version {version}")
 
-    def _udp(self, s: socket.socket) -> None:
+    def _build_process_heartbeat(self, build_pid: int, controller_pid: int) -> None:
         """
-        Do a UDP heartbeat. This is handled in a thread that is launched in the constructor.
+        Check whether the build and the main controller processes are still up.
+        Run this in a thread, and only when the build is running local.
 
-        :param s: The UDP listening socket.
+        :param build_pid: The build process ID.
+        :param controller_pid: The controller process ID.
         """
 
-        # Get the ID of the controller process.
-        pid: int = os.getpid()
         try:
-            while not self._done:
-                # If the main thread is down, stop.
-                if pid not in pids():
-                    self._done = True
-                    continue
-                sleep(0.1)
-                # Get the heartbeat.
-                try:
-                    s.recv(4)
-                # Timeout. Stop listening.
-                except socket.timeout:
-                    print("UDP heartbeat timeout. The build is probably down due to an unhandled exception."
-                          " Check the build log for more info.")
-                    self._print_build_log()
-                    self._done = True
+            while self._local_build_is_running:
+                # If the main thread is down or the build is down, stop.
+                if not psutil.pid_exists(build_pid) or not psutil.pid_exists(controller_pid):
+                    self._local_build_is_running = False
+                    sleep(1)
+            print("The build is probably down due to an unhandled exception."
+                  " Check the build log for more info.")
+            self._print_build_log()
+            self._local_build_is_running = False
         finally:
-            # Close the socket.
-            s.close()
-            # Kill the controller process.
-            os.kill(pid, 9)
+            # Kill the remaining processes.
+            for pid in [build_pid, controller_pid]:
+                if psutil.pid_exists(pid):
+                    os.kill(pid, 9)
 
     def _print_build_log(self) -> None:
         """

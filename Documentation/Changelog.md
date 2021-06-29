@@ -29,7 +29,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Use Cases
 
-- `single_object.py` is set to `launch_build=False` (was `True`)
+- `single_object.py` is set to `launch_build=False` (was `True`) and now has an optional `--launch_build` command line arg.
 
 ### Documentation
 

@@ -23,11 +23,19 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Fixed: `set_visual_material` doesn't work after sending `set_flex_soft_actor`.
 
+### Example Controllers
+
+- Added: `minimal_audio_dataset.py` Minimal example of how to generate an audio dataset.
+
 ### Documentation
 
-| Document             | Modification                                                 |
-| -------------------- | ------------------------------------------------------------ |
+#### Modified Documentation
+
+| Document    | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `README.md` | Removed link to tdw_sound20k                                 |
 | `getting_started.md` | Removed paragraph about UDP heartbeat and reverted network diagram. |
+| `video.md`  | Added a sentence directing the reader to minimal_audio_dataset.py |
 
 ## v1.8.15
 

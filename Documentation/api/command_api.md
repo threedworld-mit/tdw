@@ -22,6 +22,7 @@
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
+| [`set_error_handling`](#set_error_handling) | Set whether TDW will quit when it logs different types of messages.  |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
 | [`set_gravity_vector`](#set_gravity_vector) | Set the gravity vector in the scene. |
 | [`set_hdri_skybox_exposure`](#set_hdri_skybox_exposure) | Set the exposure of the HDRI skybox to a given value. |
@@ -34,8 +35,9 @@
 | [`set_target_framerate`](#set_target_framerate) | Set the target render framerate of the build. For more information: <ulink url="https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html">https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html</ulink> |
 | [`set_time_step`](#set_time_step) | Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). NOTE: Doubling the time_step is NOT equivalent to advancing two physics steps. For more information, see: <ulink url="https://docs.unity3d.com/Manual/TimeFrameManagement.html">https://docs.unity3d.com/Manual/TimeFrameManagement.html</ulink> |
 | [`step_physics`](#step_physics) | Step through the physics without triggering new avatar output, or new commands. |
-| [`terminate`](#terminate) | Terminate the build. |
+| [`terminate`](#terminate) | Terminate the build.  |
 | [`unload_asset_bundles`](#unload_asset_bundles) | Unloads all AssetBundles. Send this command only after destroying all objects in the scene. This command should be used only to free up memory. After sending it, you will need to re-download any objects you want to add to a scene.  |
+| [`unload_unused_assets`](#unload_unused_assets) | Unload lingering assets (scenes, models, textures, etc.) from memory. Send this command if you're rapidly adding and removing objects or scenes in order to prevent apparent memory leaks. |
 
 **Asset Bundle Command**
 
@@ -803,6 +805,31 @@ Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry
 
 ***
 
+## **`set_error_handling`**
+
+Set whether TDW will quit when it logs different types of messages. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`QuitSignal`](output_data.md#QuitSignal)</font>
+
+```python
+{"$type": "set_error_handling"}
+```
+
+```python
+{"$type": "set_error_handling", "error": True, "warning": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"error"` | bool | If True, the build will try to quit when it logs an error. | True |
+| `"warning"` | bool | If True, the build will quit when it logs a warning. This should almost always be False. | False |
+
+***
+
 ## **`set_floorplan_roof`**
 
 Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc. 
@@ -1028,8 +1055,13 @@ Step through the physics without triggering new avatar output, or new commands.
 
 ## **`terminate`**
 
-Terminate the build.
+Terminate the build. 
 
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`QuitSignal`](output_data.md#QuitSignal)</font>
 
 ```python
 {"$type": "terminate"}
@@ -1067,6 +1099,17 @@ The type of cached asset bundle.
 | `"skyboxes"` | HDRI skybox asset bundles. |
 | `"humanoids"` | Humanoid character asset bundles. |
 | `"humanoid_animations"` | Humanoid animation asset bundles. |
+
+***
+
+## **`unload_unused_assets`**
+
+Unload lingering assets (scenes, models, textures, etc.) from memory. Send this command if you're rapidly adding and removing objects or scenes in order to prevent apparent memory leaks.
+
+
+```python
+{"$type": "unload_unused_assets"}
+```
 
 # AssetBundleCommand
 

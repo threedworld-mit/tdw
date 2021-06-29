@@ -1,11 +1,16 @@
+from threading import Thread
+import platform
+from time import sleep
 import zmq
+import psutil
 import json
 import os
 from subprocess import Popen
 from typing import List, Union, Optional, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian
-from tdw.output_data import OutputData, Version
+from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH
+from tdw.output_data import OutputData, Version, QuitSignal
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
@@ -33,6 +38,9 @@ class Controller(object):
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
         """
 
+        # True if a local build process is currently running.
+        self._local_build_is_running: bool = False
+
         # Compare the installed version of the tdw Python module to the latest on PyPi.
         # If there is a difference, recommend an upgrade.
         if check_version:
@@ -40,9 +48,7 @@ class Controller(object):
 
         # Launch the build.
         if launch_build:
-            Controller.launch_build(port = port)
-
-
+            Controller.launch_build(port=port)
         context = zmq.Context()
 
         self.socket = context.socket(zmq.REP)
@@ -50,6 +56,41 @@ class Controller(object):
 
         self.socket.recv()
 
+        # Get the expected name of the process.
+        ps = platform.system()
+        if ps == "Windows":
+            process_name = "TDW.exe"
+        elif ps == "Darwin":
+            process_name = "TDW.app"
+        else:
+            process_name = "TDW.x86_64"
+        # Get the process ID, if any.
+        for q in psutil.process_iter():
+            if q.name() == process_name:
+                self._local_build_is_running = True
+                build_pid: int = q.pid
+                # Get the ID of the controller process.
+                controller_pid: int = os.getpid()
+                # Start listening for the build process.
+                t = Thread(target=self._build_process_heartbeat, args=([build_pid, controller_pid]))
+                t.daemon = True
+                t.start()
+                break
+
+        # Set error handling to default values (the build will try to quit on errors and exceptions).
+        # Request the version to log it and remember here if the Editor is being used.
+        resp = self.communicate([{"$type": "set_error_handling"},
+                                 {"$type": "send_version"}])
+        self._is_standalone: bool = False
+        self._tdw_version: str = ""
+        self._unity_version: str = ""
+        for r in resp[:-1]:
+            if Version.get_data_type_id(r) == "vers":
+                v = Version(r)
+                self._tdw_version = v.get_tdw_version()
+                self._unity_version = v.get_unity_version()
+                self._is_standalone = v.get_standalone()
+                break
         self.model_librarian: Optional[ModelLibrarian] = None
         self.scene_librarian: Optional[SceneLibrarian] = None
         self.material_librarian: Optional[MaterialLibrarian] = None
@@ -90,6 +131,16 @@ class Controller(object):
         while len(resp) > 1 and OutputData.get_data_type_id(resp[0]) == "ftre":
             self.socket.send_multipart(msg)
             resp = self.socket.recv_multipart()
+
+        # Check if we've received a quit signal. If we have, check if there was an error.
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "quit":
+                self._local_build_is_running = True
+                if not QuitSignal(resp[i]).get_ok():
+                    print("The build quit due to an error. Check the build log for more info.")
+                    self._print_build_log()
+                    break
 
         # Return the output data from the build.
         return resp
@@ -303,7 +354,7 @@ class Controller(object):
                 return v.get_tdw_version(), v.get_unity_version()
         if len(resp) == 1:
             raise Exception("Tried receiving version output data but didn't receive anything!")
-        raise Exception(f"Expected output data with ID vers but got: " + Version.get_data_type_id(resp[0]))
+        raise Exception(f"Expected output data with ID version but got: " + Version.get_data_type_id(resp[0]))
 
     @staticmethod
     def get_unique_id() -> int:
@@ -368,16 +419,54 @@ class Controller(object):
         Check the version of the build. If there is no build, download it.
         If the build is of the wrong version, recommend an upgrade.
 
-
         :param version: The version of TDW. You can set this to an arbitrary version for testing purposes.
         :param build_version: If not None, this overrides the expected build version. Only override for debugging.
         """
 
-        tdw_version, unity_version = self.get_version()
         # Override the build version for testing.
         if build_version is not None:
-            tdw_version = build_version
-        print(f"Build version {tdw_version}\nUnity Engine {unity_version}\nPython tdw module version {version}")
+            self._tdw_version = build_version
+        print(f"Build version {self._tdw_version}\nUnity Engine {self._unity_version}\n"
+              f"Python tdw module version {version}")
+
+    def _build_process_heartbeat(self, build_pid: int, controller_pid: int) -> None:
+        """
+        Check whether the build and the main controller processes are still up.
+        Run this in a thread, and only when the build is running local.
+
+        :param build_pid: The build process ID.
+        :param controller_pid: The controller process ID.
+        """
+
+        try:
+            while self._local_build_is_running:
+                # If the main thread is down or the build is down, stop.
+                if not psutil.pid_exists(build_pid) or not psutil.pid_exists(controller_pid):
+                    self._local_build_is_running = False
+                    sleep(1)
+            print("The build is probably down due to an unhandled exception."
+                  " Check the build log for more info.")
+            self._print_build_log()
+            self._local_build_is_running = False
+        finally:
+            # Kill the remaining processes.
+            for pid in [build_pid, controller_pid]:
+                if psutil.pid_exists(pid):
+                    os.kill(pid, 9)
+
+    def _print_build_log(self) -> None:
+        """
+        Print a message indicating where the build log is located.
+        """
+
+        if self._is_standalone:
+            log_path = PLAYER_LOG_PATH
+        else:
+            log_path = EDITOR_LOG_PATH
+        print(f"If the build is on the same machine as this controller, the log path is probably "
+              f"{str(log_path.resolve())}")
+        print(f"If the build is on a remote Linux server, the log path is probably"
+              f" ~/.config/unity3d/MIT/TDW/Player.log (where ~ is your home directory)")
 
     @staticmethod
     def _check_pypi_version(v_installed_override: str = None, v_pypi_override: str = None) -> None:

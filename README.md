@@ -1,9 +1,21 @@
 # ThreeDWorld (TDW)
-### A Platform for Interactive Multi-Modal Physical Simulation
 
 **ThreeDWorld (TDW)** is a platform for interactive multi-modal physical simulation. With TDW, users can simulate high-fidelity sensory data and physical interactions between mobile agents and objects in a wide variety of rich 3D environments.
 
-### [Getting Started](https://github.com/threedworld-mit/tdw/blob/master/Documentation/getting_started.md) (Read this first!)
+TDW is a general-purpose tool that allows the user to communicate and manipulate a 3D environment. As such, there's no single "correct" procedure for using TDW. This guide will show you how to start using TDW and how to explore the available options.
+
+# Tutorials
+
+## Setup
+
+- [Installation](Documentation/lessons/install.md)
+- [Getting started with TDW](Documentation/lessons/getting_started.md)
+- [Upgrading TDW to a newer version](Documentation/lessons/upgrade.md)
+
+## Core concepts
+
+- [Commands](Documentation/lessons/commands.md)
+- [Scenes](Documentation/lessons/scenes.md)
 
 ### [Code of Conduct](https://github.com/threedworld-mit/tdw/blob/master/code_of_conduct.md)
 
@@ -14,8 +26,6 @@
 ### [C# Code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md)
 
 ### [License](https://github.com/threedworld-mit/tdw/blob/master/LICENSE.txt)
-
-### [How to upgrade from TDW v1.7 to v1.8](https://github.com/threedworld-mit/tdw/blob/master/Documentation/upgrade_guides/v1.7_to_v1.8.md)
 
 # API
 

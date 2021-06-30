@@ -1,0 +1,26 @@
+# Upgrading TDW to a newer version
+
+## How to upgrade
+
+### On a Linux server
+
+1. `sudo pip3 install tdw -U`
+2. Download [the latest build of TDW](https://github.com/threedworld-mit/tdw/releases/latest/) and extract the zip file.
+3. If this is a major upgrade (for example, from TDW v1.7.16 to TDW v1.8.0), read the [upgrade guide](../upgrade_guides/v1.7_to_v1.8.md).
+4. Read the [changelog](../changelog.md).
+
+### On a personal computer
+
+1. OS X and Linux: `sudo pip3 install tdw -U` Windows: `pip3 install tdw -U --user`
+
+## When to upgrade
+
+In TDW, the second number of the version (`8` in the case of `v1.8.0`) represents a *major* release. Major releases usually introduce changes that can break a controller, such as removing commands or modifying Python function parameters. You should usually upgrade to the latest major release. **Please read the [upgrade guide](../upgrade_guides/v1.7_to_v1.8.md)** and the [changelog](../changelog.md) before upgrading.
+
+The third number of version (`0` in the case of `v1.8.0`) represents a *minor* release. These releases include bug fixes and new functionality such as new commands or Python wrapper functions. You should always upgrade to the latest minor release. Please read the [changelog](../changelog.md) before upgrading.
+
+The Python module has an additional fourth number (`2` in the case of `1.8.0.2`). These are minor patches that are almost always released to fix bugs, add models to the model library, or other features that don't actually involve the source code of the build. You should *always* upgrade to the latest patch release. These releases are not noted in the changelog.
+
+***
+
+[Return to the README](../../README.md)

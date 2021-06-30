@@ -46,6 +46,7 @@ Standard datasets have 1300000 "train" images and 50000 "val" images. A full dat
 | `--train`          | int   | 1300000          | Total number of train images.                                |
 | `--val`            | int   | 50000            | Total number of val images.                                  |
 | `--library`        | str   | models_core.json | The path to the [model library records file](../librarian/model_librarian.md). |
+| `--launch_build`   |       |                  | Automatically launch the build; download the build if one isn't present or if the build is the wrong version. Don't add this if you're running the script on a Linux server. |
 
 ### Option B: Use the `SingleObject` controller class
 

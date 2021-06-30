@@ -151,12 +151,6 @@ Output data is always sent as a list, with the last element of the list being th
 
 If the build has no data to send, it will send `[frame]`.
 
-#### UDP heartbeat
-
-When the controller and the build first launched, it automatically initiates a UDP "heartbeat" connection with the build. In most cases, you won't need to directly interact with this connection but it might be helpful to know what it's doing:
-
-Every 0.1 seconds, the build will send a tiny message to the controller on a separate network thread. If the controller doesn't receive one of these messages after 30 seconds, it assumes that the build is down, alerts you to check the build log, and kills the controller process.
-
 ## The build
 
 ### Terminology

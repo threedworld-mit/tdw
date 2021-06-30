@@ -34,7 +34,6 @@
 | [`set_socket_timeout`](#set_socket_timeout) | Set the timeout duration for the socket used to communicate with the controller. Occasionally, the build's socket will stop receiving messages from the controller. This is an inevitable consequence of how synchronous receive-response sockets work. When this happens, it will wait until the socket times out, close the socket, and alert the controller that it needs to re-send its message. The timeout duration shouldn't be less than the time required to send/receive commands, or the build will never receive anything! You should only send this command if it takes longer than the default timeout to send/receive commands. |
 | [`set_target_framerate`](#set_target_framerate) | Set the target render framerate of the build. For more information: <ulink url="https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html">https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html</ulink> |
 | [`set_time_step`](#set_time_step) | Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). NOTE: Doubling the time_step is NOT equivalent to advancing two physics steps. For more information, see: <ulink url="https://docs.unity3d.com/Manual/TimeFrameManagement.html">https://docs.unity3d.com/Manual/TimeFrameManagement.html</ulink> |
-| [`start_udp`](#start_udp) | Start a UDP heartbeat. The heartbeat will continue until the build process is killed. This command is always sent by the controller as soon as it receives an initial message from the build. In nearly all cases, you shouldn't send this command again while TDW is running. If you do send this command again, it will override the previous UDP heartbeat. |
 | [`step_physics`](#step_physics) | Step through the physics without triggering new avatar output, or new commands. |
 | [`terminate`](#terminate) | Terminate the build.  |
 | [`unload_asset_bundles`](#unload_asset_bundles) | Unloads all AssetBundles. Send this command only after destroying all objects in the scene. This command should be used only to free up memory. After sending it, you will need to re-download any objects you want to add to a scene.  |
@@ -1057,26 +1056,6 @@ Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"time_step"` | float | Time.fixedDeltaTime | 0.01 |
-
-***
-
-## **`start_udp`**
-
-Start a UDP heartbeat. The heartbeat will continue until the build process is killed. This command is always sent by the controller as soon as it receives an initial message from the build. In nearly all cases, you shouldn't send this command again while TDW is running. If you do send this command again, it will override the previous UDP heartbeat.
-
-
-```python
-{"$type": "start_udp", "port": 1}
-```
-
-```python
-{"$type": "start_udp", "port": 1, "rate": 0.1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rate"` | float | The interval between each sent message in seconds. | 0.1 |
-| `"port"` | int | The UDP socket port. | |
 
 ***
 

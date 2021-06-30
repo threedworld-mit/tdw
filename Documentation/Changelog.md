@@ -26,6 +26,11 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Fixed: `set_visual_material` doesn't work after sending `set_flex_soft_actor`.
 
+### Model library
+
+- Added models from models_full.json to models_core.json: alarm_clock, backpack, b04_backpack, b04_glass_06_vray, cgaxis_models_23_19_vray, holy_bible, b04_bowl_smooth, b04_default, calculator, 034_vray, cgaxis_models_volume_59_15_vray, b04_cassete, b04_dat, steam-punk_gear_29, steam-punk_gear_25, steam-punk_gear_27, hair_comb_2010, coffeecup004, coffee_cup, mug, b04_geosphere001, b05_48_body_shop_hair_brush, b04_comb, engineers_hammer_vray, b04_headphones_31_12, kitchen_sieve, cucharon_utensilios, lighter, b04_lighter, zippo, b03_padlock, cylinder001, b03_pen_01_001, 868580_pliers_max2016, b04_wire_pincers, remote_vr_2012, salt_shaker, scissors, b03_old_scissors, b04_screwdriver_v2_texture_, b04_screwdriver_render, b04_roller_new, b03_roller_skate, b03_spoon_001, b03_morphy_2013__vray, vray_043, b04_champions_trophy, trophy01, trophy02, omega_seamaster_set, mouse_02_vray, b05_champagne_cup_vray, ball_peen_hammer, b05_vray_cassette_render_scene, generic_toothbrush_001, toothbrush, apple_ipod_touch_yellow_vray
+- Marked models as do_not_use: b03_dice and b03_mando_samsung_max
+
 ### Example Controllers
 
 - Added: `minimal_audio_dataset.py` Minimal example of how to generate an audio dataset.

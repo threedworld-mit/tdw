@@ -1,3 +1,4 @@
+from platform import system
 import wave
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
@@ -19,13 +20,13 @@ class Audio(Controller):
         """
 
         data = str(base64.b64encode(bytes), 'ascii', 'ignore')
-        self.communicate({"$type": "play_point_source_data",
-                          "id": id,
-                          "num_frames": len(bytes),
-                          "num_channels": 1,
-                          "frame_rate": 44100,
-                          "wav_data": data,
-                          "y_pos_offset": offset})
+        return {"$type": "play_point_source_data",
+                "id": id,
+                "num_frames": len(bytes),
+                "num_channels": 1,
+                "frame_rate": 44100,
+                "wav_data": data,
+                "y_pos_offset": offset}
 
     def delay_and_teleport(self, id_0, id_1, pos_0, pos_1):
         # Wait 10 seconds.
@@ -57,54 +58,64 @@ class Audio(Controller):
         pos_3 = {"x": 2.4, "y": 0, "z": -4.3}
         pos_4 = {"x": 0, "y": 0, "z": 0}
 
-        # Load the streamed scene.
-        self.load_streamed_scene(scene="tdw_room")
-        # Create the objects.
-        id_0 = self.add_object("satiro_sculpture",
-                               position=pos_0,
-                               rotation={"x": 0.0, "y": -108.0, "z": 0.0},
-                               library="models_core.json")
-        id_1 = self.add_object("buddah",
-                               position=pos_1,
-                               rotation={"x": 0.0, "y": 90, "z": 0.0},
-                               library="models_core.json")
+        id_0 = self.get_unique_id()
+        id_1 = self.get_unique_id()
 
-        # Set both objects to kinematic.
-        self.communicate([{"$type": "set_kinematic_state",
-                           "id": id_0,
-                           "is_kinematic": True,
-                           "use_gravity": False},
-                          {"$type": "set_kinematic_state",
-                           "id": id_1,
-                           "is_kinematic": True,
-                           "use_gravity": False}
-                          ])
+        # Add the scene and the objects.
+        # Make both objects kinematic.
+        commands = [self.get_add_scene("tdw_room"),
+                    self.get_add_object(model_name="satiro_sculpture",
+                                        position=pos_0,
+                                        rotation={"x": 0.0, "y": -108.0, "z": 0.0},
+                                        object_id=id_0,
+                                        library="models_core.json"),
+                    self.get_add_object(model_name="buddah",
+                                        position=pos_1,
+                                        rotation={"x": 0.0, "y": 90, "z": 0.0},
+                                        object_id=id_1,
+                                        library="models_core.json"),
+                    {"$type": "set_kinematic_state",
+                     "id": id_0,
+                     "is_kinematic": True,
+                     "use_gravity": False},
+                    {"$type": "set_kinematic_state",
+                     "id": id_1,
+                     "is_kinematic": True,
+                     "use_gravity": False}]
 
         # Create the avatar.
-        self.communicate(TDWUtils.create_avatar(
-            position={"x": -4, "y": 1.5, "z": 0},
-            look_at={"x": 2.5, "y": 0, "z": 0}))
+        commands.extend(TDWUtils.create_avatar(position={"x": -4, "y": 1.5, "z": 0},
+                                               look_at={"x": 2.5, "y": 0, "z": 0}))
+        # If this is OS X, set error handling to ignore Resonance Audio exceptions (which are harmless).
+        if system() == "Darwin":
+            commands.append({"$type": "set_error_handling",
+                             "exception": False,
+                             "error": True,
+                             "warning": False})
         # Add the audio sensor.
         # Set the field of view.
-        self.communicate([{"$type": "add_environ_audio_sensor",
-                           "avatar_id": "a"},
-                          {"$type": "set_field_of_view",
-                           "avatar_id": "a",
-                           "field_of_view": 75.0}
-                          ])
         # Create the reverb space.
-        self.communicate({"$type": "set_reverb_space_simple",
+        commands.extend([{"$type": "add_environ_audio_sensor",
+                          "avatar_id": "a"},
+                         {"$type": "set_field_of_view",
+                          "avatar_id": "a",
+                          "field_of_view": 75.0},
+                         {"$type": "set_reverb_space_simple",
                           "env": 0,
-                          "reverb_floor_material": "marble"})
-
+                          "reverb_floor_material": "marble"}])
         # Start playing each sound.
-        self.play_point_sound(Audio.open_wav("HWL_1b.wav"), id_0)
-        self.play_point_sound(Audio.open_wav("HWL_3c.wav"), id_1)
+        commands.append(self.play_point_sound(Audio.open_wav("HWL_1b.wav"), id_0))
+        commands.append(self.play_point_sound(Audio.open_wav("HWL_3c.wav"), id_1))
+
+        # Send all of the commands.
+        self.communicate(commands)
 
         self.delay_and_teleport(id_0, id_1, pos_1, pos_0)
         self.delay_and_teleport(id_0, id_1, pos_2, pos_3)
         self.delay_and_teleport(id_0, id_1, pos_3, pos_2)
         self.delay_and_teleport(id_0, id_1, pos_2, pos_4)
+
+        self.communicate({"$type": "terminate"})
 
 
 if __name__ == "__main__":

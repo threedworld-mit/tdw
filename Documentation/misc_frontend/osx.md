@@ -53,3 +53,19 @@ To add `localhost` to your computer's list of hosts, read [this](https://apple.s
 
 [Flex](flex.md) doesn't work on OS X.
 
+## "The build crashes when I'm trying to use Resonance Audio"
+
+There is a [known bug](https://github.com/threedworld-mit/tdw/issues/200) in Resonance Audio that causes it to log harmless exceptions. By default, TDW will quit if it logs an exception.
+
+If you see `DllNotFoundException: audiopluginresonanceaudio` in the player log, you need to send the `set_error_handling` command to tell TDW to ignore exceptions before sending any Resonance Audio commands (`set_reverb_space_simple`, `set_reverb_space_expert`, `add_environ_audio_sensor`). You only need to send `set_error_handling` once.
+
+```python
+from tdw.controller import Controller
+
+c = Controller()
+c.communicate([{"$type": "set_error_handling",
+                "exception": False},
+               {"$type": "add_environ_audio_sensor"}])
+```
+
+See `tdw/Python/example_controllers/audio.py` for a complete example.

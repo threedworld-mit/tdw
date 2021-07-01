@@ -41,6 +41,8 @@ class Controller(object):
 
         # True if a local build process is currently running.
         self._local_build_is_running: bool = False
+        # If True, we already quit (suppresses a warning that the build is down).
+        self._quit: bool = False
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
         # If there is a difference, recommend an upgrade.
@@ -121,6 +123,10 @@ class Controller(object):
         :return The output data from the build.
         """
 
+        # Don't do anything if the controller already quit.
+        if self._quit:
+            return []
+
         if isinstance(commands, list):
             msg = [json.dumps(commands).encode('utf-8')]
         else:
@@ -145,11 +151,12 @@ class Controller(object):
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "quit":
-                self._local_build_is_running = True
                 if not QuitSignal(resp[i]).get_ok():
                     print("The build quit due to an error. Check the build log for more info.")
                     self._print_build_log()
-                    break
+                self._local_build_is_running = False
+                self._quit = True
+                break
 
         # Return the output data from the build.
         return resp
@@ -453,9 +460,11 @@ class Controller(object):
                 if not psutil.pid_exists(build_pid) or not psutil.pid_exists(controller_pid):
                     self._local_build_is_running = False
                     sleep(1)
-            print("The build is probably down due to an unhandled exception."
-                  " Check the build log for more info.")
-            self._print_build_log()
+            if not self._quit:
+                self._quit = True
+                print("The build is probably down due to an unhandled exception."
+                      " Check the build log for more info.")
+                self._print_build_log()
             self._local_build_is_running = False
         finally:
             # Kill the remaining processes.

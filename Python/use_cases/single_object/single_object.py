@@ -74,7 +74,8 @@ class SingleObject(Controller):
                  do_zip=False,
                  train=1300000,
                  val=50000,
-                 library="models_full.json"):
+                 library="models_full.json",
+                 temp_urls: bool = False):
         """
         :param port: The port used to connect to the build.
         :param launch_build: If True, automatically launch the build. Always set this to False on a Linux server.
@@ -141,6 +142,11 @@ class SingleObject(Controller):
                         self.skyboxes.append(skybox)
         else:
             self.skyboxes = None
+
+        # Download from pre-signed URLs.
+        if temp_urls:
+            self.communicate({"$type": "use_pre_signed_urls",
+                              "value": True})
 
     def initialize_scene(self, scene_command, a="a") -> list:
         """
@@ -791,6 +797,10 @@ if __name__ == "__main__":
     parser.add_argument("--train", type=int, default=1300000, help="Total number of train images.")
     parser.add_argument("--val", type=int, default=50000, help="Total number of val images.")
     parser.add_argument("--library", type=str, default="models_core.json", help="The path to the model library records.")
+    parser.add_argument("--temp_urls", action="store_true",
+                        help="If included and `--library models_full.json`, the build will use temporary (pre-signed) "
+                             "URLs to download models in the tdw-private bucket. "
+                             "Include this flag only if you're experiencing segfaults on Linux.")
     args = parser.parse_args()
 
     s = SingleObject(port=args.port,
@@ -810,6 +820,7 @@ if __name__ == "__main__":
                      do_zip=args.zip,
                      train=args.train,
                      val=args.val,
-                     library=args.library)
+                     library=args.library,
+                     temp_urls=args.temp_urls is not None)
     s.run(args.output_dir,
           scene_name=args.scene_name)

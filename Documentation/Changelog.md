@@ -17,6 +17,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Python
 
 - Added optional argument `--temp_urls` to `screenshotter.py` (If included, sends `use_pre_signed_urls`).
+- `screenshotter.py` no longer automatically launches the build.
 - Added optional argument `--temp_urls` to `single_object.py` (If included, sends `use_pre_signed_urls`).
 
 ### Documentation

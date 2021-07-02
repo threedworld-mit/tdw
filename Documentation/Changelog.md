@@ -8,9 +8,19 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Command API
 
+#### New Commands
+
 | Command              | Description                                                  |
 | -------------------- | ------------------------------------------------------------ |
 | `use_presigned_urls` | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = False (download S3 objects directly, without using temporary URLs) |
+
+### Documentation
+
+#### Modified Documentation
+
+| Document       | Modification                                             |
+| -------------- | -------------------------------------------------------- |
+| `debug_tdw.md` | Added a section for how and when to use pre-signed URLs. |
 
 ## v1.8.16
 

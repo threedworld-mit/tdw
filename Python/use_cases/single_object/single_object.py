@@ -528,12 +528,12 @@ class SingleObject(Controller):
                                  "angle": RNG.uniform(0, 360)})
 
             resp = self.communicate(commands)
-            train += 1
 
             # Create a thread to save the image.
             t = Thread(target=self.save_image, args=(resp, record, file_index, root_dir, wnid, train, train_count))
             t.daemon = True
             t.start()
+            train += 1
             file_index += 1
             image_count += 1
         t1 = time()

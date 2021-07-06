@@ -442,8 +442,8 @@
 
 | Command | Description |
 | --- | --- |
-| [`set_magnebot_wheel_friction_by_position`](#set_magnebot_wheel_friction_by_position) | Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approachs the target distance.  |
-| [`set_magnebot_wheel_friction_by_rotation`](#set_magnebot_wheel_friction_by_rotation) | Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approachs the target angle.  |
+| [`set_magnebot_wheel_friction_by_position`](#set_magnebot_wheel_friction_by_position) | Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approaches the target distance.  |
+| [`set_magnebot_wheel_friction_by_rotation`](#set_magnebot_wheel_friction_by_rotation) | Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approaches the target angle.  |
 
 **Robot Joint Command**
 
@@ -5469,7 +5469,7 @@ These commands set the friction coefficient of a Magnebot's wheels over time giv
 
 ## **`set_magnebot_wheel_friction_by_position`**
 
-Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approachs the target distance. 
+Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approaches the target distance. 
 
 - <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
 
@@ -5494,7 +5494,7 @@ Set the friction coefficient of the Magnebot wheels given a target distance. The
 
 ## **`set_magnebot_wheel_friction_by_rotation`**
 
-Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approachs the target angle. 
+Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approaches the target angle. 
 
 - <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
 

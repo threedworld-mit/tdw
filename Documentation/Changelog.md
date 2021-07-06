@@ -4,6 +4,18 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.18
+
+### Command API
+
+#### New Commands
+
+| Command                                   | Description                                                  |
+| ----------------------------------------- | ------------------------------------------------------------ |
+| `set_magnebot_wheel_friction_by_position` | Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approaches the target distance. |
+| `set_magnebot_wheel_friction_by_rotation` | Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approaches the target angle. |
+| `set_robot_joint_friction`                | Set the friction coefficient of a robot joint.               |
+
 ## v1.8.17
 
 ### Command API

@@ -60,7 +60,7 @@ class Robot(AddOn):
                 {"$type": "send_robots",
                  "frequency": "always"}]
 
-    def on_communicate(self, resp: List[bytes]) -> None:
+    def on_send(self, resp: List[bytes]) -> None:
         # Initialize the static data.
         if self.static is None:
             self.static = RobotStatic(resp=resp, robot_id=self.robot_id)

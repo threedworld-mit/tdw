@@ -58,7 +58,7 @@ class Debug(AddOn):
             with path.open("rt", encoding="utf-8") as f:
                 self.playback = load(f)
 
-    def on_communicate(self, resp: List[bytes]) -> None:
+    def on_send(self, resp: List[bytes]) -> None:
         # Prepare to send the next list of commands.
         if not self.record:
             if len(self.playback) > 0:
@@ -76,7 +76,7 @@ class Debug(AddOn):
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_log_messages"}]
 
-    def previous_commands(self, commands: List[dict]) -> None:
+    def before_send(self, commands: List[dict]) -> None:
         # Record the commands that were just sent.
         if self.record:
             self.playback.append(commands[:])

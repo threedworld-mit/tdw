@@ -21,7 +21,7 @@ class Keyboard(AddOn):
         return [{"$type": "send_keyboard",
                  "frequency": "always"}]
 
-    def on_communicate(self, resp: List[bytes]) -> None:
+    def on_send(self, resp: List[bytes]) -> None:
         # Get keyboard input.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])

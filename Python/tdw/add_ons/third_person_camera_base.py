@@ -81,7 +81,7 @@ class ThirdPersonCameraBase(AddOn, ABC):
                                         "framerate": framerate})
 
     @abstractmethod
-    def on_communicate(self, resp: List[bytes]) -> None:
+    def on_send(self, resp: List[bytes]) -> None:
         """
         This is called after commands are sent to the build and a response is received.
 

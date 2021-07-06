@@ -4,7 +4,12 @@
 
 Controller add-ons can be "attached" to any controller to add functionality into the `communicate()` function.
 
-See the README for a complete list of add-ons.
+Add-ons work by reading the response from the build and building a list of commands to be sent on the next frame.
+Anything that add-ons do can be replicated elsewhere via the TDW Command API, which means that these add-ons don't provide _additional_ functionality to TDW; rather, they are utility objects for commonly required tasks such as image capture.
+
+We recommend that new TDW users use add-ons in their controllers, while more experienced users might prefer to have more fine-grained control. Add-ons are a new feature in TDW as of v1.9.0 and we're still in the process of updating our example controllers.
+
+## Usage
 
 To attach an add-on, append it to the `add_ons` list.
 Every time `communicate()` is called, the add-on will evaluate the response from the build. The add-on can send additional commands to the build on the next frame or do something within its own state (such as update an ongoing log):
@@ -64,11 +69,11 @@ _(Abstract)_
 
 _Returns:_  A list of commands that will initialize this module.
 
-#### on_communicate
+#### on_send
 
 _(Abstract)_
 
-**`self.on_communicate(resp)`**
+**`self.on_send(resp)`**
 
 This is called after commands are sent to the build and a response is received.
 
@@ -76,13 +81,13 @@ This is called after commands are sent to the build and a response is received.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-#### previous_commands
+#### before_send
 
-**`self.previous_commands(commands)`**
+**`self.before_send(commands)`**
 
-Do something with the commands that were just sent to the build. By default, this function doesn't do anything.
+This is called before sending commands to the build. By default, this function doesn't do anything.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that were just sent to the build. |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
 

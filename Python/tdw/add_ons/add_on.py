@@ -69,7 +69,7 @@ class AddOn(ABC):
         raise Exception()
 
     @abstractmethod
-    def on_communicate(self, resp: List[bytes]) -> None:
+    def on_send(self, resp: List[bytes]) -> None:
         """
         This is called after commands are sent to the build and a response is received.
 
@@ -78,11 +78,11 @@ class AddOn(ABC):
 
         raise Exception()
 
-    def previous_commands(self, commands: List[dict]) -> None:
+    def before_send(self, commands: List[dict]) -> None:
         """
-        Do something with the commands that were just sent to the build. By default, this function doesn't do anything.
+        This is called before sending commands to the build. By default, this function doesn't do anything.
 
-        :param commands: The commands that were just sent to the build.
+        :param commands: The commands that are about to be sent to the build.
         """
 
         pass

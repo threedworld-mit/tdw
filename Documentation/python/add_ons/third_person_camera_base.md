@@ -31,11 +31,11 @@ An abstract base class for third-person camera controller add-ons.
 | pass_masks |  List[str] | None | The pass masks. If None, defaults to `["_img"]`. |
 | framerate |  int  | None | If not None, sets the target framerate. |
 
-#### on_communicate
+#### on_send
 
 _(Abstract)_
 
-**`self.on_communicate(resp)`**
+**`self.on_send(resp)`**
 
 This is called after commands are sent to the build and a response is received.
 

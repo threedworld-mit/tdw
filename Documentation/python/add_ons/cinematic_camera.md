@@ -220,9 +220,9 @@ c.communicate({"$type": "terminate"})
 | rotate_speed |  float  | 3 | The angular speed of the camera. This can later be adjusted by setting `self.rotate_speed`. |
 | focus_speed |  float  | 0.3 | The speed of the focus of the camera. This can later be adjusted by setting `self.focus_speed`. |
 
-#### on_communicate
+#### on_send
 
-**`self.on_communicate(resp)`**
+**`self.on_send(resp)`**
 
 This is called after commands are sent to the build and a response is received.
 

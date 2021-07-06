@@ -105,7 +105,7 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
         """
         self.follow_rotate: bool = follow_rotate
 
-    def on_communicate(self, resp: List[bytes]) -> None:
+    def on_send(self, resp: List[bytes]) -> None:
         # Look at and focus on a target object or position.
         if self.look_at_target is not None:
             self.commands.extend(self._get_look_at_commands())

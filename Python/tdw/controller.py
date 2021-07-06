@@ -30,7 +30,7 @@ class Controller(object):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = True):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = False):
         """
         Create the network socket and bind the socket to the port.
 
@@ -44,6 +44,8 @@ class Controller(object):
         self.add_ons: List[AddOn] = list()
         # True if a local build process is currently running.
         self._local_build_is_running: bool = False
+        # If True, we already quit (suppresses a warning that the build is down).
+        self._quit: bool = False
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
         # If there is a difference, recommend an upgrade.
@@ -126,6 +128,14 @@ class Controller(object):
 
         if isinstance(commands, dict):
             commands = [commands]
+        # Don't do anything if the controller already quit.
+        if self._quit:
+            return []
+
+        if isinstance(commands, list):
+            msg = [json.dumps(commands).encode('utf-8')]
+        else:
+            msg = [json.dumps([commands]).encode('utf-8')]
 
         # Append commands from each add-on.
         for m in self.add_ons:
@@ -162,16 +172,16 @@ class Controller(object):
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "quit":
-                self._local_build_is_running = True
                 if not QuitSignal(resp[i]).get_ok():
                     print("The build quit due to an error. Check the build log for more info.")
                     self._print_build_log()
-                    break
+                self._local_build_is_running = False
+                self._quit = True
+                break
 
         # Get commands per module for the next frame.
         for m in self.add_ons:
             m.on_send(resp=resp)
-            m.previous_commands(commands=commands)
 
         # Return the output data from the build.
         return resp
@@ -475,9 +485,11 @@ class Controller(object):
                 if not psutil.pid_exists(build_pid) or not psutil.pid_exists(controller_pid):
                     self._local_build_is_running = False
                     sleep(1)
-            print("The build is probably down due to an unhandled exception."
-                  " Check the build log for more info.")
-            self._print_build_log()
+            if not self._quit:
+                self._quit = True
+                print("The build is probably down due to an unhandled exception."
+                      " Check the build log for more info.")
+                self._print_build_log()
             self._local_build_is_running = False
         finally:
             # Kill the remaining processes.

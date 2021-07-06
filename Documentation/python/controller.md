@@ -16,7 +16,7 @@ c.start()
 
 ***
 
-#### `__init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = True)`
+#### `__init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = False)`
 
 Create the network socket and bind the socket to the port.
 

@@ -38,9 +38,9 @@ Per frame, request image data and save the images to disk.
 
 _Returns:_  A list of commands that will initialize this module.
 
-#### on_communicate
+#### on_send
 
-**`self.on_communicate(resp)`**
+**`self.on_send(resp)`**
 
 This is called after commands are sent to the build and a response is received.
 
@@ -48,15 +48,15 @@ This is called after commands are sent to the build and a response is received.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-##### previous_commands
+##### before_send
 
-**`self.previous_commands(commands)`**
+**`self.before_send(commands)`**
 
-Do something with the commands that were just sent to the build. By default, this function doesn't do anything.
+This is called before sending commands to the build. By default, this function doesn't do anything.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that were just sent to the build. |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
 
 

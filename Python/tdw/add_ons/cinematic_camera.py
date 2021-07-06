@@ -269,7 +269,7 @@ class CinematicCamera(ThirdPersonCameraBase):
         # This boolean is used as a state machine to let the camera know that it needs to apply `self._eulers` to its current rotation.
         self._has_eulers: bool = False
 
-    def on_communicate(self, resp: List[bytes]) -> None:
+    def on_send(self, resp: List[bytes]) -> None:
         # Set a relative target.
         if self._has_relative_translation:
             origin = self._get_avatar_position(resp=resp)

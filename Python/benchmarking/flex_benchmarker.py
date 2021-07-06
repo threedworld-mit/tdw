@@ -153,11 +153,13 @@ class FlexBenchmarker(Controller):
                            'id': 3,
                            'position': {'x': -0.8337750147387952, 'y': 0.3888592806405162, 'z': -0.9812865902869348},
                            'rotation': {'x': 0.2648241162596214, 'y': 0.23805685090753817, 'z': 0.263751099599952, 'w': 0.896455509572624}}])
-        b = Benchmark(num_frames=2000)
-        self.add_ons.append(b)
-        while b.fps < 0:
+        benchmark = Benchmark()
+        benchmark.start()
+        self.add_ons.append(benchmark)
+        for i in range(2000):
             self.communicate([])
-        return b.fps
+        benchmark.stop()
+        return benchmark.get_speed()
 
 
 if __name__ == "__main__":

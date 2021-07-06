@@ -137,6 +137,9 @@ class Controller(object):
             else:
                 commands.extend(m.commands)
                 m.commands.clear()
+        # Possibly do something with the commands about to be sent.
+        for m in self.add_ons:
+            m.before_send(commands)
 
         # Serialize the message.
         msg = [json.dumps(commands).encode('utf-8')]
@@ -167,7 +170,7 @@ class Controller(object):
 
         # Get commands per module for the next frame.
         for m in self.add_ons:
-            m.on_communicate(resp=resp)
+            m.on_send(resp=resp)
             m.previous_commands(commands=commands)
 
         # Return the output data from the build.

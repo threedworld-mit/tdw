@@ -9,11 +9,14 @@ from tdw.controller import Controller
 from tdw.add_ons.benchmark import Benchmark
 
 c = Controller()
-b = Benchmark(num_frames=2000)
-c.modules.append(b)
+b = Benchmark()
+b.start()
+c.add_ons.append(b)
 while b.fps < 0:
     c.communicate([])
+b.stop()
 c.communicate({"$type": "terminate"})
+print(b.speed)
 ```
 
 ***
@@ -24,7 +27,7 @@ c.communicate({"$type": "terminate"})
 
 - `initialized` If True, this module has been initialized.
 
-- `fps` The average frames per second.
+- `times` A list of time elapsed per `communicate()` call.
 
 ***
 
@@ -32,11 +35,9 @@ c.communicate({"$type": "terminate"})
 
 #### \_\_init\_\_
 
-**`Benchmark(num_frames)`**
+**`Benchmark()`**
 
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| num_frames |  int |  | The number of frames over which to benchmark. |
+(no parameters)
 
 #### get_initialization_commands
 
@@ -44,9 +45,19 @@ c.communicate({"$type": "terminate"})
 
 _Returns:_  A list of commands that will initialize this module.
 
-#### on_communicate
+#### before_send
 
-**`self.on_communicate(resp)`**
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
+
+### on_send
+
+**`self.on_send(resp)`**
 
 This is called after commands are sent to the build and a response is received.
 
@@ -54,15 +65,21 @@ This is called after commands are sent to the build and a response is received.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-##### previous_commands
+#### start
 
-**`self.previous_commands(commands)`**
+**`self.start()`**
 
-Do something with the commands that were just sent to the build. By default, this function doesn't do anything.
+Start bencharking each `communicate()` call and clear `self.times`.
 
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that were just sent to the build. |
+#### stop
 
+**`self.stop()`**
 
+Stop benchmarking each `communicate()` call.
+
+#### get_speed
+
+**`self.get_speed()`**
+
+_Returns:_  The average time elapsed per `communicate()` call.
 

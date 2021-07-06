@@ -438,11 +438,19 @@
 | [`detach_from_magnet`](#detach_from_magnet) | Detach an object from a Magnebot magnet. |
 | [`set_magnet_targets`](#set_magnet_targets) | Set the objects that the Magnebot magnet will try to pick up. |
 
+**Magnebot Wheel Friction Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_magnebot_wheel_friction_by_position`](#set_magnebot_wheel_friction_by_position) | Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approachs the target distance.  |
+| [`set_magnebot_wheel_friction_by_rotation`](#set_magnebot_wheel_friction_by_rotation) | Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approachs the target angle.  |
+
 **Robot Joint Command**
 
 | Command | Description |
 | --- | --- |
 | [`set_robot_joint_drive`](#set_robot_joint_drive) | Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are. |
+| [`set_robot_joint_friction`](#set_robot_joint_friction) | Set the friction coefficient of a robot joint. |
 | [`set_robot_joint_mass`](#set_robot_joint_mass) | Set the mass of a robot joint. To get the default mass, see the StaticRobot output data. |
 | [`set_robot_joint_physic_material`](#set_robot_joint_physic_material) | Set the physic material of a robot joint and apply friction and bounciness values to the joint. These settings can be overriden by sending the command again. |
 
@@ -5453,6 +5461,60 @@ A left or right arm.
 | `"left"` |  |
 | `"right"` |  |
 
+# MagnebotWheelFrictionCommand
+
+These commands set the friction coefficient of a Magnebot's wheels over time given the distance to a target. These commands must be sent per-frame. These commands will check if the Magnebot is at the target per PHYSICS frame, INCLUDING frames skipped by step_physics. This greatly increases the precision of a Magnebot simulation.
+
+***
+
+## **`set_magnebot_wheel_friction_by_position`**
+
+Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approachs the target distance. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
+
+```python
+{"$type": "set_magnebot_wheel_friction_by_position", "target": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "set_magnebot_wheel_friction_by_position", "target": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "arrived_at": 0.01, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"target"` | Vector3 | The target destination of the Magnebot. | |
+| `"origin"` | Vector3 | The origin of the Magnebot at the start of the action (not its current position). | |
+| `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_magnebot_wheel_friction_by_rotation`**
+
+Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approachs the target angle. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
+
+```python
+{"$type": "set_magnebot_wheel_friction_by_rotation", "target": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "set_magnebot_wheel_friction_by_rotation", "target": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "arrived_at": 0.01, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"target"` | float | The target rotation of the Magnebot in degrees. | |
+| `"origin"` | Vector3 | The starting forward directional vector of the Magnebot at the start of the action (not its current forward directional vector). | |
+| `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
 # RobotJointCommand
 
 These commands set joint targets or parameters for a robot in the scene.
@@ -5490,6 +5552,27 @@ Set static joint drive parameters for a robot joint. Use the StaticRobot output 
 | `"x"` |  |
 | `"y"` |  |
 | `"z"` |  |
+
+***
+
+## **`set_robot_joint_friction`**
+
+Set the friction coefficient of a robot joint.
+
+
+```python
+{"$type": "set_robot_joint_friction", "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_friction", "joint_id": 1, "friction": 0.05, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"friction"` | float | The friction coefficient. | 0.05 |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
 
 ***
 

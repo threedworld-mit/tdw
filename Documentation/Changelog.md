@@ -16,7 +16,8 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Model library
 
-- Marked cylinder001 as do_not_use
+- Marked cylinder001 and salt_shaker as do_not_use
+- Updated objects.csv with new objects
 
 ### Python
 

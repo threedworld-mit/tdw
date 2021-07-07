@@ -126,16 +126,11 @@ class Controller(object):
         :return The output data from the build.
         """
 
-        if isinstance(commands, dict):
-            commands = [commands]
         # Don't do anything if the controller already quit.
         if self._quit:
             return []
-
-        if isinstance(commands, list):
-            msg = [json.dumps(commands).encode('utf-8')]
-        else:
-            msg = [json.dumps([commands]).encode('utf-8')]
+        if isinstance(commands, dict):
+            commands = [commands]
 
         # Append commands from each add-on.
         for m in self.add_ons:

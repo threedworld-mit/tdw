@@ -78,14 +78,31 @@ This usually occurs on Linux headless servers. It means that you haven't set up 
 
 #### [Linux]: Segfault
 
-Segfaults are rare and relatively hard to debug. Below is one possible solution; if it doesn't work, please contact us for help.
+Segfaults are rare and relatively hard to debug. Below is are some potential solutions; if they don't work, please contact us for help.
 
-**Fix:** Make sure that unzip didn't fail and that the executable (`TDW.x86_64`) is in the same directory as `TDW_Data`:
+1. **Fix:** Make sure that unzip didn't fail and that the executable (`TDW.x86_64`) is in the same directory as `TDW_Data`:
 
 ```
 TDW/
 ....TDW_Data/
 ....TDW.x86_64
+```
+
+2. **Fix:** Send `use_pre_signed_urls`. Do this if your controller is segfaulting while download models from models_full.json. You only need to send this command once (before downloading the models).
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller(launch_build=False)
+c.start()
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               {"$type": "use_pre_signed_urls",
+                "value": True},
+               c.get_add_object(model_name="004_rose_pink",
+                                library="models_full.json",
+                                object_id=0)])
+c.communicate({"$type": "terminate"})
 ```
 
 #### [Windows]: `The code execution cannot proceed because UnityPlayer.dll was not found. Reinstalling the program may fix this problem.`

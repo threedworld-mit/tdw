@@ -6,13 +6,62 @@ from tdw.scene.scene_bounds import SceneBounds
 
 
 class OccupancyMap(AddOn):
+    """
+    An occupancy map is a numpy array that divides a TDW into a grid. Each cell is free (no objects), non-free (has objects), or is outside of the environment.
+
+    Generating an occupancy map requires multiple frames: one frame when the scene is first initialized, and one frame per subsequent `generate()` call:
+
+    ```python
+    from tdw.controller import Controller
+    from tdw.tdw_utils import TDWUtils
+    from tdw.add_ons.occupancy_map import OccupancyMap
+
+    c = Controller(launch_build=False)
+    c.start()
+    o = OccupancyMap(cell_size=0.5)
+    c.add_ons.append(o)
+    c.communicate(TDWUtils.create_empty_room(12, 12))
+    o.generate()
+    c.communicate([])
+    print(o.occupancy_map)
+    c.communicate({"$type": "terminate"})
+    ```
+
+    For a more complete example, see `tdw/Python/example_controllers/occupancy_mapper.py`
+
+    ## Limitations
+
+    - `o.generate()` prepares to send commands to the build but doesn't actually send commands to the build (only a controller can do that). You always need to send `o.generate()` then `c.communicate(commands)`.
+    - Occupancy maps are static. If an object in the scene moves, `o.occupancy_map` won't update until you call `o.generate()` again.
+    - Generating an occupancy map can slow down the build. We recommend generating occupancy maps only as needed (not per-frame).
+    - The occupancy map doesn't differentiate between big objects and small objects. A small object on the floor will make that cell "non-free".
+    """
+
+    # The height from which rays will be cast.
     _RAYCAST_Y: float = 100
 
-    def __init__(self):
+    def __init__(self, cell_size: float = 0.5):
+        """
+        :param cell_size: The diameter of each cell in meters.
+        """
+
         super().__init__()
+        """:field
+        A 2-dimensional numpy array of the occupancy map. Each row corresponds to a worldspace x value and each column corresponds to a worldspace z value (see `get_occupancy_position(idx, idy)` below).
+        Each element in the occupancy map can be one of three values:
+        
+        - **-1:** The cell is out of bounds of the scene (there is no floor or roof beneath this position)
+        - **0:** The cell is unoccupied; there is a floor at this position but there are no objects.
+        - **1:** The cell is occupied by at least one object.
+        """
         self.occupancy_map: Optional[np.array] = None
+        """:field
+        The [bounds of the scene](../scene_bounds.md).
+        """
         self.scene_bounds: Optional[SceneBounds] = None
-        self._cell_size: float = -1
+        # The diameter of each cell in meters.
+        self._cell_size: float = cell_size
+        # The expected dimensions of the occupancy map array.
         self._occupancy_map_size: Tuple[int, int] = (0, 0)
 
     def get_initialization_commands(self) -> List[dict]:
@@ -106,35 +155,18 @@ class OccupancyMap(AddOn):
                 for p in n:
                     self.occupancy_map[p[0]][p[1]] = -1
 
-    def generate(self, cell_size: float = 0.5) -> None:
+    def generate(self) -> None:
         """
         Generate an occupancy map.
         This function should only be called at least one controller.communicate() call after adding this add-on.
-        The OccupancyMap then requires one more controller.communicate() call to create the occupancy map:
-
-        ```python
-        from tdw.controller import Controller
-        from tdw.add_ons.occupancy_map import OccupancyMap
-
-        c = Controller(launch_build=False)
-        o = OccupancyMap()
-        c.add_ons.append(o)
-        c.communicate([])
-
-        o.generate(cell_size=0.49, y=10)
-        c.communicate([])
-        print(o.occupancy_map)
-        ```
-
-        :param cell_size: The diameter of each cell of the occupancy map in meters.
+        The OccupancyMap then requires one more controller.communicate() call to create the occupancy map.
+        (See the example at the top of this document.)
         """
 
         if not self.initialized:
-            print("Can't generate an occupancy map because this add-on hasn't initialized.\n"
-                  "Wait at least one controller.communicate() call before calling occupancy_map.generate()")
-            return
+            raise Exception("Can't generate an occupancy map because this add-on hasn't initialized.\n"
+                            "Wait at least one controller.communicate() call before calling occupancy_map.generate()")
         self.occupancy_map = None
-        self._cell_size = cell_size
         # Spherecast to each point.
         x = self.scene_bounds.x_min
         idx = 0
@@ -167,27 +199,37 @@ class OccupancyMap(AddOn):
 
         ```python
         from tdw.controller import Controller
+        from tdw.tdw_utils import TDWUtils
         from tdw.add_ons.occupancy_map import OccupancyMap
 
         c = Controller(launch_build=False)
-        o = OccupancyMap()
+        c.start()
+        o = OccupancyMap(cell_size=0.5)
         c.add_ons.append(o)
+        c.communicate(TDWUtils.create_empty_room(12, 12))
+        o.generate()
         c.communicate([])
-
-        o.generate(cell_size=0.49, y=10)
-        c.communicate([])
-        print(o.occupancy_map)
+        print(o.get_occupancy_position(4, 5))  # (-3.5, -3.0)
+        c.communicate({"$type": "terminate"})
         ```
 
         :param i: The column index of self.occupancy_map
         :param j: The row index of self.occupancy_map.
 
-        :return: `self.occupancy_map[i][j]` converted into x, z worldspace coordinates.
+        :return: A tuple: `self.occupancy_map[i][j]` converted into `(x, z)` worldspace coordinates.
         """
+
+        if self.scene_bounds is None:
+            raise Exception("The scene bounds haven't been generated and initialized (see documentation).")
 
         return self.scene_bounds.x_min + (i * self._cell_size), self.scene_bounds.z_min + (j * self._cell_size)
 
     def show(self) -> None:
+        """
+        Visualize the occupancy map by adding blue squares into the scene to mark free spaces.
+        These blue squares don't interact with the physics engine.
+        """
+
         if self.occupancy_map is None:
             raise Exception("The occupancy map hasn't been generated and initialized (see documentation).")
         for idx, idy in np.ndindex(self.occupancy_map.shape):

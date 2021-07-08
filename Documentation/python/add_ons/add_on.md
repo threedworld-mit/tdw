@@ -34,6 +34,7 @@ c.communicate({"$type": "terminate"})
 - [Debug](debug.md)
 - [ImageCapture](image_capture.md)
 - [Keyboard](keyboard.md)
+- [OccupancyMap](occupancy_map.md)
 - [ThirdPersonCamera](third_person_camera.md)
 
 ## Example controllers
@@ -42,6 +43,7 @@ c.communicate({"$type": "terminate"})
 - `tdw/Python/example_controller/debug.py` Example implementation of a `Debug` add-on.
 - `tdw/Python/example_controllers/keyboard_controls.py` Example implementation of a `Keyboard` add-on.
 - `tdw/Python/example_controllers/cinematic_camera_controls.py` Example implementation of a `CinematicCamera` add-on.
+- `tdw/Python/example_controllers/occupancy_mapper.py` Generate an occupancy map and create an image of it.
 
 ***
 

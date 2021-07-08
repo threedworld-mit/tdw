@@ -6,22 +6,6 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.occupancy_map import OccupancyMap
-
-c = Controller(launch_build=False)
-c.start()
-o = OccupancyMap(cell_size=0.5)
-c.add_ons.append(o)
-c.communicate(TDWUtils.create_empty_room(12, 12))
-o.generate()
-c.communicate([])
-print(o.get_occupancy_position(4, 5))  # (-3.5, -3.0)
-c.communicate({"$type": "terminate"})
-exit()
-
-
 class OccupancyMapper(Controller):
     """
     Generate occupancy maps in a simple scene populated by objects.

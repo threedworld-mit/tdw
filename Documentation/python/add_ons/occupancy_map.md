@@ -29,7 +29,7 @@ For a more complete example, see `tdw/Python/example_controllers/occupancy_mappe
 - `o.generate()` prepares to send commands to the build but doesn't actually send commands to the build (only a controller can do that). You always need to send `o.generate()` then `c.communicate(commands)`.
 - Occupancy maps are static. If an object in the scene moves, `o.occupancy_map` won't update until you call `o.generate()` again.
 - Generating an occupancy map can slow down the build. We recommend generating occupancy maps only as needed (not per-frame).
-- The occupancy map doesn't differentiate between big objects and small objects. A small object on the floor will make that cell "non-free".
+- The occupancy map doesn't differentiate between big objects and small objects. A small object on the floor will make that cell "non-free". You can ignore specific objects via the generate() function: `o.generate(ignore_objects=[id0, id1])`.
 
 ***
 
@@ -87,10 +87,16 @@ Any commands in the `self.commands` list will be sent on the next frame.
 
 **`self.generate()`**
 
+**`self.generate(ignore_objects=None)`**
+
 Generate an occupancy map.
 This function should only be called at least one controller.communicate() call after adding this add-on.
 The OccupancyMap then requires one more controller.communicate() call to create the occupancy map.
 (See the example at the top of this document.)
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| ignore_objects |  List[int] | None | If not None, ignore these objects when determining if a cell is free or non-free. |
 
 #### get_occupancy_position
 

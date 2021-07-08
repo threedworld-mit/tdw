@@ -34,7 +34,7 @@ class OccupancyMap(AddOn):
     - `o.generate()` prepares to send commands to the build but doesn't actually send commands to the build (only a controller can do that). You always need to send `o.generate()` then `c.communicate(commands)`.
     - Occupancy maps are static. If an object in the scene moves, `o.occupancy_map` won't update until you call `o.generate()` again.
     - Generating an occupancy map can slow down the build. We recommend generating occupancy maps only as needed (not per-frame).
-    - The occupancy map doesn't differentiate between big objects and small objects. A small object on the floor will make that cell "non-free".
+    - The occupancy map doesn't differentiate between big objects and small objects. A small object on the floor will make that cell "non-free". You can ignore specific objects via the generate() function: `o.generate(ignore_objects=[id0, id1])`.
     """
 
     # The height from which rays will be cast.
@@ -63,6 +63,8 @@ class OccupancyMap(AddOn):
         self._cell_size: float = cell_size
         # The expected dimensions of the occupancy map array.
         self._occupancy_map_size: Tuple[int, int] = (0, 0)
+        # Ignore these objects when generating the occupancy map.
+        self._ignore_objects: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_environments"}]
@@ -120,6 +122,8 @@ class OccupancyMap(AddOn):
             hit_env: Dict[int, bool] = dict()
             # Get all of the overlaps to determine if there was an object.
             hit_obj: Dict[int, bool] = dict()
+            # The IDs of each object in the overlap.
+            hit_obj_ids: Dict[int, np.array] = dict()
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
                 if r_id == "rayc":
@@ -127,7 +131,9 @@ class OccupancyMap(AddOn):
                     hit_env[raycast.get_raycast_id()] = raycast.get_hit()
                 elif r_id == "over":
                     overlap = Overlap(resp[i])
-                    hit_obj[overlap.get_id()] = len(overlap.get_object_ids()) > 0
+                    overlap_id = overlap.get_id()
+                    hit_obj[overlap_id] = len(overlap.get_object_ids()) > 0
+                    hit_obj_ids[overlap_id] = overlap.get_object_ids()
 
             for cast_id in hit_env:
                 idx = cast_id % 10000
@@ -135,8 +141,8 @@ class OccupancyMap(AddOn):
                 # The position is outside of the environment.
                 if not hit_env[cast_id]:
                     self.occupancy_map[idx][idz] = -1
-                # The position is occupied by at least one object.
-                elif hit_obj[cast_id]:
+                # The position is occupied by at least one object that we aren't ignoring.
+                elif hit_obj[cast_id] and len([o for o in hit_obj_ids[cast_id] if o not in self._ignore_objects]) > 0:
                     self.occupancy_map[idx][idz] = 1
                 # The position is free.
                 else:
@@ -155,18 +161,24 @@ class OccupancyMap(AddOn):
                 for p in n:
                     self.occupancy_map[p[0]][p[1]] = -1
 
-    def generate(self) -> None:
+    def generate(self, ignore_objects: List[int] = None) -> None:
         """
         Generate an occupancy map.
         This function should only be called at least one controller.communicate() call after adding this add-on.
         The OccupancyMap then requires one more controller.communicate() call to create the occupancy map.
         (See the example at the top of this document.)
+
+        :param ignore_objects: If not None, ignore these objects when determining if a cell is free or non-free.
         """
 
         if not self.initialized:
             raise Exception("Can't generate an occupancy map because this add-on hasn't initialized.\n"
                             "Wait at least one controller.communicate() call before calling occupancy_map.generate()")
         self.occupancy_map = None
+        if ignore_objects is None:
+            self._ignore_objects.clear()
+        else:
+            self._ignore_objects = ignore_objects
         # Spherecast to each point.
         x = self.scene_bounds.x_min
         idx = 0

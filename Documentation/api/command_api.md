@@ -5480,14 +5480,17 @@ Set the friction coefficient of the Magnebot wheels given a target distance. The
 ```
 
 ```python
-{"$type": "set_magnebot_wheel_friction_by_position", "target": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "arrived_at": 0.01, "id": 0}
+{"$type": "set_magnebot_wheel_friction_by_position", "target": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "break_distance": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"target"` | Vector3 | The target destination of the Magnebot. | |
 | `"origin"` | Vector3 | The origin of the Magnebot at the start of the action (not its current position). | |
+| `"break_distance"` | float | The distance at which the Magnebot should start to break, in meters. | 0.1 |
 | `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
+| `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
+| `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
 ***
@@ -5505,14 +5508,17 @@ Set the friction coefficient of the Magnebot wheels given a target angle. The fr
 ```
 
 ```python
-{"$type": "set_magnebot_wheel_friction_by_rotation", "target": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "arrived_at": 0.01, "id": 0}
+{"$type": "set_magnebot_wheel_friction_by_rotation", "target": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "break_angle": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"target"` | float | The target rotation of the Magnebot in degrees. | |
 | `"origin"` | Vector3 | The starting forward directional vector of the Magnebot at the start of the action (not its current forward directional vector). | |
+| `"break_angle"` | float | The angle at which the Magnebot should start to break, in degrees. | 0.1 |
 | `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
+| `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
+| `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
 # RobotJointCommand

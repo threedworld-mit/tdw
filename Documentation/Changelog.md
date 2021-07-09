@@ -16,6 +16,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `add_force_to_prismatic`  | Add a force to a prismatic joint.  |
 | `add_torque_to_spherical` | Add a torque to a spherical joint. |
 
+### Example controllers
+
+- Added: `robot_torque.py`
+
 ## v1.8.17
 
 ### Command API

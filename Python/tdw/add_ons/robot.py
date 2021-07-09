@@ -51,13 +51,23 @@ class Robot(AddOn):
     ```
     """
 
+    """:class_var
+    TDW's built-in [`RobotLibrarian`](../librarian/robot_librarian.md).
+    """
     ROBOT_LIBRARIAN: RobotLibrarian = RobotLibrarian()
+    """:class_var
+    If a joint has moved less than this many degrees (revolute or spherical) or meters (prismatic) since the previous frame, it is considered to be not moving for the purposes of determining which joints are moving.
+    """
     NON_MOVING: float = 0.001
 
     def __init__(self, name: str, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                  robot_id: int = 0, source: Union[RobotLibrarian, RobotRecord, str] = None):
         """
+        :param name: The name of the robot.
+        :param position: The position of the robot. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The rotation of the robot in Euler angles (degrees). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param robot_id: The ID of the robot.
+        :param source: The source file of the robot. If None: The source will be the URL of the robot record in TDW's built-in [`RobotLibrarian`](../librarian/robot_librarian.md). If `str`: This is a filepath (starts with `file:///`) or a URL (starts with `http://` or `https://`). If `RobotRecord`: the source is the URL in the record. If `RobotLibrarian`: The source is the record in the provided `RobotLibrarian` that matches `name`.
         """
 
         super().__init__()
@@ -66,11 +76,11 @@ class Robot(AddOn):
         """
         self.robot_id: int = robot_id
         """:field
-        [Static data](robots/robot_static.md) for this robot.
+        [Static data](robots/robot_static.md) for this robot such as the IDs and masses of each joint.
         """
         self.static: Optional[RobotStatic] = None
         """:
-        [Dynamic data](robots/robot_dynamic.md) for this robot.
+        [Dynamic data](robots/robot_dynamic.md) for this robot such as the current position of the robot and current joint angles.
         """
         self.dynamic: Optional[RobotDynamic] = None
 

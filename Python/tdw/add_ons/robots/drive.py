@@ -16,7 +16,7 @@ class Drive:
         """
 
         """:field
-        The axis of rotation. Options: `"x"`, `"y"`, or `"z"`.
+        The axis of rotation. Can be `"x"`, `"y"`, or `"z"`.
         """
         self.axis: str = sr.get_joint_drive_axis(joint_index, drive_index)
         """:field

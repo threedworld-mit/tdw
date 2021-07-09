@@ -37,6 +37,7 @@ class AddOn(ABC):
     - [ImageCapture](image_capture.md)
     - [Keyboard](keyboard.md)
     - [OccupancyMap](occupancy_map.md)
+    - [Robot](robot.md)
     - [ThirdPersonCamera](third_person_camera.md)
 
     ## Example controllers

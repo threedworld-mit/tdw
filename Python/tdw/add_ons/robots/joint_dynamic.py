@@ -3,6 +3,10 @@ from tdw.output_data import Robot
 
 
 class JointDynamic:
+    """
+    Dynamic info for a joint that can change per-frame, such as its current angle.
+    """
+
     def __init__(self, robot: Robot, joint_index: int):
         """
         :param robot: The `Robot` output data from the build.

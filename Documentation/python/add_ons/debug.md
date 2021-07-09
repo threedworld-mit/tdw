@@ -48,6 +48,9 @@ c.communicate({"$type": "terminate"})
 
 This is called after commands are sent to the build and a response is received.
 
+Use this function to send commands to the build on the next frame, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the next frame.
+
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
@@ -55,6 +58,8 @@ This is called after commands are sent to the build and a response is received.
 #### get_initialization_commands
 
 **`self.get_initialization_commands()`**
+
+This function gets called exactly once per add-on. To call it again, set `self.initialized = False`.
 
 _Returns:_  A list of commands that will initialize this module.
 

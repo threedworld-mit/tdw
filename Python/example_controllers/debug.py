@@ -1,6 +1,8 @@
+from pathlib import Path
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.debug import Debug as DBug
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from time import sleep
 
 
@@ -12,8 +14,10 @@ After running a simple physics simulation, play back all of the commands.
 
 class Debug(Controller):
     def run(self):
+        path: Path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("debug/debug.json")
+        print(f"Debug log will be saved to: {path}")
         # Add a debug module.
-        d = DBug(record=True, path="")
+        d = DBug(record=True, path=path)
         self.add_ons.append(d)
         self.start()
         self.communicate(TDWUtils.create_empty_room(12, 12))

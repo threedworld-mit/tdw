@@ -36,6 +36,7 @@ class AddOn(ABC):
     - [Debug](debug.md)
     - [ImageCapture](image_capture.md)
     - [Keyboard](keyboard.md)
+    - [OccupancyMap](occupancy_map.md)
     - [ThirdPersonCamera](third_person_camera.md)
 
     ## Example controllers
@@ -44,6 +45,7 @@ class AddOn(ABC):
     - `tdw/Python/example_controller/debug.py` Example implementation of a `Debug` add-on.
     - `tdw/Python/example_controllers/keyboard_controls.py` Example implementation of a `Keyboard` add-on.
     - `tdw/Python/example_controllers/cinematic_camera_controls.py` Example implementation of a `CinematicCamera` add-on.
+    - `tdw/Python/example_controllers/occupancy_mapper.py` Generate an occupancy map and create an image of it.
     """
 
     def __init__(self):
@@ -63,6 +65,8 @@ class AddOn(ABC):
     @abstractmethod
     def get_initialization_commands(self) -> List[dict]:
         """
+        This function gets called exactly once per add-on. To call it again, set `self.initialized = False`.
+
         :return: A list of commands that will initialize this module.
         """
 
@@ -72,6 +76,9 @@ class AddOn(ABC):
     def on_send(self, resp: List[bytes]) -> None:
         """
         This is called after commands are sent to the build and a response is received.
+
+        Use this function to send commands to the build on the next frame, given the `resp` response.
+        Any commands in the `self.commands` list will be sent on the next frame.
 
         :param resp: The response from the build.
         """

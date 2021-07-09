@@ -32,3 +32,7 @@ python3 screenshotter.py the_name_of_the_model
 ```
 
 Replace `the_name_of_the_model` with a valid model name. Use [ModelLibrarian](../Python/librarian/model_librarian.md) to get a list of valid model names.
+
+### Segfaults on Linux
+
+Occasionally, the screenshotter will segfault on Linux if the argument `--type models_full` is included (it segfaults on models in the tdw-private S3 bucket). To avoid this, include the argument `--temp_urls`.

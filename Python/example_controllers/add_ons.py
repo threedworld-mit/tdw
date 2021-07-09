@@ -1,8 +1,10 @@
+from pathlib import Path
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.debug import Debug
 from tdw.add_ons.image_capture import ImageCapture
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 class AddOns(Controller):
@@ -13,10 +15,12 @@ class AddOns(Controller):
     def run(self) -> None:
         self.start()
         object_id = 0
-        path = "D:/add_ons_images"
+
+        path: Path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("add_ons")
 
         # Create a Debug add-on.
-        debug = Debug(record=True, path=path + "/log.json")
+        debug = Debug(record=True, path=path.joinpath("log.json"))
+        print(f"Images and log.json will be saved to {path}")
 
         # Create a third-person camera that will look at the target object.
         camera = ThirdPersonCamera(position={"x": -1, "y": 1.5, "z": 0.4},

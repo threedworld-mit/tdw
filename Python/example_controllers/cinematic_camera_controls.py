@@ -2,6 +2,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.cinematic_camera import CinematicCamera
 from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 class CinematicCameraController(Controller):
@@ -15,8 +16,9 @@ class CinematicCameraController(Controller):
         camera = CinematicCamera(position={"x": 4, "y": 1.5, "z": 0},
                                  rotation={"x": 2, "y": 45, "z": 0})
         # Save images per frame.
-        capture = ImageCapture(path="D:/cinematic_camera_controller",
+        capture = ImageCapture(path=EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("cinematic_camera_controller"),
                                avatar_ids=[camera.avatar_id])
+        print(f"Images will be saved to {capture.path}")
         # Add the add-ons to the controller.
         self.add_ons.extend([camera, capture])
 

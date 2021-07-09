@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.18
+
+### Build
+
+- Fixed: `rotate_object_by`, `rotate_object_to`, and `robot_object_to_euler_angles` incorrectly translate the object if `use_centroid == True`.
+
 ## v1.8.17
 
 ### Command API

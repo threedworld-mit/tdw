@@ -61,13 +61,6 @@ class Audio(Controller):
         id_0 = self.get_unique_id()
         id_1 = self.get_unique_id()
 
-        # If this is OS X, set error handling to ignore Resonance Audio exceptions (which are harmless).
-        if system() == "Darwin":
-            self.communicate({"$type": "set_error_handling",
-                              "exception": False,
-                              "error": False,
-                              "warning": False})
-
         # Add the scene and the objects.
         # Make both objects kinematic.
         commands = [self.get_add_scene("tdw_room"),

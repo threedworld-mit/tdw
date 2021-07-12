@@ -90,8 +90,7 @@ class Controller(object):
 
         # Set error handling to default values (the build will try to quit on errors and exceptions).
         # Request the version to log it and remember here if the Editor is being used.
-        resp = self.communicate([{"$type": "set_error_handling"},
-                                 {"$type": "send_version"}])
+        resp = self.communicate([{"$type": "send_version"}])
         self._is_standalone: bool = False
         self._tdw_version: str = ""
         self._unity_version: str = ""

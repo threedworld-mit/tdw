@@ -211,22 +211,20 @@ class CinematicCamera(ThirdPersonCameraBase):
     """
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 fov: int = None, pass_masks: List[str] = None, framerate: int = None,
-                 move_speed: float = 0.1, rotate_speed: float = 3, focus_speed: float = 0.3):
+                 fov: int = None, framerate: int = None, move_speed: float = 0.1, rotate_speed: float = 3,
+                 focus_speed: float = 0.3):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
         :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param fov: If not None, this is the initial field of view. Otherwise, defaults to 35.
-        :param pass_masks: The pass masks. If None, defaults to `["_img"]`.
         :param framerate: If not None, sets the target framerate.
         :param move_speed: The directional speed of the camera. This can later be adjusted by setting `self.move_speed`.
         :param rotate_speed: The angular speed of the camera. This can later be adjusted by setting `self.rotate_speed`.
         :param focus_speed: The speed of the focus of the camera. This can later be adjusted by setting `self.focus_speed`.
         """
 
-        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, fov=fov, pass_masks=pass_masks,
-                         framerate=framerate)
+        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, fov=fov, framerate=framerate)
         """:field
         The directional speed of the camera. This can later be adjusted by setting `self.move_speed`.
         """

@@ -27,8 +27,7 @@ class AddOns(Controller):
                                    look_at=object_id)
 
         # Create an image capture add-on to save images per-frame.
-        capture = ImageCapture(path=path,
-                               avatar_ids=[camera.avatar_id])
+        capture = ImageCapture(path=path, avatar_ids=[camera.avatar_id], pass_masks=["_img"])
 
         # Add all of the add-ons.
         self.add_ons.extend([debug, camera, capture])

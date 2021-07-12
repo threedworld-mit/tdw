@@ -65,7 +65,7 @@ class Audio(Controller):
         if system() == "Darwin":
             self.communicate({"$type": "set_error_handling",
                               "exception": False,
-                              "error": True,
+                              "error": False,
                               "warning": False})
 
         # Add the scene and the objects.

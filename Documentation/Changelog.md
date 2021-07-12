@@ -16,6 +16,14 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `set_magnebot_wheel_friction_by_rotation` | Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approaches the target angle. |
 | `set_robot_joint_friction`                | Set the friction coefficient of a robot joint.               |
 
+### Output Data
+
+#### New Output Data
+
+| Output Data      | Description                                         |
+| ---------------- | --------------------------------------------------- |
+| `MagnebotWheels` | A message sent when a Magnebot arrives at a target. |
+
 ## v1.8.18
 
 ### Build

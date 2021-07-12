@@ -108,4 +108,4 @@ class Audio(Controller):
 
 
 if __name__ == "__main__":
-    Audio().run()
+    Audio(launch_build=False).run()

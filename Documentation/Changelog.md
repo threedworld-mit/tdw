@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.19
+
+### Build
+
+- Fixed: Resonance Audio doesn't work on OS X.
+
 ## v1.8.18
 
 ### Build

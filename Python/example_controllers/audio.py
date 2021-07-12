@@ -61,6 +61,13 @@ class Audio(Controller):
         id_0 = self.get_unique_id()
         id_1 = self.get_unique_id()
 
+        # If this is OS X, set error handling to ignore Resonance Audio exceptions (which are harmless).
+        if system() == "Darwin":
+            self.communicate({"$type": "set_error_handling",
+                              "exception": False,
+                              "error": True,
+                              "warning": False})
+
         # Add the scene and the objects.
         # Make both objects kinematic.
         commands = [self.get_add_scene("tdw_room"),
@@ -86,12 +93,6 @@ class Audio(Controller):
         # Create the avatar.
         commands.extend(TDWUtils.create_avatar(position={"x": -4, "y": 1.5, "z": 0},
                                                look_at={"x": 2.5, "y": 0, "z": 0}))
-        # If this is OS X, set error handling to ignore Resonance Audio exceptions (which are harmless).
-        if system() == "Darwin":
-            commands.append({"$type": "set_error_handling",
-                             "exception": False,
-                             "error": True,
-                             "warning": False})
         # Add the audio sensor.
         # Set the field of view.
         # Create the reverb space.

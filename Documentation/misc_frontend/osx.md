@@ -64,7 +64,8 @@ from tdw.controller import Controller
 
 c = Controller()
 c.communicate([{"$type": "set_error_handling",
-                "exception": False},
+                "exception": False,
+                "error": False},
                {"$type": "add_environ_audio_sensor"}])
 ```
 

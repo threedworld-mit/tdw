@@ -29,7 +29,7 @@ class Controller(object):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = True):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = False):
         """
         Create the network socket and bind the socket to the port.
 

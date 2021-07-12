@@ -215,6 +215,7 @@
 | [`set_legacy_shaders`](#set_legacy_shaders) | Set whether TDW should use legacy shaders. Prior to TDW v1.8 there was a bug and this command would result in lower image quality. Since then, TDW has far better rendering quality (at no speed penalty). Send this command only if you began your project in an earlier version of TDW and need to ensure that the rendering doesn't change. Initial value = False. (TDW will correctly set each object's shaders.) |
 | [`set_post_process`](#set_post_process) | Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled) |
 | [`simulate_physics`](#simulate_physics) | Toggle whether to simulate physics per list of sent commands (i.e. per frame). If false, the simulation won't step the physics forward. Initial value = True (simulate physics per frame). |
+| [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = False (download S3 objects directly, without using temporary URLs) |
 
 **Load From Resources**
 
@@ -3105,6 +3106,21 @@ Toggle whether to simulate physics per list of sent commands (i.e. per frame). I
 | --- | --- | --- | --- |
 | `"value"` | bool | Boolean value. | |
 
+***
+
+## **`use_pre_signed_urls`**
+
+Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = False (download S3 objects directly, without using temporary URLs)
+
+
+```python
+{"$type": "use_pre_signed_urls", "value": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"value"` | bool | Boolean value. | |
+
 # LoadFromResources
 
 Load something of type T from resources.
@@ -3420,7 +3436,7 @@ Rotate an object by a given angle around a given axis.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"axis"` | Axis | The axis of rotation. | "yaw" |
-| `"angle"` | float | The angle of rotation. | |
+| `"angle"` | float | The angle of rotation in degrees. | |
 | `"is_world"` | bool | If true, the object will rotate via "global" directions and angles. If false, the object will rotate locally. | True |
 | `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). This overrides is_world | False |
 | `"id"` | int | The unique object ID. | |

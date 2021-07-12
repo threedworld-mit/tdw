@@ -10,6 +10,11 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Fixed: `rotate_object_by`, `rotate_object_to`, and `robot_object_to_euler_angles` incorrectly translate the object if `use_centroid == True`.
 
+### Model Library
+
+-  Marked salt_shaker as do_not_use
+- Updated objects.csv with new objects
+
 ## v1.8.17
 
 ### Command API

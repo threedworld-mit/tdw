@@ -12,8 +12,20 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Model Library
 
--  Marked salt_shaker as do_not_use
+- Marked salt_shaker as do_not_use
 - Updated objects.csv with new objects
+
+### Example Controllers
+
+- Fixed `audio.py` so that it works on OS X.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document    | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `osx.md` | Added a section for how to handle Resonance Audio exceptions. |
 
 ## v1.8.17
 
@@ -73,7 +85,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Example Controllers
 
 - Added: `minimal_audio_dataset.py` Minimal example of how to generate an audio dataset.
-- Fixed `audio.py` so that it works on OS X.
 
 ### Use Cases
 
@@ -88,7 +99,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `README.md` | Removed link to tdw_sound20k                                 |
 | `getting_started.md` | Removed paragraph about UDP heartbeat and reverted network diagram. |
 | `video.md`  | Added a sentence directing the reader to minimal_audio_dataset.py |
-| `osx.md` | Added a section for how to handle Resonance Audio exceptions. |
 
 ## v1.8.15
 

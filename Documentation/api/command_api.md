@@ -5474,20 +5474,25 @@ Set the friction coefficient of the Magnebot wheels given a target distance. The
 - <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
 
     - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`MagnebotWheels`](output_data.md#MagnebotWheels)</font>
 
 ```python
 {"$type": "set_magnebot_wheel_friction_by_position", "target": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
 ```
 
 ```python
-{"$type": "set_magnebot_wheel_friction_by_position", "target": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "break_distance": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
+{"$type": "set_magnebot_wheel_friction_by_position", "target": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_distance": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"target"` | Vector3 | The target destination of the Magnebot. | |
 | `"origin"` | Vector3 | The origin of the Magnebot at the start of the action (not its current position). | |
-| `"break_distance"` | float | The distance at which the Magnebot should start to break, in meters. | 0.1 |
+| `"brake_distance"` | float | The distance at which the Magnebot should start to brake, in meters. | 0.1 |
 | `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
 | `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
 | `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |
@@ -5502,20 +5507,25 @@ Set the friction coefficient of the Magnebot wheels given a target angle. The fr
 - <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
 
     - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`MagnebotWheels`](output_data.md#MagnebotWheels)</font>
 
 ```python
 {"$type": "set_magnebot_wheel_friction_by_rotation", "target": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
 ```
 
 ```python
-{"$type": "set_magnebot_wheel_friction_by_rotation", "target": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "break_angle": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
+{"$type": "set_magnebot_wheel_friction_by_rotation", "target": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_angle": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"target"` | float | The target rotation of the Magnebot in degrees. | |
 | `"origin"` | Vector3 | The starting forward directional vector of the Magnebot at the start of the action (not its current forward directional vector). | |
-| `"break_angle"` | float | The angle at which the Magnebot should start to break, in degrees. | 0.1 |
+| `"brake_angle"` | float | The angle at which the Magnebot should start to brake, in degrees. | 0.1 |
 | `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
 | `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
 | `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |

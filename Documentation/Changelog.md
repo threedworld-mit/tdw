@@ -13,6 +13,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | Command                                                      | Modification                                                 |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `send_overlap_box`<br>`send_overlap_capsule`<br>`send_overlap_sphere` | Removed the `"frequency"` parameter; these commands now send data exactly once (never per-frame).<br>It's now possible to receive multiple `Overlap` output data objects per frame instead of just one. |
+
 ## v1.8.18
 
 ### Build

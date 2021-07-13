@@ -10,11 +10,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 #### New Commands
 
-| Command                                   | Description                                                  |
-| ----------------------------------------- | ------------------------------------------------------------ |
-| `set_magnebot_wheel_friction_by_position` | Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approaches the target distance. |
-| `set_magnebot_wheel_friction_by_rotation` | Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approaches the target angle. |
-| `set_robot_joint_friction`                | Set the friction coefficient of a robot joint.               |
+| Command                                            | Description                                                  |
+| -------------------------------------------------- | ------------------------------------------------------------ |
+| `set_magnebot_wheel_friction_by_position`          | Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approaches the target distance. |
+| `set_magnebot_wheel_friction_by_angle`             | Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approaches the target angle. |
+| `set_magnebot_wheel_friction_by_angle_to_position` | Set the friction coefficient of the Magnebot wheels given a target angle to a position. The friction coefficient will increase as the Magnebot approaches the target angle. Additionally, the command will check the alignment to the target position. |
+| `set_robot_joint_friction`                         | Set the friction coefficient of a robot joint.               |
 
 ### Output Data
 

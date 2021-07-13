@@ -442,8 +442,8 @@
 
 | Command | Description |
 | --- | --- |
+| [`set_magnebot_wheel_friction_by_angle`](#set_magnebot_wheel_friction_by_angle) | Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approaches the target angle.  |
 | [`set_magnebot_wheel_friction_by_position`](#set_magnebot_wheel_friction_by_position) | Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approaches the target distance.  |
-| [`set_magnebot_wheel_friction_by_rotation`](#set_magnebot_wheel_friction_by_rotation) | Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approaches the target angle.  |
 
 **Robot Joint Command**
 
@@ -5469,6 +5469,39 @@ These commands set the friction coefficient of a Magnebot's wheels over time giv
 
 ***
 
+## **`set_magnebot_wheel_friction_by_angle`**
+
+Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approaches the target angle. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`MagnebotWheels`](output_data.md#MagnebotWheels)</font>
+
+```python
+{"$type": "set_magnebot_wheel_friction_by_angle", "angle": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "set_magnebot_wheel_friction_by_angle", "angle": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_angle": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The target angle of the Magnebot in degrees. | |
+| `"origin"` | Vector3 | The starting forward directional vector of the Magnebot at the start of the action (not its current forward directional vector). | |
+| `"brake_angle"` | float | The angle at which the Magnebot should start to brake, in degrees. | 0.1 |
+| `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
+| `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
+| `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
 ## **`set_magnebot_wheel_friction_by_position`**
 
 Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approaches the target distance. 
@@ -5483,51 +5516,18 @@ Set the friction coefficient of the Magnebot wheels given a target distance. The
     - <font style="color:green">**Type:** [`MagnebotWheels`](output_data.md#MagnebotWheels)</font>
 
 ```python
-{"$type": "set_magnebot_wheel_friction_by_position", "target": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "set_magnebot_wheel_friction_by_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
 ```
 
 ```python
-{"$type": "set_magnebot_wheel_friction_by_position", "target": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_distance": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
+{"$type": "set_magnebot_wheel_friction_by_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_distance": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"target"` | Vector3 | The target destination of the Magnebot. | |
+| `"position"` | Vector3 | The target destination of the Magnebot. | |
 | `"origin"` | Vector3 | The origin of the Magnebot at the start of the action (not its current position). | |
 | `"brake_distance"` | float | The distance at which the Magnebot should start to brake, in meters. | 0.1 |
-| `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
-| `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
-| `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |
-| `"id"` | int | The ID of the robot in the scene. | 0 |
-
-***
-
-## **`set_magnebot_wheel_friction_by_rotation`**
-
-Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approaches the target angle. 
-
-- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
-
-    - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`MagnebotWheels`](output_data.md#MagnebotWheels)</font>
-
-```python
-{"$type": "set_magnebot_wheel_friction_by_rotation", "target": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "set_magnebot_wheel_friction_by_rotation", "target": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_angle": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"target"` | float | The target rotation of the Magnebot in degrees. | |
-| `"origin"` | Vector3 | The starting forward directional vector of the Magnebot at the start of the action (not its current forward directional vector). | |
-| `"brake_angle"` | float | The angle at which the Magnebot should start to brake, in degrees. | 0.1 |
 | `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
 | `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
 | `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |

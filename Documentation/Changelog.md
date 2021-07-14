@@ -10,12 +10,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 #### New Commands
 
-| Command                                            | Description                                                  |
-| -------------------------------------------------- | ------------------------------------------------------------ |
-| `set_magnebot_wheel_friction_by_position`          | Set the friction coefficient of the Magnebot wheels given a target distance. The friction coefficient will increase as the Magnebot approaches the target distance. |
-| `set_magnebot_wheel_friction_by_angle`             | Set the friction coefficient of the Magnebot wheels given a target angle. The friction coefficient will increase as the Magnebot approaches the target angle. |
-| `set_magnebot_wheel_friction_by_angle_to_position` | Set the friction coefficient of the Magnebot wheels given a target angle to a position. The friction coefficient will increase as the Magnebot approaches the target angle. Additionally, the command will check the alignment to the target position. |
-| `set_robot_joint_friction`                         | Set the friction coefficient of a robot joint.               |
+| Command                              | Description                                                  |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `set_magnebot_wheels_during_move`    | Set the friction coefficients of the Magnebot's wheels during a move_by() or move_to() action, given a target position. The friction coefficients will increase as the Magnebot approaches the target position and the command will announce if the Magnebot arrives at the target position. |
+| `set_magnebot_wheels_during_turn_by` | Set the friction coefficients of the Magnebot's wheels during a turn_by() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. |
+| `set_magnebot_wheels_during_turn_to` | Set the friction coefficients of the Magnebot's wheels during a turn_to() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. Because the Magnebot will move slightly while rotating, this command has an additional position parameter to re-check for alignment with the target. |
+| `set_robot_joint_friction`           | Set the friction coefficient of a robot joint.               |
 
 ### Output Data
 

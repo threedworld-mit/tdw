@@ -74,8 +74,8 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
     """
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 fov: int = None, pass_masks: List[str] = None, framerate: int = None,
-                 look_at: Union[int, Dict[str, float]] = None, follow_object: int = None, follow_rotate: bool = False):
+                 fov: int = None, framerate: int = None, look_at: Union[int, Dict[str, float]] = None,
+                 follow_object: int = None, follow_rotate: bool = False):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
         :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
@@ -84,12 +84,10 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
         :param fov: If not None, this is the initial field of view. Otherwise, defaults to 35.
         :param follow_object: If not None, follow an object per frame. The `position` parameter will be treated as a relative value from the target object rather than worldspace coordinates.
         :param follow_rotate: If True, match the rotation of the object. Ignored if `follow_object` is None.
-        :param pass_masks: The pass masks. If None, defaults to `["_img"]`.
         :param framerate: If not None, sets the target framerate.
         """
 
-        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, fov=fov, pass_masks=pass_masks,
-                         framerate=framerate)
+        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, fov=fov, framerate=framerate)
 
         """:field
         The target object or position that the camera will look at. Can be None (the camera won't look at a target).

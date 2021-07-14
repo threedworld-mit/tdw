@@ -2,6 +2,7 @@ from pathlib import Path
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.debug import Debug as DBug
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from time import sleep
 
@@ -20,34 +21,35 @@ class Debug(Controller):
         d = DBug(record=True, path=path)
         self.add_ons.append(d)
         self.start()
-        self.communicate(TDWUtils.create_empty_room(12, 12))
-
-        o_id = self.add_object("rh10")
-
-        self.communicate(TDWUtils.create_avatar(position={"x": 1, "y": 3, "z": 0}))
-
-        self.communicate([{"$type": "set_mass",
-                           "id": o_id,
-                           "mass": 15},
-                          {"$type": "rotate_object_by",
-                           "axis": "pitch",
-                           "id": o_id, "angle": 45},
-                          {"$type": "apply_force_magnitude_to_object",
-                           "id": o_id,
-                           "magnitude": 250.0}])
+        o_id = self.get_unique_id()
+        # Create the scene and add an object Set the mass of the object and apply a force..
+        commands = [TDWUtils.create_empty_room(12, 12),
+                    self.get_add_object("rh10",
+                                        object_id=o_id),
+                    {"$type": "set_mass",
+                     "id": o_id,
+                     "mass": 15},
+                    {"$type": "rotate_object_by",
+                     "axis": "pitch",
+                     "id": o_id, "angle": 45},
+                    {"$type": "apply_force_magnitude_to_object",
+                     "id": o_id,
+                     "magnitude": 250.0}]
+        # Add the third-person camera.
+        camera = ThirdPersonCamera(position={"x": 1, "y": 3, "z": 0},
+                                   look_at=o_id)
+        self.add_ons.append(camera)
+        self.communicate(commands)
+        # Keep looking at the object as it moves.
         for i in range(100):
-            self.communicate({"$type": "look_at",
-                              "avatar_id": "a",
-                              "object_id": o_id})
+            self.communicate([])
         sleep(1)
-        # Print the recorded commands to the console.
-        for commands in d.playback:
-            print(commands)
-
+        # Remove the camera add-on.
+        self.add_ons.remove(camera)
         # Play back all of the commands.
         d.record = False
         while len(d.playback) > 0:
-            print(d.playback)
+            print(d.playback[0])
             self.communicate([])
         self.communicate({"$type": "terminate"})
 

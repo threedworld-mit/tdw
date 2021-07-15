@@ -45,7 +45,7 @@ class CinematicCamera(ThirdPersonCameraBase):
     c.communicate(TDWUtils.create_empty_room(12, 12))
     ```
 
-    Each function in this class will *start* to move the camera but won't actually send commands (because this is not an `AddOn`, not a `Controller`).
+    Each function in this class will *start* to move the camera but won't actually send commands (because this is an `AddOn`, not a `Controller`).
 
     To actually apply changes to the camera and the scene, you need to send commands to the build like you normally would. In this example, the list of commands is empty, but it doesn't have to be:
 

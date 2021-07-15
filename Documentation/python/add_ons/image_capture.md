@@ -2,7 +2,10 @@
 
 `from tdw.add_ons.image_capture import ImageCapture`
 
-Per frame, request image data and save the images to disk.
+Request image data and save the images to disk. By default, images will be saved every frame for each specified avatar, but this add-on can be reset to save images for specific avatars, certain frames, etc.
+
+Note that image capture in TDW is *not* the same as image *rendering*. An avatar can render image to a display without actually sending them to the controller.
+Sending images and image passes (such as the `_id` segmentation color pass) is the slowest process in TDW; only request image capture when you actually need it.
 
 ```python
 from tdw.controller import Controller
@@ -14,12 +17,11 @@ c = Controller(launch_build=False)
 c.start()
 
 # Add a third-person camera. It will look at object 0.
-    object_id = 0
+object_id = 0
 camera = ThirdPersonCamera(position={"x": 0.5, "y": 1.5, "z": -2},
-                           look_at=0,
-                           pass_masks=["_img", "_id"])
+                           look_at=object_id)
 # Tell the camera to capture images per-frame.
-capture = ImageCapture(avatar_ids=[camera.avatar_id], path="D:/image_capture_test")
+capture = ImageCapture(avatar_ids=[camera.avatar_id], path="D:/image_capture_test", pass_masks=["_img", "_id"])
 c.add_ons.extend([camera, capture])
 
 # Create an empty room and add an object.
@@ -44,6 +46,8 @@ c.communicate({"$type": "terminate"})
 
 - `avatar_ids` The IDs of the avatars that will capture and save images. If empty, all avatars will capture and save images.
 
+- `images` Raw [`Images` output data](../../api/output_data.md#Images) from the build. Key = The ID of the avatar. This is updated per frame. If an avatar didn't capture an image on this frame, it won't be in this dictionary.
+
 ***
 
 ## Functions
@@ -52,13 +56,14 @@ c.communicate({"$type": "terminate"})
 
 **`ImageCapture(path)`**
 
-**`ImageCapture(path, avatar_ids=None, png=False)`**
+**`ImageCapture(path, avatar_ids=None, png=False, pass_masks=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | path |  Union[str, Path] |  | The path to the output directory. |
-| avatar_ids |  List[str] | None | The IDs of the avatars that will capture and save images. If empty, all avatars will capture and save images. |
+| avatar_ids |  List[str] | None | The IDs of the avatars that will capture and save images. If empty, all avatars will capture and save images. Note that these avatars must already exist in the scene (if you've added the avatars via a [`ThirdPersonCamera` add-on](third_person_camera.md), you must add the `ThirdPersonCamera` first, *then* `ImageCapture`). |
 | png |  bool  | False | If True, images will be lossless png files. If False, images will be jpgs. Usually, jpg is sufficient. |
+| pass_masks |  List[str] | None | A list of image passes that will be captured by the avatars. If None, defaults to `["_img"]`. For a description of each of pass mask, [read this](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_pass_masks). |
 
 #### get_initialization_commands
 
@@ -67,6 +72,9 @@ c.communicate({"$type": "terminate"})
 This function gets called exactly once per add-on. To call it again, set `self.initialized = False`.
 
 _Returns:_  A list of commands that will initialize this module.
+
+#set_pass_masks). |
+| save |  |  | If True, automatically save images to disk per frame. If False, images won't be saved but the `self.images` dictionary will still be updated. |
 
 #### on_send
 
@@ -81,7 +89,35 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-##### before_send
+#set_pass_masks). |
+| save |  |  | If True, automatically save images to disk per frame. If False, images won't be saved but the `self.images` dictionary will still be updated. |
+
+#### set
+
+**`self.set()`**
+
+**`self.set(frequency="always", avatar_ids=None, pass_masks=None, save=True)`**
+
+Set the frequency of images and which avatars will capture images.
+By default, all of the avatars specified in the constructor (if None, all avatars in the scene) will capture images every frame.
+This function will override the previous image capture settings; in other words, setting `frequency` to `"once"` for one avatar will make all other avatars stop capturing images per frame.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| frequency |  str  | "always" | The frequency at which images are captured. Options: `"always"` (capture images every frame), `"once"` (capture an image only on the next frame), `"never"` (stop capturing images). |
+| avatar_ids |  List[str] | None | The IDs of the avatar that will capture images. If None, all avatars in the scene will capture images. |
+| pass_masks |  List[str] | None | A list of image passes that will be captured by the avatars. If None, defaults to `["_img"]`. For a description of each of pass mask, [read this](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_pass_masks). |
+| save |  bool  | True | If True, automatically save images to disk per frame. If False, images won't be saved but the `self.images` dictionary will still be updated. |
+
+#### get_pil_images
+
+**`self.get_pil_images()`**
+
+Convert the latest image data from the build (`self.images`) to PIL images. Note that it is not necessary to call this function to save images; use this only to analyze an image at runtime.
+
+_Returns:_  A dictionary of PIL images from the latest image data from the build. Key = The avatar ID. Value = A dictionary; key = the pass mask, value = the PIL image.
+
+#### before_send
 
 **`self.before_send(commands)`**
 

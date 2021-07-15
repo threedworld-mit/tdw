@@ -92,7 +92,7 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 **`ThirdPersonCamera(look_at)`**
 
-**`ThirdPersonCamera(avatar_id=None, position=None, rotation=None, look_at, fov=None, follow_object=None, follow_rotate=False, pass_masks=None, framerate=None)`**
+**`ThirdPersonCamera(avatar_id=None, position=None, rotation=None, look_at, fov=None, follow_object=None, follow_rotate=False, framerate=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -103,7 +103,6 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 | fov |  int  | None | If not None, this is the initial field of view. Otherwise, defaults to 35. |
 | follow_object |  int  | None | If not None, follow an object per frame. The `position` parameter will be treated as a relative value from the target object rather than worldspace coordinates. |
 | follow_rotate |  bool  | False | If True, match the rotation of the object. Ignored if `follow_object` is None. |
-| pass_masks |  List[str] | None | The pass masks. If None, defaults to `["_img"]`. |
 | framerate |  int  | None | If not None, sets the target framerate. |
 
 #### on_send

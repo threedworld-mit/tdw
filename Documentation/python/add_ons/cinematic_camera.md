@@ -20,7 +20,7 @@ c.add_ons.append(cam)
 c.communicate(TDWUtils.create_empty_room(12, 12))
 ```
 
-Each function in this class will *start* to move the camera but won't actually send commands (because this is not an `AddOn`, not a `Controller`).
+Each function in this class will *start* to move the camera but won't actually send commands (because this is an `AddOn`, not a `Controller`).
 
 To actually apply changes to the camera and the scene, you need to send commands to the build like you normally would. In this example, the list of commands is empty, but it doesn't have to be:
 
@@ -206,7 +206,7 @@ c.communicate({"$type": "terminate"})
 
 **`CinematicCamera()`**
 
-**`CinematicCamera(avatar_id=None, position=None, rotation=None, fov=None, pass_masks=None, framerate=None, move_speed=0.1, rotate_speed=3, focus_speed=0.3)`**
+**`CinematicCamera(avatar_id=None, position=None, rotation=None, fov=None, framerate=None, move_speed=0.1, rotate_speed=3, focus_speed=0.3)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -214,7 +214,6 @@ c.communicate({"$type": "terminate"})
 | position |  Dict[str, float] | None | The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | rotation |  Dict[str, float] | None | The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | fov |  int  | None | If not None, this is the initial field of view. Otherwise, defaults to 35. |
-| pass_masks |  List[str] | None | The pass masks. If None, defaults to `["_img"]`. |
 | framerate |  int  | None | If not None, sets the target framerate. |
 | move_speed |  float  | 0.1 | The directional speed of the camera. This can later be adjusted by setting `self.move_speed`. |
 | rotate_speed |  float  | 3 | The angular speed of the camera. This can later be adjusted by setting `self.rotate_speed`. |

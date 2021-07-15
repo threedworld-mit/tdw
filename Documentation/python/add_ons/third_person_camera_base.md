@@ -20,7 +20,7 @@ An abstract base class for third-person camera controller add-ons.
 
 **`ThirdPersonCameraBase()`**
 
-**`ThirdPersonCameraBase(avatar_id=None, position=None, rotation=None, fov=None, pass_masks=None, framerate=None)`**
+**`ThirdPersonCameraBase(avatar_id=None, position=None, rotation=None, fov=None, framerate=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -28,7 +28,6 @@ An abstract base class for third-person camera controller add-ons.
 | position |  Dict[str, float] | None | The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | rotation |  Dict[str, float] | None | The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | fov |  int  | None | If not None, this is the initial field of view. Otherwise, defaults to 35. |
-| pass_masks |  List[str] | None | The pass masks. If None, defaults to `["_img"]`. |
 | framerate |  int  | None | If not None, sets the target framerate. |
 
 #### on_send

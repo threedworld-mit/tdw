@@ -12,11 +12,11 @@ c = Controller()
 b = Benchmark()
 b.start()
 c.add_ons.append(b)
-while b.fps < 0:
+for i in range(2000):
     c.communicate([])
 b.stop()
+print(b.get_speed())
 c.communicate({"$type": "terminate"})
-print(b.speed)
 ```
 
 ***

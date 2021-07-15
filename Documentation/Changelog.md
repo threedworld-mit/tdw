@@ -4,6 +4,20 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.20
+
+### Command API
+
+#### New Commands
+
+| Command                | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| `perlin_noise_terrain` | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain. |
+
+### Example Controllers
+
+- Added: `perlin_noise_terrain.py` Example of how to create a scene with procedurally generated terrain.
+
 ## v1.8.19
 
 ### Command API

@@ -4,6 +4,59 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.19
+
+### Command API
+
+#### Modified Commands
+
+| Command                                                      | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `send_overlap_box`<br>`send_overlap_capsule`<br>`send_overlap_sphere` | Removed the `"frequency"` parameter; these commands now send data exactly once (never per-frame).<br>It's now possible to receive multiple `Overlap` output data objects per frame instead of just one. |
+
+### Build
+
+- Fixed: Resonance Audio doesn't work on OS X.
+
+## v1.8.18
+
+### Build
+
+- Fixed: `rotate_object_by`, `rotate_object_to`, and `robot_object_to_euler_angles` incorrectly translate the object if `use_centroid == True`.
+
+### Model Library
+
+-  Marked salt_shaker as do_not_use
+- Updated objects.csv with new objects
+
+## v1.8.17
+
+### Command API
+
+#### New Commands
+
+| Command               | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| `use_pre_signed_urls` | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = False (download S3 objects directly, without using temporary URLs) |
+
+### Model library
+
+- Marked cylinder001 as do_not_use
+
+### Python
+
+- Added optional argument `--temp_urls` to `screenshotter.py` (If included, sends `use_pre_signed_urls`).
+- `screenshotter.py` no longer automatically launches the build.
+- Added optional argument `--temp_urls` to `single_object.py` (If included, sends `use_pre_signed_urls`).
+
+### Documentation
+
+#### Modified Documentation
+
+| Document       | Modification                                             |
+| -------------- | -------------------------------------------------------- |
+| `debug_tdw.md` | Added a section for how and when to use pre-signed URLs. |
+
 ## v1.8.16
 
 ### Command API
@@ -25,6 +78,11 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Build
 
 - Fixed: `set_visual_material` doesn't work after sending `set_flex_soft_actor`.
+
+### Model library
+
+- Added models from models_full.json to models_core.json: alarm_clock, backpack, b04_backpack, b04_glass_06_vray, cgaxis_models_23_19_vray, holy_bible, b04_bowl_smooth, b04_default, calculator, 034_vray, cgaxis_models_volume_59_15_vray, b04_cassete, b04_dat, steam-punk_gear_29, steam-punk_gear_25, steam-punk_gear_27, hair_comb_2010, coffeecup004, coffee_cup, mug, b04_geosphere001, b05_48_body_shop_hair_brush, b04_comb, engineers_hammer_vray, b04_headphones_31_12, kitchen_sieve, cucharon_utensilios, lighter, b04_lighter, zippo, b03_padlock, cylinder001, b03_pen_01_001, 868580_pliers_max2016, b04_wire_pincers, remote_vr_2012, salt_shaker, scissors, b03_old_scissors, b04_screwdriver_v2_texture_, b04_screwdriver_render, b04_roller_new, b03_roller_skate, b03_spoon_001, b03_morphy_2013__vray, vray_043, b04_champions_trophy, trophy01, trophy02, omega_seamaster_set, mouse_02_vray, b05_champagne_cup_vray, ball_peen_hammer, b05_vray_cassette_render_scene, generic_toothbrush_001, toothbrush, apple_ipod_touch_yellow_vray
+- Marked models as do_not_use: b03_dice and b03_mando_samsung_max
 
 ### Example Controllers
 

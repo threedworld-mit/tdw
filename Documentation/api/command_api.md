@@ -215,6 +215,7 @@
 | [`set_legacy_shaders`](#set_legacy_shaders) | Set whether TDW should use legacy shaders. Prior to TDW v1.8 there was a bug and this command would result in lower image quality. Since then, TDW has far better rendering quality (at no speed penalty). Send this command only if you began your project in an earlier version of TDW and need to ensure that the rendering doesn't change. Initial value = False. (TDW will correctly set each object's shaders.) |
 | [`set_post_process`](#set_post_process) | Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled) |
 | [`simulate_physics`](#simulate_physics) | Toggle whether to simulate physics per list of sent commands (i.e. per frame). If false, the simulation won't step the physics forward. Initial value = True (simulate physics per frame). |
+| [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = False (download S3 objects directly, without using temporary URLs) |
 
 **Load From Resources**
 
@@ -453,6 +454,16 @@
 | [`set_revolute_target`](#set_revolute_target) | Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle. |
 | [`set_spherical_target`](#set_spherical_target) | Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles. |
 
+**Send Multiple Data Once Command**
+
+**Send Overlap Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_overlap_box`](#send_overlap_box) | Check which objects a box-shaped space overlaps with.  |
+| [`send_overlap_capsule`](#send_overlap_capsule) | Check which objects a capsule-shaped space overlaps with.  |
+| [`send_overlap_sphere`](#send_overlap_sphere) | Check which objects a sphere-shaped space overlaps with.  |
+
 **Send Raycast Command**
 
 | Command | Description |
@@ -489,14 +500,6 @@
 | [`send_images`](#send_images) | Send images and metadata.  |
 | [`send_image_sensors`](#send_image_sensors) | Send data about each of the avatar's ImageSensors.  |
 | [`send_screen_positions`](#send_screen_positions) | Given a list of worldspace positions, return the screenspace positions according to each of the avatar's camera.  |
-
-**Send Overlap Command**
-
-| Command | Description |
-| --- | --- |
-| [`send_overlap_box`](#send_overlap_box) | Check which objects a box-shaped space overlaps with.  |
-| [`send_overlap_capsule`](#send_overlap_capsule) | Check which objects a capsule-shaped space overlaps with.  |
-| [`send_overlap_sphere`](#send_overlap_sphere) | Check which objects a sphere-shaped space overlaps with.  |
 
 **Send Single Data Command**
 
@@ -3105,6 +3108,21 @@ Toggle whether to simulate physics per list of sent commands (i.e. per frame). I
 | --- | --- | --- | --- |
 | `"value"` | bool | Boolean value. | |
 
+***
+
+## **`use_pre_signed_urls`**
+
+Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = False (download S3 objects directly, without using temporary URLs)
+
+
+```python
+{"$type": "use_pre_signed_urls", "value": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"value"` | bool | Boolean value. | |
+
 # LoadFromResources
 
 Load something of type T from resources.
@@ -3420,7 +3438,7 @@ Rotate an object by a given angle around a given axis.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"axis"` | Axis | The axis of rotation. | "yaw" |
-| `"angle"` | float | The angle of rotation. | |
+| `"angle"` | float | The angle of rotation in degrees. | |
 | `"is_world"` | bool | If true, the object will rotate via "global" directions and angles. If false, the object will rotate locally. | True |
 | `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). This overrides is_world | False |
 | `"id"` | int | The unique object ID. | |
@@ -5586,6 +5604,94 @@ Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint
 | `"joint_id"` | int | The ID of the joint. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
+# SendMultipleDataOnceCommand
+
+These commands send data exactly once to the controller (not per-frame). Unlike most output data such as Tranforms, there can be more than one output data object of this type in the build's response. For example, the build can send multiple Raycast objects in the same list.
+
+# SendOverlapCommand
+
+These commands create an overlap shape and then check which objects are within that shape.
+
+***
+
+## **`send_overlap_box`**
+
+Check which objects a box-shaped space overlaps with. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "send_overlap_box", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_overlap_box", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"half_extents"` | Vector3 | Half of the extents of the box (i.e. half the scale of an object). | |
+| `"rotation"` | Quaternion | The rotation of the box. | |
+| `"position"` | Vector3 | The center of the shape. | |
+| `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
+
+***
+
+## **`send_overlap_capsule`**
+
+Check which objects a capsule-shaped space overlaps with. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "send_overlap_capsule", "end": {"x": 1.1, "y": 0.0, "z": 0}, "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_overlap_capsule", "end": {"x": 1.1, "y": 0.0, "z": 0}, "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"end"` | Vector3 | The center of the sphere at the end of the capsule. (Position is the center of the sphere at the start of the capsule.) | |
+| `"radius"` | float | The radius of the capsule. | |
+| `"position"` | Vector3 | The center of the shape. | |
+| `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
+
+***
+
+## **`send_overlap_sphere`**
+
+Check which objects a sphere-shaped space overlaps with. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "send_overlap_sphere", "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_overlap_sphere", "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"radius"` | float | The radius of the sphere. | |
+| `"position"` | Vector3 | The center of the shape. | |
+| `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
+
 # SendRaycastCommand
 
 These commands cast different types of rays and send the results to the controller.
@@ -5597,6 +5703,8 @@ These commands cast different types of rays and send the results to the controll
 Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
 
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
@@ -5613,7 +5721,7 @@ Cast a box along a direction and return the results. The can be multiple hits, e
 | `"half_extents"` | Vector3 | The half-extents of the box. | |
 | `"origin"` | Vector3 | The origin of the raycast. | |
 | `"destination"` | Vector3 | The destination of the raycast. | |
-| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
+| `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 ***
 
@@ -5622,6 +5730,8 @@ Cast a box along a direction and return the results. The can be multiple hits, e
 Cast a ray from the origin to the destination. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
 
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
@@ -5637,7 +5747,7 @@ Cast a ray from the origin to the destination.
 | --- | --- | --- | --- |
 | `"origin"` | Vector3 | The origin of the raycast. | |
 | `"destination"` | Vector3 | The destination of the raycast. | |
-| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
+| `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 ***
 
@@ -5646,6 +5756,8 @@ Cast a ray from the origin to the destination.
 Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
 
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
@@ -5662,7 +5774,7 @@ Cast a sphere along a direction and return the results. The can be multiple hits
 | `"radius"` | float | The radius of the sphere. | |
 | `"origin"` | Vector3 | The origin of the raycast. | |
 | `"destination"` | Vector3 | The destination of the raycast. | |
-| `"id"` | int | The ID of the raycast(s). The output data will include this a matching ID. | 0 |
+| `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 # SingletonSubscriberCommand
 
@@ -6101,117 +6213,6 @@ Given a list of worldspace positions, return the screenspace positions according
 | `"position_ids"` | int [] | The unique IDs of each screen position output data. Use this to map the output data to the original worldspace position. | |
 | `"positions"` | Vector3 [] | The worldspace positions. | |
 | `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-# SendOverlapCommand
-
-These commands create an overlap shape and then check which objects are within that shape.
-
-***
-
-## **`send_overlap_box`**
-
-Check which objects a box-shaped space overlaps with. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
-
-```python
-{"$type": "send_overlap_box", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "position": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_overlap_box", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"half_extents"` | Vector3 | Half of the extents of the box (i.e. half the scale of an object). | |
-| `"rotation"` | Quaternion | The rotation of the box. | |
-| `"position"` | Vector3 | The center of the shape. | |
-| `"id"` | int | The ID of this overlap shape. Useful for differenting between Overlap output data objects received on the same frame. | 0 |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_overlap_capsule`**
-
-Check which objects a capsule-shaped space overlaps with. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
-
-```python
-{"$type": "send_overlap_capsule", "end": {"x": 1.1, "y": 0.0, "z": 0}, "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_overlap_capsule", "end": {"x": 1.1, "y": 0.0, "z": 0}, "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"end"` | Vector3 | The center of the sphere at the end of the capsule. (Position is the center of the sphere at the start of the capsule.) | |
-| `"radius"` | float | The radius of the capsule. | |
-| `"position"` | Vector3 | The center of the shape. | |
-| `"id"` | int | The ID of this overlap shape. Useful for differenting between Overlap output data objects received on the same frame. | 0 |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_overlap_sphere`**
-
-Check which objects a sphere-shaped space overlaps with. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
-
-```python
-{"$type": "send_overlap_sphere", "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_overlap_sphere", "radius": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"radius"` | float | The radius of the sphere. | |
-| `"position"` | Vector3 | The center of the shape. | |
-| `"id"` | int | The ID of this overlap shape. Useful for differenting between Overlap output data objects received on the same frame. | 0 |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

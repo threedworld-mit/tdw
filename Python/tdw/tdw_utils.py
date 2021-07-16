@@ -1134,4 +1134,9 @@ class QuaternionUtils:
 
         qd = QuaternionUtils.multiply(QuaternionUtils.get_conjugate(q1), q2)
 
-        return np.rad2deg(2 * np.arcsin(qd[1]))
+        # Check if we flipped over the axis (more than 180 degrees).
+        if qd[1] > np.pi:
+            a = -np.arcsin(qd[1] % np.pi)
+        else:
+            a = np.arcsin(qd[1])
+        return np.rad2deg(2 * a)

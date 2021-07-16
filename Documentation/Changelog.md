@@ -18,6 +18,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Fixed: Resonance Audio doesn't work on OS X.
 
+### Python
+
+- Fixed: RuntimeWarning in `QuaternionUtils.get_y_angle()` due to a NaN value.
+
 ## v1.8.18
 
 ### Build

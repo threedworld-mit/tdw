@@ -745,7 +745,7 @@ Initialize a scene environment with procedurally generated "terrain" using Perli
 ```
 
 ```python
-{"$type": "perlin_noise_terrain", "size": {"x": 1.1, "y": 0}, "origin": {"x": 0, "y": 0}, "subdivisions": 1, "turbulence": 1, "max_y": 1, "visual_material": "", "texture_scale": {"x": 1, "y": 1}, "dynamic_friction": 0.25, "static_friction": 0.4, "bounciness": 0.2}
+{"$type": "perlin_noise_terrain", "size": {"x": 1.1, "y": 0}, "origin": {"x": 0, "y": 0}, "subdivisions": 1, "turbulence": 1, "max_y": 1, "visual_material": "", "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "texture_scale": {"x": 1, "y": 1}, "dynamic_friction": 0.25, "static_friction": 0.4, "bounciness": 0.2}
 ```
 
 | Parameter | Type | Description | Default |
@@ -756,6 +756,7 @@ Initialize a scene environment with procedurally generated "terrain" using Perli
 | `"turbulence"` | float | How "hilly" the terrain is. | 1 |
 | `"max_y"` | float | The maximum height of the terrain. | 1 |
 | `"visual_material"` | string | The visual material for the terrain. This visual material must have already been added to the simulation via the add_material command or get_add_material() controller wrapper function. If empty, a gray default material will be used. | "" |
+| `"color"` | Color | The color of the terrain. | {"r": 1, "g": 1, "b": 1, "a": 1} |
 | `"texture_scale"` | Vector2 | If visual_material isn't an empty string, this will set the UV texture scale. | {"x": 1, "y": 1} |
 | `"dynamic_friction"` | float | The dynamic friction of the terrain. | 0.25 |
 | `"static_friction"` | float | The static friction of the terrain. | 0.4 |

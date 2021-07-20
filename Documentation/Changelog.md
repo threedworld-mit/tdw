@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.20
+
+### Build
+
+- Fixed: Unhandled ArgumentException when trying to add an object with an existing ID.
+
 ## v1.8.19
 
 ### Command API

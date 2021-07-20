@@ -9,6 +9,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Build
 
 - Fixed: Unhandled ArgumentException when trying to add an object with an existing ID.
+- Fixed: Rare object ID clashes with internal avatar ID integers. Internal avatar IDs are now far less likely to be the same as an object ID.
 
 ## v1.8.19
 

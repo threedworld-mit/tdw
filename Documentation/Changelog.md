@@ -16,6 +16,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `set_magnebot_wheels_during_turn_by` | Set the friction coefficients of the Magnebot's wheels during a turn_by() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. |
 | `set_magnebot_wheels_during_turn_to` | Set the friction coefficients of the Magnebot's wheels during a turn_to() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. Because the Magnebot will move slightly while rotating, this command has an additional position parameter to re-check for alignment with the target. |
 | `set_robot_joint_friction`           | Set the friction coefficient of a robot joint.               |
+| `perlin_noise_terrain` | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain. |
 
 ### Output Data
 
@@ -24,14 +25,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | Output Data      | Description                                         |
 | ---------------- | --------------------------------------------------- |
 | `MagnebotWheels` | A message sent when a Magnebot arrives at a target. |
-
-### Command API
-
-#### New Commands
-
-| Command                | Description                                                  |
-| ---------------------- | ------------------------------------------------------------ |
-| `perlin_noise_terrain` | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain. |
 
 ### Build
 

@@ -14,6 +14,15 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | ---------------------- | ------------------------------------------------------------ |
 | `perlin_noise_terrain` | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain. |
 
+### Build
+
+- Fixed: Unhandled ArgumentException when trying to add an object with an existing ID.
+- Fixed: Rare object ID clashes with internal avatar ID integers. Internal avatar IDs are now far less likely to be the same as an object ID.
+
+### Python
+
+- Fixed: `single_object.py` crashes when including the `--materials` flag.
+
 ### Example Controllers
 
 - Added: `perlin_noise_terrain.py` Example of how to create a scene with procedurally generated terrain.
@@ -31,6 +40,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Build
 
 - Fixed: Resonance Audio doesn't work on OS X.
+
+### Python
+
+- Fixed: RuntimeWarning in `QuaternionUtils.get_y_angle()` due to a NaN value.
 
 ## v1.8.18
 

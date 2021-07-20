@@ -1133,5 +1133,4 @@ class QuaternionUtils:
         """
 
         qd = QuaternionUtils.multiply(QuaternionUtils.get_conjugate(q1), q2)
-
-        return np.rad2deg(2 * np.arcsin(qd[1]))
+        return np.rad2deg(2 * np.arcsin(np.clip(qd[1], -1, 1)))

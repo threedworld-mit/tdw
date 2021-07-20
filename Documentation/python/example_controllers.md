@@ -35,6 +35,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `paintings.py` | Add a painting to the scene. |
 | `panorama.py` | Capture a series of images around a model to form a 360-degree panorama. |
 | `pass_masks.py` | Create one image per pass of a scene. |
+| `perlin_noise_terrain.py` | Generate Perlin noise terrain and roll a ball down the terrain. |
 | `photoreal.py` | Create a photorealistic scene, focusing on post-processing and other effects.<br>The "archviz_house" environment is used due to its maximal photorealistic lighting. |
 | `proc_gen_interior_design.py` | Procedurally furnish a room with basic relational semantic rules. |
 | `proc_gen_room.py` | - Procedurally generate rooms with different layouts.<br>- Create a ceiling and delete a portion of it.<br>- Set the floor and wall materials. |

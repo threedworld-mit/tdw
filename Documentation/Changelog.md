@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
-## v1.18.20
+## v1.8.20
 
 ### Command API
 

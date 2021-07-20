@@ -58,7 +58,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Fixed: RuntimeWarning in `QuaternionUtils.get_y_angle()` due to a NaN value.
 
->>>>>>> master
 ## v1.8.18
 
 ### Build

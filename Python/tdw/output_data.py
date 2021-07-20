@@ -40,6 +40,7 @@ from tdw.FBOutput import TriggerCollision as Trigger
 from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
 from tdw.FBOutput import QuitSignal as QuitSig
+from tdw.FBOutput import MagnebotWheels as MWheels
 import numpy as np
 from typing import Tuple, Optional
 
@@ -1042,3 +1043,11 @@ class QuitSignal(OutputData):
 
     def get_ok(self) -> bool:
         return self.data.Ok()
+
+
+class MagnebotWheels(OutputData):
+    def get_data(self) -> MWheels.MagnebotWheels:
+        return MWheels.MagnebotWheels.GetRootAsMagnebotWheels(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()

@@ -18,6 +18,7 @@
 | [`enable_reflection_probes`](#enable_reflection_probes) | Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation. |
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
+| [`perlin_noise_terrain`](#perlin_noise_terrain) | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
@@ -726,6 +727,40 @@ Pause Unity Editor.
 ```python
 {"$type": "pause_editor"}
 ```
+
+***
+
+## **`perlin_noise_terrain`**
+
+Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Meshes`](output_data.md#Meshes)</font>
+
+```python
+{"$type": "perlin_noise_terrain", "size": {"x": 1.1, "y": 0}}
+```
+
+```python
+{"$type": "perlin_noise_terrain", "size": {"x": 1.1, "y": 0}, "origin": {"x": 0, "y": 0}, "subdivisions": 1, "turbulence": 1, "max_y": 1, "visual_material": "", "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "texture_scale": {"x": 1, "y": 1}, "dynamic_friction": 0.25, "static_friction": 0.4, "bounciness": 0.2}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"size"` | Vector2 | The (length, width) of the terrain in meters. | |
+| `"origin"` | Vector2 | The offset of the perlin noise. Set this to a random number to generate random noise. | {"x": 0, "y": 0} |
+| `"subdivisions"` | int | The number of subdivisions of the mesh. Increase this number to smooth out the mesh. | 1 |
+| `"turbulence"` | float | How "hilly" the terrain is. | 1 |
+| `"max_y"` | float | The maximum height of the terrain. | 1 |
+| `"visual_material"` | string | The visual material for the terrain. This visual material must have already been added to the simulation via the add_material command or get_add_material() controller wrapper function. If empty, a gray default material will be used. | "" |
+| `"color"` | Color | The color of the terrain. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"texture_scale"` | Vector2 | If visual_material isn't an empty string, this will set the UV texture scale. | {"x": 1, "y": 1} |
+| `"dynamic_friction"` | float | The dynamic friction of the terrain. | 0.25 |
+| `"static_friction"` | float | The static friction of the terrain. | 0.4 |
+| `"bounciness"` | float | The bounciness of the terrain. | 0.2 |
 
 ***
 

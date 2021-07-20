@@ -510,7 +510,7 @@ class SingleObject(Controller):
                 if record.name not in self.substructures:
                     self.substructures.update({record.name: record.substructure})
                 for sub_object in self.substructures[record.name]:
-                    for i in range(len(self.substructures[record.name][sub_object["name"]])):
+                    for i in range(len(sub_object["materials"])):
                         material_name = self.materials[RNG.randint(0, len(self.materials))].name
                         commands.extend([self.get_add_material(material_name),
                                          {"$type": "set_visual_material",

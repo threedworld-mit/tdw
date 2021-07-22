@@ -6,6 +6,20 @@ from tdw.scene.room_bounds import RoomBounds
 class SceneBounds:
     """
     Data for the scene bounds and its rooms.
+
+    In order to initialize this object, the controller must have sent `send_environments` to the build on the previous frame:
+
+    ```python
+    from tdw.controller import Controller
+    from tdw.tdw_utils import TDWUtils
+    from tdw.scene.scene_bounds import SceneBounds
+
+    c = Controller()
+    c.start()
+    resp = c.communicate([TDWUtils.create_empty_room(12, 12),
+                          {"$type": "send_environments"}])
+    scene_bounds = SceneBounds(resp=resp)
+    ```
     """
 
     def __init__(self, resp: List[bytes]):

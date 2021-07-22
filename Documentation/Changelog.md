@@ -34,7 +34,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### `tdw` Module
 
-- (Backend): Added `SceneBounds` and `RoomBounds`. Convenient wrapper classes for scenes and room environments.
+- Added `SceneBounds` and `RoomBounds`. Convenient wrapper classes for scenes and room environments.
 
 ### Build
 

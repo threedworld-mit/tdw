@@ -801,6 +801,9 @@ class Overlap(OutputData):
     def get_env(self) -> bool:
         return self.data.Env()
 
+    def get_walls(self) -> bool:
+        return self.data.Walls()
+
 
 class NavMeshPath(OutputData):
     _STATES = {PathState.PathState.complete: "complete",

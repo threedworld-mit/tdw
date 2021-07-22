@@ -26,6 +26,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | ---------------- | --------------------------------------------------- |
 | `MagnebotWheels` | A message sent when a Magnebot arrives at a target. |
 
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Overlap`   | Added: `get_walls()`. Returns True if there is a non-floor environment object in the overlap (such as a wall). |
+
 ### Build
 
 - Fixed: Unhandled ArgumentException when trying to add an object with an existing ID.

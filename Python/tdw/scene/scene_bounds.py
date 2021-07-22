@@ -31,6 +31,14 @@ class SceneBounds:
         """
         self.x_max: float = 0
         """:field
+        Minimum y positional coordinate of the scene.
+        """
+        self.y_min: float = 1000
+        """:field
+        Maximum y positional coordinate of the scene.
+        """
+        self.y_max: float = 0
+        """:field
         Minimum z positional coordinate of the scene.
         """
         self.z_min: float = 1000
@@ -46,10 +54,14 @@ class SceneBounds:
             e = RoomBounds(env=env, i=i)
             if e.x_min < self.x_min:
                 self.x_min = e.x_min
+            if e.y_min < self.y_min:
+                self.y_min = e.y_min
             if e.z_min < self.z_min:
                 self.z_min = e.z_min
             if e.x_max > self.x_max:
                 self.x_max = e.x_max
+            if e.y_max > self.y_max:
+                self.y_max = e.y_max
             if e.z_max > self.z_max:
                 self.z_max = e.z_max
             self.rooms.append(e)

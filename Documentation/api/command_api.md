@@ -6046,7 +6046,7 @@ Check which objects a capsule-shaped space overlaps with.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"end"` | Vector3 | The center of the sphere at the end of the capsule. (Position is the center of the sphere at the start of the capsule.) | |
+| `"end"` | Vector3 | The top of the capsule. (The position parameter is the bottom of the capsule). | |
 | `"radius"` | float | The radius of the capsule. | |
 | `"position"` | Vector3 | The center of the shape. | |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |

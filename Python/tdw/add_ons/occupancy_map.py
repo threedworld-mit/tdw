@@ -124,6 +124,7 @@ class OccupancyMap(AddOn):
             hit_obj: Dict[int, bool] = dict()
             # The IDs of each object in the overlap.
             hit_obj_ids: Dict[int, np.array] = dict()
+            hit_walls: Dict[int, bool] = dict()
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
                 if r_id == "rayc":
@@ -134,6 +135,7 @@ class OccupancyMap(AddOn):
                     overlap_id = overlap.get_id()
                     hit_obj[overlap_id] = len(overlap.get_object_ids()) > 0
                     hit_obj_ids[overlap_id] = overlap.get_object_ids()
+                    hit_walls[overlap_id] = overlap.get_walls()
 
             for cast_id in hit_env:
                 idx = cast_id % 10000
@@ -142,7 +144,7 @@ class OccupancyMap(AddOn):
                 if not hit_env[cast_id]:
                     self.occupancy_map[idx][idz] = -1
                 # The position is occupied by at least one object that we aren't ignoring.
-                elif hit_obj[cast_id] and len([o for o in hit_obj_ids[cast_id] if o not in self._ignore_objects]) > 0:
+                elif hit_walls[cast_id] or (hit_obj[cast_id] and len([o for o in hit_obj_ids[cast_id] if o not in self._ignore_objects]) > 0):
                     self.occupancy_map[idx][idz] = 1
                 # The position is free.
                 else:
@@ -183,6 +185,7 @@ class OccupancyMap(AddOn):
         x = self.scene_bounds.x_min
         idx = 0
         idz = 0
+        capsule_half_height = (self.scene_bounds.y_max - self.scene_bounds.y_min) / 2
         while x < self.scene_bounds.x_max:
             z = self.scene_bounds.z_min
             idz = 0
@@ -190,9 +193,10 @@ class OccupancyMap(AddOn):
                 # Create an overlap sphere to determine if the cell is occupied.
                 # Cast a ray to determine if the cell has a floor.
                 cast_id = idx + (idz * 10000)
-                self.commands.extend([{"$type": "send_overlap_sphere",
+                self.commands.extend([{"$type": "send_overlap_capsule",
+                                       "end": {"x": x, "y": capsule_half_height, "z": z},
                                        "radius": self._cell_size / 2,
-                                       "position": {"x": x, "y": 0, "z": z},
+                                       "position": {"x": x, "y": -capsule_half_height, "z": z},
                                        "id": cast_id},
                                       {"$type": "send_raycast",
                                        "origin": {"x": x, "y": OccupancyMap._RAYCAST_Y, "z": z},

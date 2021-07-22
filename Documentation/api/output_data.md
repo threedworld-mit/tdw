@@ -567,6 +567,7 @@ The IDs of every object that a shape overlaps.
 | `get_id()` | The identity of this overlap (useful if you've requested multiple Overlap objects). | `int` |
 | `get_object_ids()` | The IDs of every object in the overlap shape. | `np.array` |
 | `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
+| `get_walls()` | If true, the overlap shape includes at least one environment object that isn't the floor. | `bool` |
 
 ## QuitSignal
 

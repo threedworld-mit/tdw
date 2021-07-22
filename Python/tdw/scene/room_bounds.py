@@ -29,6 +29,10 @@ class RoomBounds:
         """
         self.x_min: float = self.center[0] - (self.bounds[0] / 2)
         """:field
+        Minimum y positional coordinate of the room.
+        """
+        self.y_min: float = self.center[1] - (self.bounds[1] / 2)
+        """:field
         Minimum z positional coordinate of the room.
         """
         self.z_min: float = self.center[2] - (self.bounds[2] / 2)
@@ -36,6 +40,10 @@ class RoomBounds:
         Maximum x positional coordinate of the room.
         """
         self.x_max: float = self.center[0] + (self.bounds[0] / 2)
+        """:field
+        Maximum y positional coordinate of the room.
+        """
+        self.y_max: float = self.center[1] + (self.bounds[1] / 2)
         """:field
         Maximum z positional coordinate of the room.
         """

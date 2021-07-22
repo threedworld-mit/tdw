@@ -18,6 +18,7 @@
 | [`enable_reflection_probes`](#enable_reflection_probes) | Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation. |
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
+| [`perlin_noise_terrain`](#perlin_noise_terrain) | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
@@ -459,11 +460,25 @@
 | [`detach_from_magnet`](#detach_from_magnet) | Detach an object from a Magnebot magnet. |
 | [`set_magnet_targets`](#set_magnet_targets) | Set the objects that the Magnebot magnet will try to pick up. |
 
+**Magnebot Wheels Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_magnebot_wheels_during_move`](#set_magnebot_wheels_during_move) | Set the friction coefficients of the Magnebot's wheels during a move_by() or move_to() action, given a target position. The friction coefficients will increase as the Magnebot approaches the target position and the command will announce if the Magnebot arrives at the target position.  |
+
+**Magnebot Wheels Turn Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_magnebot_wheels_during_turn_by`](#set_magnebot_wheels_during_turn_by) | Set the friction coefficients of the Magnebot's wheels during a turn_by() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle.  |
+| [`set_magnebot_wheels_during_turn_to`](#set_magnebot_wheels_during_turn_to) | Set the friction coefficients of the Magnebot's wheels during a turn_to() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. Because the Magnebot will move slightly while rotating, this command has an additional position parameter to re-check for alignment with the target.  |
+
 **Robot Joint Command**
 
 | Command | Description |
 | --- | --- |
 | [`set_robot_joint_drive`](#set_robot_joint_drive) | Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are. |
+| [`set_robot_joint_friction`](#set_robot_joint_friction) | Set the friction coefficient of a robot joint. |
 | [`set_robot_joint_mass`](#set_robot_joint_mass) | Set the mass of a robot joint. To get the default mass, see the StaticRobot output data. |
 | [`set_robot_joint_physic_material`](#set_robot_joint_physic_material) | Set the physic material of a robot joint and apply friction and bounciness values to the joint. These settings can be overriden by sending the command again. |
 
@@ -747,6 +762,40 @@ Pause Unity Editor.
 ```python
 {"$type": "pause_editor"}
 ```
+
+***
+
+## **`perlin_noise_terrain`**
+
+Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Meshes`](output_data.md#Meshes)</font>
+
+```python
+{"$type": "perlin_noise_terrain", "size": {"x": 1.1, "y": 0}}
+```
+
+```python
+{"$type": "perlin_noise_terrain", "size": {"x": 1.1, "y": 0}, "origin": {"x": 0, "y": 0}, "subdivisions": 1, "turbulence": 1, "max_y": 1, "visual_material": "", "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "texture_scale": {"x": 1, "y": 1}, "dynamic_friction": 0.25, "static_friction": 0.4, "bounciness": 0.2}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"size"` | Vector2 | The (length, width) of the terrain in meters. | |
+| `"origin"` | Vector2 | The offset of the perlin noise. Set this to a random number to generate random noise. | {"x": 0, "y": 0} |
+| `"subdivisions"` | int | The number of subdivisions of the mesh. Increase this number to smooth out the mesh. | 1 |
+| `"turbulence"` | float | How "hilly" the terrain is. | 1 |
+| `"max_y"` | float | The maximum height of the terrain. | 1 |
+| `"visual_material"` | string | The visual material for the terrain. This visual material must have already been added to the simulation via the add_material command or get_add_material() controller wrapper function. If empty, a gray default material will be used. | "" |
+| `"color"` | Color | The color of the terrain. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"texture_scale"` | Vector2 | If visual_material isn't an empty string, this will set the UV texture scale. | {"x": 1, "y": 1} |
+| `"dynamic_friction"` | float | The dynamic friction of the terrain. | 0.25 |
+| `"static_friction"` | float | The static friction of the terrain. | 0.4 |
+| `"bounciness"` | float | The bounciness of the terrain. | 0.2 |
 
 ***
 
@@ -5662,6 +5711,114 @@ A left or right arm.
 | `"left"` |  |
 | `"right"` |  |
 
+# MagnebotWheelsCommand
+
+These commands set the friction coefficient of a Magnebot's wheels over time given the distance to a target. These commands must be sent per-frame. These commands will check if the Magnebot is at the target per PHYSICS frame, INCLUDING frames skipped by step_physics. This greatly increases the precision of a Magnebot simulation.
+
+***
+
+## **`set_magnebot_wheels_during_move`**
+
+Set the friction coefficients of the Magnebot's wheels during a move_by() or move_to() action, given a target position. The friction coefficients will increase as the Magnebot approaches the target position and the command will announce if the Magnebot arrives at the target position. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`MagnebotWheels`](output_data.md#MagnebotWheels)</font>
+
+```python
+{"$type": "set_magnebot_wheels_during_move", "position": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "set_magnebot_wheels_during_move", "position": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_distance": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target destination of the Magnebot. | |
+| `"origin"` | Vector3 | The origin of the Magnebot at the start of the action (not its current position). | |
+| `"brake_distance"` | float | The distance at which the Magnebot should start to brake, in meters. | 0.1 |
+| `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
+| `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
+| `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+# MagnebotWheelsTurnCommand
+
+These commands set the friction coefficients of the Magnebot's wheels during a turn action.
+
+***
+
+## **`set_magnebot_wheels_during_turn_by`**
+
+Set the friction coefficients of the Magnebot's wheels during a turn_by() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`MagnebotWheels`](output_data.md#MagnebotWheels)</font>
+
+```python
+{"$type": "set_magnebot_wheels_during_turn_by", "angle": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "set_magnebot_wheels_during_turn_by", "angle": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_angle": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The target angle of the Magnebot in degrees. | |
+| `"origin"` | Vector3 | The starting forward directional vector of the Magnebot at the start of the action (not its current forward directional vector). | |
+| `"brake_angle"` | float | The angle at which the Magnebot should start to brake, in degrees. | 0.1 |
+| `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
+| `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
+| `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_magnebot_wheels_during_turn_to`**
+
+Set the friction coefficients of the Magnebot's wheels during a turn_to() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. Because the Magnebot will move slightly while rotating, this command has an additional position parameter to re-check for alignment with the target. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`MagnebotWheels`](output_data.md#MagnebotWheels)</font>
+
+```python
+{"$type": "set_magnebot_wheels_during_turn_to", "position": {"x": 1.1, "y": 0.0, "z": 0}, "angle": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "set_magnebot_wheels_during_turn_to", "position": {"x": 1.1, "y": 0.0, "z": 0}, "angle": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_angle": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position that the Magnebot is turning to. | |
+| `"angle"` | float | The target angle of the Magnebot in degrees. | |
+| `"origin"` | Vector3 | The starting forward directional vector of the Magnebot at the start of the action (not its current forward directional vector). | |
+| `"brake_angle"` | float | The angle at which the Magnebot should start to brake, in degrees. | 0.1 |
+| `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
+| `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
+| `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
 # RobotJointCommand
 
 These commands set joint targets or parameters for a robot in the scene.
@@ -5699,6 +5856,27 @@ Set static joint drive parameters for a robot joint. Use the StaticRobot output 
 | `"x"` |  |
 | `"y"` |  |
 | `"z"` |  |
+
+***
+
+## **`set_robot_joint_friction`**
+
+Set the friction coefficient of a robot joint.
+
+
+```python
+{"$type": "set_robot_joint_friction", "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_friction", "joint_id": 1, "friction": 0.05, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"friction"` | float | The friction coefficient. | 0.05 |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
 
 ***
 

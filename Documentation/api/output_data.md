@@ -75,6 +75,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [LocalTransforms](#LocalTransforms) | Data about the Transform component of objects (position and rotation) relative to its parent objects. | `ltra` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Magnebot](#Magnebot) | Data for a Magnebot. | `magn` |
+| [MagnebotWheels](#MagnebotWheels) | A message sent when a Magnebot arrives at a target. | `mwhe` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
@@ -511,6 +512,18 @@ Data for a Magnebot.
 | `get_held_left()` | The IDs of the objects held by the left magnet. | `np.array` |
 | `get_held_right()` | The IDs of the objects held by the right magnet. | `np.array` |
 | `get_top()` | The position of the top point of the Magnebot. | `Tuple[float, float, float]` |
+
+## MagnebotWheels
+
+`m = MagnebotWheels(byte_array)`
+
+**Identifier:** `mwhe`
+
+A message sent when a Magnebot arrives at a target.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The ID of the Magnebot. | `int` |
 
 ## Meshes
 

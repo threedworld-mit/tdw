@@ -1,4 +1,4 @@
-from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState, CameraMotion
+from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState
 from tdw.FBOutput import Environments as Envs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
@@ -41,6 +41,7 @@ from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
 from tdw.FBOutput import QuitSignal as QuitSig
 from tdw.FBOutput import CameraMotionComplete as CamMot
+from tdw.FBOutput import MagnebotWheels as MWheels
 import numpy as np
 from typing import Tuple, Optional
 
@@ -1060,3 +1061,11 @@ class CameraMotionComplete(OutputData):
             return "rotate"
         else:
             return "focus"
+
+
+class MagnebotWheels(OutputData):
+    def get_data(self) -> MWheels.MagnebotWheels:
+        return MWheels.MagnebotWheels.GetRootAsMagnebotWheels(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()

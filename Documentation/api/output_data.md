@@ -510,6 +510,7 @@ A message sent when a Magnebot arrives at a target.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_id()` | The ID of the Magnebot. | `int` |
+| `get_success()` | If True, the Magnebot arrived at the target. | `bool` |
 
 ## Meshes
 

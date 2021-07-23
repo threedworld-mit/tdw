@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional
+from typing import List, Optional
 from tdw.output_data import OutputData, Environments
 from tdw.scene.room_bounds import RoomBounds
 
@@ -79,13 +79,3 @@ class SceneBounds:
             if e.z_max > self.z_max:
                 self.z_max = e.z_max
             self.rooms.append(e)
-
-    def get_bounds(self) -> Dict[str, float]:
-        """
-        :return: A dictionary of bounds data.
-        """
-
-        return {"x_min": self.x_min,
-                "x_max": self.x_max,
-                "z_min": self.z_min,
-                "z_max": self.z_max}

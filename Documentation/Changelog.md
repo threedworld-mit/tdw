@@ -26,18 +26,28 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | ---------------- | --------------------------------------------------- |
 | `MagnebotWheels` | A message sent when a Magnebot arrives at a target. |
 
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Overlap`   | Added: `get_walls()`. Returns True if there is a non-floor environment object in the overlap (such as a wall). |
+
+### `tdw` Module
+
+- Added `SceneBounds` and `RoomBounds`. Convenient wrapper classes for scenes and room environments.
+
 ### Build
 
 - Fixed: Unhandled ArgumentException when trying to add an object with an existing ID.
 - Fixed: Rare object ID clashes with internal avatar ID integers. Internal avatar IDs are now far less likely to be the same as an object ID.
 
-### Python
-
-- Fixed: `single_object.py` crashes when including the `--materials` flag.
-
 ### Example Controllers
 
 - Added: `perlin_noise_terrain.py` Example of how to create a scene with procedurally generated terrain.
+
+### Use Cases
+
+- Fixed: `single_object.py` crashes when including the `--materials` flag.
 
 ## v1.8.19
 

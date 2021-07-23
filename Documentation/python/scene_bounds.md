@@ -48,9 +48,3 @@ scene_bounds = SceneBounds(resp=resp)
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-#### get_bounds
-
-**`self.get_bounds()`**
-
-_Returns:_  A dictionary of bounds data.
-

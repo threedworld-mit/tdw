@@ -1072,3 +1072,6 @@ class MagnebotWheels(OutputData):
 
     def get_id(self) -> int:
         return self.data.Id()
+
+    def get_success(self) -> bool:
+        return self.data.Success()

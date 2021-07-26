@@ -10,7 +10,7 @@ from typing import List, Union, Optional, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian
 from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH
-from tdw.output_data import OutputData, Version, QuitSignal
+from tdw.output_data import Version, QuitSignal
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
@@ -143,14 +143,28 @@ class Controller(object):
         # If the controller receives the dummy object, it should re-send its commands.
         # The dummy object is always in an array: [ftre, 0]
         # This way, the controller can easily differentiate it from a response that just has the frame count.
-        while len(resp) > 1 and OutputData.get_data_type_id(resp[0]) == "ftre":
-            self.socket.send_multipart(msg)
-            resp = self.socket.recv_multipart()
+        ftre: bool = True
+        num_ftre: int = 0
+        while ftre and num_ftre < 1000:
+            ftre = False
+            for i in range(len(resp) - 1):
+                if resp[i][4:8] == b'ftre':
+                    ftre = True
+                    self.socket.send_multipart(msg)
+                    resp = self.socket.recv_multipart()
+                    num_ftre += 1
+                    break
+        # Tried too many times.
+        if ftre:
+            print("Quitting now because the controller tried too many times to resend commands to the build. "
+                  "Check the build log for more info.")
+            self._print_build_log()
+            self._local_build_is_running = False
+            self._quit = True
 
         # Check if we've received a quit signal. If we have, check if there was an error.
         for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "quit":
+            if resp[i][4:8] == b'quit':
                 if not QuitSignal(resp[i]).get_ok():
                     print("The build quit due to an error. Check the build log for more info.")
                     self._print_build_log()

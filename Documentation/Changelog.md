@@ -4,6 +4,13 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.21
+
+### Build
+
+- Fixed: Rare bug where the build won't receive the full JSON string for very long lists of commands. In these cases, the build will request that the controller resend the message.
+- Fixed: Rare bug in which the controller enters an infinite loop trying to resend messages to the build. Now, it will quit with an error after a certain number of retries.
+
 ## v1.8.20
 
 ### Command API

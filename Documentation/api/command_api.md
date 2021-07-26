@@ -6246,7 +6246,6 @@ Send the average grayscale value of an _id pass.
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`IdPassGrayscale`](output_data.md#IdPassGrayscale)</font>
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "send_id_pass_grayscale"}

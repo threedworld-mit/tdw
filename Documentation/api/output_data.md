@@ -77,6 +77,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [MagnebotWheels](#MagnebotWheels) | A message sent when a Magnebot arrives at a target. | `mwhe` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
+| [Occlusion](#Occlusion) | To what extent parts of the scene environment (such as walls) are occluding objects. | `occl` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
@@ -540,6 +541,20 @@ A path on the scene's NavMesh.
 | `get_state()` | The state of the path: "complete", "partial", or "invalid". | `str` |
 | `get_path()` | Waypoints on the path as a numpy array of (x, y, z) coordinates. | `np.array` |
 | `get_id()` | The ID of this path. Use this to differentiate between different NavMeshPaths. | `int` |
+
+## Occlusion
+
+`o = Occlusion(byte_array)`
+
+**Identifier:** `occl`
+
+To what extent parts of the scene environment (such as walls) are occluding objects.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_avatar_id()` | The ID of the avatar that captured the image. | `str` |
+| `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
+| `get_occluded()` | How much of the objects in the frame are occluded by the environment, between 0 (no occlusion) and 1 (fully occluded). | `float` |
 
 ## Overlap
 

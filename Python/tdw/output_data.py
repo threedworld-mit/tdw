@@ -41,6 +41,7 @@ from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
 from tdw.FBOutput import QuitSignal as QuitSig
 from tdw.FBOutput import MagnebotWheels as MWheels
+from tdw.FBOutput import Occlusion as Occl
 import numpy as np
 from typing import Tuple, Optional
 
@@ -1057,3 +1058,17 @@ class MagnebotWheels(OutputData):
 
     def get_success(self) -> bool:
         return self.data.Success()
+
+
+class Occlusion(OutputData):
+    def get_data(self) -> Occl.Occlusion:
+        return Occl.Occlusion.GetRootAsOcclusion(self.bytes, 0)
+
+    def get_avatar_id(self) -> str:
+        return self.data.AvatarId().decode('utf-8')
+
+    def get_sensor_name(self) -> str:
+        return self.data.SensorName().decode('utf-8')
+
+    def get_occluded(self) -> float:
+        return self.data.Occluded()

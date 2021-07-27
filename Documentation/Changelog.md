@@ -6,6 +6,13 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ## v1.8.21
 
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: As of a few updates ago, the controller often sends non-unique object IDs. We are still trying to determine what changed in the build's code, but in the meantime, `Controller.get_unique_id()` will always return a unique ID.
+  - Added `Controller.reset_unique_id()` to prevent overflow errors.
+
 ### Build
 
 - Fixed: Rare bug where the build won't receive the full JSON string for very long lists of commands. In these cases, the build will request that the controller resend the message.

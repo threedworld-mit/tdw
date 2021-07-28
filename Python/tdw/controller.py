@@ -10,7 +10,7 @@ from typing import List, Union, Optional, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian
 from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH
-from tdw.output_data import OutputData, Version, QuitSignal
+from tdw.output_data import Version, QuitSignal
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
@@ -29,6 +29,11 @@ class Controller(object):
     c.start()
     ```
     """
+
+    # The ID of the first object.
+    _FIRST_OBJECT_ID: int = 10000
+    # The next object ID.
+    _NEXT_OBJECT_ID: int = _FIRST_OBJECT_ID
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = False):
         """
@@ -159,14 +164,28 @@ class Controller(object):
         # If the controller receives the dummy object, it should re-send its commands.
         # The dummy object is always in an array: [ftre, 0]
         # This way, the controller can easily differentiate it from a response that just has the frame count.
-        while len(resp) > 1 and OutputData.get_data_type_id(resp[0]) == "ftre":
-            self.socket.send_multipart(msg)
-            resp = self.socket.recv_multipart()
+        ftre: bool = True
+        num_ftre: int = 0
+        while ftre and num_ftre < 1000:
+            ftre = False
+            for i in range(len(resp) - 1):
+                if resp[i][4:8] == b'ftre':
+                    ftre = True
+                    self.socket.send_multipart(msg)
+                    resp = self.socket.recv_multipart()
+                    num_ftre += 1
+                    break
+        # Tried too many times.
+        if ftre:
+            print("Quitting now because the controller tried too many times to resend commands to the build. "
+                  "Check the build log for more info.")
+            self._print_build_log()
+            self._local_build_is_running = False
+            self._quit = True
 
         # Check if we've received a quit signal. If we have, check if there was an error.
         for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "quit":
+            if resp[i][4:8] == b'quit':
                 if not QuitSignal(resp[i]).get_ok():
                     print("The build quit due to an error. Check the build log for more info.")
                     self._print_build_log()
@@ -400,7 +419,18 @@ class Controller(object):
         :return The new unique ID.
         """
 
-        return int.from_bytes(os.urandom(3), byteorder='big')
+        object_id = Controller._NEXT_OBJECT_ID
+        Controller._NEXT_OBJECT_ID += 1
+        return object_id
+
+    @staticmethod
+    def reset_object_id() -> None:
+        """
+        Reset the object ID counter to its default value.
+        This is a fallback in case of very strange errors; you shouldn't ever need to call this.
+        """
+
+        Controller._NEXT_OBJECT_ID = Controller._FIRST_OBJECT_ID
 
     @staticmethod
     def get_frame(frame: bytes) -> int:

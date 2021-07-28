@@ -201,6 +201,13 @@
 | [`set_reverb_space_expert`](#set_reverb_space_expert) | Create a ResonanceAudio Room, sized to the dimensions of the current room environment. All values are passed in as parameters. |
 | [`set_reverb_space_simple`](#set_reverb_space_simple) | Create a ResonanceAudio Room, sized to the dimensions of the current room environment. Reflectivity (early reflections) and reverb brightness (late reflections) calculated automatically based on size of space and percentage filled with objects. |
 
+**Directional Light Command**
+
+| Command | Description |
+| --- | --- |
+| [`reset_directional_light_rotation`](#reset_directional_light_rotation) | Reset the rotation of the directional light (the sun). |
+| [`rotate_directional_light_by`](#rotate_directional_light_by) | Rotate the directional light (the sun) by an angle and axis. |
+
 **Flex Container Command**
 
 | Command | Description |
@@ -3025,6 +3032,60 @@ List of surface material types.
 | `"acousticTile"` |  |
 | `"metal"` |  |
 | `"wood"` |  |
+
+# DirectionalLightCommand
+
+These commands adjust the directional light(s) in the scene. The directional light is usually the "sunlight" of the scene, but is distinct from the sunlight of HDRI skyboxes.
+
+***
+
+## **`reset_directional_light_rotation`**
+
+Reset the rotation of the directional light (the sun).
+
+
+```python
+{"$type": "reset_directional_light_rotation"}
+```
+
+```python
+{"$type": "reset_directional_light_rotation", "index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"index"` | int | The index of the light. This should almost always be 0. The scene "archviz_house" has two directional lights; for this scene, index can be 0 or 1. | 0 |
+
+***
+
+## **`rotate_directional_light_by`**
+
+Rotate the directional light (the sun) by an angle and axis.
+
+
+```python
+{"$type": "rotate_directional_light_by", "angle": 0.125}
+```
+
+```python
+{"$type": "rotate_directional_light_by", "angle": 0.125, "axis": "yaw", "index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation in degrees. | |
+| `"index"` | int | The index of the light. This should almost always be 0. The scene "archviz_house" has two directional lights; for this scene, index can be 0 or 1. | 0 |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
 
 # FlexContainerCommand
 

@@ -5,7 +5,6 @@ import zmq
 import psutil
 import json
 import os
-from math import ceil
 from subprocess import Popen
 from typing import List, Union, Optional, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \

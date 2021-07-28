@@ -45,7 +45,11 @@ class Controller(object):
         # If True, we already quit (suppresses a warning that the build is down).
         self._quit: bool = False
 
-        # The frame count. This will prevent the build from deserializing the same message twice.
+        # The current frame.
+        # On some operating systems, if the build socket times out and it reconnects and asks the controller to resend,
+        # the build can actually receive the message *and* timeout, in which case it can receive the same message twice.
+        # This frame number will be used by the build to determine if it just received a duplicate message.
+        # DO NOT adjust this number other than incrementing it in communicate().
         self.__frame: int = 0
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
@@ -131,11 +135,20 @@ class Controller(object):
         if self._quit:
             return []
 
+        # Increment the frame count.
         self.__frame += 1
+        try:
+            frame_bytes: bytes = int.to_bytes(self.__frame, byteorder='big', length=4)
+        # Prevent an unlikely overflow error.
+        # The build doesn't actually need the frame to be greater than the previous, just different.
+        except OverflowError:
+            self.__frame = 0
+            frame_bytes: bytes = int.to_bytes(self.__frame, byteorder='big', length=4)
+
         if isinstance(commands, list):
-            msg = [json.dumps(commands).encode('utf-8'), int.to_bytes(self.__frame, byteorder='big', length=4)]
+            msg = [json.dumps(commands).encode('utf-8'), frame_bytes]
         else:
-            msg = [json.dumps([commands]).encode('utf-8'), int.to_bytes(self.__frame, byteorder='big', length=4)]
+            msg = [json.dumps([commands]).encode('utf-8'), frame_bytes]
 
         # Send the commands.
         self.socket.send_multipart(msg)

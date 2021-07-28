@@ -23,16 +23,19 @@ class Debug(AddOn):
     ```
     """
 
-    def __init__(self, record: bool, path: Union[str, Path]):
+    def __init__(self, record: bool, path: Union[str, Path], log_commands_in_build: bool = False):
         """
         :param record: If True, record each command. If False, play back an existing record.
         :param path: The path to either save the record to or load the record from.
+        :param log_commands_in_build: If True, the build will log every message received and every command executed in the [Player log](https://docs.unity3d.com/Manual/LogFiles.html).
         """
 
         super().__init__()
 
         # We don't need to initialize anything.
         self.initialized = True
+        #         If True, the build will log every message received and every command executed in the Player log.
+        self._log_commands_in_build: bool = log_commands_in_build
 
         """:field
         If True, record each command. If False, play back an existing record.
@@ -74,7 +77,11 @@ class Debug(AddOn):
                 self.save()
 
     def get_initialization_commands(self) -> List[dict]:
-        return [{"$type": "send_log_messages"}]
+        commands = [{"$type": "send_log_messages"}]
+        if self._log_commands_in_build:
+            commands.append({"$type": "set_network_logging",
+                             "value": True})
+        return commands
 
     def before_send(self, commands: List[dict]) -> None:
         # Record the commands that were just sent.

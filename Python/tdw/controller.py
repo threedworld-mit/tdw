@@ -5,6 +5,7 @@ import zmq
 import psutil
 import json
 import os
+from math import ceil
 from subprocess import Popen
 from typing import List, Union, Optional, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
@@ -43,6 +44,9 @@ class Controller(object):
         self._local_build_is_running: bool = False
         # If True, we already quit (suppresses a warning that the build is down).
         self._quit: bool = False
+
+        # The frame count. This will prevent the build from deserializing the same message twice.
+        self.__frame: int = 0
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
         # If there is a difference, recommend an upgrade.
@@ -127,10 +131,11 @@ class Controller(object):
         if self._quit:
             return []
 
+        self.__frame += 1
         if isinstance(commands, list):
-            msg = [json.dumps(commands).encode('utf-8')]
+            msg = [json.dumps(commands).encode('utf-8'), int.to_bytes(self.__frame, byteorder='big', length=4)]
         else:
-            msg = [json.dumps([commands]).encode('utf-8')]
+            msg = [json.dumps([commands]).encode('utf-8'), int.to_bytes(self.__frame, byteorder='big', length=4)]
 
         # Send the commands.
         self.socket.send_multipart(msg)

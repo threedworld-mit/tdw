@@ -16,6 +16,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `composite_object.py` | Create a composite object from a local asset bundle.<br>Test that the object loaded correctly.<br>Apply sub-object commands to the sub-objects. |
 | `debug.py` | Create a debug controller. After running a simple physics simulation, play back all of the commands. |
 | `depth_shader.py` | Capture a _depth image and calculate the depth values of each pixel. |
+| `directional_light.py` | Rotate the directional light in the scene. |
 | `flex_cloth_fixed_particle.py` | Create a Flex cloth object and "fix" one of its corners in mid-air. |
 | `flex_fluid_object.py` | Create a fluid "container" with the NVIDIA Flex physics engine. Run several trials, dropping ball objects of increasing mass into the fluid. |
 | `flex_fluid_source.py` | Create a Flex FluidSource, or "hose pipe", simulation of a fluid stream. |

@@ -45,7 +45,7 @@ class Controller(object):
         self._quit: bool = False
 
         # The current frame.
-        # On some operating systems, if the build socket times out and it reconnects and asks the controller to resend,
+        # On Ubuntu 16, if the build socket times out and it reconnects and asks the controller to resend,
         # the build can actually receive the message *and* timeout, in which case it can receive the same message twice.
         # This frame number will be used by the build to determine if it just received a duplicate message.
         # DO NOT adjust this number other than incrementing it in communicate().
@@ -154,7 +154,7 @@ class Controller(object):
         # Receive output data.
         resp = self.socket.recv_multipart()
 
-        # Occasionally, the build's socket will stop receiving messages.
+        # Occasionally on Ubuntu 16, the build's socket will stop receiving messages.
         # If that happens, it will close the socket, create a new socket, and send a dummy output data object.
         # The ID of the dummy object is "ftre" (FailedToReceive).
         # If the controller receives the dummy object, it should re-send its commands.

@@ -33,6 +33,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `minimal_remote.py` | A minimal example of how to use the launch binaries daemon to<br>start and connect to a build on a remote node. Note: the remote<br>must be running launch_binaries.py. |
 | `nav_mesh.py` | - Create a NavMeshAvatar and a simple procedurally-generated room.<br>- Tell the avatar to navigate to different destinations. |
 | `objects_and_images.py` | Create a few objects, and avatar, and capture images of the objects. |
+| `occlusion.py` | Use occlusion data to measure to what extent objects in the scene are occluded. |
 | `paintings.py` | Add a painting to the scene. |
 | `panorama.py` | Capture a series of images around a model to form a 360-degree panorama. |
 | `pass_masks.py` | Create one image per pass of a scene. |

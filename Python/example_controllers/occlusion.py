@@ -33,13 +33,22 @@ class Occlusion(Controller):
                                                look_at=TDWUtils.VECTOR3_ZERO))
         # Request Occlusion output data per frame.
         commands.append({"$type": "send_occlusion",
-                         "frequency": "always"})
+                         "frequency": "once"})
         resp = self.communicate(commands)
         self.parse_resp(resp=resp)
 
-        # Place a wall in front of all of the objets.
-        resp = self.communicate({"$type": "create_interior_walls",
-                                 "walls": [{"x": 7, "y": 5}, {"x": 7, "y": 6}]})
+        # Treat some of the objects as occluders.
+        commands.append({"$type": "send_occlusion",
+                         "frequency": "once",
+                         "object_ids": [2, 4, 5]})
+        resp = self.communicate(commands)
+        self.parse_resp(resp=resp)
+
+        # Place a wall in front of all of the objects.
+        resp = self.communicate([{"$type": "send_occlusion",
+                                  "frequency": "once"},
+                                 {"$type": "create_interior_walls",
+                                  "walls": [{"x": 7, "y": 5}, {"x": 7, "y": 6}]}])
         self.parse_resp(resp=resp)
         self.communicate({"$type": "terminate"})
 
@@ -59,5 +68,5 @@ class Occlusion(Controller):
 
 
 if __name__ == "__main__":
-    c = Occlusion()
+    c = Occlusion(launch_build=False)
     c.run()

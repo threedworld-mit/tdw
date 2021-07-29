@@ -6445,11 +6445,12 @@ Send the extent to which the scene environment is occluding objects in the frame
 ```
 
 ```python
-{"$type": "send_occlusion", "ids": [], "frequency": "once"}
+{"$type": "send_occlusion", "object_ids": [], "ids": [], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"object_ids"` | int[] | If None or empty, all objects in the camera viewport will be tested for occlusion. Otherwise, if an object isn't in this list, it will be treated as an occluder (if this was a _mask pass, it would appear black instead of red). This parameter can be used to test occlusion for specific objects, but it is somewhat slower than testing for all. | [] |
 | `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 

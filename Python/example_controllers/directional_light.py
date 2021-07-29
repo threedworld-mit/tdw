@@ -18,7 +18,7 @@ commands = [c.get_add_scene(scene_name="tdw_room"),
              "width": 1280,
              "height": 720}]
 # Add an avatar.
-commands.extend(TDWUtils.create_avatar(position={"x": 2, "y": 0.9, "z": -1},
+commands.extend(TDWUtils.create_avatar(position={"x": -2, "y": 0.9, "z": -1},
                                        look_at=TDWUtils.VECTOR3_ZERO))
 # Enable image capture.
 # Disable anti-aliasing.

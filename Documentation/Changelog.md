@@ -4,6 +4,21 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.22
+
+### Command API
+
+#### New Commands
+
+| Command                            | Description                                                  |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `rotate_directional_light_by`      | Rotate the directional light (the sun) by an angle and axis. |
+| `reset_directional_light_rotation` | Reset the rotation of the directional light (the sun).       |
+
+### Example Controllers
+
+- Added: `directional_light.py`
+
 ## v1.8.21
 
 ### `tdw` module

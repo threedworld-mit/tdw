@@ -15,7 +15,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `rotate_directional_light_by`      | Rotate the directional light (the sun) by an angle and axis. |
 | `reset_directional_light_rotation` | Reset the rotation of the directional light (the sun).       |
 | `parent_object_to_avatar`          | Parent an object to an avatar.                               |
-| `unparent_object_from_avatar`      | Unparent an object from an avatar.                           |
+| `unparent_object`                  | Unparent an object from its current parent.                  |
 
 ### Example Controllers
 

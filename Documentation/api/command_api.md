@@ -261,7 +261,7 @@
 | [`set_graspable`](#set_graspable) | Make an object graspable for a VR rig with Oculus touch controllers.  |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
-| [`unparent_object_from_avatar`](#unparent_object_from_avatar) | Unparent an object from an avatar, assuming it was previously parented using the parent_object_to_avatar command. If not, this command doesn't do anything. |
+| [`unparent_object`](#unparent_object) | Unparent an object from its current parent (an avatar, an avatar's camera, etc.). If the object doesn't have a parent, this command doesn't do anything. |
 
 **Flex Object Command**
 
@@ -3724,13 +3724,13 @@ Teleport an object to a new position.
 
 ***
 
-## **`unparent_object_from_avatar`**
+## **`unparent_object`**
 
-Unparent an object from an avatar, assuming it was previously parented using the parent_object_to_avatar command. If not, this command doesn't do anything.
+Unparent an object from its current parent (an avatar, an avatar's camera, etc.). If the object doesn't have a parent, this command doesn't do anything.
 
 
 ```python
-{"$type": "unparent_object_from_avatar", "id": 1}
+{"$type": "unparent_object", "id": 1}
 ```
 
 | Parameter | Type | Description | Default |

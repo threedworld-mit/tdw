@@ -251,6 +251,7 @@
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
+| [`parent_object_to_avatar`](#parent_object_to_avatar) | Parent an object to an avatar. The object won't change its position or rotation relative to the avatar. Only use this command in non-physics simulations. |
 | [`remove_nav_mesh_obstacle`](#remove_nav_mesh_obstacle) | Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle).  |
 | [`rotate_object_by`](#rotate_object_by) | Rotate an object by a given angle around a given axis. |
 | [`rotate_object_to`](#rotate_object_to) | Set the rotation quaternion of the object. |
@@ -260,6 +261,7 @@
 | [`set_graspable`](#set_graspable) | Make an object graspable for a VR rig with Oculus touch controllers.  |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
+| [`unparent_object_from_avatar`](#unparent_object_from_avatar) | Unparent an object from an avatar, assuming it was previously parented using the parent_object_to_avatar command. If not, this command doesn't do anything. |
 
 **Flex Object Command**
 
@@ -3516,6 +3518,27 @@ Set the object's rotation such that its forward directional vector points toward
 
 ***
 
+## **`parent_object_to_avatar`**
+
+Parent an object to an avatar. The object won't change its position or rotation relative to the avatar. Only use this command in non-physics simulations.
+
+
+```python
+{"$type": "parent_object_to_avatar", "id": 1}
+```
+
+```python
+{"$type": "parent_object_to_avatar", "id": 1, "avatar_id": "a", "sensor": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar in the scene. | "a" |
+| `"sensor"` | bool | If true, parent the object to the camera rather than the root object of the avatar. | True |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`remove_nav_mesh_obstacle`**
 
 Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle). 
@@ -3697,6 +3720,21 @@ Teleport an object to a new position.
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | New position of the object. | |
 | `"physics"` | bool | This should almost always be False (the default). If True, apply a "physics-based" teleportation to the object. This only works if the object has a rigidbody (i.e. is a model from a model library) and is slightly slower than a non-physics teleport. Set this to True only if you are having persistent and rare physics glitches. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`unparent_object_from_avatar`**
+
+Unparent an object from an avatar, assuming it was previously parented using the parent_object_to_avatar command. If not, this command doesn't do anything.
+
+
+```python
+{"$type": "unparent_object_from_avatar", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
 # FlexObjectCommand

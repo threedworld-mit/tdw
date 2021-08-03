@@ -16,10 +16,32 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `reset_directional_light_rotation` | Reset the rotation of the directional light (the sun).       |
 | `parent_object_to_avatar`          | Parent an object to an avatar.                               |
 | `unparent_object`                  | Unparent an object from its current parent.                  |
+| `send_occlusion`                   | Send the extent to which the scene environment is occluding objects in the frame. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description                                                  |
+| ----------- | ------------------------------------------------------------ |
+| `Occlusion` | To what extent parts of the scene environment (such as walls) are occluding objects. |
 
 ### Example Controllers
 
 - Added: `directional_light.py`
+- Added: `occlusion.py`
+
+### Benchmark
+
+- Added occlusion to `benchmarker.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document              | Modification                             |
+| --------------------- | ---------------------------------------- |
+| `observation_data.md` | Added `Occlusion` section and benchmark. |
 
 ## v1.8.21
 

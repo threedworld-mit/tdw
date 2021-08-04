@@ -194,15 +194,6 @@ _Returns:_ The new unique ID.
 
 ***
 
-#### `reset_object_id() -> None`
-
-_This is a static function._
-
-Reset the object ID counter to its default value.
-This is a fallback in case of very strange errors; you shouldn't ever need to call this.
-
-***
-
 #### `get_frame(frame: bytes) -> int`
 
 _This is a static function._

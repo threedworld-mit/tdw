@@ -137,7 +137,7 @@ class Controller(object):
         # Receive output data.
         resp = self.socket.recv_multipart()
 
-        # Occasionally on Ubuntu 16, the build's socket will stop receiving messages.
+        # Occasionally, the build's socket will stop receiving messages.
         # If that happens, it will close the socket, create a new socket, and send a dummy output data object.
         # The ID of the dummy object is "ftre" (FailedToReceive).
         # If the controller receives the dummy object, it should re-send its commands.

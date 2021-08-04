@@ -6,8 +6,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ## v1.8.22
 
-**THIS IS A CRITICAL UPDATE.** This resolves major bugs that were introduced in v1.8.1. If you're using TDW v1.8.x you should upgrade to this version.
-
 ### Command API
 
 #### New Commands
@@ -16,29 +14,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | ---------------------------------- | ------------------------------------------------------------ |
 | `rotate_directional_light_by`      | Rotate the directional light (the sun) by an angle and axis. |
 | `reset_directional_light_rotation` | Reset the rotation of the directional light (the sun).       |
-| `set_network_logging`              | If True, the build will log every message received from the controller and will log every command that is executed. |
-
-#### Modified Commands
-
-| Command              | Modification                                                 |
-| -------------------- | ------------------------------------------------------------ |
-| `set_socket_timeout` | This only has an effect if the build is running on Ubuntu 16. |
-
-### `tdw` module
-
-- Removed `reset_object_id()`
-- Reverted behavior of `get_unique_id()` to pre-1.8.21
-- (Backend) Added a `__frame` counter that gets appended to the end of every message sent to the build.
+| `parent_object_to_avatar`          | Parent an object to an avatar.                               |
+| `unparent_object`                  | Unparent an object from its current parent.                  |
 
 ### Example Controllers
 
 - Added: `directional_light.py`
-
-### Build
-
-- **Fixed: Major networking bugs including messages being sent twice after a timeout and timeouts repeating indefinitely.** The repeated message bug was the reason behind frequent object ID key error bugs. The network behavior has been reverted to pre-v1.8.1 for all operating systems *except* Ubuntu 16, which seems to be unaffected by the bug and requires the post-v1.8.1 changes. It *should* be impossible now for a message to be sent more than once--but if the bug persists, TDW now includes a fallback where the build will compare frame numbers in order to reject repeat messages.
-- Fixed: Various race conditions when executing commands due to command execution actually being called twice (this was most notable when destroying objects or loading a new scene).
-- Fixed: Crash-to-desktop when downloading non-free (tdw-private) models on Ubuntu 20. This was previously handled by the `use_presigned_urls` command but now the build will always use pre-signed URLs if running on Ubuntu 20.
 
 ## v1.8.21
 

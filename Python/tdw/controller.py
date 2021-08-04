@@ -29,6 +29,11 @@ class Controller(object):
     ```
     """
 
+    # The ID of the first object.
+    _FIRST_OBJECT_ID: int = 10000
+    # The next object ID.
+    _NEXT_OBJECT_ID: int = _FIRST_OBJECT_ID
+
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = False):
         """
         Create the network socket and bind the socket to the port.
@@ -394,7 +399,18 @@ class Controller(object):
         :return The new unique ID.
         """
 
-        return int.from_bytes(os.urandom(3), byteorder='big')
+        object_id = Controller._NEXT_OBJECT_ID
+        Controller._NEXT_OBJECT_ID += 1
+        return object_id
+
+    @staticmethod
+    def reset_object_id() -> None:
+        """
+        Reset the object ID counter to its default value.
+        This is a fallback in case of very strange errors; you shouldn't ever need to call this.
+        """
+
+        Controller._NEXT_OBJECT_ID = Controller._FIRST_OBJECT_ID
 
     @staticmethod
     def get_frame(frame: bytes) -> int:

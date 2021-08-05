@@ -60,6 +60,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [AvatarStickyMittenSegmentationColors](#AvatarStickyMittenSegmentationColors) | Color segmentation data for a Sticky Mitten Avatar. | `smsc` |
 | [Bounds](#Bounds) | Rotated bounds data. | `boun` |
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
+| [CameraMotionComplete](#CameraMotionComplete) | Announce that a camera motion has been completed. | `camm` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [CompositeObjects](#CompositeObjects) | Data for all composite objects currently in the scene. | `comp` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
@@ -276,6 +277,19 @@ An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11,
 | `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
 | `get_projection_matrix()` | The projection matrix. | `np.array` |
 | `get_camera_matrix()` | The camera matrix. | `np.array` |
+
+## CameraMotionComplete
+
+`c = CameraMotionComplete(byte_array)`
+
+**Identifier:** `camm`
+
+Announce that a camera motion has been completed.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_avatar_id()` | The ID of the avatar. | `str` |
+| `get_motion()` | The type of motion that just ended. | `str` |
 
 ## Collision
 

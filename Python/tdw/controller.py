@@ -14,6 +14,7 @@ from tdw.output_data import Version, QuitSignal
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
+from tdw.add_ons.add_on import AddOn
 
 
 class Controller(object):
@@ -39,6 +40,8 @@ class Controller(object):
         :param check_build_process: If True and the build is on the same machine as this controller, continuously check whether the build process is still up.
         """
 
+        # A list of modules that will add commands on `communicate()`.
+        self.add_ons: List[AddOn] = list()
         # True if a local build process is currently running.
         self._local_build_is_running: bool = False
         # If True, we already quit (suppresses a warning that the build is down).
@@ -126,12 +129,25 @@ class Controller(object):
         # Don't do anything if the controller already quit.
         if self._quit:
             return []
+        if isinstance(commands, dict):
+            commands = [commands]
 
-        if isinstance(commands, list):
-            msg = [json.dumps(commands).encode('utf-8')]
-        else:
-            msg = [json.dumps([commands]).encode('utf-8')]
+        # Append commands from each add-on.
+        for m in self.add_ons:
+            # Initialize an add-on.
+            if not m.initialized:
+                commands.extend(m.get_initialization_commands())
+                m.initialized = True
+            # Append the add-on's commands.
+            else:
+                commands.extend(m.commands)
+                m.commands.clear()
+        # Possibly do something with the commands about to be sent.
+        for m in self.add_ons:
+            m.before_send(commands)
 
+        # Serialize the message.
+        msg = [json.dumps(commands).encode('utf-8')]
         # Send the commands.
         self.socket.send_multipart(msg)
         # Receive output data.
@@ -171,6 +187,10 @@ class Controller(object):
                 self._local_build_is_running = False
                 self._quit = True
                 break
+
+        # Get commands per module for the next frame.
+        for m in self.add_ons:
+            m.on_send(resp=resp)
 
         # Return the output data from the build.
         return resp

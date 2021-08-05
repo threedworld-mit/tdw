@@ -16,21 +16,9 @@ This occurs on Windows with Python 3.7+. Install with the --user flag: `pip3 ins
 
 Beyond basic coding practices (breakpoints, unit tests, etc.) in your controller, here are several strategies for debugging your controller code:
 
-### 1. Send Log Messages
+### 1. Use the `Debug` add-on
 
-```python
-c.communicate({"$type": "send_log_messages"})
-```
-
-If you send this [command](../api/command_api.md), you will receive [Log Messages](../api/output_data.md) per frame. These messages will help tell you if you've made a mistake. They _won't_ tell you if the build has crashed (because in that case, the build can't send anything!)
-
-The player log (see below) contains all of these messages, plus any others that weren't handled by the TDW logger (such as an unhandled exception in the Unity Engine).
-
-### 2. Use the DebugController class
-
-[`DebugController`](../python/debug_controller.md) is a subclass of [`Controller`](../python/controller.md) that will record every list of commands sent to the build. You can review these commands to reproduce bugs or identify problems.
-
-Because `DebugController` holds all previous commands in memory, it is not recommended for long-term simulations.
+The [`Debug` add-on](../python/add_ons/debug.md) will print any messages logged by the build and generate a log file when the build quits.
 
 See `Python/example_controllers/debug.py` for example implementation.
 

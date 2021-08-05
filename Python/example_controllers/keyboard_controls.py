@@ -1,17 +1,30 @@
-from tdw.keyboard_controller import KeyboardController
+from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-
+from tdw.add_ons.keyboard import Keyboard
 
 """
 Use WASD or arrow keys to move an avatar.
 """
 
 
-class KeyboardControls(KeyboardController):
+class KeyboardControls(Controller):
     def __init__(self, port: int = 1071):
         super().__init__(port=port)
         self.done = False
         self.avatar_id = "a"
+
+        # Add a `Keyboard` module to the controller to listen for keyboard input.
+        k: Keyboard = Keyboard()
+        k.listen(key="W", commands=self.move(direction=1), events=["press", "hold"])
+        k.listen(key="UpArrow", commands=self.move(direction=1), events=["press", "hold"])
+        k.listen(key="S", commands=self.move(direction=-1), events=["press", "hold"])
+        k.listen(key="DownArrow", commands=self.move(direction=1), events=["press", "hold"])
+        k.listen(key="A", commands=self.turn(direction=-1), events=["press", "hold"])
+        k.listen(key="LeftArrow", commands=self.turn(direction=-1), events=["press", "hold"])
+        k.listen(key="S", commands=self.turn(direction=1), events=["press", "hold"])
+        k.listen(key="RightArrow", commands=self.turn(direction=1), events=["press", "hold"])
+        k.listen(key="Escape", function=self.stop, events=["press"])
+        self.add_ons.append(k)
 
     def move(self, direction: int, force: float = 80) -> dict:
         """
@@ -70,16 +83,6 @@ class KeyboardControls(KeyboardController):
                          {"$type": "set_proc_gen_floor_texture_scale",
                           "scale": {"x": 8, "y": 8}}])
         self.communicate(commands)
-
-        self.listen(key="W", commands=self.move(direction=1), events=["press", "hold"])
-        self.listen(key="UpArrow", commands=self.move(direction=1), events=["press", "hold"])
-        self.listen(key="S", commands=self.move(direction=-1), events=["press", "hold"])
-        self.listen(key="DownArrow", commands=self.move(direction=1), events=["press", "hold"])
-        self.listen(key="A", commands=self.turn(direction=-1), events=["press", "hold"])
-        self.listen(key="LeftArrow", commands=self.turn(direction=-1), events=["press", "hold"])
-        self.listen(key="S", commands=self.turn(direction=1), events=["press", "hold"])
-        self.listen(key="RightArrow", commands=self.turn(direction=1), events=["press", "hold"])
-        self.listen(key="Escape", function=self.stop, events=["press"])
 
         while not self.done:
             self.communicate([])

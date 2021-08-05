@@ -4,19 +4,16 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
-## v1.8.22
+## v1.8.23
 
 ### Command API
 
 #### New Commands
 
-| Command                            | Description                                                  |
-| ---------------------------------- | ------------------------------------------------------------ |
-| `rotate_directional_light_by`      | Rotate the directional light (the sun) by an angle and axis. |
-| `reset_directional_light_rotation` | Reset the rotation of the directional light (the sun).       |
-| `parent_object_to_avatar`          | Parent an object to an avatar.                               |
-| `unparent_object`                  | Unparent an object from its current parent.                  |
-| `send_occlusion`                   | Send the extent to which the scene environment is occluding objects in the frame. |
+| Command          | Description                            |
+| ---------------- | -------------------------------------- |
+| `send_occlusion` | Send occlusion data to the controller. |
+
 
 ### Output Data
 
@@ -28,7 +25,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Example Controllers
 
-- Added: `directional_light.py`
 - Added: `occlusion.py`
 
 ### Benchmark
@@ -42,6 +38,55 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | Document              | Modification                             |
 | --------------------- | ---------------------------------------- |
 | `observation_data.md` | Added `Occlusion` section and benchmark. |
+
+## v1.8.22
+
+**THIS IS A CRITICAL UPDATE.** You are **strongly** advised to upgrade to this version of TDW.
+
+### Command API
+
+#### New Commands
+
+| Command                            | Description                                                  |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `rotate_directional_light_by`      | Rotate the directional light (the sun) by an angle and axis. |
+| `reset_directional_light_rotation` | Reset the rotation of the directional light (the sun).       |
+| `parent_object_to_avatar`          | Parent an object to an avatar.                               |
+| `unparent_object`                  | Unparent an object from its current parent.                  |
+| `set_network_logging`              | If True, the build will log every message received from the controller and will log every command that is executed. |
+
+#### Modified Commands
+
+| Command               | Modification                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| `use_pre_signed_urls` | Default value on Ubuntu 20 is True and default value for all other platforms is False (previously, default value was False for all platforms) |
+
+#### Deprecated Commands
+
+| Command              | Reason                                                       |
+| -------------------- | ------------------------------------------------------------ |
+| `set_socket_timeout` | The TCP socket no longer use a timeout; this command doesn't do anything. |
+
+### `tdw` module
+
+#### `Controller`
+
+- Reverted how `get_unique_id()` works to v1.8.20
+- Removed `Controller.reset_unique_id()`
+
+### Build
+
+- **FIXED CRITICAL NETWORK BUGS:**
+  - Fixed: Occasionally, the build will receive the same message twice.
+  - Fixed: Dictionary key errors when adding objects, avatars, etc. due to the aforementioned doubling of received messages.
+  - Fixed: The build will hang indefinitely due to the TCP socket repeatedly timing out.
+  - Fixed: Rare race conditions due to commands being executed out of order.
+- Fixed: (Unity Editor only) Logged error when sending `set_physic_material` because the material can't be destroyed to prevent memory loss.
+- Fixed: Warnings when destroying sub-objects of a composite object because they aren't in the main cache.
+
+### Example Controllers
+
+- Added: `directional_light.py`
 
 ## v1.8.21
 

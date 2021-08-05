@@ -115,6 +115,37 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
                                   "rotation": self.follow_rotate,
                                   "avatar_id": self.avatar_id})
 
+    def teleport(self, position: Dict[str, float], absolute: bool = True) -> None:
+        """
+        Teleport the camera to a new position.
+
+        :param position: The new position of the camera.
+        :param absolute: If True, `position` is absolute worldspace coordinates. If False, `position` is relative to the avatar's current position.
+        """
+
+        if absolute or self.position is None:
+            self.position: Dict[str, float] = position
+        else:
+            self.position: Dict[str, float] = {"x": self.position["x"] + position["x"],
+                                               "y": self.position["y"] + position["y"],
+                                               "z": self.position["z"] + position["z"]}
+        self.commands.append({"$type": "teleport_avatar_to",
+                              "position": self.position,
+                              "avatar_id": self.avatar_id})
+
+    def rotate(self, rotation: Dict[str, float]) -> None:
+        """
+        Rotate the camera.
+
+        :param rotation: Rotate the camera by these angles (in degrees). Keys are `"x"`, `"y"`, `"z"` and correspond to `(pitch, yaw, roll)`.
+        """
+
+        for q, axis in zip(["x", "y", "z"], ["pitch", "yaw", "roll"]):
+            self.commands.append({"$type": "rotate_sensor_container_by",
+                                  "axis": axis,
+                                  "angle": rotation[q],
+                                  "avatar_id": self.avatar_id})
+
     def _get_look_at_commands(self) -> List[dict]:
         """
         :return: A command for looking at a target.

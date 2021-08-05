@@ -16,6 +16,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `composite_object.py` | Create a composite object from a local asset bundle.<br>Test that the object loaded correctly.<br>Apply sub-object commands to the sub-objects. |
 | `debug.py` | Create a debug controller. After running a simple physics simulation, play back all of the commands. |
 | `depth_shader.py` | Capture a _depth image and calculate the depth values of each pixel. |
+| `directional_light.py` | Rotate the directional light in the scene. |
 | `flex_cloth_fixed_particle.py` | Create a Flex cloth object and "fix" one of its corners in mid-air. |
 | `flex_fluid_object.py` | Create a fluid "container" with the NVIDIA Flex physics engine. Run several trials, dropping ball objects of increasing mass into the fluid. |
 | `flex_fluid_source.py` | Create a Flex FluidSource, or "hose pipe", simulation of a fluid stream. |
@@ -35,6 +36,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `paintings.py` | Add a painting to the scene. |
 | `panorama.py` | Capture a series of images around a model to form a 360-degree panorama. |
 | `pass_masks.py` | Create one image per pass of a scene. |
+| `perlin_noise_terrain.py` | Generate Perlin noise terrain and roll a ball down the terrain. |
 | `photoreal.py` | Create a photorealistic scene, focusing on post-processing and other effects.<br>The "archviz_house" environment is used due to its maximal photorealistic lighting. |
 | `proc_gen_interior_design.py` | Procedurally furnish a room with basic relational semantic rules. |
 | `proc_gen_room.py` | - Procedurally generate rooms with different layouts.<br>- Create a ceiling and delete a portion of it.<br>- Set the floor and wall materials. |

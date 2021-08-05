@@ -4,6 +4,114 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.22
+
+**THIS IS A CRITICAL UPDATE.** You are **strongly** advised to upgrade to this version of TDW.
+
+### Command API
+
+#### New Commands
+
+| Command                            | Description                                                  |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `rotate_directional_light_by`      | Rotate the directional light (the sun) by an angle and axis. |
+| `reset_directional_light_rotation` | Reset the rotation of the directional light (the sun).       |
+| `parent_object_to_avatar`          | Parent an object to an avatar.                               |
+| `unparent_object`                  | Unparent an object from its current parent.                  |
+| `set_network_logging`              | If True, the build will log every message received from the controller and will log every command that is executed. |
+
+#### Modified Commands
+
+| Command               | Modification                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| `use_pre_signed_urls` | Default value on Ubuntu 20 is True and default value for all other platforms is False (previously, default value was False for all platforms) |
+
+#### Deprecated Commands
+
+| Command              | Reason                                                       |
+| -------------------- | ------------------------------------------------------------ |
+| `set_socket_timeout` | The TCP socket no longer use a timeout; this command doesn't do anything. |
+
+### `tdw` module
+
+#### `Controller`
+
+- Reverted how `get_unique_id()` works to v1.8.20
+- Removed `Controller.reset_unique_id()`
+
+### Build
+
+- **FIXED CRITICAL NETWORK BUGS:**
+  - Fixed: Occasionally, the build will receive the same message twice.
+  - Fixed: Dictionary key errors when adding objects, avatars, etc. due to the aforementioned doubling of received messages.
+  - Fixed: The build will hang indefinitely due to the TCP socket repeatedly timing out.
+  - Fixed: Rare race conditions due to commands being executed out of order.
+- Fixed: (Unity Editor only) Logged error when sending `set_physic_material` because the material can't be destroyed to prevent memory loss.
+- Fixed: Warnings when destroying sub-objects of a composite object because they aren't in the main cache.
+
+### Example Controllers
+
+- Added: `directional_light.py`
+
+## v1.8.21
+
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: As of a few updates ago, the controller often sends non-unique object IDs. We are still trying to determine what changed in the build's code, but in the meantime, `Controller.get_unique_id()` will always return a unique ID.
+  - Added `Controller.reset_unique_id()` to prevent overflow errors.
+
+### Build
+
+- Fixed: Rare bug where the build won't receive the full JSON string for very long lists of commands. In these cases, the build will request that the controller resend the message.
+- Fixed: Rare bug in which the controller enters an infinite loop trying to resend messages to the build. Now, it will quit with an error after a certain number of retries.
+
+## v1.8.20
+
+### Command API
+
+#### New Commands
+
+| Command                              | Description                                                  |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `set_magnebot_wheels_during_move`    | Set the friction coefficients of the Magnebot's wheels during a move_by() or move_to() action, given a target position. The friction coefficients will increase as the Magnebot approaches the target position and the command will announce if the Magnebot arrives at the target position. |
+| `set_magnebot_wheels_during_turn_by` | Set the friction coefficients of the Magnebot's wheels during a turn_by() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. |
+| `set_magnebot_wheels_during_turn_to` | Set the friction coefficients of the Magnebot's wheels during a turn_to() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. Because the Magnebot will move slightly while rotating, this command has an additional position parameter to re-check for alignment with the target. |
+| `set_robot_joint_friction`           | Set the friction coefficient of a robot joint.               |
+| `perlin_noise_terrain` | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data      | Description                                         |
+| ---------------- | --------------------------------------------------- |
+| `MagnebotWheels` | A message sent when a Magnebot arrives at a target. |
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Overlap`   | Added: `get_walls()`. Returns True if there is a non-floor environment object in the overlap (such as a wall). |
+
+### `tdw` Module
+
+- Added `SceneBounds` and `RoomBounds`. Convenient wrapper classes for scenes and room environments.
+
+### Build
+
+- Fixed: Unhandled ArgumentException when trying to add an object with an existing ID.
+- Fixed: Rare object ID clashes with internal avatar ID integers. Internal avatar IDs are now far less likely to be the same as an object ID.
+
+### Example Controllers
+
+- Added: `perlin_noise_terrain.py` Example of how to create a scene with procedurally generated terrain.
+
+### Use Cases
+
+- Fixed: `single_object.py` crashes when including the `--materials` flag.
+
 ## v1.8.19
 
 ### Command API
@@ -17,6 +125,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Build
 
 - Fixed: Resonance Audio doesn't work on OS X.
+
+### Python
+
+- Fixed: RuntimeWarning in `QuaternionUtils.get_y_angle()` due to a NaN value.
 
 ## v1.8.18
 

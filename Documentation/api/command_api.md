@@ -18,6 +18,7 @@
 | [`enable_reflection_probes`](#enable_reflection_probes) | Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation. |
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
+| [`perlin_noise_terrain`](#perlin_noise_terrain) | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
@@ -31,7 +32,7 @@
 | [`set_screen_size`](#set_screen_size) | Set the screen size. Any images the build creates will also be this size. |
 | [`set_shadow_strength`](#set_shadow_strength) | Set the shadow strength of all lights in the scene. This only works if you already sent load_scene or add_scene. |
 | [`set_sleep_threshold`](#set_sleep_threshold) | Set the global Rigidbody "sleep threshold", the mass-normalized energy threshold below which objects start going to sleep. A "sleeping" object is completely still until moved again by a force (object impact, force command, etc.) |
-| [`set_socket_timeout`](#set_socket_timeout) | Set the timeout duration for the socket used to communicate with the controller. Occasionally, the build's socket will stop receiving messages from the controller. This is an inevitable consequence of how synchronous receive-response sockets work. When this happens, it will wait until the socket times out, close the socket, and alert the controller that it needs to re-send its message. The timeout duration shouldn't be less than the time required to send/receive commands, or the build will never receive anything! You should only send this command if it takes longer than the default timeout to send/receive commands. |
+| [`set_socket_timeout`](#set_socket_timeout) | DEPRECATED: This command doesn't actually do anything! Set the timeout duration for the socket used to communicate with the controller. Occasionally, the build's socket will stop receiving messages from the controller. This is an inevitable consequence of how synchronous receive-response sockets work. When this happens, it will wait until the socket times out, close the socket, and alert the controller that it needs to re-send its message. The timeout duration shouldn't be less than the time required to send/receive commands, or the build will never receive anything! You should only send this command if it takes longer than the default timeout to send/receive commands.  |
 | [`set_target_framerate`](#set_target_framerate) | Set the target render framerate of the build. For more information: <ulink url="https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html">https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html</ulink> |
 | [`set_time_step`](#set_time_step) | Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). NOTE: Doubling the time_step is NOT equivalent to advancing two physics steps. For more information, see: <ulink url="https://docs.unity3d.com/Manual/TimeFrameManagement.html">https://docs.unity3d.com/Manual/TimeFrameManagement.html</ulink> |
 | [`step_physics`](#step_physics) | Step through the physics without triggering new avatar output, or new commands. |
@@ -200,6 +201,13 @@
 | [`set_reverb_space_expert`](#set_reverb_space_expert) | Create a ResonanceAudio Room, sized to the dimensions of the current room environment. All values are passed in as parameters. |
 | [`set_reverb_space_simple`](#set_reverb_space_simple) | Create a ResonanceAudio Room, sized to the dimensions of the current room environment. Reflectivity (early reflections) and reverb brightness (late reflections) calculated automatically based on size of space and percentage filled with objects. |
 
+**Directional Light Command**
+
+| Command | Description |
+| --- | --- |
+| [`reset_directional_light_rotation`](#reset_directional_light_rotation) | Reset the rotation of the directional light (the sun). |
+| [`rotate_directional_light_by`](#rotate_directional_light_by) | Rotate the directional light (the sun) by an angle and axis. This command will change the direction of cast shadows, which could adversely affect lighting that uses an HDRI skybox, Therefore this command should only be used for interior scenes where the effect of the skybox is less apparent. The original relationship between directional (sun) light and HDRI skybox can be restored by using the reset_directional_light_rotation command. |
+
 **Flex Container Command**
 
 | Command | Description |
@@ -213,9 +221,10 @@
 | --- | --- |
 | [`set_img_pass_encoding`](#set_img_pass_encoding) | Toggle the _img pass of all avatars' cameras to be either png or jpg. True = png, False = jpg, Initial value = True (png) |
 | [`set_legacy_shaders`](#set_legacy_shaders) | Set whether TDW should use legacy shaders. Prior to TDW v1.8 there was a bug and this command would result in lower image quality. Since then, TDW has far better rendering quality (at no speed penalty). Send this command only if you began your project in an earlier version of TDW and need to ensure that the rendering doesn't change. Initial value = False. (TDW will correctly set each object's shaders.) |
+| [`set_network_logging`](#set_network_logging) | If True, the build will log every message received from the controller and will log every command that is executed. Initial value = False  |
 | [`set_post_process`](#set_post_process) | Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled) |
 | [`simulate_physics`](#simulate_physics) | Toggle whether to simulate physics per list of sent commands (i.e. per frame). If false, the simulation won't step the physics forward. Initial value = True (simulate physics per frame). |
-| [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = False (download S3 objects directly, without using temporary URLs) |
+| [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Ubuntu 20: True (use temporary URLs); on all other platforms, False (download S3 objects directly, without using temporary URLs). |
 
 **Load From Resources**
 
@@ -243,6 +252,7 @@
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
+| [`parent_object_to_avatar`](#parent_object_to_avatar) | Parent an object to an avatar. The object won't change its position or rotation relative to the avatar. Only use this command in non-physics simulations. |
 | [`remove_nav_mesh_obstacle`](#remove_nav_mesh_obstacle) | Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle).  |
 | [`rotate_object_by`](#rotate_object_by) | Rotate an object by a given angle around a given axis. |
 | [`rotate_object_to`](#rotate_object_to) | Set the rotation quaternion of the object. |
@@ -252,6 +262,7 @@
 | [`set_graspable`](#set_graspable) | Make an object graspable for a VR rig with Oculus touch controllers.  |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
+| [`unparent_object`](#unparent_object) | Unparent an object from its current parent (an avatar, an avatar's camera, etc.). If the object doesn't have a parent, this command doesn't do anything. |
 
 **Flex Object Command**
 
@@ -438,11 +449,25 @@
 | [`detach_from_magnet`](#detach_from_magnet) | Detach an object from a Magnebot magnet. |
 | [`set_magnet_targets`](#set_magnet_targets) | Set the objects that the Magnebot magnet will try to pick up. |
 
+**Magnebot Wheels Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_magnebot_wheels_during_move`](#set_magnebot_wheels_during_move) | Set the friction coefficients of the Magnebot's wheels during a move_by() or move_to() action, given a target position. The friction coefficients will increase as the Magnebot approaches the target position and the command will announce if the Magnebot arrives at the target position.  |
+
+**Magnebot Wheels Turn Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_magnebot_wheels_during_turn_by`](#set_magnebot_wheels_during_turn_by) | Set the friction coefficients of the Magnebot's wheels during a turn_by() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle.  |
+| [`set_magnebot_wheels_during_turn_to`](#set_magnebot_wheels_during_turn_to) | Set the friction coefficients of the Magnebot's wheels during a turn_to() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. Because the Magnebot will move slightly while rotating, this command has an additional position parameter to re-check for alignment with the target.  |
+
 **Robot Joint Command**
 
 | Command | Description |
 | --- | --- |
 | [`set_robot_joint_drive`](#set_robot_joint_drive) | Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are. |
+| [`set_robot_joint_friction`](#set_robot_joint_friction) | Set the friction coefficient of a robot joint. |
 | [`set_robot_joint_mass`](#set_robot_joint_mass) | Set the mass of a robot joint. To get the default mass, see the StaticRobot output data. |
 | [`set_robot_joint_physic_material`](#set_robot_joint_physic_material) | Set the physic material of a robot joint and apply friction and bounciness values to the joint. These settings can be overriden by sending the command again. |
 
@@ -729,6 +754,40 @@ Pause Unity Editor.
 
 ***
 
+## **`perlin_noise_terrain`**
+
+Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Meshes`](output_data.md#Meshes)</font>
+
+```python
+{"$type": "perlin_noise_terrain", "size": {"x": 1.1, "y": 0}}
+```
+
+```python
+{"$type": "perlin_noise_terrain", "size": {"x": 1.1, "y": 0}, "origin": {"x": 0, "y": 0}, "subdivisions": 1, "turbulence": 1, "max_y": 1, "visual_material": "", "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "texture_scale": {"x": 1, "y": 1}, "dynamic_friction": 0.25, "static_friction": 0.4, "bounciness": 0.2}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"size"` | Vector2 | The (length, width) of the terrain in meters. | |
+| `"origin"` | Vector2 | The offset of the perlin noise. Set this to a random number to generate random noise. | {"x": 0, "y": 0} |
+| `"subdivisions"` | int | The number of subdivisions of the mesh. Increase this number to smooth out the mesh. | 1 |
+| `"turbulence"` | float | How "hilly" the terrain is. | 1 |
+| `"max_y"` | float | The maximum height of the terrain. | 1 |
+| `"visual_material"` | string | The visual material for the terrain. This visual material must have already been added to the simulation via the add_material command or get_add_material() controller wrapper function. If empty, a gray default material will be used. | "" |
+| `"color"` | Color | The color of the terrain. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"texture_scale"` | Vector2 | If visual_material isn't an empty string, this will set the UV texture scale. | {"x": 1, "y": 1} |
+| `"dynamic_friction"` | float | The dynamic friction of the terrain. | 0.25 |
+| `"static_friction"` | float | The static friction of the terrain. | 0.4 |
+| `"bounciness"` | float | The bounciness of the terrain. | 0.2 |
+
+***
+
 ## **`rotate_hdri_skybox_by`**
 
 Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment.
@@ -986,8 +1045,9 @@ Set the global Rigidbody "sleep threshold", the mass-normalized energy threshold
 
 ## **`set_socket_timeout`**
 
-Set the timeout duration for the socket used to communicate with the controller. Occasionally, the build's socket will stop receiving messages from the controller. This is an inevitable consequence of how synchronous receive-response sockets work. When this happens, it will wait until the socket times out, close the socket, and alert the controller that it needs to re-send its message. The timeout duration shouldn't be less than the time required to send/receive commands, or the build will never receive anything! You should only send this command if it takes longer than the default timeout to send/receive commands.
+DEPRECATED: This command doesn't actually do anything! Set the timeout duration for the socket used to communicate with the controller. Occasionally, the build's socket will stop receiving messages from the controller. This is an inevitable consequence of how synchronous receive-response sockets work. When this happens, it will wait until the socket times out, close the socket, and alert the controller that it needs to re-send its message. The timeout duration shouldn't be less than the time required to send/receive commands, or the build will never receive anything! You should only send this command if it takes longer than the default timeout to send/receive commands. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_socket_timeout"}
@@ -2977,6 +3037,60 @@ List of surface material types.
 | `"metal"` |  |
 | `"wood"` |  |
 
+# DirectionalLightCommand
+
+These commands adjust the directional light(s) in the scene. The directional light is usually the "sunlight" of the scene, but is distinct from the sunlight of HDRI skyboxes.
+
+***
+
+## **`reset_directional_light_rotation`**
+
+Reset the rotation of the directional light (the sun).
+
+
+```python
+{"$type": "reset_directional_light_rotation"}
+```
+
+```python
+{"$type": "reset_directional_light_rotation", "index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"index"` | int | The index of the light. This should almost always be 0. The scene "archviz_house" has two directional lights; for this scene, index can be 0 or 1. | 0 |
+
+***
+
+## **`rotate_directional_light_by`**
+
+Rotate the directional light (the sun) by an angle and axis. This command will change the direction of cast shadows, which could adversely affect lighting that uses an HDRI skybox, Therefore this command should only be used for interior scenes where the effect of the skybox is less apparent. The original relationship between directional (sun) light and HDRI skybox can be restored by using the reset_directional_light_rotation command.
+
+
+```python
+{"$type": "rotate_directional_light_by", "angle": 0.125}
+```
+
+```python
+{"$type": "rotate_directional_light_by", "angle": 0.125, "axis": "yaw", "index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation in degrees. | |
+| `"index"` | int | The index of the light. This should almost always be 0. The scene "archviz_house" has two directional lights; for this scene, index can be 0 or 1. | 0 |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
 # FlexContainerCommand
 
 These commands affect an NVIDIA Flex container.
@@ -3080,6 +3194,22 @@ Set whether TDW should use legacy shaders. Prior to TDW v1.8 there was a bug and
 
 ***
 
+## **`set_network_logging`**
+
+If True, the build will log every message received from the controller and will log every command that is executed. Initial value = False 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "set_network_logging", "value": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"value"` | bool | Boolean value. | |
+
+***
+
 ## **`set_post_process`**
 
 Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled)
@@ -3112,7 +3242,7 @@ Toggle whether to simulate physics per list of sent commands (i.e. per frame). I
 
 ## **`use_pre_signed_urls`**
 
-Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = False (download S3 objects directly, without using temporary URLs)
+Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Ubuntu 20: True (use temporary URLs); on all other platforms, False (download S3 objects directly, without using temporary URLs).
 
 
 ```python
@@ -3406,6 +3536,27 @@ Set the object's rotation such that its forward directional vector points toward
 
 ***
 
+## **`parent_object_to_avatar`**
+
+Parent an object to an avatar. The object won't change its position or rotation relative to the avatar. Only use this command in non-physics simulations.
+
+
+```python
+{"$type": "parent_object_to_avatar", "id": 1}
+```
+
+```python
+{"$type": "parent_object_to_avatar", "id": 1, "avatar_id": "a", "sensor": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar in the scene. | "a" |
+| `"sensor"` | bool | If true, parent the object to the camera rather than the root object of the avatar. | True |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`remove_nav_mesh_obstacle`**
 
 Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle). 
@@ -3587,6 +3738,21 @@ Teleport an object to a new position.
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | New position of the object. | |
 | `"physics"` | bool | This should almost always be False (the default). If True, apply a "physics-based" teleportation to the object. This only works if the object has a rigidbody (i.e. is a model from a model library) and is slightly slower than a non-physics teleport. Set this to True only if you are having persistent and rare physics glitches. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`unparent_object`**
+
+Unparent an object from its current parent (an avatar, an avatar's camera, etc.). If the object doesn't have a parent, this command doesn't do anything.
+
+
+```python
+{"$type": "unparent_object", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
 # FlexObjectCommand
@@ -5455,6 +5621,114 @@ A left or right arm.
 | `"left"` |  |
 | `"right"` |  |
 
+# MagnebotWheelsCommand
+
+These commands set the friction coefficient of a Magnebot's wheels over time given the distance to a target. These commands must be sent per-frame. These commands will check if the Magnebot is at the target per PHYSICS frame, INCLUDING frames skipped by step_physics. This greatly increases the precision of a Magnebot simulation.
+
+***
+
+## **`set_magnebot_wheels_during_move`**
+
+Set the friction coefficients of the Magnebot's wheels during a move_by() or move_to() action, given a target position. The friction coefficients will increase as the Magnebot approaches the target position and the command will announce if the Magnebot arrives at the target position. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`MagnebotWheels`](output_data.md#MagnebotWheels)</font>
+
+```python
+{"$type": "set_magnebot_wheels_during_move", "position": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "set_magnebot_wheels_during_move", "position": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_distance": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target destination of the Magnebot. | |
+| `"origin"` | Vector3 | The origin of the Magnebot at the start of the action (not its current position). | |
+| `"brake_distance"` | float | The distance at which the Magnebot should start to brake, in meters. | 0.1 |
+| `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
+| `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
+| `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+# MagnebotWheelsTurnCommand
+
+These commands set the friction coefficients of the Magnebot's wheels during a turn action.
+
+***
+
+## **`set_magnebot_wheels_during_turn_by`**
+
+Set the friction coefficients of the Magnebot's wheels during a turn_by() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`MagnebotWheels`](output_data.md#MagnebotWheels)</font>
+
+```python
+{"$type": "set_magnebot_wheels_during_turn_by", "angle": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "set_magnebot_wheels_during_turn_by", "angle": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_angle": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The target angle of the Magnebot in degrees. | |
+| `"origin"` | Vector3 | The starting forward directional vector of the Magnebot at the start of the action (not its current forward directional vector). | |
+| `"brake_angle"` | float | The angle at which the Magnebot should start to brake, in degrees. | 0.1 |
+| `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
+| `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
+| `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_magnebot_wheels_during_turn_to`**
+
+Set the friction coefficients of the Magnebot's wheels during a turn_to() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. Because the Magnebot will move slightly while rotating, this command has an additional position parameter to re-check for alignment with the target. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_robot_joint_friction`</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`MagnebotWheels`](output_data.md#MagnebotWheels)</font>
+
+```python
+{"$type": "set_magnebot_wheels_during_turn_to", "position": {"x": 1.1, "y": 0.0, "z": 0}, "angle": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "set_magnebot_wheels_during_turn_to", "position": {"x": 1.1, "y": 0.0, "z": 0}, "angle": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "brake_angle": 0.1, "arrived_at": 0.01, "minimum_friction": 0.05, "maximum_friction": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position that the Magnebot is turning to. | |
+| `"angle"` | float | The target angle of the Magnebot in degrees. | |
+| `"origin"` | Vector3 | The starting forward directional vector of the Magnebot at the start of the action (not its current forward directional vector). | |
+| `"brake_angle"` | float | The angle at which the Magnebot should start to brake, in degrees. | 0.1 |
+| `"arrived_at"` | float | The threshold for determining whether the Magnebot is at the target. | 0.01 |
+| `"minimum_friction"` | float | The minimum friction coefficient for the wheels. The default value (0.05) is also the default friction coefficient of the wheels. | 0.05 |
+| `"maximum_friction"` | float | The maximum friction coefficient for the wheels when slowing down. | 1 |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
 # RobotJointCommand
 
 These commands set joint targets or parameters for a robot in the scene.
@@ -5492,6 +5766,27 @@ Set static joint drive parameters for a robot joint. Use the StaticRobot output 
 | `"x"` |  |
 | `"y"` |  |
 | `"z"` |  |
+
+***
+
+## **`set_robot_joint_friction`**
+
+Set the friction coefficient of a robot joint.
+
+
+```python
+{"$type": "set_robot_joint_friction", "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_friction", "joint_id": 1, "friction": 0.05, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"friction"` | float | The friction coefficient. | 0.05 |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
 
 ***
 

@@ -74,6 +74,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [LocalTransforms](#LocalTransforms) | Data about the Transform component of objects (position and rotation) relative to its parent objects. | `ltra` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Magnebot](#Magnebot) | Data for a Magnebot. | `magn` |
+| [MagnebotWheels](#MagnebotWheels) | A message sent when a Magnebot arrives at a target. | `mwhe` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
@@ -498,6 +499,19 @@ Data for a Magnebot.
 | `get_held_right()` | The IDs of the objects held by the right magnet. | `np.array` |
 | `get_top()` | The position of the top point of the Magnebot. | `Tuple[float, float, float]` |
 
+## MagnebotWheels
+
+`m = MagnebotWheels(byte_array)`
+
+**Identifier:** `mwhe`
+
+A message sent when a Magnebot arrives at a target.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The ID of the Magnebot. | `int` |
+| `get_success()` | If True, the Magnebot arrived at the target. | `bool` |
+
 ## Meshes
 
 `m = Meshes(byte_array)`
@@ -540,6 +554,7 @@ The IDs of every object that a shape overlaps.
 | `get_id()` | The identity of this overlap (useful if you've requested multiple Overlap objects). | `int` |
 | `get_object_ids()` | The IDs of every object in the overlap shape. | `np.array` |
 | `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
+| `get_walls()` | If true, the overlap shape includes at least one environment object that isn't the floor. | `bool` |
 
 ## QuitSignal
 

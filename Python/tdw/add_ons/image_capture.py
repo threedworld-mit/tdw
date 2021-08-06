@@ -158,7 +158,7 @@ class ImageCapture(AddOn):
         :return: A dictionary of PIL images from the latest image data from the build. Key = The avatar ID. Value = A dictionary; key = the pass mask, value = the PIL image.
         """
 
-        images = Dict[str, Dict[str, Image]]
+        images: Dict[str, Dict[str, Image]] = dict()
         for avatar_id in self.images:
             images[avatar_id] = dict()
             for i in range(self.images[avatar_id].get_num_passes()):

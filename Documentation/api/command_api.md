@@ -19,14 +19,12 @@
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`perlin_noise_terrain`](#perlin_noise_terrain) | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain.  |
-| [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
 | [`set_error_handling`](#set_error_handling) | Set whether TDW will quit when it logs different types of messages.  |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
 | [`set_gravity_vector`](#set_gravity_vector) | Set the gravity vector in the scene. |
-| [`set_hdri_skybox_exposure`](#set_hdri_skybox_exposure) | Set the exposure of the HDRI skybox to a given value. |
 | [`set_physics_solver_iterations`](#set_physics_solver_iterations) | Set the number of physics solver iterations, which affects the overall accuracy of the physics engine. |
 | [`set_render_quality`](#set_render_quality) | Set the render quality level. The highest render quality level enables near-photorealism runtime rendering. The lowest render quality has "flat" rendering, no shadows, etc. The lower the render quality, the faster the simulation will run, especially in scenes with complex lighting. |
 | [`set_screen_size`](#set_screen_size) | Set the screen size. Any images the build creates will also be this size. |
@@ -225,6 +223,16 @@
 | [`set_post_process`](#set_post_process) | Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled) |
 | [`simulate_physics`](#simulate_physics) | Toggle whether to simulate physics per list of sent commands (i.e. per frame). If false, the simulation won't step the physics forward. Initial value = True (simulate physics per frame). |
 | [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Ubuntu 20: True (use temporary URLs); on all other platforms, False (download S3 objects directly, without using temporary URLs). |
+
+**Hdri Skybox Command**
+
+| Command | Description |
+| --- | --- |
+| [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
+| [`set_hdri_skybox_angle`](#set_hdri_skybox_angle) | Set the angle of the sun of an HDRI skybox. Note that in most cases this will result in strange lighting if it's different from the default value. |
+| [`set_hdri_skybox_elevation`](#set_hdri_skybox_elevation) | Set the elevation of the sun of an HDRI skybox. Note that in most cases this will result in strange lighting if it's different from the default value. |
+| [`set_hdri_skybox_exposure`](#set_hdri_skybox_exposure) | Set the exposure of the HDRI skybox to a given value. |
+| [`set_hdri_skybox_sun_intensity`](#set_hdri_skybox_sun_intensity) | Set the intensity of the sun of an HDRI skybox. Note that in most cases this will result in strange lighting if it's different from the default value. |
 
 **Load From Resources**
 
@@ -788,21 +796,6 @@ Initialize a scene environment with procedurally generated "terrain" using Perli
 
 ***
 
-## **`rotate_hdri_skybox_by`**
-
-Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment.
-
-
-```python
-{"$type": "rotate_hdri_skybox_by", "angle": 0.125}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"angle"` | float | The value to rotate the HDRI skybox by. Skyboxes are always rotated in a positive direction; values are clamped between 0 and 360, and any negative values are forced positive. | |
-
-***
-
 ## **`send_nav_mesh_path`**
 
 Tell the build to send data of a path on the NavMesh from the origin to the destination. 
@@ -929,21 +922,6 @@ Set the gravity vector in the scene.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"gravity"` | Vector3 | The gravity vector. | {"x": 0, "y": -9.81, "z": 0} |
-
-***
-
-## **`set_hdri_skybox_exposure`**
-
-Set the exposure of the HDRI skybox to a given value.
-
-
-```python
-{"$type": "set_hdri_skybox_exposure", "exposure": 0.125}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"exposure"` | float | The value to set the HDRI exposure to. | |
 
 ***
 
@@ -3252,6 +3230,85 @@ Toggle whether to download asset bundles (models, scenes, etc.) directly from by
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"value"` | bool | Boolean value. | |
+
+# HdriSkyboxCommand
+
+These commands adjust the parameter values of an HDRI skybox in the scene. See: add_hdri_skybox
+
+***
+
+## **`rotate_hdri_skybox_by`**
+
+Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment.
+
+
+```python
+{"$type": "rotate_hdri_skybox_by", "angle": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The value to rotate the HDRI skybox by. Skyboxes are always rotated in a positive direction; values are clamped between 0 and 360, and any negative values are forced positive. | |
+
+***
+
+## **`set_hdri_skybox_angle`**
+
+Set the angle of the sun of an HDRI skybox. Note that in most cases this will result in strange lighting if it's different from the default value.
+
+
+```python
+{"$type": "set_hdri_skybox_angle", "angle": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The rotation angle of the sun light. | |
+
+***
+
+## **`set_hdri_skybox_elevation`**
+
+Set the elevation of the sun of an HDRI skybox. Note that in most cases this will result in strange lighting if it's different from the default value.
+
+
+```python
+{"$type": "set_hdri_skybox_elevation", "elevation": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"elevation"` | float | The elevation of the sun light. | |
+
+***
+
+## **`set_hdri_skybox_exposure`**
+
+Set the exposure of the HDRI skybox to a given value.
+
+
+```python
+{"$type": "set_hdri_skybox_exposure", "exposure": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"exposure"` | float | The value to set the HDRI exposure to. | |
+
+***
+
+## **`set_hdri_skybox_sun_intensity`**
+
+Set the intensity of the sun of an HDRI skybox. Note that in most cases this will result in strange lighting if it's different from the default value.
+
+
+```python
+{"$type": "set_hdri_skybox_sun_intensity", "intensity": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"intensity"` | float | The intensity of the sun light. | |
 
 # LoadFromResources
 

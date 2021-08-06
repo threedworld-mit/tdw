@@ -4,6 +4,18 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.23
+
+### Command API
+
+#### New Commands
+
+| Command                         | Description                                     |
+| ------------------------------- | ----------------------------------------------- |
+| `set_hdri_skybox_sun_angle`     | Set the angle of the sun of an HDRI skybox.     |
+| `set_hdri_skybox_sun_elevation` | Set the elevation of the sun of an HDRI skybox. |
+| `set_hdri_skybox_sun_intensity` | Set the intensity of the sun of an HDRI skybox. |
+
 ## v1.8.22
 
 **THIS IS A CRITICAL UPDATE.** You are **strongly** advised to upgrade to this version of TDW.

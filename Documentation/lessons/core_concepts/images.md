@@ -4,30 +4,22 @@ TDW makes a distinction between images rendered to the build's application windo
 
 Image data in TDW is divided into **capture passes**. By far the most commonly used capture pass is `_img`, which is a render of what the camera is currently viewing. Other capture passes will return more specialized data.
 
-To capture an `_img` pass, we'll first create a scene, add an object, and add an avatar. Note that unlike previous examples using `ThirdPersonCamera`, we need to call `initialize_now()`. This is because we need to add image capture commands to the list. If we didn't do this, the controller would add the image capture commands *before* the camera initialization commands and there'd be an error in the build.
+To capture an `_img` pass, we'll first create a scene, add an object, and add an avatar. 
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.output_data import OutputData, Images
 
 c = Controller()
 c.start()
 object_id = c.get_unique_id()
-cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
-                        look_at=object_id,
-                        avatar_id="a")
-c.add_ons.append(cam)
-# We need to initialize the camera commands now so that they are in the correct order when setting up image capture.
-# Typically, add-on initialization is handled automatically by the controller.
-cam_commands = cam.initialize_now()
 
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
                              position={"x": 1, "y": 0, "z": -0.5},
                              object_id=object_id)]
-commands.extend(cam_commands)
+commands.extend(TDWUtils.create_avatar(position={"x": 2, "y": 1.6, "z": -0.6},
+                                       avatar_id="a"))
 ```
 
 Now we need to add two more commands:
@@ -40,31 +32,25 @@ We'll send all of these commands and receive a response:
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.output_data import OutputData, Images
 
 c = Controller()
 c.start()
 object_id = c.get_unique_id()
-cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
-                        look_at=object_id,
-                        avatar_id="a")
-c.add_ons.append(cam)
-# We need to initialize the camera commands now so that they are in the correct order when setting up image capture.
-# Typically, add-on initialization is handled automatically by the controller.
-cam_commands = cam.initialize_now()
 
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
                              position={"x": 1, "y": 0, "z": -0.5},
                              object_id=object_id)]
-commands.extend(cam_commands)
+commands.extend(TDWUtils.create_avatar(position={"x": 2, "y": 1.6, "z": -0.6},
+                                       avatar_id="a"))
 commands.extend([{"$type": "set_pass_masks",
                   "pass_masks": ["_img"],
                   "avatar_id": "a"},
                  {"$type": "send_images",
                   "frequency": "always",
                   "ids": ["a"]}])
+
+resp = c.communicate(commands)
 ```
 
 We can then read the [`Images`](../../api/output_data.md#Images) output data, which contains metadata about the image plus the image itself. We can then choose what to do with the image: If we want to analyze it at runtime, we could convert it to a [PIL image](https://pillow.readthedocs.io/en/stable/reference/Image.html). Or, we could immediately save it to disk. The following example does both options:
@@ -72,24 +58,18 @@ We can then read the [`Images`](../../api/output_data.md#Images) output data, wh
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.output_data import OutputData, Images
 
 c = Controller()
 c.start()
 object_id = c.get_unique_id()
-cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
-                        look_at=object_id,
-                        avatar_id="a")
-c.add_ons.append(cam)
-# We need to initialize the camera commands now so that they are in the correct order when setting up image capture.
-# Typically, add-on initialization is handled automatically by the controller.
-cam_commands = cam.initialize_now()
 
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
                              position={"x": 1, "y": 0, "z": -0.5},
                              object_id=object_id)]
+commands.extend(TDWUtils.create_avatar(position={"x": 2, "y": 1.6, "z": -0.6},
+                                       avatar_id="a"))
 commands.extend(cam_commands)
 commands.extend([{"$type": "set_pass_masks",
                   "pass_masks": ["_img"],

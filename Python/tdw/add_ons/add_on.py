@@ -1,5 +1,6 @@
 from typing import List
 from abc import ABC, abstractmethod
+from overrides import final
 
 
 class AddOn(ABC):
@@ -93,3 +94,17 @@ class AddOn(ABC):
         """
 
         pass
+
+    @final
+    def initialize_now(self) -> List[dict]:
+        """
+        Sometimes we need to manually initialize an add-on in order to send commands in the correct order.
+
+        :return: A list of initialization commands.
+        """
+
+        if self.initialized:
+            return []
+        else:
+            self.initialized = True
+            return self.get_initialization_commands()

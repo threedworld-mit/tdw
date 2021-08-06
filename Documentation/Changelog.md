@@ -4,6 +4,17 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.23
+
+### Command API
+
+#### New Commands
+
+| Command                           | Description                                           |
+| --------------------------------- | ----------------------------------------------------- |
+| `set_directional_light_intensity` | Set the intensity of the directional light (the sun). |
+| `set_directional_light_color`     | Set the color of the directional light (the sun).     |
+
 ## v1.8.22
 
 **THIS IS A CRITICAL UPDATE.** You are **strongly** advised to upgrade to this version of TDW.

@@ -207,6 +207,8 @@
 | --- | --- |
 | [`reset_directional_light_rotation`](#reset_directional_light_rotation) | Reset the rotation of the directional light (the sun). |
 | [`rotate_directional_light_by`](#rotate_directional_light_by) | Rotate the directional light (the sun) by an angle and axis. This command will change the direction of cast shadows, which could adversely affect lighting that uses an HDRI skybox, Therefore this command should only be used for interior scenes where the effect of the skybox is less apparent. The original relationship between directional (sun) light and HDRI skybox can be restored by using the reset_directional_light_rotation command. |
+| [`set_directionial_light_color`](#set_directionial_light_color) | Set the color of the directional light (the sun). |
+| [`set_directionial_light_intensity`](#set_directionial_light_intensity) | Set the intensity of the directional light (the sun). |
 
 **Flex Container Command**
 
@@ -3090,6 +3092,46 @@ An axis of rotation.
 | `"pitch"` | Nod your head "yes". |
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`set_directionial_light_color`**
+
+Set the color of the directional light (the sun).
+
+
+```python
+{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
+```
+
+```python
+{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"color"` | Color | The color of the sunlight. | |
+| `"index"` | int | The index of the light. This should almost always be 0. The scene "archviz_house" has two directional lights; for this scene, index can be 0 or 1. | 0 |
+
+***
+
+## **`set_directionial_light_intensity`**
+
+Set the intensity of the directional light (the sun).
+
+
+```python
+{"$type": "set_directionial_light_intensity", "intensity": 0.125}
+```
+
+```python
+{"$type": "set_directionial_light_intensity", "intensity": 0.125, "index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"intensity"` | float | The intensity of the sunlight. | |
+| `"index"` | int | The index of the light. This should almost always be 0. The scene "archviz_house" has two directional lights; for this scene, index can be 0 or 1. | 0 |
 
 # FlexContainerCommand
 

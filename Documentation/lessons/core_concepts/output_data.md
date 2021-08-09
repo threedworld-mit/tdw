@@ -1,4 +1,4 @@
-# 1.2.6 Output Data
+# Core concepts: Output Data
 
 So far we've covered how to send **commands** to the build. This document covers how to receive **output data** from the build.
 
@@ -169,7 +169,9 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-Next: [Images](images.md)
+**Next: [Images](images.md)**
+
+Example controller: [object_output_data.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/object_output_data.py)
 
 Command API:
 

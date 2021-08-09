@@ -1,4 +1,4 @@
-# The Controller
+# Core concepts: The controller
 
 A controller is the Python object that communicates with the simulation application (the build). Typically, users are responsible for writing their own controllers, though the documentation for TDW includes numerous examples.
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
 ***
 
-Next: [Commands](commands.md)
+**Next: [Commands](commands.md)**
 
 Python API:
 

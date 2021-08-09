@@ -53,7 +53,10 @@ class ImageCapture(AddOn):
         """
 
         super().__init__()
-        self._frame: int = 0
+        """:field
+        The current frame count. This is used to generate filenames.
+        """
+        self.frame: int = 0
         if isinstance(path, str):
             """:field
             The path to the output directory.
@@ -112,10 +115,10 @@ class ImageCapture(AddOn):
                     # Save images.
                     TDWUtils.save_images(images=images,
                                          output_directory=str(output_dir.resolve()),
-                                         filename=TDWUtils.zero_padding(self._frame, 4))
+                                         filename=TDWUtils.zero_padding(self.frame, 4))
                     got_images = True
         if got_images:
-            self._frame += 1
+            self.frame += 1
         # If we're requesting images per-frame, send the command.
         # We can't use the "always" value because of cases like that Magnebot that will turn off image capture.
         if self._frequency == "always":

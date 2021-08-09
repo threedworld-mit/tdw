@@ -1,4 +1,4 @@
-# Avatars and cameras
+# Core concepts: Avatars and cameras
 
 As mentioned [earlier](1.2.2_commands.md), TDW doesn't impose metaphors regarding what an agent is or whether there needs to be one at all.
 
@@ -217,7 +217,9 @@ def rotate(self, rotation: Dict[str, float]) -> None:
 
 ***
 
-Next: [Objects](objects.md)
+**Next: [Objects](objects.md)**
+
+Example controller: [third_person_camera.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/third_person_camera.py)
 
 Python API:
 

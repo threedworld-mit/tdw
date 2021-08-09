@@ -1,4 +1,4 @@
-# Commands
+# Core concepts: Commands
 
 **Commands** are instructions that are sent by the controller to the build per frame.
 
@@ -69,7 +69,7 @@ TDW includes hundreds of commands. **[Read the Command API documentation here.](
 
 ***
 
-Next: [Scenes](scenes.md)
+**Next: [Scenes](scenes.md)**
 
 See also: 
 

@@ -1,4 +1,4 @@
-# Image Capture Passes
+# Core concepts: Image capture passes
 
 The [previous document](images.md) described how to capture the `_img` pass. This document covers the other capture passes in TDW:
 
@@ -249,7 +249,9 @@ In the `_flow` pass, pixels are colored according to their motion in relation to
 
 ***
 
-Next: [Image capture passes](capture_passes.md)
+**This is the last document in the "Core Concepts" section. [Return to the README](../../README.md) for more in-depth documentation about specific subjects and use-cases.**
+
+Example controller: [capture_passes.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/capture_passes.py)
 
 Python API:
 

@@ -1,4 +1,4 @@
-# Scenes
+# Core concepts: Scenes
 
 A **scene** is a static environment in a TDW simulation. It usually contains objects such as an empty room, outdoor terrain, etc. It might include additional objects such as trees, houses, etc., but these objects are also static (they can't be moved or adjusted). Scenes can contain [objects](objects.md), [avatars](avatars.md), and other non-static entities.
 
@@ -153,7 +153,7 @@ for record in librarian.records:
 
 ***
 
-Next: [Avatars and cameras](avatars.md)
+**Next: [Avatars and cameras](avatars.md)**
 
 Python API:
 

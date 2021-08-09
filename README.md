@@ -4,6 +4,25 @@
 
 TDW is a general-purpose tool that allows the user to communicate and manipulate a 3D environment. As such, there's no single "correct" procedure for using TDW. This guide will show you how to start using TDW and how to explore the available options.
 
+# 1. General guide to TDW
+
+## 1.1 Setup
+
+1. [Install TDW](Documentation/lessons/setup/install.md)
+2. [Auto-launching the TDW build](Documentation/lessons/setup/launch_build.md)
+3. [Upgrade TDW](Documentation/lessons/setup/upgrade.md)
+
+## 1.2 Core Concepts
+
+1. [The Controller](Documentation/lessons/core_concepts/controller.md)
+2. [Commands](Documentation/lessons/core_concepts/commands.md)
+3. [Scenes](Documentation/lessons/core_concepts/scenes.md)
+4. [Avatars and camera](Documentation/lessons/core_concepts/avatars.md)
+5. [Objects](Documentation/lessons/core_concepts/objects.md)
+6. [Output data](Documentation/lessons/core_concepts/output_data.md)
+7. [Images](Documentation/lessons/core_concepts/images.md)
+8. [Capture passes](Documentation/lessons/core_concepts/capture_passes.md)
+
 # Tutorials
 
 ## Setup

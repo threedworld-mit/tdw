@@ -9,6 +9,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_magnebot`](#add_magnebot) | Add a Magnebot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: <ulink url="https://github.com/alters-mit/magnebot">https://github.com/alters-mit/magnebot</ulink> |
+| [`adjust_point_lights_intensity_by`](#adjust_point_lights_intensity_by) | Adjust the intensity of all point lights in the scene by a factor. Note that many scenes don't have any point lights. |
 | [`apply_force`](#apply_force) | Apply a force into the world to an target position. The force will impact any objects between the origin and the target position. |
 | [`create_avatar`](#create_avatar) | Create an avatar (agent). |
 | [`create_empty_environment`](#create_empty_environment) | Create an empty environment. This must be called after load_scene.  |
@@ -205,8 +206,10 @@
 
 | Command | Description |
 | --- | --- |
+| [`adjust_directional_light_intensity_by`](#adjust_directional_light_intensity_by) | Adjust the intensity of the directional light (the sun) by a factor. |
 | [`reset_directional_light_rotation`](#reset_directional_light_rotation) | Reset the rotation of the directional light (the sun). |
 | [`rotate_directional_light_by`](#rotate_directional_light_by) | Rotate the directional light (the sun) by an angle and axis. This command will change the direction of cast shadows, which could adversely affect lighting that uses an HDRI skybox, Therefore this command should only be used for interior scenes where the effect of the skybox is less apparent. The original relationship between directional (sun) light and HDRI skybox can be restored by using the reset_directional_light_rotation command. |
+| [`set_directionial_light_color`](#set_directionial_light_color) | Set the color of the directional light (the sun). |
 
 **Flex Container Command**
 
@@ -592,6 +595,21 @@ Add a Magnebot to the scene. For further documentation, see: Documentation/misc_
 
 ***
 
+## **`adjust_point_lights_intensity_by`**
+
+Adjust the intensity of all point lights in the scene by a factor. Note that many scenes don't have any point lights.
+
+
+```python
+{"$type": "adjust_point_lights_intensity_by", "intensity": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"intensity"` | float | The intensity factor for all point lights in the scene. | |
+
+***
+
 ## **`apply_force`**
 
 Apply a force into the world to an target position. The force will impact any objects between the origin and the target position.
@@ -799,7 +817,7 @@ Rotate the HDRI skybox by a given value and the sun light by the same value in t
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"angle"` | float | The value to rotate the HDRI skybox by. Skyboxes are always rotated in a positive direction; values are clamped between 0 and 360, and any negative values are forced positive. | |
+| `"angle"` | float | The value to rotate the HDRI skybox by. Skyboxes are always rotated in a positive direction; values are clamped between 0 and 360, and any negative values are forced positive. Rotate around the pitch axis to set the elevation of the sun. Rotate around the yaw axis to set the angle of the sun. | |
 
 ***
 
@@ -3043,6 +3061,26 @@ These commands adjust the directional light(s) in the scene. The directional lig
 
 ***
 
+## **`adjust_directional_light_intensity_by`**
+
+Adjust the intensity of the directional light (the sun) by a factor.
+
+
+```python
+{"$type": "adjust_directional_light_intensity_by", "intensity": 0.125}
+```
+
+```python
+{"$type": "adjust_directional_light_intensity_by", "intensity": 0.125, "index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"intensity"` | float | Adjust the intensity of the sunlight by this value. | |
+| `"index"` | int | The index of the light. This should almost always be 0. The scene "archviz_house" has two directional lights; for this scene, index can be 0 or 1. | 0 |
+
+***
+
 ## **`reset_directional_light_rotation`**
 
 Reset the rotation of the directional light (the sun).
@@ -3090,6 +3128,26 @@ An axis of rotation.
 | `"pitch"` | Nod your head "yes". |
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`set_directionial_light_color`**
+
+Set the color of the directional light (the sun).
+
+
+```python
+{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
+```
+
+```python
+{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"color"` | Color | The color of the sunlight. | |
+| `"index"` | int | The index of the light. This should almost always be 0. The scene "archviz_house" has two directional lights; for this scene, index can be 0 or 1. | 0 |
 
 # FlexContainerCommand
 

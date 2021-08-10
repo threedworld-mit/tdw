@@ -4,6 +4,18 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.23
+
+### Command API
+
+#### New Commands
+
+| Command                                 | Description                                                  |
+| --------------------------------------- | ------------------------------------------------------------ |
+| `adjust_directional_light_intensity_by` | Adjust the intensity of the directional light (the sun) by a factor. |
+| `set_directional_light_color`           | Set the color of the directional light (the sun).            |
+| `adjust_point_lights_intensity_by`      | Adjust the intensity of all point lights in the scene by a factor. |
+
 ## v1.8.22
 
 **THIS IS A CRITICAL UPDATE.** You are **strongly** advised to upgrade to this version of TDW.

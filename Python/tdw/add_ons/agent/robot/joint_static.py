@@ -1,7 +1,7 @@
 from typing import Dict
 import numpy as np
 from tdw.output_data import StaticRobot
-from tdw.add_ons.robots.drive import Drive
+from tdw.add_ons.agent.robot.drive import Drive
 
 
 class JointStatic:

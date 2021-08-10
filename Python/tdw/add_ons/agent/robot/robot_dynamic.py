@@ -1,27 +1,32 @@
 from typing import List, Dict
 import numpy as np
 from tdw.output_data import OutputData, Robot
-from tdw.add_ons.robots.joint_dynamic import JointDynamic
+from tdw.add_ons.agent.robot.joint_dynamic import JointDynamic
+from tdw.add_ons.agent.agent_state import AgentState
 
 
-class RobotDynamic:
+class RobotDynamic(AgentState[int]):
     """
     Dynamic data for a robot that can change per frame (such as the position of the robot, the angle of a joint, etc.)
     """
 
-    def __init__(self, resp: List[bytes], robot_id: int, previous=None, non_moving: float = 0.001):
+    """:class_var
+    If the joint moved by less than this angle or distance since the previous frame, it's considered to be non-moving.
+    """
+    NON_MOVING: float = 0.001
+
+    def __init__(self, agent_id: int, resp: List[bytes], previous=None):
         """
-        :param resp: The response from the build, which we assume contains `StaticRobot` output data.
-        :param robot_id: The ID of this robot.
+        :param resp: The response from the build, which we assume contains `Robot` output data.
+        :param agent_id: The ID of this robot.
         :param previous: If not None, the previous RobotDynamic data. Use this to determine if the joints are moving.
-        :param non_moving: If the joint has moved by less than this angle or distance since the previous frame, it's considered to be non-moving.
         """
 
+        self.__previous = previous
+        super().__init__(agent_id=agent_id, resp=resp)
+
+    def _set_state(self, resp: List[bytes]) -> None:
         got_data: bool = False
-        """:field
-        The ID of this robot.
-        """
-        self.robot_id: int = robot_id
         """:field
         The current position of the robot as an `[x, y, z]` numpy array.
         """
@@ -42,7 +47,7 @@ class RobotDynamic:
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "robo":
                 robot: Robot = Robot(resp[i])
-                if robot.get_id() == self.robot_id:
+                if robot.get_id() == self.id:
                     got_data = True
 
                     # Get the dynamic data for the robot.
@@ -54,11 +59,11 @@ class RobotDynamic:
                     for j in range(robot.get_num_joints()):
                         joint = JointDynamic(robot=robot, joint_index=j)
                         # Determine if the joint is currently moving.
-                        if previous is not None:
-                            previous: RobotDynamic
-                            previous_joint: JointDynamic = previous.joints[joint.joint_id]
+                        if self.__previous is not None:
+                            self.__previous: RobotDynamic
+                            previous_joint: JointDynamic = self.__previous.joints[joint.joint_id]
                             for k in range(len(previous_joint.angles)):
-                                if np.linalg.norm(previous_joint.angles[k] - joint.angles[k]) > non_moving:
+                                if np.linalg.norm(previous_joint.angles[k] - joint.angles[k]) > RobotDynamic.NON_MOVING:
                                     joint.moving = True
                                     break
                         self.joints[joint.joint_id] = joint

@@ -26,6 +26,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `hdri.py` | Create an object and avatar and capture images of the scene, rotating the HDRI skybox by 15 degrees<br>for each image. |
 | `impact_sounds.py` | - Listen for collisions between objects.<br>- Generate an impact sound with py_impact upon impact and play the sound in the build. |
 | `keyboard_controls.py` | Use WASD or arrow keys to move an avatar. |
+| `lights_output_data.py` | Load a streamed scene and received Lights output data. |
 | `local_object.py` | Create a local asset bundle and load it into TDW.<br><br>See `Documentation/misc_frontend/add_local_object.md` for how to run the Asset Bundle Creator. |
 | `magnebot.py` | Add a Magnebot and move it around the scene. |
 | `minimal.py` | A minimal example of how to connect to the build and receive data. |

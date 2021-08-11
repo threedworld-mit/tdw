@@ -15,6 +15,19 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `adjust_directional_light_intensity_by` | Adjust the intensity of the directional light (the sun) by a factor. |
 | `set_directional_light_color`           | Set the color of the directional light (the sun).            |
 | `adjust_point_lights_intensity_by`      | Adjust the intensity of all point lights in the scene by a factor. |
+| `send_lights`                           | Send data for each directional light and point light in the scene. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description                       |
+| ----------- | --------------------------------- |
+| `Lights`    | Data for all lights in the scene. |
+
+### Example Controllers
+
+- Added: `lights_output_data.py`
 
 ## v1.8.22
 

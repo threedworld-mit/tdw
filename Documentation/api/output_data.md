@@ -71,6 +71,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [ImageSensors](#ImageSensors) | The names of each ImageSensor component attached to an avatar, and whether they are enabled. | `imse` |
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
 | [Keyboard](#Keyboard) | Keyboard input. Note that in order to receive keyboard input, the build must be the focused window and running on the same computer as the keyboard. | `keyb` |
+| [Lights](#Lights) | Data for all lights in the scene. | `ligh` |
 | [LocalTransforms](#LocalTransforms) | Data about the Transform component of objects (position and rotation) relative to its parent objects. | `ltra` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Magnebot](#Magnebot) | Data for a Magnebot. | `magn` |
@@ -453,6 +454,26 @@ Keyboard input. Note that in order to receive keyboard input, the build must be 
 | `get_held(index)` | Keys that are being pressed down. | `str` |
 | `get_num_released()` | The number of released. | `int` |
 | `get_released(index)` | Keys that were released between the previous frame and this frame. | `str` |
+
+## Lights
+
+`l = Lights(byte_array)`
+
+**Identifier:** `ligh`
+
+Data for all lights in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num_directional_lights()` | The number of directional lights. | `int` |
+| `get_directional_light_intensity(index)` | The intensity of the directional light. | `float` |
+| `get_directional_light_color(index)` | The color of the directional light. | `Tuple[float, float, float]` |
+| `get_directional_light_rotation(index)` | The rotation of the directional light. | `Tuple[float, float, float, float]` |
+| `get_num_point_lights()` | The number of point lights. | `int` |
+| `get_point_light_intensity(index)` | The intensity of the point light. | `float` |
+| `get_point_light_color(index)` | The color of the point light. | `Tuple[float, float, float]` |
+| `get_point_light_position(index)` | The position of the point light. | `Tuple[float, float, float]` |
+| `get_point_light_range(index)` | The range of the point light. | `float` |
 
 ## LocalTransforms
 

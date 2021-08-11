@@ -9,7 +9,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_magnebot`](#add_magnebot) | Add a Magnebot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: <ulink url="https://github.com/alters-mit/magnebot">https://github.com/alters-mit/magnebot</ulink> |
-| [`adjust_point_lights_intensity_by`](#adjust_point_lights_intensity_by) | Adjust the intensity of all point lights in the scene by a factor. Note that many scenes don't have any point lights. |
+| [`adjust_point_lights_intensity_by`](#adjust_point_lights_intensity_by) | Adjust the intensity of all point lights in the scene by a value. Note that many scenes don't have any point lights. |
 | [`apply_force`](#apply_force) | Apply a force into the world to an target position. The force will impact any objects between the origin and the target position. |
 | [`create_avatar`](#create_avatar) | Create an avatar (agent). |
 | [`create_empty_environment`](#create_empty_environment) | Create an empty environment. This must be called after load_scene.  |
@@ -206,7 +206,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`adjust_directional_light_intensity_by`](#adjust_directional_light_intensity_by) | Adjust the intensity of the directional light (the sun) by a factor. |
+| [`adjust_directional_light_intensity_by`](#adjust_directional_light_intensity_by) | Adjust the intensity of the directional light (the sun) by a value. |
 | [`reset_directional_light_rotation`](#reset_directional_light_rotation) | Reset the rotation of the directional light (the sun). |
 | [`rotate_directional_light_by`](#rotate_directional_light_by) | Rotate the directional light (the sun) by an angle and axis. This command will change the direction of cast shadows, which could adversely affect lighting that uses an HDRI skybox, Therefore this command should only be used for interior scenes where the effect of the skybox is less apparent. The original relationship between directional (sun) light and HDRI skybox can be restored by using the reset_directional_light_rotation command. |
 | [`set_directionial_light_color`](#set_directionial_light_color) | Set the color of the directional light (the sun). |
@@ -535,10 +535,11 @@
 | Command | Description |
 | --- | --- |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
-| [`send_environments`](#send_environments) | Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) load_streamed_scene  |
+| [`send_environments`](#send_environments) | Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) add_scene  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
+| [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -598,7 +599,7 @@ Add a Magnebot to the scene. For further documentation, see: Documentation/misc_
 
 ## **`adjust_point_lights_intensity_by`**
 
-Adjust the intensity of all point lights in the scene by a factor. Note that many scenes don't have any point lights.
+Adjust the intensity of all point lights in the scene by a value. Note that many scenes don't have any point lights.
 
 
 ```python
@@ -607,7 +608,7 @@ Adjust the intensity of all point lights in the scene by a factor. Note that man
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"intensity"` | float | The intensity factor for all point lights in the scene. | |
+| `"intensity"` | float | Adjust all point lights in the scene by this value. | |
 
 ***
 
@@ -3058,13 +3059,13 @@ List of surface material types.
 
 # DirectionalLightCommand
 
-These commands adjust the directional light(s) in the scene. The directional light is usually the "sunlight" of the scene, but is distinct from the sunlight of HDRI skyboxes.
+These commands adjust the directional light(s) in the scene. There is always at least one directional light in the scene (the sun).
 
 ***
 
 ## **`adjust_directional_light_intensity_by`**
 
-Adjust the intensity of the directional light (the sun) by a factor.
+Adjust the intensity of the directional light (the sun) by a value.
 
 
 ```python
@@ -6654,7 +6655,7 @@ Options for when to send data.
 
 ## **`send_environments`**
 
-Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) load_streamed_scene 
+Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) add_scene 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
@@ -6765,6 +6766,38 @@ Request keyboard input data.
 
 ```python
 {"$type": "send_keyboard", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_lights`**
+
+Send data for each directional light and point light in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Lights`](output_data.md#Lights)</font>
+
+```python
+{"$type": "send_lights"}
+```
+
+```python
+{"$type": "send_lights", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

@@ -42,6 +42,7 @@ from tdw.FBOutput import DriveAxis, JointType
 from tdw.FBOutput import QuitSignal as QuitSig
 from tdw.FBOutput import MagnebotWheels as MWheels
 from tdw.FBOutput import Occlusion as Occl
+from tdw.FBOutput import Lights as Lites
 import numpy as np
 from typing import Tuple, Optional
 
@@ -1072,3 +1073,35 @@ class Occlusion(OutputData):
 
     def get_occluded(self) -> float:
         return self.data.Occluded()
+
+
+class Lights(OutputData):
+    def get_data(self) -> Lites.Lights:
+        return Lites.Lights.GetRootAsLights(self.bytes, 0)
+
+    def get_num_directional_lights(self) -> int:
+        return self.data.DirectionalLightsLength()
+
+    def get_directional_light_intensity(self, index: int) -> float:
+        return self.data.DirectionalLights(index).Intensity()
+
+    def get_directional_light_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.DirectionalLights(index).Color())
+
+    def get_directional_light_rotation(self, index: int) -> Tuple[float, float, float, float]:
+        return OutputData._get_xyzw(self.data.DirectionalLights(index).Rotation())
+
+    def get_num_point_lights(self) -> int:
+        return self.data.PointLightsLength()
+
+    def get_point_light_intensity(self, index: int) -> float:
+        return self.data.PointLights(index).Intensity()
+
+    def get_point_light_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.PointLights(index).Color())
+
+    def get_point_light_position(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.PointLights(index).Position())
+
+    def get_point_light_range(self, index) -> float:
+        return self.data.PointLights(index).Range()

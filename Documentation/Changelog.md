@@ -16,6 +16,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `set_directional_light_color`           | Set the color of the directional light (the sun).            |
 | `adjust_point_lights_intensity_by`      | Adjust the intensity of all point lights in the scene by a factor. |
 | `send_occlusion` | Send occlusion data to the controller. |
+| `send_lights`                           | Send data for each directional light and point light in the scene. |
 
 ### Output Data
 
@@ -24,10 +25,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | Output Data | Description                                                  |
 | ----------- | ------------------------------------------------------------ |
 | `Occlusion` | To what extent parts of the scene environment (such as walls) are occluding objects. |
+| `Lights`    | Data for all lights in the scene. |
 
 ### Example Controllers
 
 - Added: `occlusion.py`
+- Added: `lights_output_data.py`
 
 ### Benchmark
 

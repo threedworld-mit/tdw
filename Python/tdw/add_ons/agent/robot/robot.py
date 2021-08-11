@@ -56,10 +56,6 @@ class Robot(RobotBase[RobotStatic, RobotDynamic]):
     TDW's built-in [`RobotLibrarian`](../librarian/robot_librarian.md).
     """
     ROBOT_LIBRARIAN: RobotLibrarian = RobotLibrarian()
-    """:class_var
-    If a joint has moved less than this many degrees (revolute or spherical) or meters (prismatic) since the previous frame, it is considered to be not moving for the purposes of determining which joints are moving.
-    """
-    NON_MOVING: float = 0.001
 
     def __init__(self, name: str, agent_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                  source: Union[RobotLibrarian, RobotRecord, str] = None):
@@ -182,17 +178,7 @@ class Robot(RobotBase[RobotStatic, RobotDynamic]):
 
     def _get_dynamic(self, resp: List[bytes]) -> RobotDynamic:
         dynamic = RobotDynamic(resp=resp, agent_id=self.id, previous=self.dynamic)
-        if self.dynamic is not None:
-            # Check which joints are still moving.
-            for joint_id in dynamic.joints:
-                dynamic.joints[joint_id].moving = False
-                for angle_0, angle_1 in zip(self.dynamic.joints[joint_id].angles, dynamic.joints[joint_id].angles):
-                    if np.linalg.norm(angle_1 - angle_0) > Robot.NON_MOVING:
-                        dynamic.joints[joint_id].moving = True
-                        break
-        else:
-            for joint_id in dynamic.joints:
-                dynamic.joints[joint_id].moving = True
+        dynamic = self._set_joints_moving(dynamic)
         return dynamic
 
     def set_joint_targets(self, targets: Dict[int, Union[float, Dict[str, float]]]) -> None:

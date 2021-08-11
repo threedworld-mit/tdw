@@ -33,3 +33,8 @@ class RobotStatic(AgentState[int]):
                         non_moving = NonMoving(static_robot=static_robot, index=j)
                         self.non_moving[non_moving.object_id] = non_moving
         assert got_data, "No static robot data in response from build!"
+        """:field
+        A list of joint IDs and non-moving body part IDs.
+        """
+        self.body_parts: List[int] = list(self.joints.keys())
+        self.body_parts.extend(self.non_moving.keys())

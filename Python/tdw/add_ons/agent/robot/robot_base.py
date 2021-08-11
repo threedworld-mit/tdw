@@ -8,7 +8,7 @@ T = TypeVar("T", bound=RobotStatic)
 U = TypeVar("U", bound=RobotDynamic)
 
 
-class RobotBase(ABC, Generic[T, U], Agent[int, T, U]):
+class RobotBase(Generic[T, U], Agent[int, T, U], ABC):
     """
     Abstract base class for robot agents.
     """

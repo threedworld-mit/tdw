@@ -169,7 +169,7 @@ class Robot(RobotBase[RobotStatic, RobotDynamic]):
         return False
 
     @final
-    def _get_add_robot(self) -> dict:
+    def _get_add_robot_command(self) -> dict:
         return {"$type": "add_robot",
                 "id": self.id,
                 "position": self._initial_position,

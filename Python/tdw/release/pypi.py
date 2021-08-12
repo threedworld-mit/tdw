@@ -123,7 +123,7 @@ class PyPi:
         :param required_version: The required version of TDW.
         :param build_version: The version of the build.
 
-        :return: True if both the tdw module is the correct version.
+        :return: True if the installed tdw module is the correct version.
         """
 
         ok: bool = True

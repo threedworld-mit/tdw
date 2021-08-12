@@ -99,7 +99,7 @@ This is useful for other modules such as the Magnebot API that rely on certain v
 | required_version | The required version of TDW. |
 | build_version | The version of the build. |
 
-_Returns:_  True if both the tdw module is the correct version.
+_Returns:_  True if the installed tdw module is the correct version.
 
 ***
 

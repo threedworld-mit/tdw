@@ -22,9 +22,10 @@ class Build:
         BUILD_PATH = BUILD_PATH.joinpath("Contents/MacOS/TDW")
 
     @staticmethod
-    def get_url(version: str = __version__) -> Tuple[str, bool]:
+    def get_url(version: str = __version__, check_head: bool = True) -> Tuple[str, bool]:
         """
         :param version: The version of the build. Default = the installed version of TDW.
+        :param check_head: If True, check the HTTP headers to make sure that the release exists.
 
         :return: The URL of the build release matching the version and the OS of this machine, True if the URL exists.
         """
@@ -36,7 +37,7 @@ class Build:
         else:
             url += ".tar.gz"
         # Check if the URL exists.
-        if head(url).status_code != 302:
+        if check_head and head(url).status_code != 302:
             print(f"Release not found: {url}")
             release_exists = False
         else:

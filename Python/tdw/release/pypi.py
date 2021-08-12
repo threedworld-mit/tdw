@@ -2,6 +2,9 @@ from json import loads
 from requests import get
 from typing import List
 from pkg_resources import get_distribution
+from packaging import version
+from tdw.version import __version__
+from tdw.release.build import Build
 
 
 class PyPi:
@@ -102,11 +105,40 @@ class PyPi:
         :return: The most up-to-date version in this major release. (Example: if v == 1.5.0, this returns 1.5.5)
         """
 
-        version = PyPi.strip_post_release(v)
+        v = PyPi.strip_post_release(v)
         releases = PyPi._get_pypi_releases()
         # Sort the list by the byte array representation to put double-digit version numbers in the correct order.
-        releases = sorted([r for r in releases if r.startswith("1." + PyPi.get_major_release(version))],
+        releases = sorted([r for r in releases if r.startswith("1." + PyPi.get_major_release(v))],
                           key=lambda r: bytes([int(n) for n in r.split(".")]))
         if len(releases) == 0:
             return ""
         return releases[-1]
+
+    @staticmethod
+    def required_tdw_version_is_installed(required_version: str, build_version: str) -> bool:
+        """
+        Check whether the correct version of TDW is installed.
+        This is useful for other modules such as the Magnebot API that rely on certain versions of TDW.
+
+        :param required_version: The required version of TDW.
+        :param build_version: The version of the build.
+
+        :return: True if the installed tdw module is the correct version.
+        """
+
+        ok: bool = True
+        required_version = PyPi.strip_post_release(required_version)
+        if version.parse(required_version) != version.parse(__version__):
+            print(f"WARNING! You have tdw {__version__} but you need tdw {required_version}. "
+                  f"To install the correct version:"
+                  f"\n\tIf you installed tdw from the GitHub repo (pip3 install -e .): "
+                  f"git checkout v{PyPi.strip_post_release(required_version)}"
+                  f"\n\tIf you installed tdw from PyPi (pip3 install tdw): "
+                  f"pip3 install tdw=={required_version}")
+            ok = False
+        if version.parse(build_version) != version.parse(required_version):
+            url, url_exists = Build.get_url(required_version, check_head=False)
+            print(f"WARNING! You are using TDW build {build_version} but you need TDW build {required_version}. "
+                  f"\n\tDownload and extract: {url}")
+            ok = False
+        return ok

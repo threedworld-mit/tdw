@@ -87,3 +87,19 @@ _Returns:_  The most up-to-date version in this major release. (Example: if v ==
 
 ***
 
+#### `required_tdw_version_is_installed(required_version: str, build_version: str) -> bool`
+
+_This is a static function._
+
+Check whether the correct version of TDW is installed.
+This is useful for other modules such as the Magnebot API that rely on certain versions of TDW.
+
+| Parameter | Description |
+| --- | --- |
+| required_version | The required version of TDW. |
+| build_version | The version of the build. |
+
+_Returns:_  True if both the tdw module is the correct version.
+
+***
+

@@ -25,6 +25,16 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | ----------- | --------------------------------- |
 | `Lights`    | Data for all lights in the scene. |
 
+### `tdw` module
+
+#### `Build` (backend)
+
+- Added optional parameter `check_head` to `get_url()`. If True, check the HTTP headers to make sure that the release exists.
+
+#### `PyPi` (backend)
+
+- Added: `required_tdw_version_is_installed(required_version, build_version)` Check whether the correct version of TDW is installed. This is useful for other modules such as the Magnebot API that rely on certain versions of TDW. 
+
 ### Example Controllers
 
 - Added: `lights_output_data.py`

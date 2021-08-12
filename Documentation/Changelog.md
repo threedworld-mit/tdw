@@ -27,6 +27,8 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### `tdw` module
 
+- (Backend) Added `packaging` as a required module.
+
 #### `Build` (backend)
 
 - Added optional parameter `check_head` to `get_url()`. If True, check the HTTP headers to make sure that the release exists.

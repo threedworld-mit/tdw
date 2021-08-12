@@ -105,10 +105,10 @@ class PyPi:
         :return: The most up-to-date version in this major release. (Example: if v == 1.5.0, this returns 1.5.5)
         """
 
-        version = PyPi.strip_post_release(v)
+        v = PyPi.strip_post_release(v)
         releases = PyPi._get_pypi_releases()
         # Sort the list by the byte array representation to put double-digit version numbers in the correct order.
-        releases = sorted([r for r in releases if r.startswith("1." + PyPi.get_major_release(version))],
+        releases = sorted([r for r in releases if r.startswith("1." + PyPi.get_major_release(v))],
                           key=lambda r: bytes([int(n) for n in r.split(".")]))
         if len(releases) == 0:
             return ""

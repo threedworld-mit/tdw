@@ -3,9 +3,9 @@ from overrides import final
 import numpy as np
 from tdw.librarian import RobotLibrarian, RobotRecord
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.agent.robot.robot_base import RobotBase
-from tdw.add_ons.agent.robot.robot_static import RobotStatic
-from tdw.add_ons.agent.robot.robot_dynamic import RobotDynamic
+from tdw.add_ons.agent.robot_base import RobotBase
+from tdw.add_ons.agent.robot_data.robot_static import RobotStatic
+from tdw.add_ons.agent.robot_data.robot_dynamic import RobotDynamic
 
 
 class Robot(RobotBase[RobotStatic, RobotDynamic]):

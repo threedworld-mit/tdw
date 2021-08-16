@@ -121,6 +121,10 @@ class ObjectManager(AddOn):
                                                         center=np.array(boun.get_center(j)))
 
     def reset(self) -> None:
+        """
+        Reset the cached static data. Call this when resetting the scene.
+        """
+
         self._cached_static_data = False
         self.objects_static.clear()
         self.categories.clear()

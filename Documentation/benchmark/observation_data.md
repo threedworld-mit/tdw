@@ -87,7 +87,28 @@ Compare the list of colors in the `_id` pass to the `SegmentationColors` object 
 
 See: [`set_pass_masks`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_pass_masks)
 
-## 4. `IdPassGrayscale`
+
+## 4. `Occlusion`
+
+```python
+occlusion = c.communicate({"$type": "send_occlusion", "frequency": "always"})
+```
+
+#### What you get
+
+An `Occlusion` output data object with an occlusion float value.
+
+For example usage, see: `tdw/Python/example_controllers/occlusion.py`
+
+#### Usage
+
+Determine to what extent objects in the viewport are occluded by room environment objects (walls, floors, etc.)
+
+#### Benefits
+
+- `Occlusion` was added to TDW much more recently than `IdPassGrayscale` and is generally more useful. In terms of raw benchmarking, `Occlusion` is somewhat slower than `IdPassGrayscale`; however, because it usually takes two `IdPassGrayscale` frames to gather useful data, `Occlusion`, which requires only one frame, can be significantly faster. In other words, the *frames per second* speed of `Occlusion` is slower than `IdPassGrayscale` but the *time elapsed* is much shorter.
+
+## 5. `IdPassGrayscale`
 
 ```python
 grayscale = c.communicate({"$type": "send_id_pass_grayscale", "frequency": "always"})
@@ -109,7 +130,7 @@ If you know what grayscale value to expect in the frame, this will tell you how 
 
 - Limited usefulness. This object will tell you the percentage of the frame occupied by _any_ objects, but nothing else.
 
-## 5. `IdPassSegmentationColors`
+## 6. `IdPassSegmentationColors`
 
 ```python
 # Get all segmentation colors.
@@ -141,7 +162,7 @@ Compare the list of observed colors to the `SegmentationColors` object to determ
 - This will only tell you _which_ objects are in the frame, not _to what extent_ they are in the frame; if, for example, only 1 pixel is in the frame, they will still be included in the list of observed object.
 - The build scans an image for unique colors before creating the output data. The more objects are in the image, the slower the process. If there are only a few objects in the frame, `IdPassSegementationColors` is significantly faster than `Images` but it _can_ be slower if there are many objects in the frame.
 
-## 6. `Transforms` and avatar data
+## 7. `Transforms` and avatar data
 
 ```python
 transforms = c.communicate({"$type": "send_transforms", "frequency": "always"})
@@ -174,6 +195,7 @@ You can infer whether the avatar is "looking at" a given object.
 | `--boxes --images --passes _img`                | 306  |
 | `--boxes --images --passes _id`                 | 230  |
 | `--boxes --id_grayscale --images --passes none` | 316  |
+| `--boxes --occlusion --images --passes none`    | 199  |
 | `--boxes --id_colors --images --passes none`    | 180  |
 | `--boxes --transforms`                          | 611  |
 

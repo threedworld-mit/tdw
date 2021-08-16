@@ -33,7 +33,7 @@
 | [`set_screen_size`](#set_screen_size) | Set the screen size. Any images the build creates will also be this size. |
 | [`set_shadow_strength`](#set_shadow_strength) | Set the shadow strength of all lights in the scene. This only works if you already sent load_scene or add_scene. |
 | [`set_sleep_threshold`](#set_sleep_threshold) | Set the global Rigidbody "sleep threshold", the mass-normalized energy threshold below which objects start going to sleep. A "sleeping" object is completely still until moved again by a force (object impact, force command, etc.) |
-| [`set_socket_timeout`](#set_socket_timeout) | DEPRECATED: This command doesn't actually do anything! Set the timeout duration for the socket used to communicate with the controller. Occasionally, the build's socket will stop receiving messages from the controller. This is an inevitable consequence of how synchronous receive-response sockets work. When this happens, it will wait until the socket times out, close the socket, and alert the controller that it needs to re-send its message. The timeout duration shouldn't be less than the time required to send/receive commands, or the build will never receive anything! You should only send this command if it takes longer than the default timeout to send/receive commands.  |
+| [`set_socket_timeout`](#set_socket_timeout) | Set the timeout behavior for the socket used to communicate with the controller. |
 | [`set_target_framerate`](#set_target_framerate) | Set the target render framerate of the build. For more information: <ulink url="https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html">https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html</ulink> |
 | [`set_time_step`](#set_time_step) | Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). NOTE: Doubling the time_step is NOT equivalent to advancing two physics steps. For more information, see: <ulink url="https://docs.unity3d.com/Manual/TimeFrameManagement.html">https://docs.unity3d.com/Manual/TimeFrameManagement.html</ulink> |
 | [`step_physics`](#step_physics) | Step through the physics without triggering new avatar output, or new commands. |
@@ -527,6 +527,7 @@
 | [`send_id_pass_segmentation_colors`](#send_id_pass_segmentation_colors) | Send all unique colors in an _id pass.  |
 | [`send_images`](#send_images) | Send images and metadata.  |
 | [`send_image_sensors`](#send_image_sensors) | Send data about each of the avatar's ImageSensors.  |
+| [`send_occlusion`](#send_occlusion) | Send the extent to which the scene environment is occluding objects in the frame.  |
 | [`send_screen_positions`](#send_screen_positions) | Given a list of worldspace positions, return the screenspace positions according to each of the avatar's camera.  |
 
 **Send Single Data Command**
@@ -1064,21 +1065,21 @@ Set the global Rigidbody "sleep threshold", the mass-normalized energy threshold
 
 ## **`set_socket_timeout`**
 
-DEPRECATED: This command doesn't actually do anything! Set the timeout duration for the socket used to communicate with the controller. Occasionally, the build's socket will stop receiving messages from the controller. This is an inevitable consequence of how synchronous receive-response sockets work. When this happens, it will wait until the socket times out, close the socket, and alert the controller that it needs to re-send its message. The timeout duration shouldn't be less than the time required to send/receive commands, or the build will never receive anything! You should only send this command if it takes longer than the default timeout to send/receive commands. 
+Set the timeout behavior for the socket used to communicate with the controller.
 
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_socket_timeout"}
 ```
 
 ```python
-{"$type": "set_socket_timeout", "timeout": 5}
+{"$type": "set_socket_timeout", "timeout": Req.DEFAULT_TIMEOUT, "max_retries": Req.DEFAULT_MAX_RETRIES}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"timeout"` | int | The socket will timeout after this many seconds. The default value listed here is the default value for the build. This must be an integer. | 5 |
+| `"timeout"` | int | The socket will timeout after this many milliseconds. The default value listed here is the default value for the build. This must be an integer. | Req.DEFAULT_TIMEOUT |
+| `"max_retries"` | int | The number of times that the build will try to receive a message before terminating the socket and reconnecting. | Req.DEFAULT_MAX_RETRIES |
 
 ***
 
@@ -6531,6 +6532,40 @@ Send data about each of the avatar's ImageSensors.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_occlusion`**
+
+Send the extent to which the scene environment is occluding objects in the frame. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Occlusion`](output_data.md#Occlusion)</font>
+
+```python
+{"$type": "send_occlusion"}
+```
+
+```python
+{"$type": "send_occlusion", "object_ids": [], "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_ids"` | int[] | If None or empty, all objects in the camera viewport will be tested for occlusion. Otherwise, if an object isn't in this list, it will be treated as an occluder (if this was a _mask pass, it would appear black instead of red). This parameter can be used to test occlusion for specific objects, but it is somewhat slower than testing for all. | [] |
 | `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 

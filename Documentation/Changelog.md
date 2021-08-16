@@ -6,6 +6,8 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ## v1.8.23
 
+**THIS IS A CRITICAL UPDATE.** You are **strongly** advised to upgrade to this version of TDW.
+
 ### Command API
 
 #### New Commands
@@ -18,6 +20,13 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `send_occlusion` | Send occlusion data to the controller. |
 | `send_lights`                           | Send data for each directional light and point light in the scene. |
 
+#### Modified Commands
+
+| Command               | Modification                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| `set_socket_timeout`  | This command is no longer deprecated.<br />The `timeout` parameter is now measured in milliseconds and the default value is 1000.<br />Added `max_retries` parameter: The number of retries before the socket is terminated and reconnected. |
+| `set_network_logging` | This command no longer logs the name of each command as it is executed (it still logs the raw message sent by the controller). |
+
 ### Output Data
 
 #### New Output Data
@@ -26,6 +35,11 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | ----------- | ------------------------------------------------------------ |
 | `Occlusion` | To what extent parts of the scene environment (such as walls) are occluding objects. |
 | `Lights`    | Data for all lights in the scene. |
+
+### Build
+
+- **Fixed: On Linux, the build will often try to read the same message twice.** This can result in anomalous behavior such as the build executing a `destroy_object` command when the object doesn't exist (because it was already destroyed on the previous frame). **It is still possible for the build to read the same message twice, however to the best of our knowledge it is extremely unlikely.** 
+- Fixed: When the build automatically terminates its network socket, reconnects, and requests that the controller resend the most recent message, the build also advances one physics frame.
 
 ### `tdw` module
 

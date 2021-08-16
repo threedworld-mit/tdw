@@ -59,7 +59,8 @@
                 "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur10",
                 "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur10",
                 "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur10"
-            }
+            },
+            "targets": {"upper_arm_link": {"type": "revolute", "target": -5}}
         },
         "ur3": {
             "immovable": true,
@@ -79,7 +80,8 @@
                 "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur5",
                 "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur5",
                 "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur5"
-            }
+            },
+            "targets": {"upper_arm_link": {"type": "revolute", "target": -5}}
         }
     }
 }

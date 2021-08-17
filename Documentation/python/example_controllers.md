@@ -27,6 +27,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `hdri.py` | Create an object and avatar and capture images of the scene, rotating the HDRI skybox by 15 degrees<br>for each image. |
 | `impact_sounds.py` | - Listen for collisions between objects.<br>- Generate an impact sound with py_impact upon impact and play the sound in the build. |
 | `keyboard_controls.py` | Use WASD or arrow keys to move an avatar. |
+| `lights_output_data.py` | Load a streamed scene and received Lights output data. |
 | `local_object.py` | Create a local asset bundle and load it into TDW.<br><br>See `Documentation/misc_frontend/add_local_object.md` for how to run the Asset Bundle Creator. |
 | `magnebot.py` | Add a Magnebot and move it around the scene. |
 | `minimal.py` | A minimal example of how to connect to the build and receive data. |
@@ -34,6 +35,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `minimal_remote.py` | A minimal example of how to use the launch binaries daemon to<br>start and connect to a build on a remote node. Note: the remote<br>must be running launch_binaries.py. |
 | `nav_mesh.py` | - Create a NavMeshAvatar and a simple procedurally-generated room.<br>- Tell the avatar to navigate to different destinations. |
 | `objects_and_images.py` | Create a few objects, and avatar, and capture images of the objects. |
+| `occlusion.py` | Use occlusion data to measure to what extent objects in the scene are occluded. |
 | `occupancy_mapper.py` | Generate occupancy maps in a simple scene populated by objects.<br>For more information, [read this](add_ons/occupancy_map.md). |
 | `paintings.py` | Add a painting to the scene. |
 | `panorama.py` | Capture a series of images around a model to form a 360-degree panorama. |

@@ -31,6 +31,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Build
 
 - Fixed: `send_occlusion` gives a occlusion value of 0 when there is occlusion. This has been fixed but the command is somewhat slower now.
+- Fixed: race condition when requesting collision data for objects that have just been destroyed.
 
 ## v1.8.23
 

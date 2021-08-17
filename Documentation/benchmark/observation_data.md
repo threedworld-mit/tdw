@@ -195,7 +195,7 @@ You can infer whether the avatar is "looking at" a given object.
 | `--boxes --images --passes _img`                | 306  |
 | `--boxes --images --passes _id`                 | 230  |
 | `--boxes --id_grayscale --images --passes none` | 316  |
-| `--boxes --occlusion --images --passes none`    | 199  |
+| `--boxes --occlusion --images --passes none`    | 150  |
 | `--boxes --id_colors --images --passes none`    | 180  |
 | `--boxes --transforms`                          | 611  |
 

@@ -387,6 +387,9 @@ class SegmentationColors(OutputData):
     def get_object_name(self, index: int) -> str:
         return self.data.Objects(index).Name().decode('utf-8')
 
+    def get_object_category(self, index: int) -> str:
+        return self.data.Objects(index).Category().decode('utf-8')
+
 
 class AvatarSegmentationColor(OutputData):
     def get_data(self) -> AvSC.AvatarSegmentationColor:

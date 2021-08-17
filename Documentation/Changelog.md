@@ -28,6 +28,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | -------------------- | ------------------------------ |
 | `SegmentationColors` | Added: `get_object_category()` |
 
+### Build
+
+- Fixed: `send_occlusion` gives a occlusion value of 0 when there is occlusion. This has been fixed but the command is somewhat slower now.
+
 ## v1.8.23
 
 **THIS IS A CRITICAL UPDATE.** You are **strongly** advised to upgrade to this version of TDW.

@@ -1,4 +1,4 @@
-# Upgrading TDW
+# Setup: Upgrading TDW
 
 ## Upgrade TDW on a personal computer
 
@@ -22,9 +22,6 @@
 
 ***
 
-**This is the end of the setup guide for TDW. We recommend you continue reading the "Core Concepts" guide.**
-
-Next: [The Controller](../core_concepts/controller.md)
+**This is the end of the setup guide for TDW. We recommend you continue reading the [Core Concepts guide](../core_concepts/controller.md).**
 
 [Return to the README](../../README.md)
-

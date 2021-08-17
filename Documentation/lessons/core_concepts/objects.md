@@ -101,7 +101,7 @@ lib_0 = ModelLibrarian()
 lib_1 = ModelLibrarian("models_core.json")
 ```
 
-There are other model libraries as well; it is possible to use your own models in TDW and to generate your own metadata libraries for those models. See [1.4 Model Libraries in the README](../../README.md).
+There are other model libraries as well; it is possible to use your own models in TDW and to generate your own metadata libraries for those models. See [Model Libraries in the README](../../README.md).
 
 ## How to get images of every model in the library
 
@@ -139,12 +139,17 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 
 ## Object commands
 
-There are [many object commands in TDW] (../../api/command_api.md) (see "Object Command"). Each of these commands refers to the object using its integer ID. This example will create an `iron_box` object and then change its color to red:
+There are [many object commands in TDW](../../api/command_api.md) (see "Object Command"). Each of these commands refers to the object using its integer ID. This example will create an `iron_box` object and then change its color to red:
 
 ```python
+from time import sleep
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
+
+"""
+Add a box and make it red.
+"""
 
 c = Controller()
 c.start()
@@ -164,6 +169,8 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "set_color",
                 "color": {"r": 1.0, "g": 0, "b": 0, "a": 1.0},
                 "id": object_id}])
+sleep(2)
+c.communicate({"$type": "terminate"})
 ```
 
 Result:
@@ -173,6 +180,10 @@ Result:
 ***
 
 **Next: [Output data](output_data.md)**
+
+Example controllers:
+
+- [red_box.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/red_box.py) Add a box and make it red.
 
 Python API:
 

@@ -65,6 +65,5 @@ Python API:
 Command API:
 
 - [`terminate`](../../api/command_api.md#terminate)
-- [`do_nothing`](../../api/command_api.md#do_nothing)
 
 [Return to the README](../../README.md)

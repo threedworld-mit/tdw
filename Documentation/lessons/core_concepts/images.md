@@ -16,10 +16,11 @@ object_id = c.get_unique_id()
 
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
-                             position={"x": 1, "y": 0, "z": -0.5},
+                             position={"x": 0, "y": 0, "z": 0},
                              object_id=object_id)]
 commands.extend(TDWUtils.create_avatar(position={"x": 2, "y": 1.6, "z": -0.6},
-                                       avatar_id="a"))
+                                       avatar_id="a",
+                                       look_at={"x": 0, "y": 0, "z": 0}))
 ```
 
 Now we need to add two more commands:
@@ -39,10 +40,11 @@ object_id = c.get_unique_id()
 
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
-                             position={"x": 1, "y": 0, "z": -0.5},
+                             position={"x": 0, "y": 0, "z": 0},
                              object_id=object_id)]
 commands.extend(TDWUtils.create_avatar(position={"x": 2, "y": 1.6, "z": -0.6},
-                                       avatar_id="a"))
+                                       avatar_id="a",
+                                       look_at={"x": 0, "y": 0, "z": 0}))
 commands.extend([{"$type": "set_pass_masks",
                   "pass_masks": ["_img"],
                   "avatar_id": "a"},
@@ -59,6 +61,11 @@ We can then read the [`Images`](../../api/output_data.md#Images) output data, wh
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Images
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+"""
+Create a scene, add an object, and save the image.
+"""
 
 c = Controller()
 c.start()
@@ -66,11 +73,11 @@ object_id = c.get_unique_id()
 
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
-                             position={"x": 1, "y": 0, "z": -0.5},
+                             position={"x": 0, "y": 0, "z": 0},
                              object_id=object_id)]
 commands.extend(TDWUtils.create_avatar(position={"x": 2, "y": 1.6, "z": -0.6},
-                                       avatar_id="a"))
-commands.extend(cam_commands)
+                                       avatar_id="a",
+                                       look_at={"x": 0, "y": 0, "z": 0}))
 commands.extend([{"$type": "set_pass_masks",
                   "pass_masks": ["_img"],
                   "avatar_id": "a"},
@@ -79,6 +86,8 @@ commands.extend([{"$type": "set_pass_masks",
                   "ids": ["a"]}])
 
 resp = c.communicate(commands)
+output_directory = str(EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("send_images").resolve())
+print(f"Images will be saved to: {output_directory}")
 
 for i in range(len(resp) - 1):
     r_id = OutputData.get_data_type_id(resp[i])
@@ -95,44 +104,13 @@ for i in range(len(resp) - 1):
                     # Get a PIL image.
                     pil_image = TDWUtils.get_pil_image(images=images, index=j)
             # Save the image.
-            TDWUtils.save_images(images=images, filename="0", output_directory="tmp")
+            TDWUtils.save_images(images=images, filename="0", output_directory=output_directory)
 c.communicate({"$type": "terminate"})
 ```
 
 Result:
 
 ![](images/img_pass_box.png)
-
-## Multiple capture passes
-
-It is possible to capture multiple capture passes at the same time: simply add them to the `pass_masks` list:
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-
-c = Controller()
-c.start()
-object_id = c.get_unique_id()
-cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
-                        look_at=object_id,
-                        avatar_id="a")
-c.add_ons.append(cam)
-cam_commands = cam.initialize_now()
-
-commands = [TDWUtils.create_empty_room(12, 12),
-            c.get_add_object(model_name="iron_box",
-                             position={"x": 1, "y": 0, "z": -0.5},
-                             object_id=object_id)]
-commands.extend(cam_commands)
-commands.extend([{"$type": "set_pass_masks",
-                  "pass_masks": ["_img", "_id"],
-                  "avatar_id": "a"},
-                 {"$type": "send_images",
-                  "frequency": "always",
-                  "ids": ["a"]}])
-```
 
 ## jpg vs. png encoding
 
@@ -174,11 +152,23 @@ resp = c.communicate([TDWUtils.create_empty_room(12, 12),
 c.communicate({"$type": "terminate"})
 ```
 
+## Other capture passes
+
+The `set_pass_masks` command can enable multiple **image passes**. So far, we've only reviewed the `_img` pass but other passes such as the `_id` segmentation color pass are possible. [Read this for more information.](../capture_passes/id.md)
+
 ***
 
-**Next: [Image capture passes](capture_passes.md)**
+**This is the last document in the "Core Concepts" section.**
 
-Example controller: [image_capture.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/image_capture.py)
+- **We recommend you read our guide on [troubleshooting and good coding practices in TDW](TODO).**
+
+- **If you want to learn more about other capture passes, [read this](../capture_passes/id.md).**
+
+Example controllers:
+
+- [send_images.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/send_images.py) Capture an image and save it to disk.
+- [image_capture.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/image_capture.py) Example implementation of the ImageCapture add-on.
+- [panorama.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/panorama.py) Capture a series of images around a model to form a 360-degree panorama.
 
 Python API:
 

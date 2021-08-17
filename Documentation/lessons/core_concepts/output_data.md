@@ -171,7 +171,9 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Images](images.md)**
 
-Example controller: [object_output_data.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/object_output_data.py)
+Example controllers:
+
+- [object_output_data.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/object_output_data.py) Receive object output data.
 
 Command API:
 

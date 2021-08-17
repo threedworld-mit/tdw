@@ -4,8 +4,6 @@ As mentioned [earlier](1.2.2_commands.md), TDW doesn't impose metaphors regardin
 
 **Avatars** are a type of agent in TDW but not the only one. The most commonly used avatar is a non-embodied camera; you can think of this avatar as being more or less equivalent to a third-person camera (though the [commands](1.2.2_commands.md) for cameras have slightly different parameters than avatars).
 
-There are embodied avatars, such as the Sticky Mitten Avatar, but these have been deprecated in favor of robotic agents. Embodied avatars are a much older part of TDW than robotics that we've since deprecated. In most cases, you should only use the third-person camera avatar.
-
 To add the third-person camera avatar to the scene:
 
 ```python
@@ -45,7 +43,7 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 
 ![](images/avatar_y.png)
 
-This still isn't a very good image. Let's rotate the avatar's **sensor container** (its camera) for a better view of the scene:
+This is a *little* better (the camera is now above floor level) but still not great. Let's rotate the avatar's **sensor container** (its camera) for a better view of the scene:
 
 ```python
 from tdw.controller import Controller
@@ -103,7 +101,11 @@ To move and rotate the avatar, simply teleport and rotate it by small increments
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
-# Note that in this example, the `avatar_id` parameters are missing. That's because they all default to "a".
+"""
+Move the avatar and rotate the camera.
+Note that in this example, the `avatar_id` parameters are missing. That's because they all default to "a".
+"""
+
 c = Controller()
 c.start()
 y = 5.7
@@ -121,8 +123,8 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 for i in range(20):
     y += 0.1
     c.communicate([{"$type": "rotate_sensor_container_by",
-                   "axis": "yaw",
-                   "angle": 2},
+                    "axis": "yaw",
+                    "angle": 2},
                    {"$type": "teleport_avatar_to",
                     "position": {"x": -1, "y": y, "z": -3.8}}])
 c.communicate({"$type": "terminate"})
@@ -200,6 +202,10 @@ for i in range(20):
 c.communicate({"$type": "terminate"})
 ```
 
+## Embodied avatars
+
+**There are several embodied avatars in TDW; however, we don't recommend you use them.** Avatars are one of the oldest components of TDW and they've been gradually superseded. [There are many non-avatar embodied agents in TDW](TODO), all of which are more sophisticated than the embodied avatars. For more information regarding embodied avatars, read the API documentation for [`create_avatar`](../../api/command_api.md#create_avatar).
+
 ## A few words regarding add-ons, wrapper functions and classes
 
 In this document, we've referred several times to "wrapper" functions and objects. These bits of code "wrap" around the Command API; they *can't* do anything that you couldn't do just by sending TDW commands to the build.
@@ -219,7 +225,11 @@ def rotate(self, rotation: Dict[str, float]) -> None:
 
 **Next: [Objects](objects.md)**
 
-Example controller: [third_person_camera.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/third_person_camera.py)
+Example controllers:
+
+- [move_avatar.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/move_avatar.py) Move an avatar and rotate its camera.
+- [third_person_camera.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/third_person_camera.py) Example usage of the `ThirdPersonCamera`.
+- [cinematic_camera.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/cinematic_camera.py) Example usage of the `CinematicCamera`.
 
 Python API:
 

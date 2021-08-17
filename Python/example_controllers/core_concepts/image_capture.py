@@ -4,6 +4,10 @@ from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
+"""
+Example implementation of the ImageCapture add-on.
+"""
+
 c = Controller()
 c.start()
 object_id = c.get_unique_id()

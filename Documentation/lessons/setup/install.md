@@ -1,14 +1,14 @@
-# Installing TDW
+# Setup: Installing TDW
 
 ## Core Concepts
 
 - **The build** is the 3D simulation environment. It is a windowed application that requires a display and a GPU.
 - **The controller** is a Python script that communicates with the build. You write your own controller script (though this repo contains many examples).
-- The build and the controller communicate with each other over a TCP/IP socket.
+- The build and the controller communicate with each other over a TCP/IP socket. They can be on the same machines or separate machines (such as a laptop and a remote server).
 
 ## System Requirements
 
-- Windows, OS X, or Linux (we've tested TDW on Ubuntu 16 and 18)
+- Windows, OS X, or Linux (we've tested TDW on Ubuntu 16, 18, and 20)
 - Python 3.6+
 - A GPU, the faster the better, with up-to-date drivers. It is possible to run TDW without a GPU but you will lose some speed and photorealism.
 - For [audio/video recording](misc_frontend/video.md), you will need an audio driver.
@@ -34,7 +34,7 @@
 from tdw.controller import Controller
 
 c = Controller()
-print("Everything is OK!")
+print("Hello world!")
 c.communicate({"$type": "terminate"})
 ```
 
@@ -135,7 +135,7 @@ from tdw.controller import Controller
 
 port = 1071  # This is the default port. You can change this.
 c = Controller(launch_build=False, port=port) 
-print("Everything is OK!")
+print("Hello world!")
 c.communicate({"$type": "terminate"})
 ```
 
@@ -176,7 +176,7 @@ from tdw.controller import Controller
 
 port = 1071  # This is the default port. You can change this.
 c = Controller(launch_build=False, port=port) 
-print("Everything is OK!")
+print("Hello world!")
 c.communicate({"$type": "terminate"})
 ```
 
@@ -209,6 +209,8 @@ DISPLAY=:0.0 ./TDW.x86_64 -port=1071 -address=replace_with_the_controller_addres
 
 ***
 
-Next: [Auto-launching the TDW build](launch_build.md)
+**Next: [Auto-launching the TDW build](launch_build.md)**
+
+Example controller: [hello_world.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/setup/hello_world.py)
 
 [Return to the README](../../README.md)

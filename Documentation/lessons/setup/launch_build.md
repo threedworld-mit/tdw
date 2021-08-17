@@ -1,4 +1,4 @@
-# Auto-launching the TDW build
+# Setup: Auto-launching the TDW build
 
 By default, a TDW controller will automatically launch a build when it runs. It will also automatically update the TDW build if it detects an out of date version:
 
@@ -28,7 +28,7 @@ c = Controller(launch_build=False)
 c.communicate({"$type": "terminate"})
 ```
 
-Then, download an extract the [latest version of the build](https://github.com/threedworld-mit/tdw/releases/latest/). If you are using OS X, you'll need to run the shellscript located in the same directory as TDW.app the before running TDW for the first time (this is handled automatically if `launch_build=True`).
+Then, download an extract the [latest version of the build](https://github.com/threedworld-mit/tdw/releases/latest/). **If you are using OS X, you'll need to run the shellscript located in the same directory as TDW.app the before running TDW for the first time** (this is handled automatically if `launch_build=True`).
 
 You can set `launch_build=False` on a personal computer as well (in which case you'll need to download the build manually; see the previous link).
 
@@ -38,6 +38,6 @@ If you've already launched the build automatically via `Controller()`, the locat
 
 ***
 
-Next: [Upgrading TDW](upgrade.md)
+**Next: [Upgrading TDW](upgrade.md)**
 
 [Return to the README](../../README.md)

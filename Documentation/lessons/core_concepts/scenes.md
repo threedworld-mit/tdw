@@ -6,12 +6,14 @@ For most of the [TDW Command API](commands.md) to work, you must add a scene to 
 
 There are several ways to load a scene in TDW:
 
-## Procedurally generate an indoor environment
+## Optional A: Procedurally generated indoor environment
 
-Creating a procedurally-generated interior scene (often abbreviated to "proc-gen room") in TDW includes at least two steps:
+Creating a procedurally-generated interior scene (often abbreviated to "proc-gen room") in TDW requires several commands:
 
-1. Send the [`load_scene` command](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#load_scene).
-2. Send the [`create_exterior_walls` command](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#create_exterior_walls).
+1. [`load_scene`](../../api/command_api.md#load_scene) to initialize the scene in Unity (it still needs to be populated with a TDW scene).
+2. [`create_exterior_walls`](../../api/command_api.md#create_exterior_walls) to create a room with exterior walls.
+3. (Optional) [`create_interior_walls`](../../api/command_api.md#create_interior_walls) to add create interior walls.
+4. (Optional) [There are many other proc-gen room commands as well.](../../api/command_api.md#ProcGenRoomCommand)
 
 These commands are relatively cumbersome to use, so TDW includes simple wrapper functions.
 
@@ -45,9 +47,9 @@ c.communicate([{"$type": "load_scene",
 
 **Note: The scene won't be actually be visible.** The next tutorial page will cover how to add rendering to TDW.
 
-## Create Perlin noise terrain
+## Option B: Perlin noise terrain
 
-Send `perlin_noise_terrain` to generate a "terrain" mesh using Perlin noise. This controller:
+Send [`perlin_noise_terrain`](../../api/command_api.md#perlin_noise_terrain)  to generate a "terrain" mesh using Perlin noise. This controller:
 
 ```python
 from tdw.controller import Controller
@@ -70,17 +72,17 @@ c.communicate({"$type": "perlin_noise_terrain",
 
 ![](images/perlin_noise.png)
 
-## Create an empty scene
+## Option C: An empty scene
 
-It's possible to create a totally empty scene with the [`create_empty_environment`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#create_empty_environment) command. This is mainly for debugging TDW.
+It's possible to create a totally empty scene with the  [`create_empty_environment`](../../api/command_api.md#create_empty_environment) command. This is mainly for debugging TDW.
 
-## Download and load a streamed scene
+## Option D: Download and load a streamed scene
 
 TDW includes many pre-generated photorealistic scenes. These scenes exist on a remote Amazon S3 server as ***asset bundles***, which are Unity3D-specific binary files that can be loaded into a Unity3D application (e.g. the TDW build) at runtime. To access a scene asset bundle, TDW downloads the scene into active memory (not to a local file).
 
 Scene asset bundles can be quite large; expect downloads to require up to several minutes. When a scene is loaded into TDW, the previous scene (if any) is discarded from memory; if you want to use it again, TDW will need to re-download it.
 
-To add a streamed scene to your simulation, send the [`add_scene` command](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#add_scene). Because this command's parameters can be difficult to use, TDW includes a helpful [`get_add_scene()` wrapper function](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/controller.md#get_add_sceneself-scene_name-str-library-str-----dict):
+To add a streamed scene to your simulation, send  [`add_scene`](../../api/command_api.md#add_scene). Because this command's parameters can be difficult to use, TDW includes a helpful [`get_add_scene()` wrapper function](../../python/controller.md):
 
 ```python
 from tdw.controller import Controller
@@ -163,9 +165,11 @@ Python API:
 
 Command API:
 
+- [`load_scene`](../../api/command_api.md#load_scene)
 - [`create_exterior_walls`](../../api/command_api.md#create_exterior_walls)
-- [`create_empty_environment`](../../api/command_api.md#create_empty_environment)
+- [`create_interior_walls`](../../api/command_api.md#create_interior_walls)
 - [`perlin_noise_terrain`](../../api/command_api.md#perlin_noise_terrain)
+- [`create_empty_environment`](../../api/command_api.md#create_empty_environment)
 - [`add_scene`](../../api/command_api.md#add_scene)
 
 [Return to the README](../../README.md)

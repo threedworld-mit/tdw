@@ -534,6 +534,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
 | [`send_environments`](#send_environments) | Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) add_scene  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
@@ -6617,6 +6618,38 @@ Options for when to send data.
 # SendSingleDataCommand
 
 These commands send a single data object.
+
+***
+
+## **`send_categories`**
+
+Send data for the category names and colors of each object in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Categories`](output_data.md#Categories)</font>
+
+```python
+{"$type": "send_categories"}
+```
+
+```python
+{"$type": "send_categories", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
 
 ***
 

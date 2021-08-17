@@ -4,6 +4,30 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.24
+
+### Command API
+
+#### New Commands
+
+| Command           | Description                         |
+| ----------------- | ----------------------------------- |
+| `send_categories` | Send the category names and colors. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data  | Description                |
+| ------------ | -------------------------- |
+| `Categories` | Category names and colors. |
+
+#### Modified Output Data
+
+| Output Data          | Modification                   |
+| -------------------- | ------------------------------ |
+| `SegmentationColors` | Added: `get_object_category()` |
+
 ## v1.8.23
 
 **THIS IS A CRITICAL UPDATE.** You are **strongly** advised to upgrade to this version of TDW.

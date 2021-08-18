@@ -43,6 +43,7 @@ from tdw.FBOutput import QuitSignal as QuitSig
 from tdw.FBOutput import MagnebotWheels as MWheels
 from tdw.FBOutput import Occlusion as Occl
 from tdw.FBOutput import Lights as Lites
+from tdw.FBOutput import Categories as Cats
 import numpy as np
 from typing import Tuple, Optional
 
@@ -385,6 +386,9 @@ class SegmentationColors(OutputData):
 
     def get_object_name(self, index: int) -> str:
         return self.data.Objects(index).Name().decode('utf-8')
+
+    def get_object_category(self, index: int) -> str:
+        return self.data.Objects(index).Category().decode('utf-8')
 
 
 class AvatarSegmentationColor(OutputData):
@@ -1105,3 +1109,17 @@ class Lights(OutputData):
 
     def get_point_light_range(self, index) -> float:
         return self.data.PointLights(index).Range()
+
+
+class Categories(OutputData):
+    def get_data(self) -> Cats.Categories:
+        return Cats.Categories.GetRootAsCategories(self.bytes, 0)
+
+    def get_num_categories(self) -> int:
+        return self.data.CategoryDataLength()
+
+    def get_category_name(self, index: int) -> str:
+        return self.data.CategoryData(index).Name().decode('utf-8')
+
+    def get_category_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.CategoryData(index).Color())

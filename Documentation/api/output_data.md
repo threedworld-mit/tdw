@@ -60,6 +60,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [AvatarStickyMittenSegmentationColors](#AvatarStickyMittenSegmentationColors) | Color segmentation data for a Sticky Mitten Avatar. | `smsc` |
 | [Bounds](#Bounds) | Rotated bounds data. | `boun` |
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
+| [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [CompositeObjects](#CompositeObjects) | Data for all composite objects currently in the scene. | `comp` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
@@ -278,6 +279,20 @@ An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11,
 | `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
 | `get_projection_matrix()` | The projection matrix. | `np.array` |
 | `get_camera_matrix()` | The camera matrix. | `np.array` |
+
+## Categories
+
+`c = Categories(byte_array)`
+
+**Identifier:** `cate`
+
+Color segmentation data for object categories.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num_categories()` | The number of categories. | `int` |
+| `get_category_name(index)` | The name of the category. | `str` |
+| `get_category_color(index)` | The color of the category. | `Tuple[float, float, float]` |
 
 ## Collision
 
@@ -688,6 +703,7 @@ Color segmentation data for objects in the scene.
 | `get_object_id(index)` | The ID of the object. | `int` |
 | `get_object_color(index)` | The color of the object. | `Tuple[float, float, float]` |
 | `get_object_name(index)` | The name of the object. | `str` |
+| `get_object_category(index)` | The category of the object. | `str` |
 
 ## StaticRobot
 

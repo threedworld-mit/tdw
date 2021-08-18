@@ -4,6 +4,11 @@
 
 TDW is a general-purpose tool that allows the user to communicate and manipulate a 3D environment. As such, there's no single "correct" procedure for using TDW. This guide will show you how to start using TDW and how to explore the available options.
 
+- [Code of Conduct](https://github.com/threedworld-mit/tdw/blob/master/code_of_conduct.md)
+- [Changelog](https://github.com/threedworld-mit/tdw/blob/master/Documentation/Changelog.md)
+- [License](https://github.com/threedworld-mit/tdw/blob/master/LICENSE.txt)
+- [Website](http://threedworld.org/)
+
 # 1. General guide to TDW
 
 ## 1.1 Setup
@@ -20,31 +25,95 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 4. [Avatars and camera](Documentation/lessons/core_concepts/avatars.md)
 5. [Objects](Documentation/lessons/core_concepts/objects.md)
 6. [Output data](Documentation/lessons/core_concepts/output_data.md)
-7. [Images](Documentation/lessons/core_concepts/images.md)
-8. [Capture passes](Documentation/lessons/core_concepts/capture_passes.md)
+7. [Units and data formats](Documentation/lessons/core_concepts/units.md)
+8. [Images](Documentation/lessons/core_concepts/images.md)
 
-# Tutorials
+## 1.3 Troubleshooting and good coding practices :warning: TODO :warning:
 
-## Setup
+1. [Common errors](Documentation/lessons/debug/errors.md) TODO
+2. [Add a debug logger](Documentation/lessons/debug/debug.md) TODO
+3. [Good coding practices](Documentation/lessons/debug/good_coding_practices.md) TODO
+4. [Performance optimizations](Documentation/lessons/debug/debug.md) TODO
+5. [Benchmarks](Documentation/lessons/debug/benchmarks.md) TODO
 
-- [Installation](Documentation/lessons/install.md)
-- [Getting started with TDW](Documentation/lessons/getting_started.md)
-- [Upgrading TDW to a newer version](Documentation/lessons/upgrade.md)
+# 2. Tutorials :warning: TODO :warning:
 
-## Core concepts
+## 2.1 Model libraries
 
-- [Commands](Documentation/lessons/commands.md)
-- [Scenes](Documentation/lessons/scenes.md)
+1. [Free models](Documentation/lessons/model_libraries/free_models.md) TODO
+2. [Non-free models (`models_full.json`)](Documentation/lessons/model_libraries/non_free_models.md) TODO
+3. [Add your own models to TDW](Documentation/lessons/model_libraries/add_models.md) TODO
+4. [Add ShapeNet models to TDW](Documentation/lessons/model_libraries/shapenet.md) TODO
 
-### [Code of Conduct](https://github.com/threedworld-mit/tdw/blob/master/code_of_conduct.md)
+## 2.2 Populate a scene with objects
 
-### [Changelog](https://github.com/threedworld-mit/tdw/blob/master/Documentation/Changelog.md)
+- [ ] Positions and rotations
+- [ ] Put one object on top of another
+- [ ] Reset a scene
+- [ ] Procedural generation
+- [ ] FloorplanController (high-level API)
 
-### [Website](http://threedworld.org/)
+## 2.3 Photorealistic images
+
+- [ ] Visual materials, textures, and colors
+- [ ] Lighting
+- [ ] Post-processing
+- [ ] Depth of field
+- [ ] Anti-aliasing
+- [ ] Image-only videos
+- [ ] humanoid_video (use case)
+
+## 2.4 Image dataset generation
+
+- [ ] Segmentation colors and the `_id` pass
+- [ ] Depth maps
+- [ ] Occlusion output data
+- [ ] tdw_image_dataset (high-level API)
+
+## 2.5 Physics
+
+- [ ] Overview
+- [ ] Collisions
+- [ ] Friction
+- [ ] Default object physics parameters
+
+- [ ] NVIDIA Flex
+- [ ] tdw_physics (high-level API)
+
+## 2.6 Audio
+
+- [ ] Overview
+- [ ] PyImpact
+- [ ] Resonance Audio
+
+- [ ] Recording audio
+- [ ] Audio+visual videos
+- [ ] multimodal_challenge (use case)
+
+## 2.7 Robots and embodied agents
+
+- [ ] Robots
+- [ ] Composite objects
+- [ ] VR
+- [ ] Humanoids
+- [ ] Keyboard controls
+- [ ] NavMesh
+- [ ] magnebot (high-level API)
+
+## 2.8 Misc. topics
+
+- [ ] C# source code
+- [ ] Freezing your code
+- [ ] BinaryManager
+- [ ] xpra
+
+# 3. API Documentation
+
+TODO
+
+## :warning: old documentation :warning:
 
 ### [C# Code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md)
-
-### [License](https://github.com/threedworld-mit/tdw/blob/master/LICENSE.txt)
 
 # API
 

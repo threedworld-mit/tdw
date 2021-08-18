@@ -169,7 +169,7 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-**Next: [Images](images.md)**
+**Next: [Units and data formats](units.md)**
 
 Example controllers:
 

@@ -154,15 +154,11 @@ c.communicate({"$type": "terminate"})
 
 ## Other capture passes
 
-The `set_pass_masks` command can enable multiple **image passes**. So far, we've only reviewed the `_img` pass but other passes such as the `_id` segmentation color pass are possible. [Read this for more information.](../capture_passes/id.md)
+The `set_pass_masks` command can enable multiple **image passes**. So far, we've only reviewed the `_img` pass but other passes such as the `_id` segmentation color pass are possible. [Read this for more information.](../../api/command_api.md#set_pass_masks)
 
 ***
 
-**This is the last document in the "Core Concepts" section.**
-
-- **We recommend you read our guide on [troubleshooting and good coding practices in TDW](TODO).**
-
-- **If you want to learn more about other capture passes, [read this](../capture_passes/id.md).**
+**This is the last document in the "Core Concepts" section. We recommend you read our guide on [troubleshooting and good coding practices in TDW](TODO).**
 
 Example controllers:
 

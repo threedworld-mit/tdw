@@ -16,7 +16,7 @@ class Benchmarker(Controller):
     def run(self, boxes=False, hi_res=False, passes="none", png=False, transforms=False, rigidbodies=False,
             collisions=False, bounds=False, size=256, junk=0, images=False, id_colors=False, id_grayscale=False,
             collision_enter=True, collision_exit=True, collision_stay=True, env_collisions=False,
-            row="", return_row=True):
+            row="", return_row=True, occlusion=False):
 
         # Set the render quality.
         # Create the room.
@@ -101,6 +101,9 @@ class Benchmarker(Controller):
         if id_grayscale:
             commands.append({"$type": "send_id_pass_grayscale",
                              "frequency": "always"})
+        if occlusion:
+            commands.append({"$type": "send_occlusion",
+                             "frequency": "always"})
 
         # Send all of the init commands.
         self.communicate(commands)
@@ -137,6 +140,7 @@ if __name__ == "__main__":
     parser.add_argument('--size', type=int, default=256)
     parser.add_argument('--id_colors', action='store_true')
     parser.add_argument('--id_grayscale', action='store_true')
+    parser.add_argument('--occlusion', action='store_true')
     parser.add_argument('--collision_enter', type=lambda x: (str(x).lower() == 'true'), default=True)
     parser.add_argument('--collision_exit', type=lambda x: (str(x).lower() == 'true'), default=True),
     parser.add_argument('--collision_stay', type=lambda x: (str(x).lower() == 'true'), default=True)
@@ -150,5 +154,5 @@ if __name__ == "__main__":
                 rigidbodies=args.rigidbodies, collisions=args.collisions, bounds=args.bounds, size=args.size,
                 junk=args.junk, images=args.images, id_colors=args.id_colors, id_grayscale=args.id_grayscale,
                 collision_enter=args.collision_enter, collision_stay=args.collision_stay, collision_exit=args.collision_exit,
-                env_collisions=args.env_collisions is not None, return_row=False)
+                env_collisions=args.env_collisions is not None, return_row=False, occlusion=args.occlusion)
     print(round(fps))

@@ -9,6 +9,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_magnebot`](#add_magnebot) | Add a Magnebot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: <ulink url="https://github.com/alters-mit/magnebot">https://github.com/alters-mit/magnebot</ulink> |
+| [`adjust_point_lights_intensity_by`](#adjust_point_lights_intensity_by) | Adjust the intensity of all point lights in the scene by a value. Note that many scenes don't have any point lights. |
 | [`apply_force`](#apply_force) | Apply a force into the world to an target position. The force will impact any objects between the origin and the target position. |
 | [`create_avatar`](#create_avatar) | Create an avatar (agent). |
 | [`create_empty_environment`](#create_empty_environment) | Create an empty environment. This must be called after load_scene.  |
@@ -32,7 +33,7 @@
 | [`set_screen_size`](#set_screen_size) | Set the screen size. Any images the build creates will also be this size. |
 | [`set_shadow_strength`](#set_shadow_strength) | Set the shadow strength of all lights in the scene. This only works if you already sent load_scene or add_scene. |
 | [`set_sleep_threshold`](#set_sleep_threshold) | Set the global Rigidbody "sleep threshold", the mass-normalized energy threshold below which objects start going to sleep. A "sleeping" object is completely still until moved again by a force (object impact, force command, etc.) |
-| [`set_socket_timeout`](#set_socket_timeout) | Set the timeout duration for the socket used to communicate with the controller. Occasionally, the build's socket will stop receiving messages from the controller. This is an inevitable consequence of how synchronous receive-response sockets work. When this happens, it will wait until the socket times out, close the socket, and alert the controller that it needs to re-send its message. The timeout duration shouldn't be less than the time required to send/receive commands, or the build will never receive anything! You should only send this command if it takes longer than the default timeout to send/receive commands. |
+| [`set_socket_timeout`](#set_socket_timeout) | Set the timeout behavior for the socket used to communicate with the controller. |
 | [`set_target_framerate`](#set_target_framerate) | Set the target render framerate of the build. For more information: <ulink url="https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html">https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html</ulink> |
 | [`set_time_step`](#set_time_step) | Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). NOTE: Doubling the time_step is NOT equivalent to advancing two physics steps. For more information, see: <ulink url="https://docs.unity3d.com/Manual/TimeFrameManagement.html">https://docs.unity3d.com/Manual/TimeFrameManagement.html</ulink> |
 | [`step_physics`](#step_physics) | Step through the physics without triggering new avatar output, or new commands. |
@@ -205,8 +206,10 @@
 
 | Command | Description |
 | --- | --- |
+| [`adjust_directional_light_intensity_by`](#adjust_directional_light_intensity_by) | Adjust the intensity of the directional light (the sun) by a value. |
 | [`reset_directional_light_rotation`](#reset_directional_light_rotation) | Reset the rotation of the directional light (the sun). |
 | [`rotate_directional_light_by`](#rotate_directional_light_by) | Rotate the directional light (the sun) by an angle and axis. This command will change the direction of cast shadows, which could adversely affect lighting that uses an HDRI skybox, Therefore this command should only be used for interior scenes where the effect of the skybox is less apparent. The original relationship between directional (sun) light and HDRI skybox can be restored by using the reset_directional_light_rotation command. |
+| [`set_directionial_light_color`](#set_directionial_light_color) | Set the color of the directional light (the sun). |
 
 **Flex Container Command**
 
@@ -221,9 +224,10 @@
 | --- | --- |
 | [`set_img_pass_encoding`](#set_img_pass_encoding) | Toggle the _img pass of all avatars' cameras to be either png or jpg. True = png, False = jpg, Initial value = True (png) |
 | [`set_legacy_shaders`](#set_legacy_shaders) | Set whether TDW should use legacy shaders. Prior to TDW v1.8 there was a bug and this command would result in lower image quality. Since then, TDW has far better rendering quality (at no speed penalty). Send this command only if you began your project in an earlier version of TDW and need to ensure that the rendering doesn't change. Initial value = False. (TDW will correctly set each object's shaders.) |
+| [`set_network_logging`](#set_network_logging) | If True, the build will log every message received from the controller and will log every command that is executed. Initial value = False  |
 | [`set_post_process`](#set_post_process) | Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled) |
 | [`simulate_physics`](#simulate_physics) | Toggle whether to simulate physics per list of sent commands (i.e. per frame). If false, the simulation won't step the physics forward. Initial value = True (simulate physics per frame). |
-| [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = False (download S3 objects directly, without using temporary URLs) |
+| [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Ubuntu 20: True (use temporary URLs); on all other platforms, False (download S3 objects directly, without using temporary URLs). |
 
 **Load From Resources**
 
@@ -523,17 +527,20 @@
 | [`send_id_pass_segmentation_colors`](#send_id_pass_segmentation_colors) | Send all unique colors in an _id pass.  |
 | [`send_images`](#send_images) | Send images and metadata.  |
 | [`send_image_sensors`](#send_image_sensors) | Send data about each of the avatar's ImageSensors.  |
+| [`send_occlusion`](#send_occlusion) | Send the extent to which the scene environment is occluding objects in the frame.  |
 | [`send_screen_positions`](#send_screen_positions) | Given a list of worldspace positions, return the screenspace positions according to each of the avatar's camera.  |
 
 **Send Single Data Command**
 
 | Command | Description |
 | --- | --- |
+| [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
-| [`send_environments`](#send_environments) | Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) load_streamed_scene  |
+| [`send_environments`](#send_environments) | Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) add_scene  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
+| [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -588,6 +595,21 @@ Add a Magnebot to the scene. For further documentation, see: Documentation/misc_
 | `"id"` | int | The unique ID of the Magnebot. | 0 |
 | `"position"` | Vector3 | The initial position of the Magnebot. | {"x": 0, "y": 0, "z": 0} |
 | `"rotation"` | Vector3 | The initial rotation of the Magnebot in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+
+***
+
+## **`adjust_point_lights_intensity_by`**
+
+Adjust the intensity of all point lights in the scene by a value. Note that many scenes don't have any point lights.
+
+
+```python
+{"$type": "adjust_point_lights_intensity_by", "intensity": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"intensity"` | float | Adjust all point lights in the scene by this value. | |
 
 ***
 
@@ -798,7 +820,7 @@ Rotate the HDRI skybox by a given value and the sun light by the same value in t
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"angle"` | float | The value to rotate the HDRI skybox by. Skyboxes are always rotated in a positive direction; values are clamped between 0 and 360, and any negative values are forced positive. | |
+| `"angle"` | float | The value to rotate the HDRI skybox by. Skyboxes are always rotated in a positive direction; values are clamped between 0 and 360, and any negative values are forced positive. Rotate around the pitch axis to set the elevation of the sun. Rotate around the yaw axis to set the angle of the sun. | |
 
 ***
 
@@ -1044,7 +1066,7 @@ Set the global Rigidbody "sleep threshold", the mass-normalized energy threshold
 
 ## **`set_socket_timeout`**
 
-Set the timeout duration for the socket used to communicate with the controller. Occasionally, the build's socket will stop receiving messages from the controller. This is an inevitable consequence of how synchronous receive-response sockets work. When this happens, it will wait until the socket times out, close the socket, and alert the controller that it needs to re-send its message. The timeout duration shouldn't be less than the time required to send/receive commands, or the build will never receive anything! You should only send this command if it takes longer than the default timeout to send/receive commands.
+Set the timeout behavior for the socket used to communicate with the controller.
 
 
 ```python
@@ -1052,12 +1074,13 @@ Set the timeout duration for the socket used to communicate with the controller.
 ```
 
 ```python
-{"$type": "set_socket_timeout", "timeout": 5}
+{"$type": "set_socket_timeout", "timeout": Req.DEFAULT_TIMEOUT, "max_retries": Req.DEFAULT_MAX_RETRIES}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"timeout"` | int | The socket will timeout after this many seconds. The default value listed here is the default value for the build. This must be an integer. | 5 |
+| `"timeout"` | int | The socket will timeout after this many milliseconds. The default value listed here is the default value for the build. This must be an integer. | Req.DEFAULT_TIMEOUT |
+| `"max_retries"` | int | The number of times that the build will try to receive a message before terminating the socket and reconnecting. | Req.DEFAULT_MAX_RETRIES |
 
 ***
 
@@ -3037,7 +3060,27 @@ List of surface material types.
 
 # DirectionalLightCommand
 
-These commands adjust the directional light(s) in the scene. The directional light is usually the "sunlight" of the scene, but is distinct from the sunlight of HDRI skyboxes.
+These commands adjust the directional light(s) in the scene. There is always at least one directional light in the scene (the sun).
+
+***
+
+## **`adjust_directional_light_intensity_by`**
+
+Adjust the intensity of the directional light (the sun) by a value.
+
+
+```python
+{"$type": "adjust_directional_light_intensity_by", "intensity": 0.125}
+```
+
+```python
+{"$type": "adjust_directional_light_intensity_by", "intensity": 0.125, "index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"intensity"` | float | Adjust the intensity of the sunlight by this value. | |
+| `"index"` | int | The index of the light. This should almost always be 0. The scene "archviz_house" has two directional lights; for this scene, index can be 0 or 1. | 0 |
 
 ***
 
@@ -3088,6 +3131,26 @@ An axis of rotation.
 | `"pitch"` | Nod your head "yes". |
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`set_directionial_light_color`**
+
+Set the color of the directional light (the sun).
+
+
+```python
+{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
+```
+
+```python
+{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"color"` | Color | The color of the sunlight. | |
+| `"index"` | int | The index of the light. This should almost always be 0. The scene "archviz_house" has two directional lights; for this scene, index can be 0 or 1. | 0 |
 
 # FlexContainerCommand
 
@@ -3192,6 +3255,22 @@ Set whether TDW should use legacy shaders. Prior to TDW v1.8 there was a bug and
 
 ***
 
+## **`set_network_logging`**
+
+If True, the build will log every message received from the controller and will log every command that is executed. Initial value = False 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "set_network_logging", "value": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"value"` | bool | Boolean value. | |
+
+***
+
 ## **`set_post_process`**
 
 Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled)
@@ -3224,7 +3303,7 @@ Toggle whether to simulate physics per list of sent commands (i.e. per frame). I
 
 ## **`use_pre_signed_urls`**
 
-Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = False (download S3 objects directly, without using temporary URLs)
+Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Ubuntu 20: True (use temporary URLs); on all other platforms, False (download S3 objects directly, without using temporary URLs).
 
 
 ```python
@@ -6469,6 +6548,40 @@ Options for when to send data.
 
 ***
 
+## **`send_occlusion`**
+
+Send the extent to which the scene environment is occluding objects in the frame. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Occlusion`](output_data.md#Occlusion)</font>
+
+```python
+{"$type": "send_occlusion"}
+```
+
+```python
+{"$type": "send_occlusion", "object_ids": [], "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_ids"` | int[] | If None or empty, all objects in the camera viewport will be tested for occlusion. Otherwise, if an object isn't in this list, it will be treated as an occluder (if this was a _mask pass, it would appear black instead of red). This parameter can be used to test occlusion for specific objects, but it is somewhat slower than testing for all. | [] |
+| `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_screen_positions`**
 
 Given a list of worldspace positions, return the screenspace positions according to each of the avatar's camera. 
@@ -6508,6 +6621,38 @@ These commands send a single data object.
 
 ***
 
+## **`send_categories`**
+
+Send data for the category names and colors of each object in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Categories`](output_data.md#Categories)</font>
+
+```python
+{"$type": "send_categories"}
+```
+
+```python
+{"$type": "send_categories", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_composite_objects`**
 
 Send data for every composite object in the scene. 
@@ -6543,7 +6688,7 @@ Options for when to send data.
 
 ## **`send_environments`**
 
-Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) load_streamed_scene 
+Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) add_scene 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
@@ -6654,6 +6799,38 @@ Request keyboard input data.
 
 ```python
 {"$type": "send_keyboard", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_lights`**
+
+Send data for each directional light and point light in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Lights`](output_data.md#Lights)</font>
+
+```python
+{"$type": "send_lights"}
+```
+
+```python
+{"$type": "send_lights", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

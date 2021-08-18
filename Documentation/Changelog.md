@@ -14,6 +14,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | ----------------- | ----------------------------------- |
 | `send_categories` | Send the category names and colors. |
 
+#### Modified Commands
+
+| Command               | Modification                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| `use_pre_signed_urls` | Default value for all Linux distros is True (was True only for Ubuntu 20 and otherwise False). |
+
 ### Output Data
 
 #### New Output Data

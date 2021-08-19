@@ -42,6 +42,9 @@ from tdw.FBOutput import DriveAxis, JointType
 from tdw.FBOutput import QuitSignal as QuitSig
 from tdw.FBOutput import CameraMotionComplete as CamMot
 from tdw.FBOutput import MagnebotWheels as MWheels
+from tdw.FBOutput import Occlusion as Occl
+from tdw.FBOutput import Lights as Lites
+from tdw.FBOutput import Categories as Cats
 import numpy as np
 from typing import Tuple, Optional
 
@@ -384,6 +387,9 @@ class SegmentationColors(OutputData):
 
     def get_object_name(self, index: int) -> str:
         return self.data.Objects(index).Name().decode('utf-8')
+
+    def get_object_category(self, index: int) -> str:
+        return self.data.Objects(index).Category().decode('utf-8')
 
 
 class AvatarSegmentationColor(OutputData):
@@ -1075,3 +1081,63 @@ class MagnebotWheels(OutputData):
 
     def get_success(self) -> bool:
         return self.data.Success()
+
+
+class Occlusion(OutputData):
+    def get_data(self) -> Occl.Occlusion:
+        return Occl.Occlusion.GetRootAsOcclusion(self.bytes, 0)
+
+    def get_avatar_id(self) -> str:
+        return self.data.AvatarId().decode('utf-8')
+
+    def get_sensor_name(self) -> str:
+        return self.data.SensorName().decode('utf-8')
+
+    def get_occluded(self) -> float:
+        return self.data.Occluded()
+
+
+class Lights(OutputData):
+    def get_data(self) -> Lites.Lights:
+        return Lites.Lights.GetRootAsLights(self.bytes, 0)
+
+    def get_num_directional_lights(self) -> int:
+        return self.data.DirectionalLightsLength()
+
+    def get_directional_light_intensity(self, index: int) -> float:
+        return self.data.DirectionalLights(index).Intensity()
+
+    def get_directional_light_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.DirectionalLights(index).Color())
+
+    def get_directional_light_rotation(self, index: int) -> Tuple[float, float, float, float]:
+        return OutputData._get_xyzw(self.data.DirectionalLights(index).Rotation())
+
+    def get_num_point_lights(self) -> int:
+        return self.data.PointLightsLength()
+
+    def get_point_light_intensity(self, index: int) -> float:
+        return self.data.PointLights(index).Intensity()
+
+    def get_point_light_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.PointLights(index).Color())
+
+    def get_point_light_position(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.PointLights(index).Position())
+
+    def get_point_light_range(self, index) -> float:
+        return self.data.PointLights(index).Range()
+
+
+class Categories(OutputData):
+    def get_data(self) -> Cats.Categories:
+        return Cats.Categories.GetRootAsCategories(self.bytes, 0)
+
+    def get_num_categories(self) -> int:
+        return self.data.CategoryDataLength()
+
+    def get_category_name(self, index: int) -> str:
+        return self.data.CategoryData(index).Name().decode('utf-8')
+
+    def get_category_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.CategoryData(index).Color())

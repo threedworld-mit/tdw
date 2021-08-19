@@ -43,8 +43,16 @@ class SegmentationColorData(object):
             return self._tab.String(o + self._tab.Pos)
         return None
 
-def SegmentationColorDataStart(builder): builder.StartObject(3)
+    # SegmentationColorData
+    def Category(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.String(o + self._tab.Pos)
+        return None
+
+def SegmentationColorDataStart(builder): builder.StartObject(4)
 def SegmentationColorDataAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
 def SegmentationColorDataAddSegmentationColor(builder, segmentationColor): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(segmentationColor), 0)
 def SegmentationColorDataAddName(builder, name): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
+def SegmentationColorDataAddCategory(builder, category): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(category), 0)
 def SegmentationColorDataEnd(builder): return builder.EndObject()

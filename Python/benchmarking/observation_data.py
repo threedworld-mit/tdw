@@ -25,6 +25,10 @@ if __name__ == "__main__":
                       row="--boxes --id_grayscale --images --passes none"))
 
     b.start()
+    rows.append(b.run(boxes=True,  images=True, passes="none", occlusion=True,
+                      row="--boxes --occlusion --images --passes none"))
+
+    b.start()
     rows.append(b.run(boxes=True, id_colors=True, images=True, passes="none",
                       row="--boxes --id_colors --images --passes none"))
 

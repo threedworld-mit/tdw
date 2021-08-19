@@ -36,6 +36,7 @@ class AddOn(ABC):
     - [Debug](debug.md)
     - [ImageCapture](image_capture.md)
     - [Keyboard](keyboard.md)
+    - [ObjectManager](object_manager.md)
     - [OccupancyMap](occupancy_map.md)
     - [ThirdPersonCamera](third_person_camera.md)
 

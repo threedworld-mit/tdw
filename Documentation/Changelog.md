@@ -19,6 +19,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | Command               | Modification                                                 |
 | --------------------- | ------------------------------------------------------------ |
 | `use_pre_signed_urls` | Default value for all Linux distros is True (was True only for Ubuntu 20 and otherwise False). |
+| `set_magnebot_wheels_during_move` | Output data will report that the motion was not a success if the Magnebot overshoots the distance. |
 
 ### Output Data
 

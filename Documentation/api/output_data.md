@@ -652,6 +652,7 @@ Rigibody data (velocity, mass, etc.) for objects in the scene.
 | `get_angular_velocity(index)` | The angular velocity. | `Tuple[float, float, float]` |
 | `get_mass(index)` | The mass. | `float` |
 | `get_sleeping(index)` | True if the rigidbody is sleeping. | `bool` |
+| `get_kinematic(index)` | True if the rigidbody is kinematic. | `bool` |
 
 ## Robot
 

@@ -33,6 +33,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | Output Data          | Modification                   |
 | -------------------- | ------------------------------ |
 | `SegmentationColors` | Added: `get_object_category()` |
+| `Rigidbodies`        | Added: `get_kinematic()`       |
 
 ### Build
 

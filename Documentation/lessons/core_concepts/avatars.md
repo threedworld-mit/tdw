@@ -206,21 +206,6 @@ c.communicate({"$type": "terminate"})
 
 **There are several embodied avatars in TDW; however, we don't recommend you use them.** Avatars are one of the oldest components of TDW and they've been gradually superseded. [There are many non-avatar embodied agents in TDW](TODO), all of which are more sophisticated than the embodied avatars. For more information regarding embodied avatars, read the API documentation for [`create_avatar`](../../api/command_api.md#create_avatar).
 
-## A few words regarding add-ons, wrapper functions and classes
-
-In this document, we've referred several times to "wrapper" functions and objects. These bits of code "wrap" around the Command API; they *can't* do anything that you couldn't do just by sending TDW commands to the build.
-
-For example, this is the code of `ThirdPersonCamera.rotate(rotation)`. Note that all it is doing is appending three `rotate_sensor_container_by` commands:
-
-```python
-def rotate(self, rotation: Dict[str, float]) -> None:
-    for q, axis in zip(["x", "y", "z"], ["pitch", "yaw", "roll"]):
-        self.commands.append({"$type": "rotate_sensor_container_by",
-                              "axis": axis,
-                              "angle": rotation[q],
-                              "avatar_id": self.avatar_id})
-```
-
 ***
 
 **Next: [Objects](objects.md)**

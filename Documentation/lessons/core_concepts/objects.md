@@ -39,6 +39,32 @@ Result:
 
 ![](images/add_object.png)
 
+## `Controller.get_add_object()`
+
+The `Controller` class includes a useful wrapper function for adding objects into the scene. This function will get the object's record and use it to generate an `add_object` command. This example does the exact same thing as the previous example:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+
+c = Controller()
+c.start()
+
+# Generate a unique object ID.
+object_id = c.get_unique_id()
+# Add a camera and look at the object (we haven't added the object yet but this will execute after adding the object).
+cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
+                        look_at=object_id)
+c.add_ons.append(cam)
+# Create the scene and add the object.
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="iron_box",
+                                library="models_core.json",
+                                position={"x": 1, "y": 0, "z": -0.5},
+                                object_id=object_id)])
+```
+
 ## Object positions
 
 Every object's pivot is at its **bottom-center**. To place an object on the ground, set the `y` coordinate of its position to 0.
@@ -110,32 +136,6 @@ The TDW repo includes [a controller that will create images of every object in t
 1. `cd path/to/tdw/Python` (replace `path/to` with the actual path)
 2. `python3 screenshotter.py`
 3. [Launch the build manually](../1.1_setup/1.1.2_launch_build.md)
-
-## `Controller.get_add_object()`
-
-The `Controller` class includes a useful wrapper function for adding objects into the scene. This function will get the object's record and use it to generate an `add_object` command. This example does the exact same thing as the previous example:
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-
-c = Controller()
-c.start()
-
-# Generate a unique object ID.
-object_id = c.get_unique_id()
-# Add a camera and look at the object (we haven't added the object yet but this will execute after adding the object).
-cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
-                        look_at=object_id)
-c.add_ons.append(cam)
-# Create the scene and add the object.
-c.communicate([TDWUtils.create_empty_room(12, 12),
-               c.get_add_object(model_name="iron_box",
-                                library="models_core.json",
-                                position={"x": 1, "y": 0, "z": -0.5},
-                                object_id=object_id)])
-```
 
 ## Object commands
 

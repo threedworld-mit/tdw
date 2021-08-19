@@ -30,8 +30,23 @@
 | Quaternion                                 | An (x, y, z, w) tuple                                        | `(0, 0, 0, 1)` |
 | Color                                      | An (r, g, b) tuple where each element is a byte value between 0 and 255 | `(255, 0, 34)` |
 
+## Useful wrapper functions in `TDWUtils`
+
+| Wrapper function            | Result                                               |
+| --------------------------- | ---------------------------------------------------- |
+| `vector3_to_array(vector3)` | Convert an (x, y, z) dictionary to a numpy array.    |
+| `array_to_vector3(arr)`     | Convert an [x, y, z] numpy array to a dictionary.    |
+| `vector4_to_array(vector4)` | Convert an (x, y, z, w) dictionary to a numpy  array |
+| `array_to_vector4(arr)`     | Convert an [x, y, z, w] numpy array to a dictionary. |
+| `color_to_array(color`)     | Convert an (r, g, b, a) dictionary to a numpy array. |
+| `array_to_color(arr)`       | Convert an [r, g, b, a] numpy array to a dictionary. |
+
 ***
 
 **Next: [Images](images.md)**
+
+Python API:
+
+- [`TDWUtils`](../../python/tdw_utils.md)
 
 [Return to the README](../../README.md)

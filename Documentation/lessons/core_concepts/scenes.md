@@ -106,6 +106,10 @@ c.communicate({'$type': 'add_scene',
 
 ![](images/tdw_room.png)
 
+## Scenes and objects
+
+Some streamed scenes included objects such as benches, tables, etc. These objects are *static*--they won't move, receive segmentation colors, etc. There are non-static objects in TDW that can be added to a scene; read more of this "Core Concepts" tutorial to learn how.
+
 ## Scene metadata records and the `SceneLibrarian`
 
 All asset bundles in TDW (including scenes) have associated metadata records. These records are stored in the `tdw` module as json files.

@@ -27,10 +27,13 @@ class RigidbodyData(object):
     def Mass(self): return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, self._tab.Pos + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(28))
     # RigidbodyData
     def Sleeping(self): return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, self._tab.Pos + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(32))
+    # RigidbodyData
+    def Kinematic(self): return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, self._tab.Pos + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(33))
 
-def CreateRigidbodyData(builder, id, velocity_x, velocity_y, velocity_z, angular_velocity_x, angular_velocity_y, angular_velocity_z, mass, sleeping):
+def CreateRigidbodyData(builder, id, velocity_x, velocity_y, velocity_z, angular_velocity_x, angular_velocity_y, angular_velocity_z, mass, sleeping, kinematic):
     builder.Prep(4, 36)
-    builder.Pad(3)
+    builder.Pad(2)
+    builder.PrependBool(kinematic)
     builder.PrependBool(sleeping)
     builder.PrependFloat32(mass)
     builder.Prep(4, 12)

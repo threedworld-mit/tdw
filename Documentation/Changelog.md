@@ -14,6 +14,12 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | ----------------- | ----------------------------------- |
 | `send_categories` | Send the category names and colors. |
 
+#### Modified Commands
+
+| Command               | Modification                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| `use_pre_signed_urls` | Default value for all Linux distros is True (was True only for Ubuntu 20 and otherwise False). |
+
 ### Output Data
 
 #### New Output Data
@@ -32,6 +38,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Build
 
 - Fixed: `send_occlusion` gives a occlusion value of 0 when there is occlusion. This has been fixed but the command is somewhat slower now.
+- Fixed: race condition when requesting collision data for objects that have just been destroyed.
 - Fixed: crash to desktop if collision detection is enabled (`send_collisions`) for a robot with a fixed immovable joint that has colliders. Now, fixed immovable joints with colliders (ur5, ur10, etc.) have colliders but will never send `Collision` output data.
 
 ### Robot Library

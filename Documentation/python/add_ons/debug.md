@@ -37,10 +37,13 @@ c.communicate({"$type": "terminate"})
 
 **`Debug(record, path)`**
 
+**`Debug(record, path, log_commands_in_build=False)`**
+
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | record |  bool |  | If True, record each command. If False, play back an existing record. |
 | path |  Union[str, Path] |  | The path to either save the record to or load the record from. |
+| log_commands_in_build |  bool  | False | If True, the build will log every message received and every command executed in the [Player log](https://docs.unity3d.com/Manual/LogFiles.html). |
 
 #### on_send
 

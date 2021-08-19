@@ -76,7 +76,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 - [ ] Collisions
 - [ ] Friction
 - [ ] Default object physics parameters
-
+- [ ] The ObjectManager add-on
 - [ ] NVIDIA Flex
 - [ ] tdw_physics (high-level API)
 

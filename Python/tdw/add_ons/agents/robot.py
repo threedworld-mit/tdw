@@ -3,7 +3,6 @@ from overrides import final
 import numpy as np
 from tdw.librarian import RobotLibrarian, RobotRecord
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.agent_manager import AgentManager
 from tdw.add_ons.agents.robot_base import RobotBase
 from tdw.add_ons.agents.robot_data.robot_static import RobotStatic
 from tdw.add_ons.agents.robot_data.robot_dynamic import RobotDynamic
@@ -29,6 +28,7 @@ class Robot(RobotBase):
         :param source: The source file of the robot. If None: The source will be the URL of the robot record in TDW's built-in [`RobotLibrarian`](../librarian/robot_librarian.md). If `str`: This is a filepath (starts with `file:///`) or a URL (starts with `http://` or `https://`). If `RobotRecord`: the source is the URL in the record. If `RobotLibrarian`: The source is the record in the provided `RobotLibrarian` that matches `name`.
         """
 
+        super().__init__(robot_id=robot_id, position=position, rotation=rotation)
         """:field
         The name of the robot.
         """
@@ -38,7 +38,8 @@ class Robot(RobotBase):
         """
         self.url: str = ""
         if source is None:
-            self.url = Robot.ROBOT_LIBRARIAN.get_record(name).get_url()
+            record: RobotRecord = Robot.ROBOT_LIBRARIAN.get_record(name)
+            self.url = record.get_url()
         elif isinstance(source, RobotLibrarian):
             self.url = source.get_record(name).get_url()
         elif isinstance(source, RobotRecord):
@@ -47,8 +48,6 @@ class Robot(RobotBase):
             self.url = source
         else:
             raise TypeError("Invalid type for source: " + source)
-
-        super().__init__(robot_id=robot_id, position=position, rotation=rotation)
 
     def set_joint_targets(self, targets: Dict[int, Union[float, Dict[str, float]]]) -> None:
         """
@@ -76,6 +75,7 @@ class Robot(RobotBase):
                                       "id": self.robot_id})
             else:
                 raise Exception(f"Cannot set target for joint type {joint_type}")
+            self.dynamic.joints[joint_id].moving = True
 
     def add_joint_forces(self, forces: Dict[int, Union[float, Dict[str, float]]]) -> None:
 
@@ -104,6 +104,7 @@ class Robot(RobotBase):
                                       "id": self.robot_id})
             else:
                 raise Exception(f"Cannot apply torque or force to joint type {joint_type}")
+            self.dynamic.joints[joint_id].moving = True
 
     def stop_joints(self, joint_ids: List[int] = None) -> None:
         """
@@ -147,9 +148,12 @@ class Robot(RobotBase):
                 "name": self.name,
                 "url": self.url}
 
-    def _cache_static_data(self, resp: List[bytes], agent_manager: AgentManager) -> None:
+    def _cache_static_data(self, resp: List[bytes]) -> None:
         self.static = RobotStatic(robot_id=self.robot_id, resp=resp)
 
-    def _set_dynamic_data(self, resp: List[bytes], agent_manager: AgentManager) -> None:
+    def _set_dynamic_data(self, resp: List[bytes]) -> None:
         dynamic = RobotDynamic(resp=resp, robot_id=self.robot_id, previous=self.dynamic)
         self.dynamic = self._set_joints_moving(dynamic)
+
+    def _get_commands(self, resp: List[bytes]) -> List[dict]:
+        return []

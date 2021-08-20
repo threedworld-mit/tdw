@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Optional, cast
+from typing import List, Dict, Optional
 from overrides import final
 import numpy as np
 from tdw.add_ons.object_manager import ObjectManager
-from tdw.add_ons.agent_manager import AgentManager
+from tdw.add_ons.collision_manager import CollisionManager
+from tdw.add_ons.manager import Manager
 from tdw.add_ons.agents.agent import Agent
 from tdw.add_ons.agents.robot_data.robot_static import RobotStatic
 from tdw.add_ons.agents.robot_data.robot_dynamic import RobotDynamic
@@ -33,6 +34,8 @@ class RobotBase(Agent, ABC):
             The initial position of the robot.
             """
             self.initial_position: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
+        else:
+            self.initial_position: Dict[str, float] = position
         if rotation is None:
             """:field
             The initial rotation of the robot.
@@ -53,10 +56,10 @@ class RobotBase(Agent, ABC):
         """
         self.dynamic: Optional[RobotDynamic] = None
 
-    def add_required_add_ons(self, agent_manager: AgentManager) -> None:
-        # Add an ObjectManager.
-        if "object_manager" not in agent_manager:
-            agent_manager.managers["object_manager"] = ObjectManager(transforms=True, rigidbodies=False, bounds=False)
+    def get_required_managers(self) -> Dict[str, Manager]:
+        return {"object_manager": ObjectManager(transforms=True, rigidbodies=False, bounds=False),
+                "collision_manager": CollisionManager(enter=True, stay=False, exit=True,
+                                                      objects=True, environment=True)}
 
     def get_initialization_commands(self) -> List[dict]:
         return [self._get_add_robot_command(),
@@ -109,13 +112,3 @@ class RobotBase(Agent, ABC):
             for joint_id in dynamic.joints:
                 dynamic.joints[joint_id].moving = True
         return dynamic
-
-    @final
-    def _get_object_manager(self, agent_manager: AgentManager) -> ObjectManager:
-        """
-        :param agent_manager: The AgentManager.
-
-        :return: The AgentManager's ObjectManager.
-        """
-
-        return cast(ObjectManager, agent_manager.managers["object_manager"])

@@ -1,4 +1,4 @@
-from typing import List, Dict, Set
+from typing import List, Dict
 from tdw.add_ons.add_on import AddOn
 from tdw.add_ons.manager import Manager
 from tdw.add_ons.agents.agent import Agent
@@ -19,9 +19,12 @@ class AgentManager(AddOn):
         self.agents: List[Agent] = list()
 
     def get_initialization_commands(self) -> List[dict]:
-        # Append required add-ons.
+        # Append required managers.
         for agent in self.agents:
-            agent.add_required_add_ons(self)
+            required_managers = agent.get_required_managers()
+            for k in required_managers:
+                if k not in self.managers:
+                    self.managers[k] = required_managers[k]
         commands = []
         # Initialize all of my add-ons.
         for manager in self.managers.values():
@@ -39,7 +42,7 @@ class AgentManager(AddOn):
             self.commands.extend(manager.commands)
         # Append the agent commands.
         for agent in self.agents:
-            agent.step(resp=resp, agent_manager=self)
+            agent.step(resp=resp)
             self.commands.extend(agent.commands)
 
     def reset(self) -> None:

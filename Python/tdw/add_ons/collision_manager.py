@@ -3,10 +3,10 @@ from tdw.output_data import OutputData, Collision, EnvironmentCollision
 from tdw.collision_data.collision_obj_obj import CollisionObjObj
 from tdw.collision_data.collision_obj_env import CollisionObjEnv
 from tdw.int_pair import IntPair
-from tdw.add_ons.add_on import AddOn
+from tdw.add_ons.manager import Manager
 
 
-class CollisionManager(AddOn):
+class CollisionManager(Manager):
     """
     Manager add-on for all collisions on this frame.
     """

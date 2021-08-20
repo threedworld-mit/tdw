@@ -2,7 +2,6 @@ from typing import List, Dict
 from tdw.output_data import OutputData, StaticRobot
 from tdw.add_ons.agents.robot_data.joint_static import JointStatic
 from tdw.add_ons.agents.robot_data.non_moving import NonMoving
-from tdw.add_ons.agents.agent_state import AgentState
 
 
 class RobotStatic(AgentState):

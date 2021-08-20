@@ -1,13 +1,15 @@
 from typing import List, Dict, Union
 from overrides import final
+import numpy as np
 from tdw.librarian import RobotLibrarian, RobotRecord
 from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.agent_manager import AgentManager
 from tdw.add_ons.agents.robot_base import RobotBase
 from tdw.add_ons.agents.robot_data.robot_static import RobotStatic
 from tdw.add_ons.agents.robot_data.robot_dynamic import RobotDynamic
 
 
-class Robot(RobotBase[RobotStatic, RobotDynamic]):
+class Robot(RobotBase):
     """
     Add a robot to the scene and control its joints.
     """
@@ -61,17 +63,17 @@ class Robot(RobotBase[RobotStatic, RobotDynamic]):
                 self.commands.append({"$type": "set_spherical_target",
                                       "target": targets[joint_id],
                                       "joint_id": joint_id,
-                                      "id": self.agent_id})
+                                      "id": self.robot_id})
             elif joint_type == "revolute":
                 self.commands.append({"$type": "set_revolute_target",
                                       "target": float(targets[joint_id]),
                                       "joint_id": joint_id,
-                                      "id": self.agent_id})
+                                      "id": self.robot_id})
             elif joint_type == "prismatic":
                 self.commands.append({"$type": "set_prismatic_target",
                                       "target": float(targets[joint_id]),
                                       "joint_id": joint_id,
-                                      "id": self.agent_id})
+                                      "id": self.robot_id})
             else:
                 raise Exception(f"Cannot set target for joint type {joint_type}")
 
@@ -89,17 +91,17 @@ class Robot(RobotBase[RobotStatic, RobotDynamic]):
                 self.commands.append({"$type": "add_torque_to_spherical",
                                       "torque": forces[joint_id],
                                       "joint_id": joint_id,
-                                      "id": self.agent_id})
+                                      "id": self.robot_id})
             elif joint_type == "revolute":
                 self.commands.append({"$type": "add_torque_to_revolute",
                                       "torque": float(forces[joint_id]),
                                       "joint_id": joint_id,
-                                      "id": self.agent_id})
+                                      "id": self.robot_id})
             elif joint_type == "prismatic":
                 self.commands.append({"$type": "add_force_to_prismatic",
                                       "force": float(forces[joint_id]),
                                       "joint_id": joint_id,
-                                      "id": self.agent_id})
+                                      "id": self.robot_id})
             else:
                 raise Exception(f"Cannot apply torque or force to joint type {joint_type}")
 
@@ -122,33 +124,32 @@ class Robot(RobotBase[RobotStatic, RobotDynamic]):
                 self.commands.append({"$type": "set_revolute_target",
                                       "joint_id": joint_id,
                                       "target": float(angles[0]),
-                                      "id": self.agent_id})
+                                      "id": self.robot_id})
             # Convert the current prismatic "angle" back into "radians".
             elif joint_type == "prismatic":
                 self.commands.append({"$type": "set_prismatic_target",
                                       "joint_id": joint_id,
                                       "target": float(np.radians(angles[0])),
-                                      "id": self.agent_id})
+                                      "id": self.robot_id})
             # Set each spherical drive axis.
             else:
                 self.commands.append({"$type": "set_spherical_target",
                                       "target": TDWUtils.array_to_vector3(angles),
                                       "joint_id": joint_id,
-                                      "id": self.agent_id})
+                                      "id": self.robot_id})
 
     @final
     def _get_add_robot_command(self) -> dict:
         return {"$type": "add_robot",
                 "id": self.robot_id,
-                "position": self._initial_position,
-                "rotation": self._initial_rotation,
+                "position": self.initial_position,
+                "rotation": self.initial_rotation,
                 "name": self.name,
                 "url": self.url}
 
-    def _get_static(self, resp: List[bytes]) -> RobotStatic:
-        return RobotStatic(robot_id=self.robot_id, resp=resp)
+    def _cache_static_data(self, resp: List[bytes], agent_manager: AgentManager) -> None:
+        self.static = RobotStatic(robot_id=self.robot_id, resp=resp)
 
-    def _get_dynamic(self, resp: List[bytes]) -> RobotDynamic:
+    def _set_dynamic_data(self, resp: List[bytes], agent_manager: AgentManager) -> None:
         dynamic = RobotDynamic(resp=resp, robot_id=self.robot_id, previous=self.dynamic)
-        dynamic = self._set_joints_moving(dynamic)
-        return dynamic
+        self.dynamic = self._set_joints_moving(dynamic)

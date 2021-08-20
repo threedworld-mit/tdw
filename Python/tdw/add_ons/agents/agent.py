@@ -1,18 +1,13 @@
-from typing import List, TypeVar, Generic, Optional
+from typing import List
 from abc import ABC, abstractmethod
 from overrides import final
 from tdw.add_ons.agent_manager import AgentManager
-from tdw.add_ons.agents.agent_state import AgentState
-
-T = TypeVar("T", bound=AgentState)
-U = TypeVar("U", bound=AgentState)
 
 
-class Agent(ABC, Generic[T, U]):
+class Agent(ABC):
     def __init__(self):
         super().__init__()
-        self.static: Optional[T] = None
-        self.dynamic: Optional[U] = None
+        self._cached_static_data: bool = False
         self.commands: List[dict] = list()
 
     @abstractmethod
@@ -31,19 +26,24 @@ class Agent(ABC, Generic[T, U]):
 
     @final
     def step(self, resp: List[bytes], agent_manager: AgentManager) -> None:
-        # Set the static state.
-        if self.static is None:
-            self.static: T = self._get_static(resp=resp, agent_manager=agent_manager)
+        # Cache the static state.
+        if not self._cached_static_data:
+            self._cached_static_data = True
+            self._cache_static_data(resp=resp, agent_manager=agent_manager)
         # Update the dynamic state.
-        self.dynamic: U = self._get_dynamic(resp=resp, agent_manager=agent_manager)
+        self._set_dynamic_data(resp=resp, agent_manager=agent_manager)
+        # Get new commands.
         self.commands.extend(self._get_commands(resp=resp, agent_manager=agent_manager))
 
+    def reset(self) -> None:
+        self._cached_static_data = False
+
     @abstractmethod
-    def _get_static(self, resp: List[bytes], agent_manager: AgentManager) -> T:
+    def _cache_static_data(self, resp: List[bytes], agent_manager: AgentManager) -> None:
         raise Exception()
 
     @abstractmethod
-    def _get_dynamic(self, resp: List[bytes], agent_manager: AgentManager) -> U:
+    def _set_dynamic_data(self, resp: List[bytes], agent_manager: AgentManager) -> None:
         """
         :param resp: The response from the build.
 

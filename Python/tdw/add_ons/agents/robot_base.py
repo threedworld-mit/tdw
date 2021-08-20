@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import TypeVar, Generic, List, Dict
+from typing import List, Dict, Optional, cast
 from overrides import final
 import numpy as np
 from tdw.add_ons.object_manager import ObjectManager
@@ -8,11 +8,8 @@ from tdw.add_ons.agents.agent import Agent
 from tdw.add_ons.agents.robot_data.robot_static import RobotStatic
 from tdw.add_ons.agents.robot_data.robot_dynamic import RobotDynamic
 
-T = TypeVar("T", bound=RobotStatic)
-U = TypeVar("U", bound=RobotDynamic)
 
-
-class RobotBase(ABC, Generic[T, U], Agent[T, U]):
+class RobotBase(Agent, ABC):
     """
     Abstract base class for robot agents.
     """
@@ -32,24 +29,37 @@ class RobotBase(ABC, Generic[T, U], Agent[T, U]):
         super().__init__()
 
         if position is None:
-            self._initial_position: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
+            """:field
+            The initial position of the robot.
+            """
+            self.initial_position: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
         if rotation is None:
-            self._initial_rotation: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
+            """:field
+            The initial rotation of the robot.
+            """
+            self.initial_rotation: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
         else:
-            self._initial_rotation: Dict[str, float] = rotation
+            self.initial_rotation: Dict[str, float] = rotation
         """:field
         The ID of this robot.
         """
         self.robot_id: int = robot_id
-        self._add_robot_command: dict = self._get_add_robot_command()
+        """:field
+        Static robot data.
+        """
+        self.static: Optional[RobotStatic] = None
+        """:field
+        Dynamic robot data.
+        """
+        self.dynamic: Optional[RobotDynamic] = None
 
     def add_required_add_ons(self, agent_manager: AgentManager) -> None:
         # Add an ObjectManager.
         if "object_manager" not in agent_manager:
-            agent_manager.add_ons["object_manager"] = ObjectManager(transforms=True, rigidbodies=False, bounds=False)
+            agent_manager.managers["object_manager"] = ObjectManager(transforms=True, rigidbodies=False, bounds=False)
 
     def get_initialization_commands(self) -> List[dict]:
-        return [self._add_robot_command,
+        return [self._get_add_robot_command(),
                 {"$type": "send_static_robots",
                  "frequency": "once"},
                 {"$type": "send_robots",
@@ -78,7 +88,7 @@ class RobotBase(ABC, Generic[T, U], Agent[T, U]):
         raise Exception()
 
     @final
-    def _set_joints_moving(self, dynamic: U) -> U:
+    def _set_joints_moving(self, dynamic: RobotDynamic) -> RobotDynamic:
         """
         Set the state of the dynamic data regarding whether the joints are currently moving.
 
@@ -108,4 +118,4 @@ class RobotBase(ABC, Generic[T, U], Agent[T, U]):
         :return: The AgentManager's ObjectManager.
         """
 
-        return agent_manager.add_ons["object_manager"]
+        return cast(ObjectManager, agent_manager.managers["object_manager"])

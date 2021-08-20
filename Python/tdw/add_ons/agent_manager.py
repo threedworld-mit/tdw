@@ -1,17 +1,18 @@
-from typing import List, Dict
+from typing import List, Dict, Set
 from tdw.add_ons.add_on import AddOn
-from tdw_agents.agent import Agent
+from tdw.add_ons.manager import Manager
+from tdw.add_ons.agents.agent import Agent
 
 
 class AgentManager(AddOn):
     def __init__(self):
         super().__init__()
         """:field
-        A dictionary of add-ons. Key = An identifier for the add-on. Agents can use this key to determine if the AgentManager has all of the add-ons that the agent needs.
+        A dictionary of manager add-ons. Key = An identifier for the add-on. Agents can use this key to determine if the AgentManager has all of the add-ons that the agent needs.
         An agent can add to this when the manager is initialized.
         These add-ons will inject commands into `self.commands` in a fixed order. Then the agents will inject their commands.
         """
-        self.add_ons: Dict[str, AddOn] = dict()
+        self.managers: Dict[str, Manager] = dict()
         """:field
         A list of all of this manager's agents. You must add every agent when the AgentManager is first initialized, otherwise they might not appear correctly in the output data.
         """
@@ -23,9 +24,9 @@ class AgentManager(AddOn):
             agent.add_required_add_ons(self)
         commands = []
         # Initialize all of my add-ons.
-        for add_on in self.add_ons.values():
-            commands.extend(add_on.get_initialization_commands())
-            add_on.initialized = True
+        for manager in self.managers.values():
+            commands.extend(manager.get_initialization_commands())
+            manager.initialized = True
         # Initialize the agents.
         for agent in self.agents:
             commands.extend(agent.get_initialization_commands())
@@ -33,10 +34,21 @@ class AgentManager(AddOn):
 
     def on_send(self, resp: List[bytes]) -> None:
         # Append the add-on commands.
-        for add_on in self.add_ons.values():
-            add_on.on_send(resp=resp)
-            self.commands.extend(add_on.commands)
+        for manager in self.managers.values():
+            manager.on_send(resp=resp)
+            self.commands.extend(manager.commands)
         # Append the agent commands.
         for agent in self.agents:
             agent.step(resp=resp, agent_manager=self)
             self.commands.extend(agent.commands)
+
+    def reset(self) -> None:
+        # Reset all manager data.
+        for manager in self.managers.values():
+            manager.reset()
+        # Reset all agent data.
+        agent_types: set = set()
+        for agent in self.agents:
+            if agent.__class__ not in agent_types:
+                agent_types.add(agent.__class__)
+                agent.reset()

@@ -1,14 +1,14 @@
 from typing import Dict, List
 import numpy as np
 from tdw.output_data import OutputData, Transforms, Rigidbodies, Bounds, SegmentationColors, Categories
-from tdw.add_ons.add_on import AddOn
+from tdw.add_ons.manager import Manager
 from tdw.object_data.object_static import ObjectStatic
 from tdw.object_data.transform import Transform
 from tdw.object_data.rigidbody import Rigidbody
 from tdw.object_data.bound import Bound
 
 
-class ObjectManager(AddOn):
+class ObjectManager(Manager):
     """
     A simple manager class for objects in the scene. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.
 
@@ -184,7 +184,7 @@ class ObjectManager(AddOn):
         Reset the cached static data. Call this when resetting the scene.
         """
 
+        super().reset()
         self._cached_static_data = False
         self.objects_static.clear()
         self.categories.clear()
-        self.initialized = False

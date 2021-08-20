@@ -42,6 +42,8 @@ c.communicate({"$type": "terminate"})
 
 - `initialized` If True, this module has been initialized.
 
+- `frame` The current frame count. This is used to generate filenames.
+
 - `path` The path to the output directory.
 
 - `avatar_ids` The IDs of the avatars that will capture and save images. If empty, all avatars will capture and save images.

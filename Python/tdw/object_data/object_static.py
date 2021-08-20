@@ -2,6 +2,10 @@ import numpy as np
 
 
 class ObjectStatic:
+    """
+    Static data for an object. This data won't change between frames.
+    """
+
     def __init__(self, name: str, object_id: int, mass: float, segmentation_color: np.array, size: np.array,
                  category: str, kinematic: bool):
         """

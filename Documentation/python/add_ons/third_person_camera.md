@@ -115,7 +115,30 @@ This is called after commands are sent to the build and a response is received.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-##### get_initialization_commands
+#### teleport
+
+**`self.teleport(position)`**
+
+**`self.teleport(position, absolute=True)`**
+
+Teleport the camera to a new position.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| position |  Dict[str, float] |  | The new position of the camera. |
+| absolute |  bool  | True | If True, `position` is absolute worldspace coordinates. If False, `position` is relative to the avatar's current position. |
+
+#### rotate
+
+**`self.rotate(rotation)`**
+
+Rotate the camera.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| rotation |  Dict[str, float] |  | Rotate the camera by these angles (in degrees). Keys are `"x"`, `"y"`, `"z"` and correspond to `(pitch, yaw, roll)`. |
+
+#### get_initialization_commands
 
 **`self.get_initialization_commands()`**
 

@@ -189,6 +189,9 @@ class Rigidbodies(OutputData):
     def get_sleeping(self, index: int) -> bool:
         return self.data.Objects(index).Sleeping()
 
+    def get_kinematic(self, index: int) -> bool:
+        return self.data.Objects(index).Kinematic()
+
 
 class Bounds(OutputData):
     def get_data(self) -> Bouns.Bounds:

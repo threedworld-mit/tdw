@@ -248,7 +248,7 @@
 | [`set_network_logging`](#set_network_logging) | If True, the build will log every message received from the controller and will log every command that is executed. Initial value = False  |
 | [`set_post_process`](#set_post_process) | Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled) |
 | [`simulate_physics`](#simulate_physics) | Toggle whether to simulate physics per list of sent commands (i.e. per frame). If false, the simulation won't step the physics forward. Initial value = True (simulate physics per frame). |
-| [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Ubuntu 20: True (use temporary URLs); on all other platforms, False (download S3 objects directly, without using temporary URLs). |
+| [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Linux: True (use temporary URLs). On Windows and OS X: False (download S3 objects directly, without using temporary URLs). |
 
 **Load From Resources**
 
@@ -3510,7 +3510,7 @@ Toggle whether to simulate physics per list of sent commands (i.e. per frame). I
 
 ## **`use_pre_signed_urls`**
 
-Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Ubuntu 20: True (use temporary URLs); on all other platforms, False (download S3 objects directly, without using temporary URLs).
+Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Linux: True (use temporary URLs). On Windows and OS X: False (download S3 objects directly, without using temporary URLs).
 
 
 ```python

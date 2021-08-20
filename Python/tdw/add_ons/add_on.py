@@ -33,6 +33,7 @@ class AddOn(ABC):
 
     - [Benchmark](benchmark.md)
     - [CinematicCamera](cinematic_camera.md)
+    - [CollisionManager](collision_manager.md)
     - [Debug](debug.md)
     - [ImageCapture](image_capture.md)
     - [Keyboard](keyboard.md)

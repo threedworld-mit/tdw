@@ -30,20 +30,13 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 ## 1.3 Troubleshooting and good coding practices :warning: TODO :warning:
 
-1. [Common errors](Documentation/lessons/debug/errors.md) TODO
-2. [Add a debug logger](Documentation/lessons/debug/debug.md) TODO
-3. [Good coding practices](Documentation/lessons/debug/good_coding_practices.md) TODO
-4. [Performance optimizations](Documentation/lessons/debug/debug.md) TODO
-5. [Benchmarks](Documentation/lessons/debug/benchmarks.md) TODO
+- [ ] Common errors
+- [ ] Debug logging
+- [ ] Good coding practices
+- [ ] Performance optimizations
+- [ ] Performance benchmarks
 
 # 2. Tutorials :warning: TODO :warning:
-
-## 2.1 Model libraries
-
-1. [Free models](Documentation/lessons/model_libraries/free_models.md) TODO
-2. [Non-free models (`models_full.json`)](Documentation/lessons/model_libraries/non_free_models.md) TODO
-3. [Add your own models to TDW](Documentation/lessons/model_libraries/add_models.md) TODO
-4. [Add ShapeNet models to TDW](Documentation/lessons/model_libraries/shapenet.md) TODO
 
 ## 2.2 Populate a scene with objects
 
@@ -51,6 +44,10 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 - [ ] Put one object on top of another
 - [ ] Reset a scene
 - [ ] Procedural generation
+- [ ] Free models
+- [ ] Non-free models
+- [ ] Add your own models to TDW
+- [ ] Add ShapeNet models to TDW
 - [ ] FloorplanController (high-level API)
 
 ## 2.3 Photorealistic images
@@ -61,13 +58,15 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 - [ ] Depth of field
 - [ ] Anti-aliasing
 - [ ] Image-only videos
-- [ ] humanoid_video (use case)
+- [ ] tdw_image_dataset (high-level API)
 
-## 2.4 Image dataset generation
+## 2.4 Visual perception and image datasets
 
-- [ ] Segmentation colors and the `_id` pass
-- [ ] Depth maps
+- [ ] Segmentation color image passes (`_id` and `_category`)
+- [ ] Depth map image passes (`_depth` and `_depth_simple`)
+- [ ] Other image passes (`_mask`, `_normals`, `_flow`, and `_albedo`)
 - [ ] Occlusion output data
+- [ ] Other image output data
 - [ ] tdw_image_dataset (high-level API)
 
 ## 2.5 Physics
@@ -76,18 +75,17 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 - [ ] Collisions
 - [ ] Friction
 - [ ] Default object physics parameters
-- [ ] The ObjectManager add-on
 - [ ] NVIDIA Flex
 - [ ] tdw_physics (high-level API)
 
 ## 2.6 Audio
 
 - [ ] Overview
-- [ ] PyImpact
 - [ ] Resonance Audio
-
+- [ ] PyImpact
 - [ ] Recording audio
-- [ ] Audio+visual videos
+- [ ] Recording audio+video
+- [ ] Audio perception
 - [ ] multimodal_challenge (use case)
 
 ## 2.7 Robots and embodied agents

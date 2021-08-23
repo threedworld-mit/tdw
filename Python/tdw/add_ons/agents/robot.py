@@ -10,7 +10,7 @@ from tdw.add_ons.agents.robot_data.robot_dynamic import RobotDynamic
 
 class Robot(RobotBase):
     """
-    Add a robot to the scene and control its joints.
+    A robot agent is loaded from a converted URDF file. It has static and dynamic (per-frame) data for each of its joints.
     """
 
     """:class_var

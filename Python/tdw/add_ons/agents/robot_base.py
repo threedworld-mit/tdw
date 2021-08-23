@@ -2,9 +2,6 @@ from abc import ABC, abstractmethod
 from typing import List, Dict, Optional
 from overrides import final
 import numpy as np
-from tdw.add_ons.object_manager import ObjectManager
-from tdw.add_ons.collision_manager import CollisionManager
-from tdw.add_ons.manager import Manager
 from tdw.add_ons.agents.agent import Agent
 from tdw.add_ons.agents.robot_data.robot_static import RobotStatic
 from tdw.add_ons.agents.robot_data.robot_dynamic import RobotDynamic
@@ -55,11 +52,6 @@ class RobotBase(Agent, ABC):
         Dynamic robot data.
         """
         self.dynamic: Optional[RobotDynamic] = None
-
-    def get_required_managers(self) -> Dict[str, Manager]:
-        return {"object_manager": ObjectManager(transforms=True, rigidbodies=False, bounds=False),
-                "collision_manager": CollisionManager(enter=True, stay=False, exit=True,
-                                                      objects=True, environment=True)}
 
     def get_initialization_commands(self) -> List[dict]:
         return [self._get_add_robot_command(),

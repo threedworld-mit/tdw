@@ -1,18 +1,24 @@
-from typing import List, Dict
+from typing import List
 from abc import ABC, abstractmethod
 from overrides import final
-from tdw.add_ons.manager import Manager
 
 
 class Agent(ABC):
-    def __init__(self):
-        super().__init__()
-        self.cached_static_data: bool = False
-        self.commands: List[dict] = list()
+    """
+    An agent has a static state, a dynamic state, and can generate lists of commands given the dynamic state.
+    """
 
-    @abstractmethod
-    def get_required_managers(self) -> Dict[str, Manager]:
-        raise Exception()
+    def __init__(self):
+        """
+        (no parameters)
+        """
+
+        """:field
+        A list of commands to be sent on the next frame.
+        """
+        self.commands: List[dict] = list()
+        # If True, this agent has already cached its static data.
+        self._cached_static_data: bool = False
 
     @abstractmethod
     def get_initialization_commands(self) -> List[dict]:
@@ -26,9 +32,15 @@ class Agent(ABC):
 
     @final
     def step(self, resp: List[bytes]) -> None:
+        """
+        Update the agent's state. Cache static data if needed and update the list of commands to send to the build.
+
+        :param resp: The response from the build.
+        """
+
         # Cache the static state.
-        if not self.cached_static_data:
-            self.cached_static_data = True
+        if not self._cached_static_data:
+            self._cached_static_data = True
             self._cache_static_data(resp=resp)
         # Update the dynamic state.
         self._set_dynamic_data(resp=resp)
@@ -36,10 +48,20 @@ class Agent(ABC):
         self.commands.extend(self._get_commands(resp=resp))
 
     def reset(self) -> None:
-        self.cached_static_data = False
+        """
+        :return: Mark this agent as requiring a reset.
+        """
+
+        self._cached_static_data = False
 
     @abstractmethod
     def _cache_static_data(self, resp: List[bytes]) -> None:
+        """
+        Cache all required static data.
+
+        :param resp: The response from the build.
+        """
+
         raise Exception()
 
     @abstractmethod
@@ -54,4 +76,10 @@ class Agent(ABC):
 
     @abstractmethod
     def _get_commands(self, resp: List[bytes]) -> List[dict]:
+        """
+        :param resp: The response from the build.
+
+        :return: A list of commands to send to the build, given the current state.
+        """
+
         raise Exception()

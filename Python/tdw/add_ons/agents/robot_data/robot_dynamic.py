@@ -30,7 +30,6 @@ class RobotDynamic:
         A dictionary of [dynamic joint data](joint_dynamic.md). Key = The ID of the joint.
         """
         self.joints: Dict[int, JointDynamic] = dict()
-        got_data: bool = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "robo":
@@ -52,4 +51,3 @@ class RobotDynamic:
                                     joint.moving = True
                                     break
                         self.joints[joint.joint_id] = joint
-        assert got_data, "No dynamic robot data in response from build!"

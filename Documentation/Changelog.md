@@ -4,6 +4,22 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.25
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `add_torque_to_revolute`  | Add a torque to a revolute joint.  |
+| `add_force_to_prismatic`  | Add a force to a prismatic joint.  |
+| `add_torque_to_spherical` | Add a torque to a spherical joint. |
+
+### Example Controllers
+
+- Added: `robot_torque.py`
+
 ## v1.8.24
 
 ### Command API
@@ -188,9 +204,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `set_magnebot_wheels_during_turn_to` | Set the friction coefficients of the Magnebot's wheels during a turn_to() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. Because the Magnebot will move slightly while rotating, this command has an additional position parameter to re-check for alignment with the target. |
 | `set_robot_joint_friction`           | Set the friction coefficient of a robot joint.               |
 | `perlin_noise_terrain` | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain. |
-| `add_torque_to_revolute`  | Add a torque to a revolute joint.  |
-| `add_force_to_prismatic`  | Add a force to a prismatic joint.  |
-| `add_torque_to_spherical` | Add a torque to a spherical joint. |
 
 ### Output Data
 
@@ -218,7 +231,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Example Controllers
 
 - Added: `perlin_noise_terrain.py` Example of how to create a scene with procedurally generated terrain.
-- Added: `robot_torque.py`
 
 ### Use Cases
 

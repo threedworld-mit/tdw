@@ -44,7 +44,6 @@ class RobotStatic:
             if r_id == "srob":
                 static_robot: StaticRobot = StaticRobot(resp[i])
                 if static_robot.get_id() == robot_id:
-                    got_data = True
                     for j in range(static_robot.get_num_joints()):
                         joint = JointStatic(static_robot=static_robot, joint_index=j)
                         self.joints[joint.joint_id] = joint

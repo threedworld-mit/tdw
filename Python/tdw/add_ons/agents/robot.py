@@ -152,7 +152,8 @@ class Robot(RobotBase):
         self.static = RobotStatic(robot_id=self.robot_id, resp=resp)
 
     def _set_dynamic_data(self, resp: List[bytes]) -> None:
-        dynamic = RobotDynamic(resp=resp, robot_id=self.robot_id, previous=self.dynamic)
+        dynamic = RobotDynamic(resp=resp, robot_id=self.robot_id, body_parts=self.static.body_parts,
+                               previous=self.dynamic)
         self.dynamic = self._set_joints_moving(dynamic)
 
     def _get_commands(self, resp: List[bytes]) -> List[dict]:

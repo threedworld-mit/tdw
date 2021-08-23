@@ -41,7 +41,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 1. Overview
 2. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
-3. Positions and rotations
+3. Object rotation
 4. Put one object on top of another
 5. Reset a scene
 6. Procedural generation

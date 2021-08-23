@@ -34,6 +34,10 @@ class RobotDynamic:
         """
         self.joints: Dict[int, JointDynamic] = dict()
         """:field
+        If True, this robot is immovable.
+        """
+        self.immovable: bool = False
+        """:field
         A dictionary of collisions between one of this robot's [body parts (joints or non-moving)](robot_static.md) and another object.
         Key = A tuple where the first element is the body part ID and the second element is the object ID.
         Value = A list of [collision data.](../../object_data/collision_obj_obj.md)
@@ -59,6 +63,7 @@ class RobotDynamic:
                     self.transform = Transform(position=np.array(robot.get_position()),
                                                rotation=np.array(robot.get_rotation()),
                                                forward=np.array(robot.get_forward()))
+                    self.immovable = robot.get_immovable()
                     # Get dynamic data for each joint.
                     for j in range(robot.get_num_joints()):
                         joint = JointDynamic(robot=robot, joint_index=j)

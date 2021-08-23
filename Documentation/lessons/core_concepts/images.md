@@ -131,6 +131,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 c.start()
@@ -139,9 +140,9 @@ cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
                         look_at=object_id,
                         avatar_id="a")
 c.add_ons.append(cam)
-
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("send_images_2")
 # Add the ImageCapture add-on.
-cap = ImageCapture(path="tmp", avatar_ids=["a"], pass_masks=["_img", "_id"])
+cap = ImageCapture(path=output_directory, avatar_ids=["a"], pass_masks=["_img", "_id"])
 c.add_ons.append(cap)
 
 # This will create the scene and the object.

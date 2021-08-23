@@ -1,4 +1,4 @@
-# Core concepts: Units and data formats
+# Objects and scenes: Units and data formats
 
 ## Units
 
@@ -43,7 +43,7 @@
 
 ***
 
-**Next: [Images](images.md)**
+**Next: [Positions and rotations](positions_and_rotations.md)**
 
 Python API:
 

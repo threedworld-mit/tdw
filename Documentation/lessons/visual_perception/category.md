@@ -1,6 +1,6 @@
-# The `_category` pass
+# Visual Perception: Segmentation Colors (Object Category)
 
-The `_category` pass is similar to the `_id` pass but it assigns colors based on category. Note that the two items on the table are in the same category and therefore receive the same color:
+The `_category` pass is similar to the `_id` pass but it assigns colors based on the semantic category of the objects in the scene. Note that the two items on the table are in the same category and therefore receive the same color:
 
 ![](images/category_0000.png)
 
@@ -140,7 +140,7 @@ Note that `SegmentationColors` and `Categories` return only static data and do n
 
 ***
 
-**Next: [The `_mask` pass](mask.md)**
+**Next: [Depth maps](depth.md)**
 
 Example controllers:
 

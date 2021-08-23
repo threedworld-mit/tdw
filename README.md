@@ -25,7 +25,6 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 4. [Avatars and camera](Documentation/lessons/core_concepts/avatars.md)
 5. [Objects](Documentation/lessons/core_concepts/objects.md)
 6. [Output data](Documentation/lessons/core_concepts/output_data.md)
-7. [Units and data formats](Documentation/lessons/core_concepts/units.md)
 8. [Images](Documentation/lessons/core_concepts/images.md)
 
 ## 1.3 Troubleshooting and good coding practices :warning: TODO :warning:
@@ -38,19 +37,34 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 # 2. Tutorials :warning: TODO :warning:
 
-## 2.2 Populate a scene with objects
+## 2.1 Objects and scenes
 
-- [ ] Positions and rotations
-- [ ] Put one object on top of another
-- [ ] Reset a scene
-- [ ] Procedural generation
+1. Overview
+2. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
+3. Positions and rotations
+4. Put one object on top of another
+5. Reset a scene
+6. Procedural generation
+
+## 2.2 Use non-default 3D models
+
 - [ ] Free models
 - [ ] Non-free models
 - [ ] Add your own models to TDW
 - [ ] Add ShapeNet models to TDW
 - [ ] FloorplanController (high-level API)
 
-## 2.3 Photorealistic images
+## 2.3 Visual perception
+
+1. [Overview](Documentation/lessons/visual_perception/overview.md)
+2. [Segmentation colors (object ID)](Documentation/lessons/visual_perception/id.md)
+3. [Segmentation colors (object category)](Documentation/lessons/visual_perception/category.md)
+4. [Depth maps](Documentation/lessons/visual_perception/depth.md)
+5. [Motion perception](Documentation/lessons/visual_perception/flow.md)
+6. [Other image passes](Documentation/lessons/visual_perception/other_passes.md)
+7. [Occlusion output data](Documentation/lessons/visual_perception/occlusion.md)
+
+## 2.4 Photorealistic images
 
 - [ ] Visual materials, textures, and colors
 - [ ] Lighting
@@ -58,16 +72,8 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 - [ ] Depth of field
 - [ ] Anti-aliasing
 - [ ] Image-only videos
-- [ ] tdw_image_dataset (high-level API)
 
-## 2.4 Visual perception and image datasets
-
-- [ ] Segmentation color image passes (`_id` and `_category`)
-- [ ] Depth map image passes (`_depth` and `_depth_simple`)
-- [ ] Other image passes (`_mask`, `_normals`, `_flow`, and `_albedo`)
-- [ ] Occlusion output data
-- [ ] Other image output data
-- [ ] tdw_image_dataset (high-level API)
+High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
 ## 2.5 Physics
 

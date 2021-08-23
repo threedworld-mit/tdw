@@ -1,4 +1,4 @@
-# The `_id` pass
+# Visual Perception: Segmentation Colors (Object ID)
 
 Each object in a TDW scene has a random and unique **segmentation color**. The `_id` capture pass shows the segmentation colors of each object in the scene:
 
@@ -208,6 +208,10 @@ for object_id in segmentation_colors_per_object:
         print(object_id)
 c.communicate({"$type": "terminate"})
 ```
+
+# 2. The `_category` pass
+
+
 
 ***
 

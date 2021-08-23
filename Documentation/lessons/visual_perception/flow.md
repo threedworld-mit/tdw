@@ -1,4 +1,4 @@
-# The `_flow` pass
+# Visual Perception: Motion Perception
 
 In the `_flow` pass, pixels are colored according to their motion in relation to the camera. In the example used above, nothing is moving, so the image is totally black. We can add motion to the scene with the [`apply_force_to_object`](../../api/command_api.md#apply_force_to_object) command:
 
@@ -62,7 +62,7 @@ Result:
 
 ***
 
-**Next: [The `_albedo` pass](albedo.md)**
+**Next: [Other image passes](other_passes.md)**
 
 Example controllers:
 

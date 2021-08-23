@@ -1,6 +1,6 @@
-# `Occlusion` output data
+# Visual Perception: `Occlusion` Output Data
 
-[`Occlusion`](../../api/output_data.md#Occlusion.md) output dataisn't a capture pass, though in the backend code it does use image data.
+[`Occlusion`](../../api/output_data.md#Occlusion.md) output data isn't a capture pass, though in the backend code it does use image data.
 
 Internally, the build will capture two `_mask` passes, one with environment objects and one without. The resulting occlusion value is the ratio of the overall grayscale values of the images:
 
@@ -87,6 +87,8 @@ Result:
 ```
 
 ***
+
+**This is the last page in the Visual Perception tutorial.**
 
 Example controllers:
 

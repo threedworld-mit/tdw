@@ -1,4 +1,4 @@
-# The `_depth` and `_depth_simple` passes
+# Visual Perception: Depth Maps
 
 ## The `_depth` pass
 
@@ -154,7 +154,7 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-**Next: [The `_flow` pass](flow.md)**
+**Next: [Motion perception](flow.md)**
 
 Example controllers:
 

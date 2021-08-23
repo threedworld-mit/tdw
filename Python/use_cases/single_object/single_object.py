@@ -58,6 +58,7 @@ class Environment:
 class SingleObject(Controller):
     def __init__(self,
                  port=1071,
+                 launch_build=False,
                  visual_material_swapping=False,
                  new=False,
                  screen_size=256,
@@ -73,9 +74,11 @@ class SingleObject(Controller):
                  do_zip=False,
                  train=1300000,
                  val=50000,
-                 library="models_full.json"):
+                 library="models_full.json",
+                 temp_urls: bool = False):
         """
         :param port: The port used to connect to the build.
+        :param launch_build: If True, automatically launch the build. Always set this to False on a Linux server.
         :param visual_material_swapping: If true, set random visual materials per frame.
         :param new: If true, clear the list of models that have already been used.
         :param screen_size: The screen size of the build.
@@ -115,7 +118,7 @@ class SingleObject(Controller):
 
         self.new = new
 
-        super().__init__(port=port)
+        super().__init__(port=port, launch_build=launch_build)
 
         self.model_librarian = ModelLibrarian(library=library)
         self.material_librarian = MaterialLibrarian("materials_high.json")
@@ -139,6 +142,11 @@ class SingleObject(Controller):
                         self.skyboxes.append(skybox)
         else:
             self.skyboxes = None
+
+        # Download from pre-signed URLs.
+        if temp_urls:
+            self.communicate({"$type": "use_pre_signed_urls",
+                              "value": True})
 
     def initialize_scene(self, scene_command, a="a") -> list:
         """
@@ -502,7 +510,7 @@ class SingleObject(Controller):
                 if record.name not in self.substructures:
                     self.substructures.update({record.name: record.substructure})
                 for sub_object in self.substructures[record.name]:
-                    for i in range(len(self.substructures[record.name][sub_object["name"]])):
+                    for i in range(len(sub_object["materials"])):
                         material_name = self.materials[RNG.randint(0, len(self.materials))].name
                         commands.extend([self.get_add_material(material_name),
                                          {"$type": "set_visual_material",
@@ -520,12 +528,12 @@ class SingleObject(Controller):
                                  "angle": RNG.uniform(0, 360)})
 
             resp = self.communicate(commands)
-            train += 1
 
             # Create a thread to save the image.
             t = Thread(target=self.save_image, args=(resp, record, file_index, root_dir, wnid, train, train_count))
             t.daemon = True
             t.start()
+            train += 1
             file_index += 1
             image_count += 1
         t1 = time()
@@ -773,6 +781,9 @@ if __name__ == "__main__":
     parser.add_argument("--clamp_rotation", action="store_true",
                         help="Clamp rotation to +/- 30 degrees on each axis, rather than totally random.")
     parser.add_argument("--port", type=int, default=1071, help="The port for the controller and build.")
+    parser.add_argument("--launch_build", action="store_true",
+                        help="Automatically launch the build. "
+                             "Don't add this if you're running the script on a Linux server.")
     parser.add_argument("--max_height", type=float, default=1,
                         help="Objects and avatars can be at this percentage of the scene bounds height. Must be between 0 and 1.")
     parser.add_argument("--grayscale", type=float, default=0.5,
@@ -786,9 +797,14 @@ if __name__ == "__main__":
     parser.add_argument("--train", type=int, default=1300000, help="Total number of train images.")
     parser.add_argument("--val", type=int, default=50000, help="Total number of val images.")
     parser.add_argument("--library", type=str, default="models_core.json", help="The path to the model library records.")
+    parser.add_argument("--temp_urls", action="store_true",
+                        help="If included and `--library models_full.json`, the build will use temporary (pre-signed) "
+                             "URLs to download models in the tdw-private bucket. "
+                             "Include this flag only if you're experiencing segfaults on Linux.")
     args = parser.parse_args()
 
     s = SingleObject(port=args.port,
+                     launch_build=args.launch_build,
                      visual_material_swapping=args.materials,
                      new=args.new,
                      screen_size=args.screen_size,
@@ -804,6 +820,7 @@ if __name__ == "__main__":
                      do_zip=args.zip,
                      train=args.train,
                      val=args.val,
-                     library=args.library)
+                     library=args.library,
+                     temp_urls=args.temp_urls is not None)
     s.run(args.output_dir,
           scene_name=args.scene_name)

@@ -238,9 +238,17 @@ Enum values:
 - `ceramic`
 - `glass`
 - `metal`
-- `hardwood`
-- `wood`
+- `wood_hard`
+- `wood_medium`
+- `wood_soft`
 - `cardboard`
+- `paper`
+- `plastic_hard`
+- `plastic_soft_foam`
+- `rubber`
+- `fabric`
+- `leather`
+- `stone`
 
 ***
 
@@ -253,7 +261,7 @@ The audio values here are just recommendations; you can apply different values i
 
 ***
 
-#### `__init__(self, name: str, amp: float, mass: float, material: AudioMaterial, library: str, bounciness: float, resonance: float)`
+#### `__init__(self, name: str, amp: float, mass: float, material: AudioMaterial, library: str, bounciness: float, resonance: float, size: int)`
 
 
 | Parameter | Description |
@@ -265,6 +273,7 @@ The audio values here are just recommendations; you can apply different values i
 | library | The path to the model library (see ModelLibrarian documentation). |
 | bounciness | The bounciness value for a Unity physics material. |
 | resonance | The resonance value for the object. |
+| size | Integer representing the size "bucket" this object belongs to (0-5). |
 
 ***
 

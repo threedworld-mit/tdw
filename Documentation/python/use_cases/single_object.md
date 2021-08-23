@@ -46,6 +46,8 @@ Standard datasets have 1300000 "train" images and 50000 "val" images. A full dat
 | `--train`          | int   | 1300000          | Total number of train images.                                |
 | `--val`            | int   | 50000            | Total number of val images.                                  |
 | `--library`        | str   | models_core.json | The path to the [model library records file](../librarian/model_librarian.md). |
+| `--launch_build`   |       |                  | Automatically launch the build; download the build if one isn't present or if the build is the wrong version. Don't add this if you're running the script on a Linux server. |
+| `--temp_urls`      |       |                  | If included and `--library models_full.json`, the build will use temporary (pre-signed) URLs to download models in the tdw-private bucket. Include this flag only if you're experiencing segfaults on Linux. |
 
 ### Option B: Use the `SingleObject` controller class
 

@@ -37,7 +37,13 @@ from tdw.FBOutput import Keyboard as Key
 from tdw.FBOutput import Magnebot as Mag
 from tdw.FBOutput import ScreenPosition as Screen
 from tdw.FBOutput import TriggerCollision as Trigger
+from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
+from tdw.FBOutput import QuitSignal as QuitSig
+from tdw.FBOutput import MagnebotWheels as MWheels
+from tdw.FBOutput import Occlusion as Occl
+from tdw.FBOutput import Lights as Lites
+from tdw.FBOutput import Categories as Cats
 import numpy as np
 from typing import Tuple, Optional
 
@@ -181,6 +187,9 @@ class Rigidbodies(OutputData):
 
     def get_sleeping(self, index: int) -> bool:
         return self.data.Objects(index).Sleeping()
+
+    def get_kinematic(self, index: int) -> bool:
+        return self.data.Objects(index).Kinematic()
 
 
 class Bounds(OutputData):
@@ -380,6 +389,9 @@ class SegmentationColors(OutputData):
 
     def get_object_name(self, index: int) -> str:
         return self.data.Objects(index).Name().decode('utf-8')
+
+    def get_object_category(self, index: int) -> str:
+        return self.data.Objects(index).Category().decode('utf-8')
 
 
 class AvatarSegmentationColor(OutputData):
@@ -798,6 +810,9 @@ class Overlap(OutputData):
     def get_env(self) -> bool:
         return self.data.Env()
 
+    def get_walls(self) -> bool:
+        return self.data.Walls()
+
 
 class NavMeshPath(OutputData):
     _STATES = {PathState.PathState.complete: "complete",
@@ -1009,3 +1024,105 @@ class TriggerCollision(OutputData):
             return "stay"
         else:
             return "exit"
+
+
+class LocalTransforms(OutputData):
+    def get_data(self) -> LocalTran.LocalTransforms:
+        return LocalTran.LocalTransforms.GetRootAsLocalTransforms(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.ObjectsLength()
+
+    def get_id(self, index: int) -> int:
+        return self.data.Objects(index).Id()
+
+    def get_position(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Objects(index).Position)
+
+    def get_forward(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Objects(index).Forward)
+
+    def get_eulers(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_vector3(self.data.Objects(index).Eulers)
+
+    def get_rotation(self, index: int) -> Tuple[float, float, float, float]:
+        return OutputData._get_quaternion(self.data.Objects(index).Rotation)
+
+
+class QuitSignal(OutputData):
+    def get_data(self) -> QuitSig.QuitSignal:
+        return QuitSig.QuitSignal.GetRootAsQuitSignal(self.bytes, 0)
+
+    def get_ok(self) -> bool:
+        return self.data.Ok()
+
+
+class MagnebotWheels(OutputData):
+    def get_data(self) -> MWheels.MagnebotWheels:
+        return MWheels.MagnebotWheels.GetRootAsMagnebotWheels(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_success(self) -> bool:
+        return self.data.Success()
+
+
+class Occlusion(OutputData):
+    def get_data(self) -> Occl.Occlusion:
+        return Occl.Occlusion.GetRootAsOcclusion(self.bytes, 0)
+
+    def get_avatar_id(self) -> str:
+        return self.data.AvatarId().decode('utf-8')
+
+    def get_sensor_name(self) -> str:
+        return self.data.SensorName().decode('utf-8')
+
+    def get_occluded(self) -> float:
+        return self.data.Occluded()
+
+
+class Lights(OutputData):
+    def get_data(self) -> Lites.Lights:
+        return Lites.Lights.GetRootAsLights(self.bytes, 0)
+
+    def get_num_directional_lights(self) -> int:
+        return self.data.DirectionalLightsLength()
+
+    def get_directional_light_intensity(self, index: int) -> float:
+        return self.data.DirectionalLights(index).Intensity()
+
+    def get_directional_light_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.DirectionalLights(index).Color())
+
+    def get_directional_light_rotation(self, index: int) -> Tuple[float, float, float, float]:
+        return OutputData._get_xyzw(self.data.DirectionalLights(index).Rotation())
+
+    def get_num_point_lights(self) -> int:
+        return self.data.PointLightsLength()
+
+    def get_point_light_intensity(self, index: int) -> float:
+        return self.data.PointLights(index).Intensity()
+
+    def get_point_light_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.PointLights(index).Color())
+
+    def get_point_light_position(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.PointLights(index).Position())
+
+    def get_point_light_range(self, index) -> float:
+        return self.data.PointLights(index).Range()
+
+
+class Categories(OutputData):
+    def get_data(self) -> Cats.Categories:
+        return Cats.Categories.GetRootAsCategories(self.bytes, 0)
+
+    def get_num_categories(self) -> int:
+        return self.data.CategoryDataLength()
+
+    def get_category_name(self, index: int) -> str:
+        return self.data.CategoryData(index).Name().decode('utf-8')
+
+    def get_category_color(self, index: int) -> Tuple[float, float, float]:
+        return OutputData._get_rgb(self.data.CategoryData(index).Color())

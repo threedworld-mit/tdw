@@ -21,7 +21,7 @@ class _Screenshotter(Controller):
         Path(self.output_dir).joinpath("records.json").write_text(
             json.dumps(self._get_visualizer_metadata()), encoding="utf-8")
 
-        super().__init__(port)
+        super().__init__(port, launch_build=False)
 
         self.load_streamed_scene(scene="empty_scene")
 
@@ -139,6 +139,12 @@ class ModelScreenshotter(_Screenshotter):
     """
     Create images of every model in the model library, or of a specified model.
     """
+
+    def __init__(self, temp_urls: bool, library: str, port=1071):
+        super().__init__(library=library, port=port)
+        if temp_urls:
+            self.communicate({"$type": "use_pre_signed_urls",
+                              "value": False})
 
     def _get_output_directory(self):
         return Path.home().joinpath("TDWImages/ModelImages")
@@ -281,11 +287,14 @@ if __name__ == "__main__":
     parser.add_argument("--type", default="models_core", choices=["models_full", "models_core", "materials"],
                         help="The type of screenshotter and the asset library.")
     parser.add_argument("--target", nargs="?", type=str, help="The name of a single record.")
+    parser.add_argument("--temp_urls", action="store_true",
+                        help="Use temporary pre-signed URLs. Only include this argument if `--type models_full` and"
+                             " you're experiencing segfaults on Linux when downloading models.")
     args = parser.parse_args()
 
     # Model Screenshotter.
     if args.type == "models_full" or args.type == "models_core":
-        ModelScreenshotter(args.type).run(args.target)
+        ModelScreenshotter((True if args.temp_urls is not None else False), args.type).run(args.target)
     # Material Screenshotter.
     else:
         MaterialScreenshotter().run(args.target)

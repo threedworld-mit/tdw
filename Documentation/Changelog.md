@@ -4,15 +4,478 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.24
+
+### Command API
+
+#### New Commands
+
+| Command           | Description                         |
+| ----------------- | ----------------------------------- |
+| `send_categories` | Send the category names and colors. |
+
+#### Modified Commands
+
+| Command               | Modification                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| `use_pre_signed_urls` | Default value for all Linux distros is True (was True only for Ubuntu 20 and otherwise False). |
+| `set_magnebot_wheels_during_move` | Output data will report that the motion was not a success if the Magnebot overshoots the distance. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data  | Description                |
+| ------------ | -------------------------- |
+| `Categories` | Category names and colors. |
+
+#### Modified Output Data
+
+| Output Data          | Modification                   |
+| -------------------- | ------------------------------ |
+| `SegmentationColors` | Added: `get_object_category()` |
+| `Rigidbodies`        | Added: `get_kinematic()`       |
+
+### Build
+
+- Fixed: `send_occlusion` gives a occlusion value of 0 when there is occlusion. This has been fixed but the command is somewhat slower now.
+- Fixed: race condition when requesting collision data for objects that have just been destroyed.
+- Fixed: crash to desktop if collision detection is enabled (`send_collisions`) for a robot with a fixed immovable joint that has colliders. Now, fixed immovable joints with colliders (ur5, ur10, etc.) have colliders but will never send `Collision` output data.
+
+### Robot Library
+
+- Added: `RobotRecord.targets`. A dictionary of "canonical" joint targets to set a pose such that none of the joints are intersecting with the floor, assuming that the robot's starting position is (0, 0, 0). Key = The name of the joint. Value = A dictionary: `"type"` is the type of joint (`"revolute"`, `"prismatic"`, `"sphereical"`) and `"target"` is the target angle or position.
+
+## v1.8.23
+
+**THIS IS A CRITICAL UPDATE.** You are **strongly** advised to upgrade to this version of TDW.
+
+### Command API
+
+#### New Commands
+
+| Command                                 | Description                                                  |
+| --------------------------------------- | ------------------------------------------------------------ |
+| `adjust_directional_light_intensity_by` | Adjust the intensity of the directional light (the sun) by a factor. |
+| `set_directional_light_color`           | Set the color of the directional light (the sun).            |
+| `adjust_point_lights_intensity_by`      | Adjust the intensity of all point lights in the scene by a factor. |
+| `send_occlusion` | Send occlusion data to the controller. |
+| `send_lights`                           | Send data for each directional light and point light in the scene. |
+
+#### Modified Commands
+
+| Command               | Modification                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| `set_socket_timeout`  | This command is no longer deprecated.<br />The `timeout` parameter is now measured in milliseconds and the default value is 1000.<br />Added `max_retries` parameter: The number of retries before the socket is terminated and reconnected. |
+| `set_network_logging` | This command no longer logs the name of each command as it is executed (it still logs the raw message sent by the controller). |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description                                                  |
+| ----------- | ------------------------------------------------------------ |
+| `Occlusion` | To what extent parts of the scene environment (such as walls) are occluding objects. |
+| `Lights`    | Data for all lights in the scene. |
+
+### Build
+
+- **Fixed: On Linux, the build will often try to read the same message twice.** This can result in anomalous behavior such as the build executing a `destroy_object` command when the object doesn't exist (because it was already destroyed on the previous frame). **It is still possible for the build to read the same message twice, however to the best of our knowledge it is extremely unlikely.** 
+- Fixed: When the build automatically terminates its network socket, reconnects, and requests that the controller resend the most recent message, the build also advances one physics frame.
+
+### `tdw` module
+
+- (Backend) Added `packaging` as a required module.
+
+#### `Build` (backend)
+
+- Added optional parameter `check_head` to `get_url()`. If True, check the HTTP headers to make sure that the release exists.
+
+#### `PyPi` (backend)
+
+- Added: `required_tdw_version_is_installed(required_version, build_version)` Check whether the correct version of TDW is installed. This is useful for other modules such as the Magnebot API that rely on certain versions of TDW. 
+
+### Example Controllers
+
+- Added: `occlusion.py`
+- Added: `lights_output_data.py`
+
+### Benchmark
+
+- Added occlusion to `benchmarker.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document              | Modification                             |
+| --------------------- | ---------------------------------------- |
+| `observation_data.md` | Added `Occlusion` section and benchmark. |
+
+## v1.8.22
+
+**THIS IS A CRITICAL UPDATE.** You are **strongly** advised to upgrade to this version of TDW.
+
+### Command API
+
+#### New Commands
+
+| Command                            | Description                                                  |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `rotate_directional_light_by`      | Rotate the directional light (the sun) by an angle and axis. |
+| `reset_directional_light_rotation` | Reset the rotation of the directional light (the sun).       |
+| `parent_object_to_avatar`          | Parent an object to an avatar.                               |
+| `unparent_object`                  | Unparent an object from its current parent.                  |
+| `set_network_logging`              | If True, the build will log every message received from the controller and will log every command that is executed. |
+
+#### Modified Commands
+
+| Command               | Modification                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| `use_pre_signed_urls` | Default value on Ubuntu 20 is True and default value for all other platforms is False (previously, default value was False for all platforms) |
+
+#### Deprecated Commands
+
+| Command              | Reason                                                       |
+| -------------------- | ------------------------------------------------------------ |
+| `set_socket_timeout` | The TCP socket no longer use a timeout; this command doesn't do anything. |
+
+### `tdw` module
+
+#### `Controller`
+
+- Reverted how `get_unique_id()` works to v1.8.20
+- Removed `Controller.reset_unique_id()`
+
+### Build
+
+- **FIXED CRITICAL NETWORK BUGS:**
+  - Fixed: Occasionally, the build will receive the same message twice.
+  - Fixed: Dictionary key errors when adding objects, avatars, etc. due to the aforementioned doubling of received messages.
+  - Fixed: The build will hang indefinitely due to the TCP socket repeatedly timing out.
+  - Fixed: Rare race conditions due to commands being executed out of order.
+- Fixed: (Unity Editor only) Logged error when sending `set_physic_material` because the material can't be destroyed to prevent memory loss.
+- Fixed: Warnings when destroying sub-objects of a composite object because they aren't in the main cache.
+
+### Example Controllers
+
+- Added: `directional_light.py`
+
+## v1.8.21
+
+### `tdw` module
+
+#### `Controller`
+
+- Fixed: As of a few updates ago, the controller often sends non-unique object IDs. We are still trying to determine what changed in the build's code, but in the meantime, `Controller.get_unique_id()` will always return a unique ID.
+  - Added `Controller.reset_unique_id()` to prevent overflow errors.
+
+### Build
+
+- Fixed: Rare bug where the build won't receive the full JSON string for very long lists of commands. In these cases, the build will request that the controller resend the message.
+- Fixed: Rare bug in which the controller enters an infinite loop trying to resend messages to the build. Now, it will quit with an error after a certain number of retries.
+
+## v1.8.20
+
+### Command API
+
+#### New Commands
+
+| Command                              | Description                                                  |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `set_magnebot_wheels_during_move`    | Set the friction coefficients of the Magnebot's wheels during a move_by() or move_to() action, given a target position. The friction coefficients will increase as the Magnebot approaches the target position and the command will announce if the Magnebot arrives at the target position. |
+| `set_magnebot_wheels_during_turn_by` | Set the friction coefficients of the Magnebot's wheels during a turn_by() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. |
+| `set_magnebot_wheels_during_turn_to` | Set the friction coefficients of the Magnebot's wheels during a turn_to() action, given a target angle. The friction coefficients will increase as the Magnebot approaches the target angle and the command will announce if the Magnebot aligns with the target angle. Because the Magnebot will move slightly while rotating, this command has an additional position parameter to re-check for alignment with the target. |
+| `set_robot_joint_friction`           | Set the friction coefficient of a robot joint.               |
+| `perlin_noise_terrain` | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data      | Description                                         |
+| ---------------- | --------------------------------------------------- |
+| `MagnebotWheels` | A message sent when a Magnebot arrives at a target. |
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Overlap`   | Added: `get_walls()`. Returns True if there is a non-floor environment object in the overlap (such as a wall). |
+
+### `tdw` Module
+
+- Added `SceneBounds` and `RoomBounds`. Convenient wrapper classes for scenes and room environments.
+
+### Build
+
+- Fixed: Unhandled ArgumentException when trying to add an object with an existing ID.
+- Fixed: Rare object ID clashes with internal avatar ID integers. Internal avatar IDs are now far less likely to be the same as an object ID.
+
+### Example Controllers
+
+- Added: `perlin_noise_terrain.py` Example of how to create a scene with procedurally generated terrain.
+
+### Use Cases
+
+- Fixed: `single_object.py` crashes when including the `--materials` flag.
+
+## v1.8.19
+
+### Command API
+
+#### Modified Commands
+
+| Command                                                      | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `send_overlap_box`<br>`send_overlap_capsule`<br>`send_overlap_sphere` | Removed the `"frequency"` parameter; these commands now send data exactly once (never per-frame).<br>It's now possible to receive multiple `Overlap` output data objects per frame instead of just one. |
+
+### Build
+
+- Fixed: Resonance Audio doesn't work on OS X.
+
+### Python
+
+- Fixed: RuntimeWarning in `QuaternionUtils.get_y_angle()` due to a NaN value.
+
+## v1.8.18
+
+### Build
+
+- Fixed: `rotate_object_by`, `rotate_object_to`, and `robot_object_to_euler_angles` incorrectly translate the object if `use_centroid == True`.
+
+### Model Library
+
+-  Marked salt_shaker as do_not_use
+- Updated objects.csv with new objects
+
+## v1.8.17
+
+### Command API
+
+#### New Commands
+
+| Command               | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| `use_pre_signed_urls` | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = False (download S3 objects directly, without using temporary URLs) |
+
+### Model library
+
+- Marked cylinder001 as do_not_use
+
+### Python
+
+- Added optional argument `--temp_urls` to `screenshotter.py` (If included, sends `use_pre_signed_urls`).
+- `screenshotter.py` no longer automatically launches the build.
+- Added optional argument `--temp_urls` to `single_object.py` (If included, sends `use_pre_signed_urls`).
+
+### Documentation
+
+#### Modified Documentation
+
+| Document       | Modification                                             |
+| -------------- | -------------------------------------------------------- |
+| `debug_tdw.md` | Added a section for how and when to use pre-signed URLs. |
+
+## v1.8.16
+
+### Command API
+
+#### Removed Commands
+
+| Command     | Reason                                                       |
+| ----------- | ------------------------------------------------------------ |
+| `start_udp` | It's very unreliable and works differently depending on the OS (see below for replacement) |
+
+### `tdw` module
+
+#### `Controller`
+
+- Removed `udp` parameter from the constructor
+- Removed UDP heartbeat. Replaced it with a simpler heartbeat that checks whether the build process is up (assuming that the build process is running locally; if not, the controller doesn't start the heartbeat)
+- Added `check_build_process` parameter to the constructor, which handles the check described above
+
+### Build
+
+- Fixed: `set_visual_material` doesn't work after sending `set_flex_soft_actor`.
+
+### Model library
+
+- Added models from models_full.json to models_core.json: alarm_clock, backpack, b04_backpack, b04_glass_06_vray, cgaxis_models_23_19_vray, holy_bible, b04_bowl_smooth, b04_default, calculator, 034_vray, cgaxis_models_volume_59_15_vray, b04_cassete, b04_dat, steam-punk_gear_29, steam-punk_gear_25, steam-punk_gear_27, hair_comb_2010, coffeecup004, coffee_cup, mug, b04_geosphere001, b05_48_body_shop_hair_brush, b04_comb, engineers_hammer_vray, b04_headphones_31_12, kitchen_sieve, cucharon_utensilios, lighter, b04_lighter, zippo, b03_padlock, cylinder001, b03_pen_01_001, 868580_pliers_max2016, b04_wire_pincers, remote_vr_2012, salt_shaker, scissors, b03_old_scissors, b04_screwdriver_v2_texture_, b04_screwdriver_render, b04_roller_new, b03_roller_skate, b03_spoon_001, b03_morphy_2013__vray, vray_043, b04_champions_trophy, trophy01, trophy02, omega_seamaster_set, mouse_02_vray, b05_champagne_cup_vray, ball_peen_hammer, b05_vray_cassette_render_scene, generic_toothbrush_001, toothbrush, apple_ipod_touch_yellow_vray
+- Marked models as do_not_use: b03_dice and b03_mando_samsung_max
+
+### Example Controllers
+
+- Added: `minimal_audio_dataset.py` Minimal example of how to generate an audio dataset.
+
+### Use Cases
+
+- `single_object.py` is set to `launch_build=False` (was `True`) and now has an optional `--launch_build` command line arg.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document    | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `README.md` | Removed link to tdw_sound20k                                 |
+| `getting_started.md` | Removed paragraph about UDP heartbeat and reverted network diagram. |
+| `video.md`  | Added a sentence directing the reader to minimal_audio_dataset.py |
+
+## v1.8.15
+
+### Command API
+
+#### New Commands
+
+| Command              | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `set_error_handling` | Set whether TDW will quit when it logs different types of messages. |
+| `start_udp`          | Start a UDP heartbeat. The heartbeat will continue until the build process is killed. This command is always sent by the controller as soon as it receives an initial message from the build. In nearly all cases, you shouldn't send this command again while TDW is running. If you do send this command again, it will override the previous UDP heartbeat. |
+| `unload_unused_assets` | Unload lingering assets (scenes, models, textures, etc.) from memory. Send this command if you're rapidly adding and removing objects or scenes in order to prevent apparent memory leaks. |
+
+#### Modified Commands
+
+| Command     | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `terminate` | Sends a `QuitSignal` indicating that the build quit gracefully. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data  | Description                              |
+| ------------ | ---------------------------------------- |
+| `QuitSignal` | A signal indicating that the build quit. |
+
+### `tdw` module
+
+#### `Controller`
+
+- The controller will always send `[set_error_handling, start_udp, send_version]` as an initial message to the build.
+- Per `communicate()` call, the controller will check for a `QuitSignal`. If there is one, it will quit. 
+- Added optional `udp` parameter to the constructor.
+- (Backend) Added `self._udp()` which is automatically called after the build launches. This is handled in a separate thread and it listens to the UDP heartbeat signal from the build.
+- (Backend) `Controller._check_build_version()` no longer needs to send `send_version` in a `communicate()` call.
+- (Backend) Added `self._print_build_log()` Prints the expected location of the build log.
+- (Backend) Added `self._is_standalone`, `self._tdw_version`, and `self._unity_version` fields.
+- (Backend) Added `self._done` Boolean flag used for the UDP heartbeat thread.
+
+### Build
+
+- Fixed: For most commands involving objects, if `"id"` is set to an ID not currently in the cache, the build will have an infinite loop of NullReferenceExceptions rather than logging an error only once.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document             | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `getting_started.md` | Updated network diagram to include the UDP heartbeat.<br>Added a section explaining the UDP heartbeat. |
+
+## v1.8.14
+
+
+### Command API
+
+#### New Commands
+
+| Command                 | Description                                                  |
+| ----------------------- | ------------------------------------------------------------ |
+| `send_local_transforms` | Send Transform (position and rotation) data of objects in the scene relative to their parent object. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data       | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `LocalTransforms` | Data about the Transform component of objects (position and rotation) relative to its parent objects. |
+
+### `tdw` module
+
+- Added: `TDWUtils.euler_angles_to_rpy(euler_angles)` Convert Euler angles to ROS RPY.
+- **Updated PyImpact audio materials.** Object audio data `ObjectInfo` now has a `size` parameter (0-5). This is automatically handled in `PyImpact.get_object_info()` (i.e. the default audio data loaded from objects.csv). Audio generated by PyImpact will sound different (and better!) than it did in previous versions of TDW.
+  - Added: `ObjectInfo.size`
+  - The default value of `initial_amp` in the PyImpact constructor is now 0.5 (was 0.25)
+  - Updated default static friction and dynamic friction values per audio material
+  - Replaced all existing audio materials with new audio materials, each with size variants. For a full list, see the PyImpact API document.
+  - Updated `PyImpact.DENSITIES` with new materials and density values.
+  - (Backend) Removed a lot of audio .json files that weren't being used.
+
+## v1.8.13
+
+### Build
+
+- Fixed: Unhandled PhysX errors after sending `set_physic_material` or `set_robot_joint_physic_material` many times because there are more than 64k physic materials in memory.
+- Fixed: Potential memory leak when sending `destroy_all_objects` due to object assets not being cleaned up correctly.
+- Fixed: Potential memory leak when loading a new scene because mesh data is still in memory.
+
+## v1.8.12
+
+### Command API
+
+### New Commands
+
+| Command                          | Description                               |
+| -------------------------------- | ----------------------------------------- |
+| `make_robot_nav_mesh_obstacle`   | Make a robot a NavMesh obstacle.          |
+| `remove_nav_mesh_obstacle`       | Remove a NavMesh obstacle from an object. |
+| `remove_robot_nav_mesh_obstacle` | Remove a NavMesh obstacle from a robot.   |
+
+#### Modified Commands
+
+| Command                  | Modification                                                 |
+| ------------------------ | ------------------------------------------------------------ |
+| `bake_nav_mesh`          | Added optional parameter `ignore`: Ignore objects or robots in this list.<br>Fixed: Unhandled exception if collider meshes are read-only; read-only meshes are now ignored. |
+| `make_nav_mesh_obstacle` | Added optional parameter `shape`: The shape of the carver.   |
+
+## v1.8.11
+
+### Command API
+
+#### Modified Commands
+
+| Command              | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `send_collisions`    | Fixed: collision data can be sent from an object after it's destroyed, resulting in warnings in the player log. |
+| `set_floorplan_roof` | Fixed: The roof can be re-enabled after being disabled.      |
+
+### Model Library
+
+- Added to `models_core.json`: camera_box, iron_box, coffeemug, b04_ramlosa_bottle_2015_vray, moet_chandon_bottle_vray, b04_whiskeybottle, 102_pepsi_can_12_fl_oz_vray, candlestick1, golf, b03_toothbrush, b05_calculator, b05_tag_heuer_max2014, b05_executive_pen
+
+### `tdw` module
+
+- Added: `TDWUtils.get_bounds_extents()` Returns the width, length, height of an object's bounds.
+- Updated many audio values in `objects.csv`.
+
+## v1.8.10
+
+### Command API
+
+#### New Commands
+
+| Command        | Description                                          |
+| -------------- | ---------------------------------------------------- |
+| `send_boxcast` | Cast a box along a direction and return the results. |
+
+#### Modified Commands
+
+| Command                             | Modification                                                 |
+| ----------------------------------- | ------------------------------------------------------------ |
+| `send_raycast`<br>`send_spherecast` | Fixed: Only the last raycast command in the list returns data.<br>Removed parameter `frequency`. These commands will always function as if `"frequency" == "once"`. |
+
 ## v1.8.9
 
 ### Command API
 
 #### New Commands
 
-| Command            | Description                                                  |
-| ------------------ | ------------------------------------------------------------ |
-| `set_render_order` | Set the order in which the avatar's camera will render relative to other cameras in the scene. |
+| Command                           | Description                                                  |
+| --------------------------------- | ------------------------------------------------------------ |
+| `set_render_order`                | Set the order in which the avatar's camera will render relative to other cameras in the scene. |
+| `set_robot_joint_physic_material` | Set the physic material of a robot joint.                    |
 
 #### Modified Commands
 
@@ -25,6 +488,11 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 #### `Controller`
 
 - Fixed: Constructor doesn't pass port number to the build if `launch_build == True`
+
+### Build
+
+- **Fixed: Can't launch TDW.app by double-clicking it.** If you download the build from the Releases page on the repo, you can run `setup.sh` (located in the same directory as `TDW.app`). If you download the build by launching a controller, i.e. `c = Controller()`, the controller will automatically fix TDW.app before launching it.
+- Fixed a potential memory leak in `set_physic_material` and `set_avatar_physic_material`.
 
 ### Docker
 

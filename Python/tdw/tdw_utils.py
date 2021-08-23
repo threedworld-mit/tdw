@@ -731,6 +731,19 @@ class TDWUtils:
                 "center": np.array(bounds.get_center(index))}
 
     @staticmethod
+    def get_bounds_extents(bounds: Bounds, index: int) -> np.array:
+        """
+        :param bounds: Bounds output data.
+        :param index: The index in `bounds` of the target object.
+
+        :return: The width (left to right), length (front to back), and height (top to bottom) of the bounds as a numpy array.
+        """
+
+        return np.array([np.linalg.norm(np.array(bounds.get_left(index)) - np.array(bounds.get_right(index))),
+                         np.linalg.norm(np.array(bounds.get_front(index)) - np.array(bounds.get_back(index))),
+                         np.linalg.norm(np.array(bounds.get_top(index)) - np.array(bounds.get_bottom(index)))])
+
+    @staticmethod
     def get_closest_position_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array:
         """
         :param origin: The origin from which the distance is calculated.
@@ -815,6 +828,19 @@ class TDWUtils:
         qy = offset_y + -sin_rad * adjusted_x + cos_rad * adjusted_y
 
         return np.array([qx, position[1], qy])
+
+    @staticmethod
+    def euler_angles_to_rpy(euler_angles: np.array) -> np.array:
+        """
+        Convert Euler angles to ROS RPY angles.
+
+        :param euler_angles: A numpy array: `[x, y, z]` Euler angles in degrees.
+
+        :return: A numpy array: `[r, p, y]` angles in radians.
+        """
+
+        # Source: https://github.com/Unity-Technologies/URDF-Importer/blob/c41208565419b04907496baa93ad1b675d41dc20/com.unity.robotics.urdf-importer/Runtime/Extensions/TransformExtensions.cs#L85-L92
+        return np.radians(np.array([-euler_angles[2], euler_angles[0], -euler_angles[1]]))
 
 
 class AudioUtils:
@@ -1107,5 +1133,4 @@ class QuaternionUtils:
         """
 
         qd = QuaternionUtils.multiply(QuaternionUtils.get_conjugate(q1), q2)
-
-        return np.rad2deg(2 * np.arcsin(qd[1]))
+        return np.rad2deg(2 * np.arcsin(np.clip(qd[1], -1, 1)))

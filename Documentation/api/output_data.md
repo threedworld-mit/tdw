@@ -60,6 +60,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [AvatarStickyMittenSegmentationColors](#AvatarStickyMittenSegmentationColors) | Color segmentation data for a Sticky Mitten Avatar. | `smsc` |
 | [Bounds](#Bounds) | Rotated bounds data. | `boun` |
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
+| [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [CompositeObjects](#CompositeObjects) | Data for all composite objects currently in the scene. | `comp` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
@@ -71,12 +72,14 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [ImageSensors](#ImageSensors) | The names of each ImageSensor component attached to an avatar, and whether they are enabled. | `imse` |
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
 | [Keyboard](#Keyboard) | Keyboard input. Note that in order to receive keyboard input, the build must be the focused window and running on the same computer as the keyboard. | `keyb` |
+| [Lights](#Lights) | Data for all lights in the scene. | `ligh` |
 | [LocalTransforms](#LocalTransforms) | Data about the Transform component of objects (position and rotation) relative to its parent objects. | `ltra` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
 | [Magnebot](#Magnebot) | Data for a Magnebot. | `magn` |
 | [MagnebotWheels](#MagnebotWheels) | A message sent when a Magnebot arrives at a target. | `mwhe` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
+| [Occlusion](#Occlusion) | To what extent parts of the scene environment (such as walls) are occluding objects. | `occl` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
@@ -277,6 +280,20 @@ An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11,
 | `get_projection_matrix()` | The projection matrix. | `np.array` |
 | `get_camera_matrix()` | The camera matrix. | `np.array` |
 
+## Categories
+
+`c = Categories(byte_array)`
+
+**Identifier:** `cate`
+
+Color segmentation data for object categories.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num_categories()` | The number of categories. | `int` |
+| `get_category_name(index)` | The name of the category. | `str` |
+| `get_category_color(index)` | The color of the category. | `Tuple[float, float, float]` |
+
 ## Collision
 
 `c = Collision(byte_array)`
@@ -453,6 +470,26 @@ Keyboard input. Note that in order to receive keyboard input, the build must be 
 | `get_num_released()` | The number of released. | `int` |
 | `get_released(index)` | Keys that were released between the previous frame and this frame. | `str` |
 
+## Lights
+
+`l = Lights(byte_array)`
+
+**Identifier:** `ligh`
+
+Data for all lights in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num_directional_lights()` | The number of directional lights. | `int` |
+| `get_directional_light_intensity(index)` | The intensity of the directional light. | `float` |
+| `get_directional_light_color(index)` | The color of the directional light. | `Tuple[float, float, float]` |
+| `get_directional_light_rotation(index)` | The rotation of the directional light. | `Tuple[float, float, float, float]` |
+| `get_num_point_lights()` | The number of point lights. | `int` |
+| `get_point_light_intensity(index)` | The intensity of the point light. | `float` |
+| `get_point_light_color(index)` | The color of the point light. | `Tuple[float, float, float]` |
+| `get_point_light_position(index)` | The position of the point light. | `Tuple[float, float, float]` |
+| `get_point_light_range(index)` | The range of the point light. | `float` |
+
 ## LocalTransforms
 
 `l = LocalTransforms(byte_array)`
@@ -510,6 +547,7 @@ A message sent when a Magnebot arrives at a target.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_id()` | The ID of the Magnebot. | `int` |
+| `get_success()` | If True, the Magnebot arrived at the target. | `bool` |
 
 ## Meshes
 
@@ -540,6 +578,20 @@ A path on the scene's NavMesh.
 | `get_path()` | Waypoints on the path as a numpy array of (x, y, z) coordinates. | `np.array` |
 | `get_id()` | The ID of this path. Use this to differentiate between different NavMeshPaths. | `int` |
 
+## Occlusion
+
+`o = Occlusion(byte_array)`
+
+**Identifier:** `occl`
+
+To what extent parts of the scene environment (such as walls) are occluding objects.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_avatar_id()` | The ID of the avatar that captured the image. | `str` |
+| `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
+| `get_occluded()` | How much of the objects in the frame are occluded by the environment, between 0 (no occlusion) and 1 (fully occluded). | `float` |
+
 ## Overlap
 
 `o = Overlap(byte_array)`
@@ -553,6 +605,7 @@ The IDs of every object that a shape overlaps.
 | `get_id()` | The identity of this overlap (useful if you've requested multiple Overlap objects). | `int` |
 | `get_object_ids()` | The IDs of every object in the overlap shape. | `np.array` |
 | `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
+| `get_walls()` | If true, the overlap shape includes at least one environment object that isn't the floor. | `bool` |
 
 ## QuitSignal
 
@@ -599,6 +652,7 @@ Rigibody data (velocity, mass, etc.) for objects in the scene.
 | `get_angular_velocity(index)` | The angular velocity. | `Tuple[float, float, float]` |
 | `get_mass(index)` | The mass. | `float` |
 | `get_sleeping(index)` | True if the rigidbody is sleeping. | `bool` |
+| `get_kinematic(index)` | True if the rigidbody is kinematic. | `bool` |
 
 ## Robot
 
@@ -650,6 +704,7 @@ Color segmentation data for objects in the scene.
 | `get_object_id(index)` | The ID of the object. | `int` |
 | `get_object_color(index)` | The color of the object. | `Tuple[float, float, float]` |
 | `get_object_name(index)` | The name of the object. | `str` |
+| `get_object_category(index)` | The category of the object. | `str` |
 
 ## StaticRobot
 

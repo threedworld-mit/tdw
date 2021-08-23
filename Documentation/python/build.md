@@ -8,7 +8,7 @@ Various helper functions for TDW builds.
 
 ***
 
-#### `get_url(version: str = __version__) -> Tuple[str, bool]`
+#### `get_url(version: str = __version__, check_head: bool = True) -> Tuple[str, bool]`
 
 _This is a static function._
 
@@ -16,6 +16,7 @@ _This is a static function._
 | Parameter | Description |
 | --- | --- |
 | version | The version of the build. Default = the installed version of TDW. |
+| check_head | If True, check the HTTP headers to make sure that the release exists. |
 
 _Returns:_  The URL of the build release matching the version and the OS of this machine, True if the URL exists.
 

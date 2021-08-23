@@ -4,6 +4,26 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.25
+
+### Command API
+
+### Command API
+
+#### Modified Commands
+
+| Command                | Modification                                                 |
+| ---------------------- | ------------------------------------------------------------ |
+| `set_flex_cloth_actor` | Added optional parameter `mesh_scale` to set the scale of the object's mesh. Default value: (1, 1, 1). This fixes a bug in which it was impossible to scale a Flex cloth object. |
+
+### Documentation
+
+#### Modified Documentation
+
+| Document  | Modification                                                 |
+| --------- | ------------------------------------------------------------ |
+| `flex.md` | Updated example lists of commands.<br>Added a section for scaling objects.<br>Added a note about collision detection. |
+
 ## v1.8.24
 
 ### Command API
@@ -477,12 +497,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `set_render_order`                | Set the order in which the avatar's camera will render relative to other cameras in the scene. |
 | `set_robot_joint_physic_material` | Set the physic material of a robot joint.                    |
 
-#### Modified Commands
-
-| Command                | Modification                                                 |
-| ---------------------- | ------------------------------------------------------------ |
-| `set_flex_cloth_actor` | Added optional parameter `mesh_scale` to set the scale of the object's mesh. Default value: (1, 1, 1). This fixes a bug in which it was impossible to scale a Flex cloth object. |
-
 ### `tdw` module
 
 #### `Controller`
@@ -497,14 +511,6 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Docker
 
 - Fixed: `pull.sh` fails with error: `unary operator expected`
-
-### Documentation
-
-#### Modified Documentation
-
-| Document  | Modification                                                 |
-| --------- | ------------------------------------------------------------ |
-| `flex.md` | Updated example lists of commands.<br>Added a section for scaling objects.<br>Added a note about collision detection. |
 
 ## v1.8.8
 

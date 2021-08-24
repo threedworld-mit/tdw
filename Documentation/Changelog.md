@@ -8,7 +8,13 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Command API
 
-### Command API
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `add_torque_to_revolute`  | Add a torque to a revolute joint.  |
+| `add_force_to_prismatic`  | Add a force to a prismatic joint.  |
+| `add_torque_to_spherical` | Add a torque to a spherical joint. |
 
 #### Modified Commands
 
@@ -16,12 +22,24 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | ---------------------- | ------------------------------------------------------------ |
 | `set_flex_cloth_actor` | Added optional parameter `mesh_scale` to set the scale of the object's mesh. Default value: (1, 1, 1). This fixes a bug in which it was impossible to scale a Flex cloth object. |
 
+### Example Controllers
+
+- Added: `robot_torque.py`
+
+### Docker
+
+- Updated Dockerfile to Ubuntu 18 and removed packages required for Flex and for audio+video recording.
+- Added two new Docker files:
+  - `Dockerfile_audio` includes pulseaudio and ffmpeg (audio+video recording).
+  - `Dockerfile_flex` is Ubuntu 16 and includes CUDA (Flex).
+
 ### Documentation
 
 #### Modified Documentation
 
-| Document  | Modification                                                 |
-| --------- | ------------------------------------------------------------ |
+| Document   | Modification                                                |
+| ---------- | ----------------------------------------------------------- |
+| `video.md` | Added steps for building an audio-enabled Docker container. |
 | `flex.md` | Updated example lists of commands.<br>Added a section for scaling objects.<br>Added a note about collision detection. |
 
 ## v1.8.24

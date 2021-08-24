@@ -4,6 +4,22 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.25
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `add_torque_to_revolute`  | Add a torque to a revolute joint.  |
+| `add_force_to_prismatic`  | Add a force to a prismatic joint.  |
+| `add_torque_to_spherical` | Add a torque to a spherical joint. |
+
+### Example Controllers
+
+- Added: `robot_torque.py`
+
 ## v1.8.24
 
 ### Command API

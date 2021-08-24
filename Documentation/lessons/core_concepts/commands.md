@@ -1,4 +1,6 @@
-# Core Concepts: Commands
+##### Core Concepts
+
+# Commands
 
 **Commands** are instructions that are sent by the controller to the build per frame.
 
@@ -53,12 +55,6 @@ Many commands have parameters with default values. In these cases, it isn't nece
 
 To learn which parameters have default values, read the [Command API documentation](../api/command_api.md).
 
-## Design principles of commands
-
-- Commands tend to be "atomic". By itself, a command will do exactly one thing, but it is possible to create arbitrarily complex behavior in TDW using long lists of commands. For example, TDW doesn't have a single command that will generate a fully-furnished scene but it *does* give you the ability to use multiple commands to do just that.
-- Commands are designed to give researchers as much control of the simulation as possible. For example, the build won't internally handle navigation using depth maps; this has to be managed in the controller.
-- Commands don't impose any metaphors. It isn't even strictly necessary to have any agents or environments, nor are there limits to how many agents there are, what sort of agents there are, etc.
-
 ## API
 
 TDW includes hundreds of commands. **[Read the Command API documentation here.](../api/command_api.md)**
@@ -69,7 +65,7 @@ TDW includes hundreds of commands. **[Read the Command API documentation here.](
 
 ***
 
-**Next: [Scenes](scenes.md)**
+**Next: [Design philosophy of TDW](design_philosophy.md)**
 
 See also: 
 

@@ -1,4 +1,6 @@
-# Core Concepts: Avatars and Cameras
+##### Core Concepts
+
+# Avatars and cameras
 
 As mentioned [earlier](1.2.2_commands.md), TDW doesn't impose metaphors regarding what an agent is or whether there needs to be one at all.
 

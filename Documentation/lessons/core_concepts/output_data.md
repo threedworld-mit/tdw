@@ -1,4 +1,6 @@
-# Core Concepts: Output Data
+##### Core Concepts
+
+# Output data
 
 So far we've covered how to send **commands** to the build. This document covers how to receive **output data** from the build.
 

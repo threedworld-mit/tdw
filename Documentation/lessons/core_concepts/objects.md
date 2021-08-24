@@ -1,4 +1,6 @@
-# Core concepts: Objects
+##### Core Concepts
+
+# Objects
 
 **Objects** in TDW are 3D models that can be placed in the scene by the controller. By default, they will also respond to TDW's rendering and physics engine (though this can be toggled off if needed). They are sometimes referred to as "models" in TDW.
 

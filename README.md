@@ -19,12 +19,13 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 ## 1.2 Core Concepts
 
-1. [The Controller](Documentation/lessons/core_concepts/controller.md)
+1. [The controller](Documentation/lessons/core_concepts/controller.md)
 2. [Commands](Documentation/lessons/core_concepts/commands.md)
-3. [Scenes](Documentation/lessons/core_concepts/scenes.md)
-4. [Avatars and camera](Documentation/lessons/core_concepts/avatars.md)
-5. [Objects](Documentation/lessons/core_concepts/objects.md)
-6. [Output data](Documentation/lessons/core_concepts/output_data.md)
+3. [Design philosophy of TDW](Documentation/lessons/core_concepts/design_philosophy.md)
+4. [Scenes](Documentation/lessons/core_concepts/scenes.md)
+5. [Avatars and cameras](Documentation/lessons/core_concepts/avatars.md)
+6. [Objects](Documentation/lessons/core_concepts/objects.md)
+7. [Output data](Documentation/lessons/core_concepts/output_data.md)
 8. [Images](Documentation/lessons/core_concepts/images.md)
 
 ## 1.3 Troubleshooting and good coding practices :warning: TODO :warning:

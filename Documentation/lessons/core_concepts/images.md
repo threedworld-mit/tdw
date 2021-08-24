@@ -1,4 +1,6 @@
-# Core concepts: Images
+##### Core Concepts
+
+# Images
 
 TDW makes a distinction between images rendered to the build's application window (render frames) and encoded image output data. By default, avatar cameras generate render frames but don't actually return output data; this is because serializing image output data is one of the slowest processes in TDW. Only request image data when you really need it!
 

@@ -8,8 +8,18 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Docker
 
-- Updated Dockerfile to Ubuntu 18 and removed CUDA and pulseaudio
-  - Renamed the Dockerfile that *does* have to CUDA and pulseaudio to `Dockerfile_audio_flex`.
+- Updated Dockerfile to Ubuntu 18 and removed packages required for Flex and for audio+video recording.
+- Added two new Docker files:
+  - `Dockerfile_audio` includes pulseaudio and ffmpeg (audio+video recording).
+  - `Dockerfile_flex` is Ubuntu 16 and includes CUDA (Flex).
+
+### Documentation
+
+#### Modified Documentation
+
+| Document   | Modification                                                |
+| ---------- | ----------------------------------------------------------- |
+| `video.md` | Added steps for building an audio-enabled Docker container. |
 
 ## v1.8.24
 

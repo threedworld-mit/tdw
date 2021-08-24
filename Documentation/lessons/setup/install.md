@@ -1,4 +1,6 @@
-# Setup: Installing TDW
+##### Setup
+
+# Installing TDW
 
 ## Core Concepts
 

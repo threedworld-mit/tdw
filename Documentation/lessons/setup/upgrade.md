@@ -1,4 +1,6 @@
-# Setup: Upgrading TDW
+##### Setup
+
+# Upgrading TDW
 
 ## Upgrade TDW on a personal computer
 

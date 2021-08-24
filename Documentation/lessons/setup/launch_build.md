@@ -1,4 +1,6 @@
-# Setup: Auto-launching the TDW build
+##### Setup
+
+# Auto-launching the TDW build
 
 By default, a TDW controller will automatically launch a build when it runs. It will also automatically update the TDW build if it detects an out of date version:
 

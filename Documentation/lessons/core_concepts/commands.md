@@ -1,4 +1,4 @@
-# Core concepts: Commands
+# Core Concepts: Commands
 
 **Commands** are instructions that are sent by the controller to the build per frame.
 

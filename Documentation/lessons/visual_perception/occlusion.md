@@ -1,4 +1,6 @@
-# Visual Perception: `Occlusion` Output Data
+##### Visual Perception
+
+# `Occlusion` output data
 
 [`Occlusion`](../../api/output_data.md#Occlusion.md) output data isn't a capture pass, though in the backend code it does use image data.
 

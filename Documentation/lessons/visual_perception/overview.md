@@ -1,4 +1,6 @@
-# Visual Perception: Overview
+##### Visual Perception
+
+# Overview
 
 The [Core Concepts guide](../core_concepts/images.md) explained how to initialize image capture for the the `_img` pass. There are many other image passes available in TDW. It is possible to receive multiple capture passes on the same frame by setting the `pass_masks` parameter of the `set_pass_mask` command. In this example, the controller will receive and `_img` pass and an `_id` pass:
 
@@ -78,7 +80,7 @@ Some visual perception data is image data such as the segmentation color passes 
 
 ***
 
-**Next: [Segmentation colors (object ID)](id.md)**
+**Next: [Segmentation colors (`_id` pass)](id.md)**
 
 Example controllers:
 

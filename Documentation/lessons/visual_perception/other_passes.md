@@ -1,4 +1,6 @@
-# Visual Perception: Other Image Passes
+##### Visual Perception
+
+# Other image passes (`_mask`, `_normals`, and `_albedo` passes)
 
 ## The `_mask` pass
 
@@ -20,6 +22,7 @@ The `_albedo` pass has only color and texture, as if lit with only ambient light
 
 ***
 
-**Next: [Occlusion output data](occlusion.md)**
+**Next: [`Occlusion` output data](occlusion.md)**
 
 [Return to the README](../../README.md)
+

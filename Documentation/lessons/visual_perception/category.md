@@ -1,4 +1,6 @@
-# Visual Perception: Segmentation Colors (Object Category)
+##### Visual Perception
+
+# Segmentation Colors (`_category` pass)
 
 The `_category` pass is similar to the `_id` pass but it assigns colors based on the semantic category of the objects in the scene. Note that the two items on the table are in the same category and therefore receive the same color:
 
@@ -27,7 +29,7 @@ jug01 jug
 jug05 jug
 ```
 
-## Get object category data at runtime
+## `Categories` output data
 
 To get each object's category at runtime, send [`send_segmentation_colors`](../../api/command_api#send_segmentation_colors):
 
@@ -140,7 +142,7 @@ Note that `SegmentationColors` and `Categories` return only static data and do n
 
 ***
 
-**Next: [Depth maps](depth.md)**
+**Next: [Depth maps (`_depth` and `_depth_simple` passes)](depth.md)**
 
 Example controllers:
 

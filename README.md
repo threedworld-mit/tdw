@@ -38,7 +38,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 # 2. Tutorials :warning: TODO :warning:
 
-## 2.1 Objects and scenes
+## 2.1 Objects and Scenes
 
 1. Overview
 2. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
@@ -47,8 +47,9 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 5. Reset a scene
 6. Procedural generation
 
-## 2.2 Use non-default 3D models
+## 2.2 Non-Default 3D Models
 
+- [ ] Overview
 - [ ] Free models
 - [ ] Non-free models
 - [ ] Add your own models to TDW
@@ -58,12 +59,12 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 ## 2.3 Visual perception
 
 1. [Overview](Documentation/lessons/visual_perception/overview.md)
-2. [Segmentation colors (object ID)](Documentation/lessons/visual_perception/id.md)
-3. [Segmentation colors (object category)](Documentation/lessons/visual_perception/category.md)
-4. [Depth maps](Documentation/lessons/visual_perception/depth.md)
-5. [Motion perception](Documentation/lessons/visual_perception/flow.md)
-6. [Other image passes](Documentation/lessons/visual_perception/other_passes.md)
-7. [Occlusion output data](Documentation/lessons/visual_perception/occlusion.md)
+2. [Segmentation colors (`_id` pass)](Documentation/lessons/visual_perception/id.md)
+3. [Segmentation colors (`_category` pass)](Documentation/lessons/visual_perception/category.md)
+4. [Depth maps (`_depth` and `_depth_simple` passes)](Documentation/lessons/visual_perception/depth.md)
+5. [Motion perception (`_flow` pass)](Documentation/lessons/visual_perception/flow.md)
+6. [Other image passes (`_mask`, `_normals`, and `_albedo` passes)](Documentation/lessons/visual_perception/other_passes.md)
+7. [`Occlusion` output data](Documentation/lessons/visual_perception/occlusion.md)
 
 ## 2.4 Photorealistic images
 

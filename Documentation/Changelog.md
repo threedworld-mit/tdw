@@ -20,6 +20,21 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Added: `robot_torque.py`
 
+### Docker
+
+- Updated Dockerfile to Ubuntu 18 and removed packages required for Flex and for audio+video recording.
+- Added two new Docker files:
+  - `Dockerfile_audio` includes pulseaudio and ffmpeg (audio+video recording).
+  - `Dockerfile_flex` is Ubuntu 16 and includes CUDA (Flex).
+
+### Documentation
+
+#### Modified Documentation
+
+| Document   | Modification                                                |
+| ---------- | ----------------------------------------------------------- |
+| `video.md` | Added steps for building an audio-enabled Docker container. |
+
 ## v1.8.24
 
 ### Command API

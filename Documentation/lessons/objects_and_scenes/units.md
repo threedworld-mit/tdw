@@ -1,4 +1,6 @@
-# Objects and scenes: Units and data formats
+##### Objects and Scenes
+
+# Units and data formats
 
 ## Units
 
@@ -43,7 +45,7 @@
 
 ***
 
-**Next: [Positions and rotations](positions_and_rotations.md)**
+**Next: [`Bounds` output data](bounds.md)**
 
 Python API:
 

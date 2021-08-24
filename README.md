@@ -42,10 +42,12 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 1. Overview
 2. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
-3. Object rotation
-4. Put one object on top of another
-5. Reset a scene
-6. Procedural generation
+3. `Bounds` output data
+4. Rotating objects
+5. Kinematic objects
+6. Put one object on top of another
+7. Reset a scene
+8. Procedural generation
 
 ## 2.2 Non-Default 3D Models
 
@@ -65,6 +67,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 5. [Motion perception (`_flow` pass)](Documentation/lessons/visual_perception/flow.md)
 6. [Other image passes (`_mask`, `_normals`, and `_albedo` passes)](Documentation/lessons/visual_perception/other_passes.md)
 7. [`Occlusion` output data](Documentation/lessons/visual_perception/occlusion.md)
+8. Camera rotation
 
 ## 2.4 Photorealistic images
 

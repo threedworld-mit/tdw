@@ -90,11 +90,11 @@ Result:
 
 ***
 
-**Next: [Camera rotation](camera_rotation.md)**
+**Next: [Camera position and rotation](camera_position_and_rotation.md)**
 
 Example controllers:
 
-- [occlusion.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/capture_passes/occlusion.py) Example implementation of `Occlusion` output data.
+- [occlusion.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/occlusion.py) Example implementation of `Occlusion` output data.
 
 Command API:
 

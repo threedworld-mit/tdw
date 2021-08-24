@@ -146,7 +146,7 @@ Note that `SegmentationColors` and `Categories` return only static data and do n
 
 Example controllers:
 
-- [category.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/capture_passes/category.py) Example implementation of the `_category` pass and `Categories` output data.
+- [category.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/category.py) Example implementation of the `_category` pass and `Categories` output data.
 
 Command API:
 

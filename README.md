@@ -42,12 +42,11 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 1. Overview
 2. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
-3. `Bounds` output data
-4. Rotating objects
-5. Kinematic objects
-6. Put one object on top of another
-7. Reset a scene
-8. Procedural generation
+3. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
+4. Visual materials, textures, and colors
+5. Proc-gen room API
+6. Reset a scene
+7. Procedural object placement
 
 ## 2.2 Non-Default 3D Models
 
@@ -67,16 +66,15 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 5. [Motion perception (`_flow` pass)](Documentation/lessons/visual_perception/flow.md)
 6. [Other image passes (`_mask`, `_normals`, and `_albedo` passes)](Documentation/lessons/visual_perception/other_passes.md)
 7. [`Occlusion` output data](Documentation/lessons/visual_perception/occlusion.md)
-8. Camera rotation
+8. [Camera position and rotation](Documentation/lessons/visual_perception/camera_position_and_rotation.md)
+9. Misc. camera adjustments
 
 ## 2.4 Photorealistic images
 
-- [ ] Visual materials, textures, and colors
 - [ ] Lighting
 - [ ] Post-processing
 - [ ] Depth of field
 - [ ] Anti-aliasing
-- [ ] Image-only videos
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
@@ -95,9 +93,15 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 - [ ] Resonance Audio
 - [ ] PyImpact
 - [ ] Recording audio
-- [ ] Recording audio+video
 - [ ] Audio perception
 - [ ] multimodal_challenge (use case)
+
+## 2.7 Video recording
+
+1. Controlling the framerate
+2. Image-only videos
+3. Image+audio videos
+4. Cinematic cameras
 
 ## 2.7 Robots and embodied agents
 

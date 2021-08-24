@@ -160,7 +160,7 @@ c.communicate({"$type": "terminate"})
 
 Example controllers:
 
-- [depth.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/capture_passes/depth.py) Save a depth pass, get the depth values, and save a point cloud.
+- [depth.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/depth.py) Save a depth pass, get the depth values, and save a point cloud.
 
 Python API:
 

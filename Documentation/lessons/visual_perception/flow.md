@@ -68,7 +68,7 @@ Result:
 
 Example controllers:
 
-- [flow.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/capture_passes/flow.py) Enable `_flow` pass image capture and apply a force.
+- [flow.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/flow.py) Enable `_flow` pass image capture and apply a force.
 
 Command API:
 

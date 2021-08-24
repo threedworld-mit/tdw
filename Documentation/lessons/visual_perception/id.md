@@ -217,8 +217,8 @@ c.communicate({"$type": "terminate"})
 
 Example controllers:
 
-- [id.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/capture_passes/id.py) Example implementation of the `_id` pass.
-- [id_pass_segmentation_colors.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/capture_passes/id_pass_segmentation_colors.py) Example implementation of `IdPassSegmentationColors` pass.
+- [id.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/id.py) Example implementation of the `_id` pass.
+- [id_pass_segmentation_colors.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/id_pass_segmentation_colors.py) Example implementation of `IdPassSegmentationColors` pass.
 
 Command API:
 

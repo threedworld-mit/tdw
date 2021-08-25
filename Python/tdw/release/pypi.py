@@ -115,8 +115,7 @@ class PyPi:
         return releases[-1]
 
     @staticmethod
-    def required_tdw_version_is_installed(required_version: str, build_version: str,
-                                          comparison: str = "equals") -> bool:
+    def required_tdw_version_is_installed(required_version: str, build_version: str, comparison: str = "equals") -> bool:
         """
         Check whether the correct version of TDW is installed.
         This is useful for other modules such as the Magnebot API that rely on certain versions of TDW.

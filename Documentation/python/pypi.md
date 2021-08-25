@@ -87,7 +87,7 @@ _Returns:_  The most up-to-date version in this major release. (Example: if v ==
 
 ***
 
-#### `required_tdw_version_is_installed(required_version: str, build_version`
+#### `required_tdw_version_is_installed(required_version: str, build_version: str, comparison: str = "equals") -> bool`
 
 _This is a static function._
 

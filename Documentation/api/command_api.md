@@ -499,6 +499,9 @@
 
 | Command | Description |
 | --- | --- |
+| [`add_force_to_prismatic`](#add_force_to_prismatic) | Add a force to a prismatic joint. |
+| [`add_torque_to_revolute`](#add_torque_to_revolute) | Add a torque to a revolute joint. |
+| [`add_torque_to_spherical`](#add_torque_to_spherical) | Add a torque to a spherical joint. |
 | [`set_prismatic_target`](#set_prismatic_target) | Set the target position of a prismatic robot joint. Per frame, the joint will move towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target position. |
 | [`set_revolute_target`](#set_revolute_target) | Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle. |
 | [`set_spherical_target`](#set_spherical_target) | Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles. |
@@ -6103,6 +6106,69 @@ Set the physic material of a robot joint and apply friction and bounciness value
 # RobotJointTargetCommand
 
 These commands set target angles for each of the joint's drives. To get the type of joint and its drives, see the send_static_robots command and the StaticRobot output data.
+
+***
+
+## **`add_force_to_prismatic`**
+
+Add a force to a prismatic joint.
+
+
+```python
+{"$type": "add_force_to_prismatic", "force": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "add_force_to_prismatic", "force": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | float | The force in Newtons. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`add_torque_to_revolute`**
+
+Add a torque to a revolute joint.
+
+
+```python
+{"$type": "add_torque_to_revolute", "torque": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "add_torque_to_revolute", "torque": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"torque"` | float | The torque in Newtons. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`add_torque_to_spherical`**
+
+Add a torque to a spherical joint.
+
+
+```python
+{"$type": "add_torque_to_spherical", "torque": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1}
+```
+
+```python
+{"$type": "add_torque_to_spherical", "torque": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"torque"` | Vector3 | The (x, y, z) torques in Newtons. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
 
 ***
 

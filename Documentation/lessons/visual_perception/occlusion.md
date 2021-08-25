@@ -90,7 +90,7 @@ Result:
 
 ***
 
-**Next: [Camera position and rotation](camera_position_and_rotation.md)**
+**This is the last document in the "Visual Perception" tutorial.**
 
 Example controllers:
 

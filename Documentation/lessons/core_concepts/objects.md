@@ -137,7 +137,7 @@ The TDW repo includes [a controller that will create images of every object in t
 
 1. `cd path/to/tdw/Python` (replace `path/to` with the actual path)
 2. `python3 screenshotter.py`
-3. [Launch the build manually](../1.1_setup/1.1.2_launch_build.md)
+3. [Launch the build manually](../setup/launch_build.md)
 
 ## Object commands
 

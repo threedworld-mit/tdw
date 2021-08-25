@@ -136,7 +136,7 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-**Next: [Reset a scene](reset_scene.md)**
+**Next: [Visual materials, textures, and colors](materials_textures_colors.md)**
 
 Example controllers:
 

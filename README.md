@@ -43,7 +43,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 1. Overview
 2. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
 3. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
-4. Visual materials, textures, and colors
+4. [Visual materials, textures, and colors]((Documentation/lessons/objects_and_scenes/materials_textures_colors.md))
 5. Proc-gen room API
 6. Reset a scene
 7. Procedural object placement
@@ -57,7 +57,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 - [ ] Add ShapeNet models to TDW
 - [ ] FloorplanController (high-level API)
 
-## 2.3 Visual perception
+## 2.3 Visual Perception
 
 1. [Overview](Documentation/lessons/visual_perception/overview.md)
 2. [Segmentation colors (`_id` pass)](Documentation/lessons/visual_perception/id.md)
@@ -66,11 +66,19 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 5. [Motion perception (`_flow` pass)](Documentation/lessons/visual_perception/flow.md)
 6. [Other image passes (`_mask`, `_normals`, and `_albedo` passes)](Documentation/lessons/visual_perception/other_passes.md)
 7. [`Occlusion` output data](Documentation/lessons/visual_perception/occlusion.md)
-8. [Camera position and rotation](Documentation/lessons/visual_perception/camera_position_and_rotation.md)
-9. Misc. camera adjustments
 
-## 2.4 Photorealistic images
+## 2.4 Camera Controls
 
+1. Overview
+2. [Move a camera](Documentation/lessons/camera/position.md)
+3. [Rotate a camera](Documentation/lessons/camera/rotation.md)
+4. Field of view
+5. Enabling and disabling a camera
+6. The Cinematic Camera
+
+## 2.5 Photorealistic Images
+
+- [ ] Overview
 - [ ] Lighting
 - [ ] Post-processing
 - [ ] Depth of field
@@ -78,7 +86,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
-## 2.5 Physics
+## 2.6 Physics
 
 - [ ] Overview
 - [ ] Collisions
@@ -87,7 +95,7 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 - [ ] NVIDIA Flex
 - [ ] tdw_physics (high-level API)
 
-## 2.6 Audio
+## 2.7 Audio
 
 - [ ] Overview
 - [ ] Resonance Audio
@@ -96,14 +104,13 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 - [ ] Audio perception
 - [ ] multimodal_challenge (use case)
 
-## 2.7 Video recording
+## 2.8 Video Recording
 
 1. Controlling the framerate
 2. Image-only videos
 3. Image+audio videos
-4. Cinematic cameras
 
-## 2.7 Robots and embodied agents
+## 2.9 Robots and Embodied Agents
 
 - [ ] Robots
 - [ ] Composite objects
@@ -113,7 +120,7 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 - [ ] NavMesh
 - [ ] magnebot (high-level API)
 
-## 2.8 Misc. topics
+## 2.10 Misc. topics
 
 - [ ] C# source code
 - [ ] Freezing your code

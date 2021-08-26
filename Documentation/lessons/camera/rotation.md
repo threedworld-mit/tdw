@@ -22,17 +22,11 @@ Option 1: Send the [`rotate_sensor_container_by` command:](../../api/command_api
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.image_capture import ImageCapture
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 c.start()
 
 object_id = c.get_unique_id()
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("rotate_sensor_container_by")
-print(f"Images will be saved to: {path}")
-cap = ImageCapture(avatar_ids=["a"], pass_masks=["_img"], path=path)
-c.add_ons.append(cap)
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
                              library="models_core.json",
@@ -56,8 +50,6 @@ Option 2: With a [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.add_ons.image_capture import ImageCapture
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 c.start()
@@ -65,10 +57,7 @@ c.start()
 object_id = c.get_unique_id()
 cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
                         look_at=object_id)
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("rotate_sensor_container_by")
-print(f"Images will be saved to: {path}")
-cap = ImageCapture(avatar_ids=[cam.avatar_id], pass_masks=["_img"], path=path)
-c.add_ons.extend([cam, cap])
+c.add_ons.append(cam)
 c.communicate([TDWUtils.create_empty_room(12, 12),
                c.get_add_object(model_name="iron_box",
                                 library="models_core.json",
@@ -145,15 +134,9 @@ Reset the camera rotation to its neutral position with the [`reset_sensor_contai
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.image_capture import ImageCapture
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 c.start()
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("reset_sensor_container_rotation")
-print(f"Images will be saved to: {path}")
-cap = ImageCapture(avatar_ids=["a"], pass_masks=["_img"], path=path)
-c.add_ons.append(cap)
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend(TDWUtils.create_avatar(position={"x": 2, "y": 1.6, "z": -0.6},
                                        avatar_id="a"))
@@ -174,17 +157,11 @@ Send [`look_at`](../../api/command_api.md#look_at) to rotate the camera such tha
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.image_capture import ImageCapture
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 c.start()
 
 object_id = c.get_unique_id()
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("look_at")
-print(f"Images will be saved to: {path}")
-cap = ImageCapture(avatar_ids=["a"], pass_masks=["_img"], path=path)
-c.add_ons.append(cap)
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
                              library="models_core.json",
@@ -205,17 +182,11 @@ Send [`look_at_position`](../../api/command_api.md#look_at_position) to rotate t
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.image_capture import ImageCapture
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 c.start()
 
 object_id = c.get_unique_id()
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("look_at_position")
-print(f"Images will be saved to: {path}")
-cap = ImageCapture(avatar_ids=["a"], pass_masks=["_img"], path=path)
-c.add_ons.append(cap)
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "create_avatar",
                 "type": "A_Img_Caps_Kinematic",
@@ -231,19 +202,14 @@ The `ThirdPersonCamera` wraps both of these commands (`look_at` and `look_at_pos
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.image_capture import ImageCapture
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 c.start()
 
 object_id = c.get_unique_id()
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("third_person_camera_look_at")
-print(f"Images will be saved to: {path}")
 cam = ThirdPersonCamera(avatar_id="a", position={"x": 2, "y": 1.6, "z": -0.6})
-cap = ImageCapture(avatar_ids=["a"], pass_masks=["_img"], path=path)
-c.add_ons.extend([cam, cap])
+c.add_ons.append(cam)
 c.communicate([TDWUtils.create_empty_room(12, 12),
                c.get_add_object(model_name="iron_box",
                                 library="models_core.json",
@@ -260,7 +226,7 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-**Next: [Field of view](field_of_view.md)**
+**Next: [Follow an object](follow.md)**
 
 Command API:
 

@@ -69,12 +69,10 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 ## 2.4 Camera Controls
 
-1. Overview
+1. [Overview](Documentation/lessons/camera/overview.md)
 2. [Move a camera](Documentation/lessons/camera/position.md)
 3. [Rotate a camera](Documentation/lessons/camera/rotation.md)
-4. Field of view
-5. Enabling and disabling a camera
-6. The Cinematic Camera
+4. [Follow an object](Documentation/lessons/camera/follow.md)
 
 ## 2.5 Photorealistic Images
 

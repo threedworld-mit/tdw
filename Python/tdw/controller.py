@@ -364,32 +364,6 @@ class Controller(object):
                 "name": name,
                 "url": record.get_url()}
 
-    def load_streamed_scene(self, scene="tdw_room") -> None:
-        """
-        Load a streamed scene. This is equivalent to: `c.communicate(c.get_add_scene(scene))`
-
-        :param scene: The name of the streamed scene.
-        """
-
-        self.communicate(self.get_add_scene(scene))
-
-    def add_object(self, model_name: str, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str= "") -> int:
-        """
-        Add a model to the scene. This is equivalent to: `c.communicate(c.get_add_object())`
-
-        :param model_name: The name of the model.
-        :param position: The position of the model.
-        :param rotation: The starting rotation of the model, in Euler angles.
-        :param library: The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`.
-
-        :return The ID of the new object.
-        """
-
-        object_id = Controller.get_unique_id()
-        self.communicate(self.get_add_object(model_name, object_id, position, rotation, library))
-
-        return object_id
-
     def get_version(self) -> Tuple[str, str]:
         """
         Send a send_version command to the build.

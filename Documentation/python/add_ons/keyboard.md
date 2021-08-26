@@ -2,7 +2,7 @@
 
 `from tdw.add_ons.keyboard import Keyboard`
 
-Use this module to add keyboard controls to a TDW scene.
+Add keyboard controls to a TDW scene.
 
 For example implementation, see: `tdw/Python/example_controllers/keyboard_controls.py`
 

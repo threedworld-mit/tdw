@@ -2,7 +2,7 @@
 
 `from tdw.add_ons.debug import Debug`
 
-Use this module to record and playback every command sent to the build.
+Record and playback every command sent to the build.
 
 ```python
 from tdw.controller import Controller

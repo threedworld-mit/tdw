@@ -1,5 +1,73 @@
 # CHANGELOG
 
+# v1.9.x
+
+To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides/v1.8_to_v1.9).
+
+## v1.9.0
+
+### New Features
+
+- **Added add-ons.** These objects can be appended to `Controller.add_ons` to inject commands per `communicate()` call. They've been designed to simplify common tasks in TDW such as capturing images per frame or logging commands per frame.
+
+### Command API
+
+#### New Commands
+
+| Command                                    | Description                                                  |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `move_avatar_towards_object`               | Move the avatar towards an object.                           |
+| `move_avatar_towards_position`             | Move the avatar towards the target position.                 |
+| `focus_towards_object`                     | Focus towards the depth-of-field towards the position of an object. |
+| `rotate_sensor_container_towards_object`   | Rotate the sensor container towards the current position of a target object. |
+| `rotate_sensor_container_towards_position` | Rotate the sensor container towards a position at a given angular speed per frame. |
+| `rotate_sensor_container_towards_rotation` | Rotate the sensor container towards a target rotation.       |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data            | Description                                       |
+| ---------------------- | ------------------------------------------------- |
+| `CameraMotionComplete` | Announce that a camera motion has been completed. |
+
+### `tdw` module
+
+- **Added the following add-ons:**
+  - `Benchmark` Benchmark the FPS over a given number of frames.
+  - `CinematicCamera` Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. **towards** a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but **not** for most actual experiments.
+  - `CollisionManager` Manager add-on for all collisions on this frame.
+  - `Debug` Record and playback every command sent to the build.
+  - `ImageCapture` Request image data and save the images to disk.
+  - `Keyboard` Add keyboard controls to a TDW scene.
+  - `ObjectManager` A simple manager class for objects in the scene. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.
+  - `OccupancyMap` Generate an occupancy map of the scene at runtime.
+  - `ThirdPersonCamera` Add a third-person camera to the scene.
+- Added backend object data classes:
+  - `Transform` Transform data (position, forward, rotation).
+  - `Rigidbody` Dynamic rigidbody data (velocity, angular velocity, sleeping).
+  - `Bound` Dynamic bounds data for a single object (as opposed to `Bounds` output data).
+  - `ObjectStatic` Static object data (name, mass, etc.).
+
+- Removed `DebugController` (replaced with `Debug` add-on)
+- Removed `KeyboardController` (replaced with `Keyboard` add-on)
+- Moved `CollisionObjObj` and `CollisionObjEnv` from `tdw.collision` to `tdw.collision_data`
+  - Removed `collisons.py`
+
+### `Controller`
+
+- Added: `Controller.add_ons` A list of add-ons that will inject commands every time `communicate()` is called.
+
+#### `paths` (backend)
+
+- Added: `EXAMPLE_CONTROLLER_OUTPUT_PATH`
+
+
+
+### Benchmark
+
+- Use the new `Benchmark` add-on for all benchmark controllers.
+
 # v1.8.x
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).

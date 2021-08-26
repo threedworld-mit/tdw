@@ -57,6 +57,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 ### `Controller`
 
 - Added: `Controller.add_ons` A list of add-ons that will inject commands every time `communicate()` is called.
+- Removed: `Controller.add_object(model_name)` Use `Controller.get_add_object(model_name)` instead.
+- Removed: `Controller.load_streamed_scene(scene)` Use `Controller.get_add_scene(scene_name)` instead.
 
 #### `paths` (backend)
 

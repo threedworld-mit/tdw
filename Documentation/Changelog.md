@@ -20,7 +20,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 #### `PyPi`
 
-- (Backend) Added optional parameter `comparison` to `PyPi.required_tdw_version_is_installed()`. Options: `"equals"`, `"greater_than"`, and `"greater_than_or_equals"`.
+- (Backend) Added optional parameter `comparison` to `PyPi.required_tdw_version_is_installed()`. Options: `"=="`, `">"`, and `">="`.
 
 ### Example Controllers
 

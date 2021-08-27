@@ -1,9 +1,10 @@
 from typing import List
 from abc import ABC, abstractmethod
 from overrides import final
+from tdw.add_ons.add_on import AddOn
 
 
-class Agent(ABC):
+class Agent(AddOn, ABC):
     """
     An agent has a static state, a dynamic state, and can generate lists of commands given the dynamic state.
     """
@@ -13,10 +14,7 @@ class Agent(ABC):
         (no parameters)
         """
 
-        """:field
-        A list of commands to be sent on the next frame.
-        """
-        self.commands: List[dict] = list()
+        super().__init__()
         # If True, this agent has already cached its static data.
         self._cached_static_data: bool = False
 
@@ -31,7 +29,7 @@ class Agent(ABC):
         raise Exception()
 
     @final
-    def step(self, resp: List[bytes]) -> None:
+    def on_send(self, resp: List[bytes]) -> None:
         """
         Update the agent's state. Cache static data if needed and update the list of commands to send to the build.
 

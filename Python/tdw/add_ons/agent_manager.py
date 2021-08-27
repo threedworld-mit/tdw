@@ -25,7 +25,7 @@ class AgentManager(AddOn):
     def on_send(self, resp: List[bytes]) -> None:
         # Append the agent commands.
         for agent in self.agents:
-            agent.step(resp=resp)
+            agent.on_send(resp=resp)
             self.commands.extend(agent.commands)
 
     def reset(self) -> None:

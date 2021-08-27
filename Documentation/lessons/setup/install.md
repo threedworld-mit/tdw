@@ -8,6 +8,8 @@
 - **The controller** is a Python script that communicates with the build. You write your own controller script (though this repo contains many examples).
 - The build and the controller communicate with each other over a TCP/IP socket. They can be on the same machines or separate machines (such as a laptop and a remote server).
 
+![](images/network.png)
+
 ## System Requirements
 
 - Windows, OS X, or Linux (we've tested TDW on Ubuntu 16, 18, and 20)
@@ -40,7 +42,7 @@ print("Hello world!")
 c.communicate({"$type": "terminate"})
 ```
 
-**Result:** The terminal window will print messages about downloading a build. Then, it will launch a windowed application, print `Everything is OK!`, kill the windowed application process, and exit.
+**Result:** The terminal window will print messages about downloading a build. Then, it will launch a windowed application, print `Hello world!`, kill the windowed application process, and exit.
 
 ## Install TDW on a remote Linux server
 

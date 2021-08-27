@@ -171,7 +171,7 @@ c.communicate({"$type": "terminate"})
 
 ## The `ObjectManager` add-on
 
-TDW includes a `ObjectManager` add-on that will reorganization static and per-frame object output data. The trade-off is that `ObjectManager` is less flexible than managing this data yourself; it can only return object data for *every* object in the scene and can only do so *always* or *never*. Note that it can optionall include [`Bounds`](../../api/output_data.md#Bounds)  output data.
+TDW includes an [`ObjectManager` add-on](../../python/add_ons/object_manager.md) that will reorganization static and per-frame object output data. The trade-off is that `ObjectManager` is less flexible than managing this data yourself; it can only return object data for *every* object in the scene and can only do so *always* or *never*. Note that it can optional include [`Bounds`](../../api/output_data.md#Bounds)  output data.
 
 This example does nearly the same thing as the previous example:
 

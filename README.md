@@ -43,10 +43,11 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 1. Overview
 2. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
 3. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
-4. [Visual materials, textures, and colors]((Documentation/lessons/objects_and_scenes/materials_textures_colors.md))
+4. [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
 5. Proc-gen room API
 6. Reset a scene
 7. Procedural object placement
+8. Pre-populated scene layouts (FloorplanController)
 
 ## 2.2 Non-Default 3D Models
 
@@ -55,7 +56,6 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 - [ ] Non-free models
 - [ ] Add your own models to TDW
 - [ ] Add ShapeNet models to TDW
-- [ ] FloorplanController (high-level API)
 
 ## 2.3 Visual Perception
 
@@ -82,7 +82,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 - [ ] Depth of field
 - [ ] Anti-aliasing
 
-High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
+High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset) (TODO)
 
 ## 2.6 Physics
 

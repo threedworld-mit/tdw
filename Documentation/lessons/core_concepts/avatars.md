@@ -2,7 +2,7 @@
 
 # Avatars and cameras
 
-As mentioned [earlier](1.2.2_commands.md), TDW doesn't impose metaphors regarding what an agent is or whether there needs to be one at all.
+As mentioned [earlier](design_philosophy.md), TDW doesn't impose metaphors regarding what an agent is or whether there needs to be one at all.
 
 **Avatars** are a type of agent in TDW but not the only one. The most commonly used avatar is a non-embodied camera; you can think of this avatar as being more or less equivalent to a third-person camera (though the [commands](1.2.2_commands.md) for cameras have slightly different parameters than avatars).
 
@@ -172,38 +172,6 @@ for i in range(20):
 c.communicate({"$type": "terminate"})
 ```
 
-## The `CinematicCamera` add-on
-
-The [`CinematicCamera`](../../python/add_ons/cinematic_camera.md)  add-on is like the `ThirdPersonCamera` add-on but it's designed to smoothly rotate and move the camera. This is useful for making nice-looking videos but not that useful if you want to capture still images at various angles:
-
-This example approximately equivalent to the previous two examples except that it will "smooth" out the movement and rotation of the camera by slowing it down at the start and end of the motion.
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.cinematic_camera import CinematicCamera
-
-c = Controller()
-c.start()
-
-# Create the cinematic camera.
-cam = CinematicCamera(avatar_id="a",
-                      position={"x": -1, "y": 5.7, "z": -3.8},
-                      rotation={"x": 26, "y": 0, "z": 0})
-
-# Append the cinematic camera add-on.
-c.add_ons.append(cam)
-c.communicate([TDWUtils.create_empty_room(12, 12),
-               {"$type": "set_target_framerate",
-                "framerate": 30}])
-# Move and rotate the camera.
-cam.move_to_position(target={"x": -1, "y": 7.7, "z": -3.8})
-cam.rotate_by_rpy(target={"x": 0, "y": 20, "z": 0})
-for i in range(20):
-    c.communicate([])
-c.communicate({"$type": "terminate"})
-```
-
 ## Embodied avatars
 
 **There are several embodied avatars in TDW; however, we don't recommend you use them.** Avatars are one of the oldest components of TDW and they've been gradually superseded. [There are many non-avatar embodied agents in TDW](TODO), all of which are more sophisticated than the embodied avatars. For more information regarding embodied avatars, read the API documentation for [`create_avatar`](../../api/command_api.md#create_avatar).
@@ -216,14 +184,12 @@ Example controllers:
 
 - [move_avatar.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/move_avatar.py) Move an avatar and rotate its camera.
 - [third_person_camera.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/third_person_camera.py) Example usage of the `ThirdPersonCamera`.
-- [cinematic_camera.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/cinematic_camera.py) Example usage of the `CinematicCamera`.
 
 Python API:
 
 - [`TDWUtils.create_avatar(avatar_type, position, look_at)`](../../python/tdw_utils.md)
 - [`AddOn`](../../python/add_ons/add_on.md) (abstract base class for all add-ons)
--  [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md) 
-- [`CinematicCamera`](../../python/add_ons/cinematic_camera.md)
+- [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md) 
 
 Command API:
 

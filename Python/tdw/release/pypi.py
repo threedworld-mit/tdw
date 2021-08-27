@@ -115,20 +115,29 @@ class PyPi:
         return releases[-1]
 
     @staticmethod
-    def required_tdw_version_is_installed(required_version: str, build_version: str) -> bool:
+    def required_tdw_version_is_installed(required_version: str, build_version: str, comparison: str = "==") -> bool:
         """
         Check whether the correct version of TDW is installed.
         This is useful for other modules such as the Magnebot API that rely on certain versions of TDW.
 
         :param required_version: The required version of TDW.
         :param build_version: The version of the build.
+        :param comparison: The type of comparison. Options: "==", ">", ">=".
 
         :return: True if the installed tdw module is the correct version.
         """
 
+        valid_comparisons: List[str] = ["==", ">", ">="]
+        if comparison not in valid_comparisons:
+            raise Exception(f"Invalid comparison {comparison}. Options are: {valid_comparisons}")
+
         ok: bool = True
         required_version = PyPi.strip_post_release(required_version)
-        if version.parse(required_version) != version.parse(__version__):
+        required_version_parsed = version.parse(required_version)
+        installed_version_parsed = version.parse(__version__)
+        if (comparison == "==" and required_version_parsed != installed_version_parsed) or \
+                (comparison == ">" and installed_version_parsed <= required_version_parsed) or \
+                (comparison == ">=" and installed_version_parsed < required_version_parsed):
             print(f"WARNING! You have tdw {__version__} but you need tdw {required_version}. "
                   f"To install the correct version:"
                   f"\n\tIf you installed tdw from the GitHub repo (pip3 install -e .): "
@@ -136,7 +145,10 @@ class PyPi:
                   f"\n\tIf you installed tdw from PyPi (pip3 install tdw): "
                   f"pip3 install tdw=={required_version}")
             ok = False
-        if version.parse(build_version) != version.parse(required_version):
+        build_version_parsed = version.parse(build_version)
+        if (comparison == "==" and build_version_parsed != required_version_parsed) or \
+                (comparison == ">" and build_version_parsed <= required_version_parsed) or \
+                (comparison == ">=" and build_version_parsed < required_version_parsed):
             url, url_exists = Build.get_url(required_version, check_head=False)
             print(f"WARNING! You are using TDW build {build_version} but you need TDW build {required_version}. "
                   f"\n\tDownload and extract: {url}")

@@ -40,14 +40,15 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 ## 2.1 Objects and Scenes
 
-1. Overview
-2. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
-3. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
-4. [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
-5. Proc-gen room API
-6. Reset a scene
-7. Procedural object placement
-8. Pre-populated scene layouts (FloorplanController)
+1. [Overview](Documentation/lessons/objects_and_scenes/overview.md)
+2. [Scripted object placement (floorplan layouts)](Documentation/lessons/objects_and_scenes/floorplans.md)
+3. Procedural generation (scenes)
+4. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
+5. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
+6. Procedural generation (objects)
+7. Reset a scene
+
+High-level API: [FloorplanController](Documentation/python/floorplan_controller.md)
 
 ## 2.2 Non-Default 3D Models
 
@@ -81,6 +82,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 - [ ] Post-processing
 - [ ] Depth of field
 - [ ] Anti-aliasing
+- [ ] [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset) (TODO)
 

@@ -42,13 +42,20 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
   - `Keyboard` Add keyboard controls to a TDW scene.
   - `ObjectManager` A simple manager class for objects in the scene. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.
   - `OccupancyMap` Generate an occupancy map of the scene at runtime.
+  - `Robot` Control the joints of a robot.
   - `ThirdPersonCamera` Add a third-person camera to the scene.
 - Added backend object data classes:
   - `Transform` Transform data (position, forward, rotation).
   - `Rigidbody` Dynamic rigidbody data (velocity, angular velocity, sleeping).
   - `Bound` Dynamic bounds data for a single object (as opposed to `Bounds` output data).
   - `ObjectStatic` Static object data (name, mass, etc.).
-
+- Added backend robot data classes:
+  - `Drive` Static data for a joint drive.
+  - `JointDynamic` Dynamic data for a joint.
+  - `JointStatic` Static data for a joint.
+  - `NonMoving` Static data for a non-joint body part of a robot.
+  - `RobotDynamic` Dynamic data for a robot.
+  - `RobotStatic` Static data for a robot.
 - Removed `DebugController` (replaced with `Debug` add-on)
 - Removed `KeyboardController` (replaced with `Keyboard` add-on)
 - Moved `CollisionObjObj` and `CollisionObjEnv` from `tdw.collision` to `tdw.collision_data`

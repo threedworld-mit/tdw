@@ -111,6 +111,9 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 This is called after commands are sent to the build and a response is received.
 
+Use this function to send commands to the build on the next frame, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the next frame.
+
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
@@ -142,17 +145,19 @@ Rotate the camera.
 
 **`self.get_initialization_commands()`**
 
-_Returns:_  A list of commands that will initialize this module.
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
 
-#### previous_commands
+_Returns:_  A list of commands that will initialize this add-on.
 
-**`self.previous_commands(commands)`**
+#### before_send
 
-Do something with the commands that were just sent to the build. By default, this function doesn't do anything.
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that were just sent to the build. |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
 
 

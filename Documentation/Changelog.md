@@ -56,6 +56,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
   - `NonMoving` Static data for a non-joint body part of a robot.
   - `RobotDynamic` Dynamic data for a robot.
   - `RobotStatic` Static data for a robot.
+  - `JointType` The type of joint, e.g. `revolute`.
 - Removed `DebugController` (replaced with `Debug` add-on)
 - Removed `KeyboardController` (replaced with `Keyboard` add-on)
 - Moved `CollisionObjObj` and `CollisionObjEnv` from `tdw.collision` to `tdw.collision_data`

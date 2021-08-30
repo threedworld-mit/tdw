@@ -1,7 +1,7 @@
 from typing import List, Dict
 from tdw.output_data import OutputData, StaticRobot
-from tdw.add_ons.agents.robot_data.joint_static import JointStatic
-from tdw.add_ons.agents.robot_data.non_moving import NonMoving
+from tdw.robot_data.joint_static import JointStatic
+from tdw.robot_data.non_moving import NonMoving
 
 
 class RobotStatic:
@@ -26,7 +26,7 @@ class RobotStatic:
         """:field
         A dictionary of joint names. Key = The name of the joint. Value = The joint ID.
         """
-        self.joint_names: Dict[str, int] = dict()
+        self.joint_ids_by_name: Dict[str, int] = dict()
         """:field
         A dictionary of [Static data for non-moving parts](non_moving.md) for each non-moving part. Key = The ID of the part.
         """
@@ -47,7 +47,7 @@ class RobotStatic:
                     for j in range(static_robot.get_num_joints()):
                         joint = JointStatic(static_robot=static_robot, joint_index=j)
                         self.joints[joint.joint_id] = joint
-                        self.joint_names[joint.name] = joint.joint_id
+                        self.joint_ids_by_name[joint.name] = joint.joint_id
                         if joint.root:
                             self.immovable = joint.immovable
                     for j in range(static_robot.get_num_non_moving()):

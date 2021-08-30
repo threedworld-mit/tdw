@@ -2,14 +2,14 @@ from abc import ABC, abstractmethod
 from typing import List, Dict, Optional
 from overrides import final
 import numpy as np
-from tdw.add_ons.agents.agent import Agent
-from tdw.add_ons.agents.robot_data.robot_static import RobotStatic
-from tdw.add_ons.agents.robot_data.robot_dynamic import RobotDynamic
+from tdw.robot_data.robot_static import RobotStatic
+from tdw.robot_data.robot_dynamic import RobotDynamic
+from tdw.add_ons.add_on import AddOn
 
 
-class RobotBase(Agent, ABC):
+class RobotBase(AddOn, ABC):
     """
-    Abstract base class for robot agents.
+    Abstract base class for robots.
     """
 
     """:class_var
@@ -73,6 +73,39 @@ class RobotBase(Agent, ABC):
             if self.dynamic.joints[joint_id].moving:
                 return True
         return False
+
+    def on_send(self, resp: List[bytes]) -> None:
+        if self.static is None:
+            self._cache_static_data(resp=resp)
+        self._set_dynamic_data(resp=resp)
+
+    def reset(self) -> None:
+        """
+        Mark this robot as being reset.
+        """
+
+        self.initialized = False
+        self.static = None
+
+    @abstractmethod
+    def _cache_static_data(self, resp: List[bytes]) -> None:
+        """
+        Cache static output data.
+
+        :param resp: The response from the build.
+        """
+
+        raise Exception()
+
+    @abstractmethod
+    def _set_dynamic_data(self, resp: List[bytes]) -> None:
+        """
+        Set dynamic data per frame.
+
+        :param resp: The response from the build.
+        """
+
+        raise Exception()
 
     @abstractmethod
     def _get_add_robot_command(self) -> dict:

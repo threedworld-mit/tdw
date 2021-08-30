@@ -2,7 +2,7 @@ from typing import List, Dict, Optional, Tuple
 import numpy as np
 from tdw.output_data import OutputData, Robot, Collision, EnvironmentCollision
 from tdw.object_data.transform import Transform
-from tdw.add_ons.agents.robot_data.joint_dynamic import JointDynamic
+from tdw.robot_data.joint_dynamic import JointDynamic
 from tdw.collision_data.collision_obj_obj import CollisionObjObj
 from tdw.collision_data.collision_obj_env import CollisionObjEnv
 

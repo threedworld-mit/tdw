@@ -3,14 +3,14 @@ from overrides import final
 import numpy as np
 from tdw.librarian import RobotLibrarian, RobotRecord
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.agents.robot_base import RobotBase
-from tdw.add_ons.agents.robot_data.robot_static import RobotStatic
-from tdw.add_ons.agents.robot_data.robot_dynamic import RobotDynamic
+from tdw.robot_data.robot_static import RobotStatic
+from tdw.robot_data.robot_dynamic import RobotDynamic
+from tdw.add_ons.robot_base import RobotBase
 
 
 class Robot(RobotBase):
     """
-    A robot agent is loaded from a converted URDF file. It has static and dynamic (per-frame) data for each of its joints.
+    This add-on can add a robot to the scene and set joint targets and add joint forces. It has static and dynamic (per-frame) data for each of its joints.
     """
 
     """:class_var
@@ -155,6 +155,3 @@ class Robot(RobotBase):
         dynamic = RobotDynamic(resp=resp, robot_id=self.robot_id, body_parts=self.static.body_parts,
                                previous=self.dynamic)
         self.dynamic = self._set_joints_moving(dynamic)
-
-    def _get_commands(self, resp: List[bytes]) -> List[dict]:
-        return []

@@ -82,6 +82,9 @@ class ThirdPersonCameraBase(AddOn, ABC):
         """
         This is called after commands are sent to the build and a response is received.
 
+        Use this function to send commands to the build on the next frame, given the `resp` response.
+        Any commands in the `self.commands` list will be sent on the next frame.
+
         :param resp: The response from the build.
         """
 
@@ -90,17 +93,19 @@ class ThirdPersonCameraBase(AddOn, ABC):
     @final
     def get_initialization_commands(self) -> List[dict]:
         """
-        :return: A list of commands that will initialize this module.
+        This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+        :return: A list of commands that will initialize this add-on.
         """
 
         return self._init_commands
 
     @final
-    def previous_commands(self, commands: List[dict]) -> None:
+    def before_send(self, commands: List[dict]) -> None:
         """
-        Do something with the commands that were just sent to the build. By default, this function doesn't do anything.
+        This is called before sending commands to the build. By default, this function doesn't do anything.
 
-        :param commands: The commands that were just sent to the build.
+        :param commands: The commands that are about to be sent to the build.
         """
 
         pass

@@ -54,6 +54,13 @@ class RobotBase(AddOn, ABC):
         self.dynamic: Optional[RobotDynamic] = None
 
     def get_initialization_commands(self) -> List[dict]:
+        """
+        This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+        :return: A list of commands that will initialize this add-on.
+        """
+
+        self.static = None
         return [self._get_add_robot_command(),
                 {"$type": "send_static_robots",
                  "frequency": "once"},
@@ -75,17 +82,28 @@ class RobotBase(AddOn, ABC):
         return False
 
     def on_send(self, resp: List[bytes]) -> None:
+        """
+        This is called after commands are sent to the build and a response is received.
+
+        Use this function to send commands to the build on the next frame, given the `resp` response.
+        Any commands in the `self.commands` list will be sent on the next frame.
+
+        :param resp: The response from the build.
+        """
+
         if self.static is None:
             self._cache_static_data(resp=resp)
         self._set_dynamic_data(resp=resp)
 
-    def reset(self) -> None:
+    @final
+    def before_send(self, commands: List[dict]) -> None:
         """
-        Mark this robot as being reset.
+        This is called before sending commands to the build. By default, this function doesn't do anything.
+
+        :param commands: The commands that are about to be sent to the build.
         """
 
-        self.initialized = False
-        self.static = None
+        pass
 
     @abstractmethod
     def _cache_static_data(self, resp: List[bytes]) -> None:

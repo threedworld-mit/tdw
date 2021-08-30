@@ -40,9 +40,9 @@ Key = the object ID. Value = [The collision.](../collision_data/collision_obj_en
 
 **`self.get_initialization_commands()`**
 
-This function gets called exactly once per add-on. To call it again, set `self.initialized = False`.
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
 
-_Returns:_  A list of commands that will initialize this module.
+_Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 

@@ -9,4 +9,4 @@ Types of joint articulation.
 | `revolute` |  |
 | `spherical` |  |
 | `prismatic` |  |
-| `fixed` |  |
+| `fixed_joint` |  |

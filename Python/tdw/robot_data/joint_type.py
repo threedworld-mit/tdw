@@ -9,4 +9,4 @@ class JointType(Enum):
     revolute = 1
     spherical = 2
     prismatic = 4
-    fixed = 8
+    fixed_joint = 8

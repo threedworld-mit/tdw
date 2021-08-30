@@ -4,6 +4,28 @@
 
 Static robot joint data.
 
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.robot import Robot
+
+c = Controller()
+# Add a robot.
+robot = Robot(name="ur5",
+              position={"x": -1, "y": 0, "z": 0.5},
+              robot_id=0)
+c.add_ons.append(robot)
+# Initialize the scene.
+c.communicate([{"$type": "load_scene",
+                "scene_name": "ProcGenScene"},
+               TDWUtils.create_empty_room(12, 12)])
+# Print the ID and segmentation color of each joint.
+for joint_id in robot.static.joints:
+    print(joint_id, robot.static.joints[joint_id].segmentation_color)
+c.communicate({"$type": "terminate"})
+```
+
 ***
 
 ## Fields
@@ -12,7 +34,7 @@ Static robot joint data.
 
 - `name` The name of the joint.
 
-- `joint_type` The type of joint. Options: `"revolute"`, `"spherical"`, `"prismatic"`, `"fixed_joint"`
+- `joint_type` [The type of joint.](joint_type.md)
 
 - `segmentation_color` The segmentation color of this joint as an `[r, g, b]` numpy array.
 

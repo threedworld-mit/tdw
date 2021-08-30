@@ -10,6 +10,28 @@ from tdw.collision_data.collision_obj_env import CollisionObjEnv
 class RobotDynamic:
     """
     Dynamic data for a robot that can change per frame (such as the position of the robot, the angle of a joint, etc.)
+
+    ```python
+    from tdw.controller import Controller
+    from tdw.tdw_utils import TDWUtils
+    from tdw.add_ons.robot import Robot
+
+    c = Controller()
+    # Add a robot.
+    robot = Robot(name="ur5",
+                  position={"x": -1, "y": 0, "z": 0.5},
+                  robot_id=0)
+    c.add_ons.append(robot)
+    # Initialize the scene.
+    c.communicate([{"$type": "load_scene",
+                    "scene_name": "ProcGenScene"},
+                   TDWUtils.create_empty_room(12, 12)])
+
+    # Get the current position of each joint.
+    for joint_id in robot.dynamic.joints:
+        print(joint_id, robot.dynamic.joints[joint_id].position)
+    c.communicate({"$type": "terminate"})
+    ```
     """
 
     """:class_var

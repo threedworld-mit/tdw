@@ -46,6 +46,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `proc_gen_room.py` | - Procedurally generate rooms with different layouts.<br>- Create a ceiling and delete a portion of it.<br>- Set the floor and wall materials. |
 | `proc_gen_room_from_image.py` | Generate a proc-gen room from this image: ![](../../Python/example_controllers/room.png)<br>Each pixel corresponds to a grid point.<br>For more information, see TDWUtils documentation. |
 | `records.py` | - Use Librarian objects to search for model and material records.<br>- Set the visual material(s) of an object.<br>For documentation, see `Documentation/python/librarian.md`. |
+| `robot_add_on.py` | Add multiple robots to the scene. |
 | `robot_arm.py` | Add a robot to TDW and bend its arm. |
 | `robot_camera.py` | Add a camera to a Magnebot. |
 | `robot_torque.py` | Add a robot to TDW and bend its arm. |

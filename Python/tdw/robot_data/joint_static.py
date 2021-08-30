@@ -2,11 +2,34 @@ from typing import Dict
 import numpy as np
 from tdw.output_data import StaticRobot
 from tdw.robot_data.drive import Drive
+from tdw.robot_data.joint_type import JointType
 
 
 class JointStatic:
     """
     Static robot joint data.
+
+
+    ```python
+    from tdw.controller import Controller
+    from tdw.tdw_utils import TDWUtils
+    from tdw.add_ons.robot import Robot
+
+    c = Controller()
+    # Add a robot.
+    robot = Robot(name="ur5",
+                  position={"x": -1, "y": 0, "z": 0.5},
+                  robot_id=0)
+    c.add_ons.append(robot)
+    # Initialize the scene.
+    c.communicate([{"$type": "load_scene",
+                    "scene_name": "ProcGenScene"},
+                   TDWUtils.create_empty_room(12, 12)])
+    # Print the ID and segmentation color of each joint.
+    for joint_id in robot.static.joints:
+        print(joint_id, robot.static.joints[joint_id].segmentation_color)
+    c.communicate({"$type": "terminate"})
+    ```
     """
 
     def __init__(self, static_robot: StaticRobot, joint_index: int):
@@ -24,9 +47,9 @@ class JointStatic:
         """
         self.name: str = static_robot.get_joint_name(joint_index)
         """:field
-        The type of joint. Options: `"revolute"`, `"spherical"`, `"prismatic"`, `"fixed_joint"` 
+        [The type of joint.](joint_type.md)
         """
-        self.joint_type: str = static_robot.get_joint_type(joint_index)
+        self.joint_type: JointType = JointType[static_robot.get_joint_type(joint_index)]
         """:field
         The segmentation color of this joint as an `[r, g, b]` numpy array.
         """

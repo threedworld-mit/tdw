@@ -1,4 +1,4 @@
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Optional
 from overrides import final
 import numpy as np
 from tdw.librarian import RobotLibrarian, RobotRecord
@@ -10,7 +10,32 @@ from tdw.add_ons.robot_base import RobotBase
 
 class Robot(RobotBase):
     """
-    This add-on can add a robot to the scene and set joint targets and add joint forces. It has static and dynamic (per-frame) data for each of its joints.
+    Add a robot to the scene and set joint targets and add joint forces. It has static and dynamic (per-frame) data for each of its joints.
+
+    ```python
+    from tdw.controller import Controller
+    from tdw.tdw_utils import TDWUtils
+    from tdw.add_ons.robot import Robot
+
+    c = Controller()
+    # Add a robot.
+    robot = Robot(name="ur5",
+                  position={"x": -1, "y": 0, "z": 0.5},
+                  robot_id=0)
+    c.add_ons.append(robot)
+    # Initialize the scene.
+    c.communicate([{"$type": "load_scene",
+                    "scene_name": "ProcGenScene"},
+                   TDWUtils.create_empty_room(12, 12)])
+    # Set joint targets.
+    robot.set_joint_targets({robot.static.joint_ids_by_name["shoulder_link"]: 15,
+                             robot.static.joint_ids_by_name["upper_arm_link"]: -45,
+                             robot.static.joint_ids_by_name["forearm_link"]: 60})
+    # Wait until the robot stops moving.
+    while robot.joints_are_moving():
+        c.communicate([])
+    c.communicate({"$type": "terminate"})
+    ```
     """
 
     """:class_var
@@ -29,6 +54,14 @@ class Robot(RobotBase):
         """
 
         super().__init__(robot_id=robot_id, position=position, rotation=rotation)
+        """:field
+        [Static robot data.](../robot_data/robot_static.md)
+        """
+        self.static: Optional[RobotStatic] = None
+        """:field
+        [Dynamic robot data.](../robot_data/robot_dynamic.md)
+        """
+        self.dynamic: Optional[RobotDynamic] = None
         """:field
         The name of the robot.
         """

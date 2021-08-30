@@ -1,8 +1,8 @@
 ##### Objects and Scenes
 
-# Procedural generation
+# Procedural generation  (objects)
 
-**TODO**
+This document will walk you through a simple example of how to use procedural generation to populate a scene with objects. [As noted at the start of this tutorial](overview.md), procedural generation is a powerful technique for quickly generating large numbers of scene environments. However, by its very nature, there is no single "canonical" algorithm for procedural generation. This document will describe *a* way to populate a scene with objects, not *the* way. It is also incomplete; the end of this document lists just some of the ways to improve the example code.
 
 ## 1. Choose a random table and a random chair
 
@@ -58,7 +58,7 @@ chair = chairs[rng.randint(0, len(chairs))]
 
 ## 2. Create a scene
 
-[As explained earlier in this tutorial](proc_gen_room.md), this can get quite complicated. But this tutorial is about *object placement* so we're just going to use the empty 12x12 room used in most tutorials:
+[As explained earlier in this tutorial](proc_gen_room.md), room generation can get quite complicated. We can also use a [streamed scene asset bundle](../core_concepts/scenes.md) which has less variability but looks better. Because this tutorial is about *object placement* rather than scene generation, we're just going to use the empty 12x12 room used in most tutorials:
 
 ```python
 import numpy as np
@@ -626,4 +626,27 @@ As mentioned earlier, procedural generation is an unbounded problem and there's 
 - Refine the process of adding chairs so that they're slightly under the table top.
 - Improve the placement of the table+chairs so that it works in a multi-room scene (such that the objects won't intersect with any interior walls).
 - Add plates, cups, and so on to the top of the table.
+
+***
+
+**Next: [Reset a scene](reset_scene.md)**
+
+Example controllers:
+
+- [proc_gen_objects.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/proc_gen_objects.py) Using procedural generation, add a table to scene and add chairs around the table.
+
+Python API:
+
+- [`ModelLibrarian.get_model_wnids_and_wcategories()`](../../python/librarian/model_librarian.md) Get a dictionary of WordNet IDs and categories.
+- [`ModelLibrarian.get_all_models_in_wnid(wnid)`](../../python/librarian/model_librarian.md) Get all models with this WordNet ID.
+- [`ModelRecord.do_not_use`](../../python/librarian/model_librarian.md) If True, don't use this model.
+- [`ModelRecord.bounds`](../../python/librarian/model_librarian.md) Cached bounds of a model.
+- [`TDWUtils.vector3_to_array`](../../python/tdw_utils.md) Concert an (x, y, z) dictionary to an [x, y, z] numpy array.
+
+Command API:
+
+- [`object_look_at_position`](../../api/command_api.md#object_look_at_position) 
+- [`rotate_object_by`](../../api/command_api.md#rotate_object_by)
+
+[Return to the README](../../README.md)
 

@@ -30,11 +30,11 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 ## 1.3 Troubleshooting and good coding practices :warning: TODO :warning:
 
-- [ ] Common errors
-- [ ] Debug logging
-- [ ] Good coding practices
-- [ ] Performance optimizations
-- [ ] Performance benchmarks
+1. Debug logging
+2. Common errors
+3. Good coding practices
+4. Performance optimizations
+5. Performance benchmarks
 
 # 2. Tutorials :warning: TODO :warning:
 
@@ -42,21 +42,25 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 1. [Overview](Documentation/lessons/objects_and_scenes/overview.md)
 2. [Scripted object placement (floorplan layouts)](Documentation/lessons/objects_and_scenes/floorplans.md)
-3. Procedural generation (scenes)
-4. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
-5. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
-6. Procedural generation (objects)
-7. Reset a scene
+3. [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
+4. Procedural generation (scenes)
+5. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
+6. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
+7. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)
+8. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
 
 High-level API: [FloorplanController](Documentation/python/floorplan_controller.md)
 
 ## 2.2 Non-Default 3D Models
 
-- [ ] Overview
-- [ ] Free models
-- [ ] Non-free models
-- [ ] Add your own models to TDW
-- [ ] Add ShapeNet models to TDW
+1. Overview
+
+2. Free models
+
+3. Non-free models
+
+4. Add your own models to TDW
+5. Add ShapeNet models to TDW
 
 ## 2.3 Visual Perception
 
@@ -77,55 +81,60 @@ High-level API: [FloorplanController](Documentation/python/floorplan_controller.
 
 ## 2.5 Photorealistic Images
 
-- [ ] Overview
-- [ ] Lighting
-- [ ] Post-processing
-- [ ] Depth of field
-- [ ] Anti-aliasing
-- [ ] [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
+1. Overview
+2. Lighting
+3. Post-processing
+4. Depth of field
+5. Anti-aliasing
 
-High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset) (TODO)
+High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
 ## 2.6 Physics
 
-- [ ] Overview
-- [ ] Collisions
-- [ ] Friction
-- [ ] Default object physics parameters
-- [ ] NVIDIA Flex
-- [ ] tdw_physics (high-level API)
+1. Overview
+2. Friction and mass
+3. Default object physics parameters
+4. Collisions
+5. NVIDIA Flex
+6. Non-physics simulations
+
+High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 ## 2.7 Audio
 
-- [ ] Overview
-- [ ] Resonance Audio
-- [ ] PyImpact
-- [ ] Recording audio
-- [ ] Audio perception
-- [ ] multimodal_challenge (use case)
+1. Overview
+2. PyImpact (dynamic impact sounds)
+3. Audio perception
+4. Recording audio
+5. Resonance Audio
+
+High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge)
 
 ## 2.8 Video Recording
 
 1. Controlling the framerate
 2. Image-only videos
 3. Image+audio videos
+4. The `CinematicCamera`
 
 ## 2.9 Robots and Embodied Agents
 
-- [ ] Robots
-- [ ] Composite objects
-- [ ] VR
-- [ ] Humanoids
-- [ ] Keyboard controls
-- [ ] NavMesh
-- [ ] magnebot (high-level API)
+1. Robots
+2. Humanoid agents
+3. VR
+4. Humanoids
+5. Keyboard controls
+6. NavMesh
+
+High-level API: [magnebot](https://github.com/alters-mit/magnebot)
 
 ## 2.10 Misc. topics
 
-- [ ] C# source code
-- [ ] Freezing your code
-- [ ] BinaryManager
-- [ ] xpra
+1. C# source code
+2. Freezing your code
+3. BinaryManager
+4. xpra
+5. Composite objects
 
 # 3. API Documentation
 

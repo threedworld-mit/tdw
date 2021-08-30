@@ -85,7 +85,7 @@ c.communicate({"$type": "terminate"})
 
 Example controllers:
 
-- [follow.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/camera_controls/follow.py) Tell a camera to follow an object..
+- [follow.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/camera_controls/follow.py) Tell a camera to follow an object.
 
 Python API:
 

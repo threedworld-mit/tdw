@@ -291,7 +291,7 @@ Visual materials in TDW are photorealistic in the sense that many of them are de
 
 ***
 
-**Next: [Proc-gen room API](proc_gen_room_api.md)**
+**Next: [Procedural generation (scenes)](proc_gen_room.md)**
 
 Example controllers:
 

@@ -54,7 +54,7 @@ In the `scene` parameter, the number (1, 2, 4, or 5) defines the geometry of the
 
 ***
 
-**Next: [Procedural generation (scenes)](proc_gen_room.md)**
+**Next: [Visual materials, textures, and colors](materials_textures_colors.md)**
 
 Example controllers:
 

@@ -136,7 +136,7 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-**Next: [Visual materials, textures, and colors](materials_textures_colors.md)**
+**Next: [Procedural generation (objects)](proc_gen_objects.md)**
 
 Example controllers:
 

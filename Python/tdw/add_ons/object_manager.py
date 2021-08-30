@@ -184,7 +184,7 @@ class ObjectManager(AddOn):
         Reset the cached static data. Call this when resetting the scene.
         """
 
-        super().reset()
         self._cached_static_data = False
         self.objects_static.clear()
         self.categories.clear()
+        self.initialized = False

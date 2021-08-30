@@ -5,6 +5,7 @@ from tdw.librarian import RobotLibrarian, RobotRecord
 from tdw.tdw_utils import TDWUtils
 from tdw.robot_data.robot_static import RobotStatic
 from tdw.robot_data.robot_dynamic import RobotDynamic
+from tdw.robot_data.joint_type import JointType
 from tdw.add_ons.robot_base import RobotBase
 
 
@@ -91,17 +92,17 @@ class Robot(RobotBase):
 
         for joint_id in targets:
             joint_type = self.static.joints[joint_id].joint_type
-            if joint_type == "spherical":
+            if joint_type == JointType.spherical:
                 self.commands.append({"$type": "set_spherical_target",
                                       "target": targets[joint_id],
                                       "joint_id": joint_id,
                                       "id": self.robot_id})
-            elif joint_type == "revolute":
+            elif joint_type == JointType.revolute:
                 self.commands.append({"$type": "set_revolute_target",
                                       "target": float(targets[joint_id]),
                                       "joint_id": joint_id,
                                       "id": self.robot_id})
-            elif joint_type == "prismatic":
+            elif joint_type == JointType.prismatic:
                 self.commands.append({"$type": "set_prismatic_target",
                                       "target": float(targets[joint_id]),
                                       "joint_id": joint_id,
@@ -120,17 +121,17 @@ class Robot(RobotBase):
 
         for joint_id in forces:
             joint_type = self.static.joints[joint_id].joint_type
-            if joint_type == "spherical":
+            if joint_type == JointType.spherical:
                 self.commands.append({"$type": "add_torque_to_spherical",
                                       "torque": forces[joint_id],
                                       "joint_id": joint_id,
                                       "id": self.robot_id})
-            elif joint_type == "revolute":
+            elif joint_type == JointType.revolute:
                 self.commands.append({"$type": "add_torque_to_revolute",
                                       "torque": float(forces[joint_id]),
                                       "joint_id": joint_id,
                                       "id": self.robot_id})
-            elif joint_type == "prismatic":
+            elif joint_type == JointType.prismatic:
                 self.commands.append({"$type": "add_force_to_prismatic",
                                       "force": float(forces[joint_id]),
                                       "joint_id": joint_id,

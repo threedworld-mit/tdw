@@ -39,6 +39,7 @@ class AddOn(ABC):
     - [Keyboard](keyboard.md)
     - [ObjectManager](object_manager.md)
     - [OccupancyMap](occupancy_map.md)
+    - [Robot](robot.md)
     - [ThirdPersonCamera](third_person_camera.md)
 
     ## Example controllers
@@ -67,9 +68,9 @@ class AddOn(ABC):
     @abstractmethod
     def get_initialization_commands(self) -> List[dict]:
         """
-        This function gets called exactly once per add-on. To call it again, set `self.initialized = False`.
+        This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
 
-        :return: A list of commands that will initialize this module.
+        :return: A list of commands that will initialize this add-on.
         """
 
         raise Exception()

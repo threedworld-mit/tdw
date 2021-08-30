@@ -48,8 +48,8 @@ if __name__ == "__main__":
 
 ## Frames, Commands, and Output Data
 
-- Every time the controller calls `communicate()`, the simulation advances 1 **frame**. A frame is equivalent in TDW to both a visual camera render and a physics step.  If the controller *doesn't* call `communicate()`, the simulation pauses until it does.. (Compare this to a video game, where the application will continuously update its visual and physics state regardless of whether it receives input from the user.)
-- The controller sends **commands** to the build per communicate call. In the above examples, `{"$type": "terminate"}` is a command.
+- The controller sends **commands** to the build per `communicate()` call. In the above examples, `{"$type": "terminate"}` is a command.
+- Every time the controller calls `communicate()`, the simulation advances 1 **frame**. In nearly all cases, a frame is equivalent in TDW to both a visual camera render and a physics step (the exception is the `step_physics` command, which is covered in a later tutorial). If the controller *doesn't* call `communicate()`, the simulation pauses until it does. 
 - The build receives **output data** from the build per communicate call.
 
 
@@ -67,5 +67,6 @@ Python API:
 Command API:
 
 - [`terminate`](../../api/command_api.md#terminate)
+- [`step_physics`](../../api/command_api.md#step_physics)
 
 [Return to the README](../../README.md)

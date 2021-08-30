@@ -4,7 +4,7 @@
 
 As mentioned [earlier](design_philosophy.md), TDW doesn't impose metaphors regarding what an agent is or whether there needs to be one at all.
 
-**Avatars** are a type of agent in TDW but not the only one. The most commonly used avatar is a non-embodied camera; you can think of this avatar as being more or less equivalent to a third-person camera (though the [commands](1.2.2_commands.md) for cameras have slightly different parameters than avatars).
+**Avatars** are a type of agent in TDW but not the only one. Every type of every has a camera. The most commonly used avatar is a non-embodied camera; you can think of this avatar as being more or less equivalent to a third-person camera.
 
 To add the third-person camera avatar to the scene:
 

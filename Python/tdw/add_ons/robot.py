@@ -152,26 +152,28 @@ class Robot(RobotBase):
         for joint_id in joint_ids:
             angles = self.dynamic.joints[joint_id].angles
             joint_type = self.static.joints[joint_id].joint_type
-            if joint_type == "fixed":
+            if joint_type == JointType.fixed_joint:
                 continue
             # Set the target to the angle of the first (and only) revolute drive.
-            elif joint_type == "revolute":
+            elif joint_type == JointType.revolute:
                 self.commands.append({"$type": "set_revolute_target",
                                       "joint_id": joint_id,
                                       "target": float(angles[0]),
                                       "id": self.robot_id})
             # Convert the current prismatic "angle" back into "radians".
-            elif joint_type == "prismatic":
+            elif joint_type == JointType.prismatic:
                 self.commands.append({"$type": "set_prismatic_target",
                                       "joint_id": joint_id,
                                       "target": float(np.radians(angles[0])),
                                       "id": self.robot_id})
             # Set each spherical drive axis.
-            else:
+            elif joint_type == JointType.spherical:
                 self.commands.append({"$type": "set_spherical_target",
                                       "target": TDWUtils.array_to_vector3(angles),
                                       "joint_id": joint_id,
                                       "id": self.robot_id})
+            else:
+                raise Exception(f"Cannot stop joint type {joint_type}")
 
     @final
     def _get_add_robot_command(self) -> dict:

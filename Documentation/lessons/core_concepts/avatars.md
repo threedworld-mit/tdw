@@ -136,60 +136,21 @@ c.communicate({"$type": "terminate"})
 
 ![](images/avatar_move.gif)
 
-## The `ThirdPersonCamera` add-on
-
-**Add-ons** in TDW are objects that can be added to a controller and act as wrappers for the Command API. They will inject commands at every `communicate()` call based on the output data from the build.
-
-The [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md) add-on will add a third-person camera avatar to the scene. Unlike the avatar created by `TDWUtils.create_avatar()` this add-on has per-frame camera controls.
-
-This controller does the exact same thing as the previous example:
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-
-c = Controller()
-c.start()
-
-# Create the third-person camera.
-cam = ThirdPersonCamera(avatar_id="a",
-                        position={"x": -1, "y": 5.7, "z": -3.8},
-                        rotation={"x": 26, "y": 0, "z": 0})
-
-# Append the third-person camera add-on.
-c.add_ons.append(cam)
-c.communicate([TDWUtils.create_empty_room(12, 12),
-               {"$type": "set_target_framerate",
-                "framerate": 30}])
-for i in range(20):
-    # Raise the camera up by 0.1 meters.
-    cam.teleport(position={"x": 0, "y": 0.1, "z": 0},
-                 absolute=False)
-    # Rotate around the yaw axis by 2 degrees.
-    cam.rotate(rotation={"x": 0, "y": 2, "z": 0})
-    c.communicate([])
-c.communicate({"$type": "terminate"})
-```
-
 ## Embodied avatars
 
 **There are several embodied avatars in TDW; however, we don't recommend you use them.** Avatars are one of the oldest components of TDW and they've been gradually superseded. [There are many non-avatar embodied agents in TDW](TODO), all of which are more sophisticated than the embodied avatars. For more information regarding embodied avatars, read the API documentation for [`create_avatar`](../../api/command_api.md#create_avatar).
 
 ***
 
-**Next: [Objects](objects.md)**
+**Next: [Add-ons and the `ThirdPersonCamera`](add_ons.md)**
 
 Example controllers:
 
 - [move_avatar.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/move_avatar.py) Move an avatar and rotate its camera.
-- [third_person_camera.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/third_person_camera.py) Example usage of the `ThirdPersonCamera`.
 
 Python API:
 
 - [`TDWUtils.create_avatar(avatar_type, position, look_at)`](../../python/tdw_utils.md)
-- [`AddOn`](../../python/add_ons/add_on.md) (abstract base class for all add-ons)
-- [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md) 
 
 Command API:
 

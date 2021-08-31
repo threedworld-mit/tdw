@@ -257,6 +257,8 @@ class CinematicCamera(ThirdPersonCameraBase):
         self._relative_translation: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
         # This boolean is used as a state machine to let the camera know that it needs to apply `self._relative_translation` to its current position.
         self._has_relative_translation: bool = False
+        # If True, the camera is done moving.
+        self._moved: bool = True
 
         # A target object ID, position, quaternion, or Euler angles to rotate to. Can be None (no target).
         self._rotate_target: Optional[Union[int, Dict[str, float]]] = None
@@ -266,6 +268,13 @@ class CinematicCamera(ThirdPersonCameraBase):
         self._eulers: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
         # This boolean is used as a state machine to let the camera know that it needs to apply `self._eulers` to its current rotation.
         self._has_eulers: bool = False
+        # If True, the camera is done rotating.
+        self._rotated: bool = True
+
+        # The object ID of the focus target.
+        self._focus_target: Optional[int] = None
+        # If True, the camera is done focusing.
+        self._focused: bool = True
 
     def on_send(self, resp: List[bytes]) -> None:
         # Set a relative target.
@@ -309,18 +318,20 @@ class CinematicCamera(ThirdPersonCameraBase):
                                       "rotation": self._rotate_target,
                                       "speed": self.rotate_speed})
             elif self._rotate_target_type == _RotateTargetType.object:
-                self.commands.extend([{"$type": "rotate_sensor_container_towards_object",
-                                       "avatar_id": self.avatar_id,
-                                       "speed": self.rotate_speed,
-                                       "object_id": self._rotate_target,
-                                       "use_centroid": True},
-                                      {"$type": "focus_towards_object",
-                                       "avatar_id": self.avatar_id,
-                                       "speed": self.focus_speed,
-                                       "object_id": self._rotate_target,
-                                       "use_centroid": True}])
+                self.commands.append({"$type": "rotate_sensor_container_towards_object",
+                                      "avatar_id": self.avatar_id,
+                                      "speed": self.rotate_speed,
+                                      "object_id": self._rotate_target,
+                                      "use_centroid": True})
             else:
                 raise Exception(f"Invalid rotate target type: {self._move_target_type}")
+        # Focus towards a target.
+        if self._focus_target is not None:
+            self.commands.append({"$type": "focus_towards_object",
+                                  "avatar_id": self.avatar_id,
+                                  "speed": self.focus_speed,
+                                  "object_id": self._focus_target,
+                                  "use_centroid": True})
 
     def move_to_position(self, target: Dict[str, float], relative: bool = False) -> None:
         """
@@ -336,6 +347,7 @@ class CinematicCamera(ThirdPersonCameraBase):
         else:
             self._move_target = target
         self._move_target_type = _MoveTargetType.position
+        self._moved = False
 
     def move_to_object(self, target: int, offset_distance: float = 1, min_y: float = 0.25) -> None:
         """
@@ -350,6 +362,7 @@ class CinematicCamera(ThirdPersonCameraBase):
         self._move_distance_offset = offset_distance
         self._move_min_y = min_y
         self._move_target_type = _MoveTargetType.object
+        self._moved = False
 
     def stop_moving(self) -> None:
         """
@@ -357,6 +370,7 @@ class CinematicCamera(ThirdPersonCameraBase):
         """
 
         self._move_target = None
+        self._moved = True
 
     def rotate_to_object(self, target: int) -> None:
         """
@@ -367,6 +381,9 @@ class CinematicCamera(ThirdPersonCameraBase):
 
         self._rotate_target = target
         self._rotate_target_type = _RotateTargetType.object
+        self._rotated = False
+        self._focused = False
+        self._focus_target = target
 
     def rotate_by_rpy(self, target: Dict[str, float]) -> None:
         """
@@ -380,6 +397,9 @@ class CinematicCamera(ThirdPersonCameraBase):
         self._has_eulers = True
         self._rotate_target_type = _RotateTargetType.rotation
         self._rotate_target = None
+        self._rotated = False
+        self._focused = True
+        self._focus_target = None
 
     def rotate_to_rotation(self, target: Dict[str, float]) -> None:
         """
@@ -390,6 +410,9 @@ class CinematicCamera(ThirdPersonCameraBase):
 
         self._rotate_target = target
         self._rotate_target_type = _RotateTargetType.rotation
+        self._rotated = False
+        self._focused = True
+        self._focus_target = None
 
     def stop_rotating(self) -> None:
         """
@@ -397,6 +420,7 @@ class CinematicCamera(ThirdPersonCameraBase):
         """
 
         self._rotate_target = None
+        self._rotated = True
 
     def motions_are_done(self, resp: List[bytes]) -> Dict[str, bool]:
         """
@@ -405,9 +429,6 @@ class CinematicCamera(ThirdPersonCameraBase):
         :return: A dictionary of which motions are complete. For example: `{"move": True, "rotate": False, "focus": False}`
         """
 
-        move: bool = self._move_target is None
-        rotate: bool = self._rotate_target is None
-        focus: bool = self._rotate_target is None or self._rotate_target_type is not _RotateTargetType.object
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "camm":
@@ -415,16 +436,15 @@ class CinematicCamera(ThirdPersonCameraBase):
                 if cam.get_avatar_id() == self.avatar_id:
                     m = cam.get_motion()
                     if m == "move":
-                        move = True
-                        self._move_target = None
+                        self.stop_moving()
                     elif m == "rotate":
-                        rotate = True
-                        self._rotate_target = None
+                        self.stop_rotating()
                     elif m == "focus":
-                        focus = True
+                        self._focused = True
+                        self._focus_target = None
                     else:
                         raise Exception(f"Motion state not defined: {m}")
-        return {"move": move, "rotate": rotate, "focus": focus}
+        return {"move": self._moved, "rotate": self._rotated, "focus": self._focused}
 
     @staticmethod
     def _get_object_center(resp: List[bytes], target: int) -> np.array:

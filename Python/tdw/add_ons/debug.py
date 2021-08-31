@@ -32,9 +32,7 @@ class Debug(AddOn):
 
         super().__init__()
 
-        # We don't need to initialize anything.
-        self.initialized = True
-        #         If True, the build will log every message received and every command executed in the Player log.
+        # If True, the build will log every message received and every command executed in the Player log.
         self._log_commands_in_build: bool = log_commands_in_build
 
         """:field

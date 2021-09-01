@@ -44,7 +44,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 1. [Overview](Documentation/lessons/objects_and_scenes/overview.md)
 2. [Scripted object placement (floorplan layouts)](Documentation/lessons/objects_and_scenes/floorplans.md)
 3. [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
-4. Procedural generation (scenes)
+4. [Procedural generation (scenes)](Documentation/lessons/objects_and_scenes/proc_gen_room.md)
 5. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
 6. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
 7. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)

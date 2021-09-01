@@ -156,7 +156,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/set_visual_material_0.jpg)
+![](images/set_visual_material/0.jpg)
 
 Like the `add_object` command, which has a helpful wrapper function (`Controller.get_add_object()`) and the `add_scene` command which has a `Controller.get_add_scene()` wrapper function, `add_material` has a `Controller.get_add_material()` command which adds the material without needing to first fetching the record (the metadata is handled automatically by the function):
 
@@ -231,7 +231,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/set_visual_material_1.jpg)
+![](images/set_visual_material/1.jpg)
 
 Each of these properties is a _channel_.
 
@@ -282,7 +282,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/set_visual_material_2.jpg)
+![](images/set_visual_material/2.jpg)
 
 ## Visual materials and photorealism
 

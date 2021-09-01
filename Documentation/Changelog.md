@@ -75,6 +75,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - Removed: `Controller.load_streamed_scene(scene)` Use `Controller.get_add_scene(scene_name)` instead.
 - Removed `check_build_process` from the constructor because it's too slow to be useful.
 
+#### `FloorplanController`
+
+- Set the default value of the `audio` parameter of the constructor to `True`.
+
 #### `paths` (backend)
 
 - Added: `EXAMPLE_CONTROLLER_OUTPUT_PATH`

@@ -16,7 +16,7 @@ c.communicate(init_commands)
 
 ***
 
-#### `get_scene_init_commands(self, scene: str, layout: int, audio: bool) -> List[dict]`
+#### `get_scene_init_commands(self, scene: str, layout: int, audio: bool = True) -> List[dict]`
 
 Get commands to create a scene and populate it with objects.
 Valid scenes and layouts:

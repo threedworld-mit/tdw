@@ -23,6 +23,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | `rotate_sensor_container_towards_position` | Rotate the sensor container towards a position at a given angular speed per frame. |
 | `rotate_sensor_container_towards_rotation` | Rotate the sensor container towards a target rotation.       |
 
+#### Removed Commands
+
+| Command                         | Reason                                                      |
+| ------------------------------- | ----------------------------------------------------------- |
+| `set_proc_gen_reflection_probe` | Deprecated in v1.8; use `enable_reflection_probes` instead. |
+
 ### Output Data
 
 #### New Output Data
@@ -67,6 +73,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - Added: `Controller.add_ons` A list of add-ons that will inject commands every time `communicate()` is called.
 - Removed: `Controller.add_object(model_name)` Use `Controller.get_add_object(model_name)` instead.
 - Removed: `Controller.load_streamed_scene(scene)` Use `Controller.get_add_scene(scene_name)` instead.
+- Removed `check_build_process` from the constructor because it's too slow to be useful.
+
+#### `FloorplanController`
+
+- Set the default value of the `audio` parameter of the constructor to `True`.
 
 #### `paths` (backend)
 

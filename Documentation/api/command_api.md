@@ -421,7 +421,6 @@
 | [`set_proc_gen_ceiling_color`](#set_proc_gen_ceiling_color) | Set the albedo RGBA color of the ceiling.  |
 | [`set_proc_gen_ceiling_height`](#set_proc_gen_ceiling_height) | Set the height of all ceiling tiles in a proc-gen room. |
 | [`set_proc_gen_ceiling_texture_scale`](#set_proc_gen_ceiling_texture_scale) | Set the scale of the tiling of the ceiling material's main texture. |
-| [`set_proc_gen_reflection_probe`](#set_proc_gen_reflection_probe) | Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates.  |
 | [`set_proc_gen_walls_color`](#set_proc_gen_walls_color) | Set the albedo RGBA color of the walls. |
 | [`set_proc_gen_walls_texture_scale`](#set_proc_gen_walls_texture_scale) | Set the texture scale of all walls in a proc-gen room. |
 
@@ -5442,26 +5441,6 @@ Set the scale of the tiling of the ceiling material's main texture.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"scale"` | Vector2 | The tiling scale of the material. Generally (but by no means always), the default tiling scale of a texture is {"x": 1, "y": 1} | {"x": 1, "y": 1} |
-
-***
-
-## **`set_proc_gen_reflection_probe`**
-
-Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_reflection_probe"}
-```
-
-```python
-{"$type": "set_proc_gen_reflection_probe", "value": True}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"value"` | bool | If true, the reflection probe will be active. | True |
 
 ***
 

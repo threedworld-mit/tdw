@@ -23,6 +23,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | `rotate_sensor_container_towards_position` | Rotate the sensor container towards a position at a given angular speed per frame. |
 | `rotate_sensor_container_towards_rotation` | Rotate the sensor container towards a target rotation.       |
 
+#### Removed Commands
+
+| Command                         | Reason                                                      |
+| ------------------------------- | ----------------------------------------------------------- |
+| `set_proc_gen_reflection_probe` | Deprecated in v1.8; use `enable_reflection_probes` instead. |
+
 ### Output Data
 
 #### New Output Data

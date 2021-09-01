@@ -1,8 +1,4 @@
-from threading import Thread
-import platform
-from time import sleep
 import zmq
-import psutil
 import json
 import os
 from subprocess import Popen
@@ -30,22 +26,17 @@ class Controller(object):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = False):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """
         Create the network socket and bind the socket to the port.
 
         :param port: The port number.
         :param check_version: If true, the controller will check the version of the build and print the result.
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
-        :param check_build_process: If True and the build is on the same machine as this controller, continuously check whether the build process is still up.
         """
 
         # A list of modules that will add commands on `communicate()`.
         self.add_ons: List[AddOn] = list()
-        # True if a local build process is currently running.
-        self._local_build_is_running: bool = False
-        # If True, we already quit (suppresses a warning that the build is down).
-        self._quit: bool = False
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
         # If there is a difference, recommend an upgrade.
@@ -61,35 +52,6 @@ class Controller(object):
         self.socket.bind('tcp://*:' + str(port))
 
         self.socket.recv()
-
-        # Get the expected name of the process.
-        if check_build_process:
-            ps = platform.system()
-            if ps == "Windows":
-                process_name = "TDW.exe"
-            elif ps == "Darwin":
-                process_name = "TDW.app"
-            else:
-                process_name = "TDW.x86_64"
-            # Get the process ID, if any.
-            got_build_process: bool = False
-            for q in psutil.process_iter():
-                if got_build_process:
-                    break
-                if q.name() == process_name:
-                    # Get the instance of TDW on the correct port.
-                    for connection in q.connections():
-                        if connection.raddr.port == port:
-                            self._local_build_is_running = True
-                            build_pid: int = q.pid
-                            # Get the ID of the controller process.
-                            controller_pid: int = os.getpid()
-                            # Start listening for the build process.
-                            t = Thread(target=self._build_process_heartbeat, args=([build_pid, controller_pid]))
-                            t.daemon = True
-                            t.start()
-                            got_build_process = True
-                            break
 
         # Set error handling to default values (the build will try to quit on errors and exceptions).
         # Request the version to log it and remember here if the Editor is being used.
@@ -126,9 +88,6 @@ class Controller(object):
         :return The output data from the build.
         """
 
-        # Don't do anything if the controller already quit.
-        if self._quit:
-            return []
         if isinstance(commands, dict):
             commands = [commands]
 
@@ -175,8 +134,6 @@ class Controller(object):
             print("Quitting now because the controller tried too many times to resend commands to the build. "
                   "Check the build log for more info.")
             self._print_build_log()
-            self._local_build_is_running = False
-            self._quit = True
 
         # Check if we've received a quit signal. If we have, check if there was an error.
         for i in range(len(resp) - 1):
@@ -184,8 +141,6 @@ class Controller(object):
                 if not QuitSignal(resp[i]).get_ok():
                     print("The build quit due to an error. Check the build log for more info.")
                     self._print_build_log()
-                self._local_build_is_running = False
-                self._quit = True
                 break
 
         # Get commands per module for the next frame.
@@ -452,33 +407,6 @@ class Controller(object):
             self._tdw_version = build_version
         print(f"Build version {self._tdw_version}\nUnity Engine {self._unity_version}\n"
               f"Python tdw module version {version}")
-
-    def _build_process_heartbeat(self, build_pid: int, controller_pid: int) -> None:
-        """
-        Check whether the build and the main controller processes are still up.
-        Run this in a thread, and only when the build is running local.
-
-        :param build_pid: The build process ID.
-        :param controller_pid: The controller process ID.
-        """
-
-        try:
-            while self._local_build_is_running:
-                # If the main thread is down or the build is down, stop.
-                if not psutil.pid_exists(build_pid) or not psutil.pid_exists(controller_pid):
-                    self._local_build_is_running = False
-                    sleep(1)
-            if not self._quit:
-                self._quit = True
-                print("The build is probably down due to an unhandled exception."
-                      " Check the build log for more info.")
-                self._print_build_log()
-            self._local_build_is_running = False
-        finally:
-            # Kill the remaining processes.
-            for pid in [build_pid, controller_pid]:
-                if psutil.pid_exists(pid):
-                    os.kill(pid, 9)
 
     def _print_build_log(self) -> None:
         """

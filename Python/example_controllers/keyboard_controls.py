@@ -74,10 +74,10 @@ class KeyboardControls(KeyboardController):
         self.listen(key="W", commands=self.move(direction=1), events=["press", "hold"])
         self.listen(key="UpArrow", commands=self.move(direction=1), events=["press", "hold"])
         self.listen(key="S", commands=self.move(direction=-1), events=["press", "hold"])
-        self.listen(key="DownArrow", commands=self.move(direction=1), events=["press", "hold"])
+        self.listen(key="DownArrow", commands=self.move(direction=-1), events=["press", "hold"])
         self.listen(key="A", commands=self.turn(direction=-1), events=["press", "hold"])
         self.listen(key="LeftArrow", commands=self.turn(direction=-1), events=["press", "hold"])
-        self.listen(key="S", commands=self.turn(direction=1), events=["press", "hold"])
+        self.listen(key="D", commands=self.turn(direction=1), events=["press", "hold"])
         self.listen(key="RightArrow", commands=self.turn(direction=1), events=["press", "hold"])
         self.listen(key="Escape", function=self.stop, events=["press"])
 

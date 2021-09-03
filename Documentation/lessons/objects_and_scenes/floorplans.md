@@ -66,6 +66,7 @@ Python API:
 
 Command API:
 
+- [`set_screen_size`](../../api/command_api.md#set_screen_size)
 - [`set_floorplan_roof`](../../api/command_api.md#set_floorplan_roof)
 
 [Return to the README](../../README.md)

@@ -74,7 +74,7 @@ class Panorama(Controller):
                           ])
 
     def run(self):
-        # Load the suburb scene_data.
+        # Load the suburb scene.
         self.load_streamed_scene(scene="suburb_scene_2018")
 
         # Create the avatar.

@@ -3,7 +3,7 @@ from tdw.output_data import OutputData, StaticRobot
 from tdw.tdw_utils import TDWUtils
 
 """
-Add a Magnebot and move it around the scene_data.
+Add a Magnebot and move it around the scene.
 """
 
 if __name__ == "__main__":
@@ -12,7 +12,7 @@ if __name__ == "__main__":
     print("For a high-level API, please see: https://github.com/alters-mit/magnebot")
     c.start()
     robot_id = 0
-    # Add a Magnebot to the scene_data and request static data.
+    # Add a Magnebot to the scene and request static data.
     commands = [TDWUtils.create_empty_room(12, 12),
                           {"$type": "add_magnebot",
                            "id": robot_id,
@@ -21,7 +21,7 @@ if __name__ == "__main__":
                           {"$type": "send_static_robots",
                            "ids": [robot_id],
                            "frequency": "once"}]
-    # Add a camera to the scene_data.
+    # Add a camera to the scene.
     commands.extend(TDWUtils.create_avatar(position={"x": -2.49, "y": 4, "z": 0},
                                            look_at={"x": 0, "y": 0, "z": 0}))
     resp = c.communicate(commands)

@@ -35,7 +35,7 @@ class SceneBounds:
                 break
         assert scene is not None, "No scene regions data in response from build!"
 
-        # Get the overall size of the scene_data.
+        # Get the overall size of the scene.
         """:field
         Minimum x positional coordinate of the scene.
         """

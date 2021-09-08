@@ -18,7 +18,7 @@ c = Controller()
 
 table_id = 0
 
-# 1. Load the scene_data.
+# 1. Load the scene.
 # 2. Create an empty room (using a wrapper function)
 # 3. Add the table.
 # 4. Request Bounds data.

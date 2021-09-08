@@ -42,7 +42,7 @@ class MinimalAudioDataset(Controller):
 
     def trial(self, name: str) -> None:
         """
-        In a trial, create a scene_data. Add an avatar with an audio sensor.
+        In a trial, create a scene. Add an avatar with an audio sensor.
         Add an object and then drop the object.
         As the object bounces on the floor, generate audio.
         Record the audio and save it to disk as a .wav file.
@@ -84,7 +84,7 @@ class MinimalAudioDataset(Controller):
         resp = self.communicate(commands)
 
         # This must be sent to tell PyImpact which collisions to listen for.
-        # `object_names` must include all objects in the scene_data that can produce audio.
+        # `object_names` must include all objects in the scene that can produce audio.
         MinimalAudioDataset.PY_IMPACT.set_default_audio_info(object_names={object_id: name})
 
         # Start recording audio.

@@ -16,7 +16,7 @@ robot = Robot(name="ur5",
               position={"x": -1, "y": 0, "z": 0.5},
               robot_id=0)
 c.add_ons.append(robot)
-# Initialize the scene_data.
+# Initialize the scene.
 c.communicate([{"$type": "load_scene",
                 "scene_name": "ProcGenScene"},
                TDWUtils.create_empty_room(12, 12)])

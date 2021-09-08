@@ -81,7 +81,7 @@ It's usually worth testing and editing the prefab before finalizing the asset bu
 1. Create a prefab of the robot.
 2. Open robot_creator Unity project in Unity 2020.2; the project is located at `~/robot_creator` (where `~` is your home directory).
 3. In the Unity Editor project window, double-click `Scenes -> SampleScene`
-4. In the Unity Editor project window, search for the name of the robot. Click the file and drag it into the scene_data view.
+4. In the Unity Editor project window, search for the name of the robot. Click the file and drag it into the scene view.
 5. Press play.
 
 Common problems and solutions during prefab creation:
@@ -149,7 +149,7 @@ lib.add_or_update_record(record=record, overwrite=False, write=True)
 
 ### Load the robot into TDW
 
-To add the robot to a TDW scene_data:
+To add the robot to a TDW scene:
 
 ```python
 from pathlib import Path

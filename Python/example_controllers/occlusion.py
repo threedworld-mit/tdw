@@ -5,19 +5,19 @@ from tdw.output_data import OutputData
 from tdw.output_data import Occlusion as Occl
 
 """
-Use occlusion data to measure to what extent objects in the scene_data are occluded.
+Use occlusion data to measure to what extent objects in the scene are occluded.
 """
 
 
 class Occlusion(Controller):
     def run(self) -> None:
         """
-        Create a scene_data with a row of objects and an avatar.
+        Create a scene with a row of objects and an avatar.
         Get occlusion data.
         Put a wall in front of the objects and get occlusion data again.
         """
 
-        # Create the scene_data.
+        # Create the scene.
         commands = [{"$type": "load_scene",
                      "scene_name": "ProcGenScene"},
                     TDWUtils.create_empty_room(12, 12)]

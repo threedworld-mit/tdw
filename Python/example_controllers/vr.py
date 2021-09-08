@@ -5,11 +5,11 @@ from tdw.output_data import VRRig, OutputData
 class VR(Controller):
     """
     1. Create an Oculus VR rig.
-    2. Add a few objects to the scene_data that can be picked up, moved, put down, etc.
+    2. Add a few objects to the scene that can be picked up, moved, put down, etc.
     """
 
     def run(self):
-        # Load the streamed scene_data and add controller rig.
+        # Load the streamed scene and add controller rig.
         self.load_streamed_scene(scene="tdw_room")
 
         self.communicate({"$type": "create_vr_rig"})

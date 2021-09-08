@@ -37,7 +37,7 @@ Data for the bounds of a region in a scene. In an interior scene, this usually c
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | scene_regions |  SceneRegions |  | The scene regions output data. |
-| i |  int |  | The index of this scene_data in env.get_num() |
+| i |  int |  | The index of this scene in env.get_num() |
 
 #### is_inside
 
@@ -49,5 +49,5 @@ Data for the bounds of a region in a scene. In an interior scene, this usually c
 | x |  float |  | The x coordinate. |
 | z |  float |  | The z coordinate. |
 
-_Returns:_  True if position (x, z) is in the scene_data.
+_Returns:_  True if position (x, z) is in the scene.
 

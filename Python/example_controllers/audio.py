@@ -6,7 +6,7 @@ from time import sleep
 
 
 """
-- Create a scene_data with a reverb space and audio sensor.
+- Create a scene with a reverb space and audio sensor.
 - Test how object positions can affect reverb.
 """
 
@@ -57,7 +57,7 @@ class Audio(Controller):
         pos_3 = {"x": 2.4, "y": 0, "z": -4.3}
         pos_4 = {"x": 0, "y": 0, "z": 0}
 
-        # Load the streamed scene_data.
+        # Load the streamed scene.
         self.load_streamed_scene(scene="tdw_room")
         # Create the objects.
         id_0 = self.add_object("satiro_sculpture",

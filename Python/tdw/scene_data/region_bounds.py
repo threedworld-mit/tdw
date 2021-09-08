@@ -9,7 +9,7 @@ class RegionBounds:
     def __init__(self, scene_regions: SceneRegions, i: int):
         """
         :param scene_regions: The scene regions output data.
-        :param i: The index of this scene_data in env.get_num()
+        :param i: The index of this scene in env.get_num()
         """
 
         """:field
@@ -54,7 +54,7 @@ class RegionBounds:
         :param x: The x coordinate.
         :param z: The z coordinate.
 
-        :return: True if position (x, z) is in the scene_data.
+        :return: True if position (x, z) is in the scene.
         """
 
         return self.x_min <= x <= self.x_max and self.z_min <= z <= self.z_max

@@ -4,7 +4,7 @@ from tdw.tdw_utils import TDWUtils
 
 
 """
-Add a painting to the scene_data.
+Add a painting to the scene.
 """
 
 

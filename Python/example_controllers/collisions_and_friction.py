@@ -28,7 +28,7 @@ class CollisionsAndFriction(Controller):
         fridge_id = 0
         chair_id = 1
 
-        # Destroy all objects currently in the scene_data.
+        # Destroy all objects currently in the scene.
         init_commands = [{"$type": "destroy_all_objects"}]
         # Create the avatar.
         init_commands.extend(TDWUtils.create_avatar(position={"x": 1, "y": 2.5, "z": 5},

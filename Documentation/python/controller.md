@@ -46,7 +46,7 @@ Init TDW.
 
 | Parameter | Description |
 | --- | --- |
-| scene | The scene_data to load. |
+| scene | The scene to load. |
 
 ***
 
@@ -85,7 +85,7 @@ Returns a valid add_scene command.
 
 | Parameter | Description |
 | --- | --- |
-| scene_name | The name of the scene_data. |
+| scene_name | The name of the scene. |
 | library | The path to the records file. If left empty, the default library will be selected. See `SceneLibrarian.get_library_filenames()` and `SceneLibrarian.get_default_library()`. |
 
 _Returns:_ An add_scene command that the controller can then send.

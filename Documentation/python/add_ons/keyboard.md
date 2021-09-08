@@ -2,7 +2,7 @@
 
 `from tdw.add_ons.keyboard import Keyboard`
 
-Add keyboard controls to a TDW scene_data.
+Add keyboard controls to a TDW scene.
 
 For example implementation, see: `tdw/Python/example_controllers/keyboard_controls.py`
 

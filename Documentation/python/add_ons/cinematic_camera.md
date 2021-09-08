@@ -22,7 +22,7 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 Each function in this class will *start* to move the camera but won't actually send commands (because this is an `AddOn`, not a `Controller`).
 
-To actually apply changes to the camera and the scene_data, you need to send commands to the build like you normally would. In this example, the list of commands is empty, but it doesn't have to be:
+To actually apply changes to the camera and the scene, you need to send commands to the build like you normally would. In this example, the list of commands is empty, but it doesn't have to be:
 
 ```python
 from tdw.controller import Controller
@@ -46,7 +46,7 @@ for i in range(100):
     c.communicate([])
 ```
 
-Note that all objects that you want the camera to move to must be in the scene_data *before* adding the camera:
+Note that all objects that you want the camera to move to must be in the scene *before* adding the camera:
 
 ```python
 from tdw.controller import Controller
@@ -146,9 +146,9 @@ This object requires certain output data, which it will automatically request vi
 
 The output data will include:
 
-- `Bounds` (for all objects in the scene_data)
-- Avatar data (for all avatars in the scene_data; for this avatar, it's `AvatarKinematic`)
-- `ImageSensors` (for all avatars in the scene_data)
+- `Bounds` (for all objects in the scene)
+- Avatar data (for all avatars in the scene; for this avatar, it's `AvatarKinematic`)
+- `ImageSensors` (for all avatars in the scene)
 - `CameraMotionComplete` (for this avatar and any other cinematic cameras, whenever the avatar finishes a motion)
 
 ## Saving Images

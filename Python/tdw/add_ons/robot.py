@@ -11,7 +11,7 @@ from tdw.add_ons.robot_base import RobotBase
 
 class Robot(RobotBase):
     """
-    Add a robot to the scene_data and set joint targets and add joint forces. It has static and dynamic (per-frame) data for each of its joints.
+    Add a robot to the scene and set joint targets and add joint forces. It has static and dynamic (per-frame) data for each of its joints.
 
     ```python
     from tdw.controller import Controller
@@ -24,7 +24,7 @@ class Robot(RobotBase):
                   position={"x": -1, "y": 0, "z": 0.5},
                   robot_id=0)
     c.add_ons.append(robot)
-    # Initialize the scene_data.
+    # Initialize the scene.
     c.communicate([{"$type": "load_scene",
                     "scene_name": "ProcGenScene"},
                    TDWUtils.create_empty_room(12, 12)])

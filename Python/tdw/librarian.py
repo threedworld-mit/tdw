@@ -98,7 +98,7 @@ class MaterialRecord(_Record):
 
 class SceneRecord(_Record):
     """
-    A record of a scene_data asset bundle.
+    A record of a scene asset bundle.
     """
 
     def __init__(self, data: Optional[dict] = None):
@@ -486,7 +486,7 @@ class MaterialLibrarian(_Librarian[MaterialRecord]):
 
 class SceneLibrarian(_Librarian[SceneRecord]):
     """
-    Librarian class for scene_data metadata.
+    Librarian class for scene metadata.
     """
 
     @staticmethod

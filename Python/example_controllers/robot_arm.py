@@ -50,7 +50,7 @@ class RobotArm(Controller):
         robot_id = 0
         self.start()
 
-        # Create the scene_data. Add a robot.
+        # Create the scene. Add a robot.
         # Request static robot data for this frame only.
         # Request dynamic robot data per frame.
         commands = [TDWUtils.create_empty_room(12, 12),
@@ -59,7 +59,7 @@ class RobotArm(Controller):
                      "frequency": "once"},
                     {"$type": "send_robots",
                      "frequency": "always"}]
-        # Add an avatar to render the scene_data (just for demo purposes).
+        # Add an avatar to render the scene (just for demo purposes).
         commands.extend(TDWUtils.create_avatar(look_at=TDWUtils.VECTOR3_ZERO,
                                                position={"x": -0.881, "y": 0.836, "z": -1.396}))
 

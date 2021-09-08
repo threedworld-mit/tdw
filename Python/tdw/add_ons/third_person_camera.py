@@ -4,7 +4,7 @@ from tdw.add_ons.third_person_camera_base import ThirdPersonCameraBase
 
 class ThirdPersonCamera(ThirdPersonCameraBase):
     """
-    Add a third-person camera to the scene_data. This includes initialization parameters (position, rotation, etc.) and some basic movement parameters (whether to follow or look at a target),.
+    Add a third-person camera to the scene. This includes initialization parameters (position, rotation, etc.) and some basic movement parameters (whether to follow or look at a target),.
 
     ```python
     from tdw.controller import Controller
@@ -47,7 +47,7 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
 
     ## Multiple cameras
 
-    Unlike most `AddOn` objects, it is possible to add multiple `ThirdPersonCamera`s to the scene_data:
+    Unlike most `AddOn` objects, it is possible to add multiple `ThirdPersonCamera`s to the scene:
 
     ```python
     from tdw.controller import Controller

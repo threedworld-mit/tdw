@@ -16,7 +16,6 @@ if not path.parent.exists():
 
 c = Controller()
 print(f"Output will be saved to: {path.resolve()}")
-c.start()
 object_id = c.get_unique_id()
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",

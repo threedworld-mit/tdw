@@ -8,7 +8,6 @@ Add a box and make it red.
 """
 
 c = Controller()
-c.start()
 
 # Generate a unique object ID.
 object_id = c.get_unique_id()

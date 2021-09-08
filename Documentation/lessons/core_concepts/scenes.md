@@ -12,7 +12,6 @@ There are several ways to load a scene in TDW:
 
 Creating a procedurally-generated interior scene (often abbreviated to "proc-gen room") in TDW requires several commands:
 
-1. [`load_scene`](../../api/command_api.md#load_scene) to initialize the scene in Unity (it still needs to be populated with a TDW scene).
 2. [`create_exterior_walls`](../../api/command_api.md#create_exterior_walls) to create a room with exterior walls.
 3. (Optional) [`create_interior_walls`](../../api/command_api.md#create_interior_walls) to add create interior walls.
 4. (Optional) [There are many other proc-gen room commands as well.](../../api/command_api.md#ProcGenRoomCommand)
@@ -133,7 +132,6 @@ Send [`perlin_noise_terrain`](../../api/command_api.md#perlin_noise_terrain)  to
 from tdw.controller import Controller
 
 c = Controller()
-c.start()
 c.communicate({"$type": "perlin_noise_terrain",
                "size": {"x": 24, "y": 24},
                "subdivisions": 1,
@@ -164,7 +162,6 @@ Python API:
 
 Command API:
 
-- [`load_scene`](../../api/command_api.md#load_scene)
 - [`create_exterior_walls`](../../api/command_api.md#create_exterior_walls)
 - [`create_interior_walls`](../../api/command_api.md#create_interior_walls)
 - [`perlin_noise_terrain`](../../api/command_api.md#perlin_noise_terrain)

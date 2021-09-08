@@ -9,7 +9,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 
 object_id = c.get_unique_id()
 avatar_position = {"x": 2, "y": 1.6, "z": -0.6}
@@ -53,7 +52,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 object_id = c.get_unique_id()
 # Create a third-person camera that will follow the object.

@@ -8,7 +8,6 @@ Create a scene, add an object, and save the image.
 """
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 commands = [TDWUtils.create_empty_room(12, 12),

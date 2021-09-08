@@ -13,7 +13,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "create_avatar",
                 "type": "A_Img_Caps_Kinematic",
@@ -31,7 +30,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "create_avatar",
                 "type": "A_Img_Caps_Kinematic",
@@ -52,7 +50,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "create_avatar",
                 "type": "A_Img_Caps_Kinematic",
@@ -83,7 +80,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend(TDWUtils.create_avatar(avatar_type="A_Img_Caps_Kinematic",
                                        position={"x": -1, "y": 5.7, "z": -3.8},
@@ -109,7 +105,6 @@ Note that in this example, the `avatar_id` parameters are missing. That's becaus
 """
 
 c = Controller()
-c.start()
 y = 5.7
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "create_avatar",

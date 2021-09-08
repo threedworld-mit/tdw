@@ -9,7 +9,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 commands = [TDWUtils.create_empty_room(12, 12)]
 x = 0
 y = 1.6
@@ -33,7 +32,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 x = 0
 y = 1.6
 z = 0

@@ -9,7 +9,6 @@ Example implementation of the ImageCapture add-on.
 """
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 camera = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
                            look_at=object_id,

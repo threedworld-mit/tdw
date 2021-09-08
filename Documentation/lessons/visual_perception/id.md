@@ -12,7 +12,6 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()
@@ -66,7 +65,6 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.output_data import OutputData, SegmentationColors
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()
@@ -152,7 +150,6 @@ Get the IDs of each object in the frame.
 """
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()

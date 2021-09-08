@@ -11,7 +11,6 @@ from tdw.output_data import OutputData, Images
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 commands = [TDWUtils.create_empty_room(12, 12),
@@ -53,7 +52,6 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
@@ -80,7 +78,7 @@ Some visual perception data is image data such as the segmentation color passes 
 
 ***
 
-**Next: [Segmentation colors (`_id` pass)](id.md)**
+**Next: [Instance ID segmentation colors (`_id` pass)](id.md)**
 
 Example controllers:
 

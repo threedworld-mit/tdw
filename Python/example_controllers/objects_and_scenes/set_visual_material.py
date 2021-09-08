@@ -10,7 +10,6 @@ Set an object's visual material.
 """
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 model_record = ModelLibrarian().get_record("white_lounger_chair")

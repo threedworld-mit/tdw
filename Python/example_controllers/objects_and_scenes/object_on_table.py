@@ -10,7 +10,6 @@ Use Bounds data to put an object on a table.
 """
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 # Add a camera and enable image capture.

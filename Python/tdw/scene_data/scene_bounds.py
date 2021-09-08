@@ -15,7 +15,6 @@ class SceneBounds:
     from tdw.scene_data.scene_bounds import SceneBounds
 
     c = Controller()
-    c.start()
     resp = c.communicate([TDWUtils.create_empty_room(12, 12),
                           {"$type": "send_scene_regions"}])
     scene_bounds = SceneBounds(resp=resp)

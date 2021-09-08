@@ -13,7 +13,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 commands = [TDWUtils.create_empty_room(12, 12),
@@ -37,7 +36,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 commands = [TDWUtils.create_empty_room(12, 12),
@@ -70,7 +68,6 @@ Create a scene, add an object, and save the image.
 """
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 commands = [TDWUtils.create_empty_room(12, 12),
@@ -126,7 +123,6 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
                         look_at=object_id,

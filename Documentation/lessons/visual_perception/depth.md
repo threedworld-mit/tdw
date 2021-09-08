@@ -31,7 +31,6 @@ Convert the _depth pass to depth values and plot them using matplotlib.
 """
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()
@@ -98,7 +97,6 @@ Convert the _depth pass to depth values, plot them using matplotlib, and generat
 """
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()

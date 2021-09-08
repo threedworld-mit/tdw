@@ -10,7 +10,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Bounds
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 # Create the scene. Add an object. Request Bounds output data.
@@ -43,7 +42,6 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 # Add a camera and enable image capture.
@@ -103,7 +101,6 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.add_ons.object_manager import ObjectManager
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 # Add a camera and enable image capture.

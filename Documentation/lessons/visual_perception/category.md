@@ -39,7 +39,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, SegmentationColors
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()
@@ -87,7 +86,6 @@ Get the _category pass and category data per object.
 """
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()

@@ -55,7 +55,6 @@ class ProcGenRoom(Controller):
                 exterior_walls.append({"x": ix, "y": iy})
             elif room_arr[ix, iy] == 2:
                 interior_walls.append({"x": ix, "y": iy})
-        # load_scene typically gets sent by calling c.start()
         return [{"$type": "load_scene",
                  "scene_name": "ProcGenScene"},
                 {"$type": "create_exterior_walls",

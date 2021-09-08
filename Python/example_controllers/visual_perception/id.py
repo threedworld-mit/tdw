@@ -11,7 +11,6 @@ Capture an _id image pass and read the segmentation colors in the image.
 """
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()

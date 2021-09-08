@@ -123,7 +123,6 @@ from tdw.librarian import ModelLibrarian, MaterialLibrarian
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 material_record = MaterialLibrarian("materials_low.json").get_record("parquet_long_horizontal_clean")
@@ -171,7 +170,6 @@ from tdw.librarian import ModelLibrarian
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 model_record = ModelLibrarian().get_record("white_lounger_chair")
@@ -210,7 +208,6 @@ from tdw.librarian import ModelLibrarian
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 model_record = ModelLibrarian().get_record("white_lounger_chair")
@@ -256,7 +253,6 @@ from tdw.librarian import ModelLibrarian
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 model_record = ModelLibrarian().get_record("white_lounger_chair")

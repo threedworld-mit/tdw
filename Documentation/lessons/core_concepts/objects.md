@@ -14,7 +14,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 # Generate a unique object ID.
 object_id = c.get_unique_id()
@@ -42,7 +41,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 # Generate a unique object ID.
 object_id = c.get_unique_id()
@@ -182,7 +180,6 @@ Add a box and make it red.
 """
 
 c = Controller()
-c.start()
 
 # Generate a unique object ID.
 object_id = c.get_unique_id()

@@ -16,7 +16,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 # Create the third-person camera.
 camera = ThirdPersonCamera(avatar_id="a",
@@ -35,7 +34,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 # Create the third-person camera.
 camera = ThirdPersonCamera(avatar_id="a",
@@ -62,7 +60,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 camera = ThirdPersonCamera(avatar_id="a",
                            position={"x": -1, "y": 5.7, "z": -3.8},
@@ -101,7 +98,6 @@ from tdw.add_ons.debug import Debug
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 
 # Create the third-person camera.
 camera = ThirdPersonCamera(avatar_id="a",

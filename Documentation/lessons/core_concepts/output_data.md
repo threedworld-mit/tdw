@@ -33,7 +33,6 @@ from tdw.output_data import OutputData, SceneRegions
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 resp = c.communicate([TDWUtils.create_empty_room(12, 12),
                       {"$type": "send_scene_regions"}])
@@ -64,7 +63,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
@@ -80,7 +78,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
@@ -99,7 +96,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
@@ -122,7 +118,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Transforms, Rigidbodies
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_object(model_name="iron_box",
@@ -183,7 +178,6 @@ from tdw.add_ons.object_manager import ObjectManager
 c = Controller()
 om = ObjectManager(transforms=True, rigidbodies=True, bounds=False)
 c.add_ons.append(om)
-c.start()
 
 # Send the commands.
 resp = c.communicate([TDWUtils.create_empty_room(12, 12),

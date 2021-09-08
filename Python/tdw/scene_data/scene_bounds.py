@@ -1,23 +1,23 @@
 from typing import List, Optional
-from tdw.output_data import OutputData, Environments
-from tdw.scene.room_bounds import RoomBounds
+from tdw.output_data import OutputData, SceneRegions
+from tdw.scene_data.region_bounds import RegionBounds
 
 
 class SceneBounds:
     """
-    Data for the scene bounds and its rooms.
+    Data for the scene bounds and its regions. In an interior scene, regions are equivalent to rooms.
 
-    In order to initialize this object, the controller must have sent `send_environments` to the build on the previous frame:
+    In order to initialize this object, the controller must have sent `send_scene_regions` to the build on the previous frame:
 
     ```python
     from tdw.controller import Controller
     from tdw.tdw_utils import TDWUtils
-    from tdw.scene.scene_bounds import SceneBounds
+    from tdw.scene_data.scene_bounds import SceneBounds
 
     c = Controller()
     c.start()
     resp = c.communicate([TDWUtils.create_empty_room(12, 12),
-                          {"$type": "send_environments"}])
+                          {"$type": "send_scene_regions"}])
     scene_bounds = SceneBounds(resp=resp)
     ```
     """
@@ -27,13 +27,13 @@ class SceneBounds:
         :param resp: The response from the build.
         """
 
-        env: Optional[Environments] = None
+        scene: Optional[SceneRegions] = None
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "envi":
-                env = Environments(resp[i])
+            if r_id == "sreg":
+                scene = SceneRegions(resp[i])
                 break
-        assert env is not None, "No scene data in response from build!"
+        assert scene is not None, "No scene regions data in response from build!"
 
         # Get the overall size of the scene.
         """:field
@@ -63,9 +63,9 @@ class SceneBounds:
         """:field
         All of the rooms in the scene.
         """
-        self.rooms: List[RoomBounds] = list()
-        for i in range(env.get_num()):
-            e = RoomBounds(env=env, i=i)
+        self.rooms: List[RegionBounds] = list()
+        for i in range(scene.get_num()):
+            e = RegionBounds(scene_regions=scene, i=i)
             if e.x_min < self.x_min:
                 self.x_min = e.x_min
             if e.y_min < self.y_min:

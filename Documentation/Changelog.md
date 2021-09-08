@@ -23,6 +23,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | `rotate_sensor_container_towards_position` | Rotate the sensor container towards a position at a given angular speed per frame. |
 | `rotate_sensor_container_towards_rotation` | Rotate the sensor container towards a target rotation.       |
 
+### Renamed Commands
+
+| Command             | New name             |
+| ------------------- | -------------------- |
+| `send_environments` | `send_scene_regions` |
+
 #### Removed Commands
 
 | Command                         | Reason                                                      |
@@ -36,6 +42,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | Output Data            | Description                                       |
 | ---------------------- | ------------------------------------------------- |
 | `CameraMotionComplete` | Announce that a camera motion has been completed. |
+
+### Renamed Output Data
+
+| Output Data    | New name       |
+| -------------- | -------------- |
+| `Environments` | `SceneRegions` |
 
 ### `tdw` module
 
@@ -82,6 +94,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 #### `paths` (backend)
 
 - Added: `EXAMPLE_CONTROLLER_OUTPUT_PATH`
+
+#### `SceneBounds` and `RoomBounds`
+
+- Renamed `RoomBounds` to `RegionBounds`
+- Moved `scene_bounds.py` and `room_bounds.py` from `scene/` to `scene_data/`.
 
 ### Use Cases
 

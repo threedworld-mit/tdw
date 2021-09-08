@@ -138,6 +138,10 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Procedural generation (objects)](proc_gen_objects.md)**
 
+[Return to the README](../../README.md)
+
+***
+
 Example controllers:
 
 - [object_on_table.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/object_on_table.py) Put an object on a table using `Bounds` output data.
@@ -155,4 +159,3 @@ Output Data API:
 
 - [`Bounds`](../../api/output_data.md#Bounds) 
 
-[Return to the README](../../README.md)

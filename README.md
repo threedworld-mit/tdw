@@ -14,20 +14,20 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 ## 1.1 Setup
 
 1. [Install TDW](Documentation/lessons/setup/install.md)
-2. [Auto-launching the TDW build](Documentation/lessons/setup/launch_build.md)
 3. [Upgrade TDW](Documentation/lessons/setup/upgrade.md)
 
 ## 1.2 Core Concepts
 
 1. [The controller](Documentation/lessons/core_concepts/controller.md)
-2. [Commands](Documentation/lessons/core_concepts/commands.md)
-3. [Design philosophy of TDW](Documentation/lessons/core_concepts/design_philosophy.md)
-4. [Scenes](Documentation/lessons/core_concepts/scenes.md)
-5. [Avatars and cameras](Documentation/lessons/core_concepts/avatars.md)
-6. [Add-ons and the `ThirdPersonCamera`](Documentation/lessons/core_concepts/add_ons.md)
-7. [Objects](Documentation/lessons/core_concepts/objects.md)
-8. [Output data](Documentation/lessons/core_concepts/output_data.md)
-9. [Images](Documentation/lessons/core_concepts/images.md)
+2. [Auto-launching the TDW build](Documentation/lessons/core_concepts/launch_build.md)
+3. [Commands](Documentation/lessons/core_concepts/commands.md)
+4. [Design philosophy of TDW](Documentation/lessons/core_concepts/design_philosophy.md)
+5. [Scenes](Documentation/lessons/core_concepts/scenes.md)
+6. [Avatars and cameras](Documentation/lessons/core_concepts/avatars.md)
+7. [Add-ons and the `ThirdPersonCamera`](Documentation/lessons/core_concepts/add_ons.md)
+8. [Objects](Documentation/lessons/core_concepts/objects.md)
+9. [Output data](Documentation/lessons/core_concepts/output_data.md)
+10. [Images](Documentation/lessons/core_concepts/images.md)
 
 ## 1.3 Troubleshooting and good coding practices :warning: TODO :warning:
 
@@ -66,8 +66,8 @@ High-level API: [FloorplanController](Documentation/python/floorplan_controller.
 ## 2.3 Visual Perception
 
 1. [Overview](Documentation/lessons/visual_perception/overview.md)
-2. [Segmentation colors (`_id` pass)](Documentation/lessons/visual_perception/id.md)
-3. [Segmentation colors (`_category` pass)](Documentation/lessons/visual_perception/category.md)
+2. [Instance ID segmentation colors (`_id` pass)](Documentation/lessons/visual_perception/id.md)
+3. [Semantic category segmentation colors (`_category` pass)](Documentation/lessons/visual_perception/category.md)
 4. [Depth maps (`_depth` and `_depth_simple` passes)](Documentation/lessons/visual_perception/depth.md)
 5. [Motion perception (`_flow` pass)](Documentation/lessons/visual_perception/flow.md)
 6. [Other image passes (`_mask`, `_normals`, and `_albedo` passes)](Documentation/lessons/visual_perception/other_passes.md)
@@ -125,7 +125,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 3. VR
 4. Humanoids
 5. Keyboard controls
-6. NavMesh
+6. Embodied avatars
+7. Navigation
 
 High-level API: [magnebot](https://github.com/alters-mit/magnebot)
 

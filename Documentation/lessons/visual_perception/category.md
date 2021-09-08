@@ -1,6 +1,6 @@
 ##### Visual Perception
 
-# Segmentation Colors (`_category` pass)
+# Semantic category segmentation colors (`_category` pass)
 
 The `_category` pass is similar to the `_id` pass but it assigns colors based on the semantic category of the objects in the scene. Note that the two items on the table are in the same category and therefore receive the same color:
 

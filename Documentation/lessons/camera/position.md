@@ -51,6 +51,10 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Rotate a camera](rotation.md)**
 
+[Return to the README](../../README.md)
+
+***
+
 Command API:
 
 - [`teleport_avatar_to`](../../api/command_api.md#teleport_avatar_to)
@@ -59,4 +63,3 @@ Python API:
 
 - [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md)
 
-[Return to the README](../../README.md)

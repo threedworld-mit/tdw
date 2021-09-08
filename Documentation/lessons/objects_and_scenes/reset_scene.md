@@ -129,6 +129,10 @@ Unfortunately, it isn't possible to reset to an arbitrary frame in the middle of
 
 **This is the last document in the "Objects and Scenes" tutorial.**
 
+[Return to the README](../../README.md)
+
+***
+
 Example controllers:
 
 - [reset_scene.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/reset_scene.py) Create multiple trials of an object falling and reset the scene between trials.
@@ -148,4 +152,3 @@ Output Data API:
 
 - [`Rigidbodies`](../../api/output_data.md#Rigidbodies)
 
-[Return to the README](../../README.md)

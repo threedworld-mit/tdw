@@ -1,6 +1,6 @@
 ##### Visual Perception
 
-# Segmentation Colors (`_id` pass)
+# Instance ID segmentation colors (`_id` pass)
 
 Each object in a TDW scene has a random and unique **segmentation color**. The `_id` capture pass shows the segmentation colors of each object in the scene:
 

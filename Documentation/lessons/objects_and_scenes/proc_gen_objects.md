@@ -631,6 +631,10 @@ As mentioned earlier, procedural generation is an unbounded problem and there's 
 
 **Next: [Reset a scene](reset_scene.md)**
 
+[Return to the README](../../README.md)
+
+***
+
 Example controllers:
 
 - [proc_gen_objects.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/proc_gen_objects.py) Using procedural generation, add a table to scene and add chairs around the table.
@@ -647,6 +651,4 @@ Command API:
 
 - [`object_look_at_position`](../../api/command_api.md#object_look_at_position) 
 - [`rotate_object_by`](../../api/command_api.md#rotate_object_by)
-
-[Return to the README](../../README.md)
 

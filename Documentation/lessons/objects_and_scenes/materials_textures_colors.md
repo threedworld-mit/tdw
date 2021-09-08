@@ -8,30 +8,8 @@ This document will give an overview of some of the fundamental differences.
 
 - Every model in TDW is composed of *n*  **meshes**. Multiple meshes *does not* mean that a model has joints or affordances. Many of TDW's models were purchased from a third party and whether or not there are multiple "sub-meshes" is entirely dependent on how the original artist designed it.
 - A _material_ is a binary file containing an initialized _shader_. A shader is a tiny program that is used to render a 3D object. The material shader might contain info such the *texture*, *color*, and what happens when light hits the material (i.e. its shininess, bumpiness, and so on). **Every mesh in a TDW model has at least one material but may have more.**
-- A *texture*  is a .jpg or .png file. It is one of many aspects of a material. In computer graphics, the term _texture_ is often used interchangeably with _map_. **In TDW, most most materials have one albedo texture.**
-- A material can be tinted by a *color*.
-
-## Set the color of a model
-
-Set the color of a model with [`set_color`](../../api/command_api.md#set_color); see [this document](../core_concepts/objects.md) for example implementation.
-
-## Default materials and model substructures
-
-All of TDW's models have default materials. The organization of the sub-meshes of a model and each sub-meshes visual material(s) is known in TDW as a models "substructure". Substructure metadata is stored in [model records](../../python/librarian/model_librarian.md):
-
-```python
-from tdw.librarian import ModelLibrarian
-
-librarian = ModelLibrarian()
-record = librarian.get_record("034_vray")
-print(record.substructure)
-```
-
-Output:
-
-```
-[{'materials': ['cgaxis_electronics_34_01'], 'name': 'cgaxis_electronics_34_01'}, {'materials': ['cgaxis_electronics_34_02'], 'name': 'cgaxis_electronics_34_02'}, {'materials': ['cgaxis_electronics_34_03'], 'name': 'cgaxis_electronics_34_03'}, {'materials': ['cgaxis_electronics_34_04'], 'name': 'cgaxis_electronics_34_04'}, {'materials': ['cgaxis_electronics_34_05'], 'name': 'cgaxis_electronics_34_05'}, {'materials': ['cgaxis_electronics_34_06'], 'name': 'cgaxis_electronics_34_06'}, {'materials': ['SolidTiles_Opaque'], 'name': 'cgaxis_electronics_34_07'}, {'materials': ['SolidTiles_Opaque'], 'name': 'cgaxis_electronics_34_08'}, {'materials': ['SolidTiles_Transparent'], 'name': 'cgaxis_electronics_34_09'}]
-```
+- A *texture*  is a .jpg or .png file. It is one of many aspects of a material. In computer graphics, the term _texture_ is often used interchangeably with _map_. **In TDW, most most materials have one albedo texture.** There can be other textures as well, such as a normal map, which can adjust what happens when light hits a model (for example, by creating grooves or bumps even if the underlying mesh is smooth).
+- A material's albedo texture can be tinted by a *color*. Set the color of a model with [`set_color`](../../api/command_api.md#set_color); see [this document](../core_concepts/objects.md) for example implementation.
 
 ## Material asset bundles
 
@@ -100,17 +78,41 @@ The TDW repo includes [a controller that will create images of every material in
 2. `python3 screenshotter.py --type materials`
 3. [Launch the build manually](../setup/launch_build.md)
 
+Images will be saved to `~/TDWImages` (where `~` is your home directory).
+
+You can review the images with the [TDW Material Visualizer](https://github.com/threedworld-mit/tdw_visualizers).
+
 ## Set the visual material of an object
 
-The low-level commands required for setting an object's visual material(s) are relatively complicated but TDW includes some wrapper functions to make it easier. For the sake of understanding how it works, we'll start with the low-level API calls and then explain the wrapper functions.
-
-To set a visual material, you need to do at least three steps:
+To set a visual material, you need to do at least the following steps:
 
 1. Add an object to the scene.
 2. Get the object's model substructure.
 3. Get a material metadata record.
 4. Add the material to the scene with the [`add_material` command ](../../api/command_api.md#add_material).
 5. Set the visual material of one of the object's sub-mesh's materials with the [`set_visual_material` command](../../api/command_api.md#set_visual_material).
+
+Every model in TDW has a "substructure" of sub-meshes. The substructure could be quite simple (only one mesh) or more complicated (multiple meshes). Every mesh can have one or more visual materials.
+
+The substructure of a model has little to do with the type of object and much more to do with their origin: Most of TDW's models were purchased from external sources and different artists built the models differently.
+
+Substructure metadata is stored in [model records](../../python/librarian/model_librarian.md):
+
+```python
+from tdw.librarian import ModelLibrarian
+
+librarian = ModelLibrarian()
+record = librarian.get_record("034_vray")
+print(record.substructure)
+```
+
+Output:
+
+```
+[{'materials': ['cgaxis_electronics_34_01'], 'name': 'cgaxis_electronics_34_01'}, {'materials': ['cgaxis_electronics_34_02'], 'name': 'cgaxis_electronics_34_02'}, {'materials': ['cgaxis_electronics_34_03'], 'name': 'cgaxis_electronics_34_03'}, {'materials': ['cgaxis_electronics_34_04'], 'name': 'cgaxis_electronics_34_04'}, {'materials': ['cgaxis_electronics_34_05'], 'name': 'cgaxis_electronics_34_05'}, {'materials': ['cgaxis_electronics_34_06'], 'name': 'cgaxis_electronics_34_06'}, {'materials': ['SolidTiles_Opaque'], 'name': 'cgaxis_electronics_34_07'}, {'materials': ['SolidTiles_Opaque'], 'name': 'cgaxis_electronics_34_08'}, {'materials': ['SolidTiles_Transparent'], 'name': 'cgaxis_electronics_34_09'}]
+```
+
+The low-level commands required for setting an object's visual material(s) are relatively complicated but TDW includes some wrapper functions to make it easier. For the sake of understanding how it works, we'll start with the low-level API calls and then explain the wrapper functions.
 
 ```python
 from tdw.controller import Controller
@@ -293,6 +295,10 @@ Visual materials in TDW are photorealistic in the sense that many of them are de
 
 **Next: [Procedural generation (scenes)](proc_gen_room.md)**
 
+[Return to the README](../../README.md)
+
+***
+
 Example controllers:
 
 - [set_visual_material.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/set_visual_material.py) Set an object's visual material.
@@ -310,4 +316,6 @@ Python API:
 - [`Controller.get_add_material(material_name, library)`](../../python/controller.md) Get a valid `add_material` command.
 - [`TDWUtils.set_visual_material(controller, substructure, material, object_id)`](../../python/tdw_utils.md) Set the visual material for all materials.
 
-[Return to the README](../../README.md)
+Utility applications:
+
+- [TDW Material Visualizer](https://github.com/threedworld-mit/tdw_visualizers)

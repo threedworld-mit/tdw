@@ -15,7 +15,7 @@ Procedural generation ("proc-gen") is a common technique in video game design to
 
 That said, procedural generation is very useful and is implemented in many of TDW's high-level APIs.
 
-In this tutorial, you'll first learn about a default scripted object placement system in TDW (the floorplan layouts) and then how to procedurally add objects to a scene.
+In this tutorial, you'll first learn about "floorplan layouts", which use scripted object placement to generate interior environments. Then, you'll learn how to procedurally add objects to a scene.
 
 ***
 

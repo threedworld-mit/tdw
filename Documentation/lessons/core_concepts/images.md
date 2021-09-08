@@ -114,16 +114,6 @@ Result:
 
 ![](images/img_pass_box.png)
 
-## jpg vs. png encoding
-
-The `_img` capture pass is standard rendering of the scene. It can be encoded as a lossless png or a lossy jpg. Generally, jpg encoding is significantly faster than png encoding and good enough for most use cases. To enable jpg encoding, send [`{"$type": "set_img_pass_encoding", "value": False}`](../../api/command_api.md#set_img_pass_encoding) or set `png=False` in the `ImageCapture` constructor. 
-
-Larger jpg images will look better than smaller images, as will larger images that are later resized to be smaller.
-
-| `_img` pass (png)        | `_img` pass (jpg)        |
-| ------------------------ | ------------------------ |
-| ![](images/img_0000.png) | ![](images/img_0000.jpg) |
-
 ## The `ImageCapture` add-on
 
 You can add use an [`ImageCapture`](../../python/add_ons/ImageCapture.md) to save images per frame. Note that in this example, we don't need to manually initialize the camera, enable image capture, or parse output data; all of that is handled automatically by the `ImageCapture` add-on:
@@ -161,9 +151,23 @@ c.communicate({"$type": "terminate"})
 
 The `set_pass_masks` command can enable multiple **image passes**. So far, we've only reviewed the `_img` pass but other passes such as the `_id` segmentation color pass are possible. [Read this for more information.](../../api/command_api.md#set_pass_masks)
 
+## jpg vs. png encoding
+
+The `_img` capture pass is standard rendering of the scene. It can be encoded as a lossless png or a lossy jpg. Generally, jpg encoding is significantly faster than png encoding and good enough for most use cases. To enable jpg encoding, send [`{"$type": "set_img_pass_encoding", "value": False}`](../../api/command_api.md#set_img_pass_encoding) or set `png=False` in the `ImageCapture` constructor. 
+
+Larger jpg images will look better than smaller images, as will larger images that are later resized to be smaller.
+
+| `_img` pass (png)        | `_img` pass (jpg)        |
+| ------------------------ | ------------------------ |
+| ![](images/img_0000.png) | ![](images/img_0000.jpg) |
+
 ***
 
-**This is the last document in the "Core Concepts" section. We recommend you read our guide on [troubleshooting and good coding practices in TDW](TODO).**
+**This is the last document in the "Core Concepts" section. We recommend you next read our guide on [troubleshooting and good coding practices in TDW](TODO).**
+
+[Return to the README](../../README.md)
+
+***
 
 Example controllers:
 
@@ -186,5 +190,3 @@ Command API:
 Output Data API:
 
 - [`Images`](../../api/output_data.md#Images) 
-
-[Return to the README](../../README.md)

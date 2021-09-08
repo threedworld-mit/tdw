@@ -2,7 +2,11 @@
 
 # The Controller
 
+*Note: We recommend you try the code examples in this document on a personal computer, not a remote server. [The next Core Concepts document](launch_build.md) explains how to run TDW on a remote server in more detail.*
+
 A controller is the Python object that communicates with the simulation application (the build). Typically, users are responsible for writing their own controllers, though the documentation for TDW includes numerous examples.
+
+![](images/network.png)
 
 You've already seen a minimal controller script example:
 
@@ -58,7 +62,11 @@ if __name__ == "__main__":
 
 ***
 
-**Next: [Commands](commands.md)**
+**Next: [Auto-launching the TDW build](launch_build.md)**
+
+[Return to the README](../../README.md)
+
+***
 
 Python API:
 
@@ -68,5 +76,3 @@ Command API:
 
 - [`terminate`](../../api/command_api.md#terminate)
 - [`step_physics`](../../api/command_api.md#step_physics)
-
-[Return to the README](../../README.md)

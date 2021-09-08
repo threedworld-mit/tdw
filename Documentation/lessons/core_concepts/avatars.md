@@ -2,9 +2,9 @@
 
 # Avatars and cameras
 
-As mentioned [earlier](design_philosophy.md), TDW doesn't impose metaphors regarding what an agent is or whether there needs to be one at all.
+As mentioned [earlier](design_philosophy.md), TDW doesn't impose metaphors regarding what an agent is or whether there needs to be one at all. **Avatars** are a type of agent in TDW but not the only one.
 
-**Avatars** are a type of agent in TDW but not the only one. Every type of every has a camera. The most commonly used avatar is a non-embodied camera; you can think of this avatar as being more or less equivalent to a third-person camera.
+All avatars have a camera. The most commonly used avatar is a non-embodied camera; you can think of this avatar as being more or less equivalent to a third-person camera.
 
 To add the third-person camera avatar to the scene:
 
@@ -144,6 +144,10 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Add-ons and the `ThirdPersonCamera`](add_ons.md)**
 
+[Return to the README](../../README.md)
+
+***
+
 Example controllers:
 
 - [move_avatar.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/move_avatar.py) Move an avatar and rotate its camera.
@@ -158,5 +162,3 @@ Command API:
 - [`teleport_avatar_to`](../../api/command_api.md#teleport_avatar_to)
 - [`rotate_sensor_container_by`](../../api/command_api.md#rotate_sensor_container_by)
 - [`set_target_framerate`](../../api/command_api.md#set_target_framerate)
-
-[Return to the README](../../README.md)

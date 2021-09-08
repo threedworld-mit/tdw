@@ -2,13 +2,12 @@
 
 # Installing TDW
 
-## Core Concepts
+TDW is two applications that communicate with each other over a TCP/IP socket. You need to have both to run TDW. They can be on the same machine or on separate machines (such as a laptop and a remote server).
 
 - **The build** is the 3D simulation environment. It is a windowed application that requires a display and a GPU.
 - **The controller** is a Python script that communicates with the build. You write your own controller script (though this repo contains many examples).
-- The build and the controller communicate with each other over a TCP/IP socket. They can be on the same machines or separate machines (such as a laptop and a remote server).
 
-![](images/network.png)
+This document will explain how to install both the build executable and the Python code required to write TDW controller scripts.
 
 ## System Requirements
 
@@ -213,8 +212,12 @@ DISPLAY=:0.0 ./TDW.x86_64 -port=1071 -address=replace_with_the_controller_addres
 
 ***
 
-**Next: [Auto-launching the TDW build](launch_build.md)**
-
-Example controller: [hello_world.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/setup/hello_world.py)
+**Next: [Upgrading TDW](upgrade.md)**
 
 [Return to the README](../../README.md)
+
+***
+
+Example controllers:
+
+- [hello_world.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/setup/hello_world.py)

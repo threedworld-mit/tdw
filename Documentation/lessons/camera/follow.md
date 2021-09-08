@@ -83,6 +83,10 @@ c.communicate({"$type": "terminate"})
 
 **This is the last document in the "Camera Controls" tutorial.**
 
+[Return to the README](../../README.md)
+
+***
+
 Example controllers:
 
 - [follow.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/camera_controls/follow.py) Tell a camera to follow an object.
@@ -94,5 +98,3 @@ Python API:
 Command API:
 
 - [`follow_object`](../../api/command_api.md#follow_object)
-
-[Return to the README](../../README.md)

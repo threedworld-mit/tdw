@@ -61,14 +61,16 @@ TDW includes hundreds of commands. **[Read the Command API documentation here.](
 
 ## If you need more commands...
 
-...don't hesitate to reach out to us via email or Slack! The Command API is designed to be easily improved and extended and we'll usually be able to add the functionality you need.
+...don't hesitate to reach out by posting a GitHub issue! The Command API is designed to be easily improved and extended and we'll usually be able to add the functionality you need.
 
 ***
-
-**Next: [Design philosophy of TDW](design_philosophy.md)**
 
 See also: 
 
 - [Command API](../api/command_api.md)
+
+***
+
+**Next: [Design philosophy of TDW](design_philosophy.md)**
 
 [Return to the README](../../README.md)

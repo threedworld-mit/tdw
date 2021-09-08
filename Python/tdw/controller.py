@@ -56,7 +56,9 @@ class Controller(object):
         # Set error handling to default values (the build will try to quit on errors and exceptions).
         # Request the version to log it and remember here if the Editor is being used.
         resp = self.communicate([{"$type": "set_error_handling"},
-                                 {"$type": "send_version"}])
+                                 {"$type": "send_version"},
+                                 {"$type": "load_scene",
+                                  "scene_name": "ProcGenScene"}])
         self._is_standalone: bool = False
         self._tdw_version: str = ""
         self._unity_version: str = ""
@@ -152,12 +154,15 @@ class Controller(object):
 
     def start(self, scene="ProcGenScene") -> None:
         """
-        Init TDW.
+        This function has been deprecated and doesn't do anything. It will be removed in TDW v1.10.
 
         :param scene: The scene to load.
         """
 
-        self.communicate([{"$type": "load_scene", "scene_name": scene}])
+        print("This function has been deprecated and doesn't do anything. "
+              "The command it used to send is automatically sent via the Controller constructor. "
+              "You can safely remove this function from your code. "
+              "The start() function will be removed in TDW v1.10")
 
     def get_add_object(self, model_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str = "") -> dict:
         """

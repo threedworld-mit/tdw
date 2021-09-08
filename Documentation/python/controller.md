@@ -42,7 +42,7 @@ _Returns:_ The output data from the build.
 
 #### `start(self, scene="ProcGenScene") -> None`
 
-Init TDW.
+This function has been deprecated and doesn't do anything. It will be removed in TDW v1.10.
 
 | Parameter | Description |
 | --- | --- |

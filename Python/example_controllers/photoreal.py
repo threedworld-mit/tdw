@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 """
-Create a photorealistic scene, focusing on post-processing and other effects.
+Create a photorealistic scene_data, focusing on post-processing and other effects.
 The "archviz_house" environment is used due to its maximal photorealistic lighting.
 """
 
@@ -17,7 +17,7 @@ class Photoreal(Controller):
         if not output_directory.exists():
             output_directory.mkdir()
 
-        # Load the streamed scene.
+        # Load the streamed scene_data.
         self.load_streamed_scene(scene="archviz_house")
 
         # Add the objects.

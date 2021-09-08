@@ -8,13 +8,13 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 class OccupancyMapper(Controller):
     """
-    Generate occupancy maps in a simple scene populated by objects.
+    Generate occupancy maps in a simple scene_data populated by objects.
     For more information, [read this](add_ons/occupancy_map.md).
     """
 
     def run(self) -> None:
         """
-        Create a simple scene. Generate some occupancy maps and capture images of the scene and occupancy map.
+        Create a simple scene_data. Generate some occupancy maps and capture images of the scene_data and occupancy map.
         """
 
         self.start()
@@ -35,12 +35,12 @@ class OccupancyMapper(Controller):
         cap = ImageCapture(avatar_ids=[cam.avatar_id], path=EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("occupancy_mapper"))
         print(f"Images will be saved to: {cap.path}")
         self.add_ons.extend([cam, cap])
-        # Generate an image of the scene.
+        # Generate an image of the scene_data.
         self.communicate([])
-        # Generate an image of the scene with blue squares marking the occupancy map.
+        # Generate an image of the scene_data with blue squares marking the occupancy map.
         o.show()
         self.communicate([])
-        # Generate an image of the scene and hide the occupancy map again.
+        # Generate an image of the scene_data and hide the occupancy map again.
         o.hide()
         self.communicate([])
 

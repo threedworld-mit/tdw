@@ -4,7 +4,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.output_data import Images
 
 """
-Rotate the directional light in the scene.
+Rotate the directional light in the scene_data.
 """
 
 output_directory = str(Path.home().joinpath("tdw_example_controller_output/directional_light"))
@@ -12,7 +12,7 @@ print(f"Images will be saved to {output_directory}")
 
 c = Controller(launch_build=False)
 
-# Load the scene. Set the screen size.
+# Load the scene_data. Set the screen size.
 commands = [c.get_add_scene(scene_name="tdw_room"),
             {"$type": "set_screen_size",
              "width": 1280,

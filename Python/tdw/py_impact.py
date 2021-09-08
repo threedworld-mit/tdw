@@ -358,16 +358,16 @@ class PyImpact:
 
         # Get the default object info. See: `set_default_audio_info()`
         self.object_info: Dict[str, ObjectInfo] = dict()
-        # A dictionary of objects in the scene. See: `set_default_audio_info()`
+        # A dictionary of objects in the scene_data. See: `set_default_audio_info()`
         self.object_names: Dict[int, str] = dict()
         # A dummy ID for the environment. See: `set_default_audio_info()`
         self.env_id: int = -1
 
     def set_default_audio_info(self, object_names: Dict[int, str]) -> None:
         """
-        Set the default audio info for each object in the scene.
+        Set the default audio info for each object in the scene_data.
 
-        :param object_names: A dictionary of objects in the scene. Key = The object ID. Value = The name of the model.
+        :param object_names: A dictionary of objects in the scene_data. Key = The object ID. Value = The name of the model.
         """
 
         self.object_names = object_names
@@ -380,7 +380,7 @@ class PyImpact:
 
         Required:
 
-        - You've already called `set_default_audio_info()` and supplied it with the IDs and names of each object in the scene:
+        - You've already called `set_default_audio_info()` and supplied it with the IDs and names of each object in the scene_data:
         - You've requested collision and rigidbody data per-frame (`send_collisions` and `send_rigidbodies`)
 
         :param resp: The response from the build.

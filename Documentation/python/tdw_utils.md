@@ -313,7 +313,7 @@ _This is a static function._
 | --- | --- |
 | c | The controller. |
 | substructure | The metadata substructure of the object. |
-| object_id | The ID of the object in the scene. |
+| object_id | The ID of the object in the scene_data. |
 | material | The name of the new material. |
 | quality | The quality of the material. |
 

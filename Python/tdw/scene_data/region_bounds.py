@@ -1,29 +1,29 @@
-from tdw.output_data import Environments
+from tdw.output_data import SceneRegions
 
 
-class RoomBounds:
+class RegionBounds:
     """
-    Data for the bounds of a room in a scene.
+    Data for the bounds of a region in a scene. In an interior scene, this usually corresponds to a room.
     """
 
-    def __init__(self, env: Environments, i: int):
+    def __init__(self, scene_regions: SceneRegions, i: int):
         """
-        :param env: The environments output data.
-        :param i: The index of this scene in env.get_num()
+        :param scene_regions: The scene regions output data.
+        :param i: The index of this scene_data in env.get_num()
         """
 
         """:field
-        The ID of the room.
+        The ID of the region.
         """
-        self.room_id: int = env.get_id(i)
+        self.room_id: int = scene_regions.get_id(i)
         """:field
-        The center of the room.
+        The center of the region.
         """
-        self.center = env.get_center(i)
+        self.center = scene_regions.get_center(i)
         """:field
-        The bounds of the room.
+        The bounds of the region.
         """
-        self.bounds = env.get_bounds(i)
+        self.bounds = scene_regions.get_bounds(i)
         """:field
         Minimum x positional coordinate of the room.
         """
@@ -54,7 +54,7 @@ class RoomBounds:
         :param x: The x coordinate.
         :param z: The z coordinate.
 
-        :return: True if position (x, z) is in the scene.
+        :return: True if position (x, z) is in the scene_data.
         """
 
         return self.x_min <= x <= self.x_max and self.z_min <= z <= self.z_max

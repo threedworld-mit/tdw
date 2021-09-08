@@ -47,7 +47,7 @@ class ImageCapture(AddOn):
     def __init__(self, path: Union[str, Path], avatar_ids: List[str] = None, png: bool = False, pass_masks: List[str] = None):
         """
         :param path: The path to the output directory.
-        :param avatar_ids: The IDs of the avatars that will capture and save images. If empty, all avatars will capture and save images. Note that these avatars must already exist in the scene (if you've added the avatars via a [`ThirdPersonCamera` add-on](third_person_camera.md), you must add the `ThirdPersonCamera` first, *then* `ImageCapture`).
+        :param avatar_ids: The IDs of the avatars that will capture and save images. If empty, all avatars will capture and save images. Note that these avatars must already exist in the scene_data (if you've added the avatars via a [`ThirdPersonCamera` add-on](third_person_camera.md), you must add the `ThirdPersonCamera` first, *then* `ImageCapture`).
         :param png: If True, images will be lossless png files. If False, images will be jpgs. Usually, jpg is sufficient.
         :param pass_masks: A list of image passes that will be captured by the avatars. If None, defaults to `["_img"]`. For a description of each of pass mask, [read this](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_pass_masks).
         """
@@ -129,11 +129,11 @@ class ImageCapture(AddOn):
     def set(self, frequency: str = "always", avatar_ids: List[str] = None, pass_masks: List[str] = None, save: bool = True) -> None:
         """
         Set the frequency of images and which avatars will capture images.
-        By default, all of the avatars specified in the constructor (if None, all avatars in the scene) will capture images every frame.
+        By default, all of the avatars specified in the constructor (if None, all avatars in the scene_data) will capture images every frame.
         This function will override the previous image capture settings; in other words, setting `frequency` to `"once"` for one avatar will make all other avatars stop capturing images per frame.
 
         :param frequency: The frequency at which images are captured. Options: `"always"` (capture images every frame), `"once"` (capture an image only on the next frame), `"never"` (stop capturing images).
-        :param avatar_ids: The IDs of the avatar that will capture images. If None, all avatars in the scene will capture images.
+        :param avatar_ids: The IDs of the avatar that will capture images. If None, all avatars in the scene_data will capture images.
         :param pass_masks: A list of image passes that will be captured by the avatars. If None, defaults to `["_img"]`. For a description of each of pass mask, [read this](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_pass_masks).
         :param save: If True, automatically save images to disk per frame. If False, images won't be saved but the `self.images` dictionary will still be updated.
         """

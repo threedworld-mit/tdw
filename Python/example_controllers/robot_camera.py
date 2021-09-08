@@ -12,7 +12,7 @@ if __name__ == "__main__":
     c.start()
     robot_id = 0
     avatar_id = "a"
-    # Add a Magnebot to the scene. Request static robot data.
+    # Add a Magnebot to the scene_data. Request static robot data.
     resp = c.communicate([TDWUtils.create_empty_room(12, 12),
                           {"$type": "add_magnebot",
                            "position": {"x": 0, "y": 0, "z": 0},

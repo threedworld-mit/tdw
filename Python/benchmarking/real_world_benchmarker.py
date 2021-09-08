@@ -61,7 +61,7 @@ class RealWorldController(Controller):
                 self.get_object_dict(self.find_open_position(current_objects, avatar_position), self.bad_obj_name))
 
         # Add the TDW configurations to a list to be sent inside TDWGenerator.restart_trial()
-        # Initialize the scene.
+        # Initialize the scene_data.
         # Set the render quality to as low as possible.
         # Tell the build to return transform, rigidbody, and image data.
         config_actions.append([{'$type': "load_scene", 'scene_name': "ProcGenScene"}])

@@ -1,18 +1,18 @@
-# RoomBounds
+# RegionBounds
 
-`from scene.room_bounds import RoomBounds`
+`from scene_data.region_bounds import RegionBounds`
 
-Data for the bounds of a room in a scene.
+Data for the bounds of a region in a scene. In an interior scene, this usually corresponds to a room.
 
 ***
 
 ## Fields
 
-- `room_id` The ID of the room.
+- `room_id` The ID of the region.
 
-- `center` The center of the room.
+- `center` The center of the region.
 
-- `bounds` The bounds of the room.
+- `bounds` The bounds of the region.
 
 - `x_min` Minimum x positional coordinate of the room.
 
@@ -32,12 +32,12 @@ Data for the bounds of a room in a scene.
 
 #### \_\_init\_\_
 
-**`RoomBounds(env, i)`**
+**`RegionBounds(scene_regions, i)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| env |  Environments |  | The environments output data. |
-| i |  int |  | The index of this scene in env.get_num() |
+| scene_regions |  SceneRegions |  | The scene regions output data. |
+| i |  int |  | The index of this scene_data in env.get_num() |
 
 #### is_inside
 
@@ -49,5 +49,5 @@ Data for the bounds of a room in a scene.
 | x |  float |  | The x coordinate. |
 | z |  float |  | The z coordinate. |
 
-_Returns:_  True if position (x, z) is in the scene.
+_Returns:_  True if position (x, z) is in the scene_data.
 

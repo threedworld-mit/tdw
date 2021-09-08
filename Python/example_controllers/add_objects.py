@@ -4,7 +4,7 @@ from tdw.librarian import ModelLibrarian
 
 
 """
-Different ways to add the same object to a scene.
+Different ways to add the same object to a scene_data.
 """
 
 

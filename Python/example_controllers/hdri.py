@@ -7,7 +7,7 @@ from tdw.output_data import Images
 
 
 """
-Create an object and avatar and capture images of the scene, rotating the HDRI skybox by 15 degrees
+Create an object and avatar and capture images of the scene_data, rotating the HDRI skybox by 15 degrees
 for each image.
 """
 
@@ -22,7 +22,7 @@ class HDRI(Controller):
             os.mkdir(output_directory)
 
         self.start()
-        # Load a streamed scene. This scene covers a relatively small area, and is optimized for use with HDRI maps.
+        # Load a streamed scene_data. This scene_data covers a relatively small area, and is optimized for use with HDRI maps.
         self.load_streamed_scene(scene="building_site")
 
         # Add the object.

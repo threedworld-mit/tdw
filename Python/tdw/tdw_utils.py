@@ -375,7 +375,7 @@ class TDWUtils:
         """
         :param c: The controller.
         :param substructure: The metadata substructure of the object.
-        :param object_id: The ID of the object in the scene.
+        :param object_id: The ID of the object in the scene_data.
         :param material: The name of the new material.
         :param quality: The quality of the material.
 

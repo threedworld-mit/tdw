@@ -2,12 +2,12 @@
 
 `from tdw.add_ons.object_manager import ObjectManager`
 
-A simple manager class for objects in the scene. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.
+A simple manager class for objects in the scene_data. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.
 
 ## Usages constraints:
 
 - This add-on assumes that this is a PhysX simulation, as opposed to a simulation with physics disabled or a Flex simulation.
-- This add-on will record data for *all* objects in the scene. If you only need data for specific objects, you should use low-level TDW commands.
+- This add-on will record data for *all* objects in the scene_data. If you only need data for specific objects, you should use low-level TDW commands.
 - By default, this add-on will record [transform data](../object_data/transform.md) but not [rigidbody data](../object_data/rigidbody.md) or [bounds data](../object_data/bound.md). You can set which data the add-on will record in the constructor, but be aware that this can slow down the simulation.
 
 ## Example usage
@@ -65,11 +65,11 @@ c.communicate({"$type": "terminate"})
 
 - `categories` The segmentation color per category as use in the _category image pass. Key = The category. Value = The color as an `[r, g, b]` numpy array.
 
-- `transforms` The [transform data](../object_data/transform.md) for each object on the scene on this frame. Key = The object ID. If `transforms=False` in the constructor, this dictionary will be empty.
+- `transforms` The [transform data](../object_data/transform.md) for each object on the scene_data on this frame. Key = The object ID. If `transforms=False` in the constructor, this dictionary will be empty.
 
-- `rigidbodies` The [rigidbody data](../object_data/rigidbody.md) for each rigidbody object on the scene on this frame. Key = The object ID. If `rigidbodies=False` in the constructor, this dictionary will be empty.
+- `rigidbodies` The [rigidbody data](../object_data/rigidbody.md) for each rigidbody object on the scene_data on this frame. Key = The object ID. If `rigidbodies=False` in the constructor, this dictionary will be empty.
 
-- `bounds` The [bounds data](../object_data/bound.md) for each object on the scene on this frame. Key = The object ID. If `bounds=False` in the constructor, this dictionary will be empty.
+- `bounds` The [bounds data](../object_data/bound.md) for each object on the scene_data on this frame. Key = The object ID. If `bounds=False` in the constructor, this dictionary will be empty.
 
 ***
 
@@ -83,9 +83,9 @@ c.communicate({"$type": "terminate"})
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| transforms |  bool  | True | If True, record the [transform data](../object_data/transform.md) of each object in the scene. |
-| rigidbodies |  bool  | False | If True, record the [rigidbody data](../object_data/rigidbody.md) of each rigidbody object in the scene. |
-| bounds |  bool  | False | If True, record the [bounds data](../object_data/bound.md) of each object in the scene. |
+| transforms |  bool  | True | If True, record the [transform data](../object_data/transform.md) of each object in the scene_data. |
+| rigidbodies |  bool  | False | If True, record the [rigidbody data](../object_data/rigidbody.md) of each rigidbody object in the scene_data. |
+| bounds |  bool  | False | If True, record the [bounds data](../object_data/bound.md) of each object in the scene_data. |
 
 #### get_initialization_commands
 
@@ -112,7 +112,7 @@ Any commands in the `self.commands` list will be sent on the next frame.
 
 **`self.reset()`**
 
-Reset the cached static data. Call this when resetting the scene.
+Reset the cached static data. Call this when resetting the scene_data.
 
 #### before_send
 

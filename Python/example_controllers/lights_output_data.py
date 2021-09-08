@@ -2,7 +2,7 @@ from tdw.controller import Controller
 from tdw.output_data import OutputData, Lights
 
 """
-Load a streamed scene and received Lights output data.
+Load a streamed scene_data and received Lights output data.
 """
 
 c = Controller(launch_build=False)

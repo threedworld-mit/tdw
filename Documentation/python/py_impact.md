@@ -27,11 +27,11 @@ For example usage, see: `tdw/Python/example_controllers/impact_sounds.py`
 
 #### `set_default_audio_info(self, object_names: Dict[int, str]) -> None`
 
-Set the default audio info for each object in the scene.
+Set the default audio info for each object in the scene_data.
 
 | Parameter | Description |
 | --- | --- |
-| object_names | A dictionary of objects in the scene. Key = The object ID. Value = The name of the model. |
+| object_names | A dictionary of objects in the scene_data. Key = The object ID. Value = The name of the model. |
 
 ***
 
@@ -39,7 +39,7 @@ Set the default audio info for each object in the scene.
 
 Given the response from the build, get audio commands.
 Required:
-- You've already called `set_default_audio_info()` and supplied it with the IDs and names of each object in the scene:
+- You've already called `set_default_audio_info()` and supplied it with the IDs and names of each object in the scene_data:
 - You've requested collision and rigidbody data per-frame (`send_collisions` and `send_rigidbodies`)
 
 | Parameter | Description |

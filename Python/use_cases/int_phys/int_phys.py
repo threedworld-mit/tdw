@@ -94,7 +94,7 @@ class Util:
 
 class State:
     """
-    The current state of the scene.
+    The current state of the scene_data.
     """
 
     def __init__(self,
@@ -114,7 +114,7 @@ class State:
 
 class Possibility:
     """
-    A Possibility is the behavior that an object might have given the scene state.
+    A Possibility is the behavior that an object might have given the scene_data state.
     By default, an object will just respond to the physics engine, and have no additional behavior.
     """
 
@@ -125,7 +125,7 @@ class Possibility:
         """
         Returns a list of commands for this object that will be sent per frame.
 
-        :param state: The current scene state.
+        :param state: The current scene_data state.
         """
 
         return []
@@ -222,7 +222,7 @@ class TDWObject:
         """
         Returns a list of commands for this object that will be sent per frame.
 
-        :param state: The current scene state.
+        :param state: The current scene_data state.
         """
 
         raise Exception()
@@ -440,7 +440,7 @@ class Trial:
         """
         :param occluders: The occluders in this trial.
         :param moving_objects: The moving objects in this trial.
-        :param scene_commands: The commands used to initialize the scene for the trial.
+        :param scene_commands: The commands used to initialize the scene_data for the trial.
         :param output_dir: The output data directory.
         :param num_frames: The trial will run for this many frames.
         """
@@ -500,7 +500,7 @@ class Trial:
 
         print(f"Images will be saved to: {self.output_dir}")
 
-        # Initialize the scene.
+        # Initialize the scene_data.
         resp = c.communicate(self.init_commands)
         # Get a map of the segmentation colors.
         segm = SegmentationColors(resp[0])
@@ -509,7 +509,7 @@ class Trial:
                 if obj.object_id == segm.get_object_id(i):
                     obj.possibility.segmentation_color = segm.get_object_color(i)
 
-        # Request scene data and images per frame.
+        # Request scene_data data and images per frame.
         frame_data: List[dict] = []
         resp = c.communicate([{"$type": "send_images",
                                "frequency": "always"},
@@ -584,7 +584,7 @@ class Trial:
                         "frequency": "never"}])
 
         print("\tGenerated images.")
-        # Output the scene metadata.
+        # Output the scene_data metadata.
         Path(self.output_dir).joinpath("state.json").write_text(json.dumps({"frames": frame_data}), encoding="utf-8")
         print("\tWrote state file.")
 

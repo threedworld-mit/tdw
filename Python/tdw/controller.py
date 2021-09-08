@@ -154,7 +154,7 @@ class Controller(object):
         """
         Init TDW.
 
-        :param scene: The scene to load.
+        :param scene: The scene_data to load.
         """
 
         self.communicate([{"$type": "load_scene", "scene_name": scene}])
@@ -208,7 +208,7 @@ class Controller(object):
         """
         Returns a valid add_scene command.
 
-        :param scene_name: The name of the scene.
+        :param scene_name: The name of the scene_data.
         :param library: The path to the records file. If left empty, the default library will be selected. See `SceneLibrarian.get_library_filenames()` and `SceneLibrarian.get_default_library()`.
 
         :return An add_scene command that the controller can then send.

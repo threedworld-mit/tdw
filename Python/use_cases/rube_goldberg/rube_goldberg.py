@@ -12,9 +12,9 @@ Create a "Rube Goldberg machine" from a set of objects that will collide when th
 Impact sounds are generated for each collision.
 
 Scene setup is handled through a json file -- object_setup.json -- which defines the id number, position, rotation and 
-scale for every object in the scene. Each entry in the file is deserialized into an ObjectSetup object.
+scale for every object in the scene_data. Each entry in the file is deserialized into an ObjectSetup object.
 
-Note that all scene objects have also been added to the default audio and material data file
+Note that all scene_data objects have also been added to the default audio and material data file
 (Python/tdw/py_impact/objects.csv), and all required parameters entered including their masses, audio material used,
 bounciness and relative amplitudes. See Documentation/misc_frontend/impact_sounds.md for additional details. 
 
@@ -23,7 +23,7 @@ This use-case also demonstrates the use of mode properties logging in PyImpact.
 
 class _ObjectSetup:
     """
-    Metadata for scene object setup. Specifies the id, position, rotation and scale of object.
+    Metadata for scene_data object setup. Specifies the id, position, rotation and scale of object.
     """
     def __init__(self,
                  id: int,
@@ -32,7 +32,7 @@ class _ObjectSetup:
                  rotation: Dict[str, float] = TDWUtils.VECTOR3_ZERO,
                  scale: Dict[str, float] = {"x": 1, "y": 1, "z": 1}):
         """
-        :param id: ID number of object in scene. We assign, rather than generating unique ID (see below).
+        :param id: ID number of object in scene_data. We assign, rather than generating unique ID (see below).
         :param model_name: Actual model name of the object (i.e. TDW model library name).
         :param position: The initial position of the object as a Vector3 dictionary.
         :param rotation: The initial rotation of the object in Euler angles as a Vector3 dictionary.
@@ -150,7 +150,7 @@ class RubeGoldbergDemo(Controller):
 
     def do_trial(self):
         # Initialize PyImpact and pass in the "master gain" amplitude value. This value must be betweem 0 and 1.
-        # The relative amplitudes of all scene objects involved in collisions will be scaled relative to this value.
+        # The relative amplitudes of all scene_data objects involved in collisions will be scaled relative to this value.
         # Note -- if this value is too high, waveform clipping can occur and the resultant audio will be distorted.
         # For this reason, the value used here is considerably smaller than the corresponding value used in the
         # impact_sounds.py example controller. Here we have a large number of closely-occuring collisions resulting in

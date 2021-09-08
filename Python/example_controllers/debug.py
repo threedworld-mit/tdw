@@ -22,7 +22,7 @@ class Debug(Controller):
         self.add_ons.append(d)
         self.start()
         o_id = self.get_unique_id()
-        # Create the scene and add an object Set the mass of the object and apply a force..
+        # Create the scene_data and add an object Set the mass of the object and apply a force..
         commands = [TDWUtils.create_empty_room(12, 12),
                     self.get_add_object("rh10",
                                         object_id=o_id),

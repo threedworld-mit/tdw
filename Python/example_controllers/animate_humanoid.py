@@ -20,7 +20,7 @@ class HumanoidAnimation(Controller):
 
         h_id = 0
 
-        # Load the streamed scene.
+        # Load the streamed scene_data.
         self.load_streamed_scene(scene="tdw_room")
 
         # Create the avatar.

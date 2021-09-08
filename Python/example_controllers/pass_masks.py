@@ -5,13 +5,13 @@ from tdw.output_data import OutputData, Images
 
 
 """
-Create one image per pass of a scene.
+Create one image per pass of a scene_data.
 """
 
 
 class PassMasks(Controller):
     def run(self):
-        # Create the scene.
+        # Create the scene_data.
         # Set image encoding globals.
         self.start()
         commands = [TDWUtils.create_empty_room(12, 12),

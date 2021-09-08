@@ -10,7 +10,7 @@ class VRFlex(Controller):
     """
 
     def run(self):
-        # Load the streamed scene and add controller rig.
+        # Load the streamed scene_data and add controller rig.
         self.load_streamed_scene(scene="tdw_room")
 
         # Create the container.

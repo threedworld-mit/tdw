@@ -1,5 +1,5 @@
 from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState
-from tdw.FBOutput import Environments as Envs
+from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
 from tdw.FBOutput import Bounds as Bouns
@@ -130,21 +130,21 @@ class OutputData(object):
         return color.R(), color.G(), color.B()
 
 
-class Environments(OutputData):
-    def get_data(self) -> Envs.Environments:
-        return Envs.Environments.GetRootAsEnvironments(self.bytes, 0)
+class SceneRegions(OutputData):
+    def get_data(self) -> SceRegs.SceneRegions:
+        return SceRegs.SceneRegions.GetRootAsSceneRegions(self.bytes, 0)
 
     def get_center(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Envs(index).Center)
+        return OutputData._get_vector3(self.data.Regions(index).Center)
 
     def get_bounds(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Envs(index).Bounds)
+        return OutputData._get_vector3(self.data.Regions(index).Bounds)
 
     def get_id(self, index: int) -> int:
-        return self.data.Envs(index).Id()
+        return self.data.Regions(index).Id()
 
     def get_num(self) -> int:
-        return self.data.EnvsLength()
+        return self.data.RegionsLength()
 
 
 class Transforms(OutputData):

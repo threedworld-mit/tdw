@@ -4,13 +4,13 @@
 
 `from tdw.floorplan_controller import FloorplanController`
 
-A controller that can create an interior scene populated with objects.
+A controller that can create an interior scene_data populated with objects.
 
 ```python
 from tdw.floorplan_controller import FloorplanController
 
 c = FloorplanController()
-init_commands = c.get_scene_init_commands(scene="2a", layout=0, audio=True)
+init_commands = c.get_scene_init_commands(scene_data="2a", layout=0, audio=True)
 c.communicate(init_commands)
 ```
 
@@ -18,9 +18,9 @@ c.communicate(init_commands)
 
 #### `get_scene_init_commands(self, scene: str, layout: int, audio: bool = True) -> List[dict]`
 
-Get commands to create a scene and populate it with objects.
+Get commands to create a scene_data and populate it with objects.
 Valid scenes and layouts:
-| `scene` | `layout` |
+| `scene_data` | `layout` |
 | --- | --- |
 | 1a, 1b, or 1c | 0, 1, or 2 |
 | 2a, 2b, or 2c | 0, 1, or 2 |
@@ -29,11 +29,11 @@ Valid scenes and layouts:
 
 | Parameter | Description |
 | --- | --- |
-| scene | The name of the scene. Corresponds to a record named: `floorplan_[scene]`. |
+| scene | The name of the scene_data. Corresponds to a record named: `floorplan_[scene_data]`. |
 | layout | The layout index. |
 | audio | If True, instantiate physics values per object from audio properties. |
 
-_Returns:_  A list of commands to initialize the scene and populate it with objects.
+_Returns:_  A list of commands to initialize the scene_data and populate it with objects.
 
 ***
 

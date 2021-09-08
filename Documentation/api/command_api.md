@@ -559,7 +559,7 @@
 | --- | --- |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
-| [`send_environments`](#send_environments) | Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) add_scene  |
+| [`send_environments`](#send_environments) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
@@ -6940,11 +6940,11 @@ Options for when to send data.
 
 ## **`send_environments`**
 
-Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) add_scene 
+Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`Environments`](output_data.md#Environments)</font>
+    - <font style="color:green">**Type:** [`SceneRegions`](output_data.md#SceneRegions)</font>
 
 ```python
 {"$type": "send_environments"}

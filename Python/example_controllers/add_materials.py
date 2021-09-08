@@ -5,7 +5,7 @@ from time import sleep
 
 
 """
-Different ways to add the same material to a scene.
+Different ways to add the same material to a scene_data.
 """
 
 

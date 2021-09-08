@@ -6,7 +6,7 @@ from tdw.add_ons.robot import Robot
 
 class RobotAgents(Controller):
     """
-    Add multiple robots to the scene.
+    Add multiple robots to the scene_data.
     """
 
     def run(self) -> None:
@@ -22,7 +22,7 @@ class RobotAgents(Controller):
                                    look_at={"x": -2, "y": 0.5, "z": 0})
         self.add_ons.extend([ur5, ur10, camera])
 
-        # Initialize the scene.
+        # Initialize the scene_data.
         self.communicate([{"$type": "load_scene",
                            "scene_name": "ProcGenScene"},
                           TDWUtils.create_empty_room(12, 12)])

@@ -14,7 +14,7 @@ import json
 
 class _AnimationAndScene:
     """
-    Metadata for an animation and a scene.
+    Metadata for an animation and a scene_data.
     """
 
     def __init__(self, animation: HumanoidAnimationRecord,
@@ -22,7 +22,7 @@ class _AnimationAndScene:
                  position: Dict[str, float] = TDWUtils.VECTOR3_ZERO,
                  rotation: Dict[str, float] = TDWUtils.VECTOR3_ZERO):
         """
-        :param scene: The scene record.
+        :param scene: The scene_data record.
         :param animation: The animation record.
         :param position: The initial position of the humanoid as a Vector3 dictionary.
         :param rotation: The initial rotation of the humanoid in Euler angles as a Vector3 dictionary.
@@ -83,11 +83,11 @@ class HumanoidVideo(Controller):
         """
         Create a single animation video as a series of images that will be written to the disk.
 
-        :param a_and_s: The animation/scene combo.
+        :param a_and_s: The animation/scene_data combo.
         :param humanoids: The humanoid records. Iterate through all of these.
         :param skyboxes: The HDRI skyboxes. Iterate through some of these (equal to num_camera_iterations).
         :param pbar: The progress bar (optional).
-        :param num_camera_iterations: Make this many videos of each specific animation/humanoid/scene/skybox combo, changing the camera angle each time.
+        :param num_camera_iterations: Make this many videos of each specific animation/humanoid/scene_data/skybox combo, changing the camera angle each time.
         :param h_id: The object ID of the humanoid.
         :param min_duration: The minimum duration of the video in seconds.
         :param overwrite: If True, overwrite existing images.
@@ -126,7 +126,7 @@ class HumanoidVideo(Controller):
                     output_dir.mkdir(parents=True)
                 output_dir = str(output_dir.resolve())
 
-                # Add a skybox if this scene is HDRI-enabled and exterior.
+                # Add a skybox if this scene_data is HDRI-enabled and exterior.
                 add_skybox = a_and_s.scene.hdri and a_and_s.scene.location == "exterior"
                 skybox = skyboxes_temp.pop(0)
 
@@ -150,13 +150,13 @@ class HumanoidVideo(Controller):
                 # Write metadata to disk.
                 metadata = {"humanoid": humanoid.name,
                             "animation": a_and_s.animation.name,
-                            "scene": a_and_s.scene.name,
+                            "scene_data": a_and_s.scene.name,
                             "location": a_and_s.scene.location,
                             "skybox": skybox.name if add_skybox else "",
                             "datetime": str(datetime.now()),
                             "tdw_version": __version__}
 
-                # Load the scene, avatar, and humanoid.
+                # Load the scene_data, avatar, and humanoid.
                 # Play the animation and begin image capture.
                 commands = [{"$type": "add_scene",
                              "name": a_and_s.scene.name,
@@ -242,9 +242,9 @@ class HumanoidVideo(Controller):
 
     def run(self, num_camera_iterations: int = 1) -> None:
         """
-        Create a target number of videos. In each video, choose a random humanoid, animation, scene, and skybox.
+        Create a target number of videos. In each video, choose a random humanoid, animation, scene_data, and skybox.
 
-        :param num_camera_iterations: Make this many videos of each specific animation/humanoid/scene/skybox combo, changing the camera angle each time.
+        :param num_camera_iterations: Make this many videos of each specific animation/humanoid/scene_data/skybox combo, changing the camera angle each time.
         """
 
         humanoids = HumanoidLibrarian().records

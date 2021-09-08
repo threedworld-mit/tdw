@@ -56,7 +56,7 @@ class OccupancyMap(AddOn):
         """
         self.occupancy_map: Optional[np.array] = None
         """:field
-        The [bounds of the scene](../scene/scene_bounds.md).
+        The [bounds of the scene](../scene_data/scene_bounds.md).
         """
         self.scene_bounds: Optional[SceneBounds] = None
         # The diameter of each cell in meters.

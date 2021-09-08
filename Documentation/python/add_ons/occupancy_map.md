@@ -46,7 +46,7 @@ Each element in the occupancy map can be one of three values:
 - **0:** The cell is unoccupied; there is a floor at this position but there are no objects.
 - **1:** The cell is occupied by at least one object.
 
-- `scene_bounds` The [bounds of the scene](../scene/scene_bounds.md).
+- `scene_bounds` The [bounds of the scene](../scene_data/scene_bounds.md).
 
 ***
 

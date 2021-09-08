@@ -40,16 +40,6 @@ _Returns:_ The output data from the build.
 
 ***
 
-#### `start(self, scene="ProcGenScene") -> None`
-
-This function has been deprecated and doesn't do anything. It will be removed in TDW v1.10.
-
-| Parameter | Description |
-| --- | --- |
-| scene | The scene to load. |
-
-***
-
 #### `get_add_object(self, model_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str = "") -> dict`
 
 Returns a valid add_object command.

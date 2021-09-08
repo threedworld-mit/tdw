@@ -2,9 +2,9 @@
 
 # Add-ons and the `ThirdPersonCamera`
 
-**Add-ons** in TDW are objects that can be added to a controller and act as wrappers for the Command API. They will inject commands at every `communicate()` call based on the output data from the build. You can attach an add-on to the controller by adding it to the `c.add_ons` list.
+**Add-ons** in TDW are objects that can be added to a controller and act as wrappers for the Command API. They will inject commands at every `communicate()` call based on output from the build. You can attach an add-on to the controller by adding it to the `c.add_ons` list.
 
-The purpose of add-ons is to simplify repetitious or complex behavior in TDW and to standardize common API calls. The most important thing to know about add-ons is that all they do is read output data and send commands; there is nothing that add-on can do that can't be done with low-level commands.
+The purpose of add-ons is to simplify repetitious or complex behavior in TDW and to standardize common API calls. The most important thing to know about add-ons is that all they do is read output and send input (commands); there is nothing that add-on can do that can't be done with low-level commands.
 
 The [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md) add-on will add a third-person camera avatar to the scene. It can do everything covered [in the previous document](avatars.md) but with simplified controls. 
 

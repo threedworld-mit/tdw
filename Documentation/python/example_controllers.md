@@ -36,7 +36,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `nav_mesh.py` | - Create a NavMeshAvatar and a simple procedurally-generated room.<br>- Tell the avatar to navigate to different destinations. |
 | `objects_and_images.py` | Create a few objects, and avatar, and capture images of the objects. |
 | `occlusion.py` | Use occlusion data to measure to what extent objects in the scene are occluded. |
-| `occupancy_mapper.py` | Generate occupancy maps in a simple scene populated by objects.<br>For more information, [read this](add_ons/occupancy_map.md). |
+| `occupancy_mapper.py` | Generate occupancy maps in a scene populated by objects.<br>For more information, [read this](add_ons/occupancy_map.md). |
 | `paintings.py` | Add a painting to the scene. |
 | `panorama.py` | Capture a series of images around a model to form a 360-degree panorama. |
 | `pass_masks.py` | Create one image per pass of a scene. |

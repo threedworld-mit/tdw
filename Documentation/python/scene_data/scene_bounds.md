@@ -1,20 +1,20 @@
 # SceneBounds
 
-`from scene.scene_bounds import SceneBounds`
+`from scene_data.scene_bounds import SceneBounds`
 
-Data for the scene bounds and its rooms.
+Data for the scene bounds and its regions. In an interior scene, regions are equivalent to rooms.
 
-In order to initialize this object, the controller must have sent `send_environments` to the build on the previous frame:
+In order to initialize this object, the controller must have sent `send_scene_regions` to the build on the previous frame:
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.scene.scene_bounds import SceneBounds
+from tdw.scene_data.scene_bounds import SceneBounds
 
 c = Controller()
 c.start()
 resp = c.communicate([TDWUtils.create_empty_room(12, 12),
-                      {"$type": "send_environments"}])
+                      {"$type": "send_scene_regions"}])
 scene_bounds = SceneBounds(resp=resp)
 ```
 

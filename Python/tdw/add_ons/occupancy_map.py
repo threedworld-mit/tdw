@@ -2,7 +2,7 @@ from typing import List, Dict, Optional, Tuple
 import numpy as np
 from tdw.output_data import OutputData, Raycast, Overlap
 from tdw.add_ons.add_on import AddOn
-from tdw.scene.scene_bounds import SceneBounds
+from tdw.scene_data.scene_bounds import SceneBounds
 
 
 class OccupancyMap(AddOn):
@@ -56,7 +56,7 @@ class OccupancyMap(AddOn):
         """
         self.occupancy_map: Optional[np.array] = None
         """:field
-        The [bounds of the scene](../scene_bounds.md).
+        The [bounds of the scene](../scene_data/scene_bounds.md).
         """
         self.scene_bounds: Optional[SceneBounds] = None
         # The diameter of each cell in meters.
@@ -67,7 +67,7 @@ class OccupancyMap(AddOn):
         self._ignore_objects: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
-        return [{"$type": "send_environments"}]
+        return [{"$type": "send_scene_regions"}]
 
     def on_send(self, resp: List[bytes]) -> None:
         def __get_islands() -> List[List[Tuple[int, int]]]:

@@ -399,6 +399,7 @@ Result:
 Example controllers:
 
 - [proc_gen_room.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/proc_gen_room.py) Procedurally create an interior scene.
+- [proc_gen_room_from_image.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/proc_gen_room_from_image.py) Generate a room from a .png file.
 
 Python API:
 

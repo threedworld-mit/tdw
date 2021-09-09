@@ -48,7 +48,7 @@ for material_type in librarian.get_material_types():
     print("")
 ```
 
-Unlike TDW's Model Librarians which group models by broad categories (for example, free vs. non-free), the Material Librarians group materials by *quality*. Each material has three quality levels: low, medium ("med"), and high. Higher-quality materials will look slightly better but take longer to download and use more memory:
+Unlike TDW's Model Librarians which group models by broad categories (for example, free vs. non-free), the Material Librarians group materials by *quality*. Each material has three quality levels: "low", "med", and "high". Higher-quality materials will look slightly better but take longer to download and use more memory:
 
 ```python
 from requests import head

@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
 **Next: [Auto-launching the TDW build](launch_build.md)**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)
 
 ***
 

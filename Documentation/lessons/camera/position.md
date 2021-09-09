@@ -49,7 +49,7 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Rotate a camera](rotation.md)**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)
 
 ***
 

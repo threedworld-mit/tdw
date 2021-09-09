@@ -221,7 +221,7 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Follow an object](follow.md)**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)
 
 ***
 

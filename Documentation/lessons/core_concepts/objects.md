@@ -151,7 +151,7 @@ lib_0 = ModelLibrarian()
 lib_1 = ModelLibrarian("models_core.json")
 ```
 
-There are other model libraries as well; it is possible to use your own models in TDW and to generate your own metadata libraries for those models. See [Model Libraries in the README](../../README.md).
+There are other model libraries as well; it is possible to use your own models in TDW and to generate your own metadata libraries for those models. See [Model Libraries in the README](../../../README.md).
 
 ## How to get images of every model in the library
 
@@ -159,7 +159,7 @@ The TDW repo includes [a controller that will create images of every object in t
 
 1. `cd path/to/tdw/Python` (replace `path/to` with the actual path)
 2. `python3 screenshotter.py`
-3. [Launch the build manually](../setup/launch_build.md)
+3. [Launch the build manually](launch_build.md)
 
 Images will be saved to `~/TDWImages` (where `~` is your home directory).
 
@@ -212,7 +212,7 @@ Some streamed scenes include objects such as benches, tables, etc. These objects
 
 **Next: [Output data](output_data.md)**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)
 
 ***
 

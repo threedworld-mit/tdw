@@ -76,7 +76,7 @@ The TDW repo includes [a controller that will create images of every material in
 
 1. `cd path/to/tdw/Python` (replace `path/to` with the actual path)
 2. `python3 screenshotter.py --type materials`
-3. [Launch the build manually](../setup/launch_build.md)
+3. [Launch the build manually](../core_concepts/launch_build.md)
 
 Images will be saved to `~/TDWImages` (where `~` is your home directory).
 
@@ -238,11 +238,11 @@ Every mesh in Unity _must_ have at least 1 material (or it will appear as horrib
 -  Decals on a racecar; the car's paint and the decal could be handled as separate materials.)
 -  A puddle in the dirt might be handled as two materials on a flat surface that are blended together.
 
-Every model in the TDW model library is comprised of _n_ meshes, each of which have _m_ materials. You can switch any material of any mesh of any object by sending [`set_visual_material`](../api/command_api.md#set_visual_material).
+Every model in the TDW model library is comprised of _n_ meshes, each of which have _m_ materials. You can switch any material of any mesh of any object by sending [`set_visual_material`](../../api/command_api.md#set_visual_material).
 
 ## Set the texture scale
 
-It is possible to scale the textures of a material to make them appear larger or smaller with the [`set_texture_scale` command](../api/command_api.md#set_texture_scale). By default, texture scales are always (1, 1) but this doesn't necessarily indicate an "actual" size in real-world units. Larger values mean that the texture will be *smaller* and repeat more often:
+It is possible to scale the textures of a material to make them appear larger or smaller with the [`set_texture_scale` command](../../api/command_api.md#set_texture_scale). By default, texture scales are always (1, 1) but this doesn't necessarily indicate an "actual" size in real-world units. Larger values mean that the texture will be *smaller* and repeat more often:
 
 ```python
 from tdw.controller import Controller
@@ -291,7 +291,7 @@ Visual materials in TDW are photorealistic in the sense that many of them are de
 
 **Next: [Procedural generation (scenes)](proc_gen_room.md)**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)
 
 ***
 
@@ -304,7 +304,7 @@ Command API:
 - [`set_color`](../../api/command_api.md#set_color)
 - [`add_material`](../../api/command_api.md#add_material)
 - [`set_visual_material`](../../api/command_api.md#set_visual_material)
-- [`set_texture_scale`](../api/command_api.md#set_texture_scale)
+- [`set_texture_scale`](../../api/command_api.md#set_texture_scale)
 
 Python API:
 

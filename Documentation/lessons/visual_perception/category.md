@@ -31,7 +31,7 @@ jug05 jug
 
 ## `Categories` output data
 
-To get each object's category at runtime, send [`send_segmentation_colors`](../../api/command_api#send_segmentation_colors):
+To get each object's category at runtime, send [`send_segmentation_colors`](../../api/command_api.md#send_segmentation_colors):
 
 ```python
 from tdw.controller import Controller
@@ -74,7 +74,7 @@ for i in range(len(resp) - 1):
 c.communicate({"$type": "terminate"})
 ```
 
-To get the color of each category, send [`send_categories`](../../api/command_api#send_categories), which will return [`Categories`](../../api/output_data.md#Categories) output data:
+To get the color of each category, send [`send_categories`](../../api/command_api.md#send_categories), which will return [`Categories`](../../api/output_data.md#Categories) output data:
 
 ```python
 from tdw.controller import Controller
@@ -142,6 +142,10 @@ Note that `SegmentationColors` and `Categories` return only static data and do n
 
 **Next: [Depth maps (`_depth` and `_depth_simple` passes)](depth.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [category.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/category.py) Example implementation of the `_category` pass and `Categories` output data.
@@ -153,8 +157,8 @@ Command API:
 
 Output Data API:
 
-- [`SegmentationColors`](../../api/output_data.md#SegmentationColors.md)
-- [`Categories`](../../api/output_data.md#Categories.md)
+- [`SegmentationColors`](../../api/output_data.md#SegmentationColors)
+- [`Categories`](../../api/output_data.md#Categories)
 
-[Return to the README](../../README.md)
+
 

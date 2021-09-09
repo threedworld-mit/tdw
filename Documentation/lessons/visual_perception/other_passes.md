@@ -24,5 +24,5 @@ The `_albedo` pass has only color and texture, as if lit with only ambient light
 
 **Next: [`Occlusion` output data](occlusion.md)**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)
 

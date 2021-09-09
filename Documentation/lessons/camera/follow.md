@@ -81,7 +81,7 @@ c.communicate({"$type": "terminate"})
 
 **This is the last document in the "Camera Controls" tutorial.**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)
 
 ***
 

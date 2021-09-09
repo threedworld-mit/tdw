@@ -65,6 +65,10 @@ Result:
 
 **Next: [Other image passes (`_mask`, `_normals`, and `_albedo` passes)](other_passes.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [flow.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/flow.py) Enable `_flow` pass image capture and apply a force.
@@ -73,5 +77,5 @@ Command API:
 
 - [`apply_force_to_object`](../../api/command_api.md#apply_force_to_object)
 
-[Return to the README](../../README.md)
+
 

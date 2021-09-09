@@ -139,7 +139,7 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Add-ons and the `ThirdPersonCamera`](add_ons.md)**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)
 
 ***
 

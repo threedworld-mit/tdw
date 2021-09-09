@@ -80,7 +80,7 @@ Result:
 It is possible to convert the `_depth` pass into a point cloud. To this we need to add 3 things to the previous example:
 
 - Send the [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices) command.
-- Parse the output data to receive [`CameraMatrices`](../../api/output_data.md#CameraMatrices.md).
+- Parse the output data to receive [`CameraMatrices`](../../api/output_data.md#CameraMatrices).
 - Call [`TDWUtils.get_point_cloud(depth, filename, camera_matrix)`](../../python/tdw_utils.md).
 
 ```python
@@ -156,6 +156,10 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Motion perception (`_flow` pass)](flow.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [depth.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/depth.py) Save a depth pass, get the depth values, and save a point cloud.
@@ -171,6 +175,4 @@ Command API:
 
 Output Data API:
 
-- [`CameraMatrices`](../../api/output_data.md#CameraMatrices.md)
-
-[Return to the README](../../README.md)
+- [`CameraMatrices`](../../api/output_data.md#CameraMatrices)

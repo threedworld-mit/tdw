@@ -113,7 +113,7 @@ Result:
 
 ## The `ImageCapture` add-on
 
-You can add use an [`ImageCapture`](../../python/add_ons/ImageCapture.md) to save images per frame. Note that in this example, we don't need to manually initialize the camera, enable image capture, or parse output data; all of that is handled automatically by the `ImageCapture` add-on:
+You can add use an [`ImageCapture`](../../python/add_ons/image_capture.md) to save images per frame. Note that in this example, we don't need to manually initialize the camera, enable image capture, or parse output data; all of that is handled automatically by the `ImageCapture` add-on:
 
 ```python
 from tdw.controller import Controller
@@ -161,7 +161,7 @@ Larger jpg images will look better than smaller images, as will larger images th
 
 **This is the last document in the "Core Concepts" section. We recommend you next read our guide on [troubleshooting and good coding practices in TDW](TODO).**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)
 
 ***
 
@@ -173,7 +173,7 @@ Example controllers:
 
 Python API:
 
-- [`ImageCapture`](../../python/add_ons/ImageCapture.md)  (add-on that saves images every frame)
+- [`ImageCapture`](../../python/add_ons/image_capture.md)  (add-on that saves images every frame)
 - [`TDWUtils.save_images(images, filename, output_directory)`](../../python/tdw_utils.md)  (Save all capture passes)
 - [`TDWUtils.get_pil_image(images, index)`](../../python/tdw_utils.md)  (Convert a capture pass to a PIL image)
 

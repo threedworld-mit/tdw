@@ -161,7 +161,7 @@ DISPLAY=:0.0 ./TDW.x86_64 -port=1071
 xhost +local:root
 ```
 
-4. Pull a Docker container that matches [your version of TDW](../python/tdw.md):
+4. Pull a Docker container that matches your version of TDW:
 
 ```bash
 cd tdw/Docker
@@ -214,7 +214,7 @@ DISPLAY=:0.0 ./TDW.x86_64 -port=1071 -address=replace_with_the_controller_addres
 
 **Next: [Upgrading TDW](upgrade.md)**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)
 
 ***
 

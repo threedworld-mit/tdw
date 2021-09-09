@@ -32,10 +32,10 @@ Commands don't impose any metaphors. It isn't even strictly necessary to have an
 
 **Next: [Scenes](scenes.md)**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)
 
 ***
 
 See also: 
 
-- [Command API](../api/command_api.md)
+- [Command API](../../api/command_api.md)

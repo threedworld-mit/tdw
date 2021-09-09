@@ -51,7 +51,7 @@ Result:
 
 ## `SegmentationColors` output data
 
-You can get a mapping of the segmentation colors of each object in the scene with the [`send_segmentation_colors`](../../api/command_api.md#send_segmentation_colors), which will return [`SegmentationColors`](../../api/output_data.md#SegmentationColors.md) output data. You can use this information to determine which objects are in the image and to what extent they are in the image.
+You can get a mapping of the segmentation colors of each object in the scene with the [`send_segmentation_colors`](../../api/command_api.md#send_segmentation_colors), which will return [`SegmentationColors`](../../api/output_data.md#SegmentationColors) output data. You can use this information to determine which objects are in the image and to what extent they are in the image.
 
 You should only send `send_segmentation_colors` once after adding all objects in the scene. It is static data that won't change per frame.
 
@@ -136,7 +136,7 @@ jug05 is in the frame! 0.003204345703125
 
 ## `IdPassSegmentationColors` output data
 
-If you only need to know which segmentation colors are in the image, as opposed to *to what extent* an object is in the image, you can send [`send_id_pass_segmentation_colors`](../../api/command_api.md#send_id_pass_segmentation_colors), which will return [`IdPassSegmentationColors`](../../api/output_data.md#IdPassSegmentationColors.md).
+If you only need to know which segmentation colors are in the image, as opposed to *to what extent* an object is in the image, you can send [`send_id_pass_segmentation_colors`](../../api/command_api.md#send_id_pass_segmentation_colors), which will return [`IdPassSegmentationColors`](../../api/output_data.md#IdPassSegmentationColors).
 
 Sometimes, this is faster than the `_id` pass. The build scans an image for unique colors before creating the output data. The more objects are in the image, the slower the process. If there are only a few objects in the frame, `IdPassSegementationColors` is significantly faster than the `_id` pass but it _can_ be slower if there are many objects in the frame:
 
@@ -210,7 +210,11 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-**Next: [Segmentation colors (`_category` pass)](category.md)**
+**Next: [Semantic category segmentation colors (`_category` pass)](category.md)**
+
+[Return to the README](../../../README.md)
+
+***
 
 Example controllers:
 
@@ -224,7 +228,6 @@ Command API:
 
 Output Data API:
 
-- [`SegmentationColors`](../../api/output_data.md#SegmentationColors.md)
-- [`IdPassSegmentationColors`](../../api/output_data.md#IdPassSegmentationColors.md)
+- [`SegmentationColors`](../../api/output_data.md#SegmentationColors)
+- [`IdPassSegmentationColors`](../../api/output_data.md#IdPassSegmentationColors)
 
-[Return to the README](../../README.md)

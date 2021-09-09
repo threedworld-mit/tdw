@@ -80,6 +80,10 @@ Some visual perception data is image data such as the segmentation color passes 
 
 **Next: [Instance ID segmentation colors (`_id` pass)](id.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [send_images.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/send_images.py) Capture an image and save it to disk.
@@ -87,7 +91,7 @@ Example controllers:
 
 Python API:
 
-- [`ImageCapture`](../../python/add_ons/ImageCapture.md)  (add-on that saves images every frame)
+- [`ImageCapture`](../../python/add_ons/image_capture.md)  (add-on that saves images every frame)
 - [`TDWUtils.save_images(images, filename, output_directory)`](../../python/tdw_utils.md)  (Save all capture passes)
 
 Command API:
@@ -98,5 +102,3 @@ Command API:
 Output Data API:
 
 - [`Images`](../../api/output_data.md#Images) 
-
-[Return to the README](../../README.md)

@@ -53,11 +53,11 @@ Many commands have parameters with default values. In these cases, it isn't nece
 
 ...because the default parameter of `"id"` is `"a"`. 
 
-To learn which parameters have default values, read the [Command API documentation](../api/command_api.md).
+To learn which parameters have default values, read the [Command API documentation](../../api/command_api.md).
 
 ## API
 
-TDW includes hundreds of commands. **[Read the Command API documentation here.](../api/command_api.md)**
+TDW includes hundreds of commands. **[Read the Command API documentation here.](../../api/command_api.md)**
 
 ## If you need more commands...
 
@@ -67,10 +67,10 @@ TDW includes hundreds of commands. **[Read the Command API documentation here.](
 
 See also: 
 
-- [Command API](../api/command_api.md)
+- [Command API](../../api/command_api.md)
 
 ***
 
 **Next: [Design philosophy of TDW](design_philosophy.md)**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)

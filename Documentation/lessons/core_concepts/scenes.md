@@ -154,6 +154,12 @@ It's possible to create a totally empty scene with the  [`create_empty_environme
 
 ***
 
+**Next: [Avatars and cameras](avatars.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
 Python API:
 
 - [`SceneLibrarian`](../../python/librarian/scene_librarian.md#scenerecord-api) (A collection of scene metadata records)
@@ -168,8 +174,3 @@ Command API:
 - [`create_empty_environment`](../../api/command_api.md#create_empty_environment)
 - [`add_scene`](../../api/command_api.md#add_scene)
 
-***
-
-**Next: [Avatars and cameras](avatars.md)**
-
-[Return to the README](../../README.md)

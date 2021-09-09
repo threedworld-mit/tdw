@@ -17,9 +17,9 @@ class ThirdPersonCameraBase(AddOn, ABC):
                  fov: int = None, framerate: int = None):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
-        :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param position: The initial position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param fov: If not None, this is the initial field of view. Otherwise, defaults to 35.
+        :param fov: The initial field of view. If None, defaults to 35.
         :param framerate: If not None, sets the target framerate.
         """
 

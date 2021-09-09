@@ -38,10 +38,11 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
                  scale_factor: Dict[str, float] = None, mass: float = 80, dynamic_friction: float = 0.3,
                  static_friction: float = 0.3, bounciness: float = 0.7):
         """
-        :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
-        :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param fov: If not None, this is the initial field of view. Otherwise, defaults to 35.
+        :param avatar_id: The ID of the avatar. If None, a random ID is generated.
+        :param position: The initial position of the avatar. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The initial rotation of the avatar. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param fov: The initial field of view. If None, defaults to 35.
+        :param color: The color of the avatar as an `r, g, b, a` dictionary where each value is between 0 and 1. Can be None.
         :param body: [The body of the avatar.](avatar_body.md)
         :param scale_factor: Scale the avatar by this factor. Can be None.
         :param mass: The mass of the avatar.
@@ -101,29 +102,6 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
         If True, the avatar is currently moving or turning.
         """
         self.is_moving: bool = False
-
-    def on_send(self, resp: List[bytes]) -> None:
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            # Update my state.
-            if r_id == "avsb":
-                avsb = AvatarSimpleBody(resp[i])
-                if avsb.get_avatar_id() == self.avatar_id:
-                    # Update the transform data.
-                    self.transform.position = np.array(avsb.get_position())
-                    self.transform.rotation = np.array(avsb.get_rotation())
-                    self.transform.forward = np.array(avsb.get_forward())
-                    # Update the rigidbody data.
-                    self.rigidbody.velocity = np.array(avsb.get_velocity())
-                    self.rigidbody.angular_velocity = np.array(avsb.get_angular_velocity())
-                    self.rigidbody.sleeping = np.array(avsb.get_sleeping())
-                    # Update whether the avatar is moving.
-                    self.is_moving = not self.rigidbody.sleeping
-            # Update the rotation of the camera.
-            elif r_id == "imse":
-                imse = ImageSensors(resp[i])
-                if imse.get_avatar_id() == self.avatar_id:
-                    self.camera_rotation = np.array(imse.get_sensor_rotation(0))
 
     def move(self, force: Union[float, int, Dict[str, float], np.ndarray]) -> None:
         """
@@ -221,6 +199,29 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
 
         self.commands.append({"$type": "reset_sensor_container_rotation",
                               "avatar_id": self.avatar_id})
+
+    def on_send(self, resp: List[bytes]) -> None:
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            # Update my state.
+            if r_id == "avsb":
+                avsb = AvatarSimpleBody(resp[i])
+                if avsb.get_avatar_id() == self.avatar_id:
+                    # Update the transform data.
+                    self.transform.position = np.array(avsb.get_position())
+                    self.transform.rotation = np.array(avsb.get_rotation())
+                    self.transform.forward = np.array(avsb.get_forward())
+                    # Update the rigidbody data.
+                    self.rigidbody.velocity = np.array(avsb.get_velocity())
+                    self.rigidbody.angular_velocity = np.array(avsb.get_angular_velocity())
+                    self.rigidbody.sleeping = np.array(avsb.get_sleeping())
+                    # Update whether the avatar is moving.
+                    self.is_moving = not self.rigidbody.sleeping
+            # Update the rotation of the camera.
+            elif r_id == "imse":
+                imse = ImageSensors(resp[i])
+                if imse.get_avatar_id() == self.avatar_id:
+                    self.camera_rotation = np.array(imse.get_sensor_rotation(0))
 
     def _get_avatar_type(self) -> str:
         return "A_Simple_Body"

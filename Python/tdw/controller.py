@@ -11,6 +11,7 @@ from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
 from tdw.add_ons.add_on import AddOn
+from tdw.py_impact import PyImpact, ObjectInfo, STATIC_FRICTION, DYNAMIC_FRICTION
 
 
 class Controller(object):
@@ -25,6 +26,9 @@ class Controller(object):
     c.start()
     ```
     """
+
+
+    DEFAULT_PHYSICS_VALUES: Dict[str, ObjectInfo] = PyImpact.get_object_info()
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """
@@ -152,13 +156,13 @@ class Controller(object):
         # Return the output data from the build.
         return resp
 
-    def get_add_object(self, model_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str = "") -> dict:
+    def get_add_object(self, model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
         """
         Returns a valid add_object command.
 
         :param model_name: The name of the model.
-        :param position: The position of the model.
-        :param rotation: The starting rotation of the model, in Euler angles.
+        :param position: The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param library: The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`.
         :param object_id: The ID of the new object.
 
@@ -174,10 +178,84 @@ class Controller(object):
                 "name": model_name,
                 "url": record.get_url(),
                 "scale_factor": record.scale_factor,
-                "position": position,
-                "rotation": rotation,
+                "position": position if position is not None else {"x": 0, "y": 0, "z": 0},
+                "rotation": rotation if rotation is not None else {"x": 0, "y": 0, "z": 0},
                 "category": record.wcategory,
                 "id": object_id}
+
+    def get_add_physics_object(self, model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]:
+        """
+        Add an object to the scene with physics values (mass, friction coefficients, etc.).
+
+        :param model_name: The name of the model.
+        :param position: The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param library: The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`.
+        :param object_id: The ID of the new object.
+        :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
+        :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
+        :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
+        :param default_physics_values: If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in Controller.DEFAULT_PHYSICS_VALUES`.
+        :param mass: The mass of the object. Ignored if `default_physics_values == True`.
+        :param dynamic_friction: The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param static_friction: The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param bounciness: The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+
+        :return: A list of commands to add the object and apply physics values.
+        """
+
+        if self.model_librarian is None or (library != "" and self.model_librarian.library != library):
+            self.model_librarian = ModelLibrarian(library=library)
+        record = self.model_librarian.get_record(model_name)
+        commands = [{"$type": "add_object",
+                     "name": record.name,
+                     "url": record.get_url(),
+                     "scale_factor": record.scale_factor,
+                     "position": position,
+                     "category": record.wcategory,
+                     "id": object_id}]
+        # The rotation is a quaternion.
+        if "w" in rotation:
+            commands.append({"$type": "rotate_object_to",
+                             "rotation": rotation,
+                             "id": object_id})
+        # The rotation is in Euler angles.
+        else:
+            commands.append({"$type": "rotate_object_to_euler_angles",
+                             "euler_angles": rotation,
+                             "id": object_id})
+        commands.extend([{"$type": "scale_object",
+                          "scale_factor": scale_factor,
+                          "id": object_id},
+                         {"$type": "set_kinematic_state",
+                          "id": object_id,
+                          "is_kinematic": kinematic,
+                          "use_gravity": gravity}])
+        # Kinematic objects must be continuous_speculative.
+        if kinematic:
+            commands.append({"$type": "set_object_collision_detection_mode",
+                             "id": object_id,
+                             "mode": "continuous_speculative"})
+
+        if default_physics_values:
+            commands.extend([{"$type": "set_mass",
+                              "mass": Controller.DEFAULT_PHYSICS_VALUES[model_name].mass,
+                              "id": object_id},
+                             {"$type": "set_physic_material",
+                              "dynamic_friction": DYNAMIC_FRICTION[Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
+                              "static_friction": STATIC_FRICTION[Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
+                              "bounciness": Controller.DEFAULT_PHYSICS_VALUES[model_name].bounciness,
+                              "id": object_id}])
+        else:
+            commands.extend([{"$type": "set_mass",
+                              "mass": mass,
+                              "id": object_id},
+                             {"$type": "set_physic_material",
+                              "dynamic_friction": dynamic_friction,
+                              "static_friction": static_friction,
+                              "bounciness": bounciness,
+                              "id": object_id}])
+        return commands
 
     def get_add_material(self, material_name: str, library: str = "") -> dict:
         """

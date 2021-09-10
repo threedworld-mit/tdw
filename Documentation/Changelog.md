@@ -62,6 +62,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
   - `OccupancyMap` Generate an occupancy map of the scene at runtime.
   - `Robot` Control the joints of a robot.
   - `ThirdPersonCamera` Add a third-person camera to the scene.
+- Removed: `TransformInitData`, `RigidbodyInitData`, and `AudioInitData`.
 - Added backend object data classes:
   - `Transform` Transform data (position, forward, rotation).
   - `Rigidbody` Dynamic rigidbody data (velocity, angular velocity, sleeping).
@@ -87,6 +88,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - **Removed: `Controller.add_object(model_name)`** Use `Controller.get_add_object(model_name)` instead.
 - **Removed: `Controller.load_streamed_scene(scene)`** Use `Controller.get_add_scene(scene_name)` instead.
 - Removed `check_build_process` from the constructor because it's too slow to be useful.
+- Added: `self.get_add_physics_object()`.  Add an object to the scene with physics values (mass, friction coefficients, etc.).
 
 #### `FloorplanController`
 

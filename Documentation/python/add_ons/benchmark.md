@@ -49,15 +49,11 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### before_send
 
-**`self.before_send(commands)`**
+**`self.before_send()`**
 
-This is called before sending commands to the build. By default, this function doesn't do anything.
+Start bencharking each `communicate()` call and clear `self.times`.
 
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-### on_send
+#### on_send
 
 **`self.on_send(resp)`**
 
@@ -87,4 +83,16 @@ Stop benchmarking each `communicate()` call.
 **`self.get_speed()`**
 
 _Returns:_  The average time elapsed per `communicate()` call.
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
+
+
 

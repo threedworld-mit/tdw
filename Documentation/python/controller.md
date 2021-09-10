@@ -40,19 +40,42 @@ _Returns:_ The output data from the build.
 
 ***
 
-#### `get_add_object(self, model_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str = "") -> dict`
+#### `get_add_object(self, model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict`
 
 Returns a valid add_object command.
 
 | Parameter | Description |
 | --- | --- |
 | model_name | The name of the model. |
-| position | The position of the model. |
-| rotation | The starting rotation of the model, in Euler angles. |
+| position | The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation | The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | library | The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`. |
 | object_id | The ID of the new object. |
 
 _Returns:_ An add_object command that the controller can then send.
+
+***
+
+#### `get_add_physics_object(self, model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]`
+
+
+| Parameter | Description |
+| --- | --- |
+| model_name | The name of the model. |
+| position | The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation | The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| library | The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`. |
+| object_id | The ID of the new object. |
+| scale_factor | The [scale factor](../api/command_api.md#scale_object). |
+| kinematic | If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state). |
+| gravity | If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state). |
+| default_physics_values | If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in Controller.DEFAULT_PHYSICS_VALUES`. |
+| mass | The mass of the object. Ignored if `default_physics_values == True`. |
+| dynamic_friction | The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
+| static_friction | The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
+| bounciness | The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
+
+_Returns:_  A list of commands to add the object and apply physics values.
 
 ***
 

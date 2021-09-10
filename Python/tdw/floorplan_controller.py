@@ -3,7 +3,6 @@ from json import loads
 from pkg_resources import resource_filename
 from typing import List
 from tdw.controller import Controller
-from tdw.object_init_data import TransformInitData, AudioInitData
 
 
 class FloorplanController(Controller):
@@ -20,7 +19,7 @@ class FloorplanController(Controller):
 
     """
 
-    def get_scene_init_commands(self, scene: str, layout: int, audio: bool = True) -> List[dict]:
+    def get_scene_init_commands(self, scene: str, layout: int) -> List[dict]:
         """
         Get commands to create a scene and populate it with objects.
 
@@ -35,7 +34,6 @@ class FloorplanController(Controller):
 
         :param scene: The name of the scene. Corresponds to a record named: `floorplan_[scene]`.
         :param layout: The layout index.
-        :param audio: If True, instantiate physics values per object from audio properties.
 
         :return: A list of commands to initialize the scene and populate it with objects.
         """
@@ -64,13 +62,14 @@ class FloorplanController(Controller):
                      "intensity": 0.175},
                     {"$type": "set_ambient_occlusion_thickness_modifier",
                      "thickness": 3.5}]
-        # Deserialize the JSON data.
-        if audio:
-            objects = [AudioInitData(**o) for o in objects]
-        else:
-            objects = [TransformInitData(**o) for o in objects]
-        # Get the commands to initialize each object.
         for o in objects:
-            object_id, object_commands = o.get_commands()
-            commands.extend(object_commands)
+            object_id = self.get_unique_id()
+            commands.extend(self.get_add_physics_object(model_name=o["name"],
+                                                        library=o["library"],
+                                                        position=o["position"],
+                                                        rotation=o["rotation"],
+                                                        scale_factor=o["scale_factor"],
+                                                        kinematic=o["kinematic"],
+                                                        gravity=o["gravity"],
+                                                        object_id=object_id))
         return commands

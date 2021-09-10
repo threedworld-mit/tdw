@@ -89,6 +89,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - **Removed: `Controller.load_streamed_scene(scene)`** Use `Controller.get_add_scene(scene_name)` instead.
 - Removed `check_build_process` from the constructor because it's too slow to be useful.
 - Added: `self.get_add_physics_object()`.  Add an object to the scene with physics values (mass, friction coefficients, etc.).
+- Added: `DEFAULT_PHYSICS_VALUES`. A dictionary of default `ObjectInfo` per object. This corresponds to `PyImpact.get_object_info()`.
+
+#### `PyImpact`
+
+- Added: `STATIC_FRICTION` and `DYNAMIC_FRICTION`. Dictionaries of friction coefficients per audio material.
 
 #### `FloorplanController`
 

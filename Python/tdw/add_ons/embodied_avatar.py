@@ -16,11 +16,13 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
     from tdw.controller import Controller
     from tdw.tdw_utils import TDWUtils
     from tdw.add_ons.embodied_avatar import EmbodiedAvatar
+    from tdw.add_ons.avatar_body import AvatarBody
 
     c = Controller()
     a = EmbodiedAvatar(position={"x": 0, "y": 0, "z": 0},
                        rotation={"x": 0, "y": 30, "z": 0},
-                       avatar_id="a")
+                       avatar_id="a",
+                       body=AvatarBody.cube)
     c.add_ons.append(a)
     c.communicate(TDWUtils.create_empty_room(12, 12))
     a.move(500)

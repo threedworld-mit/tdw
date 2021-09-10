@@ -49,6 +49,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | -------------- | -------------- |
 | `Environments` | `SceneRegions` |
 
+### Build
+
+- Adjusted avatar type `A_Simple_Body`:
+  - Fixed: Avatar bodies are centered on the avatar's pivot as opposed to halfway above it (i.e. making the pivot of the avatar the bottom-center), thus causing the avatar to "pop" out of the ground when it is first created.
+  - Fixed: The cube avatar requires much more torque to turn. Its box collider has been replaced with a cube collider.
+
 ### `tdw` module
 
 - **Added the following add-ons:**

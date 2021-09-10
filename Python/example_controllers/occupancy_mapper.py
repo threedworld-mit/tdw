@@ -8,7 +8,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 class OccupancyMapper(Controller):
     """
-    Generate occupancy maps in a simple scene populated by objects.
+    Generate occupancy maps in a scene populated by objects.
     For more information, [read this](add_ons/occupancy_map.md).
     """
 

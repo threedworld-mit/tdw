@@ -23,11 +23,17 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | `rotate_sensor_container_towards_position` | Rotate the sensor container towards a position at a given angular speed per frame. |
 | `rotate_sensor_container_towards_rotation` | Rotate the sensor container towards a target rotation.       |
 
-### Renamed Commands
+#### Renamed Commands
 
 | Command             | New name             |
 | ------------------- | -------------------- |
 | `send_environments` | `send_scene_regions` |
+
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `send_model_report` | Added parameter `flex`: If True, this model is expected to be Flex-compatible. |
 
 #### Removed Commands
 

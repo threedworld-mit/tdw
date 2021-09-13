@@ -1431,15 +1431,16 @@ Tell the build to send a report of a model asset bundle. Each report will be a s
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/model_librarian.md`</font>
 
 ```python
-{"$type": "send_model_report", "id": 1, "name": "string", "url": "string"}
+{"$type": "send_model_report", "flex": True, "id": 1, "name": "string", "url": "string"}
 ```
 
 ```python
-{"$type": "send_model_report", "id": 1, "name": "string", "url": "string", "scale_factor": 1, "category": ""}
+{"$type": "send_model_report", "flex": True, "id": 1, "name": "string", "url": "string", "scale_factor": 1, "category": ""}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"flex"` | bool | If True, we expect this model to be Flex-compatible. | |
 | `"id"` | int | The unique ID of the object. | |
 | `"scale_factor"` | float | The default scale factor of a model. | 1 |
 | `"category"` | string | The model category. | "" |

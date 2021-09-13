@@ -10,7 +10,7 @@ Download a .urdf or .xacro file and convert it into an asset bundle that is usab
 
 - Windows 10, OS X, or Linux
   - On a remote Linux server, you'll need a valid virtual display (see the `display` parameter of the constructor)
-- Unity Editor 2020.2 (must be installed via Unity Hub)
+- Unity Editor 2020.3 (must be installed via Unity Hub)
 - Python3 and the `tdw` module
 - git
 
@@ -79,7 +79,7 @@ The first time that this script is run, it clone [the robot_creator repo](https:
 It's usually worth testing and editing the prefab before finalizing the asset bundle. To do this, first run `RobotCreator` as described above, and then do the following:
 
 1. Create a prefab of the robot.
-2. Open robot_creator Unity project in Unity 2020.2; the project is located at `~/robot_creator` (where `~` is your home directory).
+2. Open robot_creator Unity project in Unity 2020.3; the project is located at `~/robot_creator` (where `~` is your home directory).
 3. In the Unity Editor project window, double-click `Scenes -> SampleScene`
 4. In the Unity Editor project window, search for the name of the robot. Click the file and drag it into the scene view.
 5. Press play.
@@ -175,7 +175,6 @@ if lib.get_record(robot_name) is None:
 
 # Launch the controller.
 c = Controller(launch_build=False)
-c.start()
 robot_id = 0
 commands = [TDWUtils.create_empty_room(12, 12),
             c.get_add_robot(name=robot_name, robot_id=robot_id, library=lib_path)]

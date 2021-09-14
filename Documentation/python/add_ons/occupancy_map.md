@@ -72,16 +72,9 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
-**`self.on_send(resp)`**
+**`self.on_send()`**
 
-This is called after commands are sent to the build and a response is received.
-
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build. |
+_Returns:_  A list of all islands, i.e. continuous zones of traversability on the occupancy map.
 
 #### generate
 
@@ -139,6 +132,19 @@ These blue squares don't interact with the physics engine.
 #### hide
 
 **`self.hide()`**
+
+#### on_send
+
+**`self.on_send(resp)`**
+
+This is called after commands are sent to the build and a response is received.
+
+Use this function to send commands to the build on the next frame, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the next frame.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| resp |  List[bytes] |  | The response from the build. |
 
 #### before_send
 

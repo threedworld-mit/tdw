@@ -46,6 +46,10 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
+**`self.on_send()`**
+
+#### on_send
+
 **`self.on_send(resp)`**
 
 This is called after commands are sent to the build and a response is received.
@@ -57,7 +61,7 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-##### before_send
+#### before_send
 
 **`self.before_send(commands)`**
 

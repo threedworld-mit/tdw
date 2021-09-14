@@ -41,6 +41,7 @@ class AddOn(ABC):
     - [ObjectManager](object_manager.md)
     - [OccupancyMap](occupancy_map.md)
     - [Robot](robot.md)
+    - [StepPhysics](step_physics.md)
     - [ThirdPersonCamera](third_person_camera.md)
 
     ## Example controllers

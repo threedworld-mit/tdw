@@ -8,17 +8,19 @@ An `EmbodiedAvatar` is an avatar with a physical body. The body has a simple sha
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.embodied_avatar import EmbodiedAvatar
+from tdw.add_ons.avatar_body import AvatarBody
 
 c = Controller()
 a = EmbodiedAvatar(position={"x": 0, "y": 0, "z": 0},
                    rotation={"x": 0, "y": 30, "z": 0},
-                   avatar_id="a")
+                   avatar_id="a",
+                   body=AvatarBody.cube)
 c.add_ons.append(a)
 c.communicate(TDWUtils.create_empty_room(12, 12))
-a.move(500)
+a.apply_force(500)
 while a.is_moving:
     c.communicate([])
-a.turn(-400)
+a.apply_torque(-400)
 while a.is_moving:
     c.communicate([])
 c.communicate({"$type": "terminate"})
@@ -64,9 +66,9 @@ c.communicate({"$type": "terminate"})
 | static_friction |  float  | 0.3 | The static friction coefficient of the avatar. |
 | bounciness |  float  | 0.7 | The bounciness of the avatar. |
 
-#### move
+#### apply_force
 
-**`self.move(force)`**
+**`self.apply_force(force)`**
 
 Apply a force to the avatar to begin moving it.
 
@@ -74,9 +76,9 @@ Apply a force to the avatar to begin moving it.
 | --- | --- | --- | --- |
 | force |  Union[float, int, Dict[str, float] |  | The force. If float: apply a force along the forward (positive value) or backward (negative value) directional vector of the avatar. If dictionary or numpy array: Apply a force defined by the x, y, z vector. |
 
-#### turn
+#### apply_torque
 
-**`self.turn(torque)`**
+**`self.apply_torque(torque)`**
 
 Apply a torque to the avatar so that it starts turning.
 
@@ -136,7 +138,7 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-##### get_initialization_commands
+#### get_initialization_commands
 
 **`self.get_initialization_commands()`**
 

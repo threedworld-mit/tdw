@@ -25,10 +25,10 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
                        body=AvatarBody.cube)
     c.add_ons.append(a)
     c.communicate(TDWUtils.create_empty_room(12, 12))
-    a.move(500)
+    a.apply_force(500)
     while a.is_moving:
         c.communicate([])
-    a.turn(-400)
+    a.apply_torque(-400)
     while a.is_moving:
         c.communicate([])
     c.communicate({"$type": "terminate"})
@@ -105,7 +105,7 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
         """
         self.is_moving: bool = False
 
-    def move(self, force: Union[float, int, Dict[str, float], np.ndarray]) -> None:
+    def apply_force(self, force: Union[float, int, Dict[str, float], np.ndarray]) -> None:
         """
         Apply a force to the avatar to begin moving it.
 
@@ -133,7 +133,7 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
             raise Exception(f"Invalid type: {force}")
         self.is_moving = True
 
-    def turn(self, torque: float) -> None:
+    def apply_torque(self, torque: float) -> None:
         """
         Apply a torque to the avatar so that it starts turning.
 

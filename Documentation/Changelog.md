@@ -62,6 +62,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
   - `CinematicCamera` Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. **towards** a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but **not** for most actual experiments.
   - `CollisionManager` Manager add-on for all collisions on this frame.
   - `Debug` Record and playback every command sent to the build.
+  - `EmbodiedAvatar` Wrapper add-on for the `A_Simple_Body` avatar.
   - `ImageCapture` Request image data and save the images to disk.
   - `Keyboard` Add keyboard controls to a TDW scene.
   - `ObjectManager` A simple manager class for objects in the scene. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.

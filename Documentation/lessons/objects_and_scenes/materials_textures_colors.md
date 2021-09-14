@@ -2,14 +2,13 @@
 
 # Visual materials, textures, and colors
 
-Unity differentiates between _materials_ and _textures_ and _colors_; these three terms are _not_ interchangeable.
-
-This document will give an overview of some of the fundamental differences.
+Unity differentiates between _visual materials_ and _textures_ and _colors_; these three terms are _not_ interchangeable. This document will give an overview of some of the fundamental differences.
 
 - Every model in TDW is composed of *n*  **meshes**. Multiple meshes *does not* mean that a model has joints or affordances. Many of TDW's models were purchased from a third party and whether or not there are multiple "sub-meshes" is entirely dependent on how the original artist designed it.
-- A _material_ is a binary file containing an initialized _shader_. A shader is a tiny program that is used to render a 3D object. The material shader might contain info such the *texture*, *color*, and what happens when light hits the material (i.e. its shininess, bumpiness, and so on). **Every mesh in a TDW model has at least one material but may have more.**
-- A *texture*  is a .jpg or .png file. It is one of many aspects of a material. In computer graphics, the term _texture_ is often used interchangeably with _map_. **In TDW, most most materials have one albedo texture.** There can be other textures as well, such as a normal map, which can adjust what happens when light hits a model (for example, by creating grooves or bumps even if the underlying mesh is smooth).
-- A material's albedo texture can be tinted by a *color*. Set the color of a model with [`set_color`](../../api/command_api.md#set_color); see [this document](../core_concepts/objects.md) for example implementation.
+- In TDW,  a **substructure** is a metadata list of and object's meshes plus each mesh's visual material(s).
+- A **visual material** (often abbreviated to "material") is a binary file containing an initialized _shader_. A shader is a tiny program that is used to render a 3D object. The material shader might contain info such the *texture*, *color*, and what happens when light hits the material (i.e. its shininess, bumpiness, and so on). Every mesh in a TDW model has at least one material but may have more.
+- A **texture**  is a .jpg or .png file. It is one of many aspects of a material. In computer graphics, the term _texture_ is often used interchangeably with _map_. In TDW, most most materials have one albedo texture. There can be other textures as well, such as a normal map, which can adjust what happens when light hits a model (for example, by creating grooves or bumps even if the underlying mesh is smooth).
+- A material's albedo texture can be tinted by a **color**. Set the color of a model with [`set_color`](../../api/command_api.md#set_color); see [this document](../core_concepts/objects.md) for example implementation.
 
 ## Material asset bundles
 
@@ -92,11 +91,7 @@ To set a visual material, you need to do at least the following steps:
 4. Add the material to the scene with the [`add_material` command ](../../api/command_api.md#add_material).
 5. Set the visual material of one of the object's sub-mesh's materials with the [`set_visual_material` command](../../api/command_api.md#set_visual_material).
 
-Every model in TDW has a "substructure" of sub-meshes. The substructure could be quite simple (only one mesh) or more complicated (multiple meshes). Every mesh can have one or more visual materials.
-
-The substructure of a model has little to do with the type of object and much more to do with their origin: Most of TDW's models were purchased from external sources and different artists built the models differently.
-
-Substructure metadata is stored in [model records](../../python/librarian/model_librarian.md):
+Metadata for an object's **substructure** (see the beginning of this document) is stored in [model records](../../python/librarian/model_librarian.md):
 
 ```python
 from tdw.librarian import ModelLibrarian
@@ -282,9 +277,9 @@ Result:
 
 ![](images/set_visual_material/2.jpg)
 
-## Visual materials and photorealism
+## Visual materials and realism
 
-Visual materials in TDW are photorealistic in the sense that many of them are derived directly from real world imagery data. However, it's usually difficult to set the visual material of an object and still have it look plausible. Visual materials are best used to increase image variability, to differentiate between objects, or other situations in which photorealism isn't the primary goal.
+Visual materials in TDW are realistic in the sense that many of them are derived directly from real world imagery data. However, it's usually difficult to set the visual material of an object and still have it look plausible. Visual materials are best used to increase image variability, to differentiate between objects, or other situations in which realism isn't the primary goal.
 
 
 ***

@@ -40,7 +40,7 @@ if __name__ == "__main__":
     c.do_trials(num_trials=10000)
 ```
 
-2. **Destroy all objects in the scene with [`destroy_object`](../../api/command_api.md#destroy_object) or [`destroy_all_objects`](../../api/command_api.md#destroy_all_objects)**. `destroy_object` destroys a specific object and `destroy_all_objects` destroys all objects in the scene. You should also set the `"frequency"` any ongoing output data commands such as [`send_rigidbodies`](../../api/command_api.md#send_rigidbodies) to `"never"`; otherwise, they'll try to continue to send output data for non-existent objects.
+2. **Destroy all objects in the scene with [`destroy_object`](../../api/command_api.md#destroy_object) or [`destroy_all_objects`](../../api/command_api.md#destroy_all_objects)**. `destroy_object` destroys a specific object and `destroy_all_objects` destroys all objects in the scene. You should also set the `"frequency"` of any ongoing output data commands such as [`send_rigidbodies`](../../api/command_api.md#send_rigidbodies) to `"never"`; otherwise, they'll try to continue to send output data for non-existent objects.
 
    In the following example, an object is added to the scene above floor level and allowed to fall. The trial finishes when the object stops moving. Then the object is destroyed and the controller stops requesting output data:
 

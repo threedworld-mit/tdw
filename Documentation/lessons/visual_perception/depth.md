@@ -10,9 +10,11 @@ The `_depth` pass encodes depth values per pixel into 3 bytes (RGB). The resulti
 
 ## The `_depth_simple` pass
 
-The `_depth_simple` pass is similar to the `_depth` pass but encodes depth values to grayscale (1 byte). This makes it less accurate but somewhat easier to use. Note that the fact that this image is nearly all black is actually accurate:
+The `_depth_simple` pass is similar to the `_depth` pass but encodes depth values to grayscale (1 byte). This makes it less accurate but somewhat easier to use. The first image is a `_depth_simple` image; it is very dark but it *is* accurate. The second image is the same as the first, but with the brightness/contrast adjusted:
 
-![](images/depth_simple_0000.png)
+![](images/depth_simple_0000.png) ![](images/depth_simple_0000_contrast.png)
+
+
 
 ## Convert a depth pass to depth values
 

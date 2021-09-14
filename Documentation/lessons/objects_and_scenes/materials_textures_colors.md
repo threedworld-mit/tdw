@@ -279,7 +279,7 @@ Result:
 
 ## Visual materials and realism
 
-Visual materials in TDW are realistic in the sense that many of them are derived directly from real world imagery data.  However, in some cases it may not be possible to change the visual  material of an object and still have it look plausible. For example, a  dog object's material might use a photographic texture, so using any  other material would look implausible.
+Visual materials in TDW are realistic in the sense that many of them are derived directly from real world imagery data. However, in some cases it may not be possible to change the visual  material of an object and still have it look plausible. For example, a dog object's material might use a photographic texture, so using any  other material would look implausible.
 
 Switching visual materials is most effective for use cases the primary goal is to increase image variability, differentiate between objects, or other situations in which realism isn't the primary goal.
 

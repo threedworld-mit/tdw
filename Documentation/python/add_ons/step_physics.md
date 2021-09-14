@@ -1,23 +1,8 @@
-# Benchmark
+# StepPhysics
 
-`from tdw.add_ons.benchmark import Benchmark`
+`from tdw.add_ons.step_physics import StepPhysics`
 
-Benchmark the FPS over a given number of frames.
-
-```python
-from tdw.controller import Controller
-from tdw.add_ons.benchmark import Benchmark
-
-c = Controller()
-b = Benchmark()
-b.start()
-c.add_ons.append(b)
-for i in range(2000):
-    c.communicate([])
-b.stop()
-print(b.get_speed())
-c.communicate({"$type": "terminate"})
-```
+Step n + 1 physics frames per communciate() call.
 
 ***
 
@@ -27,17 +12,17 @@ c.communicate({"$type": "terminate"})
 
 - `initialized` If True, this module has been initialized.
 
-- `times` A list of time elapsed per `communicate()` call.
-
 ***
 
 ## Functions
 
 #### \_\_init\_\_
 
-**`Benchmark()`**
+**`StepPhysics(num_frames)`**
 
-(no parameters)
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| num_frames |  int |  | Step this many physics frames + 1 per communicate() call. |
 
 #### get_initialization_commands
 
@@ -47,11 +32,9 @@ This function gets called exactly once per add-on. To re-initialize, set `self.i
 
 _Returns:_  A list of commands that will initialize this add-on.
 
-#### before_send
+#### on_send
 
-**`self.before_send()`**
-
-Start bencharking each `communicate()` call and clear `self.times`.
+**`self.on_send()`**
 
 #### on_send
 
@@ -65,24 +48,6 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
-
-#### start
-
-**`self.start()`**
-
-Start bencharking each `communicate()` call and clear `self.times`.
-
-#### stop
-
-**`self.stop()`**
-
-Stop benchmarking each `communicate()` call.
-
-#### get_speed
-
-**`self.get_speed()`**
-
-_Returns:_  The average time elapsed per `communicate()` call.
 
 #### before_send
 

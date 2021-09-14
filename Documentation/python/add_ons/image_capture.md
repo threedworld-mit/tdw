@@ -75,7 +75,7 @@ This function gets called exactly once per add-on. To re-initialize, set `self.i
 
 _Returns:_  A list of commands that will initialize this add-on.
 
-#set_pass_masks). |
+set_pass_masks). |
 | save |  |  | If True, automatically save images to disk per frame. If False, images won't be saved but the `self.images` dictionary will still be updated. |
 
 #### on_send
@@ -91,7 +91,7 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-#set_pass_masks). |
+set_pass_masks). |
 | save |  |  | If True, automatically save images to disk per frame. If False, images won't be saved but the `self.images` dictionary will still be updated. |
 
 #### set

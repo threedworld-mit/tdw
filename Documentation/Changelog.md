@@ -67,6 +67,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
   - `ObjectManager` A simple manager class for objects in the scene. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.
   - `OccupancyMap` Generate an occupancy map of the scene at runtime.
   - `Robot` Control the joints of a robot.
+  - `StepPhysics` Step n+1 physics frames per communicate() call.
   - `ThirdPersonCamera` Add a third-person camera to the scene.
 - Added backend object data classes:
   - `Transform` Transform data (position, forward, rotation).
@@ -118,6 +119,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 # v1.8.x
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
+
+## v1.8.26
+
+### Build
+
+- Fixed: NullReferenceException when sending `destroy_object` for a composite object.
 
 ## v1.8.25
 

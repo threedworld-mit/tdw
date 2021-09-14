@@ -2,7 +2,7 @@
 
 # Objects
 
-**Objects** in TDW are 3D models that can be placed in the scene by the controller. By default, they will also respond to TDW's rendering and physics engine (though this can be toggled off if needed). They are sometimes referred to as "models" in TDW.
+**Objects** in TDW are 3D models that can be placed in the scene by the controller. By default, they will also respond to TDW's rendering and physics engine (though this can be toggled off if needed). A **model** is a non-instanced object; in TDW, the controller downloads a model and instantiates it as an object.
 
 Each object has an **object ID**, an integer that is assigned by the controller and is used by subsequent commands that reference objects.
 

@@ -23,7 +23,7 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 
 ![](images/avatar.png)
 
-The avatar is currently at position (0, 0, 0). To move it to a better location, send `teleport_avatar_to`:
+The avatar is currently at position (0, 0, 0) i.e. floor level--the top half of the image is above the floor and the bottom half is below the floor. To move the avatar to a better location, send `teleport_avatar_to`:
 
 ```python
 from tdw.controller import Controller

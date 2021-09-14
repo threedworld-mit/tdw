@@ -4,7 +4,7 @@
 
 ## 1. Low-level atomic API
 
-The API is designed to be as low-level as possible. Each API call (a "command" in TDW) is typically designed to do exactly one thing. It is possible to send multiple commands at once to achieve complex behavior. Likewise, TDW doesn't return output data by default; it must be explicitly requested.
+The API is designed to be as low-level as possible. Each API call (a "command" in TDW) is typically designed to do exactly one thing. It is possible to send multiple commands at once to achieve complex behavior. Likewise, TDW doesn't return [output data](output_data.md) by default; it must be explicitly requested.
 
 There are several key advantages to this style of API:
 

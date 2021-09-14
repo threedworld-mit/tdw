@@ -97,6 +97,18 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
+**`self.on_send()`**
+
+Reset the cached static data. Call this when resetting the scene.
+
+#### reset
+
+**`self.reset()`**
+
+Reset the cached static data. Call this when resetting the scene.
+
+#### on_send
+
 **`self.on_send(resp)`**
 
 This is called after commands are sent to the build and a response is received.
@@ -107,12 +119,6 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
-
-#### reset
-
-**`self.reset()`**
-
-Reset the cached static data. Call this when resetting the scene.
 
 #### before_send
 

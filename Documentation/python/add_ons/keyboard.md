@@ -16,6 +16,8 @@ For example implementation, see: `tdw/Python/example_controllers/keyboard_contro
 
 ***
 
+## Functions
+
 #### \_\_init\_\_
 
 **`Keyboard(key, commands, function, events)`**
@@ -39,16 +41,16 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
-**`self.on_send(resp)`**
+**`self.on_send(key, commands, function, events)`**
 
-This is called after commands are sent to the build and a response is received.
-
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
+Listen for when a key is pressed and send commands.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build. |
+| key |  |  | The keyboard key. |
+| commands |  |  | Commands to be sent when the key is pressed. |
+| function |  |  | Function to invoke when the key is pressed. |
+| events |  |  | Listen to these keyboard events for this `key`. Options: `"press"`, `"hold"`, `"release"`. If None, this defaults to `["press"]`. |
 
 #### listen
 
@@ -65,7 +67,18 @@ Listen for when a key is pressed and send commands.
 | function |  Callable  | None | Function to invoke when the key is pressed. |
 | events |  List[str] | None | Listen to these keyboard events for this `key`. Options: `"press"`, `"hold"`, `"release"`. If None, this defaults to `["press"]`. |
 
-## Functions
+#### on_send
+
+**`self.on_send(resp)`**
+
+This is called after commands are sent to the build and a response is received.
+
+Use this function to send commands to the build on the next frame, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the next frame.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| resp |  List[bytes] |  | The response from the build. |
 
 #### before_send
 

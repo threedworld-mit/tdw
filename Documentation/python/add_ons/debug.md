@@ -68,6 +68,18 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### before_send
 
+**`self.before_send()`**
+
+Write the record of commands sent to the local disk.
+
+#### save
+
+**`self.save()`**
+
+Write the record of commands sent to the local disk.
+
+#### before_send
+
 **`self.before_send(commands)`**
 
 This is called before sending commands to the build. By default, this function doesn't do anything.
@@ -76,9 +88,5 @@ This is called before sending commands to the build. By default, this function d
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
-### save
 
-**`self.save()`**
-
-Write the record of commands sent to the local disk.
 

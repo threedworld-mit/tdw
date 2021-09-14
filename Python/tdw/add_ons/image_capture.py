@@ -20,7 +20,6 @@ class ImageCapture(AddOn):
     from tdw.add_ons.image_capture import ImageCapture
 
     c = Controller(launch_build=False)
-    c.start()
 
     # Add a third-person camera. It will look at object 0.
     object_id = 0

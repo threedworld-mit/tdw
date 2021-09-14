@@ -9,7 +9,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 
 object_id = c.get_unique_id()
 avatar_position = {"x": 2, "y": 1.6, "z": -0.6}
@@ -53,7 +52,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 object_id = c.get_unique_id()
 # Create a third-person camera that will follow the object.
@@ -83,6 +81,10 @@ c.communicate({"$type": "terminate"})
 
 **This is the last document in the "Camera Controls" tutorial.**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [follow.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/camera_controls/follow.py) Tell a camera to follow an object.
@@ -94,5 +96,3 @@ Python API:
 Command API:
 
 - [`follow_object`](../../api/command_api.md#follow_object)
-
-[Return to the README](../../README.md)

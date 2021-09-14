@@ -10,7 +10,6 @@ This is very similar to object_output_data.py except that it uses an ObjectManag
 c = Controller()
 om = ObjectManager(transforms=True, rigidbodies=True, bounds=False)
 c.add_ons.append(om)
-c.start()
 
 # Send the commands.
 resp = c.communicate([TDWUtils.create_empty_room(12, 12),

@@ -1,6 +1,6 @@
 ##### Visual Perception
 
-# Segmentation Colors (`_category` pass)
+# Semantic category segmentation colors (`_category` pass)
 
 The `_category` pass is similar to the `_id` pass but it assigns colors based on the semantic category of the objects in the scene. Note that the two items on the table are in the same category and therefore receive the same color:
 
@@ -31,7 +31,7 @@ jug05 jug
 
 ## `Categories` output data
 
-To get each object's category at runtime, send [`send_segmentation_colors`](../../api/command_api#send_segmentation_colors):
+To get each object's category at runtime, send [`send_segmentation_colors`](../../api/command_api.md#send_segmentation_colors):
 
 ```python
 from tdw.controller import Controller
@@ -39,7 +39,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, SegmentationColors
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()
@@ -75,7 +74,7 @@ for i in range(len(resp) - 1):
 c.communicate({"$type": "terminate"})
 ```
 
-To get the color of each category, send [`send_categories`](../../api/command_api#send_categories), which will return [`Categories`](../../api/output_data.md#Categories) output data:
+To get the color of each category, send [`send_categories`](../../api/command_api.md#send_categories), which will return [`Categories`](../../api/output_data.md#Categories) output data:
 
 ```python
 from tdw.controller import Controller
@@ -87,7 +86,6 @@ Get the _category pass and category data per object.
 """
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()
@@ -144,6 +142,10 @@ Note that `SegmentationColors` and `Categories` return only static data and do n
 
 **Next: [Depth maps (`_depth` and `_depth_simple` passes)](depth.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [category.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/category.py) Example implementation of the `_category` pass and `Categories` output data.
@@ -155,8 +157,8 @@ Command API:
 
 Output Data API:
 
-- [`SegmentationColors`](../../api/output_data.md#SegmentationColors.md)
-- [`Categories`](../../api/output_data.md#Categories.md)
+- [`SegmentationColors`](../../api/output_data.md#SegmentationColors)
+- [`Categories`](../../api/output_data.md#Categories)
 
-[Return to the README](../../README.md)
+
 

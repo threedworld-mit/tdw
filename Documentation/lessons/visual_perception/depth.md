@@ -10,9 +10,11 @@ The `_depth` pass encodes depth values per pixel into 3 bytes (RGB). The resulti
 
 ## The `_depth_simple` pass
 
-The `_depth_simple` pass is similar to the `_depth` pass but encodes depth values to grayscale (1 byte). This makes it less accurate but somewhat easier to use. Note that the fact that this image is nearly all black is actually accurate:
+The `_depth_simple` pass is similar to the `_depth` pass but encodes depth values to grayscale (1 byte). This makes it less accurate but somewhat easier to use. The first image is a `_depth_simple` image; it is very dark but it *is* accurate. The second image is the same as the first, but with the brightness/contrast adjusted:
 
-![](images/depth_simple_0000.png)
+![](images/depth_simple_0000.png) ![](images/depth_simple_0000_contrast.png)
+
+
 
 ## Convert a depth pass to depth values
 
@@ -31,7 +33,6 @@ Convert the _depth pass to depth values and plot them using matplotlib.
 """
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()
@@ -81,7 +82,7 @@ Result:
 It is possible to convert the `_depth` pass into a point cloud. To this we need to add 3 things to the previous example:
 
 - Send the [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices) command.
-- Parse the output data to receive [`CameraMatrices`](../../api/output_data.md#CameraMatrices.md).
+- Parse the output data to receive [`CameraMatrices`](../../api/output_data.md#CameraMatrices).
 - Call [`TDWUtils.get_point_cloud(depth, filename, camera_matrix)`](../../python/tdw_utils.md).
 
 ```python
@@ -98,7 +99,6 @@ Convert the _depth pass to depth values, plot them using matplotlib, and generat
 """
 
 c = Controller()
-c.start()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
 object_id_2 = c.get_unique_id()
@@ -158,6 +158,10 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Motion perception (`_flow` pass)](flow.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [depth.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/depth.py) Save a depth pass, get the depth values, and save a point cloud.
@@ -173,6 +177,4 @@ Command API:
 
 Output Data API:
 
-- [`CameraMatrices`](../../api/output_data.md#CameraMatrices.md)
-
-[Return to the README](../../README.md)
+- [`CameraMatrices`](../../api/output_data.md#CameraMatrices)

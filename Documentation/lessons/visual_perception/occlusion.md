@@ -2,7 +2,7 @@
 
 # `Occlusion` output data
 
-[`Occlusion`](../../api/output_data.md#Occlusion.md) output data isn't a capture pass, though in the backend code it does use image data.
+[`Occlusion`](../../api/output_data.md#Occlusion) output data isn't a capture pass, though in the backend code it does use image data.
 
 Internally, the build will capture two `_mask` passes, one with environment objects and one without. The resulting occlusion value is the ratio of the overall grayscale values of the images:
 
@@ -27,9 +27,7 @@ class Occlusion(Controller):
         """
 
         # Create the scene.
-        commands = [{"$type": "load_scene",
-                     "scene_name": "ProcGenScene"},
-                    TDWUtils.create_empty_room(12, 12)]
+        commands = [TDWUtils.create_empty_room(12, 12)]
         # Add some objects.
         x = -2
         for i in range(5):
@@ -92,6 +90,10 @@ Result:
 
 **This is the last document in the "Visual Perception" tutorial.**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [occlusion.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/visual_perception/occlusion.py) Example implementation of `Occlusion` output data.
@@ -102,6 +104,5 @@ Command API:
 
 Output Data API:
 
-- [`Occlusion`](../../api/output_data.md#Occlusion.md)
+- [`Occlusion`](../../api/output_data.md#Occlusion)
 
-[Return to the README](../../README.md)

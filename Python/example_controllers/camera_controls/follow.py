@@ -8,7 +8,6 @@ Follow the position of an object.
 """
 
 c = Controller()
-c.start()
 
 object_id = c.get_unique_id()
 # Create a third-person camera that will follow the object.

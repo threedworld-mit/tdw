@@ -2,9 +2,9 @@
 
 # Add-ons and the `ThirdPersonCamera`
 
-**Add-ons** in TDW are objects that can be added to a controller and act as wrappers for the Command API. They will inject commands at every `communicate()` call based on the output data from the build. You can attach an add-on to the controller by adding it to the `c.add_ons` list.
+**Add-ons** in TDW are objects that can be added to a controller and act as wrappers for the Command API. They will inject commands at every `communicate()` call. You can attach an add-on to the controller by adding it to the `c.add_ons` list.
 
-The purpose of add-ons is to simplify repetitious or complex behavior in TDW and to standardize common API calls. The most important thing to know about add-ons is that all they do is read output data and send commands; there is nothing that add-on can do that can't be done with low-level commands.
+The purpose of add-ons is to simplify repetitious or complex behavior in TDW and to standardize common API calls. The most important thing to know about add-ons is that there is nothing that add-on can do that can't be done with low-level commands.
 
 The [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md) add-on will add a third-person camera avatar to the scene. It can do everything covered [in the previous document](avatars.md) but with simplified controls. 
 
@@ -16,7 +16,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 # Create the third-person camera.
 camera = ThirdPersonCamera(avatar_id="a",
@@ -35,7 +34,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 # Create the third-person camera.
 camera = ThirdPersonCamera(avatar_id="a",
@@ -62,7 +60,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 camera = ThirdPersonCamera(avatar_id="a",
                            position={"x": -1, "y": 5.7, "z": -3.8},
@@ -85,6 +82,8 @@ Result:
 
 ![](images/avatar_move.gif)
 
+Note that we're iterating by calling `c.communicate([])`. This sends an empty list of commands (plus any commands injected by the `camera` add-on). 
+
 ## Add-ons order of execution
 
 Add-on commands are always sent in the order that they appear in `c.add_ons`. Add-on commands are always sent after the commands explicitly listed in `communicate(commands)`.
@@ -99,7 +98,6 @@ from tdw.add_ons.debug import Debug
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 
 # Create the third-person camera.
 camera = ThirdPersonCamera(avatar_id="a",
@@ -144,6 +142,10 @@ rotate_sensor_container_by
 
 **Next: [Objects](objects.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [third_person_camera.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/third_person_camera.py) Example usage of the `ThirdPersonCamera`.
@@ -159,4 +161,3 @@ Command API:
 - [`create_exterior_walls`](../../api/command_api.md#create_exterior_walls)
 - [`send_log_messages`](../../api/command_api.md#send_log_messages)
 
-[Return to the README](../../README.md)

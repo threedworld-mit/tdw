@@ -24,7 +24,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 
 object_id = c.get_unique_id()
 commands = [TDWUtils.create_empty_room(12, 12),
@@ -52,7 +51,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 object_id = c.get_unique_id()
 cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
@@ -97,7 +95,6 @@ class RotateSensorContainerToExample(Controller):
         return commands
 
     def run(self):
-        self.start()
         commands = [TDWUtils.create_empty_room(12, 12)]
         commands.extend(TDWUtils.create_avatar(position={"x": 2, "y": 1.6, "z": -0.6},
                                                avatar_id="a"))
@@ -136,7 +133,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend(TDWUtils.create_avatar(position={"x": 2, "y": 1.6, "z": -0.6},
                                        avatar_id="a"))
@@ -159,7 +155,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 
 object_id = c.get_unique_id()
 commands = [TDWUtils.create_empty_room(12, 12),
@@ -184,7 +179,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 
 object_id = c.get_unique_id()
 c.communicate([TDWUtils.create_empty_room(12, 12),
@@ -205,7 +199,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 
 object_id = c.get_unique_id()
 cam = ThirdPersonCamera(avatar_id="a", position={"x": 2, "y": 1.6, "z": -0.6})
@@ -227,6 +220,10 @@ c.communicate({"$type": "terminate"})
 ***
 
 **Next: [Follow an object](follow.md)**
+
+[Return to the README](../../../README.md)
+
+***
 
 Command API:
 

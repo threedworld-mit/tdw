@@ -9,7 +9,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 commands = [TDWUtils.create_empty_room(12, 12)]
 x = 0
 y = 1.6
@@ -33,7 +32,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 c = Controller()
-c.start()
 x = 0
 y = 1.6
 z = 0
@@ -51,6 +49,10 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Rotate a camera](rotation.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Command API:
 
 - [`teleport_avatar_to`](../../api/command_api.md#teleport_avatar_to)
@@ -59,4 +61,3 @@ Python API:
 
 - [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md)
 
-[Return to the README](../../README.md)

@@ -2,36 +2,13 @@
 
 # Visual materials, textures, and colors
 
-Unity differentiates between _materials_ and _textures_ and _colors_; these three terms are _not_ interchangeable.
-
-This document will give an overview of some of the fundamental differences.
+Unity differentiates between _visual materials_ and _textures_ and _colors_; these three terms are _not_ interchangeable. This document will give an overview of some of the fundamental differences.
 
 - Every model in TDW is composed of *n*  **meshes**. Multiple meshes *does not* mean that a model has joints or affordances. Many of TDW's models were purchased from a third party and whether or not there are multiple "sub-meshes" is entirely dependent on how the original artist designed it.
-- A _material_ is a binary file containing an initialized _shader_. A shader is a tiny program that is used to render a 3D object. The material shader might contain info such the *texture*, *color*, and what happens when light hits the material (i.e. its shininess, bumpiness, and so on). **Every mesh in a TDW model has at least one material but may have more.**
-- A *texture*  is a .jpg or .png file. It is one of many aspects of a material. In computer graphics, the term _texture_ is often used interchangeably with _map_. **In TDW, most most materials have one albedo texture.**
-- A material can be tinted by a *color*.
-
-## Set the color of a model
-
-Set the color of a model with [`set_color`](../../api/command_api.md#set_color); see [this document](../core_concepts/objects.md) for example implementation.
-
-## Default materials and model substructures
-
-All of TDW's models have default materials. The organization of the sub-meshes of a model and each sub-meshes visual material(s) is known in TDW as a models "substructure". Substructure metadata is stored in [model records](../../python/librarian/model_librarian.md):
-
-```python
-from tdw.librarian import ModelLibrarian
-
-librarian = ModelLibrarian()
-record = librarian.get_record("034_vray")
-print(record.substructure)
-```
-
-Output:
-
-```
-[{'materials': ['cgaxis_electronics_34_01'], 'name': 'cgaxis_electronics_34_01'}, {'materials': ['cgaxis_electronics_34_02'], 'name': 'cgaxis_electronics_34_02'}, {'materials': ['cgaxis_electronics_34_03'], 'name': 'cgaxis_electronics_34_03'}, {'materials': ['cgaxis_electronics_34_04'], 'name': 'cgaxis_electronics_34_04'}, {'materials': ['cgaxis_electronics_34_05'], 'name': 'cgaxis_electronics_34_05'}, {'materials': ['cgaxis_electronics_34_06'], 'name': 'cgaxis_electronics_34_06'}, {'materials': ['SolidTiles_Opaque'], 'name': 'cgaxis_electronics_34_07'}, {'materials': ['SolidTiles_Opaque'], 'name': 'cgaxis_electronics_34_08'}, {'materials': ['SolidTiles_Transparent'], 'name': 'cgaxis_electronics_34_09'}]
-```
+- In TDW,  a **substructure** is a metadata list of and object's meshes plus each mesh's visual material(s).
+- A **visual material** (often abbreviated to "material") is a binary file containing an initialized _shader_. A shader is a tiny program that is used to render a 3D object. The material shader might contain info such the *texture*, *color*, and what happens when light hits the material (i.e. its shininess, bumpiness, and so on). Every mesh in a TDW model has at least one material but may have more.
+- A **texture**  is a .jpg or .png file. It is one of many aspects of a material. In computer graphics, the term _texture_ is often used interchangeably with _map_. In TDW, most most materials have one albedo texture. There can be other textures as well, such as a normal map, which can adjust what happens when light hits a model (for example, by creating grooves or bumps even if the underlying mesh is smooth).
+- A material's albedo texture can be tinted by a **color**. Set the color of a model with [`set_color`](../../api/command_api.md#set_color); see [this document](../core_concepts/objects.md) for example implementation.
 
 ## Material asset bundles
 
@@ -70,7 +47,7 @@ for material_type in librarian.get_material_types():
     print("")
 ```
 
-Unlike TDW's Model Librarians which group models by broad categories (for example, free vs. non-free), the Material Librarians group materials by *quality*. Each material has three quality levels: low, medium ("med"), and high. Higher-quality materials will look slightly better but take longer to download and use more memory:
+Unlike TDW's Model Librarians which group models by broad categories (for example, free vs. non-free), the Material Librarians group materials by *quality*. Each material has three quality levels: "low", "med", and "high". Higher-quality materials will look slightly better but take longer to download and use more memory:
 
 ```python
 from requests import head
@@ -98,19 +75,39 @@ The TDW repo includes [a controller that will create images of every material in
 
 1. `cd path/to/tdw/Python` (replace `path/to` with the actual path)
 2. `python3 screenshotter.py --type materials`
-3. [Launch the build manually](../setup/launch_build.md)
+3. [Launch the build manually](../core_concepts/launch_build.md)
+
+Images will be saved to `~/TDWImages` (where `~` is your home directory).
+
+You can review the images with the [TDW Material Visualizer](https://github.com/threedworld-mit/tdw_visualizers).
 
 ## Set the visual material of an object
 
-The low-level commands required for setting an object's visual material(s) are relatively complicated but TDW includes some wrapper functions to make it easier. For the sake of understanding how it works, we'll start with the low-level API calls and then explain the wrapper functions.
-
-To set a visual material, you need to do at least three steps:
+To set a visual material, you need to do at least the following steps:
 
 1. Add an object to the scene.
 2. Get the object's model substructure.
 3. Get a material metadata record.
 4. Add the material to the scene with the [`add_material` command ](../../api/command_api.md#add_material).
 5. Set the visual material of one of the object's sub-mesh's materials with the [`set_visual_material` command](../../api/command_api.md#set_visual_material).
+
+Metadata for an object's **substructure** (see the beginning of this document) is stored in [model records](../../python/librarian/model_librarian.md):
+
+```python
+from tdw.librarian import ModelLibrarian
+
+librarian = ModelLibrarian()
+record = librarian.get_record("034_vray")
+print(record.substructure)
+```
+
+Output:
+
+```
+[{'materials': ['cgaxis_electronics_34_01'], 'name': 'cgaxis_electronics_34_01'}, {'materials': ['cgaxis_electronics_34_02'], 'name': 'cgaxis_electronics_34_02'}, {'materials': ['cgaxis_electronics_34_03'], 'name': 'cgaxis_electronics_34_03'}, {'materials': ['cgaxis_electronics_34_04'], 'name': 'cgaxis_electronics_34_04'}, {'materials': ['cgaxis_electronics_34_05'], 'name': 'cgaxis_electronics_34_05'}, {'materials': ['cgaxis_electronics_34_06'], 'name': 'cgaxis_electronics_34_06'}, {'materials': ['SolidTiles_Opaque'], 'name': 'cgaxis_electronics_34_07'}, {'materials': ['SolidTiles_Opaque'], 'name': 'cgaxis_electronics_34_08'}, {'materials': ['SolidTiles_Transparent'], 'name': 'cgaxis_electronics_34_09'}]
+```
+
+The low-level commands required for setting an object's visual material(s) are relatively complicated but TDW includes some wrapper functions to make it easier. For the sake of understanding how it works, we'll start with the low-level API calls and then explain the wrapper functions.
 
 ```python
 from tdw.controller import Controller
@@ -121,7 +118,6 @@ from tdw.librarian import ModelLibrarian, MaterialLibrarian
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 material_record = MaterialLibrarian("materials_low.json").get_record("parquet_long_horizontal_clean")
@@ -169,7 +165,6 @@ from tdw.librarian import ModelLibrarian
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 model_record = ModelLibrarian().get_record("white_lounger_chair")
@@ -208,7 +203,6 @@ from tdw.librarian import ModelLibrarian
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 model_record = ModelLibrarian().get_record("white_lounger_chair")
@@ -239,11 +233,11 @@ Every mesh in Unity _must_ have at least 1 material (or it will appear as horrib
 -  Decals on a racecar; the car's paint and the decal could be handled as separate materials.)
 -  A puddle in the dirt might be handled as two materials on a flat surface that are blended together.
 
-Every model in the TDW model library is comprised of _n_ meshes, each of which have _m_ materials. You can switch any material of any mesh of any object by sending [`set_visual_material`](../api/command_api.md#set_visual_material).
+Every model in the TDW model library is comprised of _n_ meshes, each of which have _m_ materials. You can switch any material of any mesh of any object by sending [`set_visual_material`](../../api/command_api.md#set_visual_material).
 
 ## Set the texture scale
 
-It is possible to scale the textures of a material to make them appear larger or smaller with the [`set_texture_scale` command](../api/command_api.md#set_texture_scale). By default, texture scales are always (1, 1) but this doesn't necessarily indicate an "actual" size in real-world units. Larger values mean that the texture will be *smaller* and repeat more often:
+It is possible to scale the textures of a material to make them appear larger or smaller with the [`set_texture_scale` command](../../api/command_api.md#set_texture_scale). By default, texture scales are always (1, 1) but this doesn't necessarily indicate an "actual" size in real-world units. Larger values mean that the texture will be *smaller* and repeat more often:
 
 ```python
 from tdw.controller import Controller
@@ -254,7 +248,6 @@ from tdw.librarian import ModelLibrarian
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 model_record = ModelLibrarian().get_record("white_lounger_chair")
@@ -284,14 +277,20 @@ Result:
 
 ![](images/set_visual_material/2.jpg)
 
-## Visual materials and photorealism
+## Visual materials and realism
 
-Visual materials in TDW are photorealistic in the sense that many of them are derived directly from real world imagery data. However, it's usually difficult to set the visual material of an object and still have it look plausible. Visual materials are best used to increase image variability, to differentiate between objects, or other situations in which photorealism isn't the primary goal.
+Visual materials in TDW are realistic in the sense that many of them are derived directly from real world imagery data. However, in some cases it may not be possible to change the visual  material of an object and still have it look plausible. For example, a dog object's material might use a photographic texture, so using any  other material would look implausible.
+
+Switching visual materials is most effective for use cases the primary goal is to increase image variability, differentiate between objects, or other situations in which realism isn't the primary goal.
 
 
 ***
 
 **Next: [Procedural generation (scenes)](proc_gen_room.md)**
+
+[Return to the README](../../../README.md)
+
+***
 
 Example controllers:
 
@@ -302,7 +301,7 @@ Command API:
 - [`set_color`](../../api/command_api.md#set_color)
 - [`add_material`](../../api/command_api.md#add_material)
 - [`set_visual_material`](../../api/command_api.md#set_visual_material)
-- [`set_texture_scale`](../api/command_api.md#set_texture_scale)
+- [`set_texture_scale`](../../api/command_api.md#set_texture_scale)
 
 Python API:
 
@@ -310,4 +309,6 @@ Python API:
 - [`Controller.get_add_material(material_name, library)`](../../python/controller.md) Get a valid `add_material` command.
 - [`TDWUtils.set_visual_material(controller, substructure, material, object_id)`](../../python/tdw_utils.md) Set the visual material for all materials.
 
-[Return to the README](../../README.md)
+Utility applications:
+
+- [TDW Material Visualizer](https://github.com/threedworld-mit/tdw_visualizers)

@@ -13,7 +13,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 commands = [TDWUtils.create_empty_room(12, 12),
@@ -37,7 +36,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 commands = [TDWUtils.create_empty_room(12, 12),
@@ -70,7 +68,6 @@ Create a scene, add an object, and save the image.
 """
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 commands = [TDWUtils.create_empty_room(12, 12),
@@ -114,19 +111,9 @@ Result:
 
 ![](images/img_pass_box.png)
 
-## jpg vs. png encoding
-
-The `_img` capture pass is standard rendering of the scene. It can be encoded as a lossless png or a lossy jpg. Generally, jpg encoding is significantly faster than png encoding and good enough for most use cases. To enable jpg encoding, send [`{"$type": "set_img_pass_encoding", "value": False}`](../../api/command_api.md#set_img_pass_encoding) or set `png=False` in the `ImageCapture` constructor. 
-
-Larger jpg images will look better than smaller images, as will larger images that are later resized to be smaller.
-
-| `_img` pass (png)        | `_img` pass (jpg)        |
-| ------------------------ | ------------------------ |
-| ![](images/img_0000.png) | ![](images/img_0000.jpg) |
-
 ## The `ImageCapture` add-on
 
-You can add use an [`ImageCapture`](../../python/add_ons/ImageCapture.md) to save images per frame. Note that in this example, we don't need to manually initialize the camera, enable image capture, or parse output data; all of that is handled automatically by the `ImageCapture` add-on:
+You can add use an [`ImageCapture`](../../python/add_ons/image_capture.md) to save images per frame. Note that in this example, we don't need to manually initialize the camera, enable image capture, or parse output data; all of that is handled automatically by the `ImageCapture` add-on:
 
 ```python
 from tdw.controller import Controller
@@ -136,7 +123,6 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
                         look_at=object_id,
@@ -161,9 +147,23 @@ c.communicate({"$type": "terminate"})
 
 The `set_pass_masks` command can enable multiple **image passes**. So far, we've only reviewed the `_img` pass but other passes such as the `_id` segmentation color pass are possible. [Read this for more information.](../../api/command_api.md#set_pass_masks)
 
+## jpg vs. png encoding
+
+The `_img` capture pass is standard rendering of the scene. It can be encoded as a lossless png or a lossy jpg. Generally, jpg encoding is significantly faster than png encoding and good enough for most use cases. To enable jpg encoding, send [`{"$type": "set_img_pass_encoding", "value": False}`](../../api/command_api.md#set_img_pass_encoding) or set `png=False` in the `ImageCapture` constructor. 
+
+Larger jpg images will look better than smaller images, as will larger images that are later resized to be smaller.
+
+| `_img` pass (png)        | `_img` pass (jpg)        |
+| ------------------------ | ------------------------ |
+| ![](images/img_0000.png) | ![](images/img_0000.jpg) |
+
 ***
 
-**This is the last document in the "Core Concepts" section. We recommend you read our guide on [troubleshooting and good coding practices in TDW](TODO).**
+**This is the last document in the "Core Concepts" section. We recommend you next read our guide on [troubleshooting and good coding practices in TDW](TODO).**
+
+[Return to the README](../../../README.md)
+
+***
 
 Example controllers:
 
@@ -173,7 +173,7 @@ Example controllers:
 
 Python API:
 
-- [`ImageCapture`](../../python/add_ons/ImageCapture.md)  (add-on that saves images every frame)
+- [`ImageCapture`](../../python/add_ons/image_capture.md)  (add-on that saves images every frame)
 - [`TDWUtils.save_images(images, filename, output_directory)`](../../python/tdw_utils.md)  (Save all capture passes)
 - [`TDWUtils.get_pil_image(images, index)`](../../python/tdw_utils.md)  (Convert a capture pass to a PIL image)
 
@@ -186,5 +186,3 @@ Command API:
 Output Data API:
 
 - [`Images`](../../api/output_data.md#Images) 
-
-[Return to the README](../../README.md)

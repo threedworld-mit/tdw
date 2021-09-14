@@ -18,9 +18,7 @@ class Occlusion(Controller):
         """
 
         # Create the scene.
-        commands = [{"$type": "load_scene",
-                     "scene_name": "ProcGenScene"},
-                    TDWUtils.create_empty_room(12, 12)]
+        commands = [TDWUtils.create_empty_room(12, 12)]
         # Add some objects.
         x = -2
         for i in range(5):

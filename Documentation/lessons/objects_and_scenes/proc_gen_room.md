@@ -205,7 +205,7 @@ class ProcGenRoom(Controller):
                 exterior_walls.append({"x": ix, "y": iy})
             elif room_arr[ix, iy] == 2:
                 interior_walls.append({"x": ix, "y": iy})
-        # load_scene typically gets sent by calling c.start()
+        # load_scene typically gets sent in the controller constructor.
         return [{"$type": "load_scene",
                  "scene_name": "ProcGenScene"},
                 {"$type": "create_exterior_walls",
@@ -392,9 +392,14 @@ Result:
 
 **Next: [Units and data formats](units.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [proc_gen_room.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/proc_gen_room.py) Procedurally create an interior scene.
+- [proc_gen_room_from_image.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/proc_gen_room_from_image.py) Generate a room from a .png file.
 
 Python API:
 

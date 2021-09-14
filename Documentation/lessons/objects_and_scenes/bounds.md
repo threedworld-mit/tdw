@@ -10,7 +10,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Bounds
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 # Create the scene. Add an object. Request Bounds output data.
@@ -43,7 +42,6 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 # Add a camera and enable image capture.
@@ -103,7 +101,6 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.add_ons.object_manager import ObjectManager
 
 c = Controller()
-c.start()
 object_id = c.get_unique_id()
 
 # Add a camera and enable image capture.
@@ -138,6 +135,10 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Procedural generation (objects)](proc_gen_objects.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [object_on_table.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/object_on_table.py) Put an object on a table using `Bounds` output data.
@@ -155,4 +156,3 @@ Output Data API:
 
 - [`Bounds`](../../api/output_data.md#Bounds) 
 
-[Return to the README](../../README.md)

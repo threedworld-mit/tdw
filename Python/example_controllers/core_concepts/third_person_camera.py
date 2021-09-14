@@ -7,7 +7,6 @@ Create a simple scene and add a third-person camera avatar.
 """
 
 c = Controller()
-c.start()
 
 # Create the third-person camera.
 cam = ThirdPersonCamera(avatar_id="a",

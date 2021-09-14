@@ -59,7 +59,6 @@ class ProcGen(Controller):
         table_z = self.get_table_placement_coordinate(table_placement_radius)
         table_id = self.get_unique_id()
 
-        self.start()
         resp = self.communicate([TDWUtils.create_empty_room(12, 12),
                                  self.get_add_object(model_name=table.name,
                                                      position={"x": table_x, "y": 0, "z": table_z},

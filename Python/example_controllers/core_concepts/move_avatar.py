@@ -7,7 +7,6 @@ Note that in this example, the `avatar_id` parameters are missing. That's becaus
 """
 
 c = Controller()
-c.start()
 y = 5.7
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "create_avatar",

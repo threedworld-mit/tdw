@@ -40,7 +40,7 @@ if __name__ == "__main__":
     c.do_trials(num_trials=10000)
 ```
 
-2. **Destroy all objects in the scene with [`destroy_object`](../../api/command_api.md#destroy_object) or [`destroy_all_objects`](../../api/command_api.md#destroy_all_objects)**. `destroy_object` destroys a specific object and `destroy_all_objects` destroys all objects in the scene. You should also set the `"frequency"` any ongoing output data commands such as [`send_rigidbodies`](../../api/command_api.md#send_rigidbodies) to `"never"`; otherwise, they'll try to continue to send output data for non-existent objects.
+2. **Destroy all objects in the scene with [`destroy_object`](../../api/command_api.md#destroy_object) or [`destroy_all_objects`](../../api/command_api.md#destroy_all_objects)**. `destroy_object` destroys a specific object and `destroy_all_objects` destroys all objects in the scene. You should also set the `"frequency"` of any ongoing output data commands such as [`send_rigidbodies`](../../api/command_api.md#send_rigidbodies) to `"never"`; otherwise, they'll try to continue to send output data for non-existent objects.
 
    In the following example, an object is added to the scene above floor level and allowed to fall. The trial finishes when the object stops moving. Then the object is destroyed and the controller stops requesting output data:
 
@@ -129,6 +129,10 @@ Unfortunately, it isn't possible to reset to an arbitrary frame in the middle of
 
 **This is the last document in the "Objects and Scenes" tutorial.**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [reset_scene.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/reset_scene.py) Create multiple trials of an object falling and reset the scene between trials.
@@ -148,4 +152,3 @@ Output Data API:
 
 - [`Rigidbodies`](../../api/output_data.md#Rigidbodies)
 
-[Return to the README](../../README.md)

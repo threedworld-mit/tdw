@@ -76,7 +76,6 @@ table = tables[rng.randint(0, len(tables))]
 chair = chairs[rng.randint(0, len(chairs))]
 
 c = Controller()
-c.start()
 commands = [TDWUtils.create_empty_room(12, 12)]
 ```
 
@@ -117,7 +116,6 @@ class ProcGen(Controller):
         table_extents = ProcGen.get_longest_extent(table)
         chair_extents = ProcGen.get_longest_extent(chair)
         
-        self.start()
         commands = [TDWUtils.create_empty_room(12, 12)]
         
 if __name__ == "__main__":
@@ -173,7 +171,6 @@ class ProcGen(Controller):
         table_z = self.get_table_placement_coordinate(table_placement_radius)
         table_id = self.get_unique_id()
 
-        self.start()
         commands = [TDWUtils.create_empty_room(12, 12),
                     self.get_add_object(model_name=table.name,
                                         position={"x": table_x, "y": 0, "z": table_z},
@@ -234,7 +231,6 @@ class ProcGen(Controller):
         table_z = self.get_table_placement_coordinate(table_placement_radius)
         table_id = self.get_unique_id()
 
-        self.start()
         resp = self.communicate([TDWUtils.create_empty_room(12, 12),
                                  self.get_add_object(model_name=table.name,
                                                      position={"x": table_x, "y": 0, "z": table_z},
@@ -300,7 +296,6 @@ class ProcGen(Controller):
         table_z = self.get_table_placement_coordinate(table_placement_radius)
         table_id = self.get_unique_id()
 
-        self.start()
         resp = self.communicate([TDWUtils.create_empty_room(12, 12),
                                  self.get_add_object(model_name=table.name,
                                                      position={"x": table_x, "y": 0, "z": table_z},
@@ -379,7 +374,6 @@ class ProcGen(Controller):
         table_z = self.get_table_placement_coordinate(table_placement_radius)
         table_id = self.get_unique_id()
 
-        self.start()
         resp = self.communicate([TDWUtils.create_empty_room(12, 12),
                                  self.get_add_object(model_name=table.name,
                                                      position={"x": table_x, "y": 0, "z": table_z},
@@ -462,7 +456,6 @@ class ProcGen(Controller):
         table_z = self.get_table_placement_coordinate(table_placement_radius)
         table_id = self.get_unique_id()
 
-        self.start()
         resp = self.communicate([TDWUtils.create_empty_room(12, 12),
                                  self.get_add_object(model_name=table.name,
                                                      position={"x": table_x, "y": 0, "z": table_z},
@@ -565,7 +558,6 @@ class ProcGen(Controller):
         table_z = self.get_table_placement_coordinate(table_placement_radius)
         table_id = self.get_unique_id()
 
-        self.start()
         resp = self.communicate([TDWUtils.create_empty_room(12, 12),
                                  self.get_add_object(model_name=table.name,
                                                      position={"x": table_x, "y": 0, "z": table_z},
@@ -631,6 +623,10 @@ As mentioned earlier, procedural generation is an unbounded problem and there's 
 
 **Next: [Reset a scene](reset_scene.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [proc_gen_objects.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/proc_gen_objects.py) Using procedural generation, add a table to scene and add chairs around the table.
@@ -647,6 +643,4 @@ Command API:
 
 - [`object_look_at_position`](../../api/command_api.md#object_look_at_position) 
 - [`rotate_object_by`](../../api/command_api.md#rotate_object_by)
-
-[Return to the README](../../README.md)
 

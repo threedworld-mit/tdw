@@ -2,9 +2,9 @@
 
 # Avatars and cameras
 
-As mentioned [earlier](design_philosophy.md), TDW doesn't impose metaphors regarding what an agent is or whether there needs to be one at all.
+As mentioned [earlier](design_philosophy.md), TDW doesn't impose metaphors regarding what an agent is or whether there needs to be one at all. **Avatars** are a type of agent in TDW but not the only one.
 
-**Avatars** are a type of agent in TDW but not the only one. Every type of every has a camera. The most commonly used avatar is a non-embodied camera; you can think of this avatar as being more or less equivalent to a third-person camera.
+All avatars have a camera. The most commonly used avatar is a non-embodied camera; you can think of this avatar as being more or less equivalent to a third-person camera.
 
 To add the third-person camera avatar to the scene:
 
@@ -13,7 +13,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "create_avatar",
                 "type": "A_Img_Caps_Kinematic",
@@ -24,14 +23,13 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 
 ![](images/avatar.png)
 
-The avatar is currently at position (0, 0, 0). To move it to a better location, send `teleport_avatar_to`:
+The avatar is currently at position (0, 0, 0) i.e. floor level--the top half of the image is above the floor and the bottom half is below the floor. To move the avatar to a better location, send `teleport_avatar_to`:
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "create_avatar",
                 "type": "A_Img_Caps_Kinematic",
@@ -52,7 +50,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "create_avatar",
                 "type": "A_Img_Caps_Kinematic",
@@ -83,7 +80,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 c = Controller()
-c.start()
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend(TDWUtils.create_avatar(avatar_type="A_Img_Caps_Kinematic",
                                        position={"x": -1, "y": 5.7, "z": -3.8},
@@ -109,7 +105,6 @@ Note that in this example, the `avatar_id` parameters are missing. That's becaus
 """
 
 c = Controller()
-c.start()
 y = 5.7
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "create_avatar",
@@ -144,6 +139,10 @@ c.communicate({"$type": "terminate"})
 
 **Next: [Add-ons and the `ThirdPersonCamera`](add_ons.md)**
 
+[Return to the README](../../../README.md)
+
+***
+
 Example controllers:
 
 - [move_avatar.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/move_avatar.py) Move an avatar and rotate its camera.
@@ -158,5 +157,3 @@ Command API:
 - [`teleport_avatar_to`](../../api/command_api.md#teleport_avatar_to)
 - [`rotate_sensor_container_by`](../../api/command_api.md#rotate_sensor_container_by)
 - [`set_target_framerate`](../../api/command_api.md#set_target_framerate)
-
-[Return to the README](../../README.md)

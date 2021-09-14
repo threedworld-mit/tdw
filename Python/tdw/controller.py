@@ -22,7 +22,6 @@ class Controller(object):
     ```python
     from tdw.controller import Controller
     c = Controller()
-    c.start()
     ```
     """
 

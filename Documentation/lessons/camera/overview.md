@@ -10,4 +10,4 @@ For a full list of avatar camera (sensor container) commands, [read the Command 
 
 **Next: [Move a camera](position.md)**
 
-[Return to the README](../../README.md)
+[Return to the README](../../../README.md)

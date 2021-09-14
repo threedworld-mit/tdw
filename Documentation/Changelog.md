@@ -113,6 +113,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.26
+
+### Build
+
+- Fixed: NullReferenceException when sending `destroy_object` for a composite object.
+
 ## v1.8.25
 
 ### Command API

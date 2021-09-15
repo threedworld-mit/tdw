@@ -54,12 +54,9 @@ High-level API: [FloorplanController](Documentation/python/floorplan_controller.
 
 ## 2.2 Non-Default 3D Models
 
-1. Overview
-
-2. Free models
-
-3. Non-free models
-
+1. [Overview](Documentation/lessons/3d_models/overview.md)
+2. [Free models](Documentation/lessons/3d_models/free_models.md)
+3. [Non-free models](Documentation/lessons/3d_models/non_free_models.md)
 4. Add your own models to TDW
 5. Add ShapeNet models to TDW
 

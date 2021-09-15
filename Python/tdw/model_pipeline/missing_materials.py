@@ -32,8 +32,6 @@ class MissingMaterials:
 
         print(f"Results will be saved to: {MissingMaterials.OUTPUT_FILE}")
 
-        c.start()
-
         c.communicate([{"$type": "simulate_physics",
                         "value": False},
                        {"$type": "create_empty_environment"},
@@ -155,7 +153,6 @@ class MissingMaterials:
 
         MissingMaterials.start(c)
 
-        print(f"The names of models with missing materials will be saved to: {MissingMaterials.OUTPUT_FILE}")
         for library_path in ModelLibrarian.get_library_filenames():
             print(library_path)
             lib = ModelLibrarian(library=library_path)

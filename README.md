@@ -93,11 +93,13 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 ## 2.6 Physics
 
 1. Overview
-2. Friction and mass
-3. Default object physics parameters
-4. Collisions
-5. NVIDIA Flex
-6. Non-physics simulations
+2. Object physics parameters
+3. `Rigidbody` output data
+4. `Collision` output data
+5. Apply forces to objects
+6. Kinematic objects
+7. NVIDIA Flex
+8. Non-physics simulations
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
@@ -116,14 +118,13 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 1. Controlling the framerate
 2. Image-only videos
 3. Image+audio videos
-4. The `CinematicCamera`
+4. The `CinematicCamera` add-on
 
 ## 2.9 Robots and Embodied Agents
 
 1. Robots
 2. Humanoid agents
 3. VR
-4. Humanoids
 5. Keyboard controls
 6. Embodied avatars
 7. Navigation

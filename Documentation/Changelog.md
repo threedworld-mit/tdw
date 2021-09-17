@@ -4,6 +4,13 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.27
+
+### Build
+
+- Fixed: NullReferenceException when sending `send_vr_rig`.
+- Fixed: Possible race condition when sending `send_vr_rig` soon after the VR rig is created.
+
 ## v1.8.26
 
 ### Build

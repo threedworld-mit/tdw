@@ -214,23 +214,25 @@ class Controller(object):
                      "position": position,
                      "category": record.wcategory,
                      "id": object_id}]
-        # The rotation is a quaternion.
-        if "w" in rotation:
-            commands.append({"$type": "rotate_object_to",
-                             "rotation": rotation,
+        if rotation is not None:
+            # The rotation is a quaternion.
+            if "w" in rotation:
+                commands.append({"$type": "rotate_object_to",
+                                 "rotation": rotation,
+                                 "id": object_id})
+            # The rotation is in Euler angles.
+            else:
+                commands.append({"$type": "rotate_object_to_euler_angles",
+                                 "euler_angles": rotation,
+                                 "id": object_id})
+        if scale_factor is not None:
+            commands.append({"$type": "scale_object",
+                             "scale_factor": scale_factor,
                              "id": object_id})
-        # The rotation is in Euler angles.
-        else:
-            commands.append({"$type": "rotate_object_to_euler_angles",
-                             "euler_angles": rotation,
-                             "id": object_id})
-        commands.extend([{"$type": "scale_object",
-                          "scale_factor": scale_factor,
-                          "id": object_id},
-                         {"$type": "set_kinematic_state",
-                          "id": object_id,
-                          "is_kinematic": kinematic,
-                          "use_gravity": gravity}])
+        commands.append({"$type": "set_kinematic_state",
+                         "id": object_id,
+                         "is_kinematic": kinematic,
+                         "use_gravity": gravity})
         # Kinematic objects must be continuous_speculative.
         if kinematic:
             commands.append({"$type": "set_object_collision_detection_mode",

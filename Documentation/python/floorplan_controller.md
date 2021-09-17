@@ -16,7 +16,7 @@ c.communicate(init_commands)
 
 ***
 
-#### `get_scene_init_commands(self, scene: str, layout: int, audio: bool = True) -> List[dict]`
+#### `get_scene_init_commands(self, scene: str, layout: int) -> List[dict]`
 
 Get commands to create a scene and populate it with objects.
 Valid scenes and layouts:
@@ -31,7 +31,6 @@ Valid scenes and layouts:
 | --- | --- |
 | scene | The name of the scene. Corresponds to a record named: `floorplan_[scene]`. |
 | layout | The layout index. |
-| audio | If True, instantiate physics values per object from audio properties. |
 
 _Returns:_  A list of commands to initialize the scene and populate it with objects.
 

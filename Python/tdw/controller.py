@@ -2,7 +2,7 @@ import zmq
 import json
 import os
 from subprocess import Popen
-from typing import List, Union, Optional, Tuple, Dict
+from typing import List, Union, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian
 from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH
@@ -27,8 +27,14 @@ class Controller(object):
     ```
     """
 
-
     DEFAULT_PHYSICS_VALUES: Dict[str, ObjectInfo] = PyImpact.get_object_info()
+    MODEL_LIBRARIANS: Dict[str, ModelLibrarian] = dict()
+    SCENE_LIBRARIANS: Dict[str, SceneLibrarian] = dict()
+    MATERIAL_LIBRARIANS: Dict[str, MaterialLibrarian] = dict()
+    HDRI_SKYBOX_LIBRARIANS: Dict[str, HDRISkyboxLibrarian] = dict()
+    HUMANOID_LIBRARIANS: Dict[str, HumanoidLibrarian] = dict()
+    HUMANOID_ANIMATION_LIBRARIANS: Dict[str, HumanoidAnimationLibrarian] = dict()
+    ROBOT_LIBRARIANS: Dict[str, RobotLibrarian] = dict()
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """
@@ -73,14 +79,6 @@ class Controller(object):
                 self._unity_version = v.get_unity_version()
                 self._is_standalone = v.get_standalone()
                 break
-        self.model_librarian: Optional[ModelLibrarian] = None
-        self.scene_librarian: Optional[SceneLibrarian] = None
-        self.material_librarian: Optional[MaterialLibrarian] = None
-        self.hdri_skybox_librarian: Optional[HDRISkyboxLibrarian] = None
-        self.humanoid_librarian: Optional[HumanoidLibrarian] = None
-        self.humanoid_animation_librarian: Optional[HumanoidAnimationLibrarian] = None
-        self.robot_librarian: Optional[RobotLibrarian] = None
-
         # Compare the version of the tdw module to the build version.
         if check_version and launch_build:
             self._check_build_version()
@@ -156,7 +154,8 @@ class Controller(object):
         # Return the output data from the build.
         return resp
 
-    def get_add_object(self, model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
+    @staticmethod
+    def get_add_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
         """
         Returns a valid add_object command.
 
@@ -169,10 +168,11 @@ class Controller(object):
         :return An add_object command that the controller can then send.
         """
 
-        if self.model_librarian is None or (library != "" and self.model_librarian.library != library):
-            self.model_librarian = ModelLibrarian(library=library)
-
-        record = self.model_librarian.get_record(model_name)
+        if library == "":
+            library = "models_core.json"
+        if library not in Controller.MODEL_LIBRARIANS:
+            Controller.MODEL_LIBRARIANS[library] = ModelLibrarian(library)
+        record = Controller.MODEL_LIBRARIANS[library].get_record(model_name)
 
         return {"$type": "add_object",
                 "name": model_name,
@@ -183,7 +183,8 @@ class Controller(object):
                 "category": record.wcategory,
                 "id": object_id}
 
-    def get_add_physics_object(self, model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]:
+    @staticmethod
+    def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]:
         """
         Add an object to the scene with physics values (mass, friction coefficients, etc.).
 
@@ -204,9 +205,11 @@ class Controller(object):
         :return: A list of commands to add the object and apply physics values.
         """
 
-        if self.model_librarian is None or (library != "" and self.model_librarian.library != library):
-            self.model_librarian = ModelLibrarian(library=library)
-        record = self.model_librarian.get_record(model_name)
+        if library == "":
+            library = "models_core.json"
+        if library not in Controller.MODEL_LIBRARIANS:
+            Controller.MODEL_LIBRARIANS[library] = ModelLibrarian(library)
+        record = Controller.MODEL_LIBRARIANS[library].get_record(model_name)
         commands = [{"$type": "add_object",
                      "name": record.name,
                      "url": record.get_url(),
@@ -259,7 +262,8 @@ class Controller(object):
                               "id": object_id}])
         return commands
 
-    def get_add_material(self, material_name: str, library: str = "") -> dict:
+    @staticmethod
+    def get_add_material(material_name: str, library: str = "") -> dict:
         """
         Returns a valid add_material command.
 
@@ -269,15 +273,17 @@ class Controller(object):
         :return An add_material command that the controller can then send.
         """
 
-        if self.material_librarian is None:
-            self.material_librarian = MaterialLibrarian(library=library)
-
-        record = self.material_librarian.get_record(material_name)
+        if library == "":
+            library = "materials_med.json"
+        if library not in Controller.MATERIAL_LIBRARIANS:
+            Controller.MATERIAL_LIBRARIANS[library] = MaterialLibrarian(library)
+        record = Controller.MATERIAL_LIBRARIANS[library].get_record(material_name)
         return {"$type": "add_material",
                 "name": material_name,
                 "url": record.get_url()}
 
-    def get_add_scene(self, scene_name: str, library: str = "") -> dict:
+    @staticmethod
+    def get_add_scene(scene_name: str, library: str = "") -> dict:
         """
         Returns a valid add_scene command.
 
@@ -287,15 +293,17 @@ class Controller(object):
         :return An add_scene command that the controller can then send.
         """
 
-        if self.scene_librarian is None:
-            self.scene_librarian = SceneLibrarian(library=library)
-
-        record = self.scene_librarian.get_record(scene_name)
+        if library == "":
+            library = "scenes.json"
+        if library not in Controller.SCENE_LIBRARIANS:
+            Controller.SCENE_LIBRARIANS[library] = SceneLibrarian(library)
+        record = Controller.SCENE_LIBRARIANS[library].get_record(scene_name)
         return {"$type": "add_scene",
                 "name": scene_name,
                 "url": record.get_url()}
 
-    def get_add_hdri_skybox(self, skybox_name: str, library: str = "") -> dict:
+    @staticmethod
+    def get_add_hdri_skybox(skybox_name: str, library: str = "") -> dict:
         """
         Returns a valid add_hdri_skybox command.
 
@@ -305,10 +313,11 @@ class Controller(object):
         :return An add_hdri_skybox command that the controller can then send.
         """
 
-        if self.hdri_skybox_librarian is None:
-            self.hdri_skybox_librarian = HDRISkyboxLibrarian(library=library)
-
-        record = self.hdri_skybox_librarian.get_record(skybox_name)
+        if library == "":
+            library = "hdri_skyboxes.json"
+        if library not in Controller.HDRI_SKYBOX_LIBRARIANS:
+            Controller.HDRI_SKYBOX_LIBRARIANS[library] = HDRISkyboxLibrarian(library)
+        record = Controller.HDRI_SKYBOX_LIBRARIANS[library].get_record(skybox_name)
         return {"$type": "add_hdri_skybox",
                 "name": skybox_name,
                 "url": record.get_url(),
@@ -318,7 +327,8 @@ class Controller(object):
                 "sun_initial_angle": record.sun_initial_angle,
                 "sun_intensity": record.sun_intensity}
 
-    def get_add_humanoid(self, humanoid_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str ="") -> dict:
+    @staticmethod
+    def get_add_humanoid(humanoid_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str ="") -> dict:
         """
         Returns a valid add_humanoid command.
 
@@ -331,11 +341,11 @@ class Controller(object):
         :return An add_humanoid command that the controller can then send.
         """
 
-        if self.humanoid_librarian is None or (library != "" and self.humanoid_librarian.library != library):
-            self.humanoid_librarian = HumanoidLibrarian(library=library)
-
-        record = self.humanoid_librarian.get_record(humanoid_name)
-
+        if library == "":
+            library = "humanoids.json"
+        if library not in Controller.HUMANOID_LIBRARIANS:
+            Controller.HUMANOID_LIBRARIANS[library] = HumanoidLibrarian(library)
+        record = Controller.HUMANOID_LIBRARIANS[library].get_record(humanoid_name)
         return {"$type": "add_humanoid",
                 "name": humanoid_name,
                 "url": record.get_url(),
@@ -343,7 +353,8 @@ class Controller(object):
                 "rotation": rotation,
                 "id": object_id}
 
-    def get_add_humanoid_animation(self, humanoid_animation_name: str, library="") -> (dict, HumanoidAnimationRecord):
+    @staticmethod
+    def get_add_humanoid_animation(humanoid_animation_name: str, library="") -> (dict, HumanoidAnimationRecord):
         """
         Returns a valid add_humanoid_animation command and the record (which you will need to play an animation).
 
@@ -353,15 +364,17 @@ class Controller(object):
         :return An add_humanoid_animation command that the controller can then send.
         """
 
-        if self.humanoid_animation_librarian is None:
-            self.humanoid_animation_librarian = HumanoidAnimationLibrarian(library=library)
-
-        record = self.humanoid_animation_librarian.get_record(humanoid_animation_name)
+        if library == "":
+            library = "humanoid_animations.json"
+        if library not in Controller.HUMANOID_ANIMATION_LIBRARIANS:
+            Controller.HUMANOID_ANIMATION_LIBRARIANS[library] = HumanoidAnimationLibrarian(library)
+        record = Controller.HUMANOID_ANIMATION_LIBRARIANS[library].get_record(humanoid_animation_name)
         return {"$type": "add_humanoid_animation",
                 "name": humanoid_animation_name,
                 "url": record.get_url()}, record
 
-    def get_add_robot(self, name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
+    @staticmethod
+    def get_add_robot(name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
         """
         Returns a valid add_robot command.
 
@@ -374,10 +387,11 @@ class Controller(object):
         :return An `add_robot` command that the controller can then send.
         """
 
-        if self.robot_librarian is None:
-            self.robot_librarian = RobotLibrarian(library=library)
-
-        record = self.robot_librarian.get_record(name)
+        if library == "":
+            library = "robots.json"
+        if library not in Controller.ROBOT_LIBRARIANS:
+            Controller.ROBOT_LIBRARIANS[library] = RobotLibrarian(library)
+        record = Controller.ROBOT_LIBRARIANS[library].get_record(name)
 
         if position is None:
             position = {"x": 0, "y": 0, "z": 0}

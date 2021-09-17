@@ -35,6 +35,7 @@ class AddOn(ABC):
     - [CinematicCamera](cinematic_camera.md)
     - [CollisionManager](collision_manager.md)
     - [Debug](debug.md)
+    - [Floorplan](floorplan.md)
     - [ImageCapture](image_capture.md)
     - [Keyboard](keyboard.md)
     - [ObjectManager](object_manager.md)

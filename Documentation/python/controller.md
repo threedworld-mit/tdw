@@ -40,7 +40,9 @@ _Returns:_ The output data from the build.
 
 ***
 
-#### `get_add_object(self, model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict`
+#### `get_add_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict`
+
+_This is a static function._
 
 Returns a valid add_object command.
 
@@ -56,8 +58,11 @@ _Returns:_ An add_object command that the controller can then send.
 
 ***
 
-#### `get_add_physics_object(self, model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]`
+#### `get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]`
 
+_This is a static function._
+
+Add an object to the scene with physics values (mass, friction coefficients, etc.).
 
 | Parameter | Description |
 | --- | --- |
@@ -79,7 +84,9 @@ _Returns:_  A list of commands to add the object and apply physics values.
 
 ***
 
-#### `get_add_material(self, material_name: str, library: str = "") -> dict`
+#### `get_add_material(material_name: str, library: str = "") -> dict`
+
+_This is a static function._
 
 Returns a valid add_material command.
 
@@ -92,7 +99,9 @@ _Returns:_ An add_material command that the controller can then send.
 
 ***
 
-#### `get_add_scene(self, scene_name: str, library: str = "") -> dict`
+#### `get_add_scene(scene_name: str, library: str = "") -> dict`
+
+_This is a static function._
 
 Returns a valid add_scene command.
 
@@ -105,7 +114,9 @@ _Returns:_ An add_scene command that the controller can then send.
 
 ***
 
-#### `get_add_hdri_skybox(self, skybox_name: str, library: str = "") -> dict`
+#### `get_add_hdri_skybox(skybox_name: str, library: str = "") -> dict`
+
+_This is a static function._
 
 Returns a valid add_hdri_skybox command.
 
@@ -118,7 +129,9 @@ _Returns:_ An add_hdri_skybox command that the controller can then send.
 
 ***
 
-#### `get_add_humanoid(self, humanoid_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str ="") -> dict`
+#### `get_add_humanoid(humanoid_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str ="") -> dict`
+
+_This is a static function._
 
 Returns a valid add_humanoid command.
 
@@ -134,7 +147,9 @@ _Returns:_ An add_humanoid command that the controller can then send.
 
 ***
 
-#### `get_add_humanoid_animation(self, humanoid_animation_name: str, library="") -> (dict, HumanoidAnimationRecord)`
+#### `get_add_humanoid_animation(humanoid_animation_name: str, library="") -> (dict, HumanoidAnimationRecord)`
+
+_This is a static function._
 
 Returns a valid add_humanoid_animation command and the record (which you will need to play an animation).
 
@@ -147,7 +162,9 @@ _Returns:_ An add_humanoid_animation command that the controller can then send.
 
 ***
 
-#### `get_add_robot(self, name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict`
+#### `get_add_robot(name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict`
+
+_This is a static function._
 
 Returns a valid add_robot command.
 

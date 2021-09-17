@@ -50,4 +50,4 @@ class VR(Controller):
 
 
 if __name__ == "__main__":
-    VR().run()
+    VR(launch_build=False).run()

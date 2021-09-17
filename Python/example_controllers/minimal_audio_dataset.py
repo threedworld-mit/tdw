@@ -3,7 +3,6 @@ from typing import Union
 from tdw.controller import Controller
 from tdw.py_impact import PyImpact, AudioMaterial
 from tdw.tdw_utils import TDWUtils, AudioUtils
-from tdw.object_init_data import AudioInitData
 from tdw.output_data import OutputData, Rigidbodies, AudioSources
 
 
@@ -58,10 +57,10 @@ class MinimalAudioDataset(Controller):
                     TDWUtils.create_empty_room(12, 12)]
 
         # Add the object.
-        a = AudioInitData(name=name,
-                          position={"x": 0, "y": 2, "z": 0})
-        object_id, object_commands = a.get_commands()
-        commands.extend(object_commands)
+        object_id = self.get_unique_id()
+        commands.extend(self.get_add_physics_object(model_name=name,
+                                                    position={"x": 0, "y": 2, "z": 0},
+                                                    object_id=object_id))
 
         # Create the avatar.
         avatar_id = "a"

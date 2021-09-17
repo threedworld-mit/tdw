@@ -2,7 +2,6 @@ import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.py_impact import PyImpact, AudioMaterial
-from tdw.object_init_data import AudioInitData
 
 """
 - Listen for collisions between objects.
@@ -48,22 +47,20 @@ class ImpactSounds(Controller):
         obj2_name = random.choice(obj2_names)
 
         # Get initialization data from the default audio data (which includes mass, friction values, etc.).
-        obj1_init_data = AudioInitData(name=obj1_name)
-        obj2_init_data = AudioInitData(name=obj2_name,
-                                       position={"x": 0, "y": 2, "z": 0},
-                                       rotation={"x": 135, "y": 0, "z": 30})
-        # Convert the initialization data to commands.
-        obj1_id, obj1_commands = obj1_init_data.get_commands()
-        obj2_id, obj2_commands = obj2_init_data.get_commands()
+        obj1_id = self.get_unique_id()
+        obj2_id = self.get_unique_id()
+        commands.extend(self.get_add_physics_object(model_name=obj1_name,
+                                                    object_id=obj1_id))
+        commands.extend(self.get_add_physics_object(model_name=obj2_name,
+                                                    object_id=obj2_id,
+                                                    position={"x": 0, "y": 2, "z": 0},
+                                                    rotation={"x": 135, "y": 0, "z": 30}))
 
         # Cache the IDs and names of each object for PyImpact.
         object_names = {obj1_id: obj1_name,
                         obj2_id: obj2_name}
         p.set_default_audio_info(object_names=object_names)
 
-        # Add the objects.
-        commands.extend(obj1_commands)
-        commands.extend(obj2_commands)
         # Apply a small force to the dropped object.
         # Request collision and rigidbody output data.
         commands.extend([{"$type": "apply_force_to_object",
@@ -90,8 +87,6 @@ class ImpactSounds(Controller):
             resp = self.communicate(commands)
 
     def run(self):
-        self.start()
-
         # Run a series of trials.
         for j in range(5):
             self.trial()

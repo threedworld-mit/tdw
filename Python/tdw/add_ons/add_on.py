@@ -36,6 +36,7 @@ class AddOn(ABC):
     - [CollisionManager](collision_manager.md)
     - [Debug](debug.md)
     - [EmbodiedAvatar](embodied_avatar.md)
+    - [Floorplan](floorplan.md)
     - [ImageCapture](image_capture.md)
     - [Keyboard](keyboard.md)
     - [ObjectManager](object_manager.md)

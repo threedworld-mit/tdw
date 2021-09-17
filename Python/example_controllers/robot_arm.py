@@ -119,4 +119,4 @@ class RobotArm(Controller):
 
 
 if __name__ == "__main__":
-    RobotArm(launch_build=False).run()
+    RobotArm(launch_build=True).run()

@@ -517,7 +517,7 @@ class HumanoidAnimationLibrarian(_Librarian[HumanoidAnimationRecord]):
 
     @staticmethod
     def get_library_filenames() -> List[str]:
-        return ["humanoid_animations.json"]
+        return ["humanoid_animations.json", "smpl_animations.json"]
 
     def _generate_record(self, data: dict) -> T:
         return HumanoidAnimationRecord(data)

@@ -62,6 +62,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
   - `CinematicCamera` Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. **towards** a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but **not** for most actual experiments.
   - `CollisionManager` Manager add-on for all collisions on this frame.
   - `Debug` Record and playback every command sent to the build.
+  - `Floorplan` Initialize a scene populated by objects in pre-scripted layouts.
   - `ImageCapture` Request image data and save the images to disk.
   - `Keyboard` Add keyboard controls to a TDW scene.
   - `ObjectManager` A simple manager class for objects in the scene. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.
@@ -69,6 +70,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
   - `Robot` Control the joints of a robot.
   - `StepPhysics` Step n+1 physics frames per communicate() call.
   - `ThirdPersonCamera` Add a third-person camera to the scene.
+- Removed: `TransformInitData`, `RigidbodyInitData`, and `AudioInitData`.
 - Added backend object data classes:
   - `Transform` Transform data (position, forward, rotation).
   - `Rigidbody` Dynamic rigidbody data (velocity, angular velocity, sleeping).
@@ -84,6 +86,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
   - `JointType` The type of joint, e.g. `revolute`.
 - Removed `DebugController` (replaced with `Debug` add-on)
 - Removed `KeyboardController` (replaced with `Keyboard` add-on)
+- Removed `FloorplanController` (replaced with `Floorplan` add-on)
 - Moved `CollisionObjObj` and `CollisionObjEnv` from `tdw.collision` to `tdw.collision_data`
   - Removed `collisons.py`
 
@@ -94,10 +97,14 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - **Removed: `Controller.add_object(model_name)`** Use `Controller.get_add_object(model_name)` instead.
 - **Removed: `Controller.load_streamed_scene(scene)`** Use `Controller.get_add_scene(scene_name)` instead.
 - Removed `check_build_process` from the constructor because it's too slow to be useful.
+- Added: `self.get_add_physics_object()`.  Add an object to the scene with physics values (mass, friction coefficients, etc.).
+- Added: `DEFAULT_PHYSICS_VALUES`. A dictionary of default `ObjectInfo` per object. This corresponds to `PyImpact.get_object_info()`.
+- Removed all cached librarian fields (`self.model_librarian`, `self.scene_librarian`, etc.) and replaced them with class variable dictionaries that automatically cache librarians (`Controller.MODEL_LIBRARIANS`, `Controller.SCENE_LIBRARIANS`, etc.) This allows multiple librarian objects to be cached at the same time and allows other classes to access them.
+- All asset bundle wrapper functions (`get_add_object()`, `get_add_scene()`, etc.) are now static.
 
-#### `FloorplanController`
+#### `PyImpact`
 
-- Set the default value of the `audio` parameter of the constructor to `True`.
+- Added: `STATIC_FRICTION` and `DYNAMIC_FRICTION`. Dictionaries of friction coefficients per audio material.
 
 #### `paths` (backend)
 
@@ -119,6 +126,13 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 # v1.8.x
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
+
+## v1.8.27
+
+### Build
+
+- Fixed: NullReferenceException when sending `send_vr_rig`.
+- Fixed: Possible race condition when sending `send_vr_rig` soon after the VR rig is created.
 
 ## v1.8.26
 

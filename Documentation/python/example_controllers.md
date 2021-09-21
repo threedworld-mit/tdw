@@ -47,6 +47,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `robot_arm.py` | Add a robot to TDW and bend its arm. |
 | `robot_camera.py` | Add a camera to a Magnebot. |
 | `robot_torque.py` | Add a robot to TDW and bend its arm. |
+| `smpl_humanoid.py` | Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body parameters and play an animation. |
 | `visual_material_quality.py` | Adjust the render quality of visual materials. |
 | `vr.py` | 1. Create an Oculus VR rig.<br>2. Add a few objects to the scene that can be picked up, moved, put down, etc. |
 | `vr_flex.py` | 1. Create an Oculus VR rig.<br>2. Create Flex-enabled objects.<br>3. Receive Flex particle data. |

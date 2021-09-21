@@ -6,10 +6,30 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ## v1.8.27
 
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `add_smpl_humanoid` | Add a parameterized humanoid to the scene using [SMPL](https://smpl.is.tue.mpg.de/en). Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters. |
+
+### Humanoid libraries
+
+- Added: `smpl_humanoids.json` HumanoidLibrarian. There are two SMPL humanoid asset bundles in this library.
+
+### Humanoid animation libraries:
+
+- Added: `smpl_animations.json`  These animations were extracted from the SMPL unity project. A SMPL humanoid can use non-SMPL animations and vice-versa; these animations have been grouped into their own library merely for organizational convenience.
+
 ### Build
 
 - Fixed: NullReferenceException when sending `send_vr_rig`.
 - Fixed: Possible race condition when sending `send_vr_rig` soon after the VR rig is created.
+
+### Example Controllers
+
+- Added: `smpl_humanoid.py` Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body parameters and play an animation.
 
 ## v1.8.26
 

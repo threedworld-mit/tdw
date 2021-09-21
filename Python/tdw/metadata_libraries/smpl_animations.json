@@ -56,6 +56,17 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.2/walk_backward"
             }
         },
+        "walk_backward_turn_left": {
+            "duration": 4.096667,
+            "framerate": 30,
+            "loop": true,
+            "name": "walk_backward_turn_left",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.2/walk_backward_turn_left",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.2/walk_backward_turn_left",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.2/walk_backward_turn_left"
+            }
+        },
         "walk_backward_turn_right": {
             "duration": 4.096667,
             "framerate": 30,
@@ -76,6 +87,17 @@
                 "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.2/walk_forward",
                 "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.2/walk_forward",
                 "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.2/walk_forward"
+            }
+        },
+        "walk_forward_turn_left": {
+            "duration": 7.533334,
+            "framerate": 30,
+            "loop": true,
+            "name": "walk_forward_turn_left",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.2/walk_forward_turn_left",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.2/walk_forward_turn_left",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.2/walk_forward_turn_left"
             }
         },
         "walk_forward_turn_right": {

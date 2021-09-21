@@ -530,7 +530,7 @@ class HumanoidLibrarian(_Librarian[HumanoidRecord]):
 
     @staticmethod
     def get_library_filenames() -> List[str]:
-        return ["humanoids.json"]
+        return ["humanoids.json", "smpl_humanoids.json"]
 
     def _generate_record(self, data: dict) -> T:
         return HumanoidRecord(data)

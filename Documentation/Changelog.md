@@ -31,6 +31,14 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Added: `smpl_humanoid.py` Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body parameters and play an animation.
 
+### Documentation
+
+#### Modified Documentation
+
+| Document       | Modification                               |
+| -------------- | ------------------------------------------ |
+| `humanoids.md` | Rewrote document and added SMPL humanoids. |
+
 ## v1.8.26
 
 ### Build

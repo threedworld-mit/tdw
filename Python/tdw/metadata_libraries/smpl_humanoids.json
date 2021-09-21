@@ -1,0 +1,21 @@
+{
+    "description": "SMPL humanoids",
+    "records": {
+        "humanoid_smpl_f": {
+            "name": "humanoid_smpl_f",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/osx/2020.2/humanoid_smpl_f",
+                "Linux": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/linux/2020.2/humanoid_smpl_f",
+                "Windows": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/windows/2020.2/humanoid_smpl_f"
+            }
+        },
+        "humanoid_smpl_m": {
+            "name": "humanoid_smpl_m",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/osx/2020.2/humanoid_smpl_m",
+                "Linux": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/linux/2020.2/humanoid_smpl_m",
+                "Windows": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/windows/2020.2/humanoid_smpl_m"
+            }
+        }
+    }
+}

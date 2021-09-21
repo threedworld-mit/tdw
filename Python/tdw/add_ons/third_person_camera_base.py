@@ -17,9 +17,9 @@ class ThirdPersonCameraBase(AddOn, ABC):
                  fov: int = None, framerate: int = None):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
-        :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param position: The initial position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param fov: If not None, this is the initial field of view. Otherwise, defaults to 35.
+        :param fov: The initial field of view. If None, defaults to 35.
         :param framerate: If not None, sets the target framerate.
         """
 
@@ -33,7 +33,7 @@ class ThirdPersonCameraBase(AddOn, ABC):
         else:
             self.avatar_id: str = avatar_id
         self._init_commands: List[dict] = [{"$type": "create_avatar",
-                                            "type": "A_Img_Caps_Kinematic",
+                                            "type": self._get_avatar_type(),
                                             "id": self.avatar_id},
                                            {"$type": "set_pass_masks",
                                             "pass_masks": ["_img"],
@@ -48,11 +48,11 @@ class ThirdPersonCameraBase(AddOn, ABC):
         """:field
         The initial position of the object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         """
-        self.position: Optional[Dict[str, float]] = position
+        self.initial_position: Optional[Dict[str, float]] = position
         # Set the initial position.
-        if self.position is not None:
+        if self.initial_position is not None:
             self._init_commands.append({"$type": "teleport_avatar_to",
-                                        "position": self.position,
+                                        "position": self.initial_position,
                                         "avatar_id": self.avatar_id})
         # Set the initial rotation.
         if rotation is not None:
@@ -109,3 +109,10 @@ class ThirdPersonCameraBase(AddOn, ABC):
         """
 
         pass
+
+    def _get_avatar_type(self) -> str:
+        """
+        :return: The type of avatar.
+        """
+
+        return "A_Img_Caps_Kinematic"

@@ -9,7 +9,7 @@ Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body 
 """
 
 humanoid_librarian = HumanoidLibrarian("smpl_humanoids.json")
-humanoid_record = humanoid_librarian.get_record("humanoid_smpl_f")
+humanoid_record = random.choice(humanoid_librarian.records)
 
 # These animations have been extracted from SMPL and are in their own library merely for organizational reasons.
 # Other non-SMPL animations will work just as well with the SMPL humanoids.

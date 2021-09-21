@@ -117,6 +117,15 @@ humanoid_smpl_f
 humanoid_smpl_m
 ```
 
+To fetch a specific record:
+
+```python
+from tdw.librarian import HumanoidLibrarian
+
+lib = HumanoidLibrarian("smpl_humanoids.json")
+record = lib.get_record("humanoid_smpl_f")
+```
+
 To add a SMPL humanoid, send `add_smpl_humanoid`:
 
 ```python

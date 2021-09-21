@@ -1,7 +1,7 @@
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import HumanoidAnimationLibrarian, HumanoidLibrarian
+from tdw.librarian import HumanoidLibrarian
 
 
 """
@@ -11,13 +11,12 @@ Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body 
 humanoid_librarian = HumanoidLibrarian("smpl_humanoids.json")
 humanoid_record = random.choice(humanoid_librarian.records)
 
-# These animations have been extracted from SMPL and are in their own library merely for organizational reasons.
-# Other non-SMPL animations will work just as well with the SMPL humanoids.
-animation_librarian = HumanoidAnimationLibrarian("smpl_animations.json")
-animation_record = animation_librarian.get_record("walk_forward")
-
 c = Controller()
 c.start()
+# These animations have been extracted from SMPL and are in their own library merely for organizational reasons.
+# Other non-SMPL animations will work just as well with the SMPL humanoids and vice-versa.
+animation_command, animation_record = c.get_add_humanoid_animation(humanoid_animation_name="walk_forward",
+                                                                   library="smpl_animations.json")
 humanoid_id = 0
 commands = [TDWUtils.create_empty_room(12, 12),
             {"$type": "add_smpl_humanoid",
@@ -36,9 +35,7 @@ commands = [TDWUtils.create_empty_room(12, 12),
              "torso_height": random.uniform(-1, 1),
              "left_right_symmetry": random.uniform(-1, 1),
              "shoulder_and_torso_width": random.uniform(-1, 1)},
-            {"$type": "add_humanoid_animation",
-             "name": animation_record.name,
-             "url": animation_record.get_url()},
+            animation_command,
             {"$type": "set_target_framerate",
              "framerate": 30}]
 commands.extend(TDWUtils.create_avatar(position={"x": -3, "y": 1.7, "z": 0.5}))
@@ -48,9 +45,10 @@ commands.append(look_at)
 c.communicate(commands)
 num_frames = animation_record.get_num_frames()
 for i in range(4):
-    c.communicate({"$type": "play_humanoid_animation",
-                   "name": animation_record.name,
-                   "id": humanoid_id})
+    c.communicate([{"$type": "play_humanoid_animation",
+                    "name": animation_record.name,
+                    "id": humanoid_id},
+                   look_at])
     frame = 0
     while frame < num_frames:
         c.communicate(look_at)

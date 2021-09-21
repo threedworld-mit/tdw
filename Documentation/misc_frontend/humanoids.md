@@ -12,6 +12,25 @@ for record in lib.records:
     print(record.name)
 ```
 
+Output:
+
+```
+man_casual_1
+man_suit
+woman_business_1
+woman_business_2
+woman_casual_1
+```
+
+To fetch a specific record:
+
+```python
+from tdw.librarian import HumanoidLibrarian
+
+lib = HumanoidLibrarian()
+record = lib.get_record("man_casual_1")
+```
+
 For a list of animations, see the records in the [Humanoid Animation Librarian](../python/librarian/humanoid_animation_librarian.md):
 
 ```python
@@ -20,6 +39,15 @@ from tdw.librarian import HumanoidAnimationLibrarian
 lib = HumanoidAnimationLibrarian()
 for record in lib.records:
     print(record.name)
+```
+
+To fetch a specific record:
+
+```python
+from tdw.librarian import HumanoidLibrarian
+
+lib = HumanoidLibrarian()
+record = lib.get_record("man_casual_1")
 ```
 
 There are additional animations extracted from [SMPL](https://smpl.is.tue.mpg.de/downloads) in a separate librarian that can be used by any humanoid:
@@ -36,9 +64,9 @@ For an example controller, see `animate_humanoid.py`.
 
 ## How to add animations and humanoids
 
-- Add a humanoid with [`add_humanoid`](../api/command_api.md#add_humanoid).
-- Add an animation with [`add_humanoid_animation`]((../api/command_api.md#add_humanoid_animation)). This will add and cache the animation into memory, but not play it.
-- To play an animation, first send [`play_humanoid_animation`](../api/command_api.md#play_humanoid_animation).
+- Add a humanoid with [`add_humanoid`](../api/command_api.md#add_humanoid) or `Controller.get_add_humanoid()`
+- Add an animation with [`add_humanoid_animation`]((../api/command_api.md#add_humanoid_animation)). This will add and cache the animation into memory, but not play it. Alternatively, you can call `Controller.get_add_humanoid_animation()`. Unlike most `get_add` wrapper functions, this one returns a command *and* a record; you can use the record to get the total number of frames of the animation.
+- To play an animation, first send [`play_humanoid_animation`](../api/command_api.md#play_humanoid_animation). Then call `communicate()` for the number of frames in the animation:
 
 ```python
 from tdw.controller import Controller
@@ -69,6 +97,8 @@ c.communicate({"$type": "terminate"})
 ## SMPL humanoids
 
  [SMPL humanoids](https://smpl.is.tue.mpg.de/downloads) have parameterized body shapes.
+
+For an example controller, see `smpl_humanoid.py`.
 
 To review the SMPL models available, load the SMPL humanoid librarian and iterate through the records:
 

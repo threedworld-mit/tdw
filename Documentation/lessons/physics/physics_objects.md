@@ -169,8 +169,6 @@ num_trials = 10
 
 # Set the 0 to another number to use a different random seed.
 rng = np.random.RandomState(0)
-# This is the initial position of the object in every trial.
-initial_position = np.array([0, 7, 0])
 
 # Add a camera and an object manager.
 camera = ThirdPersonCamera(position={"x": 3, "y": 2.5, "z": -1},
@@ -184,7 +182,7 @@ for i in range(10):
     # Add the object.
     c.communicate(c.get_add_physics_object(model_name="iron_box",
                                            object_id=object_id,
-                                           position=TDWUtils.array_to_vector3(initial_position),
+                                           position={"x": 0, "y": 7, "z": 0},
                                            default_physics_values=False,
                                            mass=float(rng.uniform(0.5, 6)),
                                            dynamic_friction=float(rng.uniform(0, 1)),

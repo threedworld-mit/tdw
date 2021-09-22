@@ -95,7 +95,7 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 1. [Overview](Documentation/lessons/physics/overview.md)
 2. [PhysX](Documentation/lessons/physics/physx.md)
 3. [Object physics parameters](Documentation/lessons/physics/physics_objects.md)
-4. `Rigidbodies` output data
+4. [`Rigidbodies` output data](Documentation/lessons/physics/rigidbodies.md)
 5. `Collision` output data
 6. Apply forces to objects
 8. NVIDIA Flex

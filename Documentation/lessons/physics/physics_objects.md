@@ -148,6 +148,60 @@ commands.extend(c.get_add_physics_object(model_name="iron_box",
 c.communicate(commands)
 ```
 
+## How physics parameters affect an object
+
+[As mentioned previously,](overview.md) PhysX is structured such that once an object starts moving, the physics engine will automatically update its state.
+
+In this example, the controller's behavior is divided into "trials". In each trial, an object is created with random physics values and dropped. We'll use an [`ObjectManager`](../../python/add_ons/object_manager.md) to track whether the object is "sleeping" i.e. it has stopped moving; this will be covered in more depth [in the next document of this tutorial](rigidbodies.md). At the end of the trial, we'll reset the scene by sending [`destroy_object`](../../api/command_api.md#destroy_object).
+
+```python
+import numpy as np
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.object_manager import ObjectManager
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+
+c = Controller()
+c.communicate(TDWUtils.create_empty_room(12, 12))
+
+# Do a number of trials.
+num_trials = 10
+
+# Set the 0 to another number to use a different random seed.
+rng = np.random.RandomState(0)
+# This is the initial position of the object in every trial.
+initial_position = np.array([0, 7, 0])
+
+# Add a camera and an object manager.
+camera = ThirdPersonCamera(position={"x": 3, "y": 2.5, "z": -1},
+                           look_at={"x": 0, "y": 0, "z": 0})
+object_manager = ObjectManager(transforms=True, rigidbodies=True)
+c.add_ons.extend([camera, object_manager])
+
+# Run the trials.
+for i in range(10):
+    object_id = c.get_unique_id()
+    # Add the object.
+    c.communicate(c.get_add_physics_object(model_name="iron_box",
+                                           object_id=object_id,
+                                           position=TDWUtils.array_to_vector3(initial_position),
+                                           default_physics_values=False,
+                                           mass=float(rng.uniform(0.5, 6)),
+                                           dynamic_friction=float(rng.uniform(0, 1)),
+                                           static_friction=float(rng.uniform(0, 1)),
+                                           bounciness=float(rng.uniform(0, 1))))
+    done = False
+    while not done:
+        c.communicate([])
+        done = object_manager.rigidbodies[object_id].sleeping
+    # Destroy the object.
+    c.communicate({"$type": "destroy_object",
+                   "id": object_id})
+    # Mark the object manager as requiring re-initialization.
+    object_manager.initialized = False
+c.communicate({"$type": "terminate"})
+```
+
 ***
 
 **Next: [`Rigidbodies` output data](rigidbodies.md)**
@@ -156,10 +210,15 @@ c.communicate(commands)
 
 ***
 
+Example controllers:
+
+- [physics_values.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physics/physics_values.py) Drop an object with varying physics values and observe its behavior.
+
 Python API:
 
 - [`Controller.get_add_object`](../../api/python/controller.md)
 - [`Controller.get_add_physics_object`](../../api/python/controller.md)
+- [`ObjectManager`](../../python/add_ons/object_manager.md)
 
 Command API:
 
@@ -168,3 +227,5 @@ Command API:
 - [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state)
 - [`set_mass`](../../api/command_api.md#set_mass)
 - [`set_physic_material`](../../api/command_api.md#set_physic_material)
+- [`destroy_object`](../../api/command_api.md#destroy_object)
+

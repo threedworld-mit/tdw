@@ -50,7 +50,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 7. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)
 8. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
 
-High-level API: [FloorplanController](Documentation/python/floorplan_controller.md)
+High-level API: [Floorplan](Documentation/python/floorplan.md)
 
 ## 2.2 Non-Default 3D Models
 
@@ -92,14 +92,14 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 
 ## 2.6 Physics
 
-1. Overview
-2. Object physics parameters
-3. `Rigidbody` output data
-4. `Collision` output data
-5. Apply forces to objects
-6. Kinematic objects
-7. NVIDIA Flex
-8. Non-physics simulations
+1. [Overview](Documentation/lessons/physics/overview.md)
+2. [PhysX](Documentation/lessons/physics/physx.md)
+3. [Object physics parameters](Documentation/lessons/physics/physics_objects.md)
+4. `Rigidbodies` output data
+5. `Collision` output data
+6. Apply forces to objects
+8. NVIDIA Flex
+9. Non-physics simulations
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 

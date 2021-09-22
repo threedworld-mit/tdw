@@ -1,0 +1,170 @@
+##### Physics
+
+# Object physics parameters
+
+So far, we've added objects to a scene in TDW like this:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller()
+object_id = c.get_unique_id()
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="iron_box",
+                                object_id=object_id,
+                                position={"x": 0, "y": 0, "z": 0},
+                                rotation={"x": 0, "y": 0, "z": 0},
+                                library="models_core.json")])
+```
+
+But this usually sets unrealistic physics parameters for an object.
+
+Every object in TDW has additional the following additional physics parameters:
+
+- Mass
+- Dynamic friction
+- Static friction
+- Bounciness
+- Kinematic state
+
+Dynamic friction, static friction, and bounciness don't have precise real-world analogues. They are defined in PhysX by the object's [physic material](https://docs.unity3d.com/Manual/class-PhysicMaterial.html).
+
+The object's kinematic state determines whether it will respond to physics. Other objects will respond to kinematic objects. This can be useful for large objects or objects "attached" to a wall such as a cabinet, where you don't want the object to move but you do want it to affect other objects.
+
+## Default physics values and `get_add_physics_object()`
+
+TDW includes default physics values for some, but not all, models. This is because these physics values must be set manually, and we simply haven't yet done this for [all of our models](../3d_models/overview.md).
+
+The `Controller` class has a dictionary called `DEFAULT_PHYSICS_VALUES` which stores all default physics values. They keys of the dictionary are model names:
+
+```python
+from tdw.controller import Controller
+
+model_name = "iron_box"
+print(model_name in Controller.DEFAULT_PHYSICS_VALUES) # True
+```
+
+To apply these physics values, the `Controller` class includes a wrapper function: [`get_add_physics_object()`](../.../python/controller.md). This is similar to `Controller.get_add_object()` but there is a key difference: This controller returns a *list* of commands rather than a *single* command. Note that in this example we're using *extend* instead of *append* to add a list to another list:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller()
+object_id = c.get_unique_id()
+commands = [TDWUtils.create_empty_room(12, 12)]
+
+# Add a list of commands.
+commands.extend(c.get_add_physics_object(model_name="iron_box",
+                                         object_id=object_id,
+                                         position={"x": 0, "y": 0, "z": 0},
+                                         rotation={"x": 0, "y": 0, "z": 0}))
+c.communicate(commands)
+```
+
+This example does the exact same thing as the previous example, but using only low-level TDW commands:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller()
+object_id = c.get_unique_id()
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               {"$type": "add_object", 
+                "name": "iron_box", 
+                "url": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/iron_box", 
+                "scale_factor": 1.0, 
+                "position": {"x": 0, "y": 0, "z": 0}, 
+                "category": "box", 
+                "id": object_id}, 
+               {"$type": "rotate_object_to_euler_angles", 
+                "euler_angles": {"x": 0, "y": 0, "z": 0}, 
+                "id": object_id}, 
+               {"$type": "set_kinematic_state",
+                "id": object_id, 
+                "is_kinematic": False, 
+                "use_gravity": True}, 
+               {"$type": "set_mass",
+                "mass": 0.65, 
+                "id": object_id},
+               {"$type": "set_physic_material",
+                "dynamic_friction": 0.45, 
+                "static_friction": 0.48, 
+                "bounciness": 0.5, 
+                "id": object_id}])
+```
+
+## Non-default physics values and `get_add_physics_object()`
+
+You might want to set non-default physics values for an object for many reasons, including:
+
+- You want to vary the object's behavior per trial
+- The object doesn't have default physics values
+
+`Controller.get_add_physics_object()` has optional parameters that can be set. If `default_physics_values` is False, then the function will read the non-default values:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller()
+object_id = c.get_unique_id()
+commands = [TDWUtils.create_empty_room(12, 12)]
+
+commands.extend(c.get_add_physics_object(model_name="iron_box",
+                                         object_id=object_id,
+                                         position={"x": 0, "y": 0, "z": 0},
+                                         rotation={"x": 0, "y": 0, "z": 0},
+                                         default_physics_values=False,
+                                         mass=0.65,
+                                         dynamic_friction=0.45,
+                                         static_friction=0.48,
+                                         bounciness=0.5,
+                                         kinematic=False,
+                                         gravity=True))
+c.communicate(commands)
+```
+
+Given the nature of parameters with default values in Python, it is of course possible to simplify the above example to this:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller()
+object_id = c.get_unique_id()
+commands = [TDWUtils.create_empty_room(12, 12)]
+
+# This uses the default values for position and rotation (0, 0, 0) and for the kinematic state (non-kinematic, gravity-enabled).
+commands.extend(c.get_add_physics_object(model_name="iron_box",
+                                         object_id=object_id,
+                                         default_physics_values=False,
+                                         mass=0.65,
+                                         dynamic_friction=0.45,
+                                         static_friction=0.48,
+                                         bounciness=0.5))
+c.communicate(commands)
+```
+
+***
+
+**Next: [`Rigidbodies` output data](rigidbodies.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
+Python API:
+
+- [`Controller.get_add_object`](../../api/python/controller.md)
+- [`Controller.get_add_physics_object`](../../api/python/controller.md)
+
+Command API:
+
+- [`add_object`](../../api/command_api.md#add_object)
+- [`rotate_object_to_euler_angles`](../../api/command_api.md#rotate_object_to_euler_angles)
+- [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state)
+- [`set_mass`](../../api/command_api.md#set_mass)
+- [`set_physic_material`](../../api/command_api.md#set_physic_material)

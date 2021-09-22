@@ -90,7 +90,7 @@ class RubeGoldbergDemo(Controller):
         """
 
         # Load the photorealistic "archviz_house" environment.
-        self.load_streamed_scene(scene="archviz_house")
+        self.communicate(self.get_add_scene(scene_name="archviz_house"))
 
         # Organize all initialization commands into a single list.
         # Set global values, including the desired screen size and aspect ratio (720P).
@@ -146,6 +146,7 @@ class RubeGoldbergDemo(Controller):
 
         for i in range(num_trials):
             self.do_trial()
+        self.communicate({"$type": "terminate"})
             
 
     def do_trial(self):

@@ -55,6 +55,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | -------------- | -------------- |
 | `Environments` | `SceneRegions` |
 
+### Build
+
+- Adjusted avatar type `A_Simple_Body`:
+  - Fixed: Avatar bodies are centered on the avatar's pivot as opposed to halfway above it (i.e. making the pivot of the avatar the bottom-center), thus causing the avatar to "pop" out of the ground when it is first created.
+  - Fixed: The cube avatar requires much more torque to turn. Its box collider has been replaced with a cube collider.
+
 ### `tdw` module
 
 - **Added the following add-ons:**
@@ -62,6 +68,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
   - `CinematicCamera` Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. **towards** a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but **not** for most actual experiments.
   - `CollisionManager` Manager add-on for all collisions on this frame.
   - `Debug` Record and playback every command sent to the build.
+  - `EmbodiedAvatar` Wrapper add-on for the `A_Simple_Body` avatar.
   - `Floorplan` Initialize a scene populated by objects in pre-scripted layouts.
   - `ImageCapture` Request image data and save the images to disk.
   - `Keyboard` Add keyboard controls to a TDW scene.
@@ -129,10 +136,38 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ## v1.8.27
 
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `add_smpl_humanoid` | Add a parameterized humanoid to the scene using [SMPL](https://smpl.is.tue.mpg.de/en). Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters. |
+
+### Humanoid libraries
+
+- Added: `smpl_humanoids.json` HumanoidLibrarian. There are two SMPL humanoid asset bundles in this library.
+
+### Humanoid animation libraries:
+
+- Added: `smpl_animations.json`  These animations were extracted from the SMPL unity project. A SMPL humanoid can use non-SMPL animations and vice-versa; these animations have been grouped into their own library merely for organizational convenience.
+
 ### Build
 
 - Fixed: NullReferenceException when sending `send_vr_rig`.
 - Fixed: Possible race condition when sending `send_vr_rig` soon after the VR rig is created.
+
+### Example Controllers
+
+- Added: `smpl_humanoid.py` Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body parameters and play an animation.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document       | Modification                               |
+| -------------- | ------------------------------------------ |
+| `humanoids.md` | Rewrote document and added SMPL humanoids. |
 
 ## v1.8.26
 

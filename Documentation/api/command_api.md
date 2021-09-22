@@ -52,9 +52,15 @@
 | Command | Description |
 | --- | --- |
 | [`add_hdri_skybox`](#add_hdri_skybox) | Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange.  |
-| [`add_humanoid`](#add_humanoid) | Add a humanoid model to the scene.  |
 | [`add_humanoid_animation`](#add_humanoid_animation) | Load an animation clip asset bundle into memory.  |
 | [`add_robot`](#add_robot) | Add a robot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md  |
+
+**Add Humanoid Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_humanoid`](#add_humanoid) | Add a humanoid model to the scene.  |
+| [`add_smpl_humanoid`](#add_smpl_humanoid) | Add a parameterized humanoid to the scene using <ulink url="https://smpl.is.tue.mpg.de/en">SMPL</ulink>. Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters.  |
 
 **Add Material Command**
 
@@ -1274,31 +1280,6 @@ Add a single HDRI skybox to the scene. It is highly recommended that the values 
 
 ***
 
-## **`add_humanoid`**
-
-Add a humanoid model to the scene. 
-
-- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/humanoid_librarian.md`</font>
-- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_humanoid` in the [Controller API](../python/controller.md).</font>
-
-```python
-{"$type": "add_humanoid", "id": 1, "name": "string", "url": "string"}
-```
-
-```python
-{"$type": "add_humanoid", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of the object. | |
-| `"position"` | Vector3 | Position of the object. | {"x": 0, "y": 0, "z": 0} |
-| `"rotation"` | Vector3 | Rotation of the object, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
-| `"name"` | string | The name of the asset bundle. | |
-| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
-
-***
-
 ## **`add_humanoid_animation`**
 
 Load an animation clip asset bundle into memory. 
@@ -1337,6 +1318,69 @@ Add a robot to the scene. For further documentation, see: Documentation/misc_fro
 | `"id"` | int | The unique ID of the robot. | 0 |
 | `"position"` | Vector3 | The initial position of the robot. | {"x": 0, "y": 0, "z": 0} |
 | `"rotation"` | Vector3 | The initial rotation of the robot in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+# AddHumanoidCommand
+
+These commands add a humanoid model to the scene.
+
+***
+
+## **`add_humanoid`**
+
+Add a humanoid model to the scene. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/humanoid_librarian.md`</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_humanoid` in the [Controller API](../python/controller.md).</font>
+
+```python
+{"$type": "add_humanoid", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_humanoid", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the humanoid. | |
+| `"position"` | Vector3 | Position of the humanoid. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | Rotation of the humanoid, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
+## **`add_smpl_humanoid`**
+
+Add a parameterized humanoid to the scene using <ulink url="https://smpl.is.tue.mpg.de/en">SMPL</ulink>. Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/humanoid_librarian.md`</font>
+
+```python
+{"$type": "add_smpl_humanoid", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_smpl_humanoid", "id": 1, "name": "string", "url": "string", "height": 0, "weight": 0, "torso_height_and_shoulder_width": 0, "chest_breadth_and_neck_height": 0, "upper_lower_back_ratio": 0, "pelvis_width": 0, "hips_curve": 0, "torso_height": 0, "left_right_symmetry": 0, "shoulder_and_torso_width": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"height"` | float | The height or overall scale of the model. Must be between -1 and 1. | 0 |
+| `"weight"` | float | The character's overall weight. Must be between -1 and 1. | 0 |
+| `"torso_height_and_shoulder_width"` | float | The height of the torso from the chest and the width of the shoulders. Must be between -1 and 1. | 0 |
+| `"chest_breadth_and_neck_height"` | float | The breadth of the chest and the height of the neck. Must be between -1 and 1. | 0 |
+| `"upper_lower_back_ratio"` | float | The extent to which the upper back is larger than the lower back or vice versa. Must be between -1 and 1. | 0 |
+| `"pelvis_width"` | float | The width of the pelvis. Must be between -1 and 1. | 0 |
+| `"hips_curve"` | float | The overall curviness of the hips. Must be between -1 and 1. | 0 |
+| `"torso_height"` | float | The height of the torso from the chest. Must be between -1 and 1. | 0 |
+| `"left_right_symmetry"` | float | The extent to which the left side of the mesh is slightly narrower or vice versa. Must be between -1 and 1. | 0 |
+| `"shoulder_and_torso_width"` | float | The width of the shoulders and torso combined. Must be between -1 and 1. | 0 |
+| `"id"` | int | The unique ID of the humanoid. | |
+| `"position"` | Vector3 | Position of the humanoid. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | Rotation of the humanoid, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 

@@ -108,10 +108,10 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
         if self.look_at_target is not None:
             self.commands.extend(self._get_look_at_commands())
         # Follow a target object.
-        if self.follow_object is not None and self.position is not None:
+        if self.follow_object is not None and self.initial_position is not None:
             self.commands.append({"$type": "follow_object",
                                   "object_id": self.follow_object,
-                                  "position": self.position,
+                                  "position": self.initial_position,
                                   "rotation": self.follow_rotate,
                                   "avatar_id": self.avatar_id})
 
@@ -123,14 +123,14 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
         :param absolute: If True, `position` is absolute worldspace coordinates. If False, `position` is relative to the avatar's current position.
         """
 
-        if absolute or self.position is None:
-            self.position: Dict[str, float] = position
+        if absolute or self.initial_position is None:
+            self.initial_position: Dict[str, float] = position
         else:
-            self.position: Dict[str, float] = {"x": self.position["x"] + position["x"],
-                                               "y": self.position["y"] + position["y"],
-                                               "z": self.position["z"] + position["z"]}
+            self.initial_position: Dict[str, float] = {"x": self.initial_position["x"] + position["x"],
+                                                       "y": self.initial_position["y"] + position["y"],
+                                                       "z": self.initial_position["z"] + position["z"]}
         self.commands.append({"$type": "teleport_avatar_to",
-                              "position": self.position,
+                              "position": self.initial_position,
                               "avatar_id": self.avatar_id})
 
     def rotate(self, rotation: Dict[str, float]) -> None:

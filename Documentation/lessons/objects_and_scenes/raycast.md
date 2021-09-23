@@ -16,7 +16,7 @@ There's a few unusual qualities to raycast data that should be noted here:
 
 Suppose we want to add a bowl to the scene and put an object in the bowl. [`Bounds` output data](bounds.md) alone is insufficient for this because it will tell us the y (height) value of the bottom of the bowl but not y value for the top side of the interior surface.
 
-In the below examples, we'll  first learn how to raycast and then use the raycast data to place an object (in this case, a cabinet) adjacent to a wall.
+In the below examples, we'll  first learn how to raycast and then use the raycast data to place an object in a bowl.
 
 To start, we'll create a scene with a bowl and enable image capture:
 
@@ -101,7 +101,6 @@ for i in range(len(resp) - 1):
                                                  object_id=c.get_unique_id()))
 c.communicate(commands)
 c.communicate({"$type": "terminate"})
-
 ```
 
 Result:
@@ -117,9 +116,63 @@ The commands are:
 -  [`send_boxcast`](../../api/command_api.md#send_boxcast)
 -  [`send_spherecast`](../../api/command_api.md#send_spherecast)
 
+In this example, we'll add a bowl to the scene and then spherecast from a point above it. We'll then get all of the points of the spherecast on the bowl and then place an object at a randomly chosen point:
+
+```python
+import random
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.output_data import OutputData, Raycast
+
+c = Controller()
+bowl_id = c.get_unique_id()
+
+camera = ThirdPersonCamera(position={"x": 0.5, "y": 1.6, "z": -1},
+                           look_at=bowl_id,
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("spherecast")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path, png=True)
+c.add_ons.extend([camera, capture])
+
+bowl_position = {"x": -1, "y": 0, "z": 0.5}
+
+raycast_id = c.get_unique_id()
+resp = c.communicate([TDWUtils.create_empty_room(12, 12),
+                      c.get_add_object(position=bowl_position,
+                                       object_id=bowl_id,
+                                       model_name="round_bowl_small_walnut"),
+                      {"$type": "send_spherecast",
+                       "radius": 0.3,
+                       "origin": {"x": bowl_position["x"], "y": 100, "z": bowl_position["z"]},
+                       "destination": {"x": bowl_position["x"], "y": -100, "z": bowl_position["z"]},
+                       "id": raycast_id}])
+hits = []
+for i in range(len(resp) - 1):
+    r_id = OutputData.get_data_type_id(resp[i])
+    if r_id == "rayc":
+        raycast = Raycast(resp[i])
+        if raycast.get_raycast_id() == raycast_id:
+            if raycast.get_hit() and raycast.get_hit_object() and raycast.get_object_id() == bowl_id:
+                hits.append(raycast.get_point())
+jug_position = random.choice(hits)
+# Add an object at a random position on the bowl.
+c.communicate(c.get_add_object(model_name="jug03",
+                               position=TDWUtils.array_to_vector3(jug_position),
+                               object_id=c.get_unique_id()))
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/raycast/spherecast.png)
+
 ***
 
-**Next: [`Overlap` output data and the `OccupancyMap` add-on](overlap.md)**
+**Next: [`Overlap` output data](overlap.md)**
 
 [Return to the README](../../../README.md)
 
@@ -127,7 +180,8 @@ The commands are:
 
 Example controllers:
 
-- [raycast.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/raycast.py) Use raycast data to place a cabinet alongside a wall.
+- [raycast.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/raycast.py) Use raycast data to place an object in a bowl.
+- [spherecast.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/spherecast.py) Use spherecast data to place an object in a bowl.
 
 Command API:
 

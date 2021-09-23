@@ -48,7 +48,9 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 5. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
 6. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
 7. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)
-8. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
+8. [`Raycast` output data](Documentation/lessons/objects_and_scenes/raycast.md)
+9. [`Overlap` output data](Documentation/lessons/objects_and_scenes/overlap.md)
+10. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
 
 High-level API: [FloorplanController](Documentation/python/floorplan_controller.md)
 

@@ -89,7 +89,7 @@ High-level API: [Floorplan](Documentation/python/floorplan.md)
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
-## 2.6 Physics
+## 2.6 Physics (PhysX)
 
 1. [Overview](Documentation/lessons/physics/overview.md)
 2. [PhysX](Documentation/lessons/physics/physx.md)
@@ -98,12 +98,24 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 5. [`Collision` output data](Documentation/lessons/physics/collisions.md)
 6. [Apply forces to objects](Documentation/lessons/physics/forces.md)
 7. [Skip physics frames](Documentation/lessons/physics/step_physics.md)
-8. NVIDIA Flex
 9. Non-physics simulations
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
-## 2.7 Audio
+## 2.7 Physics (Flex)
+
+1. Overview
+2. Solid actors
+3. Soft actors
+4. Cloth actors
+5. Fluid actors
+6. Source actors
+7. `FlexParticles` output data
+8. Apply forces to Flex objects
+
+High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
+
+## 2.8 Audio
 
 1. Overview
 2. PyImpact (dynamic impact sounds)
@@ -113,14 +125,14 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge)
 
-## 2.8 Video Recording
+## 2.9 Video Recording
 
 1. Controlling the framerate
 2. Image-only videos
 3. Image+audio videos
 4. The `CinematicCamera` add-on
 
-## 2.9 Robots and Embodied Agents
+## 2.10 Robots and Embodied Agents
 
 1. Robots
 2. Humanoid agents
@@ -131,7 +143,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 
 High-level API: [magnebot](https://github.com/alters-mit/magnebot)
 
-## 2.10 Misc. topics
+## 2.11 Misc. topics
 
 1. C# source code
 2. Freezing your code

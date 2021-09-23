@@ -48,20 +48,19 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 5. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
 6. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
 7. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)
-8. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
+8. [`Raycast` output data](Documentation/lessons/objects_and_scenes/raycast.md)
+9. [`Overlap` output data](Documentation/lessons/objects_and_scenes/overlap.md)
+10. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
 
 High-level API: [Floorplan](Documentation/python/floorplan.md)
 
-## 2.2 Non-Default 3D Models
+## 2.2 3D Model Libraries
 
-1. Overview
-
-2. Free models
-
-3. Non-free models
-
-4. Add your own models to TDW
-5. Add ShapeNet models to TDW
+1. [Overview](Documentation/lessons/3d_models/overview.md)
+2. [Free models](Documentation/lessons/3d_models/free_models.md)
+3. [Non-free models](Documentation/lessons/3d_models/non_free_models.md)
+4. [Add your own models to TDW](Documentation/lessons/3d_models/custom_models.md)
+5. [Add ShapeNet models to TDW](Documentation/lessons/3d_models/shapenet.md)
 
 ## 2.3 Visual Perception
 

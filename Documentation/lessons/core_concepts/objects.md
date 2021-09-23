@@ -153,6 +153,32 @@ lib_1 = ModelLibrarian("models_core.json")
 
 There are other model libraries as well; it is possible to use your own models in TDW and to generate your own metadata libraries for those models. See [Model Libraries in the README](../../../README.md).
 
+## Cached model librarians
+
+Every time `Controller.get_add_object()` is called, it will evaluate the optional `library` parameter (the default value is `"models_core.json"`). The controller will then load and cache the library if it hasn't done so already. This is beneficial for performance reasons but it can be also be useful at runtime for checking record data. Cached model librarians are stored in a dictionary: `Controller.MODEL_LIBRARIANS`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller()
+print(Controller.MODEL_LIBRARIANS)
+
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="rh10",
+                                object_id=0,
+                                library="models_core.json")])
+print(Controller.MODEL_LIBRARIANS)
+c.communicate({"$type": "terminate"})
+```
+
+Output:
+
+```
+{}
+{'models_core.json': <tdw.librarian.ModelLibrarian object at 0x000002191EA98F48>}
+```
+
 ## How to get images of every model in the library
 
 The TDW repo includes [a controller that will create images of every object in the model library](https://github.com/threedworld-mit/tdw/blob/master/Python/screenshotter.py):

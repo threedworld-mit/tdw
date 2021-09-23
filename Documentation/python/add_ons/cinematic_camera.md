@@ -190,7 +190,7 @@ c.communicate({"$type": "terminate"})
 
 - `avatar_id` The ID of the avatar that (this camera).
 
-- `position` The initial position of the object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+- `initial_position` The initial position of the object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
 
 - `move_speed` The directional speed of the camera. This can later be adjusted by setting `self.move_speed`.
 

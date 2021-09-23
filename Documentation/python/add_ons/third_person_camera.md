@@ -76,7 +76,7 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 - `avatar_id` The ID of the avatar that (this camera).
 
-- `position` The initial position of the object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+- `initial_position` The initial position of the object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
 
 - `look_at_target` The target object or position that the camera will look at. Can be None (the camera won't look at a target).
 

@@ -1,4 +1,4 @@
-##### Non-Default 3D Models
+##### 3D Model Libraries
 
 # Free models
 

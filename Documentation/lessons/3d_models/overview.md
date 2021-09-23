@@ -1,4 +1,4 @@
-##### Non-Default 3D Models
+##### 3D Model Libraries
 
 # Overview
 
@@ -24,7 +24,16 @@ for record in librarian.records:
     print(record.name)
 ```
 
-However, there are other model libraries in TDW. Some have free models and others have non-free models that require an access key. You can also import models into TDW and define custom model libraries.
+However, there are other model libraries in TDW. Some have free models and others have non-free models that require an access key.
+
+| Model library         | Description                                       | Free |
+| --------------------- | ------------------------------------------------- | ---- |
+| `models_core.json`    | Approximately 400 models.                         | Yes  |
+| `models_full.json`    | Approximately 2400 models.                        | No   |
+| `models_special.json` | Primitives and special-purpose models.            | Yes  |
+| `models_flex.json`    | Primitives optimized for NVIDIA Flex simulations. | Yes  |
+
+You can also import models into TDW and define custom model libraries.
 
 This tutorial will cover the other model libraries in TDW and how to add your own models to TDW.
 

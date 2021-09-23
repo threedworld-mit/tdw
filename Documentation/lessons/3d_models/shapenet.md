@@ -1,4 +1,4 @@
-##### Non-Default 3D Models
+##### 3D Model Libraries
 
 # Add ShapeNet models to TDW
 
@@ -17,7 +17,7 @@ ShapeNet is a huge repository of semantically tagged obj files available to user
   - Most of them are not photorealistic.
   - Some of them are corrupted or have features that make them unsuitable for TDW such as being a 2D quad. 
   - Many of them have different "up" directions.
-  - ShapeNet models were often create at different canonical scales; for example, two ShapeNet that are ostensibly 1 cubic meter may be totally different sizes when added  to TDW.
+  - ShapeNet models were often created at different canonical scales; for example, two ShapeNet that are ostensibly 1 cubic meter may be totally different sizes when added  to TDW.
 - ShapeNet models are not hosted by default as TDW asset bundles. This is because of the reasons listed above (it would be extremely time-consuming for us to vet all of ShapeNet) and for potential licensing reasons.
 
 That said, you can generate your own ShapeNet asset bundles and host them locally.

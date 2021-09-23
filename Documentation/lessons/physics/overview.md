@@ -12,9 +12,9 @@ TDW supports three types of physics simulations:
 
 PhysX and Flex were both made for video game development, and therefore share a number of core concepts:
 
+- In TDW, rendered frames, output data frames, and physics frames are identical. Every time you call `communicate()`, the build receives and executes commands, advances one physics frame, renders the scene (if applicable) and returns output data. There is an exception to this though, which will be covered later in this tutorial.
 - You don't need to have an agent in the scene to apply a force. Forces can be applied directly to an object.
 - The physics engine automatically updates the scene state in the background. You don't need to simulate physics from an controller. For example, if you want to roll a ball down a ramp, you only need to add the ball, add the ramp, and apply a small force. The physics engine will handle the rest of the motion.
-- PhysX is entirely closed-source and Flex is partially closed source. This means that there is certain aspects of physics behavior in TDW that can't be modified, improved, etc.
 
 ## High-level API: `tdw_physics`
 

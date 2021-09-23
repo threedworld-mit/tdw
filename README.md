@@ -97,7 +97,7 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 4. [`Rigidbodies` output data](Documentation/lessons/physics/rigidbodies.md)
 5. [`Collision` output data](Documentation/lessons/physics/collisions.md)
 6. [Apply forces to objects](Documentation/lessons/physics/forces.md)
-7. Skip physics frames
+7. [Skip physics frames](Documentation/lessons/physics/step_physics.md)
 8. NVIDIA Flex
 9. Non-physics simulations
 

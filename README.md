@@ -101,7 +101,7 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 4. [`Collision` output data](Documentation/lessons/physics/physx/collisions.md)
 5. [Apply forces to objects](Documentation/lessons/physics/physx/forces.md)
 6. [Skip physics frames](Documentation/lessons/physics/physx/step_physics.md)
-7. Disable physics
+7. [Disable physics](Documentation/lessons/physics/physx/disable_physics.md)
 8. Non-physics objects
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)

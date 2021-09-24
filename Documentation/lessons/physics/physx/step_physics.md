@@ -1,4 +1,4 @@
-##### Physics
+##### Physics (PhysX)
 
 # Skip physics frames
 
@@ -90,7 +90,7 @@ Result:
 
 ***
 
-**Next: [NVIDIA Flex](flex.md)**
+**Next: [Disable physics](disable_physics.md)**
 
 [Return to the README](../../../README.md)
 

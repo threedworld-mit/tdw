@@ -1,4 +1,4 @@
-##### Physics
+##### Physics (PhysX)
 
 # `Rigidbodies` output data
 

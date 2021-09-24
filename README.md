@@ -89,22 +89,26 @@ High-level API: [Floorplan](Documentation/python/floorplan.md)
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
-## 2.6 Physics (PhysX)
+## 2.6 Physics
 
 1. [Overview](Documentation/lessons/physics/overview.md)
-2. [PhysX](Documentation/lessons/physics/physx.md)
-3. [Object physics parameters](Documentation/lessons/physics/physics_objects.md)
-4. [`Rigidbodies` output data](Documentation/lessons/physics/rigidbodies.md)
-5. [`Collision` output data](Documentation/lessons/physics/collisions.md)
-6. [Apply forces to objects](Documentation/lessons/physics/forces.md)
-7. [Skip physics frames](Documentation/lessons/physics/step_physics.md)
-9. Non-physics simulations
+
+### 2.6.1 Physics (PhysX)
+
+1. [PhysX](Documentation/lessons/physics/physx/physx.md)
+2. [Object physics parameters](Documentation/lessons/physics/physx/physics_objects.md)
+3. [`Rigidbodies` output data](Documentation/lessons/physics/physx/rigidbodies.md)
+4. [`Collision` output data](Documentation/lessons/physics/physx/collisions.md)
+5. [Apply forces to objects](Documentation/lessons/physics/physx/forces.md)
+6. [Skip physics frames](Documentation/lessons/physics/physx/step_physics.md)
+7. Disable physics
+8. Non-physics objects
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
-## 2.7 Physics (Flex)
+### 2.6.2 Physics (Flex)
 
-1. Overview
+1. Flex
 2. Solid actors
 3. Soft actors
 4. Cloth actors

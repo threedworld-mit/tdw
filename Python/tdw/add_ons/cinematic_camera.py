@@ -212,7 +212,7 @@ class CinematicCamera(ThirdPersonCameraBase):
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                  fov: int = None, framerate: int = None, move_speed: float = 0.1, rotate_speed: float = 3,
-                 focus_speed: float = 0.3):
+                 focus_speed: float = 0.3, look_at: Union[int, Dict[str, float]] = None):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
         :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
@@ -222,6 +222,7 @@ class CinematicCamera(ThirdPersonCameraBase):
         :param move_speed: The directional speed of the camera. This can later be adjusted by setting `self.move_speed`.
         :param rotate_speed: The angular speed of the camera. This can later be adjusted by setting `self.rotate_speed`.
         :param focus_speed: The speed of the focus of the camera. This can later be adjusted by setting `self.focus_speed`.
+        :param look_at: If not None, the cinematic camera will look at this object (if int) or position (if dictionary).
         """
 
         super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, fov=fov, framerate=framerate)
@@ -272,9 +273,17 @@ class CinematicCamera(ThirdPersonCameraBase):
         self._rotated: bool = True
 
         # The object ID of the focus target.
-        self._focus_target: Optional[int] = None
+        self._focus_target: Optional[Union[int, Dict[str, float]]] = None
         # If True, the camera is done focusing.
         self._focused: bool = True
+
+        if look_at is not None:
+            if isinstance(look_at, int):
+                self.rotate_to_object(target=look_at)
+            elif isinstance(look_at, dict):
+                self.rotate_to_position(target=look_at)
+            else:
+                raise Exception(f"Invalid look_at: {look_at}")
 
     def on_send(self, resp: List[bytes]) -> None:
         # Set a relative target.
@@ -318,20 +327,28 @@ class CinematicCamera(ThirdPersonCameraBase):
                                       "rotation": self._rotate_target,
                                       "speed": self.rotate_speed})
             elif self._rotate_target_type == _RotateTargetType.object:
-                self.commands.append({"$type": "rotate_sensor_container_towards_object",
-                                      "avatar_id": self.avatar_id,
-                                      "speed": self.rotate_speed,
-                                      "object_id": self._rotate_target,
-                                      "use_centroid": True})
+                self.commands.extend([{"$type": "rotate_sensor_container_towards_object",
+                                       "avatar_id": self.avatar_id,
+                                       "speed": self.rotate_speed,
+                                       "object_id": self._rotate_target,
+                                       "use_centroid": True},
+                                      {"$type": "focus_towards_object",
+                                       "avatar_id": self.avatar_id,
+                                       "speed": self.focus_speed,
+                                       "object_id": self._focus_target,
+                                       "use_centroid": True}])
+            elif self._rotate_target_type == _RotateTargetType.position:
+                distance = np.linalg.norm(self._get_avatar_position(resp=resp) -
+                                          TDWUtils.vector3_to_array(self._rotate_target))
+                self.commands.extend([{"$type": "rotate_sensor_container_towards_position",
+                                       "avatar_id": self.avatar_id,
+                                       "position": self._rotate_target,
+                                       "speed": self.rotate_speed},
+                                      {"$type": "set_focus_distance",
+                                       "focus_distance": distance}])
+
             else:
                 raise Exception(f"Invalid rotate target type: {self._move_target_type}")
-        # Focus towards a target.
-        if self._focus_target is not None:
-            self.commands.append({"$type": "focus_towards_object",
-                                  "avatar_id": self.avatar_id,
-                                  "speed": self.focus_speed,
-                                  "object_id": self._focus_target,
-                                  "use_centroid": True})
 
     def move_to_position(self, target: Dict[str, float], relative: bool = False) -> None:
         """
@@ -381,6 +398,13 @@ class CinematicCamera(ThirdPersonCameraBase):
 
         self._rotate_target = target
         self._rotate_target_type = _RotateTargetType.object
+        self._rotated = False
+        self._focused = False
+        self._focus_target = target
+
+    def rotate_to_position(self, target: Dict[str, float]) -> None:
+        self._rotate_target = target
+        self._rotate_target_type = _RotateTargetType.position
         self._rotated = False
         self._focused = False
         self._focus_target = target

@@ -38,7 +38,7 @@ Besides the obvious (objects won't move due to physics), there are some other ef
 
 ***
 
-**Next: [Non-physics objects](non_physics_objects.md)**
+**This is the last document in the "Physics (PhysX)" tutorial.**
 
 [Return to the README](../../../README.md)
 

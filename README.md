@@ -91,18 +91,18 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 
 ## 2.6 Physics
 
-1. [Overview](Documentation/lessons/physics/overview.md)
+1. [Overview](Documentation/lessons/physx/overview.md)
 
 ### 2.6.1 Physics (PhysX)
 
-1. [PhysX](Documentation/lessons/physics/physx/physx.md)
-2. [Object physics parameters](Documentation/lessons/physics/physx/physics_objects.md)
-3. [`Rigidbodies` output data](Documentation/lessons/physics/physx/rigidbodies.md)
-4. [`Collision` output data](Documentation/lessons/physics/physx/collisions.md)
-5. [Apply forces to objects](Documentation/lessons/physics/physx/forces.md)
-6. [Skip physics frames](Documentation/lessons/physics/physx/step_physics.md)
-7. [Disable physics](Documentation/lessons/physics/physx/disable_physics.md)
-8. Non-physics objects
+1. [PhysX](Documentation/lessons/physx/physx.md)
+2. [Object physics parameters](Documentation/lessons/physx/physics_objects.md)
+3. [`Rigidbodies` output data](Documentation/lessons/physx/rigidbodies.md)
+4. [`Collision` output data](Documentation/lessons/physx/collisions.md)
+5. [Apply forces to objects](Documentation/lessons/physx/forces.md)
+6. [Composite objects (objects with affordances)](Documentation/lessons/physx/composite_objects.md)
+7. [Skip physics frames](Documentation/lessons/physx/step_physics.md)
+8. [Disable physics](Documentation/lessons/physx/disable_physics.md)
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
@@ -153,7 +153,8 @@ High-level API: [magnebot](https://github.com/alters-mit/magnebot)
 2. Freezing your code
 3. BinaryManager
 4. xpra
-5. Composite objects
+5. Creating composite objects
+6. Paintings
 
 # 3. API Documentation
 

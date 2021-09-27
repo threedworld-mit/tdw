@@ -91,7 +91,7 @@ c.communicate({"$type": "terminate"})
 
 Example controllers:
 
-- [physics_values.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physics/physics_values.py) Drop an object with varying physics values and observe its behavior.
+- [physics_values.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/physics_values.py) Drop an object with varying physics values and observe its behavior.
 
 Python API:
 

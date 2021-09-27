@@ -98,7 +98,7 @@ Result:
 
 Example controllers:
 
-- [step_physics_speed.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physics/ball_bounce.py) Compare the speed of a simulation without skipping physics frames vs. skipping physics frames.
+- [step_physics_speed.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/ball_bounce.py) Compare the speed of a simulation without skipping physics frames vs. skipping physics frames.
 
 Python API
 

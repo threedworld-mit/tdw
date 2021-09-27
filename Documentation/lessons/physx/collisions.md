@@ -239,7 +239,7 @@ If you're using a `CollisionManager`, set `collision_mananger.initialized = Fals
 
 Example controllers:
 
-- [collisions.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physics/collisions.py) Listen for collisions with a `CollisionManager`.
+- [collisions.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/collisions.py) Listen for collisions with a `CollisionManager`.
 
 Python API:
 

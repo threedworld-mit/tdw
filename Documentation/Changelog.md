@@ -90,6 +90,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - Removed `FloorplanController` (replaced with `Floorplan` add-on)
 - Moved `CollisionObjObj` and `CollisionObjEnv` from `tdw.collision` to `tdw.collision_data`
   - Removed `collisons.py`
+- Made more objects in the floorplan layouts kinematic.
 
 #### `Controller`
 

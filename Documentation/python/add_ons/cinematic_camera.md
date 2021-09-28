@@ -204,9 +204,9 @@ c.communicate({"$type": "terminate"})
 
 #### \_\_init\_\_
 
-**`CinematicCamera()`**
+**`CinematicCamera(look_at)`**
 
-**`CinematicCamera(avatar_id=None, position=None, rotation=None, fov=None, framerate=None, move_speed=0.1, rotate_speed=3, focus_speed=0.3)`**
+**`CinematicCamera(avatar_id=None, position=None, rotation=None, fov=None, framerate=None, move_speed=0.1, rotate_speed=3, focus_speed=0.3, look_at)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -218,6 +218,7 @@ c.communicate({"$type": "terminate"})
 | move_speed |  float  | 0.1 | The directional speed of the camera. This can later be adjusted by setting `self.move_speed`. |
 | rotate_speed |  float  | 3 | The angular speed of the camera. This can later be adjusted by setting `self.rotate_speed`. |
 | focus_speed |  float  | 0.3 | The speed of the focus of the camera. This can later be adjusted by setting `self.focus_speed`. |
+| look_at |  Union[int, Dict[str, float] |  | If not None, the cinematic camera will look at this object (if int) or position (if dictionary). |
 
 #### on_send
 
@@ -274,6 +275,16 @@ Start to rotate towards an object (to look at the object).
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | target |  int |  | The ID of the target object. |
+
+#### rotate_to_position
+
+**`self.rotate_to_position(target)`**
+
+Start rotating the camera by the `[roll, pitch, yaw]` angles expressed as an `[x, y, z]` dictionary.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| target |  Dict[str, float] |  | The target `[roll, pitch, yaw]` angles from when this function was first called, in degrees. |
 
 #### rotate_by_rpy
 

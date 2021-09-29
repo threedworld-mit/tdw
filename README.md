@@ -136,18 +136,36 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 3. Image+audio videos
 4. The `CinematicCamera` add-on
 
-## 2.10 Robots and Embodied Agents
+## 2.10 Robotics
 
-1. Robots
-2. Humanoid agents
-3. VR
-5. Keyboard controls
-6. Embodied avatars
-7. Navigation
+1. [Overview](Documentation/lessons/robotics/overview.md)
+2. The `Robot` add-on
+3. Robotics API (low-level)
+4. Add your own robots to TDW
+5. Add a camera to a robot
+6. Multiple robots
 
 High-level API: [magnebot](https://github.com/alters-mit/magnebot)
 
-## 2.11 Misc. topics
+## 2.11 Navigation
+
+1. Overview
+2. NavMesh pathfinding
+3. `OccupancyMap` add-on
+
+## 2.12 Human user interaction
+
+1. Overview
+2. VR
+3. Keyboard controls
+
+## 2.13 Humanoid Agents
+
+1. Overview
+2. Mocap humanoids
+3. Non-physics humanoids
+
+## 2.14 Misc. topics
 
 1. C# source code
 2. Freezing your code

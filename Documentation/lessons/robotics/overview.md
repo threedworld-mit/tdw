@@ -2,6 +2,8 @@
 
 # Overview
 
+*Robots in TDW is handled via the PhysX physics engine. If you haven't done so already, we strongly recommend you read the [physics tutorial](../physx/overview.md).*
+
 TDW includes a full robotics API. You can add robots to a scene and either set target angles or positions for their joints, or apply forces and torques.
 
 This tutorial will cover how to add and control robots in TDW using a higher-level API (the `Robot` add-on) and lower-level API commands.

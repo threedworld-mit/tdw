@@ -82,6 +82,10 @@ if __name__ == "__main__":
 
 Result:
 
+```
+2.8298497200012207 0.3419990539550781
+```
+
 ![](images/step_physics.gif)
 
 ## Collisions and skipped frames

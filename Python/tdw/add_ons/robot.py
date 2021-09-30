@@ -1,6 +1,7 @@
 from typing import List, Dict, Union, Optional
 from overrides import final
 import numpy as np
+from tdw.controller import Controller
 from tdw.librarian import RobotLibrarian, RobotRecord
 from tdw.tdw_utils import TDWUtils
 from tdw.robot_data.robot_static import RobotStatic
@@ -39,11 +40,6 @@ class Robot(RobotBase):
     ```
     """
 
-    """:class_var
-    TDW's built-in [`RobotLibrarian`](../librarian/robot_librarian.md).
-    """
-    ROBOT_LIBRARIAN: RobotLibrarian = RobotLibrarian()
-
     def __init__(self, name: str, robot_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                  source: Union[RobotLibrarian, RobotRecord, str] = None):
         """
@@ -76,7 +72,9 @@ class Robot(RobotBase):
         # If True, we've already started to move the joints to their initial position.
         self._set_initial_targets: bool = False
         if source is None:
-            record: RobotRecord = Robot.ROBOT_LIBRARIAN.get_record(name)
+            if "robots.json" not in Controller.ROBOT_LIBRARIANS:
+                Controller.ROBOT_LIBRARIANS["robots.json"] = RobotLibrarian()
+            record: RobotRecord = Controller.ROBOT_LIBRARIANS["robots.json"].get_record(name)
             self.url = record.get_url()
             self._initial_targets = record.targets
         elif isinstance(source, RobotLibrarian):

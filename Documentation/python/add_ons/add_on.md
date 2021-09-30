@@ -43,6 +43,10 @@ c.communicate({"$type": "terminate"})
 - [StepPhysics](step_physics.md)
 - [ThirdPersonCamera](third_person_camera.md)
 
+Backend:
+
+- [ModelVerifier](model_verifier.md)
+
 ## Example controllers
 
 - `tdw/Python/example_controllers/add_ons.py` How to add multiple add-ons to the controller.

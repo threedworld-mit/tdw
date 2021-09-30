@@ -54,6 +54,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - Adjusted avatar type `A_Simple_Body`:
   - Fixed: Avatar bodies are centered on the avatar's pivot as opposed to halfway above it (i.e. making the pivot of the avatar the bottom-center), thus causing the avatar to "pop" out of the ground when it is first created.
   - Fixed: The cube avatar requires much more torque to turn. Its box collider has been replaced with a cube collider.
+- Fixed: Warnings when repeatedly sending `send_model_report` without first unloading the scene.
 
 ### `tdw` module
 
@@ -91,6 +92,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - Moved `CollisionObjObj` and `CollisionObjEnv` from `tdw.collision` to `tdw.collision_data`
   - Removed `collisons.py`
 - Made more objects in the floorplan layouts kinematic.
+- (Backend) Added `ModelVerifier` add-on plus the following `ModelTest` classes:
+  - `ModelReport`
+  - `PhysicsQuality`
+  - `MissingMaterials`
 
 #### `Controller`
 
@@ -104,6 +109,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - Removed all cached librarian fields (`self.model_librarian`, `self.scene_librarian`, etc.) and replaced them with class variable dictionaries that automatically cache librarians (`Controller.MODEL_LIBRARIANS`, `Controller.SCENE_LIBRARIANS`, etc.) This allows multiple librarian objects to be cached at the same time and allows other classes to access them.
 - All asset bundle wrapper functions (`get_add_object()`, `get_add_scene()`, etc.) are now static.
 
+#### `TDWUtils`
+
+- Fixed: Unhandled ZeroDivisionError  in `get_unit_scale(record)` if bounds are all 0 (if so, returns 1).
+
 #### `PyImpact`
 
 - Added: `STATIC_FRICTION` and `DYNAMIC_FRICTION`. Dictionaries of friction coefficients per audio material.
@@ -111,6 +120,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 #### `paths` (backend)
 
 - Added: `EXAMPLE_CONTROLLER_OUTPUT_PATH`
+- Removed: `VALIDATOR_REPORT_PATH`
+
+#### Model Pipeline (backend)
+
+- Removed: `model_pipeline/missing_materials.py`, `model_pipeline/validator.py`, `model_pipeline/write_physics_quality.py` (replaced with the `ModelVerifier` add-on)
+  - Improved the accuracy of the physics quality test.
 
 #### `SceneBounds` and `RoomBounds`
 

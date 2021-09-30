@@ -54,6 +54,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - Adjusted avatar type `A_Simple_Body`:
   - Fixed: Avatar bodies are centered on the avatar's pivot as opposed to halfway above it (i.e. making the pivot of the avatar the bottom-center), thus causing the avatar to "pop" out of the ground when it is first created.
   - Fixed: The cube avatar requires much more torque to turn. Its box collider has been replaced with a cube collider.
+- Fixed: Warnings when repeatedly sending `send_model_report` without first unloading the scene.
 
 ### `tdw` module
 
@@ -120,6 +121,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 #### Model Pipeline (backend)
 
 - Removed: `model_pipeline/missing_materials.py`, `model_pipeline/validator.py`, `model_pipeline/write_physics_quality.py` (replaced with the `ModelVerifier` add-on)
+  - Improved the accuracy of the physics quality test.
 
 #### `SceneBounds` and `RoomBounds`
 

@@ -46,15 +46,15 @@ class ModelVerifier(AddOn):
                  "render_quality": 0},
                 {"$type": "set_post_process",
                  "value": False},
-                {"$type": "simulate_physics",
-                 "value": False},
+                {"$type": "set_gravity_vector",
+                 "gravity": {"x": 0, "y": 0, "z": 0}},
                 {"$type": "create_avatar",
                  "id": "a",
                  "type": "A_Img_Caps_Kinematic"},
                 {"$type": "teleport_avatar_to",
-                 "position": {"x": 1.75, "y": 0, "z": 0}},
+                 "position": {"x": 1.75, "y": 0.5, "z": 0}},
                 {"$type": "look_at_position",
-                 "position": {"x": 0, "y": 0, "z": 0}}]
+                 "position": {"x": 0, "y": 0.5, "z": 0}}]
 
     def set_tests(self, name: str, model_report: bool, missing_materials: bool, physics_quality: bool,
                   source: Union[ModelLibrarian, ModelRecord, str] = None) -> None:

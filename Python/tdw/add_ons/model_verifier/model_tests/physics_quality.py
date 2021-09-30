@@ -1,8 +1,7 @@
 from typing import List
 from io import BytesIO
-from PIL import Image, ImageChops
+from PIL import Image
 from collections import Counter
-import numpy as np
 from tdw.add_ons.model_verifier.model_tests.rotate_object_test import RotateObjectTest
 from tdw.output_data import Images
 from tdw.librarian import ModelRecord
@@ -77,7 +76,6 @@ class PhysicsQuality(RotateObjectTest):
 
     def _read_images(self, images: Images) -> None:
         image = Image.open(BytesIO(images.get_image(0)))
-        mask_count = Counter(Image.open(BytesIO(images.get_image(0))).getdata())[(255, 0, 0)]
         if self._showing_collider_hulls:
             self._with_collider_hulls.append(Counter(image.getdata())[RotateObjectTest.PINK])
         else:

@@ -12,6 +12,7 @@ These tests add an object and then rotate it.
 | --- | --- | --- |
 | `OBJECT_ID` | int | The ID of the object. |
 | `DELTA_THETA` | int | Rotate by this many degrees per frame. |
+| `PINK ` |  | The Unity pink color. |
 
 ***
 

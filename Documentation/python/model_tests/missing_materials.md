@@ -6,14 +6,6 @@ Check if any materials are missing.
 
 ***
 
-## Class Variables
-
-| Variable | Type | Description |
-| --- | --- | --- |
-| `PINK ` |  | The Unity pink color. |
-
-***
-
 #### start
 
 **`self.start()`**

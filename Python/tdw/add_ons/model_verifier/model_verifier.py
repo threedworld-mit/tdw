@@ -52,9 +52,9 @@ class ModelVerifier(AddOn):
                  "id": "a",
                  "type": "A_Img_Caps_Kinematic"},
                 {"$type": "teleport_avatar_to",
-                 "position": {"x": 1.75, "y": 0.5, "z": 0}},
+                 "position": {"x": 1.75, "y": 0, "z": 0}},
                 {"$type": "look_at_position",
-                 "position": {"x": 0, "y": 0.5, "z": 0}}]
+                 "position": {"x": 0, "y": 0, "z": 0}}]
 
     def set_tests(self, name: str, model_report: bool, missing_materials: bool, physics_quality: bool,
                   source: Union[ModelLibrarian, ModelRecord, str] = None) -> None:
@@ -72,6 +72,7 @@ class ModelVerifier(AddOn):
             raise Exception(f"Cannot set new tests because we're still testing {self._record.name}")
         self._tests = list()
         self.done = False
+        self.reports.clear()
         if model_report:
             self._tests.append(_Test.model_report)
         if missing_materials:
@@ -115,7 +116,7 @@ class ModelVerifier(AddOn):
             self._current_test = MissingMaterials(record=self._record)
         else:
             raise Exception(f"Test not defined: {t}")
-        self.commands = self._current_test.start()
+        self.commands.extend(self._current_test.start())
 
     def on_send(self, resp: List[bytes]) -> None:
         if self._current_test is None:

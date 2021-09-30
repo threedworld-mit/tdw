@@ -1,6 +1,7 @@
 from typing import List
 from io import BytesIO
-from PIL import Image
+from PIL import Image, ImageChops
+from collections import Counter
 import numpy as np
 from tdw.add_ons.model_verifier.model_tests.rotate_object_test import RotateObjectTest
 from tdw.output_data import Images
@@ -12,11 +13,13 @@ class PhysicsQuality(RotateObjectTest):
     Test the "physics quality" i.e. the disparity between the colliders volume and the rendered volume.
     """
 
+    MASK_RED = (255, 0, 0)
+
     def __init__(self, record: ModelRecord):
         super().__init__(record=record)
         self._showing_collider_hulls: bool = False
-        self._without_collider_hulls: List[float] = list()
-        self._with_collider_hulls: List[float] = list()
+        self._without_collider_hulls: List[int] = list()
+        self._with_collider_hulls: List[int] = list()
 
     def start(self) -> List[dict]:
         """
@@ -42,9 +45,10 @@ class PhysicsQuality(RotateObjectTest):
                 qualities: List[float] = list()
                 for with_colliders, without_colliders in zip(self._with_collider_hulls, self._without_collider_hulls):
                     if without_colliders == 0:
-                        qualities.append(0)
+                        physics_quality = 0
                     else:
-                        qualities.append(1 - (float(with_colliders) / float(without_colliders)))
+                        physics_quality = 1 - float(without_colliders - with_colliders) / without_colliders
+                    qualities.append(physics_quality)
                 if len(qualities) == 0:
                     physics_quality = -1
                 else:
@@ -58,17 +62,23 @@ class PhysicsQuality(RotateObjectTest):
                 self.done = False
                 self._angle = 0
                 self._axis = "yaw"
-                commands = [{"$type": "show_collider_hulls",
-                             "id": RotateObjectTest.OBJECT_ID}]
-                commands.extend(super().on_send(resp=resp))
-                return commands
+                return [{"$type": "show_collider_hulls",
+                         "id": RotateObjectTest.OBJECT_ID},
+                        {"$type": "set_pass_masks",
+                         "pass_masks": ["_img"]},
+                        {"$type": "rotate_object_to",
+                         "rotation": {"w": 1, "x": 0, "y": 0, "z": 0},
+                         "id": RotateObjectTest.OBJECT_ID},
+                        {"$type": "teleport_object",
+                         "id": RotateObjectTest.OBJECT_ID,
+                         "position": {"x": 0, "y": 0.5, "z": 0}}]
         else:
             return commands
 
     def _read_images(self, images: Images) -> None:
-        image = np.array(Image.open(BytesIO(images.get_image(0))))
-        quality = (256 * 256) - np.sum(np.all(image == np.array([0, 0, 0]), axis=2))
+        image = Image.open(BytesIO(images.get_image(0)))
+        mask_count = Counter(Image.open(BytesIO(images.get_image(0))).getdata())[(255, 0, 0)]
         if self._showing_collider_hulls:
-            self._with_collider_hulls.append(quality)
+            self._with_collider_hulls.append(Counter(image.getdata())[RotateObjectTest.PINK])
         else:
-            self._without_collider_hulls.append(quality)
+            self._without_collider_hulls.append(Counter(image.getdata())[PhysicsQuality.MASK_RED])

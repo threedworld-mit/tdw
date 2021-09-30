@@ -11,11 +11,6 @@ class MissingMaterials(RotateObjectTest):
     Check if any materials are missing.
     """
 
-    """:class_var
-    The Unity pink color.
-    """
-    PINK = (255, 0, 255)
-
     def start(self) -> List[dict]:
         """
         :return: A list of commands to start the test.

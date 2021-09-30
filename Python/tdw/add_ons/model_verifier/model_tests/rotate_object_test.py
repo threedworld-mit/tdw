@@ -19,6 +19,10 @@ class RotateObjectTest(ModelTest, ABC):
     Rotate by this many degrees per frame.
     """
     DELTA_THETA: int = 15
+    """:class_var
+    The Unity pink color.
+    """
+    PINK = (255, 0, 255)
 
     def __init__(self, record: ModelRecord):
         """
@@ -41,6 +45,7 @@ class RotateObjectTest(ModelTest, ABC):
                 {"$type": "add_object",
                  "name": self._record.name,
                  "url": self._record.get_url(),
+                 "position": {"x": 0, "y": 0.5, "z": 0},
                  "scale_factor": self._record.scale_factor,
                  "id": RotateObjectTest.OBJECT_ID},
                 {"$type": "scale_object",
@@ -69,8 +74,10 @@ class RotateObjectTest(ModelTest, ABC):
                 self._angle = 0
                 return [{"$type": "rotate_object_to",
                          "rotation": {"w": 1, "x": 0, "y": 0, "z": 0},
+                         "id": RotateObjectTest.OBJECT_ID},
+                        {"$type": "teleport_object",
                          "id": RotateObjectTest.OBJECT_ID,
-                         "use_centroid": True}]
+                         "position": {"x": 0, "y": 0.5, "z": 0}}]
             else:
                 self.done = True
                 return []

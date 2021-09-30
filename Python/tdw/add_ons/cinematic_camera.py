@@ -273,12 +273,30 @@ class CinematicCamera(ThirdPersonCameraBase):
         self._focused: bool = True
 
         if look_at is not None:
+            # Look at and focus on the object.
             if isinstance(look_at, int):
+                self._init_commands.extend([{"$type": "look_at",
+                                             "object_id": look_at,
+                                             "use_centroid": True,
+                                             "avatar_id": self.avatar_id},
+                                            {"$type": "focus_on_object",
+                                             "object_id": look_at,
+                                             "use_centroid": True,
+                                             "avatar_id": self.avatar_id}])
+                # Continue to look at the object.
                 self.rotate_to_object(target=look_at)
+            # Look at and focus on the position.
             elif isinstance(look_at, dict):
+                distance = np.linalg.norm(TDWUtils.vector3_to_array(position) - TDWUtils.vector3_to_array(look_at))
+                self._init_commands.extend([{"$type": "look_at_position",
+                                             "position": look_at,
+                                             "avatar_id": self.avatar_id},
+                                            {"$type": "set_focus_distance",
+                                             "focus_distance": distance}])
+                # Continue to look at the position.
                 self.rotate_to_position(target=look_at)
             else:
-                raise Exception(f"Invalid look_at: {look_at}")
+                raise TypeError(f"Invalid look-at target: {look_at}")
 
     def on_send(self, resp: List[bytes]) -> None:
         # Set a relative target.
@@ -291,6 +309,7 @@ class CinematicCamera(ThirdPersonCameraBase):
             if self._move_target_type == _MoveTargetType.position:
                 self.commands.append({"$type": "move_avatar_towards_position",
                                       "position": self._move_target,
+                                      "speed": self.move_speed,
                                       "avatar_id": self.avatar_id})
             elif self._move_target_type == _MoveTargetType.object:
                 self.commands.append({"$type": "move_avatar_towards_object",
@@ -298,6 +317,7 @@ class CinematicCamera(ThirdPersonCameraBase):
                                       "offset_distance": self._move_distance_offset,
                                       "min_y": self._move_min_y,
                                       "use_centroid": True,
+                                      "speed": self.move_speed,
                                       "avatar_id": self.avatar_id})
             else:
                 raise Exception(f"Invalid move target type: {self._move_target_type}")

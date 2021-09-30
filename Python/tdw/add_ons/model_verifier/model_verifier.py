@@ -35,6 +35,10 @@ class ModelVerifier(AddOn):
         A list of reports from the test.
         """
         self.reports: List[str] = list()
+        """:field
+        If True, the tests are done.
+        """
+        self.done: bool = False
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "create_empty_environment"},
@@ -67,6 +71,7 @@ class ModelVerifier(AddOn):
         if self._current_test is not None:
             raise Exception(f"Cannot set new tests because we're still testing {self._record.name}")
         self._tests = list()
+        self.done = False
         if model_report:
             self._tests.append(_Test.model_report)
         if missing_materials:
@@ -114,6 +119,7 @@ class ModelVerifier(AddOn):
 
     def on_send(self, resp: List[bytes]) -> None:
         if self._current_test is None:
+            self.done = True
             return
         # Get test commands.
         self.commands = self._current_test.on_send(resp=resp)

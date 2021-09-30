@@ -91,6 +91,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - Moved `CollisionObjObj` and `CollisionObjEnv` from `tdw.collision` to `tdw.collision_data`
   - Removed `collisons.py`
 - Made more objects in the floorplan layouts kinematic.
+- (Backend) Added `ModelVerifier` add-on plus the following `ModelTest` classes:
+  - `ModelReport`
+  - `PhysicsQuality`
+  - `MissingMaterials`
 
 #### `Controller`
 
@@ -111,6 +115,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 #### `paths` (backend)
 
 - Added: `EXAMPLE_CONTROLLER_OUTPUT_PATH`
+- Removed: `VALIDATOR_REPORT_PATH`
+
+#### Model Pipeline (backend)
+
+- Removed: `model_pipeline/missing_materials.py`, `model_pipeline/validator.py`, `model_pipeline/write_physics_quality.py` (replaced with the `ModelVerifier` add-on)
 
 #### `SceneBounds` and `RoomBounds`
 

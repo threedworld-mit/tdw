@@ -19,12 +19,22 @@ class PhysicsQuality(RotateObjectTest):
         self._with_collider_hulls: List[float] = list()
 
     def start(self) -> List[dict]:
+        """
+        :return: A list of commands to start the test.
+        """
+
         commands = super().start()
         commands.insert(0, {"$type": "set_pass_masks",
                             "pass_masks": ["_mask"]})
         return commands
 
     def on_send(self, resp: List[bytes]) -> List[dict]:
+        """
+        :param resp: The response from the build.
+
+        :return: A list of commands to continue or end the test.
+        """
+
         commands = super().on_send(resp=resp)
         if self.done:
             # Done with both passes. Get the physics quality.

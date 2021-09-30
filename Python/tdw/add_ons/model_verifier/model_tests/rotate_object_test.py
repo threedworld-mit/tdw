@@ -21,11 +21,19 @@ class RotateObjectTest(ModelTest, ABC):
     DELTA_THETA: int = 15
 
     def __init__(self, record: ModelRecord):
+        """
+        :param record: The model record.
+        """
+
         super().__init__(record=record)
         self._axis: str = "yaw"
         self._angle: int = 0
 
     def start(self) -> List[dict]:
+        """
+        :return: A list of commands to start the test.
+        """
+
         scale = TDWUtils.get_unit_scale(self._record)
         # Create the scene. Add the avatar. Add the object.
         return [{"$type": "send_images",
@@ -40,6 +48,12 @@ class RotateObjectTest(ModelTest, ABC):
                  "scale_factor": {"x": scale, "y": scale, "z": scale}}]
 
     def on_send(self, resp: List[bytes]) -> List[dict]:
+        """
+        :param resp: The response from the build.
+
+        :return: A list of commands to continue or end the test.
+        """
+        
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "imag":

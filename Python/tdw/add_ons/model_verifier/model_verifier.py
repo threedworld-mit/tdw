@@ -46,8 +46,8 @@ class ModelVerifier(AddOn):
                  "render_quality": 0},
                 {"$type": "set_post_process",
                  "value": False},
-                {"$type": "set_gravity_vector",
-                 "gravity": {"x": 0, "y": 0, "z": 0}},
+                {"$type": "simulate_physics",
+                 "value": False},
                 {"$type": "create_avatar",
                  "id": "a",
                  "type": "A_Img_Caps_Kinematic"},
@@ -106,6 +106,7 @@ class ModelVerifier(AddOn):
 
         if len(self._tests) == 0:
             self._current_test = None
+            self._record = None
             return
         t: _Test = self._tests.pop(0)
         if t == _Test.model_report:
@@ -116,6 +117,7 @@ class ModelVerifier(AddOn):
             self._current_test = MissingMaterials(record=self._record)
         else:
             raise Exception(f"Test not defined: {t}")
+        self.commands.append({"$type": "unload_asset_bundles"})
         self.commands.extend(self._current_test.start())
 
     def on_send(self, resp: List[bytes]) -> None:

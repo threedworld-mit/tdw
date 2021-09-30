@@ -109,6 +109,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - Removed all cached librarian fields (`self.model_librarian`, `self.scene_librarian`, etc.) and replaced them with class variable dictionaries that automatically cache librarians (`Controller.MODEL_LIBRARIANS`, `Controller.SCENE_LIBRARIANS`, etc.) This allows multiple librarian objects to be cached at the same time and allows other classes to access them.
 - All asset bundle wrapper functions (`get_add_object()`, `get_add_scene()`, etc.) are now static.
 
+#### `TDWUtils`
+
+- Fixed: Unhandled ZeroDivisionError  in `get_unit_scale(record)` if bounds are all 0 (if so, returns 1).
+
 #### `PyImpact`
 
 - Added: `STATIC_FRICTION` and `DYNAMIC_FRICTION`. Dictionaries of friction coefficients per audio material.

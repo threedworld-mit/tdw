@@ -647,11 +647,14 @@ class TDWUtils:
         bounds = record.bounds
 
         # Get the "unit scale" of the object.
-        s = 1 / max(
-            bounds['top']['y'] - bounds['bottom']['y'],
-            bounds['front']['z'] - bounds['back']['z'],
-            bounds['right']['x'] - bounds['left']['x'])
-        return s
+        try:
+            s = 1 / max(
+                bounds['top']['y'] - bounds['bottom']['y'],
+                bounds['front']['z'] - bounds['back']['z'],
+                bounds['right']['x'] - bounds['left']['x'])
+            return s
+        except ZeroDivisionError:
+            return 1
 
     @staticmethod
     def validate_amazon_s3() -> bool:

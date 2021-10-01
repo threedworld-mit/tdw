@@ -88,6 +88,8 @@ Result:
 
 ![](images/step_physics.gif)
 
+The motion in both trials are the same, but in the second one physics steps are skipped such that it is much faster and some rendered frames (notably, during the bounces) are missing.
+
 ## Collisions and skipped frames
 
 [Collision data](collisions.md) *is* returned for any skipped frames (assuming you've already sent `send_collisions`). For example, if you call `resp = c.communicate({"$type": "step_physics", "frames": 10})`, the simulation will advance 11 frames; if there are are collision events on frames 1, 2, 5, and 9, `resp` will contain each of those collision events.

@@ -1,6 +1,7 @@
 from typing import List, Dict, Union, Optional
 from overrides import final
 import numpy as np
+from tdw.controller import Controller
 from tdw.librarian import RobotLibrarian, RobotRecord
 from tdw.tdw_utils import TDWUtils
 from tdw.robot_data.robot_static import RobotStatic
@@ -39,11 +40,6 @@ class Robot(RobotBase):
     ```
     """
 
-    """:class_var
-    TDW's built-in [`RobotLibrarian`](../librarian/robot_librarian.md).
-    """
-    ROBOT_LIBRARIAN: RobotLibrarian = RobotLibrarian()
-
     def __init__(self, name: str, robot_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                  source: Union[RobotLibrarian, RobotRecord, str] = None):
         """
@@ -71,13 +67,23 @@ class Robot(RobotBase):
         The URL or filepath of the robot asset bundle.
         """
         self.url: str = ""
+        # The initial target positons for the joints.
+        self._initial_targets: dict = dict()
+        # If True, we've already started to move the joints to their initial position.
+        self._set_initial_targets: bool = False
         if source is None:
-            record: RobotRecord = Robot.ROBOT_LIBRARIAN.get_record(name)
+            if "robots.json" not in Controller.ROBOT_LIBRARIANS:
+                Controller.ROBOT_LIBRARIANS["robots.json"] = RobotLibrarian()
+            record: RobotRecord = Controller.ROBOT_LIBRARIANS["robots.json"].get_record(name)
             self.url = record.get_url()
+            self._initial_targets = record.targets
         elif isinstance(source, RobotLibrarian):
-            self.url = source.get_record(name).get_url()
+            record = source.get_record(name)
+            self.url = record.get_url()
+            self._initial_targets = record.targets
         elif isinstance(source, RobotRecord):
             self.url = source.get_url()
+            self._initial_targets = source.targets
         elif isinstance(source, str):
             self.url = source
         else:
@@ -191,3 +197,10 @@ class Robot(RobotBase):
         dynamic = RobotDynamic(resp=resp, robot_id=self.robot_id, body_parts=self.static.body_parts,
                                previous=self.dynamic)
         self.dynamic = self._set_joints_moving(dynamic)
+        # Set the joints to their initial targets.
+        if not self._set_initial_targets:
+            self._set_initial_targets = True
+            targets = dict()
+            for joint_name in self._initial_targets:
+                targets[self.static.joint_ids_by_name[joint_name]] = self._initial_targets[joint_name]["target"]
+            self.set_joint_targets(targets=targets)

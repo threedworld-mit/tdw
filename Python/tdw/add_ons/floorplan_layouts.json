@@ -332,8 +332,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -376,8 +376,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bakerparisfloorlamp03",
         "position": {
@@ -398,8 +398,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -442,8 +442,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -706,8 +706,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {
@@ -728,8 +728,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -772,8 +772,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bakerparisfloorlamp03",
         "position": {
@@ -2094,8 +2094,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -2138,8 +2138,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -2160,8 +2160,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -2292,8 +2292,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -2534,8 +2534,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {
@@ -2556,8 +2556,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -2600,8 +2600,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -4186,8 +4186,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -4208,8 +4208,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -4318,8 +4318,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -4538,8 +4538,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {
@@ -4560,8 +4560,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -4604,8 +4604,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -5506,8 +5506,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bakerparisfloorlamp03",
         "position": {
@@ -5550,8 +5550,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "appliance-ge-profile-microwave3",
         "position": {
@@ -6038,8 +6038,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -6060,8 +6060,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -6214,8 +6214,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -6456,8 +6456,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {
@@ -6478,8 +6478,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -6522,8 +6522,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -7534,8 +7534,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -7734,8 +7734,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -7866,8 +7866,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -7910,8 +7910,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -7932,8 +7932,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -8042,8 +8042,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -8284,8 +8284,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {
@@ -8306,8 +8306,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -8350,8 +8350,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -9936,8 +9936,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -9958,8 +9958,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -10112,8 +10112,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -10376,8 +10376,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {
@@ -10398,8 +10398,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -10442,8 +10442,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -11964,8 +11964,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -12008,8 +12008,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -12030,8 +12030,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -12118,8 +12118,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -12338,8 +12338,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {
@@ -12360,8 +12360,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -12404,8 +12404,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -13528,8 +13528,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -13572,8 +13572,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -13594,8 +13594,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -13682,8 +13682,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -13858,8 +13858,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -13902,8 +13902,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -14804,8 +14804,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {
@@ -15356,8 +15356,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -15378,8 +15378,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -15444,8 +15444,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -15708,8 +15708,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {
@@ -15730,8 +15730,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -15774,8 +15774,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -17142,8 +17142,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -17164,8 +17164,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -17230,8 +17230,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -17472,8 +17472,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {
@@ -17494,8 +17494,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -17538,8 +17538,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -19058,8 +19058,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -19102,8 +19102,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -19124,8 +19124,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -19234,8 +19234,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -19476,8 +19476,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {
@@ -19498,8 +19498,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -19542,8 +19542,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bastone_floor_lamp",
         "position": {
@@ -20488,8 +20488,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "bakerparisfloorlamp03",
         "position": {
@@ -20532,8 +20532,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "appliance-ge-profile-microwave3",
         "position": {
@@ -20622,8 +20622,8 @@
     ],
     "2": [
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -20952,8 +20952,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -20996,8 +20996,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "alma_floor_lamp",
         "position": {
@@ -21084,8 +21084,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "trunck",
         "position": {
@@ -21260,8 +21260,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "dishwasher_4",
         "position": {
@@ -22228,8 +22228,8 @@
         }
       },
       {
-        "gravity": true,
-        "kinematic": false,
+        "gravity": false,
+        "kinematic": true,
         "library": "models_core.json",
         "name": "fridge_large",
         "position": {

@@ -52,7 +52,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 9. [`Overlap` output data](Documentation/lessons/objects_and_scenes/overlap.md)
 10. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
 
-High-level API: [FloorplanController](Documentation/python/floorplan_controller.md)
+High-level API: [Floorplan](Documentation/python/floorplan.md)
 
 ## 2.2 3D Model Libraries
 
@@ -91,18 +91,35 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 
 ## 2.6 Physics
 
-1. Overview
-2. Object physics parameters
-3. `Rigidbody` output data
-4. `Collision` output data
-5. Apply forces to objects
-6. Kinematic objects
-7. NVIDIA Flex
-8. Non-physics simulations
+1. [Overview](Documentation/lessons/physx/overview.md)
+
+### 2.6.1 Physics (PhysX)
+
+1. [PhysX](Documentation/lessons/physx/physx.md)
+2. [Object physics parameters](Documentation/lessons/physx/physics_objects.md)
+3. [`Rigidbodies` output data](Documentation/lessons/physx/rigidbodies.md)
+4. [`Collision` output data](Documentation/lessons/physx/collisions.md)
+5. [Apply forces to objects](Documentation/lessons/physx/forces.md)
+6. [Composite objects (objects with affordances)](Documentation/lessons/physx/composite_objects.md)
+7. [Skip physics frames](Documentation/lessons/physx/step_physics.md)
+8. [Disable physics](Documentation/lessons/physx/disable_physics.md)
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
-## 2.7 Audio
+### 2.6.2 Physics (Flex)
+
+1. Flex
+2. Solid actors
+3. Soft actors
+4. Cloth actors
+5. Fluid actors
+6. Source actors
+7. `FlexParticles` output data
+8. Apply forces to Flex objects
+
+High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
+
+## 2.8 Audio
 
 1. Overview
 2. PyImpact (dynamic impact sounds)
@@ -112,14 +129,14 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge)
 
-## 2.8 Video Recording
+## 2.9 Video Recording
 
 1. Controlling the framerate
 2. Image-only videos
 3. Image+audio videos
 4. The `CinematicCamera` add-on
 
-## 2.9 Robots and Embodied Agents
+## 2.10 Robots and Embodied Agents
 
 1. Robots
 2. Humanoid agents
@@ -130,13 +147,14 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 
 High-level API: [magnebot](https://github.com/alters-mit/magnebot)
 
-## 2.10 Misc. topics
+## 2.11 Misc. topics
 
 1. C# source code
 2. Freezing your code
 3. BinaryManager
 4. xpra
-5. Composite objects
+5. Creating composite objects
+6. Paintings
 
 # 3. API Documentation
 

@@ -36,7 +36,6 @@ c.communicate({"$type": "terminate"})
 | Variable | Type | Description |
 | --- | --- | --- |
 | `NON_MOVING` | float | If a joint has moved less than this many degrees (revolute or spherical) or meters (prismatic) since the previous frame, it is considered to be not moving for the purposes of determining which joints are moving. |
-| `ROBOT_LIBRARIAN` | RobotLibrarian | TDW's built-in [`RobotLibrarian`](../librarian/robot_librarian.md). |
 
 ***
 

@@ -390,23 +390,9 @@ robot.stop_joints(joint_ids=[shoulder_id])
 c.communicate({"$type": "terminate"})
 ```
 
-## Robot metadata records and the `RobotLibrarian`
-
-Robots are handled in TDW very similarly to [objects](../core_concepts.md). The robots are asset bundles stored on a remote S3 server. There is a corresponding `RobotLibrarian` collection of metadata records.
-
-This will print the name of each robot that is included by default in TDW:
-
-```python
-from tdw.librarian import RobotLibrarian
-
-lib = RobotLibrarian()
-for record in lib.records:
-    print(record.name)
-```
-
 ***
 
-**Next: [The `RobotLibrarian`](robot_librarian.md)**
+**Next: [How to select a robot](select_robot.md)**
 
 [Return to the README](../../../README.md)
 

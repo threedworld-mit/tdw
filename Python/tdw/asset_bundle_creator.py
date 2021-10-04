@@ -5,13 +5,14 @@ from subprocess import call
 import os
 import shutil
 from tdw.librarian import ModelRecord
-from tdw.backend import paths
 import json
 import pkg_resources
 import distutils.dir_util
 import distutils.file_util
 from tdw.backend.platforms import S3_TO_UNITY, SYSTEM_TO_UNITY, UNITY_TO_SYSTEM
 from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
+from tdw.add_ons.model_verifier.model_verifier import ModelVerifier
+from tdw.controller import Controller
 
 
 class AssetBundleCreator(AssetBundleCreatorBase):
@@ -574,7 +575,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
 
         if write_physics:
             self.write_physics_quality(record_path=record_path,
-                                       asset_bundle_path=self.get_local_asset_bundle_path(model_name))
+                                       asset_bundle_path=self.get_local_asset_bundle_path(model_name).resolve())
 
         return record_path
 
@@ -609,13 +610,20 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param asset_bundle_path: The URL to the local asset bundle.
         """
 
-        # Get the path to the writer controller.
-        writer_path = pkg_resources.resource_filename(__name__, "model_pipeline/write_physics_quality.py")
-        writer_call = ["py", "-3", writer_path,
-                       "--record_path", str(record_path.resolve()),
-                       "--asset_bundle_path", str(asset_bundle_path.resolve())]
-
-        call(writer_call)
+        c = Controller()
+        v = ModelVerifier()
+        r: ModelRecord = ModelRecord(json.loads(Path(record_path).read_text(encoding="utf-8")))
+        r.urls[platform.system()] = f"file:///{str(asset_bundle_path)}"
+        v.set_tests(name=r.name, source=r, model_report=False, missing_materials=False, physics_quality=True)
+        c.add_ons.append(v)
+        c.communicate([])
+        while not v.done:
+            c.communicate([])
+        c.communicate({"$type": "terminate"})
+        c.socket.close()
+        # Write the physics quality.
+        r.physics_quality = float(v.reports[0])
+        record_path.write_text(json.dumps(r.__dict__), encoding="utf-8")
 
     def validate(self, record_path: Path, asset_bundle_path: Path) -> Tuple[bool, str]:
         """
@@ -630,16 +638,20 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         if not self.quiet:
             print("Validating asset bundle...")
 
-        validator_path = pkg_resources.resource_filename(__name__, "model_pipeline/validator.py")
-        validator_call = ["py", "-3", validator_path,
-                          "--record_path", str(record_path.resolve()),
-                          "--asset_bundle_path", str(asset_bundle_path.resolve())]
-        call(validator_call)
-
-        report = json.loads(paths.VALIDATOR_REPORT_PATH.read_text(encoding="utf-8"))
-        if not report["ok"]:
+        c = Controller()
+        v = ModelVerifier()
+        r: ModelRecord = ModelRecord(json.loads(Path(record_path).read_text(encoding="utf-8")))
+        r.urls[platform.system()] = f"file:///{str(asset_bundle_path)}"
+        v.set_tests(name=r.name, source=r, model_report=True, missing_materials=True, physics_quality=False)
+        c.add_ons.append(v)
+        c.communicate([])
+        while not v.done:
+            c.communicate([])
+        c.communicate({"$type": "terminate"})
+        c.socket.close()
+        if len(v.reports) != 0:
             output = "There are problems with the asset bundle!"
-            for problem in report["reports"]:
+            for problem in v.reports:
                 output += "\n\t" + problem
             return False, output
         if not self.quiet:

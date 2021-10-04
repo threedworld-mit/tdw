@@ -176,7 +176,7 @@ c.communicate({"$type": "terminate"})
 
 ## The `CollisionManager` add-on
 
-TDW includes a convenient [`CollisionManager` add-on](../../python/add_ons/collision_manager.md) for handling collision data. The `CollisionManager` will automatically send `send_collisions` when it is 
+TDW includes a convenient [`CollisionManager` add-on](../../python/add_ons/collision_manager.md) for handling collision data. The `CollisionManager` will automatically send `send_collisions` when it is initialized.
 
 - While the output data returns velocities, contact normals, and so on as (x, y, z) tuples, this data is converted to numpy arrays by the `CollisionManager`.
 - `CollisionManager.obj_collisions` is a dictionary where each key is an [`IntPair`](../../api/int_pair.md) of object IDs.

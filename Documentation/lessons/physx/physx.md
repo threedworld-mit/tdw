@@ -19,7 +19,7 @@ When an object moves or collides with another object, the physics engine automat
 ## Common mistakes when using PhysX
 
 - It is possible to add multiple objects to TDW such that their bodies intersect each other. This is technically possible in PhysX but *not* recommended! The objects will have very glitchy and unpredictable behavior.
-- Objects in TDW initially have very low or implausible masses, meaning that you might apply a force to an object and it will respond in unexpected ways. The reason for this and how to set reasonable physics parameters [will be covered in the next page of this tutorial](physics_objects.md).
+- Objects in TDW initially have a mass of 1 kg and default friction values, meaning that you might apply a force to an object and it will respond in unexpected ways. The reason for this and how to set reasonable physics parameters [will be covered in the next page of this tutorial](physics_objects.md).
 - You should adjust the state of an object using non-physics commands such as [`teleport_object`](../../api/command_api.md#teleport_object) only when an object is first created. After that, you should only use commands such as [`apply_force_to_object`](../../api/command_api.md#apply_force_to_object). If you don't, PhysX will interpret the command as a *very* fast motion. And because the motion is technically being handled outside of the physics state, it can result in glitchy behavior.
 
 ## Limitations

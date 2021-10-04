@@ -82,7 +82,13 @@ if __name__ == "__main__":
 
 Result:
 
+```
+2.8298497200012207 0.3419990539550781
+```
+
 ![](images/step_physics.gif)
+
+The motion in both trials are the same, but in the second one physics steps are skipped such that it is much faster and some rendered frames (notably, during the bounces) are missing.
 
 ## Collisions and skipped frames
 

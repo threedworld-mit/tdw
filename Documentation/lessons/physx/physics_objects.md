@@ -34,7 +34,7 @@ The object's kinematic state determines whether it will respond to physics. Othe
 
 ## Default physics values and `get_add_physics_object()`
 
-TDW includes default physics values for some, but not all, models. This is because these physics values must be set manually, and we simply haven't yet done this for [all of our models](../3d_models/overview.md).
+TDW includes default physics values for some, but not all, models. We are continuously assigning default physics values for additional models.
 
 The `Controller` class has a dictionary called `DEFAULT_PHYSICS_VALUES` which stores all default physics values. They keys of the dictionary are model names:
 

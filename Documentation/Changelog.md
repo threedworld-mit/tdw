@@ -26,6 +26,14 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 - Added: `robot_impact_sound.py`
 
+### Documentation
+
+#### Modified Documentation
+
+| Document                        | Modification                                                 |
+| ------------------------------- | ------------------------------------------------------------ |
+| `creating_composite_objects.md` | Fixed incorrect documentation regarding how joint chains should be set up. |
+
 ## v1.8.27
 
 ### Command API

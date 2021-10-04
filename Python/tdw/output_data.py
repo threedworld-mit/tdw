@@ -648,6 +648,7 @@ class CompositeObjects(OutputData):
                      MachineType.MachineType.motor: "motor",
                      MachineType.MachineType.hinge: "hinge",
                      MachineType.MachineType.spring: "spring",
+                     MachineType.MachineType.prismatic_joint: "prismatic_joint",
                      MachineType.MachineType.none: "none"}
 
     def get_data(self) -> Comp.CompositeObjects:

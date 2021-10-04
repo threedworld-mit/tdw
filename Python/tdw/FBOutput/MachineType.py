@@ -8,4 +8,5 @@ class MachineType(object):
     hinge = 3
     spring = 4
     light = 5
+    prismatic_joint = 6
 

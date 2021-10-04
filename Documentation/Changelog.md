@@ -15,6 +15,14 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | `play_audio_data`<br>`play_point_source_data` | Fixed: Unhandled exception if one of the objects is a robot joint. |
 | `set_kinematic_state`                         | Fixed: If the object is a composite object, only the root object is set. |
 
+### Output Data
+
+#### Modified Output Data
+
+| Output Data              | Modification                                                 |
+| ------------------------ | ------------------------------------------------------------ |
+| `send_composite_objects` | Added machine type `"prismatic_joint"` (corresponds to a ConfigureableJoint) |
+
 ### `tdw` module
 
 #### `PyImpact`

@@ -4,6 +4,27 @@
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.28
+
+### Command API
+
+#### Modified Commands
+
+| Command                                       | Description                                                  |
+| --------------------------------------------- | ------------------------------------------------------------ |
+| `play_audio_data`<br>`play_point_source_data` | Fixed: Unhandled exception if one of the objects is a robot joint. |
+
+### `tdw` module
+
+#### `PyImpact`
+
+- Added optional parameter `robot_joints` to `get_impact_sound_command()`. A list of known robot joints.
+- If the controller has sent `send_robots` with frequency set to always, `PyImpact.get_audio_commands()` will automatically get a list of robot joint IDs and pass them to `get_impact_sound_command()`.
+
+### Example controllers
+
+- Added: `robot_impact_sound.py`
+
 ## v1.8.27
 
 ### Command API

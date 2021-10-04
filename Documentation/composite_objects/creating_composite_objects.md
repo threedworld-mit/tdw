@@ -50,13 +50,14 @@ Composite objects must be constructed in particular ways. In some cases, if the 
 
 Any sub-object with "mechanical" or "interactive" behavior requires a corresponding Unity Component to be attached to the GameObject. TDW will automatically map these Components to "mechanisms" for [frontend users](composite_objects.md).
 
-| Mechanism | Unity Component                    |
-| --------- | ---------------------------------- |
-| `hinge`   | HingeJoint*                        |
-| `motor`   | HingeJoint with an enabled motor.  |
-| `spring`  | HingeJoint with an enabled spring. |
-| `light`   | Light, Rigidbody, FixedJoint       |
-| `none`    | Rigidbody, FixedJoint (optional)   |
+| Mechanism         | Unity Component                    |
+| ----------------- | ---------------------------------- |
+| `hinge`           | HingeJoint*                        |
+| `motor`           | HingeJoint with an enabled motor.  |
+| `spring`          | HingeJoint with an enabled spring. |
+| `light`           | Light, Rigidbody, FixedJoint       |
+| `prismatic_joint` | ConfigureableJoint                 |
+| `none`            | Rigidbody, FixedJoint (optional)   |
 
 _* All HingeJoints require a Rigidbody component; Unity will automatically add the Rigidbody._
 

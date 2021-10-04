@@ -48,37 +48,6 @@ Robot joints are handled via [ArticulationBodies](https://docs.unity3d.com/2020.
 
 In Unity, if two objects with rigidbodies intersect each other, Unity will try to resolve the issue, sometimes with glitchy behavior. If an object with an ArticulationBody intersects with an object with a Rigibody, the build will likely *crash*. Be careful where you position your robots!
 
-If [collision detection is enabled](../physx/collisions.md) while a robot is intersecting with an object or the floor, the build will crash.
-
-Some robots, such as `ur5` and `ur10`, intersect with the floor when they are first added to the scene. To resolve this, they have initial joint targets that are automatically set by the `Robot` add-on.
-
-To ensure that collision detection can be enabled, wait for the robot to reach its initial targets:
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.robot import Robot
-from tdw.add_ons.collision_manager import CollisionManager
-
-c = Controller()
-robot = Robot(name="ur5",
-              position={"x": 1, "y": 0, "z": -2},
-              rotation={"x": 0, "y": 0, "z": 0},
-              robot_id=c.get_unique_id())
-c.add_ons.append(robot)
-c.communicate(TDWUtils.create_empty_room(12, 12))
-
-while robot.joints_are_moving():
-    c.communicate([])
-
-# The robot has moved to its initial pose. Enable collision detection.
-collision_manager = CollisionManager()
-c.add_ons.append(collision_manager)
-c.communicate([])
-
-c.communicate({"$type": "terminate"})
-```
-
 ## Static robot output data
 
 Static robot data includes static data that doesn't change once the robot is created. It is stored in the `Robot` object as `self.static`, a [`RobotStatic`](../../python/robot_data/robot_static.md) data object.
@@ -392,7 +361,7 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-**Next: [How to select a robot](select_robot.md)**
+**Next: [Robot collision detection](collision_detection.md)**
 
 [Return to the README](../../../README.md)
 
@@ -413,4 +382,3 @@ Python API:
 - [`RobotDynamic`](../../python/robot_data/robot_dynamic.md)
   - [`JointDynamic`](../../python/robot_data/joint_dynamic.md)
 - [`Transform`](../../python/object_data/transform.md)
-

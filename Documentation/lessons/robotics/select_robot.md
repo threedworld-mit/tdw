@@ -1,6 +1,6 @@
 ##### Robotics
 
-# How to select a robot
+# Select a robot
 
 Robots are handled in TDW very similarly to [objects](../core_concepts.md). The robots are asset bundles stored on a remote S3 server. There is a corresponding [`RobotLibrarian`](../../python/librarian/robot_librarian.md) collection of metadata records.
 
@@ -45,7 +45,7 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-**Next: [Robot collision detection](collision_detection.md)**
+**Next: [Add your own robots to TDW](custom_robots.md)**
 
 [Return to the README](../../../README.md)
 
@@ -55,3 +55,4 @@ Python API:
 
 - [`RobotLibrarian`](../../python/librarian/robot_librarian.md)
 - [`Robot`](../../python/add_ons/robot.md)
+

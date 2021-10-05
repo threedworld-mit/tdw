@@ -1,5 +1,145 @@
 # CHANGELOG
 
+# v1.9.x
+
+To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides/v1.8_to_v1.9).
+
+## v1.9.0
+
+### New Features
+
+- **Added add-ons.** These objects can be appended to `Controller.add_ons` to inject commands per `communicate()` call. They've been designed to simplify common tasks in TDW such as capturing images per frame or logging commands per frame.
+
+### Command API
+
+#### New Commands
+
+| Command                                    | Description                                                  |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `move_avatar_towards_object`               | Move the avatar towards an object.                           |
+| `move_avatar_towards_position`             | Move the avatar towards the target position.                 |
+| `focus_towards_object`                     | Focus towards the depth-of-field towards the position of an object. |
+| `rotate_sensor_container_towards_object`   | Rotate the sensor container towards the current position of a target object. |
+| `rotate_sensor_container_towards_position` | Rotate the sensor container towards a position at a given angular speed per frame. |
+| `rotate_sensor_container_towards_rotation` | Rotate the sensor container towards a target rotation.       |
+
+### Renamed Commands
+
+| Command             | New name             |
+| ------------------- | -------------------- |
+| `send_environments` | `send_scene_regions` |
+
+#### Removed Commands
+
+| Command                         | Reason                                                      |
+| ------------------------------- | ----------------------------------------------------------- |
+| `set_proc_gen_reflection_probe` | Deprecated in v1.8; use `enable_reflection_probes` instead. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data            | Description                                       |
+| ---------------------- | ------------------------------------------------- |
+| `CameraMotionComplete` | Announce that a camera motion has been completed. |
+
+### Renamed Output Data
+
+| Output Data    | New name       |
+| -------------- | -------------- |
+| `Environments` | `SceneRegions` |
+
+### Build
+
+- Adjusted avatar type `A_Simple_Body`:
+  - Fixed: Avatar bodies are centered on the avatar's pivot as opposed to halfway above it (i.e. making the pivot of the avatar the bottom-center), thus causing the avatar to "pop" out of the ground when it is first created.
+  - Fixed: The cube avatar requires much more torque to turn. Its box collider has been replaced with a cube collider.
+- Fixed: Warnings when repeatedly sending `send_model_report` without first unloading the scene.
+
+### `tdw` module
+
+- **Added the following add-ons:**
+  - `Benchmark` Benchmark the FPS over a given number of frames.
+  - `CinematicCamera` Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. **towards** a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but **not** for most actual experiments.
+  - `CollisionManager` Manager add-on for all collisions on this frame.
+  - `Debug` Record and playback every command sent to the build.
+  - `EmbodiedAvatar` Wrapper add-on for the `A_Simple_Body` avatar.
+  - `Floorplan` Initialize a scene populated by objects in pre-scripted layouts.
+  - `ImageCapture` Request image data and save the images to disk.
+  - `Keyboard` Add keyboard controls to a TDW scene.
+  - `ObjectManager` A simple manager class for objects in the scene. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.
+  - `OccupancyMap` Generate an occupancy map of the scene at runtime.
+  - `Robot` Control the joints of a robot.
+  - `StepPhysics` Step n+1 physics frames per communicate() call.
+  - `ThirdPersonCamera` Add a third-person camera to the scene.
+- Removed: `TransformInitData`, `RigidbodyInitData`, and `AudioInitData`.
+- Added backend object data classes:
+  - `Transform` Transform data (position, forward, rotation).
+  - `Rigidbody` Dynamic rigidbody data (velocity, angular velocity, sleeping).
+  - `Bound` Dynamic bounds data for a single object (as opposed to `Bounds` output data).
+  - `ObjectStatic` Static object data (name, mass, etc.).
+- Added backend robot data classes:
+  - `Drive` Static data for a joint drive.
+  - `JointDynamic` Dynamic data for a joint.
+  - `JointStatic` Static data for a joint.
+  - `NonMoving` Static data for a non-joint body part of a robot.
+  - `RobotDynamic` Dynamic data for a robot.
+  - `RobotStatic` Static data for a robot.
+  - `JointType` The type of joint, e.g. `revolute`.
+- Removed `DebugController` (replaced with `Debug` add-on)
+- Removed `KeyboardController` (replaced with `Keyboard` add-on)
+- Removed `FloorplanController` (replaced with `Floorplan` add-on)
+- Moved `CollisionObjObj` and `CollisionObjEnv` from `tdw.collision` to `tdw.collision_data`
+  - Removed `collisons.py`
+- Made more objects in the floorplan layouts kinematic.
+- (Backend) Added `ModelVerifier` add-on plus the following `ModelTest` classes:
+  - `ModelReport`
+  - `PhysicsQuality`
+  - `MissingMaterials`
+
+#### `Controller`
+
+- **Added: `Controller.add_ons`** A list of add-ons that will inject commands every time `communicate()` is called.
+- **Removed: `Controller.start()`** The command it used to send is automatically sent in the Controller constructor. 
+- **Removed: `Controller.add_object(model_name)`** Use `Controller.get_add_object(model_name)` instead.
+- **Removed: `Controller.load_streamed_scene(scene)`** Use `Controller.get_add_scene(scene_name)` instead.
+- Removed `check_build_process` from the constructor because it's too slow to be useful.
+- Added: `self.get_add_physics_object()`.  Add an object to the scene with physics values (mass, friction coefficients, etc.).
+- Added: `DEFAULT_PHYSICS_VALUES`. A dictionary of default `ObjectInfo` per object. This corresponds to `PyImpact.get_object_info()`.
+- Removed all cached librarian fields (`self.model_librarian`, `self.scene_librarian`, etc.) and replaced them with class variable dictionaries that automatically cache librarians (`Controller.MODEL_LIBRARIANS`, `Controller.SCENE_LIBRARIANS`, etc.) This allows multiple librarian objects to be cached at the same time and allows other classes to access them.
+- All asset bundle wrapper functions (`get_add_object()`, `get_add_scene()`, etc.) are now static.
+
+#### `TDWUtils`
+
+- Fixed: Unhandled ZeroDivisionError  in `get_unit_scale(record)` if bounds are all 0 (if so, returns 1).
+
+#### `PyImpact`
+
+- Added: `STATIC_FRICTION` and `DYNAMIC_FRICTION`. Dictionaries of friction coefficients per audio material.
+
+#### `paths` (backend)
+
+- Added: `EXAMPLE_CONTROLLER_OUTPUT_PATH`
+- Removed: `VALIDATOR_REPORT_PATH`
+
+#### Model Pipeline (backend)
+
+- Removed: `model_pipeline/missing_materials.py`, `model_pipeline/validator.py`, `model_pipeline/write_physics_quality.py` (replaced with the `ModelVerifier` add-on)
+  - Improved the accuracy of the physics quality test.
+
+#### `SceneBounds` and `RoomBounds`
+
+- Renamed `RoomBounds` to `RegionBounds`
+- Moved `scene_bounds.py` and `room_bounds.py` from `scene/` to `scene_data/`.
+
+### Use Cases
+
+- Removed `single_object.py` and `multi_env.py`; they have been replaced with [`tdw_image_dataset`](https://github.com/alters-mit/tdw_image_dataset), a separate repo.
+
+### Benchmark
+
+- Use the new `Benchmark` add-on for all benchmark controllers.
+
 # v1.8.x
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
@@ -10,9 +150,10 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 #### Modified Commands
 
-| Command                                       | Description                                                  |
+| Command                                       | Modification                                                 |
 | --------------------------------------------- | ------------------------------------------------------------ |
 | `play_audio_data`<br>`play_point_source_data` | Fixed: Unhandled exception if one of the objects is a robot joint. |
+| `set_kinematic_state`                         | Fixed: If the object is a composite object, only the root object is set. |
 
 ### `tdw` module
 
@@ -24,6 +165,14 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 ### Example controllers
 
 - Added: `robot_impact_sound.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                        | Modification                                                 |
+| ------------------------------- | ------------------------------------------------------------ |
+| `creating_composite_objects.md` | Fixed incorrect documentation regarding how joint chains should be set up. |
 
 ## v1.8.27
 

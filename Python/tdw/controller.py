@@ -1,12 +1,8 @@
-from threading import Thread
-import platform
-from time import sleep
 import zmq
-import psutil
 import json
 import os
 from subprocess import Popen
-from typing import List, Union, Optional, Tuple, Dict
+from typing import List, Union, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian
 from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH
@@ -14,6 +10,8 @@ from tdw.output_data import Version, QuitSignal
 from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
+from tdw.add_ons.add_on import AddOn
+from tdw.py_impact import PyImpact, ObjectInfo, STATIC_FRICTION, DYNAMIC_FRICTION
 
 
 class Controller(object):
@@ -29,20 +27,26 @@ class Controller(object):
     ```
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = False):
+    DEFAULT_PHYSICS_VALUES: Dict[str, ObjectInfo] = PyImpact.get_object_info()
+    MODEL_LIBRARIANS: Dict[str, ModelLibrarian] = dict()
+    SCENE_LIBRARIANS: Dict[str, SceneLibrarian] = dict()
+    MATERIAL_LIBRARIANS: Dict[str, MaterialLibrarian] = dict()
+    HDRI_SKYBOX_LIBRARIANS: Dict[str, HDRISkyboxLibrarian] = dict()
+    HUMANOID_LIBRARIANS: Dict[str, HumanoidLibrarian] = dict()
+    HUMANOID_ANIMATION_LIBRARIANS: Dict[str, HumanoidAnimationLibrarian] = dict()
+    ROBOT_LIBRARIANS: Dict[str, RobotLibrarian] = dict()
+
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """
         Create the network socket and bind the socket to the port.
 
         :param port: The port number.
         :param check_version: If true, the controller will check the version of the build and print the result.
         :param launch_build: If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor.
-        :param check_build_process: If True and the build is on the same machine as this controller, continuously check whether the build process is still up.
         """
 
-        # True if a local build process is currently running.
-        self._local_build_is_running: bool = False
-        # If True, we already quit (suppresses a warning that the build is down).
-        self._quit: bool = False
+        # A list of modules that will add commands on `communicate()`.
+        self.add_ons: List[AddOn] = list()
 
         # Compare the installed version of the tdw Python module to the latest on PyPi.
         # If there is a difference, recommend an upgrade.
@@ -59,39 +63,12 @@ class Controller(object):
 
         self.socket.recv()
 
-        # Get the expected name of the process.
-        if check_build_process:
-            ps = platform.system()
-            if ps == "Windows":
-                process_name = "TDW.exe"
-            elif ps == "Darwin":
-                process_name = "TDW.app"
-            else:
-                process_name = "TDW.x86_64"
-            # Get the process ID, if any.
-            got_build_process: bool = False
-            for q in psutil.process_iter():
-                if got_build_process:
-                    break
-                if q.name() == process_name:
-                    # Get the instance of TDW on the correct port.
-                    for connection in q.connections():
-                        if connection.raddr.port == port:
-                            self._local_build_is_running = True
-                            build_pid: int = q.pid
-                            # Get the ID of the controller process.
-                            controller_pid: int = os.getpid()
-                            # Start listening for the build process.
-                            t = Thread(target=self._build_process_heartbeat, args=([build_pid, controller_pid]))
-                            t.daemon = True
-                            t.start()
-                            got_build_process = True
-                            break
-
         # Set error handling to default values (the build will try to quit on errors and exceptions).
         # Request the version to log it and remember here if the Editor is being used.
         resp = self.communicate([{"$type": "set_error_handling"},
-                                 {"$type": "send_version"}])
+                                 {"$type": "send_version"},
+                                 {"$type": "load_scene",
+                                  "scene_name": "ProcGenScene"}])
         self._is_standalone: bool = False
         self._tdw_version: str = ""
         self._unity_version: str = ""
@@ -102,14 +79,6 @@ class Controller(object):
                 self._unity_version = v.get_unity_version()
                 self._is_standalone = v.get_standalone()
                 break
-        self.model_librarian: Optional[ModelLibrarian] = None
-        self.scene_librarian: Optional[SceneLibrarian] = None
-        self.material_librarian: Optional[MaterialLibrarian] = None
-        self.hdri_skybox_librarian: Optional[HDRISkyboxLibrarian] = None
-        self.humanoid_librarian: Optional[HumanoidLibrarian] = None
-        self.humanoid_animation_librarian: Optional[HumanoidAnimationLibrarian] = None
-        self.robot_librarian: Optional[RobotLibrarian] = None
-
         # Compare the version of the tdw module to the build version.
         if check_version and launch_build:
             self._check_build_version()
@@ -123,15 +92,25 @@ class Controller(object):
         :return The output data from the build.
         """
 
-        # Don't do anything if the controller already quit.
-        if self._quit:
-            return []
+        if isinstance(commands, dict):
+            commands = [commands]
 
-        if isinstance(commands, list):
-            msg = [json.dumps(commands).encode('utf-8')]
-        else:
-            msg = [json.dumps([commands]).encode('utf-8')]
+        # Append commands from each add-on.
+        for m in self.add_ons:
+            # Initialize an add-on.
+            if not m.initialized:
+                commands.extend(m.get_initialization_commands())
+                m.initialized = True
+            # Append the add-on's commands.
+            else:
+                commands.extend(m.commands)
+                m.commands.clear()
+        # Possibly do something with the commands about to be sent.
+        for m in self.add_ons:
+            m.before_send(commands)
 
+        # Serialize the message.
+        msg = [json.dumps(commands).encode('utf-8')]
         # Send the commands.
         self.socket.send_multipart(msg)
         # Receive output data.
@@ -159,8 +138,6 @@ class Controller(object):
             print("Quitting now because the controller tried too many times to resend commands to the build. "
                   "Check the build log for more info.")
             self._print_build_log()
-            self._local_build_is_running = False
-            self._quit = True
 
         # Check if we've received a quit signal. If we have, check if there was an error.
         for i in range(len(resp) - 1):
@@ -168,50 +145,125 @@ class Controller(object):
                 if not QuitSignal(resp[i]).get_ok():
                     print("The build quit due to an error. Check the build log for more info.")
                     self._print_build_log()
-                self._local_build_is_running = False
-                self._quit = True
                 break
+
+        # Get commands per module for the next frame.
+        for m in self.add_ons:
+            m.on_send(resp=resp)
 
         # Return the output data from the build.
         return resp
 
-    def start(self, scene="ProcGenScene") -> None:
-        """
-        Init TDW.
-
-        :param scene: The scene to load.
-        """
-
-        self.communicate([{"$type": "load_scene", "scene_name": scene}])
-
-    def get_add_object(self, model_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str = "") -> dict:
+    @staticmethod
+    def get_add_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
         """
         Returns a valid add_object command.
 
         :param model_name: The name of the model.
-        :param position: The position of the model.
-        :param rotation: The starting rotation of the model, in Euler angles.
+        :param position: The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param library: The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`.
         :param object_id: The ID of the new object.
 
         :return An add_object command that the controller can then send.
         """
 
-        if self.model_librarian is None or (library != "" and self.model_librarian.library != library):
-            self.model_librarian = ModelLibrarian(library=library)
-
-        record = self.model_librarian.get_record(model_name)
+        if library == "":
+            library = "models_core.json"
+        if library not in Controller.MODEL_LIBRARIANS:
+            Controller.MODEL_LIBRARIANS[library] = ModelLibrarian(library)
+        record = Controller.MODEL_LIBRARIANS[library].get_record(model_name)
 
         return {"$type": "add_object",
                 "name": model_name,
                 "url": record.get_url(),
                 "scale_factor": record.scale_factor,
-                "position": position,
-                "rotation": rotation,
+                "position": position if position is not None else {"x": 0, "y": 0, "z": 0},
+                "rotation": rotation if rotation is not None else {"x": 0, "y": 0, "z": 0},
                 "category": record.wcategory,
                 "id": object_id}
 
-    def get_add_material(self, material_name: str, library: str = "") -> dict:
+    @staticmethod
+    def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]:
+        """
+        Add an object to the scene with physics values (mass, friction coefficients, etc.).
+
+        :param model_name: The name of the model.
+        :param position: The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param library: The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`.
+        :param object_id: The ID of the new object.
+        :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
+        :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
+        :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
+        :param default_physics_values: If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in Controller.DEFAULT_PHYSICS_VALUES`.
+        :param mass: The mass of the object. Ignored if `default_physics_values == True`.
+        :param dynamic_friction: The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param static_friction: The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param bounciness: The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+
+        :return: A list of commands to add the object and apply physics values.
+        """
+
+        if library == "":
+            library = "models_core.json"
+        if library not in Controller.MODEL_LIBRARIANS:
+            Controller.MODEL_LIBRARIANS[library] = ModelLibrarian(library)
+        record = Controller.MODEL_LIBRARIANS[library].get_record(model_name)
+        commands = [{"$type": "add_object",
+                     "name": record.name,
+                     "url": record.get_url(),
+                     "scale_factor": record.scale_factor,
+                     "position": position,
+                     "category": record.wcategory,
+                     "id": object_id}]
+        if rotation is not None:
+            # The rotation is a quaternion.
+            if "w" in rotation:
+                commands.append({"$type": "rotate_object_to",
+                                 "rotation": rotation,
+                                 "id": object_id})
+            # The rotation is in Euler angles.
+            else:
+                commands.append({"$type": "rotate_object_to_euler_angles",
+                                 "euler_angles": rotation,
+                                 "id": object_id})
+        if scale_factor is not None:
+            commands.append({"$type": "scale_object",
+                             "scale_factor": scale_factor,
+                             "id": object_id})
+        commands.append({"$type": "set_kinematic_state",
+                         "id": object_id,
+                         "is_kinematic": kinematic,
+                         "use_gravity": gravity})
+        # Kinematic objects must be continuous_speculative.
+        if kinematic:
+            commands.append({"$type": "set_object_collision_detection_mode",
+                             "id": object_id,
+                             "mode": "continuous_speculative"})
+
+        if default_physics_values:
+            commands.extend([{"$type": "set_mass",
+                              "mass": Controller.DEFAULT_PHYSICS_VALUES[model_name].mass,
+                              "id": object_id},
+                             {"$type": "set_physic_material",
+                              "dynamic_friction": DYNAMIC_FRICTION[Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
+                              "static_friction": STATIC_FRICTION[Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
+                              "bounciness": Controller.DEFAULT_PHYSICS_VALUES[model_name].bounciness,
+                              "id": object_id}])
+        else:
+            commands.extend([{"$type": "set_mass",
+                              "mass": mass,
+                              "id": object_id},
+                             {"$type": "set_physic_material",
+                              "dynamic_friction": dynamic_friction,
+                              "static_friction": static_friction,
+                              "bounciness": bounciness,
+                              "id": object_id}])
+        return commands
+
+    @staticmethod
+    def get_add_material(material_name: str, library: str = "") -> dict:
         """
         Returns a valid add_material command.
 
@@ -221,15 +273,17 @@ class Controller(object):
         :return An add_material command that the controller can then send.
         """
 
-        if self.material_librarian is None:
-            self.material_librarian = MaterialLibrarian(library=library)
-
-        record = self.material_librarian.get_record(material_name)
+        if library == "":
+            library = "materials_med.json"
+        if library not in Controller.MATERIAL_LIBRARIANS:
+            Controller.MATERIAL_LIBRARIANS[library] = MaterialLibrarian(library)
+        record = Controller.MATERIAL_LIBRARIANS[library].get_record(material_name)
         return {"$type": "add_material",
                 "name": material_name,
                 "url": record.get_url()}
 
-    def get_add_scene(self, scene_name: str, library: str = "") -> dict:
+    @staticmethod
+    def get_add_scene(scene_name: str, library: str = "") -> dict:
         """
         Returns a valid add_scene command.
 
@@ -239,15 +293,17 @@ class Controller(object):
         :return An add_scene command that the controller can then send.
         """
 
-        if self.scene_librarian is None:
-            self.scene_librarian = SceneLibrarian(library=library)
-
-        record = self.scene_librarian.get_record(scene_name)
+        if library == "":
+            library = "scenes.json"
+        if library not in Controller.SCENE_LIBRARIANS:
+            Controller.SCENE_LIBRARIANS[library] = SceneLibrarian(library)
+        record = Controller.SCENE_LIBRARIANS[library].get_record(scene_name)
         return {"$type": "add_scene",
                 "name": scene_name,
                 "url": record.get_url()}
 
-    def get_add_hdri_skybox(self, skybox_name: str, library: str = "") -> dict:
+    @staticmethod
+    def get_add_hdri_skybox(skybox_name: str, library: str = "") -> dict:
         """
         Returns a valid add_hdri_skybox command.
 
@@ -257,10 +313,11 @@ class Controller(object):
         :return An add_hdri_skybox command that the controller can then send.
         """
 
-        if self.hdri_skybox_librarian is None:
-            self.hdri_skybox_librarian = HDRISkyboxLibrarian(library=library)
-
-        record = self.hdri_skybox_librarian.get_record(skybox_name)
+        if library == "":
+            library = "hdri_skyboxes.json"
+        if library not in Controller.HDRI_SKYBOX_LIBRARIANS:
+            Controller.HDRI_SKYBOX_LIBRARIANS[library] = HDRISkyboxLibrarian(library)
+        record = Controller.HDRI_SKYBOX_LIBRARIANS[library].get_record(skybox_name)
         return {"$type": "add_hdri_skybox",
                 "name": skybox_name,
                 "url": record.get_url(),
@@ -270,7 +327,8 @@ class Controller(object):
                 "sun_initial_angle": record.sun_initial_angle,
                 "sun_intensity": record.sun_intensity}
 
-    def get_add_humanoid(self, humanoid_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str ="") -> dict:
+    @staticmethod
+    def get_add_humanoid(humanoid_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str ="") -> dict:
         """
         Returns a valid add_humanoid command.
 
@@ -283,11 +341,11 @@ class Controller(object):
         :return An add_humanoid command that the controller can then send.
         """
 
-        if self.humanoid_librarian is None or (library != "" and self.humanoid_librarian.library != library):
-            self.humanoid_librarian = HumanoidLibrarian(library=library)
-
-        record = self.humanoid_librarian.get_record(humanoid_name)
-
+        if library == "":
+            library = "humanoids.json"
+        if library not in Controller.HUMANOID_LIBRARIANS:
+            Controller.HUMANOID_LIBRARIANS[library] = HumanoidLibrarian(library)
+        record = Controller.HUMANOID_LIBRARIANS[library].get_record(humanoid_name)
         return {"$type": "add_humanoid",
                 "name": humanoid_name,
                 "url": record.get_url(),
@@ -295,7 +353,8 @@ class Controller(object):
                 "rotation": rotation,
                 "id": object_id}
 
-    def get_add_humanoid_animation(self, humanoid_animation_name: str, library="") -> (dict, HumanoidAnimationRecord):
+    @staticmethod
+    def get_add_humanoid_animation(humanoid_animation_name: str, library="") -> (dict, HumanoidAnimationRecord):
         """
         Returns a valid add_humanoid_animation command and the record (which you will need to play an animation).
 
@@ -305,15 +364,17 @@ class Controller(object):
         :return An add_humanoid_animation command that the controller can then send.
         """
 
-        if self.humanoid_animation_librarian is None:
-            self.humanoid_animation_librarian = HumanoidAnimationLibrarian(library=library)
-
-        record = self.humanoid_animation_librarian.get_record(humanoid_animation_name)
+        if library == "":
+            library = "humanoid_animations.json"
+        if library not in Controller.HUMANOID_ANIMATION_LIBRARIANS:
+            Controller.HUMANOID_ANIMATION_LIBRARIANS[library] = HumanoidAnimationLibrarian(library)
+        record = Controller.HUMANOID_ANIMATION_LIBRARIANS[library].get_record(humanoid_animation_name)
         return {"$type": "add_humanoid_animation",
                 "name": humanoid_animation_name,
                 "url": record.get_url()}, record
 
-    def get_add_robot(self, name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
+    @staticmethod
+    def get_add_robot(name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
         """
         Returns a valid add_robot command.
 
@@ -326,10 +387,11 @@ class Controller(object):
         :return An `add_robot` command that the controller can then send.
         """
 
-        if self.robot_librarian is None:
-            self.robot_librarian = RobotLibrarian(library=library)
-
-        record = self.robot_librarian.get_record(name)
+        if library == "":
+            library = "robots.json"
+        if library not in Controller.ROBOT_LIBRARIANS:
+            Controller.ROBOT_LIBRARIANS[library] = RobotLibrarian(library)
+        record = Controller.ROBOT_LIBRARIANS[library].get_record(name)
 
         if position is None:
             position = {"x": 0, "y": 0, "z": 0}
@@ -343,32 +405,6 @@ class Controller(object):
                 "rotation": rotation,
                 "name": name,
                 "url": record.get_url()}
-
-    def load_streamed_scene(self, scene="tdw_room") -> None:
-        """
-        Load a streamed scene. This is equivalent to: `c.communicate(c.get_add_scene(scene))`
-
-        :param scene: The name of the streamed scene.
-        """
-
-        self.communicate(self.get_add_scene(scene))
-
-    def add_object(self, model_name: str, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str= "") -> int:
-        """
-        Add a model to the scene. This is equivalent to: `c.communicate(c.get_add_object())`
-
-        :param model_name: The name of the model.
-        :param position: The position of the model.
-        :param rotation: The starting rotation of the model, in Euler angles.
-        :param library: The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`.
-
-        :return The ID of the new object.
-        """
-
-        object_id = Controller.get_unique_id()
-        self.communicate(self.get_add_object(model_name, object_id, position, rotation, library))
-
-        return object_id
 
     def get_version(self) -> Tuple[str, str]:
         """
@@ -458,33 +494,6 @@ class Controller(object):
             self._tdw_version = build_version
         print(f"Build version {self._tdw_version}\nUnity Engine {self._unity_version}\n"
               f"Python tdw module version {version}")
-
-    def _build_process_heartbeat(self, build_pid: int, controller_pid: int) -> None:
-        """
-        Check whether the build and the main controller processes are still up.
-        Run this in a thread, and only when the build is running local.
-
-        :param build_pid: The build process ID.
-        :param controller_pid: The controller process ID.
-        """
-
-        try:
-            while self._local_build_is_running:
-                # If the main thread is down or the build is down, stop.
-                if not psutil.pid_exists(build_pid) or not psutil.pid_exists(controller_pid):
-                    self._local_build_is_running = False
-                    sleep(1)
-            if not self._quit:
-                self._quit = True
-                print("The build is probably down due to an unhandled exception."
-                      " Check the build log for more info.")
-                self._print_build_log()
-            self._local_build_is_running = False
-        finally:
-            # Kill the remaining processes.
-            for pid in [build_pid, controller_pid]:
-                if psutil.pid_exists(pid):
-                    os.kill(pid, 9)
 
     def _print_build_log(self) -> None:
         """

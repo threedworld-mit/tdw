@@ -16,7 +16,7 @@ c.start()
 
 ***
 
-#### `__init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True, check_build_process: bool = False)`
+#### `__init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True)`
 
 Create the network socket and bind the socket to the port.
 
@@ -25,7 +25,6 @@ Create the network socket and bind the socket to the port.
 | port | The port number. |
 | check_version | If true, the controller will check the version of the build and print the result. |
 | launch_build | If True, automatically launch the build. If one doesn't exist, download and extract the correct version. Set this to False to use your own build, or (if you are a backend developer) to use Unity Editor. |
-| check_build_process | If True and the build is on the same machine as this controller, continuously check whether the build process is still up. |
 
 ***
 
@@ -41,25 +40,17 @@ _Returns:_ The output data from the build.
 
 ***
 
-#### `start(self, scene="ProcGenScene") -> None`
+#### `get_add_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict`
 
-Init TDW.
-
-| Parameter | Description |
-| --- | --- |
-| scene | The scene to load. |
-
-***
-
-#### `get_add_object(self, model_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str = "") -> dict`
+_This is a static function._
 
 Returns a valid add_object command.
 
 | Parameter | Description |
 | --- | --- |
 | model_name | The name of the model. |
-| position | The position of the model. |
-| rotation | The starting rotation of the model, in Euler angles. |
+| position | The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation | The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | library | The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`. |
 | object_id | The ID of the new object. |
 
@@ -67,7 +58,35 @@ _Returns:_ An add_object command that the controller can then send.
 
 ***
 
-#### `get_add_material(self, material_name: str, library: str = "") -> dict`
+#### `get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]`
+
+_This is a static function._
+
+Add an object to the scene with physics values (mass, friction coefficients, etc.).
+
+| Parameter | Description |
+| --- | --- |
+| model_name | The name of the model. |
+| position | The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation | The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| library | The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`. |
+| object_id | The ID of the new object. |
+| scale_factor | The [scale factor](../api/command_api.md#scale_object). |
+| kinematic | If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state). |
+| gravity | If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state). |
+| default_physics_values | If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in Controller.DEFAULT_PHYSICS_VALUES`. |
+| mass | The mass of the object. Ignored if `default_physics_values == True`. |
+| dynamic_friction | The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
+| static_friction | The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
+| bounciness | The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
+
+_Returns:_  A list of commands to add the object and apply physics values.
+
+***
+
+#### `get_add_material(material_name: str, library: str = "") -> dict`
+
+_This is a static function._
 
 Returns a valid add_material command.
 
@@ -80,7 +99,9 @@ _Returns:_ An add_material command that the controller can then send.
 
 ***
 
-#### `get_add_scene(self, scene_name: str, library: str = "") -> dict`
+#### `get_add_scene(scene_name: str, library: str = "") -> dict`
+
+_This is a static function._
 
 Returns a valid add_scene command.
 
@@ -93,7 +114,9 @@ _Returns:_ An add_scene command that the controller can then send.
 
 ***
 
-#### `get_add_hdri_skybox(self, skybox_name: str, library: str = "") -> dict`
+#### `get_add_hdri_skybox(skybox_name: str, library: str = "") -> dict`
+
+_This is a static function._
 
 Returns a valid add_hdri_skybox command.
 
@@ -106,7 +129,9 @@ _Returns:_ An add_hdri_skybox command that the controller can then send.
 
 ***
 
-#### `get_add_humanoid(self, humanoid_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str ="") -> dict`
+#### `get_add_humanoid(humanoid_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str ="") -> dict`
+
+_This is a static function._
 
 Returns a valid add_humanoid command.
 
@@ -122,7 +147,9 @@ _Returns:_ An add_humanoid command that the controller can then send.
 
 ***
 
-#### `get_add_humanoid_animation(self, humanoid_animation_name: str, library="") -> (dict, HumanoidAnimationRecord)`
+#### `get_add_humanoid_animation(humanoid_animation_name: str, library="") -> (dict, HumanoidAnimationRecord)`
+
+_This is a static function._
 
 Returns a valid add_humanoid_animation command and the record (which you will need to play an animation).
 
@@ -135,7 +162,9 @@ _Returns:_ An add_humanoid_animation command that the controller can then send.
 
 ***
 
-#### `get_add_robot(self, name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict`
+#### `get_add_robot(name: str, robot_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict`
+
+_This is a static function._
 
 Returns a valid add_robot command.
 
@@ -148,31 +177,6 @@ Returns a valid add_robot command.
 | library | The path to the records file. If left empty, the default library will be selected. See `RobotLibrarian.get_library_filenames()` and `RobotLibrarian.get_default_library()`. |
 
 _Returns:_ An `add_robot` command that the controller can then send.
-
-***
-
-#### `load_streamed_scene(self, scene="tdw_room") -> None`
-
-Load a streamed scene. This is equivalent to: `c.communicate(c.get_add_scene(scene))`
-
-| Parameter | Description |
-| --- | --- |
-| scene | The name of the streamed scene. |
-
-***
-
-#### `add_object(self, model_name: str, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str= "") -> int`
-
-Add a model to the scene. This is equivalent to: `c.communicate(c.get_add_object())`
-
-| Parameter | Description |
-| --- | --- |
-| model_name | The name of the model. |
-| position | The position of the model. |
-| rotation | The starting rotation of the model, in Euler angles. |
-| library | The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`. |
-
-_Returns:_ The ID of the new object.
 
 ***
 

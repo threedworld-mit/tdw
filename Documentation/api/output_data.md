@@ -60,11 +60,11 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [AvatarStickyMittenSegmentationColors](#AvatarStickyMittenSegmentationColors) | Color segmentation data for a Sticky Mitten Avatar. | `smsc` |
 | [Bounds](#Bounds) | Rotated bounds data. | `boun` |
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
+| [CameraMotionComplete](#CameraMotionComplete) | Announce that a camera motion has been completed. | `camm` |
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [CompositeObjects](#CompositeObjects) | Data for all composite objects currently in the scene. | `comp` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
-| [Environments](#Environments) | Data regarding the scene environments. | `envi` |
 | [FlexParticles](#FlexParticles) | NVIDIA Flex data. | `flex` |
 | [IdPassGrayscale](#IdPassGrayscale) | The average grayscale value of the _id pass. | `idgs` |
 | [IdPassSegmentationColors](#IdPassSegmentationColors) | All segmentation colors in an _id pass. | `ipsc` |
@@ -85,6 +85,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Rigidbodies](#Rigidbodies) | Rigibody data (velocity, mass, etc.) for objects in the scene. | `rigi` |
 | [Robot](#Robot) | Data for a robot in the scene. See also: `StaticRobot` | `robo` |
+| [SceneRegions](#SceneRegions) | Data regarding the scene regions. | `sreg` |
 | [ScreenPosition](#ScreenPosition) | A position on the screen converted from a worldspace position. | `scre` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
 | [StaticRobot](#StaticRobot) | Static data for a robot in the scene. | `srob` |
@@ -280,6 +281,19 @@ An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11,
 | `get_projection_matrix()` | The projection matrix. | `np.array` |
 | `get_camera_matrix()` | The camera matrix. | `np.array` |
 
+## CameraMotionComplete
+
+`c = CameraMotionComplete(byte_array)`
+
+**Identifier:** `camm`
+
+Announce that a camera motion has been completed.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_avatar_id()` | The ID of the avatar. | `str` |
+| `get_motion()` | The type of motion that just ended. | `str` |
+
 ## Categories
 
 `c = Categories(byte_array)`
@@ -344,21 +358,6 @@ Data for a collision between and object and the scene environment on this frame.
 | `get_contact_normal(index)` | The normal of the contact. | `Tuple[float, float, float]` |
 | `get_contact_point(index)` | The point of the contact. | `Tuple[float, float, float]` |
 | `get_floor()` | If True, this is the floor. | `bool` |
-
-## Environments
-
-`e = Environments(byte_array)`
-
-**Identifier:** `envi`
-
-Data regarding the scene environments.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_center(index)` | The centerpoint of the environment. | `Tuple[float, float, float]` |
-| `get_bounds(index)` | The size of the environment. | `Tuple[float, float, float]` |
-| `get_id(index)` | The ID of the environment. | `int` |
-| `get_num()` | The number of envs. | `int` |
 
 ## FlexParticles
 
@@ -673,6 +672,21 @@ Data for a robot in the scene. See also: `StaticRobot`
 | `get_joint_position(index)` | The position of the joint. | `np.array` |
 | `get_joint_positions(index)` | The positions of the joint. | `np.array` |
 | `get_immovable()` | True if the root object of the robot is currently immovable. | `bool` |
+
+## SceneRegions
+
+`s = SceneRegions(byte_array)`
+
+**Identifier:** `sreg`
+
+Data regarding the scene regions.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_center(index)` | The centerpoint of the region. | `Tuple[float, float, float]` |
+| `get_bounds(index)` | The size of the region. | `Tuple[float, float, float]` |
+| `get_id(index)` | The ID of the region. | `int` |
+| `get_num()` | The number of regions. | `int` |
 
 ## ScreenPosition
 

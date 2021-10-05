@@ -1,5 +1,5 @@
 from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState
-from tdw.FBOutput import Environments as Envs
+from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
 from tdw.FBOutput import Bounds as Bouns
@@ -40,6 +40,7 @@ from tdw.FBOutput import TriggerCollision as Trigger
 from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
 from tdw.FBOutput import QuitSignal as QuitSig
+from tdw.FBOutput import CameraMotionComplete as CamMot
 from tdw.FBOutput import MagnebotWheels as MWheels
 from tdw.FBOutput import Occlusion as Occl
 from tdw.FBOutput import Lights as Lites
@@ -129,21 +130,21 @@ class OutputData(object):
         return color.R(), color.G(), color.B()
 
 
-class Environments(OutputData):
-    def get_data(self) -> Envs.Environments:
-        return Envs.Environments.GetRootAsEnvironments(self.bytes, 0)
+class SceneRegions(OutputData):
+    def get_data(self) -> SceRegs.SceneRegions:
+        return SceRegs.SceneRegions.GetRootAsSceneRegions(self.bytes, 0)
 
     def get_center(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Envs(index).Center)
+        return OutputData._get_vector3(self.data.Regions(index).Center)
 
     def get_bounds(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Envs(index).Bounds)
+        return OutputData._get_vector3(self.data.Regions(index).Bounds)
 
     def get_id(self, index: int) -> int:
-        return self.data.Envs(index).Id()
+        return self.data.Regions(index).Id()
 
     def get_num(self) -> int:
-        return self.data.EnvsLength()
+        return self.data.RegionsLength()
 
 
 class Transforms(OutputData):
@@ -1058,6 +1059,23 @@ class QuitSignal(OutputData):
 
     def get_ok(self) -> bool:
         return self.data.Ok()
+
+
+class CameraMotionComplete(OutputData):
+    def get_data(self) -> CamMot.CameraMotionComplete:
+        return CamMot.CameraMotionComplete.GetRootAsCameraMotionComplete(self.bytes, 0)
+
+    def get_avatar_id(self) -> str:
+        return self.data.AvatarId().decode('utf-8')
+
+    def get_motion(self) -> str:
+        motion = self.data.Motion()
+        if motion == 1:
+            return "move"
+        elif motion == 2:
+            return "rotate"
+        else:
+            return "focus"
 
 
 class MagnebotWheels(OutputData):

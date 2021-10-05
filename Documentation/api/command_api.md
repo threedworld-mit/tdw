@@ -185,12 +185,18 @@
 | [`pick_up`](#pick_up) | Pick up all objects that any sticky side of the mitten is touching.  |
 | [`pick_up_proximity`](#pick_up_proximity) | Pick up all objects within an emitted volume defined by a radius and a distance. See Sticky Mitten Avatar documentation for more information.  |
 
+**Move Avatar Towards**
+
+| Command | Description |
+| --- | --- |
+| [`move_avatar_towards_object`](#move_avatar_towards_object) | Move the avatar towards an object.  |
+| [`move_avatar_towards_position`](#move_avatar_towards_position) | Move the avatar towards the target position.  |
+
 **Sensor Container Command**
 
 | Command | Description |
 | --- | --- |
 | [`enable_image_sensor`](#enable_image_sensor) | Turn a sensor on or off. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), |
-| [`focus_on_object`](#focus_on_object) | Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera.  |
 | [`look_at`](#look_at) | Look at an object (rotate the image sensor to center the object in the frame). |
 | [`look_at_avatar`](#look_at_avatar) | Look at another avatar (rotate the image sensor to center the avatar in the frame). |
 | [`look_at_position`](#look_at_position) | Look at a worldspace position (rotate the image sensor to center the position in the frame). |
@@ -200,6 +206,21 @@
 | [`set_anti_aliasing`](#set_anti_aliasing) | Set the anti-aliasing mode for the avatar's camera.  |
 | [`set_render_order`](#set_render_order) | Set the order in which this camera will render relative to other cameras in the scene. This can prevent flickering on the screen when there are multiple cameras. This doesn't affect image capture; it only affects what the simulation application screen is displaying at runtime. |
 | [`translate_sensor_container_by`](#translate_sensor_container_by) | Translate the sensor container relative to the avatar by a given directional vector. |
+
+**Focus On Object Command**
+
+| Command | Description |
+| --- | --- |
+| [`focus_on_object`](#focus_on_object) | Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera.  |
+| [`focus_towards_object`](#focus_towards_object) | Focus towards the depth-of-field towards the position of an object.  |
+
+**Rotate Sensor Container Towards**
+
+| Command | Description |
+| --- | --- |
+| [`rotate_sensor_container_towards_object`](#rotate_sensor_container_towards_object) | Rotate the sensor container towards the current position of a target object.  |
+| [`rotate_sensor_container_towards_position`](#rotate_sensor_container_towards_position) | Rotate the sensor container towards a position at a given angular speed per frame.  |
+| [`rotate_sensor_container_towards_rotation`](#rotate_sensor_container_towards_rotation) | Rotate the sensor container towards a target rotation.  |
 
 **Create Reverb Space Command**
 
@@ -406,7 +427,6 @@
 | [`set_proc_gen_ceiling_color`](#set_proc_gen_ceiling_color) | Set the albedo RGBA color of the ceiling.  |
 | [`set_proc_gen_ceiling_height`](#set_proc_gen_ceiling_height) | Set the height of all ceiling tiles in a proc-gen room. |
 | [`set_proc_gen_ceiling_texture_scale`](#set_proc_gen_ceiling_texture_scale) | Set the scale of the tiling of the ceiling material's main texture. |
-| [`set_proc_gen_reflection_probe`](#set_proc_gen_reflection_probe) | Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates.  |
 | [`set_proc_gen_walls_color`](#set_proc_gen_walls_color) | Set the albedo RGBA color of the walls. |
 | [`set_proc_gen_walls_texture_scale`](#set_proc_gen_walls_texture_scale) | Set the texture scale of all walls in a proc-gen room. |
 
@@ -545,11 +565,11 @@
 | --- | --- |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
-| [`send_environments`](#send_environments) | Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) add_scene  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
+| [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -2746,6 +2766,69 @@ Pick up all objects within an emitted volume defined by a radius and a distance.
 | `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
+# MoveAvatarTowards
+
+Move an after towards a target at a given speed per frame.
+
+***
+
+## **`move_avatar_towards_object`**
+
+Move the avatar towards an object. 
+
+- <font style="color:orange">**Non-physics motion**: This command ignores the build's physics engine. If you send this command during a physics simulation (i.e. to a non-kinematic avatar), the physics might glitch.</font>
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
+
+```python
+{"$type": "move_avatar_towards_object", "object_id": 1}
+```
+
+```python
+{"$type": "move_avatar_towards_object", "object_id": 1, "offset_distance": 1, "min_y": 0.25, "use_centroid": True, "speed": 0.1, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the object. | |
+| `"offset_distance"` | float | Stop moving when the avatar is this many meters away from the target object. | 1 |
+| `"min_y"` | float | Clamp the y positional coordinate of the avatar to this minimum value. | 0.25 |
+| `"use_centroid"` | bool | If true, move towards the centroid of the object. If false, move towards the position of the object (y=0). | True |
+| `"speed"` | float | Move a maximum of this many meters per frame towards the target. | 0.1 |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`move_avatar_towards_position`**
+
+Move the avatar towards the target position. 
+
+- <font style="color:orange">**Non-physics motion**: This command ignores the build's physics engine. If you send this command during a physics simulation (i.e. to a non-kinematic avatar), the physics might glitch.</font>
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
+
+```python
+{"$type": "move_avatar_towards_position"}
+```
+
+```python
+{"$type": "move_avatar_towards_position", "position": {"x": 0, "y": 0, "z": 0}, "speed": 0.1, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position. | {"x": 0, "y": 0, "z": 0} |
+| `"speed"` | float | Move a maximum of this many meters per frame towards the target. | 0.1 |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
 # SensorContainerCommand
 
 These commands adjust an avatar's image sensor container. All avatars have at least one sensor, which is named "SensorContainer". Sticky Mitten Avatars have an additional sensor named "FollowCamera". For a list of all image sensors attached to an avatar, send send_image_sensors.
@@ -2768,29 +2851,6 @@ Turn a sensor on or off. The command set_pass_masks will override this command (
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"enable"` | bool | If true, enable the image sensor. | True |
-| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
-## **`focus_on_object`**
-
-Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera. 
-
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
-
-```python
-{"$type": "focus_on_object", "object_id": 1}
-```
-
-```python
-{"$type": "focus_on_object", "object_id": 1, "use_centroid": False, "sensor_name": "SensorContainer", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"object_id"` | int | The ID of the object. | |
-| `"use_centroid"` | bool | If true, look at the centroid of the object. This is computationally expensive. If false, look at the position of the object (y=0). | False |
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -3004,6 +3064,152 @@ Translate the sensor container relative to the avatar by a given directional vec
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"move_by"` | Vector3 | How much to translate the container's local position by. | {"x": 0, "y": 0, "z": 0} |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+# FocusOnObjectCommand
+
+These commands set the depth-of-field focus value based on the position of a target object.
+
+***
+
+## **`focus_on_object`**
+
+Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera. 
+
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+
+```python
+{"$type": "focus_on_object", "object_id": 1}
+```
+
+```python
+{"$type": "focus_on_object", "object_id": 1, "use_centroid": False, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the object. | |
+| `"use_centroid"` | bool | If true, look at the centroid of the object. This is computationally expensive. If false, look at the position of the object (y=0). | False |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`focus_towards_object`**
+
+Focus towards the depth-of-field towards the position of an object. 
+
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
+
+```python
+{"$type": "focus_towards_object", "object_id": 1}
+```
+
+```python
+{"$type": "focus_towards_object", "object_id": 1, "speed": 0.3, "use_centroid": False, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"speed"` | float | Focus towards the target distance at this speed. | 0.3 |
+| `"object_id"` | int | The ID of the object. | |
+| `"use_centroid"` | bool | If true, look at the centroid of the object. This is computationally expensive. If false, look at the position of the object (y=0). | False |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+# RotateSensorContainerTowards
+
+These commands rotate the sensor container towards a target by a given angular speed per frame.
+
+***
+
+## **`rotate_sensor_container_towards_object`**
+
+Rotate the sensor container towards the current position of a target object. 
+
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
+
+```python
+{"$type": "rotate_sensor_container_towards_object", "object_id": 1}
+```
+
+```python
+{"$type": "rotate_sensor_container_towards_object", "object_id": 1, "use_centroid": True, "speed": 3, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the object we want the sensor container to rotate towards. | |
+| `"use_centroid"` | bool | If true, rotate towards the centroid of the object. If false, rotate towards the position of the object (y=0). | True |
+| `"speed"` | float | The maximum angular speed that the sensor container will rotate per frame. | 3 |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`rotate_sensor_container_towards_position`**
+
+Rotate the sensor container towards a position at a given angular speed per frame. 
+
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
+
+```python
+{"$type": "rotate_sensor_container_towards_position"}
+```
+
+```python
+{"$type": "rotate_sensor_container_towards_position", "position": {"x": 0, "y": 0, "z": 0}, "speed": 3, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position to rotate towards. | {"x": 0, "y": 0, "z": 0} |
+| `"speed"` | float | The maximum angular speed that the sensor container will rotate per frame. | 3 |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`rotate_sensor_container_towards_rotation`**
+
+Rotate the sensor container towards a target rotation. 
+
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
+
+```python
+{"$type": "rotate_sensor_container_towards_rotation"}
+```
+
+```python
+{"$type": "rotate_sensor_container_towards_rotation", "rotation": {"w": 1, "x": 0, "y": 0, "z": 0}, "speed": 3, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rotation"` | Quaternion | The target rotation. | {"w": 1, "x": 0, "y": 0, "z": 0} |
+| `"speed"` | float | The maximum angular speed that the sensor container will rotate per frame. | 3 |
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -5284,26 +5490,6 @@ Set the scale of the tiling of the ceiling material's main texture.
 
 ***
 
-## **`set_proc_gen_reflection_probe`**
-
-Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_reflection_probe"}
-```
-
-```python
-{"$type": "set_proc_gen_reflection_probe", "value": True}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"value"` | bool | If true, the reflection probe will be active. | True |
-
-***
-
 ## **`set_proc_gen_walls_color`**
 
 Set the albedo RGBA color of the walls.
@@ -6129,7 +6315,7 @@ Check which objects a capsule-shaped space overlaps with.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"end"` | Vector3 | The center of the sphere at the end of the capsule. (Position is the center of the sphere at the start of the capsule.) | |
+| `"end"` | Vector3 | The top of the capsule. (The position parameter is the bottom of the capsule). | |
 | `"radius"` | float | The radius of the capsule. | |
 | `"position"` | Vector3 | The center of the shape. | |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
@@ -6798,38 +6984,6 @@ Options for when to send data.
 
 ***
 
-## **`send_environments`**
-
-Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) add_scene 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Environments`](output_data.md#Environments)</font>
-
-```python
-{"$type": "send_environments"}
-```
-
-```python
-{"$type": "send_environments", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_humanoids`**
 
 Send transform (position, rotation, etc.) data for humanoids in the scene. 
@@ -6943,6 +7097,38 @@ Send data for each directional light and point light in the scene.
 
 ```python
 {"$type": "send_lights", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_scene_regions`**
+
+Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`SceneRegions`](output_data.md#SceneRegions)</font>
+
+```python
+{"$type": "send_scene_regions"}
+```
+
+```python
+{"$type": "send_scene_regions", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

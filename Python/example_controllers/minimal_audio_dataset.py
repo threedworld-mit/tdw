@@ -1,10 +1,8 @@
 from pathlib import Path
 from typing import Union
-import numpy as np
 from tdw.controller import Controller
 from tdw.py_impact import PyImpact, AudioMaterial
 from tdw.tdw_utils import TDWUtils, AudioUtils
-from tdw.object_init_data import AudioInitData
 from tdw.output_data import OutputData, Rigidbodies, AudioSources
 
 
@@ -37,7 +35,7 @@ class MinimalAudioDataset(Controller):
         Run a series of trials. Each trial generates a .wav file.
         """
 
-        for name in ["elephant_bowl", "rh10", "pepper"]:
+        for name in ["iron_box", "rh10", "pepper"]:
             self.trial(name=name)
         self.communicate({"$type": "terminate"})
 
@@ -59,12 +57,10 @@ class MinimalAudioDataset(Controller):
                     TDWUtils.create_empty_room(12, 12)]
 
         # Add the object.
-        a = AudioInitData(name=name,
-                          position={"x": 0, "y": 2, "z": 0})
-        object_id, object_commands = a.get_commands()
-        commands.extend(object_commands)
-        commands.append({"$type": "set_reverb_space_simple",
-                         "reverb_floor_material": "marble"})
+        object_id = self.get_unique_id()
+        commands.extend(self.get_add_physics_object(model_name=name,
+                                                    position={"x": 0, "y": 2, "z": 0},
+                                                    object_id=object_id))
 
         # Create the avatar.
         avatar_id = "a"
@@ -73,7 +69,7 @@ class MinimalAudioDataset(Controller):
                                                avatar_id=avatar_id))
 
         # Add an audio sensor to the avatar. Request the required output data.
-        commands.extend([{"$type": "add_environ_audio_sensor",
+        commands.extend([{"$type": "add_audio_sensor",
                           "avatar_id": avatar_id},
                          {"$type": "send_rigidbodies",
                           "frequency": "always"},
@@ -111,26 +107,21 @@ class MinimalAudioDataset(Controller):
             # If there was a collision, get commands to generate a sound.
             commands = MinimalAudioDataset.PY_IMPACT.get_audio_commands(resp=resp,
                                                                         floor=MinimalAudioDataset.FLOOR,
-                                                                        wall=MinimalAudioDataset.WALL,
-                                                                        resonance_audio=True)
+                                                                        wall=MinimalAudioDataset.WALL)
             resp = self.communicate(commands)
 
         # Wait for the audio to stop playing.
         audio_playing = True
         while audio_playing:
-            audio_playing = False
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
                 if r_id == "audi":
                     audi = AudioSources(resp[i])
                     for j in range(audi.get_num()):
                         if audi.get_object_id(j) == object_id:
-                            if audi.get_is_playing(j):
-                                audio_playing = True
+                            if not audi.get_is_playing(j):
+                                audio_playing = False
                                 break
-                    if not audio_playing:
-                        if np.max(audi.get_samples()) > 0:
-                            audio_playing = True
             resp = self.communicate([])
 
         # Stop recording audio.

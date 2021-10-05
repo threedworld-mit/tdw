@@ -97,6 +97,14 @@ class PhysicsAudioRecorder(AddOn):
                               {"$type": "send_transforms",
                                "frequency": "always"}])
 
+    @staticmethod
+    def is_recording() -> bool:
+        """
+        :return: True if there is a recording in-progress.
+        """
+
+        return AudioUtils.is_recording()
+
     def stop(self) -> None:
         """
         Stop an ongoing recording. Use ffmpeg to remove initial silence.

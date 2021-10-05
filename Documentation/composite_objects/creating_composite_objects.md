@@ -40,7 +40,7 @@ If you are a backend TDW developer working in the private repo:
 
 ## How to Set Up the Root Object
 
-The root (parent) object of a composite object must have a Rigidbody component (like any other TDW model).
+The root (parent) object of a composite object must have a Rigidbody component (like any other TDW model). All sub-objects must be parented to the root object.
 
 ## How to Create Sub-Objects
 
@@ -50,16 +50,40 @@ Composite objects must be constructed in particular ways. In some cases, if the 
 
 Any sub-object with "mechanical" or "interactive" behavior requires a corresponding Unity Component to be attached to the GameObject. TDW will automatically map these Components to "mechanisms" for [frontend users](composite_objects.md).
 
-| Mechanism         | Unity Component                    |
-| ----------------- | ---------------------------------- |
-| `hinge`           | HingeJoint*                        |
-| `motor`           | HingeJoint with an enabled motor.  |
-| `spring`          | HingeJoint with an enabled spring. |
-| `light`           | Light, Rigidbody, FixedJoint       |
-| `prismatic_joint` | ConfigureableJoint                 |
-| `none`            | Rigidbody, FixedJoint (optional)   |
+Each sub-object requires:
 
-_* All HingeJoints require a Rigidbody component; Unity will automatically add the Rigidbody._
+- A Rigidbody. This is what differentiates a *sub-object* from a non-interactive *sub-mesh* on the backend. If you attach a HingeJoint component, a Rigidbody will automatically be added.
+- Colliders. These can be GameObjects parented to the sub-object.
+- If Rigidbodies should be attached to each other, then they need a Joint component. This can be a HingeJoint (if the object is articulated) or it can be a FixedJoint (which will rigidly attach the two objects)
+
+**Bad example:**
+
+```
+A: Rigidbody
+....B: Rigidbody + MeshRenderer
+........Colliders
+....C: Rigidbody + MeshRenderer + HingeJoint (connected to B)
+........Colliders
+```
+
+This example will have reasonable *behavior* but spurious output data; object `A` doesn't have colliders and will immediately fall through the floor.
+
+**Good example:**
+
+```
+A: Rigidbody + MeshRenderer
+....Colliders
+....B: Rigidbody + MeshRenderer + HingeJoint (connected to A)
+........Colliders
+```
+
+| Mechanism | Unity Component                    |
+| --------- | ---------------------------------- |
+| `hinge`   | HingeJoint*                        |
+| `motor`   | HingeJoint with an enabled motor.  |
+| `spring`  | HingeJoint with an enabled spring. |
+| `light`   | Light, Rigidbody, FixedJoint       |
+| `none`    | Rigidbody, FixedJoint (optional)   |
 
 ### `hinge`
 
@@ -83,23 +107,6 @@ HingeJoints may have a **motor** or a **spring**, or **neither**. They may _not_
 
 HingeJoints must have a connected body that is not null:
 ![](../images/composite_objects/connected_body.png)
-
-HingeJoints seem to work better if the root object doesn't have a mesh. To make the object behave properly, make the mesh a sub-object with a Rigidbody and FixedJoint attached to the root object:
-
-_Bad example:_
-
-```
-A: rigidbody+mesh
-....B: mesh+rigidbody+hingejoint (connected to A)
-```
-_Good example:_
-
-```
-A: rigidbody
-....B: mesh+rigidbody+fixedjoint (attached to A)
-....C: mesh+rigidbody+hingejoint (attached to B)
-
-```
 
 ### `motor`
 

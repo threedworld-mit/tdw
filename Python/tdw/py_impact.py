@@ -561,6 +561,8 @@ class PyImpact:
         speed = np.square(vel)
         speed = np.sum(speed)
         speed = math.sqrt(speed)
+        if np.linalg.norm(vel) == 0:
+            return None
         nvel = vel / np.linalg.norm(vel)
         num_contacts = collision.get_num_contacts()
         nspd = []

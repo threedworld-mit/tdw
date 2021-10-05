@@ -143,7 +143,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 3. [Robot collision detection](Documentation/lessons/robotics/collision_detection.md)
 4. [Select a robot](Documentation/lessons/robotics/select_robot.md)
 5. [Add your own robots to TDW](Documentation/lessons/robotics/custom_robots.md)
-6. Robotics API (low-level)
+6. [Robotics API (low-level)](Documentation/lessons/robotics/custom_robots.md)
 7. Add a camera to a robot
 8. Add multiple robots
 

@@ -8,7 +8,7 @@ from tdw.output_data import OutputData, StaticRobot, Robot
 
 class RobotArm(Controller):
     """
-    Add a robot to TDW and bend its arm.
+    Control a UR5 robot with low-level commands.
     """
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
@@ -48,8 +48,6 @@ class RobotArm(Controller):
 
     def run(self) -> None:
         robot_id = 0
-        self.start()
-
         # Create the scene. Add a robot.
         # Request static robot data for this frame only.
         # Request dynamic robot data per frame.

@@ -14,7 +14,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | --------------------------------------------- | ------------------------------------------------------------ |
 | `play_audio_data`<br>`play_point_source_data` | Fixed: Unhandled exception if one of the objects is a robot joint. |
 | `set_kinematic_state`                         | Fixed: If the object is a composite object, only the root object is set. |
-| `send_model_report`                           | Added tests for ConfigureableJoint components.               |
+| `send_model_report`                           | Added tests for ConfigureableJoint components.<br>Fixed: Objects remain in cache after being destroyed. |
 
 ### Output Data
 

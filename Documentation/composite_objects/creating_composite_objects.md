@@ -139,10 +139,11 @@ Prismatic motion can be set using ConfigureableJoints; ConfigureableJoints shoul
 
 1. ConfigureableJoints must have a connected body that is not null (just like HingeJoints)
 2. Set the `Anchor` at the current position of the object + the upper limit + the lower limit.
-3. Set `X Motion` or `Y Motion` (but not both) to `Limited` and set all others to `Locked`.
-4. Set `Angular X Motion`, `Angular Y Motion`, and `Angular Z Motion` to `Locked`.
-5. If `X Motion` is `Limited`, set `Axis` and `Secondary Axis` to [0, 1, 0]. If `Y Motion` is `Limited`, set `Axis` and `Secondary Axis` to [1, 0, 0]. 
-6. Under `Linear Limit`, set `Limit` to the lower limit.
+3. Set `Axis` to the direction of the motion.
+4. Set `Secondary Axis` to match `Axis`.
+5. Set `X Motion` to `Limited`, `Y Motion` to `Locked`, and `Z Motion` to `Locked`, regardless of the actual direction of the joint.
+6. Set `Angular X Motion`, `Angular Y Motion`, and `Angular Z Motion` to `Locked`.
+7. Under `Linear Limit`, set `Limit` to the lower limit.
 
 ![](../images/composite_objects/configureable_joint.png)
 

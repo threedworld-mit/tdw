@@ -4,13 +4,14 @@ Composite Objects are any models that have _sub-objects_ that can be referenced 
 
 Each sub-object may also be a _mechanism_ (a TDW-specific idiom). Currently, the following mechanism have been implemented:
 
-| Mechanism | Behavior                                                     | Example                |
-| --------- | ------------------------------------------------------------ | ---------------------- |
-| `hinge`   | Swings freely on a pivot point around an axis.               | A box with a lid       |
-| `motor`   | Can rotate on a pivot point around an axis by applying a target velocity and a force magnitude. | A helicopter propeller |
-| `spring`  | Can rotate on a pivot point around an axis by applying a target position. The motion will appear "spring-like" | Jack-in-the-box        |
-| `light`   | Can be turned on or off.                                     | A lightbulb            |
-| `none`    | (No mechanism)                                               | A chest of drawers     |
+| Mechanism         | Behavior                                                     | Example                |
+| ----------------- | ------------------------------------------------------------ | ---------------------- |
+| `hinge`           | Swings freely on a pivot point around an axis.               | A box with a lid       |
+| `motor`           | Can rotate on a pivot point around an axis by applying a target velocity and a force magnitude. | A helicopter propeller |
+| `spring`          | Can rotate on a pivot point around an axis by applying a target position. The motion will appear "spring-like" | Jack-in-the-box        |
+| `prismatic_joint` | A prismatic joint that moves linearly.                       | A chest of drawers     |
+| `light`           | Can be turned on or off.                                     | A lightbulb            |
+| `none`            | (No mechanism)                                               | A puzzle box           |
 
 ### Output Data
 

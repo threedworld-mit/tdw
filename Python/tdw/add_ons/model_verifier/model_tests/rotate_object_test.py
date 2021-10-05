@@ -84,7 +84,7 @@ class RotateObjectTest(ModelTest, ABC):
                 return [{"$type": "teleport_avatar_to",
                          "position": RotateObjectTest.AVATAR_POSITION},
                         {"$type": "look_at_position",
-                         "position": RotateObjectTest.LOOK_AT}]
+                         "position": RotateObjectTest.LOOK_AT},]
             else:
                 self.done = True
                 return []
@@ -123,4 +123,5 @@ class RotateObjectTest(ModelTest, ABC):
         """
 
         return [{"$type": "destroy_object",
-                 "id": RotateObjectTest.OBJECT_ID}]
+                 "id": RotateObjectTest.OBJECT_ID},
+                {"$type": "unload_asset_bundles"}]

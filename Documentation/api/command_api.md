@@ -353,13 +353,6 @@
 | [`set_texture_scale`](#set_texture_scale) | Set the scale of the tiling of the material's main texture. |
 | [`set_visual_material`](#set_visual_material) | Set a visual material of an object or one of its sub-objects.  |
 
-**Play Audio Data Command**
-
-| Command | Description |
-| --- | --- |
-| [`play_audio_data`](#play_audio_data) | Play a sound, using audio sample data sent over from the controller. |
-| [`play_point_source_data`](#play_point_source_data) | Make this object a ResonanceAudioSoundSource and play the audio data. |
-
 **Set Flex Actor**
 
 | Command | Description |
@@ -395,6 +388,13 @@
 | [`set_painting_texture`](#set_painting_texture) | Apply a texture to a pre-existing painting.  |
 | [`show_painting`](#show_painting) | Show a painting that was hidden. |
 | [`teleport_painting`](#teleport_painting) | Teleport a painting to a new position. |
+
+**Play Audio Data Command**
+
+| Command | Description |
+| --- | --- |
+| [`play_audio_data`](#play_audio_data) | Play a sound, using audio sample data sent over from the controller. |
+| [`play_point_source_data`](#play_point_source_data) | Make this object a ResonanceAudioSoundSource and play the audio data. |
 
 **Position Marker Command**
 
@@ -4768,57 +4768,6 @@ Set a visual material of an object or one of its sub-objects.
 | `"object_name"` | string | The name of the sub-object. | |
 | `"id"` | int | The unique object ID. | |
 
-# PlayAudioDataCommand
-
-Make an object play audio data.
-
-***
-
-## **`play_audio_data`**
-
-Play a sound, using audio sample data sent over from the controller.
-
-
-```python
-{"$type": "play_audio_data", "wav_data": "string", "num_frames": 1, "id": 1}
-```
-
-```python
-{"$type": "play_audio_data", "wav_data": "string", "num_frames": 1, "id": 1, "frame_rate": 44100, "num_channels": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
-| `"num_frames"` | int | The number of audio frames in the audio data. | |
-| `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
-| `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`play_point_source_data`**
-
-Make this object a ResonanceAudioSoundSource and play the audio data.
-
-
-```python
-{"$type": "play_point_source_data", "wav_data": "string", "num_frames": 1, "id": 1}
-```
-
-```python
-{"$type": "play_point_source_data", "wav_data": "string", "num_frames": 1, "id": 1, "y_pos_offset": 0.5, "frame_rate": 44100, "num_channels": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"y_pos_offset"` | float | Percentage offset from base of object, to place the audio source. | 0.5 |
-| `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
-| `"num_frames"` | int | The number of audio frames in the audio data. | |
-| `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
-| `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
-| `"id"` | int | The unique object ID. | |
-
 # SetFlexActor
 
 These commands create a new FlexActor of type T with a FlexAsset of type U, or to modify an object that already has a component of type T. This command must be sent before applying any other Flex commands to an object. You probably will want to send set_kinematic_state prior to sending this command.
@@ -5165,6 +5114,59 @@ Teleport a painting to a new position.
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | New position of the painting. | |
 | `"id"` | int | The unique ID of this painting. | |
+
+# PlayAudioDataCommand
+
+Make an object play audio data.
+
+***
+
+## **`play_audio_data`**
+
+Play a sound, using audio sample data sent over from the controller.
+
+
+```python
+{"$type": "play_audio_data", "id": 1, "wav_data": "string", "num_frames": 1}
+```
+
+```python
+{"$type": "play_audio_data", "id": 1, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1, "robot_joint": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+| `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
+| `"num_frames"` | int | The number of audio frames in the audio data. | |
+| `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
+| `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
+| `"robot_joint"` | bool | If true, this is joint of a robot. | False |
+
+***
+
+## **`play_point_source_data`**
+
+Make this object a ResonanceAudioSoundSource and play the audio data.
+
+
+```python
+{"$type": "play_point_source_data", "id": 1, "wav_data": "string", "num_frames": 1}
+```
+
+```python
+{"$type": "play_point_source_data", "id": 1, "wav_data": "string", "num_frames": 1, "y_pos_offset": 0.5, "frame_rate": 44100, "num_channels": 1, "robot_joint": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"y_pos_offset"` | float | Percentage offset from base of object, to place the audio source. | 0.5 |
+| `"id"` | int | The unique object ID. | |
+| `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
+| `"num_frames"` | int | The number of audio frames in the audio data. | |
+| `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
+| `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
+| `"robot_joint"` | bool | If true, this is joint of a robot. | False |
 
 # PositionMarkerCommand
 

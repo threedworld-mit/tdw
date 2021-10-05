@@ -47,6 +47,8 @@ class CollisionManager(AddOn):
         return [self._send_collision_commands]
 
     def on_send(self, resp: List[bytes]) -> None:
+        self.obj_collisions.clear()
+        self.env_collisions.clear()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "coll":

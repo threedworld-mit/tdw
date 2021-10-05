@@ -3,7 +3,6 @@ from platform import system
 
 
 ASSET_BUNDLE_VERIFIER_OUTPUT_DIR = Path.home().joinpath("tdw_asset_bundle_verifier")
-VALIDATOR_REPORT_PATH = ASSET_BUNDLE_VERIFIER_OUTPUT_DIR.joinpath("validator_report.json")
 EXAMPLE_CONTROLLER_OUTPUT_PATH = Path.home().joinpath("tdw_example_controller_output")
 
 if system() == "Windows":

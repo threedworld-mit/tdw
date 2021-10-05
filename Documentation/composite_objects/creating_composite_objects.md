@@ -77,13 +77,14 @@ A: Rigidbody + MeshRenderer
 ........Colliders
 ```
 
-| Mechanism | Unity Component                    |
-| --------- | ---------------------------------- |
-| `hinge`   | HingeJoint*                        |
-| `motor`   | HingeJoint with an enabled motor.  |
-| `spring`  | HingeJoint with an enabled spring. |
-| `light`   | Light, Rigidbody, FixedJoint       |
-| `none`    | Rigidbody, FixedJoint (optional)   |
+| Mechanism         | Unity Component                              |
+| ----------------- | -------------------------------------------- |
+| `hinge`           | HingeJoint, Rigidbody                        |
+| `motor`           | HingeJoint with an enabled motor, Rigidbody  |
+| `spring`          | HingeJoint with an enabled spring, Rigidbody |
+| `prismatic_joint` | ConfigureableJoint, Rigidbody                |
+| `light`           | Light, Rigidbody, FixedJoint                 |
+| `none`            | Rigidbody, FixedJoint (optional)             |
 
 ### `hinge`
 
@@ -131,6 +132,19 @@ Make sure that `Use Spring` is enabled, `Spring` and `Damper` are not 0, and `Ta
 ![](../images/composite_objects/spring.png)
 
 _When testing the spring, the target position can be > 0; just make sure to reset it before exporting._
+
+### `prismatic_joint`
+
+Prismatic motion can be set using ConfigureableJoints; ConfigureableJoints should *only* be used for prismatic motion.
+
+1. ConfigureableJoints must have a connected body that is not null (just like HingeJoints)
+2. Set the `Anchor` at the current position of the object + the upper limit + the lower limit.
+3. Set `X Motion` or `Y Motion` (but not both) to `Limited` and set all others to `Locked`.
+4. Set `Angular X Motion`, `Angular Y Motion`, and `Angular Z Motion` to `Locked`.
+5. If `X Motion` is `Limited`, set `Axis` and `Secondary Axis` to [0, 1, 0]. If `Y Motion` is `Limited`, set `Axis` and `Secondary Axis` to [1, 0, 0]. 
+6. Under `Linear Limit`, set `Limit` to the lower limit.
+
+![](../images/composite_objects/configureable_joint.png)
 
 ### `light`
 

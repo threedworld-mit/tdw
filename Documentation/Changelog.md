@@ -14,6 +14,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 | --------------------------------------------- | ------------------------------------------------------------ |
 | `play_audio_data`<br>`play_point_source_data` | Fixed: Unhandled exception if one of the objects is a robot joint. |
 | `set_kinematic_state`                         | Fixed: If the object is a composite object, only the root object is set. |
+| `send_model_report`                           | Added tests for ConfigureableJoint components.               |
 
 ### Output Data
 
@@ -21,7 +22,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 | Output Data              | Modification                                                 |
 | ------------------------ | ------------------------------------------------------------ |
-| `send_composite_objects` | Added machine type `"prismatic_joint"` (corresponds to a ConfigureableJoint) |
+| `send_composite_objects` | Added machine type `"prismatic_joint"` (corresponds to a ConfigureableJoint). |
 
 ### `tdw` module
 
@@ -40,7 +41,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 | Document                        | Modification                                                 |
 | ------------------------------- | ------------------------------------------------------------ |
-| `creating_composite_objects.md` | Fixed incorrect documentation regarding how joint chains should be set up. |
+| `creating_composite_objects.md` | Fixed incorrect documentation regarding how joint chains should be set up.<br>Added a section for `prismatic_joint` (ConfigureableJoints). |
 
 ## v1.8.27
 

@@ -167,7 +167,7 @@ class PyScrape:
 
         # Again, we need this as an AudioSegment for overlaying with the previous frame's segment.
         # Convert to 16-bit integers for Unity, normalizing to make sure to minimize loss of precision from truncating floating values.
-        normalized_noise_ints_conv = self.normalize_16bit_int(conv)
+        normalized_noise_ints_conv = PyScrape._normalize_16bit_int(conv)
         noise_seg_conv = AudioSegment(normalized_noise_ints_conv.tobytes(),
                                       frame_rate=PyScrape.SAMPLE_RATE,
                                       sample_width=PyScrape.WIDTH,
@@ -208,7 +208,7 @@ class PyScrape:
                 "y_pos_offset": 0}
 
     @staticmethod
-    def normalize_16bit_int(arr: np.array) -> np.array:
+    def _normalize_16bit_int(arr: np.array) -> np.array:
         """
         Convert numpy float array to normalized 16-bit integers.
 
@@ -217,12 +217,12 @@ class PyScrape:
         :return: The converted numpy array.
         """
 
-        normalized_floats = PyScrape.normalize_floats(arr)
+        normalized_floats = PyScrape._normalize_floats(arr)
 
         return (normalized_floats * 32767).astype(np.int16)
 
     @staticmethod
-    def normalize_floats(arr: np.array) -> np.array:
+    def _normalize_floats(arr: np.array) -> np.array:
         """
         Normalize numpy array of float audio data.
 
@@ -236,7 +236,7 @@ class PyScrape:
         else:
             return arr / np.abs(arr).max()
 
-    def end_scrape(self, target_id: int, other_id: int):
+    def _end_scrape(self, target_id: int, other_id: int):
         """
         Clean up after a given scrape event has ended.
         """

@@ -122,6 +122,7 @@ Audio data for each object in a scene. Note that this will only tell you if any 
 | `get_num()` | The number of objects. | `int` |
 | `get_object_id(index)` | The ID of the object. | `int` |
 | `get_is_playing(index)` | If true, the audio source is currently playing a sound. | `bool` |
+| `get_samples()` | Audio samples from the audio listener. | `np.array` |
 
 ## AvatarKinematic
 

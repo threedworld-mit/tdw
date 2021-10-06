@@ -11,7 +11,8 @@ from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
 from tdw.add_ons.add_on import AddOn
-from tdw.py_impact import PyImpact, ObjectInfo, STATIC_FRICTION, DYNAMIC_FRICTION
+from tdw.py_impact import PyImpact, STATIC_FRICTION, DYNAMIC_FRICTION
+from tdw.physics_audio.object_audio import ObjectAudio
 
 
 class Controller(object):
@@ -27,7 +28,7 @@ class Controller(object):
     ```
     """
 
-    DEFAULT_PHYSICS_VALUES: Dict[str, ObjectInfo] = PyImpact.get_object_info()
+    DEFAULT_PHYSICS_VALUES: Dict[str, ObjectAudio] = PyImpact.get_object_info()
     MODEL_LIBRARIANS: Dict[str, ModelLibrarian] = dict()
     SCENE_LIBRARIANS: Dict[str, SceneLibrarian] = dict()
     MATERIAL_LIBRARIANS: Dict[str, MaterialLibrarian] = dict()

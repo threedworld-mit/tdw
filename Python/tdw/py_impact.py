@@ -1,7 +1,6 @@
 from os import urandom
 import numpy as np
 import math
-import base64
 import json
 import scipy.signal as sg
 from enum import Enum
@@ -11,55 +10,11 @@ from pathlib import Path
 from pkg_resources import resource_filename
 from csv import DictReader
 import io
-
-
-class AudioMaterial(Enum):
-    """
-    These are the materials currently supported for impact sounds in pyImpact.  More will be added in time.
-    """
-
-    ceramic = 0
-    glass = 1
-    metal = 2
-    wood_hard = 3
-    wood_medium = 4
-    wood_soft = 5
-    cardboard = 6
-    paper = 7
-    plastic_hard = 8
-    plastic_soft_foam = 9
-    rubber = 10
-    fabric = 11
-    leather = 12
-    stone = 13
-
-
-class ObjectInfo:
-    """
-    Impact sound data for an object in a TDW model library.
-    The audio values here are just recommendations; you can apply different values if you want.
-    """
-
-    def __init__(self, name: str, amp: float, mass: float, material: AudioMaterial, library: str, bounciness: float, resonance: float, size: int):
-        """
-        :param name: The model name.
-        :param amp: The sound amplitude.
-        :param mass: The object mass.
-        :param material: The audio material.
-        :param library: The path to the model library (see ModelLibrarian documentation).
-        :param bounciness: The bounciness value for a Unity physics material.
-        :param resonance: The resonance value for the object.
-        :param size: Integer representing the size "bucket" this object belongs to (0-5).
-        """
-
-        self.amp = amp
-        self.library = library
-        self.mass = mass
-        self.material = material
-        self.name = name
-        self.bounciness = bounciness
-        self.resonance = resonance
-        self.size = size
+from tdw.physics_audio.audio_material import AudioMaterial
+from tdw.physics_audio.object_audio import ObjectAudio
+from tdw.physics_audio.modes import Modes
+from tdw.physics_audio.base64_sound import Base64Sound
+from tdw.physics_audio.collision_audio_info import CollisionAudioInfo
 
 
 # Density per audio material.
@@ -109,122 +64,12 @@ STATIC_FRICTION: Dict[AudioMaterial, float] = {AudioMaterial.ceramic: 0.47,
                                                AudioMaterial.metal: 0.47}
 
 
-class Base64Sound:
-    """
-    A sound encoded as a base64 string.
-
-    Fields:
-
-    - `bytes` Byte data of the sound.
-    - `wav_str` base64 string of the sound. Send this to the build.
-    - `length` The length of the byte array.
-    """
-
-    def __init__(self, snd: np.array):
-        """
-        :param snd: The sound byte array.
-        """
-
-        tst1 = np.array(snd * 32767, dtype='int16')
-        tst2 = bytes(tst1)
-        tst3 = base64.b64encode(tst2).decode('utf-8')
-
-        self.bytes = tst2
-        self.wav_str = tst3
-        self.length = len(tst2)
 
 
-class Modes:
-    """
-    Resonant mode properties: Frequencies, powers, and times.
-    """
-
-    def __init__(self, frequencies: np.array, powers: np.array, decay_times: np.array):
-        """
-        :param frequencies: numpy array of mode frequencies in Hz
-        :param powers: numpy array of mode onset powers in dB re 1.
-        :param decay_times: numpy array of mode decay times (i.e. the time in ms it takes for each mode to decay 60dB from its onset power)
-        """
-        self.frequencies = frequencies
-        self.powers = powers
-        self.decay_times = decay_times
-
-    def sum_modes(self, fs: int = 44100, resonance: float = 1.0) -> np.array:
-        """
-        Create mode time-series from mode properties and sum them together.
-
-        :return A synthesized sound.
-        """
-
-        # Scroll through modes
-        for i in range(len(self.frequencies)):
-            H_dB = 80 + self.powers[i]
-            L_ms = self.decay_times[i] * H_dB / 60
-            mLen = math.ceil(L_ms / 1e3 * fs)
-            # if mode length is greater than the current time-series we have had make our time series longer
-            max_len = mLen
-            if mLen > max_len:
-                max_len = mLen
-            tt = np.arange(0, max_len) / fs
-            # synthesize a sinusoid
-            mode = np.cos(2 * math.pi * self.frequencies[i] * tt)
-            mode = mode * (10 ** (self.powers[i] / 20))
-            dcy = tt * (60 / (self.decay_times[i] * resonance / 1e3))
-            env = 10 ** (-dcy / 20)
-            mode = mode * env
-            if i == 0:
-                synth_sound = mode
-            else:
-                synth_sound = Modes.mode_add(synth_sound, mode)
-        return synth_sound
-
-    @staticmethod
-    def mode_add(a: np.array, b: np.array) -> np.array:
-        """
-        Add together numpy arrays of different lengths by zero-padding the shorter.
-
-        :param a: The first array.
-        :param b: The second array.
-
-        :return The summed modes.
-        """
-
-        if len(a) < len(b):
-            c = b.copy()
-            c[:len(a)] += a
-        else:
-            c = a.copy()
-            c[:len(b)] += b
-        return c
 
 
-class CollisionInfo:
-    """
-    Class containing information about collisions required by pyImpact to determine the volume of impact sounds.
-    """
 
-    def __init__(self, obj1_modes: Modes, obj2_modes: Modes, amp: float = 0.5, init_speed: float = 1):
-        """
-        :param amp: Amplitude of the first collision (must be between 0 and 1).
-        :param init_speed: The speed of the initial collision (all collisions will be scaled relative to this).
-        :param obj1_modes: The object's modes.
-        :param obj2_modes: The other object's modes.
-        """
 
-        self.count = 0
-        self.amp = amp
-        # The speed of the initial collision.
-        self.init_speed = init_speed
-        # The audio modes.
-        self.obj1_modes = obj1_modes
-        self.obj2_modes = obj2_modes
-
-    def count_collisions(self) -> None:
-        """
-        Update the counter for how many times two objects have collided.
-        """
-
-        self.count += 1
 
 
 class CollisionType(Enum):
@@ -370,7 +215,7 @@ class PyImpact:
         self.logging = logging
 
         # The collision info per set of objects.
-        self.object_modes: Dict[int, Dict[int, CollisionInfo]] = {}
+        self.object_modes: Dict[int, Dict[int, CollisionAudioInfo]] = {}
 
         # Cache the material data. This is use to reset the material modes.
         self.material_data: Dict[str, dict] = {}
@@ -387,7 +232,7 @@ class PyImpact:
         self.mode_properties_log = dict()
 
         # Get the default object info. See: `set_default_audio_info()`
-        self.object_info: Dict[str, ObjectInfo] = dict()
+        self.object_info: Dict[str, ObjectAudio] = dict()
         # A dictionary of objects in the scene. See: `set_default_audio_info()`
         self.object_names: Dict[int, str] = dict()
         # A dummy ID for the environment. See: `set_default_audio_info()`
@@ -569,9 +414,9 @@ class PyImpact:
         if id2 not in self.object_modes:
             self.object_modes.update({id2: {}})
         if id1 not in self.object_modes[id2]:
-            self.object_modes[id2].update({id1: CollisionInfo(self._get_object_modes(mat2),
-                                                              self._get_object_modes(mat1),
-                                                              amp=target_amp * self.initial_amp)})
+            self.object_modes[id2].update({id1: CollisionAudioInfo(self._get_object_modes(mat2),
+                                                                   self._get_object_modes(mat1),
+                                                                   amp=target_amp * self.initial_amp)})
         obj_col = isinstance(collision, Collision)
 
         # Unpack useful parameters.
@@ -790,7 +635,7 @@ class PyImpact:
         return x
 
     @staticmethod
-    def get_object_info(csv_file: Union[str, Path] = "") -> Dict[str, ObjectInfo]:
+    def get_object_info(csv_file: Union[str, Path] = "") -> Dict[str, ObjectAudio]:
         """
         Returns ObjectInfo values.
         As of right now, only a few objects in the TDW model libraries are included. More will be added in time.
@@ -800,7 +645,7 @@ class PyImpact:
         :return: A list of default ObjectInfo. Key = the name of the model. Value = object info.
         """
 
-        objects: Dict[str, ObjectInfo] = {}
+        objects: Dict[str, ObjectAudio] = {}
         # Load the objects.csv metadata file.
         if isinstance(csv_file, str):
             # Load the default file.
@@ -815,9 +660,10 @@ class PyImpact:
         with io.open(csv_file, newline='', encoding='utf-8-sig') as f:
             reader = DictReader(f)
             for row in reader:
-                o = ObjectInfo(name=row["name"], amp=float(row["amp"]), mass=float(row["mass"]),
-                               material=AudioMaterial[row["material"]], library=row["library"],
-                               bounciness=float(row["bounciness"]), resonance=float(row["resonance"]), size=int(row["size"]))
+                o = ObjectAudio(name=row["name"], amp=float(row["amp"]), mass=float(row["mass"]),
+                                material=AudioMaterial[row["material"]], library=row["library"],
+                                bounciness=float(row["bounciness"]), resonance=float(row["resonance"]),
+                                size=int(row["size"]))
                 objects.update({o.name: o})
 
         return objects

@@ -1,6 +1,6 @@
 ##### Robotics
 
-# Robot collision detection
+# Add your own robots to TDW
 
 It is possible to add your own robots into TDW from a .urdf or .xacro file. However, the robot must first be converted into an asset bundle (just like [objects](../3d_models/custom_models.md)). To do so, you'll need to use TDW's [`RobotCreator`](../../python/robot_creator.py).
 

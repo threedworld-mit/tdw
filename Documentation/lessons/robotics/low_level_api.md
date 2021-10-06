@@ -254,6 +254,48 @@ for i in range(len(resp) - 1):
 c.communicate(commands)
 ```
 
+You can of course use any low-level API commands with any higher-level add-on, and the `Robot` add-on is no exception. However, the cached static data won't automatically update if you adjust static parameters.
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.robot import Robot
+
+c = Controller()
+robot_id = c.get_unique_id()
+robot = Robot(name="ur5", robot_id=robot_id)
+c.add_ons.append(robot)
+c.communicate(TDWUtils.create_empty_room(12, 12))
+commands = []
+for joint_id in robot.static.joints:
+    joint = robot.static.joints[joint_id]
+    commands.extend([{"$type": "set_robot_joint_mass",
+                      "mass": joint.mass + 2,
+                      "joint_id": joint_id,
+                      "id": robot_id},
+                     {"$type": "set_robot_joint_friction",
+                      "joint_id": joint_id,
+                      "friction": 0.3,
+                      "id": robot_id},
+                     {"$type": "set_robot_joint_physic_material",
+                      "dynamic_friction": 0.3,
+                      "static_friction": 0.3,
+                      "bounciness": 0.7,
+                      "joint_id": joint_id,
+                      "id": robot_id}])
+    for axis in joint.drives:
+        commands.append({"$type": "set_robot_joint_drive",
+                         "joint_id": joint_id,
+                         "axis": axis,
+                         "lower_limit": joint.drives[axis].limits[0] - 15,
+                         "upper_limit": joint.drives[axis].limits[1] + 15,
+                         "force_limit": joint.drives[axis].force_limit * 1.5,
+                         "stiffness": joint.drives[axis].stiffness * 1.3,
+                         "damping": joint.drives[axis].damping * 0.8,
+                         "id": robot_id})
+c.communicate(commands)
+```
+
 ***
 
 **Next: [Add a camera to a robot](add_camera.md)**

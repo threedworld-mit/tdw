@@ -128,6 +128,9 @@ class PyScrape:
         num_pts = int(num_pts)
         if num_pts == 0:
             num_pts = 1
+        # No scrape.
+        if num_pts == 1:
+            return {"$type": "do_nothing"}
 
         # interpolate the surface slopes and curvatures based on the velocity magnitude
         final_ind = self.prev_ind + num_pts

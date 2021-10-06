@@ -1,14 +1,13 @@
+import base64
+from typing import Dict, Union, Tuple
 from pkg_resources import resource_filename
 from pydub import AudioSegment
-from tdw.output_data import Rigidbodies, Collision, EnvironmentCollision
-import numpy as np
-from tdw.tdw_utils import TDWUtils
 from scipy.signal import fftconvolve
 from scipy.ndimage import gaussian_filter1d
-import base64
+import numpy as np
+from tdw.tdw_utils import TDWUtils
+from tdw.output_data import Rigidbodies, Collision, EnvironmentCollision
 from tdw.py_impact import PyImpact
-from tdw.int_pair import IntPair
-from typing import Dict, Union
 
 
 class PyScrape:
@@ -35,13 +34,13 @@ class PyScrape:
         self.max_vel: float = max_vel
 
         # Create an empty AudioSegment.
-        self.summed_masters: Dict[IntPair, AudioSegment] = dict()
+        self.summed_masters: Dict[Tuple[int, int], AudioSegment] = dict()
         # Keeping a track of previous indices.
         self.prev_ind: int = 0
         # Starting velocity magnitude of scraping object; use in calculating changing band-pass filter
-        self.start_velocities: Dict[IntPair, float] = dict()
+        self.start_velocities: Dict[Tuple[int, int], float] = dict()
         # Initialize the scraping event counter.
-        self.scrape_events_count: Dict[IntPair, int] = dict()
+        self.scrape_events_count: Dict[Tuple[int, int], int] = dict()
 
     def reset(self) -> None:
         """
@@ -75,7 +74,7 @@ class PyScrape:
         :return A `play_audio_data` or `play_point_source_data` command that can be sent to the build via `Controller.communicate()`.
         """
 
-        scrape_key = IntPair(target_id, other_id)
+        scrape_key: Tuple[int, int] = (target_id, other_id)
 
         # Initialize scrape variables; if this is an in=process scrape, these will be replaced bu te stored values.
         summed_master = AudioSegment.silent(duration=0, frame_rate=PyScrape.SAMPLE_RATE)
@@ -130,6 +129,7 @@ class PyScrape:
             num_pts = 1
         # No scrape.
         if num_pts == 1:
+            self._end_scrape(scrape_key)
             return {"$type": "do_nothing"}
 
         # interpolate the surface slopes and curvatures based on the velocity magnitude
@@ -239,12 +239,10 @@ class PyScrape:
         else:
             return arr / np.abs(arr).max()
 
-    def _end_scrape(self, target_id: int, other_id: int):
+    def _end_scrape(self, scrape_key: Tuple[int, int]) -> None:
         """
         Clean up after a given scrape event has ended.
         """
-
-        scrape_key = IntPair(target_id, other_id)
 
         del self.scrape_events_count[scrape_key]
         del self.summed_masters[scrape_key]

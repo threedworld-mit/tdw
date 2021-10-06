@@ -20,7 +20,6 @@ To ensure that collision detection can be enabled, wait for the robot to reach i
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.robot import Robot
-from tdw.add_ons.collision_manager import CollisionManager
 
 c = Controller()
 robot = Robot(name="ur5",
@@ -34,20 +33,20 @@ while robot.joints_are_moving():
     c.communicate([])
 
 # The robot has moved to its initial pose. Enable collision detection.
-collision_manager = CollisionManager()
-c.add_ons.append(collision_manager)
-c.communicate([])
-
+c.communicate({"$type": "send_collisions",
+               "enter": True,
+               "stay": False,
+               "exit": False,
+               "collision_types": ["obj", "env"]})
 c.communicate({"$type": "terminate"})
 ```
 
-In the below example, we've added an [`ObjectManager`](../../python/add_ons/object_manager.md). Individual robot joints won't appear as separate objects in the `ObjectManager` data. However, they *will* appear as objects in the `CollisionManager` data:
+We can check the robot's dynamic data to determine whether objects have collided with it:
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.robot import Robot
-from tdw.add_ons.collision_manager import CollisionManager
 from tdw.add_ons.object_manager import ObjectManager
 
 c = Controller()
@@ -61,23 +60,25 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 while robot.joints_are_moving():
     c.communicate([])
 
-collision_manager = CollisionManager(enter=True, exit=False, stay=False)
 object_manager = ObjectManager(transforms=True, rigidbodies=True)
-c.add_ons.extend([collision_manager, object_manager])
+c.add_ons.append(object_manager)
 
 object_id = c.get_unique_id()
 c.communicate([c.get_add_object(model_name="iron_box",
                                 position={"x": 1, "y": 10, "z": -2},
-                                object_id=object_id)])
+                                object_id=object_id),
+               {"$type": "send_collisions",
+                "enter": True,
+                "stay": False,
+                "exit": False,
+                "collision_types": ["obj", "env"]}])
 
 # Wait for the object to stop moving.
 while not object_manager.rigidbodies[object_id].sleeping:
     c.communicate([])
-    for collision in collision_manager.obj_collisions:
-        if collision.int1 in robot.static.joints:
-            print("Collision between iron_box and " + robot.static.joints[collision.int1].name)
-        elif collision.int2 in robot.static.joints:
-            print("Collision between iron_box and " + robot.static.joints[collision.int2].name)
+    for collision in robot.dynamic.collisions_with_objects:
+        joint_id = collision[0]
+        print("Collision between iron_box and " + robot.static.joints[joint_id].name)
 c.communicate({"$type": "terminate"})
 ```
 

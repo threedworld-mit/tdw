@@ -145,7 +145,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 5. [Add your own robots to TDW](Documentation/lessons/robotics/custom_robots.md)
 6. [Robotics API (low-level)](Documentation/lessons/robotics/custom_robots.md)
 7. [Add a camera to a robot](Documentation/lessons/robotics/add_camera.md)
-8. Add multiple robots
+8. [Add multiple robots](Documentation/lessons/robotics/multi_robot.md)
 
 High-level API: [magnebot](https://github.com/alters-mit/magnebot)
 

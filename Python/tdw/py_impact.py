@@ -3,7 +3,6 @@ import numpy as np
 import math
 import json
 import scipy.signal as sg
-from enum import Enum
 from typing import Dict, Optional, Tuple, Union, List
 from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision, Robot
 from pathlib import Path
@@ -15,179 +14,8 @@ from tdw.physics_audio.object_audio import ObjectAudio
 from tdw.physics_audio.modes import Modes
 from tdw.physics_audio.base64_sound import Base64Sound
 from tdw.physics_audio.collision_audio_info import CollisionAudioInfo
-
-
-# Density per audio material.
-DENSITIES: Dict[AudioMaterial, float] = {AudioMaterial.ceramic: 2180,
-                                         AudioMaterial.glass: 2500,
-                                         AudioMaterial.stone: 2000,
-                                         AudioMaterial.metal: 8450,
-                                         AudioMaterial.wood_hard: 1200,
-                                         AudioMaterial.wood_medium: 700,
-                                         AudioMaterial.wood_soft: 400,
-                                         AudioMaterial.fabric: 1540,
-                                         AudioMaterial.leather: 860,
-                                         AudioMaterial.plastic_hard: 1150,
-                                         AudioMaterial.plastic_soft_foam: 285,
-                                         AudioMaterial.rubber: 1522,
-                                         AudioMaterial.paper: 1200,
-                                         AudioMaterial.cardboard: 698}
-# Dynamic friction per audio material.
-DYNAMIC_FRICTION: Dict[AudioMaterial, float] = {AudioMaterial.ceramic: 0.47,
-                                                AudioMaterial.wood_hard: 0.35,
-                                                AudioMaterial.wood_medium: 0.35,
-                                                AudioMaterial.wood_soft: 0.35,
-                                                AudioMaterial.cardboard: 0.45,
-                                                AudioMaterial.paper: 0.47,
-                                                AudioMaterial.glass: 0.65,
-                                                AudioMaterial.fabric: 0.65,
-                                                AudioMaterial.leather: 0.4,
-                                                AudioMaterial.stone: 0.7,
-                                                AudioMaterial.rubber: 0.75,
-                                                AudioMaterial.plastic_hard: 0.3,
-                                                AudioMaterial.plastic_soft_foam: 0.45,
-                                                AudioMaterial.metal: 0.43}
-# Static friction per audio material.
-STATIC_FRICTION: Dict[AudioMaterial, float] = {AudioMaterial.ceramic: 0.47,
-                                               AudioMaterial.wood_hard: 0.37,
-                                               AudioMaterial.wood_medium: 0.37,
-                                               AudioMaterial.wood_soft: 0.37,
-                                               AudioMaterial.cardboard: 0.48,
-                                               AudioMaterial.paper: 0.5,
-                                               AudioMaterial.glass: 0.68,
-                                               AudioMaterial.fabric: 0.67,
-                                               AudioMaterial.leather: 0.43,
-                                               AudioMaterial.stone: 0.72,
-                                               AudioMaterial.rubber: 0.8,
-                                               AudioMaterial.plastic_hard: 0.35,
-                                               AudioMaterial.plastic_soft_foam: 0.47,
-                                               AudioMaterial.metal: 0.47}
-
-
-
-
-
-
-
-
-
-
-class CollisionType(Enum):
-    """
-    The "type" of a collision, defined by the motion of the object.
-
-    none = No collision
-    impact = The object "entered" a collision
-    scrape = The object "stayed" in a collision with a low angular velocity.
-    roll = The object "stayed" in a collision with a high angular velocity.
-    """
-
-    none = 1,
-    impact = 2,
-    scrape = 4,
-    roll = 8
-
-
-class CollisionTypesOnFrame:
-    """
-    All types of collision (impact, scrape, roll, none) between an object and any other objects or the environment on this frame.
-
-    Usage:
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.py_impact import CollisionTypesOnFrame
-
-    object_id = c.get_unique_id()
-    c = Controller()
-    c.start()
-
-    # Your code here.
-
-    # Request the required output data (do this at the start of the simulation, not per frame).
-    resp = c.communicate([{"$type": "send_collisions",
-                           "enter": True,
-                           "exit": False,
-                           "stay": True,
-                           "collision_types": ["obj", "env"]},
-                          {"$type": "send_rigidbodies",
-                           "frequency": "always"}])
-
-    # Parse the output data and get collision type data.
-    ctof = CollisionTypesOnFrame(object_id, resp)
-
-    # Read the dictionaries of collidee IDs and collision types.
-    for collidee_id in ctof.collisions:
-        collision_type = ctof.collisions[collidee_id]
-        print(collidee_id, collision_type)
-
-    # Check the environment collision.
-    print(ctof.env_collision_type)
-    ```
-    """
-
-    def __init__(self, object_id: int, resp: List[bytes]):
-        """
-        :param object_id: The unique ID of the colliding object.
-        :param resp: The response from the build.
-        """
-
-        collisions, env_collisions, rigidbodies = PyImpact.get_collisions(resp)
-        # The type of collision with each collidee.
-        self.collisions: Dict[int, CollisionType] = dict()
-        # The type of environment collision, if any.
-        self.env_collision = CollisionType.none
-
-        # If there is no Rigidbodies output data, then nothing can be parsed.
-        if rigidbodies is None:
-            return
-
-        # Get the rigidbody data for this object.
-        for i in range(rigidbodies.get_num()):
-            if rigidbodies.get_id(i) == object_id:
-                # Get the angular velocity of this object.
-                ang_vel = rigidbodies.get_angular_velocity(i)
-
-                # My collisions with other objects on this frame.
-                # Key = the collidee ID. Value = list of states.
-                my_collisions: Dict[int, List[str]] = dict()
-
-                for co in collisions:
-                    if co.get_collider_id() == object_id:
-                        collidee = co.get_collidee_id()
-                        if collidee not in my_collisions:
-                            my_collisions.update({collidee: []})
-                        my_collisions[collidee].append(co.get_state())
-                # Get the collision type.
-                for collidee in my_collisions:
-                    self.collisions[collidee] = self._get_collision_type(ang_vel, my_collisions[collidee])
-                env_collision_states: List[str] = []
-                for co in env_collisions:
-                    env_collision_states.append(co.get_state())
-
-    @staticmethod
-    def _get_collision_type(ang_vel: tuple, states: List[str]) -> CollisionType:
-        """
-        :param ang_vel: The angular velocity of this object.
-
-        :param states: The states of all collisions experienced by this object on this frame.
-
-        :return: The type of collision that the object is experiencing.
-        """
-
-        # If there is any "enter" state in this frame, then it is an impact.
-        if "enter" in states:
-            return CollisionType.impact
-        # If there are "stay" state(s) but no "enter" state, then it is either a roll or a scrape.
-        elif "stay" in states:
-            # If there is a high angular velocity, then it is a roll.
-            if np.linalg.norm(ang_vel) > 1:
-                return CollisionType.roll
-            # Otherwise, it's a scrape.
-            else:
-                return CollisionType.scrape
-        else:
-            return CollisionType.none
+from tdw.physics_audio.collision_audio_type import CollisionAudioType
+from tdw.int_pair import IntPair
 
 
 class PyImpact:
@@ -237,6 +65,91 @@ class PyImpact:
         self.object_names: Dict[int, str] = dict()
         # A dummy ID for the environment. See: `set_default_audio_info()`
         self.env_id: int = -1
+
+    @staticmethod
+    def get_collision_types(resp: List[bytes]) -> Dict[CollisionAudioType, List[Union[Collision, EnvironmentCollision]]]:
+        obj_enters: Dict[IntPair, List[Collision]] = dict()
+        obj_stays: Dict[IntPair, List[Collision]] = dict()
+        obj_exits: Dict[IntPair, List[Collision]] = dict()
+        env_enters: Dict[int, List[EnvironmentCollision]] = dict()
+        env_stays: Dict[int, List[EnvironmentCollision]] = dict()
+        env_exits: Dict[int, List[EnvironmentCollision]] = dict()
+        angular_velocities: Dict[int, np.array] = dict()
+        velocities: Dict[int, np.array] = dict()
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "rigi":
+                rigidbodies = Rigidbodies(resp[i])
+                for j in range(rigidbodies.get_num()):
+                    angular_velocities[rigidbodies.get_id(j)] = np.array(rigidbodies.get_angular_velocity(j))
+                    velocities[rigidbodies.get_id(j)] = np.array(rigidbodies.get_velocity(j))
+            elif r_id == "coll":
+                collision = Collision(resp[i])
+                ids = IntPair(collision.get_collider_id(), collision.get_collidee_id())
+                # Sort the events.
+                if collision.get_state() == "enter":
+                    if ids not in obj_enters:
+                        obj_enters[ids] = list()
+                    obj_enters[ids].append(collision)
+                elif collision.get_state() == "exit":
+                    if ids not in obj_exits:
+                        obj_exits[ids] = list()
+                    obj_exits[ids].append(collision)
+                elif collision.get_state() == "stay":
+                    if ids not in obj_stays:
+                        obj_stays[ids] = list()
+                    obj_stays[ids].append(collision)
+            elif r_id == "enco":
+                environment_collision = EnvironmentCollision(resp[i])
+                object_id = environment_collision.get_object_id()
+                # Sort the events.
+                if environment_collision.get_state() == "enter":
+                    if object_id not in env_enters:
+                        env_enters[object_id] = list()
+                    env_enters[object_id].append(environment_collision)
+                elif environment_collision.get_state() == "exit":
+                    if object_id not in env_exits:
+                        env_exits[object_id] = list()
+                    env_exits[object_id].append(environment_collision)
+                elif environment_collision.get_state() == "stay":
+                    if object_id not in env_stays:
+                        env_stays[object_id] = list()
+                    env_stays[object_id].append(environment_collision)
+
+        # Remove any enter events that are also stay or exit events.
+        obj_enters = {k: v for k, v in obj_enters.items() if k not in obj_exits and k not in obj_stays}
+        env_enters = {k: v for k, v in env_enters.items() if k not in env_exits and k not in env_stays}
+
+        # Remove any exit events that are also stay events.
+        obj_exits = {k: v for k, v in obj_exits.items() if k not in obj_stays}
+        env_exits = {k: v for k, v in env_exits.items() if k not in env_stays}
+
+        collisions: Dict[CollisionAudioType, List[Union[Collision, EnvironmentCollision]]] = {CollisionAudioType.impact: [],
+                                                                                              CollisionAudioType.scrape: [],
+                                                                                              CollisionAudioType.roll: [],
+                                                                                              CollisionAudioType.none: []}
+        # Impacts are enter events.
+        for k in obj_enters:
+            collisions[CollisionAudioType.impact].extend(obj_enters[k])
+        for k in env_enters:
+            collisions[CollisionAudioType.impact].extend(env_enters[k])
+        # Rolls are stay events with high angular velocity. Scrapes are stay events with low angular velocity.
+        for k in obj_stays:
+            if np.linalg.norm(angular_velocities[k.int1]) > 0.1 or np.linalg.norm(angular_velocities[k.int2]) > 0.1:
+                collisions[CollisionAudioType.roll].extend(obj_stays[k])
+            else:
+                collisions[CollisionAudioType.scrape].extend(obj_stays[k])
+        for k in env_stays:
+            if np.linalg.norm(angular_velocities[k]) > 0.1:
+                collisions[CollisionAudioType.roll].extend(env_stays[k])
+            else:
+                collisions[CollisionAudioType.scrape].extend(env_stays[k])
+        # None events are exits.
+        for k in obj_exits:
+            collisions[CollisionAudioType.none].extend(obj_exits[k])
+        for k in env_exits:
+            collisions[CollisionAudioType.none].extend(env_exits[k])
+        return collisions
 
     def set_default_audio_info(self, object_names: Dict[int, str]) -> None:
         """

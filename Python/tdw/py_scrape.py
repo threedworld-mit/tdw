@@ -244,6 +244,9 @@ class PyScrape:
         Clean up after a given scrape event has ended.
         """
 
-        del self.scrape_events_count[scrape_key]
-        del self.summed_masters[scrape_key]
-        del self.start_velocities[scrape_key]
+        if scrape_key in self.scrape_events_count:
+            del self.scrape_events_count[scrape_key]
+        if scrape_key in self.summed_masters:
+            del self.summed_masters[scrape_key]
+        if scrape_key in self.start_velocities:
+            del self.start_velocities[scrape_key]

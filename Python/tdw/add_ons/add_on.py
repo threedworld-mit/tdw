@@ -41,6 +41,7 @@ class AddOn(ABC):
     - [Keyboard](keyboard.md)
     - [ObjectManager](object_manager.md)
     - [OccupancyMap](occupancy_map.md)
+    - [PhysicsAudioRecorder](physics_audio_recorder.md)
     - [Robot](robot.md)
     - [StepPhysics](step_physics.md)
     - [ThirdPersonCamera](third_person_camera.md)

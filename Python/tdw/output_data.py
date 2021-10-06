@@ -774,6 +774,9 @@ class AudioSources(OutputData):
     def get_is_playing(self, index: int) -> bool:
         return self.data.Objects(index).IsPlaying()
 
+    def get_samples(self) -> np.array:
+        return self.data.SamplesAsNumpy()
+
 
 class Raycast(OutputData):
     def get_data(self) -> Ray.Raycast:

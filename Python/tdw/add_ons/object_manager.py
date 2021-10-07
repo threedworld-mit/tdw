@@ -1,11 +1,49 @@
 from typing import Dict, List
 import numpy as np
-from tdw.output_data import OutputData, Transforms, Rigidbodies, Bounds, SegmentationColors, Categories
+from tdw.output_data import OutputData, Transforms, Rigidbodies, Bounds, SegmentationColors, Categories, \
+    StaticRigidbodies
 from tdw.add_ons.add_on import AddOn
 from tdw.object_data.object_static import ObjectStatic
 from tdw.object_data.transform import Transform
 from tdw.object_data.rigidbody import Rigidbody
 from tdw.object_data.bound import Bound
+
+
+class _StaticRigidbody:
+    """
+    Temporary structure for static rigidbody data.
+    """
+
+    def __init__(self, mass: float, kinematic: bool, dynamic_friction, static_friction: float, bounciness: float):
+        """
+        :param mass: The mass of the object.
+        :param dynamic_friction: The dynamic friction of the object.
+        :param static_friction: The static friction of the object.
+        :param bounciness: The bounciness of the object.
+        :param kinematic: If True, this object is kinematic, and won't respond to physics.
+        """
+
+        """:field
+        If True, this object is kinematic, and won't respond to physics. 
+        Examples: a painting hung on a wall or built-in furniture like a countertop.
+        """
+        self.kinematic = kinematic
+        """:field
+        The mass of the object.
+        """
+        self.mass = mass
+        """:field
+        The dynamic friction of the object.
+        """
+        self.dynamic_friction: float = dynamic_friction
+        """:field
+        The static friction of the object.
+        """
+        self.static_friction: float = static_friction
+        """:field
+        The bounciness of the object.
+        """
+        self.bounciness: float = bounciness
 
 
 class ObjectManager(AddOn):
@@ -71,7 +109,7 @@ class ObjectManager(AddOn):
         super().__init__()
         self._cached_static_data: bool = False
         self._send_transforms: str = "always" if transforms else "never"
-        self._send_rigidbodies: str = "always" if rigidbodies else "once"
+        self._send_rigidbodies: str = "always" if rigidbodies else "never"
         self._send_bounds: str = "always" if bounds else "once"
         """:field
         [The static object data.](../object_data/object_static.md) Key = The ID of the object.
@@ -97,6 +135,7 @@ class ObjectManager(AddOn):
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_segmentation_colors"},
                 {"$type": "send_categories"},
+                {"$type": "send_static_rigidbodies"},
                 {"$type": "send_rigidbodies",
                  "frequency": self._send_rigidbodies},
                 {"$type": "send_bounds",
@@ -111,8 +150,7 @@ class ObjectManager(AddOn):
             # Sort the static output data by object ID.
             segmentation_colors: Dict[int, np.array] = dict()
             names: Dict[int, str] = dict()
-            masses: Dict[int, float] = dict()
-            kinematics: Dict[int, bool] = dict()
+            static_rigidbodies: Dict[int, _StaticRigidbody] = dict()
             sizes: Dict[int, np.array] = dict()
             categories: Dict[int, str] = dict()
             for i in range(len(resp) - 1):
@@ -131,12 +169,14 @@ class ObjectManager(AddOn):
                         sizes[boun.get_id(j)] = np.array([float(np.abs(boun.get_right(j)[0] - boun.get_left(j)[0])),
                                                           float(np.abs(boun.get_top(j)[1] - boun.get_bottom(j)[1])),
                                                           float(np.abs(boun.get_front(j)[2] - boun.get_back(j)[2]))])
-                elif r_id == "rigi":
-                    rigi = Rigidbodies(resp[i])
-                    for j in range(rigi.get_num()):
-                        object_id = rigi.get_id(j)
-                        masses[object_id] = rigi.get_mass(j)
-                        kinematics[object_id] = rigi.get_kinematic(j)
+                elif r_id == "srig":
+                    srig = StaticRigidbodies(resp[i])
+                    for j in range(srig.get_num()):
+                        static_rigidbodies[srig.get_id(j)] = _StaticRigidbody(mass=srig.get_mass(j),
+                                                                              kinematic=srig.get_kinematic(j),
+                                                                              dynamic_friction=srig.get_dynamic_friction(j),
+                                                                              static_friction=srig.get_static_friction(j),
+                                                                              bounciness=srig.get_bounciness(j))
                 elif r_id == "cate":
                     cate = Categories(resp[i])
                     for j in range(cate.get_num_categories()):
@@ -146,8 +186,11 @@ class ObjectManager(AddOn):
                 self.objects_static[object_id] = ObjectStatic(object_id=object_id,
                                                               name=names[object_id],
                                                               segmentation_color=segmentation_colors[object_id],
-                                                              mass=masses[object_id],
-                                                              kinematic=kinematics[object_id],
+                                                              mass=static_rigidbodies[object_id].mass,
+                                                              kinematic=static_rigidbodies[object_id].kinematic,
+                                                              dynamic_friction=static_rigidbodies[object_id].dynamic_friction,
+                                                              static_friction=static_rigidbodies[object_id].static_friction,
+                                                              bounciness=static_rigidbodies[object_id].bounciness,
                                                               size=sizes[object_id],
                                                               category=categories[object_id])
         # Set dynamic data.

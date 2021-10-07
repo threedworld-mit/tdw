@@ -99,7 +99,7 @@ class AvatarStickyMitten(object):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
         if o != 0:
             x = self._tab.Vector(o)
-            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 36
+            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 32
             from .RigidbodyData import RigidbodyData
             obj = RigidbodyData()
             obj.Init(self._tab.Bytes, x)
@@ -252,7 +252,7 @@ def AvatarStickyMittenAddAngularVelocity(builder, angularVelocity): builder.Prep
 def AvatarStickyMittenAddMass(builder, mass): builder.PrependFloat32Slot(6, mass, 0.0)
 def AvatarStickyMittenAddSleeping(builder, sleeping): builder.PrependBoolSlot(7, sleeping, 0)
 def AvatarStickyMittenAddRigidbodyParts(builder, rigidbodyParts): builder.PrependUOffsetTRelativeSlot(8, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(rigidbodyParts), 0)
-def AvatarStickyMittenStartRigidbodyPartsVector(builder, numElems): return builder.StartVector(36, numElems, 4)
+def AvatarStickyMittenStartRigidbodyPartsVector(builder, numElems): return builder.StartVector(32, numElems, 4)
 def AvatarStickyMittenAddBodyParts(builder, bodyParts): builder.PrependUOffsetTRelativeSlot(9, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(bodyParts), 0)
 def AvatarStickyMittenStartBodyPartsVector(builder, numElems): return builder.StartVector(44, numElems, 4)
 def AvatarStickyMittenAddMittenCenterLeft(builder, mittenCenterLeft): builder.PrependStructSlot(10, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(mittenCenterLeft), 0)

@@ -7,13 +7,17 @@ class ObjectStatic:
     """
 
     def __init__(self, name: str, object_id: int, mass: float, segmentation_color: np.array, size: np.array,
-                 category: str, kinematic: bool):
+                 category: str, kinematic: bool, dynamic_friction: float, static_friction: float, bounciness: float):
         """
         :param name: The name of the object.
         :param object_id: The unique ID of the object.
         :param mass: The mass of the object.
         :param segmentation_color: The segmentation color of the object.
         :param size: The size of the object.
+        :param dynamic_friction: The dynamic friction of the object.
+        :param static_friction: The static friction of the object.
+        :param bounciness: The bounciness of the object.
+        :param kinematic: If True, this object is kinematic, and won't respond to physics.
         """
 
         """:field
@@ -30,7 +34,6 @@ class ObjectStatic:
         self.category: str = category
         """:field
         If True, this object is kinematic, and won't respond to physics. 
-        Examples: a painting hung on a wall or built-in furniture like a countertop.
         """
         self.kinematic = kinematic
         """:field
@@ -45,3 +48,15 @@ class ObjectStatic:
         The size of the object as a numpy array: `[width, height, length]`
         """
         self.size = size
+        """:field
+        The dynamic friction of the object.
+        """
+        self.dynamic_friction: float = dynamic_friction
+        """:field
+        The static friction of the object.
+        """
+        self.static_friction: float = static_friction
+        """:field
+        The bounciness of the object.
+        """
+        self.bounciness: float = bounciness

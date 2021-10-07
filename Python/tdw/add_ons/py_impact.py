@@ -241,13 +241,8 @@ class PyImpact(AddOn):
                 self.commands.append(command)
 
     @staticmethod
-    def get_collision_types(resp: List[bytes], previous_stay_areas: Dict[IntPair, float]) -> Dict[CollisionAudioType, List[Union[Collision, EnvironmentCollision]]]:
-        obj_enters: Dict[IntPair, List[Collision]] = dict()
-        obj_stays: Dict[IntPair, List[Collision]] = dict()
-        obj_exits: Dict[IntPair, List[Collision]] = dict()
-        env_enters: Dict[int, List[EnvironmentCollision]] = dict()
-        env_stays: Dict[int, List[EnvironmentCollision]] = dict()
-        env_exits: Dict[int, List[EnvironmentCollision]] = dict()
+    def get_collision_types(resp: List[bytes], previous: Dict[tuple, float]) -> Dict[CollisionAudioType, List[Union[Collision, EnvironmentCollision]]]:
+        collisions: Dict[tuple, List[Union[Collision, EnvironmentCollision]]] = dict()
         rigidbody_data: Dict[int, Rigidbody] = dict()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -262,82 +257,49 @@ class PyImpact(AddOn):
             # Parse a collision.
             elif r_id == "coll":
                 collision = Collision(resp[i])
-                ids = IntPair(collision.get_collider_id(), collision.get_collidee_id())
-                # Sort the events.
-                if collision.get_state() == "enter":
-                    if ids not in obj_enters:
-                        obj_enters[ids] = list()
-                    obj_enters[ids].append(collision)
-                elif collision.get_state() == "exit":
-                    if ids not in obj_exits:
-                        obj_exits[ids] = list()
-                    obj_exits[ids].append(collision)
-                elif collision.get_state() == "stay":
-                    if ids not in obj_stays:
-                        obj_stays[ids] = list()
-                    obj_stays[ids].append(collision)
+                ids = (collision.get_collider_id(), collision.get_collidee_id())
+                if ids not in collisions:
+                    collisions[ids] = list()
+                collisions[ids].append(collision)
             elif r_id == "enco":
-                environment_collision = EnvironmentCollision(resp[i])
-                object_id = environment_collision.get_object_id()
-                # Sort the events.
-                if environment_collision.get_state() == "enter":
-                    if object_id not in env_enters:
-                        env_enters[object_id] = list()
-                    env_enters[object_id].append(environment_collision)
-                elif environment_collision.get_state() == "exit":
-                    if object_id not in env_exits:
-                        env_exits[object_id] = list()
-                    env_exits[object_id].append(environment_collision)
-                elif environment_collision.get_state() == "stay":
-
-                    if object_id not in env_stays:
-                        env_stays[object_id] = list()
-                    env_stays[object_id].append(environment_collision)
-
-        # Remove any enter events that are also stay or exit events.
-        obj_enters = {k: v for k, v in obj_enters.items() if k not in obj_exits and k not in obj_stays}
-        env_enters = {k: v for k, v in env_enters.items() if k not in env_exits and k not in env_stays}
-        collisions: Dict[CollisionAudioType, List[Union[Collision, EnvironmentCollision]]] = {CollisionAudioType.impact: [],
-                                                                                              CollisionAudioType.scrape: [],
-                                                                                              CollisionAudioType.roll: [],
-                                                                                              CollisionAudioType.none: []}
-        contact_areas: Dict[IntPair, float] = dict()
-        # Impacts are enter events.
-        for k in obj_enters:
-            for c in obj_enters[k]:
-                # There must be an actual velocity.
-                if np.linalg.norm(c.get_relative_velocity()) > 0:
-                    collisions[CollisionAudioType.impact].append(c)
-        for k in env_enters:
-            # There must be an actual velocity.
-            if np.linalg.norm(rigidbody_data[k].velocity) > 0.01:
-                collisions[CollisionAudioType.impact].extend(env_enters[k])
-        # Get collision area.
-        for k in obj_stays:
+                collision = EnvironmentCollision(resp[i])
+                ids = (collision.get_object_id(), None)
+                if ids not in collisions:
+                    collisions[ids] = list()
+                collisions[ids].append(collision)
+        collision_events: Dict[CollisionAudioType, List[Union[Collision, EnvironmentCollision]]] = {CollisionAudioType.impact: [],
+                                                                                                    CollisionAudioType.scrape: [],
+                                                                                                    CollisionAudioType.roll: []}
+        areas: Dict[tuple, float] = dict()
+        for int_pair in collisions:
+            # Sum the area of all collisions between these two.
             area = 0
-            for c in obj_stays[k]:
+            is_exit = False
+            for c in collisions[int_pair]:
+                if c.get_state() == "exit":
+                    area = 0
+                    is_exit = True
+                    break
                 area += PyImpact._get_contact_area(c)
-            contact_areas[k] = area
-            if k in previous_stay_areas:
-                stay_area_ratio = contact_areas[k] / previous_stay_areas[k]
-                # If the contact area changed by a lot, this is an impact.
-                if stay_area_ratio > 0.5:
-                    collisions[CollisionAudioType.impact].extend(obj_stays[k])
-        for k in env_stays:
-            area = 0
-            for c in env_stays[k]:
-                area += PyImpact._get_contact_area(c)
-            contact_areas[IntPair(k, -1)] = area
-
-            if np.linalg.norm(angular_velocities[k.int1]) > 0.1 or np.linalg.norm(angular_velocities[k.int2]) > 0.1:
-                collisions[CollisionAudioType.roll].extend(obj_stays[k])
+            # There was at least one exit event.
+            if is_exit:
+                continue
+            # This is a new event, implying an impact.
+            areas[int_pair] = area
+            if int_pair not in previous:
+                collision_events[CollisionAudioType.impact].extend(collisions[int_pair])
+            # The contact area changed suddenly, implying an impact.
+            elif area / previous[int_pair] > 1.5:
+                collision_events[CollisionAudioType.impact].extend(collisions[int_pair])
             else:
-                collisions[CollisionAudioType.scrape].extend(obj_stays[k])
-        for k in env_stays:
-            if np.linalg.norm(angular_velocities[k]) > 0.1:
-                collisions[CollisionAudioType.roll].extend(env_stays[k])
-            else:
-                collisions[CollisionAudioType.scrape].extend(env_stays[k])
+                # Sum the angular velocities.
+                angular_velocity = np.linalg.norm(rigidbody_data[int_pair[0]].angular_velocity)
+                if int_pair[1] is not None:
+                    angular_velocity += np.linalg.norm(rigidbody_data[int_pair[1]].angular_velocity)
+                if angular_velocity > 0.1:
+                    collision_events[CollisionAudioType.roll].extend(collisions[int_pair])
+                else:
+                    collision_events[CollisionAudioType.scrape].extend(collisions[int_pair])
         return collisions
 
     def get_log(self) -> dict:
@@ -356,7 +318,7 @@ class PyImpact(AddOn):
         points = np.array(points)
         edges = points[1:] - points[0:1]
         return sum(np.linalg.norm(np.cross(edges[:-1], edges[1:], axis=1), axis=1) / 2)
-            
+
     def _get_object_modes(self, material: Union[str, AudioMaterial]) -> Modes:
         """
         :param material: The audio material.

@@ -23,7 +23,7 @@ class Rigidbodies(object):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             x = self._tab.Vector(o)
-            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 36
+            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 32
             from .RigidbodyData import RigidbodyData
             obj = RigidbodyData()
             obj.Init(self._tab.Bytes, x)
@@ -39,5 +39,5 @@ class Rigidbodies(object):
 
 def RigidbodiesStart(builder): builder.StartObject(1)
 def RigidbodiesAddObjects(builder, objects): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(objects), 0)
-def RigidbodiesStartObjectsVector(builder, numElems): return builder.StartVector(36, numElems, 4)
+def RigidbodiesStartObjectsVector(builder, numElems): return builder.StartVector(32, numElems, 4)
 def RigidbodiesEnd(builder): return builder.EndObject()

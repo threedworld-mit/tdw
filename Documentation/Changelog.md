@@ -22,6 +22,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | `rotate_sensor_container_towards_object`   | Rotate the sensor container towards the current position of a target object. |
 | `rotate_sensor_container_towards_position` | Rotate the sensor container towards a position at a given angular speed per frame. |
 | `rotate_sensor_container_towards_rotation` | Rotate the sensor container towards a target rotation.       |
+| `send_static_rigidbodies`                  | Request static rigidbody data (mass, kinematic state, etc.)  |
 
 ### Renamed Commands
 
@@ -39,9 +40,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 
 #### New Output Data
 
-| Output Data            | Description                                       |
-| ---------------------- | ------------------------------------------------- |
-| `CameraMotionComplete` | Announce that a camera motion has been completed. |
+| Output Data            | Description                                         |
+| ---------------------- | --------------------------------------------------- |
+| `CameraMotionComplete` | Announce that a camera motion has been completed.   |
+| `StaticRigidbodies`    | Static rigidbody data (mass, kinematic state, etc.) |
 
 #### Renamed Output Data
 
@@ -54,6 +56,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | Output Data    | Modification                                                 |
 | -------------- | ------------------------------------------------------------ |
 | `AudioSources` | Added: `get_samples()`. Audio samples from the audio listener. |
+| `Rigidbodies`  | Removed: `get_mass(index)`, `get_kinematic(index)`. These are now in `StaticRigidbodies`. |
 
 ### Build
 

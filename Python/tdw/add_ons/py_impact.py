@@ -16,6 +16,7 @@ from tdw.physics_audio.base64_sound import Base64Sound
 from tdw.physics_audio.collision_audio_info import CollisionAudioInfo
 from tdw.physics_audio.collision_audio_type import CollisionAudioType
 from tdw.int_pair import IntPair
+from tdw.object_data.rigidbody import Rigidbody
 from tdw.add_ons.add_on import AddOn
 
 
@@ -240,22 +241,25 @@ class PyImpact(AddOn):
                 self.commands.append(command)
 
     @staticmethod
-    def get_collision_types(resp: List[bytes]) -> Dict[CollisionAudioType, List[Union[Collision, EnvironmentCollision]]]:
+    def get_collision_types(resp: List[bytes], previous_stay_areas: Dict[IntPair, float]) -> Dict[CollisionAudioType, List[Union[Collision, EnvironmentCollision]]]:
         obj_enters: Dict[IntPair, List[Collision]] = dict()
         obj_stays: Dict[IntPair, List[Collision]] = dict()
         obj_exits: Dict[IntPair, List[Collision]] = dict()
         env_enters: Dict[int, List[EnvironmentCollision]] = dict()
         env_stays: Dict[int, List[EnvironmentCollision]] = dict()
         env_exits: Dict[int, List[EnvironmentCollision]] = dict()
-        angular_velocities: Dict[int, np.array] = dict()
-        velocities: Dict[int, np.array] = dict()
+        rigidbody_data: Dict[int, Rigidbody] = dict()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
+            # Get rigidbody data.
             if r_id == "rigi":
                 rigidbodies = Rigidbodies(resp[i])
                 for j in range(rigidbodies.get_num()):
-                    angular_velocities[rigidbodies.get_id(j)] = np.array(rigidbodies.get_angular_velocity(j))
-                    velocities[rigidbodies.get_id(j)] = np.array(rigidbodies.get_velocity(j))
+                    rigidbody_data[rigidbodies.get_id(j)] = Rigidbody(velocity=np.array(rigidbodies.get_velocity(j)),
+                                                                      angular_velocity=np.array(
+                                                                          rigidbodies.get_angular_velocity(j)),
+                                                                      sleeping=rigidbodies.get_sleeping(j))
+            # Parse a collision.
             elif r_id == "coll":
                 collision = Collision(resp[i])
                 ids = IntPair(collision.get_collider_id(), collision.get_collidee_id())
@@ -285,6 +289,7 @@ class PyImpact(AddOn):
                         env_exits[object_id] = list()
                     env_exits[object_id].append(environment_collision)
                 elif environment_collision.get_state() == "stay":
+
                     if object_id not in env_stays:
                         env_stays[object_id] = list()
                     env_stays[object_id].append(environment_collision)
@@ -296,17 +301,34 @@ class PyImpact(AddOn):
                                                                                               CollisionAudioType.scrape: [],
                                                                                               CollisionAudioType.roll: [],
                                                                                               CollisionAudioType.none: []}
+        contact_areas: Dict[IntPair, float] = dict()
         # Impacts are enter events.
         for k in obj_enters:
             for c in obj_enters[k]:
+                # There must be an actual velocity.
                 if np.linalg.norm(c.get_relative_velocity()) > 0:
                     collisions[CollisionAudioType.impact].append(c)
         for k in env_enters:
-            if np.linalg.norm(velocities[k]) < 0.01:
-                continue
-            collisions[CollisionAudioType.impact].extend(env_enters[k])
-        # Rolls are stay events with high angular velocity. Scrapes are stay events with low angular velocity.
+            # There must be an actual velocity.
+            if np.linalg.norm(rigidbody_data[k].velocity) > 0.01:
+                collisions[CollisionAudioType.impact].extend(env_enters[k])
+        # Get collision area.
         for k in obj_stays:
+            area = 0
+            for c in obj_stays[k]:
+                area += PyImpact._get_contact_area(c)
+            contact_areas[k] = area
+            if k in previous_stay_areas:
+                stay_area_ratio = contact_areas[k] / previous_stay_areas[k]
+                # If the contact area changed by a lot, this is an impact.
+                if stay_area_ratio > 0.5:
+                    collisions[CollisionAudioType.impact].extend(obj_stays[k])
+        for k in env_stays:
+            area = 0
+            for c in env_stays[k]:
+                area += PyImpact._get_contact_area(c)
+            contact_areas[IntPair(k, -1)] = area
+
             if np.linalg.norm(angular_velocities[k.int1]) > 0.1 or np.linalg.norm(angular_velocities[k.int2]) > 0.1:
                 collisions[CollisionAudioType.roll].extend(obj_stays[k])
             else:
@@ -325,6 +347,16 @@ class PyImpact(AddOn):
 
         return self.mode_properties_log
 
+    @staticmethod
+    def _get_contact_area(collision: Union[Collision, EnvironmentCollision]) -> float:
+        points = []
+        for j in range(collision.get_num_contacts()):
+            points.append(collision.get_contact_point(j))
+        # Source: https://stackoverflow.com/a/68115011
+        points = np.array(points)
+        edges = points[1:] - points[0:1]
+        return sum(np.linalg.norm(np.cross(edges[:-1], edges[1:], axis=1), axis=1) / 2)
+            
     def _get_object_modes(self, material: Union[str, AudioMaterial]) -> Modes:
         """
         :param material: The audio material.

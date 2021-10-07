@@ -7,7 +7,8 @@ from pathlib import Path
 from pkg_resources import resource_filename
 from csv import DictReader
 import io
-from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision, StaticRobot, SegmentationColors
+from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision, StaticRobot, SegmentationColors, \
+    StaticRigidbodies
 from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.object_audio_static import ObjectAudioStatic
 from tdw.physics_audio.modes import Modes
@@ -70,7 +71,7 @@ class PyImpact(AddOn):
 
         self.static_audio_data_overrides: Dict[str, ObjectAudioStatic] = static_audio_data_overrides
 
-        self.__cached_audio_info: bool = False
+        self._cached_audio_info: bool = False
         self.static_audio_data: Dict[int, ObjectAudioStatic] = dict()
         self._robot_joints: List[int] = list()
 
@@ -83,18 +84,20 @@ class PyImpact(AddOn):
                  "stay": True,
                  "collision_types": ["obj", "env"]},
                 {"$type": "send_static_robots"},
-                {"$type": "send_segmentation_colors"}]
+                {"$type": "send_segmentation_colors"},
+                {"$type": "send_static_rigidbodies"}]
 
     def on_send(self, resp: List[bytes]) -> None:
         # Cache static audio info.
-        if not self.__cached_audio_info:
-            self.__cached_audio_info = True
+        if not self._cached_audio_info:
+            self._cached_audio_info = True
             # Load the default object info.
             default_static_audio_data = PyImpact.get_static_audio_data()
             categories: Dict[int, str] = dict()
             names: Dict[int, str] = dict()
             robot_joints: Dict[int, dict] = dict()
             object_masses: Dict[int, float] = dict()
+            object_bouncinesses: Dict[int, float] = dict()
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
                 if r_id == "segm":
@@ -110,10 +113,11 @@ class PyImpact(AddOn):
                         robot_joints[joint_id] = {"name": srob.get_joint_name(j),
                                                   "mass": srob.get_joint_mass(j)}
                         self._robot_joints.append(joint_id)
-                elif r_id == "rigi":
-                    rigi = Rigidbodies(resp[i])
-                    for j in range(rigi.get_num()):
-                        object_masses[rigi.get_id(j)] = rigi.get_mass(j)
+                elif r_id == "srig":
+                    srig = StaticRigidbodies(resp[i])
+                    for j in range(srig.get_num()):
+                        object_masses[srig.get_id(j)] = srig.get_mass(j)
+                        object_bouncinesses[srig.get_id(j)] = srig.get_bounciness(j)
             need_to_derive: List[int] = list()
             for object_id in names:
                 name = names[object_id]
@@ -129,19 +133,17 @@ class PyImpact(AddOn):
             current_values = self.static_audio_data.values()
             derived_data: Dict[int, ObjectAudioStatic] = dict()
             for object_id in need_to_derive:
-                # Try to use comparable objects in the same category.
+                # Fallback option: comparable objects in the same category.
                 objects_in_same_category = [o for o in categories if categories[o] == categories[object_id]]
                 if len(objects_in_same_category) > 0:
                     amps: List[float] = [a.amp for a in current_values]
                     materials: List[AudioMaterial] = [a.material for a in current_values]
-                    bouncinesses: List[float] = [a.bounciness for a in current_values]
                     resonances: List[float] = [a.resonance for a in current_values]
                     sizes: List[int] = [a.size for a in current_values]
-                # Find objects with similar volume.
+                # Fallback option: Find objects with similar volume.
                 else:
                     amps: List[float] = list()
                     materials: List[AudioMaterial] = list()
-                    bouncinesses: List[float] = list()
                     resonances: List[float] = list()
                     sizes: List[int] = list()
                     for m_id in object_masses:
@@ -150,19 +152,24 @@ class PyImpact(AddOn):
                         if np.abs(object_masses[m_id] / object_masses[object_id]) < 1.5:
                             amps.append(self.static_audio_data[m_id].amp)
                             materials.append(self.static_audio_data[m_id].material)
-                            bouncinesses.append(self.static_audio_data[m_id].bounciness)
                             resonances.append(self.static_audio_data[m_id].resonance)
                             sizes.append(self.static_audio_data[m_id].size)
+                # Fallback option: Use default values.
+                if len(amps) == 0:
+                    amp:  float = 0.2
+                    material: AudioMaterial = AudioMaterial.plastic_hard
+                    resonance: float = 0.45
+                    size: int = 1
                 # Get averages or maximums of each value.
-                amp: float = round(sum(amps) / len(amps), 3)
-                material: AudioMaterial = max(set(materials), key=materials.count)
-                bounciness: float = round(sum(bouncinesses) / len(bouncinesses), 3)
-                resonance: float = round(sum(resonances) / len(resonances), 3)
-                size: int = int(sum(sizes) / len(sizes))
+                else:
+                    amp: float = round(sum(amps) / len(amps), 3)
+                    material: AudioMaterial = max(set(materials), key=materials.count)
+                    resonance: float = round(sum(resonances) / len(resonances), 3)
+                    size: int = int(sum(sizes) / len(sizes))
                 derived_data[object_id] = ObjectAudioStatic(name=names[object_id],
                                                             mass=object_masses[object_id],
                                                             material=material,
-                                                            bounciness=bounciness,
+                                                            bounciness=object_bouncinesses[object_id],
                                                             resonance=resonance,
                                                             size=size,
                                                             amp=amp,
@@ -404,25 +411,11 @@ class PyImpact(AddOn):
             tmp = speed * np.cos(tmp)
             nspd.append(tmp)
         normal_speed = np.mean(nspd)
-        # Get indices of objects in collisions.
-        id1_index = None
-        id2_index = None
-
-        for i in range(rigidbodies.get_num()):
-            if rigidbodies.get_id(i) == id1:
-                id1_index = i
-            if rigidbodies.get_id(i) == id2:
-                id2_index = i
-
         # Use default values for environment collisions.
         if not obj_col:
             m1 = 100
-            m2 = rigidbodies.get_mass(id2_index)
-        # Use the Rigidbody masses.
-        elif id1_index is not None and id2_index is not None:
-            m1 = rigidbodies.get_mass(id1_index)
-            m2 = rigidbodies.get_mass(id2_index)
-        # Fallback: Try to use default mass values if the ID's aren't in the Rigidbody data.
+            m2 = self.static_audio_data[id2].mass
+        # Use the object masses.
         elif id1 in self.static_audio_data and id2 in self.static_audio_data:
             m1 = self.static_audio_data[id1].mass
             m2 = self.static_audio_data[id2].mass
@@ -631,7 +624,7 @@ class PyImpact(AddOn):
         """
 
         assert 0 < initial_amp < 1, f"initial_amp is {initial_amp} (must be > 0 and < 1)."
-        self.__cached_audio_info = False
+        self._cached_audio_info = False
         self.initialized = False
         self.static_audio_data.clear()
         # Clear the object data.

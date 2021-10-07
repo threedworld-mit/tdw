@@ -1,5 +1,3 @@
-from os import devnull
-from subprocess import call
 from typing import List, Union
 from pathlib import Path
 import numpy as np
@@ -111,11 +109,3 @@ class PhysicsAudioRecorder(AddOn):
 
         AudioUtils.stop()
         self.recording = False
-        # Use ffmpeg to remove the initial silence.
-        with open(devnull, "w+") as f:
-            call(["ffmpeg", "-i", str(self.output_path.resolve()),
-                  "-ss", "00:00:00.1",
-                  str(self.output_path.resolve())],
-                 stderr=f)
-        self.commands.append({"$type": "send_audio_sources",
-                              "frequency": "never"})

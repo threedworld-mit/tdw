@@ -587,8 +587,9 @@
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_bounds`](#send_bounds) | Send rotated bounds data of objects in the scene.  |
 | [`send_local_transforms`](#send_local_transforms) | Send Transform (position and rotation) data of objects in the scene relative to their parent object.  |
-| [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, mass, etc.) data of objects in the scene.  |
+| [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.  |
 | [`send_segmentation_colors`](#send_segmentation_colors) | Send segmentation color data for objects in the scene.  |
+| [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
 | [`send_volumes`](#send_volumes) | Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value.  |
 
@@ -7392,7 +7393,7 @@ Options for when to send data.
 
 ## **`send_rigidbodies`**
 
-Send Rigidbody (velocity, mass, etc.) data of objects in the scene. 
+Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
@@ -7437,6 +7438,39 @@ Send segmentation color data for objects in the scene.
 
 ```python
 {"$type": "send_segmentation_colors", "ids": [1, 2, 3], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_rigidbodies`**
+
+Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticRigidbodies`](output_data.md#StaticRigidbodies)</font>
+
+```python
+{"$type": "send_static_rigidbodies", "ids": [1, 2, 3]}
+```
+
+```python
+{"$type": "send_static_rigidbodies", "ids": [1, 2, 3], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

@@ -117,7 +117,6 @@ class ModelVerifier(AddOn):
             self._current_test = MissingMaterials(record=self._record)
         else:
             raise Exception(f"Test not defined: {t}")
-        self.commands.append({"$type": "unload_asset_bundles"})
         self.commands.extend(self._current_test.start())
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -125,7 +124,7 @@ class ModelVerifier(AddOn):
             self.done = True
             return
         # Get test commands.
-        self.commands = self._current_test.on_send(resp=resp)
+        self.commands.extend(self._current_test.on_send(resp=resp))
         # If this test is done, append the reports and try to start a new test.
         if self._current_test.done:
             self.reports.extend(self._current_test.reports)

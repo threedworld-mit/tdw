@@ -37,7 +37,31 @@ class AudioSources(object):
             return self._tab.VectorLen(o)
         return 0
 
-def AudioSourcesStart(builder): builder.StartObject(1)
+    # AudioSources
+    def Samples(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # AudioSources
+    def SamplesAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
+        return 0
+
+    # AudioSources
+    def SamplesLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def AudioSourcesStart(builder): builder.StartObject(2)
 def AudioSourcesAddObjects(builder, objects): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(objects), 0)
 def AudioSourcesStartObjectsVector(builder, numElems): return builder.StartVector(8, numElems, 4)
+def AudioSourcesAddSamples(builder, samples): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(samples), 0)
+def AudioSourcesStartSamplesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def AudioSourcesEnd(builder): return builder.EndObject()

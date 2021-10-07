@@ -91,7 +91,7 @@
 | [`set_avatar_color`](#set_avatar_color) | Set the color of an avatar. To allow transparency (the "alpha" channel, or "a" value in the color), first send enable_avatar_transparency |
 | [`set_avatar_forward`](#set_avatar_forward) | Set the forward directional vector of the avatar.  |
 | [`set_camera_clipping_planes`](#set_camera_clipping_planes) | Set the near and far clipping planes of the avatar's camera. |
-| [`set_field_of_view`](#set_field_of_view) | Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send toggle_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send toggle_image_sensor again.  |
+| [`set_field_of_view`](#set_field_of_view) | Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again.  |
 | [`set_pass_masks`](#set_pass_masks) | Set which types of images the avatar will render. By default, the avatar will render, but not send, these images. See send_images in the Command API.  |
 | [`teleport_avatar_to`](#teleport_avatar_to) | Teleport the avatar to a position.  |
 
@@ -353,13 +353,6 @@
 | [`set_texture_scale`](#set_texture_scale) | Set the scale of the tiling of the material's main texture. |
 | [`set_visual_material`](#set_visual_material) | Set a visual material of an object or one of its sub-objects.  |
 
-**Play Audio Data Command**
-
-| Command | Description |
-| --- | --- |
-| [`play_audio_data`](#play_audio_data) | Play a sound, using audio sample data sent over from the controller. |
-| [`play_point_source_data`](#play_point_source_data) | Make this object a ResonanceAudioSoundSource and play the audio data. |
-
 **Set Flex Actor**
 
 | Command | Description |
@@ -395,6 +388,13 @@
 | [`set_painting_texture`](#set_painting_texture) | Apply a texture to a pre-existing painting.  |
 | [`show_painting`](#show_painting) | Show a painting that was hidden. |
 | [`teleport_painting`](#teleport_painting) | Teleport a painting to a new position. |
+
+**Play Audio Data Command**
+
+| Command | Description |
+| --- | --- |
+| [`play_audio_data`](#play_audio_data) | Play a sound, using audio sample data sent over from the controller. |
+| [`play_point_source_data`](#play_point_source_data) | Make this object a ResonanceAudioSoundSource and play the audio data. |
 
 **Position Marker Command**
 
@@ -587,8 +587,9 @@
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_bounds`](#send_bounds) | Send rotated bounds data of objects in the scene.  |
 | [`send_local_transforms`](#send_local_transforms) | Send Transform (position and rotation) data of objects in the scene relative to their parent object.  |
-| [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, mass, etc.) data of objects in the scene.  |
+| [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.  |
 | [`send_segmentation_colors`](#send_segmentation_colors) | Send segmentation color data for objects in the scene.  |
+| [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
 | [`send_volumes`](#send_volumes) | Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value.  |
 
@@ -1749,7 +1750,7 @@ Set the near and far clipping planes of the avatar's camera.
 
 ## **`set_field_of_view`**
 
-Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send toggle_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send toggle_image_sensor again. 
+Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again. 
 
 - <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
 
@@ -4768,57 +4769,6 @@ Set a visual material of an object or one of its sub-objects.
 | `"object_name"` | string | The name of the sub-object. | |
 | `"id"` | int | The unique object ID. | |
 
-# PlayAudioDataCommand
-
-Make an object play audio data.
-
-***
-
-## **`play_audio_data`**
-
-Play a sound, using audio sample data sent over from the controller.
-
-
-```python
-{"$type": "play_audio_data", "wav_data": "string", "num_frames": 1, "id": 1}
-```
-
-```python
-{"$type": "play_audio_data", "wav_data": "string", "num_frames": 1, "id": 1, "frame_rate": 44100, "num_channels": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
-| `"num_frames"` | int | The number of audio frames in the audio data. | |
-| `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
-| `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`play_point_source_data`**
-
-Make this object a ResonanceAudioSoundSource and play the audio data.
-
-
-```python
-{"$type": "play_point_source_data", "wav_data": "string", "num_frames": 1, "id": 1}
-```
-
-```python
-{"$type": "play_point_source_data", "wav_data": "string", "num_frames": 1, "id": 1, "y_pos_offset": 0.5, "frame_rate": 44100, "num_channels": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"y_pos_offset"` | float | Percentage offset from base of object, to place the audio source. | 0.5 |
-| `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
-| `"num_frames"` | int | The number of audio frames in the audio data. | |
-| `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
-| `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
-| `"id"` | int | The unique object ID. | |
-
 # SetFlexActor
 
 These commands create a new FlexActor of type T with a FlexAsset of type U, or to modify an object that already has a component of type T. This command must be sent before applying any other Flex commands to an object. You probably will want to send set_kinematic_state prior to sending this command.
@@ -5165,6 +5115,59 @@ Teleport a painting to a new position.
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | New position of the painting. | |
 | `"id"` | int | The unique ID of this painting. | |
+
+# PlayAudioDataCommand
+
+Make an object play audio data.
+
+***
+
+## **`play_audio_data`**
+
+Play a sound, using audio sample data sent over from the controller.
+
+
+```python
+{"$type": "play_audio_data", "id": 1, "wav_data": "string", "num_frames": 1}
+```
+
+```python
+{"$type": "play_audio_data", "id": 1, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1, "robot_joint": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+| `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
+| `"num_frames"` | int | The number of audio frames in the audio data. | |
+| `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
+| `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
+| `"robot_joint"` | bool | If true, this is joint of a robot. | False |
+
+***
+
+## **`play_point_source_data`**
+
+Make this object a ResonanceAudioSoundSource and play the audio data.
+
+
+```python
+{"$type": "play_point_source_data", "id": 1, "wav_data": "string", "num_frames": 1}
+```
+
+```python
+{"$type": "play_point_source_data", "id": 1, "wav_data": "string", "num_frames": 1, "y_pos_offset": 0.5, "frame_rate": 44100, "num_channels": 1, "robot_joint": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"y_pos_offset"` | float | Percentage offset from base of object, to place the audio source. | 0.5 |
+| `"id"` | int | The unique object ID. | |
+| `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
+| `"num_frames"` | int | The number of audio frames in the audio data. | |
+| `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
+| `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
+| `"robot_joint"` | bool | If true, this is joint of a robot. | False |
 
 # PositionMarkerCommand
 
@@ -7390,7 +7393,7 @@ Options for when to send data.
 
 ## **`send_rigidbodies`**
 
-Send Rigidbody (velocity, mass, etc.) data of objects in the scene. 
+Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
@@ -7435,6 +7438,39 @@ Send segmentation color data for objects in the scene.
 
 ```python
 {"$type": "send_segmentation_colors", "ids": [1, 2, 3], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_rigidbodies`**
+
+Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticRigidbodies`](output_data.md#StaticRigidbodies)</font>
+
+```python
+{"$type": "send_static_rigidbodies", "ids": [1, 2, 3]}
+```
+
+```python
+{"$type": "send_static_rigidbodies", "ids": [1, 2, 3], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

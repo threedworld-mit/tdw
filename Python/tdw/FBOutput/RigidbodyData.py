@@ -24,18 +24,12 @@ class RigidbodyData(object):
         return obj
 
     # RigidbodyData
-    def Mass(self): return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, self._tab.Pos + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(28))
-    # RigidbodyData
-    def Sleeping(self): return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, self._tab.Pos + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(32))
-    # RigidbodyData
-    def Kinematic(self): return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, self._tab.Pos + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(33))
+    def Sleeping(self): return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, self._tab.Pos + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(28))
 
-def CreateRigidbodyData(builder, id, velocity_x, velocity_y, velocity_z, angular_velocity_x, angular_velocity_y, angular_velocity_z, mass, sleeping, kinematic):
-    builder.Prep(4, 36)
-    builder.Pad(2)
-    builder.PrependBool(kinematic)
+def CreateRigidbodyData(builder, id, velocity_x, velocity_y, velocity_z, angular_velocity_x, angular_velocity_y, angular_velocity_z, sleeping):
+    builder.Prep(4, 32)
+    builder.Pad(3)
     builder.PrependBool(sleeping)
-    builder.PrependFloat32(mass)
     builder.Prep(4, 12)
     builder.PrependFloat32(angular_velocity_z)
     builder.PrependFloat32(angular_velocity_y)

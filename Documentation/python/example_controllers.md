@@ -49,6 +49,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `robot_add_on.py` | Add multiple robots to the scene. |
 | `robot_arm.py` | Add a robot to TDW and bend its arm. |
 | `robot_camera.py` | Add a camera to a Magnebot. |
+| `robot_impact_sound.py` | Create impact sounds using PyImpact between a robot and an object. |
 | `robot_torque.py` | Add a robot to TDW and bend its arm. |
 | `smpl_humanoid.py` | Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body parameters and play an animation. |
 | `visual_material_quality.py` | Adjust the render quality of visual materials. |

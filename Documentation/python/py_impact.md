@@ -41,6 +41,7 @@ Given the response from the build, get audio commands.
 Required:
 - You've already called `set_default_audio_info()` and supplied it with the IDs and names of each object in the scene:
 - You've requested collision and rigidbody data per-frame (`send_collisions` and `send_rigidbodies`)
+- If there are robots in the scene, you've already requests robot data per-frame (`send_robots`)
 
 | Parameter | Description |
 | --- | --- |
@@ -79,7 +80,7 @@ _Returns:_ Sound data as a Base64Sound object.
 
 ***
 
-#### `get_impact_sound_command(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, target_id: int, target_mat: str, target_amp: float, other_id: int, other_mat: str, other_amp: float, resonance: float, play_audio_data: bool = True) -> dict`
+#### `get_impact_sound_command(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, target_id: int, target_mat: str, target_amp: float, other_id: int, other_mat: str, other_amp: float, resonance: float, play_audio_data: bool = True, robot_joints: List[int] = None) -> dict`
 
 Create an impact sound, and return a valid command to play audio data in TDW.
 "target" should usually be the smaller object, which will play the sound.
@@ -97,6 +98,7 @@ Create an impact sound, and return a valid command to play audio data in TDW.
 | target_id | The ID of the object that will play the sound. |
 | resonance | The resonance of the objects. |
 | play_audio_data | If True, return a `play_audio_data` command. If False, return a `play_point_source_data` command (useful only with Resonance Audio; see Command API). |
+| robot_joints | Optional; a list of robot joint IDs in the scene. Use this to correctly play audio day for a robot joint. |
 
 _Returns:_ A `play_audio_data` or `play_point_source_data` command that can be sent to the build via `Controller.communicate()`.
 

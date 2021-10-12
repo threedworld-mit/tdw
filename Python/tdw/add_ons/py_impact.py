@@ -506,9 +506,8 @@ class PyImpact(AddOn):
             reader = DictReader(f)
             for row in reader:
                 o = ObjectAudioStatic(name=row["name"], amp=float(row["amp"]), mass=float(row["mass"]),
-                                      material=AudioMaterial[row["material"]], library=row["library"],
-                                      bounciness=float(row["bounciness"]), resonance=float(row["resonance"]),
-                                      size=int(row["size"]), object_id=0)
+                                      material=AudioMaterial[row["material"]], bounciness=float(row["bounciness"]),
+                                      resonance=float(row["resonance"]), size=int(row["size"]), object_id=0)
                 objects.update({o.name: o})
 
         return objects
@@ -650,7 +649,6 @@ class PyImpact(AddOn):
                                                         resonance=resonance,
                                                         size=size,
                                                         amp=amp,
-                                                        library="",
                                                         object_id=object_id)
         # Add the derived data.
         for object_id in derived_data:
@@ -664,5 +662,4 @@ class PyImpact(AddOn):
                                                                  resonance=0.45,
                                                                  size=1,
                                                                  amp=0.2,
-                                                                 library="",
                                                                  object_id=joint_id)

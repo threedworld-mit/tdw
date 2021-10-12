@@ -3,7 +3,7 @@ from enum import Enum
 
 class AudioMaterial(Enum):
     """
-    These are the materials currently supported for impact sounds in [`PyImpact`](add_ons/py_impact.md). More will be added in time.
+    These are the materials currently supported for impact sounds in [`PyImpact`](../add_ons/py_impact.md). More will be added in time.
     """
 
     ceramic = 0

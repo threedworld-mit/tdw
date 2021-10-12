@@ -3,7 +3,7 @@ from tdw.physics_audio.modes import Modes
 
 class CollisionAudioInfo:
     """
-    Class containing information about collisions required by pyImpact to determine the volume of impact sounds.
+    Class containing information about collisions required by PyImpact to determine the volume of impact sounds.
     """
 
     def __init__(self, obj1_modes: Modes, obj2_modes: Modes, amp: float = 0.5, init_speed: float = 1):

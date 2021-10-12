@@ -1,0 +1,80 @@
+# ResonanceAudioInitializer
+
+`from tdw.add_ons.resonance_audio_initializer import ResonanceAudioInitializer`
+
+Initialize Resonance Audio.
+
+This assumes that an avatar corresponding to `avatar_id` has already been added to the scene.
+
+***
+
+## Class Variables
+
+| Variable | Type | Description |
+| --- | --- | --- |
+| `AUDIO_MATERIALS` | Dict[str, AudioMaterial] | A dictionary. Key = A Resonance Audio material string. Value = An [`AudioMaterial`](../physics_audio/audio_material.md). |
+
+***
+
+## Fields
+
+- `avatar_id` The ID of the listening avatar.
+
+- `env_id` The ID of the environment (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room.
+
+- `floor` The floor material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+
+- `ceiling` The ceiling material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+
+- `front_wall` The front wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+
+- `back_wall` The back wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+
+- `left_wall` The left wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+
+- `right_wall` The right wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+
+***
+
+## Functions
+
+#### \_\_init\_\_
+
+**`ResonanceAudioInitializer()`**
+
+**`ResonanceAudioInitializer(avatar_id="a", env_id=-1, floor="parquet", ceiling="acousticTile", front_wall="smoothPlaster", back_wall="smoothPlaster", left_wall="smoothPlaster", right_wall="smoothPlaster")`**
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| avatar_id |  str  | "a" | The ID of the avatar. |
+| env_id |  int  | -1 | The ID of the environment (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room. |
+| floor |  str  | "parquet" | The floor material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple) |
+| ceiling |  str  | "acousticTile" | The ceiling material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple) |
+| front_wall |  str  | "smoothPlaster" | The front wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple) |
+| back_wall |  str  | "smoothPlaster" | The back wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple) |
+| left_wall |  str  | "smoothPlaster" | The left wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple) |
+| right_wall |  str  | "smoothPlaster" | The right wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple) |
+
+#### get_initialization_commands
+
+**`self.get_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
+#### on_send
+
+**`self.on_send(resp)`**
+
+This is called after commands are sent to the build and a response is received.
+
+Use this function to send commands to the build on the next frame, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the next frame.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| resp |  List[bytes] |  | The response from the build. |
+
+
+

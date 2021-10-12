@@ -1,12 +1,15 @@
-import numpy as np
+import base64
 import math
 import json
-import scipy.signal as sg
-from typing import Dict, Optional, Union, List
 from pathlib import Path
 from pkg_resources import resource_filename
 from csv import DictReader
 import io
+from typing import Dict, Optional, Union, List, Tuple
+import numpy as np
+import scipy.signal as sg
+from scipy.ndimage import gaussian_filter1d
+from pydub import AudioSegment
 from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision, StaticRobot, SegmentationColors, \
     StaticRigidbodies
 from tdw.collision_data.collision_obj_obj import CollisionObjObj
@@ -32,6 +35,40 @@ class PyImpact(AddOn):
 
     For example usage, see: `tdw/Python/example_controllers/impact_sounds.py`
     """
+
+    """:field
+    The number of audio channels.
+    """
+    CHANNELS: int = 1
+    """:field
+    The audio sample rate.
+    """
+    SAMPLE_RATE: int = 44100
+    """:field
+    The width of a scrape sample.
+    """
+    SCRAPE_SAMPLE_WIDTH: int = 2
+    """:field
+    The scrape surface.
+    """
+    SCRAPE_SURFACE: np.array = np.load(resource_filename(__name__, f"py_impact/scrape_surface.npy"))
+    SCRAPE_SURFACE = np.append(SCRAPE_SURFACE, SCRAPE_SURFACE)
+    """:field
+    50ms of silence. Used for scrapes.
+    """
+    SILENCE_50MS: AudioSegment = AudioSegment.silent(duration=50, frame_rate=SAMPLE_RATE)
+    """:field
+    The maximum velocity allowed for a scrape.
+    """
+    SCRAPE_MAX_VELOCITY: float = 5.0
+    """:field
+    Meters per pixel on the scrape surface.
+    """
+    SCRAPE_M_PER_PIXEL: float = 1394.068 * 10 ** -9
+    """:field
+    The target decibels for scrapes.
+    """
+    SCRAPE_TARGET_DBFS: float = -20.0
 
     def __init__(self, initial_amp: float = 0.5, prevent_distortion: bool = True, logging: bool = False,
                  static_audio_data_overrides: Dict[str, ObjectAudioStatic] = None,
@@ -83,6 +120,15 @@ class PyImpact(AddOn):
         self.static_audio_data: Dict[int, ObjectAudioStatic] = dict()
         self._robot_joints: List[int] = list()
 
+        # Summed scrape masters. Key = primary ID, secondary ID.
+        self._scrape_summed_masters: Dict[Tuple[int, int], AudioSegment] = dict()
+        # Keeping a track of previous scrape indices.
+        self._scrape_previous_index: int = 0
+        # Starting velocity magnitude of scraping object; use in calculating changing band-pass filter.
+        self._scrape_start_velocities: Dict[Tuple[int, int], float] = dict()
+        # Initialize the scraping event counter.
+        self._scrape_events_count: Dict[Tuple[int, int], int] = dict()
+
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_rigidbodies",
                  "frequency": "always"},
@@ -96,6 +142,15 @@ class PyImpact(AddOn):
                 {"$type": "send_static_rigidbodies"}]
 
     def on_send(self, resp: List[bytes]) -> None:
+        """
+        This is called after commands are sent to the build and a response is received.
+
+        Use this function to send commands to the build on the next frame, given the `resp` response.
+        Any commands in the `self.commands` list will be sent on the next frame.
+
+        :param resp: The response from the build.
+        """
+
         # Cache static audio info.
         if not self._cached_audio_info:
             self._cached_audio_info = True
@@ -127,6 +182,39 @@ class PyImpact(AddOn):
                     target_audio = self.static_audio_data[self._collision_events[object_id].primary_id]
                     other_audio = self.static_audio_data[self._collision_events[object_id].secondary_id]
                     command = self.get_impact_sound_command(velocity=self._collision_events[object_id].velocity,
+                                                            contact_normals=self._collision_events[object_id].collision.normals,
+                                                            primary_id=target_audio.object_id,
+                                                            primary_amp=target_audio.amp,
+                                                            primary_material=target_audio.material.name + "_" + str(
+                                                                target_audio.size),
+                                                            primary_mass=target_audio.mass,
+                                                            secondary_id=other_audio.object_id,
+                                                            secondary_amp=other_audio.amp,
+                                                            secondary_material=other_audio.material.name + "_" + str(
+                                                                other_audio.size),
+                                                            secondary_mass=other_audio.mass,
+                                                            resonance=target_audio.resonance)
+            # Generate a scrape sound.
+            elif self._collision_events[object_id].collision_type == CollisionAudioType.scrape:
+                # Generate an environment sound.
+                if self._collision_events[object_id].secondary_id is None:
+                    audio = self.static_audio_data[object_id]
+                    command = self.get_scrape_sound_command(velocity=self._collision_events[object_id].velocity,
+                                                            contact_normals=self._collision_events[object_id].collision.normals,
+                                                            primary_id=object_id,
+                                                            primary_amp=audio.amp,
+                                                            primary_material=audio.material.name + "_" + str(audio.size),
+                                                            primary_mass=audio.mass,
+                                                            secondary_id=self.env_id,
+                                                            secondary_amp=0.5,
+                                                            secondary_material=self.floor.name + "_4",
+                                                            secondary_mass=100,
+                                                            resonance=audio.resonance)
+                # Generate an object sound.
+                else:
+                    target_audio = self.static_audio_data[self._collision_events[object_id].primary_id]
+                    other_audio = self.static_audio_data[self._collision_events[object_id].secondary_id]
+                    command = self.get_scrape_sound_command(velocity=self._collision_events[object_id].velocity,
                                                             contact_normals=self._collision_events[object_id].collision.normals,
                                                             primary_id=target_audio.object_id,
                                                             primary_amp=target_audio.amp,
@@ -376,8 +464,8 @@ class PyImpact(AddOn):
             return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
                     "id": primary_id,
                     "num_frames": impact_audio.length,
-                    "num_channels": 1,
-                    "frame_rate": 44100,
+                    "num_channels": PyImpact.CHANNELS,
+                    "frame_rate": PyImpact.SAMPLE_RATE,
                     "wav_data": impact_audio.wav_str,
                     "robot_joint": primary_id in self._robot_joints,
                     "y_pos_offset": 0.1}
@@ -443,12 +531,213 @@ class PyImpact(AddOn):
                        primary_mass=primary_mass, secondary_id=secondary_id, secondary_material=secondary_material,
                        secondary_amp=secondary_amp, secondary_mass=secondary_mass, resonance=resonance)
 
-        modes_1 = self.object_modes[primary_id][secondary_id].obj1_modes
-        modes_2 = self.object_modes[primary_id][secondary_id].obj2_modes
+        modes_1 = self.object_modes[secondary_id][primary_id].obj1_modes
+        modes_2 = self.object_modes[secondary_id][primary_id].obj2_modes
         h1 = modes_1.sum_modes(resonance=resonance)
         h2 = modes_2.sum_modes(resonance=resonance)
         h = Modes.mode_add(h1, h2)
         return h, min(modes_1.frequencies)
+
+    def get_scrape_sound_command(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
+                                 primary_material: str, primary_amp: float, primary_mass: float,
+                                 secondary_id: int, secondary_material: str, secondary_amp: float,
+                                 secondary_mass: float, resonance: float) -> Optional[dict]:
+        """
+        :param primary_id: The object ID for the primary (target) object.
+        :param primary_material: The material label for the primary (target) object.
+        :param secondary_id: The object ID for the secondary (other) object.
+        :param secondary_material: The material label for the secondary (other) object.
+        :param primary_amp: Sound amplitude of primary (target) object.
+        :param secondary_amp: Sound amplitude of the secondary (other) object.
+        :param resonance: The resonances of the objects.
+        :param velocity: The velocity.
+        :param contact_normals: The collision contact normals.
+        :param primary_mass: The mass of the primary (target) object.
+        :param secondary_mass: The mass of the secondary (target) object.
+
+        :return A command to play a scrape sound.
+        """
+
+        sound = self.get_scrape_sound(velocity=velocity,
+                                      contact_normals=contact_normals,
+                                      primary_id=primary_id,
+                                      primary_material=primary_material,
+                                      primary_amp=primary_amp,
+                                      primary_mass=primary_mass,
+                                      secondary_id=secondary_id,
+                                      secondary_material=secondary_material,
+                                      secondary_amp=secondary_amp,
+                                      secondary_mass=secondary_mass,
+                                      resonance=resonance)
+        if sound is None:
+            return None
+        else:
+            return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
+                    "id": primary_id,
+                    "num_frames": sound.length,
+                    "num_channels": PyImpact.CHANNELS,
+                    "frame_rate": PyImpact.SAMPLE_RATE,
+                    "wav_data": sound.wav_str,
+                    "y_pos_offset": 0}
+
+    def get_scrape_sound(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
+                         primary_material: str, primary_amp: float, primary_mass: float,
+                         secondary_id: int, secondary_material: str, secondary_amp: float, secondary_mass: float,
+                         resonance: float) -> Optional[Base64Sound]:
+        """
+        Create a scrape sound, and return a valid command to play audio data in TDW.
+        "target" should usually be the smaller object, which will play the sound.
+        "other" should be the larger (stationary) object.
+
+        :param primary_id: The object ID for the primary (target) object.
+        :param primary_material: The material label for the primary (target) object.
+        :param secondary_id: The object ID for the secondary (other) object.
+        :param secondary_material: The material label for the secondary (other) object.
+        :param primary_amp: Sound amplitude of primary (target) object.
+        :param secondary_amp: Sound amplitude of the secondary (other) object.
+        :param resonance: The resonances of the objects.
+        :param velocity: The velocity.
+        :param contact_normals: The collision contact normals.
+        :param primary_mass: The mass of the primary (target) object.
+        :param secondary_mass: The mass of the secondary (target) object.
+
+        :return A [`Base64Sound`](../physics_audio/base64_sound.md) object or None if no sound.
+        """
+
+        scrape_key: Tuple[int, int] = (primary_id, secondary_id)
+
+        # Initialize scrape variables; if this is an in=process scrape, these will be replaced bu te stored values.
+        summed_master = AudioSegment.silent(duration=0, frame_rate=PyImpact.SAMPLE_RATE)
+        scrape_event_count = 0
+
+        # Is this a new scrape?
+        if scrape_key in self._scrape_summed_masters:
+            summed_master = self._scrape_summed_masters[scrape_key]
+            scrape_event_count = self._scrape_events_count[scrape_key]
+        else:
+            # No -- add initialized values to dictionaries.
+            self._scrape_summed_masters[scrape_key] = summed_master
+            self._scrape_events_count[scrape_key] = scrape_event_count
+
+        # Get magnitude of velocity of the scraping object.
+        mag = min(np.linalg.norm(velocity), PyImpact.SCRAPE_MAX_VELOCITY)
+
+        # Cache the starting velocity.
+        if scrape_event_count == 0:
+            self._scrape_start_velocities[scrape_key] = mag
+
+        # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
+        db = np.interp(mag ** 2, [0, PyImpact.SCRAPE_MAX_VELOCITY ** 2], [-80, -12])
+
+        # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
+        # We also get the lowest-frequency IR mode, which we use to set the high-pass filter cutoff below.
+        scraping_ir, min_mode_freq = self.get_impulse_response(velocity=velocity,
+                                                               contact_normals=contact_normals,
+                                                               primary_id=primary_id,
+                                                               primary_material=primary_material,
+                                                               primary_amp=primary_amp,
+                                                               primary_mass=primary_mass,
+                                                               secondary_id=secondary_id,
+                                                               secondary_material=secondary_material,
+                                                               secondary_amp=secondary_amp,
+                                                               secondary_mass=secondary_mass,
+                                                               resonance=resonance)
+
+        #   Load the surface texture as a 1D vector
+        #   Create surface texture of desired length
+        #   Calculate first and second derivatives by first principles
+        #   Apply non-linearity on the second derivative
+        #   Apply a variable Gaussian average
+        #   Calculate the horizontal and vertical forces
+        #   Convolve the force with the impulse response
+        dsdx = (PyImpact.SCRAPE_SURFACE[1:] - PyImpact.SCRAPE_SURFACE[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
+        d2sdx2 = (dsdx[1:] - dsdx[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
+
+        dist = mag / 1000
+        num_pts = np.floor(dist / PyImpact.SCRAPE_M_PER_PIXEL)
+        num_pts = int(num_pts)
+        if num_pts == 0:
+            num_pts = 1
+        # No scrape.
+        if num_pts == 1:
+            self._end_scrape(scrape_key)
+            return None
+
+        # interpolate the surface slopes and curvatures based on the velocity magnitude
+        final_ind = self._scrape_previous_index + num_pts
+
+        if final_ind > len(PyImpact.SCRAPE_SURFACE) - 100:
+            self._scrape_previous_index = 0
+            final_ind = num_pts
+
+        vect1 = np.linspace(0, 1, num_pts)
+        vect2 = np.linspace(0, 1, 4010)
+
+        slope_int = np.interp(vect2, vect1, dsdx[self._scrape_previous_index:final_ind])
+        curve_int = np.interp(vect2, vect1, d2sdx2[self._scrape_previous_index:final_ind])
+
+        self._scrape_previous_index = final_ind
+
+        curve_int_tan = np.tanh(curve_int / 1000)
+
+        d2_section = gaussian_filter1d(curve_int_tan, 10)
+
+        vert_force = d2_section
+        hor_force = slope_int
+
+        t_force = vert_force / max(np.abs(vert_force)) + 0.2 * hor_force[:len(vert_force)]
+
+        noise_seg1 = AudioSegment(t_force.tobytes(),
+                                  frame_rate=PyImpact.SAMPLE_RATE,
+                                  sample_width=PyImpact.SCRAPE_SAMPLE_WIDTH,
+                                  channels=PyImpact.CHANNELS)
+        # Normalize gain.
+        noise_seg1.apply_gain(PyImpact.SCRAPE_TARGET_DBFS)
+
+        # Fade head and tail.
+        noise_seg_fade = noise_seg1.fade_in(4).fade_out(4)
+        # Convolve the band-pass filtered sound with the impulse response.
+        conv = sg.fftconvolve(scraping_ir, noise_seg_fade.get_array_of_samples())
+
+        # Again, we need this as an AudioSegment for overlaying with the previous frame's segment.
+        # Convert to 16-bit integers for Unity, normalizing to make sure to minimize loss of precision from truncating floating values.
+        normalized_noise_ints_conv = PyImpact._normalize_16bit_int(conv)
+        noise_seg_conv = AudioSegment(normalized_noise_ints_conv.tobytes(),
+                                      frame_rate=PyImpact.SAMPLE_RATE,
+                                      sample_width=PyImpact.SCRAPE_SAMPLE_WIDTH,
+                                      channels=PyImpact.CHANNELS)
+
+        # Gain-adjust the convolved segment using db value computed earlier.
+        noise_seg_conv = noise_seg_conv.apply_gain(db)
+        if scrape_event_count == 0:
+            # First time through -- append 50 ms of silence to the end of the current segment and make that "master".
+            summed_master = noise_seg_conv + PyImpact.SILENCE_50MS
+        elif scrape_event_count == 1:
+            # Second time through -- append 50 ms silence to start of current segment and overlay onto "master".
+            summed_master = summed_master.overlay(PyImpact.SILENCE_50MS + noise_seg_conv)
+        else:
+            # Pad the end of master with 50 ms of silence, the start of the current segment with (n * 50ms) of silence, and overlay.
+            padded_current = (PyImpact.SILENCE_50MS * scrape_event_count) + noise_seg_conv
+            summed_master = summed_master + PyImpact.SILENCE_50MS
+            summed_master = summed_master.overlay(padded_current)
+
+        # Extract 100ms "chunk" of sound to send over to Unity.
+        start_idx = 100 * scrape_event_count
+        temp = summed_master[-(len(summed_master) - start_idx):]
+        unity_chunk = temp[:100]
+        # Update stored summed waveform.
+        self._scrape_summed_masters[scrape_key] = summed_master
+
+        # Update scrape event count.
+        scrape_event_count += 1
+        self._scrape_events_count[scrape_key] = scrape_event_count
+        # Scrape data is handled differently than impact data, so we'll create a dummy object first.
+        sound = Base64Sound(np.array([0]))
+        # Set the audio data.
+        sound.wav_str = base64.b64encode(unity_chunk.raw_data).decode()
+        sound.length = len(unity_chunk.raw_data)
+        sound.bytes = unity_chunk.raw_data
+        return sound
 
     @staticmethod
     def synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, resonance: float) -> np.array:
@@ -527,6 +816,11 @@ class PyImpact(AddOn):
         self.object_modes.clear()
         # Clear collision data.
         self._collision_events.clear()
+        # Clear scrape data.
+        self._scrape_summed_masters.clear()
+        self._scrape_previous_index = 0
+        self._scrape_start_velocities.clear()
+        self._scrape_events_count.clear()
 
     def log_modes(self, count: int, mode_props: dict, id1: int, id2: int, modes_1: Modes, modes_2: Modes, amp: float, mat1: str, mat2: str):
         """
@@ -663,3 +957,44 @@ class PyImpact(AddOn):
                                                                  size=1,
                                                                  amp=0.2,
                                                                  object_id=joint_id)
+
+    @staticmethod
+    def _normalize_16bit_int(arr: np.array) -> np.array:
+        """
+        Convert numpy float array to normalized 16-bit integers.
+
+        :param arr: Numpy float data to convert.
+
+        :return: The converted numpy array.
+        """
+
+        normalized_floats = PyImpact._normalize_floats(arr)
+
+        return (normalized_floats * 32767).astype(np.int16)
+
+    @staticmethod
+    def _normalize_floats(arr: np.array) -> np.array:
+        """
+        Normalize numpy array of float audio data.
+
+        :param arr: Numpy float data to normalize.
+
+        :return The normalized array.
+        """
+
+        if np.all(arr == 0):
+            return arr
+        else:
+            return arr / np.abs(arr).max()
+
+    def _end_scrape(self, scrape_key: Tuple[int, int]) -> None:
+        """
+        Clean up after a given scrape event has ended.
+        """
+
+        if scrape_key in self._scrape_events_count:
+            del self._scrape_events_count[scrape_key]
+        if scrape_key in self._scrape_summed_masters:
+            del self._scrape_summed_masters[scrape_key]
+        if scrape_key in self._scrape_start_velocities:
+            del self._scrape_start_velocities[scrape_key]

@@ -31,5 +31,5 @@ setup(
     include_package_data=True,
     keywords='unity simulation ml machine-learning',
     install_requires=['pyzmq', 'numpy', 'scipy', 'pillow', 'tqdm', 'psutil', 'boto3', 'botocore', 'requests',
-                      'pyinstaller', 'overrides', 'packaging']
+                      'pyinstaller', 'overrides', 'packaging', 'pydub']
 )

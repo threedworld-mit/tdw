@@ -28,35 +28,6 @@ class AddOn(ABC):
     # The debug add-on will log this command and generate a log.json file.
     c.communicate({"$type": "terminate"})
     ```
-
-    ## Add-ons
-
-    - [Benchmark](benchmark.md)
-    - [CinematicCamera](cinematic_camera.md)
-    - [CollisionManager](collision_manager.md)
-    - [Debug](debug.md)
-    - [EmbodiedAvatar](embodied_avatar.md)
-    - [Floorplan](floorplan.md)
-    - [ImageCapture](image_capture.md)
-    - [Keyboard](keyboard.md)
-    - [ObjectManager](object_manager.md)
-    - [OccupancyMap](occupancy_map.md)
-    - [PhysicsAudioRecorder](physics_audio_recorder.md)
-    - [Robot](robot.md)
-    - [StepPhysics](step_physics.md)
-    - [ThirdPersonCamera](third_person_camera.md)
-
-    Backend:
-
-    - [ModelVerifier](model_verifier.md)
-
-    ## Example controllers
-
-    - `tdw/Python/example_controllers/add_ons.py` How to add multiple add-ons to the controller.
-    - `tdw/Python/example_controller/debug.py` Example implementation of a `Debug` add-on.
-    - `tdw/Python/example_controllers/keyboard_controls.py` Example implementation of a `Keyboard` add-on.
-    - `tdw/Python/example_controllers/cinematic_camera_controls.py` Example implementation of a `CinematicCamera` add-on.
-    - `tdw/Python/example_controllers/occupancy_mapper.py` Generate an occupancy map and create an image of it.
     """
 
     def __init__(self):

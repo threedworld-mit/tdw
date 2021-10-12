@@ -45,6 +45,7 @@ from tdw.FBOutput import MagnebotWheels as MWheels
 from tdw.FBOutput import Occlusion as Occl
 from tdw.FBOutput import Lights as Lites
 from tdw.FBOutput import Categories as Cats
+from tdw.FBOutput import StaticRigidbodies as StatRig
 import numpy as np
 from typing import Tuple, Optional
 
@@ -183,6 +184,20 @@ class Rigidbodies(OutputData):
     def get_angular_velocity(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_vector3(self.data.Objects(index).AngularVelocity)
 
+    def get_sleeping(self, index: int) -> bool:
+        return self.data.Objects(index).Sleeping()
+
+
+class StaticRigidbodies(OutputData):
+    def get_data(self) -> StatRig.StaticRigidbodies:
+        return StatRig.StaticRigidbodies.GetRootAsStaticRigidbodies(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.ObjectsLength()
+
+    def get_id(self, index: int) -> int:
+        return self.data.Objects(index).Id()
+
     def get_mass(self, index: int) -> float:
         return self.data.Objects(index).Mass()
 
@@ -191,6 +206,15 @@ class Rigidbodies(OutputData):
 
     def get_kinematic(self, index: int) -> bool:
         return self.data.Objects(index).Kinematic()
+
+    def get_dynamic_friction(self, index: int) -> float:
+        return self.data.Objects(index).DynamicFriction()
+
+    def get_static_friction(self, index: int) -> float:
+        return self.data.Objects(index).StaticFriction()
+
+    def get_bounciness(self, index: int) -> float:
+        return self.data.Objects(index).Bounciness()
 
 
 class Bounds(OutputData):
@@ -773,6 +797,9 @@ class AudioSources(OutputData):
 
     def get_is_playing(self, index: int) -> bool:
         return self.data.Objects(index).IsPlaying()
+
+    def get_samples(self) -> np.array:
+        return self.data.SamplesAsNumpy()
 
 
 class Raycast(OutputData):

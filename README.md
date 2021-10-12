@@ -136,7 +136,11 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 3. Image+audio videos
 4. The `CinematicCamera` add-on
 
-## 2.10 Robotics
+## 2.10 Agents
+
+1. Overview
+
+### 2.10.1 Robotics
 
 1. [Overview](Documentation/lessons/robotics/overview.md)
 2. [The `Robot` add-on](Documentation/lessons/robotics/robot_add_on.md)
@@ -147,25 +151,36 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 7. [Add a camera to a robot](Documentation/lessons/robotics/add_camera.md)
 8. [Add multiple robots](Documentation/lessons/robotics/multi_robot.md)
 
-High-level API: [magnebot](https://github.com/alters-mit/magnebot)
+### 2.10.2 Magnebots
 
-## 2.11 Navigation
+[`magnebot` (external repo)](https://github.com/alters-mit/magnebot)
+
+### 2.10.3 Human user interaction
+
+1. Overview
+2. Virtual reality
+3. Keyboard controls
+
+### 2.13 Humanoid agents ("Replicants")
+
+1. Overview
+3. ???
+
+### 2.10.4 Embodied avatars
+
+1. The `EmbodiedAvatar`
+
+### 2.10.4 Navigation
 
 1. Overview
 2. NavMesh pathfinding
-3. `OccupancyMap` add-on
+3. Occupancy maps
 
-## 2.12 Human user interaction
-
-1. Overview
-2. VR
-3. Keyboard controls
-
-## 2.13 Humanoid Agents
+### 2.10.5 Multi-agent simulations
 
 1. Overview
-2. Mocap humanoids
-3. Non-physics humanoids
+2. State machines
+3. World state objects
 
 ## 2.14 Misc. topics
 
@@ -175,6 +190,7 @@ High-level API: [magnebot](https://github.com/alters-mit/magnebot)
 4. xpra
 5. Creating composite objects
 6. Paintings
+7. Non-physics humanoids
 
 # 3. API Documentation
 

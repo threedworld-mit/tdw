@@ -212,6 +212,8 @@ class Controller(object):
         if library not in Controller.MODEL_LIBRARIANS:
             Controller.MODEL_LIBRARIANS[library] = ModelLibrarian(library)
         record = Controller.MODEL_LIBRARIANS[library].get_record(model_name)
+        if position is None:
+            position = {"x": 0, "y": 0, "z": 0}
         commands = [{"$type": "add_object",
                      "name": record.name,
                      "url": record.get_url(),

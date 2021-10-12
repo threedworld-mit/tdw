@@ -9,13 +9,15 @@ from csv import DictReader
 import io
 from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision, StaticRobot, SegmentationColors, \
     StaticRigidbodies
+from tdw.collision_data.collision_obj_obj import CollisionObjObj
+from tdw.collision_data.collision_obj_env import CollisionObjEnv
 from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.object_audio_static import ObjectAudioStatic
 from tdw.physics_audio.modes import Modes
 from tdw.physics_audio.base64_sound import Base64Sound
 from tdw.physics_audio.collision_audio_info import CollisionAudioInfo
 from tdw.physics_audio.collision_audio_type import CollisionAudioType
-from tdw.int_pair import IntPair
+from tdw.physics_audio.collision_audio_event import CollisionAudioEvent
 from tdw.object_data.rigidbody import Rigidbody
 from tdw.add_ons.add_on import AddOn
 
@@ -55,7 +57,8 @@ class PyImpact(AddOn):
 
         # Cache the material data. This is use to reset the material modes.
         self.material_data: Dict[str, dict] = {}
-        material_list = ["ceramic", "wood_hard", "wood_medium", "wood_soft", "metal", "glass", "paper", "cardboard", "leather", "fabric", "plastic_hard", "plastic_soft_foam", "rubber", "stone"]
+        material_list = ["ceramic", "wood_hard", "wood_medium", "wood_soft", "metal", "glass", "paper", "cardboard",
+                         "leather", "fabric", "plastic_hard", "plastic_soft_foam", "rubber", "stone"]
         for mat in material_list:
             for i in range(6):
                 # Load the JSON data.
@@ -70,7 +73,11 @@ class PyImpact(AddOn):
         # A dummy ID for the environment. See: `set_default_audio_info()`
         self.env_id: int = -1
 
-        self.static_audio_data_overrides: Dict[str, ObjectAudioStatic] = static_audio_data_overrides
+        self.static_audio_data_overrides: Dict[str, ObjectAudioStatic] = dict()
+        if static_audio_data_overrides is not None:
+            self.static_audio_data_overrides = static_audio_data_overrides
+
+        self._collision_events: Dict[int, CollisionAudioEvent] = dict()
 
         self._cached_audio_info: bool = False
         self.static_audio_data: Dict[int, ObjectAudioStatic] = dict()
@@ -92,157 +99,63 @@ class PyImpact(AddOn):
         # Cache static audio info.
         if not self._cached_audio_info:
             self._cached_audio_info = True
-            # Load the default object info.
-            default_static_audio_data = PyImpact.get_static_audio_data()
-            categories: Dict[int, str] = dict()
-            names: Dict[int, str] = dict()
-            robot_joints: Dict[int, dict] = dict()
-            object_masses: Dict[int, float] = dict()
-            object_bouncinesses: Dict[int, float] = dict()
-            for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i])
-                if r_id == "segm":
-                    segm = SegmentationColors(resp[i])
-                    for j in range(segm.get_num()):
-                        object_id = segm.get_object_id(j)
-                        names[object_id] = segm.get_object_name(j).lower()
-                        categories[object_id] = segm.get_object_category(j)
-                elif r_id == "srob":
-                    srob = StaticRobot(resp[i])
-                    for j in range(srob.get_num_joints()):
-                        joint_id = srob.get_joint_id(j)
-                        robot_joints[joint_id] = {"name": srob.get_joint_name(j),
-                                                  "mass": srob.get_joint_mass(j)}
-                        self._robot_joints.append(joint_id)
-                elif r_id == "srig":
-                    srig = StaticRigidbodies(resp[i])
-                    for j in range(srig.get_num()):
-                        object_masses[srig.get_id(j)] = srig.get_mass(j)
-                        object_bouncinesses[srig.get_id(j)] = srig.get_bounciness(j)
-            need_to_derive: List[int] = list()
-            for object_id in names:
-                name = names[object_id]
-                # Use override data.
-                if name in self.static_audio_data_overrides:
-                    self.static_audio_data[object_id] = self.static_audio_data_overrides[name]
-                # Use default audio data.
-                elif name in default_static_audio_data:
-                    self.static_audio_data[object_id] = default_static_audio_data[name]
-                    self.static_audio_data[object_id].mass = object_masses[object_id]
-                else:
-                    need_to_derive.append(object_id)
-            current_values = self.static_audio_data.values()
-            derived_data: Dict[int, ObjectAudioStatic] = dict()
-            for object_id in need_to_derive:
-                # Fallback option: comparable objects in the same category.
-                objects_in_same_category = [o for o in categories if categories[o] == categories[object_id]]
-                if len(objects_in_same_category) > 0:
-                    amps: List[float] = [a.amp for a in current_values]
-                    materials: List[AudioMaterial] = [a.material for a in current_values]
-                    resonances: List[float] = [a.resonance for a in current_values]
-                    sizes: List[int] = [a.size for a in current_values]
-                # Fallback option: Find objects with similar volume.
-                else:
-                    amps: List[float] = list()
-                    materials: List[AudioMaterial] = list()
-                    resonances: List[float] = list()
-                    sizes: List[int] = list()
-                    for m_id in object_masses:
-                        if m_id == object_id or m_id not in self.static_audio_data:
-                            continue
-                        if np.abs(object_masses[m_id] / object_masses[object_id]) < 1.5:
-                            amps.append(self.static_audio_data[m_id].amp)
-                            materials.append(self.static_audio_data[m_id].material)
-                            resonances.append(self.static_audio_data[m_id].resonance)
-                            sizes.append(self.static_audio_data[m_id].size)
-                # Fallback option: Use default values.
-                if len(amps) == 0:
-                    amp:  float = 0.2
-                    material: AudioMaterial = AudioMaterial.plastic_hard
-                    resonance: float = 0.45
-                    size: int = 1
-                # Get averages or maximums of each value.
-                else:
-                    amp: float = round(sum(amps) / len(amps), 3)
-                    material: AudioMaterial = max(set(materials), key=materials.count)
-                    resonance: float = round(sum(resonances) / len(resonances), 3)
-                    size: int = int(sum(sizes) / len(sizes))
-                derived_data[object_id] = ObjectAudioStatic(name=names[object_id],
-                                                            mass=object_masses[object_id],
-                                                            material=material,
-                                                            bounciness=object_bouncinesses[object_id],
-                                                            resonance=resonance,
-                                                            size=size,
-                                                            amp=amp,
-                                                            library="")
-            # Add the derived data.
-            for object_id in derived_data:
-                self.static_audio_data[object_id] = derived_data[object_id]
-            # Add robot joints.
-            for joint_id in robot_joints:
-                self.static_audio_data[joint_id] = ObjectAudioStatic(name=robot_joints[joint_id]["name"],
-                                                                     mass=robot_joints[joint_id]["mass"],
-                                                                     material=AudioMaterial.metal,
-                                                                     bounciness=0.7,
-                                                                     resonance=0.45,
-                                                                     size=1,
-                                                                     amp=0.2,
-                                                                     library="")
+            self._cache_static_data(resp=resp)
         # Get collision events.
-        collision_events = PyImpact.get_collision_types(resp=resp)
-        rigidbodies: Optional[Rigidbodies] = None
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "rigi":
-                rigidbodies = Rigidbodies(resp[i])
-                break
-        for collision in collision_events[CollisionAudioType.impact]:
+        self._get_collision_types(resp=resp)
+        for object_id in self._collision_events:
             command = None
-            if isinstance(collision, Collision):
-                collider_id = collision.get_collider_id()
-                collidee_id = collision.get_collidee_id()
-                # The target object is the one with less mass.
-                if self.static_audio_data[collider_id].mass < \
-                        self.static_audio_data[collidee_id].mass:
-                    target = collider_id
-                    other = collidee_id
+            # Generate an impact sound.
+            if self._collision_events[object_id].collision_type == CollisionAudioType.impact:
+                # Generate an environment sound.
+                if self._collision_events[object_id].secondary_id is None:
+                    audio = self.static_audio_data[object_id]
+                    command = self.get_impact_sound_command(velocity=self._collision_events[object_id].velocity,
+                                                            contact_normals=self._collision_events[object_id].collision.normals,
+                                                            primary_id=object_id,
+                                                            primary_amp=audio.amp,
+                                                            primary_material=audio.material.name + "_" + str(audio.size),
+                                                            primary_mass=audio.mass,
+                                                            secondary_id=self.env_id,
+                                                            secondary_amp=0.5,
+                                                            # We probably need dedicated wall and floor materials, or maybe they are in size category #6?
+                                                            # Setting to "4" for now, for general debugging purposes
+                                                            secondary_material=self.floor.name + "_4",
+                                                            secondary_mass=100,
+                                                            resonance=audio.resonance)
+                # Generate an object sound.
                 else:
-                    target = collidee_id
-                    other = collider_id
-                target_audio = self.static_audio_data[target]
-                other_audio = self.static_audio_data[other]
-                command = self.get_impact_sound_command(collision=collision,
-                                                        rigidbodies=rigidbodies,
-                                                        target_id=target,
-                                                        target_amp=target_audio.amp,
-                                                        target_mat=target_audio.material.name + "_" + str(target_audio.size),
-                                                        other_id=other,
-                                                        other_amp=other_audio.amp,
-                                                        other_mat=other_audio.material.name + "_" + str(other_audio.size),
-                                                        resonance=target_audio.resonance,
-                                                        resonance_audio=self.resonance_audio)
-            elif isinstance(collision, EnvironmentCollision):
-                object_id = collision.get_object_id()
-                audio = self.static_audio_data[object_id]
-                command = self.get_impact_sound_command(collision=collision,
-                                                        rigidbodies=rigidbodies,
-                                                        target_id=object_id,
-                                                        target_amp=audio.amp,
-                                                        target_mat=audio.material.name + "_" + str(audio.size),
-                                                        other_id=self.env_id,
-                                                        other_amp=0.5,
-                                                        # We probably need dedicated wall and floor materials, or maybe they are in size category #6?
-                                                        # Setting to "4" for now, for general debugging purposes
-                                                        other_mat=self.floor.name + "_4",
-                                                        resonance=audio.resonance,
-                                                        resonance_audio=self.resonance_audio)
+                    target_audio = self.static_audio_data[self._collision_events[object_id].primary_id]
+                    other_audio = self.static_audio_data[self._collision_events[object_id].secondary_id]
+                    command = self.get_impact_sound_command(velocity=self._collision_events[object_id].velocity,
+                                                            contact_normals=self._collision_events[object_id].collision.normals,
+                                                            primary_id=target_audio.object_id,
+                                                            primary_amp=target_audio.amp,
+                                                            primary_material=target_audio.material.name + "_" + str(
+                                                                target_audio.size),
+                                                            primary_mass=target_audio.mass,
+                                                            secondary_id=other_audio.object_id,
+                                                            secondary_amp=other_audio.amp,
+                                                            secondary_material=other_audio.material.name + "_" + str(
+                                                                other_audio.size),
+                                                            secondary_mass=other_audio.mass,
+                                                            resonance=target_audio.resonance)
             # Append impact sound commands.
             if command is not None:
                 self.commands.append(command)
 
-    @staticmethod
-    def get_collision_types(resp: List[bytes], previous: Dict[tuple, float]) -> Dict[CollisionAudioType, List[Union[Collision, EnvironmentCollision]]]:
-        collisions: Dict[tuple, List[Union[Collision, EnvironmentCollision]]] = dict()
+    def _get_collision_types(self, resp: List[bytes]) -> None:
+        """
+        Get all collision types on this frame. Update previous area data.
+
+        :param resp: The response from the build.
+        """
+
+        # Collision events per object on this frame. We'll only care about the most significant one.
+        collision_events_per_object: Dict[int, List[CollisionAudioEvent]] = dict()
+        # Get the previous areas.
+        previous_areas: Dict[int, float] = {k: v.area for k, v in self._collision_events.items()}
+        # Clear the collision events.
+        self._collision_events.clear()
         rigidbody_data: Dict[int, Rigidbody] = dict()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -254,53 +167,42 @@ class PyImpact(AddOn):
                                                                       angular_velocity=np.array(
                                                                           rigidbodies.get_angular_velocity(j)),
                                                                       sleeping=rigidbodies.get_sleeping(j))
+                break
+        # Get collision data.
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
             # Parse a collision.
-            elif r_id == "coll":
+            if r_id == "coll":
                 collision = Collision(resp[i])
-                ids = (collision.get_collider_id(), collision.get_collidee_id())
-                if ids not in collisions:
-                    collisions[ids] = list()
-                collisions[ids].append(collision)
+                collider_id = collision.get_collider_id()
+                collidee_id = collision.get_collidee_id()
+                event = CollisionAudioEvent(collision=CollisionObjObj(collision),
+                                            object_0_static=self.static_audio_data[collider_id],
+                                            object_0_dynamic=rigidbody_data[collider_id],
+                                            object_1_static=self.static_audio_data[collidee_id],
+                                            object_1_dynamic=rigidbody_data[collidee_id],
+                                            previous_areas=previous_areas)
+                if event.primary_id not in collision_events_per_object:
+                    collision_events_per_object[event.primary_id] = list()
+                collision_events_per_object[event.primary_id].append(event)
+            # Parse an environment collision.
             elif r_id == "enco":
                 collision = EnvironmentCollision(resp[i])
-                ids = (collision.get_object_id(), None)
-                if ids not in collisions:
-                    collisions[ids] = list()
-                collisions[ids].append(collision)
-        collision_events: Dict[CollisionAudioType, List[Union[Collision, EnvironmentCollision]]] = {CollisionAudioType.impact: [],
-                                                                                                    CollisionAudioType.scrape: [],
-                                                                                                    CollisionAudioType.roll: []}
-        areas: Dict[tuple, float] = dict()
-        for int_pair in collisions:
-            # Sum the area of all collisions between these two.
-            area = 0
-            is_exit = False
-            for c in collisions[int_pair]:
-                if c.get_state() == "exit":
-                    area = 0
-                    is_exit = True
-                    break
-                area += PyImpact._get_contact_area(c)
-            # There was at least one exit event.
-            if is_exit:
-                continue
-            # This is a new event, implying an impact.
-            areas[int_pair] = area
-            if int_pair not in previous:
-                collision_events[CollisionAudioType.impact].extend(collisions[int_pair])
-            # The contact area changed suddenly, implying an impact.
-            elif area / previous[int_pair] > 1.5:
-                collision_events[CollisionAudioType.impact].extend(collisions[int_pair])
-            else:
-                # Sum the angular velocities.
-                angular_velocity = np.linalg.norm(rigidbody_data[int_pair[0]].angular_velocity)
-                if int_pair[1] is not None:
-                    angular_velocity += np.linalg.norm(rigidbody_data[int_pair[1]].angular_velocity)
-                if angular_velocity > 0.1:
-                    collision_events[CollisionAudioType.roll].extend(collisions[int_pair])
-                else:
-                    collision_events[CollisionAudioType.scrape].extend(collisions[int_pair])
-        return collisions
+                collider_id = collision.get_object_id()
+                event = CollisionAudioEvent(collision=CollisionObjEnv(collision),
+                                            object_0_static=self.static_audio_data[collider_id],
+                                            object_0_dynamic=rigidbody_data[collider_id],
+                                            previous_areas=previous_areas)
+                if event.primary_id not in collision_events_per_object:
+                    collision_events_per_object[event.primary_id] = list()
+                collision_events_per_object[event.primary_id].append(event)
+        # Get the significant collision events per object.
+        for primary_id in collision_events_per_object:
+            events: List[CollisionAudioEvent] = [e for e in collision_events_per_object[primary_id] if e.magnitude > 0 
+                                                 and e.collision_type != CollisionAudioType.none]
+            if len(events) > 0:
+                event: CollisionAudioEvent = max(events, key=lambda x: x.magnitude)
+                self._collision_events[event.primary_id] = event
 
     def get_log(self) -> dict:
         """
@@ -348,107 +250,92 @@ class PyImpact(AddOn):
                 t = np.append(t, jt * 1e3)
         return Modes(f, p, t)
 
-    def get_sound(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, id1: int, mat1: str, id2: int, mat2: str, other_amp: float, target_amp: float, resonance: float) -> Optional[Base64Sound]:
+    def get_sound(self, velocity: np.array, contact_normals: List[np.array],
+                  primary_id: int, primary_material: str, primary_amp: float, primary_mass: float,
+                  secondary_id: int, secondary_material: str, secondary_amp: float, secondary_mass: float,
+                  resonance: float) -> Optional[Base64Sound]:
         """
         Produce sound of two colliding objects as a byte array.
 
-        :param collision: TDW `Collision` or `EnvironmentCollision` output data.
-        :param rigidbodies: TDW `Rigidbodies` output data.
-        :param id1: The object ID for one of the colliding objects.
-        :param mat1: The material label for one of the colliding objects.
-        :param id2: The object ID for the other object.
-        :param mat2: The material label for the other object.
-        :param other_amp: Sound amplitude of object 2.
-        :param target_amp: Sound amplitude of object 1.
+        :param primary_id: The object ID for the primary (target) object.
+        :param primary_material: The material label for the primary (target) object.
+        :param secondary_id: The object ID for the secondary (other) object.
+        :param secondary_material: The material label for the secondary (other) object.
+        :param primary_amp: Sound amplitude of primary (target) object.
+        :param secondary_amp: Sound amplitude of the secondary (other) object.
         :param resonance: The resonances of the objects.
+        :param velocity: The velocity.
+        :param contact_normals: The collision contact normals.
+        :param primary_mass: The mass of the primary (target) object.
+        :param secondary_mass: The mass of the secondary (target) object.
 
         :return Sound data as a Base64Sound object.
         """
 
         # The sound amplitude of object 2 relative to that of object 1.
-        amp2re1 = other_amp / target_amp
+        amp2re1 = secondary_amp / primary_amp
 
         # Set the object modes.
-        if id2 not in self.object_modes:
-            self.object_modes.update({id2: {}})
-        if id1 not in self.object_modes[id2]:
-            self.object_modes[id2].update({id1: CollisionAudioInfo(self._get_object_modes(mat2),
-                                                                   self._get_object_modes(mat1),
-                                                                   amp=target_amp * self.initial_amp)})
-        obj_col = isinstance(collision, Collision)
-
+        if secondary_id not in self.object_modes:
+            self.object_modes.update({secondary_id: {}})
+        if primary_id not in self.object_modes[secondary_id]:
+            self.object_modes[secondary_id].update({primary_id: CollisionAudioInfo(self._get_object_modes(secondary_material),
+                                                                                   self._get_object_modes(
+                                                                                       primary_material),
+                                                                                   amp=primary_amp * self.initial_amp)})
         # Unpack useful parameters.
-        # Compute normal velocity at impact.
-        vel = 0
-        if obj_col:
-            vel = collision.get_relative_velocity()
-        else:
-            for i in range(rigidbodies.get_num()):
-                if rigidbodies.get_id(i) == id2:
-                    vel = rigidbodies.get_velocity(i)
-                    # If the y coordinate of the velocity is negative, it implies a scrape or roll along the floor.
-                    if vel[1] < 0:
-                        return None
-                    break
-        vel = np.asarray(vel)
-        speed = np.square(vel)
+        speed = np.square(velocity)
         speed = np.sum(speed)
         speed = math.sqrt(speed)
-        nvel = vel / np.linalg.norm(vel)
-        num_contacts = collision.get_num_contacts()
+        nvel = velocity / np.linalg.norm(velocity)
         nspd = []
-        for jc in range(0, num_contacts):
-            tmp = np.asarray(collision.get_contact_normal(jc))
+        for jc in range(len(contact_normals)):
+            tmp = np.asarray(contact_normals[jc])
             tmp = tmp / np.linalg.norm(tmp)
             tmp = np.arccos(np.clip(np.dot(tmp, nvel), -1.0, 1.0))
             # Scale the speed by the angle (i.e. we want speed Normal to the surface).
             tmp = speed * np.cos(tmp)
             nspd.append(tmp)
         normal_speed = np.mean(nspd)
-        # Use default values for environment collisions.
-        if not obj_col:
-            m1 = 100
-            m2 = self.static_audio_data[id2].mass
-        # Use the object masses.
-        elif id1 in self.static_audio_data and id2 in self.static_audio_data:
-            m1 = self.static_audio_data[id1].mass
-            m2 = self.static_audio_data[id2].mass
-        # Failed to generate a sound.
-        else:
-            return None
-        mass = np.min([m1, m2])
+        mass = np.min([primary_mass, secondary_mass])
 
         # Re-scale the amplitude.
-        if self.object_modes[id2][id1].count == 0:
+        if self.object_modes[secondary_id][primary_id].count == 0:
             # Sample the modes.
-            sound, modes_1, modes_2 = self.make_impact_audio(amp2re1, mass, mat1=mat1, mat2=mat2, id1=id1, id2=id2, resonance=resonance)
+            sound, modes_1, modes_2 = self.make_impact_audio(amp2re1, mass,
+                                                             mat1=primary_material,
+                                                             mat2=secondary_material,
+                                                             id1=primary_id,
+                                                             id2=secondary_id,
+                                                             resonance=resonance)
             # Save collision info - we will need for later collisions.
-            amp = self.object_modes[id2][id1].amp
-            self.object_modes[id2][id1].init_speed = normal_speed
-            self.object_modes[id2][id1].obj1_modes = modes_1
-            self.object_modes[id2][id1].obj2_modes = modes_2
+            amp = self.object_modes[secondary_id][primary_id].amp
+            self.object_modes[secondary_id][primary_id].init_speed = normal_speed
+            self.object_modes[secondary_id][primary_id].obj1_modes = modes_1
+            self.object_modes[secondary_id][primary_id].obj2_modes = modes_2
 
         else:
-            amp = self.object_modes[id2][id1].amp * normal_speed / self.object_modes[id2][id1].init_speed
+            amp = self.object_modes[secondary_id][primary_id].amp * normal_speed / self.object_modes[secondary_id][primary_id].init_speed
             # Adjust modes here so that two successive impacts are not identical.
-            modes_1 = self.object_modes[id2][id1].obj1_modes
-            modes_2 = self.object_modes[id2][id1].obj2_modes
+            modes_1 = self.object_modes[secondary_id][primary_id].obj1_modes
+            modes_2 = self.object_modes[secondary_id][primary_id].obj2_modes
             modes_1.powers = modes_1.powers + np.random.normal(0, 2, len(modes_1.powers))
             modes_2.powers = modes_2.powers + np.random.normal(0, 2, len(modes_2.powers))
             sound = PyImpact.synth_impact_modes(modes_1, modes_2, mass, resonance)
-            self.object_modes[id2][id1].obj1_modes = modes_1
-            self.object_modes[id2][id1].obj2_modes = modes_2
+            self.object_modes[secondary_id][primary_id].obj1_modes = modes_1
+            self.object_modes[secondary_id][primary_id].obj2_modes = modes_2
 
         if self.logging:
             mode_props = dict()
-            self.log_modes(self.object_modes[id2][id1].count, mode_props, id1, id2, modes_1, modes_2, amp, str(mat1), str(mat2))
+            self.log_modes(self.object_modes[secondary_id][primary_id].count, mode_props, primary_id, secondary_id,
+                           modes_1, modes_2, amp, primary_material, secondary_material)
             
         # On rare occasions, it is possible for PyImpact to fail to generate a sound.
         if sound is None:
             return None
 
         # Count the collisions.
-        self.object_modes[id2][id1].count_collisions()
+        self.object_modes[secondary_id][primary_id].count_collisions()
 
         # Prevent distortion by clamping the amp.
         if self.prevent_distortion and np.abs(amp) > 0.99:
@@ -457,35 +344,42 @@ class PyImpact(AddOn):
         sound = amp * sound / np.max(np.abs(sound))
         return Base64Sound(sound)
 
-    def get_impact_sound_command(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, target_id: int, target_mat: str, target_amp: float, other_id: int, other_mat: str, other_amp: float, resonance: float, resonance_audio: bool = False) -> Optional[dict]:
+    def get_impact_sound_command(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
+                                 primary_material: str, primary_amp: float, primary_mass: float,
+                                 secondary_id: int, secondary_material: str, secondary_amp: float,
+                                 secondary_mass: float, resonance: float) -> Optional[dict]:
         """
         Create an impact sound, and return a valid command to play audio data in TDW.
         "target" should usually be the smaller object, which will play the sound.
         "other" should be the larger (stationary) object.
 
-        :param collision: TDW `Collision` or `EnvironmentCollision` output data.
-        :param target_amp: The target's amp value.
-        :param target_mat: The target's audio material.
-        :param other_amp: The other object's amp value.
-        :param other_id: The other object's ID.
-        :param other_mat: The other object's audio material.
-        :param rigidbodies: TDW `Rigidbodies` output data.
-        :param target_id: The ID of the object that will play the sound.
-        :param resonance: The resonance of the objects.
-        :param resonance_audio: If False, return a `play_audio_data` command. If True, return a `play_point_source_data` command (useful only with Resonance Audio; see Command API).
+        :param primary_id: The object ID for the primary (target) object.
+        :param primary_material: The material label for the primary (target) object.
+        :param secondary_id: The object ID for the secondary (other) object.
+        :param secondary_material: The material label for the secondary (other) object.
+        :param primary_amp: Sound amplitude of primary (target) object.
+        :param secondary_amp: Sound amplitude of the secondary (other) object.
+        :param resonance: The resonances of the objects.
+        :param velocity: The velocity.
+        :param contact_normals: The collision contact normals.
+        :param primary_mass: The mass of the primary (target) object.
+        :param secondary_mass: The mass of the secondary (target) object.
 
         :return A `play_audio_data` or `play_point_source_data` command that can be sent to the build via `Controller.communicate()`.
         """
 
-        impact_audio = self.get_sound(collision, rigidbodies, other_id, other_mat, target_id, target_mat, other_amp, target_amp, resonance)
+        impact_audio = self.get_sound(velocity=velocity, contact_normals=contact_normals, primary_id=primary_id,
+                                      primary_material=primary_material, primary_amp=primary_amp,
+                                      primary_mass=primary_mass, secondary_id=secondary_id, secondary_material=secondary_material,
+                                      secondary_amp=secondary_amp, secondary_mass=secondary_mass, resonance=resonance)
         if impact_audio is not None:
-            return {"$type": "play_audio_data" if not resonance_audio else "play_point_source_data",
-                    "id": target_id,
+            return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
+                    "id": primary_id,
                     "num_frames": impact_audio.length,
                     "num_channels": 1,
                     "frame_rate": 44100,
                     "wav_data": impact_audio.wav_str,
-                    "robot_joint": target_id in self._robot_joints,
+                    "robot_joint": primary_id in self._robot_joints,
                     "y_pos_offset": 0.1}
         # If PyImpact failed to generate a sound (which is rare!), fail silently here.
         else:
@@ -522,26 +416,35 @@ class PyImpact(AddOn):
         snth = PyImpact.synth_impact_modes(modes_1, modes_2, mass, resonance)
         return snth, modes_1, modes_2
 
-    def get_impulse_response(self, collision: Union[Collision, EnvironmentCollision], rigidbodies: Rigidbodies, other_id: int, other_mat: str, target_id: int, target_mat: str, other_amp: float, target_amp: float, resonance: float) -> np.array:
+    def get_impulse_response(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
+                             primary_material: str, primary_amp: float, primary_mass: float,
+                             secondary_id: int, secondary_material: str, secondary_amp: float, secondary_mass: float,
+                             resonance: float) -> np.array:
         """
         Generate an impulse response from the modes for two specified objects.
 
-        :param collision: TDW `Collision` or `EnvironmentCollision` output data.
-        :param target_mat: The target's audio material.
-        :param other_id: The other object's ID.
-        :param other_mat: The other object's audio material.
-        :param rigidbodies: TDW `Rigidbodies` output data.
-        :param target_id: The ID of the object that will play the sound.
-        :param other_amp: Sound amplitude of other object.
-        :param target_amp: Sound amplitude of target object.
-        :param resonance: The resonance of the objects.
+        :param primary_id: The object ID for the primary (target) object.
+        :param primary_material: The material label for the primary (target) object.
+        :param secondary_id: The object ID for the secondary (other) object.
+        :param secondary_material: The material label for the secondary (other) object.
+        :param primary_amp: Sound amplitude of primary (target) object.
+        :param secondary_amp: Sound amplitude of the secondary (other) object.
+        :param resonance: The resonances of the objects.
+        :param velocity: The velocity.
+        :param contact_normals: The collision contact normals.
+        :param primary_mass: The mass of the primary (target) object.
+        :param secondary_mass: The mass of the secondary (target) object.
 
         :return The impulse response.
         """
-        self.get_sound(collision, rigidbodies, other_id, other_mat, target_id, target_mat, other_amp, target_amp, resonance)
 
-        modes_1 = self.object_modes[target_id][other_id].obj1_modes
-        modes_2 = self.object_modes[target_id][other_id].obj2_modes
+        self.get_sound(velocity=velocity, contact_normals=contact_normals, primary_id=primary_id,
+                       primary_material=primary_material, primary_amp=primary_amp,
+                       primary_mass=primary_mass, secondary_id=secondary_id, secondary_material=secondary_material,
+                       secondary_amp=secondary_amp, secondary_mass=secondary_mass, resonance=resonance)
+
+        modes_1 = self.object_modes[primary_id][secondary_id].obj1_modes
+        modes_2 = self.object_modes[primary_id][secondary_id].obj2_modes
         h1 = modes_1.sum_modes(resonance=resonance)
         h2 = modes_2.sum_modes(resonance=resonance)
         h = Modes.mode_add(h1, h2)
@@ -605,7 +508,7 @@ class PyImpact(AddOn):
                 o = ObjectAudioStatic(name=row["name"], amp=float(row["amp"]), mass=float(row["mass"]),
                                       material=AudioMaterial[row["material"]], library=row["library"],
                                       bounciness=float(row["bounciness"]), resonance=float(row["resonance"]),
-                                      size=int(row["size"]))
+                                      size=int(row["size"]), object_id=0)
                 objects.update({o.name: o})
 
         return objects
@@ -623,6 +526,8 @@ class PyImpact(AddOn):
         self.static_audio_data.clear()
         # Clear the object data.
         self.object_modes.clear()
+        # Clear collision data.
+        self._collision_events.clear()
 
     def log_modes(self, count: int, mode_props: dict, id1: int, id2: int, modes_1: Modes, modes_2: Modes, amp: float, mat1: str, mat2: str):
         """
@@ -652,3 +557,112 @@ class PyImpact(AddOn):
         mode_props["modes_2.powers"] = modes_2.powers.tolist()
         mode_props["modes_2.decay_times"] = modes_2.decay_times.tolist()
         self.mode_properties_log[str(id1) + "_" + str(id2) + "__" + str(count)] = mode_props
+
+    def _cache_static_data(self, resp: List[bytes]) -> None:
+        """
+        Cache static data.
+
+        :param resp: The response from the build.
+        """
+
+        # Load the default object info.
+        default_static_audio_data = PyImpact.get_static_audio_data()
+        categories: Dict[int, str] = dict()
+        names: Dict[int, str] = dict()
+        robot_joints: Dict[int, dict] = dict()
+        object_masses: Dict[int, float] = dict()
+        object_bouncinesses: Dict[int, float] = dict()
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "segm":
+                segm = SegmentationColors(resp[i])
+                for j in range(segm.get_num()):
+                    object_id = segm.get_object_id(j)
+                    names[object_id] = segm.get_object_name(j).lower()
+                    categories[object_id] = segm.get_object_category(j)
+            elif r_id == "srob":
+                srob = StaticRobot(resp[i])
+                for j in range(srob.get_num_joints()):
+                    joint_id = srob.get_joint_id(j)
+                    robot_joints[joint_id] = {"name": srob.get_joint_name(j),
+                                              "mass": srob.get_joint_mass(j)}
+                    self._robot_joints.append(joint_id)
+            elif r_id == "srig":
+                srig = StaticRigidbodies(resp[i])
+                for j in range(srig.get_num()):
+                    object_masses[srig.get_id(j)] = srig.get_mass(j)
+                    object_bouncinesses[srig.get_id(j)] = srig.get_bounciness(j)
+        need_to_derive: List[int] = list()
+        for object_id in names:
+            name = names[object_id]
+            # Use override data.
+            if name in self.static_audio_data_overrides:
+                self.static_audio_data[object_id] = self.static_audio_data_overrides[name]
+                self.static_audio_data[object_id].mass = object_masses[object_id]
+                self.static_audio_data[object_id].object_id = object_id
+            # Use default audio data.
+            elif name in default_static_audio_data:
+                self.static_audio_data[object_id] = default_static_audio_data[name]
+                self.static_audio_data[object_id].mass = object_masses[object_id]
+                self.static_audio_data[object_id].object_id = object_id
+            else:
+                need_to_derive.append(object_id)
+        current_values = self.static_audio_data.values()
+        derived_data: Dict[int, ObjectAudioStatic] = dict()
+        for object_id in need_to_derive:
+            # Fallback option: comparable objects in the same category.
+            objects_in_same_category = [o for o in categories if categories[o] == categories[object_id]]
+            if len(objects_in_same_category) > 0:
+                amps: List[float] = [a.amp for a in current_values]
+                materials: List[AudioMaterial] = [a.material for a in current_values]
+                resonances: List[float] = [a.resonance for a in current_values]
+                sizes: List[int] = [a.size for a in current_values]
+            # Fallback option: Find objects with similar volume.
+            else:
+                amps: List[float] = list()
+                materials: List[AudioMaterial] = list()
+                resonances: List[float] = list()
+                sizes: List[int] = list()
+                for m_id in object_masses:
+                    if m_id == object_id or m_id not in self.static_audio_data:
+                        continue
+                    if np.abs(object_masses[m_id] / object_masses[object_id]) < 1.5:
+                        amps.append(self.static_audio_data[m_id].amp)
+                        materials.append(self.static_audio_data[m_id].material)
+                        resonances.append(self.static_audio_data[m_id].resonance)
+                        sizes.append(self.static_audio_data[m_id].size)
+            # Fallback option: Use default values.
+            if len(amps) == 0:
+                amp: float = 0.2
+                material: AudioMaterial = AudioMaterial.plastic_hard
+                resonance: float = 0.45
+                size: int = 1
+            # Get averages or maximums of each value.
+            else:
+                amp: float = round(sum(amps) / len(amps), 3)
+                material: AudioMaterial = max(set(materials), key=materials.count)
+                resonance: float = round(sum(resonances) / len(resonances), 3)
+                size: int = int(sum(sizes) / len(sizes))
+            derived_data[object_id] = ObjectAudioStatic(name=names[object_id],
+                                                        mass=object_masses[object_id],
+                                                        material=material,
+                                                        bounciness=object_bouncinesses[object_id],
+                                                        resonance=resonance,
+                                                        size=size,
+                                                        amp=amp,
+                                                        library="",
+                                                        object_id=object_id)
+        # Add the derived data.
+        for object_id in derived_data:
+            self.static_audio_data[object_id] = derived_data[object_id]
+        # Add robot joints.
+        for joint_id in robot_joints:
+            self.static_audio_data[joint_id] = ObjectAudioStatic(name=robot_joints[joint_id]["name"],
+                                                                 mass=robot_joints[joint_id]["mass"],
+                                                                 material=AudioMaterial.metal,
+                                                                 bounciness=0.7,
+                                                                 resonance=0.45,
+                                                                 size=1,
+                                                                 amp=0.2,
+                                                                 library="",
+                                                                 object_id=joint_id)

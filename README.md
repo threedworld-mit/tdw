@@ -121,11 +121,11 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 ## 2.8 Audio
 
-1. Overview
+1. [Overview](Documentation/lessons/audio/overview.md)
 2. Initialize audio and play .wav files
 3. Resonance Audio
 4. `PyImpact` (dynamic impact sounds)
-5. Record audio
+5. Recording audio
 6. Audio perception
 
 High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge)

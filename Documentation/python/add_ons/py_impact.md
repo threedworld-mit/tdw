@@ -72,7 +72,7 @@ Produce sound of two colliding objects as a byte array.
 | --- | --- | --- | --- |
 | primary_id |  int |  | The object ID for the primary (target) object. |
 | primary_material |  str |  | The material label for the primary (target) object. |
-| secondary_id |  int |  | The object ID for the secondary (other) object. |
+| secondary_id |  Optional[int] |  | The object ID for the secondary (other) object. |
 | secondary_material |  str |  | The material label for the secondary (other) object. |
 | primary_amp |  float |  | Sound amplitude of primary (target) object. |
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
@@ -97,7 +97,7 @@ Create an impact sound, and return a valid command to play audio data in TDW.
 | --- | --- | --- | --- |
 | primary_id |  int |  | The object ID for the primary (target) object. |
 | primary_material |  str |  | The material label for the primary (target) object. |
-| secondary_id |  int |  | The object ID for the secondary (other) object. |
+| secondary_id |  Optional[int] |  | The object ID for the secondary (other) object. |
 | secondary_material |  str |  | The material label for the secondary (other) object. |
 | primary_amp |  float |  | Sound amplitude of primary (target) object. |
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
@@ -162,7 +162,7 @@ _Returns:_  The impulse response.
 | --- | --- | --- | --- |
 | primary_id |  int |  | The object ID for the primary (target) object. |
 | primary_material |  str |  | The material label for the primary (target) object. |
-| secondary_id |  int |  | The object ID for the secondary (other) object. |
+| secondary_id |  Optional[int] |  | The object ID for the secondary (other) object. |
 | secondary_material |  str |  | The material label for the secondary (other) object. |
 | primary_amp |  float |  | Sound amplitude of primary (target) object. |
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |

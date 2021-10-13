@@ -89,8 +89,12 @@ class PhysicsAudioRecorder(AddOn):
         self.recording = True
         if isinstance(output_path, str):
             self.output_path = Path(output_path)
-        if not output_path.parent.exists:
+        else:
+            self.output_path = output_path
+        if not self.output_path.parent.exists:
             self.output_path.parent.mkdir(parents=True)
+        if self.output_path.exists():
+            self.output_path.unlink()
 
         self._frame = 0
         # Start listening.

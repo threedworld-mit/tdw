@@ -15,6 +15,15 @@ class CollisionAudioEvent:
     Includes collision data as well as the "primary" and "secondary" objects and the type of audio event.
     """
 
+    """:field
+    If the angular velocity is this or greater, the event is a roll, not a scrape.
+    """
+    ROLL_ANGULAR_VELOCITY: float = 0.5
+    """:field
+    If the area of the collision increases by at least this factor during a stay event, the collision is actually an impact.
+    """
+    IMPACT_AREA_RATIO: float = 1.5
+
     def __init__(self, collision: CollisionBase, object_0_static: ObjectAudioStatic, object_0_dynamic: Rigidbody,
                  previous_areas: Dict[int, float], object_1_static: ObjectAudioStatic = None,
                  object_1_dynamic: Rigidbody = None):
@@ -86,7 +95,7 @@ class CollisionAudioEvent:
         if self.collision.state == "stay":
             self._set_as_impact(obj_obj=obj_obj, object_0_static=object_0_static, object_1_static=object_1_static)
             # This is a scrape or a roll.
-            if previous_area is None or (previous_area > 0 and self.area / previous_area < 1.5):
+            if previous_area is None or (previous_area > 0 and self.area / previous_area < CollisionAudioEvent.IMPACT_AREA_RATIO):
                 self._set_as_impact(obj_obj=obj_obj, object_0_static=object_0_static, object_1_static=object_1_static)
                 # Get the angular velocity of the primary object.
                 if obj_obj:
@@ -104,7 +113,7 @@ class CollisionAudioEvent:
                 else:
                     angular_velocity = object_0_dynamic.angular_velocity
                 # If the primary object has a high angular velocity, this is a roll.
-                if np.linalg.norm(angular_velocity) > 0.5:
+                if np.linalg.norm(angular_velocity) > CollisionAudioEvent.ROLL_ANGULAR_VELOCITY:
                     self.collision_type = CollisionAudioType.roll
                 # If the primary object has a low angular velocity, this is a scrape.
                 else:

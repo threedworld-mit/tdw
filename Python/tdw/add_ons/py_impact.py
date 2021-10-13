@@ -70,9 +70,41 @@ class PyImpact(AddOn):
     """
     SCRAPE_TARGET_DBFS: float = -20.0
     """:field
-    If the angular velocity is this or greater, the event is a roll, not a scrape.
+    The default amp value for objects.
     """
-    ROLL_ANGULAR_VELOCITY: float = 10
+    DEFAULT_AMP: float = 0.2
+    """:field
+    The default [material](../physics_audio/audio_material.md) for objects.
+    """
+    DEFAULT_MATERIAL: AudioMaterial = AudioMaterial.plastic_hard
+    """:field
+    The default resonance value for objects.
+    """
+    DEFAULT_RESONANCE: float = 0.45
+    """:field
+    The default audio size "bucket" for objects.
+    """
+    DEFAULT_SIZE: int = 1
+    """:field
+    The assumed bounciness value for robot joints.
+    """
+    ROBOT_JOINT_BOUNCINESS: float = 0.6
+    """:field
+    The [material](../physics_audio/audio_material.md) used for robot joints.
+    """
+    ROBOT_JOINT_MATERIAL: AudioMaterial = AudioMaterial.metal
+    """:field
+    The amp value for the floor.
+    """
+    FLOOR_AMP: float = 0.5
+    """:field
+    The size "bucket" for the floor.
+    """
+    FLOOR_SIZE: int = 4
+    """:field
+    The mass of the floor.
+    """
+    FLOOR_MASS: int = 100
 
     def __init__(self, initial_amp: float = 0.5, prevent_distortion: bool = True, logging: bool = False,
                  static_audio_data_overrides: Dict[str, ObjectAudioStatic] = None,
@@ -110,9 +142,6 @@ class PyImpact(AddOn):
 
         # Create empty dictionary for log.
         self.mode_properties_log = dict()
-
-        # A dummy ID for the environment. See: `set_default_audio_info()`
-        self.env_id: int = -1
 
         self.static_audio_data_overrides: Dict[str, ObjectAudioStatic] = dict()
         if static_audio_data_overrides is not None:
@@ -174,12 +203,10 @@ class PyImpact(AddOn):
                                                             primary_amp=audio.amp,
                                                             primary_material=audio.material.name + "_" + str(audio.size),
                                                             primary_mass=audio.mass,
-                                                            secondary_id=self.env_id,
-                                                            secondary_amp=0.5,
-                                                            # We probably need dedicated wall and floor materials, or maybe they are in size category #6?
-                                                            # Setting to "4" for now, for general debugging purposes
-                                                            secondary_material=self.floor.name + "_4",
-                                                            secondary_mass=100,
+                                                            secondary_id=None,
+                                                            secondary_amp=PyImpact.FLOOR_AMP,
+                                                            secondary_material=self._get_floor_material_name(),
+                                                            secondary_mass=PyImpact.FLOOR_MASS,
                                                             resonance=audio.resonance)
                 # Generate an object sound.
                 else:
@@ -209,10 +236,10 @@ class PyImpact(AddOn):
                                                             primary_amp=audio.amp,
                                                             primary_material=audio.material.name + "_" + str(audio.size),
                                                             primary_mass=audio.mass,
-                                                            secondary_id=self.env_id,
-                                                            secondary_amp=0.5,
-                                                            secondary_material=self.floor.name + "_4",
-                                                            secondary_mass=100,
+                                                            secondary_id=None,
+                                                            secondary_amp=PyImpact.FLOOR_AMP,
+                                                            secondary_material=self._get_floor_material_name(),
+                                                            secondary_mass=PyImpact.FLOOR_MASS,
                                                             resonance=audio.resonance)
                 # Generate an object sound.
                 else:
@@ -234,6 +261,15 @@ class PyImpact(AddOn):
             # Append impact sound commands.
             if command is not None:
                 self.commands.append(command)
+
+    def _get_floor_material_name(self) -> str:
+        """
+        :return: The name of the floor material.
+        """
+
+        # We probably need dedicated wall and floor materials, or maybe they are in size category #6?
+        # Setting to "4" for now, for general debugging purposes.
+        return f"{self.floor.name}_{PyImpact.FLOOR_SIZE}"
 
     def _get_collision_types(self, resp: List[bytes]) -> None:
         """
@@ -303,16 +339,6 @@ class PyImpact(AddOn):
 
         return self.mode_properties_log
 
-    @staticmethod
-    def _get_contact_area(collision: Union[Collision, EnvironmentCollision]) -> float:
-        points = []
-        for j in range(collision.get_num_contacts()):
-            points.append(collision.get_contact_point(j))
-        # Source: https://stackoverflow.com/a/68115011
-        points = np.array(points)
-        edges = points[1:] - points[0:1]
-        return sum(np.linalg.norm(np.cross(edges[:-1], edges[1:], axis=1), axis=1) / 2)
-
     def _get_object_modes(self, material: Union[str, AudioMaterial]) -> Modes:
         """
         :param material: The audio material.
@@ -344,7 +370,7 @@ class PyImpact(AddOn):
 
     def get_sound(self, velocity: np.array, contact_normals: List[np.array],
                   primary_id: int, primary_material: str, primary_amp: float, primary_mass: float,
-                  secondary_id: int, secondary_material: str, secondary_amp: float, secondary_mass: float,
+                  secondary_id: Optional[int], secondary_material: str, secondary_amp: float, secondary_mass: float,
                   resonance: float) -> Optional[Base64Sound]:
         """
         Produce sound of two colliding objects as a byte array.
@@ -438,7 +464,7 @@ class PyImpact(AddOn):
 
     def get_impact_sound_command(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
                                  primary_material: str, primary_amp: float, primary_mass: float,
-                                 secondary_id: int, secondary_material: str, secondary_amp: float,
+                                 secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
                                  secondary_mass: float, resonance: float) -> Optional[dict]:
         """
         Create an impact sound, and return a valid command to play audio data in TDW.
@@ -544,7 +570,7 @@ class PyImpact(AddOn):
 
     def get_scrape_sound_command(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
                                  primary_material: str, primary_amp: float, primary_mass: float,
-                                 secondary_id: int, secondary_material: str, secondary_amp: float,
+                                 secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
                                  secondary_mass: float, resonance: float) -> Optional[dict]:
         """
         :param primary_id: The object ID for the primary (target) object.
@@ -923,17 +949,17 @@ class PyImpact(AddOn):
                 for m_id in object_masses:
                     if m_id == object_id or m_id not in self.static_audio_data:
                         continue
-                    if np.abs(object_masses[m_id] / object_masses[object_id]) < PyImpact.ROLL_ANGULAR_VELOCITY:
+                    if np.abs(object_masses[m_id] / object_masses[object_id]) < 1.5:
                         amps.append(self.static_audio_data[m_id].amp)
                         materials.append(self.static_audio_data[m_id].material)
                         resonances.append(self.static_audio_data[m_id].resonance)
                         sizes.append(self.static_audio_data[m_id].size)
             # Fallback option: Use default values.
             if len(amps) == 0:
-                amp: float = 0.2
-                material: AudioMaterial = AudioMaterial.plastic_hard
-                resonance: float = 0.45
-                size: int = 1
+                amp: float = PyImpact.DEFAULT_AMP
+                material: AudioMaterial = PyImpact.DEFAULT_MATERIAL
+                resonance: float = PyImpact.DEFAULT_RESONANCE
+                size: int = PyImpact.DEFAULT_SIZE
             # Get averages or maximums of each value.
             else:
                 amp: float = round(sum(amps) / len(amps), 3)
@@ -955,11 +981,11 @@ class PyImpact(AddOn):
         for joint_id in robot_joints:
             self.static_audio_data[joint_id] = ObjectAudioStatic(name=robot_joints[joint_id]["name"],
                                                                  mass=robot_joints[joint_id]["mass"],
-                                                                 material=AudioMaterial.metal,
-                                                                 bounciness=0.7,
-                                                                 resonance=0.45,
-                                                                 size=1,
-                                                                 amp=0.2,
+                                                                 material=PyImpact.ROBOT_JOINT_MATERIAL,
+                                                                 bounciness=PyImpact.ROBOT_JOINT_BOUNCINESS,
+                                                                 resonance=PyImpact.DEFAULT_RESONANCE,
+                                                                 size=PyImpact.DEFAULT_SIZE,
+                                                                 amp=PyImpact.DEFAULT_AMP,
                                                                  object_id=joint_id)
 
     @staticmethod

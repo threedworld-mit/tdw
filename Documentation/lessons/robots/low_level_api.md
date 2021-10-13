@@ -1,4 +1,4 @@
-##### Robotics
+##### Robots
 
 # Robotics API (low-level)
 
@@ -306,7 +306,7 @@ c.communicate(commands)
 
 Example controllers:
 
-- [robot_arm.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/robotics/robot_arm.py) Control a UR5 robot with low-level commands.
+- [robot_arm.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/robots/robot_arm.py) Control a UR5 robot with low-level commands.
 
 Python API:
 

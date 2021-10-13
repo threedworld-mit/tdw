@@ -1,4 +1,4 @@
-##### Robotics
+##### Robots
 
 # Select a robot
 

@@ -1,4 +1,4 @@
-##### Robotics
+##### Robots
 
 # The `Robot` add-on
 
@@ -369,7 +369,7 @@ c.communicate({"$type": "terminate"})
 
 Example controllers:
 
-- [set_joint_targets.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/robotics/set_joint_targets.py) Set the joint targets of a UR5 robot.
+- [set_joint_targets.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/robots/set_joint_targets.py) Set the joint targets of a UR5 robot.
 
 Python API:
 

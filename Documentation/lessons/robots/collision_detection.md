@@ -1,4 +1,4 @@
-##### Robotics
+##### Robots
 
 # Robot collision detection
 
@@ -100,7 +100,7 @@ Collision between iron_box and ur5(Clone)
 
 Example controllers:
 
-- [collision_detection.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/robotics/set_joint_targets.py) Enable collision detection for a UR5 robot.
+- [collision_detection.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/robots/set_joint_targets.py) Enable collision detection for a UR5 robot.
 
 Python API:
 

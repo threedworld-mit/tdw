@@ -1,4 +1,4 @@
-##### Robotics
+##### Robots
 
 # Add a camera to a robot
 
@@ -113,7 +113,7 @@ Result:
 
 ***
 
-**Next: [Add multiple robots](multi_robot.md)**
+**This is the last document in the "Robots" tutorial.**
 
 [Return to the README](../../../README.md)
 
@@ -121,7 +121,7 @@ Result:
 
 Example controllers:
 
-- [robot_camera.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/robotics/robot_camera.py) Add a camera to a UR5 robot.
+- [robot_camera.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/robots/robot_camera.py) Add a camera to a UR5 robot.
 
 Python API:
 

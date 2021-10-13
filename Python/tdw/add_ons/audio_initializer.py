@@ -18,3 +18,6 @@ class AudioInitializer(AudioInitializerBase):
 
     def _get_sensor_command_name(self) -> str:
         return "add_audio_sensor"
+
+    def _get_play_audio_command_name(self) -> str:
+        return "play_audio_data"

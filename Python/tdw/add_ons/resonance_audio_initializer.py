@@ -84,3 +84,6 @@ class ResonanceAudioInitializer(AudioInitializerBase):
 
     def _get_sensor_command_name(self) -> str:
         return "add_environ_audio_sensor"
+
+    def _get_play_audio_command_name(self) -> str:
+        return "play_point_source_data"

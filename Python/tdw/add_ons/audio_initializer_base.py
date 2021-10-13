@@ -1,7 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import List
+from base64 import b64encode
+from typing import List, Union
+from pathlib import Path
+import wave
 from overrides import final
 from tdw.add_ons.add_on import AddOn
+from tdw.audio_constants import SAMPLE_RATE, CHANNELS
 
 
 class AudioInitializerBase(AddOn, ABC):
@@ -48,10 +52,41 @@ class AudioInitializerBase(AddOn, ABC):
 
         return
 
+    @final
+    def play(self, path: Union[str, Path], object_id: int, robot_joint: bool = False) -> None:
+        """
+        Load a .wav file and prepare to send a command to the build to play the audio.
+        The command will be sent on the next `Controller.communicate()` call.
+
+        :param path: The path to a .wav file.
+        :param object_id: The ID of the object that will play the audio clip.
+        :param robot_joint: If True, the object is a robot joint.
+        """
+
+        if isinstance(path, Path):
+            path = str(path.resolve())
+        w = wave.open(path, 'rb')
+        wav = w.readframes(w.getparams().nframes)
+        self.commands.append({"$type": self._get_play_audio_command_name(),
+                              "id": object_id,
+                              "num_frames": len(wav),
+                              "num_channels": CHANNELS,
+                              "frame_rate": SAMPLE_RATE,
+                              "wav_data": str(b64encode(wav), 'ascii', 'ignore'),
+                              "robot_joint": robot_joint})
+
     @abstractmethod
     def _get_sensor_command_name(self) -> str:
         """
         :return: The name of the command to add an audio sensor.
+        """
+
+        raise Exception()
+
+    @abstractmethod
+    def _get_play_audio_command_name(self) -> str:
+        """
+        :return: The name of the command to play audio.
         """
 
         raise Exception()

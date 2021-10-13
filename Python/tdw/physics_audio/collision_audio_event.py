@@ -15,11 +15,11 @@ class CollisionAudioEvent:
     Includes collision data as well as the "primary" and "secondary" objects and the type of audio event.
     """
 
-    """:field
+    """:class_var
     If the angular velocity is this or greater, the event is a roll, not a scrape.
     """
     ROLL_ANGULAR_VELOCITY: float = 0.5
-    """:field
+    """:class_var
     If the area of the collision increases by at least this factor during a stay event, the collision is actually an impact.
     """
     IMPACT_AREA_RATIO: float = 1.5

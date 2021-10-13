@@ -22,6 +22,7 @@ from tdw.physics_audio.collision_audio_info import CollisionAudioInfo
 from tdw.physics_audio.collision_audio_type import CollisionAudioType
 from tdw.physics_audio.collision_audio_event import CollisionAudioEvent
 from tdw.object_data.rigidbody import Rigidbody
+from tdw.audio_constants import SAMPLE_RATE, CHANNELS
 from tdw.add_ons.add_on import AddOn
 
 
@@ -36,72 +37,65 @@ class PyImpact(AddOn):
     For example usage, see: `tdw/Python/example_controllers/impact_sounds.py`
     """
 
-    """:field
-    The number of audio channels.
-    """
-    CHANNELS: int = 1
-    """:field
-    The audio sample rate.
-    """
-    SAMPLE_RATE: int = 44100
-    """:field
+
+    """:class_var
     The width of a scrape sample.
     """
     SCRAPE_SAMPLE_WIDTH: int = 2
-    """:field
+    """:class_var
     The scrape surface.
     """
     SCRAPE_SURFACE: np.array = np.load(resource_filename(__name__, f"py_impact/scrape_surface.npy"))
     SCRAPE_SURFACE = np.append(SCRAPE_SURFACE, SCRAPE_SURFACE)
-    """:field
+    """:class_var
     50ms of silence. Used for scrapes.
     """
     SILENCE_50MS: AudioSegment = AudioSegment.silent(duration=50, frame_rate=SAMPLE_RATE)
-    """:field
+    """:class_var
     The maximum velocity allowed for a scrape.
     """
     SCRAPE_MAX_VELOCITY: float = 5.0
-    """:field
+    """:class_var
     Meters per pixel on the scrape surface.
     """
     SCRAPE_M_PER_PIXEL: float = 1394.068 * 10 ** -9
-    """:field
+    """:class_var
     The target decibels for scrapes.
     """
     SCRAPE_TARGET_DBFS: float = -20.0
-    """:field
+    """:class_var
     The default amp value for objects.
     """
     DEFAULT_AMP: float = 0.2
-    """:field
+    """:class_var
     The default [material](../physics_audio/audio_material.md) for objects.
     """
     DEFAULT_MATERIAL: AudioMaterial = AudioMaterial.plastic_hard
-    """:field
+    """:class_var
     The default resonance value for objects.
     """
     DEFAULT_RESONANCE: float = 0.45
-    """:field
+    """:class_var
     The default audio size "bucket" for objects.
     """
     DEFAULT_SIZE: int = 1
-    """:field
+    """:class_var
     The assumed bounciness value for robot joints.
     """
     ROBOT_JOINT_BOUNCINESS: float = 0.6
-    """:field
+    """:class_var
     The [material](../physics_audio/audio_material.md) used for robot joints.
     """
     ROBOT_JOINT_MATERIAL: AudioMaterial = AudioMaterial.metal
-    """:field
+    """:class_var
     The amp value for the floor.
     """
     FLOOR_AMP: float = 0.5
-    """:field
+    """:class_var
     The size "bucket" for the floor.
     """
     FLOOR_SIZE: int = 4
-    """:field
+    """:class_var
     The mass of the floor.
     """
     FLOOR_MASS: int = 100
@@ -494,8 +488,8 @@ class PyImpact(AddOn):
             return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
                     "id": primary_id,
                     "num_frames": impact_audio.length,
-                    "num_channels": PyImpact.CHANNELS,
-                    "frame_rate": PyImpact.SAMPLE_RATE,
+                    "num_channels": CHANNELS,
+                    "frame_rate": SAMPLE_RATE,
                     "wav_data": impact_audio.wav_str,
                     "robot_joint": primary_id in self._robot_joints,
                     "y_pos_offset": 0.1}
@@ -605,8 +599,8 @@ class PyImpact(AddOn):
             return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
                     "id": primary_id,
                     "num_frames": sound.length,
-                    "num_channels": PyImpact.CHANNELS,
-                    "frame_rate": PyImpact.SAMPLE_RATE,
+                    "num_channels": CHANNELS,
+                    "frame_rate": SAMPLE_RATE,
                     "wav_data": sound.wav_str,
                     "y_pos_offset": 0}
 
@@ -637,7 +631,7 @@ class PyImpact(AddOn):
         scrape_key: Tuple[int, int] = (primary_id, secondary_id)
 
         # Initialize scrape variables; if this is an in=process scrape, these will be replaced bu te stored values.
-        summed_master = AudioSegment.silent(duration=0, frame_rate=PyImpact.SAMPLE_RATE)
+        summed_master = AudioSegment.silent(duration=0, frame_rate=SAMPLE_RATE)
         scrape_event_count = 0
 
         # Is this a new scrape?
@@ -718,9 +712,9 @@ class PyImpact(AddOn):
         t_force = vert_force / max(np.abs(vert_force)) + 0.2 * hor_force[:len(vert_force)]
 
         noise_seg1 = AudioSegment(t_force.tobytes(),
-                                  frame_rate=PyImpact.SAMPLE_RATE,
+                                  frame_rate=SAMPLE_RATE,
                                   sample_width=PyImpact.SCRAPE_SAMPLE_WIDTH,
-                                  channels=PyImpact.CHANNELS)
+                                  channels=CHANNELS)
         # Normalize gain.
         noise_seg1.apply_gain(PyImpact.SCRAPE_TARGET_DBFS)
 
@@ -733,9 +727,9 @@ class PyImpact(AddOn):
         # Convert to 16-bit integers for Unity, normalizing to make sure to minimize loss of precision from truncating floating values.
         normalized_noise_ints_conv = PyImpact._normalize_16bit_int(conv)
         noise_seg_conv = AudioSegment(normalized_noise_ints_conv.tobytes(),
-                                      frame_rate=PyImpact.SAMPLE_RATE,
+                                      frame_rate=SAMPLE_RATE,
                                       sample_width=PyImpact.SCRAPE_SAMPLE_WIDTH,
-                                      channels=PyImpact.CHANNELS)
+                                      channels=CHANNELS)
 
         # Gain-adjust the convolved segment using db value computed earlier.
         noise_seg_conv = noise_seg_conv.apply_gain(db)

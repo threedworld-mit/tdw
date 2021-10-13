@@ -17,7 +17,6 @@ class OccupancyMap(AddOn):
     from tdw.add_ons.occupancy_map import OccupancyMap
 
     c = Controller(launch_build=False)
-    c.start()
     o = OccupancyMap(cell_size=0.5)
     c.add_ons.append(o)
     c.communicate(TDWUtils.create_empty_room(12, 12))
@@ -219,7 +218,6 @@ class OccupancyMap(AddOn):
         from tdw.add_ons.occupancy_map import OccupancyMap
 
         c = Controller(launch_build=False)
-        c.start()
         o = OccupancyMap(cell_size=0.5)
         c.add_ons.append(o)
         c.communicate(TDWUtils.create_empty_room(12, 12))

@@ -6,6 +6,10 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 class CinematicCameraController(Controller):
+    """
+    Example implementation of the `CinematicCamera` add-on.
+    """
+
     def run(self) -> None:
         object_id = 0
         self.start()

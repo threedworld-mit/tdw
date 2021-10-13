@@ -12,7 +12,6 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
     from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
     c = Controller(launch_build=False)
-    c.start()
     cam = ThirdPersonCamera(avatar_id="c",
                             position={"x": 1, "y": 2.2, "z": -0.5},
                             rotation={"x": 0, "y": -45, "z": 0})
@@ -29,7 +28,6 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
     from tdw.add_ons.image_capture import ImageCapture
 
     c = Controller(launch_build=False)
-    c.start()
     cam = ThirdPersonCamera(avatar_id="c",
                             position={"x": 1, "y": 2.2, "z": -0.5},
                             rotation={"x": 0, "y": -45, "z": 0})
@@ -56,7 +54,6 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
     from tdw.add_ons.image_capture import ImageCapture
 
     c = Controller(launch_build=False)
-    c.start()
 
     # Add two cameras.
     cam_0 = ThirdPersonCamera(avatar_id="c0",

@@ -35,7 +35,6 @@ class CinematicCamera(ThirdPersonCameraBase):
     from tdw.add_ons.cinematic_camera import CinematicCamera
 
     c = Controller(launch_build=False)
-    c.start()
     cam = CinematicCamera(position={"x": 0, "y": 1.5, "z": 0},
                           rotation={"x": 2, "y": 45, "z": 0},
                           move_speed=0.1,
@@ -55,7 +54,6 @@ class CinematicCamera(ThirdPersonCameraBase):
     from tdw.add_ons.cinematic_camera import CinematicCamera
 
     c = Controller(launch_build=False)
-    c.start()
     cam = CinematicCamera(position={"x": 0, "y": 1.5, "z": 0},
                           rotation={"x": 2, "y": 45, "z": 0},
                           move_speed=0.1,
@@ -80,7 +78,6 @@ class CinematicCamera(ThirdPersonCameraBase):
 
     object_id = 0
     c = Controller(launch_build=False)
-    c.start()
     c.communicate([TDWUtils.create_empty_room(12, 12),
                    c.get_add_object(model_name="iron_box", object_id=object_id)])
     cam = CinematicCamera(position={"x": 4, "y": 1.5, "z": 0},
@@ -114,7 +111,6 @@ class CinematicCamera(ThirdPersonCameraBase):
 
     object_id = 0
     c = Controller(launch_build=False)
-    c.start()
     c.communicate([TDWUtils.create_empty_room(12, 12),
                    c.get_add_object(model_name="iron_box", object_id=object_id)])
     cam = CinematicCamera(position={"x": 4, "y": 1.5, "z": 0},
@@ -145,7 +141,6 @@ class CinematicCamera(ThirdPersonCameraBase):
 
     object_id = 0
     c = Controller(launch_build=False)
-    c.start()
     c.communicate([TDWUtils.create_empty_room(12, 12),
                    c.get_add_object(model_name="iron_box", object_id=object_id)])
     cam = CinematicCamera(position={"x": 4, "y": 1.5, "z": 0},

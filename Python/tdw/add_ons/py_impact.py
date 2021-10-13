@@ -69,6 +69,10 @@ class PyImpact(AddOn):
     The target decibels for scrapes.
     """
     SCRAPE_TARGET_DBFS: float = -20.0
+    """:field
+    If the angular velocity is this or greater, the event is a roll, not a scrape.
+    """
+    ROLL_ANGULAR_VELOCITY: float = 10
 
     def __init__(self, initial_amp: float = 0.5, prevent_distortion: bool = True, logging: bool = False,
                  static_audio_data_overrides: Dict[str, ObjectAudioStatic] = None,
@@ -919,7 +923,7 @@ class PyImpact(AddOn):
                 for m_id in object_masses:
                     if m_id == object_id or m_id not in self.static_audio_data:
                         continue
-                    if np.abs(object_masses[m_id] / object_masses[object_id]) < 1.5:
+                    if np.abs(object_masses[m_id] / object_masses[object_id]) < PyImpact.ROLL_ANGULAR_VELOCITY:
                         amps.append(self.static_audio_data[m_id].amp)
                         materials.append(self.static_audio_data[m_id].material)
                         resonances.append(self.static_audio_data[m_id].resonance)

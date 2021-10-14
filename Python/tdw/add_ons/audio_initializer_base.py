@@ -1,9 +1,12 @@
 from abc import ABC, abstractmethod
 from base64 import b64encode
-from typing import List, Union
+from typing import List, Union, Dict
 from pathlib import Path
 import wave
+import numpy as np
 from overrides import final
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.add_on import AddOn
 from tdw.audio_constants import SAMPLE_RATE, CHANNELS
 
@@ -53,27 +56,31 @@ class AudioInitializerBase(AddOn, ABC):
         return
 
     @final
-    def play(self, path: Union[str, Path], object_id: int, robot_joint: bool = False) -> None:
+    def play(self, path: Union[str, Path], position: Union[np.array, Dict[str, float]], audio_id: int = None) -> None:
         """
         Load a .wav file and prepare to send a command to the build to play the audio.
         The command will be sent on the next `Controller.communicate()` call.
 
         :param path: The path to a .wav file.
-        :param object_id: The ID of the object that will play the audio clip.
-        :param robot_joint: If True, the object is a robot joint.
+        :param position: The position of audio source. Can be a numpy array or x, y, z dictionary.
+        :param audio_id: The unique ID of the audio source. If None, a random ID is generated.
         """
 
         if isinstance(path, Path):
             path = str(path.resolve())
+        if isinstance(position, np.ndarray):
+            position = TDWUtils.array_to_vector3(position)
+        if audio_id is None:
+            audio_id = Controller.get_unique_id()
         w = wave.open(path, 'rb')
         wav = w.readframes(w.getparams().nframes)
         self.commands.append({"$type": self._get_play_audio_command_name(),
-                              "id": object_id,
+                              "id": audio_id,
+                              "position": position,
                               "num_frames": len(wav),
                               "num_channels": CHANNELS,
                               "frame_rate": SAMPLE_RATE,
-                              "wav_data": str(b64encode(wav), 'ascii', 'ignore'),
-                              "robot_joint": robot_joint})
+                              "wav_data": str(b64encode(wav), 'ascii', 'ignore')})
 
     @abstractmethod
     def _get_sensor_command_name(self) -> str:

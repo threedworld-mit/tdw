@@ -1,3 +1,4 @@
+from os import urandom
 import base64
 import math
 import json
@@ -23,7 +24,7 @@ from tdw.physics_audio.collision_audio_type import CollisionAudioType
 from tdw.physics_audio.collision_audio_event import CollisionAudioEvent
 from tdw.object_data.rigidbody import Rigidbody
 from tdw.audio_constants import SAMPLE_RATE, CHANNELS
-from tdw.add_ons.add_on import AddOn
+from tdw.add_ons.collision_manager import AddOn
 
 
 class PyImpact(AddOn):
@@ -36,7 +37,6 @@ class PyImpact(AddOn):
 
     For example usage, see: `tdw/Python/example_controllers/impact_sounds.py`
     """
-
 
     """:class_var
     The width of a scrape sample.
@@ -145,7 +145,6 @@ class PyImpact(AddOn):
 
         self._cached_audio_info: bool = False
         self.static_audio_data: Dict[int, ObjectAudioStatic] = dict()
-        self._robot_joints: List[int] = list()
 
         # Summed scrape masters. Key = primary ID, secondary ID.
         self._scrape_summed_masters: Dict[Tuple[int, int], AudioSegment] = dict()
@@ -192,6 +191,7 @@ class PyImpact(AddOn):
                 if self._collision_events[object_id].secondary_id is None:
                     audio = self.static_audio_data[object_id]
                     command = self.get_impact_sound_command(velocity=self._collision_events[object_id].velocity,
+                                                            contact_points=self._collision_events[object_id].collision.points,
                                                             contact_normals=self._collision_events[object_id].collision.normals,
                                                             primary_id=object_id,
                                                             primary_amp=audio.amp,
@@ -207,6 +207,7 @@ class PyImpact(AddOn):
                     target_audio = self.static_audio_data[self._collision_events[object_id].primary_id]
                     other_audio = self.static_audio_data[self._collision_events[object_id].secondary_id]
                     command = self.get_impact_sound_command(velocity=self._collision_events[object_id].velocity,
+                                                            contact_points=self._collision_events[object_id].collision.points,
                                                             contact_normals=self._collision_events[object_id].collision.normals,
                                                             primary_id=target_audio.object_id,
                                                             primary_amp=target_audio.amp,
@@ -225,6 +226,7 @@ class PyImpact(AddOn):
                 if self._collision_events[object_id].secondary_id is None:
                     audio = self.static_audio_data[object_id]
                     command = self.get_scrape_sound_command(velocity=self._collision_events[object_id].velocity,
+                                                            contact_points=self._collision_events[object_id].collision.points,
                                                             contact_normals=self._collision_events[object_id].collision.normals,
                                                             primary_id=object_id,
                                                             primary_amp=audio.amp,
@@ -240,6 +242,7 @@ class PyImpact(AddOn):
                     target_audio = self.static_audio_data[self._collision_events[object_id].primary_id]
                     other_audio = self.static_audio_data[self._collision_events[object_id].secondary_id]
                     command = self.get_scrape_sound_command(velocity=self._collision_events[object_id].velocity,
+                                                            contact_points=self._collision_events[object_id].collision.points,
                                                             contact_normals=self._collision_events[object_id].collision.normals,
                                                             primary_id=target_audio.object_id,
                                                             primary_amp=target_audio.amp,
@@ -456,7 +459,8 @@ class PyImpact(AddOn):
         sound = amp * sound / np.max(np.abs(sound))
         return Base64Sound(sound)
 
-    def get_impact_sound_command(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
+    def get_impact_sound_command(self, velocity: np.array, contact_points: List[np.array],
+                                 contact_normals: List[np.array], primary_id: int,
                                  primary_material: str, primary_amp: float, primary_mass: float,
                                  secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
                                  secondary_mass: float, resonance: float) -> Optional[dict]:
@@ -473,6 +477,7 @@ class PyImpact(AddOn):
         :param secondary_amp: Sound amplitude of the secondary (other) object.
         :param resonance: The resonances of the objects.
         :param velocity: The velocity.
+        :param contact_points: The collision contact points.
         :param contact_normals: The collision contact normals.
         :param primary_mass: The mass of the primary (target) object.
         :param secondary_mass: The mass of the secondary (target) object.
@@ -485,13 +490,14 @@ class PyImpact(AddOn):
                                       primary_mass=primary_mass, secondary_id=secondary_id, secondary_material=secondary_material,
                                       secondary_amp=secondary_amp, secondary_mass=secondary_mass, resonance=resonance)
         if impact_audio is not None:
+            point = np.mean(contact_points, axis=0)
             return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
-                    "id": primary_id,
+                    "id": PyImpact._get_unique_id(),
+                    "position": {"x": float(point[0]), "y": float(point[1]), "z": float(point[2])},
                     "num_frames": impact_audio.length,
                     "num_channels": CHANNELS,
                     "frame_rate": SAMPLE_RATE,
                     "wav_data": impact_audio.wav_str,
-                    "robot_joint": primary_id in self._robot_joints,
                     "y_pos_offset": 0.1}
         # If PyImpact failed to generate a sound (which is rare!), fail silently here.
         else:
@@ -562,7 +568,8 @@ class PyImpact(AddOn):
         h = Modes.mode_add(h1, h2)
         return h, min(modes_1.frequencies)
 
-    def get_scrape_sound_command(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
+    def get_scrape_sound_command(self, velocity: np.array, contact_points: np.array,
+                                 contact_normals: List[np.array], primary_id: int,
                                  primary_material: str, primary_amp: float, primary_mass: float,
                                  secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
                                  secondary_mass: float, resonance: float) -> Optional[dict]:
@@ -575,6 +582,7 @@ class PyImpact(AddOn):
         :param secondary_amp: Sound amplitude of the secondary (other) object.
         :param resonance: The resonances of the objects.
         :param velocity: The velocity.
+        :param contact_points: The collision contact points.
         :param contact_normals: The collision contact normals.
         :param primary_mass: The mass of the primary (target) object.
         :param secondary_mass: The mass of the secondary (target) object.
@@ -596,8 +604,10 @@ class PyImpact(AddOn):
         if sound is None:
             return None
         else:
+            point = np.mean(contact_points, axis=0)
             return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
-                    "id": primary_id,
+                    "id": PyImpact._get_unique_id(),
+                    "position": {"x": float(point[0]), "y": float(point[1]), "z": float(point[2])},
                     "num_frames": sound.length,
                     "num_channels": CHANNELS,
                     "frame_rate": SAMPLE_RATE,
@@ -903,7 +913,6 @@ class PyImpact(AddOn):
                     joint_id = srob.get_joint_id(j)
                     robot_joints[joint_id] = {"name": srob.get_joint_name(j),
                                               "mass": srob.get_joint_mass(j)}
-                    self._robot_joints.append(joint_id)
             elif r_id == "srig":
                 srig = StaticRigidbodies(resp[i])
                 for j in range(srig.get_num()):
@@ -1022,3 +1031,13 @@ class PyImpact(AddOn):
             del self._scrape_summed_masters[scrape_key]
         if scrape_key in self._scrape_start_velocities:
             del self._scrape_start_velocities[scrape_key]
+
+    @staticmethod
+    def _get_unique_id() -> int:
+        """
+        Generate a unique integer. Useful when creating objects.
+
+        :return The new unique ID.
+        """
+
+        return int.from_bytes(urandom(3), byteorder='big')

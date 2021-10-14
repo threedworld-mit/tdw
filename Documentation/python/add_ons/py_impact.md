@@ -12,6 +12,28 @@ For example usage, see: `tdw/Python/example_controllers/impact_sounds.py`
 
 ***
 
+## Class Variables
+
+| Variable | Type | Description |
+| --- | --- | --- |
+| `SCRAPE_SAMPLE_WIDTH` | int | The width of a scrape sample. |
+| `SCRAPE_SURFACE` | np.array | The scrape surface. |
+| `SILENCE_50MS` | AudioSegment | 50ms of silence. Used for scrapes. |
+| `SCRAPE_MAX_VELOCITY` | float | The maximum velocity allowed for a scrape. |
+| `SCRAPE_M_PER_PIXEL` | float | Meters per pixel on the scrape surface. |
+| `SCRAPE_TARGET_DBFS` | float | The target decibels for scrapes. |
+| `DEFAULT_AMP` | float | The default amp value for objects. |
+| `DEFAULT_MATERIAL` | AudioMaterial | The default [material](../physics_audio/audio_material.md) for objects. |
+| `DEFAULT_RESONANCE` | float | The default resonance value for objects. |
+| `DEFAULT_SIZE` | int | The default audio size "bucket" for objects. |
+| `ROBOT_JOINT_BOUNCINESS` | float | The assumed bounciness value for robot joints. |
+| `ROBOT_JOINT_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for robot joints. |
+| `FLOOR_AMP` | float | The amp value for the floor. |
+| `FLOOR_SIZE` | int | The size "bucket" for the floor. |
+| `FLOOR_MASS` | int | The mass of the floor. |
+
+***
+
 ## Fields
 
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
@@ -86,7 +108,7 @@ _Returns:_  Sound data as a Base64Sound object.
 
 #### get_impact_sound_command
 
-**`self.get_impact_sound_command(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
+**`self.get_impact_sound_command(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_points, contact_normals, primary_mass, secondary_mass)`**
 
 Create an impact sound, and return a valid command to play audio data in TDW.
 "target" should usually be the smaller object, which will play the sound.
@@ -103,6 +125,7 @@ Create an impact sound, and return a valid command to play audio data in TDW.
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
 | resonance |  float |  | The resonances of the objects. |
 | velocity |  np.array |  | The velocity. |
+| contact_points |  List[np.array] |  | The collision contact points. |
 | contact_normals |  List[np.array] |  | The collision contact normals. |
 | primary_mass |  float |  | The mass of the primary (target) object. |
 | secondary_mass |  float |  | The mass of the secondary (target) object. |
@@ -155,7 +178,7 @@ _Returns:_  The impulse response.
 
 #### get_scrape_sound_command
 
-**`self.get_scrape_sound_command(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
+**`self.get_scrape_sound_command(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_points, contact_normals, primary_mass, secondary_mass)`**
 
 
 | Parameter | Type | Default | Description |
@@ -168,6 +191,7 @@ _Returns:_  The impulse response.
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
 | resonance |  float |  | The resonances of the objects. |
 | velocity |  np.array |  | The velocity. |
+| contact_points |  np.array |  | The collision contact points. |
 | contact_normals |  List[np.array] |  | The collision contact normals. |
 | primary_mass |  float |  | The mass of the primary (target) object. |
 | secondary_mass |  float |  | The mass of the secondary (target) object. |

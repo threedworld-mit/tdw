@@ -12,7 +12,7 @@ import scipy.signal as sg
 from scipy.ndimage import gaussian_filter1d
 from pydub import AudioSegment
 from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision, StaticRobot, SegmentationColors, \
-    StaticRigidbodies
+    StaticRigidbodies, RobotJointVelocities
 from tdw.collision_data.collision_obj_obj import CollisionObjObj
 from tdw.collision_data.collision_obj_env import CollisionObjEnv
 from tdw.physics_audio.audio_material import AudioMaterial
@@ -158,6 +158,8 @@ class PyImpact(AddOn):
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_rigidbodies",
                  "frequency": "always"},
+                {"$type": "send_robot_joint_velocities",
+                 "frequency": "always"},
                 {"$type": "send_collisions",
                  "enter": True,
                  "exit": True,
@@ -292,7 +294,13 @@ class PyImpact(AddOn):
                                                                       angular_velocity=np.array(
                                                                           rigidbodies.get_angular_velocity(j)),
                                                                       sleeping=rigidbodies.get_sleeping(j))
-                break
+            # Get robot joint velocity data.
+            elif r_id == "rojv":
+                robot_joint_velocities = RobotJointVelocities(resp[i])
+                for j in range(robot_joint_velocities.get_num_joints()):
+                    rigidbody_data[robot_joint_velocities.get_joint_id(j)] = Rigidbody(velocity=robot_joint_velocities.get_joint_velocity(j),
+                                                                                       angular_velocity=robot_joint_velocities.get_joint_angular_velocity(j),
+                                                                                       sleeping=robot_joint_velocities.get_joint_sleeping(j))
         # Get collision data.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])

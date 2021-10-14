@@ -7,6 +7,15 @@ Includes collision data as well as the "primary" and "secondary" objects and the
 
 ***
 
+## Class Variables
+
+| Variable | Type | Description |
+| --- | --- | --- |
+| `ROLL_ANGULAR_VELOCITY` | float | If the angular velocity is this or greater, the event is a roll, not a scrape. |
+| `IMPACT_AREA_RATIO` | float | If the area of the collision increases by at least this factor during a stay event, the collision is actually an impact. |
+
+***
+
 ## Fields
 
 - `collision` [The collision data.](../collision_data/collision_base.md)

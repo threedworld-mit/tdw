@@ -46,6 +46,7 @@ from tdw.FBOutput import Occlusion as Occl
 from tdw.FBOutput import Lights as Lites
 from tdw.FBOutput import Categories as Cats
 from tdw.FBOutput import StaticRigidbodies as StatRig
+from tdw.FBOutput import RobotJointVelocities as RoJoVe
 import numpy as np
 from typing import Tuple, Optional
 
@@ -969,6 +970,29 @@ class Robot(OutputData):
 
     def get_immovable(self) -> bool:
         return self.data.Immovable()
+
+
+class RobotJointVelocities(OutputData):
+    def get_data(self) -> RoJoVe.RobotJointVelocities:
+        return RoJoVe.RobotJointVelocities.GetRootAsRobotJointVelocities(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_num_joints(self) -> int:
+        return self.data.JointsLength()
+
+    def get_joint_id(self, index: int) -> int:
+        return self.data.Joints(index).Id()
+
+    def get_joint_velocity(self, index: int) -> np.array:
+        return self.data.Joints(index).VelocityAsNumpy()
+
+    def get_joint_angular_velocity(self, index: int) -> np.array:
+        return self.data.Joints(index).AngularVelocityAsNumpy()
+
+    def get_joint_sleeping(self, index: int) -> bool:
+        return self.data.Joints(index).Sleeping()
 
 
 class Keyboard(OutputData):

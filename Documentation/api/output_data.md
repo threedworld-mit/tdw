@@ -85,6 +85,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Rigidbodies](#Rigidbodies) | Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scene. | `rigi` |
 | [Robot](#Robot) | Data for a robot in the scene. See also: `StaticRobot` | `robo` |
+| [RobotJointVelocities](#RobotJointVelocities) | Velocity for a robot in the scene. | `rojv` |
 | [SceneRegions](#SceneRegions) | Data regarding the scene regions. | `sreg` |
 | [ScreenPosition](#ScreenPosition) | A position on the screen converted from a worldspace position. | `scre` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
@@ -672,6 +673,23 @@ Data for a robot in the scene. See also: `StaticRobot`
 | `get_joint_position(index)` | The position of the joint. | `np.array` |
 | `get_joint_positions(index)` | The positions of the joint. | `np.array` |
 | `get_immovable()` | True if the root object of the robot is currently immovable. | `bool` |
+
+## RobotJointVelocities
+
+`r = RobotJointVelocities(byte_array)`
+
+**Identifier:** `rojv`
+
+Velocity for a robot in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The ID of the robot. | `int` |
+| `get_num_joints()` | The number of joints. | `int` |
+| `get_joint_id(index)` | The ID of the joint. | `int` |
+| `get_joint_velocity(index)` | The velocity of the joint. | `np.array` |
+| `get_joint_angular_velocity(index)` | The angular velocity of the joint. | `np.array` |
+| `get_joint_sleeping(index)` | The sleeping of the joint. | `bool` |
 
 ## SceneRegions
 

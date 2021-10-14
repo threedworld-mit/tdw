@@ -25,7 +25,6 @@ c.model_librarian = ModelLibrarian("models_special.json")
 # Create the object manager.
 om = ObjectManager()
 c.add_ons.append(om)
-c.start()
 commands = [TDWUtils.create_empty_room(100, 100)]
 # The starting height of the objects.
 y = 10

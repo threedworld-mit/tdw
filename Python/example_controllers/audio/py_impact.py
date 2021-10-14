@@ -59,10 +59,11 @@ py_impact = PyImpact(initial_amp=0.9,
                                                                                 size=1)})
 recorder = PhysicsAudioRecorder()
 root_dir = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("py_impact")
+print(f"Audio will be saved to: {root_dir}")
 path = root_dir.joinpath("impact.wav")
 c.add_ons.extend([audio_initializer, py_impact, recorder])
 c.communicate(commands)
-recorder.start(output_path=path)
+recorder.start(path=path)
 while recorder.recording:
     c.communicate([])
 

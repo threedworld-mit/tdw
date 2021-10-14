@@ -393,7 +393,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`play_audio_data`](#play_audio_data) | Play a sound, using audio sample data sent over from the controller. |
+| [`play_audio_data`](#play_audio_data) | Play a sound at a position using audio sample data sent over from the controller. |
 | [`play_point_source_data`](#play_point_source_data) | Make this object a ResonanceAudioSoundSource and play the audio data. |
 
 **Position Marker Command**
@@ -541,7 +541,8 @@
 | Command | Description |
 | --- | --- |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
-| [`send_robots`](#send_robots) | Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. See also: send_static_robots  |
+| [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
+| [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. See also: send_robots and send_static_robots  |
 | [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
@@ -5118,31 +5119,31 @@ Teleport a painting to a new position.
 
 # PlayAudioDataCommand
 
-Make an object play audio data.
+Play audio at a position.
 
 ***
 
 ## **`play_audio_data`**
 
-Play a sound, using audio sample data sent over from the controller.
+Play a sound at a position using audio sample data sent over from the controller.
 
 
 ```python
-{"$type": "play_audio_data", "id": 1, "wav_data": "string", "num_frames": 1}
+{"$type": "play_audio_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1}
 ```
 
 ```python
-{"$type": "play_audio_data", "id": 1, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1, "robot_joint": False}
+{"$type": "play_audio_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"id"` | int | The unique object ID. | |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"position"` | Vector3 | The position of the audio source. | |
 | `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
 | `"num_frames"` | int | The number of audio frames in the audio data. | |
 | `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
 | `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
-| `"robot_joint"` | bool | If true, this is joint of a robot. | False |
 
 ***
 
@@ -5152,22 +5153,21 @@ Make this object a ResonanceAudioSoundSource and play the audio data.
 
 
 ```python
-{"$type": "play_point_source_data", "id": 1, "wav_data": "string", "num_frames": 1}
+{"$type": "play_point_source_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1}
 ```
 
 ```python
-{"$type": "play_point_source_data", "id": 1, "wav_data": "string", "num_frames": 1, "y_pos_offset": 0.5, "frame_rate": 44100, "num_channels": 1, "robot_joint": False}
+{"$type": "play_point_source_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"y_pos_offset"` | float | Percentage offset from base of object, to place the audio source. | 0.5 |
-| `"id"` | int | The unique object ID. | |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"position"` | Vector3 | The position of the audio source. | |
 | `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
 | `"num_frames"` | int | The number of audio frames in the audio data. | |
 | `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
 | `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
-| `"robot_joint"` | bool | If true, this is joint of a robot. | False |
 
 # PositionMarkerCommand
 
@@ -6515,7 +6515,7 @@ Options for when to send data.
 
 ## **`send_robots`**
 
-Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. See also: send_static_robots 
+Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
@@ -6527,6 +6527,38 @@ Send dynamic data (position, rotation, velocity, etc.) of each robot and each ro
 
 ```python
 {"$type": "send_robots", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_robot_joint_velocities`**
+
+Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. See also: send_robots and send_static_robots 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`RobotJointVelocities`](output_data.md#RobotJointVelocities)</font>
+
+```python
+{"$type": "send_robot_joint_velocities"}
+```
+
+```python
+{"$type": "send_robot_joint_velocities", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

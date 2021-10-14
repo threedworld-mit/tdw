@@ -71,7 +71,7 @@ print(record.name)
 print(record.urls)
 ```
 
-The first time that this script is run, it clone [the robot_creator repo](https://github.com/alters-mit/robot_creator) (a Unity project used for creating robots) to your home directory.
+The first time that this script is run, it will clone [the robot_creator repo](https://github.com/alters-mit/robot_creator) (a Unity project used for creating robots) to your home directory.
 
 ## Edit the prefab
 

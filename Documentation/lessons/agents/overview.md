@@ -52,7 +52,7 @@ Human users can directly control TDW. A human can move an agent using keyboard c
 
 Replicants are human-like, or "humanoid" agents. They are embodied and physically response to the environment. They have far more sophisticated motion planning than robots or Magnebots and can have specialized animation routines for specific actions.
 
-**Trade-offs:** Replicants are massless and are unresponsive to weight and forces. A robot or Magnebot can try to pick up a heavy object and fail or tip over. A replicant will effortlessly pick up any object.
+**Trade-offs:** Replicants are responsive to collisions unresponsive to weight and forces. A robot or Magnebot can try to pick up a heavy object and fail or tip over. A replicant isn't powered by simulated drive motors. If a replicant picks up a heavy object, it can act *as if* the object is too heavy to lift the object but the physics engine alone won't be determining the outcome of the action.
 
 ### Embodied avatar
 

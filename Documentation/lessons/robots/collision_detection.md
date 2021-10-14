@@ -4,15 +4,21 @@
 
 Collision detection works exactly the same for robots as it does for [objects](../physx/collisions.md). The only significant difference is in how robots are initialized.
 
-When collision detection is enabled (either by sending [`send_collisions`](../../api/command_api.md#send_collisions) or by initializing a [`CollisionManager`](../../python/add_ons/collision_manager.md)), **a robot must not be intersecting any objects or environment meshes such as the floor.** If there are any intersections, the robot will severely glitch, or the build will crash, or both.
-
-Some of the robots in TDW initially intersect with the floor. 
-
 Robot joints are handled via [ArticulationBodies](https://docs.unity3d.com/2020.1/Documentation/ScriptReference/ArticulationBody.html). ArticulationBodies are very stable when used correctly but brittle when used incorrectly. 
 
 In Unity, if two objects with rigidbodies intersect each other, Unity will try to resolve the issue, sometimes with glitchy behavior. If an object with an ArticulationBody intersects with an object with a Rigibody, the build will likely *crash*. Be careful where you position your robots!
 
-Some robots, such as `ur5` and `ur10`, intersect with the floor when they are first added to the scene. To resolve this, they have *initial joint targets* that are automatically set by the `Robot` add-on.
+Some of the robots in TDW, such as `ur5` and `ur10`, initially intersect with the floor. When collision detection is enabled (either by sending [`send_collisions`](../../api/command_api.md#send_collisions) or by initializing a [`CollisionManager`](../../python/add_ons/collision_manager.md)), **a robot must not be intersecting any objects or environment meshes such as the floor.** If there are any intersections, the robot will severely glitch, or the build will crash, or both.
+
+To resolve this, some robots have *initial joint targets* that are automatically set by the `Robot` add-on. These targets are stored in `RobotRecord.targets`:
+
+```python
+from tdw.librarian import RobotLibrarian
+
+lib = RobotLibrarian()
+record = lib.get_record("ur5")
+print(record.targets) # {'upper_arm_link': {'type': 'revolute', 'target': -5}}
+```
 
 To ensure that collision detection can be enabled, wait for the robot to reach its initial targets. Once this is done, you can initialize collision detection.
 

@@ -105,11 +105,11 @@ c.communicate(commands)
 
 ## Play audio
 
-You can call `audio_intializer.play(path, object_id)` to play a .wav file. 
+You can call `audio_intializer.play(path, position)` to play a .wav file. 
 
 - `path` is the path to the .wav file
-- `object_id` is the ID of an object in the scene. In TDW, audio must have a source object.
-- If you want a [robot joint](../robots/overview.md) to be the source, set the optional parameter: `robot_joint=True`.
+- `position` is the position of the audio source. 
+- You can optionally set the parameter `audio_id` to an integer. Each audio source has a unique ID. If you don't set this parameter, a unique ID will be generated.
 
 This `play()` function loads the .wav file and converts it into a useable byte array. It then tells the build to play the audio by sending [`play_audio_data`](../../api/command_api.md#play_audio_data).
 
@@ -128,6 +128,8 @@ Initialize and play audio.
 c = Controller()
 object_id_0 = c.get_unique_id()
 object_id_1 = c.get_unique_id()
+object_position_0 = {"x": 3.16, "y": 0, "z": 4.34}
+object_position_1 = {"x": -2.13, "y": 0, "z": -1.0}
 # Add a camera.
 camera = ThirdPersonCamera(avatar_id="a",
                            position={"x": -4, "y": 1.5, "z": 0},
@@ -139,15 +141,15 @@ c.add_ons.extend([camera, audio_initializer])
 c.communicate([c.get_add_scene("tdw_room"),
                c.get_add_object(model_name="satiro_sculpture",
                                 object_id=object_id_0,
-                                position={"x": 3.16, "y": 0, "z": 4.34},
+                                position=object_position_0,
                                 rotation={"x": 0.0, "y": -108.0, "z": 0.0}),
                c.get_add_object(model_name="buddah",
                                 object_id=object_id_1,
                                 position={"x": -2.13, "y": 0, "z": -1.0},
                                 rotation={"x": 0.0, "y": 90, "z": 0.0})])
 # Start playing audio on both objects once they are created.
-audio_initializer.play(path="HWL_1b.wav", object_id=object_id_0)
-audio_initializer.play(path="HWL_3c.wav", object_id=object_id_1)
+audio_initializer.play(path="HWL_1b.wav", position=object_position_0)
+audio_initializer.play(path="HWL_3c.wav", position=object_position_1)
 c.communicate({"$type": "set_field_of_view",
                "avatar_id": "a",
                "field_of_view": 75.0})

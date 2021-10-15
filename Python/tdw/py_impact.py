@@ -255,7 +255,6 @@ class CollisionTypesOnFrame:
 
     object_id = c.get_unique_id()
     c = Controller()
-    c.start()
 
     # Your code here.
 

@@ -57,8 +57,8 @@ class UR5(Robot):
         initial_angles = np.radians(initial_angles)
         if isinstance(target, dict):
             target = TDWUtils.vector3_to_array(target)
-        angles =  UR5.CHAIN.inverse_kinematics(target_position=target,
-                                               initial_position=initial_angles)
+        angles = UR5.CHAIN.inverse_kinematics(target_position=target,
+                                              initial_position=initial_angles)
         # Convert the IK solution to degrees. Remove the origin link.
         angles = [float(np.rad2deg(angle)) for angle in angles[1:-1]]
         for joint_name, angle in zip(UR5.JOINT_ORDER, angles):

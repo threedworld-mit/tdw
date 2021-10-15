@@ -88,7 +88,7 @@ commands.extend([{"$type": "apply_force_to_object",
                   "color": color}])
 path = root_dir.joinpath("scrape.wav")
 c.communicate(commands)
-recorder.start(output_path=path)
+recorder.start(path=path)
 while recorder.recording:
     c.communicate([])
 c.communicate({"$type": "terminate"})

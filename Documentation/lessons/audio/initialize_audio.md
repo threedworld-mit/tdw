@@ -29,7 +29,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.audio_initializer import AudioInitializer
 
-c = Controller(launch_build=False)
+c = Controller()
 audio_initializer = AudioInitializer(avatar_id="a", framerate=60)
 c.add_ons.append(audio_initializer)
 commands = [TDWUtils.create_empty_room(12, 12)]
@@ -45,7 +45,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.audio_initializer import AudioInitializer
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
-c = Controller(launch_build=False)
+c = Controller()
 audio_initializer = AudioInitializer(avatar_id="a", framerate=60)
 camera = ThirdPersonCamera(avatar_id="a")
 # Note the order: The camera must be added before audio is initialized.
@@ -60,7 +60,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
-c = Controller(launch_build=False)
+c = Controller()
 camera = ThirdPersonCamera(avatar_id="a")
 c.add_ons.append(camera)
 commands = [TDWUtils.create_empty_room(12, 12)]
@@ -90,7 +90,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.audio_initializer import AudioInitializer
 
-c = Controller(launch_build=False)
+c = Controller()
 audio_initializer = AudioInitializer(avatar_id="a", framerate=60)
 c.add_ons.append(audio_initializer)
 commands = [TDWUtils.create_empty_room(12, 12)]

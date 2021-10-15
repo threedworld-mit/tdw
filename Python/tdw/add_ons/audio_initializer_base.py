@@ -56,7 +56,8 @@ class AudioInitializerBase(AddOn, ABC):
         return
 
     @final
-    def play(self, path: Union[str, Path], position: Union[np.array, Dict[str, float]], audio_id: int = None) -> None:
+    def play(self, path: Union[str, Path], position: Union[np.array, Dict[str, float]], audio_id: int = None,
+             object_id: int = None) -> None:
         """
         Load a .wav file and prepare to send a command to the build to play the audio.
         The command will be sent on the next `Controller.communicate()` call.
@@ -64,6 +65,7 @@ class AudioInitializerBase(AddOn, ABC):
         :param path: The path to a .wav file.
         :param position: The position of audio source. Can be a numpy array or x, y, z dictionary.
         :param audio_id: The unique ID of the audio source. If None, a random ID is generated.
+        :param object_id: If not None, parent the audio source to this object.
         """
 
         if isinstance(path, Path):
@@ -81,6 +83,10 @@ class AudioInitializerBase(AddOn, ABC):
                               "num_channels": CHANNELS,
                               "frame_rate": SAMPLE_RATE,
                               "wav_data": str(b64encode(wav), 'ascii', 'ignore')})
+        if object_id is not None:
+            self.commands.append({"$type": "parent_audio_source_to_object",
+                                  "object_id": object_id,
+                                  "audio_id": audio_id})
 
     @abstractmethod
     def _get_sensor_command_name(self) -> str:

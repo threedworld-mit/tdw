@@ -26,25 +26,26 @@ class ResonanceAudioInitializer(AudioInitializerBase):
                                                  "brick": AudioMaterial.ceramic,
                                                  "metal": AudioMaterial.metal}
 
-    def __init__(self, avatar_id: str = "a", env_id: int = -1, floor: str = "parquet", ceiling: str = "acousticTile",
+    def __init__(self, avatar_id: str = "a", region_id: int = -1, floor: str = "parquet", ceiling: str = "acousticTile",
                  front_wall: str = "smoothPlaster", back_wall: str = "smoothPlaster", left_wall: str = "smoothPlaster",
-                 right_wall: str = "smoothPlaster"):
+                 right_wall: str = "smoothPlaster", framerate: int = 60):
         """
         :param avatar_id: The ID of the avatar.
-        :param env_id: The ID of the environment (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room.
+        :param region_id: The ID of the scene region (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room.
         :param floor: The floor material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
         :param ceiling: The ceiling material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
         :param front_wall: The front wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
         :param back_wall: The back wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
         :param left_wall: The left wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
         :param right_wall: The right wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+        :param framerate: The target simulation framerate.
         """
 
-        super().__init__(avatar_id=avatar_id)
+        super().__init__(avatar_id=avatar_id, framerate=framerate)
         """:field
-        The ID of the environment (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room.
+        The ID of the scene region (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room.
         """
-        self.env_id = env_id
+        self.region_id = region_id
         """:field
         The floor material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
         """
@@ -73,7 +74,7 @@ class ResonanceAudioInitializer(AudioInitializerBase):
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
         commands.insert(0, {"$type": "set_reverb_space_simple",
-                            "env_id": self.env_id,
+                            "region_id": self.region_id,
                             "reverb_floor_material": self.floor,
                             "reverb_ceiling_material": self.ceiling,
                             "reverb_front_wall_material": self.front_wall,

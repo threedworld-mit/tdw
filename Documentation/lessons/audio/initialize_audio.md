@@ -110,6 +110,7 @@ You can call `audio_intializer.play(path, position)` to play a .wav file.
 - `path` is the path to the .wav file
 - `position` is the position of the audio source. 
 - You can optionally set the parameter `audio_id` to an integer. Each audio source has a unique ID. If you don't set this parameter, a unique ID will be generated.
+- You can optionally set the parameter `object_id`. If you do, the audio source will be parented to the corresponding object such that whenever the object moves, the source will move with it. (Internally, this is handled with via the command [`parent_audio_source_to_object`](../../api/command_api.md#parent_audio_source_to_object).)
 
 This `play()` function loads the .wav file and converts it into a useable byte array. It then tells the build to play the audio by sending [`play_audio_data`](../../api/command_api.md#play_audio_data).
 
@@ -185,6 +186,7 @@ Command API:
 
 - [`play_audio_data`](../../api/command_api.md#play_audio_data)
 - [`add_audio_sensor`](../../api/command_api.md#add_audio_sensor)
+- [`parent_audio_source_to_object`](../../api/command_api.md#parent_audio_source_to_object)
 - [`set_target_framerate`](../../api/command_api.md#set_target_framerate)
 - [`destroy_avatar`](../../api/command_api.md#destroy_avatar)
 - [`set_field_of_view`](../../api/command_api.md#set_field_of_view)

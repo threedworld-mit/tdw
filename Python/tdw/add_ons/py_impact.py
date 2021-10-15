@@ -1,4 +1,9 @@
-from os import urandom
+from os import urandom, environ
+# We don't actually use ffmpeg in PyImpact.
+# This will suppress a warning from pydub.
+environ_paths = environ["PATH"]
+if "ffmpeg" not in environ["PATH"]:
+    environ["PATH"] += "ffmpeg;"
 import base64
 import math
 import json

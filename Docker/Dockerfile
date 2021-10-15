@@ -20,8 +20,7 @@ RUN apt-get -qq update && apt-get -qq install -y sudo libxfixes3 libxi6 libxrand
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     curl \
-    unzip \
-    ffmpeg
+    unzip
 
 
 RUN wget https://github.com/threedworld-mit/tdw/releases/download/v${TDW_VERSION}/TDW_Linux.tar.gz

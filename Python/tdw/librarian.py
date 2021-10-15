@@ -80,6 +80,10 @@ class ModelRecord(_Record):
             self.physics_quality: float = data["physics_quality"]
             self.asset_bundle_sizes: Dict[str, int] = data["asset_bundle_sizes"]
             self.composite_object: bool = data["composite_object"]
+            if "volume" not in data:
+                self.volume: float = 0
+            else:
+                self.volume: float = data["volume"]
 
 
 class MaterialRecord(_Record):

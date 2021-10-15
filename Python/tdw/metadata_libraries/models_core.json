@@ -117,6 +117,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/034_vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/034_vray"
             },
+            "volume": 0.0016708194743841887,
             "wcategory": "camera",
             "wnid": "n02942699"
         },
@@ -200,6 +201,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/102_pepsi_can_12_fl_oz_vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/102_pepsi_can_12_fl_oz_vray"
             },
+            "volume": 0.0005482376436702907,
             "wcategory": "soda can",
             "wnid": "n04255586"
         },
@@ -295,6 +297,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/24_in_wall_cabinet_white_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/24_in_wall_cabinet_white_wood"
             },
+            "volume": 0.036572329699993134,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -390,6 +393,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/24_in_wall_cabinet_wood_beach_honey",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/24_in_wall_cabinet_wood_beach_honey"
             },
+            "volume": 0.03657233342528343,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -485,6 +489,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/36_in_wall_cabinet_white_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/36_in_wall_cabinet_white_wood"
             },
+            "volume": 0.0532197467982769,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -580,6 +585,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/36_in_wall_cabinet_wood_beach_honey",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/36_in_wall_cabinet_wood_beach_honey"
             },
+            "volume": 0.0532197467982769,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -691,6 +697,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.4/4ft_shelf_metal",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.4/4ft_shelf_metal"
             },
+            "volume": 0.03301480785012245,
             "wcategory": "bookshelf",
             "wnid": "n04190052"
         },
@@ -802,6 +809,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/4ft_wood_shelving",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/4ft_wood_shelving"
             },
+            "volume": 0.03301494941115379,
             "wcategory": "shelf",
             "wnid": "n04190052"
         },
@@ -919,6 +927,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/5ft_shelf_metal",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/5ft_shelf_metal"
             },
+            "volume": 0.04484545439481735,
             "wcategory": "shelf",
             "wnid": "n04190052"
         },
@@ -1036,6 +1045,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/5ft_wood_shelving",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/5ft_wood_shelving"
             },
+            "volume": 0.044845372438430786,
             "wcategory": "shelf",
             "wnid": "n04190052"
         },
@@ -1159,6 +1169,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/6ft_shelf_metal",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/6ft_shelf_metal"
             },
+            "volume": 0.055600687861442566,
             "wcategory": "shelf",
             "wnid": "n04190052"
         },
@@ -1282,6 +1293,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/6ft_wood_shelving",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/6ft_wood_shelving"
             },
+            "volume": 0.05560079216957092,
             "wcategory": "shelf",
             "wnid": "n04190052"
         },
@@ -1371,6 +1383,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/868580_pliers_max2016",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/868580_pliers_max2016"
             },
+            "volume": 5.427012001746334e-05,
             "wcategory": "pliers",
             "wnid": "n03966976"
         },
@@ -1445,6 +1458,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/9v_battery",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/9v_battery"
             },
+            "volume": 2.4577309886808507e-05,
             "wcategory": "flashlight battery",
             "wnid": "n03359285"
         },
@@ -1518,6 +1532,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/aaa_battery",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/aaa_battery"
             },
+            "volume": 5.032665285398252e-06,
             "wcategory": "flashlight battery",
             "wnid": "n03359285"
         },
@@ -1589,6 +1604,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/afl_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/afl_lamp"
             },
+            "volume": 0.00954983476549387,
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
@@ -1663,6 +1679,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/alarm_clock",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/alarm_clock"
             },
+            "volume": 0.0010841402690857649,
             "wcategory": "alarm clock",
             "wnid": "n02694662"
         },
@@ -1735,6 +1752,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/alivar_tech_bench_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/alivar_tech_bench_sofa"
             },
+            "volume": 0.15741032361984253,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -1808,6 +1826,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/alma_floor_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/alma_floor_lamp"
             },
+            "volume": 0.03906799852848053,
             "wcategory": "floor lamp",
             "wnid": "n03367059"
         },
@@ -2113,6 +2132,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/apple_ipod_touch_yellow_vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/apple_ipod_touch_yellow_vray"
             },
+            "volume": 1.2723086001642514e-05,
             "wcategory": "ipod",
             "wnid": "n03584254"
         },
@@ -2187,6 +2207,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/appliance-ge-profile-microwave",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/appliance-ge-profile-microwave"
             },
+            "volume": 0.1508081555366516,
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
         },
@@ -2259,6 +2280,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/appliance-ge-profile-microwave3",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/appliance-ge-profile-microwave3"
             },
+            "volume": 0.15471599996089935,
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
         },
@@ -2331,6 +2353,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/aquostv",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/aquostv"
             },
+            "volume": 0.0355503112077713,
             "wcategory": "television set",
             "wnid": "n04405907"
         },
@@ -2404,6 +2427,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/arco_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/arco_lamp"
             },
+            "volume": 0.01075831800699234,
             "wcategory": "floor lamp",
             "wnid": "n03367059"
         },
@@ -2499,6 +2523,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/arflex_hollywood_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/arflex_hollywood_sofa"
             },
+            "volume": 3.693368434906006,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -2571,6 +2596,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/arflex_strips_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/arflex_strips_sofa"
             },
+            "volume": 1.0280157327651978,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -2642,6 +2668,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/arturoalvarez_v_floor_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/arturoalvarez_v_floor_lamp"
             },
+            "volume": 0.2484867423772812,
             "wcategory": "floor lamp",
             "wnid": "n03367059"
         },
@@ -2714,6 +2741,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/atmosphere_nodo",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/atmosphere_nodo"
             },
+            "volume": 0.003677351400256157,
             "wcategory": "globe",
             "wnid": "n03440512"
         },
@@ -2881,6 +2909,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_morphy_2013__vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_morphy_2013__vray"
             },
+            "volume": 0.0034628764260560274,
             "wcategory": "teakettle",
             "wnid": "n04397768"
         },
@@ -2952,6 +2981,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_old_scissors",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_old_scissors"
             },
+            "volume": 5.380806214816403e-06,
             "wcategory": "scissors",
             "wnid": "n04148054"
         },
@@ -3047,6 +3077,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_padlock",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_padlock"
             },
+            "volume": 8.860872912919149e-05,
             "wcategory": "padlock",
             "wnid": "n03874599"
         },
@@ -3118,6 +3149,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_pen_01_001",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_pen_01_001"
             },
+            "volume": 7.796366844559088e-06,
             "wcategory": "pen",
             "wnid": "n03906997"
         },
@@ -3189,6 +3221,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_roller_skate",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_roller_skate"
             },
+            "volume": 0.003850015811622143,
             "wcategory": "skate",
             "wnid": "n04225729"
         },
@@ -3260,6 +3293,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_spoon_001",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_spoon_001"
             },
+            "volume": 6.289315933827311e-05,
             "wcategory": "spoon",
             "wnid": "n04284002"
         },
@@ -3333,6 +3367,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_toothbrush",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_toothbrush"
             },
+            "volume": 1.8397153326077387e-05,
             "wcategory": "toothbrush",
             "wnid": "n04453156"
         },
@@ -3404,6 +3439,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_backpack",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_backpack"
             },
+            "volume": 0.014770840294659138,
             "wcategory": "backpack",
             "wnid": "n02769748"
         },
@@ -3476,6 +3512,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_bowl_smooth",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_bowl_smooth"
             },
+            "volume": 0.0016161754028871655,
             "wcategory": "bowl",
             "wnid": "n03206908"
         },
@@ -3643,6 +3680,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_cassete",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_cassete"
             },
+            "volume": 2.2313524823402986e-05,
             "wcategory": "cassette",
             "wnid": "n02978881"
         },
@@ -3750,6 +3788,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_champions_trophy",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_champions_trophy"
             },
+            "volume": 0.04211835563182831,
             "wcategory": "trophy",
             "wnid": "n04487996"
         },
@@ -3821,6 +3860,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_comb",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_comb"
             },
+            "volume": 1.4221653145796154e-05,
             "wcategory": "hairbrush",
             "wnid": "n03475581"
         },
@@ -3893,6 +3933,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_dat",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_dat"
             },
+            "volume": 0.00031032765400595963,
             "wcategory": "cassette",
             "wnid": "n02978881"
         },
@@ -3964,6 +4005,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_default",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_default"
             },
+            "volume": 9.285306987294462e-06,
             "wcategory": "calculator",
             "wnid": "n02938886"
         },
@@ -4035,6 +4077,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_geosphere001",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_geosphere001"
             },
+            "volume": 0.00011402761447243392,
             "wcategory": "golf ball",
             "wnid": "n03445777"
         },
@@ -4118,6 +4161,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_glass_06_vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_glass_06_vray"
             },
+            "volume": 0.0014584062155336142,
             "wcategory": "beverage",
             "wnid": "n07881800"
         },
@@ -4219,6 +4263,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_headphones_31_12",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_headphones_31_12"
             },
+            "volume": 0.0009864780586212873,
             "wcategory": "headphone",
             "wnid": "n03261776"
         },
@@ -4290,6 +4335,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_lighter",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_lighter"
             },
+            "volume": 3.385730451554991e-05,
             "wcategory": "lighter",
             "wnid": "n03031422"
         },
@@ -4385,6 +4431,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_ramlosa_bottle_2015_vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_ramlosa_bottle_2015_vray"
             },
+            "volume": 0.000903722713701427,
             "wcategory": "bottle",
             "wnid": "n02876657"
         },
@@ -4510,6 +4557,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_roller_new",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_roller_new"
             },
+            "volume": 0.004641840700060129,
             "wcategory": "skate",
             "wnid": "n04225729"
         },
@@ -4587,6 +4635,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_screwdriver_render",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_screwdriver_render"
             },
+            "volume": 9.168633550871164e-05,
             "wcategory": "screwdriver",
             "wnid": "n04154565"
         },
@@ -4658,6 +4707,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_screwdriver_v2_texture_",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_screwdriver_v2_texture_"
             },
+            "volume": 1.6391355529776774e-05,
             "wcategory": "screwdriver",
             "wnid": "n04154565"
         },
@@ -4747,6 +4797,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_whiskeybottle",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_whiskeybottle"
             },
+            "volume": 0.003195848548784852,
             "wcategory": "bottle",
             "wnid": "n02876657"
         },
@@ -4839,6 +4890,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_wire_pincers",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_wire_pincers"
             },
+            "volume": 4.26881160819903e-05,
             "wcategory": "pliers",
             "wnid": "n03966976"
         },
@@ -4911,6 +4963,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_48_body_shop_hair_brush",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_48_body_shop_hair_brush"
             },
+            "volume": 0.00013089946878608316,
             "wcategory": "hairbrush",
             "wnid": "n03475581"
         },
@@ -4984,6 +5037,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_calculator",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_calculator"
             },
+            "volume": 4.542914030025713e-05,
             "wcategory": "calculator",
             "wnid": "n02938886"
         },
@@ -5067,6 +5121,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_champagne_cup_vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_champagne_cup_vray"
             },
+            "volume": 0.0002295405138283968,
             "wcategory": "wineglass",
             "wnid": "n04592099"
         },
@@ -5174,6 +5229,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_executive_pen",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_executive_pen"
             },
+            "volume": 4.006388735433575e-06,
             "wcategory": "pen",
             "wnid": "n03906997"
         },
@@ -5701,6 +5757,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_tag_heuer_max2014",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_tag_heuer_max2014"
             },
+            "volume": 4.9336063966620713e-05,
             "wcategory": "watch",
             "wnid": "n04555897"
         },
@@ -5826,6 +5883,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_vray_cassette_render_scene",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_vray_cassette_render_scene"
             },
+            "volume": 2.3163323930930346e-05,
             "wcategory": "cassette",
             "wnid": "n02978881"
         },
@@ -5897,6 +5955,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/backpack",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/backpack"
             },
+            "volume": 0.01935604400932789,
             "wcategory": "backpack",
             "wnid": "n02769748"
         },
@@ -5968,6 +6027,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bag_14",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bag_14"
             },
+            "volume": 0.0003223841486033052,
             "wcategory": "bag, handbag, pocketbook, purse",
             "wnid": "n02774152"
         },
@@ -6039,6 +6099,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bag_3",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bag_3"
             },
+            "volume": 0.004986942745745182,
             "wcategory": "bag, handbag, pocketbook, purse",
             "wnid": "n02774152"
         },
@@ -6112,6 +6173,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bakerparisfloorlamp03",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bakerparisfloorlamp03"
             },
+            "volume": 0.020757637917995453,
             "wcategory": "floor lamp",
             "wnid": "n03367059"
         },
@@ -6183,6 +6245,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2//baking_sheet01",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2//baking_sheet01"
             },
+            "volume": 0.0004112875903956592,
             "wcategory": "cookie sheet",
             "wnid": "n03101796"
         },
@@ -6254,6 +6317,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2//baking_sheet02",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2//baking_sheet02"
             },
+            "volume": 0.00044402541243471205,
             "wcategory": "cookie sheet",
             "wnid": "n03101796"
         },
@@ -6325,6 +6389,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/baking_sheet03",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/baking_sheet03"
             },
+            "volume": 0.00042540853610262275,
             "wcategory": "cookie sheet",
             "wnid": "n03101796"
         },
@@ -6396,6 +6461,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/baking_sheet04",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/baking_sheet04"
             },
+            "volume": 0.000237934262258932,
             "wcategory": "cookie sheet",
             "wnid": "n03101796"
         },
@@ -6467,6 +6533,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/baking_sheet05",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/baking_sheet05"
             },
+            "volume": 0.00026140312547795475,
             "wcategory": "cookie sheet",
             "wnid": "n03101796"
         },
@@ -6538,6 +6605,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/baking_sheet06",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/baking_sheet06"
             },
+            "volume": 0.0002372175658820197,
             "wcategory": "cookie sheet",
             "wnid": "n03101796"
         },
@@ -6609,6 +6677,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/baking_sheet07",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/baking_sheet07"
             },
+            "volume": 0.0005763695226050913,
             "wcategory": "cookie sheet",
             "wnid": "n03101796"
         },
@@ -6680,6 +6749,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/baking_sheet08",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/baking_sheet08"
             },
+            "volume": 0.0005763622466474771,
             "wcategory": "cookie sheet",
             "wnid": "n03101796"
         },
@@ -6751,6 +6821,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/baking_sheet09",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/baking_sheet09"
             },
+            "volume": 0.0002379342186031863,
             "wcategory": "cookie sheet",
             "wnid": "n03101796"
         },
@@ -6822,6 +6893,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/baking_sheet10",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/baking_sheet10"
             },
+            "volume": 0.000444051023805514,
             "wcategory": "cookie sheet",
             "wnid": "n03101796"
         },
@@ -6894,6 +6966,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/balance_double_doghouse",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/balance_double_doghouse"
             },
+            "volume": 0.3810552954673767,
             "wcategory": "dog house",
             "wnid": "n03859280"
         },
@@ -6965,6 +7038,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/baleri_italia_folded_black_table",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/baleri_italia_folded_black_table"
             },
+            "volume": 0.043381061404943466,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -7040,6 +7114,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/ball_peen_hammer",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/ball_peen_hammer"
             },
+            "volume": 0.0003719691012520343,
             "wcategory": "hammer",
             "wnid": "n03481172"
         },
@@ -7112,6 +7187,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/barcelona_bench_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/barcelona_bench_sofa"
             },
+            "volume": 0.08948738127946854,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -7183,6 +7259,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/basic_cork",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/basic_cork"
             },
+            "volume": 1.8642103896127082e-05,
             "wcategory": "bottle cork",
             "wnid": "n03108853"
         },
@@ -7254,6 +7331,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/basic_cork_2",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/basic_cork_2"
             },
+            "volume": 1.8642103896127082e-05,
             "wcategory": "bottle cork",
             "wnid": "n03108853"
         },
@@ -7396,6 +7474,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/basket_18inx18inx12iin_bamboo",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/basket_18inx18inx12iin_bamboo"
             },
+            "volume": 0.0075235795229673386,
             "wcategory": "basket",
             "wnid": "n02801938"
         },
@@ -7467,6 +7546,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/basket_18inx18inx12iin_plastic_lattice",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/basket_18inx18inx12iin_plastic_lattice"
             },
+            "volume": 0.007523596286773682,
             "wcategory": "basket",
             "wnid": "n02801938"
         },
@@ -7538,6 +7618,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/basket_18inx18inx12iin_wicker",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/basket_18inx18inx12iin_wicker"
             },
+            "volume": 0.007523559033870697,
             "wcategory": "basket",
             "wnid": "n02801938"
         },
@@ -7609,6 +7690,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/basket_18inx18inx12iin_wood_mesh",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/basket_18inx18inx12iin_wood_mesh"
             },
+            "volume": 0.007523530162870884,
             "wcategory": "basket",
             "wnid": "n02801938"
         },
@@ -7682,6 +7764,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bastone_floor_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bastone_floor_lamp"
             },
+            "volume": 0.0681440457701683,
             "wcategory": "floor lamp",
             "wnid": "n03367059"
         },
@@ -7757,6 +7840,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/baton_table_lamp_dark",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/baton_table_lamp_dark"
             },
+            "volume": 0.01591740921139717,
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
@@ -7908,6 +7992,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bed01",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bed01"
             },
+            "volume": 3.408139944076538,
             "wcategory": "bed",
             "wnid": "n02818832"
         },
@@ -8059,6 +8144,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bed01_blue",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bed01_blue"
             },
+            "volume": 3.408139944076538,
             "wcategory": "bed",
             "wnid": "n02818832"
         },
@@ -8210,6 +8296,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bed01_red",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bed01_red"
             },
+            "volume": 3.408139944076538,
             "wcategory": "bed",
             "wnid": "n02818832"
         },
@@ -8281,6 +8368,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bee",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bee"
             },
+            "volume": 0.0017116594826802611,
             "wcategory": "bee",
             "wnid": "n02206856"
         },
@@ -8352,6 +8440,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/black_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/black_lamp"
             },
+            "volume": 0.012924396432936192,
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
@@ -8435,6 +8524,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/blue_bag",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/blue_bag"
             },
+            "volume": 0.0018377763917669654,
             "wcategory": "bag, handbag, pocketbook, purse",
             "wnid": "n02774152"
         },
@@ -8508,6 +8598,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/blue_club_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/blue_club_chair"
             },
+            "volume": 0.41732513904571533,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -8579,6 +8670,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/blue_rug",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/blue_rug"
             },
+            "volume": 0.04662416875362396,
             "wcategory": "rug",
             "wnid": "n04118021"
         },
@@ -8662,6 +8754,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/blue_satchal",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/blue_satchal"
             },
+            "volume": 0.0240883007645607,
             "wcategory": "suitcase",
             "wnid": "n02773838"
         },
@@ -8734,6 +8827,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/blue_side_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/blue_side_chair"
             },
+            "volume": 0.12402118742465973,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -8805,6 +8899,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bookend01",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bookend01"
             },
+            "volume": 1.1685755453072488e-05,
             "wcategory": "bookend",
             "wnid": "n02871005"
         },
@@ -8876,6 +8971,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bookend03",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bookend03"
             },
+            "volume": 0.0008486003498546779,
             "wcategory": "bookend",
             "wnid": "n02871005"
         },
@@ -8947,6 +9043,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bookend04",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bookend04"
             },
+            "volume": 0.0007344268378801644,
             "wcategory": "bookend",
             "wnid": "n02871005"
         },
@@ -9018,6 +9115,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bookend05",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bookend05"
             },
+            "volume": 0.00012812497152481228,
             "wcategory": "bookend",
             "wnid": "n02871005"
         },
@@ -9089,6 +9187,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bookend06",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bookend06"
             },
+            "volume": 0.0004280419962015003,
             "wcategory": "bookend",
             "wnid": "n02871005"
         },
@@ -9160,6 +9259,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/bookend07",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/bookend07"
             },
+            "volume": 0.00036716117756441236,
             "wcategory": "bookend",
             "wnid": "n02871005"
         },
@@ -9235,6 +9335,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bork_vacuum",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bork_vacuum"
             },
+            "volume": 0.06208451837301254,
             "wcategory": "vacuum cleaner",
             "wnid": "n04517823"
         },
@@ -9307,6 +9408,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bow_rake",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bow_rake"
             },
+            "volume": 0.0025617668870836496,
             "wcategory": "garden rake",
             "wnid": "n03417970"
         },
@@ -9378,6 +9480,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/box_18inx18inx12in_cardboard",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/box_18inx18inx12in_cardboard"
             },
+            "volume": 0.015018651261925697,
             "wcategory": "box",
             "wnid": "n02883344"
         },
@@ -9449,6 +9552,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/box_24inx18inx12in_cherry",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/box_24inx18inx12in_cherry"
             },
+            "volume": 0.030324632301926613,
             "wcategory": "box",
             "wnid": "n02883344"
         },
@@ -9520,6 +9624,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/box_tapered_beech",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/box_tapered_beech"
             },
+            "volume": 0.1586495041847229,
             "wcategory": "box",
             "wnid": "n02883344"
         },
@@ -9591,6 +9696,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/box_tapered_white_mesh",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/box_tapered_white_mesh"
             },
+            "volume": 0.15865349769592285,
             "wcategory": "box",
             "wnid": "n02883344"
         },
@@ -9668,6 +9774,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bronze_purse",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bronze_purse"
             },
+            "volume": 0.0007549361907877028,
             "wcategory": "bag, handbag, pocketbook, purse",
             "wnid": "n02774152"
         },
@@ -9745,6 +9852,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/brown_leather_dining_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/brown_leather_dining_chair"
             },
+            "volume": 0.07425395399332047,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -9818,6 +9926,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/brown_leather_side_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/brown_leather_side_chair"
             },
+            "volume": 0.09889040142297745,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -9889,6 +9998,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/buddah",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/buddah"
             },
+            "volume": 0.28436410427093506,
             "wcategory": "sculpture",
             "wnid": "n04157320"
         },
@@ -9960,6 +10070,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/bung",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/bung"
             },
+            "volume": 0.00013059290358796716,
             "wcategory": "bottle cork",
             "wnid": "n03108853"
         },
@@ -10031,6 +10142,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_large_black",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_large_black"
             },
+            "volume": 1.0007956916524563e-06,
             "wcategory": "shirt button",
             "wnid": "n04197781"
         },
@@ -10102,6 +10214,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_large_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_large_wood"
             },
+            "volume": 1.0008177468989743e-06,
             "wcategory": "shirt button",
             "wnid": "n04197781"
         },
@@ -10173,6 +10286,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_mottled",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_mottled"
             },
+            "volume": 1.2999365708310506e-06,
             "wcategory": "shirt button",
             "wnid": "n04197781"
         },
@@ -10244,6 +10358,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_red_plastic",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_red_plastic"
             },
+            "volume": 1.29994009512302e-06,
             "wcategory": "shirt button",
             "wnid": "n04197781"
         },
@@ -10315,6 +10430,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_white_plastic",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_white_plastic"
             },
+            "volume": 1.2999158798265853e-06,
             "wcategory": "shirt button",
             "wnid": "n04197781"
         },
@@ -10386,6 +10502,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_four_hole_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_four_hole_wood"
             },
+            "volume": 1.2999231557841995e-06,
             "wcategory": "shirt button",
             "wnid": "n04197781"
         },
@@ -10457,6 +10574,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_green_mottled",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_green_mottled"
             },
+            "volume": 9.441329780202068e-07,
             "wcategory": "shirt button",
             "wnid": "n04197781"
         },
@@ -10528,6 +10646,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_grey",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_grey"
             },
+            "volume": 9.441423571843188e-07,
             "wcategory": "shirt button",
             "wnid": "n04197781"
         },
@@ -10599,6 +10718,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_red_mottled",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_red_mottled"
             },
+            "volume": 1.3141780073055997e-06,
             "wcategory": "shirt button",
             "wnid": "n04197781"
         },
@@ -10670,6 +10790,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/button_two_hole_red_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/button_two_hole_red_wood"
             },
+            "volume": 1.314191422352451e-06,
             "wcategory": "shirt button",
             "wnid": "n04197781"
         },
@@ -10761,6 +10882,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_door_drawer_wood_beach_honey",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_door_drawer_wood_beach_honey"
             },
+            "volume": 0.1518884152173996,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -10845,6 +10967,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_singledoor_wood_beach_honey",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_singledoor_wood_beach_honey"
             },
+            "volume": 0.36150357127189636,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -10936,6 +11059,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_two_drawer_white_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_two_drawer_white_wood"
             },
+            "volume": 0.36008888483047485,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -11027,6 +11151,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_two_drawer_wood_beach_honey",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_two_drawer_wood_beach_honey"
             },
+            "volume": 0.36008888483047485,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -11134,6 +11259,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_white_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_white_wood"
             },
+            "volume": 0.3615034520626068,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -11241,6 +11367,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_24_wood_beach_honey",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_wood_beach_honey"
             },
+            "volume": 0.3615034520626068,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -11348,6 +11475,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_36_white_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_36_white_wood"
             },
+            "volume": 0.5420937538146973,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -11455,6 +11583,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_36_wood_beach_honey",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_36_wood_beach_honey"
             },
+            "volume": 0.5420937538146973,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -11533,6 +11662,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_full_height_white_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_full_height_white_wood"
             },
+            "volume": 0.12262023240327835,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -11611,6 +11741,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/cabinet_full_height_wood_beach_honey",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_full_height_wood_beach_honey"
             },
+            "volume": 0.12262017279863358,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -11988,6 +12119,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/calculator",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/calculator"
             },
+            "volume": 4.205391087452881e-05,
             "wcategory": "calculator",
             "wnid": "n02938886"
         },
@@ -12059,6 +12191,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/camera_box",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/camera_box"
             },
+            "volume": 0.004280616994947195,
             "wcategory": "box",
             "wnid": "n02883344"
         },
@@ -12132,6 +12265,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/candle",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/candle"
             },
+            "volume": 0.0034935702569782734,
             "wcategory": "candle",
             "wnid": "n02948072"
         },
@@ -12203,6 +12337,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/candlestick1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/candlestick1"
             },
+            "volume": 0.0006195395835675299,
             "wcategory": "candle",
             "wnid": "n02948072"
         },
@@ -12274,6 +12409,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/carpet_rug",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/carpet_rug"
             },
+            "volume": 0.04662416875362396,
             "wcategory": "rug",
             "wnid": "n04118021"
         },
@@ -12347,6 +12483,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/cerno_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/cerno_lamp"
             },
+            "volume": 0.2821855843067169,
             "wcategory": "floor lamp",
             "wnid": "n03367059"
         },
@@ -12436,6 +12573,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/cgaxis_models_23_19_vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/cgaxis_models_23_19_vray"
             },
+            "volume": 0.0019783559255301952,
             "wcategory": "book",
             "wnid": "n02870526"
         },
@@ -12579,6 +12717,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/cgaxis_models_volume_59_15_vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/cgaxis_models_volume_59_15_vray"
             },
+            "volume": 0.0003285840793978423,
             "wcategory": "camera",
             "wnid": "n02942699"
         },
@@ -12662,6 +12801,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/chain_purse",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/chain_purse"
             },
+            "volume": 0.001237687305547297,
             "wcategory": "bag, handbag, pocketbook, purse",
             "wnid": "n02774152"
         },
@@ -12739,6 +12879,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/chair_annabelle",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/chair_annabelle"
             },
+            "volume": 0.05200786888599396,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -12816,6 +12957,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/chair_billiani_doll",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/chair_billiani_doll"
             },
+            "volume": 0.049694422632455826,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -12893,6 +13035,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/chair_eames_plastic_armchair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/chair_eames_plastic_armchair"
             },
+            "volume": 0.061240945011377335,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -12970,6 +13113,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/chair_willisau_riale",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/chair_willisau_riale"
             },
+            "volume": 0.03827018290758133,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -13042,6 +13186,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/champagne_cork",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/champagne_cork"
             },
+            "volume": 1.3321438018465415e-05,
             "wcategory": "bottle cork",
             "wnid": "n03108853"
         },
@@ -13113,6 +13258,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/chista_slice_of_teak_table",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/chista_slice_of_teak_table"
             },
+            "volume": 0.06658819317817688,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -13185,6 +13331,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/club_house_italia_nautilus_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/club_house_italia_nautilus_sofa"
             },
+            "volume": 2.1535046100616455,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -13260,6 +13407,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffee_001",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_001"
             },
+            "volume": 0.01346401683986187,
             "wcategory": "coffee maker",
             "wnid": "n03063338"
         },
@@ -13335,6 +13483,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffee_0023",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_0023"
             },
+            "volume": 0.033225588500499725,
             "wcategory": "coffee maker",
             "wnid": "n03063338"
         },
@@ -13409,6 +13558,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffee_005_13",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_005_13"
             },
+            "volume": 0.02595151774585247,
             "wcategory": "coffee maker",
             "wnid": "n03063338"
         },
@@ -13486,6 +13636,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffee_cup",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_cup"
             },
+            "volume": 0.0009956557769328356,
             "wcategory": "cup",
             "wnid": "n03147509"
         },
@@ -13560,6 +13711,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffee_maker",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_maker"
             },
+            "volume": 0.08546439558267593,
             "wcategory": "coffee maker",
             "wnid": "n03063338"
         },
@@ -13632,6 +13784,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffee_table_glass_round",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_table_glass_round"
             },
+            "volume": 0.026751317083835602,
             "wcategory": "coffee table, cocktail table",
             "wnid": "n03063968"
         },
@@ -13703,6 +13856,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffeecup004",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffeecup004"
             },
+            "volume": 0.0002519000554457307,
             "wcategory": "cup",
             "wnid": "n03147509"
         },
@@ -13774,6 +13928,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffeemug",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffeemug"
             },
+            "volume": 0.0005452937330119312,
             "wcategory": "cup",
             "wnid": "n03147509"
         },
@@ -13845,6 +14000,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/cork_plastic",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/cork_plastic"
             },
+            "volume": 1.7031132301781327e-05,
             "wcategory": "bottle cork",
             "wnid": "n03108853"
         },
@@ -13916,6 +14072,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/cork_plastic_black",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/cork_plastic_black"
             },
+            "volume": 1.7031132301781327e-05,
             "wcategory": "bottle cork",
             "wnid": "n03108853"
         },
@@ -13987,6 +14144,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/cucharon_utensilios",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/cucharon_utensilios"
             },
+            "volume": 0.0004819503810722381,
             "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
@@ -14131,6 +14289,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/dark_red_club_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/dark_red_club_chair"
             },
+            "volume": 0.4237993657588959,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -14202,6 +14361,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/de_castelli_placas_table",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/de_castelli_placas_table"
             },
+            "volume": 0.007402101065963507,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -14273,6 +14433,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/de_castelli_placas_table_low",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/de_castelli_placas_table_low"
             },
+            "volume": 0.015044654719531536,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -14348,6 +14509,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/desk_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/desk_lamp"
             },
+            "volume": 0.011564874090254307,
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
@@ -14419,6 +14581,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/dining_room_table",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/dining_room_table"
             },
+            "volume": 0.0411614254117012,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -14490,6 +14653,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/dishwasher_4",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/dishwasher_4"
             },
+            "volume": 0.32725971937179565,
             "wcategory": "dishwasher",
             "wnid": "n03207941"
         },
@@ -14579,6 +14743,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/duffle_bag",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/duffle_bag"
             },
+            "volume": 0.1356908529996872,
             "wcategory": "suitcase",
             "wnid": "n02773838"
         },
@@ -14662,6 +14827,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/duffle_bag_sm",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/duffle_bag_sm"
             },
+            "volume": 0.017094934359192848,
             "wcategory": "suitcase",
             "wnid": "n02773838"
         },
@@ -14733,6 +14899,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/easter4",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/easter4"
             },
+            "volume": 0.140579953789711,
             "wcategory": "sculpture",
             "wnid": "n04157320"
         },
@@ -14804,6 +14971,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/elephant_bowl",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/elephant_bowl"
             },
+            "volume": 0.12154193967580795,
             "wcategory": "bowl",
             "wnid": "n03206908"
         },
@@ -14876,6 +15044,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/elf_painting",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/elf_painting"
             },
+            "volume": 0.026351163163781166,
             "wcategory": "painting",
             "wnid": "n00609236"
         },
@@ -14947,6 +15116,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/emeco_navy_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/emeco_navy_chair"
             },
+            "volume": 0.02210216596722603,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -15030,6 +15200,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/engineers_hammer_vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/engineers_hammer_vray"
             },
+            "volume": 0.0001225792511831969,
             "wcategory": "hammer",
             "wnid": "n03481172"
         },
@@ -15109,6 +15280,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/f10_apple_iphone_4",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/f10_apple_iphone_4"
             },
+            "volume": 2.8325281164143234e-05,
             "wcategory": "ipod",
             "wnid": "n03584254"
         },
@@ -15180,6 +15352,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/flat_woven_rug",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/flat_woven_rug"
             },
+            "volume": 0.04662416875362396,
             "wcategory": "rug",
             "wnid": "n04118021"
         },
@@ -15251,6 +15424,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fork1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fork1"
             },
+            "volume": 8.62329761730507e-06,
             "wcategory": "fork",
             "wnid": "n03383948"
         },
@@ -15322,6 +15496,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fork2",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fork2"
             },
+            "volume": 1.3293515621626284e-05,
             "wcategory": "fork",
             "wnid": "n03383948"
         },
@@ -15393,6 +15568,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fork3",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fork3"
             },
+            "volume": 1.3692834727407899e-05,
             "wcategory": "fork",
             "wnid": "n03383948"
         },
@@ -15464,6 +15640,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fork4",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fork4"
             },
+            "volume": 1.329370297753485e-05,
             "wcategory": "fork",
             "wnid": "n03383948"
         },
@@ -15538,6 +15715,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/foscarini_cage_mic_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/foscarini_cage_mic_lamp"
             },
+            "volume": 0.004382255952805281,
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
@@ -15609,6 +15787,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/framed_painting",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/framed_painting"
             },
+            "volume": 0.045473530888557434,
             "wcategory": "picture",
             "wnid": "n03876519"
         },
@@ -15684,6 +15863,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fridge_large",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fridge_large"
             },
+            "volume": 1.375571370124817,
             "wcategory": "refrigerator",
             "wnid": "n04070727"
         },
@@ -15756,6 +15936,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/fruit_basket",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/fruit_basket"
             },
+            "volume": 0.0226898230612278,
             "wcategory": "painting",
             "wnid": "n00609236"
         },
@@ -15869,6 +16050,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/generic_toothbrush_001",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/generic_toothbrush_001"
             },
+            "volume": 1.5229838936647866e-05,
             "wcategory": "toothbrush",
             "wnid": "n04453156"
         },
@@ -15940,6 +16122,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/glass1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/glass1"
             },
+            "volume": 0.00029749644454568624,
             "wcategory": "wineglass",
             "wnid": "n04592099"
         },
@@ -16011,6 +16194,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/glass2",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/glass2"
             },
+            "volume": 0.0001641968556214124,
             "wcategory": "wineglass",
             "wnid": "n04592099"
         },
@@ -16082,6 +16266,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/glass3",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/glass3"
             },
+            "volume": 0.0004033238801639527,
             "wcategory": "wineglass",
             "wnid": "n04592099"
         },
@@ -16154,6 +16339,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/glass_coffee_table_long",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/glass_coffee_table_long"
             },
+            "volume": 0.05234703794121742,
             "wcategory": "coffee table, cocktail table",
             "wnid": "n03063968"
         },
@@ -16226,6 +16412,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/glass_table",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/glass_table"
             },
+            "volume": 0.14684359729290009,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -16298,6 +16485,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/glass_table_round",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/glass_table_round"
             },
+            "volume": 0.08214885741472244,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -16369,6 +16557,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/golf",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/golf"
             },
+            "volume": 5.8358771639177576e-05,
             "wcategory": "golf ball",
             "wnid": "n03445777"
         },
@@ -16446,6 +16635,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/green_bag",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/green_bag"
             },
+            "volume": 0.008593261241912842,
             "wcategory": "suitcase",
             "wnid": "n02773838"
         },
@@ -16518,6 +16708,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/green_side_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/green_side_chair"
             },
+            "volume": 0.09824598580598831,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -16589,6 +16780,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/h-shape_wood_block",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/h-shape_wood_block"
             },
+            "volume": 0.00011657970753731206,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -16672,6 +16864,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/hair_comb_2010",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/hair_comb_2010"
             },
+            "volume": 0.0010045041562989354,
             "wcategory": "comb",
             "wnid": "n00256746"
         },
@@ -16743,6 +16936,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/half_circle_wood_block",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/half_circle_wood_block"
             },
+            "volume": 7.854589784983546e-05,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -16814,6 +17008,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/heart",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/heart"
             },
+            "volume": 0.0007153556798584759,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -16885,6 +17080,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/hexagonal_toy",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/hexagonal_toy"
             },
+            "volume": 0.02752772718667984,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -16986,6 +17182,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/hiker_backpack",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/hiker_backpack"
             },
+            "volume": 0.043860942125320435,
             "wcategory": "backpack",
             "wnid": "n02769748"
         },
@@ -17069,6 +17266,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/holy_bible",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/holy_bible"
             },
+            "volume": 0.0007293620146811008,
             "wcategory": "book",
             "wnid": "n02870526"
         },
@@ -17145,6 +17343,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/hp_printer",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/hp_printer"
             },
+            "volume": 0.054940056055784225,
             "wcategory": "printer",
             "wnid": "n04004767"
         },
@@ -17216,6 +17415,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/iron_box",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/iron_box"
             },
+            "volume": 0.01773608848452568,
             "wcategory": "box",
             "wnid": "n02883344"
         },
@@ -17288,6 +17488,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/its_about_time_painting",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/its_about_time_painting"
             },
+            "volume": 0.026351163163781166,
             "wcategory": "painting",
             "wnid": "n00609236"
         },
@@ -17538,6 +17739,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/jug01",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/jug01"
             },
+            "volume": 0.00649641128256917,
             "wcategory": "jug",
             "wnid": "n03603722"
         },
@@ -17609,6 +17811,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/jug02",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/jug02"
             },
+            "volume": 0.004006349015980959,
             "wcategory": "jug",
             "wnid": "n03603722"
         },
@@ -17680,6 +17883,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/jug03",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/jug03"
             },
+            "volume": 0.0030844053253531456,
             "wcategory": "jug",
             "wnid": "n03603722"
         },
@@ -17751,6 +17955,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/jug04",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/jug04"
             },
+            "volume": 0.0030969311483204365,
             "wcategory": "jug",
             "wnid": "n03603722"
         },
@@ -17822,6 +18027,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/jug05",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/jug05"
             },
+            "volume": 0.004128294996917248,
             "wcategory": "jug",
             "wnid": "n03603722"
         },
@@ -17896,6 +18102,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/juicer",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/juicer"
             },
+            "volume": 0.0072278412990272045,
             "wcategory": "coffee grinder",
             "wnid": "n03063485"
         },
@@ -17967,6 +18174,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/kettle",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/kettle"
             },
+            "volume": 0.004126150161027908,
             "wcategory": "teakettle",
             "wnid": "n04397768"
         },
@@ -18056,6 +18264,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/kevin_reilly_pattern_table_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/kevin_reilly_pattern_table_lamp"
             },
+            "volume": 0.02209586277604103,
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
@@ -18127,6 +18336,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/key_brass",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/key_brass"
             },
+            "volume": 7.686699063924607e-07,
             "wcategory": "key",
             "wnid": "n03613294"
         },
@@ -18198,6 +18408,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/key_dull_metal",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/key_dull_metal"
             },
+            "volume": 7.686699063924607e-07,
             "wcategory": "key",
             "wnid": "n03613294"
         },
@@ -18269,6 +18480,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/key_shiny",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/key_shiny"
             },
+            "volume": 7.686699063924607e-07,
             "wcategory": "key",
             "wnid": "n03613294"
         },
@@ -18352,6 +18564,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/kids_luggage_1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/kids_luggage_1"
             },
+            "volume": 0.024101436138153076,
             "wcategory": "suitcase",
             "wnid": "n02773838"
         },
@@ -18435,6 +18648,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/kids_luggage_2",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/kids_luggage_2"
             },
+            "volume": 0.01682504266500473,
             "wcategory": "suitcase",
             "wnid": "n02773838"
         },
@@ -18530,6 +18744,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/kitchen_sieve",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/kitchen_sieve"
             },
+            "volume": 0.0009470299701206386,
             "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
@@ -18601,6 +18816,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/knife1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/knife1"
             },
+            "volume": 7.055636615405092e-06,
             "wcategory": "knife",
             "wnid": "n03624134"
         },
@@ -18672,6 +18888,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/knife2",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/knife2"
             },
+            "volume": 9.736638276081067e-06,
             "wcategory": "knife",
             "wnid": "n03624134"
         },
@@ -18743,6 +18960,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/knife3",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/knife3"
             },
+            "volume": 7.692549843341112e-06,
             "wcategory": "knife",
             "wnid": "n03624134"
         },
@@ -18814,6 +19032,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/l-shape_wood_block",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/l-shape_wood_block"
             },
+            "volume": 0.0001192701020045206,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -18889,6 +19108,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/lamp_02",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/lamp_02"
             },
+            "volume": 0.019798312336206436,
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
@@ -18960,6 +19180,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/lapalma_stil_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/lapalma_stil_chair"
             },
+            "volume": 0.03197437524795532,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -19039,6 +19260,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/lawnmower",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/lawnmower"
             },
+            "volume": 0.33476507663726807,
             "wcategory": "lawn mower, mower",
             "wnid": "n03649909"
         },
@@ -19111,6 +19333,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/lg_table_marble_green",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/lg_table_marble_green"
             },
+            "volume": 0.010034611448645592,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -19183,6 +19406,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/lg_table_white",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/lg_table_white"
             },
+            "volume": 0.010034690611064434,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -19266,6 +19490,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/lighter",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/lighter"
             },
+            "volume": 3.5323164411238395e-06,
             "wcategory": "lighter",
             "wnid": "n03031422"
         },
@@ -19343,6 +19568,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/ligne_roset_armchair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/ligne_roset_armchair"
             },
+            "volume": 0.49949678778648376,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -19414,6 +19640,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/linbrazil_diz_armchair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/linbrazil_diz_armchair"
             },
+            "volume": 0.15363827347755432,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -19491,6 +19718,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/linen_dining_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/linen_dining_chair"
             },
+            "volume": 0.16408157348632812,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -19564,6 +19792,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/lint_roller01",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/lint_roller01"
             },
+            "volume": 0.0004220607806928456,
             "wcategory": "clothesbrush",
             "wnid": "n03050453"
         },
@@ -19637,6 +19866,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/lint_roller02",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/lint_roller02"
             },
+            "volume": 0.0004583494446706027,
             "wcategory": "clothesbrush",
             "wnid": "n03050453"
         },
@@ -19710,6 +19940,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/lint_roller03",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/lint_roller03"
             },
+            "volume": 0.00018382802954874933,
             "wcategory": "clothesbrush",
             "wnid": "n03050453"
         },
@@ -19783,6 +20014,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/lint_roller04",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/lint_roller04"
             },
+            "volume": 0.000550700118765235,
             "wcategory": "clothesbrush",
             "wnid": "n03050453"
         },
@@ -19856,6 +20088,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/lint_roller05",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/lint_roller05"
             },
+            "volume": 0.0005461819237098098,
             "wcategory": "clothesbrush",
             "wnid": "n03050453"
         },
@@ -19927,6 +20160,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/live_edge_coffee_table",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/live_edge_coffee_table"
             },
+            "volume": 0.08515335619449615,
             "wcategory": "coffee table, cocktail table",
             "wnid": "n03063968"
         },
@@ -20010,6 +20244,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/luggage_bag_1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/luggage_bag_1"
             },
+            "volume": 0.05490456894040108,
             "wcategory": "suitcase",
             "wnid": "n02773838"
         },
@@ -20090,6 +20325,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/macbook_air",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/macbook_air"
             },
+            "volume": 0.003897136077284813,
             "wcategory": "laptop, laptop computer",
             "wnid": "n03642806"
         },
@@ -20167,6 +20403,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/marble_table",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/marble_table"
             },
+            "volume": 0.08849462866783142,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -20244,6 +20481,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/marble_table_white",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/marble_table_white"
             },
+            "volume": 0.08847516030073166,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -20316,6 +20554,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/meridiani_belmondo_bench_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/meridiani_belmondo_bench_sofa"
             },
+            "volume": 0.9370458722114563,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -20388,6 +20627,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/meridiani_freeman_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/meridiani_freeman_sofa"
             },
+            "volume": 1.194029450416565,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -20465,6 +20705,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/metal_briefcase",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/metal_briefcase"
             },
+            "volume": 0.02138405852019787,
             "wcategory": "suitcase",
             "wnid": "n02773838"
         },
@@ -20538,6 +20779,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/metal_sculpture",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/metal_sculpture"
             },
+            "volume": 2.44646544160787e-05,
             "wcategory": "sculpture",
             "wnid": "n04157320"
         },
@@ -20612,6 +20854,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/microwave",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/microwave"
             },
+            "volume": 0.04605881869792938,
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
         },
@@ -20684,6 +20927,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/minotti_helion_3_seater_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/minotti_helion_3_seater_sofa"
             },
+            "volume": 0.6732205152511597,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -20797,6 +21041,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/moet_chandon_bottle_vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/moet_chandon_bottle_vray"
             },
+            "volume": 0.0015765420394018292,
             "wcategory": "bottle",
             "wnid": "n02876657"
         },
@@ -20874,6 +21119,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/molteni_turner_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/molteni_turner_sofa"
             },
+            "volume": 2.6028027534484863,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -20953,6 +21199,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/monster_beats_studio",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/monster_beats_studio"
             },
+            "volume": 0.004222926218062639,
             "wcategory": "headphone",
             "wnid": "n03261776"
         },
@@ -21042,6 +21289,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/mouse_02_vray",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/mouse_02_vray"
             },
+            "volume": 6.630879215663299e-05,
             "wcategory": "computer mouse",
             "wnid": "n03793489"
         },
@@ -21127,6 +21375,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/mouse_m505_1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/mouse_m505_1"
             },
+            "volume": 0.00037950044497847557,
             "wcategory": "computer mouse",
             "wnid": "n03793489"
         },
@@ -21204,6 +21453,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/mug",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/mug"
             },
+            "volume": 5.930585030000657e-05,
             "wcategory": "cup",
             "wnid": "n03147509"
         },
@@ -21276,6 +21526,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/napoleon_iii_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/napoleon_iii_sofa"
             },
+            "volume": 0.613719642162323,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -21347,6 +21598,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/naughtone_pinch_stool_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/naughtone_pinch_stool_chair"
             },
+            "volume": 0.11591733992099762,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -21420,6 +21672,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/notes_02",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/notes_02"
             },
+            "volume": 0.0005033444031141698,
             "wcategory": "book",
             "wnid": "n02870526"
         },
@@ -21599,6 +21852,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/omega_seamaster_set",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/omega_seamaster_set"
             },
+            "volume": 5.014825364924036e-05,
             "wcategory": "watch",
             "wnid": "n04555897"
         },
@@ -21671,6 +21925,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/on_the_rocks_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/on_the_rocks_sofa"
             },
+            "volume": 2.0900819301605225,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -21744,6 +21999,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pencil_all",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pencil_all"
             },
+            "volume": 0.0005998132983222604,
             "wcategory": "pencil",
             "wnid": "n03908204"
         },
@@ -21815,6 +22071,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pentagon_wood_block",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pentagon_wood_block"
             },
+            "volume": 0.00016994996985886246,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -21888,6 +22145,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pepper",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pepper"
             },
+            "volume": 0.00013643605052493513,
             "wcategory": "pepper mill, pepper grinder",
             "wnid": "n03914337"
         },
@@ -21959,6 +22217,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow"
             },
+            "volume": 0.011968257836997509,
             "wcategory": "throw pillow",
             "wnid": "n04430364"
         },
@@ -22030,6 +22289,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow01",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow01"
             },
+            "volume": 0.020411154255270958,
             "wcategory": "throw pillow",
             "wnid": "n04430364"
         },
@@ -22101,6 +22361,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow02",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow02"
             },
+            "volume": 0.013439351692795753,
             "wcategory": "throw pillow",
             "wnid": "n04430364"
         },
@@ -22172,6 +22433,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow03",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow03"
             },
+            "volume": 0.018623564392328262,
             "wcategory": "throw pillow",
             "wnid": "n04430364"
         },
@@ -22243,6 +22505,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow04",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow04"
             },
+            "volume": 0.1213834211230278,
             "wcategory": "throw pillow",
             "wnid": "n04430364"
         },
@@ -22314,6 +22577,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow05",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow05"
             },
+            "volume": 0.02585078589618206,
             "wcategory": "throw pillow",
             "wnid": "n04430364"
         },
@@ -22385,6 +22649,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow06",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow06"
             },
+            "volume": 0.016799431294202805,
             "wcategory": "throw pillow",
             "wnid": "n04430364"
         },
@@ -22456,6 +22721,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow07",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow07"
             },
+            "volume": 0.01797313429415226,
             "wcategory": "throw pillow",
             "wnid": "n04430364"
         },
@@ -22527,6 +22793,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow08",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow08"
             },
+            "volume": 0.016814112663269043,
             "wcategory": "throw pillow",
             "wnid": "n04430364"
         },
@@ -22599,6 +22866,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/poliform_atollo_curved_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/poliform_atollo_curved_sofa"
             },
+            "volume": 1.1468220949172974,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -22671,6 +22939,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/poliform_park_low_arm_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/poliform_park_low_arm_sofa"
             },
+            "volume": 0.8114084005355835,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -22742,6 +23011,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pot",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pot"
             },
+            "volume": 0.045727573335170746,
             "wcategory": "pot",
             "wnid": "n03990474"
         },
@@ -22820,6 +23090,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/printer_hp_laserjet1321",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/printer_hp_laserjet1321"
             },
+            "volume": 0.027075501158833504,
             "wcategory": "printer",
             "wnid": "n04004767"
         },
@@ -22891,6 +23162,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/purple_woven_rug",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/purple_woven_rug"
             },
+            "volume": 0.04662416875362396,
             "wcategory": "rug",
             "wnid": "n04118021"
         },
@@ -22963,6 +23235,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/purse",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/purse"
             },
+            "volume": 0.001226619933731854,
             "wcategory": "bag, handbag, pocketbook, purse",
             "wnid": "n02774152"
         },
@@ -23100,6 +23373,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2//puzzle_box_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2//puzzle_box_composite"
             },
+            "volume": 0.001785377273336053,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -23252,6 +23526,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/rectangle_wood_block",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/rectangle_wood_block"
             },
+            "volume": 0.00011664252815535292,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -23324,6 +23599,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/red_bag",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/red_bag"
             },
+            "volume": 0.0013398589799180627,
             "wcategory": "bag, handbag, pocketbook, purse",
             "wnid": "n02774152"
         },
@@ -23396,6 +23672,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/red_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/red_lamp"
             },
+            "volume": 0.01344800740480423,
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
@@ -23469,6 +23746,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/red_side_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/red_side_chair"
             },
+            "volume": 0.11197085678577423,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -23666,6 +23944,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/remote_vr_2012",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/remote_vr_2012"
             },
+            "volume": 2.9594737497973256e-05,
             "wcategory": "remote",
             "wnid": "n04074963"
         },
@@ -23737,6 +24016,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/rh1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/rh1"
             },
+            "volume": 0.02464435063302517,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -23808,6 +24088,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/rh10",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/rh10"
             },
+            "volume": 0.024778643622994423,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -23879,6 +24160,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/rh18",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/rh18"
             },
+            "volume": 0.024436164647340775,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -24095,6 +24377,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_large_padauk",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_large_padauk"
             },
+            "volume": 0.13622796535491943,
             "wcategory": "bowl",
             "wnid": "n00104409"
         },
@@ -24166,6 +24449,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_large_thin",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_large_thin"
             },
+            "volume": 0.12630215287208557,
             "wcategory": "bowl",
             "wnid": "n00104409"
         },
@@ -24237,6 +24521,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_small_beech",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_small_beech"
             },
+            "volume": 0.044196728616952896,
             "wcategory": "bowl",
             "wnid": "n00104409"
         },
@@ -24308,6 +24593,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_small_walnut",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_small_walnut"
             },
+            "volume": 0.0441974438726902,
             "wcategory": "bowl",
             "wnid": "n00104409"
         },
@@ -24379,6 +24665,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/round_bowl_talll_wenge",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/round_bowl_talll_wenge"
             },
+            "volume": 0.06286275386810303,
             "wcategory": "bowl",
             "wnid": "n00104409"
         },
@@ -24451,6 +24738,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_cherry",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_cherry"
             },
+            "volume": 0.00014732142153661698,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -24523,6 +24811,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_indent_rubber",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_indent_rubber"
             },
+            "volume": 9.246699482901022e-05,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -24595,6 +24884,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_indent_stone",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_indent_stone"
             },
+            "volume": 9.24675478017889e-05,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -24667,6 +24957,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_indent_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_indent_wood"
             },
+            "volume": 9.246500849258155e-05,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -24739,6 +25030,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_stone",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_stone"
             },
+            "volume": 0.00014732142153661698,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -24811,6 +25103,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/round_coaster_stone_dark",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/round_coaster_stone_dark"
             },
+            "volume": 0.00014732142153661698,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -24884,6 +25177,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/salt",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/salt"
             },
+            "volume": 136883.0625,
             "wcategory": "saltshaker, salt shaker",
             "wnid": "n04131690"
         },
@@ -25038,6 +25332,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/satiro_sculpture",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/satiro_sculpture"
             },
+            "volume": 0.6094591617584229,
             "wcategory": "sculpture",
             "wnid": "n04157320"
         },
@@ -25110,6 +25405,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/sayonara_sofa",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/sayonara_sofa"
             },
+            "volume": 0.8292659521102905,
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
@@ -25211,6 +25507,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/scissors",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/scissors"
             },
+            "volume": 0.00010152207687497139,
             "wcategory": "scissors",
             "wnid": "n04148054"
         },
@@ -25282,6 +25579,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/serving_bowl",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/serving_bowl"
             },
+            "volume": 0.015396259725093842,
             "wcategory": "bowl",
             "wnid": "n03206908"
         },
@@ -25354,6 +25652,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/servingfork",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/servingfork"
             },
+            "volume": 0.00029551112675108016,
             "wcategory": "carving fork",
             "wnid": "n02973805"
         },
@@ -25425,6 +25724,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/shallow_basket_white_mesh",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/shallow_basket_white_mesh"
             },
+            "volume": 0.007107828743755817,
             "wcategory": "basket",
             "wnid": "n02801938"
         },
@@ -25496,6 +25796,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/shallow_basket_wicker",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/shallow_basket_wicker"
             },
+            "volume": 0.007107848767191172,
             "wcategory": "basket",
             "wnid": "n02801938"
         },
@@ -25567,6 +25868,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/shark",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/shark"
             },
+            "volume": 0.001570314634591341,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -25638,6 +25940,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/shoebox_fused",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/shoebox_fused"
             },
+            "volume": 0.021962037310004234,
             "wcategory": "box",
             "wnid": "n02883344"
         },
@@ -25710,6 +26013,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/side_table_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/side_table_wood"
             },
+            "volume": 0.025286149233579636,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -25781,6 +26085,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/silver_frame_painting",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/silver_frame_painting"
             },
+            "volume": 0.045473530888557434,
             "wcategory": "painting",
             "wnid": "n00609236"
         },
@@ -25912,6 +26217,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/sink_base_white_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/sink_base_white_wood"
             },
+            "volume": 0.23190121352672577,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -26043,6 +26349,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2/sink_base_wood_beach_honey",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/sink_base_wood_beach_honey"
             },
+            "volume": 0.23190130293369293,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -26114,6 +26421,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/skillet_closed",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/skillet_closed"
             },
+            "volume": 0.008123166859149933,
             "wcategory": "pan",
             "wnid": "n03880531"
         },
@@ -26185,6 +26493,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/skillet_open",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/skillet_open"
             },
+            "volume": 0.008293204009532928,
             "wcategory": "pan",
             "wnid": "n03880531"
         },
@@ -26256,6 +26565,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/skillet_open_no_lid",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/skillet_open_no_lid"
             },
+            "volume": 0.002115541836246848,
             "wcategory": "pan",
             "wnid": "n03880531"
         },
@@ -26399,6 +26709,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/sm_table_white",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/sm_table_white"
             },
+            "volume": 0.059995733201503754,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -26476,6 +26787,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/small_purse",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/small_purse"
             },
+            "volume": 7.983826071722433e-05,
             "wcategory": "bag, handbag, pocketbook, purse",
             "wnid": "n02774152"
         },
@@ -26548,6 +26860,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/small_table_green_marble",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/small_table_green_marble"
             },
+            "volume": 0.05999666079878807,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -26619,6 +26932,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/soup_ladle_black_02",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/soup_ladle_black_02"
             },
+            "volume": 0.0004966225242242217,
             "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
@@ -26691,6 +27005,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/spagetti-server",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/spagetti-server"
             },
+            "volume": 0.0005977068794891238,
             "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
@@ -26763,6 +27078,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/spatula",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/spatula"
             },
+            "volume": 0.0006197234033606946,
             "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
@@ -26835,6 +27151,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/spatula2",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/spatula2"
             },
+            "volume": 0.0007061984506435692,
             "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
@@ -26907,6 +27224,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/spatula3",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/spatula3"
             },
+            "volume": 0.0005458941450342536,
             "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
@@ -26978,6 +27296,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/spoon1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/spoon1"
             },
+            "volume": 1.8904274838860147e-05,
             "wcategory": "spoon",
             "wnid": "n04284002"
         },
@@ -27049,6 +27368,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/spoon2",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/spoon2"
             },
+            "volume": 1.8988608644576743e-05,
             "wcategory": "spoon",
             "wnid": "n04284002"
         },
@@ -27121,6 +27441,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/spunlight_designermesh_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/spunlight_designermesh_lamp"
             },
+            "volume": 0.020602533593773842,
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
@@ -27193,6 +27514,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_001_cork",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_001_cork"
             },
+            "volume": 0.00013906878302805126,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -27265,6 +27587,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_001_marble",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_001_marble"
             },
+            "volume": 0.0001390692632412538,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -27337,6 +27660,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_001_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_001_wood"
             },
+            "volume": 0.00013906919048167765,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -27409,6 +27733,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_rubber",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_rubber"
             },
+            "volume": 0.00013756929547525942,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -27481,6 +27806,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_stone",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_stone"
             },
+            "volume": 0.00013756744738202542,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -27553,6 +27879,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/square_coaster_wood",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/square_coaster_wood"
             },
+            "volume": 0.00013757278793491423,
             "wcategory": "coaster",
             "wnid": "n03056701"
         },
@@ -27624,6 +27951,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/square_wood_block",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/square_wood_block"
             },
+            "volume": 0.00018584787903819233,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -27808,6 +28136,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/star_wood_block",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/star_wood_block"
             },
+            "volume": 0.00017740874318405986,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -27879,6 +28208,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/steam-punk_gear_25",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/steam-punk_gear_25"
             },
+            "volume": 0.0007798201404511929,
             "wcategory": "cog, gear",
             "wnid": "n03430551"
         },
@@ -27950,6 +28280,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/steam-punk_gear_27",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/steam-punk_gear_27"
             },
+            "volume": 0.00011171002552146092,
             "wcategory": "cog, gear",
             "wnid": "n03430551"
         },
@@ -28021,6 +28352,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/steam-punk_gear_29",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/steam-punk_gear_29"
             },
+            "volume": 0.0007863242644816637,
             "wcategory": "cog, gear",
             "wnid": "n03430551"
         },
@@ -28092,6 +28424,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/t-shape_wood_block",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/t-shape_wood_block"
             },
+            "volume": 0.00010161704267375171,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -28165,6 +28498,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/table_square",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/table_square"
             },
+            "volume": 0.017364120110869408,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -28238,6 +28572,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/table_stack",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/table_stack"
             },
+            "volume": 0.08411204814910889,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -28310,6 +28645,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/tablespoon",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/tablespoon"
             },
+            "volume": 0.0007945072138682008,
             "wcategory": "spoon",
             "wnid": "n04284002"
         },
@@ -28411,6 +28747,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/tan_lounger_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/tan_lounger_chair"
             },
+            "volume": 0.35037410259246826,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -28488,6 +28825,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/tan_purse",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/tan_purse"
             },
+            "volume": 0.0020171913783997297,
             "wcategory": "bag, handbag, pocketbook, purse",
             "wnid": "n02774152"
         },
@@ -28561,6 +28899,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/tan_side_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/tan_side_chair"
             },
+            "volume": 0.06733518093824387,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -28632,6 +28971,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/tapered_cork",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/tapered_cork"
             },
+            "volume": 1.966433228517417e-05,
             "wcategory": "bottle cork",
             "wnid": "n03108853"
         },
@@ -28703,6 +29043,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.2/tapered_cork_w_hole",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.2/tapered_cork_w_hole"
             },
+            "volume": 1.9662129489006475e-05,
             "wcategory": "bottle cork",
             "wnid": "n03108853"
         },
@@ -28776,6 +29117,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/toaster_002",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/toaster_002"
             },
+            "volume": 0.002220001770183444,
             "wcategory": "toaster",
             "wnid": "n04442312"
         },
@@ -28848,6 +29190,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/toaster_b",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/toaster_b"
             },
+            "volume": 0.003598012262955308,
             "wcategory": "toaster",
             "wnid": "n04442312"
         },
@@ -28937,6 +29280,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/toothbrush",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/toothbrush"
             },
+            "volume": 5.898588278796524e-05,
             "wcategory": "toothbrush",
             "wnid": "n04453156"
         },
@@ -29008,6 +29352,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/trapezoidal_table",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/trapezoidal_table"
             },
+            "volume": 0.07273335009813309,
             "wcategory": "coffee table, cocktail table",
             "wnid": "n03063968"
         },
@@ -29109,6 +29454,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/trophy01",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/trophy01"
             },
+            "volume": 0.001890591811388731,
             "wcategory": "trophy",
             "wnid": "n04487996"
         },
@@ -29186,6 +29532,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/trophy02",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/trophy02"
             },
+            "volume": 0.0016904969234019518,
             "wcategory": "trophy",
             "wnid": "n04487996"
         },
@@ -29261,6 +29608,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/trunck",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/trunck"
             },
+            "volume": 0.5429002642631531,
             "wcategory": "trunk",
             "wnid": "n04491769"
         },
@@ -29332,6 +29680,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vase_01",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vase_01"
             },
+            "volume": 0.0013711241772398353,
             "wcategory": "vase",
             "wnid": "n04522168"
         },
@@ -29403,6 +29752,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vase_02",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vase_02"
             },
+            "volume": 0.002062443643808365,
             "wcategory": "vase",
             "wnid": "n04522168"
         },
@@ -29474,6 +29824,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vase_03",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vase_03"
             },
+            "volume": 0.0017565437592566013,
             "wcategory": "vase",
             "wnid": "n04522168"
         },
@@ -29545,6 +29896,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vase_05",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vase_05"
             },
+            "volume": 0.0023718150332570076,
             "wcategory": "vase",
             "wnid": "n04522168"
         },
@@ -29616,6 +29968,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vase_06",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vase_06"
             },
+            "volume": 0.0024685789830982685,
             "wcategory": "vase",
             "wnid": "n04522168"
         },
@@ -29705,6 +30058,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vitra_meda_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vitra_meda_chair"
             },
+            "volume": 0.10223258286714554,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -29806,6 +30160,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/vray_043",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vray_043"
             },
+            "volume": 0.010700816288590431,
             "wcategory": "teakettle",
             "wnid": "n04397768"
         },
@@ -29878,6 +30233,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/whisk",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/whisk"
             },
+            "volume": 0.0013658399693667889,
             "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
@@ -29950,6 +30306,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/white_club_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/white_club_chair"
             },
+            "volume": 0.3980846405029297,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -30021,6 +30378,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/white_lamp",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/white_lamp"
             },
+            "volume": 0.013447330333292484,
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
@@ -30104,6 +30462,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/white_lounger_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/white_lounger_chair"
             },
+            "volume": 0.21678058803081512,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -30181,6 +30540,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/white_shopping_bag",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/white_shopping_bag"
             },
+            "volume": 0.005410138051956892,
             "wcategory": "suitcase",
             "wnid": "n02773838"
         },
@@ -30252,6 +30612,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/willisau_varion_w3_table",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/willisau_varion_w3_table"
             },
+            "volume": 0.3039042055606842,
             "wcategory": "table",
             "wnid": "n04379243"
         },
@@ -30329,6 +30690,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/wood_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/wood_chair"
             },
+            "volume": 0.021484529599547386,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -30400,6 +30762,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/woven_box",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/woven_box"
             },
+            "volume": 0.08693654835224152,
             "wcategory": "box",
             "wnid": "n02883344"
         },
@@ -30472,6 +30835,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/yellow_side_chair",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/yellow_side_chair"
             },
+            "volume": 0.05986594408750534,
             "wcategory": "chair",
             "wnid": "n03001627"
         },
@@ -30543,6 +30907,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/zenblocks",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/zenblocks"
             },
+            "volume": 0.015682166442275047,
             "wcategory": "toy",
             "wnid": "n04461879"
         },
@@ -30704,6 +31069,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/zippo",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/zippo"
             },
+            "volume": 0.0001537739299237728,
             "wcategory": "lighter",
             "wnid": "n03031422"
         }

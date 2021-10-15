@@ -102,6 +102,7 @@ record = ModelRecord(data=data) # Creates a record from JSON data.
 | `physics_quality`    | float                       | The percentage of the object's mesh covered by colliders.    |
 | `asset_bundle_sizes` | Dict[str, int]              | A dictionary of asset bundle sizes. Key=Platform. Value=The size of the binary in bytes. |
 | `composite_object`   | bool                        | If true, this model is a [composite object](../../composite_objects/composite_objects.md). |
+| `volume`             | float                       | The volume of the object in cubic meters.                    |
 
 ### Functions
 

@@ -136,18 +136,52 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 3. Image+audio videos
 4. The `CinematicCamera` add-on
 
-## 2.10 Robots and Embodied Agents
+## 2.10 Agents
 
-1. Robots
-2. Humanoid agents
-3. VR
-5. Keyboard controls
-6. Embodied avatars
-7. Navigation
+[**Overview**](Documentation/lessons/agents/overview.md)
 
-High-level API: [magnebot](https://github.com/alters-mit/magnebot)
+### 2.10.1 Robots
 
-## 2.11 Misc. topics
+1. [Overview](Documentation/lessons/robots/overview.md)
+2. [The `Robot` add-on](Documentation/lessons/robots/robot_add_on.md)
+3. [Robot collision detection](Documentation/lessons/robots/collision_detection.md)
+4. [Select a robot](Documentation/lessons/robots/select_robot.md)
+5. [Add your own robots to TDW](Documentation/lessons/robots/custom_robots.md)
+6. [Robotics API (low-level)](Documentation/lessons/robots/custom_robots.md)
+7. [Add a camera to a robot](Documentation/lessons/robots/add_camera.md)
+
+### 2.10.2 Magnebots
+
+[`magnebot` (external repo)](https://github.com/alters-mit/magnebot)
+
+### 2.10.3 Human user interaction
+
+1. Overview
+2. Virtual reality
+3. Keyboard controls
+
+### 2.13 Humanoid agents ("Replicants")
+
+1. Overview
+3. ???
+
+### 2.10.4 Embodied avatars
+
+1. The `EmbodiedAvatar`
+
+### 2.10.4 Navigation
+
+1. Overview
+2. NavMesh pathfinding
+3. Occupancy maps
+
+### 2.10.5 Multi-agent simulations
+
+1. Overview
+2. State machines
+3. World state objects
+
+## 2.14 Misc. topics
 
 1. C# source code
 2. Freezing your code
@@ -155,6 +189,7 @@ High-level API: [magnebot](https://github.com/alters-mit/magnebot)
 4. xpra
 5. Creating composite objects
 6. Paintings
+7. Non-physics humanoids
 
 # 3. API Documentation
 

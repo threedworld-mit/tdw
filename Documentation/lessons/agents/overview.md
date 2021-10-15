@@ -8,15 +8,15 @@ Unlike most simulation platforms, TDW has a very loose definition for "agent". S
 
 - [Avatars](../core_concepts/avatars.md) have image sensors but typically are not embodied.
 - [Objects](../core_concepts.md) don't have image sensors but [it is possible to directly apply forces to objects](../physx/forces.md) and thereby make them act as if they are embodied agents.
-- [Robots](../robotics/overview.md) can act as agents but don't have image sensors by default.
+- [Robots](../robots/overview.md) can act as agents but don't have image sensors by default.
 
 TDW includes higher-level add-ons to effectively "create" agents from lower-level functionality. The [`Robot` add-on](../../python/add_ons/robot.md), for example, is a robotics wrapper class that has been designed assuming that the user wants to use robots as agents.
 
 The following tables lists the agent tutorials, but should not be taken as the be-all-end-all of what is possible for agent behavior in TDW. Each agent has been optimized to achieve realism in certain ways but not in other ways.
 
-### [Robot](../robotics/overview.md)
+### [Robot](../robots/overview.md)
 
-[Robots](../robotics/overview.md) are physically realistic and driven by motor drives. You can set joint targets, apply forces to drives, and so on. Robots can interact with objects in the scene.
+[Robots](../robots/overview.md) are physically realistic and driven by motor drives. You can set joint targets, apply forces to drives, and so on. Robots can interact with objects in the scene.
 
 **Trade-offs:** TDW doesn't include built-in motion planning or high-level action spaces for its robots (though it is possible for you to implement this yourself).
 
@@ -52,7 +52,7 @@ Human users can directly control TDW. A human can move an agent using keyboard c
 
 Replicants are human-like, or "humanoid" agents. They are embodied and physically response to the environment. They have far more sophisticated motion planning than robots or Magnebots and can have specialized animation routines for specific actions.
 
-**Trade-offs:** Replicants are massless and are unresponsive to weight and forces. A robot or Magnebot can try to pick up a heavy object and fail or tip over. A replicant will effortlessly pick up any object.
+**Trade-offs:** Unlike robots or Magnebots, replicant joints aren't motorized. If a replicant tries to pick up a large object, it might act *as if* the object is too heavy to lift but the physics engine alone won't determine the outcome of the action.
 
 ### Embodied avatar
 

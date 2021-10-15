@@ -13,7 +13,8 @@ from tdw.version import __version__
 from tdw.add_ons.add_on import AddOn
 from tdw.add_ons.py_impact import PyImpact
 from tdw.physics_audio.object_audio_static import ObjectAudioStatic
-from tdw.physics_audio.audio_material_constants import STATIC_FRICTION, DYNAMIC_FRICTION
+from tdw.physics_audio.audio_material import AudioMaterial
+from tdw.physics_audio.audio_material_constants import STATIC_FRICTION, DYNAMIC_FRICTION, DENSITIES
 
 
 class Controller(object):
@@ -248,13 +249,43 @@ class Controller(object):
                              "mode": "continuous_speculative"})
 
         if default_physics_values:
+            # Use default physics values.
+            if model_name in Controller.DEFAULT_PHYSICS_VALUES:
+                mass = Controller.DEFAULT_PHYSICS_VALUES[model_name].mass
+                bounciness = Controller.DEFAULT_PHYSICS_VALUES[model_name].bounciness
+            # Fallback: Try to derive physics values from existing data.
+            else:
+                # Get all models in the same category that have default physics values.
+                records = Controller.MODEL_LIBRARIANS["models_full.json"].get_all_models_in_wnid(record.wnid)
+                records = [r for r in records if not r.do_not_use and r.name != record.name and r.name in
+                           Controller.DEFAULT_PHYSICS_VALUES]
+                # Fallback: Find objects with similar volume.
+                if len(records) == 0:
+                    records = [r for r in Controller.MODEL_LIBRARIANS["models_full.json"].records if r.name in
+                               Controller.DEFAULT_PHYSICS_VALUES and not r.do_not_use and r.name != record.name and
+                               0.8 <= abs(r.volume / record.volume) <= 1.2]
+                # Fallback: Select a default material and bounciness.
+                if len(records) == 0:
+                    material: AudioMaterial = AudioMaterial.plastic_hard
+                    # Select a default bounciness.
+                    bounciness: float = 0
+                # Select the most common material and bounciness.
+                else:
+                    materials: List[AudioMaterial] = [Controller.DEFAULT_PHYSICS_VALUES[r.name].material for r in records]
+                    material: AudioMaterial = max(set(materials), key=materials.count)
+                    bouncinesses = [Controller.DEFAULT_PHYSICS_VALUES[r.name].bounciness for r in records]
+                    bounciness = round(sum(bouncinesses) / len(bouncinesses), 3)
+                # Derive the mass.
+                mass = (DENSITIES[material] / 1000) * record.volume
             commands.extend([{"$type": "set_mass",
-                              "mass": Controller.DEFAULT_PHYSICS_VALUES[model_name].mass,
+                              "mass": mass,
                               "id": object_id},
                              {"$type": "set_physic_material",
-                              "dynamic_friction": DYNAMIC_FRICTION[Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
-                              "static_friction": STATIC_FRICTION[Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
-                              "bounciness": Controller.DEFAULT_PHYSICS_VALUES[model_name].bounciness,
+                              "dynamic_friction": DYNAMIC_FRICTION[
+                                  Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
+                              "static_friction": STATIC_FRICTION[
+                                  Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
+                              "bounciness": bounciness,
                               "id": object_id}])
         else:
             commands.extend([{"$type": "set_mass",

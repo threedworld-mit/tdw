@@ -840,7 +840,6 @@ class PyImpact(AddOn):
                                       material=AudioMaterial[row["material"]], bounciness=float(row["bounciness"]),
                                       resonance=float(row["resonance"]), size=int(row["size"]), object_id=0)
                 objects.update({o.name: o})
-
         return objects
 
     def reset(self, initial_amp: float = 0.5) -> None:

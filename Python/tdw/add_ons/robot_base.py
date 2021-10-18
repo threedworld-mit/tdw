@@ -81,6 +81,21 @@ class RobotBase(AddOn, ABC):
                 return True
         return False
 
+    def reset(self, position: Dict[str, float] = None, rotation: Dict[str, float] = None) -> None:
+        """
+        Reset the robot.
+
+        :param position: The position of the robot.
+        :param rotation: The rotation of the robot.
+        """
+
+        self.initialized = False
+        self.static = None
+        self.dynamic = None
+        self.commands.clear()
+        self.initial_position = position
+        self.initial_rotation = rotation
+
     def on_send(self, resp: List[bytes]) -> None:
         """
         This is called after commands are sent to the build and a response is received.

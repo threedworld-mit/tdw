@@ -11,8 +11,7 @@ from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
 from tdw.add_ons.add_on import AddOn
-from tdw.add_ons.py_impact import PyImpact
-from tdw.physics_audio.object_audio_static import ObjectAudioStatic
+from tdw.physics_audio.object_audio_static import DEFAULT_OBJECT_AUDIO_STATIC_DATA
 from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.audio_material_constants import STATIC_FRICTION, DYNAMIC_FRICTION, DENSITIES
 
@@ -29,7 +28,6 @@ class Controller(object):
     ```
     """
 
-    DEFAULT_PHYSICS_VALUES: Dict[str, ObjectAudioStatic] = PyImpact.get_static_audio_data()
     MODEL_LIBRARIANS: Dict[str, ModelLibrarian] = dict()
     SCENE_LIBRARIANS: Dict[str, SceneLibrarian] = dict()
     MATERIAL_LIBRARIANS: Dict[str, MaterialLibrarian] = dict()
@@ -198,7 +196,7 @@ class Controller(object):
         :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
         :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
-        :param default_physics_values: If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in Controller.DEFAULT_PHYSICS_VALUES`.
+        :param default_physics_values: If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA`.
         :param mass: The mass of the object. Ignored if `default_physics_values == True`.
         :param dynamic_friction: The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
         :param static_friction: The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
@@ -250,19 +248,19 @@ class Controller(object):
 
         if default_physics_values:
             # Use default physics values.
-            if model_name in Controller.DEFAULT_PHYSICS_VALUES:
-                mass = Controller.DEFAULT_PHYSICS_VALUES[model_name].mass
-                bounciness = Controller.DEFAULT_PHYSICS_VALUES[model_name].bounciness
+            if model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA:
+                mass = DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].mass
+                bounciness = DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].bounciness
             # Fallback: Try to derive physics values from existing data.
             else:
                 # Get all models in the same category that have default physics values.
                 records = Controller.MODEL_LIBRARIANS["models_full.json"].get_all_models_in_wnid(record.wnid)
                 records = [r for r in records if not r.do_not_use and r.name != record.name and r.name in
-                           Controller.DEFAULT_PHYSICS_VALUES]
+                           DEFAULT_OBJECT_AUDIO_STATIC_DATA]
                 # Fallback: Find objects with similar volume.
                 if len(records) == 0:
                     records = [r for r in Controller.MODEL_LIBRARIANS["models_full.json"].records if r.name in
-                               Controller.DEFAULT_PHYSICS_VALUES and not r.do_not_use and r.name != record.name and
+                               DEFAULT_OBJECT_AUDIO_STATIC_DATA and not r.do_not_use and r.name != record.name and
                                0.8 <= abs(r.volume / record.volume) <= 1.2]
                 # Fallback: Select a default material and bounciness.
                 if len(records) == 0:
@@ -271,9 +269,9 @@ class Controller(object):
                     bounciness: float = 0
                 # Select the most common material and bounciness.
                 else:
-                    materials: List[AudioMaterial] = [Controller.DEFAULT_PHYSICS_VALUES[r.name].material for r in records]
+                    materials: List[AudioMaterial] = [DEFAULT_OBJECT_AUDIO_STATIC_DATA[r.name].material for r in records]
                     material: AudioMaterial = max(set(materials), key=materials.count)
-                    bouncinesses = [Controller.DEFAULT_PHYSICS_VALUES[r.name].bounciness for r in records]
+                    bouncinesses = [DEFAULT_OBJECT_AUDIO_STATIC_DATA[r.name].bounciness for r in records]
                     bounciness = round(sum(bouncinesses) / len(bouncinesses), 3)
                 # Derive the mass.
                 mass = (DENSITIES[material] / 1000) * record.volume
@@ -282,9 +280,9 @@ class Controller(object):
                               "id": object_id},
                              {"$type": "set_physic_material",
                               "dynamic_friction": DYNAMIC_FRICTION[
-                                  Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
+                                  DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].material],
                               "static_friction": STATIC_FRICTION[
-                                  Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
+                                  DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].material],
                               "bounciness": bounciness,
                               "id": object_id}])
         else:
@@ -364,7 +362,7 @@ class Controller(object):
                 "sun_intensity": record.sun_intensity}
 
     @staticmethod
-    def get_add_humanoid(humanoid_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str ="") -> dict:
+    def get_add_humanoid(humanoid_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
         """
         Returns a valid add_humanoid command.
 
@@ -376,6 +374,11 @@ class Controller(object):
 
         :return An add_humanoid command that the controller can then send.
         """
+
+        if position is None:
+            position = {"x": 0, "y": 0, "z": 0}
+        if rotation is None:
+            rotation = {"x": 0, "y": 0, "z": 0}
 
         if library == "":
             library = "humanoids.json"

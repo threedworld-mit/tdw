@@ -4,8 +4,6 @@ import math
 import json
 from pathlib import Path
 from pkg_resources import resource_filename
-from csv import DictReader
-import io
 from typing import Dict, Optional, Union, List, Tuple
 import numpy as np
 import scipy.signal as sg
@@ -16,7 +14,7 @@ from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentColli
 from tdw.collision_data.collision_obj_obj import CollisionObjObj
 from tdw.collision_data.collision_obj_env import CollisionObjEnv
 from tdw.physics_audio.audio_material import AudioMaterial
-from tdw.physics_audio.object_audio_static import ObjectAudioStatic
+from tdw.physics_audio.object_audio_static import ObjectAudioStatic, DEFAULT_OBJECT_AUDIO_STATIC_DATA
 from tdw.physics_audio.modes import Modes
 from tdw.physics_audio.base64_sound import Base64Sound
 from tdw.physics_audio.collision_audio_info import CollisionAudioInfo
@@ -810,38 +808,6 @@ class PyImpact(AddOn):
         x = x / abs(np.max(x))
         return x
 
-    @staticmethod
-    def get_static_audio_data(csv_file: Union[str, Path] = "") -> Dict[str, ObjectAudioStatic]:
-        """
-        Returns ObjectInfo values.
-        As of right now, only a few objects in the TDW model libraries are included. More will be added in time.
-
-        :param csv_file: The path to the .csv file containing the object info. By default, it will load `tdw/py_impact/objects.csv`. If you want to make your own spreadsheet, use this file as a reference.
-
-        :return: A list of default ObjectInfo. Key = the name of the model. Value = object info.
-        """
-
-        objects: Dict[str, ObjectAudioStatic] = {}
-        # Load the objects.csv metadata file.
-        if isinstance(csv_file, str):
-            # Load the default file.
-            if csv_file == "":
-                csv_file = str(Path(resource_filename(__name__, f"py_impact/objects.csv")).resolve())
-            else:
-                csv_file = str(Path(csv_file).resolve())
-        else:
-            csv_file = str(csv_file.resolve())
-
-        # Parse the .csv file.
-        with io.open(csv_file, newline='', encoding='utf-8-sig') as f:
-            reader = DictReader(f)
-            for row in reader:
-                o = ObjectAudioStatic(name=row["name"], amp=float(row["amp"]), mass=float(row["mass"]),
-                                      material=AudioMaterial[row["material"]], bounciness=float(row["bounciness"]),
-                                      resonance=float(row["resonance"]), size=int(row["size"]), object_id=0)
-                objects.update({o.name: o})
-        return objects
-
     def reset(self, initial_amp: float = 0.5) -> None:
         """
         Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
@@ -900,7 +866,6 @@ class PyImpact(AddOn):
         """
 
         # Load the default object info.
-        default_static_audio_data = PyImpact.get_static_audio_data()
         categories: Dict[int, str] = dict()
         names: Dict[int, str] = dict()
         robot_joints: Dict[int, dict] = dict()
@@ -934,8 +899,8 @@ class PyImpact(AddOn):
                 self.static_audio_data[object_id].mass = object_masses[object_id]
                 self.static_audio_data[object_id].object_id = object_id
             # Use default audio data.
-            elif name in default_static_audio_data:
-                self.static_audio_data[object_id] = default_static_audio_data[name]
+            elif name in DEFAULT_OBJECT_AUDIO_STATIC_DATA:
+                self.static_audio_data[object_id] = DEFAULT_OBJECT_AUDIO_STATIC_DATA[name]
                 self.static_audio_data[object_id].mass = object_masses[object_id]
                 self.static_audio_data[object_id].object_id = object_id
             else:

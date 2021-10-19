@@ -9,10 +9,8 @@ import numpy as np
 import scipy.signal as sg
 from scipy.ndimage import gaussian_filter1d
 from pydub import AudioSegment
-from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision, StaticRobot, SegmentationColors, \
-    StaticRigidbodies, RobotJointVelocities
-from tdw.collision_data.collision_obj_obj import CollisionObjObj
-from tdw.collision_data.collision_obj_env import CollisionObjEnv
+from tdw.output_data import OutputData, Rigidbodies, StaticRobot, SegmentationColors, StaticRigidbodies, \
+    RobotJointVelocities
 from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.object_audio_static import ObjectAudioStatic, DEFAULT_OBJECT_AUDIO_STATIC_DATA
 from tdw.physics_audio.modes import Modes
@@ -22,10 +20,10 @@ from tdw.physics_audio.collision_audio_type import CollisionAudioType
 from tdw.physics_audio.collision_audio_event import CollisionAudioEvent
 from tdw.object_data.rigidbody import Rigidbody
 from tdw.audio_constants import SAMPLE_RATE, CHANNELS
-from tdw.add_ons.collision_manager import AddOn
+from tdw.add_ons.collision_manager import CollisionManager
 
 
-class PyImpact(AddOn):
+class PyImpact(CollisionManager):
     """
     Generate impact sounds from physics data.
 
@@ -230,6 +228,7 @@ class PyImpact(AddOn):
                 {"$type": "send_static_rigidbodies"}]
 
     def on_send(self, resp: List[bytes]) -> None:
+        super().on_send(resp=resp)
         # Cache static audio info.
         if not self._cached_audio_info:
             self._cached_audio_info = True
@@ -356,33 +355,26 @@ class PyImpact(AddOn):
                                                                                        angular_velocity=robot_joint_velocities.get_joint_angular_velocity(j),
                                                                                        sleeping=robot_joint_velocities.get_joint_sleeping(j))
         # Get collision data.
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            # Parse a collision.
-            if r_id == "coll":
-                collision = Collision(resp[i])
-                collider_id = collision.get_collider_id()
-                collidee_id = collision.get_collidee_id()
-                event = CollisionAudioEvent(collision=CollisionObjObj(collision),
-                                            object_0_static=self._static_audio_data[collider_id],
-                                            object_0_dynamic=rigidbody_data[collider_id],
-                                            object_1_static=self._static_audio_data[collidee_id],
-                                            object_1_dynamic=rigidbody_data[collidee_id],
-                                            previous_areas=previous_areas)
-                if event.primary_id not in collision_events_per_object:
-                    collision_events_per_object[event.primary_id] = list()
-                collision_events_per_object[event.primary_id].append(event)
-            # Parse an environment collision.
-            elif r_id == "enco":
-                collision = EnvironmentCollision(resp[i])
-                collider_id = collision.get_object_id()
-                event = CollisionAudioEvent(collision=CollisionObjEnv(collision),
-                                            object_0_static=self._static_audio_data[collider_id],
-                                            object_0_dynamic=rigidbody_data[collider_id],
-                                            previous_areas=previous_areas)
-                if event.primary_id not in collision_events_per_object:
-                    collision_events_per_object[event.primary_id] = list()
-                collision_events_per_object[event.primary_id].append(event)
+        for object_ids in self.obj_collisions:
+            collider_id = object_ids.int1
+            collidee_id = object_ids.int2
+            event = CollisionAudioEvent(collision=self.obj_collisions[object_ids],
+                                        object_0_static=self._static_audio_data[collider_id],
+                                        object_0_dynamic=rigidbody_data[collider_id],
+                                        object_1_static=self._static_audio_data[collidee_id],
+                                        object_1_dynamic=rigidbody_data[collidee_id],
+                                        previous_areas=previous_areas)
+            if event.primary_id not in collision_events_per_object:
+                collision_events_per_object[event.primary_id] = list()
+            collision_events_per_object[event.primary_id].append(event)
+        for object_id in self.env_collisions:
+            event = CollisionAudioEvent(collision=self.env_collisions[object_id],
+                                        object_0_static=self._static_audio_data[object_id],
+                                        object_0_dynamic=rigidbody_data[object_id],
+                                        previous_areas=previous_areas)
+            if event.primary_id not in collision_events_per_object:
+                collision_events_per_object[event.primary_id] = list()
+            collision_events_per_object[event.primary_id].append(event)
         # Get the significant collision events per object.
         for primary_id in collision_events_per_object:
             events: List[CollisionAudioEvent] = [e for e in collision_events_per_object[primary_id] if e.magnitude > 0 

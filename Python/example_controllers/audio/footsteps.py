@@ -25,6 +25,7 @@ c.add_ons.extend([camera, audio])
 animation_name = "walk_forward"
 humanoid_animation_command, humanoid_animation_record = c.get_add_humanoid_animation(humanoid_animation_name=animation_name,
                                                                                      library="smpl_animations.json")
+framerate = 60
 resp = c.communicate([c.get_add_scene(scene_name="downtown_alleys"),
                       c.get_add_humanoid(humanoid_name="woman_business_1",
                                          object_id=humanoid_id,
@@ -32,11 +33,15 @@ resp = c.communicate([c.get_add_scene(scene_name="downtown_alleys"),
                       humanoid_animation_command,
                       {"$type": "play_humanoid_animation",
                        "name": animation_name,
-                       "id": humanoid_id},
+                       "id": humanoid_id,
+                       "framerate": framerate},
                       {"$type": "set_target_framerate",
-                       "framerate": 60},
+                       "framerate": framerate},
                       {"$type": "send_humanoids",
-                       "frequency": "always"}])
+                       "frequency": "always"},
+                      {"$type": "set_screen_size",
+                       "width": 512,
+                       "height": 512}])
 camera.move_to_object(target=humanoid_id,
                       offset_distance=1,
                       min_y=0)
@@ -70,13 +75,13 @@ for i in range(300):
                                                            contact_points=contact_points,
                                                            contact_normals=contact_normals,
                                                            primary_id=humanoid_id,
-                                                           primary_material="ceramic_1",
+                                                           primary_material="wood_soft_1",
                                                            primary_amp=0.1,
                                                            primary_mass=64,
                                                            secondary_id=None,
                                                            secondary_material="stone_4",
                                                            secondary_amp=0.5,
                                                            secondary_mass=100,
-                                                           resonance=0.4))
+                                                           resonance=0.1))
     resp = c.communicate(commands)
 c.communicate({"$type": "terminate"})

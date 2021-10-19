@@ -122,7 +122,7 @@ class PyImpact(AddOn):
     def __init__(self, initial_amp: float = 0.5, prevent_distortion: bool = True, logging: bool = False,
                  static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None,
                  resonance_audio: bool = False, floor: AudioMaterial = AudioMaterial.wood_medium,
-                 rng: np.random.RandomState = None):
+                 rng: np.random.RandomState = None, auto: bool = True):
         """
         :param initial_amp: The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
         :param prevent_distortion: If True, clamp amp values to <= 0.99
@@ -131,6 +131,7 @@ class PyImpact(AddOn):
         :param resonance_audio: If True, the simulation is using Resonance Audio.
         :param floor: The floor material.
         :param rng: The random number generator. If None, a random number generator with a random seed is created.
+        :param auto: If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio.
         """
 
         super().__init__()
@@ -190,16 +191,20 @@ class PyImpact(AddOn):
         """
         self.mode_properties_log = dict()
         """:field
-        A dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values.
+        If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio.
         """
-        self.static_audio_data_overrides: Dict[int, ObjectAudioStatic] = dict()
+        self.auto: bool = auto
+        # A dictionary of audio data. Key = Object ID; Value = `ObjectAudioStatic`.
+        # These audio values will be applied to these objects instead of default values.
+        self._static_audio_data_overrides: Dict[int, ObjectAudioStatic] = dict()
         if static_audio_data_overrides is not None:
-            self.static_audio_data_overrides = static_audio_data_overrides
+            self._static_audio_data_overrides = static_audio_data_overrides
 
         self._collision_events: Dict[int, CollisionAudioEvent] = dict()
 
         self._cached_audio_info: bool = False
-        self.static_audio_data: Dict[int, ObjectAudioStatic] = dict()
+        # A dictionary of audio data. Key = Object ID; Value = `ObjectAudioStatic`.
+        self._static_audio_data: Dict[int, ObjectAudioStatic] = dict()
 
         # Summed scrape masters. Key = primary ID, secondary ID.
         self._scrape_summed_masters: Dict[Tuple[int, int], AudioSegment] = dict()
@@ -229,6 +234,9 @@ class PyImpact(AddOn):
         if not self._cached_audio_info:
             self._cached_audio_info = True
             self._cache_static_data(resp=resp)
+        # Don't automatically generate audio.
+        if not self.auto:
+            return
         # Get collision events.
         self._get_collision_types(resp=resp)
         for object_id in self._collision_events:
@@ -237,7 +245,7 @@ class PyImpact(AddOn):
             if self._collision_events[object_id].collision_type == CollisionAudioType.impact:
                 # Generate an environment sound.
                 if self._collision_events[object_id].secondary_id is None:
-                    audio = self.static_audio_data[object_id]
+                    audio = self._static_audio_data[object_id]
                     command = self.get_impact_sound_command(velocity=self._collision_events[object_id].velocity,
                                                             contact_points=self._collision_events[object_id].collision.points,
                                                             contact_normals=self._collision_events[object_id].collision.normals,
@@ -252,8 +260,8 @@ class PyImpact(AddOn):
                                                             resonance=audio.resonance)
                 # Generate an object sound.
                 else:
-                    target_audio = self.static_audio_data[self._collision_events[object_id].primary_id]
-                    other_audio = self.static_audio_data[self._collision_events[object_id].secondary_id]
+                    target_audio = self._static_audio_data[self._collision_events[object_id].primary_id]
+                    other_audio = self._static_audio_data[self._collision_events[object_id].secondary_id]
                     command = self.get_impact_sound_command(velocity=self._collision_events[object_id].velocity,
                                                             contact_points=self._collision_events[object_id].collision.points,
                                                             contact_normals=self._collision_events[object_id].collision.normals,
@@ -272,7 +280,7 @@ class PyImpact(AddOn):
             elif self._collision_events[object_id].collision_type == CollisionAudioType.scrape:
                 # Generate an environment sound.
                 if self._collision_events[object_id].secondary_id is None:
-                    audio = self.static_audio_data[object_id]
+                    audio = self._static_audio_data[object_id]
                     command = self.get_scrape_sound_command(velocity=self._collision_events[object_id].velocity,
                                                             contact_points=self._collision_events[object_id].collision.points,
                                                             contact_normals=self._collision_events[object_id].collision.normals,
@@ -287,8 +295,8 @@ class PyImpact(AddOn):
                                                             resonance=audio.resonance)
                 # Generate an object sound.
                 else:
-                    target_audio = self.static_audio_data[self._collision_events[object_id].primary_id]
-                    other_audio = self.static_audio_data[self._collision_events[object_id].secondary_id]
+                    target_audio = self._static_audio_data[self._collision_events[object_id].primary_id]
+                    other_audio = self._static_audio_data[self._collision_events[object_id].secondary_id]
                     command = self.get_scrape_sound_command(velocity=self._collision_events[object_id].velocity,
                                                             contact_points=self._collision_events[object_id].collision.points,
                                                             contact_normals=self._collision_events[object_id].collision.normals,
@@ -356,9 +364,9 @@ class PyImpact(AddOn):
                 collider_id = collision.get_collider_id()
                 collidee_id = collision.get_collidee_id()
                 event = CollisionAudioEvent(collision=CollisionObjObj(collision),
-                                            object_0_static=self.static_audio_data[collider_id],
+                                            object_0_static=self._static_audio_data[collider_id],
                                             object_0_dynamic=rigidbody_data[collider_id],
-                                            object_1_static=self.static_audio_data[collidee_id],
+                                            object_1_static=self._static_audio_data[collidee_id],
                                             object_1_dynamic=rigidbody_data[collidee_id],
                                             previous_areas=previous_areas)
                 if event.primary_id not in collision_events_per_object:
@@ -369,7 +377,7 @@ class PyImpact(AddOn):
                 collision = EnvironmentCollision(resp[i])
                 collider_id = collision.get_object_id()
                 event = CollisionAudioEvent(collision=CollisionObjEnv(collision),
-                                            object_0_static=self.static_audio_data[collider_id],
+                                            object_0_static=self._static_audio_data[collider_id],
                                             object_0_dynamic=rigidbody_data[collider_id],
                                             previous_areas=previous_areas)
                 if event.primary_id not in collision_events_per_object:
@@ -397,11 +405,11 @@ class PyImpact(AddOn):
         for jm in range(0, 10):
             jf = 0
             while jf < 20:
-                jf = data["cf"][jm] + np.random.normal(0, data["cf"][jm] / 10)
-            jp = data["op"][jm] + np.random.normal(0, 10)
+                jf = data["cf"][jm] + self.rng.normal(0, data["cf"][jm] / 10)
+            jp = data["op"][jm] + self.rng.normal(0, 10)
             jt = 0
             while jt < 0.001:
-                jt = data["rt"][jm] + np.random.normal(0, data["rt"][jm] / 10)
+                jt = data["rt"][jm] + self.rng.normal(0, data["rt"][jm] / 10)
             if jm == 0:
                 f = jf
                 p = jp
@@ -481,8 +489,8 @@ class PyImpact(AddOn):
             # Adjust modes here so that two successive impacts are not identical.
             modes_1 = self.object_modes[secondary_id][primary_id].obj1_modes
             modes_2 = self.object_modes[secondary_id][primary_id].obj2_modes
-            modes_1.powers = modes_1.powers + np.random.normal(0, 2, len(modes_1.powers))
-            modes_2.powers = modes_2.powers + np.random.normal(0, 2, len(modes_2.powers))
+            modes_1.powers = modes_1.powers + self.rng.normal(0, 2, len(modes_1.powers))
+            modes_2.powers = modes_2.powers + self.rng.normal(0, 2, len(modes_2.powers))
             sound = PyImpact._synth_impact_modes(modes_1, modes_2, mass, resonance)
             self.object_modes[secondary_id][primary_id].obj1_modes = modes_1
             self.object_modes[secondary_id][primary_id].obj2_modes = modes_2
@@ -849,17 +857,22 @@ class PyImpact(AddOn):
         x = x / abs(np.max(x))
         return x
 
-    def reset(self, initial_amp: float = 0.5) -> None:
+    def reset(self, initial_amp: float = 0.5, static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None) -> None:
         """
         Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
 
         :param initial_amp: The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
+        :param static_audio_data_overrides: If not None, a dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values.
         """
 
         assert 0 < initial_amp < 1, f"initial_amp is {initial_amp} (must be > 0 and < 1)."
         self._cached_audio_info = False
         self.initialized = False
-        self.static_audio_data.clear()
+        self._static_audio_data.clear()
+        self._static_audio_data_overrides.clear()
+        if static_audio_data_overrides is not None:
+            for k in static_audio_data_overrides:
+                self._static_audio_data_overrides[k] = static_audio_data_overrides[k]
         # Clear the object data.
         self.object_modes.clear()
         # Clear collision data.
@@ -935,18 +948,18 @@ class PyImpact(AddOn):
         for object_id in names:
             name = names[object_id]
             # Use override data.
-            if object_id in self.static_audio_data_overrides:
-                self.static_audio_data[object_id] = self.static_audio_data_overrides[object_id]
-                self.static_audio_data[object_id].mass = object_masses[object_id]
-                self.static_audio_data[object_id].object_id = object_id
+            if object_id in self._static_audio_data_overrides:
+                self._static_audio_data[object_id] = self._static_audio_data_overrides[object_id]
+                self._static_audio_data[object_id].mass = object_masses[object_id]
+                self._static_audio_data[object_id].object_id = object_id
             # Use default audio data.
             elif name in DEFAULT_OBJECT_AUDIO_STATIC_DATA:
-                self.static_audio_data[object_id] = DEFAULT_OBJECT_AUDIO_STATIC_DATA[name]
-                self.static_audio_data[object_id].mass = object_masses[object_id]
-                self.static_audio_data[object_id].object_id = object_id
+                self._static_audio_data[object_id] = DEFAULT_OBJECT_AUDIO_STATIC_DATA[name]
+                self._static_audio_data[object_id].mass = object_masses[object_id]
+                self._static_audio_data[object_id].object_id = object_id
             else:
                 need_to_derive.append(object_id)
-        current_values = self.static_audio_data.values()
+        current_values = self._static_audio_data.values()
         derived_data: Dict[int, ObjectAudioStatic] = dict()
         for object_id in need_to_derive:
             # Fallback option: comparable objects in the same category.
@@ -963,13 +976,13 @@ class PyImpact(AddOn):
                 resonances: List[float] = list()
                 sizes: List[int] = list()
                 for m_id in object_masses:
-                    if m_id == object_id or m_id not in self.static_audio_data:
+                    if m_id == object_id or m_id not in self._static_audio_data:
                         continue
                     if np.abs(object_masses[m_id] / object_masses[object_id]) < 1.5:
-                        amps.append(self.static_audio_data[m_id].amp)
-                        materials.append(self.static_audio_data[m_id].material)
-                        resonances.append(self.static_audio_data[m_id].resonance)
-                        sizes.append(self.static_audio_data[m_id].size)
+                        amps.append(self._static_audio_data[m_id].amp)
+                        materials.append(self._static_audio_data[m_id].material)
+                        resonances.append(self._static_audio_data[m_id].resonance)
+                        sizes.append(self._static_audio_data[m_id].size)
             # Fallback option: Use default values.
             if len(amps) == 0:
                 amp: float = PyImpact.DEFAULT_AMP
@@ -992,17 +1005,17 @@ class PyImpact(AddOn):
                                                         object_id=object_id)
         # Add the derived data.
         for object_id in derived_data:
-            self.static_audio_data[object_id] = derived_data[object_id]
+            self._static_audio_data[object_id] = derived_data[object_id]
         # Add robot joints.
         for joint_id in robot_joints:
-            self.static_audio_data[joint_id] = ObjectAudioStatic(name=robot_joints[joint_id]["name"],
-                                                                 mass=robot_joints[joint_id]["mass"],
-                                                                 material=PyImpact.ROBOT_JOINT_MATERIAL,
-                                                                 bounciness=PyImpact.ROBOT_JOINT_BOUNCINESS,
-                                                                 resonance=PyImpact.DEFAULT_RESONANCE,
-                                                                 size=PyImpact.DEFAULT_SIZE,
-                                                                 amp=PyImpact.DEFAULT_AMP,
-                                                                 object_id=joint_id)
+            self._static_audio_data[joint_id] = ObjectAudioStatic(name=robot_joints[joint_id]["name"],
+                                                                  mass=robot_joints[joint_id]["mass"],
+                                                                  material=PyImpact.ROBOT_JOINT_MATERIAL,
+                                                                  bounciness=PyImpact.ROBOT_JOINT_BOUNCINESS,
+                                                                  resonance=PyImpact.DEFAULT_RESONANCE,
+                                                                  size=PyImpact.DEFAULT_SIZE,
+                                                                  amp=PyImpact.DEFAULT_AMP,
+                                                                  object_id=joint_id)
 
     @staticmethod
     def _normalize_16bit_int(arr: np.array) -> np.array:

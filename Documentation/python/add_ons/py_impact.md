@@ -1,14 +1,35 @@
 # PyImpact
 
-`from tdw.add_ons.py_impact import PyImpact`
+`from add_ons.py_impact import PyImpact`
 
 Generate impact sounds from physics data.
 
 Sounds are synthesized as described in: [Traer,Cusimano and McDermott, A PERCEPTUALLY INSPIRED GENERATIVE MODEL OF RIGID-BODY CONTACT SOUNDS, Digital Audio Effects, (DAFx), 2019](http://dafx2019.bcu.ac.uk/papers/DAFx2019_paper_57.pdf)
 
-For a general guide on impact sounds in TDW, read [this](../misc_frontend/impact_sounds.md).
+Sounds can be synthesized automatically (for general use-cases) or manually (for advanced use-cases).
 
-For example usage, see: `tdw/Python/example_controllers/impact_sounds.py`
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.audio_initializer import AudioInitializer
+from tdw.add_ons.py_impact import PyImpact
+
+c = Controller()
+commands = [TDWUtils.create_empty_room(12, 12)]
+commands.extend(TDWUtils.create_avatar(avatar_id="a",
+                                       position={"x": 1, "y": 1.6, "z": -2},
+                                       look_at={"x": 0, "y": 0.5, "z": 0}))
+commands.extend(c.get_add_physics_object(model_name="vase_02",
+                                         position={"x": 0, "y": 3, "z": 0},
+                                         object_id=c.get_unique_id()))
+audio_initializer = AudioInitializer(avatar_id="a")
+py_impact = PyImpact()
+c.add_ons.extend([audio_initializer, py_impact])
+c.communicate(commands)
+for i in range(200):
+    c.communicate([])
+c.communicate({"$type": "terminate"})
+```
 
 ***
 
@@ -36,9 +57,25 @@ For example usage, see: `tdw/Python/example_controllers/impact_sounds.py`
 
 ## Fields
 
-- `commands` These commands will be appended to the commands of the next `communicate()` call.
+- `rng` The random number generator.
 
-- `initialized` If True, this module has been initialized.
+- `initial_amp` The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
+
+- `prevent_distortion` If True, clamp amp values to <= 0.99
+
+- `logging` If True, log mode properties for all colliding objects, as json.
+
+- `object_modes` The collision info per set of objects.
+
+- `resonance_audio` If True, the simulation is using Resonance Audio.
+
+- `floor` The floor material.
+
+- `material_data` Cached material data.
+
+- `mode_properties_log` The mode properties log.
+
+- `static_audio_data_overrides` A dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values.
 
 ***
 
@@ -48,40 +85,41 @@ For example usage, see: `tdw/Python/example_controllers/impact_sounds.py`
 
 **`PyImpact()`**
 
-**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False)`**
+**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False, static_audio_data_overrides=None, resonance_audio=False, floor=AudioMaterial.wood_medium, rng=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | initial_amp |  float  | 0.5 | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
 | prevent_distortion |  bool  | True | If True, clamp amp values to <= 0.99 |
 | logging |  bool  | False | If True, log mode properties for all colliding objects, as json. |
+| static_audio_data_overrides |  Dict[int, ObjectAudioStatic] | None | If not None, a dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values. |
+| resonance_audio |  bool  | False | If True, the simulation is using Resonance Audio. |
+| floor |  AudioMaterial  | AudioMaterial.wood_medium | The floor material. |
+| rng |  np.random.RandomState  | None | The random number generator. If None, a random number generator with a random seed is created. |
 
-#### get_initialization_commands
+***
 
-**`self.get_initialization_commands()`**
+### General
 
-This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+These functions are meant for most use-cases. For general use-cases, PyImpact will generate audio automatically. In *all* use-cases, you'll need to manually reset PyImapct whenevery you reset the scene.
 
-_Returns:_  A list of commands that will initialize this add-on.
+#### reset
 
-#### on_send
+**`self.reset()`**
 
-**`self.on_send(resp)`**
+**`self.reset(initial_amp=0.5)`**
 
-This is called after commands are sent to the build and a response is received.
-
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
+Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build. |
+| initial_amp |  float  | 0.5 | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
 
-#### get_log
+***
 
-**`self.get_log()`**
+### Advanced
 
-_Returns:_  The mode properties log.
+These functions manually create audio data, including .wav data and TDW commands.
 
 #### get_sound
 
@@ -223,94 +261,5 @@ Create a scrape sound, and return a valid command to play audio data in TDW.
 
 _Returns:_  A [`Base64Sound`](../physics_audio/base64_sound.md) object or None if no sound.
 
-#### synth_impact_modes
-
-**`PyImpact(AddOn).synth_impact_modes(modes1, modes2, mass, resonance)`**
-
-_This is a static function._
-
-Generate an impact sound from specified modes for two objects, and the mass of the smaller object.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| modes1 |  Modes |  | Modes of object 1. A numpy array with: column1=mode frequencies (Hz); column2=mode onset powers in dB; column3=mode RT60s in milliseconds; |
-| modes2 |  Modes |  | Modes of object 2. Formatted as modes1/modes2. |
-| mass |  float |  | the mass of the smaller of the two colliding objects. |
-| resonance |  float |  | The resonance of the objects. |
-
-_Returns:_  The impact sound.
-
-#### get_static_audio_data
-
-**`PyImpact(AddOn).get_static_audio_data()`**
-
-**`PyImpact(AddOn).get_static_audio_data(csv_file="")`**
-
-_This is a static function._
-
-Returns ObjectInfo values.
-As of right now, only a few objects in the TDW model libraries are included. More will be added in time.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| csv_file |  Union[str, Path] | "" | The path to the .csv file containing the object info. By default, it will load `tdw/py_impact/objects.csv`. If you want to make your own spreadsheet, use this file as a reference. |
-
-_Returns:_  A list of default ObjectInfo. Key = the name of the model. Value = object info.
-
-#### reset
-
-**`self.reset()`**
-
-**`self.reset(initial_amp=0.5)`**
-
-Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| initial_amp |  float  | 0.5 | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
-
-#### log_modes
-
-**`self.log_modes(count, mode_props, id1, id2, modes_1, modes_2, amp, mat1, mat2)`**
-
-Log mode properties info for a single collision event.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| count |  int |  | Mode count for this material-material collision. |
-| mode_props |  dict |  | Dictionary to log to. |
-| id1 |  int |  | ID of the "other" object. |
-| id2 |  int |  | ID of the "target" object. |
-| modes_1 |  Modes |  | Modes of the "other" object. |
-| modes_2 |  Modes |  | Modes of the "target" object. |
-| amp |  float |  | Adjusted amplitude value of collision. |
-| mat1 |  str |  | Material of the "other" object. |
-| mat2 |  str |  | Material of the "target" object. |
-
-#### on_send
-
-**`self.on_send(resp)`**
-
-This is called after commands are sent to the build and a response is received.
-
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build. |
-
-#### before_send
-
-**`self.before_send(commands)`**
-
-This is called before sending commands to the build. By default, this function doesn't do anything.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-
+***
 

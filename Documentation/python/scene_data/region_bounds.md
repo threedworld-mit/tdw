@@ -8,7 +8,7 @@ Data for the bounds of a region in a scene. In an interior scene, this usually c
 
 ## Fields
 
-- `room_id` The ID of the region.
+- `region_id` The ID of the region.
 
 - `center` The center of the region.
 

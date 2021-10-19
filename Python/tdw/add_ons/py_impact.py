@@ -31,9 +31,30 @@ class PyImpact(AddOn):
 
     Sounds are synthesized as described in: [Traer,Cusimano and McDermott, A PERCEPTUALLY INSPIRED GENERATIVE MODEL OF RIGID-BODY CONTACT SOUNDS, Digital Audio Effects, (DAFx), 2019](http://dafx2019.bcu.ac.uk/papers/DAFx2019_paper_57.pdf)
 
-    For a general guide on impact sounds in TDW, read [this](../misc_frontend/impact_sounds.md).
+    Sounds can be synthesized automatically (for general use-cases) or manually (for advanced use-cases).
 
-    For example usage, see: `tdw/Python/example_controllers/impact_sounds.py`
+    ```python
+    from tdw.controller import Controller
+    from tdw.tdw_utils import TDWUtils
+    from tdw.add_ons.audio_initializer import AudioInitializer
+    from tdw.add_ons.py_impact import PyImpact
+
+    c = Controller()
+    commands = [TDWUtils.create_empty_room(12, 12)]
+    commands.extend(TDWUtils.create_avatar(avatar_id="a",
+                                           position={"x": 1, "y": 1.6, "z": -2},
+                                           look_at={"x": 0, "y": 0.5, "z": 0}))
+    commands.extend(c.get_add_physics_object(model_name="vase_02",
+                                             position={"x": 0, "y": 3, "z": 0},
+                                             object_id=c.get_unique_id()))
+    audio_initializer = AudioInitializer(avatar_id="a")
+    py_impact = PyImpact()
+    c.add_ons.extend([audio_initializer, py_impact])
+    c.communicate(commands)
+    for i in range(200):
+        c.communicate([])
+    c.communicate({"$type": "terminate"})
+    ```
     """
 
     """:class_var
@@ -99,28 +120,60 @@ class PyImpact(AddOn):
     FLOOR_MASS: int = 100
 
     def __init__(self, initial_amp: float = 0.5, prevent_distortion: bool = True, logging: bool = False,
-                 static_audio_data_overrides: Dict[str, ObjectAudioStatic] = None,
-                 resonance_audio: bool = False, floor: AudioMaterial = AudioMaterial.wood_medium):
+                 static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None,
+                 resonance_audio: bool = False, floor: AudioMaterial = AudioMaterial.wood_medium,
+                 rng: np.random.RandomState = None):
         """
         :param initial_amp: The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
         :param prevent_distortion: If True, clamp amp values to <= 0.99
         :param logging: If True, log mode properties for all colliding objects, as json.
+        :param static_audio_data_overrides: If not None, a dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values.
+        :param resonance_audio: If True, the simulation is using Resonance Audio.
+        :param floor: The floor material.
+        :param rng: The random number generator. If None, a random number generator with a random seed is created.
         """
 
         super().__init__()
 
+        if rng is None:
+            """:field
+            The random number generator.
+            """
+            self.rng: np.random.RandomState = np.random.RandomState()
+        else:
+            self.rng = rng
+
         assert 0 < initial_amp < 1, f"initial_amp is {initial_amp} (must be > 0 and < 1)."
 
+        """:field
+        The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
+        """
         self.initial_amp = initial_amp
+        """:field
+        If True, clamp amp values to <= 0.99
+        """
         self.prevent_distortion = prevent_distortion
+        """:field
+        If True, log mode properties for all colliding objects, as json.
+        """
         self.logging = logging
 
-        # The collision info per set of objects.
-        self.object_modes: Dict[int, Dict[int, CollisionAudioInfo]] = {}
+        """:field
+        The collision info per set of objects.
+        """
+        self.object_modes: Dict[int, Dict[int, CollisionAudioInfo]] = dict()
+        """:field
+        If True, the simulation is using Resonance Audio.
+        """
         self.resonance_audio: bool = resonance_audio
+        """:field
+        The floor material.
+        """
         self.floor: AudioMaterial = floor
 
-        # Cache the material data. This is use to reset the material modes.
+        """:field
+        Cached material data.
+        """
         self.material_data: Dict[str, dict] = {}
         material_list = ["ceramic", "wood_hard", "wood_medium", "wood_soft", "metal", "glass", "paper", "cardboard",
                          "leather", "fabric", "plastic_hard", "plastic_soft_foam", "rubber", "stone"]
@@ -132,10 +185,14 @@ class PyImpact(AddOn):
                 data = json.loads(Path(resource_filename(__name__, f"py_impact/material_data/{path}.json")).read_text())
                 self.material_data.update({mat_name: data})
 
-        # Create empty dictionary for log.
+        """:field
+        The mode properties log.
+        """
         self.mode_properties_log = dict()
-
-        self.static_audio_data_overrides: Dict[str, ObjectAudioStatic] = dict()
+        """:field
+        A dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values.
+        """
+        self.static_audio_data_overrides: Dict[int, ObjectAudioStatic] = dict()
         if static_audio_data_overrides is not None:
             self.static_audio_data_overrides = static_audio_data_overrides
 
@@ -168,15 +225,6 @@ class PyImpact(AddOn):
                 {"$type": "send_static_rigidbodies"}]
 
     def on_send(self, resp: List[bytes]) -> None:
-        """
-        This is called after commands are sent to the build and a response is received.
-
-        Use this function to send commands to the build on the next frame, given the `resp` response.
-        Any commands in the `self.commands` list will be sent on the next frame.
-
-        :param resp: The response from the build.
-        """
-
         # Cache static audio info.
         if not self._cached_audio_info:
             self._cached_audio_info = True
@@ -335,13 +383,6 @@ class PyImpact(AddOn):
                 event: CollisionAudioEvent = max(events, key=lambda x: x.magnitude)
                 self._collision_events[event.primary_id] = event
 
-    def get_log(self) -> dict:
-        """
-        :return: The mode properties log.
-        """
-
-        return self.mode_properties_log
-
     def _get_object_modes(self, material: Union[str, AudioMaterial]) -> Modes:
         """
         :param material: The audio material.
@@ -442,14 +483,14 @@ class PyImpact(AddOn):
             modes_2 = self.object_modes[secondary_id][primary_id].obj2_modes
             modes_1.powers = modes_1.powers + np.random.normal(0, 2, len(modes_1.powers))
             modes_2.powers = modes_2.powers + np.random.normal(0, 2, len(modes_2.powers))
-            sound = PyImpact.synth_impact_modes(modes_1, modes_2, mass, resonance)
+            sound = PyImpact._synth_impact_modes(modes_1, modes_2, mass, resonance)
             self.object_modes[secondary_id][primary_id].obj1_modes = modes_1
             self.object_modes[secondary_id][primary_id].obj2_modes = modes_2
 
         if self.logging:
             mode_props = dict()
-            self.log_modes(self.object_modes[secondary_id][primary_id].count, mode_props, primary_id, secondary_id,
-                           modes_1, modes_2, amp, primary_material, secondary_material)
+            self._log_modes(self.object_modes[secondary_id][primary_id].count, mode_props, primary_id, secondary_id,
+                            modes_1, modes_2, amp, primary_material, secondary_material)
             
         # On rare occasions, it is possible for PyImpact to fail to generate a sound.
         if sound is None:
@@ -537,7 +578,7 @@ class PyImpact(AddOn):
         modes_2 = self.object_modes[id2][id1].obj2_modes
         # Scale the two sounds as specified.
         modes_2.decay_times = modes_2.decay_times + 20 * np.log10(amp2re1)
-        snth = PyImpact.synth_impact_modes(modes_1, modes_2, mass, resonance)
+        snth = PyImpact._synth_impact_modes(modes_1, modes_2, mass, resonance)
         return snth, modes_1, modes_2
 
     def get_impulse_response(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
@@ -780,7 +821,7 @@ class PyImpact(AddOn):
         return sound
 
     @staticmethod
-    def synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, resonance: float) -> np.array:
+    def _synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, resonance: float) -> np.array:
         """
         Generate an impact sound from specified modes for two objects, and the mass of the smaller object.
 
@@ -829,7 +870,7 @@ class PyImpact(AddOn):
         self._scrape_start_velocities.clear()
         self._scrape_events_count.clear()
 
-    def log_modes(self, count: int, mode_props: dict, id1: int, id2: int, modes_1: Modes, modes_2: Modes, amp: float, mat1: str, mat2: str):
+    def _log_modes(self, count: int, mode_props: dict, id1: int, id2: int, modes_1: Modes, modes_2: Modes, amp: float, mat1: str, mat2: str):
         """
         Log mode properties info for a single collision event.
 
@@ -894,8 +935,8 @@ class PyImpact(AddOn):
         for object_id in names:
             name = names[object_id]
             # Use override data.
-            if name in self.static_audio_data_overrides:
-                self.static_audio_data[object_id] = self.static_audio_data_overrides[name]
+            if object_id in self.static_audio_data_overrides:
+                self.static_audio_data[object_id] = self.static_audio_data_overrides[object_id]
                 self.static_audio_data[object_id].mass = object_masses[object_id]
                 self.static_audio_data[object_id].object_id = object_id
             # Use default audio data.

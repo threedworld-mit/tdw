@@ -49,14 +49,14 @@ audio_initializer = ResonanceAudioInitializer(avatar_id=avatar_id, floor=floor_m
 py_impact = PyImpact(initial_amp=0.9,
                      resonance_audio=True,
                      floor=ResonanceAudioInitializer.AUDIO_MATERIALS[floor_material],
-                     static_audio_data_overrides={model_name: ObjectAudioStatic(name=model_name,
-                                                                                object_id=object_id,
-                                                                                material=AudioMaterial.metal,
-                                                                                mass=object_mass,
-                                                                                bounciness=object_bounciness,
-                                                                                amp=0.8,
-                                                                                resonance=0.7,
-                                                                                size=1)})
+                     static_audio_data_overrides={object_id: ObjectAudioStatic(name=model_name,
+                                                                               object_id=object_id,
+                                                                               material=AudioMaterial.metal,
+                                                                               mass=object_mass,
+                                                                               bounciness=object_bounciness,
+                                                                               amp=0.8,
+                                                                               resonance=0.7,
+                                                                               size=1)})
 recorder = PhysicsAudioRecorder()
 root_dir = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("py_impact")
 print(f"Audio will be saved to: {root_dir}")

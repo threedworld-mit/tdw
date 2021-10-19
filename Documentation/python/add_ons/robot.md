@@ -130,6 +130,19 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 _Returns:_  True if the joints are moving.
 
+#### reset
+
+**`self.reset()`**
+
+**`self.reset(position=None, rotation=None)`**
+
+Reset the robot.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| position |  Dict[str, float] | None | The position of the robot. |
+| rotation |  Dict[str, float] | None | The rotation of the robot. |
+
 #### on_send
 
 **`self.on_send(resp)`**

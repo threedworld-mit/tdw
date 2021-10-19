@@ -5,7 +5,6 @@ from tdw.collision_data.collision_obj_obj import CollisionObjObj
 from tdw.collision_data.collision_obj_env import CollisionObjEnv
 from tdw.object_data.rigidbody import Rigidbody
 from tdw.physics_audio.collision_audio_type import CollisionAudioType
-from tdw.physics_audio.audio_material_constants import DENSITIES
 from tdw.physics_audio.object_audio_static import ObjectAudioStatic
 
 

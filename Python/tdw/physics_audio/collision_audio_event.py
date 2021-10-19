@@ -101,8 +101,8 @@ class CollisionAudioEvent:
                 if obj_obj:
                     if object_1_dynamic is None:
                         raise Exception("object_1_dynamic is None but this is an object-object collision.")
-                    # Set the primary and secondary bodies based on density.
-                    if DENSITIES[object_0_static.material] > DENSITIES[object_1_static.material]:
+                    # Set the primary and secondary bodies based on speed. Assume that the slower object is the surface.
+                    if np.linalg.norm(object_0_dynamic.velocity) > np.linalg.norm(object_1_dynamic.velocity):
                         self.primary_id = object_0_static.object_id
                         self.secondary_id = object_1_static.object_id
                         angular_velocity = object_0_dynamic.angular_velocity

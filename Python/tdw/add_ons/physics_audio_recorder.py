@@ -2,7 +2,7 @@ from typing import List, Union
 from pathlib import Path
 import numpy as np
 from tdw.output_data import OutputData, AudioSources, Rigidbodies, Transforms
-from tdw.tdw_utils import AudioUtils
+from tdw.audio_utils import AudioUtils
 from tdw.add_ons.add_on import AddOn
 
 

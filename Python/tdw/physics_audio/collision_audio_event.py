@@ -69,7 +69,7 @@ class CollisionAudioEvent:
         if isinstance(collision, CollisionObjObj):
             self.velocity = collision.relative_velocity
             self.magnitude = np.linalg.norm(self.velocity)
-            valid_event = self.magnitude > 0
+            valid_event = self.magnitude > 0.01
             obj_obj: bool = True
             if object_1_static is None:
                 raise Exception("object_1_static is None but this is an object-object collision.")

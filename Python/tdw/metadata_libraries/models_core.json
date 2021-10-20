@@ -8372,6 +8372,79 @@
             "wcategory": "bee",
             "wnid": "n02206856"
         },
+        "bench": {
+            "asset_bundle_sizes": {
+                "Darwin": 16394352,
+                "Linux": 16619736,
+                "Windows": 16488665
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.192093e-07,
+                    "y": 0.205806,
+                    "z": -0.175
+                },
+                "bottom": {
+                    "x": -1.192093e-07,
+                    "y": -8.940697e-08,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": -1.192093e-07,
+                    "y": 0.205806,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": -1.192093e-07,
+                    "y": 0.205806,
+                    "z": 0.175
+                },
+                "left": {
+                    "x": -0.8000001,
+                    "y": 0.205806,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.7999998,
+                    "y": 0.205806,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": -1.192093e-07,
+                    "y": 0.4116122,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "bench",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "aluminium_brushed"
+                    ],
+                    "name": "Bench"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/bench",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/bench",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/bench"
+            },
+            "volume": 0.026772914454340935,
+            "wcategory": "bench",
+            "wnid": "n02828884"
+        },
         "black_lamp": {
             "asset_bundle_sizes": {
                 "Darwin": 552266,
@@ -29284,6 +29357,156 @@
             "wcategory": "toothbrush",
             "wnid": "n04453156"
         },
+        "toy_monkey_medium": {
+            "asset_bundle_sizes": {
+                "Darwin": 83591560,
+                "Linux": 83762208,
+                "Windows": 83473805
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.02526498,
+                    "y": 0.08480668,
+                    "z": -0.08512826
+                },
+                "bottom": {
+                    "x": -0.02526498,
+                    "y": 0,
+                    "z": -7.450581e-09
+                },
+                "center": {
+                    "x": -0.02526498,
+                    "y": 0.08480668,
+                    "z": -7.450581e-09
+                },
+                "front": {
+                    "x": -0.02526498,
+                    "y": 0.08480668,
+                    "z": 0.08512825
+                },
+                "left": {
+                    "x": -0.1426142,
+                    "y": 0.08480668,
+                    "z": -7.450581e-09
+                },
+                "right": {
+                    "x": 0.09208424,
+                    "y": 0.08480668,
+                    "z": -7.450581e-09
+                },
+                "top": {
+                    "x": -0.02526498,
+                    "y": 0.1696134,
+                    "z": -7.450581e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 180.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "toy_monkey_medium",
+            "physics_quality": 0.6142678249352289,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_manks"
+                    ],
+                    "name": "manks015"
+                },
+                {
+                    "materials": [
+                        "wood_manks_001"
+                    ],
+                    "name": "manks016"
+                },
+                {
+                    "materials": [
+                        "wood_manks"
+                    ],
+                    "name": "manks017"
+                },
+                {
+                    "materials": [
+                        "manks"
+                    ],
+                    "name": "manks018"
+                },
+                {
+                    "materials": [
+                        "wood_manks"
+                    ],
+                    "name": "manks019"
+                },
+                {
+                    "materials": [
+                        "wood_manks_001"
+                    ],
+                    "name": "manks020"
+                },
+                {
+                    "materials": [
+                        "wood_manks"
+                    ],
+                    "name": "manks021"
+                },
+                {
+                    "materials": [
+                        "wood_manks_001"
+                    ],
+                    "name": "manks022"
+                },
+                {
+                    "materials": [
+                        "wood_manks"
+                    ],
+                    "name": "manks023"
+                },
+                {
+                    "materials": [
+                        "wood_manks_001"
+                    ],
+                    "name": "manks024"
+                },
+                {
+                    "materials": [
+                        "wood_manks"
+                    ],
+                    "name": "manks025"
+                },
+                {
+                    "materials": [
+                        "wood_manks_001"
+                    ],
+                    "name": "manks026"
+                },
+                {
+                    "materials": [
+                        "wood_manks_001"
+                    ],
+                    "name": "manks027"
+                },
+                {
+                    "materials": [
+                        "wood_manks"
+                    ],
+                    "name": "manks028"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/toy_monkey_medium",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/toy_monkey_medium",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/toy_monkey_medium"
+            },
+            "volume": 0.0015586402732878923,
+            "wcategory": "toy",
+            "wnid": "n04461879"
+        },
         "trapezoidal_table": {
             "asset_bundle_sizes": {
                 "Darwin": 3880673,
@@ -30615,6 +30838,78 @@
             "volume": 0.3039042055606842,
             "wcategory": "table",
             "wnid": "n04379243"
+        },
+        "wood_board": {
+            "asset_bundle_sizes": {
+                "Darwin": 8027858,
+                "Linux": 8161495,
+                "Windows": 7921206
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.005000021,
+                    "z": -0.5
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.005,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.004999978,
+                    "z": 0.5
+                },
+                "left": {
+                    "x": -0.1,
+                    "y": 0.005,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1,
+                    "y": 0.005,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.01,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "wood_board",
+            "physics_quality": 1.0,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "wood_board"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/wood_board",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/wood_board",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/wood_board"
+            },
+            "volume": 0.002082936465740204,
+            "wcategory": "incline",
+            "wnid": "n04051549"
         },
         "wood_chair": {
             "asset_bundle_sizes": {

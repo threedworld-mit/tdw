@@ -126,7 +126,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 3. [Resonance Audio](Documentation/lessons/audio/resonance_audio.md)
 4. [`PyImpact` (dynamic impact sounds)](Documentation/lessons/audio/py_impact.md)
 5. `PyImpact` (advanced API)
-6. Recording audio
+6. [Recording audio](Documentation/lessons/audio/record_audio.md)
 7. Audio perception
 
 High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_challenge)

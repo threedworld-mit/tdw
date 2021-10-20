@@ -75,7 +75,7 @@ c.communicate({"$type": "terminate"})
 
 - `mode_properties_log` The mode properties log.
 
-- `static_audio_data_overrides` A dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values.
+- `auto` If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio.
 
 ***
 
@@ -85,7 +85,7 @@ c.communicate({"$type": "terminate"})
 
 **`PyImpact()`**
 
-**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False, static_audio_data_overrides=None, resonance_audio=False, floor=AudioMaterial.wood_medium, rng=None)`**
+**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False, static_audio_data_overrides=None, resonance_audio=False, floor=AudioMaterial.wood_medium, rng=None, auto=True)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -96,30 +96,19 @@ c.communicate({"$type": "terminate"})
 | resonance_audio |  bool  | False | If True, the simulation is using Resonance Audio. |
 | floor |  AudioMaterial  | AudioMaterial.wood_medium | The floor material. |
 | rng |  np.random.RandomState  | None | The random number generator. If None, a random number generator with a random seed is created. |
+| auto |  bool  | True | If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio. |
 
-***
+#### get_initialization_commands
 
-### General
+**`self.get_initialization_commands()`**
 
-These functions are meant for most use-cases. For general use-cases, PyImpact will generate audio automatically. In *all* use-cases, you'll need to manually reset PyImapct whenevery you reset the scene.
+_Returns:_  The name of the floor material.
 
-#### reset
+#### on_send
 
-**`self.reset()`**
+**`self.on_send()`**
 
-**`self.reset(initial_amp=0.5)`**
-
-Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| initial_amp |  float  | 0.5 | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
-
-***
-
-### Advanced
-
-These functions manually create audio data, including .wav data and TDW commands.
+_Returns:_  The name of the floor material.
 
 #### get_sound
 
@@ -261,5 +250,16 @@ Create a scrape sound, and return a valid command to play audio data in TDW.
 
 _Returns:_  A [`Base64Sound`](../physics_audio/base64_sound.md) object or None if no sound.
 
-***
+#### reset
+
+**`self.reset()`**
+
+**`self.reset(initial_amp=0.5, static_audio_data_overrides=None)`**
+
+Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| initial_amp |  float  | 0.5 | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
+| static_audio_data_overrides |  Dict[int, ObjectAudioStatic] | None | If not None, a dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values. |
 

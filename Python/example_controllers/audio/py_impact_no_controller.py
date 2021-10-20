@@ -8,10 +8,10 @@ py_impact = PyImpact()
 output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("py_impact_no_controller")
 if not output_directory.exists():
     output_directory.mkdir()
+print(f"Audio will be saved to: {output_directory}")
 contact_normals: List[np.array] = list()
 for i in range(3):
     contact_normals.append(np.array([0, 1, 0]))
-print(f"Audio will be saved to: {output_directory}")
 for i in range(5):
     sound = py_impact.get_sound(velocity=np.array([0, -1.5, 0]),
                                 contact_normals=contact_normals,

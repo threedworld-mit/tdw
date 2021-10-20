@@ -127,7 +127,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 4. [`PyImpact` (dynamic impact sounds)](Documentation/lessons/audio/py_impact.md)
 5. `PyImpact` (advanced API)
 6. [Recording audio](Documentation/lessons/audio/record_audio.md)
-7. Audio perception
+7. [Audio perception](Documentation/lessons/audio/audio_perception.md)
 
 High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_challenge)
 
@@ -183,15 +183,20 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 2. State machines
 3. World state objects
 
-## 2.14 Misc. topics
+## 2.11 Non-physics objects
+
+1. Overview
+2. Position markers
+3. Paintings
+4. Non-physics humanoids
+
+## 2.12 Misc. topics
 
 1. C# source code
 2. Freezing your code
 3. BinaryManager
 4. xpra
 5. Creating composite objects
-6. Paintings
-7. Non-physics humanoids
 
 # 3. API Documentation
 

@@ -11,6 +11,10 @@ Audio data is very different than [image](../visual_perception/overview.md) or [
 
 In this tutorial, you'll learn how to initialize audio, play pre-recorded audio, generate dynamic audio from physics collision events, and how to record audio.
 
+## High-Level API: Multimodal Challenge
+
+The  [Multimodal Challenge](https://github.com/alters-mit/multimodal_challenge) combines a [Magnebot](https://github.com/alters-mit/magnebot) with an audio simulation; the Magnebot can both [visually perceive objects](../visual_perception/overview.md) and "listen" to a pre-processed physics audio event. The Multimodal Challenge includes a controller with an agent that can respond to the audio event, an a separate controller for generating a dataset of pre-processed trial data (including audio data).
+
 ***
 
 **Next: [Initialize audio and play .wav files](initialize_audio.md)**

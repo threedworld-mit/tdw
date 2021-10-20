@@ -19,7 +19,7 @@ from tdw.physics_audio.collision_audio_info import CollisionAudioInfo
 from tdw.physics_audio.collision_audio_type import CollisionAudioType
 from tdw.physics_audio.collision_audio_event import CollisionAudioEvent
 from tdw.object_data.rigidbody import Rigidbody
-from tdw.audio_constants import SAMPLE_RATE, CHANNELS
+from tdw.audio_constants import SAMPLE_RATE, CHANNELS, SAMPLE_WIDTH
 from tdw.add_ons.collision_manager import CollisionManager
 
 
@@ -55,10 +55,6 @@ class PyImpact(CollisionManager):
     ```
     """
 
-    """:class_var
-    The width of a scrape sample.
-    """
-    SCRAPE_SAMPLE_WIDTH: int = 2
     """:class_var
     The scrape surface.
     """
@@ -770,7 +766,7 @@ class PyImpact(CollisionManager):
 
         noise_seg1 = AudioSegment(t_force.tobytes(),
                                   frame_rate=SAMPLE_RATE,
-                                  sample_width=PyImpact.SCRAPE_SAMPLE_WIDTH,
+                                  sample_width=SAMPLE_WIDTH,
                                   channels=CHANNELS)
         # Normalize gain.
         noise_seg1.apply_gain(PyImpact.SCRAPE_TARGET_DBFS)
@@ -785,7 +781,7 @@ class PyImpact(CollisionManager):
         normalized_noise_ints_conv = PyImpact._normalize_16bit_int(conv)
         noise_seg_conv = AudioSegment(normalized_noise_ints_conv.tobytes(),
                                       frame_rate=SAMPLE_RATE,
-                                      sample_width=PyImpact.SCRAPE_SAMPLE_WIDTH,
+                                      sample_width=SAMPLE_WIDTH,
                                       channels=CHANNELS)
 
         # Gain-adjust the convolved segment using db value computed earlier.

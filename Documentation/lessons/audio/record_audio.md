@@ -138,7 +138,7 @@ This controller will output two files per trial:
 
 ***
 
-**Next: [Audio perception](audio_perception.md)**
+**Next: [`PyImpact` (advanced API)](py_impact_advanced.md)**
 
 [Return to the README](../../../README.md)
 
@@ -147,6 +147,7 @@ This controller will output two files per trial:
 Example controllers:
 
 - [minimal_audio_dataset.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/minimal_audio_dataset.py) A minimal example of how to record a physics audio dataset using `AudioInitializer`, `PyImpact`, and `PhysicsAudioRecorder`.
+- [impact_and_scrape.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/impact_and_scrape.py) Record an impact and a scrape.
 - [rube_goldberg.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/rube_goldberg.py)
 
 Python API:

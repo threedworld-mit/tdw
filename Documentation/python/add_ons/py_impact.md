@@ -37,7 +37,6 @@ c.communicate({"$type": "terminate"})
 
 | Variable | Type | Description |
 | --- | --- | --- |
-| `SCRAPE_SAMPLE_WIDTH` | int | The width of a scrape sample. |
 | `SCRAPE_SURFACE` | np.array | The scrape surface. |
 | `SILENCE_50MS` | AudioSegment | 50ms of silence. Used for scrapes. |
 | `SCRAPE_MAX_VELOCITY` | float | The maximum velocity allowed for a scrape. |
@@ -77,6 +76,8 @@ c.communicate({"$type": "terminate"})
 
 - `auto` If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio.
 
+- `collision_events` Collision events on this frame. Key = Object ID. Value = [`CollisionAudioEvent`](../physics_audio/collision_audio_event.md).
+
 ***
 
 ## Functions
@@ -110,9 +111,9 @@ _Returns:_  The name of the floor material.
 
 _Returns:_  The name of the floor material.
 
-#### get_sound
+#### get_impact_sound
 
-**`self.get_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
+**`self.get_impact_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
 
 Produce sound of two colliding objects as a byte array.
 
@@ -158,50 +159,6 @@ Create an impact sound, and return a valid command to play audio data in TDW.
 | secondary_mass |  float |  | The mass of the secondary (target) object. |
 
 _Returns:_  A `play_audio_data` or `play_point_source_data` command that can be sent to the build via `Controller.communicate()`.
-
-#### make_impact_audio
-
-**`self.make_impact_audio(amp2re1, mass, id1, id2, resonance)`**
-
-**`self.make_impact_audio(mat1='cardboard', mat2='cardboard', amp2re1, mass, id1, id2, resonance)`**
-
-Generate an impact sound.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| mat1 |  str  | 'cardboard' | The material label for one of the colliding objects. |
-| mat2 |  str  | 'cardboard' | The material label for the other object. |
-| amp2re1 |  float |  | The sound amplitude of object 2 relative to that of object 1. |
-| mass |  float |  | The mass of the smaller of the two colliding objects. |
-| id1 |  int |  | The ID for the one of the colliding objects. |
-| id2 |  int |  | The ID for the other object. |
-| resonance |  float |  | The resonance of the objects. |
-
-_Returns:_  The sound, and the object modes.
-
-#### get_impulse_response
-
-**`self.get_impulse_response(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
-
-Generate an impulse response from the modes for two specified objects.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| primary_id |  int |  | The object ID for the primary (target) object. |
-| primary_material |  str |  | The material label for the primary (target) object. |
-| secondary_id |  int |  | The object ID for the secondary (other) object. |
-| secondary_material |  str |  | The material label for the secondary (other) object. |
-| primary_amp |  float |  | Sound amplitude of primary (target) object. |
-| secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
-| resonance |  float |  | The resonances of the objects. |
-| velocity |  np.array |  | The velocity. |
-| contact_normals |  List[np.array] |  | The collision contact normals. |
-| primary_mass |  float |  | The mass of the primary (target) object. |
-| secondary_mass |  float |  | The mass of the secondary (target) object. |
-
-_Returns:_  The impulse response.
 
 #### get_scrape_sound_command
 

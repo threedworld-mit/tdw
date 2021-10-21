@@ -26,3 +26,13 @@ A sound encoded as a base64 string.
 | --- | --- | --- | --- |
 | snd |  np.array |  | The sound byte array. |
 
+#### write
+
+**`self.write(path)`**
+
+Write audio to disk.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| path |  Union[str, Path] |  | The path to the .wav file. |
+

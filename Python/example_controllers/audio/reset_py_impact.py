@@ -27,7 +27,7 @@ class ResetPyImpact(Controller):
         # Initialize audio.
         audio_initializer = ResonanceAudioInitializer(avatar_id="a", floor=resonance_audio_floor)
         # Initialize PyImpact, using the controller's RNG.
-        self.py_impact = PyImpact(initial_amp=0.5, floor=py_impact_floor, rng=self.rng)
+        self.py_impact = PyImpact(initial_amp=0.5, floor=py_impact_floor, rng=self.rng, resonance_audio=True)
         # Initialize the scene.
         self.add_ons.extend([camera, audio_initializer, self.py_impact])
         self.communicate(TDWUtils.create_empty_room(7, 7))

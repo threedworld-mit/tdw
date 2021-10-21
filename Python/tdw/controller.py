@@ -274,7 +274,7 @@ class Controller(object):
                     bouncinesses = [DEFAULT_OBJECT_AUDIO_STATIC_DATA[r.name].bounciness for r in records]
                     bounciness = round(sum(bouncinesses) / len(bouncinesses), 3)
                 # Derive the mass.
-                mass = (DENSITIES[material] / 1000) * record.volume
+                mass = DENSITIES[material] * record.volume
             commands.extend([{"$type": "set_mass",
                               "mass": mass,
                               "id": object_id},

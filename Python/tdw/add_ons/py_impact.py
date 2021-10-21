@@ -193,8 +193,10 @@ class PyImpact(CollisionManager):
         self._static_audio_data_overrides: Dict[int, ObjectAudioStatic] = dict()
         if static_audio_data_overrides is not None:
             self._static_audio_data_overrides = static_audio_data_overrides
-
-        self._collision_events: Dict[int, CollisionAudioEvent] = dict()
+        """:field
+        Collision events on this frame. Key = Object ID. Value = [`CollisionAudioEvent`](../physics_audio/collision_audio_event.md).
+        """
+        self.collision_events: Dict[int, CollisionAudioEvent] = dict()
 
         self._cached_audio_info: bool = False
         # A dictionary of audio data. Key = Object ID; Value = `ObjectAudioStatic`.
@@ -234,16 +236,16 @@ class PyImpact(CollisionManager):
             return
         # Get collision events.
         self._get_collision_types(resp=resp)
-        for object_id in self._collision_events:
+        for object_id in self.collision_events:
             command = None
             # Generate an impact sound.
-            if self._collision_events[object_id].collision_type == CollisionAudioType.impact:
+            if self.collision_events[object_id].collision_type == CollisionAudioType.impact:
                 # Generate an environment sound.
-                if self._collision_events[object_id].secondary_id is None:
+                if self.collision_events[object_id].secondary_id is None:
                     audio = self._static_audio_data[object_id]
-                    command = self.get_impact_sound_command(velocity=self._collision_events[object_id].velocity,
-                                                            contact_points=self._collision_events[object_id].collision.points,
-                                                            contact_normals=self._collision_events[object_id].collision.normals,
+                    command = self.get_impact_sound_command(velocity=self.collision_events[object_id].velocity,
+                                                            contact_points=self.collision_events[object_id].collision.points,
+                                                            contact_normals=self.collision_events[object_id].collision.normals,
                                                             primary_id=object_id,
                                                             primary_amp=audio.amp,
                                                             primary_material=audio.material.name + "_" + str(audio.size),
@@ -255,11 +257,11 @@ class PyImpact(CollisionManager):
                                                             resonance=audio.resonance)
                 # Generate an object sound.
                 else:
-                    target_audio = self._static_audio_data[self._collision_events[object_id].primary_id]
-                    other_audio = self._static_audio_data[self._collision_events[object_id].secondary_id]
-                    command = self.get_impact_sound_command(velocity=self._collision_events[object_id].velocity,
-                                                            contact_points=self._collision_events[object_id].collision.points,
-                                                            contact_normals=self._collision_events[object_id].collision.normals,
+                    target_audio = self._static_audio_data[self.collision_events[object_id].primary_id]
+                    other_audio = self._static_audio_data[self.collision_events[object_id].secondary_id]
+                    command = self.get_impact_sound_command(velocity=self.collision_events[object_id].velocity,
+                                                            contact_points=self.collision_events[object_id].collision.points,
+                                                            contact_normals=self.collision_events[object_id].collision.normals,
                                                             primary_id=target_audio.object_id,
                                                             primary_amp=target_audio.amp,
                                                             primary_material=target_audio.material.name + "_" + str(
@@ -272,13 +274,13 @@ class PyImpact(CollisionManager):
                                                             secondary_mass=other_audio.mass,
                                                             resonance=target_audio.resonance)
             # Generate a scrape sound.
-            elif self._collision_events[object_id].collision_type == CollisionAudioType.scrape:
+            elif self.collision_events[object_id].collision_type == CollisionAudioType.scrape:
                 # Generate an environment sound.
-                if self._collision_events[object_id].secondary_id is None:
+                if self.collision_events[object_id].secondary_id is None:
                     audio = self._static_audio_data[object_id]
-                    command = self.get_scrape_sound_command(velocity=self._collision_events[object_id].velocity,
-                                                            contact_points=self._collision_events[object_id].collision.points,
-                                                            contact_normals=self._collision_events[object_id].collision.normals,
+                    command = self.get_scrape_sound_command(velocity=self.collision_events[object_id].velocity,
+                                                            contact_points=self.collision_events[object_id].collision.points,
+                                                            contact_normals=self.collision_events[object_id].collision.normals,
                                                             primary_id=object_id,
                                                             primary_amp=audio.amp,
                                                             primary_material=audio.material.name + "_" + str(audio.size),
@@ -290,11 +292,11 @@ class PyImpact(CollisionManager):
                                                             resonance=audio.resonance)
                 # Generate an object sound.
                 else:
-                    target_audio = self._static_audio_data[self._collision_events[object_id].primary_id]
-                    other_audio = self._static_audio_data[self._collision_events[object_id].secondary_id]
-                    command = self.get_scrape_sound_command(velocity=self._collision_events[object_id].velocity,
-                                                            contact_points=self._collision_events[object_id].collision.points,
-                                                            contact_normals=self._collision_events[object_id].collision.normals,
+                    target_audio = self._static_audio_data[self.collision_events[object_id].primary_id]
+                    other_audio = self._static_audio_data[self.collision_events[object_id].secondary_id]
+                    command = self.get_scrape_sound_command(velocity=self.collision_events[object_id].velocity,
+                                                            contact_points=self.collision_events[object_id].collision.points,
+                                                            contact_normals=self.collision_events[object_id].collision.normals,
                                                             primary_id=target_audio.object_id,
                                                             primary_amp=target_audio.amp,
                                                             primary_material=target_audio.material.name + "_" + str(
@@ -329,9 +331,9 @@ class PyImpact(CollisionManager):
         # Collision events per object on this frame. We'll only care about the most significant one.
         collision_events_per_object: Dict[int, List[CollisionAudioEvent]] = dict()
         # Get the previous areas.
-        previous_areas: Dict[int, float] = {k: v.area for k, v in self._collision_events.items()}
+        previous_areas: Dict[int, float] = {k: v.area for k, v in self.collision_events.items()}
         # Clear the collision events.
-        self._collision_events.clear()
+        self.collision_events.clear()
         rigidbody_data: Dict[int, Rigidbody] = dict()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -377,7 +379,7 @@ class PyImpact(CollisionManager):
                                                  and e.collision_type != CollisionAudioType.none]
             if len(events) > 0:
                 event: CollisionAudioEvent = max(events, key=lambda x: x.magnitude)
-                self._collision_events[event.primary_id] = event
+                self.collision_events[event.primary_id] = event
 
     def _get_object_modes(self, material: Union[str, AudioMaterial]) -> Modes:
         """
@@ -408,10 +410,10 @@ class PyImpact(CollisionManager):
                 t = np.append(t, jt * 1e3)
         return Modes(f, p, t)
 
-    def get_sound(self, velocity: np.array, contact_normals: List[np.array],
-                  primary_id: int, primary_material: str, primary_amp: float, primary_mass: float,
-                  secondary_id: Optional[int], secondary_material: str, secondary_amp: float, secondary_mass: float,
-                  resonance: float) -> Optional[Base64Sound]:
+    def get_impact_sound(self, velocity: np.array, contact_normals: List[np.array],
+                         primary_id: int, primary_material: str, primary_amp: float, primary_mass: float,
+                         secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
+                         secondary_mass: float, resonance: float) -> Optional[Base64Sound]:
         """
         Produce sound of two colliding objects as a byte array.
 
@@ -460,12 +462,12 @@ class PyImpact(CollisionManager):
         # Re-scale the amplitude.
         if self.object_modes[secondary_id][primary_id].count == 0:
             # Sample the modes.
-            sound, modes_1, modes_2 = self.make_impact_audio(amp2re1, mass,
-                                                             mat1=primary_material,
-                                                             mat2=secondary_material,
-                                                             id1=primary_id,
-                                                             id2=secondary_id,
-                                                             resonance=resonance)
+            sound, modes_1, modes_2 = self._make_impact_audio(amp2re1, mass,
+                                                              mat1=primary_material,
+                                                              mat2=secondary_material,
+                                                              id1=primary_id,
+                                                              id2=secondary_id,
+                                                              resonance=resonance)
             # Save collision info - we will need for later collisions.
             amp = self.object_modes[secondary_id][primary_id].amp
             self.object_modes[secondary_id][primary_id].init_speed = normal_speed
@@ -528,10 +530,11 @@ class PyImpact(CollisionManager):
         :return A `play_audio_data` or `play_point_source_data` command that can be sent to the build via `Controller.communicate()`.
         """
 
-        impact_audio = self.get_sound(velocity=velocity, contact_normals=contact_normals, primary_id=primary_id,
-                                      primary_material=primary_material, primary_amp=primary_amp,
-                                      primary_mass=primary_mass, secondary_id=secondary_id, secondary_material=secondary_material,
-                                      secondary_amp=secondary_amp, secondary_mass=secondary_mass, resonance=resonance)
+        impact_audio = self.get_impact_sound(velocity=velocity, contact_normals=contact_normals, primary_id=primary_id,
+                                             primary_material=primary_material, primary_amp=primary_amp,
+                                             primary_mass=primary_mass, secondary_id=secondary_id,
+                                             secondary_material=secondary_material, secondary_amp=secondary_amp,
+                                             secondary_mass=secondary_mass, resonance=resonance)
         if impact_audio is not None:
             point = np.mean(contact_points, axis=0)
             return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
@@ -546,7 +549,8 @@ class PyImpact(CollisionManager):
         else:
             return None
 
-    def make_impact_audio(self, amp2re1: float, mass: float, id1: int, id2: int, resonance: float, mat1: str = 'cardboard', mat2: str = 'cardboard') -> (np.array, Modes, Modes):
+    def _make_impact_audio(self, amp2re1: float, mass: float, id1: int, id2: int, resonance: float,
+                           mat1: str = 'cardboard', mat2: str = 'cardboard') -> (np.array, Modes, Modes):
         """
         Generate an impact sound.
 
@@ -577,10 +581,10 @@ class PyImpact(CollisionManager):
         snth = PyImpact._synth_impact_modes(modes_1, modes_2, mass, resonance)
         return snth, modes_1, modes_2
 
-    def get_impulse_response(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
-                             primary_material: str, primary_amp: float, primary_mass: float,
-                             secondary_id: int, secondary_material: str, secondary_amp: float, secondary_mass: float,
-                             resonance: float) -> np.array:
+    def _get_impulse_response(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
+                              primary_material: str, primary_amp: float, primary_mass: float,
+                              secondary_id: int, secondary_material: str, secondary_amp: float, secondary_mass: float,
+                              resonance: float) -> Tuple[np.array, float]:
         """
         Generate an impulse response from the modes for two specified objects.
 
@@ -596,13 +600,13 @@ class PyImpact(CollisionManager):
         :param primary_mass: The mass of the primary (target) object.
         :param secondary_mass: The mass of the secondary (target) object.
 
-        :return The impulse response.
+        :return The impulse response and the frequency.
         """
 
-        self.get_sound(velocity=velocity, contact_normals=contact_normals, primary_id=primary_id,
-                       primary_material=primary_material, primary_amp=primary_amp,
-                       primary_mass=primary_mass, secondary_id=secondary_id, secondary_material=secondary_material,
-                       secondary_amp=secondary_amp, secondary_mass=secondary_mass, resonance=resonance)
+        self.get_impact_sound(velocity=velocity, contact_normals=contact_normals, primary_id=primary_id,
+                              primary_material=primary_material, primary_amp=primary_amp, primary_mass=primary_mass,
+                              secondary_id=secondary_id, secondary_material=secondary_material,
+                              secondary_amp=secondary_amp, secondary_mass=secondary_mass, resonance=resonance)
 
         modes_1 = self.object_modes[secondary_id][primary_id].obj1_modes
         modes_2 = self.object_modes[secondary_id][primary_id].obj2_modes
@@ -708,17 +712,17 @@ class PyImpact(CollisionManager):
 
         # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
         # We also get the lowest-frequency IR mode, which we use to set the high-pass filter cutoff below.
-        scraping_ir, min_mode_freq = self.get_impulse_response(velocity=velocity,
-                                                               contact_normals=contact_normals,
-                                                               primary_id=primary_id,
-                                                               primary_material=primary_material,
-                                                               primary_amp=primary_amp,
-                                                               primary_mass=primary_mass,
-                                                               secondary_id=secondary_id,
-                                                               secondary_material=secondary_material,
-                                                               secondary_amp=secondary_amp,
-                                                               secondary_mass=secondary_mass,
-                                                               resonance=resonance)
+        scraping_ir, min_mode_freq = self._get_impulse_response(velocity=velocity,
+                                                                contact_normals=contact_normals,
+                                                                primary_id=primary_id,
+                                                                primary_material=primary_material,
+                                                                primary_amp=primary_amp,
+                                                                primary_mass=primary_mass,
+                                                                secondary_id=secondary_id,
+                                                                secondary_material=secondary_material,
+                                                                secondary_amp=secondary_amp,
+                                                                secondary_mass=secondary_mass,
+                                                                resonance=resonance)
 
         #   Load the surface texture as a 1D vector
         #   Create surface texture of desired length
@@ -864,7 +868,7 @@ class PyImpact(CollisionManager):
         # Clear the object data.
         self.object_modes.clear()
         # Clear collision data.
-        self._collision_events.clear()
+        self.collision_events.clear()
         # Clear scrape data.
         self._scrape_summed_masters.clear()
         self._scrape_previous_index = 0

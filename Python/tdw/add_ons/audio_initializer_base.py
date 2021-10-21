@@ -8,8 +8,7 @@ from overrides import final
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.add_on import AddOn
-from tdw.audio_constants import SAMPLE_RATE, CHANNELS, SAMPLE_WIDTH
-from tdw.physics_audio.base64_sound import Base64Sound
+from tdw.audio_constants import SAMPLE_RATE, CHANNELS
 
 
 class AudioInitializerBase(AddOn, ABC):
@@ -88,24 +87,6 @@ class AudioInitializerBase(AddOn, ABC):
             self.commands.append({"$type": "parent_audio_source_to_object",
                                   "object_id": object_id,
                                   "audio_id": audio_id})
-
-    @staticmethod
-    def write(path: Union[str, Path], sound: Base64Sound) -> None:
-        """
-        Write audio to disk.
-
-        :param path: The path to the .wav file.
-        :param sound: The [`Base64Sound` object](../physics_audio/base64_sound.md).
-        """
-
-        if isinstance(path, Path):
-            path = str(path.resolve())
-        w = wave.Wave_write(f=path)
-        w.setnchannels(CHANNELS)
-        w.setnframes(sound.length)
-        w.setframerate(SAMPLE_RATE)
-        w.setsampwidth(SAMPLE_WIDTH)
-        w.writeframes(sound.bytes)
 
     @abstractmethod
     def _get_sensor_command_name(self) -> str:

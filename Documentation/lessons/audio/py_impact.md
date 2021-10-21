@@ -68,7 +68,9 @@ py_impact.floor = AudioMaterial.metal
 
 ## Resonance audio materials
 
-An `AudioMaterial` is not quite the same thing as a [Resonance Audio material](resonance_audio.md); the latter is defined by third-party software. However, TDW does include a dictionary to map `AudioMaterial` to Resonance Audio material:
+An `AudioMaterial` is not quite the same thing as a [Resonance Audio material](resonance_audio.md); the latter is defined by third-party software. However, TDW does include a dictionary to map `AudioMaterial` to Resonance Audio material.
+
+Note that when using Resonance Audio, you must set `resonance_audio=True` in the `PyImpact` constructor.
 
 ```python
 from tdw.add_ons.py_impact import PyImpact
@@ -76,7 +78,7 @@ from tdw.add_ons.resonance_audio_initializer import ResonanceAudioInitializer
 
 resonance_audio_material = "parquet"
 audio_material = ResonanceAudioInitializer.AUDIO_MATERIALS[resonance_audio_material]
-py_impact = PyImpact(floor=audio_material)
+py_impact = PyImpact(floor=audio_material, resonance_audio=True)
 audio_initializer = ResonanceAudioInitializer(floor=resonance_audio_material)
 ```
 
@@ -168,6 +170,10 @@ PyImpact uses cached static object data and per-frame physics metadata (velociti
 ## Impacts, scrapes, and rolls
 
 PyImpact generates impact, scrapes, and rolls using three different processes.
+
+- Impact sounds are fully implemented.
+- Scrape sounds are partially implemented; they still need to be differentiated by audio/visual material.
+- Rolls aren't implemented yet.
 
 In order to decide which process to use, PyImpact must first determine the "event type" of a collision. This is  normally done automatically but it can be useful to understand how it works:
 
@@ -283,7 +289,7 @@ class ResetPyImpact(Controller):
         # Initialize audio.
         audio_initializer = ResonanceAudioInitializer(avatar_id="a", floor=resonance_audio_floor)
         # Initialize PyImpact, using the controller's RNG.
-        self.py_impact = PyImpact(initial_amp=0.5, floor=py_impact_floor, rng=self.rng)
+        self.py_impact = PyImpact(initial_amp=0.5, floor=py_impact_floor, rng=self.rng, resonance_audio=True)
         # Initialize the scene.
         self.add_ons.extend([camera, audio_initializer, self.py_impact])
         self.communicate(TDWUtils.create_empty_room(7, 7))
@@ -334,7 +340,7 @@ if __name__ == "__main__":
 
 ***
 
-**Next: [`PyImpact` (advanced API)](py_impact_advanced.md)**
+**Next: [Recording audio](record_audio.md)**
 
 [Return to the README](../../../README.md)
 

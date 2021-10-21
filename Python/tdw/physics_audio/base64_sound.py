@@ -1,5 +1,9 @@
 import base64
+from pathlib import Path
+from typing import Union
+import wave
 import numpy as np
+from tdw.audio_constants import SAMPLE_RATE, CHANNELS, SAMPLE_WIDTH
 
 
 class Base64Sound:
@@ -24,3 +28,19 @@ class Base64Sound:
         The length of the byte array.
         """
         self.length: int = len(self.bytes)
+
+    def write(self, path: Union[str, Path]) -> None:
+        """
+        Write audio to disk.
+
+        :param path: The path to the .wav file.
+        """
+
+        if isinstance(path, Path):
+            path = str(path.resolve())
+        w = wave.Wave_write(f=path)
+        w.setnchannels(CHANNELS)
+        w.setnframes(self.length)
+        w.setframerate(SAMPLE_RATE)
+        w.setsampwidth(SAMPLE_WIDTH)
+        w.writeframes(self.bytes)

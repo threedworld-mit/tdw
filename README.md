@@ -144,11 +144,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 
 1. [Overview](Documentation/lessons/robots/overview.md)
 2. [The `Robot` add-on](Documentation/lessons/robots/robot_add_on.md)
-3. [Robot collision detection](Documentation/lessons/robots/collision_detection.md)
-4. [Select a robot](Documentation/lessons/robots/select_robot.md)
-5. [Add your own robots to TDW](Documentation/lessons/robots/custom_robots.md)
-6. [Robotics API (low-level)](Documentation/lessons/robots/custom_robots.md)
-7. [Add a camera to a robot](Documentation/lessons/robots/add_camera.md)
+3. [Robot arm add-ons](Documentation/lessons/robots/robot_arm.md)
+4. [Robot collision detection](Documentation/lessons/robots/collision_detection.md)
+5. [Select a robot](Documentation/lessons/robots/select_robot.md)
+6. [Add your own robots to TDW](Documentation/lessons/robots/custom_robots.md)
+7. [Robotics API (low-level)](Documentation/lessons/robots/custom_robots.md)
+8. [Add a camera to a robot](Documentation/lessons/robots/add_camera.md)
 
 ### 2.10.2 Magnebots
 

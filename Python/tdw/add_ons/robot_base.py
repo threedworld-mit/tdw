@@ -93,8 +93,10 @@ class RobotBase(AddOn, ABC):
         self.static = None
         self.dynamic = None
         self.commands.clear()
-        self.initial_position = position
-        self.initial_rotation = rotation
+        if position is not None:
+            self.initial_position = position
+        if rotation is not None:
+            self.initial_rotation = rotation
 
     def on_send(self, resp: List[bytes]) -> None:
         """

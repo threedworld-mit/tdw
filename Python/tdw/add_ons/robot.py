@@ -118,7 +118,6 @@ class Robot(RobotBase):
             self.dynamic.joints[joint_id].moving = True
 
     def add_joint_forces(self, forces: Dict[int, Union[float, Dict[str, float]]]) -> None:
-
         """
         Add torques and forces to a dictionary of joints.
 

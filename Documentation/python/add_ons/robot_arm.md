@@ -1,45 +1,15 @@
-# Robot
+# RobotArm
 
-`from tdw.add_ons.robot import Robot`
+`from tdw.add_ons.robot_arm import RobotArm`
 
-Add a robot to the scene and set joint targets and add joint forces. It has static and dynamic (per-frame) data for each of its joints.
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.robot import Robot
-
-c = Controller()
-# Add a robot.
-robot = Robot(name="ur5",
-              position={"x": -1, "y": 0, "z": 0.5},
-              robot_id=0)
-c.add_ons.append(robot)
-# Initialize the scene.
-c.communicate([{"$type": "load_scene",
-                "scene_name": "ProcGenScene"},
-               TDWUtils.create_empty_room(12, 12)])
-# Set joint targets.
-robot.set_joint_targets({robot.static.joint_ids_by_name["shoulder_link"]: 15,
-                         robot.static.joint_ids_by_name["upper_arm_link"]: -45,
-                         robot.static.joint_ids_by_name["forearm_link"]: 60})
-# Wait until the robot stops moving.
-while robot.joints_are_moving():
-    c.communicate([])
-c.communicate({"$type": "terminate"})
-```
+Abstract class for a robot with a single arm.
+This class includes an inverse kinematic (IK) solver that allows the robot to reach for a target position.
 
 ***
 
 ## Fields
 
-- `static` [Static robot data.](../robot_data/robot_static.md)
-
-- `dynamic` [Dynamic robot data.](../robot_data/robot_dynamic.md)
-
-- `name` The name of the robot.
-
-- `url` The URL or filepath of the robot asset bundle.
+- `name` The name of this robot.
 
 ***
 
@@ -47,17 +17,25 @@ c.communicate({"$type": "terminate"})
 
 #### \_\_init\_\_
 
-**`Robot(name)`**
+**`RobotArm()`**
 
-**`Robot(name, robot_id=0, position=None, rotation=None, source=None)`**
+**`RobotArm(robot_id=0, position=None, rotation=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| name |  str |  | The name of the robot. |
 | robot_id |  int  | 0 | The ID of the robot. |
 | position |  Dict[str, float] | None | The position of the robot. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | rotation |  Dict[str, float] | None | The rotation of the robot in Euler angles (degrees). If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| source |  Union[RobotLibrarian, RobotRecord, str] | None | The source file of the robot. If None: The source will be the URL of the robot record in TDW's built-in [`RobotLibrarian`](../librarian/robot_librarian.md). If `str`: This is a filepath (starts with `file:///`) or a URL (starts with `http://` or `https://`). If `RobotRecord`: the source is the URL in the record. If `RobotLibrarian`: The source is the record in the provided `RobotLibrarian` that matches `name`. |
+
+#### reach_for
+
+**`self.reach_for(target)`**
+
+Start to reach for a target position.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| target |  Union[Dict[str, float] |  | The target position. Can be a dictionary or a numpy array. |
 
 #### set_joint_targets
 

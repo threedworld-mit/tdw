@@ -1,49 +1,22 @@
 import numpy as np
-from ikpy.chain import Chain
 from ikpy.link import OriginLink, URDFLink, Link
-from ikpy.utils import geometry
-from tdw.add_ons.robot import Robot
-from typing import List, Dict, Union
-from tdw.tdw_utils import TDWUtils
+from typing import List
+from tdw.add_ons.robot_arm import RobotArm
 
 
-class UR5(Robot):
-    JOINT_ORDER: List[str] = ["shoulder_link", "upper_arm_link", "forearm_link", "wrist_1_link", "wrist_2_link",
-                              "wrist_3_link"]
+class UR5(RobotArm):
+    """
+    A UR5 robot arm with an inverse kinematics (IK) solver.
+    """
 
-    def __init__(self, robot_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None):
-        super().__init__(name="ur5", robot_id=robot_id, position=position, rotation=rotation)
-        self.chain: Chain = Chain(name="ur5", links=self.get_links())
+    def _get_name(self) -> str:
+        return "ur5"
 
-    def reach_for(self, target: Union[Dict[str, float], np.array]) -> None:
-        # Get the current angles of the joints.
-        initial_angles = [0]
-        for joint_name in UR5.JOINT_ORDER:
-            initial_angles.append(self.dynamic.joints[self.static.joint_ids_by_name[joint_name]].angles[0])
-        initial_angles = np.radians(initial_angles)
-        if isinstance(target, dict):
-            target = TDWUtils.vector3_to_array(target)
-        angles = self.chain.inverse_kinematics(target_position=target,
-                                               initial_position=initial_angles)
-        transformation_matrices = self.chain.forward_kinematics(angles, full_kinematics=True)
-        # Convert the matrix into positions (this is pulled from ikpy).
-        nodes = []
-        for (index, link) in enumerate(self.chain.links):
-            (node, orientation) = geometry.from_transformation_matrix(transformation_matrices[index])
-            nodes.append(node)
-        for node in nodes[:7]:
-            self.commands.append({"$type": "add_position_marker",
-                                  "position": TDWUtils.array_to_vector3(node)})
+    def _get_joint_order(self) -> List[str]:
+        return ["shoulder_link", "upper_arm_link", "forearm_link", "wrist_1_link", "wrist_2_link",
+                "wrist_3_link"]
 
-        # Convert the IK solution to degrees. Remove the origin link.
-        angles = [float(np.rad2deg(angle)) for angle in angles[1:]]
-        # Convert the angles to a dictionary of joint targets.
-        targets = dict()
-        for joint_name, angle in zip(UR5.JOINT_ORDER, angles):
-            targets[self.static.joint_ids_by_name[joint_name]] = angle
-        self.set_joint_targets(targets=targets)
-
-    def get_links(self) -> List[Link]:
+    def _get_links(self) -> List[Link]:
         bounds = (np.deg2rad(-360), np.deg2rad(360))
         orientation = np.array([0, 0, 0])
         return [OriginLink(),

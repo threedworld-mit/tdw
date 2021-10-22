@@ -65,7 +65,7 @@ class UR5(Robot):
                 URDFLink(name="wrist_3_link",
                          translation_vector=np.array([0, 0.09465025, 0]),
                          orientation=orientation,
-                         rotation=np.array([1, 0, 0]),
+                         rotation=np.array([-1, 0, 0]),
                          bounds=bounds),
                 URDFLink(name="end_effector",
                          translation_vector=np.array([-0.0802, 0, 0]),

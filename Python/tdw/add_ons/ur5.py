@@ -20,7 +20,6 @@ class UR5(Robot):
         initial_angles = [0]
         for joint_name in UR5.JOINT_ORDER:
             initial_angles.append(self.dynamic.joints[self.static.joint_ids_by_name[joint_name]].angles[0])
-        initial_angles.append(0)
         initial_angles = np.radians(initial_angles)
         if isinstance(target, dict):
             target = TDWUtils.vector3_to_array(target)
@@ -37,7 +36,7 @@ class UR5(Robot):
                                   "position": TDWUtils.array_to_vector3(node)})
 
         # Convert the IK solution to degrees. Remove the origin link.
-        angles = [float(np.rad2deg(angle)) for angle in angles[1:-1]]
+        angles = [float(np.rad2deg(angle)) for angle in angles[1:]]
         # Convert the angles to a dictionary of joint targets.
         targets = dict()
         for joint_name, angle in zip(UR5.JOINT_ORDER, angles):
@@ -75,10 +74,5 @@ class UR5(Robot):
                          bounds=bounds),
                 URDFLink(name="wrist_3_link",
                          translation_vector=np.array([0, -0.09465025, 0]),
-                         orientation=orientation,
-                         rotation=np.array([1, 0, 0]),
-                         bounds=bounds),
-                URDFLink(name="end_effector",
-                         translation_vector=np.array([-0.0802, 0, 0]),
                          orientation=orientation,
                          rotation=None)]

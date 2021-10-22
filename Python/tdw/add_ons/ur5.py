@@ -26,7 +26,7 @@ class UR5(Robot):
             target = TDWUtils.vector3_to_array(target)
         angles = self.chain.inverse_kinematics(target_position=target,
                                                initial_position=initial_angles)
-        transformation_matrices = self.chain.forward_kinematics(initial_angles, full_kinematics=True)
+        transformation_matrices = self.chain.forward_kinematics(angles, full_kinematics=True)
         # Convert the matrix into positions (this is pulled from ikpy).
         nodes = []
         for (index, link) in enumerate(self.chain.links):
@@ -61,12 +61,12 @@ class UR5(Robot):
                 URDFLink(name="forearm_link",
                          translation_vector=np.array([0.1196999, 0, 0.425001]),
                          orientation=orientation,
-                         rotation=np.array([-1, 0, 0]),
+                         rotation=np.array([1, 0, 0]),
                          bounds=bounds),
                 URDFLink(name="wrist_1_link",
                          translation_vector=np.array([0, 0, 0.3922516]),
                          orientation=orientation,
-                         rotation=np.array([-1, 0, 0]),
+                         rotation=np.array([1, 0, 0]),
                          bounds=bounds),
                 URDFLink(name="wrist_2_link",
                          translation_vector=np.array([-0.093, 0, 0]),
@@ -76,7 +76,7 @@ class UR5(Robot):
                 URDFLink(name="wrist_3_link",
                          translation_vector=np.array([0, -0.09465025, 0]),
                          orientation=orientation,
-                         rotation=np.array([-1, 0, 0]),
+                         rotation=np.array([1, 0, 0]),
                          bounds=bounds),
                 URDFLink(name="end_effector",
                          translation_vector=np.array([-0.0802, 0, 0]),

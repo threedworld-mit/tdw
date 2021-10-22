@@ -1,6 +1,7 @@
 import numpy as np
 from ikpy.chain import Chain
 from ikpy.link import OriginLink, URDFLink, Link
+from ikpy.utils import geometry
 from tdw.add_ons.robot import Robot
 from typing import List, Dict, Union
 from tdw.tdw_utils import TDWUtils
@@ -25,6 +26,16 @@ class UR5(Robot):
             target = TDWUtils.vector3_to_array(target)
         angles = self.chain.inverse_kinematics(target_position=target,
                                                initial_position=initial_angles)
+        transformation_matrices = self.chain.forward_kinematics(initial_angles, full_kinematics=True)
+        # Convert the matrix into positions (this is pulled from ikpy).
+        nodes = []
+        for (index, link) in enumerate(self.chain.links):
+            (node, orientation) = geometry.from_transformation_matrix(transformation_matrices[index])
+            nodes.append(node)
+        for node in nodes[:7]:
+            self.commands.append({"$type": "add_position_marker",
+                                  "position": TDWUtils.array_to_vector3(node)})
+
         # Convert the IK solution to degrees. Remove the origin link.
         angles = [float(np.rad2deg(angle)) for angle in angles[1:-1]]
         # Convert the angles to a dictionary of joint targets.
@@ -45,15 +56,15 @@ class UR5(Robot):
                 URDFLink(name="upper_arm_link",
                          translation_vector=np.array([-0.13585, 0, 0]),
                          orientation=orientation,
-                         rotation=np.array([-1, 0, 0]),
+                         rotation=np.array([1, 0, 0]),
                          bounds=bounds),
                 URDFLink(name="forearm_link",
-                         translation_vector=np.array([0.1196999, 0.425001, 0]),
+                         translation_vector=np.array([0.1196999, 0, 0.425001]),
                          orientation=orientation,
                          rotation=np.array([-1, 0, 0]),
                          bounds=bounds),
                 URDFLink(name="wrist_1_link",
-                         translation_vector=np.array([0, 0.3922516, 0]),
+                         translation_vector=np.array([0, 0, 0.3922516]),
                          orientation=orientation,
                          rotation=np.array([-1, 0, 0]),
                          bounds=bounds),
@@ -63,7 +74,7 @@ class UR5(Robot):
                          rotation=np.array([0, -1, 0]),
                          bounds=bounds),
                 URDFLink(name="wrist_3_link",
-                         translation_vector=np.array([0, 0.09465025, 0]),
+                         translation_vector=np.array([0, -0.09465025, 0]),
                          orientation=orientation,
                          rotation=np.array([-1, 0, 0]),
                          bounds=bounds),

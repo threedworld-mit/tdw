@@ -37,7 +37,7 @@ int_kitchen_accessories_le_creuset_bowl_30cm,0.2,12,ceramic,models_full.json,0.6
 jug01,0.6,3,ceramic,models_core.json,0.6,0.85,3
 jug04,0.1,3,ceramic,models_core.json,0.6,0.85,3
 jug05,0.1,3,ceramic,models_core.json,0.6,0.85,3
-toy_monkey_medium,0.25,0.75,ceramic,models_full.json,0.4,0.35,3
+toy_monkey_medium,0.25,0.75,ceramic,models_core.json,0.4,0.35,3
 elephant_bowl,1,2.5,ceramic,models_core.json,0.625,0.65,4
 serving_bowl,1,2,ceramic,models_core.json,0.625,0.65,4
 sm_table_white,0.1,130,ceramic,models_core.json,0.625,0.65,4
@@ -162,7 +162,7 @@ vk0060_dessertspoon,0.6,0.2,metal,models_full.json,0.6,0.65,3
 arco_lamp,1,2,metal,models_core.json,0.35,0.65,4
 dishwasher_4,0.01,300,metal,models_core.json,0.35,0.65,4
 gas_stove,0.01,400,metal,models_full.json,0.35,0.65,4
-metal_lab_shelf,0.02,330,metal,models_full.json,0.35,0.65,4
+metal_lab_shelf,0.02,330,metal,models_core.json,0.35,0.65,4
 pot,0.2,12,metal,models_core.json,0.625,0.65,4
 round_bowl_large_metal_perf,0.02,5,metal,models_core.json,0.5,0.65,4
 table_square,0.5,200,metal,models_core.json,0.6,0.65,4
@@ -269,8 +269,8 @@ pencil_all,0.2,0.2,wood_medium,models_core.json,0.5,0.65,3
 rope_table_lamp,0.014,1,wood_medium,models_core.json,0.35,0.65,3
 round_bowl_small_walnut,0.02,5,wood_medium,models_core.json,0.5,0.65,3
 silver_frame_painting,0.2,0.5,wood_medium,models_core.json,0.6,0.65,3
-skateboard_1,0.1,4,wood_medium,models_full.json,0.58,0.65,3
-tray_02,0.7,0.3,wood_medium,models_full.json,0.4,0.85,3
+skateboard_1,0.1,4,wood_medium,models_core.json,0.58,0.65,3
+tray_02,0.7,0.3,wood_medium,models_core.json,0.4,0.85,3
 trunck,0.01,275,wood_medium,models_core.json,0.58,0.65,3
 24_in_wall_cabinet_white_wood,0.01,70,wood_medium,models_core.json,0.58,0.25,4
 24_in_wall_cabinet_wood_beach_honey,0.01,70,wood_medium,models_core.json,0.58,0.5,4
@@ -288,7 +288,7 @@ linbrazil_diz_armchair,0.1,40,wood_medium,models_core.json,0.6,0.65,4
 round_bowl_large_padauk,0.02,5,wood_medium,models_core.json,0.5,0.65,4
 round_bowl_large_thin,0.02,5,wood_medium,models_core.json,0.5,0.65,4
 round_bowl_small_beech,0.02,5,wood_medium,models_core.json,0.5,0.65,4
-wood_board,0.3,0.6,wood_medium,models_full.json,0.2,0.65,4
+wood_board,0.3,0.6,wood_medium,models_core.json,0.2,0.65,4
 wood_chair,0.1,20,wood_medium,models_core.json,0.6,0.65,4
 cabinet_full_height_white_wood,0.01,70,wood_medium,models_core.json,0.58,0.25,5
 cabinet_full_height_wood_beach_honey,0.01,150,wood_medium,models_core.json,0.58,0.5,5
@@ -297,7 +297,7 @@ sink_base_wood_beach_honey,0.01,70,wood_medium,models_core.json,0.58,0.65,5
 round_coaster_indent_wood,0.3,0.3,wood_soft,models_core.json,0.5,0.45,1
 pepper,0.4,0.4,wood_soft,models_core.json,0.4,0.65,3
 4ft_wood_shelving,0.2,24,wood_soft,models_core.json,0.6,0.65,3
-b05_table_new,0.01,135,wood_soft,models_full.json,0.58,0.65,3
+b05_table_new,0.01,135,wood_soft,models_core.json,0.58,0.65,3
 balance_double_doghouse,0.5,100,wood_soft,models_core.json,0.6,0.65,3
 chair_billiani_doll,0.02,35,wood_soft,models_core.json,0.58,0.45,3
 display_cabinet_1_2012,0.01,275,wood_soft,models_full.json,0.58,0.65,3
@@ -311,7 +311,7 @@ woven_box,0.1,0.6,wood_soft,models_core.json,0.2,0.65,3
 5ft_wood_shelving,0.2,32,wood_soft,models_core.json,0.6,0.65,4
 yellow_side_chair,0.1,20,wood_soft,models_core.json,0.6,0.65,4
 baleri_italia_folded_black_table,0.2,150,wood_soft,models_core.json,0.6,0.65,4
-bench,0.4,200,wood_soft,models_full.json,0.1,0.25,4
+bench,0.4,200,wood_soft,models_core.json,0.1,0.25,4
 blue_side_chair,0.1,20,wood_soft,models_core.json,0.6,0.35,4
 chair_annabelle,0.02,35,wood_soft,models_core.json,0.58,0.65,4
 chair_willisau_riale,0.02,35,wood_soft,models_core.json,0.58,0.65,4
@@ -324,8 +324,8 @@ trapezoidal_table,0.5,200,wood_soft,models_core.json,0.6,0.45,4
 willisau_varion_w3_table,0.2,150,wood_soft,models_core.json,0.6,0.65,4
 6ft_wood_shelving,0.2,36,wood_soft,models_core.json,0.6,0.65,5
 dining_room_table,0.01,250,wood_soft,models_core.json,0.58,0.35,5
-enzo_industrial_loft_pine_metal_round_dining_table,0.02,200,wood_soft,models_full.json,0.58,0.65,5
-quatre_dining_table,0.01,250,wood_soft,models_full.json,0.58,0.65,5
+enzo_industrial_loft_pine_metal_round_dining_table,0.02,200,wood_soft,models_core.json,0.58,0.65,5
+quatre_dining_table,0.01,250,wood_soft,models_core.json,0.58,0.65,5
 remote_vr_2012,0.3,0.2,plastic_hard,models_core.json,0.5,0.65,1
 mouse_02_vray,0.3,0.2,plastic_hard,models_core.json,0.5,0.65,1
 b04_screwdriver_v2_texture_,0.2,0.7,metal,models_core.json,0.4,0.65,3

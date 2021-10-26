@@ -142,6 +142,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - Renamed `RoomBounds` to `RegionBounds`
 - Moved `scene_bounds.py` and `room_bounds.py` from `scene/` to `scene_data/`.
 
+### Model Library
+
+- Copied models from models_full.json to models_core.json: bench, toy_monkey_medium, wood_board, metal_lab_shelf, skateboard_1, tray_02, b05_table_new, enzo_industrial_loft_pine_metal_round_dining_table,quatre_dining_table
+
 ### Use Cases
 
 - Removed `single_object.py` and `multi_env.py`; they have been replaced with [`tdw_image_dataset`](https://github.com/alters-mit/tdw_image_dataset), a separate repo.

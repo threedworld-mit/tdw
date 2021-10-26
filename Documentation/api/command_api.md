@@ -67,6 +67,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_material`](#add_material) | Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. set_visual_material), you must first send this command.  |
+| [`send_material_properties_report`](#send_material_properties_report) | Send a report of the material property values. Each report will be a separate LogMessage.  |
 | [`send_material_report`](#send_material_report) | Tell the build to send a report of a material asset bundle. Each report will be a separate LogMessage.  |
 
 **Add Model Command**
@@ -1379,6 +1380,29 @@ Load a material asset bundle into memory. If you want to set the visual material
 
 ```python
 {"$type": "add_material", "name": "string", "url": "string"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
+## **`send_material_properties_report`**
+
+Send a report of the material property values. Each report will be a separate LogMessage. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`LogMessage`](output_data.md#LogMessage)</font>
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/material_librarian.md`</font>
+
+```python
+{"$type": "send_material_properties_report", "name": "string", "url": "string"}
 ```
 
 | Parameter | Type | Description | Default |

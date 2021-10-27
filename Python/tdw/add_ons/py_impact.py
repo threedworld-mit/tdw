@@ -18,9 +18,12 @@ from tdw.physics_audio.base64_sound import Base64Sound
 from tdw.physics_audio.collision_audio_info import CollisionAudioInfo
 from tdw.physics_audio.collision_audio_type import CollisionAudioType
 from tdw.physics_audio.collision_audio_event import CollisionAudioEvent
+from tdw.physics_audio.scrape_model import ScrapeModel, DEFAULT_SCRAPE_MODELS
+from tdw.physics_audio.scrape_material import ScrapeMaterial
 from tdw.object_data.rigidbody import Rigidbody
 from tdw.audio_constants import SAMPLE_RATE, CHANNELS, SAMPLE_WIDTH
 from tdw.add_ons.collision_manager import CollisionManager
+from tdw.librarian import MaterialLibrarian
 
 
 class PyImpact(CollisionManager):
@@ -55,11 +58,6 @@ class PyImpact(CollisionManager):
     ```
     """
 
-    """:class_var
-    The scrape surface.
-    """
-    SCRAPE_SURFACE: np.array = np.load(resource_filename(__name__, f"py_impact/scrape_surface.npy"))
-    SCRAPE_SURFACE = np.append(SCRAPE_SURFACE, SCRAPE_SURFACE)
     """:class_var
     50ms of silence. Used for scrapes.
     """
@@ -112,11 +110,14 @@ class PyImpact(CollisionManager):
     The mass of the floor.
     """
     FLOOR_MASS: int = 100
+    # Visual material librarian used for scrape surfaces.
+    __VISUAL_MATERIAL_LIBRARIAN: MaterialLibrarian = MaterialLibrarian("materials_high.json")
 
     def __init__(self, initial_amp: float = 0.5, prevent_distortion: bool = True, logging: bool = False,
                  static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None,
                  resonance_audio: bool = False, floor: AudioMaterial = AudioMaterial.wood_medium,
-                 rng: np.random.RandomState = None, auto: bool = True):
+                 rng: np.random.RandomState = None, auto: bool = True, scrape: bool = True,
+                 scrape_objects: Dict[int, ScrapeModel] = None):
         """
         :param initial_amp: The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
         :param prevent_distortion: If True, clamp amp values to <= 0.99
@@ -126,6 +127,8 @@ class PyImpact(CollisionManager):
         :param floor: The floor material.
         :param rng: The random number generator. If None, a random number generator with a random seed is created.
         :param auto: If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio.
+        :param scrape: If True, initialize certain objects as scrape surfaces: Change their visual material(s) and enable them for scrape audio. See: `tdw.physics_audio.scrape_model.DEFAULT_SCRAPE_MODELS`
+        :param scrape_objects: If `scrape == True` and this is not None, this dictionary can be used to manually set scrape surfaces. Key = Object ID. Value = [`ScrapeModel`](../physics_audio/scrape_model.md).
         """
 
         super().__init__()
@@ -179,7 +182,21 @@ class PyImpact(CollisionManager):
                 path = mat_name + "_mm"
                 data = json.loads(Path(resource_filename(__name__, f"py_impact/material_data/{path}.json")).read_text())
                 self.material_data.update({mat_name: data})
-
+        """:field
+        Cached scrape surface data.
+        """
+        self.scrape_surface_data: Dict[ScrapeMaterial, np.ndarray] = {}
+        for scrape_material in ScrapeMaterial:
+            self.scrape_surface_data[scrape_material] = np.load(str(Path(resource_filename(__name__, f"py_impact/scrape_surfaces/{scrape_material.name}.json")).resolve()))
+        """:field
+        A dictionary of all [scrape models](../physics_audio/scrape_model.md) in the scene. If `scrape == False`, this dictionary is empty. Key = Object ID.
+        """
+        self._scrape_objects: Dict[int, ScrapeModel] = dict()
+        self._scrape: bool = scrape
+        # Use scrape surfaces.
+        if self._scrape and scrape_objects is not None:
+            for k in scrape_objects:
+                self._scrape_objects[k] = scrape_objects[k]
         """:field
         The mode properties log.
         """
@@ -274,7 +291,7 @@ class PyImpact(CollisionManager):
                                                             secondary_mass=other_audio.mass,
                                                             resonance=target_audio.resonance)
             # Generate a scrape sound.
-            elif self.collision_events[object_id].collision_type == CollisionAudioType.scrape:
+            elif self.collision_events[object_id].collision_type == CollisionAudioType.scrape and object_id in self._scrape_objects:
                 # Generate an environment sound.
                 if self.collision_events[object_id].secondary_id is None:
                     audio = self._static_audio_data[object_id]
@@ -283,13 +300,14 @@ class PyImpact(CollisionManager):
                                                             contact_normals=self.collision_events[object_id].collision.normals,
                                                             primary_id=object_id,
                                                             primary_amp=audio.amp,
-                                                            primary_material=audio.material.name + "_" + str(audio.size),
+                                                            primary_material=self._scrape_objects[object_id].audio_material.name + "_" + str(audio.size),
                                                             primary_mass=audio.mass,
                                                             secondary_id=None,
                                                             secondary_amp=PyImpact.FLOOR_AMP,
                                                             secondary_material=self._get_floor_material_name(),
                                                             secondary_mass=PyImpact.FLOOR_MASS,
-                                                            resonance=audio.resonance)
+                                                            resonance=audio.resonance,
+                                                            scrape_material=self._scrape_objects[object_id].scrape_material)
                 # Generate an object sound.
                 else:
                     target_audio = self._static_audio_data[self.collision_events[object_id].primary_id]
@@ -299,15 +317,14 @@ class PyImpact(CollisionManager):
                                                             contact_normals=self.collision_events[object_id].collision.normals,
                                                             primary_id=target_audio.object_id,
                                                             primary_amp=target_audio.amp,
-                                                            primary_material=target_audio.material.name + "_" + str(
-                                                                target_audio.size),
+                                                            primary_material=self._scrape_objects[object_id].audio_material.name + "_" + str(target_audio.size),
                                                             primary_mass=target_audio.mass,
                                                             secondary_id=other_audio.object_id,
                                                             secondary_amp=other_audio.amp,
-                                                            secondary_material=other_audio.material.name + "_" + str(
-                                                                other_audio.size),
+                                                            secondary_material=other_audio.material.name + "_" + str(other_audio.size),
                                                             secondary_mass=other_audio.mass,
-                                                            resonance=target_audio.resonance)
+                                                            resonance=target_audio.resonance,
+                                                            scrape_material=self._scrape_objects[object_id].scrape_material)
             # Append impact sound commands.
             if command is not None:
                 self.commands.append(command)
@@ -619,7 +636,8 @@ class PyImpact(CollisionManager):
                                  contact_normals: List[np.array], primary_id: int,
                                  primary_material: str, primary_amp: float, primary_mass: float,
                                  secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
-                                 secondary_mass: float, resonance: float) -> Optional[dict]:
+                                 secondary_mass: float, resonance: float,
+                                 scrape_material: ScrapeMaterial) -> Optional[dict]:
         """
         :param primary_id: The object ID for the primary (target) object.
         :param primary_material: The material label for the primary (target) object.
@@ -633,6 +651,7 @@ class PyImpact(CollisionManager):
         :param contact_normals: The collision contact normals.
         :param primary_mass: The mass of the primary (target) object.
         :param secondary_mass: The mass of the secondary (target) object.
+        :param scrape_material: The [scrape material](../physics_audio/scrape_material.md).
 
         :return A command to play a scrape sound.
         """
@@ -647,7 +666,8 @@ class PyImpact(CollisionManager):
                                       secondary_material=secondary_material,
                                       secondary_amp=secondary_amp,
                                       secondary_mass=secondary_mass,
-                                      resonance=resonance)
+                                      resonance=resonance,
+                                      scrape_material=scrape_material)
         if sound is None:
             return None
         else:
@@ -664,7 +684,7 @@ class PyImpact(CollisionManager):
     def get_scrape_sound(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
                          primary_material: str, primary_amp: float, primary_mass: float,
                          secondary_id: int, secondary_material: str, secondary_amp: float, secondary_mass: float,
-                         resonance: float) -> Optional[Base64Sound]:
+                         resonance: float, scrape_material: ScrapeMaterial) -> Optional[Base64Sound]:
         """
         Create a scrape sound, and return a valid command to play audio data in TDW.
         "target" should usually be the smaller object, which will play the sound.
@@ -681,6 +701,7 @@ class PyImpact(CollisionManager):
         :param contact_normals: The collision contact normals.
         :param primary_mass: The mass of the primary (target) object.
         :param secondary_mass: The mass of the secondary (target) object.
+        :param scrape_material: The [scrape material](../physics_audio/scrape_material.md).
 
         :return A [`Base64Sound`](../physics_audio/base64_sound.md) object or None if no sound.
         """
@@ -723,7 +744,6 @@ class PyImpact(CollisionManager):
                                                                 secondary_amp=secondary_amp,
                                                                 secondary_mass=secondary_mass,
                                                                 resonance=resonance)
-
         #   Load the surface texture as a 1D vector
         #   Create surface texture of desired length
         #   Calculate first and second derivatives by first principles
@@ -731,7 +751,7 @@ class PyImpact(CollisionManager):
         #   Apply a variable Gaussian average
         #   Calculate the horizontal and vertical forces
         #   Convolve the force with the impulse response
-        dsdx = (PyImpact.SCRAPE_SURFACE[1:] - PyImpact.SCRAPE_SURFACE[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
+        dsdx = (self.scrape_surface_data[scrape_material][1:] - self.scrape_surface_data[scrape_material][0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
         d2sdx2 = (dsdx[1:] - dsdx[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
 
         dist = mag / 1000
@@ -747,7 +767,7 @@ class PyImpact(CollisionManager):
         # interpolate the surface slopes and curvatures based on the velocity magnitude
         final_ind = self._scrape_previous_index + num_pts
 
-        if final_ind > len(PyImpact.SCRAPE_SURFACE) - 100:
+        if final_ind > len(self.scrape_surface_data[scrape_material]) - 100:
             self._scrape_previous_index = 0
             final_ind = num_pts
 
@@ -849,12 +869,14 @@ class PyImpact(CollisionManager):
         x = x / abs(np.max(x))
         return x
 
-    def reset(self, initial_amp: float = 0.5, static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None) -> None:
+    def reset(self, initial_amp: float = 0.5, static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None,
+              scrape_objects: Dict[int, ScrapeModel] = None) -> None:
         """
         Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
 
         :param initial_amp: The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
         :param static_audio_data_overrides: If not None, a dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values.
+        :param scrape_objects: A dictionary of [scrape objects](../physics_audio/scrape_model.md) in the scene. Key = Object ID. Ignored if None or `scrape == False` in the constructor.
         """
 
         assert 0 < initial_amp < 1, f"initial_amp is {initial_amp} (must be > 0 and < 1)."
@@ -862,6 +884,11 @@ class PyImpact(CollisionManager):
         self.initialized = False
         self._static_audio_data.clear()
         self._static_audio_data_overrides.clear()
+        self._scrape_objects.clear()
+        # Use scrape surfaces.
+        if self._scrape and scrape_objects is not None:
+            for k in scrape_objects:
+                self._scrape_objects[k] = scrape_objects[k]
         if static_audio_data_overrides is not None:
             for k in static_audio_data_overrides:
                 self._static_audio_data_overrides[k] = static_audio_data_overrides[k]
@@ -923,8 +950,25 @@ class PyImpact(CollisionManager):
                 segm = SegmentationColors(resp[i])
                 for j in range(segm.get_num()):
                     object_id = segm.get_object_id(j)
-                    names[object_id] = segm.get_object_name(j).lower()
+                    model_name = segm.get_object_name(j).lower()
+                    names[object_id] = model_name
                     categories[object_id] = segm.get_object_category(j)
+                    # Enable a scrape surface.
+                    if self._scrape and (model_name in DEFAULT_SCRAPE_MODELS or object_id in self._scrape_objects):
+                        self._scrape_objects[object_id] = DEFAULT_SCRAPE_MODELS[model_name]
+                        # Add the visual material.
+                        material_record = PyImpact.__VISUAL_MATERIAL_LIBRARIAN.get_record(
+                            name=self._scrape_objects[object_id].visual_material)
+                        self.commands.append({"$type": "add_material",
+                                              "name": material_record.name,
+                                              "url": material_record.get_url()})
+                        # Set the visual material.
+                        for sub_object in self._scrape_objects[object_id].sub_objects:
+                            self.commands.append({"$type": "set_visual_material",
+                                                  "material_index": sub_object.material_index,
+                                                  "material_name": material_record.name,
+                                                  "object_name": model_name,
+                                                  "id": object_id})
             elif r_id == "srob":
                 srob = StaticRobot(resp[i])
                 for j in range(srob.get_num_joints()):

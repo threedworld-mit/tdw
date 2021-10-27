@@ -37,7 +37,6 @@ c.communicate({"$type": "terminate"})
 
 | Variable | Type | Description |
 | --- | --- | --- |
-| `SCRAPE_SURFACE` | np.array | The scrape surface. |
 | `SILENCE_50MS` | AudioSegment | 50ms of silence. Used for scrapes. |
 | `SCRAPE_MAX_VELOCITY` | float | The maximum velocity allowed for a scrape. |
 | `SCRAPE_M_PER_PIXEL` | float | Meters per pixel on the scrape surface. |
@@ -72,6 +71,10 @@ c.communicate({"$type": "terminate"})
 
 - `material_data` Cached material data.
 
+- `scrape_surface_data` Cached scrape surface data.
+
+- `_scrape_objects` A dictionary of all [scrape models](../physics_audio/scrape_model.md) in the scene. If `scrape == False`, this dictionary is empty. Key = Object ID.
+
 - `mode_properties_log` The mode properties log.
 
 - `auto` If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio.
@@ -86,7 +89,7 @@ c.communicate({"$type": "terminate"})
 
 **`PyImpact()`**
 
-**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False, static_audio_data_overrides=None, resonance_audio=False, floor=AudioMaterial.wood_medium, rng=None, auto=True)`**
+**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False, static_audio_data_overrides=None, resonance_audio=False, floor=AudioMaterial.wood_medium, rng=None, auto=True, scrape=True, scrape_objects=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -98,6 +101,8 @@ c.communicate({"$type": "terminate"})
 | floor |  AudioMaterial  | AudioMaterial.wood_medium | The floor material. |
 | rng |  np.random.RandomState  | None | The random number generator. If None, a random number generator with a random seed is created. |
 | auto |  bool  | True | If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio. |
+| scrape |  bool  | True | If True, initialize certain objects as scrape surfaces: Change their visual material(s) and enable them for scrape audio. See: `tdw.physics_audio.scrape_model.DEFAULT_SCRAPE_MODELS` |
+| scrape_objects |  Dict[int, ScrapeModel] | None | If `scrape == True` and this is not None, this dictionary can be used to manually set scrape surfaces. Key = Object ID. Value = [`ScrapeModel`](../physics_audio/scrape_model.md). |
 
 #### get_initialization_commands
 
@@ -162,7 +167,7 @@ _Returns:_  A `play_audio_data` or `play_point_source_data` command that can be 
 
 #### get_scrape_sound_command
 
-**`self.get_scrape_sound_command(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_points, contact_normals, primary_mass, secondary_mass)`**
+**`self.get_scrape_sound_command(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_points, contact_normals, primary_mass, secondary_mass, scrape_material)`**
 
 
 | Parameter | Type | Default | Description |
@@ -179,12 +184,13 @@ _Returns:_  A `play_audio_data` or `play_point_source_data` command that can be 
 | contact_normals |  List[np.array] |  | The collision contact normals. |
 | primary_mass |  float |  | The mass of the primary (target) object. |
 | secondary_mass |  float |  | The mass of the secondary (target) object. |
+| scrape_material |  ScrapeMaterial |  | The [scrape material](../physics_audio/scrape_material.md). |
 
 _Returns:_  A command to play a scrape sound.
 
 #### get_scrape_sound
 
-**`self.get_scrape_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
+**`self.get_scrape_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_normals, primary_mass, secondary_mass, scrape_material)`**
 
 Create a scrape sound, and return a valid command to play audio data in TDW.
 "target" should usually be the smaller object, which will play the sound.
@@ -204,6 +210,7 @@ Create a scrape sound, and return a valid command to play audio data in TDW.
 | contact_normals |  List[np.array] |  | The collision contact normals. |
 | primary_mass |  float |  | The mass of the primary (target) object. |
 | secondary_mass |  float |  | The mass of the secondary (target) object. |
+| scrape_material |  ScrapeMaterial |  | The [scrape material](../physics_audio/scrape_material.md). |
 
 _Returns:_  A [`Base64Sound`](../physics_audio/base64_sound.md) object or None if no sound.
 
@@ -211,7 +218,7 @@ _Returns:_  A [`Base64Sound`](../physics_audio/base64_sound.md) object or None i
 
 **`self.reset()`**
 
-**`self.reset(initial_amp=0.5, static_audio_data_overrides=None)`**
+**`self.reset(initial_amp=0.5, static_audio_data_overrides=None, scrape_objects=None)`**
 
 Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
 
@@ -219,4 +226,5 @@ Reset PyImpact. This is somewhat faster than creating a new PyImpact object per 
 | --- | --- | --- | --- |
 | initial_amp |  float  | 0.5 | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
 | static_audio_data_overrides |  Dict[int, ObjectAudioStatic] | None | If not None, a dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values. |
+| scrape_objects |  Dict[int, ScrapeModel] | None | A dictionary of [scrape objects](../physics_audio/scrape_model.md) in the scene. Key = Object ID. Ignored if None or `scrape == False` in the constructor. |
 

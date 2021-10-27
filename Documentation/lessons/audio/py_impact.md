@@ -197,21 +197,29 @@ from tdw.physics_audio.scrape_model import DEFAULT_SCRAPE_MODELS
 
 for model_name in DEFAULT_SCRAPE_MODELS:
     print(model_name)
+print("small_table_green_marble" in DEFAULT_SCRAPE_MODELS)  # True
 ```
 
 This controller will automatically initialize model `small_table_green_marble` as a scrape surface:
 
 ```python
+from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.audio_initializer import AudioInitializer
 from tdw.add_ons.py_impact import PyImpact
 
 c = Controller()
-py_impact = PyImpact()
-c.add_ons.append(py_impact)
 commands = [TDWUtils.create_empty_room(12, 12)]
+commands.extend(TDWUtils.create_avatar(avatar_id="a"))
 commands.extend(c.get_add_physics_object(model_name="small_table_green_marble",
                                          object_id=c.get_unique_id()))
+audio_initializer = AudioInitializer(avatar_id="a")
+py_impact = PyImpact()
+c.add_ons.extend([audio_initializer, py_impact])
 c.communicate(commands)
+for i in range(200):
+    c.communicate([])
+c.communicate({"$type": "terminate"})
 ```
 
 ### Disable scrape sounds
@@ -249,12 +257,13 @@ A `ScrapeModel` the following:
   [{'materials': ['Material_#9'], 'name': 'ir'}]
   ```
 
-This will manually initialize an `iron_box` object for scraping. Note that `iron_box` *is* one of the default scrape models; `scrape_objects` will override default data:
+This will manually initialize an `iron_box` object for scraping. Note that `iron_box` is one of the default scrape models but `scrape_objects` will override the default data:
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.py_impact import PyImpact
+from tdw.add_ons.audio_initializer import AudioInitializer
 from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.scrape_material import ScrapeMaterial
 from tdw.physics_audio.scrape_model import ScrapeModel
@@ -270,7 +279,8 @@ scrape_model = ScrapeModel(model_name=model_name,
                            sub_objects=[ScrapeSubObject(sub_object_name="ir",
                                                         material_index=0)])
 py_impact = PyImpact(scrape_objects={object_id: scrape_model})
-c.add_ons.append(py_impact)
+audio_intializer = AudioInitializer(avatar_id="a")
+c.add_ons.extend([audio_intializer, py_impact])
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend(c.get_add_physics_object(model_name=model_name,
                                          object_id=object_id))
@@ -292,7 +302,7 @@ py_impact = PyImpact(rng=rng)
 
 ## `PyImpact` and robots
 
-It is possible to generate impact sounds from the body of a [robot](../robots/overview.md). Please read the document regarding [robot collision detection](../robots/collision_detection.md) carefully.
+It is possible to generate impact sounds from the body of a [robot](../robots/overview.md). Please the [robot collision detection documentation](../robots/collision_detection.md) carefully!
 
 Once a robot has been added to the scene and initialized for collision detection, PyImpact will automatically set static audio data for each joint:
 

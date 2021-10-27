@@ -401,10 +401,11 @@ Output:
 
 Example controllers:
 
-- [collision_events.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/collision_events.py)
-- [implausible_audio.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/implausible_audio.py)
-- [make_sound_with_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/make_sound_with_controller.py)
-- [footsteps.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/footsteps.py) 
+- [collision_events.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/collision_events.py) Get collision audio event types without using PyImpact.
+- [implausible_audio.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/implausible_audio.py) Generate audio using audio physics parameters that don't match the object's actual physics parameters.
+- [make_sound_with_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/make_sound_with_controller.py) Generate sounds with PyImpact without using physics data and play the audio in a circle around the avatar listener.
+- [make_sound_without_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/make_sound_without_controller.py) Make sounds with PyImpact without using a TDW controller.
+- [footsteps.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/footsteps.py) Simulate a walking humanoid with footstep sounds.
 
 Python API:
 

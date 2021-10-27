@@ -106,5 +106,9 @@
   "wood_black_walnut_striped": {
     "audio_material": "wood_hard",
     "scrape_material": "poplar_wood"
+  },
+  "wood_teak": {
+    "audio_material": "wood_medium",
+    "scrape_material": "poplar_wood"
   }
 }

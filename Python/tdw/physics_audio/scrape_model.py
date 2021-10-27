@@ -1,5 +1,6 @@
 from pkg_resources import resource_filename
 from json import loads
+from pathlib import Path
 from typing import List, Dict
 from tdw.physics_audio.scrape_sub_object import ScrapeSubObject
 from tdw.physics_audio.scrape_material import ScrapeMaterial
@@ -50,14 +51,14 @@ def __get_default_scrape_models() -> Dict[str, ScrapeModel]:
 
     scrape_models: Dict[str, ScrapeModel] = dict()
     default_scrape_materials: Dict[str, Dict[str, str]] = loads(
-        resource_filename(__name__, f"scrape_materials.json"))
+        Path(resource_filename(__name__, f"scrape_materials.json")).read_text())
     default_scrape_models: Dict[str, dict] = loads(
-        resource_filename(__name__, f"scrape_models.json"))
+        Path(resource_filename(__name__, f"scrape_models.json")).read_text())
     for model_name in default_scrape_models:
         visual_material = default_scrape_models[model_name]["visual_material"]
         sub_objects: List[ScrapeSubObject] = list()
         for sub_object in default_scrape_models[model_name]["sub_objects"]:
-            sub_objects.append(ScrapeSubObject(sub_object_name=sub_object["sub_object_name"],
+            sub_objects.append(ScrapeSubObject(sub_object_name=sub_object["name"],
                                                material_index=sub_object["material_index"]))
         audio_material = AudioMaterial[default_scrape_materials[visual_material]["audio_material"]]
         scrape_material = ScrapeMaterial[default_scrape_materials[visual_material]["scrape_material"]]

@@ -48,6 +48,16 @@ c.communicate({"$type": "terminate"})
 
 Result: [Synthesized audio from the object colliding with the floor.](https://drive.google.com/file/d/1DkvC9HP7XpnYUGNGNW5AuXBMmCXuXmjz/view?usp=sharing)
 
+## Auto-generated audio
+
+By default, PyImpact will evaluate the simulation state per `Controller.communicate()` call and will automatically generate audio that will then be played by the build. This behavior can be suppressed by setting `auto=False` in the constructor.
+
+PyImpact automatically requests and receives [Rigidbody data](../physx/rigidbodies.md) and [collision data](../phyx/collisions.md) per-frame, as well as [`RobotJointVelocities`](../../api/output_data.md#RobotJointVelocities), a special output data type required for simulations with robots.
+
+`PyImpact` is a sub-class of [`CollisionManager`](../../python/add_ons/collision_manager.md). You don't (and shouldn't) include both a `PyImpact` add-on and a `CollisionManager` add-on.
+
+PyImpact uses cached static object data and per-frame physics metadata (velocities, collision states, etc.) to create audio, convert the audio into TDW commands, and send the commands on the next `communicate()` call.
+
 ## The `initial_amp` parameter
 
 `initial_amp` controls the overall volume of PyImpact. It must be between 0 and 1.
@@ -157,16 +167,6 @@ for material in AudioMaterial:
 
 Bounciness, on the other hand, *does* vary per-object and is stored in `ObjectAudioStatic`.
 
-## Auto-generated audio
-
-By default, PyImpact will evaluate the simulation state per `Controller.communicate()` call and will automatically generate audio that will then be played by the build. This behavior can be suppressed by setting `auto=False` in the constructor.
-
-PyImpact automatically requests and receives [Rigidbody data](../physx/rigidbodies.md) and [collision data](../phyx/collisions.md) per-frame, as well as [`RobotJointVelocities`](../../api/output_data.md#RobotJointVelocities), a special output data type required for simulations with robots.
-
-`PyImpact` is a sub-class of [`CollisionManager`](../../python/add_ons/collision_manager.md). You don't (and shouldn't) include both a `PyImpact` add-on and a `CollisionManager` add-on.
-
-PyImpact uses cached static object data and per-frame physics metadata (velocities, collision states, etc.) to create audio, convert the audio into TDW commands, and send the commands on the next `communicate()` call.
-
 ## Impacts, scrapes, and rolls
 
 PyImpact generates impact, scrapes, and rolls using three different processes.
@@ -185,6 +185,97 @@ In order to decide which process to use, PyImpact must first determine the "even
   - Otherwise:
     - If the angular velocity is > 0.5 m/s, the event is `roll`.
     - Otherwise: the event is `scrape`.
+
+## Scrape objects
+
+Scrape sounds can only be generated from a predefined list of models with "scrape surfaces". Each of these models may have more than one "scrape surface", such as shelving. Each surface must have a particular visual material. When `PyImpact` is initialized, it will automatically find objects with scrape surfaces, cache relevant data, and set their visual materials.
+
+To get a list of models with "scrape surfaces", you can read the dictionary `tdw.physics_audio.scrape_model.DEFAULT_SCRAPE_MODELS`:
+
+```python
+from tdw.physics_audio.scrape_model import DEFAULT_SCRAPE_MODELS
+
+for model_name in DEFAULT_SCRAPE_MODELS:
+    print(model_name)
+```
+
+This controller will automatically initialize model `small_table_green_marble` as a scrape surface:
+
+```python
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.py_impact import PyImpact
+
+c = Controller()
+py_impact = PyImpact()
+c.add_ons.append(py_impact)
+commands = [TDWUtils.create_empty_room(12, 12)]
+commands.extend(c.get_add_physics_object(model_name="small_table_green_marble",
+                                         object_id=c.get_unique_id()))
+c.communicate(commands)
+```
+
+### Disable scrape sounds
+
+To disable scrape sounds in `PyImpact`, set `scrape=False` in the constructor.
+
+### Manually set scrape objects and surfaces
+
+To manually initialize objects as scrape surfaces, set the `scrape_objects` parameter in the constructor. This is a dictionary: Key = an object ID. Value = A [`ScrapeModel`](../../physics_audio/scrape_model.md).
+
+A `ScrapeModel` the following:
+
+- An `AudioMaterial`
+
+- A [`ScrapeMaterial`](../../physics_audio/scrape_material.md) Due to separate recording processes, this isn't the same as `AudioMaterial`, although it can be mapped to an `AudioMaterial`
+
+- A visual material (a string)
+
+- A list of [`ScrapeSubObject`](../../api/physics_audio/scrape_sub_object.md):
+
+  - The material index (this is usually 0)
+  - The name of the sub-object. See `ModelRecord.substructure`:
+
+  ```python
+  from tdw.librarian import ModelLibrarian
+  
+  librarian = ModelLibrarian()
+  record = librarian.get_record("iron_box")
+  print(record.substructure)
+  ```
+
+  Output:
+
+  ```
+  [{'materials': ['Material_#9'], 'name': 'ir'}]
+  ```
+
+This will manually initialize an `iron_box` object for scraping. Note that `iron_box` *is* one of the default scrape models; `scrape_objects` will override default data:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.py_impact import PyImpact
+from tdw.physics_audio.audio_material import AudioMaterial
+from tdw.physics_audio.scrape_material import ScrapeMaterial
+from tdw.physics_audio.scrape_model import ScrapeModel
+from tdw.physics_audio.scrape_sub_object import ScrapeSubObject
+
+c = Controller()
+object_id = c.get_unique_id()
+model_name = "iron_box"
+scrape_model = ScrapeModel(model_name=model_name,
+                           visual_material="cardboard_corrugated",
+                           audio_material=AudioMaterial.cardboard,
+                           scrape_material=ScrapeMaterial.plywood,
+                           sub_objects=[ScrapeSubObject(sub_object_name="ir",
+                                                        material_index=0)])
+py_impact = PyImpact(scrape_objects={object_id: scrape_model})
+c.add_ons.append(py_impact)
+commands = [TDWUtils.create_empty_room(12, 12)]
+commands.extend(c.get_add_physics_object(model_name=model_name,
+                                         object_id=object_id))
+c.communicate(commands)
+```
 
 ## Random number generator
 
@@ -212,10 +303,6 @@ from tdw.add_ons.py_impact import PyImpact
 from tdw.add_ons.resonance_audio_initializer import ResonanceAudioInitializer
 from tdw.add_ons.robot import Robot
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-
-"""
-Create an impact sound between an object and a robot.
-"""
 
 c = Controller()
 
@@ -255,7 +342,7 @@ c.communicate({"$type": "terminate"})
 
 **`PyImpact` must be reset every time the scene is reset.** If you don't, you'll get very buggy behavior and the controller might crash.
 
-To reset PyImpact, call `self.reset()`. You can optionally supply new static object audio override data.
+To reset PyImpact, call `self.reset()`. You can optionally supply new static object audio override data and scrape object data.
 
 In this example, an object is assigned random physics and audio values and then dropped from a random height. After every trial, the object is destroyed and PyImpact is reset:
 
@@ -361,6 +448,9 @@ Python API:
 - [`ResonanceAudioInitializer`](../../python/add_ons/resonance_audio_initializer.md)
 - [`CollisionManager`](../../python/add_ons/collision_manager.md)
 - [`Robot`](../../python/add_ons/robot.md)
+- [`ScrapeModel`](../../physics_audio/scrape_model.md)
+- [`ScrapeMaterial`](../../physics_audio/scrape_material.md)
+- [`ScrapeSubObject`](../../api/physics_audio/scrape_sub_object.md)
 
 Output Data:
 

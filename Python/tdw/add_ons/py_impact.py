@@ -292,24 +292,8 @@ class PyImpact(CollisionManager):
                                                             resonance=target_audio.resonance)
             # Generate a scrape sound.
             elif self.collision_events[object_id].collision_type == CollisionAudioType.scrape and object_id in self._scrape_objects:
-                # Generate an environment sound.
-                if self.collision_events[object_id].secondary_id is None:
-                    audio = self._static_audio_data[object_id]
-                    command = self.get_scrape_sound_command(velocity=self.collision_events[object_id].velocity,
-                                                            contact_points=self.collision_events[object_id].collision.points,
-                                                            contact_normals=self.collision_events[object_id].collision.normals,
-                                                            primary_id=object_id,
-                                                            primary_amp=audio.amp,
-                                                            primary_material=self._scrape_objects[object_id].audio_material.name + "_" + str(audio.size),
-                                                            primary_mass=audio.mass,
-                                                            secondary_id=None,
-                                                            secondary_amp=PyImpact.FLOOR_AMP,
-                                                            secondary_material=self._get_floor_material_name(),
-                                                            secondary_mass=PyImpact.FLOOR_MASS,
-                                                            resonance=audio.resonance,
-                                                            scrape_material=self._scrape_objects[object_id].scrape_material)
                 # Generate an object sound.
-                else:
+                if self.collision_events[object_id].secondary_id is not None:
                     target_audio = self._static_audio_data[self.collision_events[object_id].primary_id]
                     other_audio = self._static_audio_data[self.collision_events[object_id].secondary_id]
                     command = self.get_scrape_sound_command(velocity=self.collision_events[object_id].velocity,

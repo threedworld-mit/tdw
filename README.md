@@ -130,9 +130,9 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 
 ## 2.9 Video Recording
 
-1. Overview
-2. Image videos
-3. Image+audio videos
+1. [Overview](Documentation/lessons/video/overview.md)
+2. [Image-only video](Documentation/lessons/video/images.md)
+3. [Video with audio](Documentation/lessons/video/audio.md)
 4. The `CinematicCamera` add-on
 
 ## 2.10 Agents

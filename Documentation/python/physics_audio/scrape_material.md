@@ -14,3 +14,7 @@ An audio material used for a scrape event.
 | `sanded_acrylic` |  |
 | `vinyl` |  |
 | `poplar_wood` |  |
+| `bass_wood` |  |
+| `polycarbonate` |  |
+| `polyethylene` |  |
+| `sandpaper` |  |

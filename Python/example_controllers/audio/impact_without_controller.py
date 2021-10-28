@@ -4,11 +4,11 @@ from tdw.add_ons.py_impact import PyImpact
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 """
-Make sounds with PyImpact without using a TDW controller.
+Generate impact sounds with PyImpact without using a TDW controller.
 """
 
 py_impact = PyImpact()
-output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("make_sound_without_controller")
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("impact_without_controller")
 if not output_directory.exists():
     output_directory.mkdir()
 print(f"Audio will be saved to: {output_directory}")

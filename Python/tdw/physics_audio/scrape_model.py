@@ -58,7 +58,7 @@ def __get_default_scrape_models() -> Dict[str, ScrapeModel]:
         visual_material = default_scrape_models[model_name]["visual_material"]
         sub_objects: List[ScrapeSubObject] = list()
         for sub_object in default_scrape_models[model_name]["sub_objects"]:
-            sub_objects.append(ScrapeSubObject(sub_object_name=sub_object["name"],
+            sub_objects.append(ScrapeSubObject(name=sub_object["name"],
                                                material_index=sub_object["material_index"]))
         audio_material = AudioMaterial[default_scrape_materials[visual_material]["audio_material"]]
         scrape_material = ScrapeMaterial[default_scrape_materials[visual_material]["scrape_material"]]

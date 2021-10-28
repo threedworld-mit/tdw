@@ -14,3 +14,7 @@ class ScrapeMaterial(Enum):
     sanded_acrylic = 5
     vinyl = 6
     poplar_wood = 7
+    bass_wood = 8
+    polycarbonate = 9
+    polyethylene = 10
+    sandpaper = 11

@@ -188,7 +188,7 @@ In order to decide which process to use, PyImpact must first determine the "even
 
 ## Scrape objects
 
-Scrape sounds can only be generated from a predefined list of models with "scrape surfaces". Each of these models may have more than one "scrape surface", such as shelving. Each surface must have a particular visual material. When `PyImpact` is initialized, it will automatically find objects with scrape surfaces, cache relevant data, and set their visual materials.
+Scrape sounds can only be generated from a predefined list of models with "scrape surfaces". Each of these models may have more than one "scrape surface", such as shelving. Each surface must have a particular visual material. When `PyImpact` is initialized, it will automatically find objects with scrape surfaces, cache relevant data, and set their visual materials. Note that the floor of the scene won't generate scrape sounds.
 
 To get a list of models with "scrape surfaces", you can read the dictionary `tdw.physics_audio.scrape_model.DEFAULT_SCRAPE_MODELS`:
 
@@ -286,6 +286,10 @@ commands.extend(c.get_add_physics_object(model_name=model_name,
                                          object_id=object_id))
 c.communicate(commands)
 ```
+
+## Roll sounds
+
+Roll sounds have not yet been implemented in PyImpact.
 
 ## Random number generator
 

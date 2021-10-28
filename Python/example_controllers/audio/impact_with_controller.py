@@ -10,7 +10,7 @@ from tdw.audio_utils import AudioUtils
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 """
-Generate sounds with PyImpact without using physics data and play the audio in a circle around the avatar listener.
+Generate impact sounds with PyImpact without using physics data and play the audio in a circle around the avatar listener.
 """
 
 c = Controller()
@@ -44,7 +44,7 @@ for i in range(3):
     contact_normals.append(np.array([0, 1, 0]))
 velocity = np.array([0, -1.5, 0])
 
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("make_sound_with_controller/audio.wav")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("impact_with_controller/audio.wav")
 print(f"Audio will be saved to: {path}")
 if not path.parent.exists():
     path.parent.mkdir(parents=True)

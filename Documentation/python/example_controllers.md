@@ -6,7 +6,6 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | --- | --- |
 | `add_ons.py` | Add multiple add-ons to a controller. |
 | `animate_humanoid.py` | Create a humanoid and play some animations. |
-| `audio.py` | - Create a scene with a reverb space and audio sensor.<br>- Test how object positions can affect reverb. |
 | `avatar_drag.py` | Set the avatar's drag values to control its speed while in mid-air. |
 | `avatar_movement.py` | A basic example of how to move a physics-enabled (non-kinematic) avatar. |
 | `cinematic_camera_controls.py` | Example implementation of the `CinematicCamera` add-on. |
@@ -17,13 +16,9 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `flex_fluid_object.py` | Create a fluid "container" with the NVIDIA Flex physics engine. Run several trials, dropping ball objects of increasing mass into the fluid. |
 | `flex_fluid_source.py` | Create a Flex FluidSource, or "hose pipe", simulation of a fluid stream. |
 | `flex_soft_body.py` | Create a soft-body object with the NVIDIA Flex physics engine. |
-| `getting_started.py` | 1. Add a table and place an object on the table.<br>2. Add a camera and receive an image. |
 | `hdri.py` | Create an object and avatar and capture images of the scene, rotating the HDRI skybox by 15 degrees<br>for each image. |
-| `impact_sounds.py` | - Listen for collisions between objects.<br>- Generate an impact sound with py_impact upon impact and play the sound in the build. |
 | `keyboard_controls.py` | Use WASD or arrow keys to move an avatar. |
 | `lights_output_data.py` | Load a streamed scene and received Lights output data. |
-| `magnebot.py` | Add a Magnebot and move it around the scene. |
-| `minimal_audio_dataset.py` | A minimal example of how to generate audio datasets. |
 | `minimal_remote.py` | A minimal example of how to use the launch binaries daemon to<br>start and connect to a build on a remote node. Note: the remote<br>must be running launch_binaries.py. |
 | `nav_mesh.py` | - Create a NavMeshAvatar and a simple procedurally-generated room.<br>- Tell the avatar to navigate to different destinations. |
 | `occupancy_mapper.py` | Generate occupancy maps in a scene populated by objects.<br>For more information, [read this](add_ons/occupancy_map.md). |

@@ -186,8 +186,6 @@ class PyImpact(CollisionManager):
         Cached scrape surface data.
         """
         self.scrape_surface_data: Dict[ScrapeMaterial, np.ndarray] = {}
-        for scrape_material in ScrapeMaterial:
-            self.scrape_surface_data[scrape_material] = np.load(str(Path(resource_filename(__name__, f"py_impact/scrape_surfaces/{scrape_material.name}.json")).resolve()))
         """:field
         A dictionary of all [scrape models](../physics_audio/scrape_model.md) in the scene. If `scrape == False`, this dictionary is empty. Key = Object ID.
         """
@@ -291,9 +289,10 @@ class PyImpact(CollisionManager):
                                                             secondary_mass=other_audio.mass,
                                                             resonance=target_audio.resonance)
             # Generate a scrape sound.
-            elif self.collision_events[object_id].collision_type == CollisionAudioType.scrape and object_id in self._scrape_objects:
+            elif self.collision_events[object_id].collision_type == CollisionAudioType.scrape and self.collision_events[object_id].secondary_id in self._scrape_objects:
+                scrape_surface_id = self.collision_events[object_id].secondary_id
                 # Generate an object sound.
-                if self.collision_events[object_id].secondary_id is not None:
+                if scrape_surface_id is not None:
                     target_audio = self._static_audio_data[self.collision_events[object_id].primary_id]
                     other_audio = self._static_audio_data[self.collision_events[object_id].secondary_id]
                     command = self.get_scrape_sound_command(velocity=self.collision_events[object_id].velocity,
@@ -301,14 +300,14 @@ class PyImpact(CollisionManager):
                                                             contact_normals=self.collision_events[object_id].collision.normals,
                                                             primary_id=target_audio.object_id,
                                                             primary_amp=target_audio.amp,
-                                                            primary_material=self._scrape_objects[object_id].audio_material.name + "_" + str(target_audio.size),
+                                                            primary_material=self._scrape_objects[scrape_surface_id].audio_material.name + "_" + str(target_audio.size),
                                                             primary_mass=target_audio.mass,
                                                             secondary_id=other_audio.object_id,
                                                             secondary_amp=other_audio.amp,
                                                             secondary_material=other_audio.material.name + "_" + str(other_audio.size),
                                                             secondary_mass=other_audio.mass,
                                                             resonance=target_audio.resonance,
-                                                            scrape_material=self._scrape_objects[object_id].scrape_material)
+                                                            scrape_material=self._scrape_objects[scrape_surface_id].scrape_material)
             # Append impact sound commands.
             if command is not None:
                 self.commands.append(command)
@@ -728,6 +727,14 @@ class PyImpact(CollisionManager):
                                                                 secondary_amp=secondary_amp,
                                                                 secondary_mass=secondary_mass,
                                                                 resonance=resonance)
+        # Cache the scrape material.
+        # Don't do this when PyImpact is initialized because scrape surfaces are large files!
+        # We don't want them in memory all the time and they can be a bit slow to load.
+        if scrape_material not in self.scrape_surface_data:
+            scrape_surface = np.load(str(Path(resource_filename(__name__, f"py_impact/scrape_surfaces/{scrape_material.name}.npy")).resolve()))
+            scrape_surface = np.append(scrape_surface, scrape_surface)
+            self.scrape_surface_data[scrape_material] = scrape_surface
+
         #   Load the surface texture as a 1D vector
         #   Create surface texture of desired length
         #   Calculate first and second derivatives by first principles
@@ -739,12 +746,9 @@ class PyImpact(CollisionManager):
         d2sdx2 = (dsdx[1:] - dsdx[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
 
         dist = mag / 1000
-        num_pts = np.floor(dist / PyImpact.SCRAPE_M_PER_PIXEL)
-        num_pts = int(num_pts)
-        if num_pts == 0:
-            num_pts = 1
+        num_pts = int(np.floor(dist / PyImpact.SCRAPE_M_PER_PIXEL))
         # No scrape.
-        if num_pts == 1:
+        if num_pts <= 1:
             self._end_scrape(scrape_key)
             return None
 
@@ -951,7 +955,7 @@ class PyImpact(CollisionManager):
                             self.commands.append({"$type": "set_visual_material",
                                                   "material_index": sub_object.material_index,
                                                   "material_name": material_record.name,
-                                                  "object_name": model_name,
+                                                  "object_name": sub_object.name,
                                                   "id": object_id})
             elif r_id == "srob":
                 srob = StaticRobot(resp[i])

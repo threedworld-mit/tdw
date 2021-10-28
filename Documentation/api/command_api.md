@@ -18,6 +18,7 @@
 | [`do_nothing`](#do_nothing) | Do nothing. Useful for benchmarking.  |
 | [`enable_reflection_probes`](#enable_reflection_probes) | Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation. |
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
+| [`parent_audio_source_to_object`](#parent_audio_source_to_object) | Parent an audio source to an object. When the object moves, the audio source will move with it. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`perlin_noise_terrain`](#perlin_noise_terrain) | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
@@ -543,7 +544,7 @@
 | --- | --- |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
 | [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
-| [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. See also: send_robots and send_static_robots  |
+| [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations.  |
 | [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
@@ -792,6 +793,22 @@ The filename of a locally-stored scene.
 | --- | --- |
 | `"ProcGenScene"` | The default ProcGen scene. |
 | `"PointLightScene"` | This is identical to ProcGenScene but with an extra point light. |
+
+***
+
+## **`parent_audio_source_to_object`**
+
+Parent an audio source to an object. When the object moves, the audio source will move with it.
+
+
+```python
+{"$type": "parent_audio_source_to_object", "object_id": 1, "audio_id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The object ID. | |
+| `"audio_id"` | int | The audio source ID. | |
 
 ***
 
@@ -3255,7 +3272,7 @@ Create a ResonanceAudio Room, sized to the dimensions of the current room enviro
 ```
 
 ```python
-{"$type": "set_reverb_space_expert", "reflectivity": 1.0, "reverb_brightness": 0.5, "reverb_gain": 0, "reverb_time": 1.0, "env_id": -1, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
+{"$type": "set_reverb_space_expert", "reflectivity": 1.0, "reverb_brightness": 0.5, "reverb_gain": 0, "reverb_time": 1.0, "region_id": -1, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -3264,7 +3281,7 @@ Create a ResonanceAudio Room, sized to the dimensions of the current room enviro
 | `"reverb_brightness"` | float | Balance the amount of low or high frequencies by providing different reverb decay rates at different frequencies. | 0.5 |
 | `"reverb_gain"` | float | Adjust room effect loudness, compared to direct sound coming from Resonance Audio sources in a scene. | 0 |
 | `"reverb_time"` | float | Increases or decreases reverb length; the value is a multiplier on the reverb time calculated from the surface materials and room dimensions of the room. | 1.0 |
-| `"env_id"` | int | The ID of the environment (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room. | -1 |
+| `"region_id"` | int | The ID of the scene region (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room. | -1 |
 | `"reverb_floor_material"` | SurfaceMaterial | The surface material of the reverb space floor. | "parquet" |
 | `"reverb_ceiling_material"` | SurfaceMaterial | The surface material of the reverb space ceiling. | "acousticTile" |
 | `"reverb_front_wall_material"` | SurfaceMaterial | The surface material of the reverb space front wall. | "smoothPlaster" |
@@ -3303,14 +3320,14 @@ Create a ResonanceAudio Room, sized to the dimensions of the current room enviro
 ```
 
 ```python
-{"$type": "set_reverb_space_simple", "min_room_volume": 27.0, "max_room_volume": 1000.0, "env_id": -1, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
+{"$type": "set_reverb_space_simple", "min_room_volume": 27.0, "max_room_volume": 1000.0, "region_id": -1, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"min_room_volume"` | float | Minimum possible volume of a room (i.e. 1 x 1 x 1 room). | 27.0 |
 | `"max_room_volume"` | float | Maximum room volume <ndash /> purely for range-setting for reflectivity calculation. | 1000.0 |
-| `"env_id"` | int | The ID of the environment (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room. | -1 |
+| `"region_id"` | int | The ID of the scene region (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room. | -1 |
 | `"reverb_floor_material"` | SurfaceMaterial | The surface material of the reverb space floor. | "parquet" |
 | `"reverb_ceiling_material"` | SurfaceMaterial | The surface material of the reverb space ceiling. | "acousticTile" |
 | `"reverb_front_wall_material"` | SurfaceMaterial | The surface material of the reverb space front wall. | "smoothPlaster" |
@@ -4668,9 +4685,14 @@ Play a motion capture animation on a humanoid. The animation must already be in 
 {"$type": "play_humanoid_animation", "name": "string", "id": 1}
 ```
 
+```python
+{"$type": "play_humanoid_animation", "name": "string", "id": 1, "framerate": -1}
+```
+
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"name"` | string | Name of the animation clip to play. | |
+| `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -6571,11 +6593,14 @@ Options for when to send data.
 
 ## **`send_robot_joint_velocities`**
 
-Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. See also: send_robots and send_static_robots 
+Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`RobotJointVelocities`](output_data.md#RobotJointVelocities)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_robots`</font>
 
 ```python
 {"$type": "send_robot_joint_velocities"}

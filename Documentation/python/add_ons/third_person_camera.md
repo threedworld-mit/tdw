@@ -89,7 +89,7 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 **`ThirdPersonCamera(look_at)`**
 
-**`ThirdPersonCamera(avatar_id=None, position=None, rotation=None, look_at, field_of_view=35, follow_object=None, follow_rotate=False)`**
+**`ThirdPersonCamera(avatar_id=None, position=None, rotation=None, look_at, field_of_view=None, follow_object=None, follow_rotate=False)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -97,7 +97,7 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 | position |  Dict[str, float] | None | The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | rotation |  Dict[str, float] | None | The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | look_at |  Union[int, Dict[str, float] |  | If not None, rotate look at this target every frame. Overrides `rotation`. Can be an int (an object ID) or an `(x, y, z)` dictionary (a position). |
-| field_of_view |  int  | 35 | The initial field of view. |
+| field_of_view |  int  | None | If not None, set the field of view. |
 | follow_object |  int  | None | If not None, follow an object per frame. The `position` parameter will be treated as a relative value from the target object rather than worldspace coordinates. |
 | follow_rotate |  bool  | False | If True, match the rotation of the object. Ignored if `follow_object` is None. |
 

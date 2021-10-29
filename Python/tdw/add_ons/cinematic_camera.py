@@ -41,13 +41,13 @@ class CinematicCamera(ThirdPersonCameraBase):
     """
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 field_of_view: int = 35, move_speed: float = 0.1, rotate_speed: float = 1,
+                 field_of_view: int = None, move_speed: float = 0.1, rotate_speed: float = 1,
                  look_at: Union[int, Dict[str, float]] = None, focus_distance: float = 6):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
         :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param field_of_view: The initial field of view.
+        :param field_of_view: If not None, set the field of view.
         :param move_speed: The directional speed of the camera. This can later be adjusted by setting `self.move_speed`.
         :param rotate_speed: The angular speed of the camera. This can later be adjusted by setting `self.rotate_speed`.
         :param look_at: If not None, the cinematic camera will look at this object (if int) or position (if dictionary).

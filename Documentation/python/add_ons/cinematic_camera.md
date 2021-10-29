@@ -28,14 +28,14 @@ Wrapper class for third-person camera controls in TDW. These controls are "cinem
 
 **`CinematicCamera(look_at)`**
 
-**`CinematicCamera(avatar_id=None, position=None, rotation=None, field_of_view=35, move_speed=0.1, rotate_speed=1, look_at, focus_distance=6)`**
+**`CinematicCamera(avatar_id=None, position=None, rotation=None, field_of_view=None, move_speed=0.1, rotate_speed=1, look_at, focus_distance=6)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | avatar_id |  str  | None | The ID of the avatar (camera). If None, a random ID is generated. |
 | position |  Dict[str, float] | None | The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | rotation |  Dict[str, float] | None | The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| field_of_view |  int  | 35 | The initial field of view. |
+| field_of_view |  int  | None | If not None, set the field of view. |
 | move_speed |  float  | 0.1 | The directional speed of the camera. This can later be adjusted by setting `self.move_speed`. |
 | rotate_speed |  float  | 1 | The angular speed of the camera. This can later be adjusted by setting `self.rotate_speed`. |
 | look_at |  Union[int, Dict[str, float] |  | If not None, the cinematic camera will look at this object (if int) or position (if dictionary). |

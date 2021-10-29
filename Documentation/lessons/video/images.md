@@ -1,4 +1,4 @@
-##### Video
+##### Video Recording
 
 # Image-only video
 

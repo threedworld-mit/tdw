@@ -1,4 +1,4 @@
-##### Video
+##### Video Recording
 
 # Video with audio
 
@@ -32,6 +32,6 @@ ffmpeg -i <.nut file generated above> -c:v libx264 -vf format=yuv420p -crf 18 -s
 
 ***
 
-**Next: [The `CinematicCamera` add-on](cinematic_camera.md)**
+**This is the last document in the "Video Recording" tutorial.**
 
 [Return to the README](../../../README.md)

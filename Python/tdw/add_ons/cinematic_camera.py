@@ -25,189 +25,24 @@ class _RotateTargetType(Enum):
     rotation = 4
 
 
+class _FocusTargetType(Enum):
+    """
+    A type of target that the camera can focus towards.
+    """
+
+    position = 1
+    object = 2
+    distance = 4
+
+
 class CinematicCamera(ThirdPersonCameraBase):
     """
     Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. *towards* a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but *not* for most actual experiments.
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.cinematic_camera import CinematicCamera
-
-    c = Controller(launch_build=False)
-    cam = CinematicCamera(position={"x": 0, "y": 1.5, "z": 0},
-                          rotation={"x": 2, "y": 45, "z": 0},
-                          move_speed=0.1,
-                          rotate_speed=3,
-                          focus_speed=0.3)
-    c.add_ons.append(cam)
-    c.communicate(TDWUtils.create_empty_room(12, 12))
-    ```
-
-    Each function in this class will *start* to move the camera but won't actually send commands (because this is an `AddOn`, not a `Controller`).
-
-    To actually apply changes to the camera and the scene, you need to send commands to the build like you normally would. In this example, the list of commands is empty, but it doesn't have to be:
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.cinematic_camera import CinematicCamera
-
-    c = Controller(launch_build=False)
-    cam = CinematicCamera(position={"x": 0, "y": 1.5, "z": 0},
-                          rotation={"x": 2, "y": 45, "z": 0},
-                          move_speed=0.1,
-                          rotate_speed=3,
-                          focus_speed=0.3)
-    c.add_ons.append(cam)
-
-    # Set a movement target for the camera. This won't actually send any commands!
-    cam.move_to_position(target={"x": 1, "y": 2, "z": -0.5})
-
-    c.communicate(TDWUtils.create_empty_room(12, 12))
-    for i in range(100):
-        c.communicate([])
-    ```
-
-    Note that all objects that you want the camera to move to must be in the scene *before* adding the camera:
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.cinematic_camera import CinematicCamera
-
-    object_id = 0
-    c = Controller(launch_build=False)
-    c.communicate([TDWUtils.create_empty_room(12, 12),
-                   c.get_add_object(model_name="iron_box", object_id=object_id)])
-    cam = CinematicCamera(position={"x": 4, "y": 1.5, "z": 0},
-                          rotation={"x": 2, "y": 45, "z": 0})
-    c.add_ons.append(cam)
-
-    # Look at the target object.
-    cam.move_to_object(target=object_id, offset_distance=1)
-    cam.rotate_to_object(target=object_id)
-
-    for i in range(500):
-        c.communicate([])
-    ```
-
-    ## Possible motions
-
-    - **Move** towards a target object or position
-    - **Rotate** towards a target quaternion, Euler angles; or rotate to look at a target position or object
-    - **Focus** towards a target distance or object. Focusing is handled implicitly whenever the camera is rotating towards a target object.
-
-    ## Stopping motions
-
-    There are two ways to stop a camera motion:
-
-    1. Call `cam.stop_moving()` or `cam.stop_rotating()`:
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.cinematic_camera import CinematicCamera
-
-    object_id = 0
-    c = Controller(launch_build=False)
-    c.communicate([TDWUtils.create_empty_room(12, 12),
-                   c.get_add_object(model_name="iron_box", object_id=object_id)])
-    cam = CinematicCamera(position={"x": 4, "y": 1.5, "z": 0},
-                          rotation={"x": 2, "y": 45, "z": 0})
-    c.add_ons.append(cam)
-
-    # Look at the target object.
-    cam.move_to_object(target=object_id, offset_distance=1)
-    cam.rotate_to_object(target=object_id)
-
-    for i in range(20):
-        c.communicate([])
-
-    # Stop moving and rotating the camera.
-    cam.stop_rotating()
-    cam.stop_moving()
-
-    for i in range(500):
-        c.communicate([])
-    ```
-
-    2. Call `cam.motions_are_done(resp)`, which will return a dictionary indicating whether the each type of motion is done:
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.cinematic_camera import CinematicCamera
-
-    object_id = 0
-    c = Controller(launch_build=False)
-    c.communicate([TDWUtils.create_empty_room(12, 12),
-                   c.get_add_object(model_name="iron_box", object_id=object_id)])
-    cam = CinematicCamera(position={"x": 4, "y": 1.5, "z": 0},
-                          rotation={"x": 2, "y": 45, "z": 0})
-    c.add_ons.append(cam)
-
-    # Look at the target object.
-    cam.move_to_object(target=object_id, offset_distance=1)
-    cam.rotate_to_object(target=object_id)
-
-    done = False
-    while not done:
-        resp = c.communicate([])
-        motions = cam.motions_are_done(resp=resp)
-        done = motions["move"] and motions["rotate"]
-    print("Done!")
-    c.communicate({"$type": "terminate"})
-    ```
-
-    ## Output Data
-
-    This object requires certain output data, which it will automatically request via `cam.init_commands`. If you're not already requesting this data per frame, you might notice that the simulation runs slightly slower.
-
-    The output data will include:
-
-    - `Bounds` (for all objects in the scene)
-    - Avatar data (for all avatars in the scene; for this avatar, it's `AvatarKinematic`)
-    - `ImageSensors` (for all avatars in the scene)
-    - `CameraMotionComplete` (for this avatar and any other cinematic cameras, whenever the avatar finishes a motion)
-
-    ## Saving Images
-
-    To save images per frame, include an `ImageCapture` add-on to the Controller:
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.cinematic_camera import CinematicCamera
-    from tdw.add_ons.image_capture import ImageCapture
-
-    object_id = 0
-    c = Controller(launch_build=False)
-    c.start()
-    c.communicate([TDWUtils.create_empty_room(12, 12),
-                   c.get_add_object(model_name="iron_box", object_id=object_id)])
-    cam = CinematicCamera(position={"x": 4, "y": 1.5, "z": 0},
-                          rotation={"x": 2, "y": 45, "z": 0})
-    cap = ImageCapture(path="D:/cinematic_camera_demo", avatar_ids=[cam.avatar_id])
-    c.add_ons.extend([cam, cap])
-
-    # Look at the target object.
-    cam.move_to_object(target=object_id, offset_distance=1)
-    cam.rotate_to_object(target=object_id)
-
-    done = False
-    while not done:
-        resp = c.communicate([])
-        motions = cam.motions_are_done(resp=resp)
-        done = motions["move"] and motions["rotate"]
-    print("Done!")
-    c.communicate({"$type": "terminate"})
-    ```
     """
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 field_of_view: int = 35, move_speed: float = 0.1, rotate_speed: float = 3,
-                 focus_speed: float = 0.3, look_at: Union[int, Dict[str, float]] = None):
+                 field_of_view: int = 35, move_speed: float = 0.1, rotate_speed: float = 1,
+                 look_at: Union[int, Dict[str, float]] = None, focus_distance: float = 6):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
         :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
@@ -215,23 +50,19 @@ class CinematicCamera(ThirdPersonCameraBase):
         :param field_of_view: The initial field of view.
         :param move_speed: The directional speed of the camera. This can later be adjusted by setting `self.move_speed`.
         :param rotate_speed: The angular speed of the camera. This can later be adjusted by setting `self.rotate_speed`.
-        :param focus_speed: The speed of the focus of the camera. This can later be adjusted by setting `self.focus_speed`.
         :param look_at: If not None, the cinematic camera will look at this object (if int) or position (if dictionary).
+        :param focus_distance: The initial focus distance. Ignore if `look_at` is an object ID (in which case the camera will focus on the target object).
         """
 
         super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, field_of_view=field_of_view)
         """:field
-        The directional speed of the camera. This can later be adjusted by setting `self.move_speed`.
+        The directional speed of the camera.
         """
         self.move_speed: float = move_speed
         """:field
-        The angular speed of the camera. This can later be adjusted by setting `self.rotate_speed`.
+        The angular speed of the camera.
         """
         self.rotate_speed: float = rotate_speed
-        """:field
-        The speed of the focus of the camera. This can later be adjusted by setting `self.focus_speed`.
-        """
-        self.focus_speed: float = focus_speed
 
         # A target object ID or position to move towards. Can be None (no target).
         self._move_target: Optional[Union[int, Dict[str, float]]] = None
@@ -250,10 +81,6 @@ class CinematicCamera(ThirdPersonCameraBase):
         self._rotate_target: Optional[Union[int, Dict[str, float]]] = None
         # The type of rotate target.
         self._rotate_target_type: _RotateTargetType = _RotateTargetType.position
-        # If `self._rotate_target` is Euler angles, temporarily store them here.
-        self._eulers: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
-        # This boolean is used as a state machine to let the camera know that it needs to apply `self._eulers` to its current rotation.
-        self._has_eulers: bool = False
         """:field
         If True, the camera is rotating.
         """
@@ -264,18 +91,16 @@ class CinematicCamera(ThirdPersonCameraBase):
         # The current rotation of the image sensor.
         self._sensor_rotation: np.array = np.array([0, 0, 0, 0])
         # The object ID of the focus target.
-        self._focus_target: Optional[Union[int, Dict[str, float]]] = None
-        # If True, the camera is done focusing.
-        self._focused: bool = True
+        self._focus_target: Union[int, float, Dict[str, float]] = focus_distance
+        # The type of focus target.
+        self._focus_target_type: _FocusTargetType = _FocusTargetType.distance
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
         commands.extend([{"$type": "send_avatars",
                           "frequency": "always"},
                          {"$type": "send_image_sensors",
-                          "frequency": "always"},
-                         {"$type": "set_focus_distance",
-                          "focus_distance": 6}])
+                          "frequency": "always"}])
         if self._look_at is not None:
             # Look at and focus on the object.
             if isinstance(self._look_at, int):
@@ -301,6 +126,10 @@ class CinematicCamera(ThirdPersonCameraBase):
                 self.rotate_to_position(target=self._look_at)
             else:
                 raise TypeError(f"Invalid look-at target: {self._look_at}")
+        # Focus on the target distance.
+        else:
+            commands.append({"$type": "set_focus_distance",
+                             "focus_distance": self._focus_target})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -343,15 +172,6 @@ class CinematicCamera(ThirdPersonCameraBase):
                                       "avatar_id": self.avatar_id})
             else:
                 raise Exception(f"Invalid move target type: {self._move_target_type}")
-        # Apply Euler angles to the current rotation.
-        if self._has_eulers:
-            self._has_eulers = False
-            eulers = QuaternionUtils.quaternion_to_euler_angles(self._sensor_rotation)
-            eulers[0] += self._eulers["x"]
-            eulers[1] += self._eulers["y"]
-            eulers[2] += self._eulers["z"]
-            self._rotate_target = TDWUtils.array_to_vector4(
-                QuaternionUtils.euler_angles_to_quaternion(np.deg2rad(eulers)))
         # Rotate towards a target.
         if self._rotate_target is not None:
             if self._rotate_target_type == _RotateTargetType.rotation:
@@ -360,27 +180,33 @@ class CinematicCamera(ThirdPersonCameraBase):
                                       "rotation": self._rotate_target,
                                       "speed": self.rotate_speed})
             elif self._rotate_target_type == _RotateTargetType.object:
-                self.commands.extend([{"$type": "rotate_sensor_container_towards_object",
-                                       "avatar_id": self.avatar_id,
-                                       "speed": self.rotate_speed,
-                                       "object_id": self._rotate_target,
-                                       "use_centroid": True},
-                                      {"$type": "focus_towards_object",
-                                       "avatar_id": self.avatar_id,
-                                       "speed": self.focus_speed,
-                                       "object_id": self._focus_target,
-                                       "use_centroid": True}])
+                self.commands.append({"$type": "rotate_sensor_container_towards_object",
+                                      "avatar_id": self.avatar_id,
+                                      "speed": self.rotate_speed,
+                                      "object_id": self._rotate_target,
+                                      "use_centroid": True})
             elif self._rotate_target_type == _RotateTargetType.position:
-                distance = np.linalg.norm(TDWUtils.vector3_to_array(self.position) -
-                                          TDWUtils.vector3_to_array(self._rotate_target))
-                self.commands.extend([{"$type": "rotate_sensor_container_towards_position",
-                                       "avatar_id": self.avatar_id,
-                                       "position": self._rotate_target,
-                                       "speed": self.rotate_speed},
-                                      {"$type": "set_focus_distance",
-                                       "focus_distance": distance}])
+                self.commands.append({"$type": "rotate_sensor_container_towards_position",
+                                      "avatar_id": self.avatar_id,
+                                      "position": self._rotate_target,
+                                      "speed": self.rotate_speed})
             else:
                 raise Exception(f"Invalid rotate target type: {self._move_target_type}")
+        # Set the focus.
+        if self._focus_target_type == _FocusTargetType.distance:
+            self.commands.append({"$type": "set_focus_distance",
+                                  "focus_distance": self._focus_target})
+        elif self._focus_target_type == _FocusTargetType.position:
+            self.commands.append({"$type": "set_focus_distance",
+                                  "focus_distance": np.linalg.norm(TDWUtils.vector3_to_array(self.position) -
+                                                                   TDWUtils.vector3_to_array(self._focus_target))})
+        elif self._focus_target_type == _FocusTargetType.object:
+            self.commands.append({"$type": "focus_on_object",
+                                  "avatar_id": self.avatar_id,
+                                  "object_id": self._focus_target,
+                                  "use_centroid": True})
+        else:
+            raise Exception(f"Invalid focus target type: {self._focus_target_type}")
 
     def move_to_position(self, target: Dict[str, float], relative: bool = False) -> None:
         """
@@ -423,7 +249,7 @@ class CinematicCamera(ThirdPersonCameraBase):
 
     def rotate_to_object(self, target: int) -> None:
         """
-        Start to rotate towards an object (to look at the object).
+        Rotate towards an object. This will update if
 
         :param target: The ID of the target object.
         """
@@ -431,33 +257,41 @@ class CinematicCamera(ThirdPersonCameraBase):
         self._rotate_target = target
         self._rotate_target_type = _RotateTargetType.object
         self.rotating = True
-        self.focusing = True
         self._focus_target = target
+        self._focus_target_type = _FocusTargetType.object
 
     def rotate_to_position(self, target: Dict[str, float]) -> None:
+        """
+        Start to rotate towards a position.
+
+        :param target: The target position.
+        """
+
         self._rotate_target = target
         self._rotate_target_type = _RotateTargetType.position
         self.rotating = True
-        self.focusing = True
         self._focus_target = target
+        self._focus_target_type = _FocusTargetType.position
 
     def rotate_by_rpy(self, target: Dict[str, float]) -> None:
         """
-        Start rotating the camera by the `[roll, pitch, yaw]` angles expressed as an `[x, y, z]` dictionary.
+        Rotate the camera by the `[pitch, yaw, roll]` angles expressed as an `[x, y, z]` dictionary.
 
-        :param target: The target `[roll, pitch, yaw]` angles from when this function was first called, in degrees.
+        :param target: The target `[pitch, yaw, roll]` angles from when this function was first called, in degrees.
         """
 
-        # Remember the Eulers. They will be applied to the rotation later.
-        self._eulers = target
-        self._has_eulers = True
+        eulers = QuaternionUtils.quaternion_to_euler_angles(self._sensor_rotation)
+        eulers[0] += target["x"]
+        eulers[1] += target["y"]
+        eulers[2] += target["z"]
+        self._rotate_target = TDWUtils.array_to_vector4(
+            QuaternionUtils.euler_angles_to_quaternion(np.deg2rad(eulers)))
         self._rotate_target_type = _RotateTargetType.rotation
-        self._rotate_target = None
         self.rotating = True
 
     def rotate_to_rotation(self, target: Dict[str, float]) -> None:
         """
-        Start rotating to a rotation, expressed as a quaternion dictionary.
+        Rotate towards a rotation quaternion.
 
         :param target: The target rotation.
         """
@@ -473,3 +307,23 @@ class CinematicCamera(ThirdPersonCameraBase):
 
         self._rotate_target = None
         self.rotating = False
+
+    def set_focus_distance(self, target: float) -> None:
+        """
+        Set the focus distance.
+
+        :param target: The focus distance.
+        """
+
+        self._focus_target = target
+        self._focus_target_type = _FocusTargetType.distance
+
+    def focus_on_object(self, target: int) -> None:
+        """
+        Set the focus distance to the distance from the camera to an object. This will update every frame as the camera or object moves.
+
+        :param target: The object ID.
+        """
+
+        self._focus_target = target
+        self._focus_target_type = _FocusTargetType.object

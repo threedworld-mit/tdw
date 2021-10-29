@@ -8,7 +8,6 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `animate_humanoid.py` | Create a humanoid and play some animations. |
 | `avatar_drag.py` | Set the avatar's drag values to control its speed while in mid-air. |
 | `avatar_movement.py` | A basic example of how to move a physics-enabled (non-kinematic) avatar. |
-| `cinematic_camera_controls.py` | Example implementation of the `CinematicCamera` add-on. |
 | `cloth_drape.py` | Using NVIDIA Flex, drape a cloth over an object. |
 | `debug.py` | Create a controller with a `Debug` module.<br>After running a simple physics simulation, play back all of the commands. |
 | `directional_light.py` | Rotate the directional light in the scene. |

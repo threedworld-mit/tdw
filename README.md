@@ -78,6 +78,7 @@ High-level API: [Floorplan](Documentation/python/floorplan.md)
 2. [Move a camera](Documentation/lessons/camera/position.md)
 3. [Rotate a camera](Documentation/lessons/camera/rotation.md)
 4. [Follow an object](Documentation/lessons/camera/follow.md)
+5. [The `CinematicCamera` add-on](Documentation/lessons/camera/cinematic_camera.md)
 
 ## 2.5 Photorealistic Images
 
@@ -133,7 +134,6 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 1. [Overview](Documentation/lessons/video/overview.md)
 2. [Image-only video](Documentation/lessons/video/images.md)
 3. [Video with audio](Documentation/lessons/video/audio.md)
-4. The `CinematicCamera` add-on
 
 ## 2.10 Agents
 

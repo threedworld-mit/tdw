@@ -378,6 +378,21 @@ _Returns:_ A list of commands to create theavatar.
 
 ***
 
+#### `lerp(a: float, b: float, t: float) -> float`
+
+_This is a static function._
+
+
+| Parameter | Description |
+| --- | --- |
+| a | The first value. |
+| b | The second value. |
+| t | The interpolation value (must be between 0 and 1). |
+
+_Returns:_  Linear interpolation value between `a` and `b` by `t`.
+
+***
+
 #### `launch_build(listener_port: int, build_address: str, controller_address: str) -> dict`
 
 _This is a static function._

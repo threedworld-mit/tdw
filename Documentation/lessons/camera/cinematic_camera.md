@@ -52,12 +52,6 @@ c.communicate({"$type": "terminate"})
 - `rotate_speed` is the angular speed of the camera. This can later be adjusted by setting `camera.rotate_speed`.
 - `field_of_view_speed` is the rate per frame that the field of view will be set. This can later be adjusted by setting `camera.field_of_view_speed`.
 
-`CinematicCamera` API calls *start* a camera motion. It will then continuously move per `c.communicate(commands)` call until the motion is done:
-
-- `camera.moving` If True, the camera is still moving.
-- `camera.rotating` If True, the camera is still rotating.
-- `camera.setting_field_of_view` If True, the camera is still adjusting the field of view.
-
 ## Movement
 
 | Function                                        | Description                                                  |
@@ -91,7 +85,7 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                                 position={"x": 1, "y": 0, "z": 1},
                                 object_id=object_id)])
 camera.move_to_position({"x": 0, "y": 0, "z": 4}, relative=True)
-while camera.moving:
+for i in range(100):
     c.communicate([])
 c.communicate({"$type": "terminate"})
 ```
@@ -124,8 +118,8 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                c.get_add_object(model_name="iron_box",
                                 position={"x": 1, "y": 0, "z": 1},
                                 object_id=object_id)])
-camera.move_to_object(target=object_id, offset_distance=4, min_y=3)
-while camera.moving:
+camera.move_to_object(target=object_id, offset={"x": 1.1, "y": 2.5, "z": -0.5})
+for i in range(100):
     c.communicate([])
 c.communicate({"$type": "terminate"})
 ```
@@ -168,11 +162,11 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                                 position={"x": 1, "y": 0, "z": 1},
                                 object_id=object_id)])
 camera.rotate_to_object(target=object_id)
-while camera.rotating:
+for i in range(60):
     c.communicate([])
 camera.rotate_by_rpy({"x": -20, "y": 0, "z": 0})
 camera.rotate_speed = 0.25
-while camera.rotating:
+for i in range(80):
     c.communicate([])
 c.communicate({"$type": "terminate"})
 ```
@@ -181,12 +175,52 @@ Result:
 
 ![](images/cinematic_camera/rotate.gif)
 
-## Focusing
+## Field of view
 
-- When you call `rotate_to_object(target)` the camera will automatically set the focus distance to the distance from the camera to the object. This will automatically update as the camera and/or object moves.
-- When you call `rotate_to_position(target)` the camera will automatically set the focus distance to the distance from the camera to the position. This will automatically update as the camera moves.
-- Call `set_focus_distance(target)` to explicitly set the focus distance.
-- Call `focus_on_object(target)` to explicitly set the object to focus on. The focus distance will automatically update as the camera and/or object moves.
+| Function                           | Description                                                  |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `set_field_of_view(field_of_view)` | Set the target field of view. This will also set the camera's target focal length. |
+
+In this example, the camera adjusts its field of view per frame (note that this also adjusts the camera's focal length):
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.cinematic_camera import CinematicCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+c = Controller()
+object_id = c.get_unique_id()
+camera = CinematicCamera(position={"x": 0, "y": 4, "z": -4},
+                         avatar_id="a",
+                         look_at=object_id)
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("cinematic_camera_field_of_view")
+capture = ImageCapture(path=path, avatar_ids=["a"])
+print(f"Images will be save to: {path.resolve()}")
+c.add_ons.extend([camera, capture])
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               {"$type": "set_target_framerate",
+                "framerate": 60},
+               c.get_add_object(model_name="iron_box",
+                                position={"x": 1, "y": 0, "z": 1},
+                                object_id=object_id)])
+camera.set_field_of_view(field_of_view=20)
+for i in range(100):
+    c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/cinematic_camera/field_of_view.gif)
+
+## `footsteps.py` example controller
+
+[`footsteps.py`](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/camera_controls/footsteps.py) adds a `CinematicCamera` to a realistic looking scene. The camera follows a human-like agent as it walks. This controller uses several other features covered in other tutorials:
+
+- The camera follows a [non-physics humanoid](../non_physics/humanoids.md).
+- The controller uses [`PyImpact`](../audio/py_impact_advanced.md) to generate the footstep sounds.
 
 ***
 
@@ -195,6 +229,10 @@ Result:
 [Return to the README](../../../README.md)
 
 ***
+
+Example controllers:
+
+- [footsteps.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/camera_controls/footsteps.py)
 
 Python API:
 

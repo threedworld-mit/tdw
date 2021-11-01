@@ -54,21 +54,9 @@ class CinematicCamera(ThirdPersonCameraBase):
         """
         self.rotate_speed: float = rotate_speed
         """:field
-        If True, the camera is rotating.
-        """
-        self.rotating: bool = False
-        """:field
-        If True, the camera is moving.
-        """
-        self.moving: bool = False
-        """:field
         Adjust the field of view by this value per frame.
         """
         self.field_of_view_speed: float = field_of_view_speed
-        """:field
-        If True, the camera is adjusting the field of view.
-        """
-        self.setting_field_of_view: bool = False
         # The current forward directional vector of the image sensor.
         self._sensor_forward: np.array = np.array([0, 0, 0])
         # The current rotation of the image sensor.
@@ -123,13 +111,12 @@ class CinematicCamera(ThirdPersonCameraBase):
             if r_id == "imse":
                 imse = ImageSensors(resp[i])
                 if imse.get_avatar_id() == self.avatar_id:
-                    # Update the rotation. Check if the image sensor is rotating.
+                    # Update the rotation.
                     self._sensor_forward = np.array(imse.get_sensor_forward(0))
-                    sensor_rotation = np.array(imse.get_sensor_rotation(0))
-                    self.rotating = np.linalg.norm(sensor_rotation - self._sensor_rotation) > 1e-5
-                    self._sensor_rotation = sensor_rotation
+                    self._sensor_rotation = np.array(imse.get_sensor_rotation(0))
                     # Set the field of view.
                     self._field_of_view = imse.get_sensor_field_of_view(0)
+                    set_field_of_view = False
                     if self._field_of_view_target is None:
                         self._field_of_view_target = self._field_of_view
                     f = np.linalg.norm(self._field_of_view - self._field_of_view_target)
@@ -138,25 +125,20 @@ class CinematicCamera(ThirdPersonCameraBase):
                             self._field_of_view -= self.field_of_view_speed
                         else:
                             self._field_of_view += self.field_of_view_speed
-                        self.setting_field_of_view = True
+                        set_field_of_view = True
                     else:
                         if f < 1e-5 and f < self.field_of_view_speed:
                             self._field_of_view = self._field_of_view_target
-                            self.setting_field_of_view = True
-                        else:
-                            self.setting_field_of_view = False
-                    if self.setting_field_of_view:
+                            set_field_of_view = True
+                    if set_field_of_view:
                         self.commands.append({"$type": "set_field_of_view",
                                               "field_of_view": self._field_of_view,
                                               "avatar_id": self.avatar_id})
             elif r_id == "avki":
                 a = AvatarKinematic(resp[i])
                 if a.get_avatar_id() == self.avatar_id:
-                    # Update the position. Check if the avatar is moving.
-                    position = np.array(a.get_position())
-                    d_from_position = np.linalg.norm(position - TDWUtils.vector3_to_array(self.position))
-                    self.moving = np.linalg.norm(position - TDWUtils.vector3_to_array(self.position)) > 1e-5
-                    self.position = TDWUtils.array_to_vector3(position)
+                    # Update the position.
+                    self.position = TDWUtils.array_to_vector3(np.array(a.get_position()))
         if self._move_target is not None:
             if self._move_target_type == _MoveTargetType.position:
                 self.commands.append({"$type": "move_avatar_towards_position",
@@ -207,7 +189,6 @@ class CinematicCamera(ThirdPersonCameraBase):
         else:
             self._move_target = target
         self._move_target_type = _MoveTargetType.position
-        self.moving = True
 
     def move_to_object(self, target: int, offset: Dict[str, float]) -> None:
         """
@@ -220,7 +201,6 @@ class CinematicCamera(ThirdPersonCameraBase):
         self._move_target = target
         self._move_to_object_offset = offset
         self._move_target_type = _MoveTargetType.object
-        self.moving = True
 
     def stop_moving(self) -> None:
         """
@@ -228,7 +208,6 @@ class CinematicCamera(ThirdPersonCameraBase):
         """
 
         self._move_target = None
-        self.moving = False
 
     def rotate_to_object(self, target: int) -> None:
         """
@@ -239,7 +218,6 @@ class CinematicCamera(ThirdPersonCameraBase):
 
         self._rotate_target = target
         self._rotate_target_type = _RotateTargetType.object
-        self.rotating = True
 
     def rotate_to_position(self, target: Dict[str, float]) -> None:
         """
@@ -250,7 +228,6 @@ class CinematicCamera(ThirdPersonCameraBase):
 
         self._rotate_target = target
         self._rotate_target_type = _RotateTargetType.position
-        self.rotating = True
 
     def rotate_by_rpy(self, target: Dict[str, float]) -> None:
         """
@@ -266,7 +243,6 @@ class CinematicCamera(ThirdPersonCameraBase):
         self._rotate_target = TDWUtils.array_to_vector4(
             QuaternionUtils.euler_angles_to_quaternion(np.deg2rad(eulers)))
         self._rotate_target_type = _RotateTargetType.rotation
-        self.rotating = True
 
     def rotate_to_rotation(self, target: Dict[str, float]) -> None:
         """
@@ -277,7 +253,6 @@ class CinematicCamera(ThirdPersonCameraBase):
 
         self._rotate_target = target
         self._rotate_target_type = _RotateTargetType.rotation
-        self.rotating = True
 
     def stop_rotating(self) -> None:
         """
@@ -285,13 +260,12 @@ class CinematicCamera(ThirdPersonCameraBase):
         """
 
         self._rotate_target = None
-        self.rotating = False
 
     def set_field_of_view(self, field_of_view: float) -> None:
         """
         Set the target field of view. This will also set the camera's target focal length.
+
         :param field_of_view: The field of view.
         """
 
         self._field_of_view_target = field_of_view
-        self.setting_field_of_view = True

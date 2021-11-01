@@ -20,7 +20,7 @@ for i in range(3):
 for i in range(5):
     sound: Optional[Base64Sound] = None
     for j in range(5):
-        s = py_impact.get_scrape_sound(velocity=np.array([0, -1.5, 0]),
+        s = py_impact.get_scrape_sound(velocity=np.array([4, 0, 0]),
                                        contact_normals=contact_normals,
                                        primary_id=0,
                                        primary_material="metal_1",

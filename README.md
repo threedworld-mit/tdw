@@ -29,13 +29,14 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 9. [Output data](Documentation/lessons/core_concepts/output_data.md)
 10. [Images](Documentation/lessons/core_concepts/images.md)
 
-## 1.3 Troubleshooting and good coding practices :warning: TODO :warning:
+## 1.3 Troubleshooting
 
-1. Debug logging
-2. Common errors
-3. Good coding practices
-4. Performance optimizations
-5. Performance benchmarks
+1. Report an issue
+2. [Common errors](Documentation/lessons/troubleshooting/common_errors.md)
+3. Performance benchmarks
+4. Good coding practices
+5. Performance optimizations
+6. Command logging
 
 # 2. Tutorials :warning: TODO :warning:
 

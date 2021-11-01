@@ -74,6 +74,7 @@ record = RobotRecord(data=data) # Creates a record from JSON data.
 | `source`    | str            | The source URL of the robot model or .urdf file.             |
 | `immovable` | bool           | If true, the base of the robot is immovable and can't change position once added to the scene. |
 | `targets`   | dict           | A dictionary of "canonical" joint targets to set a pose such that none of the joints are intersecting with the floor, assuming that the robot's starting position is (0, 0, 0). Key = The name of the joint. Value = A dictionary: `"type"` is the type of joint (`"revolute"`, `"prismatic"`, `"sphereical"`) and `"target"` is the target angle or position. |
+| `ik`        | list           | A list of joint link chains that can be used for inverse kinematics (IK). |
 
 ### Functions
 

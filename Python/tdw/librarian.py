@@ -188,6 +188,7 @@ class RobotRecord(_Record):
         self.source: str = data["source"]
         self.immovable: bool = data["immovable"]
         self.targets: dict = data["targets"]
+        self.ik: list = data["ik"]
 
 
 T = TypeVar("T", bound=_Record)

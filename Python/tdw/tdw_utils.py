@@ -515,6 +515,18 @@ class TDWUtils:
         return commands
 
     @staticmethod
+    def lerp(a: float, b: float, t: float) -> float:
+        """
+        :param a: The first value.
+        :param b: The second value.
+        :param t: The interpolation value (must be between 0 and 1).
+
+        :return: Linear interpolation value between `a` and `b` by `t`.
+        """
+
+        return a + (b - a) * t
+
+    @staticmethod
     def _send_start_build(socket, controller_address: str) -> dict:
         """
         This sends a command to the launch_binaries daemon running on a remote node

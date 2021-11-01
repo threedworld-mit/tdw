@@ -35,27 +35,28 @@ c.communicate({"$type": "terminate"})
 
 `CinematicCamera` shares many constructor parameters with `ThirdPersonCamera`. It also has some parameters not found in the `ThirdPersonCamera` constructor, and vice versa.
 
-| Parameter        | `ThirdPersonCamera` | `CinematicCamera` |
-| ---------------- | ------------------- | ----------------- |
-| `avatar_id`      | X                   | X                 |
-| `position`       | X                   | X                 |
-| `look_at`        | X                   | X                 |
-| `rotation`       | X                   | X                 |
-| `field_of_view`  | X                   | X                 |
-| `follow_object`  |                     | X                 |
-| `follow_rotate`  |                     | X                 |
-| `move_speed`     | X                   |                   |
-| `rotate_speed`   | X                   |                   |
-| `focus_distance` | X                   |                   |
+| Parameter             | `ThirdPersonCamera` | `CinematicCamera` |
+| --------------------- | ------------------- | ----------------- |
+| `avatar_id`           | X                   | X                 |
+| `position`            | X                   | X                 |
+| `look_at`             | X                   | X                 |
+| `rotation`            | X                   | X                 |
+| `field_of_view`       | X                   | X                 |
+| `follow_object`       |                     | X                 |
+| `follow_rotate`       |                     | X                 |
+| `move_speed`          | X                   |                   |
+| `rotate_speed`        | X                   |                   |
+| `field_of_view_speed` | X                   |                   |
 
 - `move_speed` is the directional speed of the camera. This can later be adjusted by setting `camera.move_speed`.
 - `rotate_speed` is the angular speed of the camera. This can later be adjusted by setting `camera.rotate_speed`.
-- `focus_distance` is the initial [focus distance](TODO).
+- `field_of_view_speed` is the rate per frame that the field of view will be set. This can later be adjusted by setting `camera.field_of_view_speed`.
 
 `CinematicCamera` API calls *start* a camera motion. It will then continuously move per `c.communicate(commands)` call until the motion is done:
 
-- `camera.moving` If True, the camera is still moving
-- `camera.rotating` If True, the camera is still rotating
+- `camera.moving` If True, the camera is still moving.
+- `camera.rotating` If True, the camera is still rotating.
+- `camera.setting_field_of_view` If True, the camera is still adjusting the field of view.
 
 ## Movement
 

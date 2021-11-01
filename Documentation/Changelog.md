@@ -154,6 +154,26 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 
 To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
 
+## v1.8.29
+
+### Command API
+
+### New Commands
+
+| Command                           | Description                                   |
+| --------------------------------- | --------------------------------------------- |
+| `send_material_properties_report` | Send a report of the material property values |
+
+#### Modified Commands
+
+| Command        | Modification                                     |
+| -------------- | ------------------------------------------------ |
+| `add_material` | Fixed: Transparent materials aren't transparent. |
+
+### Material Library
+
+- Fixed: Some variants/platform versions of glass_clear aren't transparent 
+
 ## v1.8.28
 
 ### Command API

@@ -1,7 +1,8 @@
 from enum import Enum
 from typing import List, Dict, Optional, Union
 import numpy as np
-from tdw.tdw_utils import TDWUtils, QuaternionUtils
+from tdw.tdw_utils import TDWUtils
+from tdw.quaternion_utils import QuaternionUtils
 from tdw.output_data import OutputData, AvatarKinematic, ImageSensors
 from tdw.add_ons.third_person_camera_base import ThirdPersonCameraBase
 

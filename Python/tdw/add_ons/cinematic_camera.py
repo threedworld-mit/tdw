@@ -1,8 +1,9 @@
 from enum import Enum
 from typing import List, Dict, Optional, Union
 import numpy as np
-from tdw.tdw_utils import TDWUtils, QuaternionUtils
-from tdw.output_data import OutputData, AvatarKinematic, ImageSensors, CameraMotionComplete
+from tdw.tdw_utils import TDWUtils
+from tdw.quaternion_utils import QuaternionUtils
+from tdw.output_data import OutputData, AvatarKinematic, ImageSensors
 from tdw.add_ons.third_person_camera_base import ThirdPersonCameraBase
 
 
@@ -25,33 +26,23 @@ class _RotateTargetType(Enum):
     rotation = 4
 
 
-class _FocusTargetType(Enum):
-    """
-    A type of target that the camera can focus towards.
-    """
-
-    position = 1
-    object = 2
-    distance = 4
-
-
 class CinematicCamera(ThirdPersonCameraBase):
     """
     Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. *towards* a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but *not* for most actual experiments.
     """
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 field_of_view: int = 35, move_speed: float = 0.1, rotate_speed: float = 1,
-                 look_at: Union[int, Dict[str, float]] = None, focus_distance: float = 6):
+                 field_of_view: int = None, move_speed: float = 0.1, rotate_speed: float = 1,
+                 field_of_view_speed: float = 0.1, look_at: Union[int, Dict[str, float]] = None):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
         :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param field_of_view: The initial field of view.
+        :param field_of_view: If not None, set the field of view.
         :param move_speed: The directional speed of the camera. This can later be adjusted by setting `self.move_speed`.
         :param rotate_speed: The angular speed of the camera. This can later be adjusted by setting `self.rotate_speed`.
         :param look_at: If not None, the cinematic camera will look at this object (if int) or position (if dictionary).
-        :param focus_distance: The initial focus distance. Ignore if `look_at` is an object ID (in which case the camera will focus on the target object).
+        :param field_of_view_speed: Adjust the field of view by this value per frame.
         """
 
         super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, field_of_view=field_of_view)
@@ -63,37 +54,31 @@ class CinematicCamera(ThirdPersonCameraBase):
         The angular speed of the camera.
         """
         self.rotate_speed: float = rotate_speed
+        """:field
+        Adjust the field of view by this value per frame.
+        """
+        self.field_of_view_speed: float = field_of_view_speed
+        # The current forward directional vector of the image sensor.
+        self._sensor_forward: np.array = np.array([0, 0, 0])
+        # The current rotation of the image sensor.
+        self._sensor_rotation: np.array = np.array([0, 0, 0, 0])
 
         # A target object ID or position to move towards. Can be None (no target).
         self._move_target: Optional[Union[int, Dict[str, float]]] = None
         # If `self._move_target` is an int, try to stay this far away from the target object.
-        self._move_distance_offset: float = 0
-        # If `self._move_target` is not None, clamp the height of the camera to this minimal value.
-        self._move_min_y: float = 0.25
+        self._move_to_object_offset: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
         # The type of move target.
         self._move_target_type: _MoveTargetType = _MoveTargetType.position
-        """:field
-        If True, the camera is moving.
-        """
-        self.moving: bool = False
 
         # A target object ID, position, quaternion, or Euler angles to rotate to. Can be None (no target).
         self._rotate_target: Optional[Union[int, Dict[str, float]]] = None
         # The type of rotate target.
         self._rotate_target_type: _RotateTargetType = _RotateTargetType.position
-        """:field
-        If True, the camera is rotating.
-        """
-        self.rotating: bool = False
+
         self._look_at: Optional[Union[int, Dict[str, float]]] = look_at
-        # The current forward directional vector of the image sensor.
-        self._sensor_forward: np.array = np.array([0, 0, 0])
-        # The current rotation of the image sensor.
-        self._sensor_rotation: np.array = np.array([0, 0, 0, 0])
-        # The object ID of the focus target.
-        self._focus_target: Union[int, float, Dict[str, float]] = focus_distance
-        # The type of focus target.
-        self._focus_target_type: _FocusTargetType = _FocusTargetType.distance
+
+        # The target field of view.
+        self._field_of_view_target: float = self._field_of_view
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -102,60 +87,59 @@ class CinematicCamera(ThirdPersonCameraBase):
                          {"$type": "send_image_sensors",
                           "frequency": "always"}])
         if self._look_at is not None:
-            # Look at and focus on the object.
+            # Look at the object.
             if isinstance(self._look_at, int):
-                commands.extend([{"$type": "look_at",
-                                  "object_id": self._look_at,
-                                  "use_centroid": True,
-                                  "avatar_id": self.avatar_id},
-                                 {"$type": "focus_on_object",
-                                  "object_id": self._look_at,
-                                  "use_centroid": True,
-                                  "avatar_id": self.avatar_id}])
+                commands.append({"$type": "look_at",
+                                 "object_id": self._look_at,
+                                 "use_centroid": True,
+                                 "avatar_id": self.avatar_id})
                 # Continue to look at the object.
                 self.rotate_to_object(target=self._look_at)
-            # Look at and focus on the position.
+            # Look at the position.
             elif isinstance(self._look_at, dict):
-                distance = np.linalg.norm(TDWUtils.vector3_to_array(self.position) - TDWUtils.vector3_to_array(self._look_at))
-                commands.extend([{"$type": "look_at_position",
-                                  "position": self._look_at,
-                                  "avatar_id": self.avatar_id},
-                                 {"$type": "set_focus_distance",
-                                  "focus_distance": distance}])
+                commands.append({"$type": "look_at_position",
+                                 "position": self._look_at,
+                                 "avatar_id": self.avatar_id})
                 # Continue to look at the position.
                 self.rotate_to_position(target=self._look_at)
             else:
                 raise TypeError(f"Invalid look-at target: {self._look_at}")
-        # Focus on the target distance.
-        else:
-            commands.append({"$type": "set_focus_distance",
-                             "focus_distance": self._focus_target})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "camm":
-                cam = CameraMotionComplete(resp[i])
-                if cam.get_avatar_id() == self.avatar_id:
-                    m = cam.get_motion()
-                    if m == "move":
-                        self.stop_moving()
-                    elif m == "rotate":
-                        self.stop_rotating()
-                    elif m == "focus":
-                        pass
-                    else:
-                        raise Exception(f"Motion state not defined: {m}")
-            elif r_id == "imse":
+            if r_id == "imse":
                 imse = ImageSensors(resp[i])
                 if imse.get_avatar_id() == self.avatar_id:
+                    # Update the rotation.
                     self._sensor_forward = np.array(imse.get_sensor_forward(0))
                     self._sensor_rotation = np.array(imse.get_sensor_rotation(0))
+                    # Set the field of view.
+                    self._field_of_view = imse.get_sensor_field_of_view(0)
+                    set_field_of_view = False
+                    if self._field_of_view_target is None:
+                        self._field_of_view_target = self._field_of_view
+                    f = np.linalg.norm(self._field_of_view - self._field_of_view_target)
+                    if f > self.field_of_view_speed:
+                        if self._field_of_view > self._field_of_view_target:
+                            self._field_of_view -= self.field_of_view_speed
+                        else:
+                            self._field_of_view += self.field_of_view_speed
+                        set_field_of_view = True
+                    else:
+                        if f < 1e-5 and f < self.field_of_view_speed:
+                            self._field_of_view = self._field_of_view_target
+                            set_field_of_view = True
+                    if set_field_of_view:
+                        self.commands.append({"$type": "set_field_of_view",
+                                              "field_of_view": self._field_of_view,
+                                              "avatar_id": self.avatar_id})
             elif r_id == "avki":
                 a = AvatarKinematic(resp[i])
                 if a.get_avatar_id() == self.avatar_id:
-                    self.position = TDWUtils.array_to_vector3(a.get_position())
+                    # Update the position.
+                    self.position = TDWUtils.array_to_vector3(np.array(a.get_position()))
         if self._move_target is not None:
             if self._move_target_type == _MoveTargetType.position:
                 self.commands.append({"$type": "move_avatar_towards_position",
@@ -165,8 +149,7 @@ class CinematicCamera(ThirdPersonCameraBase):
             elif self._move_target_type == _MoveTargetType.object:
                 self.commands.append({"$type": "move_avatar_towards_object",
                                       "object_id": self._move_target,
-                                      "offset_distance": self._move_distance_offset,
-                                      "min_y": self._move_min_y,
+                                      "offset": self._move_to_object_offset,
                                       "use_centroid": True,
                                       "speed": self.move_speed,
                                       "avatar_id": self.avatar_id})
@@ -192,21 +175,6 @@ class CinematicCamera(ThirdPersonCameraBase):
                                       "speed": self.rotate_speed})
             else:
                 raise Exception(f"Invalid rotate target type: {self._move_target_type}")
-        # Set the focus.
-        if self._focus_target_type == _FocusTargetType.distance:
-            self.commands.append({"$type": "set_focus_distance",
-                                  "focus_distance": self._focus_target})
-        elif self._focus_target_type == _FocusTargetType.position:
-            self.commands.append({"$type": "set_focus_distance",
-                                  "focus_distance": np.linalg.norm(TDWUtils.vector3_to_array(self.position) -
-                                                                   TDWUtils.vector3_to_array(self._focus_target))})
-        elif self._focus_target_type == _FocusTargetType.object:
-            self.commands.append({"$type": "focus_on_object",
-                                  "avatar_id": self.avatar_id,
-                                  "object_id": self._focus_target,
-                                  "use_centroid": True})
-        else:
-            raise Exception(f"Invalid focus target type: {self._focus_target_type}")
 
     def move_to_position(self, target: Dict[str, float], relative: bool = False) -> None:
         """
@@ -222,22 +190,18 @@ class CinematicCamera(ThirdPersonCameraBase):
         else:
             self._move_target = target
         self._move_target_type = _MoveTargetType.position
-        self.moving = True
 
-    def move_to_object(self, target: int, offset_distance: float = 1, min_y: float = 0.25) -> None:
+    def move_to_object(self, target: int, offset: Dict[str, float]) -> None:
         """
         Start moving towards a target object.
 
         :param target: The ID of the target object.
-        :param offset_distance: Stop moving when the camera is this far away from the object.
-        :param min_y: Clamp the y positional coordinate of the camera to this minimum value.
+        :param offset: Stop moving when the camera is this far away from the object.
         """
 
         self._move_target = target
-        self._move_distance_offset = offset_distance
-        self._move_min_y = min_y
+        self._move_to_object_offset = offset
         self._move_target_type = _MoveTargetType.object
-        self.moving = True
 
     def stop_moving(self) -> None:
         """
@@ -245,7 +209,6 @@ class CinematicCamera(ThirdPersonCameraBase):
         """
 
         self._move_target = None
-        self.moving = False
 
     def rotate_to_object(self, target: int) -> None:
         """
@@ -256,9 +219,6 @@ class CinematicCamera(ThirdPersonCameraBase):
 
         self._rotate_target = target
         self._rotate_target_type = _RotateTargetType.object
-        self.rotating = True
-        self._focus_target = target
-        self._focus_target_type = _FocusTargetType.object
 
     def rotate_to_position(self, target: Dict[str, float]) -> None:
         """
@@ -269,9 +229,6 @@ class CinematicCamera(ThirdPersonCameraBase):
 
         self._rotate_target = target
         self._rotate_target_type = _RotateTargetType.position
-        self.rotating = True
-        self._focus_target = target
-        self._focus_target_type = _FocusTargetType.position
 
     def rotate_by_rpy(self, target: Dict[str, float]) -> None:
         """
@@ -287,7 +244,6 @@ class CinematicCamera(ThirdPersonCameraBase):
         self._rotate_target = TDWUtils.array_to_vector4(
             QuaternionUtils.euler_angles_to_quaternion(np.deg2rad(eulers)))
         self._rotate_target_type = _RotateTargetType.rotation
-        self.rotating = True
 
     def rotate_to_rotation(self, target: Dict[str, float]) -> None:
         """
@@ -298,7 +254,6 @@ class CinematicCamera(ThirdPersonCameraBase):
 
         self._rotate_target = target
         self._rotate_target_type = _RotateTargetType.rotation
-        self.rotating = True
 
     def stop_rotating(self) -> None:
         """
@@ -306,24 +261,12 @@ class CinematicCamera(ThirdPersonCameraBase):
         """
 
         self._rotate_target = None
-        self.rotating = False
 
-    def set_focus_distance(self, target: float) -> None:
+    def set_field_of_view(self, field_of_view: float) -> None:
         """
-        Set the focus distance.
+        Set the target field of view. This will also set the camera's target focal length.
 
-        :param target: The focus distance.
-        """
-
-        self._focus_target = target
-        self._focus_target_type = _FocusTargetType.distance
-
-    def focus_on_object(self, target: int) -> None:
-        """
-        Set the focus distance to the distance from the camera to an object. This will update every frame as the camera or object moves.
-
-        :param target: The object ID.
+        :param field_of_view: The field of view.
         """
 
-        self._focus_target = target
-        self._focus_target_type = _FocusTargetType.object
+        self._field_of_view_target = field_of_view

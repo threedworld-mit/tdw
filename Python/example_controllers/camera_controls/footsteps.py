@@ -9,6 +9,10 @@ from tdw.add_ons.py_impact import PyImpact
 from tdw.add_ons.cinematic_camera import CinematicCamera
 from tdw.add_ons.audio_initializer import AudioInitializer
 
+"""
+Add a cinematic camera and a non-physics humanoid to a streamed scene.
+Use PyImpact to generate footsteps audio while the camera tracks the humanoid.
+"""
 
 c = Controller()
 humanoid_id = c.get_unique_id()
@@ -42,9 +46,7 @@ resp = c.communicate([c.get_add_scene(scene_name="downtown_alleys"),
                       {"$type": "set_screen_size",
                        "width": 512,
                        "height": 512}])
-camera.move_to_object(target=humanoid_id,
-                      offset_distance=1,
-                      min_y=0)
+camera.move_to_object(target=humanoid_id, offset={"x": -0.7, "y": 0.5, "z": 0})
 frame = 0
 for i in range(300):
     frame += 1

@@ -43,7 +43,7 @@ py_impact = PyImpact(initial_amp=0.9, floor=py_impact_floor, resonance_audio=Tru
 contact_normals: List[np.array] = list()
 for i in range(3):
     contact_normals.append(np.array([0, 1, 0]))
-velocity = np.array([0, -1.5, 0])
+velocity = np.array([4, 0, 0])
 
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("impact_with_controller/audio.wav")
 print(f"Audio will be saved to: {path}")

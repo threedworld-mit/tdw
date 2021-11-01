@@ -71,14 +71,14 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
     """
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 field_of_view: int = 35, look_at: Union[int, Dict[str, float]] = None,
+                 field_of_view: int = None, look_at: Union[int, Dict[str, float]] = None,
                  follow_object: int = None, follow_rotate: bool = False):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
         :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param look_at: If not None, rotate look at this target every frame. Overrides `rotation`. Can be an int (an object ID) or an `(x, y, z)` dictionary (a position).
-        :param field_of_view: The initial field of view.
+        :param field_of_view: If not None, set the field of view.
         :param follow_object: If not None, follow an object per frame. The `position` parameter will be treated as a relative value from the target object rather than worldspace coordinates.
         :param follow_rotate: If True, match the rotation of the object. Ignored if `follow_object` is None.
         """

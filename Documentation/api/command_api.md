@@ -2821,25 +2821,19 @@ Move the avatar towards an object.
 
 - <font style="color:orange">**Non-physics motion**: This command ignores the build's physics engine. If you send this command during a physics simulation (i.e. to a non-kinematic avatar), the physics might glitch.</font>
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
-{"$type": "move_avatar_towards_object", "object_id": 1}
+{"$type": "move_avatar_towards_object", "object_id": 1, "offset": {"x": 1.1, "y": 0.0, "z": 0}}
 ```
 
 ```python
-{"$type": "move_avatar_towards_object", "object_id": 1, "offset_distance": 1, "min_y": 0.25, "use_centroid": True, "speed": 0.1, "avatar_id": "a"}
+{"$type": "move_avatar_towards_object", "object_id": 1, "offset": {"x": 1.1, "y": 0.0, "z": 0}, "use_centroid": True, "speed": 0.1, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"object_id"` | int | The ID of the object. | |
-| `"offset_distance"` | float | Stop moving when the avatar is this many meters away from the target object. | 1 |
-| `"min_y"` | float | Clamp the y positional coordinate of the avatar to this minimum value. | 0.25 |
+| `"offset"` | Vector3 | The offset the position of the avatar from the object. | |
 | `"use_centroid"` | bool | If true, move towards the centroid of the object. If false, move towards the position of the object (y=0). | True |
 | `"speed"` | float | Move a maximum of this many meters per frame towards the target. | 0.1 |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
@@ -2852,11 +2846,6 @@ Move the avatar towards the target position.
 
 - <font style="color:orange">**Non-physics motion**: This command ignores the build's physics engine. If you send this command during a physics simulation (i.e. to a non-kinematic avatar), the physics might glitch.</font>
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
 {"$type": "move_avatar_towards_position"}
@@ -3145,11 +3134,6 @@ Focus towards the depth-of-field towards the position of an object.
 
 - <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
 {"$type": "focus_towards_object", "object_id": 1}
@@ -3178,11 +3162,6 @@ These commands rotate the sensor container towards a target by a given angular s
 Rotate the sensor container towards the current position of a target object. 
 
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
 {"$type": "rotate_sensor_container_towards_object", "object_id": 1}
@@ -3207,11 +3186,6 @@ Rotate the sensor container towards the current position of a target object.
 Rotate the sensor container towards a position at a given angular speed per frame. 
 
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
 {"$type": "rotate_sensor_container_towards_position"}
@@ -3235,11 +3209,6 @@ Rotate the sensor container towards a position at a given angular speed per fram
 Rotate the sensor container towards a target rotation. 
 
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
 {"$type": "rotate_sensor_container_towards_rotation"}

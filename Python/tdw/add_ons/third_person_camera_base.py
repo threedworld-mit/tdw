@@ -14,12 +14,12 @@ class ThirdPersonCameraBase(AddOn, ABC):
     __RENDER_ORDER: int = 100
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 field_of_view: int = 35):
+                 field_of_view: int = None):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
         :param position: The initial position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param field_of_view: The initial field of view.
+        :param field_of_view: If not None, set the field of view.
         """
 
         super().__init__()

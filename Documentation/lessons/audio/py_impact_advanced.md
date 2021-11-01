@@ -408,7 +408,7 @@ for i in range(3):
 for i in range(5):
     sound: Optional[Base64Sound] = None
     for j in range(5):
-        s = py_impact.get_scrape_sound(velocity=np.array([0, -1.5, 0]),
+        s = py_impact.get_scrape_sound(velocity=np.array([4, 0, 0]),
                                        contact_normals=contact_normals,
                                        primary_id=0,
                                        primary_material="metal_1",
@@ -472,7 +472,7 @@ py_impact = PyImpact(initial_amp=0.9, floor=py_impact_floor, resonance_audio=Tru
 contact_normals: List[np.array] = list()
 for i in range(3):
     contact_normals.append(np.array([0, 1, 0]))
-velocity = np.array([0, -1.5, 0])
+velocity = np.array([4, 0, 0])
 
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("impact_with_controller/audio.wav")
 print(f"Audio will be saved to: {path}")
@@ -540,7 +540,6 @@ Example controllers:
 - [impact_without_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/impact_without_controller.py) Generate impact sounds with PyImpact without using a TDW controller.
 - [scrape_with_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/scrape_with_controller.py) Generate impact sounds with PyImpact without using physics data and play the audio in a circle around the avatar listener.
 - [scrape_without_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/scrape_without_controller.py) Generate scrape sounds with PyImpact without using a TDW controller.
-- [footsteps.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/footsteps.py) Simulate a walking humanoid with footstep sounds.
 
 Python API:
 

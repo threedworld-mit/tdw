@@ -71,16 +71,17 @@ class Robot(RobotBase):
         self._initial_targets: dict = dict()
         # If True, we've already started to move the joints to their initial position.
         self._set_initial_targets: bool = False
+        self._record: Optional[RobotRecord] = None
         if source is None:
             if "robots.json" not in Controller.ROBOT_LIBRARIANS:
                 Controller.ROBOT_LIBRARIANS["robots.json"] = RobotLibrarian()
-            record: RobotRecord = Controller.ROBOT_LIBRARIANS["robots.json"].get_record(name)
-            self.url = record.get_url()
-            self._initial_targets = record.targets
+            self._record = Controller.ROBOT_LIBRARIANS["robots.json"].get_record(name)
+            self.url = self._record.get_url()
+            self._initial_targets = self._record.targets
         elif isinstance(source, RobotLibrarian):
-            record = source.get_record(name)
-            self.url = record.get_url()
-            self._initial_targets = record.targets
+            self._record = source.get_record(name)
+            self.url = self._record.get_url()
+            self._initial_targets = self._record.targets
         elif isinstance(source, RobotRecord):
             self.url = source.get_url()
             self._initial_targets = source.targets

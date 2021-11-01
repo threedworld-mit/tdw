@@ -1,35 +1,45 @@
-from abc import ABC, abstractmethod
 from typing import List, Dict, Union
 import numpy as np
 from overrides import final
 from ikpy.chain import Chain
-from ikpy.link import Link
+from ikpy.link import OriginLink, URDFLink, Link
 from tdw.tdw_utils import TDWUtils, QuaternionUtils
 from tdw.add_ons.robot import Robot
+from tdw.librarian import RobotLibrarian, RobotRecord
 
 
-class RobotArm(Robot, ABC):
+class RobotArm(Robot):
     """
-    Abstract class for a robot with a single arm.
+    A robot with a single arm.
     This class includes an inverse kinematic (IK) solver that allows the robot to reach for a target position.
     """
 
-    def __init__(self, robot_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None):
+    def __init__(self, name: str, robot_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+                 source: Union[RobotLibrarian, RobotRecord] = None):
         """
+        :param name: The name of the robot.
         :param robot_id: The ID of the robot.
         :param position: The position of the robot. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the robot in Euler angles (degrees). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param source: The source file of the robot. If None: The source will be the URL of the robot record in TDW's built-in [`RobotLibrarian`](../librarian/robot_librarian.md). If `RobotRecord`: the source is the URL in the record. If `RobotLibrarian`: The source is the record in the provided `RobotLibrarian` that matches `name`.
         """
 
-        """:field
-        The name of this robot.
-        """
-        self.name: str = self._get_name()
-        super().__init__(name=self.name, robot_id=robot_id, position=position, rotation=rotation)
-        # The robot arm IK chain.
-        self._chain: Chain = Chain(name=self._get_name(), links=self._get_links())
+        super().__init__(name=name, robot_id=robot_id, position=position, rotation=rotation, source=source)
+        assert self._record is not None, "Record is None."
+        assert len(self._record.ik) > 0, "Record doesn't have IK data."
         # A list of joint names in the order that they appear in the IK chain.
-        self._joint_order: List[str] = self._get_joint_order()
+        self._joint_order: List[str] = list()
+        # Convert the record data into joint links.
+        links: List[Link] = [OriginLink()]
+        for link in self._record.ik[0]:
+            self._joint_order.append(link["name"])
+            links.append(URDFLink(name=link["name"],
+                                  translation_vector=np.array(link["translation_vector"]),
+                                  orientation=np.array(link["orientation"]),
+                                  rotation=None if link["rotation"] is None else np.array(link["rotation"]),
+                                  bounds=link["bounds"]))
+        # Set robot arm IK chain.
+        self._chain: Chain = Chain(name=name, links=links)
 
     def reach_for(self, target: Union[Dict[str, float], np.array]) -> None:
         """
@@ -104,27 +114,3 @@ class RobotArm(Robot, ABC):
         return QuaternionUtils.world_to_local_vector(position=target,
                                                      origin=self.dynamic.transform.position,
                                                      rotation=self.dynamic.transform.rotation)
-
-    @abstractmethod
-    def _get_name(self) -> str:
-        """
-        :return: The name of this robot.
-        """
-
-        raise Exception()
-
-    @abstractmethod
-    def _get_links(self) -> List[Link]:
-        """
-        :return: A list of IK chain links.
-        """
-
-        raise Exception()
-
-    @abstractmethod
-    def _get_joint_order(self) -> List[str]:
-        """
-        :return: A list of joint names in the order that they appear in the IK chain.
-        """
-
-        raise Exception()

@@ -1,7 +1,7 @@
 import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.ur5 import UR5
+from tdw.add_ons.robot_arm import RobotArm
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
@@ -11,7 +11,7 @@ Control a UR5 robot arm with inverse kinematics (IK).
 """
 
 c = Controller()
-ur5 = UR5(robot_id=0)
+ur5 = RobotArm(name="ur5", robot_id=0)
 camera = ThirdPersonCamera(avatar_id="a",
                            position={"x": -0.881, "y": 0.836, "z": -1.396},
                            look_at={"x": 0, "y": 0.2, "z": 0})

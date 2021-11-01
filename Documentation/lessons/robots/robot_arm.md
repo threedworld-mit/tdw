@@ -2,23 +2,27 @@
 
 # Robot arm add-ons
 
-[`RobotArm`](../../python/add_ons/robot_arm.md) is an abstract class that extends `Robot`. The main difference is that it adds an inverse kinematics (IK) solver and a `reach_for(target)` function. If you call this function, the robot will set its joint targets to reach for the target position.
+[`RobotArm`](../../python/add_ons/robot_arm.md) is an class that extends `Robot`. The main difference is that it adds an inverse kinematics (IK) solver and a `reach_for(target)` function. If you call this function, the robot will set its joint targets to reach for the target position.
 
-Internally, each robot arm requires its own IK chain. This chain is derived from a .urdf file but is often not the *same* as the data in the .urdf file. Reasons include differences between how ROS and Unity handle local coordinate systems and differences between the robot in TDW (which is sometimes missing fixed joints for the sake of simplicity) and the original robot.
+Internally, each robot arm requires its own IK chain. This chain is derived from a .urdf file but is often not the *same* as the data in the .urdf file. Reasons include differences between how ROS and Unity handle local coordinate systems and differences between the robot in TDW (which is sometimes missing fixed joints for the sake of simplicity) and the original robot. In TDW, the joint link data is stored in [the robot's metadata record](../../python/librarian/robot_librarian.md).
 
-Therefore, each robot arm needs to extend the `RobotArm` class. At present, TDW includes a [`UR5`](../../python/add_ons/ur5.md) robot arm:
+Currently, the following robots in TDW have joint link data, meaning that they can be used as a  `RobotArm`:
+
+- `ur5`
+
+This example controller adds a UR5 robot to the scene as a `RobotArm` rather than as a `Robot`, like in previous examples:
 
 ```python
 import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.ur5 import UR5
+from tdw.add_ons.robot_arm import RobotArm
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-ur5 = UR5(robot_id=0)
+ur5 = RobotArm(name="ur5", robot_id=0)
 camera = ThirdPersonCamera(avatar_id="a",
                            position={"x": -0.881, "y": 0.836, "z": -1.396},
                            look_at={"x": 0, "y": 0.2, "z": 0})
@@ -48,32 +52,6 @@ Output:
 
 ![](images/ur5_ik.gif)
 
-## Define your own robot arm
-
-To define a robot arm that can use IK, create a new subclass of `RobotArm` and define these functions:
-
-```python
-import numpy as np
-from ikpy.link import OriginLink, URDFLink, Link
-from typing import List
-from tdw.add_ons.robot_arm import RobotArm
-
-
-class MyRobotArm(RobotArm):
-    def _get_name(self) -> str:
-        # Your code here.
-
-    def _get_joint_order(self) -> List[str]:
-        # Your code here.
-
-    def _get_links(self) -> List[Link]:
-        # Your code here.
-```
-
-- `_get_name()` returns a string, such as `"ur5"`
-- `_get_joint_order()` returns a list of joint names. This is the order of joint names as they'll appear in the IK joint chain.
-- `_get_links()` returns a list of IK links. See the code for `ur5.py` for an example of how to accurately convert from a .urdf file to a TDW link chain.
-
 ***
 
 **Next: [Robot collision detection](collision_detection.md)**
@@ -89,4 +67,3 @@ Example controllers:
 Python API:
 
 - [`RobotArm`](../../python/add_ons/robot_arm.md)
-- [`UR5`](../../python/add_ons/ur5.md)

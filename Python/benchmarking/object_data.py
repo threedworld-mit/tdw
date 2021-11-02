@@ -14,6 +14,6 @@ for transforms, rigidbodies, bounds, collisions in zip(
     [False, False, False, True, True]):
     fps = c.run(boxes=True, transforms=transforms, rigidbodies=rigidbodies, bounds=bounds, collisions=collisions,
                 num_frames=2000)
-    output += f"| {transforms} | {rigidbodies} | {bounds} | {collisions} |\n"
+    output += f"| {transforms} | {rigidbodies} | {bounds} | {collisions} | {fps} |\n"
 c.communicate({"$type": "terminate"})
 print(output)

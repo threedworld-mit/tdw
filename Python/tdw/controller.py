@@ -251,8 +251,11 @@ class Controller(object):
             if model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA:
                 mass = DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].mass
                 bounciness = DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].bounciness
+                material = DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].material
             # Fallback: Try to derive physics values from existing data.
             else:
+                if "models_full.json" not in Controller.MODEL_LIBRARIANS:
+                    Controller.MODEL_LIBRARIANS["models_full.json"] = ModelLibrarian("models_full.json")
                 # Get all models in the same category that have default physics values.
                 records = Controller.MODEL_LIBRARIANS["models_full.json"].get_all_models_in_wnid(record.wnid)
                 records = [r for r in records if not r.do_not_use and r.name != record.name and r.name in
@@ -279,10 +282,8 @@ class Controller(object):
                               "mass": mass,
                               "id": object_id},
                              {"$type": "set_physic_material",
-                              "dynamic_friction": DYNAMIC_FRICTION[
-                                  DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].material],
-                              "static_friction": STATIC_FRICTION[
-                                  DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].material],
+                              "dynamic_friction": DYNAMIC_FRICTION[material],
+                              "static_friction": STATIC_FRICTION[material],
                               "bounciness": bounciness,
                               "id": object_id}])
         else:

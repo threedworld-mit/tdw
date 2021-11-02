@@ -1,7 +1,6 @@
 import platform
 import psutil
 from argparse import ArgumentParser
-from benchmark_utils import PATH
 
 
 if __name__ == "__main__":
@@ -10,9 +9,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     keys = {"legion_lenovo": "$MACHINE_WINDOWS", "braintree": "$MACHINE_BRAINTREE", "node11": "$MACHINE_NODE11"}
-
-    txt = PATH.read_text()
-
     os_name = platform.system()
     cpu = str(psutil.cpu_freq()[0] / 1000.0) + " GHz " + str(psutil.cpu_count() + " Cores")
     memory = str(round(round(psutil.virtual_memory().total / 1000000000))) + " GB"
@@ -31,4 +27,3 @@ if __name__ == "__main__":
 
     row = "| `" + args.machine + "` | " + os_name + " | " + cpu + " | " + memory + " | " + gpus + " | " + py_version + " |"
     print(row)
-

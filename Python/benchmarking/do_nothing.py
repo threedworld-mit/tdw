@@ -1,6 +1,6 @@
 import json
-from time import time
 from tdw.controller import Controller
+from tdw.add_ons.benchmark import Benchmark
 
 
 """
@@ -16,34 +16,23 @@ This way, it is possible to gauge the effect that Command deserialization has on
 
 if __name__ == "__main__":
     c = Controller(launch_build=False)
-
-    c.start()
+    b = Benchmark()
+    c.add_ons.append(b)
     c.communicate({"$type": "create_empty_environment"})
-
-    quantities = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-
     cmd = {"$type": "do_nothing"}
-
-    num_trials = 1000
-
     output = "| Quantity | Size (bytes) | FPS |\n| --- | --- | --- |\n"
-
     sizes = []
-
-    for quant in quantities:
+    for quant in [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]:
         cmds = []
         for q in range(quant):
             cmds.append(cmd)
-
         size = len(json.dumps(cmds).encode('utf-8'))
         sizes.append(size)
-
-        t0 = time()
-        for trial in range(num_trials):
+        b.start()
+        for trial in range(1000):
             c.communicate(cmds)
-        fps = (num_trials / (time() - t0))
-        output += "| " + str(quant) + " | " + str(size) + " | " + str(round(fps)) + " |\n"
-
+        b.stop()
+        output += "| " + str(quant) + " | " + str(size) + " | " + str(round(b.fps)) + " |\n"
     print("")
     print(output)
     c.communicate({"$type": "terminate"})

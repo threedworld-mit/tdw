@@ -13,6 +13,7 @@ If after reading this document you're still unsure how to fix your error, [pleas
 - Make sure that your `tdw` Python module is at the latest release.
 - Make sure that the version of the TDW build matches the version of the `tdw` Python module.
 - See sections below for common controller and build problems.
+- Add a [logger](log.md) to your controller.
 
 **The simulation hangs indefinitely**
 
@@ -23,6 +24,15 @@ If after reading this document you're still unsure how to fix your error, [pleas
 
 - **Cause:** This is how the Unity physics engine works.
 - **Solution:** Differences in behavior between machines should be *very* minor. Because the issue is intrinsic to PhysX, we can *reduce* determinism problems but we can't totally *fix* them.
+
+**The simulation is slow**
+
+- **Cause:** There are two common causes:
+  - You're running TDW without a GPU.
+  - Your code isn't optimized.
+- **Solution:**
+  - On Linux servers, make sure that TDW is using a GPU.
+  - [Read the documentation for performance optimizations](performance_optimizations.md).
 
 **[Linux:] Can't launch the simulation in a Docker container**
 
@@ -143,3 +153,9 @@ This warning is harmless; you can ignore it.
   ....UnityPlayer.dll
   ....TDW.exe
   ```
+
+***
+
+**Next: [Performance optimizations](performance_optimizations.md)**
+
+[Return to the README](../../../README.md)

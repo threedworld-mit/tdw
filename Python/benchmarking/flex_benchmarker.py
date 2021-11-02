@@ -159,7 +159,7 @@ class FlexBenchmarker(Controller):
         for i in range(2000):
             self.communicate([])
         benchmark.stop()
-        return benchmark.get_speed()
+        return benchmark.fps
 
 
 if __name__ == "__main__":

@@ -31,12 +31,11 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 
 ## 1.3 Troubleshooting
 
-1. How to report an issue
+1. [How to report an issue](Documentation/lessons/troubleshooting/issues.md)
 2. [Common errors](Documentation/lessons/troubleshooting/common_errors.md)
-3. Performance benchmarks
+3. [Performance optimizations](Documentation/lessons/troubleshooting/performance_optimizations.md)
 4. Good coding practices
-5. Performance optimizations
-6. Command logging
+5. Command logger
 
 # 2. Tutorials :warning: TODO :warning:
 
@@ -199,7 +198,10 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 
 # 3. API Documentation
 
-TODO
+:warning: TODO:warning:
+
+# 4. Performance benchmarks
+:warning: TODO:warning:
 
 ## :warning: old documentation :warning:
 

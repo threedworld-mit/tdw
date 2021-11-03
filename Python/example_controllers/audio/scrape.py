@@ -31,46 +31,47 @@ cube_bounciness = 0.4
 for scrape_surface_model_name in ["glass_table", "quatre_dining_table", "small_table_green_marble"]:
     surface_record = lib_core.get_record(scrape_surface_model_name)
     for audio_material in [AudioMaterial.wood_medium, AudioMaterial.ceramic, AudioMaterial.metal]:
-        # Add the surface.
-        surface_id = c.get_unique_id()
-        cube_id = c.get_unique_id()
-        commands = c.get_add_physics_object(model_name=scrape_surface_model_name,
-                                            library="models_core.json",
-                                            object_id=surface_id,
-                                            kinematic=True)
-        # Add the cube just above the top of the surface.
-        commands.extend(c.get_add_physics_object(model_name="cube",
-                                                 library="models_flex.json",
-                                                 object_id=cube_id,
-                                                 position={"x": 0, "y": surface_record.bounds["top"]["y"], "z": 0},
-                                                 scale_factor={"x": 0.1, "y": 0.1, "z": 0.1},
-                                                 default_physics_values=False,
-                                                 mass=cube_mass,
-                                                 dynamic_friction=0.2,
-                                                 static_friction=0.2,
-                                                 bounciness=cube_bounciness))
-        # Define audio for the cube.
-        cube_audio = ObjectAudioStatic(name="cube",
-                                       object_id=cube_id,
-                                       mass=cube_mass,
-                                       bounciness=cube_bounciness,
-                                       amp=0.2,
-                                       resonance=0.45,
-                                       size=1,
-                                       material=audio_material)
-        # Reset PyImpact.
-        py_impact.reset(static_audio_data_overrides={cube_id: cube_audio}, initial_amp=0.9)
-        c.communicate(commands)
-        recorder.start(path=path.joinpath(f"{scrape_surface_model_name}_{audio_material.name}.wav"))
-        # Apply a lateral force to start scraping.
-        c.communicate({"$type": "apply_force_magnitude_to_object",
-                       "magnitude": 12,
-                       "id": cube_id})
-        while recorder.recording:
-            c.communicate([])
-        # Destroy the objects to reset the scene.
-        c.communicate([{"$type": "destroy_object",
-                        "id": cube_id},
-                       {"$type": "destroy_object",
-                        "id": surface_id}])
+        for force in [6, 12, 18]:
+            # Add the surface.
+            surface_id = c.get_unique_id()
+            cube_id = c.get_unique_id()
+            commands = c.get_add_physics_object(model_name=scrape_surface_model_name,
+                                                library="models_core.json",
+                                                object_id=surface_id,
+                                                kinematic=True)
+            # Add the cube just above the top of the surface.
+            commands.extend(c.get_add_physics_object(model_name="cube",
+                                                     library="models_flex.json",
+                                                     object_id=cube_id,
+                                                     position={"x": 0, "y": surface_record.bounds["top"]["y"], "z": 0},
+                                                     scale_factor={"x": 0.1, "y": 0.1, "z": 0.1},
+                                                     default_physics_values=False,
+                                                     mass=cube_mass,
+                                                     dynamic_friction=0.2,
+                                                     static_friction=0.2,
+                                                     bounciness=cube_bounciness))
+            # Define audio for the cube.
+            cube_audio = ObjectAudioStatic(name="cube",
+                                           object_id=cube_id,
+                                           mass=cube_mass,
+                                           bounciness=cube_bounciness,
+                                           amp=0.2,
+                                           resonance=0.45,
+                                           size=1,
+                                           material=audio_material)
+            # Reset PyImpact.
+            py_impact.reset(static_audio_data_overrides={cube_id: cube_audio}, initial_amp=0.9)
+            c.communicate(commands)
+            recorder.start(path=path.joinpath(f"{scrape_surface_model_name}_{audio_material.name}_{force}.wav"))
+            # Apply a lateral force to start scraping.
+            c.communicate({"$type": "apply_force_magnitude_to_object",
+                           "magnitude": force,
+                           "id": cube_id})
+            while recorder.recording:
+                c.communicate([])
+            # Destroy the objects to reset the scene.
+            c.communicate([{"$type": "destroy_object",
+                            "id": cube_id},
+                           {"$type": "destroy_object",
+                            "id": surface_id}])
 c.communicate({"$type": "terminate"})

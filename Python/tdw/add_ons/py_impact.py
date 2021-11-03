@@ -690,7 +690,6 @@ class PyImpact(CollisionManager):
         """
 
         scrape_key: Tuple[int, int] = (primary_id, secondary_id)
-        print(scrape_key, velocity)
         if scrape_key not in self._scrape_previous_indices:
             self._scrape_previous_indices[scrape_key] = 0
 
@@ -814,8 +813,7 @@ class PyImpact(CollisionManager):
 
         # Extract 100ms "chunk" of sound to send over to Unity.
         start_idx = 100 * scrape_event_count
-        temp = summed_master[-(len(summed_master) - start_idx):]
-        unity_chunk = temp[:100]
+        unity_chunk = summed_master[-(len(summed_master) - start_idx):][:100]
         # Update stored summed waveform.
         self._scrape_summed_masters[scrape_key] = summed_master
 

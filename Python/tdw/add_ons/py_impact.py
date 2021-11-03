@@ -530,20 +530,13 @@ class PyImpact(CollisionManager):
         :return A `play_audio_data` or `play_point_source_data` command that can be sent to the build via `Controller.communicate()`.
         """
 
-        impact_audio = self.get_impact_sound(velocity=velocity, contact_normals=contact_normals, primary_id=primary_id,
-                                             primary_material=primary_material, primary_amp=primary_amp,
-                                             primary_mass=primary_mass, secondary_id=secondary_id,
-                                             secondary_material=secondary_material, secondary_amp=secondary_amp,
-                                             secondary_mass=secondary_mass, resonance=resonance)
-        if impact_audio is not None:
-            point = np.mean(contact_points, axis=0)
-            return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
-                    "id": PyImpact._get_unique_id(),
-                    "position": {"x": float(point[0]), "y": float(point[1]), "z": float(point[2])},
-                    "num_frames": impact_audio.length,
-                    "num_channels": CHANNELS,
-                    "frame_rate": SAMPLE_RATE,
-                    "wav_data": impact_audio.wav_str}
+        sound = self.get_impact_sound(velocity=velocity, contact_normals=contact_normals, primary_id=primary_id,
+                                      primary_material=primary_material, primary_amp=primary_amp,
+                                      primary_mass=primary_mass, secondary_id=secondary_id,
+                                      secondary_material=secondary_material, secondary_amp=secondary_amp,
+                                      secondary_mass=secondary_mass, resonance=resonance)
+        if sound is not None:
+            return self._get_audio_command(contact_points=contact_points, sound=sound)
         # If PyImpact failed to generate a sound (which is rare!), fail silently here.
         else:
             return None
@@ -653,14 +646,7 @@ class PyImpact(CollisionManager):
         if sound is None:
             return None
         else:
-            point = np.mean(contact_points, axis=0)
-            return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
-                    "id": PyImpact._get_unique_id(),
-                    "position": {"x": float(point[0]), "y": float(point[1]), "z": float(point[2])},
-                    "num_frames": sound.length,
-                    "num_channels": CHANNELS,
-                    "frame_rate": SAMPLE_RATE,
-                    "wav_data": sound.wav_str}
+            return self._get_audio_command(contact_points=contact_points, sound=sound)
 
     def get_scrape_sound(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
                          primary_material: str, primary_amp: float, primary_mass: float,
@@ -1071,6 +1057,8 @@ class PyImpact(CollisionManager):
     def _end_scrape(self, scrape_key: Tuple[int, int]) -> None:
         """
         Clean up after a given scrape event has ended.
+
+        :param: The scrape index key.
         """
 
         if scrape_key in self._scrape_events_count:
@@ -1082,12 +1070,19 @@ class PyImpact(CollisionManager):
         if scrape_key in self._scrape_previous_indices:
             del self._scrape_previous_indices[scrape_key]
 
-    @staticmethod
-    def _get_unique_id() -> int:
+    def _get_audio_command(self, contact_points: np.array, sound: Base64Sound) -> dict:
         """
-        Generate a unique integer. Useful when creating objects.
+        :param contact_points: The collision contact points.
+        :param sound: The Base64Sound object.
 
-        :return The new unique ID.
+        :return: A command to play audio data.
         """
 
-        return int.from_bytes(urandom(3), byteorder='big')
+        point = np.mean(contact_points, axis=0)
+        return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
+                "id": int.from_bytes(urandom(3), byteorder='big'),
+                "position": {"x": float(point[0]), "y": float(point[1]), "z": float(point[2])},
+                "num_frames": sound.length,
+                "num_channels": CHANNELS,
+                "frame_rate": SAMPLE_RATE,
+                "wav_data": sound.wav_str}

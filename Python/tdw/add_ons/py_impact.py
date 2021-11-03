@@ -185,7 +185,7 @@ class PyImpact(CollisionManager):
         """:field
         Cached scrape surface data.
         """
-        self.scrape_surface_data: Dict[ScrapeMaterial, np.ndarray] = {}
+        self.scrape_surface_data: Dict[ScrapeMaterial, Dict[str, np.ndarray]] = {}
         """:field
         A dictionary of all [scrape models](../physics_audio/scrape_model.md) in the scene. If `scrape == False`, this dictionary is empty. Key = Object ID.
         """
@@ -220,7 +220,7 @@ class PyImpact(CollisionManager):
         # Summed scrape masters. Key = primary ID, secondary ID.
         self._scrape_summed_masters: Dict[Tuple[int, int], AudioSegment] = dict()
         # Keeping a track of previous scrape indices.
-        self._scrape_previous_index: int = 0
+        self._scrape_previous_indices: Dict[Tuple[int, int], int] = dict()
         # Starting velocity magnitude of scraping object; use in calculating changing band-pass filter.
         self._scrape_start_velocities: Dict[Tuple[int, int], float] = dict()
         # Initialize the scraping event counter.
@@ -690,6 +690,9 @@ class PyImpact(CollisionManager):
         """
 
         scrape_key: Tuple[int, int] = (primary_id, secondary_id)
+        print(scrape_key, velocity)
+        if scrape_key not in self._scrape_previous_indices:
+            self._scrape_previous_indices[scrape_key] = 0
 
         # Initialize scrape variables; if this is an in=process scrape, these will be replaced bu te stored values.
         summed_master = AudioSegment.silent(duration=0, frame_rate=SAMPLE_RATE)
@@ -712,7 +715,7 @@ class PyImpact(CollisionManager):
             self._scrape_start_velocities[scrape_key] = mag
 
         # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
-        db = np.interp(mag ** 2, [0, PyImpact.SCRAPE_MAX_VELOCITY ** 2], [-80, -12])
+        db = np.interp(mag ** 2, [0, PyImpact.SCRAPE_MAX_VELOCITY ** 2], [-68, 0])
 
         # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
         # We also get the lowest-frequency IR mode, which we use to set the high-pass filter cutoff below.
@@ -732,19 +735,18 @@ class PyImpact(CollisionManager):
         # We don't want them in memory all the time and they can be a bit slow to load.
         if scrape_material not in self.scrape_surface_data:
             scrape_surface = np.load(str(Path(resource_filename(__name__, f"py_impact/scrape_surfaces/{scrape_material.name}.npy")).resolve()))
-            scrape_surface = np.append(scrape_surface, scrape_surface)
-            self.scrape_surface_data[scrape_material] = scrape_surface
-
-        #   Load the surface texture as a 1D vector
-        #   Create surface texture of desired length
-        #   Calculate first and second derivatives by first principles
-        #   Apply non-linearity on the second derivative
-        #   Apply a variable Gaussian average
-        #   Calculate the horizontal and vertical forces
-        #   Convolve the force with the impulse response
-        dsdx = (self.scrape_surface_data[scrape_material][1:] - self.scrape_surface_data[scrape_material][0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
-        d2sdx2 = (dsdx[1:] - dsdx[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
-
+            #   Load the surface texture as a 1D vector
+            #   Create surface texture of desired length
+            #   Calculate first and second derivatives by first principles
+            #   Apply non-linearity on the second derivative
+            #   Apply a variable Gaussian average
+            #   Calculate the horizontal and vertical forces
+            #   Convolve the force with the impulse response
+            dsdx = (scrape_surface[1:] - scrape_surface[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
+            d2sdx2 = (dsdx[1:] - dsdx[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
+            self.scrape_surface_data[scrape_material] = {"dsdx": dsdx,
+                                                         "d2sdx2": d2sdx2,
+                                                         "surface": scrape_surface}
         dist = mag / 1000
         num_pts = int(np.floor(dist / PyImpact.SCRAPE_M_PER_PIXEL))
         # No scrape.
@@ -753,19 +755,19 @@ class PyImpact(CollisionManager):
             return None
 
         # interpolate the surface slopes and curvatures based on the velocity magnitude
-        final_ind = self._scrape_previous_index + num_pts
+        final_ind = self._scrape_previous_indices[scrape_key] + num_pts
 
-        if final_ind > len(self.scrape_surface_data[scrape_material]) - 100:
-            self._scrape_previous_index = 0
+        if final_ind > len(self.scrape_surface_data[scrape_material]["surface"]) - 100:
+            self._scrape_previous_indices[scrape_key] = 0
             final_ind = num_pts
 
         vect1 = np.linspace(0, 1, num_pts)
         vect2 = np.linspace(0, 1, 4010)
 
-        slope_int = np.interp(vect2, vect1, dsdx[self._scrape_previous_index:final_ind])
-        curve_int = np.interp(vect2, vect1, d2sdx2[self._scrape_previous_index:final_ind])
+        slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][self._scrape_previous_indices[scrape_key]:final_ind])
+        curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][self._scrape_previous_indices[scrape_key]:final_ind])
 
-        self._scrape_previous_index = final_ind
+        self._scrape_previous_indices[scrape_key] = final_ind
 
         curve_int_tan = np.tanh(curve_int / 1000)
 
@@ -872,7 +874,6 @@ class PyImpact(CollisionManager):
         self.initialized = False
         self._static_audio_data.clear()
         self._static_audio_data_overrides.clear()
-        self._scrape_objects.clear()
         # Use scrape surfaces.
         if self._scrape and scrape_objects is not None:
             for k in scrape_objects:
@@ -886,9 +887,10 @@ class PyImpact(CollisionManager):
         self.collision_events.clear()
         # Clear scrape data.
         self._scrape_summed_masters.clear()
-        self._scrape_previous_index = 0
         self._scrape_start_velocities.clear()
         self._scrape_events_count.clear()
+        self._scrape_objects.clear()
+        self._scrape_previous_indices.clear()
 
     def _log_modes(self, count: int, mode_props: dict, id1: int, id2: int, modes_1: Modes, modes_2: Modes, amp: float, mat1: str, mat2: str):
         """
@@ -1081,6 +1083,8 @@ class PyImpact(CollisionManager):
             del self._scrape_summed_masters[scrape_key]
         if scrape_key in self._scrape_start_velocities:
             del self._scrape_start_velocities[scrape_key]
+        if scrape_key in self._scrape_previous_indices:
+            del self._scrape_previous_indices[scrape_key]
 
     @staticmethod
     def _get_unique_id() -> int:

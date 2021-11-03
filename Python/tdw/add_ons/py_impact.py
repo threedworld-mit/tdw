@@ -543,8 +543,7 @@ class PyImpact(CollisionManager):
                     "num_frames": impact_audio.length,
                     "num_channels": CHANNELS,
                     "frame_rate": SAMPLE_RATE,
-                    "wav_data": impact_audio.wav_str,
-                    "y_pos_offset": 0.1}
+                    "wav_data": impact_audio.wav_str}
         # If PyImpact failed to generate a sound (which is rare!), fail silently here.
         else:
             return None
@@ -661,8 +660,7 @@ class PyImpact(CollisionManager):
                     "num_frames": sound.length,
                     "num_channels": CHANNELS,
                     "frame_rate": SAMPLE_RATE,
-                    "wav_data": sound.wav_str,
-                    "y_pos_offset": 0}
+                    "wav_data": sound.wav_str}
 
     def get_scrape_sound(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
                          primary_material: str, primary_amp: float, primary_mass: float,

@@ -54,9 +54,17 @@ class ImageSensor(object):
             return obj
         return None
 
-def ImageSensorStart(builder): builder.StartObject(4)
+    # ImageSensor
+    def FieldOfView(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
+        return 0.0
+
+def ImageSensorStart(builder): builder.StartObject(5)
 def ImageSensorAddName(builder, name): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
 def ImageSensorAddIsOn(builder, isOn): builder.PrependBoolSlot(1, isOn, 0)
 def ImageSensorAddRotation(builder, rotation): builder.PrependStructSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(rotation), 0)
 def ImageSensorAddForward(builder, forward): builder.PrependStructSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(forward), 0)
+def ImageSensorAddFieldOfView(builder, fieldOfView): builder.PrependFloat32Slot(4, fieldOfView, 0.0)
 def ImageSensorEnd(builder): return builder.EndObject()

@@ -18,7 +18,7 @@ class Transform:
         """
         self.position: np.array = position
         """:field
-        The rotation quaternion of the object as a numpy array: `[x, y, z, w]` See: [`tdw.tdw_utils.QuaternionUtils`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/tdw_utils.md#quaternionutils).
+        The rotation quaternion of the object as a numpy array: `[x, y, z, w]` See: [`tdw.quaternion_utils.QuaternionUtils`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/tdw_utils.md#quaternionutils).
         """
         self.rotation: np.array = rotation
         """:field

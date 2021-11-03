@@ -32,7 +32,7 @@ c.communicate({"$type": "terminate"})
 
 - `avatar_id` The ID of the avatar that (this camera).
 
-- `initial_position` The initial position of the object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+- `position` The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
 
 - `transform` [Transform data](../object_data/transform.md) for the avatar.
 

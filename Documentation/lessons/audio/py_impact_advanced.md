@@ -540,7 +540,6 @@ Example controllers:
 - [impact_without_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/impact_without_controller.py) Generate impact sounds with PyImpact without using a TDW controller.
 - [scrape_with_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/scrape_with_controller.py) Generate impact sounds with PyImpact without using physics data and play the audio in a circle around the avatar listener.
 - [scrape_without_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/scrape_without_controller.py) Generate scrape sounds with PyImpact without using a TDW controller.
-- [footsteps.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/footsteps.py) Simulate a walking humanoid with footstep sounds.
 
 Python API:
 

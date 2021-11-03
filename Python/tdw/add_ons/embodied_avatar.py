@@ -53,7 +53,7 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
         :param bounciness: The bounciness of the avatar.
         """
 
-        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, fov=fov)
+        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, field_of_view=fov)
         self._init_commands.extend([{"$type": "change_avatar_body",
                                      "body_type": body.name.title(),
                                      "avatar_id": self.avatar_id},

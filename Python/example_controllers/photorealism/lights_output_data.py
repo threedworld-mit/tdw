@@ -5,7 +5,7 @@ from tdw.output_data import OutputData, Lights
 Load a streamed scene and received Lights output data.
 """
 
-c = Controller(launch_build=False)
+c = Controller()
 resp = c.communicate([c.get_add_scene("tdw_room"),
                       {"$type": "send_lights"}])
 

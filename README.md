@@ -78,12 +78,11 @@ High-level API: [Floorplan](Documentation/python/floorplan.md)
 2. [Move a camera](Documentation/lessons/camera/position.md)
 3. [Rotate a camera](Documentation/lessons/camera/rotation.md)
 4. [Follow an object](Documentation/lessons/camera/follow.md)
-5. [The `CinematicCamera` add-on](Documentation/lessons/camera/cinematic_camera.md)
 
-## 2.5 Photorealistic Images
+## 2.5 Photorealism
 
-1. Overview
-2. Lighting
+1. [Overview](Documentation/lessons/photorealism/overview.md)
+2. [Lighting (HDRI skyboxes)](Documentation/lessons/photorealism/lighting.md)
 3. Post-processing
 4. Depth of field
 5. Anti-aliasing
@@ -92,7 +91,7 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 
 ## 2.6 Physics
 
-1. [Overview](Documentation/lessons/physx/overview.md)
+**[Overview](Documentation/lessons/physx/overview.md)**
 
 ### 2.6.1 Physics (PhysX)
 
@@ -131,9 +130,10 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 
 ## 2.9 Video Recording
 
-1. [Overview](Documentation/lessons/video/overview.md)
-2. [Image-only video](Documentation/lessons/video/images.md)
-3. [Video with audio](Documentation/lessons/video/audio.md)
+1. Overview
+2. Image videos
+3. Image+audio videos
+4. The `CinematicCamera` add-on
 
 ## 2.10 Agents
 

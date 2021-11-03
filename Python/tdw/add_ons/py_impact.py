@@ -715,7 +715,7 @@ class PyImpact(CollisionManager):
             self._scrape_start_velocities[scrape_key] = mag
 
         # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
-        db = np.interp(mag ** 2, [0, PyImpact.SCRAPE_MAX_VELOCITY ** 2], [-68, 0])
+        db = np.interp(mag ** 2, [0, PyImpact.SCRAPE_MAX_VELOCITY ** 2], [-80, -12])
 
         # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
         # We also get the lowest-frequency IR mode, which we use to set the high-pass filter cutoff below.

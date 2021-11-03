@@ -70,9 +70,6 @@ class ThirdPersonCameraBase(AddOn, ABC):
                      "avatar_id": self.avatar_id},
                     {"$type": "set_render_order",
                      "render_order": self._render_order,
-                     "avatar_id": self.avatar_id},
-                    {"$type": "set_anti_aliasing",
-                     "mode": "subpixel",
                      "avatar_id": self.avatar_id}]
         # Set the initial position.
         if self.position is not None:

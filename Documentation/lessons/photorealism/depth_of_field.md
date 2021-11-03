@@ -59,7 +59,7 @@ The following images illustrate the effect of different settings for Focus Dista
 
 ***
 
-**Next: [Anti-aliasing](anti_aliasing.md)**
+**This is the last document in the "Photorealism" tutorial.**
 
 [Return to the README](../../../README.md)
 

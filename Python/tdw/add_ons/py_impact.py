@@ -268,8 +268,6 @@ class PyImpact(CollisionManager):
                                                             resonance=audio.resonance)
                 # Generate an object sound.
                 else:
-                    self._end_scrape((self.collision_events[object_id].primary_id,
-                                      self.collision_events[object_id].secondary_id))
                     target_audio = self._static_audio_data[self.collision_events[object_id].primary_id]
                     other_audio = self._static_audio_data[self.collision_events[object_id].secondary_id]
                     command = self.get_impact_sound_command(velocity=self.collision_events[object_id].velocity,
@@ -360,6 +358,9 @@ class PyImpact(CollisionManager):
                                         object_1_static=self._static_audio_data[collidee_id],
                                         object_1_dynamic=rigidbody_data[collidee_id],
                                         previous_areas=previous_areas)
+            # End an ongoing scrape, if any.
+            if event.collision_type != CollisionAudioType.scrape:
+                self._end_scrape((event.primary_id, event.secondary_id))
             if event.primary_id not in collision_events_per_object:
                 collision_events_per_object[event.primary_id] = list()
             collision_events_per_object[event.primary_id].append(event)
@@ -368,6 +369,9 @@ class PyImpact(CollisionManager):
                                         object_0_static=self._static_audio_data[object_id],
                                         object_0_dynamic=rigidbody_data[object_id],
                                         previous_areas=previous_areas)
+            # End an ongoing scrape, if any.
+            if event.collision_type != CollisionAudioType.scrape:
+                self._end_scrape((event.primary_id, event.secondary_id))
             if event.primary_id not in collision_events_per_object:
                 collision_events_per_object[event.primary_id] = list()
             collision_events_per_object[event.primary_id].append(event)

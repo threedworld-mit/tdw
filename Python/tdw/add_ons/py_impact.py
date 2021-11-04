@@ -71,10 +71,6 @@ class PyImpact(CollisionManager):
     """
     SCRAPE_M_PER_PIXEL: float = 1394.068 * 10 ** -9
     """:class_var
-    The target decibels for scrapes.
-    """
-    SCRAPE_TARGET_DBFS: float = -20.0
-    """:class_var
     The default amp value for objects.
     """
     DEFAULT_AMP: float = 0.2
@@ -272,6 +268,8 @@ class PyImpact(CollisionManager):
                                                             resonance=audio.resonance)
                 # Generate an object sound.
                 else:
+                    self._end_scrape((self.collision_events[object_id].primary_id,
+                                      self.collision_events[object_id].secondary_id))
                     target_audio = self._static_audio_data[self.collision_events[object_id].primary_id]
                     other_audio = self._static_audio_data[self.collision_events[object_id].secondary_id]
                     command = self.get_impact_sound_command(velocity=self.collision_events[object_id].velocity,
@@ -536,7 +534,8 @@ class PyImpact(CollisionManager):
                                       secondary_material=secondary_material, secondary_amp=secondary_amp,
                                       secondary_mass=secondary_mass, resonance=resonance)
         if sound is not None:
-            return self._get_audio_command(contact_points=contact_points, sound=sound)
+            # Use the primary object ID for the audio source ID to prevent a droning effect.
+            return self._get_audio_command(audio_source_id=primary_id, contact_points=contact_points, sound=sound)
         # If PyImpact failed to generate a sound (which is rare!), fail silently here.
         else:
             return None
@@ -646,7 +645,10 @@ class PyImpact(CollisionManager):
         if sound is None:
             return None
         else:
-            return self._get_audio_command(contact_points=contact_points, sound=sound)
+            # Use random audio source IDs so that multiple scrape sound chunks can play at the same time.
+            return self._get_audio_command(audio_source_id=int.from_bytes(urandom(3), byteorder='big'),
+                                           contact_points=contact_points,
+                                           sound=sound)
 
     def get_scrape_sound(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
                          primary_material: str, primary_amp: float, primary_mass: float,
@@ -698,7 +700,7 @@ class PyImpact(CollisionManager):
             self._scrape_start_velocities[scrape_key] = mag
 
         # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
-        db = np.interp(mag ** 2, [0, PyImpact.SCRAPE_MAX_VELOCITY ** 2], [-80, -12])
+        db = np.interp(mag ** 2, [0, PyImpact.SCRAPE_MAX_VELOCITY ** 2], [-48, 6])
 
         # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
         # We also get the lowest-frequency IR mode, which we use to set the high-pass filter cutoff below.
@@ -765,9 +767,6 @@ class PyImpact(CollisionManager):
                                   frame_rate=SAMPLE_RATE,
                                   sample_width=SAMPLE_WIDTH,
                                   channels=CHANNELS)
-        # Normalize gain.
-        noise_seg1.apply_gain(PyImpact.SCRAPE_TARGET_DBFS)
-
         # Fade head and tail.
         noise_seg_fade = noise_seg1.fade_in(4).fade_out(4)
         # Convolve the band-pass filtered sound with the impulse response.
@@ -1073,8 +1072,9 @@ class PyImpact(CollisionManager):
         if scrape_key in self._scrape_previous_indices:
             del self._scrape_previous_indices[scrape_key]
 
-    def _get_audio_command(self, contact_points: np.array, sound: Base64Sound) -> dict:
+    def _get_audio_command(self, audio_source_id: int, contact_points: np.array, sound: Base64Sound) -> dict:
         """
+        :param audio_source_id: The audio source ID.
         :param contact_points: The collision contact points.
         :param sound: The Base64Sound object.
 
@@ -1083,7 +1083,7 @@ class PyImpact(CollisionManager):
 
         point = np.mean(contact_points, axis=0)
         return {"$type": "play_audio_data" if not self.resonance_audio else "play_point_source_data",
-                "id": int.from_bytes(urandom(3), byteorder='big'),
+                "id": audio_source_id,
                 "position": {"x": float(point[0]), "y": float(point[1]), "z": float(point[2])},
                 "num_frames": sound.length,
                 "num_channels": CHANNELS,

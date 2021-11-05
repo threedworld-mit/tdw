@@ -31,7 +31,25 @@ c.communicate({"$type": "terminate"})
 
 ***
 
+## Class Variables
+
+| Variable | Type | Description |
+| --- | --- | --- |
+| `NON_MOVING` | float | If a joint has moved less than this many degrees (revolute or spherical) or meters (prismatic) since the previous frame, it is considered to be not moving for the purposes of determining which joints are moving. |
+
+***
+
 ## Fields
+
+- `initial_position` The initial position of the robot.
+
+- `initial_rotation` The initial rotation of the robot.
+
+- `robot_id` The ID of this robot.
+
+- `static` Static robot data.
+
+- `dynamic` Dynamic robot data.
 
 - `static` [Static robot data.](../robot_data/robot_static.md)
 
@@ -90,4 +108,50 @@ Stop the joints at their current angles or positions.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | joint_ids |  List[int] | None | A list of joint IDs. If None, stop all joints. |
+
+#### get_initialization_commands
+
+**`self.get_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
+#### joints_are_moving
+
+**`self.joints_are_moving()`**
+
+**`self.joints_are_moving(joint_ids=None)`**
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| joint_ids |  List[int] | None | A list of joint IDs to check for movement. If `None`, check all joints for movement. |
+
+_Returns:_  True if the joints are moving.
+
+#### on_send
+
+**`self.on_send(resp)`**
+
+This is called after commands are sent to the build and a response is received.
+
+Use this function to send commands to the build on the next frame, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the next frame.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| resp |  List[bytes] |  | The response from the build. |
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
+
+
 

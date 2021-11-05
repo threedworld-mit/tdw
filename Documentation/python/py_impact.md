@@ -404,6 +404,7 @@ from tdw.py_impact import CollisionTypesOnFrame
 
 object_id = c.get_unique_id()
 c = Controller()
+c.start()
 
 # Your code here.
 

@@ -50,13 +50,13 @@ Result: [Synthesized audio from the object colliding with the floor.](https://dr
 
 ## Auto-generated audio
 
-By default, PyImpact will evaluate the simulation state per `Controller.communicate()` call and will automatically generate audio that will then be played by the build. This behavior can be suppressed by setting `auto=False` in the constructor.
+By default, PyImpact will evaluate the simulation state per `c.communicate()` call and will automatically generate audio that will then be played by the build. This behavior can be suppressed by setting `auto=False` in the constructor.
 
 PyImpact automatically requests and receives [Rigidbody data](../physx/rigidbodies.md) and [collision data](../phyx/collisions.md) per-frame, as well as [`RobotJointVelocities`](../../api/output_data.md#RobotJointVelocities), a special output data type required for simulations with robots.
 
-`PyImpact` is a sub-class of [`CollisionManager`](../../python/add_ons/collision_manager.md). You don't (and shouldn't) include both a `PyImpact` add-on and a `CollisionManager` add-on.
+`PyImpact` is a sub-class of [`CollisionManager`](../../python/add_ons/collision_manager.md). You shouldn't include both a `PyImpact` add-on and a `CollisionManager` add-on.
 
-PyImpact uses cached static object data and per-frame physics metadata (velocities, collision states, etc.) to create audio, convert the audio into TDW commands, and send the commands on the next `communicate()` call.
+PyImpact uses cached static object data and per-frame physics metadata (velocities, collision states, etc.) to create audio, convert the audio into TDW commands, and send the commands on the next `c.communicate()` call.
 
 ## The `initial_amp` parameter
 
@@ -186,7 +186,7 @@ In order to decide which process to use, PyImpact must first determine the "even
     - If the angular velocity is > 0.5 m/s, the event is `roll`.
     - Otherwise: the event is `scrape`.
 
-## Scrape objects
+## Scrape sounds
 
 Scrape sounds can only be generated from a predefined list of models with "scrape surfaces". Each of these models may have more than one "scrape surface", such as shelving. Each surface must have a particular visual material. When `PyImpact` is initialized, it will automatically find objects with scrape surfaces, cache relevant data, and set their visual materials. Note that the floor of the scene won't generate scrape sounds.
 

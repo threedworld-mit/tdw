@@ -92,7 +92,6 @@ class CollisionAudioEvent:
         else:
             previous_area = None
         if self.collision.state == "stay":
-            self._set_as_impact(obj_obj=obj_obj, object_0_static=object_0_static, object_1_static=object_1_static)
             # This is a scrape or a roll.
             if previous_area is None or (previous_area > 0 and self.area / previous_area < CollisionAudioEvent.IMPACT_AREA_RATIO):
                 self._set_as_impact(obj_obj=obj_obj, object_0_static=object_0_static, object_1_static=object_1_static)
@@ -117,6 +116,8 @@ class CollisionAudioEvent:
                 # If the primary object has a low angular velocity, this is a scrape.
                 else:
                     self.collision_type = CollisionAudioType.scrape
+            else:
+                self.collision_type = CollisionAudioType.none
 
     def _get_contact_area(self) -> float:
         """

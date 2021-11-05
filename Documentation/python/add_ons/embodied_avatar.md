@@ -66,6 +66,14 @@ c.communicate({"$type": "terminate"})
 | static_friction |  float  | 0.3 | The static friction coefficient of the avatar. |
 | bounciness |  float  | 0.7 | The bounciness of the avatar. |
 
+#### get_initialization_commands
+
+**`self.get_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
 #### apply_force
 
 **`self.apply_force(force)`**
@@ -137,14 +145,6 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
-
-#### get_initialization_commands
-
-**`self.get_initialization_commands()`**
-
-This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
-
-_Returns:_  A list of commands that will initialize this add-on.
 
 #### before_send
 

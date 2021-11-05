@@ -64,6 +64,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [CompositeObjects](#CompositeObjects) | Data for all composite objects currently in the scene. | `comp` |
+| [EmptyObjects](#EmptyObjects) | The position of each empty object in the scene. | `empt` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
 | [FlexParticles](#FlexParticles) | NVIDIA Flex data. | `flex` |
 | [IdPassGrayscale](#IdPassGrayscale) | The average grayscale value of the _id pass. | `idgs` |
@@ -344,6 +345,20 @@ Data for all composite objects currently in the scene.
 | `get_num_sub_objects(index)` | The number of sub objects. | `int` |
 | `get_sub_object_id(index, sub_object_index)` | The ID of the sub object. | `int` |
 | `get_sub_object_machine_type(index, sub_object_index)` | The type of the sub object machine. | `str` |
+
+## EmptyObjects
+
+`e = EmptyObjects(byte_array)`
+
+**Identifier:** `empt`
+
+The position of each empty object in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_position(index)` | The position. | `np.array` |
 
 ## EnvironmentCollision
 

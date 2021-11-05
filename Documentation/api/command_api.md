@@ -280,6 +280,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
+| [`attach_empty_object`](#attach_empty_object) | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
@@ -568,6 +569,7 @@
 | --- | --- |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
+| [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
@@ -3799,6 +3801,23 @@ The shape of the trigger collider.
 | --- | --- |
 | `"cube"` |  |
 | `"sphere"` |  |
+
+***
+
+## **`attach_empty_object`**
+
+Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects
+
+
+```python
+{"$type": "attach_empty_object", "empty_object_id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"empty_object_id"` | int | The ID of the empty object. This doesn't have to be the same as the object ID. | |
+| `"position"` | Vector3 | The position of the empty object relative to the parent object, in the parent object's local coordinate space. | |
+| `"id"` | int | The unique object ID. | |
 
 ***
 
@@ -7048,6 +7067,38 @@ Send data for every composite object in the scene.
 
 ```python
 {"$type": "send_composite_objects", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_empty_objects`**
+
+Send data each empty object in the scene. See: attach_empty_object 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`EmptyObjects`](output_data.md#EmptyObjects)</font>
+
+```python
+{"$type": "send_empty_objects"}
+```
+
+```python
+{"$type": "send_empty_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

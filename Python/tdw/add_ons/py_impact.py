@@ -65,7 +65,7 @@ class PyImpact(CollisionManager):
     """:class_var
     The maximum velocity allowed for a scrape.
     """
-    SCRAPE_MAX_VELOCITY: float = 5.0
+    SCRAPE_MAX_VELOCITY: float = 2.0
     """:class_var
     Meters per pixel on the scrape surface.
     """
@@ -377,7 +377,7 @@ class PyImpact(CollisionManager):
             collision_events_per_object[event.primary_id].append(event)
         # Get the significant collision events per object.
         for primary_id in collision_events_per_object:
-            events: List[CollisionAudioEvent] = [e for e in collision_events_per_object[primary_id] if e.magnitude > 0 
+            events: List[CollisionAudioEvent] = [e for e in collision_events_per_object[primary_id] if e.magnitude > 0
                                                  and e.collision_type != CollisionAudioType.none]
             if len(events) > 0:
                 event: CollisionAudioEvent = max(events, key=lambda x: x.magnitude)
@@ -491,7 +491,7 @@ class PyImpact(CollisionManager):
             mode_props = dict()
             self._log_modes(self.object_modes[secondary_id][primary_id].count, mode_props, primary_id, secondary_id,
                             modes_1, modes_2, amp, primary_material, secondary_material)
-            
+
         # On rare occasions, it is possible for PyImpact to fail to generate a sound.
         if sound is None:
             return None
@@ -704,7 +704,8 @@ class PyImpact(CollisionManager):
             self._scrape_start_velocities[scrape_key] = mag
 
         # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
-        db = np.interp(mag ** 2, [0, PyImpact.SCRAPE_MAX_VELOCITY ** 2], [-48, 6])
+        db2 = 40 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY)
+        db1 = 20 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY)
 
         # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
         # We also get the lowest-frequency IR mode, which we use to set the high-pass filter cutoff below.
@@ -723,7 +724,10 @@ class PyImpact(CollisionManager):
         # Don't do this when PyImpact is initialized because scrape surfaces are large files!
         # We don't want them in memory all the time and they can be a bit slow to load.
         if scrape_material not in self.scrape_surface_data:
-            scrape_surface = np.load(str(Path(resource_filename(__name__, f"py_impact/scrape_surfaces/{scrape_material.name}.npy")).resolve()))
+            scrape_surface = np.load(str(
+                Path(resource_filename(__name__, f"py_impact/scrape_surfaces/{scrape_material.name}.npy")).resolve()))
+            for i in range(3):
+                scrape_surface = np.append(scrape_surface, scrape_surface)
             #   Load the surface texture as a 1D vector
             #   Create surface texture of desired length
             #   Calculate first and second derivatives by first principles
@@ -733,59 +737,80 @@ class PyImpact(CollisionManager):
             #   Convolve the force with the impulse response
             dsdx = (scrape_surface[1:] - scrape_surface[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
             d2sdx2 = (dsdx[1:] - dsdx[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
+            rough_ratio = np.std(scrape_surface) / (6 * 10 ** -4)
+            r_gain = 20 * np.log10(rough_ratio)
             self.scrape_surface_data[scrape_material] = {"dsdx": dsdx,
                                                          "d2sdx2": d2sdx2,
-                                                         "surface": scrape_surface}
-        dist = mag / 1000
+                                                         "surface": scrape_surface,
+                                                         "r_gain": r_gain}
+        dist = mag / 10
         num_pts = int(np.floor(dist / PyImpact.SCRAPE_M_PER_PIXEL))
         # No scrape.
-        if num_pts <= 1:
+        if num_pts <= 2:
             self._end_scrape(scrape_key)
             return None
-
         # interpolate the surface slopes and curvatures based on the velocity magnitude
         final_ind = self._scrape_previous_indices[scrape_key] + num_pts
 
-        if final_ind > len(self.scrape_surface_data[scrape_material]["surface"]) - 100:
+        if final_ind > len(self.scrape_surface_data[scrape_material]["surface"]) - 10:
             self._scrape_previous_indices[scrape_key] = 0
             final_ind = num_pts
 
         vect1 = np.linspace(0, 1, num_pts)
-        vect2 = np.linspace(0, 1, 4010)
+        vect2 = np.linspace(0, 1, 4410)
 
         slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][self._scrape_previous_indices[scrape_key]:final_ind])
         curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][self._scrape_previous_indices[scrape_key]:final_ind])
 
         self._scrape_previous_indices[scrape_key] = final_ind
 
-        curve_int_tan = np.tanh(curve_int / 1000)
+        curve_int_tan = np.tanh(curve_int / 100)
 
-        d2_section = gaussian_filter1d(curve_int_tan, 10)
+        d2_section = gaussian_filter1d(curve_int_tan, 6)
 
         vert_force = d2_section
         hor_force = slope_int
 
-        t_force = vert_force / max(np.abs(vert_force)) + 0.2 * hor_force[:len(vert_force)]
+        t_force2 = vert_force / max(np.abs(vert_force))
+        t_force1 = hor_force[:len(vert_force)]
 
-        noise_seg1 = AudioSegment(t_force.tobytes(),
+        noise_seg1 = AudioSegment(t_force1.tobytes(),
+                                  frame_rate=SAMPLE_RATE,
+                                  sample_width=SAMPLE_WIDTH,
+                                  channels=CHANNELS)
+        noise_seg2 = AudioSegment(t_force2.tobytes(),
                                   frame_rate=SAMPLE_RATE,
                                   sample_width=SAMPLE_WIDTH,
                                   channels=CHANNELS)
         # Fade head and tail.
-        noise_seg_fade = noise_seg1.fade_in(4).fade_out(4)
+        noise_seg_fade1 = noise_seg1.fade_in(4).fade_out(4)
+        noise_seg_fade2 = noise_seg2.fade_in(4).fade_out(4)
         # Convolve the band-pass filtered sound with the impulse response.
-        conv = sg.fftconvolve(scraping_ir, noise_seg_fade.get_array_of_samples())
+        conv1 = sg.fftconvolve(scraping_ir, noise_seg_fade1.get_array_of_samples())
+        conv2 = sg.fftconvolve(scraping_ir, noise_seg_fade2.get_array_of_samples())
 
         # Again, we need this as an AudioSegment for overlaying with the previous frame's segment.
         # Convert to 16-bit integers for Unity, normalizing to make sure to minimize loss of precision from truncating floating values.
-        normalized_noise_ints_conv = PyImpact._normalize_16bit_int(conv)
-        noise_seg_conv = AudioSegment(normalized_noise_ints_conv.tobytes(),
-                                      frame_rate=SAMPLE_RATE,
-                                      sample_width=SAMPLE_WIDTH,
-                                      channels=CHANNELS)
+        normalized_noise_ints_conv1 = PyImpact._normalize_16bit_int(conv1)
+        noise_seg_conv1 = AudioSegment(normalized_noise_ints_conv1.tobytes(),
+                                       frame_rate=SAMPLE_RATE,
+                                       sample_width=SAMPLE_WIDTH,
+                                       channels=CHANNELS)
+
+        normalized_noise_ints_conv2 = PyImpact._normalize_16bit_int(conv2)
+        noise_seg_conv2 = AudioSegment(normalized_noise_ints_conv2.tobytes(),
+                                       frame_rate=SAMPLE_RATE,
+                                       sample_width=SAMPLE_WIDTH,
+                                       channels=CHANNELS)
 
         # Gain-adjust the convolved segment using db value computed earlier.
-        noise_seg_conv = noise_seg_conv.apply_gain(db)
+        noise_seg_conv1 = noise_seg_conv1.apply_gain(db1)
+        noise_seg_conv2 = noise_seg_conv2.apply_gain(db2)
+
+        noise_seg_conv = noise_seg_conv1.overlay(noise_seg_conv2)
+        # Apply roughness gain.
+        noise_seg_conv = noise_seg_conv.apply_gain(self.scrape_surface_data[scrape_material]["r_gain"])
+
         if scrape_event_count == 0:
             # First time through -- append 50 ms of silence to the end of the current segment and make that "master".
             summed_master = noise_seg_conv + PyImpact.SILENCE_50MS

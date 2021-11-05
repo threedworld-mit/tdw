@@ -1,10 +1,9 @@
 from pathlib import Path
-from typing import Union
 from tdw.controller import Controller
 from tdw.py_impact import PyImpact, AudioMaterial
-from tdw.tdw_utils import TDWUtils, AudioUtils
-from tdw.object_init_data import AudioInitData
-from tdw.output_data import OutputData, Rigidbodies, AudioSources
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 class MinimalAudioDataset(Controller):
@@ -18,16 +17,16 @@ class MinimalAudioDataset(Controller):
     FLOOR: AudioMaterial = AudioMaterial.wood_medium
     WALL: AudioMaterial = AudioMaterial.wood_medium
 
-    def __init__(self, output_directory: Union[str, Path], port: int = 1071):
-        super().__init__(port=port, launch_build=False)
-        if isinstance(output_directory, str):
-            self.output_directory: Path = Path(output_directory)
-        else:
-            self.output_directory: Path = output_directory
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        self.output_directory: Path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("minimal_audio_dataset")
         if not self.output_directory.exists():
             self.output_directory.mkdir(parents=True)
+        print(f"Audio will be saved to: {self.output_directory}")
         # The trial number.
         self.trial_num: int = 0
+        self.recorder: PhysicsAudioRecorder = PhysicsAudioRecorder(max_frames=1000)
+        self.add_ons.append(self.recorder)
         self.communicate({"$type": "set_target_framerate",
                           "framerate": 60})
 
@@ -55,13 +54,16 @@ class MinimalAudioDataset(Controller):
 
         # Create a new empty room.
         commands = [{"$type": "load_scene", "scene_name": "ProcGenScene"},
-                    TDWUtils.create_empty_room(12, 12)]
+                    TDWUtils.create_empty_room(12, 12),
+                    {"$type": "set_reverb_space_simple",
+                     "env": 0,
+                     "reverb_floor_material": "marble"}]
 
         # Add the object.
-        a = AudioInitData(name=name,
-                          position={"x": 0, "y": 2, "z": 0})
-        object_id, object_commands = a.get_commands()
-        commands.extend(object_commands)
+        object_id = self.get_unique_id()
+        commands.extend(self.get_add_physics_object(model_name=name,
+                                                    position={"x": 0, "y": 2, "z": 0},
+                                                    object_id=object_id))
 
         # Create the avatar.
         avatar_id = "a"
@@ -70,7 +72,7 @@ class MinimalAudioDataset(Controller):
                                                avatar_id=avatar_id))
 
         # Add an audio sensor to the avatar. Request the required output data.
-        commands.extend([{"$type": "add_audio_sensor",
+        commands.extend([{"$type": "add_environ_audio_sensor",
                           "avatar_id": avatar_id},
                          {"$type": "send_rigidbodies",
                           "frequency": "always"},
@@ -88,49 +90,20 @@ class MinimalAudioDataset(Controller):
         MinimalAudioDataset.PY_IMPACT.set_default_audio_info(object_names={object_id: name})
 
         # Start recording audio.
-        AudioUtils.start(output_path=self.output_directory.joinpath(str(self.trial_num) + ".wav"))
+        self.recorder.start(output_path=self.output_directory.joinpath(str(self.trial_num) + ".wav"))
 
-        # Let the object fall.
-        num_frames = 0
-        done = False
-        # Stop when either the simulation is done or there are too many frames.
-        while not done and num_frames < 1000:
-            # The trial is done when the object stops moving.
-            for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i])
-                if r_id == "rigi":
-                    rigi = Rigidbodies(resp[i])
-                    for j in range(rigi.get_num()):
-                        if rigi.get_id(j) == object_id:
-                            if rigi.get_sleeping(j):
-                                done = True
-                                break
+        # Let the object fall. Stop when either the simulation is done or there are too many frames.
+        while self.recorder.recording:
             # If there was a collision, get commands to generate a sound.
             commands = MinimalAudioDataset.PY_IMPACT.get_audio_commands(resp=resp,
                                                                         floor=MinimalAudioDataset.FLOOR,
-                                                                        wall=MinimalAudioDataset.WALL)
+                                                                        wall=MinimalAudioDataset.WALL,
+                                                                        resonance_audio=True)
             resp = self.communicate(commands)
-
-        # Wait for the audio to stop playing.
-        audio_playing = True
-        while audio_playing:
-            for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i])
-                if r_id == "audi":
-                    audi = AudioSources(resp[i])
-                    for j in range(audi.get_num()):
-                        if audi.get_object_id(j) == object_id:
-                            if not audi.get_is_playing(j):
-                                audio_playing = False
-                                break
-            resp = self.communicate([])
-
-        # Stop recording audio.
-        AudioUtils.stop()
         # Increment the trial counter.
         self.trial_num += 1
 
 
 if __name__ == "__main__":
-    c = MinimalAudioDataset(output_directory="D:/minimal_audio_dataset")
+    c = MinimalAudioDataset()
     c.run()

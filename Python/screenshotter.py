@@ -1,13 +1,15 @@
+from abc import ABC, abstractmethod
+from typing import List, Dict
+from pathlib import Path
+import json
+from tqdm import tqdm
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import ModelLibrarian, MaterialLibrarian, ModelRecord, MaterialRecord
+from tdw.librarian import _Librarian, ModelLibrarian, MaterialLibrarian, ModelRecord, MaterialRecord
 from tdw.output_data import Images
-from pathlib import Path
-from tqdm import tqdm
-import json
 
 
-class _Screenshotter(Controller):
+class _Screenshotter(Controller, ABC):
     """
     Base class for screenshotter controllers.
     """
@@ -23,36 +25,36 @@ class _Screenshotter(Controller):
 
         super().__init__(port, launch_build=False)
 
-        self.load_streamed_scene(scene="empty_scene")
-
-        self.communicate([{"$type": "simulate_physics",
-                           "value": False},
-                          {"$type": "set_screen_size",
-                           "height": 1024,
-                           "width": 1024},
-                          {"$type": "set_render_quality",
-                           "render_quality": 5},
-                          {"$type": "set_shadow_strength",
-                           "strength": 1.0},
-                          {"$type": "set_img_pass_encoding",
-                           "value": False}])
-
-        self.communicate(TDWUtils.create_avatar(position=self._get_avatar_position()))
-        self.communicate([{"$type": "set_pass_masks",
-                           "avatar_id": "a",
-                           "pass_masks": ["_img"]},
-                          {"$type": "send_images",
+        commands = [self.get_add_scene(scene_name="empty_scene"),
+                    {"$type": "simulate_physics",
+                     "value": False},
+                    {"$type": "set_screen_size",
+                     "height": 1024,
+                     "width": 1024},
+                    {"$type": "set_render_quality",
+                     "render_quality": 5},
+                    {"$type": "set_shadow_strength",
+                     "strength": 1.0},
+                    {"$type": "set_img_pass_encoding",
+                     "value": False}]
+        commands.extend(TDWUtils.create_avatar(position=self._get_avatar_position()))
+        commands.extend([{"$type": "set_pass_masks",
+                          "pass_masks": ["_img"]},
+                         {"$type": "send_images",
                           "frequency": "always"}])
-        self._set_post_processing()
+        commands.extend(self._get_post_processing_commands())
+        self.communicate(commands)
 
-    def _get_visualizer_metadata(self):
+    @abstractmethod
+    def _get_visualizer_metadata(self) -> List[dict]:
         """
         Returns metadata that the Visualizer applications need.
         """
 
         raise Exception()
 
-    def _get_librarian(self, library: str):
+    @abstractmethod
+    def _get_librarian(self, library: str) -> _Librarian:
         """
         Returns the librarian object.
 
@@ -61,21 +63,23 @@ class _Screenshotter(Controller):
 
         raise Exception()
 
-    def _set_post_processing(self):
+    @abstractmethod
+    def _get_post_processing_commands(self) -> List[dict]:
         """
-        Adjust the default post-process settings.
+        :return: A list of commands for adjusting the post-processing settings.
         """
 
         raise Exception()
 
-    def _get_avatar_position(self):
+    @abstractmethod
+    def _get_avatar_position(self) -> Dict[str, float]:
         """
         :return: The position of the avatar.
         """
 
         raise Exception()
 
-    def _get_output_directory(self):
+    def _get_output_directory(self) -> Path:
         """
         :return: The output directory for the images.
         """
@@ -91,17 +95,18 @@ class _Screenshotter(Controller):
 
         raise Exception()
 
-    def get_image(self, record):
+    def get_image(self, record) -> Images:
         """
         Get an image of the asset corresponding to the record.
 
         :param record: The record.
-        :return: The image and the frame.
+
+        :return: The image output data.
         """
 
         raise Exception()
 
-    def run(self, target: str):
+    def run(self, target: str) -> None:
         """
         Take a screenshot per record.
 
@@ -125,7 +130,7 @@ class _Screenshotter(Controller):
             # Skip an image that exists.
             if not Path(self.output_dir).joinpath(record_name + ".jpg").exists():
                 # Capture a screenshot.
-                images, frame = self.get_image(record)
+                images = self.get_image(record)
                 # Save the image.
                 TDWUtils.save_images(images, record_name,
                                      output_directory=self.output_dir, append_pass=False)
@@ -146,51 +151,50 @@ class ModelScreenshotter(_Screenshotter):
             self.communicate({"$type": "use_pre_signed_urls",
                               "value": False})
 
-    def _get_output_directory(self):
+    def _get_output_directory(self) -> Path:
         return Path.home().joinpath("TDWImages/ModelImages")
 
-    def _get_avatar_position(self):
+    def _get_avatar_position(self) -> Dict[str, float]:
         return {"x": 1.57, "y": 3, "z": 3.56}
 
-    def _set_post_processing(self):
-        self.communicate([{"$type": "set_screen_space_reflections",
-                           "enabled": True},
-                          {"$type": "set_vignette",
-                           "enabled": False},
-                          {"$type": "set_focus_distance",
-                           "focus_distance": 8.0}])
+    def _get_post_processing_commands(self) -> List[dict]:
+        return [{"$type": "set_screen_space_reflections",
+                 "enabled": True},
+                {"$type": "set_vignette",
+                 "enabled": False},
+                {"$type": "set_focus_distance",
+                 "focus_distance": 8.0}]
 
-    def _get_librarian(self, library: str):
+    def _get_librarian(self, library: str) -> ModelLibrarian:
         return ModelLibrarian(library + ".json")
 
-    def _get_visualizer_metadata(self):
-        records = []
+    def _get_visualizer_metadata(self) -> List[dict]:
+        self._lib: ModelLibrarian
+        records: List[dict] = []
         for record in self._lib.records:
             if record.do_not_use:
                 continue
             records.append({"name": record.name,
                             "wnid": record.wnid,
                             "wcategory": record.wcategory})
-        records = {"records": records}
         return records
 
     def _record_is_ok(self, record) -> bool:
         return not record.do_not_use
 
-    def get_image(self, record: ModelRecord):
+    def get_image(self, record: ModelRecord) -> Images:
         o_id = Controller.get_unique_id()
-        self.communicate({"$type": "add_object",
-                          "name": record.name,
-                          "url": record.get_url(),
-                          "scale_factor": record.scale_factor,
-                          "rotation": record.canonical_rotation,
-                          "id": o_id})
-
         s = TDWUtils.get_unit_scale(record) * 2
-
+        # Add the model.
         # Scale the model and get an image.
         # Look at the model's centroid.
-        resp = self.communicate([{"$type": "scale_object",
+        resp = self.communicate([{"$type": "add_object",
+                                  "name": record.name,
+                                  "url": record.get_url(),
+                                  "scale_factor": record.scale_factor,
+                                  "rotation": record.canonical_rotation,
+                                  "id": o_id},
+                                 {"$type": "scale_object",
                                   "id": o_id,
                                   "scale_factor": {"x": s, "y": s, "z": s}},
                                  {"$type": "look_at",
@@ -201,7 +205,7 @@ class ModelScreenshotter(_Screenshotter):
         self.communicate([{"$type": "destroy_object",
                           "id": o_id},
                           {"$type": "unload_asset_bundles"}])
-        return Images(resp[0]), resp[-1]
+        return Images(resp[0])
 
 
 class MaterialScreenshotter(_Screenshotter):
@@ -234,39 +238,39 @@ class MaterialScreenshotter(_Screenshotter):
                            "avatar_id": "a",
                            "axis": "pitch"}])
 
-    def _set_post_processing(self):
-        self.communicate([{"$type": "set_screen_space_reflections",
-                           "enabled": False},
-                          {"$type": "set_contrast",
-                           "contrast": 0},
-                          {"$type": "set_saturation",
-                           "saturation": 0},
-                          {"$type": "set_vignette",
-                           "enabled": False},
-                          {"$type": "set_focus_distance",
-                           "focus_distance": 8.0}])
+    def _get_post_processing_commands(self) -> List[dict]:
+        return [{"$type": "set_screen_space_reflections",
+                 "enabled": False},
+                {"$type": "set_contrast",
+                 "contrast": 0},
+                {"$type": "set_saturation",
+                 "saturation": 0},
+                {"$type": "set_vignette",
+                 "enabled": False},
+                {"$type": "set_focus_distance",
+                 "focus_distance": 8.0}]
 
-    def _get_output_directory(self):
+    def _get_output_directory(self) -> Path:
         return Path.home().joinpath("TDWImages/MaterialImages")
 
-    def _get_avatar_position(self):
+    def _get_avatar_position(self) -> Dict[str, float]:
         return {"x": -2.58, "y": 2.2, "z": 0}
 
-    def _get_librarian(self, library: str):
+    def _get_librarian(self, library: str) -> MaterialLibrarian:
         return MaterialLibrarian(library + ".json")
 
-    def _get_visualizer_metadata(self):
+    def _get_visualizer_metadata(self) -> List[dict]:
         records = []
+        self._lib: MaterialLibrarian
         for record in self._lib.records:
             records.append({"name": record.name,
                             "type": record.type})
-        records = {"records": records}
         return records
 
     def _record_is_ok(self, record) -> bool:
         return True
 
-    def get_image(self, record: MaterialRecord):
+    def get_image(self, record: MaterialRecord) -> Images:
         self.communicate([self.get_add_material(record.name),
                           {"$type": "set_primitive_visual_material",
                            "id": self.sphere_id,
@@ -277,8 +281,8 @@ class MaterialScreenshotter(_Screenshotter):
                            "name": record.name,
                            "quality": "high"}])
         # Capture the image the following frame to allow it to initialize correctly.
-        resp = self.communicate({"$type": "do_nothing"})
-        return Images(resp[0]), resp[-1]
+        resp = self.communicate([])
+        return Images(resp[0])
 
 
 if __name__ == "__main__":

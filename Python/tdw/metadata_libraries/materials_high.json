@@ -1499,9 +1499,9 @@
             "name": "glass_clear",
             "type": "Glass",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_high/osx/pre-2019.2/glass_clear",
-                "Linux": "https://tdw-public.s3.amazonaws.com/materials_high/linux/pre-2019.2/glass_clear",
-                "Windows": "https://tdw-public.s3.amazonaws.com/materials_high/windows/pre-2019.2/glass_clear"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_high/osx/2020.2/glass_clear",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_high/linux/2020.2/glass_clear",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_high/windows/2020.2/glass_clear"
             }
         },
         "glass_fiber_plain_weave": {

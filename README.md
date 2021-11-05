@@ -1,21 +1,204 @@
 # ThreeDWorld (TDW)
-### A Platform for Interactive Multi-Modal Physical Simulation
 
 **ThreeDWorld (TDW)** is a platform for interactive multi-modal physical simulation. With TDW, users can simulate high-fidelity sensory data and physical interactions between mobile agents and objects in a wide variety of rich 3D environments.
 
-### [Getting Started](https://github.com/threedworld-mit/tdw/blob/master/Documentation/getting_started.md) (Read this first!)
+TDW is a general-purpose tool that allows the user to communicate and manipulate a 3D environment. As such, there's no single "correct" procedure for using TDW. This guide will show you how to start using TDW and how to explore the available options.
 
-### [Code of Conduct](https://github.com/threedworld-mit/tdw/blob/master/code_of_conduct.md)
+- [Code of Conduct](https://github.com/threedworld-mit/tdw/blob/master/code_of_conduct.md)
+- [Changelog](https://github.com/threedworld-mit/tdw/blob/master/Documentation/Changelog.md)
+- [License](https://github.com/threedworld-mit/tdw/blob/master/LICENSE.txt)
+- [Website](http://threedworld.org/)
 
-### [Changelog](https://github.com/threedworld-mit/tdw/blob/master/Documentation/Changelog.md)
+# 1. General guide to TDW
 
-### [Website](http://threedworld.org/)
+## 1.1 Setup
+
+1. [Install TDW](Documentation/lessons/setup/install.md)
+3. [Upgrade TDW](Documentation/lessons/setup/upgrade.md)
+
+## 1.2 Core Concepts
+
+1. [The controller](Documentation/lessons/core_concepts/controller.md)
+2. [Auto-launching the TDW build](Documentation/lessons/core_concepts/launch_build.md)
+3. [Commands](Documentation/lessons/core_concepts/commands.md)
+4. [Design philosophy of TDW](Documentation/lessons/core_concepts/design_philosophy.md)
+5. [Scenes](Documentation/lessons/core_concepts/scenes.md)
+6. [Avatars and cameras](Documentation/lessons/core_concepts/avatars.md)
+7. [Add-ons and the `ThirdPersonCamera`](Documentation/lessons/core_concepts/add_ons.md)
+8. [Objects](Documentation/lessons/core_concepts/objects.md)
+9. [Output data](Documentation/lessons/core_concepts/output_data.md)
+10. [Images](Documentation/lessons/core_concepts/images.md)
+
+## 1.3 Troubleshooting and good coding practices :warning: TODO :warning:
+
+1. Debug logging
+2. Common errors
+3. Good coding practices
+4. Performance optimizations
+5. Performance benchmarks
+
+# 2. Tutorials :warning: TODO :warning:
+
+## 2.1 Objects and Scenes
+
+1. [Overview](Documentation/lessons/objects_and_scenes/overview.md)
+2. [Scripted object placement (floorplan layouts)](Documentation/lessons/objects_and_scenes/floorplans.md)
+3. [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
+4. [Procedural generation (scenes)](Documentation/lessons/objects_and_scenes/proc_gen_room.md)
+5. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
+6. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
+7. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)
+8. [`Raycast` output data](Documentation/lessons/objects_and_scenes/raycast.md)
+9. [`Overlap` output data](Documentation/lessons/objects_and_scenes/overlap.md)
+10. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
+
+High-level API: [Floorplan](Documentation/python/floorplan.md)
+
+## 2.2 3D Model Libraries
+
+1. [Overview](Documentation/lessons/3d_models/overview.md)
+2. [Free models](Documentation/lessons/3d_models/free_models.md)
+3. [Non-free models](Documentation/lessons/3d_models/non_free_models.md)
+4. [Add your own models to TDW](Documentation/lessons/3d_models/custom_models.md)
+5. [Add ShapeNet models to TDW](Documentation/lessons/3d_models/shapenet.md)
+
+## 2.3 Visual Perception
+
+1. [Overview](Documentation/lessons/visual_perception/overview.md)
+2. [Instance ID segmentation colors (`_id` pass)](Documentation/lessons/visual_perception/id.md)
+3. [Semantic category segmentation colors (`_category` pass)](Documentation/lessons/visual_perception/category.md)
+4. [Depth maps (`_depth` and `_depth_simple` passes)](Documentation/lessons/visual_perception/depth.md)
+5. [Motion perception (`_flow` pass)](Documentation/lessons/visual_perception/flow.md)
+6. [Other image passes (`_mask`, `_normals`, and `_albedo` passes)](Documentation/lessons/visual_perception/other_passes.md)
+7. [`Occlusion` output data](Documentation/lessons/visual_perception/occlusion.md)
+
+## 2.4 Camera Controls
+
+1. [Overview](Documentation/lessons/camera/overview.md)
+2. [Move a camera](Documentation/lessons/camera/position.md)
+3. [Rotate a camera](Documentation/lessons/camera/rotation.md)
+4. [Follow an object](Documentation/lessons/camera/follow.md)
+
+## 2.5 Photorealistic Images
+
+1. Overview
+2. Lighting
+3. Post-processing
+4. Depth of field
+5. Anti-aliasing
+
+High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
+
+## 2.6 Physics
+
+1. [Overview](Documentation/lessons/physx/overview.md)
+
+### 2.6.1 Physics (PhysX)
+
+1. [PhysX](Documentation/lessons/physx/physx.md)
+2. [Object physics parameters](Documentation/lessons/physx/physics_objects.md)
+3. [`Rigidbodies` output data](Documentation/lessons/physx/rigidbodies.md)
+4. [`Collision` output data](Documentation/lessons/physx/collisions.md)
+5. [Apply forces to objects](Documentation/lessons/physx/forces.md)
+6. [Composite objects (objects with affordances)](Documentation/lessons/physx/composite_objects.md)
+7. [Skip physics frames](Documentation/lessons/physx/step_physics.md)
+8. [Disable physics](Documentation/lessons/physx/disable_physics.md)
+
+High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
+
+### 2.6.2 Physics (Flex)
+
+1. Flex
+2. Solid actors
+3. Soft actors
+4. Cloth actors
+5. Fluid actors
+6. Source actors
+7. `FlexParticles` output data
+8. Apply forces to Flex objects
+
+High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
+
+## 2.8 Audio
+
+1. Overview
+2. PyImpact (dynamic impact sounds)
+3. Audio perception
+4. Recording audio
+5. Resonance Audio
+
+High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge)
+
+## 2.9 Video Recording
+
+1. Controlling the framerate
+2. Image-only videos
+3. Image+audio videos
+4. The `CinematicCamera` add-on
+
+## 2.10 Agents
+
+[**Overview**](Documentation/lessons/agents/overview.md)
+
+### 2.10.1 Robots
+
+1. [Overview](Documentation/lessons/robots/overview.md)
+2. [The `Robot` add-on](Documentation/lessons/robots/robot_add_on.md)
+3. [Robot arm add-ons](Documentation/lessons/robots/robot_arm.md)
+4. [Robot collision detection](Documentation/lessons/robots/collision_detection.md)
+5. [Select a robot](Documentation/lessons/robots/select_robot.md)
+6. [Add your own robots to TDW](Documentation/lessons/robots/custom_robots.md)
+7. [Robotics API (low-level)](Documentation/lessons/robots/custom_robots.md)
+8. [Add a camera to a robot](Documentation/lessons/robots/add_camera.md)
+
+### 2.10.2 Magnebots
+
+[`magnebot` (external repo)](https://github.com/alters-mit/magnebot)
+
+### 2.10.3 Human user interaction
+
+1. Overview
+2. Virtual reality
+3. Keyboard controls
+
+### 2.13 Humanoid agents ("Replicants")
+
+1. Overview
+3. ???
+
+### 2.10.4 Embodied avatars
+
+1. The `EmbodiedAvatar`
+
+### 2.10.4 Navigation
+
+1. Overview
+2. NavMesh pathfinding
+3. Occupancy maps
+
+### 2.10.5 Multi-agent simulations
+
+1. Overview
+2. State machines
+3. World state objects
+
+## 2.14 Misc. topics
+
+1. C# source code
+2. Freezing your code
+3. BinaryManager
+4. xpra
+5. Creating composite objects
+6. Paintings
+7. Non-physics humanoids
+
+# 3. API Documentation
+
+TODO
+
+## :warning: old documentation :warning:
 
 ### [C# Code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md)
-
-### [License](https://github.com/threedworld-mit/tdw/blob/master/LICENSE.txt)
-
-### [How to upgrade from TDW v1.7 to v1.8](https://github.com/threedworld-mit/tdw/blob/master/Documentation/upgrade_guides/v1.7_to_v1.8.md)
 
 # API
 
@@ -47,13 +230,18 @@
 | [TDWUtils](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/tdw_utils.md) | Utility class.                                               |
 | [AssetBundleCreator](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/asset_bundle_creator.md) | Covert 3D models into TDW-compatible asset bundles.          |
 | [PyImpact](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/py_impact.md) | Generate impact sounds at runtime.                           |
-| [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md) | Child class of `Controller` that has useful debug features.  |
-| [KeyboardController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/keyboard_controller.md) | Child class of `Controller` that can listen for keyboard input. |
 | [FloorplanController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/floorplan_controller.md) | Child class of `Controller` that creates an interior environment and populates it with objects. |
 | [Librarian](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/librarian.md) | "Librarians" hold asset bundle metadata records.             |
 | [FluidTypes](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/fluid_types.md) | Access different NVIDIA Flex fluid types.                    |
 | [Object Init Data](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/object_init_data.md) | Wrapper classes for storing object initialization data.      |
-
+| [AddOn](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/add_on.md) | Overview of how add-ons work and API documentation for the abstract `AddOn` class. |
+| [Benchmark](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/benchmark.md) | An add-on that can be used to benchmark your controller.     |
+| [CinematicCamera](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds a "cinematic" camera to the scene.       |
+| [Debug](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that can help debug your controller.               |
+| [ImageCapture](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that will save images to disk per-frame.           |
+| [Keyboard](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds keyboard controls.                       |
+| [OccupancyMap](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/occupancy_map.md) | Generated navigation occupancy maps for a scene.             |
+| [ThirdPersonCamera](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds a third-person camera to the scene.      |
 
 ##### Backend
 
@@ -70,6 +258,9 @@
 | [PyImpact](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/py_impact.md)                | PyImpact API.                                     |
 | [Audio/Video Recording](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/video.md) | Record audio, video, or audio+video.              |
 | [Remote rendering](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/xpra.md)      | How to render using xpra.                         |
+| [CinematicCamera](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds a "cinematic" camera to the scene. |
+| [ImageCapture](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that will save images to disk per-frame. |
+| [ThirdPersonCamera](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds a third-person camera to the scene. |
 
 # Avatars (Agents)
 
@@ -79,11 +270,15 @@
 | [Depth Maps](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth.md) | How to use depth maps.                                       |
 | [Avatar Movement](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/avatar_movement.md) | Different techniques for moving agents.                      |
 | [Magnebot](https://github.com/alters-mit/magnebot)           | High-level Magnebot API.                      |
+| [CinematicCamera](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds a "cinematic" camera to the scene. |
+| [ImageCapture](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that will save images to disk per-frame. |
+| [ThirdPersonCamera](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds a third-person camera to the scene. |
 
 # Benchmarks and Speed
 
 | Document                                                     | Description                |
 | ------------------------------------------------------------ | -------------------------- |
+| [Benchmark](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/benchmark.md) | An add-on that can be used to benchmark your controller. |
 | [Benchmarks](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/benchmark.md)           | Performance benchmarks.    |
 | [Performance Optimizations](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/performance_optimizations.md) | Increase simulation speed. |
 
@@ -141,6 +336,9 @@
 | [Depth Maps](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth.md) | How to use depth maps.                                       |
 | [Remote rendering](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/xpra.md) | How to render using xpra.                                    |
 | [Observation Data](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/observation_data.md) | Different means of determining what an agent is observing.   |
+| [CinematicCamera](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds a "cinematic" camera to the scene. |
+| [ImageCapture](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that will save images to disk per-frame. |
+| [ThirdPersonCamera](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/cinematic_camera.md) | An add-on that adds a third-person camera to the scene. |
 
 # Robotics
 
@@ -174,13 +372,13 @@
 | [Composite Objects](Documentation/composite_objects/composite_objects.md)<br>[Creating Composite Objects](https://github.com/threedworld-mit/tdw/blob/master/Documentation/composite_objects/creating_composite_objects.md) | Use and create "composite objects".                          |
 | [AssetBundleCreator](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/asset_bundle_creator.md) | API for the `AssetBundleCreator` class (used to convert 3D models into TDW-compatible asset bundles). |
 | [Rotation](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/rotation.md) | Different means of rotating objects and agents in a scene.   |
+| [AddOn](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/add_ons/add_on.md) | Overview of how add-ons work and API documentation for the abstract `AddOn` class. |
 
 # Troubleshooting TDW
 
 | Document                                                     | Description                                           |
 | ------------------------------------------------------------ | ----------------------------------------------------- |
 | [Debug TDW](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/debug_tdw.md) | Several strategies for debugging errors in your code. |
-| [DebugController](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/debug_controller.md) | API for the `DebugController` class.                  |
 | [Depth of Field](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/depth_of_field_and_image_blurriness.md) | Prevent blurry images and increase realism.           |
 | [Performance Optimizations](https://github.com/threedworld-mit/tdw/blob/master/Documentation/benchmark/performance_optimizations.md) | Increase simulation speed.                            |
 | [OS X](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/osx.md) | Common OS X problems and solutions.                   |

@@ -6,6 +6,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | --- | --- |
 | `add_materials.py` | Different ways to add the same material to a scene. |
 | `add_objects.py` | Different ways to add the same object to a scene. |
+| `add_ons.py` | Add multiple add-ons to a controller. |
 | `animate_humanoid.py` | Create a humanoid and play some animations. |
 | `audio.py` | - Create a scene with a reverb space and audio sensor.<br>- Test how object positions can affect reverb. |
 | `avatar_drag.py` | Set the avatar's drag values to control its speed while in mid-air. |
@@ -14,7 +15,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `collisions.py` | Receive collision output data and read it as a `Collisions` object. |
 | `collisions_and_friction.py` | - Listen for collisions between objects.<br>- Adjust the friction values of objects. |
 | `composite_object.py` | Create a composite object from a local asset bundle.<br>Test that the object loaded correctly.<br>Apply sub-object commands to the sub-objects. |
-| `debug.py` | Create a debug controller. After running a simple physics simulation, play back all of the commands. |
+| `debug.py` | Create a controller with a `Debug` module.<br>After running a simple physics simulation, play back all of the commands. |
 | `depth_shader.py` | Capture a _depth image and calculate the depth values of each pixel. |
 | `directional_light.py` | Rotate the directional light in the scene. |
 | `flex_cloth_fixed_particle.py` | Create a Flex cloth object and "fix" one of its corners in mid-air. |
@@ -35,6 +36,7 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `nav_mesh.py` | - Create a NavMeshAvatar and a simple procedurally-generated room.<br>- Tell the avatar to navigate to different destinations. |
 | `objects_and_images.py` | Create a few objects, and avatar, and capture images of the objects. |
 | `occlusion.py` | Use occlusion data to measure to what extent objects in the scene are occluded. |
+| `occupancy_mapper.py` | Generate occupancy maps in a scene populated by objects.<br>For more information, [read this](add_ons/occupancy_map.md). |
 | `paintings.py` | Add a painting to the scene. |
 | `panorama.py` | Capture a series of images around a model to form a 360-degree panorama. |
 | `pass_masks.py` | Create one image per pass of a scene. |
@@ -44,9 +46,12 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `proc_gen_room.py` | - Procedurally generate rooms with different layouts.<br>- Create a ceiling and delete a portion of it.<br>- Set the floor and wall materials. |
 | `proc_gen_room_from_image.py` | Generate a proc-gen room from this image: ![](../../Python/example_controllers/room.png)<br>Each pixel corresponds to a grid point.<br>For more information, see TDWUtils documentation. |
 | `records.py` | - Use Librarian objects to search for model and material records.<br>- Set the visual material(s) of an object.<br>For documentation, see `Documentation/python/librarian.md`. |
+| `robot_add_on.py` | Add multiple robots to the scene. |
 | `robot_arm.py` | Add a robot to TDW and bend its arm. |
 | `robot_camera.py` | Add a camera to a Magnebot. |
+| `robot_impact_sound.py` | Create impact sounds using PyImpact between a robot and an object. |
 | `robot_torque.py` | Add a robot to TDW and bend its arm. |
+| `smpl_humanoid.py` | Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body parameters and play an animation. |
 | `visual_material_quality.py` | Adjust the render quality of visual materials. |
 | `vr.py` | 1. Create an Oculus VR rig.<br>2. Add a few objects to the scene that can be picked up, moved, put down, etc. |
 | `vr_flex.py` | 1. Create an Oculus VR rig.<br>2. Create Flex-enabled objects.<br>3. Receive Flex particle data. |

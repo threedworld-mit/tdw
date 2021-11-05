@@ -1,5 +1,5 @@
 from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState
-from tdw.FBOutput import Environments as Envs
+from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
 from tdw.FBOutput import Bounds as Bouns
@@ -40,10 +40,13 @@ from tdw.FBOutput import TriggerCollision as Trigger
 from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
 from tdw.FBOutput import QuitSignal as QuitSig
+from tdw.FBOutput import CameraMotionComplete as CamMot
 from tdw.FBOutput import MagnebotWheels as MWheels
 from tdw.FBOutput import Occlusion as Occl
 from tdw.FBOutput import Lights as Lites
 from tdw.FBOutput import Categories as Cats
+from tdw.FBOutput import StaticRigidbodies as StatRig
+from tdw.FBOutput import EmptyObjects as Empty
 import numpy as np
 from typing import Tuple, Optional
 
@@ -129,21 +132,21 @@ class OutputData(object):
         return color.R(), color.G(), color.B()
 
 
-class Environments(OutputData):
-    def get_data(self) -> Envs.Environments:
-        return Envs.Environments.GetRootAsEnvironments(self.bytes, 0)
+class SceneRegions(OutputData):
+    def get_data(self) -> SceRegs.SceneRegions:
+        return SceRegs.SceneRegions.GetRootAsSceneRegions(self.bytes, 0)
 
     def get_center(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Envs(index).Center)
+        return OutputData._get_vector3(self.data.Regions(index).Center)
 
     def get_bounds(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Envs(index).Bounds)
+        return OutputData._get_vector3(self.data.Regions(index).Bounds)
 
     def get_id(self, index: int) -> int:
-        return self.data.Envs(index).Id()
+        return self.data.Regions(index).Id()
 
     def get_num(self) -> int:
-        return self.data.EnvsLength()
+        return self.data.RegionsLength()
 
 
 class Transforms(OutputData):
@@ -182,6 +185,20 @@ class Rigidbodies(OutputData):
     def get_angular_velocity(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_vector3(self.data.Objects(index).AngularVelocity)
 
+    def get_sleeping(self, index: int) -> bool:
+        return self.data.Objects(index).Sleeping()
+
+
+class StaticRigidbodies(OutputData):
+    def get_data(self) -> StatRig.StaticRigidbodies:
+        return StatRig.StaticRigidbodies.GetRootAsStaticRigidbodies(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.ObjectsLength()
+
+    def get_id(self, index: int) -> int:
+        return self.data.Objects(index).Id()
+
     def get_mass(self, index: int) -> float:
         return self.data.Objects(index).Mass()
 
@@ -190,6 +207,15 @@ class Rigidbodies(OutputData):
 
     def get_kinematic(self, index: int) -> bool:
         return self.data.Objects(index).Kinematic()
+
+    def get_dynamic_friction(self, index: int) -> float:
+        return self.data.Objects(index).DynamicFriction()
+
+    def get_static_friction(self, index: int) -> float:
+        return self.data.Objects(index).StaticFriction()
+
+    def get_bounciness(self, index: int) -> float:
+        return self.data.Objects(index).Bounciness()
 
 
 class Bounds(OutputData):
@@ -773,6 +799,9 @@ class AudioSources(OutputData):
     def get_is_playing(self, index: int) -> bool:
         return self.data.Objects(index).IsPlaying()
 
+    def get_samples(self) -> np.array:
+        return self.data.SamplesAsNumpy()
+
 
 class Raycast(OutputData):
     def get_data(self) -> Ray.Raycast:
@@ -1057,6 +1086,23 @@ class QuitSignal(OutputData):
         return self.data.Ok()
 
 
+class CameraMotionComplete(OutputData):
+    def get_data(self) -> CamMot.CameraMotionComplete:
+        return CamMot.CameraMotionComplete.GetRootAsCameraMotionComplete(self.bytes, 0)
+
+    def get_avatar_id(self) -> str:
+        return self.data.AvatarId().decode('utf-8')
+
+    def get_motion(self) -> str:
+        motion = self.data.Motion()
+        if motion == 1:
+            return "move"
+        elif motion == 2:
+            return "rotate"
+        else:
+            return "focus"
+
+
 class MagnebotWheels(OutputData):
     def get_data(self) -> MWheels.MagnebotWheels:
         return MWheels.MagnebotWheels.GetRootAsMagnebotWheels(self.bytes, 0)
@@ -1126,3 +1172,22 @@ class Categories(OutputData):
 
     def get_category_color(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_rgb(self.data.CategoryData(index).Color())
+
+
+class EmptyObjects(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy().view(dtype=int)
+        self._positions = self.data.PositionsAsNumpy().view(dtype=np.float32).reshape(-1, 3)
+
+    def get_data(self) -> Empty.EmptyObjects:
+        return Empty.EmptyObjects.GetRootAsEmptyObjects(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return self._ids[index]
+
+    def get_position(self, index: int) -> np.array:
+        return self._positions[index]

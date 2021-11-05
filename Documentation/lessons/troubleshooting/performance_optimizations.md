@@ -10,40 +10,6 @@ By default, TDW is optimized to strike a balance between simulation speed and re
 
 If your controller is running significantly slower than our benchmark controllers, your code might not be optimized.
 
-To benchmark your own code, add the [`Benchmark`](../../python/add_ons/benchmark.md) add-on. In this example, we'll compare the frames per second (FPS) of sending commands without adding a camera to the scene vs. the FPS after adding a camera to the scene:
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.benchmark import Benchmark
-
-c = Controller()
-b = Benchmark()
-c.add_ons.append(b)
-b.start()
-for i in range(1000):
-    c.communicate([])
-b.stop()
-print(b.fps)
-
-commands = [TDWUtils.create_empty_room(12, 12)]
-commands.extend(TDWUtils.create_avatar(position={"x": 0, "y": 1.5, "z": 0}))
-c.communicate(commands)
-b.start()
-for i in range(1000):
-    c.communicate([])
-b.stop()
-print(b.fps)
-c.communicate({"$type": "terminate"})
-```
-
-Output:
-
-```
-778.2112198643591
-518.1101836971412
-```
-
 ## 2. Run TDW on a computer with a GPU
 
 You should run TDW on a high-end machine. **A powerful GPU is the single most decisive factor in overall performance.**
@@ -129,7 +95,6 @@ However, it's possible to load too many models into the scene and run out of sys
 
 Python API:
 
-- [`Benchmark`](../../python/add_ons/benchmark.md) 
 - [`ImageCapture`](../../python/add_ons/image_capture.md) 
 - [`ModelLibrarian`](../../python/librarian/model_librarian.md) 
 

@@ -203,7 +203,6 @@ class PerformanceBenchmarkController(Controller):
         self.benchmark.start()
         for trial_frame in range(1000):
             commands.clear()
-            # Generate a random action from between -1,1 for each action.
             random_action = np.random.uniform(-200, 200, 2)
             # Actual TDW actions.
             for p_idx in range(5):
@@ -241,14 +240,10 @@ class PerformanceBenchmarkController(Controller):
                            'position': {'x': -2, 'y': 1, 'z': -2}},
                           {'$type': 'set_avatar_forward',
                            'forward': {'x': 2, 'y': -1, 'z': 2}},
-                          {'$type': 'send_avatars',
-                           'frequency': 'always'},
                           {'$type': 'send_camera_matrices',
                            'frequency': 'always'},
                           {'$type': 'send_flex_particles',
                            'frequency': 'always'},
-                          {'$type': 'set_pass_masks',
-                           'pass_masks': ['_img']},
                           {'$type': 'create_flex_container',
                            'gravity': {'x': 0, 'y': -9.81, 'z': 0},
                            'radius': 0.1875,

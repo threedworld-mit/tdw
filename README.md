@@ -201,7 +201,12 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 :warning: TODO:warning:
 
 # 4. Performance benchmarks
-:warning: TODO:warning:
+1. [Performance benchmarks](Documentation/benchmark/benchmark.md)
+2. [Image capture](Documentation/benchmark/image_capture.md)
+3. Object data
+4. Command deserialization
+5. Core Unity speed
+6. Determinism
 
 ## :warning: old documentation :warning:
 

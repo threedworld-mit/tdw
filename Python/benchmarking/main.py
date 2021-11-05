@@ -4,8 +4,8 @@ from tdw.backend.performance_benchmark_controller import PerformanceBenchmarkCon
 Run the primary performance benchmarks.
 """
 
-c = PerformanceBenchmarkController()
-fps = c.run(boxes=True, transforms=True)
+c = PerformanceBenchmarkController(launch_build=False)
+fps = c.run(boxes=True, transforms=True, num_frames=20000)
 print("Object data:", fps)
 fps = c.run(images=True, pass_masks=["_img"], png=False, screen_size=256, post_processing=False, render_quality=0)
 print("Image capture (low quality):", fps)

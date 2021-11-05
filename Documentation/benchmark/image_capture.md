@@ -1,6 +1,6 @@
 ##### Performance Benchmarks
 
-# Image Capture
+# Image capture
 
 These benchmarks measure the FPS of image capture and observation data in TDW. Image capture is unavoidably slow.
 

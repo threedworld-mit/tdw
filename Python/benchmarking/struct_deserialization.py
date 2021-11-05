@@ -15,7 +15,7 @@ if __name__ == "__main__":
             {"$type": "rotate_object_to",
              "rotation": {"w": 1, "x": 0, "y": 0, "z": 0},
              "id": o_id}]
-    c = Controller()
+    c = Controller(launch_build=False)
     b = Benchmark()
     c.add_ons.append(b)
     c.communicate([TDWUtils.create_empty_room(12, 12),

@@ -203,10 +203,8 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 # 4. Performance benchmarks
 1. [Performance benchmarks](Documentation/benchmark/benchmark.md)
 2. [Image capture](Documentation/benchmark/image_capture.md)
-3. Object data
-4. Command deserialization
-5. Core Unity speed
-6. Determinism
+3. [Object data](Documentation/benchmark/object_data.md)
+4. [Command deserialization](Documentation/benchmark/command_deserialization.md)
 
 ## :warning: old documentation :warning:
 

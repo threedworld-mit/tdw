@@ -4,34 +4,6 @@
 
 **These benchmarks test the FPS (frames per second) of TDW.** FPS is  _the time elapsed between the controller sending a message and receiving a multipart message from the build._ The FPS can vary depending on the size of the data object, and the process required to generate the data.
 
-### What affects speed?
-
-Because TDW is a general-purpose tool, there are [innumerable optimizations](performance_optimizations.md) you can make. That said, there are four _innate and unavoidable_ causes of potential slowdown: 
-
-#### 2. Command deserialization
-
-[Commands](../api/command_api_guide.md) are sent as JSON strings which are deserialized into objects. The quantity of commands sent per frame will affect the speed of the build.
-
-- [Command deserialization benchmarks](command_deserialization.md)
-
-#### 3. Image capture
-
-**Image capture is the slowest process in TDW.** Unfortunately, the code required to capture an image is part of the Unity Engine and can't be edited.
-
-- [Image capture benchmarks](image_capture.md)
-- [Observation data alternatives](observation_data.md)
-
-#### 4. The main Unity loop
-
-The main Unity loop has an innate and unavoidable slowness. We need to use this loop in order to call any Unity Engine-related functions (e.g. image capture).
-
-- [Unity Engine benchmarks](unity_loop.md)
-
-## What _doesn't_ affect speed?
-
-- [Outputting general object data](object_data.md)
-- [The network socket code library (ZMQ)](unity_loop.md) 
-
 ## Test machine system info
 
 | OS      | CPU             | Memory | GPU                     | Python | TDW   |

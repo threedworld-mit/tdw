@@ -46,6 +46,7 @@ from tdw.FBOutput import Occlusion as Occl
 from tdw.FBOutput import Lights as Lites
 from tdw.FBOutput import Categories as Cats
 from tdw.FBOutput import StaticRigidbodies as StatRig
+from tdw.FBOutput import EmptyObjects as Empty
 import numpy as np
 from typing import Tuple, Optional
 
@@ -1171,3 +1172,22 @@ class Categories(OutputData):
 
     def get_category_color(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_rgb(self.data.CategoryData(index).Color())
+
+
+class EmptyObjects(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy().view(dtype=int)
+        self._positions = self.data.PositionsAsNumpy().view(dtype=np.float32).reshape(-1, 3)
+
+    def get_data(self) -> Empty.EmptyObjects:
+        return Empty.EmptyObjects.GetRootAsEmptyObjects(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return self._ids[index]
+
+    def get_position(self, index: int) -> np.array:
+        return self._positions[index]

@@ -23,6 +23,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | `rotate_sensor_container_towards_position` | Rotate the sensor container towards a position at a given angular speed per frame. |
 | `rotate_sensor_container_towards_rotation` | Rotate the sensor container towards a target rotation.       |
 | `send_static_rigidbodies`                  | Request static rigidbody data (mass, kinematic state, etc.)  |
+| `attach_empty_object`                      | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. |
+| `send_empty_objects`                       | Send data each empty object in the scene.                    |
 
 ### Renamed Commands
 
@@ -44,6 +46,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | ---------------------- | --------------------------------------------------- |
 | `CameraMotionComplete` | Announce that a camera motion has been completed.   |
 | `StaticRigidbodies`    | Static rigidbody data (mass, kinematic state, etc.) |
+| `EmptyObjects`         | The position of each empty object in the scene.     |
 
 #### Renamed Output Data
 

@@ -810,7 +810,7 @@ Initialize a scene environment with procedurally generated "terrain" using Perli
 | `"subdivisions"` | int | The number of subdivisions of the mesh. Increase this number to smooth out the mesh. | 1 |
 | `"turbulence"` | float | How "hilly" the terrain is. | 1 |
 | `"max_y"` | float | The maximum height of the terrain. | 1 |
-| `"visual_material"` | string | The visual material for the terrain. This visual material must have already been added to the simulation via the [add_material](#add_material) command or [`get_add_material`](../python/controller.md/#get_add_materialself-material_name-str-library-str-----dict)() controller wrapper function. If empty, a gray default material will be used. | "" |
+| `"visual_material"` | string | The visual material for the terrain. This visual material must have already been added to the simulation via the [add_material](#add_material) command or [get_add_material](../python/controller.md/#get_add_materialself-material_name-str-library-str-----dict)() controller wrapper function. If empty, a gray default material will be used. | "" |
 | `"color"` | Color | The color of the terrain. | {"r": 1, "g": 1, "b": 1, "a": 1} |
 | `"texture_scale"` | Vector2 | If visual_material isn't an empty string, this will set the UV texture scale. | {"x": 1, "y": 1} |
 | `"dynamic_friction"` | float | The dynamic friction of the terrain. | 0.25 |

@@ -1376,7 +1376,7 @@ These commands add material asset bundles to the scene.
 Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. [set_visual_material](#set_visual_material)), you must first send this command. 
 
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/material_librarian.md`</font>
-- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_material` in the [Controller API](../python/controller.md).</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`get_add_material`](../python/controller.md/#get_add_materialself-material_name-str-library-str-----dict) in the [Controller API](../python/controller.md).</font>
 
 ```python
 {"$type": "add_material", "name": "string", "url": "string"}

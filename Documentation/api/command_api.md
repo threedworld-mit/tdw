@@ -810,7 +810,7 @@ Initialize a scene environment with procedurally generated "terrain" using Perli
 | `"subdivisions"` | int | The number of subdivisions of the mesh. Increase this number to smooth out the mesh. | 1 |
 | `"turbulence"` | float | How "hilly" the terrain is. | 1 |
 | `"max_y"` | float | The maximum height of the terrain. | 1 |
-| `"visual_material"` | string | The visual material for the terrain. This visual material must have already been added to the simulation via the add_material command or get_add_material() controller wrapper function. If empty, a gray default material will be used. | "" |
+| `"visual_material"` | string | The visual material for the terrain. This visual material must have already been added to the simulation via the [add_material](#add_material) command or get_add_material() controller wrapper function. If empty, a gray default material will be used. | "" |
 | `"color"` | Color | The color of the terrain. | {"r": 1, "g": 1, "b": 1, "a": 1} |
 | `"texture_scale"` | Vector2 | If visual_material isn't an empty string, this will set the UV texture scale. | {"x": 1, "y": 1} |
 | `"dynamic_friction"` | float | The dynamic friction of the terrain. | 0.25 |
@@ -4365,7 +4365,7 @@ Set the drag of an object's RigidBody. Both drag and angular_drag can be safely 
 
 Set the material of an object created via load_primitive_from_resources 
 
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the add_material command first.</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
 
 ```python
 {"$type": "set_primitive_visual_material", "name": "string", "id": 1}
@@ -4573,7 +4573,7 @@ Set the scale of the tiling of the material's main texture.
 
 Set a visual material of an object or one of its sub-objects. 
 
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the add_material command first.</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
 
 ```python
 {"$type": "set_visual_material", "material_index": 1, "material_name": "string", "object_name": "string", "id": 1}
@@ -5445,7 +5445,7 @@ These commands add a material to part of the proc-gen room.
 
 Set the material of a procedurally-generated ceiling. 
 
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the add_material command first.</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
 
 ```python
 {"$type": "set_proc_gen_ceiling_material", "name": "string"}
@@ -5461,7 +5461,7 @@ Set the material of a procedurally-generated ceiling.
 
 Set the material of a procedurally-generated floor. 
 
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the add_material command first.</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
 
 ```python
 {"$type": "set_proc_gen_floor_material", "name": "string"}
@@ -5477,7 +5477,7 @@ Set the material of a procedurally-generated floor.
 
 Set the material of all procedurally-generated walls. 
 
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the add_material command first.</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
 
 ```python
 {"$type": "set_proc_gen_walls_material", "name": "string"}

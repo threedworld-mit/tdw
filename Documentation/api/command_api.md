@@ -66,7 +66,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`add_material`](#add_material) | Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. set_visual_material), you must first send this command.  |
+| [`add_material`](#add_material) | Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. [set_visual_material](set_visual_material), you must first send this command.  |
 | [`send_material_properties_report`](#send_material_properties_report) | Send a report of the material property values. Each report will be a separate LogMessage.  |
 | [`send_material_report`](#send_material_report) | Tell the build to send a report of a material asset bundle. Each report will be a separate LogMessage.  |
 
@@ -1373,7 +1373,7 @@ These commands add material asset bundles to the scene.
 
 ## **`add_material`**
 
-Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. set_visual_material), you must first send this command. 
+Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. [set_visual_material](#set_visual_material)), you must first send this command. 
 
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/material_librarian.md`</font>
 - <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_material` in the [Controller API](../python/controller.md).</font>

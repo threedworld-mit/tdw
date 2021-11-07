@@ -66,7 +66,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`add_material`](#add_material) | Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. [set_visual_material](set_visual_material), you must first send this command.  |
+| [`add_material`](#add_material) | Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. [set_visual_material](#set_visual_material), you must first send this command.  |
 | [`send_material_properties_report`](#send_material_properties_report) | Send a report of the material property values. Each report will be a separate LogMessage.  |
 | [`send_material_report`](#send_material_report) | Tell the build to send a report of a material asset bundle. Each report will be a separate LogMessage.  |
 

@@ -181,7 +181,7 @@ for i in range(5):
                                        secondary_mass=100,
                                        resonance=0.2)
     sound.write(path=output_directory.joinpath(f"{i}.wav"))
-
+    py_impact.reset()
 ```
 
 ## Example D: Generate impact sounds without an object
@@ -269,6 +269,7 @@ while theta < 360:
                                                      secondary_amp=0.5,
                                                      secondary_mass=100,
                                                      resonance=0.1))
+    py_impact.reset(initial_amp=0.9)
     sleep(0.15)
     theta += d_theta
 sleep(0.15)
@@ -408,7 +409,7 @@ for i in range(3):
 for i in range(5):
     sound: Optional[Base64Sound] = None
     for j in range(5):
-        s = py_impact.get_scrape_sound(velocity=np.array([4, 0, 0]),
+        s = py_impact.get_scrape_sound(velocity=np.array([1.5, 0, 0]),
                                        contact_normals=contact_normals,
                                        primary_id=0,
                                        primary_material="metal_1",
@@ -422,7 +423,7 @@ for i in range(5):
                                        scrape_material=ScrapeMaterial.ceramic)
         if sound is None:
             sound = s
-        else:
+        elif s is not None:
             sound.bytes += s.bytes
             sound.length += s.length
     sound.write(path=output_directory.joinpath(f"{i}.wav"))
@@ -466,15 +467,15 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 # Initialize PyImpact but DON'T add it as an add-on.
 py_impact_floor = ResonanceAudioInitializer.AUDIO_MATERIALS[resonance_audio_floor]
 impact_sound_floor = py_impact_floor.name + "_4"
-py_impact = PyImpact(initial_amp=0.9, floor=py_impact_floor, resonance_audio=True)
+py_impact = PyImpact(initial_amp=0.9, floor=py_impact_floor, resonance_audio=True, rng=np.random.RandomState(0))
 
 # Generate contact normals and set the collision velocity.
 contact_normals: List[np.array] = list()
 for i in range(3):
     contact_normals.append(np.array([0, 1, 0]))
-velocity = np.array([4, 0, 0])
+velocity = np.array([1.5, 0, 0])
 
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("impact_with_controller/audio.wav")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("scrape_with_controller/audio.wav")
 print(f"Audio will be saved to: {path}")
 if not path.parent.exists():
     path.parent.mkdir(parents=True)
@@ -513,6 +514,7 @@ while theta < 360:
                                                          secondary_mass=100,
                                                          resonance=0.1,
                                                          scrape_material=ScrapeMaterial.ceramic))
+        py_impact.reset()
     sleep(0.15)
     theta += d_theta
 sleep(0.15)

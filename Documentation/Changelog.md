@@ -23,6 +23,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | `rotate_sensor_container_towards_position` | Rotate the sensor container towards a position at a given angular speed per frame. |
 | `rotate_sensor_container_towards_rotation` | Rotate the sensor container towards a target rotation.       |
 | `send_static_rigidbodies`                  | Request static rigidbody data (mass, kinematic state, etc.)  |
+| `parent_audio_source_to_object`            | Parent an audio source to an object. When the object moves, the audio source will move with it. |
+| `send_robot_joint_velocities`              | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. |
+| `attach_empty_object`                      | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. |
+| `send_empty_objects`                       | Send data each empty object in the scene.                    |
 
 ### Renamed Commands
 
@@ -40,9 +44,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 
 #### New Output Data
 
-| Output Data         | Description                                         |
-| ------------------- | --------------------------------------------------- |
-| `StaticRigidbodies` | Static rigidbody data (mass, kinematic state, etc.) |
+
+| Output Data            | Description                                         |
+| ---------------------- | --------------------------------------------------- |
+| `StaticRigidbodies`    | Static rigidbody data (mass, kinematic state, etc.) |
+| `RobotJointVelocities` | Velocity for a robot in the scene.                  |
+| `EmptyObjects`         | The position of each empty object in the scene.     |
 
 #### Renamed Output Data
 

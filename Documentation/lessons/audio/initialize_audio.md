@@ -110,7 +110,7 @@ You can call `audio_intializer.play(path, position)` to play a .wav file.
 - `path` is the path to the .wav file
 - `position` is the position of the audio source. 
 - You can optionally set the parameter `audio_id` to an integer. Each audio source has a unique ID. If you don't set this parameter, a unique ID will be generated.
-- You can optionally set the parameter `object_id`. If you do, the audio source will be parented to the corresponding object such that whenever the object moves, the source will move with it. (Internally, this is handled with via the command [`parent_audio_source_to_object`](../../api/command_api.md#parent_audio_source_to_object).)
+- You can optionally set the parameter `object_id`. If you do, the audio source will be parented to the corresponding object such that whenever the object moves, the source will move with it. Internally, this is handled with via the command [`parent_audio_source_to_object`](../../api/command_api.md#parent_audio_source_to_object).
 
 This `play()` function loads the .wav file and converts it into a useable byte array. It then tells the build to play the audio by sending [`play_audio_data`](../../api/command_api.md#play_audio_data).
 
@@ -121,10 +121,6 @@ from time import sleep
 from tdw.controller import Controller
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.audio_initializer import AudioInitializer
-
-"""
-Initialize and play audio.
-"""
 
 c = Controller()
 object_id_0 = c.get_unique_id()

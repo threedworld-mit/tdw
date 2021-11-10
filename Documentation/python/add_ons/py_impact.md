@@ -40,7 +40,6 @@ c.communicate({"$type": "terminate"})
 | `SILENCE_50MS` | AudioSegment | 50ms of silence. Used for scrapes. |
 | `SCRAPE_MAX_VELOCITY` | float | The maximum velocity allowed for a scrape. |
 | `SCRAPE_M_PER_PIXEL` | float | Meters per pixel on the scrape surface. |
-| `SCRAPE_TARGET_DBFS` | float | The target decibels for scrapes. |
 | `DEFAULT_AMP` | float | The default amp value for objects. |
 | `DEFAULT_MATERIAL` | AudioMaterial | The default [material](../physics_audio/audio_material.md) for objects. |
 | `DEFAULT_RESONANCE` | float | The default resonance value for objects. |

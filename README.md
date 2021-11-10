@@ -167,7 +167,10 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 
 ### 2.10.4 Embodied avatars
 
-1. The `EmbodiedAvatar`
+1. [Overview](Documentation/lessons/embodied_avatar/overview.md)
+1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatar/embodied_avatar.md)
+1. Obsolete embodied avatars
+1. Low-level embodied avatar API
 
 ### 2.10.4 Navigation
 

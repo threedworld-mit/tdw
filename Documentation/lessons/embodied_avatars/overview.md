@@ -38,6 +38,15 @@ All other types of avatars are embodied avatars.
 
 **In general, we don't recommend you use embodied avatars.** Embodied avatars can be useful for prototyping but in general they're either obsolete or less sophisticated than other agents or both. Avatars are one of the oldest components of TDW and they've been gradually superseded.
 
+The following avatar types *won't* be covered in this tutorial because they are obsolete. They exist in TDW only for the sake of maintaining support for old projects:
+
+- `"A_Img_Caps"`
+- `"A_Nav_Mesh"`
+- `"A_StickyMitten_Adult"`
+- `"A_StickyMitten_Baby"`
+
+
+
 ***
 
 **Next: [The `EmbodiedAvatar`](embodied_avatar.md)**
@@ -53,17 +62,6 @@ Python API:
 Command API:
 
 - [`create_avatar`](../../api/command_api.md#create_avatar)
-
-These avatars are actively supported and will be covered in this tutorial:
-
-- `"A_Simple_Body"` (the `EmbodiedAvatar` add-on)
-
-The following avatar types *won't* be covered in this tutorial because they are obsolete. They exist in TDW only for the sake of maintaining support for old projects:
-
-- `"A_Img_Caps"`
-- `"A_Nav_Mesh"`
-- `"A_StickyMitten_Adult"`
-- `"A_StickyMitten_Baby"`
 
 
 

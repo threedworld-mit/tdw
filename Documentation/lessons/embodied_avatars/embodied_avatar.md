@@ -152,7 +152,7 @@ Reset camera rotation via `embodied_avatar.reset_camera()`.
 
 ***
 
-**Next: [Obsolete embodied avatars](obsolete_embodied_avatars.md)**
+**This is the last document in the "Embodied Avatars" tutorial.**
 
 [Return to the README](../../../README.md)
 

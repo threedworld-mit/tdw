@@ -54,20 +54,11 @@ Replicants are human-like, or "humanoid" agents. They are embodied and physicall
 
 **Trade-offs:** Unlike robots or Magnebots, replicant joints aren't motorized. If a replicant tries to pick up a large object, it might act *as if* the object is too heavy to lift but the physics engine alone won't determine the outcome of the action.
 
-### Embodied avatar
+### [Embodied avatar](../embodied_avatars/overview.md)
 
 Embodied avatars are simple geometric shapes with image sensors. They can be useful for prototyping.
 
 **Trade-offs:** Embodied avatars are simple. They can't interact with objects except by running into them.
-
-***
-
-## Additional tutorials for special topics
-
-| Tutorial                | Summary                                                      |
-| ----------------------- | ------------------------------------------------------------ |
-| Navigation              | Built-in navigation aids such as pathfinding and occupancy maps. |
-| Multi-agent simulations | How to enable and organize multi-agent simulations.          |
 
 ***
 

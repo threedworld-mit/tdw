@@ -152,7 +152,7 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 
 ### 2.10.2 Magnebots
 
-[`magnebot` (external repo)](https://github.com/alters-mit/magnebot)
+1. [Magnebot API (external repo)](https://github.com/alters-mit/magnebot)
 
 ### 2.10.3 Human user interaction
 
@@ -160,38 +160,34 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 2. Virtual reality
 3. Keyboard controls
 
-### 2.13 Humanoid agents ("Replicants")
+### 2.10.4 Humanoid agents ("Replicants")
+
+TODO
+
+### 2.10.5 Embodied avatars
+
+1. [Overview](Documentation/lessons/embodied_avatars/overview.md)
+1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
+
+## 2.11 Multi-agent simulations
 
 1. Overview
-3. ???
+2. Good coding practices
 
-### 2.10.4 Embodied avatars
-
-1. [Overview](Documentation/lessons/embodied_avatar/overview.md)
-1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatar/embodied_avatar.md)
-1. Obsolete embodied avatars
-1. Low-level embodied avatar API
-
-### 2.10.4 Navigation
+## 2.12 Navigation
 
 1. Overview
 2. NavMesh pathfinding
 3. Occupancy maps
 
-### 2.10.5 Multi-agent simulations
-
-1. Overview
-2. State machines
-3. World state objects
-
-## 2.11 Non-physics objects
+## 2.13 Non-physics objects
 
 1. Overview
 2. Position markers
 3. Paintings
 4. Non-physics humanoids
 
-## 2.12 Misc. topics
+## 2.14 Misc. topics
 
 1. C# source code
 2. Freezing your code

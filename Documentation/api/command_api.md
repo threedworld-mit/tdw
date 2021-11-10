@@ -67,7 +67,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`add_material`](#add_material) | Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. set_visual_material), you must first send this command.  |
+| [`add_material`](#add_material) | Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. [set_visual_material](#set_visual_material), you must first send this command.  |
 | [`send_material_properties_report`](#send_material_properties_report) | Send a report of the material property values. Each report will be a separate LogMessage.  |
 | [`send_material_report`](#send_material_report) | Tell the build to send a report of a material asset bundle. Each report will be a separate LogMessage.  |
 
@@ -280,6 +280,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
+| [`attach_empty_object`](#attach_empty_object) | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
@@ -568,6 +569,7 @@
 | --- | --- |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
+| [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
@@ -733,7 +735,7 @@ Create an Oculus VR rig. For more information, see: Documentation/misc_frontend/
 Destroy all objects and avatars in the scene. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command [unload_asset_bundles](#unload_asset_bundles).</font>
 
 ```python
 {"$type": "destroy_all_objects"}
@@ -849,7 +851,7 @@ Initialize a scene environment with procedurally generated "terrain" using Perli
 | `"subdivisions"` | int | The number of subdivisions of the mesh. Increase this number to smooth out the mesh. | 1 |
 | `"turbulence"` | float | How "hilly" the terrain is. | 1 |
 | `"max_y"` | float | The maximum height of the terrain. | 1 |
-| `"visual_material"` | string | The visual material for the terrain. This visual material must have already been added to the simulation via the add_material command or get_add_material() controller wrapper function. If empty, a gray default material will be used. | "" |
+| `"visual_material"` | string | The visual material for the terrain. This visual material must have already been added to the simulation via the [add_material](#add_material) command or [Controller.get_add_material()](../python/controller.md). If empty, a gray default material will be used. | "" |
 | `"color"` | Color | The color of the terrain. | {"r": 1, "g": 1, "b": 1, "a": 1} |
 | `"texture_scale"` | Vector2 | If visual_material isn't an empty string, this will set the UV texture scale. | {"x": 1, "y": 1} |
 | `"dynamic_friction"` | float | The dynamic friction of the terrain. | 0.25 |
@@ -877,7 +879,7 @@ Rotate the HDRI skybox by a given value and the sun light by the same value in t
 
 Tell the build to send data of a path on the NavMesh from the origin to the destination. 
 
-- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via [add_scene](#add_scene) already have NavMeshes.Proc-gen scenes don't; send [bake_nav_mesh](#bake_nav_mesh) to create one.</font>
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`NavMeshPath`](output_data.md#NavMeshPath)</font>
@@ -1255,7 +1257,7 @@ These commands load an asset bundle (if it hasn't been loaded already), and then
 Add a scene to TDW. Unloads the current scene if any (including any created by the load_scene command). 
 
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/scene_librarian.md`</font>
-- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_scene` in the [Controller API](../python/controller.md).</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_scene()`](../python/controller.md).</font>
 
 ```python
 {"$type": "add_scene", "name": "string", "url": "string"}
@@ -1282,7 +1284,7 @@ These commands load an asset bundle with a specific object (model, material, etc
 Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange. 
 
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/hdri_skybox_librarian.md`</font>
-- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_hdri_skybox` in the [Controller API](../python/controller.md).</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_hdri_skybox()`](../python/controller.md).</font>
 
 ```python
 {"$type": "add_hdri_skybox", "exposure": 0.125, "initial_skybox_rotation": 0.125, "sun_elevation": 0.125, "sun_initial_angle": 0.125, "sun_intensity": 0.125, "name": "string", "url": "string"}
@@ -1305,7 +1307,7 @@ Add a single HDRI skybox to the scene. It is highly recommended that the values 
 Load an animation clip asset bundle into memory. 
 
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/add_humanoid_animation.md`</font>
-- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_humanoid_animation` in the [Controller API](../python/controller.md).</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_humanoid_animation()`](../python/controller.md).</font>
 
 ```python
 {"$type": "add_humanoid_animation", "name": "string", "url": "string"}
@@ -1323,7 +1325,7 @@ Load an animation clip asset bundle into memory.
 Add a robot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md 
 
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/robot_librarian.md`</font>
-- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_robot` in the [Controller API](../python/controller.md).</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_robot()`](../python/controller.md).</font>
 
 ```python
 {"$type": "add_robot", "name": "string", "url": "string"}
@@ -1352,7 +1354,7 @@ These commands add a humanoid model to the scene.
 Add a humanoid model to the scene. 
 
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/humanoid_librarian.md`</font>
-- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_humanoid` in the [Controller API](../python/controller.md).</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_humanoid()`](../python/controller.md).</font>
 
 ```python
 {"$type": "add_humanoid", "id": 1, "name": "string", "url": "string"}
@@ -1412,10 +1414,10 @@ These commands add material asset bundles to the scene.
 
 ## **`add_material`**
 
-Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. set_visual_material), you must first send this command. 
+Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. [set_visual_material](#set_visual_material), you must first send this command. 
 
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/material_librarian.md`</font>
-- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_material` in the [Controller API](../python/controller.md).</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_material()`](../python/controller.md).</font>
 
 ```python
 {"$type": "add_material", "name": "string", "url": "string"}
@@ -1483,7 +1485,7 @@ These commands add model asset bundles to the scene.
 Add a single object from a model library or from a local asset bundle to the scene. 
 
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/model_librarian.md`</font>
-- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: `get_add_object` in the [Controller API](../python/controller.md).</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_object()`](../python/controller.md).</font>
 
 ```python
 {"$type": "add_object", "id": 1, "name": "string", "url": "string"}
@@ -3706,7 +3708,7 @@ How objects in the scene will "carve" the NavMesh.
 
 Given a position, try to get the nearest position on the NavMesh. 
 
-- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via [add_scene](#add_scene) already have NavMeshes.Proc-gen scenes don't; send [bake_nav_mesh](#bake_nav_mesh) to create one.</font>
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Exactly once**</font>
@@ -3771,12 +3773,29 @@ The shape of the trigger collider.
 
 ***
 
+## **`attach_empty_object`**
+
+Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects
+
+
+```python
+{"$type": "attach_empty_object", "empty_object_id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"empty_object_id"` | int | The ID of the empty object. This doesn't have to be the same as the object ID. | |
+| `"position"` | Vector3 | The position of the empty object relative to the parent object, in the parent object's local coordinate space. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`destroy_object`**
 
 Destroy an object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command [unload_asset_bundles](#unload_asset_bundles).</font>
 
 ```python
 {"$type": "destroy_object", "id": 1}
@@ -3792,7 +3811,7 @@ Destroy an object.
 
 Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command. 
 
-- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via [add_scene](#add_scene) already have NavMeshes.Proc-gen scenes don't; send [bake_nav_mesh](#bake_nav_mesh) to create one.</font>
 
 ```python
 {"$type": "make_nav_mesh_obstacle", "id": 1}
@@ -3887,7 +3906,7 @@ Parent an object to an avatar. The object won't change its position or rotation 
 
 Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle). 
 
-- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via [add_scene](#add_scene) already have NavMeshes.Proc-gen scenes don't; send [bake_nav_mesh](#bake_nav_mesh) to create one.</font>
 
 ```python
 {"$type": "remove_nav_mesh_obstacle", "id": 1}
@@ -4017,7 +4036,7 @@ Set the albedo RGBA color of an object.
 
 Make an object graspable for a VR rig with Oculus touch controllers. 
 
-- <font style="color:green">**VR**: This command will only work if you've already sent `create_vr_rig`.</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
 
 ```python
 {"$type": "set_graspable", "id": 1}
@@ -4154,7 +4173,7 @@ Assign the FlexContainer of the object.
 Destroy the Flex object. This will leak memory (due to a bug in the Flex library that we can't fix), but will leak <emphasis>less</emphasis> memory than destroying a Flex-enabled object with <computeroutput>destroy_object</computeroutput>. 
 
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command [unload_asset_bundles](#unload_asset_bundles).</font>
 
 ```python
 {"$type": "destroy_flex_object", "id": 1}
@@ -4559,7 +4578,7 @@ Set the drag of an object's RigidBody. Both drag and angular_drag can be safely 
 
 Set the material of an object created via load_primitive_from_resources 
 
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the add_material command first.</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
 
 ```python
 {"$type": "set_primitive_visual_material", "name": "string", "id": 1}
@@ -4633,7 +4652,7 @@ These commands affect humanoids currently in the scene. To add a humanoid, see a
 
 Destroy a humanoid. 
 
-- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command `unload_asset_bundles`.</font>
+- <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command [unload_asset_bundles](#unload_asset_bundles).</font>
 
 ```python
 {"$type": "destroy_humanoid", "id": 1}
@@ -4689,7 +4708,7 @@ These commands can only be used for sub-objects of a composite object. Additiona
 
 Set the target velocity and force of a motor. 
 
-- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the `send_composite_objects` command.</font>
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
 
     - <font style="color:deepskyblue">**Type:** `motor`</font>
 
@@ -4709,7 +4728,7 @@ Set the target velocity and force of a motor.
 
 Set the target position of a spring. 
 
-- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the `send_composite_objects` command.</font>
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
 
     - <font style="color:deepskyblue">**Type:** `spring`</font>
 
@@ -4728,7 +4747,7 @@ Set the target position of a spring.
 
 Turn a light on or off. 
 
-- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the `send_composite_objects` command.</font>
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
 
     - <font style="color:deepskyblue">**Type:** `light`</font>
 
@@ -4772,7 +4791,7 @@ Set the scale of the tiling of the material's main texture.
 
 Set a visual material of an object or one of its sub-objects. 
 
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the add_material command first.</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
 
 ```python
 {"$type": "set_visual_material", "material_index": 1, "material_name": "string", "object_name": "string", "id": 1}
@@ -5623,7 +5642,7 @@ These commands add a material to part of the proc-gen room.
 
 Set the material of a procedurally-generated ceiling. 
 
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the add_material command first.</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
 
 ```python
 {"$type": "set_proc_gen_ceiling_material", "name": "string"}
@@ -5639,7 +5658,7 @@ Set the material of a procedurally-generated ceiling.
 
 Set the material of a procedurally-generated floor. 
 
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the add_material command first.</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
 
 ```python
 {"$type": "set_proc_gen_floor_material", "name": "string"}
@@ -5655,7 +5674,7 @@ Set the material of a procedurally-generated floor.
 
 Set the material of all procedurally-generated walls. 
 
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the add_material command first.</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
 
 ```python
 {"$type": "set_proc_gen_walls_material", "name": "string"}
@@ -5750,7 +5769,7 @@ Destroy a robot in the scene.
 
 Make a specific robot a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. 
 
-- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via [add_scene](#add_scene) already have NavMeshes.Proc-gen scenes don't; send [bake_nav_mesh](#bake_nav_mesh) to create one.</font>
 
 ```python
 {"$type": "make_robot_nav_mesh_obstacle"}
@@ -5814,7 +5833,7 @@ Parent an avatar to a robot. The avatar's position and rotation will always be r
 
 Remove a NavMesh obstacle from a robot (see make_robot_nav_mesh_obstacle). 
 
-- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via `add_scene` already have NavMeshes.Proc-gen scenes don't; send `bake_nav_mesh` to create one.</font>
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via [add_scene](#add_scene) already have NavMeshes.Proc-gen scenes don't; send [bake_nav_mesh](#bake_nav_mesh) to create one.</font>
 
 ```python
 {"$type": "remove_robot_nav_mesh_obstacle"}
@@ -7035,6 +7054,38 @@ Options for when to send data.
 
 ***
 
+## **`send_empty_objects`**
+
+Send data each empty object in the scene. See: attach_empty_object 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`EmptyObjects`](output_data.md#EmptyObjects)</font>
+
+```python
+{"$type": "send_empty_objects"}
+```
+
+```python
+{"$type": "send_empty_objects", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_humanoids`**
 
 Send transform (position, rotation, etc.) data for humanoids in the scene. 
@@ -7238,7 +7289,7 @@ Send data for a VR Rig currently in the scene.
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`VRRig`](output_data.md#VRRig)</font>
-- <font style="color:green">**VR**: This command will only work if you've already sent `create_vr_rig`.</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
 
 ```python
 {"$type": "send_vr_rig"}
@@ -7616,7 +7667,7 @@ These commands utilize VR in TDW.
 
 Attach an avatar (A_Img_Caps_Kinematic) to the VR rig in the scene. This avatar will work like all others, i.e it can send images and other data. The avatar will match the position and rotation of the VR rig's head. By default, this feature is disabled because it slows down the simulation's FPS. 
 
-- <font style="color:green">**VR**: This command will only work if you've already sent `create_vr_rig`.</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
 
 ```python
 {"$type": "attach_avatar_to_vr_rig", "id": "string"}
@@ -7632,7 +7683,7 @@ Attach an avatar (A_Img_Caps_Kinematic) to the VR rig in the scene. This avatar 
 
 Destroy the current VR rig. 
 
-- <font style="color:green">**VR**: This command will only work if you've already sent `create_vr_rig`.</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
 
 ```python
 {"$type": "destroy_vr_rig"}
@@ -7644,7 +7695,7 @@ Destroy the current VR rig.
 
 Teleport the VR rig to a new position. 
 
-- <font style="color:green">**VR**: This command will only work if you've already sent `create_vr_rig`.</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
 
 ```python
 {"$type": "teleport_vr_rig", "position": {"x": 1.1, "y": 0.0, "z": 0}}

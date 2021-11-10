@@ -5,9 +5,9 @@
 **Resonance Audio** is TDW's advanced audio system. Resonance audio supports:
 
 - Advanced audio spatialization
-- Audio occlusion (i.e. a wall between the audio source and the listener will affect the output)
-- Physics-based reverb. The floor, ceiling, and walls each have "resonance audio materials". 
-- Objects in the system will affect the audio (in other words, an object dropped in an empty room will sound very different than an object dropped in a room populated by many objects)
+- Audio occlusion, i.e. a wall between the audio source and the listener will affect the output.
+- Physics-based reverb. The floor, ceiling, and walls each have "resonance audio materials" 
+- Objects in the system will affect the audio. In other words, an object dropped in an empty room will sound very different than an object dropped in a room populated by many objects.
 
 Resonance Audio is best used with interior room environments.
 
@@ -28,7 +28,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.resonance_audio_initializer import ResonanceAudioInitializer
 
-c = Controller(launch_build=False)
+c = Controller()
 audio_initializer = ResonanceAudioInitializer(avatar_id="a", framerate=60)
 c.add_ons.append(audio_initializer)
 commands = [TDWUtils.create_empty_room(12, 12)]
@@ -44,7 +44,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.audio_initializer import AudioInitializer
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
-c = Controller(launch_build=False)
+c = Controller()
 audio_initializer = AudioInitializer(avatar_id="a", framerate=60)
 camera = ThirdPersonCamera(avatar_id="a")
 # Note the order: The camera must be added before audio is initialized.
@@ -81,7 +81,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.resonance_audio_initializer import ResonanceAudioInitializer
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
-c = Controller(launch_build=False)
+c = Controller()
 audio_initializer = ResonanceAudioInitializer(avatar_id="a",
                                               framerate=60,
                                               floor="tile",
@@ -158,7 +158,7 @@ You can call `audio_intializer.play(path, position)` to play a .wav file.
 - `path` is the path to the .wav file
 - `position` is the position of the audio source. 
 - You can optionally set the parameter `audio_id`. Each audio source has a unique ID. If you don't set this parameter, a unique ID will be generated.
-- You can optionally set the parameter `object_id`. If you do, the audio source will be parented to the corresponding object such that whenever the object moves, the source will move with it. (Internally, this is handled with via the command [`parent_audio_source_to_object`](../../api/command_api.md#parent_audio_source_to_object).)
+- You can optionally set the parameter `object_id`. If you do, the audio source will be parented to the corresponding object such that whenever the object moves, the source will move with it. Internally, this is handled with via the command [`parent_audio_source_to_object`](../../api/command_api.md#parent_audio_source_to_object).
 
 This `play()` function loads the .wav file and converts it into a useable byte array. It then tells the build to play the audio by sending [`play_point_source_data`](../../api/command_api.md#play_point_source_data).
 

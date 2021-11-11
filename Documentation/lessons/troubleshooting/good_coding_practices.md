@@ -24,7 +24,7 @@ resp = c.communicate([TDWUtils.create_empty_room(12, 12),
                       c.get_add_object("iron_box",
                                        object_id=object_id,
                                        position={"x": 0, "y": 1.5, "z": 0}),
-                      {"$type": "send_rigibodies",
+                      {"$type": "send_rigidbodies",
                        "frequency": "always"},
                       {"$type": "send_transforms",
                        "frequency": "always"}])
@@ -77,7 +77,7 @@ class Drop(Controller):
         resp = self.communicate([c.get_add_object(model_name,
                                                   object_id=object_id,
                                                   position={"x": 0, "y": height, "z": 0}),
-                                 {"$type": "send_rigibodies",
+                                 {"$type": "send_rigidbodies",
                                   "frequency": "always"},
                                  {"$type": "send_transforms",
                                   "frequency": "always"}])
@@ -185,7 +185,7 @@ class Drop(Controller):
         resp = self.communicate([c.get_add_object(self.model_name,
                                                   object_id=object_id,
                                                   position={"x": 0, "y": height, "z": 0}),
-                                 {"$type": "send_rigibodies",
+                                 {"$type": "send_rigidbodies",
                                   "frequency": "always"},
                                  {"$type": "send_transforms",
                                   "frequency": "always"}])
@@ -239,9 +239,9 @@ In this example, we'll load trial data from a `trials.json` file:
 
 ```json
 {"trials": [
-  {"model_name": "iron_box", "height":  1.5},
-  {"model_name": "iron_box", "height":  13},
-  {"model_name": "rh10", "height":  2.4},
+  {"model_name": "iron_box", "height": 1.5},
+  {"model_name": "iron_box", "height": 13},
+  {"model_name": "rh10", "height": 2.4}
 ]}
 ```
 
@@ -249,6 +249,7 @@ And then we'll load the trial data in the `run()` function:
 
 ```python
 import json
+from pathlib import Path
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Transforms, Rigidbodies
@@ -274,7 +275,7 @@ class Drop(Controller):
         resp = self.communicate([c.get_add_object(model_name,
                                                   object_id=object_id,
                                                   position={"x": 0, "y": height, "z": 0}),
-                                 {"$type": "send_rigibodies",
+                                 {"$type": "send_rigidbodies",
                                   "frequency": "always"},
                                  {"$type": "send_transforms",
                                   "frequency": "always"}])
@@ -304,13 +305,13 @@ class Drop(Controller):
 
     def run(self):
         # Load the trial data.
-        trial_data = json.loads("trials.json")
+        trial_data = json.loads(Path("trials.json").read_text())
         # Create an empty room.
         self.communicate(TDWUtils.create_empty_room(12, 12))
         # Log the positions of the objects.
         positions = {}
         # Run a series of trials.
-        for trial in trial_data:
+        for trial in trial_data["trials"]:
             model_name = trial["model_name"]
             height = trial["height"]
             position = self.trial(model_name=model_name, height=height)
@@ -326,9 +327,216 @@ if __name__ == "__main__":
     c.run()
 ```
 
+## 5. Group code into functions
+
+This is good coding practice in general. If you need to use the same code more than once, it should be in its own function.
+
+In the previous examples, we've set default values for `sleeping` and `object_position`. If we want to initially set them to the *actual* sleeping value and *actual* object, position, we can define a function called `_get_object_state(resp, object_id)` that returns the current state of the object.
+
+```python
+import json
+from pathlib import Path
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.output_data import OutputData, Transforms, Rigidbodies
+
+
+class Drop(Controller):
+    """
+    Drop an object and print its final position.
+    """
+
+    def trial(self, model_name, height):
+        """
+        Drop an object from a given height.
+
+        :param model_name: The name of the model.
+        :param height: The starting height of the model.
+
+        :return: The final position of the object.
+        """
+
+        object_id = self.get_unique_id()
+        # Add an object. Request Rigidbodies and Transforms output data.
+        resp = self.communicate([c.get_add_object(model_name,
+                                                  object_id=object_id,
+                                                  position={"x": 0, "y": height, "z": 0}),
+                                 {"$type": "send_rigidbodies",
+                                  "frequency": "always"},
+                                 {"$type": "send_transforms",
+                                  "frequency": "always"}])
+        # Call self.communicate() until the object is "sleeping" i.e. no longer moving.
+        sleeping, object_position = Drop._get_object_state(resp=resp, object_id=object_id)
+        while not sleeping:
+            resp = self.communicate([])
+            sleeping, object_position = Drop._get_object_state(resp=resp, object_id=object_id)
+        # Destroy the object to reset the scene.
+        self.communicate({"$type": "destroy_object",
+                          "id": object_id})
+        return object_position
+
+    def run(self):
+        # Load the trial data.
+        trial_data = json.loads(Path("trials.json").read_text())
+        # Create an empty room.
+        self.communicate(TDWUtils.create_empty_room(12, 12))
+        # Log the positions of the objects.
+        positions = {}
+        # Run a series of trials.
+        for trial in trial_data["trials"]:
+            model_name = trial["model_name"]
+            height = trial["height"]
+            position = self.trial(model_name=model_name, height=height)
+            if model_name not in positions:
+                positions[model_name] = []
+            positions[model_name].append(position)
+        print(positions)
+        # End the simulation.
+        self.communicate({"$type": "terminate"})
+
+    @staticmethod
+    def _get_object_state(resp, object_id):
+        """
+        :param resp: The most recent response from the build.
+        :param object_id: The object ID.
+
+        :return: Tuple: True if the object is sleeping; The object's position as an (x, y, z) tuple.
+        """
+
+        sleeping = False
+        object_position = (0, 0, 0)
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            # Parse Transforms output data to get the object's position.
+            if r_id == "tran":
+                transforms = Transforms(resp[i])
+                for j in range(transforms.get_num()):
+                    if transforms.get_id(j) == object_id:
+                        object_position = transforms.get_position(j)
+            # Parse Rigidbody data to determine if the object is sleeping.
+            elif r_id == "rigi":
+                rigidbodies = Rigidbodies(resp[i])
+                for j in range(rigidbodies.get_num()):
+                    if rigidbodies.get_id(j) == object_id:
+                        sleeping = rigidbodies.get_sleeping(j)
+        return sleeping, object_position
+
+
+if __name__ == "__main__":
+    c = Drop()
+    c.run()
+```
+
+## 6. Use type hinting
+
+[Type hinting was added to Python 3.5](https://docs.python.org/3/library/typing.html) and can be a very useful way to make your code cleaner and allow code editors such as PyCharm to warn you that your input values are invalid. This is particularly useful in TDW where there are many data object types. 
+
+Type hinting is never necessary in TDW, but most of the code in the `tdw` module includes it. We recommend using type hinting whenever you're coding an API that will be used by other users.
+
+```python
+from typing import List, Tuple
+from pathlib import Path
+import json
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.output_data import OutputData, Transforms, Rigidbodies
+
+
+class Drop(Controller):
+    """
+    Drop an object and print its final position.
+    """
+
+    def trial(self, model_name: str, height: float) -> Tuple[float, float, float]:
+        """
+        Drop an object from a given height.
+
+        :param model_name: The name of the model.
+        :param height: The starting height of the model.
+
+        :return: The final position of the object.
+        """
+
+        object_id = self.get_unique_id()
+        # Add an object. Request Rigidbodies and Transforms output data.
+        resp = self.communicate([c.get_add_object(model_name,
+                                                  object_id=object_id,
+                                                  position={"x": 0, "y": height, "z": 0}),
+                                 {"$type": "send_rigidbodies",
+                                  "frequency": "always"},
+                                 {"$type": "send_transforms",
+                                  "frequency": "always"}])
+        # Call self.communicate() until the object is "sleeping" i.e. no longer moving.
+        sleeping, object_position = Drop._get_object_state(resp=resp, object_id=object_id)
+        while not sleeping:
+            resp = self.communicate([])
+            sleeping, object_position = Drop._get_object_state(resp=resp, object_id=object_id)
+        # Destroy the object to reset the scene.
+        self.communicate({"$type": "destroy_object",
+                          "id": object_id})
+        return object_position
+
+    def run(self) -> None:
+        # Load the trial data.
+        trial_data = json.loads(Path("trials.json").read_text())
+        # Create an empty room.
+        self.communicate(TDWUtils.create_empty_room(12, 12))
+        # Log the positions of the objects.
+        positions = {}
+        # Run a series of trials.
+        for trial in trial_data["trials"]:
+            model_name = trial["model_name"]
+            height = trial["height"]
+            position = self.trial(model_name=model_name, height=height)
+            if model_name not in positions:
+                positions[model_name] = []
+            positions[model_name].append(position)
+        print(positions)
+        # End the simulation.
+        self.communicate({"$type": "terminate"})
+
+    @staticmethod
+    def _get_object_state(resp: List[bytes], object_id: int) -> Tuple[bool, Tuple[float, float, float]]:
+        """
+        :param resp: The most recent response from the build.
+        :param object_id: The object ID.
+
+        :return: Tuple: True if the object is sleeping; The object's position as an (x, y, z) tuple.
+        """
+
+        sleeping = False
+        object_position = (0, 0, 0)
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            # Parse Transforms output data to get the object's position.
+            if r_id == "tran":
+                transforms = Transforms(resp[i])
+                for j in range(transforms.get_num()):
+                    if transforms.get_id(j) == object_id:
+                        object_position = transforms.get_position(j)
+            # Parse Rigidbody data to determine if the object is sleeping.
+            elif r_id == "rigi":
+                rigidbodies = Rigidbodies(resp[i])
+                for j in range(rigidbodies.get_num()):
+                    if rigidbodies.get_id(j) == object_id:
+                        sleeping = rigidbodies.get_sleeping(j)
+        return sleeping, object_position
+
+
+if __name__ == "__main__":
+    c = Drop()
+    c.run()
+```
+
 ***
 
 **Next: [The `Logger` add-on](logger.md)**
 
 [Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [drop.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/troubleshooting/drop.py) Drop an object for many trials. An example of a well-structured controller.
 

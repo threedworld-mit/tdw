@@ -8,7 +8,7 @@ Record and playback every command sent to the build.
 from tdw.controller import Controller
 from tdw.add_ons.logger import Logger
 
-c = Controller(launch_build=False)
+c = Controller()
 logger = Logger(record=True, path="log.json")
 c.add_ons.append(logger)
 # The logger add-on will log this command.

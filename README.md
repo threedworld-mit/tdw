@@ -35,7 +35,7 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 2. [Common errors](Documentation/lessons/troubleshooting/common_errors.md)
 3. [Performance optimizations](Documentation/lessons/troubleshooting/performance_optimizations.md)
 4. [Good coding practices](Documentation/lessons/troubleshooting/good_coding_practices.md)
-5. The `Logger` add-on
+5. [The `Logger` add-on](Documentation/lessons/troubleshooting/logger.md)
 
 # 2. Tutorials :warning: TODO :warning:
 

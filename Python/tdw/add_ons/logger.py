@@ -13,7 +13,7 @@ class Logger(AddOn):
     from tdw.controller import Controller
     from tdw.add_ons.logger import Logger
 
-    c = Controller(launch_build=False)
+    c = Controller()
     logger = Logger(record=True, path="log.json")
     c.add_ons.append(logger)
     # The logger add-on will log this command.
@@ -56,7 +56,7 @@ class Logger(AddOn):
             self.playback: List[List[dict]] = list()
         # Load an existing .json file.
         else:
-            with path.open("rt", encoding="utf-8") as f:
+            with self._path.open("rt", encoding="utf-8") as f:
                 self.playback = load(f)
 
     def on_send(self, resp: List[bytes]) -> None:

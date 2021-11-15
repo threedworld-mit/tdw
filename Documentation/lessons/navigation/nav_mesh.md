@@ -18,7 +18,7 @@ If you are using a [proc-gen room](../objects_and_scenes/proc_gen_room.md), you 
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 
-c = Controller(launch_build=False)
+c = Controller()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "bake_nav_mesh"}])
 ```
@@ -35,7 +35,7 @@ If there are objects in the scene, `bake_nav_mesh` will make them NavMesh obstac
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 
-c = Controller(launch_build=False)
+c = Controller()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                c.get_add_object(model_name="trunck",
                                 object_id=0,
@@ -53,7 +53,7 @@ If you add objects *after* baking the NavMesh, they will be ignored. This can al
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 
-c = Controller(launch_build=False)
+c = Controller()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "bake_nav_mesh"},
                c.get_add_object(model_name="trunck",
@@ -79,4 +79,55 @@ Result:
 ![](images/nav_mesh_obstacles.jpg)
 
 ## `NavMeshPath` output data
+
+After initializing the NavMesh and the NavMesh obstacles, you can request [`NavMeshPath`](../../api/output_data.md#NavMeshPath) output data by sending [`send_nav_mesh_path`](../../api/command_api.md#send_nav_mesh_path). `NavMeshPath` includes a path (a numpy array of `[x, y, z]` coordinates) and a state (complete, partial, or invalid).
+
+In this example, we'll create a scene with a NavMesh and find a path between two points:
+
+```python
+from tdw.tdw_utils import TDWUtils
+from tdw.controller import Controller
+from tdw.output_data import OutputData, NavMeshPath
+
+c = Controller()
+resp = c.communicate([TDWUtils.create_empty_room(12, 12),
+                      {"$type": "bake_nav_mesh"},
+                      c.get_add_object(model_name="trunck",
+                                       object_id=0,
+                                       position={"x": 0, "y": 0, "z": 0}),
+                      {"$type": "make_nav_mesh_obstacle",
+                       "id": 0,
+                       "carve_type": "stationary",
+                       "scale": 1,
+                       "shape": "box"},
+                      c.get_add_object(model_name="rh10",
+                                       object_id=1,
+                                       position={"x": -1, "y": 0, "z": 1.5}),
+                      {"$type": "make_nav_mesh_obstacle",
+                       "id": 1,
+                       "carve_type": "all",
+                       "scale": 1,
+                       "shape": "box"},
+                      {"$type": "send_nav_mesh_path",
+                       "origin": {"x": 0.1, "y": 0, "z": -1.3},
+                       "destination": {"x": -0.13, "y": 0, "z": 4}}])
+for i in range(len(resp) - 1):
+    r_id = OutputData.get_data_type_id(resp[i])
+    if r_id == "path":
+        nav_mesh_path = NavMeshPath(resp[i])
+        print(nav_mesh_path.get_state())
+        for point in nav_mesh_path.get_path():
+            print(point)
+c.communicate({"$type": "terminate"})
+```
+
+Output:
+
+```
+complete
+[ 0.1         0.08333325 -1.3       ]
+[-0.9404912   0.08333325 -0.844499  ]
+[-0.9404912   0.08333325  0.83449864]
+[-0.13        0.08333325  4.        ]
+```
 

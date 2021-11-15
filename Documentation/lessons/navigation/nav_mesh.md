@@ -193,3 +193,4 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
+![](images/magnebot.gif)

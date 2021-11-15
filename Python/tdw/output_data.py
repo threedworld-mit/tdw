@@ -40,12 +40,12 @@ from tdw.FBOutput import TriggerCollision as Trigger
 from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
 from tdw.FBOutput import QuitSignal as QuitSig
-from tdw.FBOutput import CameraMotionComplete as CamMot
 from tdw.FBOutput import MagnebotWheels as MWheels
 from tdw.FBOutput import Occlusion as Occl
 from tdw.FBOutput import Lights as Lites
 from tdw.FBOutput import Categories as Cats
 from tdw.FBOutput import StaticRigidbodies as StatRig
+from tdw.FBOutput import RobotJointVelocities as RoJoVe
 from tdw.FBOutput import EmptyObjects as Empty
 import numpy as np
 from typing import Tuple, Optional
@@ -530,6 +530,9 @@ class ImageSensors(OutputData):
     def get_sensor_forward(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_xyz(self.data.Sensors(index).Forward())
 
+    def get_sensor_field_of_view(self, index: int) -> float:
+        return self.data.Sensors(index).FieldOfView()
+
 
 class CameraMatrices(OutputData):
     def get_data(self) -> CaMa.CameraMatrices:
@@ -972,6 +975,29 @@ class Robot(OutputData):
         return self.data.Immovable()
 
 
+class RobotJointVelocities(OutputData):
+    def get_data(self) -> RoJoVe.RobotJointVelocities:
+        return RoJoVe.RobotJointVelocities.GetRootAsRobotJointVelocities(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_num_joints(self) -> int:
+        return self.data.JointsLength()
+
+    def get_joint_id(self, index: int) -> int:
+        return self.data.Joints(index).Id()
+
+    def get_joint_velocity(self, index: int) -> np.array:
+        return self.data.Joints(index).VelocityAsNumpy()
+
+    def get_joint_angular_velocity(self, index: int) -> np.array:
+        return self.data.Joints(index).AngularVelocityAsNumpy()
+
+    def get_joint_sleeping(self, index: int) -> bool:
+        return self.data.Joints(index).Sleeping()
+
+
 class Keyboard(OutputData):
     def get_data(self) -> Key.Keyboard:
         return Key.Keyboard.GetRootAsKeyboard(self.bytes, 0)
@@ -1084,23 +1110,6 @@ class QuitSignal(OutputData):
 
     def get_ok(self) -> bool:
         return self.data.Ok()
-
-
-class CameraMotionComplete(OutputData):
-    def get_data(self) -> CamMot.CameraMotionComplete:
-        return CamMot.CameraMotionComplete.GetRootAsCameraMotionComplete(self.bytes, 0)
-
-    def get_avatar_id(self) -> str:
-        return self.data.AvatarId().decode('utf-8')
-
-    def get_motion(self) -> str:
-        motion = self.data.Motion()
-        if motion == 1:
-            return "move"
-        elif motion == 2:
-            return "rotate"
-        else:
-            return "focus"
 
 
 class MagnebotWheels(OutputData):

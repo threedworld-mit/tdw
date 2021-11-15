@@ -2,7 +2,7 @@ from typing import List, Union
 from pathlib import Path
 import numpy as np
 from tdw.output_data import OutputData, AudioSources, Rigidbodies, Transforms
-from tdw.tdw_utils import AudioUtils
+from tdw.audio_utils import AudioUtils
 from tdw.add_ons.add_on import AddOn
 
 
@@ -27,7 +27,7 @@ class PhysicsAudioRecorder(AddOn):
         """:field
         The path to the next audio file.
         """
-        self.output_path: Path = Path.home()
+        self.path: Path = Path.home()
         """:field
         If True, there is an ongoing recording.
         """
@@ -76,25 +76,29 @@ class PhysicsAudioRecorder(AddOn):
         if sleeping and not playing_audio:
             self.stop()
 
-    def start(self, output_path: Union[str, Path]) -> None:
+    def start(self, path: Union[str, Path]) -> None:
         """
         Start recording.
 
-        :param output_path: The path to the output .wav file.
+        :param path: The path to the output .wav file.
         """
 
         # Don't start a new recording if one is ongoing.
         if self.recording:
             return
         self.recording = True
-        if isinstance(output_path, str):
-            self.output_path = Path(output_path)
-        if not output_path.parent.exists:
-            self.output_path.parent.mkdir(parents=True)
+        if isinstance(path, str):
+            self.path = Path(path)
+        else:
+            self.path = path
+        if not self.path.parent.exists:
+            self.path.parent.mkdir(parents=True)
+        if self.path.exists():
+            self.path.unlink()
 
         self._frame = 0
         # Start listening.
-        AudioUtils.start(output_path=self.output_path)
+        AudioUtils.start(output_path=self.path)
         self.commands.extend([{"$type": "send_audio_sources",
                                "frequency": "always"},
                               {"$type": "send_rigidbodies",

@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Optional
 import numpy as np
 from tdw.output_data import OutputData, AvatarSimpleBody, ImageSensors
 from tdw.tdw_utils import TDWUtils
@@ -11,39 +11,17 @@ from tdw.object_data.rigidbody import Rigidbody
 class EmbodiedAvatar(ThirdPersonCameraBase):
     """
     An `EmbodiedAvatar` is an avatar with a physical body. The body has a simple shape and responds to physics (just like objects and robots).
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.embodied_avatar import EmbodiedAvatar
-    from tdw.add_ons.avatar_body import AvatarBody
-
-    c = Controller()
-    a = EmbodiedAvatar(position={"x": 0, "y": 0, "z": 0},
-                       rotation={"x": 0, "y": 30, "z": 0},
-                       avatar_id="a",
-                       body=AvatarBody.cube)
-    c.add_ons.append(a)
-    c.communicate(TDWUtils.create_empty_room(12, 12))
-    a.apply_force(500)
-    while a.is_moving:
-        c.communicate([])
-    a.apply_torque(-400)
-    while a.is_moving:
-        c.communicate([])
-    c.communicate({"$type": "terminate"})
-    ```
     """
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 fov: int = None, color: Dict[str, float] = None, body: AvatarBody = AvatarBody.capsule,
+                 field_of_view: int = None, color: Dict[str, float] = None, body: AvatarBody = AvatarBody.capsule,
                  scale_factor: Dict[str, float] = None, mass: float = 80, dynamic_friction: float = 0.3,
                  static_friction: float = 0.3, bounciness: float = 0.7):
         """
         :param avatar_id: The ID of the avatar. If None, a random ID is generated.
         :param position: The initial position of the avatar. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The initial rotation of the avatar. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param fov: The initial field of view. If None, defaults to 35.
+        :param field_of_view: The initial field of view.
         :param color: The color of the avatar as an `r, g, b, a` dictionary where each value is between 0 and 1. Can be None.
         :param body: [The body of the avatar.](avatar_body.md)
         :param scale_factor: Scale the avatar by this factor. Can be None.
@@ -53,37 +31,15 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
         :param bounciness: The bounciness of the avatar.
         """
 
-        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, fov=fov)
-        self._init_commands.extend([{"$type": "change_avatar_body",
-                                     "body_type": body.name.title(),
-                                     "avatar_id": self.avatar_id},
-                                    {"$type": "set_avatar_mass",
-                                     "mass": mass,
-                                     "avatar_id": self.avatar_id},
-                                    {"$type": "set_avatar_physic_material",
-                                     "dynamic_friction": dynamic_friction,
-                                     "static_friction": static_friction,
-                                     "bounciness": bounciness,
-                                     "avatar_id": self.avatar_id},
-                                    {"$type": "set_avatar_drag",
-                                     "angular_drag": 0.5,
-                                     "avatar_id": self.avatar_id,
-                                     "drag": 1},
-                                    {"$type": "send_avatars",
-                                     "frequency": "always"},
-                                    {"$type": "send_image_sensors",
-                                     "frequency": "always"}])
-        if color is not None:
-            if "a" in color and color["a"] < 1:
-                self._init_commands.append({"$type": "enable_avatar_transparency",
-                                            "avatar_id": self.avatar_id})
-            self._init_commands.append({"$type": "set_avatar_color",
-                                        "color": color,
-                                        "avatar_id": self.avatar_id})
-        if scale_factor is not None:
-            self._init_commands.append({"$type": "scale_avatar",
-                                        "scale_factor": scale_factor,
-                                        "avatar_id": self.avatar_id})
+        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, field_of_view=field_of_view)
+        self._body: AvatarBody = body
+        self._bounciness: float = bounciness
+        self._dynamic_friction: float = dynamic_friction
+        self._static_friction: float = static_friction
+        self._mass: float = mass
+        self._color: Optional[Dict[str, float]] = color
+        self._scale_factor: Optional[Dict[str, float]] = scale_factor
+
         """:field
         [Transform data](../object_data/transform.md) for the avatar.
         """
@@ -104,6 +60,40 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
         If True, the avatar is currently moving or turning.
         """
         self.is_moving: bool = False
+
+    def get_initialization_commands(self) -> List[dict]:
+        commands = super().get_initialization_commands()
+        commands.extend([{"$type": "change_avatar_body",
+                          "body_type": self._body.name.title(),
+                          "avatar_id": self.avatar_id},
+                         {"$type": "set_avatar_mass",
+                          "mass": self._mass,
+                          "avatar_id": self.avatar_id},
+                         {"$type": "set_avatar_physic_material",
+                          "dynamic_friction": self._dynamic_friction,
+                          "static_friction": self._static_friction,
+                          "bounciness": self._bounciness,
+                          "avatar_id": self.avatar_id},
+                         {"$type": "set_avatar_drag",
+                          "angular_drag": 0.5,
+                          "avatar_id": self.avatar_id,
+                          "drag": 1},
+                         {"$type": "send_avatars",
+                          "frequency": "always"},
+                         {"$type": "send_image_sensors",
+                          "frequency": "always"}])
+        if self._color is not None:
+            if "a" in self._color and self._color["a"] < 1:
+                commands.append({"$type": "enable_avatar_transparency",
+                                 "avatar_id": self.avatar_id})
+            commands.append({"$type": "set_avatar_color",
+                             "color": self._color,
+                             "avatar_id": self.avatar_id})
+        if self._scale_factor is not None:
+            commands.append({"$type": "scale_avatar",
+                             "scale_factor": self._scale_factor,
+                             "avatar_id": self.avatar_id})
+        return commands
 
     def apply_force(self, force: Union[float, int, Dict[str, float], np.ndarray]) -> None:
         """

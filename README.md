@@ -78,6 +78,7 @@ High-level API: [Floorplan](Documentation/python/floorplan.md)
 2. [Move a camera](Documentation/lessons/camera/position.md)
 3. [Rotate a camera](Documentation/lessons/camera/rotation.md)
 4. [Follow an object](Documentation/lessons/camera/follow.md)
+5. [The `CinematicCamera` add-on](Documentation/lessons/camera/cinematic_camera.md)
 
 ## 2.5 Photorealistic Images
 
@@ -109,11 +110,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 ### 2.6.2 Physics (Flex)
 
 1. Flex
-2. Solid actors
-3. Soft actors
-4. Cloth actors
-5. Fluid actors
-6. Source actors
+2. Flex actors (solid, soft, and cloth)
+3. Flex actors (fluid and source)
 7. `FlexParticles` output data
 8. Apply forces to Flex objects
 
@@ -121,20 +119,21 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 ## 2.8 Audio
 
-1. Overview
-2. PyImpact (dynamic impact sounds)
-3. Audio perception
-4. Recording audio
-5. Resonance Audio
+1. [Overview](Documentation/lessons/audio/overview.md)
+2. [Initialize audio and play .wav files](Documentation/lessons/audio/initialize_audio.md)
+3. [Resonance Audio](Documentation/lessons/audio/resonance_audio.md)
+4. [`PyImpact` (dynamic impact sounds)](Documentation/lessons/audio/py_impact.md)
+6. [Recording audio](Documentation/lessons/audio/record_audio.md)
+6. [`PyImpact` (advanced API)](Documentation/lessons/audio/py_impact_advanced.md)
+7. [Audio perception](Documentation/lessons/audio/audio_perception.md)
 
-High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge)
+High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_challenge)
 
 ## 2.9 Video Recording
 
-1. Controlling the framerate
-2. Image-only videos
-3. Image+audio videos
-4. The `CinematicCamera` add-on
+1. [Overview](Documentation/lessons/video/overview.md)
+2. [Image-only video](Documentation/lessons/video/images.md)
+3. [Video with audio](Documentation/lessons/video/audio.md)
 
 ## 2.10 Agents
 
@@ -153,7 +152,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 
 ### 2.10.2 Magnebots
 
-[`magnebot` (external repo)](https://github.com/alters-mit/magnebot)
+1. [Magnebot API (external repo)](https://github.com/alters-mit/magnebot)
 
 ### 2.10.3 Human user interaction
 
@@ -161,26 +160,32 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 2. Virtual reality
 3. Keyboard controls
 
-### 2.13 Humanoid agents ("Replicants")
+### 2.10.4 Humanoid agents ("Replicants")
+
+TODO
+
+### 2.10.5 Embodied avatars
+
+1. [Overview](Documentation/lessons/embodied_avatars/overview.md)
+1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
+
+## 2.11 Multi-agent simulations
 
 1. Overview
-3. ???
+2. Good coding practices
 
-### 2.10.4 Embodied avatars
-
-1. The `EmbodiedAvatar`
-
-### 2.10.4 Navigation
+## 2.12 Navigation
 
 1. Overview
 2. NavMesh pathfinding
 3. Occupancy maps
 
-### 2.10.5 Multi-agent simulations
+## 2.13 Non-physics objects
 
 1. Overview
-2. State machines
-3. World state objects
+2. Position markers
+3. Paintings
+4. Non-physics humanoids
 
 ## 2.14 Misc. topics
 
@@ -189,8 +194,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 3. BinaryManager
 4. xpra
 5. Creating composite objects
-6. Paintings
-7. Non-physics humanoids
 
 # 3. API Documentation
 

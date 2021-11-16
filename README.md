@@ -29,13 +29,13 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 9. [Output data](Documentation/lessons/core_concepts/output_data.md)
 10. [Images](Documentation/lessons/core_concepts/images.md)
 
-## 1.3 Troubleshooting and good coding practices :warning: TODO :warning:
+## 1.3 Troubleshooting
 
-1. Debug logging
-2. Common errors
-3. Good coding practices
-4. Performance optimizations
-5. Performance benchmarks
+1. [How to report an issue](Documentation/lessons/troubleshooting/issues.md)
+2. [Common errors](Documentation/lessons/troubleshooting/common_errors.md)
+3. [Performance optimizations](Documentation/lessons/troubleshooting/performance_optimizations.md)
+4. [Good coding practices](Documentation/lessons/troubleshooting/good_coding_practices.md)
+5. [The `Logger` add-on](Documentation/lessons/troubleshooting/logger.md)
 
 # 2. Tutorials :warning: TODO :warning:
 
@@ -196,7 +196,13 @@ TODO
 
 # 3. API Documentation
 
-TODO
+:warning: TODO:warning:
+
+# 4. Performance benchmarks
+1. [Performance benchmarks](Documentation/benchmark/benchmark.md)
+2. [Image capture](Documentation/benchmark/image_capture.md)
+3. [Object data](Documentation/benchmark/object_data.md)
+4. [Command deserialization](Documentation/benchmark/command_deserialization.md)
 
 ## :warning: old documentation :warning:
 

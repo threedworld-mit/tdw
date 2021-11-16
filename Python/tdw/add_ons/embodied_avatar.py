@@ -1,4 +1,4 @@
-from typing import Dict, List, Union, Optional
+from typing import Dict, List, Union
 import numpy as np
 from tdw.output_data import OutputData, AvatarSimpleBody, ImageSensors
 from tdw.tdw_utils import TDWUtils
@@ -16,7 +16,7 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                  field_of_view: int = None, color: Dict[str, float] = None, body: AvatarBody = AvatarBody.capsule,
                  scale_factor: Dict[str, float] = None, mass: float = 80, dynamic_friction: float = 0.3,
-                 static_friction: float = 0.3, bounciness: float = 0.7):
+                 static_friction: float = 0.3, bounciness: float = 0.7, drag: float = 1, angular_drag: float = 0.5):
         """
         :param avatar_id: The ID of the avatar. If None, a random ID is generated.
         :param position: The initial position of the avatar. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
@@ -32,14 +32,6 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
         """
 
         super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, field_of_view=field_of_view)
-        self._body: AvatarBody = body
-        self._bounciness: float = bounciness
-        self._dynamic_friction: float = dynamic_friction
-        self._static_friction: float = static_friction
-        self._mass: float = mass
-        self._color: Optional[Dict[str, float]] = color
-        self._scale_factor: Optional[Dict[str, float]] = scale_factor
-
         """:field
         [Transform data](../object_data/transform.md) for the avatar.
         """
@@ -60,6 +52,15 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
         If True, the avatar is currently moving or turning.
         """
         self.is_moving: bool = False
+        self._body: AvatarBody = body
+        self._mass: float = mass
+        self._dynamic_friction: float = dynamic_friction
+        self._static_friction: float = static_friction
+        self._bounciness: float = bounciness
+        self._drag: float = drag
+        self._angular_drag: float = angular_drag
+        self._color: Dict[str, float] = color
+        self._scale_factor: Dict[str, float] = scale_factor
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -81,7 +82,11 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
                          {"$type": "send_avatars",
                           "frequency": "always"},
                          {"$type": "send_image_sensors",
-                          "frequency": "always"}])
+                          "frequency": "always"},
+                         {"$type": "set_avatar_drag",
+                          "drag": self._drag,
+                          "angular_drag": self._angular_drag,
+                          "avatar_id": self.avatar_id}])
         if self._color is not None:
             if "a" in self._color and self._color["a"] < 1:
                 commands.append({"$type": "enable_avatar_transparency",

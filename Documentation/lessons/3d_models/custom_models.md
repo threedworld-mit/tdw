@@ -255,6 +255,7 @@ To set correct .fbx model scaling in Blender:
 - Make sure that Unity Editor and Visual Studio are _closed_ when running `AssetBundleCreator`.
 - Make sure that you have installed the Editor _via Unity Hub_; the Python script assumes this when trying to find the editor .exe
 - If `AssetBundleCreator` is crashing with errors, please let us know; copy+paste the error when you do.
+- If you get this warning in the Editor log: `[warn] kq_init: detected broken kqueue; not using.: Undefined error: 0` it means that there's a problem with your Unity license. Make sure you have valid and active Unity credentials.
 
 ***
 

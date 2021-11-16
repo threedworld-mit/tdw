@@ -2,22 +2,7 @@
 
 `from tdw.add_ons.benchmark import Benchmark`
 
-Benchmark the FPS over a given number of frames.
-
-```python
-from tdw.controller import Controller
-from tdw.add_ons.benchmark import Benchmark
-
-c = Controller()
-b = Benchmark()
-b.start()
-c.add_ons.append(b)
-for i in range(2000):
-    c.communicate([])
-b.stop()
-print(b.get_speed())
-c.communicate({"$type": "terminate"})
-```
+Benchmark the frames per second (FPS) over a given number of frames.
 
 ***
 
@@ -28,6 +13,8 @@ c.communicate({"$type": "terminate"})
 - `initialized` If True, this module has been initialized.
 
 - `times` A list of time elapsed per `communicate()` call.
+
+- `fps` The frames per second of the previous benchmark test.
 
 ***
 
@@ -76,13 +63,7 @@ Start bencharking each `communicate()` call and clear `self.times`.
 
 **`self.stop()`**
 
-Stop benchmarking each `communicate()` call.
-
-#### get_speed
-
-**`self.get_speed()`**
-
-_Returns:_  The average time elapsed per `communicate()` call.
+Stop benchmarking each `communicate()` call and set `self.fps`.
 
 #### before_send
 

@@ -44,7 +44,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 
 #### New Output Data
 
-
 | Output Data            | Description                                         |
 | ---------------------- | --------------------------------------------------- |
 | `StaticRigidbodies`    | Static rigidbody data (mass, kinematic state, etc.) |

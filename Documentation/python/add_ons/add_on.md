@@ -16,14 +16,14 @@ Every time `communicate()` is called, the add-on will evaluate the response from
 
 ```python
 from tdw.controller import Controller
-from tdw.add_ons.debug import Debug
+from tdw.add_ons.logger import Logger
 
 c = Controller(launch_build=False)
-d = Debug(record=True, path="log.json")
-c.add_ons.append(d)
-# The debug add-on will log this command.
+logger = Logger(record=True, path="log.json")
+c.add_ons.append(logger)
+# The logger add-on will log this command.
 c.communicate({"$type": "do_nothing"})
-# The debug add-on will log this command and generate a log.json file.
+# The logger add-on will log this command and generate a log.json file.
 c.communicate({"$type": "terminate"})
 ```
 

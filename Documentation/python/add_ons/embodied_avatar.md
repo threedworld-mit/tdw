@@ -4,28 +4,6 @@
 
 An `EmbodiedAvatar` is an avatar with a physical body. The body has a simple shape and responds to physics (just like objects and robots).
 
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.embodied_avatar import EmbodiedAvatar
-from tdw.add_ons.avatar_body import AvatarBody
-
-c = Controller()
-a = EmbodiedAvatar(position={"x": 0, "y": 0, "z": 0},
-                   rotation={"x": 0, "y": 30, "z": 0},
-                   avatar_id="a",
-                   body=AvatarBody.cube)
-c.add_ons.append(a)
-c.communicate(TDWUtils.create_empty_room(12, 12))
-a.apply_force(500)
-while a.is_moving:
-    c.communicate([])
-a.apply_torque(-400)
-while a.is_moving:
-    c.communicate([])
-c.communicate({"$type": "terminate"})
-```
-
 ***
 
 ## Fields
@@ -50,14 +28,14 @@ c.communicate({"$type": "terminate"})
 
 **`EmbodiedAvatar()`**
 
-**`EmbodiedAvatar(avatar_id=None, position=None, rotation=None, fov=None, color=None, body=AvatarBody.capsule, scale_factor=None, mass=80, dynamic_friction=0.3, static_friction=0.3, bounciness=0.7)`**
+**`EmbodiedAvatar(avatar_id=None, position=None, rotation=None, field_of_view=None, color=None, body=AvatarBody.capsule, scale_factor=None, mass=80, dynamic_friction=0.3, static_friction=0.3, bounciness=0.7)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | avatar_id |  str  | None | The ID of the avatar. If None, a random ID is generated. |
 | position |  Dict[str, float] | None | The initial position of the avatar. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | rotation |  Dict[str, float] | None | The initial rotation of the avatar. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| fov |  int  | None | The initial field of view. If None, defaults to 35. |
+| field_of_view |  int  | None | The initial field of view. |
 | color |  Dict[str, float] | None | The color of the avatar as an `r, g, b, a` dictionary where each value is between 0 and 1. Can be None. |
 | body |  AvatarBody  | AvatarBody.capsule | [The body of the avatar.](avatar_body.md) |
 | scale_factor |  Dict[str, float] | None | Scale the avatar by this factor. Can be None. |

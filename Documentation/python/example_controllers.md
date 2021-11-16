@@ -6,8 +6,6 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | --- | --- |
 | `add_ons.py` | Add multiple add-ons to a controller. |
 | `animate_humanoid.py` | Create a humanoid and play some animations. |
-| `avatar_drag.py` | Set the avatar's drag values to control its speed while in mid-air. |
-| `avatar_movement.py` | A basic example of how to move a physics-enabled (non-kinematic) avatar. |
 | `cloth_drape.py` | Using NVIDIA Flex, drape a cloth over an object. |
 | `debug.py` | Create a controller with a `Debug` module.<br>After running a simple physics simulation, play back all of the commands. |
 | `directional_light.py` | Rotate the directional light in the scene. |
@@ -19,13 +17,10 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | `keyboard_controls.py` | Use WASD or arrow keys to move an avatar. |
 | `lights_output_data.py` | Load a streamed scene and received Lights output data. |
 | `minimal_remote.py` | A minimal example of how to use the launch binaries daemon to<br>start and connect to a build on a remote node. Note: the remote<br>must be running launch_binaries.py. |
-| `nav_mesh.py` | - Create a NavMeshAvatar and a simple procedurally-generated room.<br>- Tell the avatar to navigate to different destinations. |
 | `occupancy_mapper.py` | Generate occupancy maps in a scene populated by objects.<br>For more information, [read this](add_ons/occupancy_map.md). |
 | `paintings.py` | Add a painting to the scene. |
 | `perlin_noise_terrain.py` | Generate Perlin noise terrain and roll a ball down the terrain. |
 | `photoreal.py` | Create a photorealistic scene, focusing on post-processing and other effects.<br>The "archviz_house" environment is used due to its maximal photorealistic lighting. |
-| `proc_gen_room.py` | - Procedurally generate rooms with different layouts.<br>- Create a ceiling and delete a portion of it.<br>- Set the floor and wall materials. |
-| `records.py` | - Use Librarian objects to search for model and material records.<br>- Set the visual material(s) of an object.<br>For documentation, see `Documentation/python/librarian.md`. |
 | `smpl_humanoid.py` | Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body parameters and play an animation. |
 | `vr.py` | 1. Create an Oculus VR rig.<br>2. Add a few objects to the scene that can be picked up, moved, put down, etc. |
 | `vr_flex.py` | 1. Create an Oculus VR rig.<br>2. Create Flex-enabled objects.<br>3. Receive Flex particle data. |

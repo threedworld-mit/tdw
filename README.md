@@ -107,11 +107,13 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 ### 2.6.2 Physics (Flex)
 
-1. Flex
-2. Flex actors (solid, soft, and cloth)
-3. Flex actors (fluid and source)
+1. [Flex](Documentation/lessons/flex/flex.md)
+2. Solid and soft actors
+3. Cloth actors
+3. Fluid and source actors
 7. `FlexParticles` output data
 8. Apply forces to Flex objects
+8. Reset a Flex scene
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 

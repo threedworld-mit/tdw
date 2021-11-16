@@ -142,7 +142,7 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from magnebot import Magnebot, ActionStatus
 
-c = Controller(launch_build=False)
+c = Controller()
 magnebot = Magnebot(position={"x": 0.1, "y": 0, "z": -1.3},
                     robot_id=c.get_unique_id())
 magnebot.collision_detection.objects = False
@@ -194,3 +194,29 @@ c.communicate({"$type": "terminate"})
 Result:
 
 ![](images/magnebot.gif)
+
+***
+
+**Next: [Occupancy maps](occupancy_maps.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
+External APIs:
+
+- [Magnebot](https://github.com/alters-mit/magnebot)
+
+Example controllers:
+
+- [nav_mesh.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/navigation/nav_mesh.py) Add a Magnebot to the scene and navigate using a NavMesh.
+
+Command API:
+
+- [`bake_nav_mesh`](../../api/command_api.md#bake_nav_mesh)
+- [`make_nav_mesh_obstacle`](../../api/command_api.md#make_nav_mesh_obstacle)
+- [`send_nav_mesh`](../../api/command_api.md#send_nav_mesh)
+
+Output Data:
+
+- [`NavMeshPath`](../../api/output_data.md#NavMeshPath)

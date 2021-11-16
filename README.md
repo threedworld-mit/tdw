@@ -175,9 +175,9 @@ TODO
 
 ## 2.12 Navigation
 
-1. Overview
-2. NavMesh pathfinding
-3. Occupancy maps
+1. [Overview](Documentation/lessons/navigation/overview.md)
+2. [NavMesh pathfinding](Documentation/lessons/navigation/nav_mesh.md)
+3. [Occupancy maps](Documentation/lessons/navigation/occupancy_maps.md)
 
 ## 2.13 Non-physics objects
 

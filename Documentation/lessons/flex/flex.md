@@ -136,6 +136,63 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 c.communicate({"$type": "terminate"})
 ```
 
+## Flex primitive models
+
+TDW includes a [model library](../3d_models/overview.md) of *Flex primitives*. These models are simple shapes with extra vertices to make them more useful in Flex simulations. All Flex primitives models can also be used in PhysX simulations.
+
+To read the available Flex primitives:
+
+```python
+from tdw.librarian import ModelLibrarian
+
+librarian = ModelLibrarian("models_flex.json")
+for record in librarian.records:
+    print(record.name)
+```
+
+Output:
+
+```
+bowl
+cone
+cube
+cylinder
+dumbbell
+octahedron
+pentagon
+pipe
+platonic
+pyramid
+sphere
+torus
+triangular_prism
+```
+
+To use a Flex primitive in a scene, set the `"library"` parameter of `Controller.get_add_object(model_name)`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller()
+object_id = c.get_unique_id()
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               {"$type": "convexify_proc_gen_room"},
+               {"$type": "create_flex_container"},
+               c.get_add_object(model_name="cube",
+                                object_id=object_id,
+                                library="models_flex.json",
+                                position={"x": 0, "y": 1, "z": 0}),
+               {"$type": "set_flex_solid_actor",
+                "id": object_id,
+                "mass_scale": 5,
+                "particle_spacing": 0.05},
+               {"$type": "assign_flex_container",
+                "id": object_id,
+                "container_id": 0}])
+c.communicate({"$type": "terminate"})
+```
+
 ## Limitations
 
 In general, if you only need rigidbody physics, you should almost always opt for the default [PhysX](../physx/physx.md) physics engine rather than Flex.

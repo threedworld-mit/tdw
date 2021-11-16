@@ -73,7 +73,7 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 - `avatar_id` The ID of the avatar that (this camera).
 
-- `initial_position` The initial position of the object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+- `position` The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
 
 - `look_at_target` The target object or position that the camera will look at. Can be None (the camera won't look at a target).
 
@@ -89,7 +89,7 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 **`ThirdPersonCamera(look_at)`**
 
-**`ThirdPersonCamera(avatar_id=None, position=None, rotation=None, look_at, fov=None, follow_object=None, follow_rotate=False, framerate=None)`**
+**`ThirdPersonCamera(avatar_id=None, position=None, rotation=None, look_at, field_of_view=None, follow_object=None, follow_rotate=False)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -97,10 +97,17 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 | position |  Dict[str, float] | None | The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | rotation |  Dict[str, float] | None | The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | look_at |  Union[int, Dict[str, float] |  | If not None, rotate look at this target every frame. Overrides `rotation`. Can be an int (an object ID) or an `(x, y, z)` dictionary (a position). |
-| fov |  int  | None | If not None, this is the initial field of view. Otherwise, defaults to 35. |
+| field_of_view |  int  | None | If not None, set the field of view. |
 | follow_object |  int  | None | If not None, follow an object per frame. The `position` parameter will be treated as a relative value from the target object rather than worldspace coordinates. |
 | follow_rotate |  bool  | False | If True, match the rotation of the object. Ignored if `follow_object` is None. |
-| framerate |  int  | None | If not None, sets the target framerate. |
+
+#### get_initialization_commands
+
+**`self.get_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+_Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
@@ -137,14 +144,6 @@ Rotate the camera.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | rotation |  Dict[str, float] |  | Rotate the camera by these angles (in degrees). Keys are `"x"`, `"y"`, `"z"` and correspond to `(pitch, yaw, roll)`. |
-
-#### get_initialization_commands
-
-**`self.get_initialization_commands()`**
-
-This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
-
-_Returns:_  A list of commands that will initialize this add-on.
 
 #### before_send
 

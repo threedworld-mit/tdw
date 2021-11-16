@@ -40,7 +40,6 @@ from tdw.FBOutput import TriggerCollision as Trigger
 from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
 from tdw.FBOutput import QuitSignal as QuitSig
-from tdw.FBOutput import CameraMotionComplete as CamMot
 from tdw.FBOutput import MagnebotWheels as MWheels
 from tdw.FBOutput import Occlusion as Occl
 from tdw.FBOutput import Lights as Lites
@@ -530,6 +529,9 @@ class ImageSensors(OutputData):
 
     def get_sensor_forward(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_xyz(self.data.Sensors(index).Forward())
+
+    def get_sensor_field_of_view(self, index: int) -> float:
+        return self.data.Sensors(index).FieldOfView()
 
 
 class CameraMatrices(OutputData):
@@ -1108,23 +1110,6 @@ class QuitSignal(OutputData):
 
     def get_ok(self) -> bool:
         return self.data.Ok()
-
-
-class CameraMotionComplete(OutputData):
-    def get_data(self) -> CamMot.CameraMotionComplete:
-        return CamMot.CameraMotionComplete.GetRootAsCameraMotionComplete(self.bytes, 0)
-
-    def get_avatar_id(self) -> str:
-        return self.data.AvatarId().decode('utf-8')
-
-    def get_motion(self) -> str:
-        motion = self.data.Motion()
-        if motion == 1:
-            return "move"
-        elif motion == 2:
-            return "rotate"
-        else:
-            return "focus"
 
 
 class MagnebotWheels(OutputData):

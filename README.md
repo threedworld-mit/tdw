@@ -29,13 +29,13 @@ TDW is a general-purpose tool that allows the user to communicate and manipulate
 9. [Output data](Documentation/lessons/core_concepts/output_data.md)
 10. [Images](Documentation/lessons/core_concepts/images.md)
 
-## 1.3 Troubleshooting and good coding practices :warning: TODO :warning:
+## 1.3 Troubleshooting
 
-1. Debug logging
-2. Common errors
-3. Good coding practices
-4. Performance optimizations
-5. Performance benchmarks
+1. [How to report an issue](Documentation/lessons/troubleshooting/issues.md)
+2. [Common errors](Documentation/lessons/troubleshooting/common_errors.md)
+3. [Performance optimizations](Documentation/lessons/troubleshooting/performance_optimizations.md)
+4. [Good coding practices](Documentation/lessons/troubleshooting/good_coding_practices.md)
+5. [The `Logger` add-on](Documentation/lessons/troubleshooting/logger.md)
 
 # 2. Tutorials :warning: TODO :warning:
 
@@ -79,19 +79,18 @@ High-level API: [Floorplan](Documentation/python/floorplan.md)
 3. [Rotate a camera](Documentation/lessons/camera/rotation.md)
 4. [Follow an object](Documentation/lessons/camera/follow.md)
 
-## 2.5 Photorealistic Images
+## 2.5 Photorealism
 
-1. Overview
-2. Lighting
-3. Post-processing
-4. Depth of field
-5. Anti-aliasing
+1. [Overview](Documentation/lessons/photorealism/overview.md)
+2. [Lighting (HDRI skyboxes)](Documentation/lessons/photorealism/lighting.md)
+3. [Post-processing](Documentation/lessons/photorealism/post_processing.md)
+4. [Depth of field](Documentation/lessons/photorealism/depth_of_field.md)
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
 ## 2.6 Physics
 
-1. [Overview](Documentation/lessons/physx/overview.md)
+**[Overview](Documentation/lessons/physx/overview.md)**
 
 ### 2.6.1 Physics (PhysX)
 
@@ -152,7 +151,7 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 
 ### 2.10.2 Magnebots
 
-[`magnebot` (external repo)](https://github.com/alters-mit/magnebot)
+1. [Magnebot API (external repo)](https://github.com/alters-mit/magnebot)
 
 ### 2.10.3 Human user interaction
 
@@ -160,35 +159,34 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 2. Virtual reality
 3. Keyboard controls
 
-### 2.13 Humanoid agents ("Replicants")
+### 2.10.4 Humanoid agents ("Replicants")
+
+TODO
+
+### 2.10.5 Embodied avatars
+
+1. [Overview](Documentation/lessons/embodied_avatars/overview.md)
+1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
+
+## 2.11 Multi-agent simulations
 
 1. Overview
-3. ???
+2. Good coding practices
 
-### 2.10.4 Embodied avatars
-
-1. The `EmbodiedAvatar`
-
-### 2.10.4 Navigation
+## 2.12 Navigation
 
 1. Overview
 2. NavMesh pathfinding
 3. Occupancy maps
 
-### 2.10.5 Multi-agent simulations
-
-1. Overview
-2. State machines
-3. World state objects
-
-## 2.11 Non-physics objects
+## 2.13 Non-physics objects
 
 1. Overview
 2. Position markers
 3. Paintings
 4. Non-physics humanoids
 
-## 2.12 Misc. topics
+## 2.14 Misc. topics
 
 1. C# source code
 2. Freezing your code
@@ -198,7 +196,13 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 
 # 3. API Documentation
 
-TODO
+:warning: TODO:warning:
+
+# 4. Performance benchmarks
+1. [Performance benchmarks](Documentation/benchmark/benchmark.md)
+2. [Image capture](Documentation/benchmark/image_capture.md)
+3. [Object data](Documentation/benchmark/object_data.md)
+4. [Command deserialization](Documentation/benchmark/command_deserialization.md)
 
 ## :warning: old documentation :warning:
 

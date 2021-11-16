@@ -238,7 +238,7 @@
 | [`adjust_directional_light_intensity_by`](#adjust_directional_light_intensity_by) | Adjust the intensity of the directional light (the sun) by a value. |
 | [`reset_directional_light_rotation`](#reset_directional_light_rotation) | Reset the rotation of the directional light (the sun). |
 | [`rotate_directional_light_by`](#rotate_directional_light_by) | Rotate the directional light (the sun) by an angle and axis. This command will change the direction of cast shadows, which could adversely affect lighting that uses an HDRI skybox, Therefore this command should only be used for interior scenes where the effect of the skybox is less apparent. The original relationship between directional (sun) light and HDRI skybox can be restored by using the reset_directional_light_rotation command. |
-| [`set_directionial_light_color`](#set_directionial_light_color) | Set the color of the directional light (the sun). |
+| [`set_directional_light_color`](#set_directional_light_color) | Set the color of the directional light (the sun). |
 
 **Flex Container Command**
 
@@ -411,7 +411,7 @@
 | Command | Description |
 | --- | --- |
 | [`set_ambient_occlusion_intensity`](#set_ambient_occlusion_intensity) | Set the intensity (darkness) of the Ambient Occlusion effect. |
-| [`set_ambient_occlusion_thickness_modifier`](#set_ambient_occlusion_thickness_modifier) | Set the Thickness Modifer for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners. |
+| [`set_ambient_occlusion_thickness_modifier`](#set_ambient_occlusion_thickness_modifier) | Set the Thickness Modifier for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners. |
 | [`set_aperture`](#set_aperture) | Set the depth-of-field aperture in post processing volume.  |
 | [`set_contrast`](#set_contrast) | Set the contrast value of the post-processing color grading. |
 | [`set_focus_distance`](#set_focus_distance) | Set the depth-of-field focus distance in post processing volume.  |
@@ -2823,25 +2823,19 @@ Move the avatar towards an object.
 
 - <font style="color:orange">**Non-physics motion**: This command ignores the build's physics engine. If you send this command during a physics simulation (i.e. to a non-kinematic avatar), the physics might glitch.</font>
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
-{"$type": "move_avatar_towards_object", "object_id": 1}
+{"$type": "move_avatar_towards_object", "object_id": 1, "offset": {"x": 1.1, "y": 0.0, "z": 0}}
 ```
 
 ```python
-{"$type": "move_avatar_towards_object", "object_id": 1, "offset_distance": 1, "min_y": 0.25, "use_centroid": True, "speed": 0.1, "avatar_id": "a"}
+{"$type": "move_avatar_towards_object", "object_id": 1, "offset": {"x": 1.1, "y": 0.0, "z": 0}, "use_centroid": True, "speed": 0.1, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"object_id"` | int | The ID of the object. | |
-| `"offset_distance"` | float | Stop moving when the avatar is this many meters away from the target object. | 1 |
-| `"min_y"` | float | Clamp the y positional coordinate of the avatar to this minimum value. | 0.25 |
+| `"offset"` | Vector3 | The offset the position of the avatar from the object. | |
 | `"use_centroid"` | bool | If true, move towards the centroid of the object. If false, move towards the position of the object (y=0). | True |
 | `"speed"` | float | Move a maximum of this many meters per frame towards the target. | 0.1 |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
@@ -2854,11 +2848,6 @@ Move the avatar towards the target position.
 
 - <font style="color:orange">**Non-physics motion**: This command ignores the build's physics engine. If you send this command during a physics simulation (i.e. to a non-kinematic avatar), the physics might glitch.</font>
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
 {"$type": "move_avatar_towards_position"}
@@ -3046,16 +3035,16 @@ Set the anti-aliasing mode for the avatar's camera.
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 
 ```python
-{"$type": "set_anti_aliasing", "mode": "fast"}
+{"$type": "set_anti_aliasing"}
 ```
 
 ```python
-{"$type": "set_anti_aliasing", "mode": "fast", "sensor_name": "SensorContainer", "avatar_id": "a"}
+{"$type": "set_anti_aliasing", "mode": "subpixel", "sensor_name": "SensorContainer", "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"mode"` | AntiAliasingMode | The anti-aliasing mode. | |
+| `"mode"` | AntiAliasingMode | The anti-aliasing mode. | "subpixel" |
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -3067,8 +3056,8 @@ The anti-aliasing mode for the camera.
 | --- | --- |
 | `"fast"` | A computionally fast technique with lower image quality results. |
 | `"none"` | No antialiasing. |
-| `"subpixel"` | A higher quality, more expensive technique than fast. |
-| `"temporal"` | The highest-quality technique. Expensive. Adds motion blurring based on camera history. By default, all cameras in TDW are set to temporal. If you are frequently teleporting the avatar (and camera), do NOT use this mode. |
+| `"subpixel"` | A higher quality, more expensive technique than fast. This is the default setting of all cameras in TDW. |
+| `"temporal"` | The highest-quality technique. Expensive. Adds motion blurring based on camera history. If you are frequently teleporting the avatar (and camera), do NOT use this mode. |
 
 ***
 
@@ -3147,11 +3136,6 @@ Focus towards the depth-of-field towards the position of an object.
 
 - <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
 {"$type": "focus_towards_object", "object_id": 1}
@@ -3180,11 +3164,6 @@ These commands rotate the sensor container towards a target by a given angular s
 Rotate the sensor container towards the current position of a target object. 
 
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
 {"$type": "rotate_sensor_container_towards_object", "object_id": 1}
@@ -3209,11 +3188,6 @@ Rotate the sensor container towards the current position of a target object.
 Rotate the sensor container towards a position at a given angular speed per frame. 
 
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
 {"$type": "rotate_sensor_container_towards_position"}
@@ -3237,11 +3211,6 @@ Rotate the sensor container towards a position at a given angular speed per fram
 Rotate the sensor container towards a target rotation. 
 
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Exactly once**</font>
-
-    - <font style="color:green">**Type:** [`CameraMotionComplete`](output_data.md#CameraMotionComplete)</font>
 
 ```python
 {"$type": "rotate_sensor_container_towards_rotation"}
@@ -3432,17 +3401,17 @@ An axis of rotation.
 
 ***
 
-## **`set_directionial_light_color`**
+## **`set_directional_light_color`**
 
 Set the color of the directional light (the sun).
 
 
 ```python
-{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
+{"$type": "set_directional_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
 ```
 
 ```python
-{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "index": 0}
+{"$type": "set_directional_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "index": 0}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5311,7 +5280,7 @@ Set the intensity (darkness) of the Ambient Occlusion effect.
 
 ## **`set_ambient_occlusion_thickness_modifier`**
 
-Set the Thickness Modifer for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners.
+Set the Thickness Modifier for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners.
 
 
 ```python

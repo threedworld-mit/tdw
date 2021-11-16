@@ -133,7 +133,7 @@ c.communicate({"$type": "terminate"})
 
 ## Embodied avatars
 
-**There are several embodied avatars in TDW; however, we don't recommend you use them.** Avatars are one of the oldest components of TDW and they've been gradually superseded. [There are many non-avatar embodied agents in TDW](TODO), all of which are more sophisticated than the embodied avatars. For more information regarding embodied avatars, read the API documentation for [`create_avatar`](../../api/command_api.md#create_avatar).
+**There are several embodied avatars in TDW; however, they usually aren't the best option for agent simulations.** [Read this for more information.](../embodied_avatars/overview.md)
 
 ***
 

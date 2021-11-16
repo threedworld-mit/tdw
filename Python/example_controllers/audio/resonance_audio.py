@@ -44,7 +44,7 @@ class Audio(Controller):
         camera = ThirdPersonCamera(position={"x": -4, "y": 1.5, "z": 0},
                                    look_at={"x": 2.5, "y": 0, "z": 0},
                                    avatar_id="a",
-                                   fov=75)
+                                   field_of_view=75)
         # Enable Resonance Audio.
         audio = ResonanceAudioInitializer(avatar_id="a",
                                           floor="marble")

@@ -1,38 +1,19 @@
-from benchmarker import Benchmarker
+from tdw.backend.performance_benchmark_controller import PerformanceBenchmarkController
 
 """
-Objects data benchmarks.
+Object data benchmarks.
 """
 
-if __name__ == "__main__":
-    b = Benchmarker()
-
-    output = "| Test | FPS |\n| --- | --- |\n"
-
-    rows = []
-
-    b.start()
-    rows.append(b.run(boxes=True, transforms=True,
-                      row="--boxes --transforms"))
-
-    b.start()
-    rows.append(b.run(boxes=True, rigidbodies=True,
-                      row="--boxes --rigidbodies"))
-
-    b.start()
-    rows.append(b.run(boxes=True, collisions=True,
-                      row="--boxes --collisions"))
-
-    b.start()
-    rows.append(b.run(boxes=True, bounds=True,
-                      row="--boxes --bounds"))
-
-    b.start()
-    rows.append(b.run(boxes=True, transforms=True, rigidbodies=True, collisions=True, bounds=True,
-                      row="--boxes --transforms --rigidbodies --collisions --bounds"))
-
-    for row in rows:
-        output += row + "\n"
-    print(output)
-
-    b.communicate({"$type": "terminate"})
+output = "| Transforms | Rigidbodies | Bounds | Collisions | FPS |" \
+         "\n| --- | --- | --- | --- | --- |\n"
+c = PerformanceBenchmarkController(launch_build=False)
+for transforms, rigidbodies, bounds, collisions in zip(
+        [True, False, False, False, True],
+        [False, True, False, False, True],
+        [False, False, True, False, True],
+        [False, False, False, True, True]):
+    fps = c.run(boxes=True, transforms=transforms, rigidbodies=rigidbodies, bounds=bounds, collisions=collisions,
+                num_frames=2000)
+    output += f"| {transforms} | {rigidbodies} | {bounds} | {collisions} | {fps} |\n"
+c.communicate({"$type": "terminate"})
+print(output)

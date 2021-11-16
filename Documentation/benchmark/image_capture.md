@@ -1,43 +1,56 @@
-# Image Capture
+##### Performance Benchmarks
 
-These benchmarks measure the FPS of image capture in TDW. Image capture is unavoidably slow.
+# Image capture
 
- To learn about alternative means of gathering observation data, read [this document](observation_data.md).
+These benchmarks measure the FPS of image capture and observation data in TDW. Image capture is unavoidably slow.
 
-To learn about the controller used in these tests, read the [general benchmark document](benchmark.md).
+See [the Benchmark document](benchmark.md) for the test machine's system info.
 
-These tests were performed on a Windows machine.
+## 1: Image capture
 
-### Arguments
+Performance benchmark for `Images` output data using different render settings:
 
-| Argument   | Description                                                  |
-| ---------- | ------------------------------------------------------------ |
-| `--boxes`  | Add 100 cube primitives to the scene.                        |
-| `--images` | Create an avatar. Send `Images` data per frame.              |
-| `--hi_res` | Set render quality to maximum. Enable shadows. Enable post-processing. Set screen size to 1024x1024. |
-| `--passes` | Set the image passes to: `[_img]`, `[_id]`, or `[_img, _id]` |
+| 100 objects | Pass masks        | Render quality | Post-processing | Screen size | .png  | FPS  |
+| ----------- | ----------------- | -------------- | --------------- | ----------- | ----- | ---- |
+| False       | `['_img']`        | 0              | False           | 256         | False | 355  |
+| True        | `['_id']`         | 0              | False           | 256         | False | 232  |
+| False       | `['_img']`        | 5              | True            | 256         | False | 243  |
+| False       | `['_img']`        | 5              | True            | 1024        | False | 44   |
+| True        | `['_id']`         | 0              | False           | 1024        | False | 31   |
+| False       | `['_img']`        | 5              | True            | 1024        | True  | 13   |
+| True        | `['_img', '_id']` | 5              | True            | 1024        | False | 16   |
+| True        | `['_img', '_id']` | 5              | True            | 1024        | True  | 9    |
 
-### Results
+## 2. Observation data
 
-| Test                                                   | FPS  |
-| ------------------------------------------------------ | ---- |
-| `--images --passes _img`                               | 300  |
-| `--boxes --images --passes _id`                        | 223  |
-| `--images --passes _img --hi_res`                      | 158  |
-| `--images --passes _img --png`                         | 248  |
-| `--images --passes _img --hi_res --size 1024`          | 41   |
-| `--images --passes _id --hi_res --size 1024`           | 30   |
-| `--images --passes _img_id --hi_res --size 1024`       | 15   |
-| `--images --passes _img_id --hi_res --size 1024 --png` | 8    |
+Performance benchmark to compare `Images` data to alternative observation data. 
 
-### How to run this test
+- Render quality is 0
+- Post processing is disabled
+- Screen size is 256x256
+- Images are .jpg
+- There are 100 objects in the scene
+- Note that `Occlusion` is slow because it renders two images; it would normally require 2 frames to get the same data as `Occlusion`'s 1 frame.
 
-```bash
-cd <root>/Python/benchmarking
-python3 image_capture.py
-```
+| _img pass | _id pass | IdPassSegmentationColors | Occlusion | FPS  |
+| --------- | -------- | ------------------------ | --------- | ---- |
+| True      | False    | False                    | False     | 308  |
+| False     | True     | False                    | False     | 236  |
+| False     | False    | True                     | False     | 269  |
+| False     | False    | False                    | True      | 167  |
 
-```bash
-<run build>
-```
+## How to run TDW's image capture performance benchmarks
 
+1. [Follow instructions in the Benchmark document for cloning the repo, downloading the build, etc.](benchmark.md)
+2. `cd path/to/tdw/Python/benchmarking` (replace `path/to` with the actual path)
+3. `python3 image_capture.py` or `python3 observation_data.py`
+4. Run the build
+5. Wait for the performance benchmark to complete (this might take up to five minutes).
+6. Compare your results to those listed above
+
+
+***
+
+**Next: [Object data](object_data.md)**
+
+[Return to the README](../../../README.md)

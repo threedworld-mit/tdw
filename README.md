@@ -109,10 +109,11 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Flex](Documentation/lessons/flex/flex.md)
 2. [Solid and soft actors](Documentation/lessons/flex/solid_and_soft.md)
-3. Cloth actors
+3. [Cloth actors](Documentation/lessons/flex/cloth.md)
 3. Fluid and source actors
 7. `FlexParticles` output data
 8. Apply forces to Flex objects
+8. Fixed particles
 8. Reset a Flex scene
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)

@@ -39,7 +39,10 @@ class ReachForAffordancePoint(Controller):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.h_id = self.get_unique_id()
         self.t_id = self.get_unique_id()
-        self.reach_action_length=40
+        self.reach_action_length=30
+        self.reset_action_length=20
+        self.affordance_id = 0
+        self.reach_arm = "left"
 
     @staticmethod
     def get_add_object_with_affordance_points(model_name: str, object_id: int, position: Dict[str, float] = None,
@@ -92,6 +95,7 @@ class ReachForAffordancePoint(Controller):
                     for j in range(empt.get_num()):
                         # Get the ID of the affordance point.
                         empty_object_id = empt.get_id(j)
+                        self.affordance_id = empty_object_id
                         # Get the parent object ID.
                         object_id = ReachForAffordancePoint.EMPTY_OBJECT_IDS[empty_object_id]["object_id"]
                         # Found the target object.
@@ -121,11 +125,14 @@ class ReachForAffordancePoint(Controller):
                                 break
                 if not got_center:
                     raise Exception("Couldn't get the centroid of the target object.")
-        print(target)
         return [
             # Teleport IK target to target position
-            # Reach for IK target
-            {"$type": "humanoid_reach_for_position", "position": target, "id": self.h_id, "length": self.reach_action_length, "arm": "left"}
+            # Reach for IK target, at affordance position
+            {"$type": "humanoid_reach_for_position", 
+             "position": target, 
+             "id": self.h_id, 
+             "length": self.reach_action_length, 
+             "arm": self.reach_arm}
         ]
 
     def init_scene(self) -> None:
@@ -134,11 +141,11 @@ class ReachForAffordancePoint(Controller):
         commands.extend(self.get_add_object_with_affordance_points(model_name="basket_18inx18inx12iin_wicker",
                                                                    object_id=self.t_id,
                                                                    position={"x": 0, "y": 0.35, "z": 0},
-                                                                   rotation={"x": 0, "y": 0, "z": 0}))
+                                                                   rotation={"x": 0, "y": 90, "z": 0}))
         commands.extend([self.get_add_object(model_name="live_edge_coffee_table",
                                              object_id=9999,
                                              position={"x": 0, "y": 0, "z": 0},
-                                             rotation={"x": 0, "y": 0, "z": 0},
+                                             rotation={"x": 0, "y": 20, "z": 0},
                                              library="models_core.json"),
                          self.get_add_object(model_name="chair_billiani_doll",
                                              object_id=5555,
@@ -176,37 +183,35 @@ class ReachForAffordancePoint(Controller):
 
         self.communicate(TDWUtils.create_avatar(position={"x": -4.42, "y": 1.5, "z": 5.95}, look_at={"x": 0, "y": 1.0, "z": -3}))
 
-        # reposition the target object (ball) just above the table, and let it drop.
-        for i in range(1):
-            resp = self.communicate([])
-            for r in resp[:-1]:
-                r_id = OutputData.get_data_type_id(r)
-                # Find the transform data.
-                if r_id == "tran":
-                    t = Transforms(r)
-                    if t.get_id(0) == self.h_id:
-                        ha_forward = np.array(t.get_forward(0))
-                        ha_position = np.array(t.get_position(0))
-                    if t.get_id(0) == self.t_id:
-                        tgt_position = np.array(t.get_position(0))
+        resp = self.communicate([])
 
-            pos_val = self.get_direction(ha_forward, ha_position, tgt_position)
+        #self.reach_for_target(arm="left", humanoid=self.h_id, target=self.t_id, reach_action_length=40, reset_action_length=60)
+        self.reach_arm = "left"
+        commands = self.reach_for(resp=resp, arm=Arm.right, target=self.t_id, hand_position=np.array([0, 0, 0]))
+        self.communicate(commands) 
 
-            # Based on whether the object is left or right of center, reach for it with the appropriate arm.
-            if pos_val < 0:
-                #self.reach_for_target(arm="left", humanoid=self.h_id, target=self.t_id, reach_action_length=40, reset_action_length=60)
-                commands = self.reach_for(resp=resp, arm=Arm.left, target=self.t_id, hand_position=np.array([0, 0, 0]))
-                self.communicate(commands) 
-            else:
-                #self.reach_for_target(arm="right", humanoid=self.h_id, target=self.t_id, reach_action_length=40, reset_action_length=60)
-                commands = self.reach_for(resp=resp, arm=Arm.right, target=self.t_id, hand_position=np.array([0, 0, 0]))
-                self.communicate(commands) 
+        frame = 0
+        while frame < self.reach_action_length:
+            self.communicate([])
+            frame += 1
+        """
+        # Grasp the object that was just reached for. The object is attached to the hand using a FixedJoint.
+        self.communicate({"$type": "humanoid_grasp_object", 
+                          "target": self.t_id, 
+                          "affordance_id": int(self.affordance_id), 
+                          "id": self.h_id, 
+                          "arm": self.reach_arm})
+        # Return arm to rest position, holding object
+        self.communicate({"$type": "humanoid_reset_arm",  
+                          "id": self.h_id, 
+                          "length": self.reset_action_length, 
+                          "arm": self.reach_arm})
+        frame = 0
+        while frame < self.reset_action_length:
+            self.communicate([])
+            frame += 1
+        """
 
-            frame = 0
-            while frame < self.reach_action_length:
-                self.communicate([])
-                frame += 1
-    
     def reach_for_target(self, arm: str, humanoid: int, target: int, reach_action_length: int, reset_action_length: int):
         """
         :param arm: Which arm to use.

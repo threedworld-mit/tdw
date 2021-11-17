@@ -360,9 +360,9 @@
 
 | Command | Description |
 | --- | --- |
-| [`create_flex_fluid_object`](#create_flex_fluid_object) | Create or adjust a FlexArrayActor as a fluid object.  |
-| [`create_flex_fluid_source_actor`](#create_flex_fluid_source_actor) | Create or adjust a FlexSourceActor as a fluid "hose pipe" source.  |
 | [`set_flex_cloth_actor`](#set_flex_cloth_actor) | Create or adjust a FlexClothActor for the object.  |
+| [`set_flex_fluid_actor`](#set_flex_fluid_actor) | Create or adjust a FlexArrayActor as a fluid object.  |
+| [`set_flex_fluid_source_actor`](#set_flex_fluid_source_actor) | Create or adjust a FlexSourceActor as a fluid "hose pipe" source.  |
 | [`set_flex_soft_actor`](#set_flex_soft_actor) | Create or adjust a FlexSoftActor for the object.  |
 | [`set_flex_solid_actor`](#set_flex_solid_actor) | Create or adjust a FlexSolidActor for the object.  |
 
@@ -4810,58 +4810,6 @@ These commands create a new FlexActor of type T with a FlexAsset of type U, or t
 
 ***
 
-## **`create_flex_fluid_object`**
-
-Create or adjust a FlexArrayActor as a fluid object. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "create_flex_fluid_object", "id": 1}
-```
-
-```python
-{"$type": "create_flex_fluid_object", "id": 1, "mesh_expansion": 0, "max_particles": 10000, "particle_spacing": 0.125, "mass_scale": 1, "draw_particles": False}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"mesh_expansion"` | float | Mesh local scale of the FlexArrayAsset. | 0 |
-| `"max_particles"` | int | Maximum number of particles for the Flex Asset. | 10000 |
-| `"particle_spacing"` | float | Particle spacing of the Flex Asset. | 0.125 |
-| `"mass_scale"` | float | The mass scale factor. | 1 |
-| `"draw_particles"` | bool | Debug drawing of particles. | False |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`create_flex_fluid_source_actor`**
-
-Create or adjust a FlexSourceActor as a fluid "hose pipe" source. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "create_flex_fluid_source_actor", "id": 1}
-```
-
-```python
-{"$type": "create_flex_fluid_source_actor", "id": 1, "start_speed": 10.0, "lifetime": 2.0, "mesh_tesselation": 2, "mass_scale": 1, "draw_particles": False}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"start_speed"` | float | Rate of fluid particle generation. | 10.0 |
-| `"lifetime"` | float | Lifetime of fluid particles. | 2.0 |
-| `"mesh_tesselation"` | int | Mesh tesselation of the FlexSourceAsset. | 2 |
-| `"mass_scale"` | float | The mass scale factor. | 1 |
-| `"draw_particles"` | bool | Debug drawing of particles. | False |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_flex_cloth_actor`**
 
 Create or adjust a FlexClothActor for the object. 
@@ -4886,6 +4834,58 @@ Create or adjust a FlexClothActor for the object.
 | `"tether_give"` | float | Because tether constraints are so effective at reducing stiffness, it can be useful to allow a small amount of extension before the constraint activates. | 0.0 |
 | `"pressure"` | float | If > 0.0f then a volume (pressure) constraint will also be added to the asset. The rest volume and stiffness will be automatically computed by this function. | 0.0 |
 | `"self_collide"` | bool | If true, the object will handle self-collisions. | False |
+| `"mass_scale"` | float | The mass scale factor. | 1 |
+| `"draw_particles"` | bool | Debug drawing of particles. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_flex_fluid_actor`**
+
+Create or adjust a FlexArrayActor as a fluid object. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+
+```python
+{"$type": "set_flex_fluid_actor", "id": 1}
+```
+
+```python
+{"$type": "set_flex_fluid_actor", "id": 1, "mesh_expansion": 0, "max_particles": 10000, "particle_spacing": 0.125, "mass_scale": 1, "draw_particles": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"mesh_expansion"` | float | Mesh local scale of the FlexArrayAsset. | 0 |
+| `"max_particles"` | int | Maximum number of particles for the Flex Asset. | 10000 |
+| `"particle_spacing"` | float | Particle spacing of the Flex Asset. | 0.125 |
+| `"mass_scale"` | float | The mass scale factor. | 1 |
+| `"draw_particles"` | bool | Debug drawing of particles. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_flex_fluid_source_actor`**
+
+Create or adjust a FlexSourceActor as a fluid "hose pipe" source. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+
+```python
+{"$type": "set_flex_fluid_source_actor", "id": 1}
+```
+
+```python
+{"$type": "set_flex_fluid_source_actor", "id": 1, "start_speed": 10.0, "lifetime": 2.0, "mesh_tesselation": 2, "mass_scale": 1, "draw_particles": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"start_speed"` | float | Rate of fluid particle generation. | 10.0 |
+| `"lifetime"` | float | Lifetime of fluid particles. | 2.0 |
+| `"mesh_tesselation"` | int | Mesh tesselation of the FlexSourceAsset. | 2 |
 | `"mass_scale"` | float | The mass scale factor. | 1 |
 | `"draw_particles"` | bool | Debug drawing of particles. | False |
 | `"id"` | int | The unique object ID. | |

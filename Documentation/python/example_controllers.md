@@ -5,14 +5,10 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | Controller | Description |
 | --- | --- |
 | `animate_humanoid.py` | Create a humanoid and play some animations. |
-| `cloth_drape.py` | Using NVIDIA Flex, drape a cloth over an object. |
 | `flex_cloth_fixed_particle.py` | Create a Flex cloth object and "fix" one of its corners in mid-air. |
-| `flex_fluid_object.py` | Create a fluid "container" with the NVIDIA Flex physics engine. Run several trials, dropping ball objects of increasing mass into the fluid. |
 | `flex_fluid_source.py` | Create a Flex FluidSource, or "hose pipe", simulation of a fluid stream. |
-| `flex_soft_body.py` | Create a soft-body object with the NVIDIA Flex physics engine. |
 | `keyboard_controls.py` | Use WASD or arrow keys to move an avatar. |
 | `minimal_remote.py` | A minimal example of how to use the launch binaries daemon to<br>start and connect to a build on a remote node. Note: the remote<br>must be running launch_binaries.py. |
-| `occupancy_mapper.py` | Generate occupancy maps in a scene populated by objects.<br>For more information, [read this](add_ons/occupancy_map.md). |
 | `paintings.py` | Add a painting to the scene. |
 | `perlin_noise_terrain.py` | Generate Perlin noise terrain and roll a ball down the terrain. |
 | `smpl_humanoid.py` | Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body parameters and play an animation. |

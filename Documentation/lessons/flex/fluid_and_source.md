@@ -301,7 +301,11 @@ In almost all cases, you should use the default values; the most important value
 
 Example controllers:
 
-- [flex_minimal.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/flex/flex_minimal.py) Minimal Flex scene setup.
+- In the TDW repo:
+  - [fluid.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/flex/fluid.py)  Generate fluid simulation trials with random fluids.
+  - [source.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/flex/source.py)  Create a Flex FluidSource, or "hose pipe", simulation of a fluid stream.
+- [tdw_physics](https://github.com/alters-mit/tdw_physics) includes a fluid simulation:
+  - [submerging.py](https://github.com/alters-mit/tdw_physics/blob/master/controllers/submerging.py) Drop ball objects of increasing mass into afluid.
 
 Command API:
 

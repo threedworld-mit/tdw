@@ -1,7 +1,7 @@
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.flex.fluid_types import FluidTypes
+from tdw.flex.fluid_type import FLUID_TYPES
 
 
 class FlexFluids(Controller):
@@ -11,7 +11,6 @@ class FlexFluids(Controller):
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.fluid_types = FluidTypes()
         # Create a scene and add a camera.
         commands = [self.get_add_scene(scene_name="tdw_room")]
         commands.extend(TDWUtils.create_avatar(position={"x": -3.75, "y": 1.5, "z": -0.5},
@@ -20,7 +19,7 @@ class FlexFluids(Controller):
         self.communicate(commands)
 
     def trial(self, fluid_name: str) -> None:
-        fluid = self.fluid_types.fluid_types[fluid_name]
+        fluid = FLUID_TYPES[fluid_name]
         receptacle_id = self.get_unique_id()
         fluid_id = self.get_unique_id()
         # Create a Flex fluid container.
@@ -55,7 +54,7 @@ class FlexFluids(Controller):
                            "id": fluid_id,
                            "orientation": {"x": 0, "y": 0, "z": 0},
                            "position": {"x": -0.35, "y": 1.0, "z": 0}},
-                          {"$type": "create_flex_fluid_object",
+                          {"$type": "set_flex_fluid_actor",
                            "id": fluid_id,
                            "mass_scale": 1.0,
                            "particle_spacing": 0.05},
@@ -77,7 +76,7 @@ class FlexFluids(Controller):
     def run(self, num_trials: int) -> None:
         for i in range(num_trials):
             # Select a random fluid.
-            fluid_name = random.choice(self.fluid_types.fluid_type_names)
+            fluid_name = random.choice(FLUID_TYPES.keys())
             self.trial(fluid_name=fluid_name)
         self.communicate({"$type": "terminate"})
 

@@ -13,10 +13,10 @@ In Flex simulations *fluids* are bodies of fluids while *sources* are fluids emi
 
 Like all Flex simulations, fluid simulations require a Flex container. The parameters `"viscosity"`, `"adhesion"`, and `"cohesion"` control the fluid dynamics.
 
-TDW includes pre-set values for various types of fluids. You can find these in the [`tdw.flex.fluid_type.FLUID_TYPES`](../../python/flex_data/fluid_type.md):
+TDW includes pre-set values for various types of fluids. You can find these in the [`tdw.flex_data.fluid_type.FLUID_TYPES`](../../python/flex_data/fluid_type.md):
 
 ```python
-from tdw.flex.fluid_type import FLUID_TYPES
+from tdw.flex_data.fluid_type import FLUID_TYPES
 
 print(FLUID_TYPES.keys())
 water = FLUID_TYPES["water"]
@@ -41,7 +41,7 @@ You can then use these parameters in [`create_flex_container`](../../api/command
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.flex.fluid_type import FLUID_TYPES
+from tdw.flex_data.fluid_type import FLUID_TYPES
 
 fluid = FLUID_TYPES["honey"]
 c = Controller()
@@ -68,7 +68,7 @@ In this example, fluids are parameterized and randomly selected:
 ```python
 import random
 from tdw.controller import Controller
-from tdw.flex.fluid_type import FLUID_TYPES
+from tdw.flex_data.fluid_type import FLUID_TYPES
 
 
 class FlexFluids(Controller):
@@ -122,7 +122,7 @@ This example adds a random fluid to each trial:
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.flex.fluid_type import FLUID_TYPES
+from tdw.flex_data.fluid_type import FLUID_TYPES
 
 
 class FlexFluids(Controller):
@@ -207,6 +207,10 @@ if __name__ == "__main__":
     c.run(num_trials=15)
 ```
 
+Result:
+
+![](images/fluid.gif)
+
 Note: Each trial ends with three commands: [`destroy_flex_container`](../../api/command_api.md#destroy_flex_container), [`destroy_object`](../../api/command_api.md#destroy_object), and [`destroy_flex_object`](../../api/command_api.md#destroy_flex_object). [A document later in this tutorial will explain in more depth how to reset a Flex scene.](reset_scene.md) The command `destroy_object` is used for the receptacle because it isn't a Flex object.
 
 ## Source actors
@@ -221,7 +225,7 @@ Just like fluid actors, you can use fluid types to define fluid parameters. When
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.flex.fluid_type import FLUID_TYPES
+from tdw.flex_data.fluid_type import FLUID_TYPES
 
 c = Controller()
 fluid = FLUID_TYPES["water"]
@@ -289,7 +293,7 @@ In almost all cases, you should use the default values; the most important value
 
 ***
 
-**Next: [Solid and soft actors](solid_and_soft.md)**
+**Next: [Move, rotate, and scale Flex objects](transform.md)**
 
 [Return to the README](../../../README.md)
 

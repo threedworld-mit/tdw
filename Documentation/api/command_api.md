@@ -305,14 +305,9 @@
 | [`apply_force_to_flex_object`](#apply_force_to_flex_object) | Apply a directional force to the FlexActor object.  |
 | [`assign_flex_container`](#assign_flex_container) | Assign the FlexContainer of the object.  |
 | [`destroy_flex_object`](#destroy_flex_object) | Destroy the Flex object. This will leak memory (due to a bug in the Flex library that we can't fix), but will leak <emphasis>less</emphasis> memory than destroying a Flex-enabled object with <computeroutput>destroy_object</computeroutput>.  |
-| [`rotate_flex_object_by`](#rotate_flex_object_by) | Rotate a Flex object by a given angle around a given axis.  |
-| [`rotate_flex_object_by_quaternion`](#rotate_flex_object_by_quaternion) | Rotate a Flex object by a given quaternion.  |
-| [`rotate_flex_object_to`](#rotate_flex_object_to) | Rotate a Flex object to a new rotation.  |
 | [`set_flex_object_mass`](#set_flex_object_mass) | Set the mass of the Flex object. The mass is distributed equally across all particles. Thus the particle mass equals mass divided by number of particles.  |
 | [`set_flex_particles_mass`](#set_flex_particles_mass) | Set the mass of all particles in the Flex object. Thus, the total object mass equals the number of particles times the particle mass.  |
 | [`set_flex_particle_fixed`](#set_flex_particle_fixed) | Fix the particle in the Flex object, such that it does not move.  |
-| [`teleport_and_rotate_flex_object`](#teleport_and_rotate_flex_object) | Teleport a Flex object to a new position and rotation.  |
-| [`teleport_flex_object`](#teleport_flex_object) | Teleport a Flex object to a new position.  |
 
 **Object Type Command**
 
@@ -4185,73 +4180,6 @@ Destroy the Flex object. This will leak memory (due to a bug in the Flex library
 
 ***
 
-## **`rotate_flex_object_by`**
-
-Rotate a Flex object by a given angle around a given axis. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "rotate_flex_object_by", "angle": 0.125, "id": 1}
-```
-
-```python
-{"$type": "rotate_flex_object_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"axis"` | Axis | The axis of rotation. | "yaw" |
-| `"angle"` | float | The angle of rotation. | |
-| `"is_world"` | bool | If true, the object will rotate via "global" directions and angles. If false, the object will rotate locally. | True |
-| `"id"` | int | The unique object ID. | |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-***
-
-## **`rotate_flex_object_by_quaternion`**
-
-Rotate a Flex object by a given quaternion. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "rotate_flex_object_by_quaternion", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rotation"` | Quaternion | Rotate the object by this quaternion. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`rotate_flex_object_to`**
-
-Rotate a Flex object to a new rotation. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "rotate_flex_object_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rotation"` | Quaternion | The new rotation of the object. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_flex_object_mass`**
 
 Set the mass of the Flex object. The mass is distributed equally across all particles. Thus the particle mass equals mass divided by number of particles. 
@@ -4302,41 +4230,6 @@ Fix the particle in the Flex object, such that it does not move.
 | --- | --- | --- | --- |
 | `"is_fixed"` | bool | Set whether particle is fixed or not. | |
 | `"particle_id"` | int | The ID of the particle. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`teleport_and_rotate_flex_object`**
-
-Teleport a Flex object to a new position and rotation. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "teleport_and_rotate_flex_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The new position of the object. | |
-| `"rotation"` | Quaternion | The new rotation of the object. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`teleport_flex_object`**
-
-Teleport a Flex object to a new position. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "teleport_flex_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The new position of the object. | |
 | `"id"` | int | The unique object ID. | |
 
 # ObjectTypeCommand

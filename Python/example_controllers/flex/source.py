@@ -1,6 +1,6 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.flex.fluid_type import FLUID_TYPES
+from tdw.flex_data.fluid_type import FLUID_TYPES
 
 """
 Create a Flex FluidSource, or "hose pipe", simulation of a fluid stream.

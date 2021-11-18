@@ -59,6 +59,7 @@ Velocities
 
 - `flex.get_particles(j)` returns a numpy array of particles. The first three elements are the particle's (x, y, z) positional coordinates. The fourth element is the particle's inverse mass.
 - `flex.get_velocities(j)` returns a numpy array of (x, y, z) particle velocities.
+- The *particle ID* is the index of the particle in either of the arrays.
 
 `FlexParticles` data can be useful for analyzing the physics state of the scene and for [applying forces to Flex objects](forces.md).
 

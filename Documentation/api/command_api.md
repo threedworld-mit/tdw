@@ -1791,7 +1791,7 @@ Set the near and far clipping planes of the avatar's camera.
 
 Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
 ```python
 {"$type": "set_field_of_view"}
@@ -3106,7 +3106,7 @@ These commands set the depth-of-field focus value based on the position of a tar
 
 Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
 ```python
 {"$type": "focus_on_object", "object_id": 1}
@@ -3129,7 +3129,7 @@ Set the post-process depth of field focus distance to equal the distance between
 
 Focus towards the depth-of-field towards the position of an object. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
 
 ```python
@@ -3425,7 +3425,7 @@ These commands affect an NVIDIA Flex container.
 Create a Flex Container. The ID of this container is the quantity of containers in the scene prior to adding it. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "create_flex_container"}
@@ -3467,7 +3467,7 @@ Create a Flex Container. The ID of this container is the quantity of containers 
 
 Destroy an existing Flex container. Only send this command after destroying all Flex objects in the scene. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "destroy_flex_container"}
@@ -3590,7 +3590,7 @@ Load a GameObject from resources.
 
 Load a FlexFluidPrimitive from resources. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "load_flex_fluid_from_resources", "id": 1}
@@ -3612,7 +3612,7 @@ Load a FlexFluidPrimitive from resources.
 
 Load a FlexFluidSource mesh from resources. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "load_flex_fluid_source_from_resources", "id": 1}
@@ -4105,7 +4105,7 @@ These commands apply only to objects that already have FlexActor components.
 
 Apply a directional force to the FlexActor object. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "apply_forces_to_flex_object_base64", "forces_and_ids_base64": "string", "id": 1}
@@ -4122,7 +4122,7 @@ Apply a directional force to the FlexActor object.
 
 Apply a directional force to the FlexActor object. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "apply_force_to_flex_object", "force": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
@@ -4144,7 +4144,7 @@ Apply a directional force to the FlexActor object.
 
 Assign the FlexContainer of the object. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "assign_flex_container", "container_id": 1, "id": 1}
@@ -4167,7 +4167,7 @@ Assign the FlexContainer of the object.
 
 Destroy the Flex object. This will leak memory (due to a bug in the Flex library that we can't fix), but will leak <emphasis>less</emphasis> memory than destroying a Flex-enabled object with <computeroutput>destroy_object</computeroutput>. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 - <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command [unload_asset_bundles](#unload_asset_bundles).</font>
 
 ```python
@@ -4185,7 +4185,7 @@ Destroy the Flex object. This will leak memory (due to a bug in the Flex library
 Set the mass of the Flex object. The mass is distributed equally across all particles. Thus the particle mass equals mass divided by number of particles. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_object_mass", "mass": 0.125, "id": 1}
@@ -4203,7 +4203,7 @@ Set the mass of the Flex object. The mass is distributed equally across all part
 Set the mass of all particles in the Flex object. Thus, the total object mass equals the number of particles times the particle mass. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_particles_mass", "mass": 0.125, "id": 1}
@@ -4220,7 +4220,7 @@ Set the mass of all particles in the Flex object. Thus, the total object mass eq
 
 Fix the particle in the Flex object, such that it does not move. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_particle_fixed", "is_fixed": True, "particle_id": 1, "id": 1}
@@ -4708,7 +4708,7 @@ These commands create a new FlexActor of type T with a FlexAsset of type U, or t
 Create or adjust a FlexClothActor for the object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_cloth_actor", "id": 1}
@@ -4738,7 +4738,7 @@ Create or adjust a FlexClothActor for the object.
 Create or adjust a FlexArrayActor as a fluid object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_fluid_actor", "id": 1}
@@ -4764,7 +4764,7 @@ Create or adjust a FlexArrayActor as a fluid object.
 Create or adjust a FlexSourceActor as a fluid "hose pipe" source. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_fluid_source_actor", "id": 1}
@@ -4790,7 +4790,7 @@ Create or adjust a FlexSourceActor as a fluid "hose pipe" source.
 Create or adjust a FlexSoftActor for the object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_soft_actor", "id": 1}
@@ -4822,7 +4822,7 @@ Create or adjust a FlexSoftActor for the object.
 Create or adjust a FlexSolidActor for the object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_solid_actor", "id": 1}
@@ -5194,7 +5194,7 @@ Set the Thickness Modifier for the Ambient Occlusion effect<ndash /> controls "s
 
 Set the depth-of-field aperture in post processing volume. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
 ```python
 {"$type": "set_aperture"}
@@ -5233,7 +5233,7 @@ Set the contrast value of the post-processing color grading.
 
 Set the depth-of-field focus distance in post processing volume. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
 ```python
 {"$type": "set_focus_distance"}

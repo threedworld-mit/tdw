@@ -6,7 +6,6 @@ Each TDW release includes many example controllers. They can be found in: `<root
 | --- | --- |
 | `animate_humanoid.py` | Create a humanoid and play some animations. |
 | `flex_cloth_fixed_particle.py` | Create a Flex cloth object and "fix" one of its corners in mid-air. |
-| `flex_fluid_source.py` | Create a Flex FluidSource, or "hose pipe", simulation of a fluid stream. |
 | `keyboard_controls.py` | Use WASD or arrow keys to move an avatar. |
 | `minimal_remote.py` | A minimal example of how to use the launch binaries daemon to<br>start and connect to a build on a remote node. Note: the remote<br>must be running launch_binaries.py. |
 | `paintings.py` | Add a painting to the scene. |

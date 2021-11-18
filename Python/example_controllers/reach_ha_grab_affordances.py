@@ -157,8 +157,8 @@ class ReachForAffordancePoint(Controller):
                           {"$type": "add_humanoid",
                            "name": "ha_proto_v1a",
                            "position": {"x": 0, "y": 0, "z": -0.525},
-                           "url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
-                           #"url": "file:///" + "D://HumanoidAgent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
+                           #"url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
+                           "url": "file:///" + "D://HumanoidAgent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
                            "id": self.h_id},
                           {"$type": "send_humanoids",
                            "ids": [self.h_id],
@@ -194,13 +194,14 @@ class ReachForAffordancePoint(Controller):
         while frame < self.reach_action_length:
             self.communicate([])
             frame += 1
-        """
+        
         # Grasp the object that was just reached for. The object is attached to the hand using a FixedJoint.
         self.communicate({"$type": "humanoid_grasp_object", 
                           "target": self.t_id, 
                           "affordance_id": int(self.affordance_id), 
                           "id": self.h_id, 
                           "arm": self.reach_arm})
+        """
         # Return arm to rest position, holding object
         self.communicate({"$type": "humanoid_reset_arm",  
                           "id": self.h_id, 
@@ -210,7 +211,7 @@ class ReachForAffordancePoint(Controller):
         while frame < self.reset_action_length:
             self.communicate([])
             frame += 1
-        """
+        """        
 
     def reach_for_target(self, arm: str, humanoid: int, target: int, reach_action_length: int, reset_action_length: int):
         """

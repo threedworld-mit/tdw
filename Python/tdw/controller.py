@@ -16,7 +16,7 @@ from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.audio_material_constants import STATIC_FRICTION, DYNAMIC_FRICTION, DENSITIES
 
 
-class Controller(object):
+class Controller:
     """
     Base class for all controllers.
 

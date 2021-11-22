@@ -158,9 +158,9 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 
 ### 2.10.3 Human user interaction
 
-1. Overview
-2. Virtual reality
-3. Keyboard controls
+1. [Overview](Documentation/lessons/humans/overview.md)
+2. [Keyboard controls](Documentation/lessons/humans/overview.md)
+3. [Virtual reality](Documentation/lessons/humans/vr.md)
 
 ### 2.10.4 Humanoid agents ("Replicants")
 

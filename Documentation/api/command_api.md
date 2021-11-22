@@ -586,7 +586,6 @@
 | Command | Description |
 | --- | --- |
 | [`rotate_textured_quad_by`](#rotate_textured_quad_by) | Rotate a textured quad by a given angle around a given axis. |
-| [`rotate_textured_quad_to_euler_angles`](#rotate_textured_quad_to_euler_angles) | Set the rotation of the quad with Euler angles.  |
 | [`scale_textured_quad`](#scale_textured_quad) | Scale a textured quad by a factor. |
 | [`set_textured_quad`](#set_textured_quad) | Apply a texture to a pre-existing quad.  |
 | [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
@@ -7451,23 +7450,6 @@ An axis of rotation.
 | `"pitch"` | Nod your head "yes". |
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
-
-***
-
-## **`rotate_textured_quad_to_euler_angles`**
-
-Set the rotation of the quad with Euler angles. 
-
-- <font style="color:teal">**Euler angles**: Rotational behavior can become unpredictable if the Euler angles of an object are adjusted more than once. Consider sending this command only to initialize the orientation. See: [Rotation documentation)(../misc_frontend/rotation.md)</font>
-
-```python
-{"$type": "rotate_textured_quad_to_euler_angles", "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"euler_angles"` | Vector3 | The new Euler angles of the quad. | |
-| `"id"` | int | The unique ID of this textured quad. | |
 
 ***
 

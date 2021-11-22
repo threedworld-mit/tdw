@@ -71,7 +71,7 @@ The only required parameter of `add_position_marker` is `position` (an {x, y, z}
 
 ## Remove position markers
 
-To remove all position markers from a scene, send [`remove_position_markers`](../../api/command_api.md#remove_position_markers)
+To remove all position markers from a scene, send [`remove_position_markers`](../../api/command_api.md#remove_position_markers).
 
 ## Command API and output data
 

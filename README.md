@@ -187,7 +187,7 @@ TODO
 1. [Overview](Documentation/lessons/non_physics/overview.md)
 2. [Position markers](Documentation/lessons/non_physics/position_markers.md)
 3. [Textured quads](Documentation/lessons/non_physics/textured_quads.md)
-4. Non-physics humanoids
+4. [Non-physics humanoids](Documentation/lessons/non_physics/humanoids.md)
 
 ## 2.14 Misc. topics
 

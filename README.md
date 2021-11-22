@@ -189,12 +189,15 @@ TODO
 3. [Textured quads](Documentation/lessons/non_physics/textured_quads.md)
 4. [Non-physics humanoids](Documentation/lessons/non_physics/humanoids.md)
 
-## 2.14 Misc. topics
+## 2.14 Misc. remote server topics
+
+1. BinaryManager
+2. xpra
+
+## 2.15 Misc. other topics
 
 1. C# source code
 2. Freezing your code
-3. BinaryManager
-4. xpra
 5. Creating composite objects
 
 # 3. API Documentation

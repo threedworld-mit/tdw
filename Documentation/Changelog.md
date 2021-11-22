@@ -35,6 +35,13 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | `send_environments`              | `send_scene_regions`    |
 | `create_flex_fluid_object`       | `set_flex_fluid_actor`  |
 | `create_flex_fluid_source_actor` | `set_flex_source_actor` |
+| `create_painting`                 | `create_textured_quad`                       |
+| `destroy_painting`                | `destroy_textured_quad`                      |
+| `rotate_painting_by`              | `rotate_textured_quad_by`                    |
+| `scale_painting`                  | `scale_textured_quad`                        |
+| `set_painting_texture`            | `set_textured_quad`                          |
+| `show_painting`                   | `show_textured_quad`                         |
+| `teleport_painting`               | `teleport_textured_quad`                     |
 
 #### Removed Commands
 
@@ -42,6 +49,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `set_proc_gen_reflection_probe`                              | Deprecated in v1.8; use `enable_reflection_probes` instead.  |
 | `rotate_flex_object_by`<br>`rotate_flex_object_by_quaternion`<br>`teleport_and_rotate_flex_object`<br>`teleport_flex_object` | Flex objects should be teleported and rotated prior to enabling them for Flex. |
+| `rotate_painting_to_euler_angles`                            | Redundant and can gimbal lock.                               |
+| `hide_painting`                                              | Replaced with `show_textured_quad` (set `"show"` to False)   |
 
 ### Output Data
 

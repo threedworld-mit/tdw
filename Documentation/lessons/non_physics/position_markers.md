@@ -75,7 +75,7 @@ To remove all position markers from a scene, send [`remove_position_markers`](..
 
 ## Command API and output data
 
-Position markers aren't [objects](../core_concepts/objects.md) in the TDW sense and won't respond to object commands such as `teleport_object`. They won't appear in *any* output data (including `Transforms`).
+Position markers aren't [objects](../core_concepts/objects.md) in the TDW sense and won't respond to object commands such as `teleport_object`. They won't appear in *any* output data except `Images` (and only in the `_img` pass).
 
 ***
 

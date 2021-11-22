@@ -368,25 +368,6 @@
 | [`hide_object`](#hide_object) | Hide the object. |
 | [`show_object`](#show_object) | Show the object. |
 
-**Painting Command**
-
-| Command | Description |
-| --- | --- |
-| [`create_painting`](#create_painting) | Create a blank "painting" in the scene. |
-| [`destroy_painting`](#destroy_painting) | Destroy an existing painting. |
-
-**Adjust Painting Command**
-
-| Command | Description |
-| --- | --- |
-| [`hide_painting`](#hide_painting) | Hide a visible painting. |
-| [`rotate_painting_by`](#rotate_painting_by) | Rotate a painting by a given angle around a given axis. |
-| [`rotate_painting_to_euler_angles`](#rotate_painting_to_euler_angles) | Set the rotation of the painting with Euler angles.  |
-| [`scale_painting`](#scale_painting) | Scale a painting by a factor. |
-| [`set_painting_texture`](#set_painting_texture) | Apply a texture to a pre-existing painting.  |
-| [`show_painting`](#show_painting) | Show a painting that was hidden. |
-| [`teleport_painting`](#teleport_painting) | Teleport a painting to a new position. |
-
 **Play Audio Data Command**
 
 | Command | Description |
@@ -592,6 +573,24 @@
 | [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
 | [`send_volumes`](#send_volumes) | Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value.  |
+
+**Textured Quad Command**
+
+| Command | Description |
+| --- | --- |
+| [`create_textured_quad`](#create_textured_quad) | Create a blank quad (a rectangular mesh with four vertices) in the scene. |
+| [`destroy_textured_quad`](#destroy_textured_quad) | Destroy an existing textured quad. |
+
+**Adjust Textured Quad Command**
+
+| Command | Description |
+| --- | --- |
+| [`rotate_textured_quad_by`](#rotate_textured_quad_by) | Rotate a textured quad by a given angle around a given axis. |
+| [`rotate_textured_quad_to_euler_angles`](#rotate_textured_quad_to_euler_angles) | Set the rotation of the quad with Euler angles.  |
+| [`scale_textured_quad`](#scale_textured_quad) | Scale a textured quad by a factor. |
+| [`set_textured_quad`](#set_textured_quad) | Apply a texture to a pre-existing quad.  |
+| [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
+| [`teleport_textured_quad`](#teleport_textured_quad) | Teleport a textured quad to a new position. |
 
 **Vr Command**
 
@@ -4874,176 +4873,6 @@ Show the object.
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
-# PaintingCommand
-
-These commands allow you to create and edit static "paintings". To create a painting, first send the command create_painting. To edit a painting, send set_painting_texture.
-
-***
-
-## **`create_painting`**
-
-Create a blank "painting" in the scene.
-
-
-```python
-{"$type": "create_painting", "position": {"x": 1.1, "y": 0.0, "z": 0}, "size": {"x": 1.1, "y": 0}, "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The position of the painting. This will always be anchored in the bottom-center point of the object. | |
-| `"size"` | Vector2 | The width and height of the painting. | |
-| `"euler_angles"` | Vector3 | The orientation of the painting, in Euler angles. | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`destroy_painting`**
-
-Destroy an existing painting.
-
-
-```python
-{"$type": "destroy_painting", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of this painting. | |
-
-# AdjustPaintingCommand
-
-These commands adjust an existing painting.
-
-***
-
-## **`hide_painting`**
-
-Hide a visible painting.
-
-
-```python
-{"$type": "hide_painting", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`rotate_painting_by`**
-
-Rotate a painting by a given angle around a given axis.
-
-
-```python
-{"$type": "rotate_painting_by", "angle": 0.125, "id": 1}
-```
-
-```python
-{"$type": "rotate_painting_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"axis"` | Axis | The axis of rotation. | "yaw" |
-| `"angle"` | float | The angle of rotation. | |
-| `"is_world"` | bool | If true, the painting will rotate via "global" directions and angles. If false, the painting will rotate locally. | True |
-| `"id"` | int | The unique ID of this painting. | |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-***
-
-## **`rotate_painting_to_euler_angles`**
-
-Set the rotation of the painting with Euler angles. 
-
-- <font style="color:teal">**Euler angles**: Rotational behavior can become unpredictable if the Euler angles of an object are adjusted more than once. Consider sending this command only to initialize the orientation. See: [Rotation documentation)(../misc_frontend/rotation.md)</font>
-
-```python
-{"$type": "rotate_painting_to_euler_angles", "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"euler_angles"` | Vector3 | The new Euler angles of the painting. | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`scale_painting`**
-
-Scale a painting by a factor.
-
-
-```python
-{"$type": "scale_painting", "scale_factor": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale_factor"` | Vector3 | Multiply the scale of the painting by this vector. (For example, if scale_factor is (2,2,2), then the painting's current size will double.) | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`set_painting_texture`**
-
-Apply a texture to a pre-existing painting. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-
-```python
-{"$type": "set_painting_texture", "dimensions": {"x": 0, "y": 1}, "image": "string", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"dimensions"` | GridPoint | The expected dimensions of the image in pixels. | |
-| `"image"` | string | base64 string representation of the image byte array. | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`show_painting`**
-
-Show a painting that was hidden.
-
-
-```python
-{"$type": "show_painting", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`teleport_painting`**
-
-Teleport a painting to a new position.
-
-
-```python
-{"$type": "teleport_painting", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | New position of the painting. | |
-| `"id"` | int | The unique ID of this painting. | |
-
 # PlayAudioDataCommand
 
 Play audio at a position.
@@ -5119,7 +4948,7 @@ Create a non-physics, non-interactive marker at a position in the scene.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | Add a marker at this position. | |
-| `"scale"` | float | The scale of the marker. | 0.05 |
+| `"scale"` | float | The scale of the marker. If the scale is 1, a cube and square will be 1 meter wide and a sphere and circle will be 1 meter in diameter. | 0.05 |
 | `"color"` | Color | The color of the marker. The default color is red. | {"r": 1, "g": 0, "b": 0, "a": 1} |
 | `"shape"` | Shape | The shape of the position marker object. | "sphere" |
 
@@ -7549,6 +7378,170 @@ Options for when to send data.
 | `"once"` | Send the data for this frame only. |
 | `"always"` | Send the data every frame. |
 | `"never"` | Never send the data. |
+
+# TexturedQuadCommand
+
+These commands allow you to create and edit static quad meshes (a rectangle with four vertices) with textures. To create a textured quad, send the command create_textured_quad. To edit a textured quad, send [set_textured_quad](#set_textured_quad).
+
+***
+
+## **`create_textured_quad`**
+
+Create a blank quad (a rectangular mesh with four vertices) in the scene.
+
+
+```python
+{"$type": "create_textured_quad", "position": {"x": 1.1, "y": 0.0, "z": 0}, "size": {"x": 1.1, "y": 0}, "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the quad. This will always be anchored in the bottom-center point of the object. | |
+| `"size"` | Vector2 | The width and height of the quad. | |
+| `"euler_angles"` | Vector3 | The orientation of the quad, in Euler angles. | |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`destroy_textured_quad`**
+
+Destroy an existing textured quad.
+
+
+```python
+{"$type": "destroy_textured_quad", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+# AdjustTexturedQuadCommand
+
+These commands adjust an existing textured quad.
+
+***
+
+## **`rotate_textured_quad_by`**
+
+Rotate a textured quad by a given angle around a given axis.
+
+
+```python
+{"$type": "rotate_textured_quad_by", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "rotate_textured_quad_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation. | |
+| `"is_world"` | bool | If true, the quad will rotate via "global" directions and angles. If false, the quad will rotate locally. | True |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`rotate_textured_quad_to_euler_angles`**
+
+Set the rotation of the quad with Euler angles. 
+
+- <font style="color:teal">**Euler angles**: Rotational behavior can become unpredictable if the Euler angles of an object are adjusted more than once. Consider sending this command only to initialize the orientation. See: [Rotation documentation)(../misc_frontend/rotation.md)</font>
+
+```python
+{"$type": "rotate_textured_quad_to_euler_angles", "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"euler_angles"` | Vector3 | The new Euler angles of the quad. | |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`scale_textured_quad`**
+
+Scale a textured quad by a factor.
+
+
+```python
+{"$type": "scale_textured_quad", "id": 1}
+```
+
+```python
+{"$type": "scale_textured_quad", "id": 1, "scale_factor": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale_factor"` | Vector3 | Multiply the scale of the quad by this vector. (For example, if scale_factor is (2,2,2), then the quad's current size will double.) | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`set_textured_quad`**
+
+Apply a texture to a pre-existing quad. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+
+```python
+{"$type": "set_textured_quad", "dimensions": {"x": 0, "y": 1}, "image": "string", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dimensions"` | GridPoint | The expected dimensions of the image in pixels. | |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`show_textured_quad`**
+
+Show or hide a textured quad.
+
+
+```python
+{"$type": "show_textured_quad", "id": 1}
+```
+
+```python
+{"$type": "show_textured_quad", "id": 1, "show": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"show"` | bool | If True, show the quad. If False, hide it. | True |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`teleport_textured_quad`**
+
+Teleport a textured quad to a new position.
+
+
+```python
+{"$type": "teleport_textured_quad", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | New position of the quad. | |
+| `"id"` | int | The unique ID of this textured quad. | |
 
 # VrCommand
 

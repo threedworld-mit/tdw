@@ -89,7 +89,7 @@ class TransformInitData:
         :return: The model metadata record for this object.
         """
 
-        return TransformInitData.LIBRARIES[self.library].get_record(name=self.name)
+        return ModelLibrarian(self.library).get_record(name=self.name)
 
 
 class RigidbodyInitData(TransformInitData):

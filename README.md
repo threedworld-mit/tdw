@@ -191,8 +191,8 @@ TODO
 
 ## 2.14 Misc. remote server topics
 
-1. BinaryManager
-2. xpra
+1. [Launch a TDW build on a remote server from a personal computer](Documentation/lessons/remote/launch_build.md)
+2. [Remote rendering with xpra](Documentation/lessons/remote/xpra.md)
 
 ## 2.15 Misc. other topics
 

@@ -57,7 +57,7 @@ class Controller:
         if launch_build:
             Controller.launch_build(port=port)
         context = zmq.Context()
-
+        # noinspection PyUnresolvedReferences
         self.socket = context.socket(zmq.REP)
         self.socket.bind('tcp://*:' + str(port))
 

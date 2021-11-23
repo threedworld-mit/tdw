@@ -173,8 +173,8 @@ TODO
 
 ## 2.11 Multi-agent simulations
 
-1. Overview
-2. Good coding practices
+1. [Overview](Documentation/lessons/multi_agent/overview.md)
+2. [Custom agent classes](Documentation/lessons/multi_agent/custom_agent_classes.md)
 
 ## 2.12 Navigation
 

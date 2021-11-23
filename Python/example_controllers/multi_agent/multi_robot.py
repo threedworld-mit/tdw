@@ -50,6 +50,10 @@ class SwingRobot(Robot):
 
 
 class MultiRobot(Controller):
+    """
+    Two "Swing Robots" swing at a ball when they detect a collision.
+    """
+
     def run(self) -> None:
         object_id = self.get_unique_id()
         # Add two robots, a camera, and image capture.
@@ -79,15 +83,17 @@ class MultiRobot(Controller):
                                                     scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
                                                     default_physics_values=False,
                                                     mass=5))
-        commands.append({"$type": "send_collisions",
-                         "enter": True,
-                         "stay": False,
-                         "exit": False,
-                         "collision_types": ["obj", "env"]})
         self.communicate(commands)
+        while robot_0.joints_are_moving() or robot_1.joints_are_moving():
+            self.communicate([])
         # Start swinging.
         robot_1.start_to_swing()
-
+        # Enable collision detection.
+        self.communicate({"$type": "send_collisions",
+                          "enter": True,
+                          "stay": False,
+                          "exit": False,
+                          "collision_types": ["obj", "env"]})
         for i in range(500):
             self.communicate([])
         self.communicate({"$type": "terminate"})

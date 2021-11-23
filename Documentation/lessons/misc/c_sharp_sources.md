@@ -59,7 +59,9 @@ Please post an [Issue in the repo](https://github.com/threedworld-mit/tdw/issues
 Even if your project does require access to the TDW back-end and C# source code, and you have the necessary skills, it’s important to discuss your project requirements with us first before contemplating a major development effort, because:
 
 - We may already be working on developing what you need, or it may be on our near-term development road map. In either case we can discuss with you when we think that development effort could be completed, and perhaps discuss collaborating with you to speed up the development
-
 - If your requirement is NOT on our roadmap, it may be something we could develop quite quickly, in which case we could look at adding it to our near-term development queue
-
 - If is NOT something we can do in the near-term, nor are we planning to do it, we may still be able to offer advice on how to proceed, and/or offer recommendations for third-party code plugins that could accelerate your development
+
+***
+
+[Return to the README](../../../README.md)

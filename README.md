@@ -196,8 +196,8 @@ TODO
 
 ## 2.15 Misc. other topics
 
-1. C# source code
-2. Freezing your code
+1. [C# source code](Documentation/lessons/misc/c_sharp_sources.md)
+2. [Freezing your code](Documentation/lessons/misc/freeze.md)
 5. Creating composite objects
 
 # 3. API Documentation

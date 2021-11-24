@@ -319,7 +319,7 @@ Example controllers:
 
 Python API:
 
-- [`Controller.get_add_hdri_skybox`](../../api/python/controller.md)
+- [`Controller.get_add_hdri_skybox`](../../python/controller.md)
 - [`HDRISkyboxLibrarian`](../../python/librarian/hdri_skybox_librarian.md)
 - [`SceneLibrarian`](../../python/librarian/scene_librarian.md)
 

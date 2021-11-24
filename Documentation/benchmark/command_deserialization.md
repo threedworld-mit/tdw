@@ -2,7 +2,7 @@
 
 # Command deserialization
 
-The build receives [commands](../api/command_api_guide.md) as JSON string and deserializes them into objects. This process is highly optimized within TDW.
+The build receives commands as JSON string and deserializes them into objects. This process is highly optimized within TDW.
 
 JSON is known to be slower than other serialization formats. However, on the backend, JSON allows us to rapidly iterate, fix, and create commands. Switching to a different serialization format would take a tremendous amount of time and result in a faster but much more fragile API; we've decided that this is not a good tradeoff.
 

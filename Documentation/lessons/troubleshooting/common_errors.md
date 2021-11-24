@@ -13,7 +13,7 @@ If after reading this document you're still unsure how to fix your error, [pleas
 - Make sure that your `tdw` Python module is at the latest release.
 - Make sure that the version of the TDW build matches the version of the `tdw` Python module.
 - See sections below for common controller and build problems.
-- Add a [logger](log.md) to your controller.
+- Add a [logger](logger.md) to your controller.
 
 **The simulation hangs indefinitely**
 

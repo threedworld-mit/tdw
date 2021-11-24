@@ -2,7 +2,7 @@
 
 # Overview
 
-*Photorealism is best achieved via a combination of reasonable camera positions and angles, and plausible object selection and positions. If you haven't done so already, we strongly recommend you read the [camera controls tutorial](../camera_controls/overview.md) and [objects and scenes tutorial](../objects_and_scenes/overview.md).*
+*Photorealism is best achieved via a combination of reasonable camera positions and angles, and plausible object selection and positions. If you haven't done so already, we strongly recommend you read the [camera controls tutorial](../camera/overview.md) and [objects and scenes tutorial](../objects_and_scenes/overview.md).*
 
 TDW offers users the ability to generate near-photorealistic images at runtime. To some extent, the process of creating photorealistic images always involves a human user. There can't be a "realism toggle" in TDW because there are too many factors in what constitutes a "realistic" image. Brighter scenes require different parameters than darker scenes, images with objects closer to the foreground require different parameters than images with objects further away, different scenes have different lighting setups, and so on.
 

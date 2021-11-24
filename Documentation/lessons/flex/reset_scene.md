@@ -4,7 +4,7 @@
 
 *Many of the techniques involved in resetting a non-Flex scene. The main difference is which commands you need to send. If you haven't done so already, [read this document regarding resetting a scene.](../objects_and_scenes/reset_scene.md)*
 
-When resetting a Flex scene, be sure to clear Flex data from memory. [Flex always leaks memory during a scene reset](overview.md) but these commands will leak much less memory:
+When resetting a Flex scene, be sure to clear Flex data from memory. [Flex always leaks memory during a scene reset](flex.md) but these commands will leak much less memory:
 
 - For each Flex object, you must send [`destroy_flex_object`](../../api/command_api.md#destroy_flex_object). Send this *instead* of [`destroy_object`](../../api/command_api.md#destroy_object) for Flex. Send this even if you are unloading and reloading a scene. 
 - After destroying all Flex objects in the scene, destroy all Flex containers with [`destroy_flex_container`](../../api/command_api.md#destroy_flex_container).  Send this even if you are unloading and reloading a scene. 

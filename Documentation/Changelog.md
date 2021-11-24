@@ -2,7 +2,7 @@
 
 # v1.9.x
 
-To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides/v1.8_to_v1.9).
+To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
 ## v1.9.0
 
@@ -172,7 +172,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 
 # v1.8.x
 
-To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
+To upgrade from TDW v1.7 to v1.8, read [this guide](upgrade_guides/v1.7_to_v1.8.md).
 
 ## v1.8.29
 
@@ -232,7 +232,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 | Command | Description |
 | --- | --- |
-| `add_smpl_humanoid` | Add a parameterized humanoid to the scene using [SMPL](https://smpl.is.tue.mpg.de/en). Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters. |
+| `add_smpl_humanoid` | Add a parameterized humanoid to the scene using [SMPL](https://smpl.is.tue.mpg.de). Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters. |
 
 ### Humanoid libraries
 
@@ -249,7 +249,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Example Controllers
 
-- Added: `smpl_humanoid.py` Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body parameters and play an animation.
+- Added: `smpl_humanoid.py` Add a [SMPL humanoid](https://smpl.is.tue.mpg.de) to the scene. Set its body parameters and play an animation.
 
 ### Documentation
 
@@ -1035,9 +1035,9 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### New Features
 
-- Added a [robotics API](misc_frontend/robots.md) to TDW. For now, the total number of robots is small, but we'll add more over time.
-  - Added the [Magnebot](misc_frontend/magnebot.md) to TDW.
-  - Deprecated the Sticky Mitten Avatar (see [upgrade guide](Documentation/upgrade_guides/v1.7_to_v1.8)).
+- Added a robotics API to TDW. For now, the total number of robots is small, but we'll add more over time.
+  - Added the Magnebot to TDW.
+  - Deprecated the Sticky Mitten Avatar (see [upgrade guide](upgrade_guides/v1.7_to_v1.8.md)).
 - Significant graphics improvements in certain scenes because many models didn't cast shadows or reflect light correctly.
 - Updated Unity Engine from 2019.4 to 2020.2
 - Fixed: OS X and Linux builds don't have executable flags. In order to preserve permissions, they are now stored online as .tar.gz files instead of .zip files.
@@ -1197,7 +1197,7 @@ It's currently not possible to draw Flex particles (`"draw_particles"` in the Co
 
 # v1.7.x
 
-To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/upgrade_guides/v1.6_to_v1.7).
+To upgrade from TDW v1.6 to v1.7, read [this guide](upgrade_guides/v1.6_to_v1.7.md).
 
 ## v1.7.16
 
@@ -2178,7 +2178,7 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/upgrade_guides
 - **The build will automatically launch when you launch a controller.** 
 - When you launch a controller, it will automatically check to make sure that your local TDW install it is up-to-date and, if not, offer suggestions for how to upgrade.
 
-For more information, please read [Getting Started](getting_started.md).
+For more information, please read Getting Started.
 
 ### `tdw` module
 

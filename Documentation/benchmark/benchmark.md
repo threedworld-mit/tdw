@@ -84,7 +84,7 @@
 
 ## How to benchmark your own controller
 
-To benchmark your own controller, add a To benchmark your own code, add the [`Benchmark`](../../python/add_ons/benchmark.md) add-on. In this example, we'll compare the frames per second (FPS) of sending commands without adding a camera to the scene vs. the FPS after adding a camera to the scene:
+To benchmark your own controller, add a To benchmark your own code, add the [`Benchmark`](../python/add_ons/benchmark.md) add-on. In this example, we'll compare the frames per second (FPS) of sending commands without adding a camera to the scene vs. the FPS after adding a camera to the scene:
 
 ```python
 from tdw.controller import Controller
@@ -128,4 +128,4 @@ Output:
 
 Python API:
 
-- [`Benchmark`](../../python/add_ons/benchmark.md) 
+- [`Benchmark`](../python/add_ons/benchmark.md) 

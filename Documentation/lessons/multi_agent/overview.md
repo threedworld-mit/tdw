@@ -50,7 +50,7 @@ Result:
 
 ![](images/multi_agent.gif)
 
-We can add multiple types of agent to the same simulation. This example adds a `Robot` and an [`EmbodiedAvatar`](../../python/add_ons/embodied_avatar.py). Note that the simulation ends when the robot stops moving; it's not necessary in multi-agent simulations to wait for all agents to finish their actions (or in fact to wait for *any* agents to finish their actions).
+We can add multiple types of agent to the same simulation. This example adds a `Robot` and an [`EmbodiedAvatar`](../../python/add_ons/embodied_avatar.md). Note that the simulation ends when the robot stops moving; it's not necessary in multi-agent simulations to wait for all agents to finish their actions (or in fact to wait for *any* agents to finish their actions).
 
 ```python
 from tdw.controller import Controller
@@ -114,6 +114,6 @@ Example controllers:
 Python API:
 
 -  [`Robot`](../../python/add_ons/robot.md)
--  [`EmbodiedAvatar`](../../python/add_ons/embodied_avatar.py)
+-  [`EmbodiedAvatar`](../../python/add_ons/embodied_avatar.md)
 -  [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md)
 -  [`ImageCapture`](../../python/add_ons/image_capture.md)

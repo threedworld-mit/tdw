@@ -139,6 +139,6 @@ You can run [`screenshotter.py --type models_full`](../core_concepts/objects.md)
 
 Python API:
 
-- [`ModelLibrarian`](../../librarian/model_librarian.md)
+- [`ModelLibrarian`](../../python/librarian/model_librarian.md)
 - [`TDWUtils.validate_amazon_s3()](../../python/tdw_utils.md)
 

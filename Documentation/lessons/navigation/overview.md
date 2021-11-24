@@ -7,7 +7,7 @@ Typically, agents learn to navigate using RGB-D image data. [Read this for more 
 This tutorial covers two navigation aids in TDW that *don't* utilize perception data:
 
 - [NavMeshes](nav_mesh.md) are Unity's built-in pathfinding system. It is possible to request a navigation path  on the NavMesh.
-- [Occupancy maps](occupancy_map.md) are numpy arrays that divide a scene into a grid of cells, where each cell is occupied, out of bounds, or free. 
+- [Occupancy maps](occupancy_maps.md) are numpy arrays that divide a scene into a grid of cells, where each cell is occupied, out of bounds, or free. 
 
 ***
 

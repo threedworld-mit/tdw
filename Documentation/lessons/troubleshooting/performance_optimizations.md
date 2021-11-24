@@ -38,7 +38,7 @@ Reducing the image size with [`set_screen_size`](../../api/command_api.md#set_sc
 
 ### 3D. Disable the image sensor
 
-If you don't need image data at all, consider not adding an [avatar](../core_concepts.md) to the scene. Or, disable the avatar's camera by sending [`enable_image_sensor`](../../api/command_api.md#enable_image_sensor).
+If you don't need image data at all, consider not adding an [avatar](../core_concepts/avatars.md) to the scene. Or, disable the avatar's camera by sending [`enable_image_sensor`](../../api/command_api.md#enable_image_sensor).
 
 ### 3E. Use alternative output data
 
@@ -77,7 +77,7 @@ However, it's possible to load too many models into the scene and run out of sys
 
 ## 6. Reduce render quality
 
-- Raise and lower the overall render quality by sending [`{"$type": "set_render_quality", "render_quality": value}`](../photorealism/set_render_quality.md) where `value` is an integer between 0 (lowest quality) and 5 (highest quality).
+- Raise and lower the overall render quality by sending [`{"$type": "set_render_quality", "render_quality": value}`](../../api/command_api.md#set_render_quality) where `value` is an integer between 0 (lowest quality) and 5 (highest quality).
 - [Post-processing](../photorealism/post_processing.md) can be an expensive process. Disable it by sending [`set_post_process`](../../api/command_api.md#set_post_process). This will lower image quality.
 - Disable reflection probes by sending [`enable_reflection_probes`](../../api/command_api.md#enable_reflection_probes). Images will be flatter and less realistic.
 

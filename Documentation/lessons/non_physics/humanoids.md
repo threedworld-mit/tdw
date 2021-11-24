@@ -101,7 +101,7 @@ record = lib.get_record("man_casual_1")
 
 Non-physics humanoid animations are *also* asset bundles. Humanoid animations were recorded at varying framerates, have varying play lengths. Additionally, some animations are designed to loop and some are not.
 
-All of this means that prior to adding an animation to the scene, you need to have its metadata. Humanoid animation metadata is stored in the [`HumanoidAnimationLibrarian`](../python/librarian/humanoid_animation_librarian.md):
+All of this means that prior to adding an animation to the scene, you need to have its metadata. Humanoid animation metadata is stored in the [`HumanoidAnimationLibrarian`](../../python/librarian/humanoid_animation_librarian.md):
 
 ```python
 from tdw.librarian import HumanoidAnimationLibrarian
@@ -127,7 +127,7 @@ Output:
 walking_1 30 69 True
 ```
 
-There are additional animations extracted from [SMPL](https://smpl.is.tue.mpg.de/downloads) in a separate librarian that can be used by any humanoid:
+There are additional animations extracted from [SMPL](https://smpl.is.tue.mpg.de) in a separate librarian that can be used by any humanoid:
 
 ```python
 from tdw.librarian import HumanoidAnimationLibrarian
@@ -224,7 +224,7 @@ Result:
 
 ## SMPL humanoids
 
- [SMPL humanoids](https://smpl.is.tue.mpg.de/downloads) have parameterized body shapes.
+ [SMPL humanoids](https://smpl.is.tue.mpg.de) have parameterized body shapes.
 
 To review the SMPL models available, load the SMPL humanoid librarian and iterate through the records:
 
@@ -252,7 +252,7 @@ lib = HumanoidLibrarian("smpl_humanoids.json")
 record = lib.get_record("humanoid_smpl_f")
 ```
 
-To add a SMPL humanoid, send [`add_smpl_humanoid`](../api/command_api.md#add_smpl_humanoid):
+To add a SMPL humanoid, send [`add_smpl_humanoid`](../../api/command_api.md#add_smpl_humanoid):
 
 ```python
 import random
@@ -374,7 +374,7 @@ Python API:
 - [`Controller.get_add_humanoid()`](../../Python/controller.md)
 - [`Controller.get_add_humanoid_animation()`](../../Python/controller.md)
 - [`HumanoidLibrarian`](../../python/librarian/humanoid_librarian.md)
-- [`HumanoidAnimationLibrarian`](../python/librarian/humanoid_animation_librarian.md)
+- [`HumanoidAnimationLibrarian`](../../python/librarian/humanoid_animation_librarian.md)
 
 Command API:
 
@@ -382,6 +382,7 @@ Command API:
 - [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation)
 - [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation)
 - [`look_at`](../../api/command_api.md#look_at)
+- [`add_smpl_humanoid`](../../api/command_api.md#add_smpl_humanoid)
 - [`send_humanoids`](../../api/command_api.md#send_humanoids)
 - [`destroy_humanoid`](../../api/command_api.md#destroy_humanoid)
 - [`stop_humanoid_animation`](../../api/command_api.md#stop_humanoid_animation)

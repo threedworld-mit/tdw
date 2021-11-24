@@ -4,7 +4,7 @@
 
 [As mentioned at the start of this tutorial](overview.md), unlike all other output data in TDW, audio data can't be passed directly from the build to the controller. Audio must be recorded from with an external program. TDW includes wrapper functions to do this.
 
-**If you want to record audio *and* video, [read this](../video/audio_visual.md).** It's difficult to align audio recorded with one program with video recorded with another program; they should both be captured with the same program. This document describes how to record audio-only data.
+**If you want to record audio *and* video, [read this](../video/audio.md).** It's difficult to align audio recorded with one program with video recorded with another program; they should both be captured with the same program. This document describes how to record audio-only data.
 
 ## Requirements
 

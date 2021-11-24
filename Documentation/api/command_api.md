@@ -1,6 +1,6 @@
 # Command API
 
-**This document contains all commands currently available in TDW. For a usage guide, [read this](command_api_guide.md).**
+**This document contains all commands currently available in TDW.**
 
 # Table of Contents
 

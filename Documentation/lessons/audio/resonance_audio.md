@@ -21,7 +21,7 @@ Initializing a scene with Resonance Audio is very similar to initializing a scen
 2. [Add an avatar](../core_concepts/avatars.md)
 3. Add an **Resonance Audio sensor** to the avatar
 
-The final step can be simplified with the [`ResonanceAudioInitializer` add-on](../../python/add_ons/audio_intializer.md):
+The final step can be simplified with the [`ResonanceAudioInitializer` add-on](../../python/add_ons/resonance_audio_initializer.md):
 
 ```python
 from tdw.controller import Controller
@@ -127,7 +127,7 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 
 The `region_id` parameter controls the position and size of the reverb space. In some scenes, it's possible to have multiple reverb spaces.
 
-If `region_id` is set to -1, then the reverb space will be the size of the scene. The default value of `region_id` in both `ResonanceAudioInitializer` and the underlying [`set_reverb_space_simple`](../../api/command_api.md#set_reverb_space_simple)` command is -1.
+If `region_id` is set to -1, then the reverb space will be the size of the scene. The default value of `region_id` in both `ResonanceAudioInitializer` and the underlying [`set_reverb_space_simple`](../../api/command_api.md#set_reverb_space_simple) command is -1.
 
 Certain [streamed scenes](../core_concepts/scenes.md) have multiple *scene regions*. In interior scenes, scene regions are usually individual *rooms*. Each region has an ID. Set `region_id` to this value to create a reverb space that matches the position and size of the scene region.
 

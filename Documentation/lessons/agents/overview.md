@@ -7,7 +7,7 @@
 Unlike most simulation platforms, TDW has a very loose definition for "agent". Some examples of what *might* be, but doesn't *have* to be, an agent:
 
 - [Avatars](../core_concepts/avatars.md) have image sensors but typically are not embodied.
-- [Objects](../core_concepts.md) don't have image sensors but [it is possible to directly apply forces to objects](../physx/forces.md) and thereby make them act as if they are embodied agents.
+- [Objects](../core_concepts/objects.md) don't have image sensors but [it is possible to directly apply forces to objects](../physx/forces.md) and thereby make them act as if they are embodied agents.
 - [Robots](../robots/overview.md) can act as agents but don't have image sensors by default.
 
 TDW includes higher-level add-ons to effectively "create" agents from lower-level functionality. The [`Robot` add-on](../../python/add_ons/robot.md), for example, is a robotics wrapper class that has been designed assuming that the user wants to use robots as agents.

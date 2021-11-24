@@ -22,7 +22,7 @@ In order to initialize audio in TDW, you must:
 2. [Add an avatar](../core_concepts/avatars.md)
 3. Add an **audio sensor** to the avatar
 
-The final step can be simplified with the [`AudioInitializer` add-on](../../python/add_ons/audio_intializer.md):
+The final step can be simplified with the [`AudioInitializer` add-on](../../python/add_ons/audio_initializer.md):
 
 ```python
 from tdw.controller import Controller

@@ -75,7 +75,7 @@ keyboard.listen(key="Escape", function=self.quit())
 
 ## Keyboard controls and window focus
 
-In order to use keyboard controls, the TDW build window must [be focused (i.e. be the selected window)](https://en.wikipedia.org/wiki/Focus_(computing)).This means that keyboard controls will only work on personal computers.
+In order to use keyboard controls, the TDW build window must be focused (i.e. be the selected window). This means that keyboard controls will only work on personal computers.
 
 ## Control an avatar with the keyboard
 

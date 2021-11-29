@@ -10,7 +10,7 @@ An abstract base class for third-person camera controller add-ons.
 
 - `avatar_id` The ID of the avatar that (this camera).
 
-- `initial_position` The initial position of the object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+- `position` The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
 
 ***
 
@@ -20,15 +20,14 @@ An abstract base class for third-person camera controller add-ons.
 
 **`ThirdPersonCameraBase()`**
 
-**`ThirdPersonCameraBase(avatar_id=None, position=None, rotation=None, fov=None, framerate=None)`**
+**`ThirdPersonCameraBase(avatar_id=None, position=None, rotation=None, field_of_view=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | avatar_id |  str  | None | The ID of the avatar (camera). If None, a random ID is generated. |
 | position |  Dict[str, float] | None | The initial position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | rotation |  Dict[str, float] | None | The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| fov |  int  | None | The initial field of view. If None, defaults to 35. |
-| framerate |  int  | None | If not None, sets the target framerate. |
+| field_of_view |  int  | None | If not None, set the field of view. |
 
 #### on_send
 

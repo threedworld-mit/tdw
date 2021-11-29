@@ -1,21 +1,218 @@
 # ThreeDWorld (TDW)
-### A Platform for Interactive Multi-Modal Physical Simulation
 
 **ThreeDWorld (TDW)** is a platform for interactive multi-modal physical simulation. With TDW, users can simulate high-fidelity sensory data and physical interactions between mobile agents and objects in a wide variety of rich 3D environments.
 
-### [Getting Started](https://github.com/threedworld-mit/tdw/blob/master/Documentation/getting_started.md) (Read this first!)
+TDW is a general-purpose tool that allows the user to communicate and manipulate a 3D environment. As such, there's no single "correct" procedure for using TDW. This guide will show you how to start using TDW and how to explore the available options.
 
-### [Code of Conduct](https://github.com/threedworld-mit/tdw/blob/master/code_of_conduct.md)
+- [Code of Conduct](https://github.com/threedworld-mit/tdw/blob/master/code_of_conduct.md)
+- [Changelog](https://github.com/threedworld-mit/tdw/blob/master/Documentation/Changelog.md)
+- [License](https://github.com/threedworld-mit/tdw/blob/master/LICENSE.txt)
+- [Website](http://threedworld.org/)
 
-### [Changelog](https://github.com/threedworld-mit/tdw/blob/master/Documentation/Changelog.md)
+# 1. General guide to TDW
 
-### [Website](http://threedworld.org/)
+## 1.1 Setup
+
+1. [Install TDW](Documentation/lessons/setup/install.md)
+3. [Upgrade TDW](Documentation/lessons/setup/upgrade.md)
+
+## 1.2 Core Concepts
+
+1. [The controller](Documentation/lessons/core_concepts/controller.md)
+2. [Auto-launching the TDW build](Documentation/lessons/core_concepts/launch_build.md)
+3. [Commands](Documentation/lessons/core_concepts/commands.md)
+4. [Design philosophy of TDW](Documentation/lessons/core_concepts/design_philosophy.md)
+5. [Scenes](Documentation/lessons/core_concepts/scenes.md)
+6. [Avatars and cameras](Documentation/lessons/core_concepts/avatars.md)
+7. [Add-ons and the `ThirdPersonCamera`](Documentation/lessons/core_concepts/add_ons.md)
+8. [Objects](Documentation/lessons/core_concepts/objects.md)
+9. [Output data](Documentation/lessons/core_concepts/output_data.md)
+10. [Images](Documentation/lessons/core_concepts/images.md)
+
+## 1.3 Troubleshooting
+
+1. [How to report an issue](Documentation/lessons/troubleshooting/issues.md)
+2. [Common errors](Documentation/lessons/troubleshooting/common_errors.md)
+3. [Performance optimizations](Documentation/lessons/troubleshooting/performance_optimizations.md)
+4. [Good coding practices](Documentation/lessons/troubleshooting/good_coding_practices.md)
+5. [The `Logger` add-on](Documentation/lessons/troubleshooting/logger.md)
+
+# 2. Tutorials :warning: TODO :warning:
+
+## 2.1 Objects and Scenes
+
+1. [Overview](Documentation/lessons/objects_and_scenes/overview.md)
+2. [Scripted object placement (floorplan layouts)](Documentation/lessons/objects_and_scenes/floorplans.md)
+3. [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
+4. [Procedural generation (scenes)](Documentation/lessons/objects_and_scenes/proc_gen_room.md)
+5. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
+6. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
+7. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)
+8. [`Raycast` output data](Documentation/lessons/objects_and_scenes/raycast.md)
+9. [`Overlap` output data](Documentation/lessons/objects_and_scenes/overlap.md)
+10. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
+
+High-level API: [Floorplan](Documentation/python/floorplan.md)
+
+## 2.2 3D Model Libraries
+
+1. [Overview](Documentation/lessons/3d_models/overview.md)
+2. [Free models](Documentation/lessons/3d_models/free_models.md)
+3. [Non-free models](Documentation/lessons/3d_models/non_free_models.md)
+4. [Add your own models to TDW](Documentation/lessons/3d_models/custom_models.md)
+5. [Add ShapeNet models to TDW](Documentation/lessons/3d_models/shapenet.md)
+
+## 2.3 Visual Perception
+
+1. [Overview](Documentation/lessons/visual_perception/overview.md)
+2. [Instance ID segmentation colors (`_id` pass)](Documentation/lessons/visual_perception/id.md)
+3. [Semantic category segmentation colors (`_category` pass)](Documentation/lessons/visual_perception/category.md)
+4. [Depth maps (`_depth` and `_depth_simple` passes)](Documentation/lessons/visual_perception/depth.md)
+5. [Motion perception (`_flow` pass)](Documentation/lessons/visual_perception/flow.md)
+6. [Other image passes (`_mask`, `_normals`, and `_albedo` passes)](Documentation/lessons/visual_perception/other_passes.md)
+7. [`Occlusion` output data](Documentation/lessons/visual_perception/occlusion.md)
+
+## 2.4 Camera Controls
+
+1. [Overview](Documentation/lessons/camera/overview.md)
+2. [Move a camera](Documentation/lessons/camera/position.md)
+3. [Rotate a camera](Documentation/lessons/camera/rotation.md)
+4. [Follow an object](Documentation/lessons/camera/follow.md)
+
+## 2.5 Photorealism
+
+1. [Overview](Documentation/lessons/photorealism/overview.md)
+2. [Lighting (HDRI skyboxes)](Documentation/lessons/photorealism/lighting.md)
+3. [Post-processing](Documentation/lessons/photorealism/post_processing.md)
+4. [Depth of field](Documentation/lessons/photorealism/depth_of_field.md)
+
+High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
+
+## 2.6 Physics
+
+**[Overview](Documentation/lessons/physx/overview.md)**
+
+### 2.6.1 Physics (PhysX)
+
+1. [PhysX](Documentation/lessons/physx/physx.md)
+2. [Object physics parameters](Documentation/lessons/physx/physics_objects.md)
+3. [`Rigidbodies` output data](Documentation/lessons/physx/rigidbodies.md)
+4. [`Collision` output data](Documentation/lessons/physx/collisions.md)
+5. [Apply forces to objects](Documentation/lessons/physx/forces.md)
+6. [Composite objects (objects with affordances)](Documentation/lessons/physx/composite_objects.md)
+7. [Skip physics frames](Documentation/lessons/physx/step_physics.md)
+8. [Disable physics](Documentation/lessons/physx/disable_physics.md)
+
+High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
+
+### 2.6.2 Physics (Flex)
+
+1. [Flex](Documentation/lessons/flex/flex.md)
+2. [Solid and soft actors](Documentation/lessons/flex/solid_and_soft.md)
+3. [Cloth actors](Documentation/lessons/flex/cloth.md)
+4. [Fluid and source actors](Documentation/lessons/flex/fluid_and_source.md)
+5. [Move, rotate, and scale Flex objects](Documentation/lessons/flex/transform.md)
+6. [`FlexParticles` output data](Documentation/lessons/flex/output_data.md)
+7. [Apply forces to Flex objects](Documentation/lessons/flex/forces.md)
+8. [Reset a Flex scene](Documentation/lessons/flex/reset_scene.md)
+8. [Other Flex commands](Documentation/lessons/flex/other_commands.md)
+
+High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
+
+## 2.8 Audio
+
+1. [Overview](Documentation/lessons/audio/overview.md)
+2. [Initialize audio and play .wav files](Documentation/lessons/audio/initialize_audio.md)
+3. [Resonance Audio](Documentation/lessons/audio/resonance_audio.md)
+4. [`PyImpact` (dynamic impact sounds)](Documentation/lessons/audio/py_impact.md)
+6. [Recording audio](Documentation/lessons/audio/record_audio.md)
+6. [`PyImpact` (advanced API)](Documentation/lessons/audio/py_impact_advanced.md)
+7. [Audio perception](Documentation/lessons/audio/audio_perception.md)
+
+High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_challenge)
+
+## 2.9 Video Recording
+
+1. [Overview](Documentation/lessons/video/overview.md)
+2. [Image-only video](Documentation/lessons/video/images.md)
+3. [Video with audio](Documentation/lessons/video/audio.md)
+
+## 2.10 Agents
+
+[**Overview**](Documentation/lessons/agents/overview.md)
+
+### 2.10.1 Robots
+
+1. [Overview](Documentation/lessons/robots/overview.md)
+2. [The `Robot` add-on](Documentation/lessons/robots/robot_add_on.md)
+3. [Robot arm add-ons](Documentation/lessons/robots/robot_arm.md)
+4. [Robot collision detection](Documentation/lessons/robots/collision_detection.md)
+5. [Select a robot](Documentation/lessons/robots/select_robot.md)
+6. [Add your own robots to TDW](Documentation/lessons/robots/custom_robots.md)
+7. [Robotics API (low-level)](Documentation/lessons/robots/custom_robots.md)
+8. [Add a camera to a robot](Documentation/lessons/robots/add_camera.md)
+
+### 2.10.2 Magnebots
+
+1. [Magnebot API (external repo)](https://github.com/alters-mit/magnebot)
+
+### 2.10.3 Human user interaction
+
+1. [Overview](Documentation/lessons/humans/overview.md)
+2. [Keyboard controls](Documentation/lessons/humans/overview.md)
+3. [Virtual reality](Documentation/lessons/humans/vr.md)
+
+### 2.10.4 Humanoid agents ("Replicants")
+
+TODO
+
+### 2.10.5 Embodied avatars
+
+1. [Overview](Documentation/lessons/embodied_avatars/overview.md)
+1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
+
+## 2.11 Multi-agent simulations
+
+1. [Overview](Documentation/lessons/multi_agent/overview.md)
+2. [Custom agent classes](Documentation/lessons/multi_agent/custom_agent_classes.md)
+
+## 2.12 Navigation
+
+1. [Overview](Documentation/lessons/navigation/overview.md)
+2. [NavMesh pathfinding](Documentation/lessons/navigation/nav_mesh.md)
+3. [Occupancy maps](Documentation/lessons/navigation/occupancy_maps.md)
+
+## 2.13 Non-physics objects
+
+1. [Overview](Documentation/lessons/non_physics/overview.md)
+2. [Position markers](Documentation/lessons/non_physics/position_markers.md)
+3. [Textured quads](Documentation/lessons/non_physics/textured_quads.md)
+4. [Non-physics humanoids](Documentation/lessons/non_physics/humanoids.md)
+
+## 2.14 Misc. remote server topics
+
+1. [Launch a TDW build on a remote server from a personal computer](Documentation/lessons/remote/launch_build.md)
+2. [Remote rendering with xpra](Documentation/lessons/remote/xpra.md)
+
+## 2.15 Misc. other topics
+
+1. [C# source code](Documentation/lessons/misc/c_sharp_sources.md)
+2. [Freezing your code](Documentation/lessons/misc/freeze.md)
+5. Creating composite objects
+
+# 3. API Documentation
+
+:warning: TODO:warning:
+
+# 4. Performance benchmarks
+1. [Performance benchmarks](Documentation/benchmark/benchmark.md)
+2. [Image capture](Documentation/benchmark/image_capture.md)
+3. [Object data](Documentation/benchmark/object_data.md)
+4. [Command deserialization](Documentation/benchmark/command_deserialization.md)
+
+## :warning: old documentation :warning:
 
 ### [C# Code](https://github.com/threedworld-mit/tdw/blob/master/Documentation/contributions/c_sharp_sources.md)
-
-### [License](https://github.com/threedworld-mit/tdw/blob/master/LICENSE.txt)
-
-### [How to upgrade from TDW v1.7 to v1.8](https://github.com/threedworld-mit/tdw/blob/master/Documentation/upgrade_guides/v1.7_to_v1.8.md)
 
 # API
 

@@ -16,44 +16,16 @@ Every time `communicate()` is called, the add-on will evaluate the response from
 
 ```python
 from tdw.controller import Controller
-from tdw.add_ons.debug import Debug
+from tdw.add_ons.logger import Logger
 
 c = Controller(launch_build=False)
-d = Debug(record=True, path="log.json")
-c.add_ons.append(d)
-# The debug add-on will log this command.
+logger = Logger(record=True, path="log.json")
+c.add_ons.append(logger)
+# The logger add-on will log this command.
 c.communicate({"$type": "do_nothing"})
-# The debug add-on will log this command and generate a log.json file.
+# The logger add-on will log this command and generate a log.json file.
 c.communicate({"$type": "terminate"})
 ```
-
-## Add-ons
-
-- [Benchmark](benchmark.md)
-- [CinematicCamera](cinematic_camera.md)
-- [CollisionManager](collision_manager.md)
-- [Debug](debug.md)
-- [EmbodiedAvatar](embodied_avatar.md)
-- [Floorplan](floorplan.md)
-- [ImageCapture](image_capture.md)
-- [Keyboard](keyboard.md)
-- [ObjectManager](object_manager.md)
-- [OccupancyMap](occupancy_map.md)
-- [Robot](robot.md)
-- [StepPhysics](step_physics.md)
-- [ThirdPersonCamera](third_person_camera.md)
-
-Backend:
-
-- [ModelVerifier](model_verifier.md)
-
-## Example controllers
-
-- `tdw/Python/example_controllers/add_ons.py` How to add multiple add-ons to the controller.
-- `tdw/Python/example_controller/debug.py` Example implementation of a `Debug` add-on.
-- `tdw/Python/example_controllers/keyboard_controls.py` Example implementation of a `Keyboard` add-on.
-- `tdw/Python/example_controllers/cinematic_camera_controls.py` Example implementation of a `CinematicCamera` add-on.
-- `tdw/Python/example_controllers/occupancy_mapper.py` Generate an occupancy map and create an image of it.
 
 ***
 

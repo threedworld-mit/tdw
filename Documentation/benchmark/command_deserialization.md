@@ -1,52 +1,45 @@
-# Command Deserialization
+##### Performance Benchmarks
 
-The build receives [commands](../api/command_api_guide.md) as JSON string and deserializes them into objects. This is an _innately slow process_, albeit highly optimized within TDW.
+# Command deserialization
+
+The build receives commands as JSON string and deserializes them into objects. This process is highly optimized within TDW.
 
 JSON is known to be slower than other serialization formats. However, on the backend, JSON allows us to rapidly iterate, fix, and create commands. Switching to a different serialization format would take a tremendous amount of time and result in a faster but much more fragile API; we've decided that this is not a good tradeoff.
 
-## 1. To what extent does deserialization affect performance?
+## 1. Command deserialization performance benchmark
 
-The test controller `do_nothing.py` sends increasing quantities of the command `{"$type": "do_nothing"}` for 1000 iterations. The build responds with an empty frame.
+The test controller sends increasing quantities of the command `{"$type": "do_nothing"}` for 1000 iterations. The build responds with an empty frame.
 
-| Quantity | Size (bytes) | FPS |
-| --- | --- | --- |
-| 1 | 25 | 921 |
-| 2 | 50 | 940 |
-| 4 | 100 | 919 |
-| 8 | 200 | 915 |
-| 16 | 400 | 879 |
-| 32 | 800 | 825 |
-| 64 | 1600 | 780 |
-| 128 | 3200 | 676 |
-| 256 | 6400 | 578 |
-| 512 | 12800 | 408 |
-| 1024 | 25600 | 302 |
-| 2048 | 51200 | 203 |
+| Quantity | Size (bytes) | FPS  |
+| -------- | ------------ | ---- |
+| 1        | 25           | 826  |
+| 2        | 50           | 857  |
+| 4        | 100          | 867  |
+| 8        | 200          | 847  |
+| 16       | 400          | 821  |
+| 32       | 800          | 781  |
+| 64       | 1600         | 717  |
+| 128      | 3200         | 662  |
+| 256      | 6400         | 611  |
+| 512      | 12800        | 412  |
+| 1024     | 25600        | 316  |
+| 2048     | 51200        | 186  |
 
-### How to run this test
+## 2. Struct deserialization
 
-```bash
-cd <root>/Python/benchmarking
-```
+The test controller deserializes a Vector3 and a Quaternion per frame for 5000 frames. The build responds with an empty frame. 
 
-```bash
-python3 do_nothing.py
-```
+**Result: 614 FPS**
 
-## 2. How does the deserialization of structs affect performance?
+## How to run TDW's deserialization performance benchmarks
 
-The test controller `struct_deserialization.py` deserializing a Vector3 and a Quaternion per frame for 5000 frames. The build responds with an empty frame. 
+1. [Follow instructions in the Benchmark document for cloning the repo, downloading the build, etc.](benchmark.md)
+2. `cd path/to/tdw/Python/benchmarking` (replace `path/to` with the actual path)
+3. `python3 command_deserialization.py` or `python3 struct_deserialization.py`
+4. Run the build
+5. Wait for the performance benchmark to complete (this might take up to five minutes).
+6. Compare your results to those listed above
 
-This test can't be directly compared to the `do_nothing.py` test because it adds an object to a room, as opposed to testing an empty scene with no room and no objects.
+***
 
-**Result: 621 FPS**
-
-### How to run this test
-
-```bash
-cd <root>/Python/benchmarking
-```
-
-```bash
-python3 struct_deserialization.py
-```
+[Return to the README](../../../README.md)

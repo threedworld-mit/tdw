@@ -60,10 +60,10 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [AvatarStickyMittenSegmentationColors](#AvatarStickyMittenSegmentationColors) | Color segmentation data for a Sticky Mitten Avatar. | `smsc` |
 | [Bounds](#Bounds) | Rotated bounds data. | `boun` |
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
-| [CameraMotionComplete](#CameraMotionComplete) | Announce that a camera motion has been completed. | `camm` |
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [CompositeObjects](#CompositeObjects) | Data for all composite objects currently in the scene. | `comp` |
+| [EmptyObjects](#EmptyObjects) | The position of each empty object in the scene. | `empt` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
 | [FlexParticles](#FlexParticles) | NVIDIA Flex data. | `flex` |
 | [IdPassGrayscale](#IdPassGrayscale) | The average grayscale value of the _id pass. | `idgs` |
@@ -83,11 +83,13 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
-| [Rigidbodies](#Rigidbodies) | Rigibody data (velocity, mass, etc.) for objects in the scene. | `rigi` |
+| [Rigidbodies](#Rigidbodies) | Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scene. | `rigi` |
 | [Robot](#Robot) | Data for a robot in the scene. See also: `StaticRobot` | `robo` |
+| [RobotJointVelocities](#RobotJointVelocities) | Velocity for a robot in the scene. | `rojv` |
 | [SceneRegions](#SceneRegions) | Data regarding the scene regions. | `sreg` |
 | [ScreenPosition](#ScreenPosition) | A position on the screen converted from a worldspace position. | `scre` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
+| [StaticRigidbodies](#StaticRigidbodies) | Static rigibody data (mass, kinematic state, etc.) for objects in the scene. | `srig` |
 | [StaticRobot](#StaticRobot) | Static data for a robot in the scene. | `srob` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
 | [Transforms](#Transforms) | Data about the Transform component of objects (position and rotation). | `tran` |
@@ -122,6 +124,7 @@ Audio data for each object in a scene. Note that this will only tell you if any 
 | `get_num()` | The number of objects. | `int` |
 | `get_object_id(index)` | The ID of the object. | `int` |
 | `get_is_playing(index)` | If true, the audio source is currently playing a sound. | `bool` |
+| `get_samples()` | Audio samples from the audio listener. | `np.array` |
 
 ## AvatarKinematic
 
@@ -281,19 +284,6 @@ An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11,
 | `get_projection_matrix()` | The projection matrix. | `np.array` |
 | `get_camera_matrix()` | The camera matrix. | `np.array` |
 
-## CameraMotionComplete
-
-`c = CameraMotionComplete(byte_array)`
-
-**Identifier:** `camm`
-
-Announce that a camera motion has been completed.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_avatar_id()` | The ID of the avatar. | `str` |
-| `get_motion()` | The type of motion that just ended. | `str` |
-
 ## Categories
 
 `c = Categories(byte_array)`
@@ -341,6 +331,20 @@ Data for all composite objects currently in the scene.
 | `get_num_sub_objects(index)` | The number of sub objects. | `int` |
 | `get_sub_object_id(index, sub_object_index)` | The ID of the sub object. | `int` |
 | `get_sub_object_machine_type(index, sub_object_index)` | The type of the sub object machine. | `str` |
+
+## EmptyObjects
+
+`e = EmptyObjects(byte_array)`
+
+**Identifier:** `empt`
+
+The position of each empty object in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_position(index)` | The position. | `np.array` |
 
 ## EnvironmentCollision
 
@@ -438,6 +442,7 @@ The names of each ImageSensor component attached to an avatar, and whether they 
 | `get_sensor_on(index)` | The on of the sensor. | `bool` |
 | `get_sensor_rotation(index)` | The rotation of the sensor. | `Tuple[float, float, float, float]` |
 | `get_sensor_forward(index)` | The forward of the sensor. | `Tuple[float, float, float]` |
+| `get_sensor_field_of_view(index)` | The view of the sensor field of. | `float` |
 
 ## IsOnNavMesh
 
@@ -641,7 +646,7 @@ A ray cast from an origin to a destination and what, if anything, it hit.
 
 **Identifier:** `rigi`
 
-Rigibody data (velocity, mass, etc.) for objects in the scene.
+Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scene.
 
 | Function | Description | Return type |
 | --- | --- | --- |
@@ -649,9 +654,7 @@ Rigibody data (velocity, mass, etc.) for objects in the scene.
 | `get_id(index)` | The unique ID of this object. | `int` |
 | `get_velocity(index)` | The directional velocity. | `Tuple[float, float, float]` |
 | `get_angular_velocity(index)` | The angular velocity. | `Tuple[float, float, float]` |
-| `get_mass(index)` | The mass. | `float` |
 | `get_sleeping(index)` | True if the rigidbody is sleeping. | `bool` |
-| `get_kinematic(index)` | True if the rigidbody is kinematic. | `bool` |
 
 ## Robot
 
@@ -672,6 +675,23 @@ Data for a robot in the scene. See also: `StaticRobot`
 | `get_joint_position(index)` | The position of the joint. | `np.array` |
 | `get_joint_positions(index)` | The positions of the joint. | `np.array` |
 | `get_immovable()` | True if the root object of the robot is currently immovable. | `bool` |
+
+## RobotJointVelocities
+
+`r = RobotJointVelocities(byte_array)`
+
+**Identifier:** `rojv`
+
+Velocity for a robot in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The ID of the robot. | `int` |
+| `get_num_joints()` | The number of joints. | `int` |
+| `get_joint_id(index)` | The ID of the joint. | `int` |
+| `get_joint_velocity(index)` | The velocity of the joint. | `np.array` |
+| `get_joint_angular_velocity(index)` | The angular velocity of the joint. | `np.array` |
+| `get_joint_sleeping(index)` | The sleeping of the joint. | `bool` |
 
 ## SceneRegions
 
@@ -719,6 +739,25 @@ Color segmentation data for objects in the scene.
 | `get_object_color(index)` | The color of the object. | `Tuple[float, float, float]` |
 | `get_object_name(index)` | The name of the object. | `str` |
 | `get_object_category(index)` | The category of the object. | `str` |
+
+## StaticRigidbodies
+
+`s = StaticRigidbodies(byte_array)`
+
+**Identifier:** `srig`
+
+Static rigibody data (mass, kinematic state, etc.) for objects in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The unique ID of this object. | `int` |
+| `get_mass(index)` | The mass. | `float` |
+| `get_sleeping(index)` | The sleeping. | `bool` |
+| `get_kinematic(index)` | True if the rigidbody is kinematic. | `bool` |
+| `get_dynamic_friction(index)` | The dynamic friction of the physic material. | `float` |
+| `get_static_friction(index)` | The static friction of the physic material. | `float` |
+| `get_bounciness(index)` | The bounciness of the physic material. | `float` |
 
 ## StaticRobot
 

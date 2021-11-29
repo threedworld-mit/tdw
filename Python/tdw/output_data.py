@@ -40,11 +40,13 @@ from tdw.FBOutput import TriggerCollision as Trigger
 from tdw.FBOutput import LocalTransforms as LocalTran
 from tdw.FBOutput import DriveAxis, JointType
 from tdw.FBOutput import QuitSignal as QuitSig
-from tdw.FBOutput import CameraMotionComplete as CamMot
 from tdw.FBOutput import MagnebotWheels as MWheels
 from tdw.FBOutput import Occlusion as Occl
 from tdw.FBOutput import Lights as Lites
 from tdw.FBOutput import Categories as Cats
+from tdw.FBOutput import StaticRigidbodies as StatRig
+from tdw.FBOutput import RobotJointVelocities as RoJoVe
+from tdw.FBOutput import EmptyObjects as Empty
 import numpy as np
 from typing import Tuple, Optional
 
@@ -183,6 +185,20 @@ class Rigidbodies(OutputData):
     def get_angular_velocity(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_vector3(self.data.Objects(index).AngularVelocity)
 
+    def get_sleeping(self, index: int) -> bool:
+        return self.data.Objects(index).Sleeping()
+
+
+class StaticRigidbodies(OutputData):
+    def get_data(self) -> StatRig.StaticRigidbodies:
+        return StatRig.StaticRigidbodies.GetRootAsStaticRigidbodies(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.ObjectsLength()
+
+    def get_id(self, index: int) -> int:
+        return self.data.Objects(index).Id()
+
     def get_mass(self, index: int) -> float:
         return self.data.Objects(index).Mass()
 
@@ -191,6 +207,15 @@ class Rigidbodies(OutputData):
 
     def get_kinematic(self, index: int) -> bool:
         return self.data.Objects(index).Kinematic()
+
+    def get_dynamic_friction(self, index: int) -> float:
+        return self.data.Objects(index).DynamicFriction()
+
+    def get_static_friction(self, index: int) -> float:
+        return self.data.Objects(index).StaticFriction()
+
+    def get_bounciness(self, index: int) -> float:
+        return self.data.Objects(index).Bounciness()
 
 
 class Bounds(OutputData):
@@ -505,6 +530,9 @@ class ImageSensors(OutputData):
     def get_sensor_forward(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_xyz(self.data.Sensors(index).Forward())
 
+    def get_sensor_field_of_view(self, index: int) -> float:
+        return self.data.Sensors(index).FieldOfView()
+
 
 class CameraMatrices(OutputData):
     def get_data(self) -> CaMa.CameraMatrices:
@@ -774,6 +802,9 @@ class AudioSources(OutputData):
     def get_is_playing(self, index: int) -> bool:
         return self.data.Objects(index).IsPlaying()
 
+    def get_samples(self) -> np.array:
+        return self.data.SamplesAsNumpy()
+
 
 class Raycast(OutputData):
     def get_data(self) -> Ray.Raycast:
@@ -944,6 +975,29 @@ class Robot(OutputData):
         return self.data.Immovable()
 
 
+class RobotJointVelocities(OutputData):
+    def get_data(self) -> RoJoVe.RobotJointVelocities:
+        return RoJoVe.RobotJointVelocities.GetRootAsRobotJointVelocities(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_num_joints(self) -> int:
+        return self.data.JointsLength()
+
+    def get_joint_id(self, index: int) -> int:
+        return self.data.Joints(index).Id()
+
+    def get_joint_velocity(self, index: int) -> np.array:
+        return self.data.Joints(index).VelocityAsNumpy()
+
+    def get_joint_angular_velocity(self, index: int) -> np.array:
+        return self.data.Joints(index).AngularVelocityAsNumpy()
+
+    def get_joint_sleeping(self, index: int) -> bool:
+        return self.data.Joints(index).Sleeping()
+
+
 class Keyboard(OutputData):
     def get_data(self) -> Key.Keyboard:
         return Key.Keyboard.GetRootAsKeyboard(self.bytes, 0)
@@ -1058,23 +1112,6 @@ class QuitSignal(OutputData):
         return self.data.Ok()
 
 
-class CameraMotionComplete(OutputData):
-    def get_data(self) -> CamMot.CameraMotionComplete:
-        return CamMot.CameraMotionComplete.GetRootAsCameraMotionComplete(self.bytes, 0)
-
-    def get_avatar_id(self) -> str:
-        return self.data.AvatarId().decode('utf-8')
-
-    def get_motion(self) -> str:
-        motion = self.data.Motion()
-        if motion == 1:
-            return "move"
-        elif motion == 2:
-            return "rotate"
-        else:
-            return "focus"
-
-
 class MagnebotWheels(OutputData):
     def get_data(self) -> MWheels.MagnebotWheels:
         return MWheels.MagnebotWheels.GetRootAsMagnebotWheels(self.bytes, 0)
@@ -1144,3 +1181,22 @@ class Categories(OutputData):
 
     def get_category_color(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_rgb(self.data.CategoryData(index).Color())
+
+
+class EmptyObjects(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy().view(dtype=int)
+        self._positions = self.data.PositionsAsNumpy().view(dtype=np.float32).reshape(-1, 3)
+
+    def get_data(self) -> Empty.EmptyObjects:
+        return Empty.EmptyObjects.GetRootAsEmptyObjects(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return self._ids[index]
+
+    def get_position(self, index: int) -> np.array:
+        return self._positions[index]

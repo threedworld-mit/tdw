@@ -141,7 +141,7 @@ class ReachForAffordancePoint(Controller):
         commands.extend(self.get_add_object_with_affordance_points(model_name="basket_18inx18inx12iin_wicker",
                                                                    object_id=self.t_id,
                                                                    position={"x": 0, "y": 0.35, "z": 0},
-                                                                   rotation={"x": 0, "y": 90, "z": 0}))
+                                                                   rotation={"x": 0, "y": 0, "z": 0}))
         commands.extend([self.get_add_object(model_name="live_edge_coffee_table",
                                              object_id=9999,
                                              position={"x": 0, "y": 0, "z": 0},
@@ -152,8 +152,7 @@ class ReachForAffordancePoint(Controller):
                                              position={"x": -0.3, "y": 0, "z": -2},
                                              rotation={"x": 0, "y": 63.25, "z": 0},
                                              library="models_core.json"),
-                          #{"$type": "set_kinematic_state", "id": self.t_id, "is_kinematic": True, "use_gravity": False},
-                          #{"$type": "set_ik_graspable", "id": self.t_id},
+                          {"$type": "set_kinematic_state", "id": self.t_id, "is_kinematic": True, "use_gravity": False},
                           {"$type": "add_humanoid",
                            "name": "ha_proto_v1a",
                            "position": {"x": 0, "y": 0, "z": -0.525},
@@ -185,9 +184,8 @@ class ReachForAffordancePoint(Controller):
 
         resp = self.communicate([])
 
-        #self.reach_for_target(arm="left", humanoid=self.h_id, target=self.t_id, reach_action_length=40, reset_action_length=60)
         self.reach_arm = "left"
-        commands = self.reach_for(resp=resp, arm=Arm.right, target=self.t_id, hand_position=np.array([0, 0, 0]))
+        commands = self.reach_for(resp=resp, arm=Arm.left, target=self.t_id, hand_position=np.array([0, 0, 0]))
         self.communicate(commands) 
 
         frame = 0
@@ -195,23 +193,29 @@ class ReachForAffordancePoint(Controller):
             self.communicate([])
             frame += 1
         
-        # Grasp the object that was just reached for. The object is attached to the hand using a FixedJoint.
+        # Grasp the object that was just reached for. The object is parented to the affordance empty game object.
         self.communicate({"$type": "humanoid_grasp_object", 
                           "target": self.t_id, 
                           "affordance_id": int(self.affordance_id), 
                           "id": self.h_id, 
                           "arm": self.reach_arm})
-        """
-        # Return arm to rest position, holding object
-        self.communicate({"$type": "humanoid_reset_arm",  
-                          "id": self.h_id, 
+        
+        # Move the arm holding the object, to a reasonable carrying position.     
+        self.communicate({"$type": "humanoid_reach_for_position", 
+                          "position": {"x": -0.175, "y": 1.275, "z": 0.1}, 
+                          "target": self.t_id, 
+                          "affordance_id": int(self.affordance_id), 
+                          "id": self.h_id,
                           "length": self.reset_action_length, 
                           "arm": self.reach_arm})
+
         frame = 0
         while frame < self.reset_action_length:
             self.communicate([])
             frame += 1
-        """        
+
+
+
 
     def reach_for_target(self, arm: str, humanoid: int, target: int, reach_action_length: int, reset_action_length: int):
         """

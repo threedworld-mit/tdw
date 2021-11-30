@@ -114,7 +114,7 @@ class RubeGoldbergDemo(Controller):
         # distortion of the audio.
         # Note that logging is also enabled.
         self.py_impact = PyImpact(initial_amp=0.25, logging=True,
-                                  static_audio_data_overrides=self.static_audio_data_overrides)
+                                  static_audio_data_overrides=self.static_audio_data_overrides, scrape=False)
 
         # Add a recorder.
         self.recorder: PhysicsAudioRecorder = PhysicsAudioRecorder()
@@ -192,4 +192,4 @@ if __name__ == "__main__":
     parser.add_argument("--launch_build", action="store_true", help="Auto-launch the build")
     args = parser.parse_args()
 
-    RubeGoldbergDemo(args.launch_build).run(args.num)
+    RubeGoldbergDemo(launch_build=args.launch_build).run(args.num)

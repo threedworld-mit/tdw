@@ -21,7 +21,11 @@ class CollisionAudioEvent:
     """:class_var
     If the area of the collision increases by at least this factor during a stay event, the collision is actually an impact.
     """
-    IMPACT_AREA_RATIO: float = 1.5
+    IMPACT_AREA_RATIO: float = 2.5
+    """:class_var
+    On a stay event, if the previous area is None and the current area is greater than this, the collision is actually an impact. 
+    """
+    IMPACT_AREA_NEW_COLLISION: float = 1e-5
 
     def __init__(self, collision: CollisionBase, object_0_static: ObjectAudioStatic, object_0_dynamic: Rigidbody,
                  previous_areas: Dict[int, float], object_1_static: ObjectAudioStatic = None,
@@ -92,8 +96,15 @@ class CollisionAudioEvent:
         else:
             previous_area = None
         if self.collision.state == "stay":
+            if previous_area is None:
+                if self.area > CollisionAudioEvent.IMPACT_AREA_NEW_COLLISION:
+                    self._set_as_impact(obj_obj=obj_obj,
+                                        object_0_static=object_0_static,
+                                        object_1_static=object_1_static)
+                else:
+                    self.collision_type = CollisionAudioType.none
             # This is a scrape or a roll.
-            if previous_area is None or (previous_area > 0 and self.area / previous_area < CollisionAudioEvent.IMPACT_AREA_RATIO):
+            elif previous_area > 0 and self.area / previous_area < CollisionAudioEvent.IMPACT_AREA_RATIO:
                 self._set_as_impact(obj_obj=obj_obj, object_0_static=object_0_static, object_1_static=object_1_static)
                 # Get the angular velocity of the primary object.
                 if obj_obj:

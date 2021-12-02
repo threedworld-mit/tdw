@@ -2,12 +2,14 @@ from tdw.librarian import HumanoidAnimationLibrarian, HumanoidLibrarian
 from tdw.controller import Controller
 from typing import List, Dict, Union
 from tdw.tdw_utils import TDWUtils, QuaternionUtils
-from tdw.output_data import OutputData, Transforms
+from tdw.output_data import OutputData, Transforms, LocalTransforms
 from tdw.output_data import OutputData, EmptyObjects, Bounds
 from random import uniform
+from time import sleep
 import os
 import numpy as np
 from enum import Enum
+from tdw.tdw_utils import QuaternionUtils
 
 
 class Arm(Enum):
@@ -34,6 +36,8 @@ class ReachForAffordancePoint(Controller):
     # Store empty object IDs.
     # Key = The empty object ID. Value = {"object_id": object_id, "position": position}
     EMPTY_OBJECT_IDS: Dict[int, Dict[str, int]] = dict()
+
+    AFFORDANCE_POINTS_BY_OBJECT_ID: Dict[int, Dict[int, Dict[str, float]]] = dict()
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
@@ -62,6 +66,8 @@ class ReachForAffordancePoint(Controller):
         # Add affordance points.
         if model_name in ReachForAffordancePoint.AFFORDANCE_POINTS:
             for affordance_position in ReachForAffordancePoint.AFFORDANCE_POINTS[model_name]:
+                # Remember the original local positions.
+                ReachForAffordancePoint.AFFORDANCE_POINTS_BY_OBJECT_ID[object_id] = dict()
                 empty_object_id = Controller.get_unique_id()
                 # Cache the mapping between empty object IDs and the ID of the parent object.
                 ReachForAffordancePoint.EMPTY_OBJECT_IDS[empty_object_id] = {"object_id": object_id,
@@ -76,6 +82,8 @@ class ReachForAffordancePoint(Controller):
                                   "scale": 0.05, 
                                   "color": {"r": 1, "g": 0, "b": 0, "a": 1},
                                   "shape": "sphere"}])
+                # Remember the position.
+                ReachForAffordancePoint.AFFORDANCE_POINTS_BY_OBJECT_ID[object_id][empty_object_id] = affordance_position
         return commands
 
     def reach_for(self, resp: List[bytes], target: Union[int, np.ndarray, Dict[str,  float]], arm: Arm, hand_position: np.ndarray) -> List[dict]:
@@ -153,6 +161,7 @@ class ReachForAffordancePoint(Controller):
                                              rotation={"x": 0, "y": 63.25, "z": 0},
                                              library="models_core.json"),
                           {"$type": "set_kinematic_state", "id": self.t_id, "is_kinematic": True, "use_gravity": False},
+                          {"$type": "set_kinematic_state", "id": 9999, "is_kinematic": True, "use_gravity": False},
                           {"$type": "add_humanoid",
                            "name": "ha_proto_v1a",
                            "position": {"x": 0, "y": 0, "z": -0.525},
@@ -171,6 +180,66 @@ class ReachForAffordancePoint(Controller):
                          {"$type": "send_bounds",
                           "frequency": "always"}])
         self.communicate(commands)
+
+    
+    @staticmethod
+    def _reset_affordance_points(object_id: int) -> List[dict]:
+        """
+        :param object_id: The object ID.
+        
+        :return: A list of commands to reset this object's affordance points.
+        """
+        
+        if object_id not in ReachForAffordancePoint.AFFORDANCE_POINTS_BY_OBJECT_ID:
+            return []
+        commands = []
+        for empty_object_id in ReachForAffordancePoint.AFFORDANCE_POINTS_BY_OBJECT_ID[object_id]:
+            commands.extend([{"$type": "parent_empty_object",
+                              "empty_object_id": empty_object_id,
+                              "id": object_id},
+                             {"$type": "teleport_empty_object",
+                              "empty_object_id": empty_object_id,
+                              "id": object_id,
+                              "position": ReachForAffordancePoint.AFFORDANCE_POINTS_BY_OBJECT_ID[object_id][empty_object_id],
+                              "absolute": False}])
+        return commands
+
+
+    def drop(self, resp: List[bytes], object_id: int, empty_object_id: int, arm: Arm) -> List[dict]:
+        commands = [{"$type": "humanoid_drop_object",
+                     "target": object_id,
+                     "id": self.h_id,
+                     "arm": self.reach_arm}]
+        # Get the current position of the target object.
+        
+        resp = self.communicate([])
+        for r in resp[:-1]:
+            r_id = OutputData.get_data_type_id(r)
+            # Find the transform data.
+            if r_id == "tran":
+                t = Transforms(r)
+                for j in range(t.get_num()):
+                    if t.get_id(j) == object_id:
+                        tgt_position = TDWUtils.array_to_vector3(np.array(t.get_position(j)))
+                        offset = ReachForAffordancePoint.AFFORDANCE_POINTS_BY_OBJECT_ID[object_id][empty_object_id]
+                        home_position = {"x": tgt_position["x"] + offset["z"], "y": tgt_position["y"] + offset["y"],
+                                         "z": tgt_position["z"] + offset["x"]}
+        commands.append({"$type": "teleport_object_local", 
+                         "position": home_position,
+                         "id": object_id})
+        
+        """                
+        offset = ReachForAffordancePoint.AFFORDANCE_POINTS_BY_OBJECT_ID[object_id][empty_object_id]
+        commands.extend([{"$type": "translate_object_by", 
+                         "position": {"x": -offset["z"], "y": -offset["y"], "z": -offset["x"]},
+                         "absolute": False,
+                         "id": object_id},
+                        {"$type": "rotate_object_to", 
+                         "rotation": {"w": 1.0, "x": 0, "y": 0, "z": 0}, "id": object_id}])
+        """
+        commands.extend(ReachForAffordancePoint._reset_affordance_points(self.t_id))
+        return commands
+
 
     def run(self):
         walk_record = HumanoidAnimationLibrarian().get_record("walking_2")
@@ -199,48 +268,63 @@ class ReachForAffordancePoint(Controller):
                           "affordance_id": int(self.affordance_id), 
                           "id": self.h_id, 
                           "arm": self.reach_arm})
-        
-        # Move the arm holding the object, to a reasonable carrying position.     
-        self.communicate({"$type": "humanoid_reach_for_position", 
-                          "position": {"x": -0.175, "y": 1.0, "z": 0.1}, 
+
+        for i in range(2):
+            # Move the arm holding the object, to a reasonable carrying position.     
+            self.communicate([{"$type": "humanoid_reach_for_position", 
+                               "position": {"x": uniform(-0.75, 0.75), "y": uniform(0.75, 2.0), "z": uniform(0, 0.1)}, 
+                               "target": self.t_id, 
+                               "affordance_id": int(self.affordance_id), 
+                               "id": self.h_id,
+                               "length": self.reset_action_length, 
+                               "arm": self.reach_arm},
+                              {"$type": "humanoid_reset_held_object_rotation", 
+                               "target": self.t_id, 
+                               "affordance_id": int(self.affordance_id), 
+                               "id": self.h_id,
+                               "length": self.reset_action_length, 
+                               "arm": self.reach_arm}])
+            frame = 0
+            while frame < self.reset_action_length:
+                self.communicate([])
+                frame += 1
+
+            sleep(1)
+
+
+        # Place the basket back onto the table surface.     
+        self.communicate([{"$type": "humanoid_reach_for_position", 
+                          "position": {"x": 0, "y": 0.655, "z": 0.1}, 
                           "target": self.t_id, 
                           "affordance_id": int(self.affordance_id), 
                           "id": self.h_id,
                           "length": self.reset_action_length, 
-                          "arm": self.reach_arm})
-
+                          "arm": self.reach_arm},
+                         {"$type": "humanoid_reset_held_object_rotation", 
+                          "target": self.t_id, 
+                          "affordance_id": int(self.affordance_id), 
+                          "id": self.h_id,
+                          "length": self.reset_action_length, 
+                          "arm": self.reach_arm}])
         frame = 0
         while frame < self.reset_action_length:
             self.communicate([])
             frame += 1
 
+        commands = self.drop(resp=resp, arm=Arm.left, object_id=self.t_id, empty_object_id = int(self.affordance_id))
+        self.communicate(commands) 
 
-
-
-    def reach_for_target(self, arm: str, humanoid: int, target: int, reach_action_length: int, reset_action_length: int):
-        """
-        :param arm: Which arm to use.
-        :param target: The target position.
-        :param reach_action_length: How long the arm should take to reach the target object.
-        :param reset_action_length: How long the arm should take to return to rest position.
-
-        """
-        self.communicate({"$type": "humanoid_reach_for_object", "target": target, "id": humanoid, "length": reach_action_length, "arm": arm})
-        frame = 0
-        while frame < reach_action_length:
+        
+        sleep(0.5)       
+        self.communicate({"$type": "humanoid_reset_arm", 
+                          "id": self.h_id, 
+                          "length": self.reset_action_length, 
+                          "arm": self.reach_arm})
+        
+        for i in range(200):
             self.communicate([])
-            frame += 1
+        
 
-        # Grasp the object that was just reached for. The object is attached to the hand using a FixedJoint.
-        self.communicate({"$type": "humanoid_grasp_object", "target": target, "id": humanoid, "arm": arm})
-
-        # Return arm to rest position, holding object
-        self.communicate({"$type": "humanoid_reset_arm", "id": humanoid, "length": reset_action_length, "arm": arm})
-
-        frame = 0
-        while frame < reset_action_length:
-            self.communicate([])
-            frame += 1
 
 
     def get_direction(self, forward: np.array, origin: np.array, target: np.array) -> bool:

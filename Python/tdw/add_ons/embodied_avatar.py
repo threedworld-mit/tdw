@@ -11,39 +11,17 @@ from tdw.object_data.rigidbody import Rigidbody
 class EmbodiedAvatar(ThirdPersonCameraBase):
     """
     An `EmbodiedAvatar` is an avatar with a physical body. The body has a simple shape and responds to physics (just like objects and robots).
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.embodied_avatar import EmbodiedAvatar
-    from tdw.add_ons.avatar_body import AvatarBody
-
-    c = Controller()
-    a = EmbodiedAvatar(position={"x": 0, "y": 0, "z": 0},
-                       rotation={"x": 0, "y": 30, "z": 0},
-                       avatar_id="a",
-                       body=AvatarBody.cube)
-    c.add_ons.append(a)
-    c.communicate(TDWUtils.create_empty_room(12, 12))
-    a.apply_force(500)
-    while a.is_moving:
-        c.communicate([])
-    a.apply_torque(-400)
-    while a.is_moving:
-        c.communicate([])
-    c.communicate({"$type": "terminate"})
-    ```
     """
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 fov: int = None, color: Dict[str, float] = None, body: AvatarBody = AvatarBody.capsule,
+                 field_of_view: int = None, color: Dict[str, float] = None, body: AvatarBody = AvatarBody.capsule,
                  scale_factor: Dict[str, float] = None, mass: float = 80, dynamic_friction: float = 0.3,
                  static_friction: float = 0.3, bounciness: float = 0.7, drag: float = 1, angular_drag: float = 0.5):
         """
         :param avatar_id: The ID of the avatar. If None, a random ID is generated.
         :param position: The initial position of the avatar. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The initial rotation of the avatar. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param fov: The initial field of view. If None, defaults to 35.
+        :param field_of_view: The initial field of view.
         :param color: The color of the avatar as an `r, g, b, a` dictionary where each value is between 0 and 1. Can be None.
         :param body: [The body of the avatar.](avatar_body.md)
         :param scale_factor: Scale the avatar by this factor. Can be None.
@@ -53,7 +31,7 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
         :param bounciness: The bounciness of the avatar.
         """
 
-        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, field_of_view=fov)
+        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, field_of_view=field_of_view)
         """:field
         [Transform data](../object_data/transform.md) for the avatar.
         """

@@ -52,7 +52,7 @@ Result: [Synthesized audio from the object colliding with the floor.](https://dr
 
 By default, PyImpact will evaluate the simulation state per `c.communicate()` call and will automatically generate audio that will then be played by the build. This behavior can be suppressed by setting `auto=False` in the constructor.
 
-PyImpact automatically requests and receives [Rigidbody data](../physx/rigidbodies.md) and [collision data](../phyx/collisions.md) per-frame, as well as [`RobotJointVelocities`](../../api/output_data.md#RobotJointVelocities), a special output data type required for simulations with robots.
+PyImpact automatically requests and receives [Rigidbody data](../physx/rigidbodies.md) and [collision data](../physx/collisions.md) per-frame, as well as [`RobotJointVelocities`](../../api/output_data.md#RobotJointVelocities), a special output data type required for simulations with robots.
 
 `PyImpact` is a sub-class of [`CollisionManager`](../../python/add_ons/collision_manager.md). You shouldn't include both a `PyImpact` add-on and a `CollisionManager` add-on.
 
@@ -177,7 +177,7 @@ PyImpact generates impact, scrapes, and rolls using three different processes.
 
 In order to decide which process to use, PyImpact must first determine the "event type" of a collision. This is  normally done automatically but it can be useful to understand how it works:
 
-- It's possible for a pair of objects to register multiple collision events on the same `communicate()` call if [the controller is skipping physics frames](../phyx/step_physics.md). In these cases, PyImpact evaluates the collision with the highest overall speed.
+- It's possible for a pair of objects to register multiple collision events on the same `communicate()` call if [the controller is skipping physics frames](../physx/step_physics.md). In these cases, PyImpact evaluates the collision with the highest overall speed.
 - If the collision state is `"exit"` or the velocity is `0`, the event is `none`.
 - If the collision state is `"enter"`, the event is `impact`.
 - If the collision state is `"stay"`:
@@ -228,17 +228,17 @@ To disable scrape sounds in `PyImpact`, set `scrape=False` in the constructor.
 
 ### Manually set scrape objects and surfaces
 
-To manually initialize objects as scrape surfaces, set the `scrape_objects` parameter in the constructor. This is a dictionary: Key = an object ID. Value = A [`ScrapeModel`](../../physics_audio/scrape_model.md).
+To manually initialize objects as scrape surfaces, set the `scrape_objects` parameter in the constructor. This is a dictionary: Key = an object ID. Value = A [`ScrapeModel`](../../python/physics_audio/scrape_model.md).
 
 A `ScrapeModel` the following:
 
 - An `AudioMaterial`
 
-- A [`ScrapeMaterial`](../../physics_audio/scrape_material.md) Due to separate recording processes, this isn't the same as `AudioMaterial`, although it can be mapped to an `AudioMaterial`
+- A [`ScrapeMaterial`](../../python/physics_audio/scrape_material.md) Due to separate recording processes, this isn't the same as `AudioMaterial`, although it can be mapped to an `AudioMaterial`
 
 - A visual material (a string)
 
-- A list of [`ScrapeSubObject`](../../api/physics_audio/scrape_sub_object.md):
+- A list of [`ScrapeSubObject`](../../python/physics_audio/scrape_sub_object.md):
 
   - The material index (this is usually 0)
   - The name of the sub-object. See `ModelRecord.substructure`:
@@ -462,9 +462,9 @@ Python API:
 - [`ResonanceAudioInitializer`](../../python/add_ons/resonance_audio_initializer.md)
 - [`CollisionManager`](../../python/add_ons/collision_manager.md)
 - [`Robot`](../../python/add_ons/robot.md)
-- [`ScrapeModel`](../../physics_audio/scrape_model.md)
-- [`ScrapeMaterial`](../../physics_audio/scrape_material.md)
-- [`ScrapeSubObject`](../../api/physics_audio/scrape_sub_object.md)
+- [`ScrapeModel`](../../python/physics_audio/scrape_model.md)
+- [`ScrapeMaterial`](../../python/physics_audio/scrape_material.md)
+- [`ScrapeSubObject`](../../python/physics_audio/scrape_sub_object.md)
 
 Output Data:
 

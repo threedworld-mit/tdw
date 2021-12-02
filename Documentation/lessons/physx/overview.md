@@ -26,8 +26,8 @@ PhysX and Flex were both made for video game development, and therefore share a 
 
 **Next:**
 
-- **[PhysX](physx/physx.md)** (We recommend you read the PhysX tutorial regardless of whether or not you intend to only use Flex)
-- **[Flex](flex/flex.md)**
+- **[PhysX](physx.md)** (We recommend you read the PhysX tutorial regardless of whether or not you intend to only use Flex)
+- **[Flex](../flex/flex.md)**
 
 [Return to the README](../../../README.md)
 

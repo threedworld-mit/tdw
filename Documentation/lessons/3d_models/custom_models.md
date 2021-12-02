@@ -7,7 +7,7 @@ It is possible to add any 3D model to TDW. However, the underlying Unity engine 
 ## Requirements
 
 - Windows 10, OS X, or Linux
-- (Windows only) [Visual C++ 2012 Redistributable](https://www.microsoft.com/en-au/download/confirmation.aspx?id=30679)
+- (Windows only) [Visual C++ 2012 Redistributable](https://www.microsoft.com/en-us/download/confirmation.aspx?id=30679)
 - The `tdw` module
 - Python 3.6+
 - Unity Hub
@@ -17,7 +17,7 @@ It is possible to add any 3D model to TDW. However, the underlying Unity engine 
 
 ## The `AssetBundleCreator`
 
-The [`AssetBundleCreator`](../../python/asset_bundle_creator.py) Python class will convert an .fbx or .obj file into an asset bundle and generate physics colliders. Depending on the complexity of the base mesh, this can be a lengthy process, especially when generating physics colliders.
+The [`AssetBundleCreator`](../../python/asset_bundle_creator.md) Python class will convert an .fbx or .obj file into an asset bundle and generate physics colliders. Depending on the complexity of the base mesh, this can be a lengthy process, especially when generating physics colliders.
 
 ```python
 from tdw.asset_bundle_creator import AssetBundleCreator
@@ -271,7 +271,7 @@ Example controllers:
 
 Python API:
 
-- [`ModelLibrarian`](../../librarian/model_librarian.md)
+- [`ModelLibrarian`](../../python/librarian/model_librarian.md)
 - [`AssetBundleCreator`](../../python/asset_bundle_creator.md)
 
 Command API:

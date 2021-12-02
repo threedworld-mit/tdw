@@ -2,7 +2,7 @@
 
 # Select a robot
 
-Robots are handled in TDW very similarly to [objects](../core_concepts.md). The robots are asset bundles stored on a remote S3 server. There is a corresponding [`RobotLibrarian`](../../python/librarian/robot_librarian.md) collection of metadata records.
+Robots are handled in TDW very similarly to [objects](../core_concepts/objects.md). The robots are asset bundles stored on a remote S3 server. There is a corresponding [`RobotLibrarian`](../../python/librarian/robot_librarian.md) collection of metadata records.
 
 This will print the name of each robot that is included by default in TDW:
 

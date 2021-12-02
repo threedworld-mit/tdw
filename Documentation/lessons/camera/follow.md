@@ -79,7 +79,7 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-**Next: [The `CinematicCamera` add-on](cinematic_camera.md)
+**This is the last document in the "Camera controls" tutorial.**
 
 [Return to the README](../../../README.md)
 

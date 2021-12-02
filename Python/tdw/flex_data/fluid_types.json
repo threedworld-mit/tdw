@@ -1,0 +1,32 @@
+{
+  "water": {
+    "viscosity": 0.01,
+    "adhesion": 0,
+    "cohesion": 0.001
+  },
+  "ink": {
+    "viscosity": 0.05,
+    "adhesion": 0,
+    "cohesion": 0.0025
+  },
+  "oil": {
+    "viscosity": 6.5,
+    "adhesion": 0.001,
+    "cohesion": 0.001
+  },
+  "honey": {
+    "viscosity": 100.0,
+    "adhesion": 0.025,
+    "cohesion": 0.001
+  },
+  "glycerin": {
+    "viscosity": 50.0,
+    "adhesion": 0.005,
+    "cohesion": 0.001
+  },
+  "chocolate": {
+    "viscosity": 200.0,
+    "adhesion": 0.25,
+    "cohesion": 0.001
+  }
+  }

@@ -1,6 +1,6 @@
 # Command API
 
-**This document contains all commands currently available in TDW. For a usage guide, [read this](command_api_guide.md).**
+**This document contains all commands currently available in TDW.**
 
 # Table of Contents
 
@@ -238,7 +238,7 @@
 | [`adjust_directional_light_intensity_by`](#adjust_directional_light_intensity_by) | Adjust the intensity of the directional light (the sun) by a value. |
 | [`reset_directional_light_rotation`](#reset_directional_light_rotation) | Reset the rotation of the directional light (the sun). |
 | [`rotate_directional_light_by`](#rotate_directional_light_by) | Rotate the directional light (the sun) by an angle and axis. This command will change the direction of cast shadows, which could adversely affect lighting that uses an HDRI skybox, Therefore this command should only be used for interior scenes where the effect of the skybox is less apparent. The original relationship between directional (sun) light and HDRI skybox can be restored by using the reset_directional_light_rotation command. |
-| [`set_directionial_light_color`](#set_directionial_light_color) | Set the color of the directional light (the sun). |
+| [`set_directional_light_color`](#set_directional_light_color) | Set the color of the directional light (the sun). |
 
 **Flex Container Command**
 
@@ -305,14 +305,9 @@
 | [`apply_force_to_flex_object`](#apply_force_to_flex_object) | Apply a directional force to the FlexActor object.  |
 | [`assign_flex_container`](#assign_flex_container) | Assign the FlexContainer of the object.  |
 | [`destroy_flex_object`](#destroy_flex_object) | Destroy the Flex object. This will leak memory (due to a bug in the Flex library that we can't fix), but will leak <emphasis>less</emphasis> memory than destroying a Flex-enabled object with <computeroutput>destroy_object</computeroutput>.  |
-| [`rotate_flex_object_by`](#rotate_flex_object_by) | Rotate a Flex object by a given angle around a given axis.  |
-| [`rotate_flex_object_by_quaternion`](#rotate_flex_object_by_quaternion) | Rotate a Flex object by a given quaternion.  |
-| [`rotate_flex_object_to`](#rotate_flex_object_to) | Rotate a Flex object to a new rotation.  |
 | [`set_flex_object_mass`](#set_flex_object_mass) | Set the mass of the Flex object. The mass is distributed equally across all particles. Thus the particle mass equals mass divided by number of particles.  |
 | [`set_flex_particles_mass`](#set_flex_particles_mass) | Set the mass of all particles in the Flex object. Thus, the total object mass equals the number of particles times the particle mass.  |
 | [`set_flex_particle_fixed`](#set_flex_particle_fixed) | Fix the particle in the Flex object, such that it does not move.  |
-| [`teleport_and_rotate_flex_object`](#teleport_and_rotate_flex_object) | Teleport a Flex object to a new position and rotation.  |
-| [`teleport_flex_object`](#teleport_flex_object) | Teleport a Flex object to a new position.  |
 
 **Object Type Command**
 
@@ -360,9 +355,9 @@
 
 | Command | Description |
 | --- | --- |
-| [`create_flex_fluid_object`](#create_flex_fluid_object) | Create or adjust a FlexArrayActor as a fluid object.  |
-| [`create_flex_fluid_source_actor`](#create_flex_fluid_source_actor) | Create or adjust a FlexSourceActor as a fluid "hose pipe" source.  |
 | [`set_flex_cloth_actor`](#set_flex_cloth_actor) | Create or adjust a FlexClothActor for the object.  |
+| [`set_flex_fluid_actor`](#set_flex_fluid_actor) | Create or adjust a FlexArrayActor as a fluid object.  |
+| [`set_flex_fluid_source_actor`](#set_flex_fluid_source_actor) | Create or adjust a FlexSourceActor as a fluid "hose pipe" source.  |
 | [`set_flex_soft_actor`](#set_flex_soft_actor) | Create or adjust a FlexSoftActor for the object.  |
 | [`set_flex_solid_actor`](#set_flex_solid_actor) | Create or adjust a FlexSolidActor for the object.  |
 
@@ -372,25 +367,6 @@
 | --- | --- |
 | [`hide_object`](#hide_object) | Hide the object. |
 | [`show_object`](#show_object) | Show the object. |
-
-**Painting Command**
-
-| Command | Description |
-| --- | --- |
-| [`create_painting`](#create_painting) | Create a blank "painting" in the scene. |
-| [`destroy_painting`](#destroy_painting) | Destroy an existing painting. |
-
-**Adjust Painting Command**
-
-| Command | Description |
-| --- | --- |
-| [`hide_painting`](#hide_painting) | Hide a visible painting. |
-| [`rotate_painting_by`](#rotate_painting_by) | Rotate a painting by a given angle around a given axis. |
-| [`rotate_painting_to_euler_angles`](#rotate_painting_to_euler_angles) | Set the rotation of the painting with Euler angles.  |
-| [`scale_painting`](#scale_painting) | Scale a painting by a factor. |
-| [`set_painting_texture`](#set_painting_texture) | Apply a texture to a pre-existing painting.  |
-| [`show_painting`](#show_painting) | Show a painting that was hidden. |
-| [`teleport_painting`](#teleport_painting) | Teleport a painting to a new position. |
 
 **Play Audio Data Command**
 
@@ -411,7 +387,7 @@
 | Command | Description |
 | --- | --- |
 | [`set_ambient_occlusion_intensity`](#set_ambient_occlusion_intensity) | Set the intensity (darkness) of the Ambient Occlusion effect. |
-| [`set_ambient_occlusion_thickness_modifier`](#set_ambient_occlusion_thickness_modifier) | Set the Thickness Modifer for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners. |
+| [`set_ambient_occlusion_thickness_modifier`](#set_ambient_occlusion_thickness_modifier) | Set the Thickness Modifier for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners. |
 | [`set_aperture`](#set_aperture) | Set the depth-of-field aperture in post processing volume.  |
 | [`set_contrast`](#set_contrast) | Set the contrast value of the post-processing color grading. |
 | [`set_focus_distance`](#set_focus_distance) | Set the depth-of-field focus distance in post processing volume.  |
@@ -597,6 +573,23 @@
 | [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
 | [`send_volumes`](#send_volumes) | Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value.  |
+
+**Textured Quad Command**
+
+| Command | Description |
+| --- | --- |
+| [`create_textured_quad`](#create_textured_quad) | Create a blank quad (a rectangular mesh with four vertices) in the scene. |
+| [`destroy_textured_quad`](#destroy_textured_quad) | Destroy an existing textured quad. |
+
+**Adjust Textured Quad Command**
+
+| Command | Description |
+| --- | --- |
+| [`rotate_textured_quad_by`](#rotate_textured_quad_by) | Rotate a textured quad by a given angle around a given axis. |
+| [`scale_textured_quad`](#scale_textured_quad) | Scale a textured quad by a factor. |
+| [`set_textured_quad`](#set_textured_quad) | Apply a texture to a pre-existing quad.  |
+| [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
+| [`teleport_textured_quad`](#teleport_textured_quad) | Teleport a textured quad to a new position. |
 
 **Vr Command**
 
@@ -1796,7 +1789,7 @@ Set the near and far clipping planes of the avatar's camera.
 
 Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
 ```python
 {"$type": "set_field_of_view"}
@@ -3035,16 +3028,16 @@ Set the anti-aliasing mode for the avatar's camera.
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 
 ```python
-{"$type": "set_anti_aliasing", "mode": "fast"}
+{"$type": "set_anti_aliasing"}
 ```
 
 ```python
-{"$type": "set_anti_aliasing", "mode": "fast", "sensor_name": "SensorContainer", "avatar_id": "a"}
+{"$type": "set_anti_aliasing", "mode": "subpixel", "sensor_name": "SensorContainer", "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"mode"` | AntiAliasingMode | The anti-aliasing mode. | |
+| `"mode"` | AntiAliasingMode | The anti-aliasing mode. | "subpixel" |
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -3056,8 +3049,8 @@ The anti-aliasing mode for the camera.
 | --- | --- |
 | `"fast"` | A computionally fast technique with lower image quality results. |
 | `"none"` | No antialiasing. |
-| `"subpixel"` | A higher quality, more expensive technique than fast. |
-| `"temporal"` | The highest-quality technique. Expensive. Adds motion blurring based on camera history. By default, all cameras in TDW are set to temporal. If you are frequently teleporting the avatar (and camera), do NOT use this mode. |
+| `"subpixel"` | A higher quality, more expensive technique than fast. This is the default setting of all cameras in TDW. |
+| `"temporal"` | The highest-quality technique. Expensive. Adds motion blurring based on camera history. If you are frequently teleporting the avatar (and camera), do NOT use this mode. |
 
 ***
 
@@ -3111,7 +3104,7 @@ These commands set the depth-of-field focus value based on the position of a tar
 
 Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
 ```python
 {"$type": "focus_on_object", "object_id": 1}
@@ -3134,7 +3127,7 @@ Set the post-process depth of field focus distance to equal the distance between
 
 Focus towards the depth-of-field towards the position of an object. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 - <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
 
 ```python
@@ -3401,17 +3394,17 @@ An axis of rotation.
 
 ***
 
-## **`set_directionial_light_color`**
+## **`set_directional_light_color`**
 
 Set the color of the directional light (the sun).
 
 
 ```python
-{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
+{"$type": "set_directional_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
 ```
 
 ```python
-{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "index": 0}
+{"$type": "set_directional_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "index": 0}
 ```
 
 | Parameter | Type | Description | Default |
@@ -3430,7 +3423,7 @@ These commands affect an NVIDIA Flex container.
 Create a Flex Container. The ID of this container is the quantity of containers in the scene prior to adding it. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "create_flex_container"}
@@ -3472,7 +3465,7 @@ Create a Flex Container. The ID of this container is the quantity of containers 
 
 Destroy an existing Flex container. Only send this command after destroying all Flex objects in the scene. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "destroy_flex_container"}
@@ -3595,7 +3588,7 @@ Load a GameObject from resources.
 
 Load a FlexFluidPrimitive from resources. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "load_flex_fluid_from_resources", "id": 1}
@@ -3617,7 +3610,7 @@ Load a FlexFluidPrimitive from resources.
 
 Load a FlexFluidSource mesh from resources. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "load_flex_fluid_source_from_resources", "id": 1}
@@ -4110,7 +4103,7 @@ These commands apply only to objects that already have FlexActor components.
 
 Apply a directional force to the FlexActor object. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "apply_forces_to_flex_object_base64", "forces_and_ids_base64": "string", "id": 1}
@@ -4127,7 +4120,7 @@ Apply a directional force to the FlexActor object.
 
 Apply a directional force to the FlexActor object. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "apply_force_to_flex_object", "force": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
@@ -4149,7 +4142,7 @@ Apply a directional force to the FlexActor object.
 
 Assign the FlexContainer of the object. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "assign_flex_container", "container_id": 1, "id": 1}
@@ -4172,7 +4165,7 @@ Assign the FlexContainer of the object.
 
 Destroy the Flex object. This will leak memory (due to a bug in the Flex library that we can't fix), but will leak <emphasis>less</emphasis> memory than destroying a Flex-enabled object with <computeroutput>destroy_object</computeroutput>. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 - <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command [unload_asset_bundles](#unload_asset_bundles).</font>
 
 ```python
@@ -4185,79 +4178,12 @@ Destroy the Flex object. This will leak memory (due to a bug in the Flex library
 
 ***
 
-## **`rotate_flex_object_by`**
-
-Rotate a Flex object by a given angle around a given axis. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "rotate_flex_object_by", "angle": 0.125, "id": 1}
-```
-
-```python
-{"$type": "rotate_flex_object_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"axis"` | Axis | The axis of rotation. | "yaw" |
-| `"angle"` | float | The angle of rotation. | |
-| `"is_world"` | bool | If true, the object will rotate via "global" directions and angles. If false, the object will rotate locally. | True |
-| `"id"` | int | The unique object ID. | |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-***
-
-## **`rotate_flex_object_by_quaternion`**
-
-Rotate a Flex object by a given quaternion. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "rotate_flex_object_by_quaternion", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rotation"` | Quaternion | Rotate the object by this quaternion. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`rotate_flex_object_to`**
-
-Rotate a Flex object to a new rotation. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "rotate_flex_object_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rotation"` | Quaternion | The new rotation of the object. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_flex_object_mass`**
 
 Set the mass of the Flex object. The mass is distributed equally across all particles. Thus the particle mass equals mass divided by number of particles. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_object_mass", "mass": 0.125, "id": 1}
@@ -4275,7 +4201,7 @@ Set the mass of the Flex object. The mass is distributed equally across all part
 Set the mass of all particles in the Flex object. Thus, the total object mass equals the number of particles times the particle mass. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_particles_mass", "mass": 0.125, "id": 1}
@@ -4292,7 +4218,7 @@ Set the mass of all particles in the Flex object. Thus, the total object mass eq
 
 Fix the particle in the Flex object, such that it does not move. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_particle_fixed", "is_fixed": True, "particle_id": 1, "id": 1}
@@ -4302,41 +4228,6 @@ Fix the particle in the Flex object, such that it does not move.
 | --- | --- | --- | --- |
 | `"is_fixed"` | bool | Set whether particle is fixed or not. | |
 | `"particle_id"` | int | The ID of the particle. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`teleport_and_rotate_flex_object`**
-
-Teleport a Flex object to a new position and rotation. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "teleport_and_rotate_flex_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The new position of the object. | |
-| `"rotation"` | Quaternion | The new rotation of the object. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`teleport_flex_object`**
-
-Teleport a Flex object to a new position. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "teleport_flex_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The new position of the object. | |
 | `"id"` | int | The unique object ID. | |
 
 # ObjectTypeCommand
@@ -4810,64 +4701,12 @@ These commands create a new FlexActor of type T with a FlexAsset of type U, or t
 
 ***
 
-## **`create_flex_fluid_object`**
-
-Create or adjust a FlexArrayActor as a fluid object. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "create_flex_fluid_object", "id": 1}
-```
-
-```python
-{"$type": "create_flex_fluid_object", "id": 1, "mesh_expansion": 0, "max_particles": 10000, "particle_spacing": 0.125, "mass_scale": 1, "draw_particles": False}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"mesh_expansion"` | float | Mesh local scale of the FlexArrayAsset. | 0 |
-| `"max_particles"` | int | Maximum number of particles for the Flex Asset. | 10000 |
-| `"particle_spacing"` | float | Particle spacing of the Flex Asset. | 0.125 |
-| `"mass_scale"` | float | The mass scale factor. | 1 |
-| `"draw_particles"` | bool | Debug drawing of particles. | False |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`create_flex_fluid_source_actor`**
-
-Create or adjust a FlexSourceActor as a fluid "hose pipe" source. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "create_flex_fluid_source_actor", "id": 1}
-```
-
-```python
-{"$type": "create_flex_fluid_source_actor", "id": 1, "start_speed": 10.0, "lifetime": 2.0, "mesh_tesselation": 2, "mass_scale": 1, "draw_particles": False}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"start_speed"` | float | Rate of fluid particle generation. | 10.0 |
-| `"lifetime"` | float | Lifetime of fluid particles. | 2.0 |
-| `"mesh_tesselation"` | int | Mesh tesselation of the FlexSourceAsset. | 2 |
-| `"mass_scale"` | float | The mass scale factor. | 1 |
-| `"draw_particles"` | bool | Debug drawing of particles. | False |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_flex_cloth_actor`**
 
 Create or adjust a FlexClothActor for the object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_cloth_actor", "id": 1}
@@ -4892,12 +4731,64 @@ Create or adjust a FlexClothActor for the object.
 
 ***
 
+## **`set_flex_fluid_actor`**
+
+Create or adjust a FlexArrayActor as a fluid object. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+
+```python
+{"$type": "set_flex_fluid_actor", "id": 1}
+```
+
+```python
+{"$type": "set_flex_fluid_actor", "id": 1, "mesh_expansion": 0, "max_particles": 10000, "particle_spacing": 0.125, "mass_scale": 1, "draw_particles": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"mesh_expansion"` | float | Mesh local scale of the FlexArrayAsset. | 0 |
+| `"max_particles"` | int | Maximum number of particles for the Flex Asset. | 10000 |
+| `"particle_spacing"` | float | Particle spacing of the Flex Asset. | 0.125 |
+| `"mass_scale"` | float | The mass scale factor. | 1 |
+| `"draw_particles"` | bool | Debug drawing of particles. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_flex_fluid_source_actor`**
+
+Create or adjust a FlexSourceActor as a fluid "hose pipe" source. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+
+```python
+{"$type": "set_flex_fluid_source_actor", "id": 1}
+```
+
+```python
+{"$type": "set_flex_fluid_source_actor", "id": 1, "start_speed": 10.0, "lifetime": 2.0, "mesh_tesselation": 2, "mass_scale": 1, "draw_particles": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"start_speed"` | float | Rate of fluid particle generation. | 10.0 |
+| `"lifetime"` | float | Lifetime of fluid particles. | 2.0 |
+| `"mesh_tesselation"` | int | Mesh tesselation of the FlexSourceAsset. | 2 |
+| `"mass_scale"` | float | The mass scale factor. | 1 |
+| `"draw_particles"` | bool | Debug drawing of particles. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`set_flex_soft_actor`**
 
 Create or adjust a FlexSoftActor for the object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_soft_actor", "id": 1}
@@ -4929,7 +4820,7 @@ Create or adjust a FlexSoftActor for the object.
 Create or adjust a FlexSolidActor for the object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_solid_actor", "id": 1}
@@ -4980,176 +4871,6 @@ Show the object.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
-
-# PaintingCommand
-
-These commands allow you to create and edit static "paintings". To create a painting, first send the command create_painting. To edit a painting, send set_painting_texture.
-
-***
-
-## **`create_painting`**
-
-Create a blank "painting" in the scene.
-
-
-```python
-{"$type": "create_painting", "position": {"x": 1.1, "y": 0.0, "z": 0}, "size": {"x": 1.1, "y": 0}, "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The position of the painting. This will always be anchored in the bottom-center point of the object. | |
-| `"size"` | Vector2 | The width and height of the painting. | |
-| `"euler_angles"` | Vector3 | The orientation of the painting, in Euler angles. | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`destroy_painting`**
-
-Destroy an existing painting.
-
-
-```python
-{"$type": "destroy_painting", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of this painting. | |
-
-# AdjustPaintingCommand
-
-These commands adjust an existing painting.
-
-***
-
-## **`hide_painting`**
-
-Hide a visible painting.
-
-
-```python
-{"$type": "hide_painting", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`rotate_painting_by`**
-
-Rotate a painting by a given angle around a given axis.
-
-
-```python
-{"$type": "rotate_painting_by", "angle": 0.125, "id": 1}
-```
-
-```python
-{"$type": "rotate_painting_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"axis"` | Axis | The axis of rotation. | "yaw" |
-| `"angle"` | float | The angle of rotation. | |
-| `"is_world"` | bool | If true, the painting will rotate via "global" directions and angles. If false, the painting will rotate locally. | True |
-| `"id"` | int | The unique ID of this painting. | |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-***
-
-## **`rotate_painting_to_euler_angles`**
-
-Set the rotation of the painting with Euler angles. 
-
-- <font style="color:teal">**Euler angles**: Rotational behavior can become unpredictable if the Euler angles of an object are adjusted more than once. Consider sending this command only to initialize the orientation. See: [Rotation documentation)(../misc_frontend/rotation.md)</font>
-
-```python
-{"$type": "rotate_painting_to_euler_angles", "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"euler_angles"` | Vector3 | The new Euler angles of the painting. | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`scale_painting`**
-
-Scale a painting by a factor.
-
-
-```python
-{"$type": "scale_painting", "scale_factor": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale_factor"` | Vector3 | Multiply the scale of the painting by this vector. (For example, if scale_factor is (2,2,2), then the painting's current size will double.) | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`set_painting_texture`**
-
-Apply a texture to a pre-existing painting. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-
-```python
-{"$type": "set_painting_texture", "dimensions": {"x": 0, "y": 1}, "image": "string", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"dimensions"` | GridPoint | The expected dimensions of the image in pixels. | |
-| `"image"` | string | base64 string representation of the image byte array. | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`show_painting`**
-
-Show a painting that was hidden.
-
-
-```python
-{"$type": "show_painting", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`teleport_painting`**
-
-Teleport a painting to a new position.
-
-
-```python
-{"$type": "teleport_painting", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | New position of the painting. | |
-| `"id"` | int | The unique ID of this painting. | |
 
 # PlayAudioDataCommand
 
@@ -5226,7 +4947,7 @@ Create a non-physics, non-interactive marker at a position in the scene.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | Add a marker at this position. | |
-| `"scale"` | float | The scale of the marker. | 0.05 |
+| `"scale"` | float | The scale of the marker. If the scale is 1, a cube and square will be 1 meter wide and a sphere and circle will be 1 meter in diameter. | 0.05 |
 | `"color"` | Color | The color of the marker. The default color is red. | {"r": 1, "g": 0, "b": 0, "a": 1} |
 | `"shape"` | Shape | The shape of the position marker object. | "sphere" |
 
@@ -5280,7 +5001,7 @@ Set the intensity (darkness) of the Ambient Occlusion effect.
 
 ## **`set_ambient_occlusion_thickness_modifier`**
 
-Set the Thickness Modifer for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners.
+Set the Thickness Modifier for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners.
 
 
 ```python
@@ -5301,7 +5022,7 @@ Set the Thickness Modifer for the Ambient Occlusion effect<ndash /> controls "sp
 
 Set the depth-of-field aperture in post processing volume. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
 ```python
 {"$type": "set_aperture"}
@@ -5340,7 +5061,7 @@ Set the contrast value of the post-processing color grading.
 
 Set the depth-of-field focus distance in post processing volume. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
 ```python
 {"$type": "set_focus_distance"}
@@ -7656,6 +7377,153 @@ Options for when to send data.
 | `"once"` | Send the data for this frame only. |
 | `"always"` | Send the data every frame. |
 | `"never"` | Never send the data. |
+
+# TexturedQuadCommand
+
+These commands allow you to create and edit static quad meshes (a rectangle with four vertices) with textures. To create a textured quad, send the command create_textured_quad. To edit a textured quad, send [set_textured_quad](#set_textured_quad).
+
+***
+
+## **`create_textured_quad`**
+
+Create a blank quad (a rectangular mesh with four vertices) in the scene.
+
+
+```python
+{"$type": "create_textured_quad", "position": {"x": 1.1, "y": 0.0, "z": 0}, "size": {"x": 1.1, "y": 0}, "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the quad. This will always be anchored in the bottom-center point of the object. | |
+| `"size"` | Vector2 | The width and height of the quad. | |
+| `"euler_angles"` | Vector3 | The orientation of the quad, in Euler angles. | |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`destroy_textured_quad`**
+
+Destroy an existing textured quad.
+
+
+```python
+{"$type": "destroy_textured_quad", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+# AdjustTexturedQuadCommand
+
+These commands adjust an existing textured quad.
+
+***
+
+## **`rotate_textured_quad_by`**
+
+Rotate a textured quad by a given angle around a given axis.
+
+
+```python
+{"$type": "rotate_textured_quad_by", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "rotate_textured_quad_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation. | |
+| `"is_world"` | bool | If true, the quad will rotate via "global" directions and angles. If false, the quad will rotate locally. | True |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`scale_textured_quad`**
+
+Scale a textured quad by a factor.
+
+
+```python
+{"$type": "scale_textured_quad", "id": 1}
+```
+
+```python
+{"$type": "scale_textured_quad", "id": 1, "scale_factor": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale_factor"` | Vector3 | Multiply the scale of the quad by this vector. (For example, if scale_factor is (2,2,2), then the quad's current size will double.) | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`set_textured_quad`**
+
+Apply a texture to a pre-existing quad. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+
+```python
+{"$type": "set_textured_quad", "dimensions": {"x": 0, "y": 1}, "image": "string", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dimensions"` | GridPoint | The expected dimensions of the image in pixels. | |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`show_textured_quad`**
+
+Show or hide a textured quad.
+
+
+```python
+{"$type": "show_textured_quad", "id": 1}
+```
+
+```python
+{"$type": "show_textured_quad", "id": 1, "show": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"show"` | bool | If True, show the quad. If False, hide it. | True |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`teleport_textured_quad`**
+
+Teleport a textured quad to a new position.
+
+
+```python
+{"$type": "teleport_textured_quad", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | New position of the quad. | |
+| `"id"` | int | The unique ID of this textured quad. | |
 
 # VrCommand
 

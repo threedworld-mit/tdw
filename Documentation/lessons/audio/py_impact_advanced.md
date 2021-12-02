@@ -279,7 +279,7 @@ c.communicate({"$type": "terminate"})
 
 ## Example E: Get the collision audio type
 
-To get the collision events on this frame, see `py_impact.collision_events`. This is a dictionary where the key is an object ID and value is a [`CollisionAudioEvent`](../../python/physics_audio/collisioin_audio_event.md). The `CollisionAudioEvent` includes a [`collision_type`](../../python/physics_audio/collision_audio_type.md) which is used by PyImpact to decide whether to generate an impact, scrape, roll, or no sound.
+To get the collision events on this frame, see `py_impact.collision_events`. This is a dictionary where the key is an object ID and value is a [`CollisionAudioEvent`](../../python/physics_audio/collision_audio_event.md). The `CollisionAudioEvent` includes a [`collision_type`](../../python/physics_audio/collision_audio_type.md) which is used by PyImpact to decide whether to generate an impact, scrape, roll, or no sound.
 
 ```python
 from tdw.controller import Controller
@@ -386,7 +386,7 @@ Output:
 
 ## Example F: Generate scrape sounds
 
-It's possible to generate scrape sounds without using a TDW controller by calling `py_impact.get_scrape_sound()`. The parameters are nearly the same as in `get_impact_sound()` with two difference: `secondary_id` must be an integer (rather than optionally be None) and you must set [`scrape_material`](../../api/physics_audio/scrape_material.md).
+It's possible to generate scrape sounds without using a TDW controller by calling `py_impact.get_scrape_sound()`. The parameters are nearly the same as in `get_impact_sound()` with two difference: `secondary_id` must be an integer (rather than optionally be None) and you must set [`scrape_material`](../../python/physics_audio/scrape_material.md).
 
 In terms of implementation, the main difference in generating scrape sounds is that we want to append multiple frames of a scrape to the .wav file, so we'll add a second loop within a loop:
 
@@ -554,9 +554,9 @@ Python API:
 -  [`Base64Sound`](../../python/physics_audio/base64_sound.md)
 - [`ObjectAudioStatic`](../../python/physics_audio/object_audio_static.md)
 - [`CollisionAudioType`](../../python/physics_audio/collision_audio_type.md)
-- [`CollisionAudioEvent`](../../python/physics_audio/collisioin_audio_event.md)
+- [`CollisionAudioEvent`](../../python/physics_audio/collision_audio_event.md)
 -  [`Modes`](../../python/physics_audio/modes.md)
--  [`ScrapeMaterial`](../../api/physics_audio/scrape_material.md)
+-  [`ScrapeMaterial`](../../python/physics_audio/scrape_material.md)
 
 Command API:
 

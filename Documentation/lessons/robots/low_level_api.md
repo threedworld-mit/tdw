@@ -6,7 +6,7 @@ So far, this tutorial has utilized the [`Robot` add-on](../../Python/add_ons/rob
 
 ## Add a robot to the scene
 
-Add a robot to the scene with the [`add_robot` command](../../api/command_api.md#add_robot) or the wrapper function [`Controller.get_add_robot()`](../../Python/controller.md):
+Add a robot to the scene with the [`add_robot` command](../../api/command_api.md#add_robot) or the wrapper function [`Controller.get_add_robot()`](../../python/controller.md):
 
 ```python
 from tdw.controller import Controller
@@ -105,7 +105,7 @@ c.communicate([{"$type": "set_revolute_target",
 
 ## Get dynamic robot data and check if the joints are still moving
 
-To determine whether the robot's joints are still moving, you'll need to send [`send_robots`](../../command_api.md#send_robots) which will return [`Robot`](../../output_data.md#Robot) output data. In this example, we'll get the starting position of the joints. Per frame, we'll then parse `Robot` output data and compare it to the previous positions. If all of the joints have stopped moving or nearly stopped moving, the controller ends:
+To determine whether the robot's joints are still moving, you'll need to send [`send_robots`](../../api/command_api.md#send_robots) which will return [`Robot`](../../api/output_data.md#Robot) output data. In this example, we'll get the starting position of the joints. Per frame, we'll then parse `Robot` output data and compare it to the previous positions. If all of the joints have stopped moving or nearly stopped moving, the controller ends:
 
 ```python
 import numpy as np

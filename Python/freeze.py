@@ -22,9 +22,8 @@ if __name__ == "__main__":
         dir_util.remove_tree(str(output_dir.resolve()))
     output_dir.mkdir(parents=True)
     parser = ArgumentParser()
-    parser.add_argument("--controller", type=str, default="example_controllers/minimal.py",
-                        help="The relative path from this script to your controller. "
-                             "Example: example_controllers/minimal.py")
+    parser.add_argument("--controller", type=str,
+                        help="The relative path from this script to your controller.")
     args = parser.parse_args()
     controller = Path(args.controller)
     # Parse ~ as the home directory.

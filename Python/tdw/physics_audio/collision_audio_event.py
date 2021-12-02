@@ -21,7 +21,7 @@ class CollisionAudioEvent:
     """:class_var
     If the area of the collision increases by at least this factor during a stay event, the collision is actually an impact.
     """
-    IMPACT_AREA_RATIO: float = 2.5
+    IMPACT_AREA_RATIO: float = 5
     """:class_var
     On a stay event, if the previous area is None and the current area is greater than this, the collision is actually an impact. 
     """

@@ -206,37 +206,39 @@ class ReachForAffordancePoint(Controller):
 
 
     def drop(self, resp: List[bytes], object_id: int, empty_object_id: int, arm: Arm) -> List[dict]:
-        commands = [{"$type": "humanoid_drop_object",
-                     "target": object_id,
-                     "id": self.h_id,
-                     "arm": self.reach_arm}]
+        commands = []
+        """
         # Get the current position of the target object.
-        
+        home_position = {"x": 0, "y": 0, "z": 0}
         resp = self.communicate([])
         for r in resp[:-1]:
             r_id = OutputData.get_data_type_id(r)
             # Find the transform data.
-            if r_id == "tran":
-                t = Transforms(r)
+            if r_id == "ltra":
+                t = LocalTransforms(r)
                 for j in range(t.get_num()):
                     if t.get_id(j) == object_id:
                         tgt_position = TDWUtils.array_to_vector3(np.array(t.get_position(j)))
                         offset = ReachForAffordancePoint.AFFORDANCE_POINTS_BY_OBJECT_ID[object_id][empty_object_id]
-                        home_position = {"x": tgt_position["x"] + offset["z"], "y": tgt_position["y"] + offset["y"],
-                                         "z": tgt_position["z"] + offset["x"]}
+                        home_position = {"x": tgt_position["x"] + -offset["z"], "y": tgt_position["y"],
+                                         "z": tgt_position["z"] + -offset["x"]}
         commands.append({"$type": "teleport_object_local", 
                          "position": home_position,
                          "id": object_id})
         
-        """                
+        """              
         offset = ReachForAffordancePoint.AFFORDANCE_POINTS_BY_OBJECT_ID[object_id][empty_object_id]
-        commands.extend([{"$type": "translate_object_by", 
+        commands.extend([{"$type": "humanoid_drop_object",
+                          "target": object_id,
+                          "id": self.h_id,
+                          "arm": self.reach_arm},
+                         {"$type": "translate_object_by", 
                          "position": {"x": -offset["z"], "y": -offset["y"], "z": -offset["x"]},
                          "absolute": False,
                          "id": object_id},
                         {"$type": "rotate_object_to", 
                          "rotation": {"w": 1.0, "x": 0, "y": 0, "z": 0}, "id": object_id}])
-        """
+        
         commands.extend(ReachForAffordancePoint._reset_affordance_points(self.t_id))
         return commands
 
@@ -269,7 +271,7 @@ class ReachForAffordancePoint(Controller):
                           "id": self.h_id, 
                           "arm": self.reach_arm})
 
-        for i in range(2):
+        for i in range(10):
             # Move the arm holding the object, to a reasonable carrying position.     
             self.communicate([{"$type": "humanoid_reach_for_position", 
                                "position": {"x": uniform(-0.75, 0.75), "y": uniform(0.75, 2.0), "z": uniform(0, 0.1)}, 

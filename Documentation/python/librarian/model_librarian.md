@@ -40,7 +40,7 @@ If you don't provided a value for `library`, the default is `models_core.json`.
 | `models_special.json` | Primitives and specialized models.                           | ✓     |
 | `models_flex.json`    | Primitives that have been optimized for Flex deformation.    | ✓     |
 
-<img src="../../images/librarian/model_libraries.png" style="zoom:50%;" />
+<img src="images/model_libraries.png" style="zoom:50%;" />
 
 ## Command API
 

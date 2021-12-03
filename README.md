@@ -2,12 +2,13 @@
 
 **ThreeDWorld (TDW)** is a platform for interactive multi-modal physical simulation. With TDW, users can simulate high-fidelity sensory data and physical interactions between mobile agents and objects in a wide variety of rich 3D environments.
 
-TDW is a general-purpose tool that allows the user to communicate and manipulate a 3D environment. As such, there's no single "correct" procedure for using TDW. This guide will show you how to start using TDW and how to explore the available options.
+![](splash.jpg)
 
 - [Code of Conduct](https://github.com/threedworld-mit/tdw/blob/master/code_of_conduct.md)
 - [Changelog](https://github.com/threedworld-mit/tdw/blob/master/Documentation/Changelog.md)
 - [License](https://github.com/threedworld-mit/tdw/blob/master/LICENSE.txt)
 - [Website](http://threedworld.org/)
+- [Example controllers](https://github.com/threedworld-mit/tdw/tree/master/Python/example_controllers)
 
 # 1. General guide to TDW
 
@@ -162,11 +163,7 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 2. [Keyboard controls](Documentation/lessons/humans/overview.md)
 3. [Virtual reality](Documentation/lessons/humans/vr.md)
 
-### 2.10.4 Humanoid agents ("Replicants")
-
-TODO
-
-### 2.10.5 Embodied avatars
+### 2.10.4 Embodied avatars
 
 1. [Overview](Documentation/lessons/embodied_avatars/overview.md)
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)

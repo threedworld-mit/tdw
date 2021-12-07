@@ -1,11 +1,7 @@
-from typing import List, Dict, Tuple
-from pkg_resources import resource_filename
-from pathlib import Path
-from json import loads, dumps
+from typing import List, Tuple
 import numpy as np
 from tdw.controller import Controller
 from tdw.proc_gen_objects.proc_gen_object import ProcGenObject
-from tdw.librarian import ModelLibrarian
 from tdw.proc_gen_objects.shelf_items_type import ShelfItemsType
 
 
@@ -23,33 +19,31 @@ class Shelf(ProcGenObject):
     """
     SMALL_ITEMS: List[str] = ["102_pepsi_can_12_fl_oz_vray", "9v_battery", "aaa_battery", "alarm_clock",
                               "apple_ipod_touch_yellow_vray", "b03_old_scissors", "b03_padlock", "b03_pen_01_001",
-                              "b03_spoon_001", "b04_cassete", "b04_dat", "b04_default", "b04_wire_pincers",
-                              "b05_48_body_shop_hair_brush", "b05_calculator", "b05_champagne_cup_vray",
-                              "b05_executive_pen", "b05_vray_cassette_render_scene", "basic_cork", "basic_cork_2",
+                              "b03_spoon_001", "b04_cassete", "b05_48_body_shop_hair_brush", "b05_calculator",
+                              "b05_champagne_cup_vray", "b05_vray_cassette_render_scene", "basic_cork", "basic_cork_2",
                               "bookend01", "bookend03", "bookend04", "bookend05", "bookend06", "bookend07",
                               "bronze_purse", "bung", "button_four_hole_large_black", "button_four_hole_large_wood",
                               "button_four_hole_mottled", "button_four_hole_red_plastic",
                               "button_four_hole_white_plastic", "button_four_hole_wood",
                               "button_two_hole_green_mottled", "button_two_hole_grey", "button_two_hole_red_mottled",
                               "button_two_hole_red_wood", "calculator", "cgaxis_models_volume_59_15_vray",
-                              "champagne_cork", "coffee_cup", "coffeecup004", "coffeemug", "cork_plastic",
+                              "champagne_cork", "coffee_cup", "coffeecup004", "cork_plastic",
                               "cork_plastic_black", "f10_apple_iphone_4", "fork1", "fork3", "fork4", "glass1", "glass2",
                               "golf", "h-shape_wood_block", "half_circle_wood_block", "holy_bible", "jug04", "jug05",
                               "key_brass", "key_dull_metal", "key_shiny", "knife1", "knife2", "l-shape_wood_block",
-                              "lighter", "metal_sculpture", "mug", "notes_02", "omega_seamaster_set", "pencil_all",
-                              "pentagon_wood_block", "pepper", "rectangle_wood_block", "remote_vr_2012",
-                              "round_coaster_cherry", "round_coaster_indent_rubber", "round_coaster_indent_stone",
+                              "lighter", "metal_sculpture", "mug", "notes_02", "pentagon_wood_block", "pepper",
+                              "rectangle_wood_block", "remote_vr_2012", "round_coaster_cherry",
+                              "round_coaster_indent_rubber", "round_coaster_indent_stone",
                               "round_coaster_indent_wood", "round_coaster_stone", "round_coaster_stone_dark",
                               "salt", "small_purse", "spoon1", "spoon2", "square_coaster_001_cork",
                               "square_coaster_001_marble", "square_coaster_001_wood", "square_coaster_rubber",
                               "square_coaster_stone", "square_coaster_wood", "square_wood_block", "star_wood_block",
-                              "t-shape_wood_block", "tapered_cork", "tapered_cork_w_hole", "toy_monkey_medium"]
+                              "t-shape_wood_block", "tapered_cork", "tapered_cork_w_hole"]
     """:class_var
     The names of the baking sheet models.
     """
     BAKING_SHEETS: List[str] = ["baking_sheet01", "baking_sheet02", "baking_sheet03", "baking_sheet04",
-                                "baking_sheet05", "baking_sheet06", "baking_sheet07", "baking_sheet08",
-                                "baking_sheet09", "baking_sheet10"]
+                                "baking_sheet05", "baking_sheet06", "baking_sheet07", "baking_sheet09"]
     """:class_var
     The cell size on the "shelf grid".
     """
@@ -93,6 +87,10 @@ class Shelf(ProcGenObject):
             # Shelf with random items.
             elif shelf_item_type == ShelfItemsType.random:
                 commands.extend(self.random_items(y=shelf_y, rng=rng))
+            elif shelf_item_type == ShelfItemsType.baking_sheets:
+                commands.extend(self.baking_sheets(y=shelf_y, rng=rng))
+            elif shelf_item_type == ShelfItemsType.shoeboxes:
+                commands.extend(self.shoeboxes(y=shelf_y, rng=rng))
         return commands
 
     def random_items(self, y: float, rng: np.random.RandomState) -> List[dict]:
@@ -136,13 +134,66 @@ class Shelf(ProcGenObject):
                                                               object_id=Controller.get_unique_id()))
         return commands
 
+    def baking_sheets(self, y: float, rng: np.random.RandomState) -> List[dict]:
+        """
+        :param y: The y value of the shelf.
+        :param rng: The random number generator.
 
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
+        :return: A list of commands to add baking sheets to the shelf.
+        """
 
+        commands = []
+        i = float(rng.uniform(-Shelf.HALF_LENGTH, Shelf.HALF_LENGTH)) * 0.25
+        j = float(rng.uniform(-Shelf.HALF_WIDTH, Shelf.HALF_WIDTH)) * 0.25
+        if self.north_south:
+            x = self.position["x"] + j
+            z = self.position["z"] + i
+        else:
+            x = self.position["x"] + i
+            z = self.position["z"] + j
+        # Add random baking sheets.
+        sheet_y = y
+        for i in range(rng.randint(4, 8)):
+            sheet_name: str = rng.choice(Shelf.BAKING_SHEETS)
+            commands.extend(Controller.get_add_physics_object(model_name=sheet_name,
+                                                              object_id=Controller.get_unique_id(),
+                                                              position={"x": x, "y": sheet_y, "z": z},
+                                                              rotation={"x": 0,
+                                                                        "y": float(rng.uniform(-90, 90)),
+                                                                        "z": 0},
+                                                              library="models_core.json"))
+            # Place the next sheet on top of this one.
+            sheet_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(sheet_name)
+            sheet_y += np.linalg.norm(sheet_record.bounds["top"]["y"] - sheet_record.bounds["bottom"]["y"])
+        return commands
 
-sh = Shelf(north_south=True, position={"x": 0, "y": 0, "z": 1})
-c = Controller()
-commands = [TDWUtils.create_empty_room(12, 12)]
-commands.extend(sh.create(rng=np.random.RandomState(0)))
-c.communicate(commands)
+    def shoeboxes(self, y: float, rng: np.random.RandomState) -> List[dict]:
+        """
+        :param y: The y value of the shelf.
+        :param rng: The random number generator.
+
+        :return: A list of commands to add shoeboxes to the shelf.
+        """
+
+        shoebox_layout_variants = [[True, True], [True, False], [False, True]]
+        shoebox_variant_index = rng.randint(0, 2)
+        commands = []
+        for shoebox, direction in zip(shoebox_layout_variants[shoebox_variant_index], [-1, 1]):
+            if not shoebox:
+                continue
+            i = (0.214 * direction) + float(rng.uniform(-0.03, 0.03))
+            j = float(rng.uniform(-0.1, 0.1))
+            if self.north_south:
+                rotation = 0
+                x = self.position["x"] + i
+                z = self.position["z"] + j
+            else:
+                rotation = 90
+                x = self.position["x"] + j
+                z = self.position["z"] + i
+            rotation += float(rng.uniform(-30, 30))
+            commands.extend(Controller.get_add_physics_object(model_name="shoebox_fused",
+                                                              position={"x": x, "y": y, "z": z},
+                                                              rotation={"x": 0, "y": rotation, "z": 0},
+                                                              object_id=Controller.get_unique_id()))
+        return commands

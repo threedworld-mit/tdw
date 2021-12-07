@@ -4,6 +4,7 @@ from tdw.controller import Controller
 from tdw.add_ons.add_on import AddOn
 from tdw.scene_data.scene_bounds import SceneBounds
 from tdw.tdw_utils import TDWUtils
+from tdw.librarian import ModelLibrarian
 
 
 class ProcGenKitchen(AddOn):
@@ -165,3 +166,46 @@ class ProcGenKitchen(AddOn):
         chair_position = table_bound_point + (position_to_center_normalized * ProcGenKitchen.RNG.uniform(0.5, 0.125))
         chair_position[1] = 0
         return chair_position
+
+# Divide a shelf into a grid.
+cell_size = 0.12
+baking_sheet_diameter = 0.5392402
+xs = np.arange(cell_size, 0.9451682 * 0.9, cell_size)
+zs = np.arange(cell_size, 0.3857702 * 0.9, cell_size)
+y = 0.3970358371734619 * 0.5
+for ix in xs:
+    for iz in zs:
+        print(ix, iz)
+lib = ModelLibrarian()
+cell_dimensions = {}
+lib = ModelLibrarian()
+for record in lib.records:
+    if record.do_not_use:
+        continue
+    # Get the width and length of the object.
+    width = record.bounds["right"]["x"] - record.bounds["left"]["x"]
+    length = record.bounds["front"]["z"] - record.bounds["back"]["z"]
+    height = record.bounds["top"]["y"] - record.bounds["bottom"]["y"]
+    if height > y:
+        continue
+    # Convert the width and length to cells.
+    i = 1
+    x = cell_size
+    while x < width:
+        x += cell_size
+        i += 1
+    j = 1
+    z = cell_size
+    while z < length:
+        z += cell_size
+        j += 1
+    if i > 1:
+        i -= 1
+    if j > 1:
+        j -= 1
+    # Exceeds maximum cells.
+    if i >= 8 or j >= 3:
+        continue
+    cell_dimensions[record.name] = [i, j]
+import json
+print(json.dumps(cell_dimensions))

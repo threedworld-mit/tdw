@@ -65,7 +65,7 @@ class PyImpact(CollisionManager):
     """:class_var
     The maximum velocity allowed for a scrape.
     """
-    SCRAPE_MAX_VELOCITY: float = 10.0
+    SCRAPE_MAX_VELOCITY: float = 5.0
     """:class_var
     Meters per pixel on the scrape surface.
     """
@@ -704,7 +704,7 @@ class PyImpact(CollisionManager):
             self._scrape_start_velocities[scrape_key] = mag
 
         # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
-        db2 = 40 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY)
+        db2 = 40 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 2
         db1 = 20 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 10
 
         # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
@@ -744,19 +744,29 @@ class PyImpact(CollisionManager):
                                                          "surface": scrape_surface,
                                                          "r_gain": r_gain}
         dist = mag / 10
-        num_pts = int(np.floor(dist / PyImpact.SCRAPE_M_PER_PIXEL))
+        num_pts = int(np.floor(dist / PyImpact.SCRAPE_M_PER_PIXEL) + 1)
+        # No scrape.
+        if num_pts < 1:
+            self._end_scrape(scrape_key)
+            return None
         # interpolate the surface slopes and curvatures based on the velocity magnitude
         final_ind = self._scrape_previous_indices[scrape_key] + num_pts
-
-        if final_ind > len(self.scrape_surface_data[scrape_material]["surface"]) - 10:
-            self._scrape_previous_indices[scrape_key] = 0
-            final_ind = num_pts
 
         vect1 = np.linspace(0, 1, num_pts)
         vect2 = np.linspace(0, 1, 4410)
 
-        slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][self._scrape_previous_indices[scrape_key]:final_ind])
-        curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][self._scrape_previous_indices[scrape_key]:final_ind])
+        if final_ind > len(self.scrape_surface_data[scrape_material]["surface"]) - 1:
+            inddd = list(range(self._scrape_previous_indices[scrape_key] - num_pts,
+                               self._scrape_previous_indices[scrape_key]))
+            inddd.reverse()
+            final_ind = self._scrape_previous_indices[scrape_key] - num_pts
+            slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][inddd])
+            curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][inddd])
+        else:
+            slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][
+                                                self._scrape_previous_indices[scrape_key]:final_ind])
+            curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][
+                                                self._scrape_previous_indices[scrape_key]:final_ind])
 
         self._scrape_previous_indices[scrape_key] = final_ind
 
@@ -806,14 +816,12 @@ class PyImpact(CollisionManager):
         noise_seg_conv = noise_seg_conv1.overlay(noise_seg_conv2)
         # Apply roughness gain.
         noise_seg_conv = noise_seg_conv.apply_gain(self.scrape_surface_data[scrape_material]["r_gain"])
-        # First time through -- append 50 ms of silence to the end of the current segment and make that "master".
-        if scrape_event_count == 0:
-            summed_master = noise_seg_conv + PyImpact.SILENCE_50MS
+
         # Pad the end of master with 50 ms of silence, the start of the current segment with (n * 50ms) of silence, and overlay.
-        else:
-            padded_current = (PyImpact.SILENCE_50MS * (2 * scrape_event_count + 1)) + noise_seg_conv
-            summed_master = summed_master + PyImpact.SILENCE_50MS
-            summed_master = summed_master.overlay(padded_current)
+        padded_current = (PyImpact.SILENCE_50MS * scrape_event_count) + noise_seg_conv
+        summed_master = summed_master + PyImpact.SILENCE_50MS
+        summed_master = summed_master.overlay(padded_current)
+
         # Extract 100ms "chunk" of sound to send over to Unity.
         start_idx = 100 * scrape_event_count
         unity_chunk = summed_master[-(len(summed_master) - start_idx):][:100]

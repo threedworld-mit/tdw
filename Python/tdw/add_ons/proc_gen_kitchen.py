@@ -12,8 +12,7 @@ class ProcGenKitchen(AddOn):
     WALL_WITHOUT_WINDOWS: dict = {'x': -3.0015454292297363,
                                   'z': [-3.483069896697998, 3.443080425262451]}
 
-    CHAIR_MODEL_NAMES: List[str] = ['chair_billiani_doll', 'wood_chair', 'yellow_side_chair', 'chair_annabelle']
-    TABLE_MODEL_NAMES: List[str] = ['enzo_industrial_loft_pine_metal_round_dining_table', 'quatre_dining_table']
+
     FLOOR_LAMP_MODEL_NAMES: List[str] = ["alma_floor_lamp", "bastone_floor_lamp", "bakerparisfloorlamp03"]
     SHELF_MODEL_NAME: str = "4ft_shelf_metal"
     MICROWAVE_MODEL_NAMES: List[str] = ["appliance-ge-profile-microwave3", "microwave"]
@@ -21,12 +20,6 @@ class ProcGenKitchen(AddOn):
     HANDLE_MATERIAL_NAMES: List[str] = ["bronze_yellow", "steel_galvanized"]
     WOOD_MATERIAL_NAMES: List[str] = ["wood_oak_white", "wood_beech_honey"]
     COUNTERTOP_MATERIAL_NAMES: List[str] = ["granite_beige_french", "granite_black"]
-
-    SHELF_ITEM_MODEL_NAMES: List[str] = ["duffle_bag_sm", "shoebox_fused", "basket_18inx18inx12iin_wicker",
-                                         "box_18inx18inx12in_cardboard", "basket_18inx18inx12iin_wood_mesh",
-                                         "basket_18inx18inx12iin_plastic_lattice"]
-    #PANTRY_ITEM_NAMES: List[str]
-
 
 
     partnet_pantries = [41003, 41085, 45189, 45387]
@@ -54,50 +47,6 @@ class ProcGenKitchen(AddOn):
         # Set the RNG with a random seed.
         if random_seed is not None:
             ProcGenKitchen.RNG = np.random.RandomState(random_seed)
-
-    @staticmethod
-    def shelf(position: Dict[str, float], east_west: bool) -> List[dict]:
-        """
-        :param position: The position of the shelf.
-        :param east_west: If True, the shelf is oriented east-west. If False, the shelf is oriented north-south.
-
-        :return: A list of commands to add the shelf and place items on it.
-        """
-
-        # Add a shelf.
-        if east_west:
-            rotation = {"x": 0, "y": 0, "z": 0}
-        else:
-            rotation = {"x": 0, "y": 90, "z": 0}
-        commands = Controller.get_add_physics_object(model_name="4ft_shelf_metal",
-                                                     object_id=Controller.get_unique_id(),
-                                                     library="models_core.json",
-                                                     position=position,
-                                                     rotation=rotation,
-                                                     kinematic=True)
-        # Add items on each shelf.
-        for y in ProcGenKitchen.SHELF_YS:
-            # Add an item on the shelf.
-            if ProcGenKitchen.RNG.random() < ProcGenKitchen.PROBABILITY_ITEM_ON_SHELF:
-                i = ProcGenKitchen.RNG.uniform(ProcGenKitchen.SHELF_WIDTH * 0.25, ProcGenKitchen.SHELF_WIDTH * 0.75) + \
-                    position["x"]
-                j = ProcGenKitchen.RNG.uniform(ProcGenKitchen.SHELF_LENGTH * 0.25, ProcGenKitchen.SHELF_LENGTH * 0.75) + \
-                    position["z"]
-                if east_west:
-                    x = i
-                    z = j
-                else:
-                    x = j
-                    z = i
-                commands.extend(Controller.get_add_physics_object(model_name=ProcGenKitchen.SHELF_ITEM_MODEL_NAMES[
-                    ProcGenKitchen.RNG.randint(0, len(ProcGenKitchen.SHELF_ITEM_MODEL_NAMES))],
-                                                                  object_id=Controller.get_unique_id(),
-                                                                  library="models_core.json",
-                                                                  position={"x": float(x), "y": y, "z": float(z)},
-                                                                  rotation={"x": 0,
-                                                                            "y": float(ProcGenKitchen.RNG.uniform(-45, 45)),
-                                                                            "z": 0}))
-        return commands
 
     @staticmethod
     def table(position: Dict[str, float], east_west: bool) -> List[dict]:
@@ -152,20 +101,7 @@ class ProcGenKitchen(AddOn):
                               "axis": "yaw"}])
         return commands
 
-    @staticmethod
-    def get_chair_position(table_bottom: np.array, table_bound_point: np.array) -> np.array:
-        """
-        :param table_bottom: The bottom-center position of the table.
-        :param table_bound_point: The bounds position.
 
-        :return: A position for a chair around the table.
-        """
-
-        position_to_center = table_bound_point - table_bottom
-        position_to_center_normalized = position_to_center / np.linalg.norm(position_to_center)
-        chair_position = table_bound_point + (position_to_center_normalized * ProcGenKitchen.RNG.uniform(0.5, 0.125))
-        chair_position[1] = 0
-        return chair_position
 
 # Divide a shelf into a grid.
 cell_size = 0.12

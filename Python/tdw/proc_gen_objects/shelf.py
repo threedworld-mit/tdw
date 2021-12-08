@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Dict, Optional
 import numpy as np
 from tdw.controller import Controller
 from tdw.proc_gen_objects.proc_gen_object import ProcGenObject
@@ -65,8 +65,12 @@ class Shelf(ProcGenObject):
     """
     HALF_LENGTH: float = 0.3857702 * 0.5
 
-    def create(self, rng: np.random.RandomState,
-               shelf_item_type_overrides: Tuple[ShelfItemsType, ShelfItemsType, ShelfItemsType] = None) -> List[dict]:
+    def __init__(self, position: Dict[str, float], north_south: bool,
+                 shelf_item_type_overrides: Tuple[ShelfItemsType, ShelfItemsType, ShelfItemsType] = None):
+        super().__init__(position=position, north_south=north_south)
+        self._shelf_item_type_overrides: Optional[Tuple[ShelfItemsType, ShelfItemsType, ShelfItemsType]] = shelf_item_type_overrides
+
+    def create(self, rng: np.random.RandomState) -> List[dict]:
         # Create the shelf.
         commands = Controller.get_add_physics_object(model_name=rng.choice(Shelf.SHELF_MODEL_NAMES),
                                                      position=self.position,
@@ -75,8 +79,8 @@ class Shelf(ProcGenObject):
                                                      object_id=Controller.get_unique_id(),
                                                      kinematic=True)
         # Manually set the types items on the shelves.
-        if shelf_item_type_overrides is not None:
-            shelf_item_types = shelf_item_type_overrides
+        if self._shelf_item_type_overrides is not None:
+            shelf_item_types = self._shelf_item_type_overrides
         else:
             vs = [s for s in ShelfItemsType]
             shelf_item_types = (rng.choice(vs), rng.choice(vs), rng.choice(vs))

@@ -13,6 +13,7 @@ Includes collision data as well as the "primary" and "secondary" objects and the
 | --- | --- | --- |
 | `ROLL_ANGULAR_VELOCITY` | float | If the angular velocity is this or greater, the event is a roll, not a scrape. |
 | `IMPACT_AREA_RATIO` | float | If the area of the collision increases by at least this factor during a stay event, the collision is actually an impact. |
+| `IMPACT_AREA_NEW_COLLISION` | float | On a stay event, if the previous area is None and the current area is greater than this, the collision is actually an impact. |
 
 ***
 

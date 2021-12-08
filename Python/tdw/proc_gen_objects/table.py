@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple
+from typing import List, Dict
 import numpy as np
 from tdw.proc_gen_objects.proc_gen_object import ProcGenObject
 from tdw.controller import Controller
@@ -19,7 +19,16 @@ class Table(ProcGenObject):
     Chair model names.
     """
     CHAIR_MODEL_NAMES: List[str] = ['chair_billiani_doll', 'wood_chair', 'yellow_side_chair', 'chair_annabelle']
-    FOOD_MODEL_NAMES: List[str] = ["b03_banana_01_high", "b03_burger", "b03_pain_au_chocolat"] # TODO models_full.json
+    """:class_var
+    Food model names.
+    """
+    FOOD_MODEL_NAMES: List[str] = ["b03_banana_01_high", "b03_burger", "b03_pain_au_chocolat"]  # TODO models_full.json
+    """:class_var
+    Centerpiece model names.
+    """
+    CENTERPIECE_MODEL_NAMES: List[str] = ['round_bowl_small_walnut', 'vase_01', 'vase_02', 'vase_03', 'vase_05',
+                                          'vase_06', 'pot', 'jug01', 'jug02', 'jug03', 'jug04', 'jug05',
+                                          'skillet_closed', 'skillet_open_no_lid']
     """:class_var
     The height of the plate model.
     """
@@ -162,6 +171,17 @@ class Table(ProcGenObject):
                                                                                     rng.uniform(0, 360)),
                                                                                 "z": 0},
                                                                       library="models_full.json"))
+        # Add a centerpiece.
+        if rng.random() < 0.75:
+            commands.extend(Controller.get_add_physics_object(model_name=rng.choice(Table.CENTERPIECE_MODEL_NAMES),
+                                                              object_id=Controller.get_unique_id(),
+                                                              position={"x": self.position["x"] + float(rng.uniform(-0.1, 0.1)),
+                                                                        "y": float(table_top_arr[1]),
+                                                                        "z": self.position["z"] + float(rng.uniform(-0.1, 0.1))},
+                                                              rotation={"x": 0,
+                                                                        "y": float(rng.uniform(0, 360)),
+                                                                        "z": 0},
+                                                              library="models_core.json"))
         return commands
 
     @staticmethod
@@ -263,11 +283,3 @@ class Table(ProcGenObject):
         return np.array([plate_position[0] + q[1] + r[0] + rng.uniform(-0.03, 0.03),
                          plate_position[1],
                          plate_position[2] - q[0] + r[1] + rng.uniform(-0.03, 0.03)])
-
-from tdw.controller import Controller
-c = Controller()
-commands = [TDWUtils.create_empty_room(12, 12)]
-commands.extend(Table(position={"x": 0.5, "y": 0, "z": 2}, north_south=True, table_settings=True, kitchen_set=KitchenSet()).create(rng=np.random.RandomState()))
-c.communicate(commands)
-
-

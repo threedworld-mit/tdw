@@ -10,7 +10,6 @@ from tdw.output_data import OutputData, Images
 from tdw.controller import Controller
 
 c = Controller()
-c.start()
 
 # Initialize your scene here.
 
@@ -18,7 +17,7 @@ resp = c.Communicate(commands)
 
 # Iterate through all output data. 
 # Ignore the last element (frame count).
-for r in resp[:-1]:
+for i in range(len(resp) - 1):
 	# Parse the byte array here.
 ```
 

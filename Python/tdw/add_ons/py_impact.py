@@ -704,7 +704,7 @@ class PyImpact(CollisionManager):
             self._scrape_start_velocities[scrape_key] = mag
 
         # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
-        db2 = 40 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 2
+        db2 = 40 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 1
         db1 = 20 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 10
 
         # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
@@ -737,7 +737,7 @@ class PyImpact(CollisionManager):
             #   Convolve the force with the impulse response
             dsdx = (scrape_surface[1:] - scrape_surface[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
             d2sdx2 = (dsdx[1:] - dsdx[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
-            rough_ratio = np.std(scrape_surface) / (6 * 10 ** -4)
+            rough_ratio = (np.std(scrape_surface) / (9 * 10 ** -4)) ** 0.85
             r_gain = 20 * np.log10(rough_ratio)
             self.scrape_surface_data[scrape_material] = {"dsdx": dsdx,
                                                          "d2sdx2": d2sdx2,
@@ -815,7 +815,7 @@ class PyImpact(CollisionManager):
 
         noise_seg_conv = noise_seg_conv1.overlay(noise_seg_conv2)
         # Apply roughness gain.
-        noise_seg_conv = noise_seg_conv.apply_gain(self.scrape_surface_data[scrape_material]["r_gain"])
+        noise_seg_conv = noise_seg_conv.apply_gain(self.scrape_surface_data[scrape_material]["r_gain"] + 4)
 
         # Pad the end of master with 50 ms of silence, the start of the current segment with (n * 50ms) of silence, and overlay.
         padded_current = (PyImpact.SILENCE_50MS * scrape_event_count) + noise_seg_conv

@@ -756,12 +756,12 @@ class PyImpact(CollisionManager):
         vect2 = np.linspace(0, 1, 4410)
 
         if final_ind > len(self.scrape_surface_data[scrape_material]["surface"]) - 1:
-            inddd = list(range(self._scrape_previous_indices[scrape_key] - num_pts,
-                               self._scrape_previous_indices[scrape_key]))
-            inddd.reverse()
-            final_ind = self._scrape_previous_indices[scrape_key] - num_pts
-            slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][inddd])
-            curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][inddd])
+            self._scrape_previous_indices[scrape_key] = 0
+            final_ind = num_pts
+            slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][
+                                                self._scrape_previous_indices[scrape_key]:final_ind])
+            curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][
+                                                self._scrape_previous_indices[scrape_key]:final_ind])
         else:
             slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][
                                                 self._scrape_previous_indices[scrape_key]:final_ind])

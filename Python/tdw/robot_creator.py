@@ -95,7 +95,8 @@ class RobotCreator(AssetBundleCreatorBase):
                        "source": RobotCreator._get_repo_url(url=urdf_url),
                        "immovable": immovable,
                        "urls": asset_bundles,
-                       "targets": {}}
+                       "targets": {},
+                       "ik": {}}
         return RobotRecord(data=record_data)
 
     def clone_repo(self, url: str) -> Path:

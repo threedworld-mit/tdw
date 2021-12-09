@@ -12,6 +12,8 @@ Step n + 1 physics frames per communciate() call.
 
 - `initialized` If True, this module has been initialized.
 
+- `num_frames` Step this many physics frames + 1 per communicate() call.
+
 ***
 
 ## Functions

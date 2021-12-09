@@ -109,11 +109,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 ### 2.6.2 Physics (Flex)
 
 1. Flex
-2. Solid actors
-3. Soft actors
-4. Cloth actors
-5. Fluid actors
-6. Source actors
+2. Flex actors (solid, soft, and cloth)
+3. Flex actors (fluid and source)
 7. `FlexParticles` output data
 8. Apply forces to Flex objects
 
@@ -121,18 +118,18 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 ## 2.8 Audio
 
-1. Overview
-2. PyImpact (dynamic impact sounds)
-3. Audio perception
-4. Recording audio
-5. Resonance Audio
-
-High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge)
+1. [Overview](Documentation/lessons/audio/overview.md)
+2. [Initialize audio and play .wav files](Documentation/lessons/audio/initialize_audio.md)
+3. [Resonance Audio](Documentation/lessons/audio/resonance_audio.md)
+4. [`PyImpact` (dynamic impact sounds)](Documentation/lessons/audio/py_impact.md)
+6. [Recording audio](Documentation/lessons/audio/record_audio.md)
+6. [`PyImpact` (advanced API)](Documentation/lessons/audio/py_impact_advanced.md)
+7. [Audio perception](Documentation/lessons/audio/audio_perception.md)
 
 ## 2.9 Video Recording
 
-1. Controlling the framerate
-2. Image-only videos
+1. Overview
+2. Image videos
 3. Image+audio videos
 4. The `CinematicCamera` add-on
 
@@ -182,15 +179,20 @@ High-level API: [tdw_physics](https://github.com/alters-mit/multimodal_challenge
 2. State machines
 3. World state objects
 
-## 2.14 Misc. topics
+## 2.11 Non-physics objects
+
+1. Overview
+2. Position markers
+3. Paintings
+4. Non-physics humanoids
+
+## 2.12 Misc. topics
 
 1. C# source code
 2. Freezing your code
 3. BinaryManager
 4. xpra
 5. Creating composite objects
-6. Paintings
-7. Non-physics humanoids
 
 # 3. API Documentation
 

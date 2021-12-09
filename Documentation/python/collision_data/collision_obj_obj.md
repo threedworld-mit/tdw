@@ -12,9 +12,9 @@ A collision between two objects.
 
 - `normals` The contact point normals.
 
-- `relative_velocity` The relative velocity of the objects.
-
 - `state` The state of the collision.
+
+- `relative_velocity` The relative velocity of the objects.
 
 ***
 

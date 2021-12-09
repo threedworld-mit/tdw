@@ -73,7 +73,7 @@ Add an object to the scene with physics values (mass, friction coefficients, etc
 | scale_factor | The [scale factor](../api/command_api.md#scale_object). |
 | kinematic | If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state). |
 | gravity | If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state). |
-| default_physics_values | If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in Controller.DEFAULT_PHYSICS_VALUES`. |
+| default_physics_values | If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA`. |
 | mass | The mass of the object. Ignored if `default_physics_values == True`. |
 | dynamic_friction | The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
 | static_friction | The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
@@ -128,7 +128,7 @@ _Returns:_ An add_hdri_skybox command that the controller can then send.
 
 ***
 
-#### `get_add_humanoid(humanoid_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str ="") -> dict`
+#### `get_add_humanoid(humanoid_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict`
 
 _This is a static function._
 

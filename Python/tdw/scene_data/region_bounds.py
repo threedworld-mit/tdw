@@ -15,7 +15,7 @@ class RegionBounds:
         """:field
         The ID of the region.
         """
-        self.room_id: int = scene_regions.get_id(i)
+        self.region_id: int = scene_regions.get_id(i)
         """:field
         The center of the region.
         """

@@ -13,11 +13,14 @@ class StepPhysics(AddOn):
         """
 
         super().__init__()
-        self._commands: List[dict] = [{"$type": "step_physics",
-                                       "frames": num_frames}]
+        """:field
+        Step this many physics frames + 1 per communicate() call.
+        """
+        self.num_frames: int = num_frames
 
     def get_initialization_commands(self) -> List[dict]:
         return []
 
     def on_send(self, resp: List[bytes]) -> None:
-        self.commands.extend(self._commands)
+        self.commands.append({"$type": "step_physics",
+                              "frames": self.num_frames})

@@ -79,6 +79,7 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 2. [Move a camera](Documentation/lessons/camera/position.md)
 3. [Rotate a camera](Documentation/lessons/camera/rotation.md)
 4. [Follow an object](Documentation/lessons/camera/follow.md)
+4. [The `CinematicCamera` add-on](Documentation/lessons/camera/cinematic_camera.md)
 
 ## 2.5 Photorealism
 

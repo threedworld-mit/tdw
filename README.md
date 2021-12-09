@@ -130,8 +130,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 6. [`PyImpact` (advanced API)](Documentation/lessons/audio/py_impact_advanced.md)
 7. [Audio perception](Documentation/lessons/audio/audio_perception.md)
 
-High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_challenge)
-
 ## 2.9 Video Recording
 
 1. [Overview](Documentation/lessons/video/overview.md)

@@ -2,7 +2,9 @@
 
 # The `EmbodiedAvatar`
 
-The [`EmbodiedAvatar`](../../python/add_ons/embodied_avatar.md) is an agent add-on for controlling an avatar of type `"A_Simple_Body"`. These avatars are physically embodied and can be one of several simple shapes.
+*EmbodiedAvatars in TDW are handled via the PhysX physics engine. If you haven't done so already, we strongly recommend you read the [physics tutorial](../physx/physx.md).*
+
+The [`EmbodiedAvatar`](../../python/add_ons/embodied_avatar.md) is an [agent](../agents/overview.md) add-on for controlling an avatar of type `"A_Simple_Body"`. These avatars are physically embodied and can be one of several simple shapes. These can be useful for prototyping agent simulations.
 
 ## Add an embodied avatar to the scene
 

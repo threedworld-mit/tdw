@@ -233,7 +233,7 @@ if __name__ == "__main__":
 
 ## 4. Load data from .json files
 
-For more complex seasons, it can be inefficient to store data within a controller. In this cases, we find it useful to load data from a saved .json file.
+For more complex scenes, it can be inefficient to store data within a controller. In this cases, we find it useful to load data from a saved .json file.
 
 In this example, we'll load trial data from a `trials.json` file:
 

@@ -38,6 +38,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `play_audio_data`<br>`play_point_source_data`          | Parameter ID now refers to a unique ID for the audio source (not an object ID).<br>Added parameter `position`. |
 | `set_reverb_space_expert`<br>`set_reverb_space_simple` | Renamed parameter `env_id` to `region_id`                    |
 | `play_humanoid_animation`                              | Added optional parameter `framerate`                         |
+| `send_model_report`                                    | Added parameter `flex`. If True, this model is expected to be Flex-compatible. |
 
 #### Renamed Commands
 
@@ -98,6 +99,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - Fixed: Avatar bodies are centered on the avatar's pivot as opposed to halfway above it (i.e. making the pivot of the avatar the bottom-center), thus causing the avatar to "pop" out of the ground when it is first created.
   - Fixed: The cube avatar requires much more torque to turn. Its box collider has been replaced with a cube collider.
 - Fixed: Warnings when repeatedly sending `send_model_report` without first unloading the scene.
+- Updated Unity Engine from 2020.2.7f1 to 2020.3.24f1.
 
 ### `tdw` module
 
@@ -121,7 +123,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `StepPhysics` Step n+1 physics frames per communicate() call.
   - `ThirdPersonCamera` Add a third-person camera to the scene.
 - Removed: `TransformInitData`, `RigidbodyInitData`, and `AudioInitData`.
-
 - Added audio classes: 
   - `CollisionAudioEvent` Data for a collision audio event. 
   - `CollisionAudioInfo` Class containing information about collisions required by PyImpact to determine the volume of impact sounds. 
@@ -131,7 +132,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `ScrapeSubObject` Data for a sub-object of a model being used as a scrape surface. 
   - Moved audio classes `AudioMaterial`, `Base64Sound` and `Modes` from `tdw.py_impact` to `tdw.physics_audio.audio_material`, `tdw.physics_audio.base64_sound`, and `tdw.physics_audio.modes` 
   - Renamed `ObjectInfo` to `ObjectAudioStatic` and moved it from `tdw.py_impact` to `tdw.physics_audio.object_audio_static` 
-
 - Added backend object data classes:
   - `Transform` Transform data (position, forward, rotation).
   - `Rigidbody` Dynamic rigidbody data (velocity, angular velocity, sleeping).
@@ -160,6 +160,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `MissingMaterials`
 - Moved `tdw.flex.fluid_types.FluidType` to `tdw.flex_data.fluid_type.FluidType`
 - Removed `tdw.flex.fluid_types.FluidTypes` Default fluid type data is now stored in a dictionary: `tdw.flex_data.fluid_type.FLUID_TYPES`
+- Updated `asset_bundle_creator`. To upgrade: Delete `~/asset_bundle_creator` (assuming that it exists). It will be re-created next time you create a model asset bundle.
+- Updated `robot_creator`. To upgrade: Delete `~/robot_creator` (assuming that it exists). It will be re-created next time you create a robot asset bundle.
 
 #### `Controller`
 
@@ -204,6 +206,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 - Added `volume` field to each model record. 
 - Copied models from models_full.json to models_core.json: bench, toy_monkey_medium, wood_board, metal_lab_shelf, skateboard_1, tray_02, b05_table_new, enzo_industrial_loft_pine_metal_round_dining_table,quatre_dining_table 
+- Fixed: Some models that have ``flex` set to True in their records are not Flex-compatible. These models now have `flex` set to False.
 
 ### Use Cases
 

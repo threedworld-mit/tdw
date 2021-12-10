@@ -1,11 +1,11 @@
 from typing import List, Tuple, Dict, Optional
 import numpy as np
 from tdw.controller import Controller
-from tdw.proc_gen_objects.proc_gen_object import ProcGenObject
-from tdw.proc_gen_objects.shelf_items_type import ShelfItemsType
+from tdw.proc_gen_object_recipes.proc_gen_object_recipe import ProcGenObjectRecipe
+from tdw.proc_gen_object_recipes.shelf_items_type import ShelfItemsType
 
 
-class Shelf(ProcGenObject):
+class Shelf(ProcGenObjectRecipe):
     """
     Add a shelf with objects on it.
     """
@@ -65,39 +65,47 @@ class Shelf(ProcGenObject):
     """
     HALF_LENGTH: float = 0.3857702 * 0.5
 
-    def __init__(self, position: Dict[str, float], north_south: bool,
+    def __init__(self, position: Dict[str, float], north_south: bool, rng: np.random.RandomState = None,
                  shelf_item_type_overrides: Tuple[ShelfItemsType, ShelfItemsType, ShelfItemsType] = None):
-        super().__init__(position=position, north_south=north_south)
+        """
+        :param position: The position of the object.
+        :param north_south: If True, the object is aligned north-south (0 degree rotation). If False, the object is aligned east-west (90 degree rotation).
+        :param rng: The random number generator. If None, a generator is created.
+        :param shelf_item_type_overrides: If not None, a tuple of (lower, middle, upper) [shelf types](shelf_items_type.md). If None, random shelf types are chosen per shelf.
+        """
+
+        super().__init__(position=position, north_south=north_south, rng=rng)
         self._shelf_item_type_overrides: Optional[Tuple[ShelfItemsType, ShelfItemsType, ShelfItemsType]] = shelf_item_type_overrides
 
-    def create(self, rng: np.random.RandomState) -> List[dict]:
+    def create(self) -> List[dict]:
         # Create the shelf.
-        commands = Controller.get_add_physics_object(model_name=rng.choice(Shelf.SHELF_MODEL_NAMES),
+        self.root_object_id = Controller.get_unique_id()
+        commands = Controller.get_add_physics_object(model_name=self._rng.choice(Shelf.SHELF_MODEL_NAMES),
                                                      position=self.position,
                                                      rotation={"x": 0, "y": 90 if self.north_south else 0, "z": 0},
                                                      library="models_core.json",
-                                                     object_id=Controller.get_unique_id(),
+                                                     object_id=self.root_object_id,
                                                      kinematic=True)
         # Manually set the types items on the shelves.
         if self._shelf_item_type_overrides is not None:
             shelf_item_types = self._shelf_item_type_overrides
         else:
             vs = [s for s in ShelfItemsType]
-            shelf_item_types = (rng.choice(vs), rng.choice(vs), rng.choice(vs))
+            shelf_item_types = (self._rng.choice(vs), self._rng.choice(vs), self._rng.choice(vs))
         for shelf_y, shelf_item_type in zip(Shelf.SHELF_YS, shelf_item_types):
             # An empty shelf.
             if shelf_item_type == ShelfItemsType.none:
                 continue
             # Shelf with random items.
             elif shelf_item_type == ShelfItemsType.random:
-                commands.extend(self.random_items(y=shelf_y, rng=rng))
+                commands.extend(self._random_items(y=shelf_y, rng=self._rng))
             elif shelf_item_type == ShelfItemsType.baking_sheets:
-                commands.extend(self.baking_sheets(y=shelf_y, rng=rng))
+                commands.extend(self._baking_sheets(y=shelf_y, rng=self._rng))
             elif shelf_item_type == ShelfItemsType.shoeboxes:
-                commands.extend(self.shoeboxes(y=shelf_y, rng=rng))
+                commands.extend(self._shoeboxes(y=shelf_y, rng=self._rng))
         return commands
 
-    def random_items(self, y: float, rng: np.random.RandomState) -> List[dict]:
+    def _random_items(self, y: float, rng: np.random.RandomState) -> List[dict]:
         """
         :param y: The y value of the shelf.
         :param rng: The random number generator.
@@ -138,7 +146,7 @@ class Shelf(ProcGenObject):
                                                               object_id=Controller.get_unique_id()))
         return commands
 
-    def baking_sheets(self, y: float, rng: np.random.RandomState) -> List[dict]:
+    def _baking_sheets(self, y: float, rng: np.random.RandomState) -> List[dict]:
         """
         :param y: The y value of the shelf.
         :param rng: The random number generator.
@@ -171,7 +179,7 @@ class Shelf(ProcGenObject):
             sheet_y += np.linalg.norm(sheet_record.bounds["top"]["y"] - sheet_record.bounds["bottom"]["y"])
         return commands
 
-    def shoeboxes(self, y: float, rng: np.random.RandomState) -> List[dict]:
+    def _shoeboxes(self, y: float, rng: np.random.RandomState) -> List[dict]:
         """
         :param y: The y value of the shelf.
         :param rng: The random number generator.

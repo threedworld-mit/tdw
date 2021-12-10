@@ -1,12 +1,12 @@
 from typing import List, Dict
 import numpy as np
-from tdw.proc_gen_objects.proc_gen_object import ProcGenObject
+from tdw.proc_gen_object_recipes.proc_gen_object_recipe import ProcGenObjectRecipe
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.proc_gen_objects.kitchen_set import KitchenSet
+from tdw.proc_gen_object_recipes.kitchen_set import KitchenSet
 
 
-class Table(ProcGenObject):
+class Table(ProcGenObjectRecipe):
     """
     A table with chairs and, optionally, table settings.
     """
@@ -22,7 +22,7 @@ class Table(ProcGenObject):
     """:class_var
     Food model names.
     """
-    FOOD_MODEL_NAMES: List[str] = ["b03_banana_01_high", "b03_burger", "b03_pain_au_chocolat"]  # TODO models_full.json
+    FOOD_MODEL_NAMES: List[str] = ["b03_banana_01_high", "b03_burger", "b03_pain_au_chocolat"]
     """:class_var
     Centerpiece model names.
     """
@@ -34,18 +34,30 @@ class Table(ProcGenObject):
     """
     PLATE_HEIGHT: float = 0.02264883
 
-    def __init__(self, position: Dict[str, float], north_south: bool, table_settings: bool,
-                 kitchen_set: KitchenSet = None):
-        super().__init__(position=position, north_south=north_south)
-        self._table_settings: bool = table_settings
-        self._kitchen_set: KitchenSet = kitchen_set
+    def __init__(self, position: Dict[str, float], north_south: bool, rng: np.random.RandomState = None,
+                 table_settings: bool = True, kitchen_set: KitchenSet = None):
+        """
+        :param position: The position of the object.
+        :param north_south: If True, the object is aligned north-south (0 degree rotation). If False, the object is aligned east-west (90 degree rotation).
+        :param rng: The random number generator. If None, a generator is created.
+        :param table_settings: If True, add table settings (plates, forks, knives, etc.).
+        :param kitchen_set: The [`KitchenSet`](kitchen_set.md). If None, a kitchen set is randomly generated. Ignored if `table_settings == False`.
+        """
 
-    def create(self, rng: np.random.RandomState) -> List[dict]:
+        super().__init__(position=position, north_south=north_south, rng=rng)
+        self._table_settings: bool = table_settings
+        if kitchen_set is None:
+            self._kitchen_set: KitchenSet = KitchenSet()
+        else:
+            self._kitchen_set = kitchen_set
+
+    def create(self) -> List[dict]:
         # Get a random table model name.
-        table_name = Table.TABLE_MODEL_NAMES[rng.randint(0, len(Table.TABLE_MODEL_NAMES))]
+        table_name = Table.TABLE_MODEL_NAMES[self._rng.randint(0, len(Table.TABLE_MODEL_NAMES))]
         # Add the table.
+        self.root_object_id = Controller.get_unique_id()
         commands = Controller.get_add_physics_object(model_name=table_name,
-                                                     object_id=Controller.get_unique_id(),
+                                                     object_id=self.root_object_id,
                                                      library="models_core.json",
                                                      position=self.position,
                                                      rotation={"x": 0, "y": 0 if self.north_south else 90, "z": 0},
@@ -58,7 +70,7 @@ class Table(ProcGenObject):
         table_bottom_arr = TDWUtils.vector3_to_array(table_bottom)
         table_top_arr = TDWUtils.vector3_to_array(table_record.bounds["top"])
         # Get a random chair model name.
-        chair_name = Table.CHAIR_MODEL_NAMES[rng.randint(0, len(Table.CHAIR_MODEL_NAMES))]
+        chair_name = Table.CHAIR_MODEL_NAMES[self._rng.randint(0, len(Table.CHAIR_MODEL_NAMES))]
         # Add chairs around the table.
         for bound in ["left", "right", "front", "back"]:
             table_bound_point = np.array([table_record.bounds[bound]["x"] + self.position["x"],
@@ -66,7 +78,7 @@ class Table(ProcGenObject):
                                           table_record.bounds[bound]["z"] + self.position["z"]])
             chair_position = Table._get_chair_position(table_bottom=table_bottom_arr,
                                                        table_bound_point=table_bound_point,
-                                                       rng=rng)
+                                                       rng=self._rng)
             object_id = Controller.get_unique_id()
             # Add the chair.
             commands.extend(Controller.get_add_physics_object(model_name=chair_name,
@@ -78,7 +90,7 @@ class Table(ProcGenObject):
                               "position": table_bottom,
                               "id": object_id},
                              {"$type": "rotate_object_by",
-                              "angle": float(rng.uniform(-20, 20)),
+                              "angle": float(self._rng.uniform(-20, 20)),
                               "id": object_id,
                               "axis": "yaw"}])
         # Add table settings.
@@ -90,18 +102,18 @@ class Table(ProcGenObject):
                 # Get the position of the plate. Use this as a reference for all other objects.
                 plate_position = self._get_plate_position(table_top=table_top_arr,
                                                           table_bound_point=table_bound_point,
-                                                          rng=rng)
+                                                          rng=self._rng)
                 # Add the plate.
                 commands.extend(Controller.get_add_physics_object(model_name=KitchenSet.PLATE,
                                                                   position=TDWUtils.array_to_vector3(plate_position),
                                                                   object_id=Controller.get_unique_id(),
-                                                                  library="models_full.json"))
+                                                                  library="models_core.json"))
                 # Get the direction from the plate to the center.
                 v = np.array([self.position["x"], self.position["z"]]) - np.array([plate_position[0], plate_position[2]])
                 v / np.linalg.norm(v)
-                fork_position = self._get_fork_position(plate_position=plate_position, v=v, rng=rng)
-                knife_position = self._get_knife_position(plate_position=plate_position, v=v, rng=rng)
-                spoon_position = self._get_spoon_position(plate_position=plate_position, v=v, rng=rng)
+                fork_position = self._get_fork_position(plate_position=plate_position, v=v, rng=self._rng)
+                knife_position = self._get_knife_position(plate_position=plate_position, v=v, rng=self._rng)
+                spoon_position = self._get_spoon_position(plate_position=plate_position, v=v, rng=self._rng)
                 # Get the rotation of the fork, knife, and spoon.
                 if bound == "left":
                     rotation = 90
@@ -116,27 +128,27 @@ class Table(ProcGenObject):
                                                                   object_id=Controller.get_unique_id(),
                                                                   position=TDWUtils.array_to_vector3(fork_position),
                                                                   rotation={"x": 0,
-                                                                            "y": rotation + float(rng.uniform(-15, 15)),
+                                                                            "y": rotation + float(self._rng.uniform(-15, 15)),
                                                                             "z": 0},
-                                                                  library="models_full.json"))
+                                                                  library="models_core.json"))
                 # Add a knife.
                 commands.extend(Controller.get_add_physics_object(model_name=self._kitchen_set.knife,
                                                                   object_id=Controller.get_unique_id(),
                                                                   position=TDWUtils.array_to_vector3(knife_position),
                                                                   rotation={"x": 0,
-                                                                            "y": rotation + float(rng.uniform(-15, 15)),
+                                                                            "y": rotation + float(self._rng.uniform(-15, 15)),
                                                                             "z": 0},
-                                                                  library="models_full.json"))
+                                                                  library="models_core.json"))
                 # Add a spoon.
                 commands.extend(Controller.get_add_physics_object(model_name=self._kitchen_set.spoon,
                                                                   object_id=Controller.get_unique_id(),
                                                                   position=TDWUtils.array_to_vector3(spoon_position),
                                                                   rotation={"x": 0,
-                                                                            "y": rotation + float(rng.uniform(-15, 15)),
+                                                                            "y": rotation + float(self._rng.uniform(-15, 15)),
                                                                             "z": 0},
-                                                                  library="models_full.json"))
-                cup_position = self._get_cup_position(plate_position=plate_position, v=v, rng=rng)
-                cup_roll = rng.random()
+                                                                  library="models_core.json"))
+                cup_position = self._get_cup_position(plate_position=plate_position, v=v, rng=self._rng)
+                cup_roll = self._rng.random()
                 # Add a mug.
                 if cup_roll < 0.33:
                     commands.extend(Controller.get_add_physics_object(model_name=self._kitchen_set.MUG,
@@ -144,9 +156,9 @@ class Table(ProcGenObject):
                                                                       position=TDWUtils.array_to_vector3(cup_position),
                                                                       rotation={"x": 0,
                                                                                 "y": rotation + float(
-                                                                                    rng.uniform(0, 360)),
+                                                                                    self._rng.uniform(0, 360)),
                                                                                 "z": 0},
-                                                                      library="models_full.json"))
+                                                                      library="models_core.json"))
                 # Add a wine glass.
                 elif cup_roll < 0.66:
                     commands.extend(Controller.get_add_physics_object(model_name=self._kitchen_set.wine_glass,
@@ -154,32 +166,32 @@ class Table(ProcGenObject):
                                                                       position=TDWUtils.array_to_vector3(cup_position),
                                                                       rotation={"x": 0,
                                                                                 "y": rotation + float(
-                                                                                    rng.uniform(0, 360)),
+                                                                                    self._rng.uniform(0, 360)),
                                                                                 "z": 0},
-                                                                      library="models_full.json"))
+                                                                      library="models_core.json"))
                 # Add food.
-                if rng.random() < 0.66:
-                    food_model_name: str = rng.choice(Table.FOOD_MODEL_NAMES)
-                    food_position = [plate_position[0] + rng.uniform(-0.05, 0.05),
+                if self._rng.random() < 0.66:
+                    food_model_name: str = self._rng.choice(Table.FOOD_MODEL_NAMES)
+                    food_position = [plate_position[0] + self._rng.uniform(-0.05, 0.05),
                                      plate_position[1] + Table.PLATE_HEIGHT,
-                                     plate_position[2] + rng.uniform(-0.05, 0.05)]
+                                     plate_position[2] + self._rng.uniform(-0.05, 0.05)]
                     commands.extend(Controller.get_add_physics_object(model_name=food_model_name,
                                                                       object_id=Controller.get_unique_id(),
                                                                       position=TDWUtils.array_to_vector3(food_position),
                                                                       rotation={"x": 0,
                                                                                 "y": rotation + float(
-                                                                                    rng.uniform(0, 360)),
+                                                                                    self._rng.uniform(0, 360)),
                                                                                 "z": 0},
-                                                                      library="models_full.json"))
+                                                                      library="models_core.json"))
         # Add a centerpiece.
-        if rng.random() < 0.75:
-            commands.extend(Controller.get_add_physics_object(model_name=rng.choice(Table.CENTERPIECE_MODEL_NAMES),
+        if self._rng.random() < 0.75:
+            commands.extend(Controller.get_add_physics_object(model_name=self._rng.choice(Table.CENTERPIECE_MODEL_NAMES),
                                                               object_id=Controller.get_unique_id(),
-                                                              position={"x": self.position["x"] + float(rng.uniform(-0.1, 0.1)),
+                                                              position={"x": self.position["x"] + float(self._rng.uniform(-0.1, 0.1)),
                                                                         "y": float(table_top_arr[1]),
-                                                                        "z": self.position["z"] + float(rng.uniform(-0.1, 0.1))},
+                                                                        "z": self.position["z"] + float(self._rng.uniform(-0.1, 0.1))},
                                                               rotation={"x": 0,
-                                                                        "y": float(rng.uniform(0, 360)),
+                                                                        "y": float(self._rng.uniform(0, 360)),
                                                                         "z": 0},
                                                               library="models_core.json"))
         return commands

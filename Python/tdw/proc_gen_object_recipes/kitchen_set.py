@@ -8,16 +8,31 @@ class KitchenSet:
     """
 
     """:class_var
-    The plate model name.
+    Plate model name.
     """
-    PLATE: str = "plate06" # TODO models_full.json
-    KNIVES: List[str] = ["vk0007_steak_knife", "vk0014_dinner_knife_subd2", "vk0055_tableknife"] # TODO models_full.json
+    PLATE: str = "plate06"
+    """:class_var
+    Knife model names.
+    """
+    KNIVES: List[str] = ["vk0007_steak_knife", "vk0014_dinner_knife_subd2", "vk0055_tableknife"]
+    """:class_var
+    Fork model names.
+    """
     FORKS: List[str] = ["pcylinder222", "vk0010_dinner_fork_subd0", "vk0011_dessert_fork_subd0",
-                        "vk0056_tablefork", "vk0067_fishfork"] # TODO models_full.json
+                        "vk0056_tablefork", "vk0067_fishfork"]
+    """:class_var
+    Spoon model names.
+    """
     SPOONS: List[str] = ["vk0002_teaspoon", "vk0054_teaspoon", "vk0058_tablespoon",
-                         "vk0060_dessertspoon", "vk0078_fruitspoon", "vk0080_soupspoon"]  # TODO models_full.json
-    WINE_GLASSES: List[str] = ["b04_cantate_crystal_wine_glass", "b04_wineglass", "glass1", "glass2", "glass3"] # TODO models_full.json
-    MUG: str = "mug" # TODO models_full.json
+                         "vk0060_dessertspoon", "vk0078_fruitspoon", "vk0080_soupspoon"]
+    """:class_var
+    Wine glass model names.
+    """
+    WINE_GLASSES: List[str] = ["b04_cantate_crystal_wine_glass", "b04_wineglass", "glass1", "glass2", "glass3"]
+    """:class_var
+    Mug model name.
+    """
+    MUG: str = "mug"
 
     def __init__(self, rng: np.random.RandomState = None):
         """

@@ -6,6 +6,14 @@ Download a .urdf or .xacro file and convert it into an asset bundle that is usab
 
 ***
 
+## Class Variables
+
+| Variable | Type | Description |
+| --- | --- | --- |
+| `UNITY_VERSION` | str | Use this version of Unity Editor to launch the asset bundle creator. |
+
+***
+
 ## Functions
 
 #### \_\_init\_\_

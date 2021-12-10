@@ -99,6 +99,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - Fixed: Avatar bodies are centered on the avatar's pivot as opposed to halfway above it (i.e. making the pivot of the avatar the bottom-center), thus causing the avatar to "pop" out of the ground when it is first created.
   - Fixed: The cube avatar requires much more torque to turn. Its box collider has been replaced with a cube collider.
 - Fixed: Warnings when repeatedly sending `send_model_report` without first unloading the scene.
+- Fixed: Asset bundle commands (`add_object`, `add_material`, etc.) log an error when the connection times out, causing the build to quit. Now, they log a warning, allowing the build to continue.
+- Fixed: Asset bundle commands (`add_object`, `add_material`, etc.) log an error on a status code 429 (too many requests). Now, they try to wait for approximately 60 seconds before retrying the connection.
 - Updated Unity Engine from 2020.2.7f1 to 2020.3.24f1.
 
 ### `tdw` module

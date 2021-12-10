@@ -12,7 +12,10 @@ class AssetBundleCreatorBase(ABC):
     Base class for creating asset bundles.
     """
 
-    UNITY_VERSION = "2020.3"
+    """:class_var
+    Use this version of Unity Editor to launch the asset bundle creator.
+    """
+    UNITY_VERSION: str = "2020.3"
 
     def __init__(self, quiet: bool = False, display: str = ":0"):
         """

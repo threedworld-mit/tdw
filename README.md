@@ -53,7 +53,7 @@
 9. [`Overlap` output data](Documentation/lessons/objects_and_scenes/overlap.md)
 10. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
 
-High-level API: [Floorplan](Documentation/python/floorplan.md)
+High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 
 ## 2.2 3D Model Libraries
 
@@ -79,6 +79,7 @@ High-level API: [Floorplan](Documentation/python/floorplan.md)
 2. [Move a camera](Documentation/lessons/camera/position.md)
 3. [Rotate a camera](Documentation/lessons/camera/rotation.md)
 4. [Follow an object](Documentation/lessons/camera/follow.md)
+4. [The `CinematicCamera` add-on](Documentation/lessons/camera/cinematic_camera.md)
 
 ## 2.5 Photorealism
 

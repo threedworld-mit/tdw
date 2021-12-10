@@ -1,6 +1,6 @@
 # Drive
 
-`from robot_data.drive import Drive`
+`from tdw.robot_data.drive import Drive`
 
 Static data for a joint drive.
 

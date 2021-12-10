@@ -1,6 +1,6 @@
 # CollisionObjEnv
 
-`from collision_data.collision_obj_env import CollisionObjEnv`
+`from tdw.collision_data.collision_obj_env import CollisionObjEnv`
 
 A collision between an object and the environment.
 

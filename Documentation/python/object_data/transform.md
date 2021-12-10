@@ -1,6 +1,6 @@
 # Transform
 
-`from object_data.transform import Transform`
+`from tdw.object_data.transform import Transform`
 
 Positional data for an object, robot body part, etc.
 

@@ -1,6 +1,6 @@
 # ScrapeMaterial
 
-`from physics_audio.scrape_material import ScrapeMaterial`
+`from tdw.physics_audio.scrape_material import ScrapeMaterial`
 
 An audio material used for a scrape event.
 

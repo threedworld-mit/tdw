@@ -1,6 +1,6 @@
 # ScrapeModel
 
-`from physics_audio.scrape_model import ScrapeModel`
+`from tdw.physics_audio.scrape_model import ScrapeModel`
 
 Data for a 3D model being used as a PyImpact scrape surface.
 

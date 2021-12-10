@@ -1,6 +1,6 @@
 # CollisionAudioEvent
 
-`from physics_audio.collision_audio_event import CollisionAudioEvent`
+`from tdw.physics_audio.collision_audio_event import CollisionAudioEvent`
 
 Data for a collision audio event.
 Includes collision data as well as the "primary" and "secondary" objects and the type of audio event.

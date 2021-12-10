@@ -1,10 +1,18 @@
 from setuptools import setup, find_packages
 from pathlib import Path
+import re
 
 __version__ = "1.9.0.1"
 readme_path = Path('../README.md')
 if readme_path.exists():
     long_description = readme_path.read_text(encoding='utf-8')
+    # Replace relative markdown links with absolute https links.
+    long_description = re.sub(r'\[(.*?)\]\((Documentation/(.*?))\)',
+                              r'[\1](https://github.com/threedworld-mit/tdw/blob/master/\2)',
+                              long_description,
+                              flags=re.MULTILINE)
+    long_description = long_description.replace("![](splash.jpg)",
+                                                '<img src="https://raw.githubusercontent.com/threedworld-mit/tdw/master/splash.jpg">')
 else:
     long_description = "See: https://github.com/threedworld-mit/tdw"
 

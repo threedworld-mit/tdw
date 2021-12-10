@@ -206,7 +206,8 @@ In order to decide which process to use, PyImpact must first determine the "even
 - If the collision state is `"exit"` or the velocity is `0`, the event is `none`.
 - If the collision state is `"enter"`, the event is `impact`.
 - If the collision state is `"stay"`:
-  - If the contact area changed by more than 150% since the previous frame, the event is `impact`.
+  - If the contact area changed by more than 500% since the previous frame, the event is `impact`.
+  - If there was no previous contact area and the contact area is greater than 0.00001, the event is `impact`.
   - Otherwise:
     - If the angular velocity is > 0.5 m/s, the event is `roll`.
     - Otherwise: the event is `scrape`.

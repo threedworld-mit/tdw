@@ -1,6 +1,6 @@
 # ModelReport
 
-`from model_tests.model_report import ModelReport`
+`from tdw.add_ons.model_verifier.model_tests.model_report import ModelReport`
 
 Send `send_model_report` and get a basic report on the model.
 

@@ -1,6 +1,6 @@
 # Modes
 
-`from physics_audio.modes import Modes`
+`from tdw.physics_audio.modes import Modes`
 
 Resonant mode properties: Frequencies, powers, and times.
 

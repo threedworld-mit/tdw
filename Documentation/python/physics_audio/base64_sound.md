@@ -1,6 +1,6 @@
 # Base64Sound
 
-`from physics_audio.base64_sound import Base64Sound`
+`from tdw.physics_audio.base64_sound import Base64Sound`
 
 A sound encoded as a base64 string.
 

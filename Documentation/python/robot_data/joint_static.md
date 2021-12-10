@@ -1,6 +1,6 @@
 # JointStatic
 
-`from robot_data.joint_static import JointStatic`
+`from tdw.robot_data.joint_static import JointStatic`
 
 Static robot joint data.
 

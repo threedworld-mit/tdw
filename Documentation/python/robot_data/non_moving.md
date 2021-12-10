@@ -1,6 +1,6 @@
 # NonMoving
 
-`from robot_data.non_moving import NonMoving`
+`from tdw.robot_data.non_moving import NonMoving`
 
 Static data for a non-moving object attached to a robot (i.e. a sub-object mesh of a limb).
 

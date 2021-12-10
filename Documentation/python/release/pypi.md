@@ -1,6 +1,6 @@
 # PyPi
 
-`from release.pypi import PyPi`
+`from tdw.release.pypi import PyPi`
 
 Compare the version of the installed tdw Python module to the PyPi version.
 

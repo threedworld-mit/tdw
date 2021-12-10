@@ -1,6 +1,6 @@
 # RobotDynamic
 
-`from robot_data.robot_dynamic import RobotDynamic`
+`from tdw.robot_data.robot_dynamic import RobotDynamic`
 
 Dynamic data for a robot that can change per frame (such as the position of the robot, the angle of a joint, etc.)
 

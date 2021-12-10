@@ -1,6 +1,6 @@
 # ObjectAudioStatic
 
-`from physics_audio.object_audio_static import ObjectAudioStatic`
+`from tdw.physics_audio.object_audio_static import ObjectAudioStatic`
 
 Impact sound data for an object in a TDW model library.
 The audio values here are just recommendations; you can apply different values if you want.

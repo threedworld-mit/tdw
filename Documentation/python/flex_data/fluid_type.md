@@ -1,6 +1,6 @@
 # FluidType
 
-`from flex_data.fluid_type import FluidType`
+`from tdw.flex_data.fluid_type import FluidType`
 
 Metadata for a single fluid type. Specifies values for Flex fluid containers.
 

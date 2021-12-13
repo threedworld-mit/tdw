@@ -79,12 +79,11 @@ class Shelf(ProcGenObjectRecipe):
 
     def create(self) -> List[dict]:
         # Create the shelf.
-        self.root_object_id = Controller.get_unique_id()
         commands = Controller.get_add_physics_object(model_name=self._rng.choice(Shelf.SHELF_MODEL_NAMES),
                                                      position=self.position,
                                                      rotation={"x": 0, "y": 90 if self.north_south else 0, "z": 0},
                                                      library="models_core.json",
-                                                     object_id=self.root_object_id,
+                                                     object_id= Controller.get_unique_id(),
                                                      kinematic=True)
         # Manually set the types items on the shelves.
         if self._shelf_item_type_overrides is not None:

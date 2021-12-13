@@ -35,10 +35,6 @@ class ProcGenObjectRecipe(ABC):
             self._rng: np.random.RandomState = np.random.RandomState()
         else:
             self._rng = rng
-        """:field
-        The ID of the "root" object. This is set when `create()` is called.
-        """
-        self.root_object_id: int = -1
 
     @abstractmethod
     def create(self) -> List[dict]:

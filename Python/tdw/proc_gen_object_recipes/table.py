@@ -55,9 +55,8 @@ class Table(ProcGenObjectRecipe):
         # Get a random table model name.
         table_name = Table.TABLE_MODEL_NAMES[self._rng.randint(0, len(Table.TABLE_MODEL_NAMES))]
         # Add the table.
-        self.root_object_id = Controller.get_unique_id()
         commands = Controller.get_add_physics_object(model_name=table_name,
-                                                     object_id=self.root_object_id,
+                                                     object_id= Controller.get_unique_id(),
                                                      library="models_core.json",
                                                      position=self.position,
                                                      rotation={"x": 0, "y": 0 if self.north_south else 90, "z": 0},

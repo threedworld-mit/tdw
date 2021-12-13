@@ -10,7 +10,6 @@ from tdw.output_data import OutputData, Images
 from tdw.controller import Controller
 
 c = Controller()
-c.start()
 
 # Initialize your scene here.
 
@@ -18,7 +17,7 @@ resp = c.Communicate(commands)
 
 # Iterate through all output data. 
 # Ignore the last element (frame count).
-for r in resp[:-1]:
+for i in range(len(resp) - 1):
 	# Parse the byte array here.
 ```
 
@@ -60,7 +59,6 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [AvatarStickyMittenSegmentationColors](#AvatarStickyMittenSegmentationColors) | Color segmentation data for a Sticky Mitten Avatar. | `smsc` |
 | [Bounds](#Bounds) | Rotated bounds data. | `boun` |
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
-| [CameraMotionComplete](#CameraMotionComplete) | Announce that a camera motion has been completed. | `camm` |
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [CompositeObjects](#CompositeObjects) | Data for all composite objects currently in the scene. | `comp` |
@@ -285,19 +283,6 @@ An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11,
 | `get_projection_matrix()` | The projection matrix. | `np.array` |
 | `get_camera_matrix()` | The camera matrix. | `np.array` |
 
-## CameraMotionComplete
-
-`c = CameraMotionComplete(byte_array)`
-
-**Identifier:** `camm`
-
-Announce that a camera motion has been completed.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_avatar_id()` | The ID of the avatar. | `str` |
-| `get_motion()` | The type of motion that just ended. | `str` |
-
 ## Categories
 
 `c = Categories(byte_array)`
@@ -456,6 +441,7 @@ The names of each ImageSensor component attached to an avatar, and whether they 
 | `get_sensor_on(index)` | The on of the sensor. | `bool` |
 | `get_sensor_rotation(index)` | The rotation of the sensor. | `Tuple[float, float, float, float]` |
 | `get_sensor_forward(index)` | The forward of the sensor. | `Tuple[float, float, float]` |
+| `get_sensor_field_of_view(index)` | The view of the sensor field of. | `float` |
 
 ## IsOnNavMesh
 

@@ -2,7 +2,7 @@
 
 # Overview
 
-In most of the tutorials and documentation for TDW, as well as most example controllers and high-level APIs, the controller only uses the *default* [models](../core_concepts/objects.md) from the "core" [model library](../../librarian/model_librarian.md). These are free models that anyone can use in TDW.
+In most of the tutorials and documentation for TDW, as well as most example controllers and high-level APIs, the controller only uses the *default* [models](../core_concepts/objects.md) from the "core" [model library](../../python/librarian/model_librarian.md). These are free models that anyone can use in TDW.
 
 This:
 
@@ -63,4 +63,4 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 
 Python API:
 
-- [`ModelLibrarian`](../../librarian/model_librarian.md)
+- [`ModelLibrarian`](../../python/librarian/model_librarian.md)

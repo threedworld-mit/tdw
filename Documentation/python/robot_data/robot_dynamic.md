@@ -1,30 +1,8 @@
 # RobotDynamic
 
-`from robot_data.robot_dynamic import RobotDynamic`
+`from tdw.robot_data.robot_dynamic import RobotDynamic`
 
 Dynamic data for a robot that can change per frame (such as the position of the robot, the angle of a joint, etc.)
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.robot import Robot
-
-c = Controller()
-# Add a robot.
-robot = Robot(name="ur5",
-              position={"x": -1, "y": 0, "z": 0.5},
-              robot_id=0)
-c.add_ons.append(robot)
-# Initialize the scene.
-c.communicate([{"$type": "load_scene",
-                "scene_name": "ProcGenScene"},
-               TDWUtils.create_empty_room(12, 12)])
-
-# Get the current position of each joint.
-for joint_id in robot.dynamic.joints:
-    print(joint_id, robot.dynamic.joints[joint_id].position)
-c.communicate({"$type": "terminate"})
-```
 
 ***
 
@@ -46,15 +24,15 @@ c.communicate({"$type": "terminate"})
 
 - `collisions_with_objects` A dictionary of collisions between one of this robot's [body parts (joints or non-moving)](robot_static.md) and another object.
 Key = A tuple where the first element is the body part ID and the second element is the object ID.
-Value = A list of [collision data.](../../object_data/collision_obj_obj.md)
+Value = A list of [collision data.](../collision_data/collision_obj_obj.md)
 
 - `collisions_with_self` A dictionary of collisions between two of this robot's [body parts](robot_static.md).
 Key = An unordered tuple of two body part IDs.
-Value = A list of [collision data.](../../object_data/collision_obj_obj.md)
+Value = A list of [collision data.](../collision_data/collision_obj_obj.md)
 
 - `collisions_with_environment` A dictionary of collisions between one of this robot's [body parts](robot_static.md) and the environment (floors, walls, etc.).
 Key = The ID of the body part.
-Value = A list of [environment collision data.](../../object_data/collision_obj_env.md)
+Value = A list of [environment collision data.](../collision_data/collision_obj_env.md)
 
 ***
 

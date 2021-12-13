@@ -1,6 +1,6 @@
 # Robot Librarian
 
-A **Robot Librarian** is a [Librarian](librarian.md) wrapper class for a robot records database.
+A **Robot Librarian** is a robot records database.
 
 ## Default Libraries
 

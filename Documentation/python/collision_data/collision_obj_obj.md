@@ -1,6 +1,6 @@
 # CollisionObjObj
 
-`from collision_data.collision_obj_obj import CollisionObjObj`
+`from tdw.collision_data.collision_obj_obj import CollisionObjObj`
 
 A collision between two objects.
 

@@ -1,6 +1,4 @@
-# `asset_bundle_creator_base.py`
-
-## `AssetBundleCreatorBase(ABC)`
+# AssetBundleCreatorBase
 
 `from tdw.asset_bundle_creator_base import AssetBundleCreatorBase`
 
@@ -8,43 +6,50 @@ Base class for creating asset bundles.
 
 ***
 
-#### `__init__(self, quiet: bool = False, display: str = ":0")`
+## Functions
 
+#### \_\_init\_\_
 
-| Parameter | Description |
-| --- | --- |
-| quiet | If true, don't print any messages to console. |
-| display | The display to launch Unity Editor on. Ignored if this isn't Linux. |
+**`AssetBundleCreatorBase()`**
 
-***
+**`AssetBundleCreatorBase(quiet=False, display="0")`**
 
-#### `get_base_unity_call(self) -> List[str]`
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| quiet |  bool  | False | If true, don't print any messages to console. |
+| display |  str  | "0" | The display to launch Unity Editor on. Ignored if this isn't Linux. |
 
-_Returns:_ The call to launch Unity Editor silently in batchmode, execute something, and then quit.
+#### get_base_unity_call
 
-***
+**`self.get_base_unity_call()`**
 
-#### `get_editor_path() -> Path`
+_Returns:_  The call to launch Unity Editor silently in batchmode, execute something, and then quit.
+
+#### get_editor_path
+
+**`AssetBundleCreatorBase(ABC).get_editor_path()`**
 
 _This is a static function._
 
 Build the asset_bundle_creator Unity project.
 
-_Returns:_ The path to the asset_bundle_creator Unity project.
+_Returns:_  The path to the asset_bundle_creator Unity project.
 
-***
+#### get_unity_project
 
-#### `get_unity_project(self) -> Path`
+_(Abstract)_
+
+**`self.get_unity_project()`**
 
 Build the asset_bundle_creator Unity project.
 
-_Returns:_ The path to the asset_bundle_creator Unity project.
+_Returns:_  The path to the asset_bundle_creator Unity project.
 
-***
+#### get_project_path
 
-#### `get_project_path() -> Path`
+_(Abstract)_
+
+**`self.get_project_path()`**
 
 _Returns:_  The expected path of the Unity project.
-
-***
 

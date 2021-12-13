@@ -2,7 +2,7 @@
 
 # Add ShapeNet models to TDW
 
-You can add [ShapeNet](https://www.shapenet.org/) models to TDW by converting them to asset bundles.
+You can add [ShapeNet](https://shapenet.org/) models to TDW by converting them to asset bundles.
 
 ShapeNet is a huge repository of semantically tagged obj files available to users that has several advantages and disadvantages compared to TDW's models.
 
@@ -107,5 +107,5 @@ ShapeNet convertor script:
 
 Python API:
 
-- [`ModelLibrarian`](../../librarian/model_librarian.md)
+- [`ModelLibrarian`](../../python/librarian/model_librarian.md)
 - [`AssetBundleCreator`](../../python/asset_bundle_creator.md)

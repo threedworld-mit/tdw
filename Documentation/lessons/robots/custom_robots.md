@@ -2,7 +2,7 @@
 
 # Add your own robots to TDW
 
-It is possible to add your own robots into TDW from a .urdf or .xacro file. However, the robot must first be converted into an asset bundle (just like [objects](../3d_models/custom_models.md)). To do so, you'll need to use TDW's [`RobotCreator`](../../python/robot_creator.py).
+It is possible to add your own robots into TDW from a .urdf or .xacro file. However, the robot must first be converted into an asset bundle (just like [objects](../3d_models/custom_models.md)). To do so, you'll need to use TDW's [`RobotCreator`](../../python/robot_creator.md).
 
 The `RobotCreator` can download a .urdf or .xacro file plus all relevant textures, meshes, etc. or it can use local files.
 
@@ -186,5 +186,5 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 Python API:
 
-- [`RobotCreator`](../../python/robot_creator.py)
+- [`RobotCreator`](../../python/robot_creator.md)
 - [`RobotLibrarian`](../../python/librarian/robot_librarian.md)

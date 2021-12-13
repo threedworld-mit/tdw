@@ -1,30 +1,8 @@
 # RobotStatic
 
-`from robot_data.robot_static import RobotStatic`
+`from tdw.robot_data.robot_static import RobotStatic`
 
 Static data for a robot that won't change due to physics (such as the joint IDs, segmentation colors, etc.)
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.robot import Robot
-
-c = Controller()
-# Add a robot.
-robot = Robot(name="ur5",
-              position={"x": -1, "y": 0, "z": 0.5},
-              robot_id=0)
-c.add_ons.append(robot)
-# Initialize the scene.
-c.communicate([{"$type": "load_scene",
-                "scene_name": "ProcGenScene"},
-               TDWUtils.create_empty_room(12, 12)])
-
-# Print the ID, name, and mass of each joint.
-for joint_id in robot.static.joints:
-    print(joint_id, robot.static.joints[joint_id].name, robot.static.joints[joint_id].mass)
-c.communicate({"$type": "terminate"})
-```
 
 ***
 

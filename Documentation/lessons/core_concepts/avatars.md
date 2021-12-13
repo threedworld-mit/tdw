@@ -2,9 +2,9 @@
 
 # Avatars and cameras
 
-As mentioned [earlier](design_philosophy.md), TDW doesn't impose metaphors regarding what an agent is or whether there needs to be one at all. **Avatars** are a type of agent in TDW but not the only one.
+As mentioned [earlier](design_philosophy.md), TDW doesn't impose metaphors regarding what an agent is or whether there needs to be one at all. **Avatars** are a type of [agent](../agents/overview.md) in TDW but not the only one.
 
-All avatars have a camera. The most commonly used avatar is a non-embodied camera; you can think of this avatar as being more or less equivalent to a third-person camera.
+All avatars have a camera. The most commonly used avatar is a non-embodied camera or "third-person camera". There is a more streamline API for third-person cameras, which will be covered in the [next document](add_ons.md).
 
 To add the third-person camera avatar to the scene:
 
@@ -133,7 +133,7 @@ c.communicate({"$type": "terminate"})
 
 ## Embodied avatars
 
-**There are several embodied avatars in TDW; however, we don't recommend you use them.** Avatars are one of the oldest components of TDW and they've been gradually superseded. [There are many non-avatar embodied agents in TDW](TODO), all of which are more sophisticated than the embodied avatars. For more information regarding embodied avatars, read the API documentation for [`create_avatar`](../../api/command_api.md#create_avatar).
+There are several embodied avatars in TDW which can be useful for prototyping. [Read this for more information.](../embodied_avatars/embodied_avatar.md)
 
 ***
 

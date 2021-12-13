@@ -1,6 +1,6 @@
 # Bound
 
-`from object_data.bound import Bound`
+`from tdw.object_data.bound import Bound`
 
 Bounds data for a single object.
 

@@ -86,57 +86,74 @@ Note that we're iterating by calling `c.communicate([])`. This sends an empty li
 
 ## Add-ons order of execution
 
-Add-on commands are always sent in the order that they appear in `c.add_ons`. Add-on commands are always sent after the commands explicitly listed in `communicate(commands)`.
+- Add-on commands are always sent in the order that they appear in `c.add_ons`. 
+- Add-on commands are always sent *after* the commands explicitly listed in `communicate(commands)`.
 
-To demonstrate this, we'll add a second add-on, [`Debug`](../../python/add_ons/debug.md). This add-on will log all commands sent to a build and optionally play them back.
+For example, in this example, there are two cameras (`camera_0` and `camera_1`):
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.add_ons.debug import Debug
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-
-# Create the third-person camera.
-camera = ThirdPersonCamera(avatar_id="a",
+camera_0 = ThirdPersonCamera(avatar_id="a",
                            position={"x": -1, "y": 5.7, "z": -3.8},
                            rotation={"x": 26, "y": 0, "z": 0})
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("add_ons/log.txt")
-print(f"Log will be saved to: {path}")
-# Add a debug add-on.
-debug = Debug(record=True, path=path)
-
-# Append the third-person camera and debug add-ons.
-c.add_ons.extend([debug, camera])
-
-c.communicate(TDWUtils.create_empty_room(12, 12))
-c.communicate({"$type": "terminate"})
-
-# Show the commands from the first logged frame.
-for command in debug.playback[0]:
-    print(command["$type"])
+camera_1 = ThirdPersonCamera(avatar_id="b",
+                             position={"x": 1.1, "y": 3.7, "z": 2.1},
+                             rotation={"x": 26, "y": 0, "z": 0})
+c.add_ons.extend([camera_0, camera_1])
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               {"$type": "set_target_framerate",
+                "framerate": 30}])
 ```
 
-Output:
+The order of execution is: 
 
-```
-create_exterior_walls
-send_log_messages
-create_avatar
-set_pass_masks
-set_render_order
-set_anti_aliasing
-teleport_avatar_to
-rotate_sensor_container_by
-rotate_sensor_container_by
-rotate_sensor_container_by
+1. `TDWUtils.create_empty_room(12, 12)`
+2. `{"$type": "set_target_framerate", "framerate": 30}`
+3. Commands to initialize `camera_0`
+4. Commands to initialize `camera_1`
+
+## Define your own add-ons
+
+To define your own add-on, extend the [`AddOn`](../../python/add_ons/add_on.md) class and define the following functions:
+
+- `get_initialization_commands()` Returns a list of commands to initialize the add-on.
+- `on_send(resp)` Defines what happens after commands are sent and a response is receive. `resp` is a list of bytes that can be turned into [output data](output_data.md).
+- Additionally, you might want to define a custom constructor and custom API calls. `self.commands` is a list of commands that will be sent on the next frame.
+
+This is an example of a very simple custom add-on. It can dynamically set the screen size.
+
+```python
+from typing import List
+from tdw.add_ons.add_on import AddOn
+
+class SetScreenSize(AddOn):
+    def __init__(self, width: int, height: int):
+        super().__init__()
+        self.width: int = width
+        self.height: int = height
+
+    def get_initialization_commands(self) -> List[dict]:
+        return [{"$type": "set_screen_size",
+                 "width": self.width,
+                 "height": self.height}]
+
+    def on_send(self, resp: List[bytes]) -> None:
+        return
+    
+    def set(self, width: int, height: int):
+        self.commands.append({"$type": "set_screen_size",
+                              "width": width,
+                              "height": height})
 ```
 
-- [`create_exterior_walls`](../../api/command_api.md#create_exterior_walls) is first in the list because  we called `c.communicate(TDWUtils.create_empty_room(12, 12))` (which sends a `create_extertior_walls` command).
-- [`send_log_messages`](../../api/command_api.md#send_log_messages) was added by the `Debug` add-on. Because the list of add-ons is `[debug, camera]`, this command is sent before `camera`'s commands.
-- The ret of the commands are injected into the list by the `ThirdPersonCamera`.
+- The constructor has `width` and `height` parameters to set the screen size.
+- `get_initialization_commands(self)` returns a [`set_screen_size`](../../api/command_api.md#set_screen_size) command.
+- `on_send(self, resp: List[bytes])` doesn't do anything in this example.
+- `set(self, width: int, height: int)` is a custom API call that allows the user to set a new screen size after initialization. `self.commands` will be sent on the next frame.
 
 ***
 
@@ -149,15 +166,15 @@ rotate_sensor_container_by
 Example controllers:
 
 - [third_person_camera.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/third_person_camera.py) Example usage of the `ThirdPersonCamera`.
+- [set_screen_size.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/set_screen_size.py) Example custom add-on.
 
 Python API:
 
 - [`AddOn`](../../python/add_ons/add_on.md) (abstract base class for all add-ons)
 - [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md) 
-- [`Debug`](../../python/add_ons/debug.md) 
 
 Command API:
 
 - [`create_exterior_walls`](../../api/command_api.md#create_exterior_walls)
-- [`send_log_messages`](../../api/command_api.md#send_log_messages)
+- [`set_screen_size`](../../api/command_api.md#set_screen_size)
 

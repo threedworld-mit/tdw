@@ -34,7 +34,7 @@ Typically, users want to disable physics if they are setting up a scene that inv
 Besides the obvious (objects won't move due to physics), there are some other effects of disabling physics:
 
 1. [Collision detection](collisions.md) is disabled.
-2. [Raycasts](../../objects_and_scenes/raycast.md) and [overlaps](../../objects_and_scenes/overlaps.md) won't work.
+2. [Raycasts](../objects_and_scenes/raycast.md) and [overlaps](../objects_and_scenes/overlap.md) won't work.
 
 ***
 

@@ -1,6 +1,6 @@
 # ScrapeSubObject
 
-`from physics_audio.scrape_sub_object import ScrapeSubObject`
+`from tdw.physics_audio.scrape_sub_object import ScrapeSubObject`
 
 Data for a sub-object of a model being used as a scrape surface.
 

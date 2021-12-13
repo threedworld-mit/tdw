@@ -14,13 +14,12 @@ class ThirdPersonCameraBase(AddOn, ABC):
     __RENDER_ORDER: int = 100
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 fov: int = None, framerate: int = None):
+                 field_of_view: int = None):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
         :param position: The initial position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param fov: The initial field of view. If None, defaults to 35.
-        :param framerate: If not None, sets the target framerate.
+        :param field_of_view: If not None, set the field of view.
         """
 
         super().__init__()
@@ -32,50 +31,16 @@ class ThirdPersonCameraBase(AddOn, ABC):
             self.avatar_id: str = token_urlsafe(4)
         else:
             self.avatar_id: str = avatar_id
-        self._init_commands: List[dict] = [{"$type": "create_avatar",
-                                            "type": self._get_avatar_type(),
-                                            "id": self.avatar_id},
-                                           {"$type": "set_pass_masks",
-                                            "pass_masks": ["_img"],
-                                            "avatar_id": self.avatar_id},
-                                           {"$type": "set_render_order",
-                                            "render_order": ThirdPersonCameraBase.__RENDER_ORDER,
-                                            "avatar_id": self.avatar_id},
-                                           {"$type": "set_anti_aliasing",
-                                            "mode": "subpixel",
-                                            "avatar_id": self.avatar_id}]
+        self._render_order = ThirdPersonCameraBase.__RENDER_ORDER
         ThirdPersonCameraBase.__RENDER_ORDER += 1
         """:field
-        The initial position of the object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         """
-        self.initial_position: Optional[Dict[str, float]] = position
-        # Set the initial position.
-        if self.initial_position is not None:
-            self._init_commands.append({"$type": "teleport_avatar_to",
-                                        "position": self.initial_position,
-                                        "avatar_id": self.avatar_id})
-        # Set the initial rotation.
-        if rotation is not None:
-            if isinstance(rotation, dict):
-                if "w" in rotation:
-                    self._init_commands.append({"$type": "rotate_sensor_container_to",
-                                                "rotation": rotation,
-                                                "avatar_id": self.avatar_id})
-                else:
-                    for q, axis in zip(["x", "y", "z"], ["pitch", "yaw", "roll"]):
-                        self._init_commands.append({"$type": "rotate_sensor_container_by",
-                                                    "axis": axis,
-                                                    "angle": rotation[q],
-                                                    "avatar_id": self.avatar_id})
-        # Set the field of view.
-        if fov is not None:
-            self._init_commands.append({"$type": "set_field_of_view",
-                                        "field_of_view": fov,
-                                        "avatar_id": self.avatar_id})
-        # Set the simulation framerate.
-        if framerate is not None:
-            self._init_commands.append({"$type": "set_target_framerate",
-                                        "framerate": framerate})
+        self.position: Optional[Dict[str, float]] = position
+        # The initial rotation.
+        self._rotation: Optional[Dict[str, float]] = rotation
+        # The field of view.
+        self._field_of_view: float = field_of_view
 
     @abstractmethod
     def on_send(self, resp: List[bytes]) -> None:
@@ -90,7 +55,6 @@ class ThirdPersonCameraBase(AddOn, ABC):
 
         raise Exception()
 
-    @final
     def get_initialization_commands(self) -> List[dict]:
         """
         This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
@@ -98,7 +62,39 @@ class ThirdPersonCameraBase(AddOn, ABC):
         :return: A list of commands that will initialize this add-on.
         """
 
-        return self._init_commands
+        commands = [{"$type": "create_avatar",
+                     "type": self._get_avatar_type(),
+                     "id": self.avatar_id},
+                    {"$type": "set_pass_masks",
+                     "pass_masks": ["_img"],
+                     "avatar_id": self.avatar_id},
+                    {"$type": "set_render_order",
+                     "render_order": self._render_order,
+                     "avatar_id": self.avatar_id}]
+        # Set the initial position.
+        if self.position is not None:
+            commands.append({"$type": "teleport_avatar_to",
+                             "position": self.position,
+                             "avatar_id": self.avatar_id})
+        # Set the initial rotation.
+        if self._rotation is not None:
+            if isinstance(self._rotation, dict):
+                if "w" in self._rotation:
+                    commands.append({"$type": "rotate_sensor_container_to",
+                                     "rotation": self._rotation,
+                                     "avatar_id": self.avatar_id})
+                else:
+                    for q, axis in zip(["x", "y", "z"], ["pitch", "yaw", "roll"]):
+                        commands.append({"$type": "rotate_sensor_container_by",
+                                         "axis": axis,
+                                         "angle": self._rotation[q],
+                                         "avatar_id": self.avatar_id})
+        # Set the field of view.
+        if self._field_of_view is not None:
+            commands.append({"$type": "set_field_of_view",
+                             "field_of_view": self._field_of_view,
+                             "avatar_id": self.avatar_id})
+        return commands
 
     @final
     def before_send(self, commands: List[dict]) -> None:

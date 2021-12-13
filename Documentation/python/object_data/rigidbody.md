@@ -1,6 +1,6 @@
 # Rigidbody
 
-`from object_data.rigidbody import Rigidbody`
+`from tdw.object_data.rigidbody import Rigidbody`
 
 Dynamic object rigidbody data. Note that this excludes *static* rigidbody data such as the mass of the object.
 

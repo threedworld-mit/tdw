@@ -1,0 +1,5 @@
+{"trials": [
+  {"model_name": "iron_box", "height": 1.5},
+  {"model_name": "iron_box", "height": 13},
+  {"model_name": "rh10", "height": 2.4}
+]}

@@ -1,6 +1,6 @@
 # RotateObjectTest
 
-`from model_tests.rotate_object_test import RotateObjectTest`
+`from tdw.add_ons.model_verifier.model_tests.rotate_object_test import RotateObjectTest`
 
 These tests add an object and then rotate it.
 

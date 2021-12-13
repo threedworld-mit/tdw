@@ -1,6 +1,6 @@
-from time import time
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.benchmark import Benchmark
 
 
 """
@@ -15,16 +15,14 @@ if __name__ == "__main__":
             {"$type": "rotate_object_to",
              "rotation": {"w": 1, "x": 0, "y": 0, "z": 0},
              "id": o_id}]
-
-    c = Controller()
-
-    c.start()
+    c = Controller(launch_build=False)
+    b = Benchmark()
+    c.add_ons.append(b)
     c.communicate([TDWUtils.create_empty_room(12, 12),
                    c.get_add_object("rh10", object_id=o_id)])
-    num_trials = 5000
-    t0 = time()
-    for i in range(num_trials):
+    b.start()
+    for i in range(5000):
         c.communicate(cmds)
-    fps = (num_trials / (time() - t0))
-    print(f"FPS: {round(fps)}")
+    b.stop()
+    print(f"FPS: {round(b.fps)}")
     c.communicate({"$type": "terminate"})

@@ -4,8 +4,6 @@
 
 Add keyboard controls to a TDW scene.
 
-For example implementation, see: `tdw/Python/example_controllers/keyboard_controls.py`
-
 ***
 
 ## Fields

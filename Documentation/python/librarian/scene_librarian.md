@@ -1,6 +1,6 @@
 # Scene Librarian
 
-A **Scene Librarian** is a [Librarian](librarian.md) wrapper class for a scene records database. 
+A **Scene Librarian** is a scene records database. 
 
 A **scene** is the background environment in TDW. You must load a scene before anything else.
 

@@ -61,6 +61,8 @@ Result:
 
 ![](images/sofa_bounds.jpg)
 
+*In this image, the position markers for the top, bottom, and two sides of the sofa are visible.*
+
 ## Optional parameters
 
 The only required parameter of `add_position_marker` is `position` (an {x, y, z} dictionary). There are other optional parameters:

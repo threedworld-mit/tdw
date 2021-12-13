@@ -164,7 +164,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 ### 2.10.4 Embodied avatars
 
-1. [Overview](Documentation/lessons/embodied_avatars/overview.md)
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
 
 ## 2.11 Multi-agent simulations

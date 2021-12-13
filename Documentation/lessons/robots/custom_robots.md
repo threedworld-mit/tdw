@@ -10,7 +10,7 @@ The `RobotCreator` can download a .urdf or .xacro file plus all relevant texture
 
 - Windows 10, OS X, or Linux
   - On a remote Linux server, you'll need a valid virtual display (see the `display` parameter of the constructor)
-- Unity Editor 2020.2 (must be installed via Unity Hub)
+- Unity Editor 2020.3.24f1 (must be installed via Unity Hub)
 - Python3 and the `tdw` module
 - git
 

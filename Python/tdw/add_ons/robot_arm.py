@@ -3,7 +3,8 @@ import numpy as np
 from overrides import final
 from ikpy.chain import Chain
 from ikpy.link import OriginLink, URDFLink, Link
-from tdw.tdw_utils import TDWUtils, QuaternionUtils
+from tdw.tdw_utils import TDWUtils
+from tdw.quaternion_utils import QuaternionUtils
 from tdw.add_ons.robot import Robot
 from tdw.librarian import RobotLibrarian, RobotRecord
 

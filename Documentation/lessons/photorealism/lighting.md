@@ -175,40 +175,6 @@ Result:
 
 ![](images/hdri/rotate.gif)
 
-## Ambient light intensity
-
-You can set the intensity of the scene's ambient light by sending [`set_ambient_intensity`](../../api/command_api.md#set_ambient_intensity). The default ambient light intensity varies between streamed scenes.
-
-```python
-from tdw.controller import Controller
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.add_ons.image_capture import ImageCapture
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-
-c = Controller()
-camera = ThirdPersonCamera(avatar_id="a",
-                           position={"x": -4.28, "y": 0.85, "z": 4.27},
-                           look_at={"x": 0, "y": 0, "z": 0})
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("ambient_intensity")
-print(f"Image will be saved to: {path}")
-capture = ImageCapture(avatar_ids=["a"], path=path)
-c.add_ons.extend([camera, capture])
-c.communicate([c.get_add_scene(scene_name="building_site"),
-               c.get_add_hdri_skybox(skybox_name="bergen_4k")])
-for intensity in [1, 0.2]:
-    c.communicate({"$type": "set_ambient_intensity",
-                   "intensity": intensity})
-c.communicate({"$type": "terminate"})
-```
-
-Result:
-
-| Intensity | Image                                           |
-| --------- | ----------------------------------------------- |
-| 0.76      | ![](images/hdri/ambient_intensity/img_0000.jpg) |
-| 1         | ![](images/hdri/ambient_intensity/img_0001.jpg) |
-| 0.2       | ![](images/hdri/ambient_intensity/img_0002.jpg) |
-
 ## Shadow strength
 
 You can set the intensity of the scene's ambient light by sending [`set_shadow_strength`](../../api/command_api.md#set_shadow_strength):
@@ -311,7 +277,6 @@ Point lights:
 
 Example controllers:
 
-- [ambient_intensity.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/ambient_intensity.py) Show the difference between ambient light intensities.
 - [hdri_skyboxes.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/hdri_skyboxes.py) Add different HDRI skyboxes to the same scene.
 - [lights_output_data.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/lights_output_data.py) Load a streamed scene and received Lights output data.
 - [rotate_hdri_skybox.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/rotate_hdri_skybox.py) Add an HDRI skybox to the scene and rotate it.
@@ -327,12 +292,11 @@ Command API:
 
 - [`add_hdri_skybox`](../../api/command_api.md#add_hdri_skybox)
 - [`rotate_hdri_skybox_by`](../../api/command_api.md#rotate_hdri_skybox_by)
-- [`set_ambient_intensity`](../../api/command_api.md#set_ambient_intensity)
 - [`set_shadow_strength`](../../api/command_api.md#set_shadow_strength)
--  [`adjust_directional_light_intensity_by`](../../api/command_api.md#adjust_directional_light_intensity_by) 
--  [`reset_directional_light_rotation`](../../api/command_api.md#adjust_directional_light_intensity_by) 
--  [`rotate_directional_light_by`](../../api/command_api.md#rotate_directional_light_by) 
--  [`set_directional_light_color`](../../api/command_api.md#set_directional_light_color) 
+- [`adjust_directional_light_intensity_by`](../../api/command_api.md#adjust_directional_light_intensity_by) 
+- [`reset_directional_light_rotation`](../../api/command_api.md#adjust_directional_light_intensity_by) 
+- [`rotate_directional_light_by`](../../api/command_api.md#rotate_directional_light_by) 
+- [`set_directional_light_color`](../../api/command_api.md#set_directional_light_color) 
 - [`adjust_point_lights_intensity_by`](../../api/command_api.md#adjust_point_lights_intensity_by)
 - [`send_lights`](../../api/command_api.md#send_lights)
 

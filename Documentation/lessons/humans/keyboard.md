@@ -79,7 +79,7 @@ In order to use keyboard controls, the TDW build window must be focused (i.e. be
 
 ## Control an avatar with the keyboard
 
-In this example, the human user can control an [`EmbodiedAvatar`](../embodied_avatars/overview.md) with the keyboard.
+In this example, the human user can control an [`EmbodiedAvatar`](../embodied_avatars/embodied_avatar.md) with the keyboard.
 
 In order to listen for both *key presses* and *key holds*, we'll set the *events* parameter like this:
 

@@ -18,7 +18,7 @@ In setting up your controller:
 
 1. See [install guide](../setup/install.md) for Docker requirements.
 2. [Build this container.](https://github.com/threedworld-mit/tdw/blob/master/Docker/Dockerfile_audio)
-3. Run [`start_container_audio_video.sh`](https://github.com/threedworld-mit/tdw/blob/master/Docker/start_container_audio.sh). You may need to adjust the `-video_size` and pixel offset (`$DISPLAY+1152,672`) parameters.
+3. Run [`start_container_audio_video.sh`](https://github.com/threedworld-mit/tdw/blob/master/Docker/start_container_audio_video.sh). You may need to adjust the `-video_size` and pixel offset (`$DISPLAY+1152,672`) parameters.
 4. To stop recording, you will need to stop the Docker container.
 5. After recording, you will need to re-encode the video:
 

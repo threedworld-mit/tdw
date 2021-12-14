@@ -104,7 +104,7 @@ ffmpeg -f avfoundation -list_devices true -i ""
 
 Example controllers:
 
-- [image_only_video.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/robots/image_only_video.py) Capture image data and automatically call ffmpeg to convert it to a video.
+- [image_only_video.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/video/image_only_video.py) Capture image data and automatically call ffmpeg to convert it to a video.
 
 Command API:
 

@@ -28,11 +28,7 @@ from tdw.librarian import MaterialLibrarian
 
 class PyImpact(CollisionManager):
     """
-    Generate impact sounds from physics data.
-
-    Sounds are synthesized as described in: [Traer,Cusimano and McDermott, A PERCEPTUALLY INSPIRED GENERATIVE MODEL OF RIGID-BODY CONTACT SOUNDS, Digital Audio Effects, (DAFx), 2019](http://dafx2019.bcu.ac.uk/papers/DAFx2019_paper_57.pdf)
-
-    Sounds can be synthesized automatically (for general use-cases) or manually (for advanced use-cases).
+    Generate impact sounds from physics data. Sounds can be synthesized automatically (for general use-cases) or manually (for advanced use-cases).
 
     ```python
     from tdw.controller import Controller
@@ -56,6 +52,31 @@ class PyImpact(CollisionManager):
         c.communicate([])
     c.communicate({"$type": "terminate"})
     ```
+
+    When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually inspired generative model of rigid-body contact sounds, Digital Audio Effects, (DAFx), 2019](http://dafx2019.bcu.ac.uk/papers/DAFx2019_paper_57.pdf) and [Agarwal, Cusimano, Traer, and McDermott, Object-based synthesis of scraping and rolling sounds based on non-linear physical constraints, (DAFx), 2021](http://mcdermottlab.mit.edu/bib2php/pubs/makeAbs.php?loc=agarwal21).
+
+    ```
+    @article {4500,
+        title = {A perceptually inspired generative model of rigid-body contact sounds},
+        journal = {Proceedings of the 22nd International Conference on Digital Audio Effects (DAFx-19)},
+        year = {2019},
+        month = {09/2019},
+        abstract = {<p>Contact between rigid-body objects produces a diversity of impact and friction sounds. These sounds can be synthesized with detailed simulations of the motion, vibration and sound radiation of the objects, but such synthesis is computationally expensive and prohibitively slow for many applications. Moreover, detailed physical simulations may not be necessary for perceptually compelling synthesis; humans infer ecologically relevant causes of sound, such as material categories, but not with arbitrary precision. We present a generative model of impact sounds which summarizes the effect of physical variables on acoustic features via statistical distributions fit to empirical measurements of object acoustics. Perceptual experiments show that sampling from these distributions allows efficient synthesis of realistic impact and scraping sounds that convey material, mass, and motion.</p>
+    },
+        author = {James Traer and Maddie Cusimano and Josh H. McDermott}
+    }
+    ```
+
+    ```
+    @inproceedings{agarwal21,
+         TITLE= "Object-based synthesis of scraping and rolling sounds based on non-linear physical constraints",
+         AUTHOR= "V Agarwal and M Cusimano and J Traer and J H McDermott",
+         booktitle= "The 24th International Conference on Digital Audio Effects (DAFx-21)",
+         MONTH= "September",
+         YEAR= 2021,
+         PDF-URL= "http://mcdermottlab.mit.edu/papers/Agarwal_etal_2021_scraping_rolling_synthesis_DAFx.pdf",
+    }
+    ```
     """
 
     """:class_var
@@ -65,7 +86,7 @@ class PyImpact(CollisionManager):
     """:class_var
     The maximum velocity allowed for a scrape.
     """
-    SCRAPE_MAX_VELOCITY: float = 2.0
+    SCRAPE_MAX_VELOCITY: float = 5.0
     """:class_var
     Meters per pixel on the scrape surface.
     """
@@ -704,8 +725,8 @@ class PyImpact(CollisionManager):
             self._scrape_start_velocities[scrape_key] = mag
 
         # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
-        db2 = 40 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY)
-        db1 = 20 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY)
+        db2 = 40 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 1
+        db1 = 20 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 10
 
         # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
         # We also get the lowest-frequency IR mode, which we use to set the high-pass filter cutoff below.
@@ -726,7 +747,7 @@ class PyImpact(CollisionManager):
         if scrape_material not in self.scrape_surface_data:
             scrape_surface = np.load(str(
                 Path(resource_filename(__name__, f"py_impact/scrape_surfaces/{scrape_material.name}.npy")).resolve()))
-            for i in range(3):
+            for i in range(2):
                 scrape_surface = np.append(scrape_surface, scrape_surface)
             #   Load the surface texture as a 1D vector
             #   Create surface texture of desired length
@@ -737,34 +758,40 @@ class PyImpact(CollisionManager):
             #   Convolve the force with the impulse response
             dsdx = (scrape_surface[1:] - scrape_surface[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
             d2sdx2 = (dsdx[1:] - dsdx[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
-            rough_ratio = np.std(scrape_surface) / (6 * 10 ** -4)
+            rough_ratio = (np.std(scrape_surface) / (9 * 10 ** -4)) ** 0.85
             r_gain = 20 * np.log10(rough_ratio)
             self.scrape_surface_data[scrape_material] = {"dsdx": dsdx,
                                                          "d2sdx2": d2sdx2,
                                                          "surface": scrape_surface,
                                                          "r_gain": r_gain}
         dist = mag / 10
-        num_pts = int(np.floor(dist / PyImpact.SCRAPE_M_PER_PIXEL))
+        num_pts = int(np.floor(dist / PyImpact.SCRAPE_M_PER_PIXEL) + 1)
         # No scrape.
-        if num_pts <= 2:
+        if num_pts < 1:
             self._end_scrape(scrape_key)
             return None
         # interpolate the surface slopes and curvatures based on the velocity magnitude
         final_ind = self._scrape_previous_indices[scrape_key] + num_pts
 
-        if final_ind > len(self.scrape_surface_data[scrape_material]["surface"]) - 10:
-            self._scrape_previous_indices[scrape_key] = 0
-            final_ind = num_pts
-
         vect1 = np.linspace(0, 1, num_pts)
         vect2 = np.linspace(0, 1, 4410)
 
-        slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][self._scrape_previous_indices[scrape_key]:final_ind])
-        curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][self._scrape_previous_indices[scrape_key]:final_ind])
+        if final_ind > len(self.scrape_surface_data[scrape_material]["surface"]) - 1:
+            self._scrape_previous_indices[scrape_key] = 0
+            final_ind = num_pts
+            slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][
+                                                self._scrape_previous_indices[scrape_key]:final_ind])
+            curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][
+                                                self._scrape_previous_indices[scrape_key]:final_ind])
+        else:
+            slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][
+                                                self._scrape_previous_indices[scrape_key]:final_ind])
+            curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][
+                                                self._scrape_previous_indices[scrape_key]:final_ind])
 
         self._scrape_previous_indices[scrape_key] = final_ind
 
-        curve_int_tan = np.tanh(curve_int / 100)
+        curve_int_tan = np.tanh(curve_int / (100 * primary_mass))
 
         d2_section = gaussian_filter1d(curve_int_tan, 6)
 
@@ -809,26 +836,16 @@ class PyImpact(CollisionManager):
 
         noise_seg_conv = noise_seg_conv1.overlay(noise_seg_conv2)
         # Apply roughness gain.
-        noise_seg_conv = noise_seg_conv.apply_gain(self.scrape_surface_data[scrape_material]["r_gain"])
+        noise_seg_conv = noise_seg_conv.apply_gain(self.scrape_surface_data[scrape_material]["r_gain"] + 4)
 
-        if scrape_event_count == 0:
-            # First time through -- append 50 ms of silence to the end of the current segment and make that "master".
-            summed_master = noise_seg_conv + PyImpact.SILENCE_50MS
-        elif scrape_event_count == 1:
-            # Second time through -- append 50 ms silence to start of current segment and overlay onto "master".
-            summed_master = summed_master.overlay(PyImpact.SILENCE_50MS + noise_seg_conv)
-        else:
-            # Pad the end of master with 50 ms of silence, the start of the current segment with (n * 50ms) of silence, and overlay.
-            padded_current = (PyImpact.SILENCE_50MS * scrape_event_count) + noise_seg_conv
-            summed_master = summed_master + PyImpact.SILENCE_50MS
-            summed_master = summed_master.overlay(padded_current)
+        # Pad the end of master with 50 ms of silence, the start of the current segment with (n * 50ms) of silence, and overlay.
+        padded_current = (PyImpact.SILENCE_50MS * scrape_event_count) + noise_seg_conv
+        summed_master = summed_master + PyImpact.SILENCE_50MS
+        summed_master = summed_master.overlay(padded_current)
 
         # Extract 100ms "chunk" of sound to send over to Unity.
         start_idx = 100 * scrape_event_count
         unity_chunk = summed_master[-(len(summed_master) - start_idx):][:100]
-        # Ignore totally silent sounds.
-        if unity_chunk.dBFS == -np.inf:
-            return None
         # Update stored summed waveform.
         self._scrape_summed_masters[scrape_key] = summed_master
 

@@ -4,6 +4,8 @@
 
 **Textured quads** are simple rectangular objects that exist in 3D space and be set to any given [texture](../objects_and_scenes/materials_textures_colors.md). These 3D "quads" can be positioned and set to an image located on your computer. 
 
+Textured quads can be used to visualize areas in a scene, add paintings to walls, increase overall scene variability, and so on.
+
 To add a textured quad to the scene, we must first load the source image. We will use this image:
 
 ![](images/DT4897.jpg)

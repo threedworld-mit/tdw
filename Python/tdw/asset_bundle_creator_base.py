@@ -2,9 +2,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 import platform
 from typing import List
-from subprocess import call, check_output, CalledProcessError
+from subprocess import check_output, CalledProcessError
 import os
-import pkg_resources
 import re
 
 
@@ -13,7 +12,10 @@ class AssetBundleCreatorBase(ABC):
     Base class for creating asset bundles.
     """
 
-    UNITY_VERSION = "2020.2"
+    """:class_var
+    Use this version of Unity Editor to launch the asset bundle creator.
+    """
+    UNITY_VERSION: str = "2020.3"
 
     def __init__(self, quiet: bool = False, display: str = ":0"):
         """

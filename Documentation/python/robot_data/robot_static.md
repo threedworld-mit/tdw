@@ -1,6 +1,6 @@
 # RobotStatic
 
-`from robot_data.robot_static import RobotStatic`
+`from tdw.robot_data.robot_static import RobotStatic`
 
 Static data for a robot that won't change due to physics (such as the joint IDs, segmentation colors, etc.)
 

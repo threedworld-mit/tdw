@@ -53,7 +53,7 @@
 9. [`Overlap` output data](Documentation/lessons/objects_and_scenes/overlap.md)
 10. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
 
-High-level API: [Floorplan](Documentation/python/floorplan.md)
+High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 
 ## 2.2 3D Model Libraries
 
@@ -79,6 +79,7 @@ High-level API: [Floorplan](Documentation/python/floorplan.md)
 2. [Move a camera](Documentation/lessons/camera/position.md)
 3. [Rotate a camera](Documentation/lessons/camera/rotation.md)
 4. [Follow an object](Documentation/lessons/camera/follow.md)
+4. [The `CinematicCamera` add-on](Documentation/lessons/camera/cinematic_camera.md)
 
 ## 2.5 Photorealism
 
@@ -130,8 +131,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 6. [`PyImpact` (advanced API)](Documentation/lessons/audio/py_impact_advanced.md)
 7. [Audio perception](Documentation/lessons/audio/audio_perception.md)
 
-High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_challenge)
-
 ## 2.9 Video Recording
 
 1. [Overview](Documentation/lessons/video/overview.md)
@@ -165,7 +164,6 @@ High-level API: [Multimodal Challenge](https://github.com/alters-mit/multimodal_
 
 ### 2.10.4 Embodied avatars
 
-1. [Overview](Documentation/lessons/embodied_avatars/overview.md)
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
 
 ## 2.11 Multi-agent simulations

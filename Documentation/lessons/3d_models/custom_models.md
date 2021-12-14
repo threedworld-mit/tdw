@@ -7,11 +7,11 @@ It is possible to add any 3D model to TDW. However, the underlying Unity engine 
 ## Requirements
 
 - Windows 10, OS X, or Linux
-- (Windows only) [Visual C++ 2012 Redistributable](https://www.microsoft.com/en-us/download/confirmation.aspx?id=30679)
+- (Windows only) Visual C++ 2012 Redistributable
 - The `tdw` module
 - Python 3.6+
 - Unity Hub
-- Unity Editor 2020.3 (installed via Unity Hub)
+- Unity Editor 2020.3.24f1 (installed via Unity Hub)
   - Build options must enabled for Windows, OS X, and Linux (these can  be set when installing Unity).
 - A .fbx or .obj+.mtl model
 

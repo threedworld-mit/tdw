@@ -2,11 +2,52 @@
 
 # Lighting (HDRI skyboxes)
 
-Lighting in TDW scenes is typically controlled by setting the **HDRI skybox** of a scene.
+There are two components to TDW's lighting model:
 
-An HDRI image is an image file that includes real-world lighting information. A skybox is an image that wraps around the background of a virtual scene to form a "sky". 
+1. **Direct lighting:** a single light source representing the sun, used for dynamic lighting – the type of lighting that causes objects to cast shadows in a scene. 
+2. **HDRI (High Dynamic Range Image) skyboxes** used for general environmental lighting. 
 
-## HDRI skybox asset bundles
+Additionally, some scenes have **point light sources.**
+
+## Direct lighting
+
+Every TDW scene has a single "sun" **directional light**. A directional light has an intensity and an angle, but doesn't have a spatial point of origin (i.e. it behaves as if it comes from infinitely far away).
+
+Directional lights cast shadows from 3D objects in the scene onto other objects, or surfaces such as floors and walls. In interior scenes, depending on the light direction and scene geometry, it may also cast “pools” of light on objects and surfaces (e.g. by shining in to the room through a window). For example, the complex shadows and pool of light on the floor in the `photoreal.py` scene come from this type of lighting; 3D tree models outside the building are in fact casting these shadows through a transparent skylight in the roof of this building.
+
+These commands adjust the directional light:
+
+-  [`adjust_directional_light_intensity_by`](../../api/command_api.md#adjust_directional_light_intensity_by) 
+-  [`reset_directional_light_rotation`](../../api/command_api.md#adjust_directional_light_intensity_by) 
+-  [`rotate_directional_light_by`](../../api/command_api.md#rotate_directional_light_by) 
+-  [`set_directional_light_color`](../../api/command_api.md#set_directional_light_color) 
+
+**Be aware that adjusting scene lighting may negatively impact the quality of your final image.** TDW's lighting has been carefully set up for photorealism; adjusting it can yield strange-looking images. In particular, it is *highly* recommended that you only adjust the "sun" light rotation for interior scenes – doing so in exterior scenes will create implausible-looking images with incorrect shadows.
+
+When rotating the directional “sun” light, keep these facts in mind:
+
+- The “pitch” component of the rotation affects the elevation of the “sun” light (i.e. the apparent time-of-day), which in turn affects the *length* of shadows being cast.
+- The “yaw” component of the rotation affects the *direction* of the shadows.
+
+## HDRI Skyboxes
+
+An HDRI image is an image file that includes real-world lighting information. A skybox is an image that wraps around the background of a virtual scene to form a "sky", much like a planetarium projection.
+
+The choice of HDRI skybox can have a dramatic impact on the lighting of a scene, especially exterior scenes. This can include simulating the apparent time of day -- from sunrise, to noon, to sunset. Every HDRI skybox has associated metadata that positions the “sun” directional light at the correct elevation and angle to generate shadows that match the time of day and lighting conditions when the original image was captured. **For this reason, in any scene that uses an HDRI skybox we strongly recommend *not* altering the rotation of the “sun” directional light using the command API.**
+
+To determine if a scene uses HDRI skyboxes, see [`record.hdri`](../../python/librarian/scene_librarian.md) in `SceneLibrarian`:
+
+```python
+from tdw.librarian import SceneLibrarian
+
+librarian = SceneLibrarian()
+for record in librarian.records:
+    print(record.name, record.hdri)
+```
+
+### Set the HDRI skybox
+
+Most streamed scenes in TDW include a default HDRI skybox, but the skybox can be changed programmatically. 
 
 In TDW, HDRI skyboxes, like [models](../core_concepts/objects.md) and [visual materials](../objects_and_scenes/materials_textures_colors.md), are stored as **asset bundles**, typically on a remote server.
 
@@ -22,8 +63,6 @@ print(record.location)  # interior
 ```
 
 There are other fields in an `HDRISkyboxRecord`;  these are mainly used internally to set the lighting parameters correctly.
-
-## Add an HDRI skybox to a scene
 
 This controller loads a [streamed scene](../core_concepts/scenes.md) and adds an HDRI skybox. Note that the controller uses a wrapper function, `get_add_hdri_skybox(skybox_name)`, to generate a valid command.
 
@@ -107,21 +146,7 @@ Result:
 
 ![](images/hdri/img_0002.jpg) ![](images/hdri/img_0003.jpg)
 
-## Scenes that are enabled for HDRI skyboxes
-
-Not all scenes in TDW are enabled for HDRI skyboxes. Typically, this is because either the scenes were added to TDW prior to HDRI skyboxes being added to the underlying Unity Engine, or because the lighting in the scene is already photorealistic.
-
-To determine if a scene can support HDRI skyboxes, check `record.hdri`:
-
-```python
-from tdw.librarian import SceneLibrarian
-
-librarian = SceneLibrarian()
-for record in librarian.records:
-    print(record.name, record.hdri)
-```
-
-## Rotate an HDRI skybox
+### Rotate an HDRI skybox
 
 To rotate an HDRI skybox, send [`rotate_hdri_skybox_by`](../../api/command_api.md#rotate_hdri_skybox_by). Rotating an HDRI skybox will change the direction of the light as well as the background image.
 
@@ -175,40 +200,6 @@ Result:
 
 ![](images/hdri/rotate.gif)
 
-## Ambient light intensity
-
-You can set the intensity of the scene's ambient light by sending [`set_ambient_intensity`](../../api/command_api.md#set_ambient_intensity). The default ambient light intensity varies between streamed scenes.
-
-```python
-from tdw.controller import Controller
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.add_ons.image_capture import ImageCapture
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-
-c = Controller()
-camera = ThirdPersonCamera(avatar_id="a",
-                           position={"x": -4.28, "y": 0.85, "z": 4.27},
-                           look_at={"x": 0, "y": 0, "z": 0})
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("ambient_intensity")
-print(f"Image will be saved to: {path}")
-capture = ImageCapture(avatar_ids=["a"], path=path)
-c.add_ons.extend([camera, capture])
-c.communicate([c.get_add_scene(scene_name="building_site"),
-               c.get_add_hdri_skybox(skybox_name="bergen_4k")])
-for intensity in [1, 0.2]:
-    c.communicate({"$type": "set_ambient_intensity",
-                   "intensity": intensity})
-c.communicate({"$type": "terminate"})
-```
-
-Result:
-
-| Intensity | Image                                           |
-| --------- | ----------------------------------------------- |
-| 0.76      | ![](images/hdri/ambient_intensity/img_0000.jpg) |
-| 1         | ![](images/hdri/ambient_intensity/img_0001.jpg) |
-| 0.2       | ![](images/hdri/ambient_intensity/img_0002.jpg) |
-
 ## Shadow strength
 
 You can set the intensity of the scene's ambient light by sending [`set_shadow_strength`](../../api/command_api.md#set_shadow_strength):
@@ -243,22 +234,15 @@ Result:
 | 1        | ![](images/hdri/shadow_strength/img_0001.jpg)      |
 | 0.2      | ![](images/hdri/shadow_strength/img_0002.jpg)      |
 
-## Other lighting commands
+## Point lights
 
-It's possible to use other TDW commands to adjust a scene's lighting, both in scenes with and without HDRI skyboxes. **However, be aware that this usually won't result in photorealsitic images.** TDW's lighting has been carefully set up for photorealism; adjusting it can yield strange-looking images.
+Some scenes in TDW also contain *point lights*, which have a spatial point of origin. Additionally, lamp models that are composite objects incorporate a point light in the model that serves as a luminaire, so adding a model of this type to a scene will also add a point light.
 
-All scenes have at least one *directional light*, a light that has an angle but doesn't have a spatial point of origin. These commands adjust the directional light:
+To adjust the intensity of a scene's point lights, send [`adjust_point_lights_intensity_by`](../../api/command_api.md#adjust_point_lights_intensity_by) 
 
--  [`adjust_directional_light_intensity_by`](../../api/command_api.md#adjust_directional_light_intensity_by) 
--  [`reset_directional_light_rotation`](../../api/command_api.md#adjust_directional_light_intensity_by) 
--  [`rotate_directional_light_by`](../../api/command_api.md#rotate_directional_light_by) 
--  [`set_directional_light_color`](../../api/command_api.md#set_directional_light_color) 
+## `Lights` output data
 
-Some scenes have *point lights*, which have a spatial point of origin. These commands adjust point lights:
-
--  [`adjust_point_lights_intensity_by`](../../api/command_api.md#adjust_point_lights_intensity_by) 
-
-To get information about the lights in the scene, send [`send_lights`](../../api/command_api.md#send_lights) to receive [`Lights`](../../api/output_data.md#Lights) output data:
+To get information about the lights in the scene (including the scene's point lights), send [`send_lights`](../../api/command_api.md#send_lights) to receive [`Lights`](../../api/output_data.md#Lights) output data:
 
 ```python
 from tdw.controller import Controller
@@ -311,11 +295,10 @@ Point lights:
 
 Example controllers:
 
-- [ambient_intensity.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/ambient_intensity.py) Show the difference between ambient light intensities.
 - [hdri_skyboxes.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/hdri_skyboxes.py) Add different HDRI skyboxes to the same scene.
 - [lights_output_data.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/lights_output_data.py) Load a streamed scene and received Lights output data.
 - [rotate_hdri_skybox.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/rotate_hdri_skybox.py) Add an HDRI skybox to the scene and rotate it.
-- [shadow_strength.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/v.py) Show the difference between shadow strengths.
+- [shadow_strength.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/shadow_strength.py) Show the difference between shadow strengths.
 
 Python API:
 
@@ -327,12 +310,11 @@ Command API:
 
 - [`add_hdri_skybox`](../../api/command_api.md#add_hdri_skybox)
 - [`rotate_hdri_skybox_by`](../../api/command_api.md#rotate_hdri_skybox_by)
-- [`set_ambient_intensity`](../../api/command_api.md#set_ambient_intensity)
 - [`set_shadow_strength`](../../api/command_api.md#set_shadow_strength)
--  [`adjust_directional_light_intensity_by`](../../api/command_api.md#adjust_directional_light_intensity_by) 
--  [`reset_directional_light_rotation`](../../api/command_api.md#adjust_directional_light_intensity_by) 
--  [`rotate_directional_light_by`](../../api/command_api.md#rotate_directional_light_by) 
--  [`set_directional_light_color`](../../api/command_api.md#set_directional_light_color) 
+- [`adjust_directional_light_intensity_by`](../../api/command_api.md#adjust_directional_light_intensity_by) 
+- [`reset_directional_light_rotation`](../../api/command_api.md#adjust_directional_light_intensity_by) 
+- [`rotate_directional_light_by`](../../api/command_api.md#rotate_directional_light_by) 
+- [`set_directional_light_color`](../../api/command_api.md#set_directional_light_color) 
 - [`adjust_point_lights_intensity_by`](../../api/command_api.md#adjust_point_lights_intensity_by)
 - [`send_lights`](../../api/command_api.md#send_lights)
 

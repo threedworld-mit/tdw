@@ -4,34 +4,13 @@
 
 Download a .urdf or .xacro file and convert it into an asset bundle that is usable by TDW.
 
-```python
-from tdw.robot_creator import RobotCreator
-
-r = RobotCreator()
-record = r.create_asset_bundles(
-    urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf",
-    xacro_args=None,
-    required_repo_urls=None,
-    immovable=True,
-    up="y")
-print(record.name)
-print(record.urls)
-```
-
-Note that most of the parameters are optional, so this can be simplified to:
-
-```python
-from tdw.robot_creator import RobotCreator
-
-r = RobotCreator()
-record = r.create_asset_bundles(urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
-print(record.name)
-print(record.urls)
-```
-
 ***
 
-# Functions
+## Class Variables
+
+| Variable | Type | Description |
+| --- | --- | --- |
+| `UNITY_VERSION` | str | Use this version of Unity Editor to launch the asset bundle creator. |
 
 ***
 

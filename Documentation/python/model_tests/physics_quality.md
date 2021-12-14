@@ -1,6 +1,6 @@
 # PhysicsQuality
 
-`from model_tests.physics_quality import PhysicsQuality`
+`from tdw.add_ons.model_verifier.model_tests.physics_quality import PhysicsQuality`
 
 Test the "physics quality" i.e. the disparity between the colliders volume and the rendered volume.
 

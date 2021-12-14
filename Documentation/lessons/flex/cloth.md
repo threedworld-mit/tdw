@@ -2,7 +2,7 @@
 
 # Cloth actors
 
-Enable an object as a soft-body actor via [`set_flex_cloth_actor`](../../api/command_api.md#set_flex_cloth_actor):
+Enable an object as a cloth-body actor via [`set_flex_cloth_actor`](../../api/command_api.md#set_flex_cloth_actor):
 
 ```python
 from tdw.controller import Controller

@@ -31,7 +31,7 @@ class SwingRobot(Robot):
 The constructor has two new parameters:
 
 - `target_id` is the ID of the target object (the ball).
-- `swing direction` defines whether the arm swings clockwise or counterclockwise.
+- `swing_direction` defines whether the arm swings clockwise or counterclockwise.
 
 ## Define API calls
 
@@ -66,7 +66,7 @@ class SwingRobot(Robot):
 
 ## Define state machine flags
 
-It can be useful to use [state machines](https://gameprogrammingpatterns.com/state.html) to manage basic AI behavior; they are often used in video game design. State machines typically use enum values to determine whether which discrete *state* the agent is currently in and therefore how to plan the current action:
+It can be useful to use [state machines](https://gameprogrammingpatterns.com/state.html) to manage basic AI behavior; they are often used in video game design. State machines typically use enum values to determine which discrete *state* the agent is currently in and therefore how to plan the current action:
 
 ```python
 from enum import Enum

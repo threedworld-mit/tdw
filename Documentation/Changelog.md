@@ -9,6 +9,9 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 ### New Features
 
 - **Added add-ons.** These objects can be appended to `Controller.add_ons` to inject commands per `communicate()` call. They've been designed to simplify common tasks in TDW such as capturing images per frame or logging commands per frame.
+- **Completely rewrite of documentation.** All non-API documentation has been completely rewritten. Documentation is now divided into "lessons" for specified subjects such as robotics or visual perception. You can find the complete table of contents on the README. **Even if you are an experienced TDW user, we recommend you read our new documentation.** You might learn new techniques!
+- **PyImpact is now an add-on and has scrape sounds.** [Read this for more information.](lessons/audio/py_impact.md)
+- (External repo) **[Magnebot](https://github.com/alters-mit/magnebot) has been upgraded to version 2.0.** Magnebot can now be used as an add-on, meaning that it can be added to any TDW controller.
 
 ### Command API
 
@@ -28,7 +31,16 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `attach_empty_object`                      | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. |
 | `send_empty_objects`                       | Send data each empty object in the scene.                    |
 
-### Renamed Commands
+#### Modified Commands
+
+| Command                                                | Modification                                                 |
+| ------------------------------------------------------ | ------------------------------------------------------------ |
+| `play_audio_data`<br>`play_point_source_data`          | Parameter ID now refers to a unique ID for the audio source (not an object ID).<br>Added parameter `position`. |
+| `set_reverb_space_expert`<br>`set_reverb_space_simple` | Renamed parameter `env_id` to `region_id`                    |
+| `play_humanoid_animation`                              | Added optional parameter `framerate`                         |
+| `send_model_report`                                    | Added parameter `flex`. If True, this model is expected to be Flex-compatible. |
+
+#### Renamed Commands
 
 | Command                          | New name                |
 | -------------------------------- | ----------------------- |
@@ -42,6 +54,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `set_painting_texture`            | `set_textured_quad`                          |
 | `show_painting`                   | `show_textured_quad`                         |
 | `teleport_painting`               | `teleport_textured_quad`                     |
+
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `send_model_report` | Added parameter `flex`: If True, this model is expected to be Flex-compatible. |
 
 #### Removed Commands
 
@@ -81,10 +99,14 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - Fixed: Avatar bodies are centered on the avatar's pivot as opposed to halfway above it (i.e. making the pivot of the avatar the bottom-center), thus causing the avatar to "pop" out of the ground when it is first created.
   - Fixed: The cube avatar requires much more torque to turn. Its box collider has been replaced with a cube collider.
 - Fixed: Warnings when repeatedly sending `send_model_report` without first unloading the scene.
+- Fixed: Asset bundle commands (`add_object`, `add_material`, etc.) log an error when the connection times out, causing the build to quit. Now, they log a warning, allowing the build to continue.
+- Fixed: Asset bundle commands (`add_object`, `add_material`, etc.) log an error on a status code 429 (too many requests). Now, they try to wait for approximately 60 seconds before retrying the connection.
+- Updated Unity Engine from 2020.2.7f1 to 2020.3.24f1.
 
 ### `tdw` module
 
 - **Added the following add-ons:**
+  - `AudioInitializer` Initialize standard (Unity) audio. 
   - `Benchmark` Benchmark the FPS over a given number of frames.
   - `CinematicCamera` Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. towards a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but not for most actual experiments.
   - `CollisionManager` Manager add-on for all collisions on this frame.
@@ -96,11 +118,22 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `ObjectManager` A simple manager class for objects in the scene. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.
   - `OccupancyMap` Generate an occupancy map of the scene at runtime.
   - `PhysicsAudioRecorder` Record audio generated by physics events.
+  - `PyImpact` Generate physics-based audio at runtime. 
+  - `ResonanceAudioInitializer` Initialize Resonance Audio. 
   - `Robot` Control the joints of a robot.
   - `RobotArm` Control a robot with inverse kinematics (IK).
   - `StepPhysics` Step n+1 physics frames per communicate() call.
   - `ThirdPersonCamera` Add a third-person camera to the scene.
 - Removed: `TransformInitData`, `RigidbodyInitData`, and `AudioInitData`.
+- Added audio classes: 
+  - `CollisionAudioEvent` Data for a collision audio event. 
+  - `CollisionAudioInfo` Class containing information about collisions required by PyImpact to determine the volume of impact sounds. 
+  - `CollisionAudioType` The "type" of a collision, defined by the motion of the object. 
+  - `ScrapeMaterial` The scrape material type. 
+  - `ScrapeModel` Data for a 3D model being used as a PyImpact scrape surface. 
+  - `ScrapeSubObject` Data for a sub-object of a model being used as a scrape surface. 
+  - Moved audio classes `AudioMaterial`, `Base64Sound` and `Modes` from `tdw.py_impact` to `tdw.physics_audio.audio_material`, `tdw.physics_audio.base64_sound`, and `tdw.physics_audio.modes` 
+  - Renamed `ObjectInfo` to `ObjectAudioStatic` and moved it from `tdw.py_impact` to `tdw.physics_audio.object_audio_static` 
 - Added backend object data classes:
   - `Transform` Transform data (position, forward, rotation).
   - `Rigidbody` Dynamic rigidbody data (velocity, angular velocity, sleeping).
@@ -114,18 +147,23 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `RobotDynamic` Dynamic data for a robot.
   - `RobotStatic` Static data for a robot.
   - `JointType` The type of joint, e.g. `revolute`.
-- Removed `DebugController` (replaced with `Debug` add-on)
+- Removed `DebugController` (replaced with `Logger` add-on)
 - Removed `KeyboardController` (replaced with `Keyboard` add-on)
 - Removed `FloorplanController` (replaced with `Floorplan` add-on)
 - Moved `CollisionObjObj` and `CollisionObjEnv` from `tdw.collision` to `tdw.collision_data`
   - Removed `collisons.py`
 - Made more objects in the floorplan layouts kinematic.
+- Moved `AudioUtils` from `tdw.tdw_utils` to `tdw.audio_utils` 
+- Added: `AudioConstants` Various audio constants. 
+- Added: `RemoteBuildLauncher`
 - (Backend) Added `ModelVerifier` add-on plus the following `ModelTest` classes:
   - `ModelReport`
   - `PhysicsQuality`
   - `MissingMaterials`
 - Moved `tdw.flex.fluid_types.FluidType` to `tdw.flex_data.fluid_type.FluidType`
 - Removed `tdw.flex.fluid_types.FluidTypes` Default fluid type data is now stored in a dictionary: `tdw.flex_data.fluid_type.FLUID_TYPES`
+- Updated `asset_bundle_creator`. To upgrade: Delete `~/asset_bundle_creator` (assuming that it exists). It will be re-created next time you create a model asset bundle.
+- Updated `robot_creator`. To upgrade: Delete `~/robot_creator` (assuming that it exists). It will be re-created next time you create a robot asset bundle.
 
 #### `Controller`
 
@@ -145,6 +183,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### `PyImpact`
 
+- **Complete refactor of PyImpact** 
+  - PyImpact is now an add-on 
+  - Small improvements to impact event detection 
+  - Added scrape sounds 
 - Added: `STATIC_FRICTION` and `DYNAMIC_FRICTION`. Dictionaries of friction coefficients per audio material.
 
 #### `paths` (backend)
@@ -162,13 +204,22 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Renamed `RoomBounds` to `RegionBounds`
 - Moved `scene_bounds.py` and `room_bounds.py` from `scene/` to `scene_data/`.
 
+### Model Library 
+
+- Added `volume` field to each model record. 
+- Copied models from models_full.json to models_core.json: bench, toy_monkey_medium, wood_board, metal_lab_shelf, skateboard_1, tray_02, b05_table_new, enzo_industrial_loft_pine_metal_round_dining_table,quatre_dining_table 
+- Fixed: Some models that have ``flex` set to True in their records are not Flex-compatible. These models now have `flex` set to False.
+
 ### Use Cases
 
 - Removed `single_object.py` and `multi_env.py`; they have been replaced with [`tdw_image_dataset`](https://github.com/alters-mit/tdw_image_dataset), a separate repo.
+- Removed IntPhys demo.
 
 ### Benchmark
 
 - Use the new `Benchmark` add-on for all benchmark controllers.
+- Updated performance benchmarks. Removed obsolete tests.
+- Added: `tdw.backend.performance_benchmark_controller.PerformanceBenchmarkController`
 
 # v1.8.x
 

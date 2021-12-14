@@ -7,7 +7,7 @@ It is possible for a human to interact with a TDW scene using virtual reality (V
 ## Requirements
 
 - Oculus VR with Touch controls. *In the future, more VR hardware will be supported in TDW.*
-- Windows or OS X
+- Windows
 - A GPU that can run at 90 FPS or more on a VR headset.
 
 ## Add a VR rig to a scene

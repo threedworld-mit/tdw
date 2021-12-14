@@ -1,6 +1,6 @@
 # CollisionBase
 
-`from collision_data.collision_base import CollisionBase`
+`from tdw.collision_data.collision_base import CollisionBase`
 
 Abstract base class for collision data.
 

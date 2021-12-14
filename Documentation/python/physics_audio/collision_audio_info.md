@@ -1,6 +1,6 @@
 # CollisionAudioInfo
 
-`from physics_audio.collision_audio_info import CollisionAudioInfo`
+`from tdw.physics_audio.collision_audio_info import CollisionAudioInfo`
 
 Class containing information about collisions required by PyImpact to determine the volume of impact sounds.
 

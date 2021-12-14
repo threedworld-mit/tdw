@@ -215,7 +215,6 @@ for record in librarian.records:
 - **Flex leaks memory when objects are destroyed.** This is a bug in the Unity Flex plugin that we can't fix. If you destroy objects with the command [`destroy_flex_object`](../../api/command_api.md#destroy_flex_object) instead of [`destroy_object`](../../api/command_api.md#destroy_object), *less* memory will be leaked.
 - **Fluid simulations are supported only on Windows.** If you try loading fluids in Ubuntu 16, the screen will flip upside-down and the fluid will be invisible.
 - Adding a Flex Source Actor with the [`set_flex_source_actor`](../../api/command_api.md#set_flex_source_actor) command disables all particle data for all Flex objects in the scene.
-- If you teleport an object with [`teleport_flex_object`](../../api/command_api.md#teleport_flex_object)  or [`teleport_and_rotate_flex_object`](../../api/command_api.md#teleport_and_rotate_flex_object), the build must step through 4 phyiscs frames before the objects starts to move.
 
 ***
 
@@ -245,5 +244,3 @@ Command API:
 - [`destroy_flex_object`](../../api/command_api.md#destroy_flex_object)
 - [`destroy_object`](../../api/command_api.md#destroy_object)
 - [`set_flex_source_actor`](../../api/command_api.md#set_flex_source_actor)
-- [`teleport_flex_object`](../../api/command_api.md#teleport_flex_object)
-- [`teleport_and_rotate_flex_object`](../../api/command_api.md#teleport_and_rotate_flex_object)

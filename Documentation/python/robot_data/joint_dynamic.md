@@ -1,6 +1,6 @@
 # JointDynamic
 
-`from robot_data.joint_dynamic import JointDynamic`
+`from tdw.robot_data.joint_dynamic import JointDynamic`
 
 Dynamic info for a joint that can change per-frame, such as its current position.
 

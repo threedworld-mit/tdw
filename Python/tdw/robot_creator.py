@@ -15,36 +15,6 @@ from tdw.backend.platforms import UNITY_TO_SYSTEM
 class RobotCreator(AssetBundleCreatorBase):
     """
     Download a .urdf or .xacro file and convert it into an asset bundle that is usable by TDW.
-
-    ```python
-    from tdw.robot_creator import RobotCreator
-
-    r = RobotCreator()
-    record = r.create_asset_bundles(
-        urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf",
-        xacro_args=None,
-        required_repo_urls=None,
-        immovable=True,
-        up="y")
-    print(record.name)
-    print(record.urls)
-    ```
-
-    Note that most of the parameters are optional, so this can be simplified to:
-
-    ```python
-    from tdw.robot_creator import RobotCreator
-
-    r = RobotCreator()
-    record = r.create_asset_bundles(urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
-    print(record.name)
-    print(record.urls)
-    ```
-
-    ***
-
-    # Functions
-
     """
 
     # The root temporary directory.
@@ -125,7 +95,8 @@ class RobotCreator(AssetBundleCreatorBase):
                        "source": RobotCreator._get_repo_url(url=urdf_url),
                        "immovable": immovable,
                        "urls": asset_bundles,
-                       "targets": {}}
+                       "targets": {},
+                       "ik": {}}
         return RobotRecord(data=record_data)
 
     def clone_repo(self, url: str) -> Path:

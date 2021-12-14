@@ -48,7 +48,7 @@ Human users can directly control TDW. A human can move an agent using keyboard c
 
 **Trade-offs:** The VR agent can't walk around large spaces without instantaneous teleport actions and doesn't have colliders except on its hands.
 
-### [Embodied avatar](../embodied_avatars/overview.md)
+### [Embodied avatar](../embodied_avatars/embodied_avatar.md)
 
 Embodied avatars are simple geometric shapes with image sensors. They can be useful for prototyping.
 

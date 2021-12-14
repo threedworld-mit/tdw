@@ -1,6 +1,6 @@
 # ObjectStatic
 
-`from object_data.object_static import ObjectStatic`
+`from tdw.object_data.object_static import ObjectStatic`
 
 Static data for an object. This data won't change between frames.
 

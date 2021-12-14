@@ -6,6 +6,14 @@ Base class for creating asset bundles.
 
 ***
 
+## Class Variables
+
+| Variable | Type | Description |
+| --- | --- | --- |
+| `UNITY_VERSION` | str | Use this version of Unity Editor to launch the asset bundle creator. |
+
+***
+
 ## Functions
 
 #### \_\_init\_\_

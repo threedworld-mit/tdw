@@ -29,6 +29,7 @@ class Table(ProcGenObjectRecipe):
     CENTERPIECE_MODEL_NAMES: List[str] = ['round_bowl_small_walnut', 'vase_01', 'vase_02', 'vase_03', 'vase_05',
                                           'vase_06', 'pot', 'jug01', 'jug02', 'jug03', 'jug04', 'jug05',
                                           'skillet_closed', 'skillet_open_no_lid']
+    print("TODO coasters")
     """:class_var
     The height of the plate model.
     """

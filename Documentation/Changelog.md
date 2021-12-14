@@ -1,8 +1,229 @@
 # CHANGELOG
 
+# v1.9.x
+
+To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
+
+## v1.9.0
+
+### New Features
+
+- **Added add-ons.** These objects can be appended to `Controller.add_ons` to inject commands per `communicate()` call. They've been designed to simplify common tasks in TDW such as capturing images per frame or logging commands per frame.
+- **Completely rewrite of documentation.** All non-API documentation has been completely rewritten. Documentation is now divided into "lessons" for specified subjects such as robotics or visual perception. You can find the complete table of contents on the README. **Even if you are an experienced TDW user, we recommend you read our new documentation.** You might learn new techniques!
+- **PyImpact is now an add-on and has scrape sounds.** [Read this for more information.](lessons/audio/py_impact.md)
+- (External repo) **[Magnebot](https://github.com/alters-mit/magnebot) has been upgraded to version 2.0.** Magnebot can now be used as an add-on, meaning that it can be added to any TDW controller.
+
+### Command API
+
+#### New Commands
+
+| Command                                    | Description                                                  |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `move_avatar_towards_object`               | Move the avatar towards an object.                           |
+| `move_avatar_towards_position`             | Move the avatar towards the target position.                 |
+| `focus_towards_object`                     | Focus towards the depth-of-field towards the position of an object. |
+| `rotate_sensor_container_towards_object`   | Rotate the sensor container towards the current position of a target object. |
+| `rotate_sensor_container_towards_position` | Rotate the sensor container towards a position at a given angular speed per frame. |
+| `rotate_sensor_container_towards_rotation` | Rotate the sensor container towards a target rotation.       |
+| `send_static_rigidbodies`                  | Request static rigidbody data (mass, kinematic state, etc.)  |
+| `parent_audio_source_to_object`            | Parent an audio source to an object. When the object moves, the audio source will move with it. |
+| `send_robot_joint_velocities`              | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. |
+| `attach_empty_object`                      | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. |
+| `send_empty_objects`                       | Send data each empty object in the scene.                    |
+
+#### Modified Commands
+
+| Command                                                | Modification                                                 |
+| ------------------------------------------------------ | ------------------------------------------------------------ |
+| `play_audio_data`<br>`play_point_source_data`          | Parameter ID now refers to a unique ID for the audio source (not an object ID).<br>Added parameter `position`. |
+| `set_reverb_space_expert`<br>`set_reverb_space_simple` | Renamed parameter `env_id` to `region_id`                    |
+| `play_humanoid_animation`                              | Added optional parameter `framerate`                         |
+| `send_model_report`                                    | Added parameter `flex`. If True, this model is expected to be Flex-compatible. |
+
+#### Renamed Commands
+
+| Command                          | New name                |
+| -------------------------------- | ----------------------- |
+| `send_environments`              | `send_scene_regions`    |
+| `create_flex_fluid_object`       | `set_flex_fluid_actor`  |
+| `create_flex_fluid_source_actor` | `set_flex_source_actor` |
+| `create_painting`                 | `create_textured_quad`                       |
+| `destroy_painting`                | `destroy_textured_quad`                      |
+| `rotate_painting_by`              | `rotate_textured_quad_by`                    |
+| `scale_painting`                  | `scale_textured_quad`                        |
+| `set_painting_texture`            | `set_textured_quad`                          |
+| `show_painting`                   | `show_textured_quad`                         |
+| `teleport_painting`               | `teleport_textured_quad`                     |
+
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `send_model_report` | Added parameter `flex`: If True, this model is expected to be Flex-compatible. |
+
+#### Removed Commands
+
+| Command                                                      | Reason                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `set_proc_gen_reflection_probe`                              | Deprecated in v1.8; use `enable_reflection_probes` instead.  |
+| `rotate_flex_object_by`<br>`rotate_flex_object_by_quaternion`<br>`teleport_and_rotate_flex_object`<br>`teleport_flex_object` | Flex objects should be teleported and rotated prior to enabling them for Flex. |
+| `rotate_painting_to_euler_angles`                            | Redundant and can gimbal lock.                               |
+| `hide_painting`                                              | Replaced with `show_textured_quad` (set `"show"` to False)   |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data            | Description                                         |
+| ---------------------- | --------------------------------------------------- |
+| `StaticRigidbodies`    | Static rigidbody data (mass, kinematic state, etc.) |
+| `RobotJointVelocities` | Velocity for a robot in the scene.                  |
+| `EmptyObjects`         | The position of each empty object in the scene.     |
+
+#### Renamed Output Data
+
+| Output Data    | New name       |
+| -------------- | -------------- |
+| `Environments` | `SceneRegions` |
+
+#### Modified Output Data
+
+| Output Data    | Modification                                                 |
+| -------------- | ------------------------------------------------------------ |
+| `AudioSources` | Added: `get_samples()`. Audio samples from the audio listener. |
+| `Rigidbodies`  | Removed: `get_mass(index)`, `get_kinematic(index)`. These are now in `StaticRigidbodies`. |
+
+### Build
+
+- Adjusted avatar type `A_Simple_Body`:
+  - Fixed: Avatar bodies are centered on the avatar's pivot as opposed to halfway above it (i.e. making the pivot of the avatar the bottom-center), thus causing the avatar to "pop" out of the ground when it is first created.
+  - Fixed: The cube avatar requires much more torque to turn. Its box collider has been replaced with a cube collider.
+- Fixed: Warnings when repeatedly sending `send_model_report` without first unloading the scene.
+- Fixed: Asset bundle commands (`add_object`, `add_material`, etc.) log an error when the connection times out, causing the build to quit. Now, they log a warning, allowing the build to continue.
+- Fixed: Asset bundle commands (`add_object`, `add_material`, etc.) log an error on a status code 429 (too many requests). Now, they try to wait for approximately 60 seconds before retrying the connection.
+- Updated Unity Engine from 2020.2.7f1 to 2020.3.24f1.
+
+### `tdw` module
+
+- **Added the following add-ons:**
+  - `AudioInitializer` Initialize standard (Unity) audio. 
+  - `Benchmark` Benchmark the FPS over a given number of frames.
+  - `CinematicCamera` Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. towards a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but not for most actual experiments.
+  - `CollisionManager` Manager add-on for all collisions on this frame.
+  - `EmbodiedAvatar` Wrapper add-on for the `A_Simple_Body` avatar.
+  - `Floorplan` Initialize a scene populated by objects in pre-scripted layouts.
+  - `ImageCapture` Request image data and save the images to disk.
+  - `Keyboard` Add keyboard controls to a TDW scene.
+  - `Logger` Record and playback every command sent to the build.
+  - `ObjectManager` A simple manager class for objects in the scene. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.
+  - `OccupancyMap` Generate an occupancy map of the scene at runtime.
+  - `PhysicsAudioRecorder` Record audio generated by physics events.
+  - `PyImpact` Generate physics-based audio at runtime. 
+  - `ResonanceAudioInitializer` Initialize Resonance Audio. 
+  - `Robot` Control the joints of a robot.
+  - `RobotArm` Control a robot with inverse kinematics (IK).
+  - `StepPhysics` Step n+1 physics frames per communicate() call.
+  - `ThirdPersonCamera` Add a third-person camera to the scene.
+- Removed: `TransformInitData`, `RigidbodyInitData`, and `AudioInitData`.
+- Added audio classes: 
+  - `CollisionAudioEvent` Data for a collision audio event. 
+  - `CollisionAudioInfo` Class containing information about collisions required by PyImpact to determine the volume of impact sounds. 
+  - `CollisionAudioType` The "type" of a collision, defined by the motion of the object. 
+  - `ScrapeMaterial` The scrape material type. 
+  - `ScrapeModel` Data for a 3D model being used as a PyImpact scrape surface. 
+  - `ScrapeSubObject` Data for a sub-object of a model being used as a scrape surface. 
+  - Moved audio classes `AudioMaterial`, `Base64Sound` and `Modes` from `tdw.py_impact` to `tdw.physics_audio.audio_material`, `tdw.physics_audio.base64_sound`, and `tdw.physics_audio.modes` 
+  - Renamed `ObjectInfo` to `ObjectAudioStatic` and moved it from `tdw.py_impact` to `tdw.physics_audio.object_audio_static` 
+- Added backend object data classes:
+  - `Transform` Transform data (position, forward, rotation).
+  - `Rigidbody` Dynamic rigidbody data (velocity, angular velocity, sleeping).
+  - `Bound` Dynamic bounds data for a single object (as opposed to `Bounds` output data).
+  - `ObjectStatic` Static object data (name, mass, etc.).
+- Added backend robot data classes:
+  - `Drive` Static data for a joint drive.
+  - `JointDynamic` Dynamic data for a joint.
+  - `JointStatic` Static data for a joint.
+  - `NonMoving` Static data for a non-joint body part of a robot.
+  - `RobotDynamic` Dynamic data for a robot.
+  - `RobotStatic` Static data for a robot.
+  - `JointType` The type of joint, e.g. `revolute`.
+- Removed `DebugController` (replaced with `Logger` add-on)
+- Removed `KeyboardController` (replaced with `Keyboard` add-on)
+- Removed `FloorplanController` (replaced with `Floorplan` add-on)
+- Moved `CollisionObjObj` and `CollisionObjEnv` from `tdw.collision` to `tdw.collision_data`
+  - Removed `collisons.py`
+- Made more objects in the floorplan layouts kinematic.
+- Moved `AudioUtils` from `tdw.tdw_utils` to `tdw.audio_utils` 
+- Added: `AudioConstants` Various audio constants. 
+- Added: `RemoteBuildLauncher`
+- (Backend) Added `ModelVerifier` add-on plus the following `ModelTest` classes:
+  - `ModelReport`
+  - `PhysicsQuality`
+  - `MissingMaterials`
+- Moved `tdw.flex.fluid_types.FluidType` to `tdw.flex_data.fluid_type.FluidType`
+- Removed `tdw.flex.fluid_types.FluidTypes` Default fluid type data is now stored in a dictionary: `tdw.flex_data.fluid_type.FLUID_TYPES`
+- Updated `asset_bundle_creator`. To upgrade: Delete `~/asset_bundle_creator` (assuming that it exists). It will be re-created next time you create a model asset bundle.
+- Updated `robot_creator`. To upgrade: Delete `~/robot_creator` (assuming that it exists). It will be re-created next time you create a robot asset bundle.
+
+#### `Controller`
+
+- **Added: `Controller.add_ons`** A list of add-ons that will inject commands every time `communicate()` is called.
+- **Removed: `Controller.start()`** The command it used to send is automatically sent in the Controller constructor. 
+- **Removed: `Controller.add_object(model_name)`** Use `Controller.get_add_object(model_name)` instead.
+- **Removed: `Controller.load_streamed_scene(scene)`** Use `Controller.get_add_scene(scene_name)` instead.
+- Removed `check_build_process` from the constructor because it's too slow to be useful.
+- Added: `self.get_add_physics_object()`.  Add an object to the scene with physics values (mass, friction coefficients, etc.).
+- Added: `DEFAULT_PHYSICS_VALUES`. A dictionary of default `ObjectInfo` per object. This corresponds to `PyImpact.get_object_info()`.
+- Removed all cached librarian fields (`self.model_librarian`, `self.scene_librarian`, etc.) and replaced them with class variable dictionaries that automatically cache librarians (`Controller.MODEL_LIBRARIANS`, `Controller.SCENE_LIBRARIANS`, etc.) This allows multiple librarian objects to be cached at the same time and allows other classes to access them.
+- All asset bundle wrapper functions (`get_add_object()`, `get_add_scene()`, etc.) are now static.
+
+#### `TDWUtils`
+
+- Fixed: Unhandled ZeroDivisionError  in `get_unit_scale(record)` if bounds are all 0 (if so, returns 1).
+
+#### `PyImpact`
+
+- **Complete refactor of PyImpact** 
+  - PyImpact is now an add-on 
+  - Small improvements to impact event detection 
+  - Added scrape sounds 
+- Added: `STATIC_FRICTION` and `DYNAMIC_FRICTION`. Dictionaries of friction coefficients per audio material.
+
+#### `paths` (backend)
+
+- Added: `EXAMPLE_CONTROLLER_OUTPUT_PATH`
+- Removed: `VALIDATOR_REPORT_PATH`
+
+#### Model Pipeline (backend)
+
+- Removed: `model_pipeline/missing_materials.py`, `model_pipeline/validator.py`, `model_pipeline/write_physics_quality.py` (replaced with the `ModelVerifier` add-on)
+  - Improved the accuracy of the physics quality test.
+
+#### `SceneBounds` and `RoomBounds`
+
+- Renamed `RoomBounds` to `RegionBounds`
+- Moved `scene_bounds.py` and `room_bounds.py` from `scene/` to `scene_data/`.
+
+### Model Library 
+
+- Added `volume` field to each model record. 
+- Copied models from models_full.json to models_core.json: bench, toy_monkey_medium, wood_board, metal_lab_shelf, skateboard_1, tray_02, b05_table_new, enzo_industrial_loft_pine_metal_round_dining_table,quatre_dining_table 
+- Fixed: Some models that have ``flex` set to True in their records are not Flex-compatible. These models now have `flex` set to False.
+
+### Use Cases
+
+- Removed `single_object.py` and `multi_env.py`; they have been replaced with [`tdw_image_dataset`](https://github.com/alters-mit/tdw_image_dataset), a separate repo.
+- Removed IntPhys demo.
+
+### Benchmark
+
+- Use the new `Benchmark` add-on for all benchmark controllers.
+- Updated performance benchmarks. Removed obsolete tests.
+- Added: `tdw.backend.performance_benchmark_controller.PerformanceBenchmarkController`
+
 # v1.8.x
 
-To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
+To upgrade from TDW v1.7 to v1.8, read [this guide](upgrade_guides/v1.7_to_v1.8.md).
 
 ## v1.8.29
 
@@ -62,7 +283,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 | Command | Description |
 | --- | --- |
-| `add_smpl_humanoid` | Add a parameterized humanoid to the scene using [SMPL](https://smpl.is.tue.mpg.de/en). Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters. |
+| `add_smpl_humanoid` | Add a parameterized humanoid to the scene using [SMPL](https://smpl.is.tue.mpg.de). Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters. |
 
 ### Humanoid libraries
 
@@ -79,7 +300,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Example Controllers
 
-- Added: `smpl_humanoid.py` Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body parameters and play an animation.
+- Added: `smpl_humanoid.py` Add a [SMPL humanoid](https://smpl.is.tue.mpg.de) to the scene. Set its body parameters and play an animation.
 
 ### Documentation
 
@@ -865,9 +1086,9 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### New Features
 
-- Added a [robotics API](misc_frontend/robots.md) to TDW. For now, the total number of robots is small, but we'll add more over time.
-  - Added the [Magnebot](misc_frontend/magnebot.md) to TDW.
-  - Deprecated the Sticky Mitten Avatar (see [upgrade guide](Documentation/upgrade_guides/v1.7_to_v1.8)).
+- Added a robotics API to TDW. For now, the total number of robots is small, but we'll add more over time.
+  - Added the Magnebot to TDW.
+  - Deprecated the Sticky Mitten Avatar (see [upgrade guide](upgrade_guides/v1.7_to_v1.8.md)).
 - Significant graphics improvements in certain scenes because many models didn't cast shadows or reflect light correctly.
 - Updated Unity Engine from 2019.4 to 2020.2
 - Fixed: OS X and Linux builds don't have executable flags. In order to preserve permissions, they are now stored online as .tar.gz files instead of .zip files.
@@ -1027,7 +1248,7 @@ It's currently not possible to draw Flex particles (`"draw_particles"` in the Co
 
 # v1.7.x
 
-To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/upgrade_guides/v1.6_to_v1.7).
+To upgrade from TDW v1.6 to v1.7, read [this guide](upgrade_guides/v1.6_to_v1.7.md).
 
 ## v1.7.16
 
@@ -2008,7 +2229,7 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/upgrade_guides
 - **The build will automatically launch when you launch a controller.** 
 - When you launch a controller, it will automatically check to make sure that your local TDW install it is up-to-date and, if not, offer suggestions for how to upgrade.
 
-For more information, please read [Getting Started](getting_started.md).
+For more information, please read Getting Started.
 
 ### `tdw` module
 

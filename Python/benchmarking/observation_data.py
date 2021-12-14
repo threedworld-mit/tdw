@@ -1,42 +1,21 @@
-from benchmarker import Benchmarker
+from tdw.backend.performance_benchmark_controller import PerformanceBenchmarkController
 
 """
-Objects data benchmarks.
+Observation data benchmarks.
 """
 
-if __name__ == "__main__":
-    b = Benchmarker()
-
-    header = "| Test | FPS |\n| --- | --- |\n"
-    output = header[:]
-
-    rows = []
-
-    b.start()
-    rows.append(b.run(boxes=True, images=True, passes="_img",
-                      row="--boxes --images --passes _img"))
-
-    b.start()
-    rows.append(b.run(boxes=True, images=True, passes="_id",
-                      row="--boxes --images --passes _id"))
-
-    b.start()
-    rows.append(b.run(boxes=True,  images=True, passes="none", id_grayscale=True,
-                      row="--boxes --id_grayscale --images --passes none"))
-
-    b.start()
-    rows.append(b.run(boxes=True,  images=True, passes="none", occlusion=True,
-                      row="--boxes --occlusion --images --passes none"))
-
-    b.start()
-    rows.append(b.run(boxes=True, id_colors=True, images=True, passes="none",
-                      row="--boxes --id_colors --images --passes none"))
-
-    b.start()
-    rows.append(b.run(boxes=True, transforms=True,
-                      row="--boxes --transforms"))
-    for row in rows:
-        output += row + "\n"
-    print(output)
-
-    b.communicate({"$type": "terminate"})
+output = "| _img pass | _id pass | IdPassSegmentationColors | Occlusion | FPS |" \
+         "\n| --- | --- | --- | --- | --- |\n"
+c = PerformanceBenchmarkController(launch_build=False)
+for images, pass_masks, id_colors, occlusion in zip(
+        [True, True, False, False],
+        [["_img"], ["_id"], None, None],
+        [False, False, True, False],
+        [False, False, False, True]):
+    fps = c.run(boxes=True, images=images, pass_masks=pass_masks, id_colors=id_colors, occlusion=occlusion,
+                num_frames=2000)
+    img_pass = True if pass_masks is not None and "_img" in pass_masks else False
+    id_pass = True if pass_masks is not None and "_id" in pass_masks else False
+    output += f"| {img_pass} | {id_pass} | {id_colors} | {occlusion} | {fps} |\n"
+c.communicate({"$type": "terminate"})
+print(output)

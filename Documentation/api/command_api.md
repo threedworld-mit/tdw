@@ -1,6 +1,6 @@
 # Command API
 
-**This document contains all commands currently available in TDW. For a usage guide, [read this](command_api_guide.md).**
+**This document contains all commands currently available in TDW.**
 
 # Table of Contents
 
@@ -18,6 +18,7 @@
 | [`do_nothing`](#do_nothing) | Do nothing. Useful for benchmarking.  |
 | [`enable_reflection_probes`](#enable_reflection_probes) | Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation. |
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
+| [`parent_audio_source_to_object`](#parent_audio_source_to_object) | Parent an audio source to an object. When the object moves, the audio source will move with it. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`perlin_noise_terrain`](#perlin_noise_terrain) | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
@@ -92,7 +93,7 @@
 | [`set_avatar_color`](#set_avatar_color) | Set the color of an avatar. To allow transparency (the "alpha" channel, or "a" value in the color), first send enable_avatar_transparency |
 | [`set_avatar_forward`](#set_avatar_forward) | Set the forward directional vector of the avatar.  |
 | [`set_camera_clipping_planes`](#set_camera_clipping_planes) | Set the near and far clipping planes of the avatar's camera. |
-| [`set_field_of_view`](#set_field_of_view) | Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send toggle_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send toggle_image_sensor again.  |
+| [`set_field_of_view`](#set_field_of_view) | Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again.  |
 | [`set_pass_masks`](#set_pass_masks) | Set which types of images the avatar will render. By default, the avatar will render, but not send, these images. See send_images in the Command API.  |
 | [`teleport_avatar_to`](#teleport_avatar_to) | Teleport the avatar to a position.  |
 
@@ -186,12 +187,18 @@
 | [`pick_up`](#pick_up) | Pick up all objects that any sticky side of the mitten is touching.  |
 | [`pick_up_proximity`](#pick_up_proximity) | Pick up all objects within an emitted volume defined by a radius and a distance. See Sticky Mitten Avatar documentation for more information.  |
 
+**Move Avatar Towards**
+
+| Command | Description |
+| --- | --- |
+| [`move_avatar_towards_object`](#move_avatar_towards_object) | Move the avatar towards an object.  |
+| [`move_avatar_towards_position`](#move_avatar_towards_position) | Move the avatar towards the target position.  |
+
 **Sensor Container Command**
 
 | Command | Description |
 | --- | --- |
 | [`enable_image_sensor`](#enable_image_sensor) | Turn a sensor on or off. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), |
-| [`focus_on_object`](#focus_on_object) | Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera.  |
 | [`look_at`](#look_at) | Look at an object (rotate the image sensor to center the object in the frame). |
 | [`look_at_avatar`](#look_at_avatar) | Look at another avatar (rotate the image sensor to center the avatar in the frame). |
 | [`look_at_position`](#look_at_position) | Look at a worldspace position (rotate the image sensor to center the position in the frame). |
@@ -201,6 +208,21 @@
 | [`set_anti_aliasing`](#set_anti_aliasing) | Set the anti-aliasing mode for the avatar's camera.  |
 | [`set_render_order`](#set_render_order) | Set the order in which this camera will render relative to other cameras in the scene. This can prevent flickering on the screen when there are multiple cameras. This doesn't affect image capture; it only affects what the simulation application screen is displaying at runtime. |
 | [`translate_sensor_container_by`](#translate_sensor_container_by) | Translate the sensor container relative to the avatar by a given directional vector. |
+
+**Focus On Object Command**
+
+| Command | Description |
+| --- | --- |
+| [`focus_on_object`](#focus_on_object) | Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera.  |
+| [`focus_towards_object`](#focus_towards_object) | Focus towards the depth-of-field towards the position of an object.  |
+
+**Rotate Sensor Container Towards**
+
+| Command | Description |
+| --- | --- |
+| [`rotate_sensor_container_towards_object`](#rotate_sensor_container_towards_object) | Rotate the sensor container towards the current position of a target object.  |
+| [`rotate_sensor_container_towards_position`](#rotate_sensor_container_towards_position) | Rotate the sensor container towards a position at a given angular speed per frame.  |
+| [`rotate_sensor_container_towards_rotation`](#rotate_sensor_container_towards_rotation) | Rotate the sensor container towards a target rotation.  |
 
 **Create Reverb Space Command**
 
@@ -216,7 +238,7 @@
 | [`adjust_directional_light_intensity_by`](#adjust_directional_light_intensity_by) | Adjust the intensity of the directional light (the sun) by a value. |
 | [`reset_directional_light_rotation`](#reset_directional_light_rotation) | Reset the rotation of the directional light (the sun). |
 | [`rotate_directional_light_by`](#rotate_directional_light_by) | Rotate the directional light (the sun) by an angle and axis. This command will change the direction of cast shadows, which could adversely affect lighting that uses an HDRI skybox, Therefore this command should only be used for interior scenes where the effect of the skybox is less apparent. The original relationship between directional (sun) light and HDRI skybox can be restored by using the reset_directional_light_rotation command. |
-| [`set_directionial_light_color`](#set_directionial_light_color) | Set the color of the directional light (the sun). |
+| [`set_directional_light_color`](#set_directional_light_color) | Set the color of the directional light (the sun). |
 
 **Flex Container Command**
 
@@ -258,6 +280,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
+| [`attach_empty_object`](#attach_empty_object) | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
@@ -282,14 +305,9 @@
 | [`apply_force_to_flex_object`](#apply_force_to_flex_object) | Apply a directional force to the FlexActor object.  |
 | [`assign_flex_container`](#assign_flex_container) | Assign the FlexContainer of the object.  |
 | [`destroy_flex_object`](#destroy_flex_object) | Destroy the Flex object. This will leak memory (due to a bug in the Flex library that we can't fix), but will leak <emphasis>less</emphasis> memory than destroying a Flex-enabled object with <computeroutput>destroy_object</computeroutput>.  |
-| [`rotate_flex_object_by`](#rotate_flex_object_by) | Rotate a Flex object by a given angle around a given axis.  |
-| [`rotate_flex_object_by_quaternion`](#rotate_flex_object_by_quaternion) | Rotate a Flex object by a given quaternion.  |
-| [`rotate_flex_object_to`](#rotate_flex_object_to) | Rotate a Flex object to a new rotation.  |
 | [`set_flex_object_mass`](#set_flex_object_mass) | Set the mass of the Flex object. The mass is distributed equally across all particles. Thus the particle mass equals mass divided by number of particles.  |
 | [`set_flex_particles_mass`](#set_flex_particles_mass) | Set the mass of all particles in the Flex object. Thus, the total object mass equals the number of particles times the particle mass.  |
 | [`set_flex_particle_fixed`](#set_flex_particle_fixed) | Fix the particle in the Flex object, such that it does not move.  |
-| [`teleport_and_rotate_flex_object`](#teleport_and_rotate_flex_object) | Teleport a Flex object to a new position and rotation.  |
-| [`teleport_flex_object`](#teleport_flex_object) | Teleport a Flex object to a new position.  |
 
 **Object Type Command**
 
@@ -337,9 +355,9 @@
 
 | Command | Description |
 | --- | --- |
-| [`create_flex_fluid_object`](#create_flex_fluid_object) | Create or adjust a FlexArrayActor as a fluid object.  |
-| [`create_flex_fluid_source_actor`](#create_flex_fluid_source_actor) | Create or adjust a FlexSourceActor as a fluid "hose pipe" source.  |
 | [`set_flex_cloth_actor`](#set_flex_cloth_actor) | Create or adjust a FlexClothActor for the object.  |
+| [`set_flex_fluid_actor`](#set_flex_fluid_actor) | Create or adjust a FlexArrayActor as a fluid object.  |
+| [`set_flex_fluid_source_actor`](#set_flex_fluid_source_actor) | Create or adjust a FlexSourceActor as a fluid "hose pipe" source.  |
 | [`set_flex_soft_actor`](#set_flex_soft_actor) | Create or adjust a FlexSoftActor for the object.  |
 | [`set_flex_solid_actor`](#set_flex_solid_actor) | Create or adjust a FlexSolidActor for the object.  |
 
@@ -350,30 +368,11 @@
 | [`hide_object`](#hide_object) | Hide the object. |
 | [`show_object`](#show_object) | Show the object. |
 
-**Painting Command**
-
-| Command | Description |
-| --- | --- |
-| [`create_painting`](#create_painting) | Create a blank "painting" in the scene. |
-| [`destroy_painting`](#destroy_painting) | Destroy an existing painting. |
-
-**Adjust Painting Command**
-
-| Command | Description |
-| --- | --- |
-| [`hide_painting`](#hide_painting) | Hide a visible painting. |
-| [`rotate_painting_by`](#rotate_painting_by) | Rotate a painting by a given angle around a given axis. |
-| [`rotate_painting_to_euler_angles`](#rotate_painting_to_euler_angles) | Set the rotation of the painting with Euler angles.  |
-| [`scale_painting`](#scale_painting) | Scale a painting by a factor. |
-| [`set_painting_texture`](#set_painting_texture) | Apply a texture to a pre-existing painting.  |
-| [`show_painting`](#show_painting) | Show a painting that was hidden. |
-| [`teleport_painting`](#teleport_painting) | Teleport a painting to a new position. |
-
 **Play Audio Data Command**
 
 | Command | Description |
 | --- | --- |
-| [`play_audio_data`](#play_audio_data) | Play a sound, using audio sample data sent over from the controller. |
+| [`play_audio_data`](#play_audio_data) | Play a sound at a position using audio sample data sent over from the controller. |
 | [`play_point_source_data`](#play_point_source_data) | Make this object a ResonanceAudioSoundSource and play the audio data. |
 
 **Position Marker Command**
@@ -388,7 +387,7 @@
 | Command | Description |
 | --- | --- |
 | [`set_ambient_occlusion_intensity`](#set_ambient_occlusion_intensity) | Set the intensity (darkness) of the Ambient Occlusion effect. |
-| [`set_ambient_occlusion_thickness_modifier`](#set_ambient_occlusion_thickness_modifier) | Set the Thickness Modifer for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners. |
+| [`set_ambient_occlusion_thickness_modifier`](#set_ambient_occlusion_thickness_modifier) | Set the Thickness Modifier for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners. |
 | [`set_aperture`](#set_aperture) | Set the depth-of-field aperture in post processing volume.  |
 | [`set_contrast`](#set_contrast) | Set the contrast value of the post-processing color grading. |
 | [`set_focus_distance`](#set_focus_distance) | Set the depth-of-field focus distance in post processing volume.  |
@@ -407,7 +406,6 @@
 | [`set_proc_gen_ceiling_color`](#set_proc_gen_ceiling_color) | Set the albedo RGBA color of the ceiling.  |
 | [`set_proc_gen_ceiling_height`](#set_proc_gen_ceiling_height) | Set the height of all ceiling tiles in a proc-gen room. |
 | [`set_proc_gen_ceiling_texture_scale`](#set_proc_gen_ceiling_texture_scale) | Set the scale of the tiling of the ceiling material's main texture. |
-| [`set_proc_gen_reflection_probe`](#set_proc_gen_reflection_probe) | Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates.  |
 | [`set_proc_gen_walls_color`](#set_proc_gen_walls_color) | Set the albedo RGBA color of the walls. |
 | [`set_proc_gen_walls_texture_scale`](#set_proc_gen_walls_texture_scale) | Set the texture scale of all walls in a proc-gen room. |
 
@@ -522,7 +520,8 @@
 | Command | Description |
 | --- | --- |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
-| [`send_robots`](#send_robots) | Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. See also: send_static_robots  |
+| [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
+| [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations.  |
 | [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
@@ -546,11 +545,12 @@
 | --- | --- |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
-| [`send_environments`](#send_environments) | Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) add_scene  |
+| [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
+| [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -568,10 +568,28 @@
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_bounds`](#send_bounds) | Send rotated bounds data of objects in the scene.  |
 | [`send_local_transforms`](#send_local_transforms) | Send Transform (position and rotation) data of objects in the scene relative to their parent object.  |
-| [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, mass, etc.) data of objects in the scene.  |
+| [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.  |
 | [`send_segmentation_colors`](#send_segmentation_colors) | Send segmentation color data for objects in the scene.  |
+| [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
 | [`send_volumes`](#send_volumes) | Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value.  |
+
+**Textured Quad Command**
+
+| Command | Description |
+| --- | --- |
+| [`create_textured_quad`](#create_textured_quad) | Create a blank quad (a rectangular mesh with four vertices) in the scene. |
+| [`destroy_textured_quad`](#destroy_textured_quad) | Destroy an existing textured quad. |
+
+**Adjust Textured Quad Command**
+
+| Command | Description |
+| --- | --- |
+| [`rotate_textured_quad_by`](#rotate_textured_quad_by) | Rotate a textured quad by a given angle around a given axis. |
+| [`scale_textured_quad`](#scale_textured_quad) | Scale a textured quad by a factor. |
+| [`set_textured_quad`](#set_textured_quad) | Apply a texture to a pre-existing quad.  |
+| [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
+| [`teleport_textured_quad`](#teleport_textured_quad) | Teleport a textured quad to a new position. |
 
 **Vr Command**
 
@@ -770,6 +788,22 @@ The filename of a locally-stored scene.
 | --- | --- |
 | `"ProcGenScene"` | The default ProcGen scene. |
 | `"PointLightScene"` | This is identical to ProcGenScene but with an extra point light. |
+
+***
+
+## **`parent_audio_source_to_object`**
+
+Parent an audio source to an object. When the object moves, the audio source will move with it.
+
+
+```python
+{"$type": "parent_audio_source_to_object", "object_id": 1, "audio_id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The object ID. | |
+| `"audio_id"` | int | The audio source ID. | |
 
 ***
 
@@ -1479,15 +1513,16 @@ Tell the build to send a report of a model asset bundle. Each report will be a s
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/model_librarian.md`</font>
 
 ```python
-{"$type": "send_model_report", "id": 1, "name": "string", "url": "string"}
+{"$type": "send_model_report", "flex": True, "id": 1, "name": "string", "url": "string"}
 ```
 
 ```python
-{"$type": "send_model_report", "id": 1, "name": "string", "url": "string", "scale_factor": 1, "category": ""}
+{"$type": "send_model_report", "flex": True, "id": 1, "name": "string", "url": "string", "scale_factor": 1, "category": ""}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"flex"` | bool | If True, we expect this model to be Flex-compatible. | |
 | `"id"` | int | The unique ID of the object. | |
 | `"scale_factor"` | float | The default scale factor of a model. | 1 |
 | `"category"` | string | The model category. | "" |
@@ -1753,9 +1788,9 @@ Set the near and far clipping planes of the avatar's camera.
 
 ## **`set_field_of_view`**
 
-Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send toggle_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send toggle_image_sensor again. 
+Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
 ```python
 {"$type": "set_field_of_view"}
@@ -1795,15 +1830,15 @@ Set which types of images the avatar will render. By default, the avatar will re
 
 | Value | Description |
 | --- | --- |
-| `_img` | ![](../images/pass_masks/img_0.jpg) Standard rendering of the scene. |
-| `_id` | ![](../images/pass_masks/id_0.png) The segmentation colors of each object. |
-| `_category` | ![](../images/pass_masks/category_0.png) The segmentation colors of each semantic object category (note that both jugs on the table have the same color). |
-| `_mask` | ![](../images/pass_masks/mask_0.png) Similar to `_id` and `_category` but every object has the same color. |
-| `_depth` | ![](../images/pass_masks/depth_0.png) Depth values per pixel. The image looks strange because it is using color rather than grayscale to encode more precisely. To decode the image, use [`TDWUtils.get_depth_values()`](../python/tdw_utils.md). |
-| `_depth_simple` | ![](../images/pass_masks/depth_simple_0.png) Depth values per pixel. This grayscale image is less precise than the `_depth` pass but is easier to use and doesn't require a conversion function, making it somewhat faster. The depth values aren't normalized. |
-| `_normals` | ![](../images/pass_masks/normals_0.png) Surfaces are colored according to their orientation in relation to the camera. |
-| `_flow` | ![](../images/pass_masks/flow_0.png) Pixels are colored according to their motion in relation to the camera. |
-| `_albedo` | ![](../images/pass_masks/albedo_0.png) Only color and texture, as if lit with only ambient light. |
+| `_img` | ![](images/pass_masks/img_0.jpg) Standard rendering of the scene. |
+| `_id` | ![](images/pass_masks/id_0.png) The segmentation colors of each object. |
+| `_category` | ![](images/pass_masks/category_0.png) The segmentation colors of each semantic object category (note that both jugs on the table have the same color). |
+| `_mask` | ![](images/pass_masks/mask_0.png) Similar to `_id` and `_category` but every object has the same color. |
+| `_depth` | ![](images/pass_masks/depth_0.png) Depth values per pixel. The image looks strange because it is using color rather than grayscale to encode more precisely. To decode the image, use [`TDWUtils.get_depth_values()`](../python/tdw_utils.md). |
+| `_depth_simple` | ![](images/pass_masks/depth_simple_0.png) Depth values per pixel. This grayscale image is less precise than the `_depth` pass but is easier to use and doesn't require a conversion function, making it somewhat faster. The depth values aren't normalized. |
+| `_normals` | ![](images/pass_masks/normals_0.png) Surfaces are colored according to their orientation in relation to the camera. |
+| `_flow` | ![](images/pass_masks/flow_0.png) Pixels are colored according to their motion in relation to the camera. |
+| `_albedo` | ![](images/pass_masks/albedo_0.png) Only color and texture, as if lit with only ambient light. |
 
 ***
 
@@ -2770,6 +2805,58 @@ Pick up all objects within an emitted volume defined by a radius and a distance.
 | `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
+# MoveAvatarTowards
+
+Move an after towards a target at a given speed per frame.
+
+***
+
+## **`move_avatar_towards_object`**
+
+Move the avatar towards an object. 
+
+- <font style="color:orange">**Non-physics motion**: This command ignores the build's physics engine. If you send this command during a physics simulation (i.e. to a non-kinematic avatar), the physics might glitch.</font>
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+
+```python
+{"$type": "move_avatar_towards_object", "object_id": 1, "offset": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "move_avatar_towards_object", "object_id": 1, "offset": {"x": 1.1, "y": 0.0, "z": 0}, "use_centroid": True, "speed": 0.1, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the object. | |
+| `"offset"` | Vector3 | The offset the position of the avatar from the object. | |
+| `"use_centroid"` | bool | If true, move towards the centroid of the object. If false, move towards the position of the object (y=0). | True |
+| `"speed"` | float | Move a maximum of this many meters per frame towards the target. | 0.1 |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`move_avatar_towards_position`**
+
+Move the avatar towards the target position. 
+
+- <font style="color:orange">**Non-physics motion**: This command ignores the build's physics engine. If you send this command during a physics simulation (i.e. to a non-kinematic avatar), the physics might glitch.</font>
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+
+```python
+{"$type": "move_avatar_towards_position"}
+```
+
+```python
+{"$type": "move_avatar_towards_position", "position": {"x": 0, "y": 0, "z": 0}, "speed": 0.1, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position. | {"x": 0, "y": 0, "z": 0} |
+| `"speed"` | float | Move a maximum of this many meters per frame towards the target. | 0.1 |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
 # SensorContainerCommand
 
 These commands adjust an avatar's image sensor container. All avatars have at least one sensor, which is named "SensorContainer". Sticky Mitten Avatars have an additional sensor named "FollowCamera". For a list of all image sensors attached to an avatar, send send_image_sensors.
@@ -2792,29 +2879,6 @@ Turn a sensor on or off. The command set_pass_masks will override this command (
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"enable"` | bool | If true, enable the image sensor. | True |
-| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
-## **`focus_on_object`**
-
-Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera. 
-
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
-
-```python
-{"$type": "focus_on_object", "object_id": 1}
-```
-
-```python
-{"$type": "focus_on_object", "object_id": 1, "use_centroid": False, "sensor_name": "SensorContainer", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"object_id"` | int | The ID of the object. | |
-| `"use_centroid"` | bool | If true, look at the centroid of the object. This is computationally expensive. If false, look at the position of the object (y=0). | False |
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2965,16 +3029,16 @@ Set the anti-aliasing mode for the avatar's camera.
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 
 ```python
-{"$type": "set_anti_aliasing", "mode": "fast"}
+{"$type": "set_anti_aliasing"}
 ```
 
 ```python
-{"$type": "set_anti_aliasing", "mode": "fast", "sensor_name": "SensorContainer", "avatar_id": "a"}
+{"$type": "set_anti_aliasing", "mode": "subpixel", "sensor_name": "SensorContainer", "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"mode"` | AntiAliasingMode | The anti-aliasing mode. | |
+| `"mode"` | AntiAliasingMode | The anti-aliasing mode. | "subpixel" |
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
@@ -2986,8 +3050,8 @@ The anti-aliasing mode for the camera.
 | --- | --- |
 | `"fast"` | A computionally fast technique with lower image quality results. |
 | `"none"` | No antialiasing. |
-| `"subpixel"` | A higher quality, more expensive technique than fast. |
-| `"temporal"` | The highest-quality technique. Expensive. Adds motion blurring based on camera history. By default, all cameras in TDW are set to temporal. If you are frequently teleporting the avatar (and camera), do NOT use this mode. |
+| `"subpixel"` | A higher quality, more expensive technique than fast. This is the default setting of all cameras in TDW. |
+| `"temporal"` | The highest-quality technique. Expensive. Adds motion blurring based on camera history. If you are frequently teleporting the avatar (and camera), do NOT use this mode. |
 
 ***
 
@@ -3031,6 +3095,132 @@ Translate the sensor container relative to the avatar by a given directional vec
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
+# FocusOnObjectCommand
+
+These commands set the depth-of-field focus value based on the position of a target object.
+
+***
+
+## **`focus_on_object`**
+
+Set the post-process depth of field focus distance to equal the distance between the avatar and an object. This won't adjust the angle or position of the avatar's camera. 
+
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
+
+```python
+{"$type": "focus_on_object", "object_id": 1}
+```
+
+```python
+{"$type": "focus_on_object", "object_id": 1, "use_centroid": False, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the object. | |
+| `"use_centroid"` | bool | If true, look at the centroid of the object. This is computationally expensive. If false, look at the position of the object (y=0). | False |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`focus_towards_object`**
+
+Focus towards the depth-of-field towards the position of an object. 
+
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+
+```python
+{"$type": "focus_towards_object", "object_id": 1}
+```
+
+```python
+{"$type": "focus_towards_object", "object_id": 1, "speed": 0.3, "use_centroid": False, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"speed"` | float | Focus towards the target distance at this speed. | 0.3 |
+| `"object_id"` | int | The ID of the object. | |
+| `"use_centroid"` | bool | If true, look at the centroid of the object. This is computationally expensive. If false, look at the position of the object (y=0). | False |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+# RotateSensorContainerTowards
+
+These commands rotate the sensor container towards a target by a given angular speed per frame.
+
+***
+
+## **`rotate_sensor_container_towards_object`**
+
+Rotate the sensor container towards the current position of a target object. 
+
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+
+```python
+{"$type": "rotate_sensor_container_towards_object", "object_id": 1}
+```
+
+```python
+{"$type": "rotate_sensor_container_towards_object", "object_id": 1, "use_centroid": True, "speed": 3, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the object we want the sensor container to rotate towards. | |
+| `"use_centroid"` | bool | If true, rotate towards the centroid of the object. If false, rotate towards the position of the object (y=0). | True |
+| `"speed"` | float | The maximum angular speed that the sensor container will rotate per frame. | 3 |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`rotate_sensor_container_towards_position`**
+
+Rotate the sensor container towards a position at a given angular speed per frame. 
+
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+
+```python
+{"$type": "rotate_sensor_container_towards_position"}
+```
+
+```python
+{"$type": "rotate_sensor_container_towards_position", "position": {"x": 0, "y": 0, "z": 0}, "speed": 3, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position to rotate towards. | {"x": 0, "y": 0, "z": 0} |
+| `"speed"` | float | The maximum angular speed that the sensor container will rotate per frame. | 3 |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`rotate_sensor_container_towards_rotation`**
+
+Rotate the sensor container towards a target rotation. 
+
+- <font style="color:green">**Motion is applied over time**: This command will move, rotate, or otherwise adjust the avatar per-frame at a non-linear rate (smoothed at the start and end). This command must be sent per-frame to continuously update.</font>
+
+```python
+{"$type": "rotate_sensor_container_towards_rotation"}
+```
+
+```python
+{"$type": "rotate_sensor_container_towards_rotation", "rotation": {"w": 1, "x": 0, "y": 0, "z": 0}, "speed": 3, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rotation"` | Quaternion | The target rotation. | {"w": 1, "x": 0, "y": 0, "z": 0} |
+| `"speed"` | float | The maximum angular speed that the sensor container will rotate per frame. | 3 |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
 # CreateReverbSpaceCommand
 
 Base class to create a ResonanceAudio Room, sized to the dimensions of the current room environment.
@@ -3047,7 +3237,7 @@ Create a ResonanceAudio Room, sized to the dimensions of the current room enviro
 ```
 
 ```python
-{"$type": "set_reverb_space_expert", "reflectivity": 1.0, "reverb_brightness": 0.5, "reverb_gain": 0, "reverb_time": 1.0, "env_id": -1, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
+{"$type": "set_reverb_space_expert", "reflectivity": 1.0, "reverb_brightness": 0.5, "reverb_gain": 0, "reverb_time": 1.0, "region_id": -1, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -3056,7 +3246,7 @@ Create a ResonanceAudio Room, sized to the dimensions of the current room enviro
 | `"reverb_brightness"` | float | Balance the amount of low or high frequencies by providing different reverb decay rates at different frequencies. | 0.5 |
 | `"reverb_gain"` | float | Adjust room effect loudness, compared to direct sound coming from Resonance Audio sources in a scene. | 0 |
 | `"reverb_time"` | float | Increases or decreases reverb length; the value is a multiplier on the reverb time calculated from the surface materials and room dimensions of the room. | 1.0 |
-| `"env_id"` | int | The ID of the environment (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room. | -1 |
+| `"region_id"` | int | The ID of the scene region (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room. | -1 |
 | `"reverb_floor_material"` | SurfaceMaterial | The surface material of the reverb space floor. | "parquet" |
 | `"reverb_ceiling_material"` | SurfaceMaterial | The surface material of the reverb space ceiling. | "acousticTile" |
 | `"reverb_front_wall_material"` | SurfaceMaterial | The surface material of the reverb space front wall. | "smoothPlaster" |
@@ -3095,14 +3285,14 @@ Create a ResonanceAudio Room, sized to the dimensions of the current room enviro
 ```
 
 ```python
-{"$type": "set_reverb_space_simple", "min_room_volume": 27.0, "max_room_volume": 1000.0, "env_id": -1, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
+{"$type": "set_reverb_space_simple", "min_room_volume": 27.0, "max_room_volume": 1000.0, "region_id": -1, "reverb_floor_material": "parquet", "reverb_ceiling_material": "acousticTile", "reverb_front_wall_material": "smoothPlaster", "reverb_back_wall_material": "smoothPlaster", "reverb_left_wall_material": "smoothPlaster", "reverb_right_wall_material": "smoothPlaster"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"min_room_volume"` | float | Minimum possible volume of a room (i.e. 1 x 1 x 1 room). | 27.0 |
 | `"max_room_volume"` | float | Maximum room volume <ndash /> purely for range-setting for reflectivity calculation. | 1000.0 |
-| `"env_id"` | int | The ID of the environment (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room. | -1 |
+| `"region_id"` | int | The ID of the scene region (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room. | -1 |
 | `"reverb_floor_material"` | SurfaceMaterial | The surface material of the reverb space floor. | "parquet" |
 | `"reverb_ceiling_material"` | SurfaceMaterial | The surface material of the reverb space ceiling. | "acousticTile" |
 | `"reverb_front_wall_material"` | SurfaceMaterial | The surface material of the reverb space front wall. | "smoothPlaster" |
@@ -3205,17 +3395,17 @@ An axis of rotation.
 
 ***
 
-## **`set_directionial_light_color`**
+## **`set_directional_light_color`**
 
 Set the color of the directional light (the sun).
 
 
 ```python
-{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
+{"$type": "set_directional_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
 ```
 
 ```python
-{"$type": "set_directionial_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "index": 0}
+{"$type": "set_directional_light_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "index": 0}
 ```
 
 | Parameter | Type | Description | Default |
@@ -3234,7 +3424,7 @@ These commands affect an NVIDIA Flex container.
 Create a Flex Container. The ID of this container is the quantity of containers in the scene prior to adding it. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "create_flex_container"}
@@ -3276,7 +3466,7 @@ Create a Flex Container. The ID of this container is the quantity of containers 
 
 Destroy an existing Flex container. Only send this command after destroying all Flex objects in the scene. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "destroy_flex_container"}
@@ -3399,7 +3589,7 @@ Load a GameObject from resources.
 
 Load a FlexFluidPrimitive from resources. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "load_flex_fluid_from_resources", "id": 1}
@@ -3421,7 +3611,7 @@ Load a FlexFluidPrimitive from resources.
 
 Load a FlexFluidSource mesh from resources. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "load_flex_fluid_source_from_resources", "id": 1}
@@ -3574,6 +3764,23 @@ The shape of the trigger collider.
 | --- | --- |
 | `"cube"` |  |
 | `"sphere"` |  |
+
+***
+
+## **`attach_empty_object`**
+
+Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects
+
+
+```python
+{"$type": "attach_empty_object", "empty_object_id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"empty_object_id"` | int | The ID of the empty object. This doesn't have to be the same as the object ID. | |
+| `"position"` | Vector3 | The position of the empty object relative to the parent object, in the parent object's local coordinate space. | |
+| `"id"` | int | The unique object ID. | |
 
 ***
 
@@ -3897,7 +4104,7 @@ These commands apply only to objects that already have FlexActor components.
 
 Apply a directional force to the FlexActor object. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "apply_forces_to_flex_object_base64", "forces_and_ids_base64": "string", "id": 1}
@@ -3914,7 +4121,7 @@ Apply a directional force to the FlexActor object.
 
 Apply a directional force to the FlexActor object. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "apply_force_to_flex_object", "force": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
@@ -3936,7 +4143,7 @@ Apply a directional force to the FlexActor object.
 
 Assign the FlexContainer of the object. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "assign_flex_container", "container_id": 1, "id": 1}
@@ -3959,7 +4166,7 @@ Assign the FlexContainer of the object.
 
 Destroy the Flex object. This will leak memory (due to a bug in the Flex library that we can't fix), but will leak <emphasis>less</emphasis> memory than destroying a Flex-enabled object with <computeroutput>destroy_object</computeroutput>. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 - <font style="color:green">**Cached in memory**: When this object is destroyed, the asset bundle remains in memory.If you want to recreate the object, the build will be able to instantiate it more or less instantly. To free up memory, send the command [unload_asset_bundles](#unload_asset_bundles).</font>
 
 ```python
@@ -3972,79 +4179,12 @@ Destroy the Flex object. This will leak memory (due to a bug in the Flex library
 
 ***
 
-## **`rotate_flex_object_by`**
-
-Rotate a Flex object by a given angle around a given axis. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "rotate_flex_object_by", "angle": 0.125, "id": 1}
-```
-
-```python
-{"$type": "rotate_flex_object_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"axis"` | Axis | The axis of rotation. | "yaw" |
-| `"angle"` | float | The angle of rotation. | |
-| `"is_world"` | bool | If true, the object will rotate via "global" directions and angles. If false, the object will rotate locally. | True |
-| `"id"` | int | The unique object ID. | |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-***
-
-## **`rotate_flex_object_by_quaternion`**
-
-Rotate a Flex object by a given quaternion. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "rotate_flex_object_by_quaternion", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rotation"` | Quaternion | Rotate the object by this quaternion. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`rotate_flex_object_to`**
-
-Rotate a Flex object to a new rotation. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "rotate_flex_object_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rotation"` | Quaternion | The new rotation of the object. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_flex_object_mass`**
 
 Set the mass of the Flex object. The mass is distributed equally across all particles. Thus the particle mass equals mass divided by number of particles. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_object_mass", "mass": 0.125, "id": 1}
@@ -4062,7 +4202,7 @@ Set the mass of the Flex object. The mass is distributed equally across all part
 Set the mass of all particles in the Flex object. Thus, the total object mass equals the number of particles times the particle mass. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_particles_mass", "mass": 0.125, "id": 1}
@@ -4079,7 +4219,7 @@ Set the mass of all particles in the Flex object. Thus, the total object mass eq
 
 Fix the particle in the Flex object, such that it does not move. 
 
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_particle_fixed", "is_fixed": True, "particle_id": 1, "id": 1}
@@ -4089,41 +4229,6 @@ Fix the particle in the Flex object, such that it does not move.
 | --- | --- | --- | --- |
 | `"is_fixed"` | bool | Set whether particle is fixed or not. | |
 | `"particle_id"` | int | The ID of the particle. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`teleport_and_rotate_flex_object`**
-
-Teleport a Flex object to a new position and rotation. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "teleport_and_rotate_flex_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The new position of the object. | |
-| `"rotation"` | Quaternion | The new rotation of the object. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`teleport_flex_object`**
-
-Teleport a Flex object to a new position. 
-
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "teleport_flex_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The new position of the object. | |
 | `"id"` | int | The unique object ID. | |
 
 # ObjectTypeCommand
@@ -4460,9 +4565,14 @@ Play a motion capture animation on a humanoid. The animation must already be in 
 {"$type": "play_humanoid_animation", "name": "string", "id": 1}
 ```
 
+```python
+{"$type": "play_humanoid_animation", "name": "string", "id": 1, "framerate": -1}
+```
+
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"name"` | string | Name of the animation clip to play. | |
+| `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -4592,64 +4702,12 @@ These commands create a new FlexActor of type T with a FlexAsset of type U, or t
 
 ***
 
-## **`create_flex_fluid_object`**
-
-Create or adjust a FlexArrayActor as a fluid object. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "create_flex_fluid_object", "id": 1}
-```
-
-```python
-{"$type": "create_flex_fluid_object", "id": 1, "mesh_expansion": 0, "max_particles": 10000, "particle_spacing": 0.125, "mass_scale": 1, "draw_particles": False}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"mesh_expansion"` | float | Mesh local scale of the FlexArrayAsset. | 0 |
-| `"max_particles"` | int | Maximum number of particles for the Flex Asset. | 10000 |
-| `"particle_spacing"` | float | Particle spacing of the Flex Asset. | 0.125 |
-| `"mass_scale"` | float | The mass scale factor. | 1 |
-| `"draw_particles"` | bool | Debug drawing of particles. | False |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`create_flex_fluid_source_actor`**
-
-Create or adjust a FlexSourceActor as a fluid "hose pipe" source. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
-
-```python
-{"$type": "create_flex_fluid_source_actor", "id": 1}
-```
-
-```python
-{"$type": "create_flex_fluid_source_actor", "id": 1, "start_speed": 10.0, "lifetime": 2.0, "mesh_tesselation": 2, "mass_scale": 1, "draw_particles": False}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"start_speed"` | float | Rate of fluid particle generation. | 10.0 |
-| `"lifetime"` | float | Lifetime of fluid particles. | 2.0 |
-| `"mesh_tesselation"` | int | Mesh tesselation of the FlexSourceAsset. | 2 |
-| `"mass_scale"` | float | The mass scale factor. | 1 |
-| `"draw_particles"` | bool | Debug drawing of particles. | False |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_flex_cloth_actor`**
 
 Create or adjust a FlexClothActor for the object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_cloth_actor", "id": 1}
@@ -4674,12 +4732,64 @@ Create or adjust a FlexClothActor for the object.
 
 ***
 
+## **`set_flex_fluid_actor`**
+
+Create or adjust a FlexArrayActor as a fluid object. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+
+```python
+{"$type": "set_flex_fluid_actor", "id": 1}
+```
+
+```python
+{"$type": "set_flex_fluid_actor", "id": 1, "mesh_expansion": 0, "max_particles": 10000, "particle_spacing": 0.125, "mass_scale": 1, "draw_particles": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"mesh_expansion"` | float | Mesh local scale of the FlexArrayAsset. | 0 |
+| `"max_particles"` | int | Maximum number of particles for the Flex Asset. | 10000 |
+| `"particle_spacing"` | float | Particle spacing of the Flex Asset. | 0.125 |
+| `"mass_scale"` | float | The mass scale factor. | 1 |
+| `"draw_particles"` | bool | Debug drawing of particles. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_flex_fluid_source_actor`**
+
+Create or adjust a FlexSourceActor as a fluid "hose pipe" source. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+
+```python
+{"$type": "set_flex_fluid_source_actor", "id": 1}
+```
+
+```python
+{"$type": "set_flex_fluid_source_actor", "id": 1, "start_speed": 10.0, "lifetime": 2.0, "mesh_tesselation": 2, "mass_scale": 1, "draw_particles": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"start_speed"` | float | Rate of fluid particle generation. | 10.0 |
+| `"lifetime"` | float | Lifetime of fluid particles. | 2.0 |
+| `"mesh_tesselation"` | int | Mesh tesselation of the FlexSourceAsset. | 2 |
+| `"mass_scale"` | float | The mass scale factor. | 1 |
+| `"draw_particles"` | bool | Debug drawing of particles. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`set_flex_soft_actor`**
 
 Create or adjust a FlexSoftActor for the object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_soft_actor", "id": 1}
@@ -4711,7 +4821,7 @@ Create or adjust a FlexSoftActor for the object.
 Create or adjust a FlexSolidActor for the object. 
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../misc_frontend/flex.md)</font>
+- <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
 
 ```python
 {"$type": "set_flex_solid_actor", "id": 1}
@@ -4763,203 +4873,33 @@ Show the object.
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
-# PaintingCommand
-
-These commands allow you to create and edit static "paintings". To create a painting, first send the command create_painting. To edit a painting, send set_painting_texture.
-
-***
-
-## **`create_painting`**
-
-Create a blank "painting" in the scene.
-
-
-```python
-{"$type": "create_painting", "position": {"x": 1.1, "y": 0.0, "z": 0}, "size": {"x": 1.1, "y": 0}, "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The position of the painting. This will always be anchored in the bottom-center point of the object. | |
-| `"size"` | Vector2 | The width and height of the painting. | |
-| `"euler_angles"` | Vector3 | The orientation of the painting, in Euler angles. | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`destroy_painting`**
-
-Destroy an existing painting.
-
-
-```python
-{"$type": "destroy_painting", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of this painting. | |
-
-# AdjustPaintingCommand
-
-These commands adjust an existing painting.
-
-***
-
-## **`hide_painting`**
-
-Hide a visible painting.
-
-
-```python
-{"$type": "hide_painting", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`rotate_painting_by`**
-
-Rotate a painting by a given angle around a given axis.
-
-
-```python
-{"$type": "rotate_painting_by", "angle": 0.125, "id": 1}
-```
-
-```python
-{"$type": "rotate_painting_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"axis"` | Axis | The axis of rotation. | "yaw" |
-| `"angle"` | float | The angle of rotation. | |
-| `"is_world"` | bool | If true, the painting will rotate via "global" directions and angles. If false, the painting will rotate locally. | True |
-| `"id"` | int | The unique ID of this painting. | |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-***
-
-## **`rotate_painting_to_euler_angles`**
-
-Set the rotation of the painting with Euler angles. 
-
-- <font style="color:teal">**Euler angles**: Rotational behavior can become unpredictable if the Euler angles of an object are adjusted more than once. Consider sending this command only to initialize the orientation. See: [Rotation documentation)(../misc_frontend/rotation.md)</font>
-
-```python
-{"$type": "rotate_painting_to_euler_angles", "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"euler_angles"` | Vector3 | The new Euler angles of the painting. | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`scale_painting`**
-
-Scale a painting by a factor.
-
-
-```python
-{"$type": "scale_painting", "scale_factor": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale_factor"` | Vector3 | Multiply the scale of the painting by this vector. (For example, if scale_factor is (2,2,2), then the painting's current size will double.) | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`set_painting_texture`**
-
-Apply a texture to a pre-existing painting. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-
-```python
-{"$type": "set_painting_texture", "dimensions": {"x": 0, "y": 1}, "image": "string", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"dimensions"` | GridPoint | The expected dimensions of the image in pixels. | |
-| `"image"` | string | base64 string representation of the image byte array. | |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`show_painting`**
-
-Show a painting that was hidden.
-
-
-```python
-{"$type": "show_painting", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of this painting. | |
-
-***
-
-## **`teleport_painting`**
-
-Teleport a painting to a new position.
-
-
-```python
-{"$type": "teleport_painting", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | New position of the painting. | |
-| `"id"` | int | The unique ID of this painting. | |
-
 # PlayAudioDataCommand
 
-Make an object play audio data.
+Play audio at a position.
 
 ***
 
 ## **`play_audio_data`**
 
-Play a sound, using audio sample data sent over from the controller.
+Play a sound at a position using audio sample data sent over from the controller.
 
 
 ```python
-{"$type": "play_audio_data", "id": 1, "wav_data": "string", "num_frames": 1}
+{"$type": "play_audio_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1}
 ```
 
 ```python
-{"$type": "play_audio_data", "id": 1, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1, "robot_joint": False}
+{"$type": "play_audio_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"id"` | int | The unique object ID. | |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"position"` | Vector3 | The position of the audio source. | |
 | `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
 | `"num_frames"` | int | The number of audio frames in the audio data. | |
 | `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
 | `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
-| `"robot_joint"` | bool | If true, this is joint of a robot. | False |
 
 ***
 
@@ -4969,22 +4909,21 @@ Make this object a ResonanceAudioSoundSource and play the audio data.
 
 
 ```python
-{"$type": "play_point_source_data", "id": 1, "wav_data": "string", "num_frames": 1}
+{"$type": "play_point_source_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1}
 ```
 
 ```python
-{"$type": "play_point_source_data", "id": 1, "wav_data": "string", "num_frames": 1, "y_pos_offset": 0.5, "frame_rate": 44100, "num_channels": 1, "robot_joint": False}
+{"$type": "play_point_source_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"y_pos_offset"` | float | Percentage offset from base of object, to place the audio source. | 0.5 |
-| `"id"` | int | The unique object ID. | |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"position"` | Vector3 | The position of the audio source. | |
 | `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
 | `"num_frames"` | int | The number of audio frames in the audio data. | |
 | `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
 | `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
-| `"robot_joint"` | bool | If true, this is joint of a robot. | False |
 
 # PositionMarkerCommand
 
@@ -5009,7 +4948,7 @@ Create a non-physics, non-interactive marker at a position in the scene.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | Add a marker at this position. | |
-| `"scale"` | float | The scale of the marker. | 0.05 |
+| `"scale"` | float | The scale of the marker. If the scale is 1, a cube and square will be 1 meter wide and a sphere and circle will be 1 meter in diameter. | 0.05 |
 | `"color"` | Color | The color of the marker. The default color is red. | {"r": 1, "g": 0, "b": 0, "a": 1} |
 | `"shape"` | Shape | The shape of the position marker object. | "sphere" |
 
@@ -5063,7 +5002,7 @@ Set the intensity (darkness) of the Ambient Occlusion effect.
 
 ## **`set_ambient_occlusion_thickness_modifier`**
 
-Set the Thickness Modifer for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners.
+Set the Thickness Modifier for the Ambient Occlusion effect<ndash /> controls "spread" of the effect out from corners.
 
 
 ```python
@@ -5084,7 +5023,7 @@ Set the Thickness Modifer for the Ambient Occlusion effect<ndash /> controls "sp
 
 Set the depth-of-field aperture in post processing volume. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
 ```python
 {"$type": "set_aperture"}
@@ -5123,7 +5062,7 @@ Set the contrast value of the post-processing color grading.
 
 Set the depth-of-field focus distance in post processing volume. 
 
-- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../misc_frontend/depth_of_field_and_image_blurriness.md).</font>
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
 ```python
 {"$type": "set_focus_distance"}
@@ -5305,26 +5244,6 @@ Set the scale of the tiling of the ceiling material's main texture.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"scale"` | Vector2 | The tiling scale of the material. Generally (but by no means always), the default tiling scale of a texture is {"x": 1, "y": 1} | {"x": 1, "y": 1} |
-
-***
-
-## **`set_proc_gen_reflection_probe`**
-
-Toggle the reflection probe in a procedurally generated room. By default, the reflection probe is active. Deactivating the reflection probe will yield less realistic images but better framerates. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_reflection_probe"}
-```
-
-```python
-{"$type": "set_proc_gen_reflection_probe", "value": True}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"value"` | bool | If true, the reflection probe will be active. | True |
 
 ***
 
@@ -6153,7 +6072,7 @@ Check which objects a capsule-shaped space overlaps with.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"end"` | Vector3 | The center of the sphere at the end of the capsule. (Position is the center of the sphere at the start of the capsule.) | |
+| `"end"` | Vector3 | The top of the capsule. (The position parameter is the bottom of the capsule). | |
 | `"radius"` | float | The radius of the capsule. | |
 | `"position"` | Vector3 | The center of the shape. | |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
@@ -6352,7 +6271,7 @@ Options for when to send data.
 
 ## **`send_robots`**
 
-Send dynamic data (position, rotation, velocity, etc.) of each robot and each robot's body parts in the scene. See also: send_static_robots 
+Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
@@ -6364,6 +6283,41 @@ Send dynamic data (position, rotation, velocity, etc.) of each robot and each ro
 
 ```python
 {"$type": "send_robots", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_robot_joint_velocities`**
+
+Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`RobotJointVelocities`](output_data.md#RobotJointVelocities)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_robots`</font>
+
+```python
+{"$type": "send_robot_joint_velocities"}
+```
+
+```python
+{"$type": "send_robot_joint_velocities", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6822,20 +6776,20 @@ Options for when to send data.
 
 ***
 
-## **`send_environments`**
+## **`send_empty_objects`**
 
-Receive data about the environment(s) in the scene. Only send this command after initializing the environment in one of two ways: 1) create_exterior_walls, 2) add_scene 
+Send data each empty object in the scene. See: attach_empty_object 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`Environments`](output_data.md#Environments)</font>
+    - <font style="color:green">**Type:** [`EmptyObjects`](output_data.md#EmptyObjects)</font>
 
 ```python
-{"$type": "send_environments"}
+{"$type": "send_empty_objects"}
 ```
 
 ```python
-{"$type": "send_environments", "frequency": "once"}
+{"$type": "send_empty_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6967,6 +6921,38 @@ Send data for each directional light and point light in the scene.
 
 ```python
 {"$type": "send_lights", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_scene_regions`**
+
+Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`SceneRegions`](output_data.md#SceneRegions)</font>
+
+```python
+{"$type": "send_scene_regions"}
+```
+
+```python
+{"$type": "send_scene_regions", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7230,7 +7216,7 @@ Options for when to send data.
 
 ## **`send_rigidbodies`**
 
-Send Rigidbody (velocity, mass, etc.) data of objects in the scene. 
+Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
@@ -7275,6 +7261,39 @@ Send segmentation color data for objects in the scene.
 
 ```python
 {"$type": "send_segmentation_colors", "ids": [1, 2, 3], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_rigidbodies`**
+
+Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticRigidbodies`](output_data.md#StaticRigidbodies)</font>
+
+```python
+{"$type": "send_static_rigidbodies", "ids": [1, 2, 3]}
+```
+
+```python
+{"$type": "send_static_rigidbodies", "ids": [1, 2, 3], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7359,6 +7378,153 @@ Options for when to send data.
 | `"once"` | Send the data for this frame only. |
 | `"always"` | Send the data every frame. |
 | `"never"` | Never send the data. |
+
+# TexturedQuadCommand
+
+These commands allow you to create and edit static quad meshes (a rectangle with four vertices) with textures. To create a textured quad, send the command create_textured_quad. To edit a textured quad, send [set_textured_quad](#set_textured_quad).
+
+***
+
+## **`create_textured_quad`**
+
+Create a blank quad (a rectangular mesh with four vertices) in the scene.
+
+
+```python
+{"$type": "create_textured_quad", "position": {"x": 1.1, "y": 0.0, "z": 0}, "size": {"x": 1.1, "y": 0}, "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the quad. This will always be anchored in the bottom-center point of the object. | |
+| `"size"` | Vector2 | The width and height of the quad. | |
+| `"euler_angles"` | Vector3 | The orientation of the quad, in Euler angles. | |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`destroy_textured_quad`**
+
+Destroy an existing textured quad.
+
+
+```python
+{"$type": "destroy_textured_quad", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+# AdjustTexturedQuadCommand
+
+These commands adjust an existing textured quad.
+
+***
+
+## **`rotate_textured_quad_by`**
+
+Rotate a textured quad by a given angle around a given axis.
+
+
+```python
+{"$type": "rotate_textured_quad_by", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "rotate_textured_quad_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation. | |
+| `"is_world"` | bool | If true, the quad will rotate via "global" directions and angles. If false, the quad will rotate locally. | True |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`scale_textured_quad`**
+
+Scale a textured quad by a factor.
+
+
+```python
+{"$type": "scale_textured_quad", "id": 1}
+```
+
+```python
+{"$type": "scale_textured_quad", "id": 1, "scale_factor": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale_factor"` | Vector3 | Multiply the scale of the quad by this vector. (For example, if scale_factor is (2,2,2), then the quad's current size will double.) | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`set_textured_quad`**
+
+Apply a texture to a pre-existing quad. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+
+```python
+{"$type": "set_textured_quad", "dimensions": {"x": 0, "y": 1}, "image": "string", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dimensions"` | GridPoint | The expected dimensions of the image in pixels. | |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`show_textured_quad`**
+
+Show or hide a textured quad.
+
+
+```python
+{"$type": "show_textured_quad", "id": 1}
+```
+
+```python
+{"$type": "show_textured_quad", "id": 1, "show": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"show"` | bool | If True, show the quad. If False, hide it. | True |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`teleport_textured_quad`**
+
+Teleport a textured quad to a new position.
+
+
+```python
+{"$type": "teleport_textured_quad", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | New position of the quad. | |
+| `"id"` | int | The unique ID of this textured quad. | |
 
 # VrCommand
 

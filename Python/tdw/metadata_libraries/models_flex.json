@@ -69,6 +69,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.4/bowl",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.4/bowl"
             },
+            "volume": 0.17152899503707886,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -140,6 +141,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/cone",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/cone"
             },
+            "volume": 0.9898183345794678,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -211,6 +213,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/cube",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/cube"
             },
+            "volume": 1.0,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -282,6 +285,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/cylinder",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/cylinder"
             },
+            "volume": 1.0000014305114746,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -353,6 +357,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.4/dumbbell",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.4/dumbbell"
             },
+            "volume": 0.8873069286346436,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -424,6 +429,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/octahedron",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/octahedron"
             },
+            "volume": 1.5,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -495,6 +501,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/pentagon",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/pentagon"
             },
+            "volume": 0.8602399826049805,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -566,6 +573,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.4/pipe",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.4/pipe"
             },
+            "volume": 0.5146116614341736,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -637,6 +645,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/platonic",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/platonic"
             },
+            "volume": 0.7608382701873779,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -708,6 +717,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/pyramid",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/pyramid"
             },
+            "volume": 1.1249996423721313,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -779,6 +789,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/sphere",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/sphere"
             },
+            "volume": 1.0,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -850,6 +861,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.4/torus",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.4/torus"
             },
+            "volume": 0.2617514431476593,
             "wcategory": "flex_primitive",
             "wnid": ""
         },
@@ -921,6 +933,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/linux/2019.2/triangular_prism",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/flex_primitives/windows/2019.2/triangular_prism"
             },
+            "volume": 0.9330129623413086,
             "wcategory": "flex_primitive",
             "wnid": ""
         }

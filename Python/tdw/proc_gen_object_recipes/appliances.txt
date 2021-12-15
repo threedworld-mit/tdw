@@ -1,0 +1,8 @@
+cabinet
+wall_cabinet
+kitchen_counter
+dishwasher
+microwave
+refrigerator
+stove
+table

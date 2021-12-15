@@ -2,6 +2,16 @@
   "apple": [
     "apple"
   ],
+  "baking_sheet": [
+    "baking_sheet01",
+    "baking_sheet02",
+    "baking_sheet03",
+    "baking_sheet04",
+    "baking_sheet05",
+    "baking_sheet06",
+    "baking_sheet07",
+    "baking_sheet09"
+  ],
   "banana": [
     "b03_banana_01_high",
     "b04_banana",
@@ -16,16 +26,6 @@
     "b04_bottle_2_max",
     "b04_whiskeybottle"
   ],
-  "bottle cork": [
-    "basic_cork",
-    "basic_cork_2",
-    "bung",
-    "champagne_cork",
-    "cork_plastic",
-    "cork_plastic_black",
-    "tapered_cork",
-    "tapered_cork_w_hole"
-  ],
   "bowl": [
     "b04_bowl_smooth",
     "int_kitchen_accessories_le_creuset_bowl_30cm",
@@ -34,6 +34,26 @@
   "bread": [
     "b03_loafbread",
     "bread"
+  ],
+  "cabinet": [
+    "cabinet_full_height_white_wood",
+    "cabinet_full_height_wood_beach_honey",
+    "cabinet_24_door_drawer_wood_beach_honey",
+    "cabinet_24_singledoor_wood_beach_honey",
+    "cabinet_24_two_drawer_white_wood",
+    "cabinet_24_two_drawer_wood_beach_honey"
+  ],
+  "wall_cabinet": [
+    "24_in_wall_cabinet_white_wood",
+    "24_in_wall_cabinet_wood_beach_honey",
+    "36_in_wall_cabinet_white_wood",
+    "36_in_wall_cabinet_wood_beach_honey"
+  ],
+  "kitchen_counter": [
+    "cabinet_24_white_wood",
+    "cabinet_24_wood_beach_honey",
+    "cabinet_36_white_wood",
+    "cabinet_36_wood_beach_honey"
   ],
   "candle": [
     "b03_iron_candle_vray",
@@ -48,6 +68,9 @@
     "cgaxis_models_37_15_vray",
     "lantern_2010"
   ],
+  "carving_fork": [
+    "servingfork"
+  ],
   "chair": [
     "chair_annabelle",
     "chair_billiani_doll",
@@ -57,7 +80,7 @@
     "wood_chair",
     "yellow_side_chair"
   ],
-  "chocolate candy": [
+  "chocolate": [
     "b05_snickers",
     "chocolate_bar001"
   ],
@@ -75,7 +98,7 @@
     "square_coaster_stone",
     "square_coaster_wood"
   ],
-  "coffee grinder": [
+  "coffee_grinder": [
     "b05_coffee_grinder",
     "cafe_2010",
     "cgaxis_models_61_17_vray",
@@ -83,7 +106,7 @@
     "juicer",
     "kitchen_aid_coffee_grinder"
   ],
-  "coffee maker": [
+  "coffee_maker": [
     "coffee_001",
     "coffee_0023",
     "coffee_005_13"
@@ -92,15 +115,21 @@
     "b06_circle",
     "ripple"
   ],
-  "cookie sheet": [
-    "baking_sheet01",
-    "baking_sheet02",
-    "baking_sheet03",
-    "baking_sheet04",
-    "baking_sheet05",
-    "baking_sheet06",
-    "baking_sheet07",
-    "baking_sheet09"
+  "cork": [
+    "basic_cork",
+    "basic_cork_2",
+    "bung",
+    "champagne_cork",
+    "cork_plastic",
+    "cork_plastic_black",
+    "tapered_cork",
+    "tapered_cork_w_hole"
+  ],
+  "cup": [
+    "coffee_cup",
+    "coffeecup004_fix",
+    "coffeemug",
+    "cup"
   ],
   "dishwasher": [
     "b03_db_apps_tech_08_04_composite",
@@ -119,21 +148,47 @@
     "vk0056_tablefork",
     "vk0067_fishfork"
   ],
-  "gas cooker": [
-    "b05_beko_oie_22500x_2013__corona",
-    "b05_dacor_double_wall_oven",
-    "b05_max2013vray_oven_by_whirlpool_akzm8910ixl",
-    "duhovka",
-    "vraymax2013_oven_akzm6610ixl_by_whirlpool"
-  ],
-  "houseplant": [
+  "house_plant": [
     "cgaxis_models_50_12_vray",
     "cgaxis_models_50_24_vray"
+  ],
+  "jar": [
+    "b04_3d_jar_180_gr_01",
+    "b04_honey_jar",
+    "b04_honey_jar_max_2014",
+    "b05_sugerjar_a001_2015"
+  ],
+  "jug": [
+    "b03_pot",
+    "b04_low",
+    "jug01",
+    "jug02",
+    "jug03",
+    "jug04",
+    "jug05",
+    "stelton_emma_tea_vacuum_jug"
   ],
   "knife": [
     "vk0007_steak_knife",
     "vk0014_dinner_knife_subd2",
     "vk0055_tableknife"
+  ],
+  "ladle": [
+    "soup_ladle_black_02"
+  ],
+  "microwave": [
+    "appliance-ge-profile-microwave",
+    "appliance-ge-profile-microwave3",
+    "b03_bosch_cbg675bs1b_2013__vray_composite",
+    "b05_whirlpool_microwave_wmc30516as_v-ray",
+    "cgaxis_models_10_11_vray",
+    "microwave",
+    "vm_v5_070",
+    "vray_062"
+  ],
+  "orange": [
+    "b04_orange_00",
+    "orange"
   ],
   "pan": [
     "b03_696615_object001",
@@ -155,10 +210,15 @@
     "b05_ball-point_pen-obj",
     "b05_executive_pen"
   ],
-  "pepper mill, pepper grinder": [
+  "pepper": [
     "cylinder01",
     "pepper",
     "wooden_pepper_mill"
+  ],
+  "plate": [
+    "plate05",
+    "plate06",
+    "plate07"
   ],
   "pot": [
     "b03_aluminum_pan",
@@ -173,7 +233,7 @@
     "b05_ikea_nutid_side_by_side_refrigerator",
     "fridge_large"
   ],
-  "saltshaker, salt shaker": [
+  "salt": [
     "b05_cylinder001"
   ],
   "sandwich": [
@@ -183,13 +243,29 @@
     "b04_scissors_2013",
     "scissors"
   ],
-  "soap dispenser": [
+  "shelf": [
+    "4ft_shelf_metal",
+    "4ft_wood_shelving",
+    "5ft_shelf_metal",
+    "5ft_wood_shelving",
+    "6ft_shelf_metal",
+    "6ft_wood_shelving"
+  ],
+  "soap_dispenser": [
     "b05_bathroom_dispenser",
     "b05_gold_glass_soap_dispenser(max)",
     "blue_edition_liquid_soap02",
     "filler_2010",
     "kosmos_black_soap_dispenser",
     "soap_dispenser_01"
+  ],
+  "spaghetti_seriver": [
+    "spagheti-server"
+  ],
+  "spatula": [
+    "b01_spatula",
+    "spatula",
+    "spatula2"
   ],
   "spoon": [
     "vk0002_teaspoon",
@@ -199,18 +275,25 @@
     "vk0078_fruitspoon",
     "vk0080_soupspoon"
   ],
+  "stove": [
+    "b05_beko_oie_22500x_2013__corona",
+    "b05_dacor_double_wall_oven",
+    "b05_max2013vray_oven_by_whirlpool_akzm8910ixl",
+    "duhovka",
+    "vraymax2013_oven_akzm6610ixl_by_whirlpool"
+  ],
   "table": [
     "dining_room_table",
     "enzo_industrial_loft_pine_metal_round_dining_table",
     "metal_lab_table",
     "quatre_dining_table"
   ],
-  "table lamp": [
+  "table_lamp": [
     "kevin_reilly_pattern_table_lamp",
     "lamp_02",
     "spunlight_designermesh_lamp"
   ],
-  "tea tray": [
+  "tea_tray": [
     "teatray"
   ],
   "teakettle": [
@@ -234,6 +317,19 @@
     "vray_083",
     "vray_084",
     "vray_085"
+  ],
+  "vase": [
+    "amphora_jar_vase",
+    "b04_new",
+    "vase_01",
+    "vase_02",
+    "vase_03",
+    "vase_05",
+    "vase_06",
+    "vase_laura_deko_vase_set"
+  ],
+  "whisk": [
+    "whisk"
   ],
   "wineglass": [
     "b04_cantate_crystal_wine_glass",

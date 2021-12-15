@@ -1,929 +1,245 @@
 {
-  "apple": {
-    "apple": [
-      0.1007956,
-      0.09466714,
-      0.10079562
-    ]
-  },
-  "banana": {
-    "b03_banana_01_high": [
-      0.17713508,
-      0.03553543,
-      0.08984272
-    ],
-    "b04_banana": [
-      0.2057532,
-      0.04424989,
-      0.2034682
-    ],
-    "banana_fix2": [
-      0.18043606,
-      0.0489355,
-      0.17045058
-    ]
-  },
-  "book": {
-    "cgaxis_models_65_06_vray": [
-      0.2293768,
-      0.03503445,
-      0.2969726
-    ],
-    "cgaxis_models_65_14_vray": [
-      0.14800004,
-      0.01499959,
-      0.2109996
-    ]
-  },
-  "bottle": {
-    "b04_bottle-2014-2018": [
-      0.05838397,
-      0.1783261,
-      0.0583839
-    ],
-    "b04_bottle_2_max": [
-      0.06013322,
-      0.1382124,
-      0.0280426
-    ],
-    "b04_whiskeybottle": [
-      0.12024813,
-      0.2846134,
-      0.12024814
-    ]
-  },
-  "bowl": {
-    "b04_bowl_smooth": [
-      0.2401654,
-      0.0817289,
-      0.2401654
-    ],
-    "int_kitchen_accessories_le_creuset_bowl_30cm": [
-      0.3106522,
-      0.12940931,
-      0.3654386
-    ],
-    "serving_bowl": [
-      0.5090605,
-      0.1934218,
-      0.3677688
-    ]
-  },
-  "bread": {
-    "b03_loafbread": [
-      0.15148828,
-      0.09381004,
-      0.3470852
-    ],
-    "bread": [
-      0.2035294,
-      0.11276271,
-      0.2124076
-    ]
-  },
-  "candle": {
-    "b03_iron_candle_vray": [
-      0.13636743,
-      0.2269422,
-      0.06401549
-    ],
-    "b04_candle_holder_metal": [
-      0.11419128,
-      0.21723891,
-      0.11399469
-    ],
-    "b05_candles_max_vray2": [
-      0.17376658,
-      0.21686881,
-      0.17394172
-    ],
-    "b05_candlestick_with_candles002_max2017_vray": [
-      0.2993382,
-      0.10068353,
-      0.09867458
-    ],
-    "b05_cgaxis_models_37_17_vray": [
-      0.299,
-      0.18240003,
-      0.2598078
-    ],
-    "candle": [
-      0.17376655,
-      0.2172253,
-      0.17394169
-    ],
-    "candles_max_vray": [
-      0.2989778,
-      0.20973912,
-      0.09899954
-    ],
-    "candlestick1": [
-      0.07849233,
-      0.2522379,
-      0.07848772
-    ],
-    "cgaxis_models_20_05_vray": [
-      0.10906048,
-      0.3183096,
-      0.10906051
-    ],
-    "cgaxis_models_37_15_vray": [
-      0.26076,
-      0.14726461,
-      0.26076
-    ],
-    "lantern_2010": [
-      0.3576634,
-      0.3676144,
-      0.1812206
-    ]
-  },
-  "candy": {
-    "b05_snickers": [
-      0.02850922,
-      0.0171456,
-      0.0619138
-    ],
-    "chocolate_bar001": [
-      0.0203457,
-      0.00780368,
-      0.05087826
-    ]
-  },
-  "chair": {
-    "chair_annabelle": [
-      0.5,
-      0.7737253,
-      0.5574073
-    ],
-    "chair_billiani_doll": [
-      0.489437,
-      0.7779118,
-      0.5393717
-    ],
-    "chair_thonet_marshall": [
-      0.3967712,
-      0.8307803,
-      0.482177
-    ],
-    "chair_willisau_riale": [
-      0.4736602,
-      0.80933563,
-      0.5401487
-    ],
-    "emeco_navy_chair": [
-      0.4200468,
-      0.858965,
-      0.5086646
-    ],
-    "wood_chair": [
-      0.4298932,
-      0.81151409,
-      0.4778954
-    ],
-    "yellow_side_chair": [
-      0.531329,
-      0.7224569,
-      0.6123289
-    ]
-  },
-  "coaster": {
-    "round_coaster_cherry": [
-      0.1,
-      0.0145,
-      0.1
-    ],
-    "round_coaster_indent_rubber": [
-      0.1,
-      0.01429904,
-      0.1
-    ],
-    "round_coaster_indent_stone": [
-      0.1,
-      0.01429904,
-      0.1
-    ],
-    "round_coaster_indent_wood": [
-      0.1,
-      0.01429904,
-      0.1
-    ],
-    "round_coaster_stone": [
-      0.1,
-      0.0145,
-      0.1
-    ],
-    "round_coaster_stone_dark": [
-      0.1,
-      0.0145,
-      0.1
-    ],
-    "square_coaster_001_cork": [
-      0.1,
-      0.0145,
-      0.1
-    ],
-    "square_coaster_001_marble": [
-      0.1,
-      0.0145,
-      0.1
-    ],
-    "square_coaster_001_wood": [
-      0.1,
-      0.0145,
-      0.1
-    ],
-    "square_coaster_rubber": [
-      0.1,
-      0.0145,
-      0.1
-    ],
-    "square_coaster_stone": [
-      0.1,
-      0.0145,
-      0.1
-    ],
-    "square_coaster_wood": [
-      0.1,
-      0.0145,
-      0.1
-    ]
-  },
-  "coffee_grinder": {
-    "b05_coffee_grinder": [
-      0.2721527,
-      0.2983497,
-      0.19045453
-    ],
-    "cafe_2010": [
-      0.2010554,
-      0.26667593,
-      0.13285805
-    ],
-    "cgaxis_models_61_17_vray": [
-      0.11897779,
-      0.2590645,
-      0.11897781
-    ],
-    "coffee_grinder": [
-      0.17285534,
-      0.2945589,
-      0.07320619
-    ],
-    "juicer": [
-      0.2056412,
-      0.28587507,
-      0.2247637
-    ],
-    "kitchen_aid_coffee_grinder": [
-      0.2979244,
-      0.40342001,
-      0.17610921
-    ]
-  },
-  "coffee_maker": {
-    "coffee_001": [
-      0.3269474,
-      0.3444609,
-      0.16520099
-    ],
-    "coffee_0023": [
-      0.27,
-      0.3400978,
-      0.3733862
-    ],
-    "coffee_005_13": [
-      0.274376,
-      0.321638,
-      0.3230893
-    ]
-  },
-  "coin": {
-    "b06_circle": [
-      0.03711608,
-      0.00224639,
-      0.03711608
-    ],
-    "ripple": [
-      0.03996552,
-      0.00236292,
-      0.0399655
-    ]
-  },
-  "cookie_sheet": {
-    "baking_sheet01": [
-      0.531834,
-      0.01381167,
-      0.3545558
-    ],
-    "baking_sheet02": [
-      0.6016213,
-      0.01520463,
-      0.352986
-    ],
-    "baking_sheet03": [
-      0.5974248,
-      0.01403344,
-      0.352982
-    ],
-    "baking_sheet04": [
-      0.5289249,
-      0.0138485,
-      0.352986
-    ],
-    "baking_sheet05": [
-      0.5383584,
-      0.0138485,
-      0.352986
-    ],
-    "baking_sheet06": [
-      0.5208152,
-      0.01075397,
-      0.3536316
-    ],
-    "baking_sheet07": [
-      0.552743,
-      0.01820848,
-      0.365226
-    ],
-    "baking_sheet09": [
-      0.5289249,
-      0.0138485,
-      0.352986
-    ]
-  },
-  "cork": {
-    "basic_cork": [
-      0.022,
-      0.022,
-      0.038
-    ],
-    "basic_cork_2": [
-      0.022,
-      0.022,
-      0.038
-    ],
-    "bung": [
-      0.05312914,
-      0.05312914,
-      0.046
-    ],
-    "champagne_cork": [
-      0.02260578,
-      0.02260578,
-      0.03475997
-    ],
-    "cork_plastic": [
-      0.02,
-      0.02,
-      0.042
-    ],
-    "cork_plastic_black": [
-      0.02,
-      0.02,
-      0.042
-    ],
-    "tapered_cork": [
-      0.02222862,
-      0.02222862,
-      0.03927385
-    ],
-    "tapered_cork_w_hole": [
-      0.02222862,
-      0.02222862,
-      0.03927385
-    ]
-  },
-  "dishwasher": {
-    "b03_db_apps_tech_08_04_composite": [
-      0.6075255,
-      0.8113788,
-      0.6072918
-    ],
-    "b03_db_apps_tech_08_07_composite": [
-      0.5861948,
-      0.80912516,
-      0.6202008
-    ],
-    "b03_db_apps_tech_08_08_composite": [
-      0.622282,
-      0.85002966,
-      0.6418053
-    ],
-    "b04_db_apps_tech_08_03": [
-      0.6013624,
-      0.84944736,
-      0.5987592
-    ],
-    "b05_db_apps_tech_08_09": [
-      0.6442321,
-      0.88849706,
-      0.6115834
-    ],
-    "b05_db_apps_tech_08_09_composite": [
-      0.644232,
-      0.88849706,
-      0.611584
-    ],
-    "dishwasher_4": [
-      0.5912286,
-      0.80018996,
-      0.6539202
-    ],
-    "vray_032": [
-      0.5681047,
-      1.00033406,
-      0.5080086
-    ]
-  },
-  "fork": {
-    "pcylinder222": [
-      0.02293924,
-      0.0244975,
-      0.16326859
-    ],
-    "vk0010_dinner_fork_subd0": [
-      0.027574,
-      0.01785122,
-      0.19858604
-    ],
-    "vk0011_dessert_fork_subd0": [
-      0.023255,
-      0.01509776,
-      0.16756824
-    ],
-    "vk0056_tablefork": [
-      0.0275079,
-      0.02012614,
-      0.19731236
-    ],
-    "vk0067_fishfork": [
-      0.02527534,
-      0.02021141,
-      0.18699258
-    ]
-  },
-  "houseplant": {
-    "cgaxis_models_50_12_vray": [
-      0.2885847,
-      0.3409363,
-      0.2677668
-    ],
-    "cgaxis_models_50_24_vray": [
-      0.10838994,
-      0.16823461,
-      0.10597214
-    ]
-  },
-  "knife": {
-    "vk0007_steak_knife": [
-      0.02306389,
-      0.00969853,
-      0.215511
-    ],
-    "vk0014_dinner_knife_subd2": [
-      0.02574831,
-      0.0101727,
-      0.2243214
-    ],
-    "vk0055_tableknife": [
-      0.02437776,
-      0.00491894,
-      0.2249398
-    ]
-  },
-  "oven": {
-    "b05_beko_oie_22500x_2013__corona": [
-      0.5921968,
-      0.58794776,
-      0.51827
-    ],
-    "b05_dacor_double_wall_oven": [
-      0.5853419,
-      0.93433396,
-      0.5397274
-    ],
-    "b05_max2013vray_oven_by_whirlpool_akzm8910ixl": [
-      0.6000029,
-      0.599993,
-      0.5537239
-    ],
-    "duhovka": [
-      0.6000002,
-      0.46375107,
-      0.6315914
-    ],
-    "vraymax2013_oven_akzm6610ixl_by_whirlpool": [
-      0.6000027,
-      0.599993,
-      0.5537239
-    ]
-  },
-  "pan": {
-    "b03_696615_object001": [
-      0.2649726,
-      0.08006693,
-      0.2451728
-    ],
-    "b03_object05": [
-      0.19067504,
-      0.04447855,
-      0.1632252
-    ],
-    "int_kitchen_accessories_le_creuset_frying_pan_28cm": [
-      0.2756804,
-      0.08723689,
-      0.5563318
-    ],
-    "measuring_pan": [
-      0.25077988,
-      0.0603313,
-      0.1596615
-    ],
-    "object05": [
-      0.4440946,
-      0.0730876,
-      0.2682132
-    ],
-    "pan01": [
-      0.2690022,
-      0.19304043,
-      0.5856907
-    ],
-    "pan02": [
-      0.360093,
-      0.2584088,
-      0.7789952
-    ],
-    "pan03": [
-      0.3600931,
-      0.2584088,
-      0.46237403
-    ],
-    "pan04": [
-      0.1812382,
-      0.13005949,
-      0.3929117
-    ],
-    "pan05": [
-      0.4857202,
-      0.15168919,
-      0.9216659
-    ],
-    "skillet_closed": [
-      0.3648567,
-      0.1034683,
-      0.4753393
-    ],
-    "skillet_open_no_lid": [
-      0.3024195,
-      0.06971715,
-      0.543484
-    ]
-  },
-  "pen": {
-    "b03_pen": [
-      0.15610678,
-      0.01132431,
-      0.01039994
-    ],
-    "b03_pen_01_001": [
-      0.10895776,
-      0.00951403,
-      0.01136489
-    ],
-    "b05_ball-point_pen-obj": [
-      0.11035155,
-      0.00837478,
-      0.00838708
-    ],
-    "b05_executive_pen": [
-      0.08865122,
-      0.01330846,
-      0.01160789
-    ]
-  },
-  "pepper": {
-    "cylinder01": [
-      0.04802699,
-      0.160675,
-      0.04802136
-    ],
-    "pepper": [
-      0.05379034,
-      0.11930611,
-      0.05379034
-    ],
-    "wooden_pepper_mill": [
-      0.03969174,
-      0.1327892,
-      0.03968708
-    ]
-  },
-  "pot": {
-    "b03_aluminum_pan": [
-      0.4157546,
-      0.27604123,
-      0.323567
-    ],
-    "b03_cooking_pot_01": [
-      0.3220465,
-      0.172665,
-      0.3004516
-    ],
-    "pan1": [
-      0.3282381,
-      0.20114312,
-      0.2793633
-    ],
-    "pan3": [
-      0.4932329,
-      0.27338731,
-      0.2903514
-    ],
-    "pot": [
-      0.3865197,
-      0.337375,
-      0.4576438
-    ]
-  },
-  "refridgerator": {
-    "b03_ka90ivi20r_2013__vray": [
-      0.9108776,
-      1.76716712,
-      0.6892624
-    ],
-    "b05_db_apps_tech_06_02_2": [
-      0.8143889,
-      1.60927512,
-      0.6852298
-    ],
-    "b05_ikea_nutid_side_by_side_refrigerator": [
-      1.1336582,
-      1.75141412,
-      1.0578756
-    ],
-    "fridge_large": [
-      0.9118316,
-      1.76000006,
-      0.7813477
-    ]
-  },
-  "salt": {
-    "b05_cylinder001": [
-      0.03969173,
-      0.1327892,
-      0.03968708
-    ]
-  },
-  "sandwich": {
-    "b03_burger": [
-      0.11116847,
-      0.08082542,
-      0.11549009
-    ]
-  },
-  "scissors": {
-    "b04_scissors_2013": [
-      0.17331612,
-      0.00406738,
-      0.05254243
-    ],
-    "scissors": [
-      0.09903679,
-      0.01942807,
-      0.277927
-    ]
-  },
-  "soap_dispenser": {
-    "b05_bathroom_dispenser": [
-      0.04740774,
-      0.1708347,
-      0.04748672
-    ],
-    "b05_gold_glass_soap_dispenser(max)": [
-      0.09301383,
-      0.22093621,
-      0.07729675
-    ],
-    "blue_edition_liquid_soap02": [
-      0.07494182,
-      0.1512459,
-      0.07495788
-    ],
-    "filler_2010": [
-      0.09291648,
-      0.221072,
-      0.0912154
-    ],
-    "kosmos_black_soap_dispenser": [
-      0.05721118,
-      0.1808983,
-      0.1152012
-    ],
-    "soap_dispenser_01": [
-      0.09130011,
-      0.1850001,
-      0.07102962
-    ]
-  },
-  "spoon": {
-    "vk0002_teaspoon": [
-      0.03358698,
-      0.01564679,
-      0.1367602
-    ],
-    "vk0054_teaspoon": [
-      0.03000279,
-      0.0168346,
-      0.1357824
-    ],
-    "vk0058_tablespoon": [
-      0.0430212,
-      0.02517122,
-      0.19287132
-    ],
-    "vk0060_dessertspoon": [
-      0.03815914,
-      0.02205654,
-      0.17000854
-    ],
-    "vk0078_fruitspoon": [
-      0.02740387,
-      0.01757466,
-      0.14095614
-    ],
-    "vk0080_soupspoon": [
-      0.04390078,
-      0.02003102,
-      0.1639865
-    ]
-  },
-  "table": {
-    "dining_room_table": [
-      1.0922,
-      0.7351434,
-      1.0922
-    ],
-    "enzo_industrial_loft_pine_metal_round_dining_table": [
-      1.5244322,
-      0.76037183,
-      1.5201714
-    ],
-    "metal_lab_table": [
-      1.2192,
-      0.83721332,
-      0.6096001
-    ],
-    "quatre_dining_table": [
-      1.205155,
-      0.86825626,
-      2.27514
-    ]
-  },
-  "table_lamp": {
-    "kevin_reilly_pattern_table_lamp": [
-      0.4218154,
-      0.78700153,
-      0.3691399
-    ],
-    "lamp_02": [
-      0.4670802,
-      0.6642901,
-      0.4670806
-    ],
-    "spunlight_designermesh_lamp": [
-      0.3978088,
-      0.5867645,
-      0.4
-    ]
-  },
-  "tea_tray": {
-    "teatray": [
-      0.5600978,
-      0.06230028,
-      0.4036578
-    ]
-  },
-  "teakettle": {
-    "b03_morphy_2013__vray": [
-      0.2338414,
-      0.277801,
-      0.2237556
-    ],
-    "kettle": [
-      0.21205146,
-      0.2565221,
-      0.14845858
-    ],
-    "kettle_2": [
-      0.2310786,
-      0.2449181,
-      0.2503375
-    ],
-    "tea_kettle_model": [
-      0.18189332,
-      0.21647061,
-      0.2190428
-    ],
-    "teakettle_01": [
-      0.2133582,
-      0.2347799,
-      0.2008204
-    ],
-    "v3_tf_04_01": [
-      0.14870926,
-      0.24066561,
-      0.2211242
-    ],
-    "vray_041": [
-      0.2592908,
-      0.25955573,
-      0.2041268
-    ],
-    "vray_043": [
-      0.2434459,
-      0.26555823,
-      0.2160922
-    ],
-    "vray_044": [
-      0.2590078,
-      0.28171661,
-      0.2021174
-    ]
-  },
-  "toaster": {
-    "b05_delonghi_icona_toaster": [
-      0.3021794,
-      0.20531173,
-      0.3151269
-    ],
-    "b06_21_dualit_original_toaster_4x": [
-      0.3516874,
-      0.22357012,
-      0.2420182
-    ],
-    "russell_hobbs_2013__vray": [
-      0.1702945,
-      0.18163071,
-      0.2900502
-    ],
-    "toaster_002": [
-      0.3730932,
-      0.1834687,
-      0.17
-    ],
-    "toaster_b": [
-      0.2870893,
-      0.2450076,
-      0.18569292
-    ],
-    "vray_077": [
-      0.17598884,
-      0.20006482,
-      0.3350978
-    ],
-    "vray_083": [
-      0.2056485,
-      0.21147653,
-      0.3125638
-    ],
-    "vray_084": [
-      0.3183718,
-      0.23306493,
-      0.167386
-    ],
-    "vray_085": [
-      0.19515407,
-      0.18291372,
-      0.255544
-    ]
-  },
-  "wine_glass": {
-    "b04_cantate_crystal_wine_glass": [
-      0.09073482,
-      0.2409313,
-      0.0907349
-    ],
-    "b04_wineglass": [
-      0.05975832,
-      0.2091141,
-      0.05976184
-    ],
-    "glass1": [
-      0.07537587,
-      0.1577054,
-      0.07537586
-    ],
-    "glass2": [
-      0.05609027,
-      0.10785038,
-      0.05609026
-    ],
-    "glass3": [
-      0.08361627,
-      0.2001192,
-      0.08361627
-    ]
-  }
+  "apple": [
+    "apple"
+  ],
+  "banana": [
+    "b03_banana_01_high",
+    "b04_banana",
+    "banana_fix2"
+  ],
+  "book": [
+    "cgaxis_models_65_06_vray",
+    "cgaxis_models_65_14_vray"
+  ],
+  "bottle": [
+    "b04_bottle-2014-2018",
+    "b04_bottle_2_max",
+    "b04_whiskeybottle"
+  ],
+  "bottle cork": [
+    "basic_cork",
+    "basic_cork_2",
+    "bung",
+    "champagne_cork",
+    "cork_plastic",
+    "cork_plastic_black",
+    "tapered_cork",
+    "tapered_cork_w_hole"
+  ],
+  "bowl": [
+    "b04_bowl_smooth",
+    "int_kitchen_accessories_le_creuset_bowl_30cm",
+    "serving_bowl"
+  ],
+  "bread": [
+    "b03_loafbread",
+    "bread"
+  ],
+  "candle": [
+    "b03_iron_candle_vray",
+    "b04_candle_holder_metal",
+    "b05_candles_max_vray2",
+    "b05_candlestick_with_candles002_max2017_vray",
+    "b05_cgaxis_models_37_17_vray",
+    "candle",
+    "candles_max_vray",
+    "candlestick1",
+    "cgaxis_models_20_05_vray",
+    "cgaxis_models_37_15_vray",
+    "lantern_2010"
+  ],
+  "chair": [
+    "chair_annabelle",
+    "chair_billiani_doll",
+    "chair_thonet_marshall",
+    "chair_willisau_riale",
+    "emeco_navy_chair",
+    "wood_chair",
+    "yellow_side_chair"
+  ],
+  "chocolate candy": [
+    "b05_snickers",
+    "chocolate_bar001"
+  ],
+  "coaster": [
+    "round_coaster_cherry",
+    "round_coaster_indent_rubber",
+    "round_coaster_indent_stone",
+    "round_coaster_indent_wood",
+    "round_coaster_stone",
+    "round_coaster_stone_dark",
+    "square_coaster_001_cork",
+    "square_coaster_001_marble",
+    "square_coaster_001_wood",
+    "square_coaster_rubber",
+    "square_coaster_stone",
+    "square_coaster_wood"
+  ],
+  "coffee grinder": [
+    "b05_coffee_grinder",
+    "cafe_2010",
+    "cgaxis_models_61_17_vray",
+    "coffee_grinder",
+    "juicer",
+    "kitchen_aid_coffee_grinder"
+  ],
+  "coffee maker": [
+    "coffee_001",
+    "coffee_0023",
+    "coffee_005_13"
+  ],
+  "coin": [
+    "b06_circle",
+    "ripple"
+  ],
+  "cookie sheet": [
+    "baking_sheet01",
+    "baking_sheet02",
+    "baking_sheet03",
+    "baking_sheet04",
+    "baking_sheet05",
+    "baking_sheet06",
+    "baking_sheet07",
+    "baking_sheet09"
+  ],
+  "dishwasher": [
+    "b03_db_apps_tech_08_04_composite",
+    "b03_db_apps_tech_08_07_composite",
+    "b03_db_apps_tech_08_08_composite",
+    "b04_db_apps_tech_08_03",
+    "b05_db_apps_tech_08_09",
+    "b05_db_apps_tech_08_09_composite",
+    "dishwasher_4",
+    "vray_032"
+  ],
+  "fork": [
+    "pcylinder222",
+    "vk0010_dinner_fork_subd0",
+    "vk0011_dessert_fork_subd0",
+    "vk0056_tablefork",
+    "vk0067_fishfork"
+  ],
+  "gas cooker": [
+    "b05_beko_oie_22500x_2013__corona",
+    "b05_dacor_double_wall_oven",
+    "b05_max2013vray_oven_by_whirlpool_akzm8910ixl",
+    "duhovka",
+    "vraymax2013_oven_akzm6610ixl_by_whirlpool"
+  ],
+  "houseplant": [
+    "cgaxis_models_50_12_vray",
+    "cgaxis_models_50_24_vray"
+  ],
+  "knife": [
+    "vk0007_steak_knife",
+    "vk0014_dinner_knife_subd2",
+    "vk0055_tableknife"
+  ],
+  "pan": [
+    "b03_696615_object001",
+    "b03_object05",
+    "int_kitchen_accessories_le_creuset_frying_pan_28cm",
+    "measuring_pan",
+    "object05",
+    "pan01",
+    "pan02",
+    "pan03",
+    "pan04",
+    "pan05",
+    "skillet_closed",
+    "skillet_open_no_lid"
+  ],
+  "pen": [
+    "b03_pen",
+    "b03_pen_01_001",
+    "b05_ball-point_pen-obj",
+    "b05_executive_pen"
+  ],
+  "pepper mill, pepper grinder": [
+    "cylinder01",
+    "pepper",
+    "wooden_pepper_mill"
+  ],
+  "pot": [
+    "b03_aluminum_pan",
+    "b03_cooking_pot_01",
+    "pan1",
+    "pan3",
+    "pot"
+  ],
+  "refrigerator": [
+    "b03_ka90ivi20r_2013__vray",
+    "b05_db_apps_tech_06_02_2",
+    "b05_ikea_nutid_side_by_side_refrigerator",
+    "fridge_large"
+  ],
+  "saltshaker, salt shaker": [
+    "b05_cylinder001"
+  ],
+  "sandwich": [
+    "b03_burger"
+  ],
+  "scissors": [
+    "b04_scissors_2013",
+    "scissors"
+  ],
+  "soap dispenser": [
+    "b05_bathroom_dispenser",
+    "b05_gold_glass_soap_dispenser(max)",
+    "blue_edition_liquid_soap02",
+    "filler_2010",
+    "kosmos_black_soap_dispenser",
+    "soap_dispenser_01"
+  ],
+  "spoon": [
+    "vk0002_teaspoon",
+    "vk0054_teaspoon",
+    "vk0058_tablespoon",
+    "vk0060_dessertspoon",
+    "vk0078_fruitspoon",
+    "vk0080_soupspoon"
+  ],
+  "table": [
+    "dining_room_table",
+    "enzo_industrial_loft_pine_metal_round_dining_table",
+    "metal_lab_table",
+    "quatre_dining_table"
+  ],
+  "table lamp": [
+    "kevin_reilly_pattern_table_lamp",
+    "lamp_02",
+    "spunlight_designermesh_lamp"
+  ],
+  "tea tray": [
+    "teatray"
+  ],
+  "teakettle": [
+    "b03_morphy_2013__vray",
+    "kettle",
+    "kettle_2",
+    "tea_kettle_model",
+    "teakettle_01",
+    "v3_tf_04_01",
+    "vray_041",
+    "vray_043",
+    "vray_044"
+  ],
+  "toaster": [
+    "b05_delonghi_icona_toaster",
+    "b06_21_dualit_original_toaster_4x",
+    "russell_hobbs_2013__vray",
+    "toaster_002",
+    "toaster_b",
+    "vray_077",
+    "vray_083",
+    "vray_084",
+    "vray_085"
+  ],
+  "wineglass": [
+    "b04_cantate_crystal_wine_glass",
+    "b04_wineglass",
+    "glass1",
+    "glass2",
+    "glass3"
+  ]
 }

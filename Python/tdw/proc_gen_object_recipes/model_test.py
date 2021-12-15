@@ -5,7 +5,6 @@ from tdw.librarian import ModelLibrarian
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
-
 """
 cabinet
 vase
@@ -24,11 +23,13 @@ sink
 wnid = "n02948072"
 lib = ModelLibrarian("models_full.json")
 wnids = lib.get_model_wnids_and_wcategories()
-category = "candle"
+wcategory = ""
 for q in wnids:
     print(q, wnids[q])
+    if q == wnid:
+        wcategory = wnids[q]
 records = lib.get_all_models_in_wnid(wnid)
-sizes = dict()
+names = []
 x = -4
 xs = []
 exclude = ["b03_pot_plant_20_2013__vray", "b04_cgaxis_models_50_06_vray", "ficus", "pot_plant_23_2013__vray", "monstera_plant", "philodendron"]
@@ -38,28 +39,24 @@ for record in records:
         r = TDWUtils.vector3_to_array(record.canonical_rotation)
         if b < 100 and np.linalg.norm(r) == 0:
             print(record.name, b)
+            names.append(record.name)
             width = np.linalg.norm(
                 TDWUtils.vector3_to_array(record.bounds["left"]) - TDWUtils.vector3_to_array(record.bounds["right"]))
-            height = np.linalg.norm(
-                TDWUtils.vector3_to_array(record.bounds["top"]) - TDWUtils.vector3_to_array(record.bounds["bottom"]))
-            length = np.linalg.norm(
-                TDWUtils.vector3_to_array(record.bounds["front"]) - TDWUtils.vector3_to_array(record.bounds["back"]))
-            sizes[record.name] = [round(width, 8), round(height, 8), round(length, 8)]
             xs.append(x)
             x += width
 path = Path.home().joinpath("tdw/Python/tdw/proc_gen_object_recipes/models.json")
 data = json.loads(path.read_text(encoding="utf-8"))
-if len(sizes) == 0:
-    if category in data:
-        del data[category]
+if len(names) == 0:
+    if wcategory in data:
+        del data[wcategory]
         path.write_text(json.dumps(data, indent=2, sort_keys=True))
     exit()
 else:
-    data[category] = sizes
+    data[wcategory] = names
 path.write_text(json.dumps(data, indent=2, sort_keys=True))
 #exit()
 commands = [TDWUtils.create_empty_room(12, 12)]
-for name, ix in zip(sizes, xs):
+for name, ix in zip(names, xs):
     commands.append(Controller.get_add_object(model_name=name,
                                               position={"x": ix, "y": 0, "z": 0},
                                               object_id=Controller.get_unique_id(),

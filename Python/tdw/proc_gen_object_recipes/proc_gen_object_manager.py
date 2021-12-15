@@ -5,7 +5,8 @@ from typing import Tuple, List, Union, Dict
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
-from tdw.librarian import ModelLibrarian
+from tdw.librarian import ModelLibrarian, ModelRecord
+from tdw.proc_gen_object_recipes.spatial_relation import SpatialRelation, SPATIAL_RELATIONS
 
 
 class ProcGenObjectManager:
@@ -15,11 +16,11 @@ class ProcGenObjectManager:
         Controller.MODEL_LIBRARIANS["models_full.json"] = ModelLibrarian("models_full.json")
     print("TODO move the models to models_core.json")
     """:class_var
-    The names of models suitable for proc-gen. Key = The wcategory. Value = A list of model names.
+    The names of models suitable for proc-gen. Key = The category. Value = A list of model names.
     """
     MODEL_NAMES: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "models.json")).read_text())
     """:class_var
-    The appliance model categories.
+    The appliance model categories. Objects in these categories won't have random rotations.
     """
     APPLIANCE_CATEGORIES: List[str] = Path(resource_filename(__name__, "appliances.txt")).read_text().split("\n")
 
@@ -36,13 +37,43 @@ class ProcGenObjectManager:
         else:
             self.rng = np.random.RandomState(random_seed)
 
-    def get_relational_arrangement(self, root_category: str, position: Union[np.array, Dict[str, float]],
+    def get_relational_arrangement(self, category: str, position: Union[np.array, Dict[str, float]],
                                    rotation: float) -> List[dict]:
-        pass
+        assert category in ProcGenObjectManager.MODEL_NAMES, f"Invalid category: {category}"
+        # Add the object.
+        model_name = ProcGenObjectManager.MODEL_NAMES[category][self.rng.randint(0, len(ProcGenObjectManager.MODEL_NAMES[category]))]
+        record = Controller.MODEL_LIBRARIANS["models_full.json"].get_record(model_name)
+        if isinstance(position, dict):
+            object_position = position
+        elif isinstance(position, np.ndarray) or isinstance(position, list):
+            object_position = TDWUtils.array_to_vector3(position)
+        else:
+            raise Exception(f"Invalid position argument: {position}")
+        commands: List[dict] = Controller.get_add_physics_object(model_name=model_name,
+                                                                 position=object_position,
+                                                                 rotation={"x": 0, "y": rotation, "z": 0},
+                                                                 library="models_full.json",
+                                                                 object_id=Controller.get_unique_id(),
+                                                                 kinematic=model_name in ProcGenObjectManager.APPLIANCE_CATEGORIES)
+        # Get the size of the model.
+        model_size = ProcGenObjectManager._get_size(record=record)
+        # Add objects base on spatial relationship.
+        for spatial_relation in SPATIAL_RELATIONS:
+            if category not in SPATIAL_RELATIONS[spatial_relation]:
+                continue
+            # Put objects on top of the root object.
+            if spatial_relation == SpatialRelation.on_top_of:
+                # Gert the top position of the object.
+                object_top = {"x": position["x"], "y": record.bounds["top"]["y"] + position["y"], "z": position["z"]}
+                commands.extend(self.get_rectangular_arrangement(size=model_size,
+                                                                 categories=SPATIAL_RELATIONS[spatial_relation][category],
+                                                                 center=object_top,
+                                                                 rotation=rotation))
+        return commands
 
     def get_rectangular_arrangement(self, size: Tuple[float, float], center: Union[np.array, Dict[str, float]],
-                                    categories: List[str], rotation: float = 0, probability_empty_cell: float = 0.9,
-                                    cell_size: float = 0.1) -> List[dict]:
+                                    categories: List[str], rotation: float = 0, probability_empty_cell: float = 0.4,
+                                    cell_size: float = 0.05) -> List[dict]:
         """
         Get a random arrangement of objects in a rectangular space.
 
@@ -77,8 +108,8 @@ class ProcGenObjectManager:
         else:
             center_dict = TDWUtils.array_to_vector3(center)
         # Get the x, z positions.
-        xs: np.array = np.arange(cell_size, size[0], cell_size)
-        zs: np.array = np.arange(cell_size, size[1], cell_size)
+        xs: np.array = np.arange(cell_size, size[0] - cell_size, cell_size)
+        zs: np.array = np.arange(cell_size, size[1] - cell_size, cell_size)
         # Get the occupancy map.
         occupancy_map: np.array = np.zeros(shape=(len(xs), len(zs)), dtype=bool)
         # Print a warning about bad categories.
@@ -97,11 +128,8 @@ class ProcGenObjectManager:
             # Get objects small enough to fit within the rectangle.
             for model_name in ProcGenObjectManager.MODEL_NAMES[category]:
                 record = Controller.MODEL_LIBRARIANS["models_full.json"].get_record(model_name)
-                left_right = np.linalg.norm(TDWUtils.vector3_to_array(record.bounds["left"]) -
-                                            TDWUtils.vector3_to_array(record.bounds["right"]))
-                front_back = np.linalg.norm(TDWUtils.vector3_to_array(record.bounds["front"]) -
-                                            TDWUtils.vector3_to_array(record.bounds["back"]))
-                model_semi_major_axis = left_right if left_right > front_back else front_back
+                model_size = ProcGenObjectManager._get_size(record=record)
+                model_semi_major_axis = model_size[0] if model_size[0] > model_size[1] else model_size[1]
                 if model_semi_major_axis < semi_minor_axis:
                     model_sizes[model_name] = model_semi_major_axis
                     model_cell_sizes.append(int(model_semi_major_axis / cell_size) + 1)
@@ -111,6 +139,9 @@ class ProcGenObjectManager:
         model_cell_sizes = list(set(model_cell_sizes))
         model_cell_sizes.reverse()
         for ix, iz in np.ndindex(occupancy_map.shape):
+            # Exclude edges.
+            if ix == 0 or ix == occupancy_map.shape[0] - 1 or iz == 0 or iz == occupancy_map.shape[1]:
+                continue
             # This position is already occupied. Sometimes, skip a position.
             if occupancy_map[ix][iz] or self.rng.random() < probability_empty_cell:
                 continue
@@ -119,7 +150,6 @@ class ProcGenObjectManager:
             for mcs in model_cell_sizes:
                 # Stop if the the semi-major axis doesn't fit (it would fall off the edge).
                 if ix - mcs < 0 or ix + mcs >= occupancy_map.shape[0] or iz - mcs < 0 or iz + mcs >= occupancy_map.shape[1]:
-                    print("off edge", ix, iz, mcs, occupancy_map.shape)
                     break
                 else:
                     # Define the circle.
@@ -136,11 +166,11 @@ class ProcGenObjectManager:
             # Choose a random model.
             model_name: str = model_names[self.rng.randint(0, len(model_names))]
             # Get the position. Perturb it slightly.
-            x = xs[0] + (ix * cell_size) + self.rng.uniform(-cell_size * 0.1, cell_size * 0.1)
-            z = zs[0] + (iz * cell_size) + self.rng.uniform(-cell_size * 0.1, cell_size * 0.1)
+            x = (ix * cell_size) + self.rng.uniform(-cell_size * 0.025, cell_size * 0.025)
+            z = (iz * cell_size) + self.rng.uniform(-cell_size * 0.025, cell_size * 0.025)
             # Offset from the center.
-            x += center_dict["x"] - size[0] / 2
-            z += center_dict["z"] - size[0] / 2
+            x += center_dict["x"] - size[0] / 2 + cell_size
+            z += center_dict["z"] - size[1] / 2 + cell_size
             # Cache the object ID.
             object_id = Controller.get_unique_id()
             # Set the rotation.
@@ -163,3 +193,26 @@ class ProcGenObjectManager:
             # Record the position on the occupancy map.
             occupancy_map[__get_circle_mask(circle_x=ix, circle_y=iz, radius=sma) == True] = True
         return commands
+
+    @staticmethod
+    def _get_size(record: ModelRecord) -> Tuple[float, float]:
+        """
+        :param record: A model record.
+
+        :return: Tuple: The left-right and front-back spans of the object bounds.
+        """
+
+        left_right = np.linalg.norm(TDWUtils.vector3_to_array(record.bounds["left"]) -
+                                    TDWUtils.vector3_to_array(record.bounds["right"]))
+        front_back = np.linalg.norm(TDWUtils.vector3_to_array(record.bounds["front"]) -
+                                    TDWUtils.vector3_to_array(record.bounds["back"]))
+        return left_right, front_back
+
+
+c = Controller(launch_build=False)
+cmds = [TDWUtils.create_empty_room(12, 12)]
+p = ProcGenObjectManager()
+cmds.extend(p.get_relational_arrangement(category="microwave",
+                                         position={"x": 0.1, "y": 0, "z": -1},
+                                         rotation=0))
+c.communicate(cmds)

@@ -288,6 +288,7 @@
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
 | [`parent_object_to_avatar`](#parent_object_to_avatar) | Parent an object to an avatar. The object won't change its position or rotation relative to the avatar. Only use this command in non-physics simulations. |
 | [`remove_nav_mesh_obstacle`](#remove_nav_mesh_obstacle) | Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle).  |
+| [`rotate_object_around`](#rotate_object_around) | Rotate an object by a given angle and axis around a position. |
 | [`rotate_object_by`](#rotate_object_by) | Rotate an object by a given angle around a given axis. |
 | [`rotate_object_to`](#rotate_object_to) | Set the rotation quaternion of the object. |
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
@@ -3921,6 +3922,38 @@ Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle).
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
+
+***
+
+## **`rotate_object_around`**
+
+Rotate an object by a given angle and axis around a position.
+
+
+```python
+{"$type": "rotate_object_around", "angle": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+```python
+{"$type": "rotate_object_around", "angle": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "axis": "yaw"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation in degrees. | |
+| `"position"` | Vector3 | Rotate around this position in world space coordinates. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
 
 ***
 

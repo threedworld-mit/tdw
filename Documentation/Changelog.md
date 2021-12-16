@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.1
+
+### Command API
+
+#### New Commands
+
+| Command                | Description                                              |
+| ---------------------- | -------------------------------------------------------- |
+| `rotate_object_around` | Rotate an object by an angle and axis around a position. |
+
 ## v1.9.0
 
 ### New Features

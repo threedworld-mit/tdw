@@ -4,6 +4,14 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.1
+
+### Modified Commands
+
+| Command                       | Modification                                                 |
+| ----------------------------- | ------------------------------------------------------------ |
+| `rotate_directional_light_by` | The directional light rotates within the local coordinate space (not the world coordinate space). |
+
 ## v1.9.0
 
 ### New Features

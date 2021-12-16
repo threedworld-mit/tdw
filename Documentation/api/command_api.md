@@ -38,6 +38,7 @@
 | [`set_target_framerate`](#set_target_framerate) | Set the target render framerate of the build. For more information: <ulink url="https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html">https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html</ulink> |
 | [`set_time_step`](#set_time_step) | Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). NOTE: Doubling the time_step is NOT equivalent to advancing two physics steps. For more information, see: <ulink url="https://docs.unity3d.com/Manual/TimeFrameManagement.html">https://docs.unity3d.com/Manual/TimeFrameManagement.html</ulink> |
 | [`step_physics`](#step_physics) | Step through the physics without triggering new avatar output, or new commands. |
+| [`stop_all_audio`](#stop_all_audio) | Stop all ongoing audio. |
 | [`terminate`](#terminate) | Terminate the build.  |
 | [`unload_asset_bundles`](#unload_asset_bundles) | Unloads all AssetBundles. Send this command only after destroying all objects in the scene. This command should be used only to free up memory. After sending it, you will need to re-download any objects you want to add to a scene.  |
 | [`unload_unused_assets`](#unload_unused_assets) | Unload lingering assets (scenes, models, textures, etc.) from memory. Send this command if you're rapidly adding and removing objects or scenes in order to prevent apparent memory leaks. |
@@ -1178,6 +1179,17 @@ Step through the physics without triggering new avatar output, or new commands.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"frames"` | int | Let the physics run for this many frames. | |
+
+***
+
+## **`stop_all_audio`**
+
+Stop all ongoing audio.
+
+
+```python
+{"$type": "stop_all_audio"}
+```
 
 ***
 

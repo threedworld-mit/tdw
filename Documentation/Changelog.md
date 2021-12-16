@@ -8,6 +8,13 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ### Command API
 
+<<<<<<< HEAD
+#### New Commands
+
+| Command                | Description                                              |
+| ---------------------- | -------------------------------------------------------- |
+| `rotate_object_around` | Rotate an object by an angle and axis around a position. |
+=======
 #### Modified Commands
 
 | Command                       | Modification                                                 |
@@ -17,6 +24,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 ### `tdw` module
 
 - Fixed: `PyImpact` seems to be "missing" impact sounds because roll sounds haven't been implemented yet. Now, all "roll" events are handled as "impact events".
+>>>>>>> master
 
 ## v1.9.0
 

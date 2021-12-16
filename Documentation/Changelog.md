@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.1
+
+### `tdw` module
+
+- Fixed: `PyImpact` seems to be "missing" impact sounds because roll sounds haven't been implemented yet. Now, all "roll" events are handled as "impact events".
+
 ## v1.9.0
 
 ### New Features

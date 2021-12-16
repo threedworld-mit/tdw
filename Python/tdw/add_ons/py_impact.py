@@ -921,6 +921,8 @@ class PyImpact(CollisionManager):
         self._scrape_events_count.clear()
         self._scrape_objects.clear()
         self._scrape_previous_indices.clear()
+        # Stop all ongoing audio.
+        self.commands.append({"$type": "stop_all_audio"})
 
     def _log_modes(self, count: int, mode_props: dict, id1: int, id2: int, modes_1: Modes, modes_2: Modes, amp: float, mat1: str, mat2: str):
         """

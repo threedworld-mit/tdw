@@ -14024,8 +14024,8 @@
                 "z": 0
             },
             "composite_object": false,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "duplicate of coffeecup004_fix",
             "flex": true,
             "name": "coffeecup004",
             "physics_quality": 0.941240254690963,
@@ -24981,8 +24981,8 @@
                 "z": 0
             },
             "composite_object": false,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Too small",
             "flex": false,
             "name": "mug",
             "physics_quality": -1,
@@ -29640,8 +29640,8 @@
                 "z": 0
             },
             "composite_object": false,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Bad colliders (WAY too big)",
             "flex": true,
             "name": "salt",
             "physics_quality": 0.9215153680281509,

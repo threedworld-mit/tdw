@@ -123,7 +123,8 @@ class CollisionAudioEvent:
                     angular_velocity = object_0_dynamic.angular_velocity
                 # If the primary object has a high angular velocity, this is a roll.
                 if np.linalg.norm(angular_velocity) > CollisionAudioEvent.ROLL_ANGULAR_VELOCITY:
-                    self.collision_type = CollisionAudioType.roll
+                    # TODO set this to CollisionAudioType.roll once we have roll sounds.
+                    self.collision_type = CollisionAudioType.impact
                 # If the primary object has a low angular velocity, this is a scrape.
                 else:
                     self.collision_type = CollisionAudioType.scrape

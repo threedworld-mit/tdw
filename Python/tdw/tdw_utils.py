@@ -719,7 +719,7 @@ class TDWUtils:
         return np.radians(np.array([-euler_angles[2], euler_angles[0], -euler_angles[1]]))
 
     @staticmethod
-    def bytes_to_megabytes(b: int) -> int:
+    def bytes_to_megabytes(b: int) -> float:
         """
         :param b: A quantity of bytes.
 

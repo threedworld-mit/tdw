@@ -579,3 +579,16 @@ Convert Euler angles to ROS RPY angles.
 
 _Returns:_  A numpy array: `[r, p, y]` angles in radians.
 
+#### bytes_to_megabytes
+
+**`TDWUtils.bytes_to_megabytes(b)`**
+
+_This is a static function._
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| b |  int |  | A quantity of bytes. |
+
+_Returns:_  A quantity of megabytes.
+

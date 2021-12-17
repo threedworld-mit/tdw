@@ -38,6 +38,7 @@
 | [`set_target_framerate`](#set_target_framerate) | Set the target render framerate of the build. For more information: <ulink url="https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html">https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html</ulink> |
 | [`set_time_step`](#set_time_step) | Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). NOTE: Doubling the time_step is NOT equivalent to advancing two physics steps. For more information, see: <ulink url="https://docs.unity3d.com/Manual/TimeFrameManagement.html">https://docs.unity3d.com/Manual/TimeFrameManagement.html</ulink> |
 | [`step_physics`](#step_physics) | Step through the physics without triggering new avatar output, or new commands. |
+| [`stop_all_audio`](#stop_all_audio) | Stop all ongoing audio. |
 | [`terminate`](#terminate) | Terminate the build.  |
 | [`unload_asset_bundles`](#unload_asset_bundles) | Unloads all AssetBundles. Send this command only after destroying all objects in the scene. This command should be used only to free up memory. After sending it, you will need to re-download any objects you want to add to a scene.  |
 | [`unload_unused_assets`](#unload_unused_assets) | Unload lingering assets (scenes, models, textures, etc.) from memory. Send this command if you're rapidly adding and removing objects or scenes in order to prevent apparent memory leaks. |
@@ -287,6 +288,7 @@
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
 | [`parent_object_to_avatar`](#parent_object_to_avatar) | Parent an object to an avatar. The object won't change its position or rotation relative to the avatar. Only use this command in non-physics simulations. |
 | [`remove_nav_mesh_obstacle`](#remove_nav_mesh_obstacle) | Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle).  |
+| [`rotate_object_around`](#rotate_object_around) | Rotate an object by a given angle and axis around a position. |
 | [`rotate_object_by`](#rotate_object_by) | Rotate an object by a given angle around a given axis. |
 | [`rotate_object_to`](#rotate_object_to) | Set the rotation quaternion of the object. |
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
@@ -1178,6 +1180,17 @@ Step through the physics without triggering new avatar output, or new commands.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"frames"` | int | Let the physics run for this many frames. | |
+
+***
+
+## **`stop_all_audio`**
+
+Stop all ongoing audio.
+
+
+```python
+{"$type": "stop_all_audio"}
+```
 
 ***
 
@@ -3909,6 +3922,38 @@ Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle).
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
+
+***
+
+## **`rotate_object_around`**
+
+Rotate an object by a given angle and axis around a position.
+
+
+```python
+{"$type": "rotate_object_around", "angle": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+```python
+{"$type": "rotate_object_around", "angle": 0.125, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "axis": "yaw"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation in degrees. | |
+| `"position"` | Vector3 | Rotate around this position in world space coordinates. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
 
 ***
 

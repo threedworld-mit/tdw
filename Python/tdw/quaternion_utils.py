@@ -199,3 +199,21 @@ class QuaternionUtils:
 
         qd = QuaternionUtils.multiply(QuaternionUtils.get_conjugate(q1), q2)
         return np.rad2deg(2 * np.arcsin(np.clip(qd[1], -1, 1)))
+
+    @staticmethod
+    def is_left_of(origin: np.array, target: np.array, forward: np.array) -> bool:
+        """
+        :param origin: The origin position.
+        :param target: The target position.
+        :param forward: The forward directional vector.
+
+        :return: True if `target` is to the left of `origin` by the `forward` vector; False if it's to the right.
+        """
+
+        # Get the heading.
+        target_direction = target - origin
+        # Normalize the heading.
+        target_direction = target_direction / np.linalg.norm(target_direction)
+        perpendicular: np.array = np.cross(forward, target_direction)
+        direction = np.dot(perpendicular, QuaternionUtils.UP)
+        return direction > 0

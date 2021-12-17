@@ -145,6 +145,8 @@ class ProcGenObjectManager:
             center_dict = center
         else:
             center_dict = TDWUtils.array_to_vector3(center)
+        if size[0] > size[1]:
+            size = (size[1], size[0])
         # Get the x, z positions.
         xs: np.array = np.arange(cell_size, size[0] - cell_size, cell_size)
         zs: np.array = np.arange(cell_size, size[1] - cell_size, cell_size)

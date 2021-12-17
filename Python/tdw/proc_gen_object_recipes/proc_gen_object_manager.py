@@ -159,7 +159,7 @@ class ProcGenObjectManager:
                     else:
                         sma = mcs
             # Get all objects that fit.
-            model_names = [m for m in model_sizes if int(model_sizes[m] / cell_size) + 1 <= sma]
+            model_names = [m for m in model_sizes if int(model_sizes[m] / cell_size) <= sma]
             if len(model_names) == 0:
                 continue
             # Choose a random model.

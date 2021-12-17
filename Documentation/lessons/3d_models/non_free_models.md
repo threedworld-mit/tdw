@@ -20,8 +20,8 @@ Output:
 
 ```
 models_core.json
-Number of models: 376
-Number of semantic categories: 89
+Number of models: 513
+Number of semantic categories: 106
 
 models_full.json
 Number of models: 2399

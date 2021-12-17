@@ -12,9 +12,8 @@ from tdw.proc_gen_object_recipes.spatial_relation import SpatialRelation, SPATIA
 class ProcGenObjectManager:
 
     # Cache the model librarian.
-    if "models_full.json" not in Controller.MODEL_LIBRARIANS:
-        Controller.MODEL_LIBRARIANS["models_full.json"] = ModelLibrarian("models_full.json")
-    print("TODO move the models to models_core.json")
+    if "models_core.json" not in Controller.MODEL_LIBRARIANS:
+        Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian("models_core.json")
     """:class_var
     The names of models suitable for proc-gen. Key = The category. Value = A list of model names.
     """
@@ -42,7 +41,7 @@ class ProcGenObjectManager:
         assert category in ProcGenObjectManager.MODEL_NAMES, f"Invalid category: {category}"
         # Add the object.
         model_name = ProcGenObjectManager.MODEL_NAMES[category][self.rng.randint(0, len(ProcGenObjectManager.MODEL_NAMES[category]))]
-        record = Controller.MODEL_LIBRARIANS["models_full.json"].get_record(model_name)
+        record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
         if isinstance(position, dict):
             object_position = position
         elif isinstance(position, np.ndarray) or isinstance(position, list):
@@ -52,7 +51,7 @@ class ProcGenObjectManager:
         commands: List[dict] = Controller.get_add_physics_object(model_name=model_name,
                                                                  position=object_position,
                                                                  rotation={"x": 0, "y": rotation, "z": 0},
-                                                                 library="models_full.json",
+                                                                 library="models_core.json",
                                                                  object_id=Controller.get_unique_id(),
                                                                  kinematic=model_name in ProcGenObjectManager.APPLIANCE_CATEGORIES)
         # Get the size of the model.
@@ -127,7 +126,7 @@ class ProcGenObjectManager:
                 continue
             # Get objects small enough to fit within the rectangle.
             for model_name in ProcGenObjectManager.MODEL_NAMES[category]:
-                record = Controller.MODEL_LIBRARIANS["models_full.json"].get_record(model_name)
+                record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
                 model_size = ProcGenObjectManager._get_size(record=record)
                 model_semi_major_axis = model_size[0] if model_size[0] > model_size[1] else model_size[1]
                 if model_semi_major_axis < semi_minor_axis:
@@ -184,7 +183,7 @@ class ProcGenObjectManager:
                                                               position={"x": x, "y": center_dict["y"], "z": z},
                                                               rotation={"x": 0, "y": object_rotation, "z": 0},
                                                               object_id=object_id,
-                                                              library="models_full.json"))
+                                                              library="models_core.json"))
             commands.append({"$type": "rotate_object_around",
                              "id": object_id,
                              "axis": "yaw",
@@ -207,12 +206,3 @@ class ProcGenObjectManager:
         front_back = np.linalg.norm(TDWUtils.vector3_to_array(record.bounds["front"]) -
                                     TDWUtils.vector3_to_array(record.bounds["back"]))
         return left_right, front_back
-
-
-c = Controller(launch_build=False)
-cmds = [TDWUtils.create_empty_room(12, 12)]
-p = ProcGenObjectManager()
-cmds.extend(p.get_relational_arrangement(category="microwave",
-                                         position={"x": 0.1, "y": 0, "z": -1},
-                                         rotation=0))
-c.communicate(cmds)

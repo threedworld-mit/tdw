@@ -25,6 +25,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 - Fixed: `PyImpact` seems to be "missing" impact sounds because roll sounds haven't been implemented yet. Now, all "roll" events are handled as "impact events".
 - Fixed: `PyImpact.reset()` doesn't stop ongoing audio.
+- Added: `TDWUtils.bytes_to_megabytes(b)` Convert a quantity of bytes to a quantity of megabytes.
+- Added: `QuaternionUtils.is_left_of(origin, target, forward)` Returns True if `target` is to the left of `origin` otherwise returns False.
 
 ### Model library
 

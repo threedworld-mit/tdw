@@ -161,3 +161,18 @@ Source: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_a
 
 _Returns:_  The angle between the two quaternions in degrees around the y axis.
 
+#### is_left_of
+
+**`QuaternionUtils.is_left_of(origin, target, forward)`**
+
+_This is a static function._
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| origin |  np.array |  | The origin position. |
+| target |  np.array |  | The target position. |
+| forward |  np.array |  | The forward directional vector. |
+
+_Returns:_  True if `target` is to the left of `origin` by the `forward` vector; False if it's to the right.
+

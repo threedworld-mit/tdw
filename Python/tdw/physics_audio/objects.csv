@@ -19,13 +19,13 @@ basket_18inx18inx12iin_wicker,0.02,5,cardboard,models_core.json,0.5,0.65,3
 basket_18inx18inx12iin_wood_mesh,0.02,5,cardboard,models_core.json,0.5,0.65,3
 box_18inx18inx12in_cardboard,0.02,5,cardboard,models_core.json,0.5,0.65,3
 box_tapered_white_mesh,0.02,5,cardboard,models_core.json,0.5,0.65,3
-cgaxis_models_65_14_vray,0.1,0.4,cardboard,models_full.json,0.1,0.65,3
+cgaxis_models_65_14_vray,0.1,0.4,cardboard,models_core.json,0.1,0.65,3
 fruit_basket,0.01,1,cardboard,models_core.json,0.2,0.35,3
 shoebox_fused,0.2,0.4,cardboard,models_core.json,0.4,0.45,3
 vase_02,1,1.65,ceramic,models_core.json,0.4,0.85,2
 vase_03,0.5,1,ceramic,models_core.json,0.4,0.85,2
 vase_05,1,2.25,ceramic,models_core.json,0.4,0.85,2
-plate05,1,1,ceramic,models_full.json,0.625,0.65,2
+plate05,1,1,ceramic,models_core.json,0.625,0.65,2
 vase_01,0.6,3,ceramic,models_core.json,0.6,0.85,2
 jug03,0.1,1.45,ceramic,models_core.json,0.5,0.85,3
 coffeemug,0.4,0.5,ceramic,models_core.json,0.6,0.65,3
@@ -33,7 +33,7 @@ vase_06,1,2.2,ceramic,models_core.json,0.6,0.85,3
 12_01_001,0.6,5,ceramic,models_full.json,0.2,0.65,3
 cgaxis_models_22_33_vray,0.1,3,ceramic,models_full.json,0.625,0.65,3
 coffee_001,0.01,1,ceramic,models_core.json,0.2,0.65,3
-int_kitchen_accessories_le_creuset_bowl_30cm,0.2,12,ceramic,models_full.json,0.625,0.65,3
+int_kitchen_accessories_le_creuset_bowl_30cm,0.2,12,ceramic,models_core.json,0.625,0.65,3
 jug01,0.6,3,ceramic,models_core.json,0.6,0.85,3
 jug04,0.1,3,ceramic,models_core.json,0.6,0.85,3
 jug05,0.1,3,ceramic,models_core.json,0.6,0.85,3
@@ -76,7 +76,7 @@ glass1,0.65,0.4,glass,models_core.json,0.6,1.1,2
 b04_ramlosa_bottle_2015_vray,0.7,0.8,glass,models_core.json,0.5,0.75,2
 moet_chandon_bottle_vray,0.7,1.25,glass,models_core.json,0.5,0.75,2
 glass2,0.7,0.5,glass,models_core.json,0.6,1.15,2
-b04_bottle-2014-2018,1,0.8,glass,models_full.json,0.5,0.65,2
+b04_bottle-2014-2018,1,0.8,glass,models_core.json,0.5,0.65,2
 glass3,0.4,2,glass,models_core.json,0.6,1.15,2
 b04_whiskeybottle,0.4,1.25,glass,models_core.json,0.5,0.65,3
 b05_s_jams_01,0.2,0.6,glass,models_full.json,0.1,0.65,3
@@ -147,7 +147,7 @@ mailbox_toon_2013,1,3,metal,models_full.json,0.35,0.65,3
 metal_briefcase,0.01,4,metal,models_core.json,0.4,0.65,3
 metal_sculpture,0.01,100,metal,models_core.json,0.1,0.65,3
 microwave,0.1,20,metal,models_core.json,0.625,0.65,3
-pan03,0.6,1,metal,models_full.json,0.6,0.65,3
+pan03,0.6,1,metal,models_core.json,0.6,0.65,3
 prim_sphere,0.3,4,metal,models_special.json,0.2,0.35,3
 round_bowl_large_metal_perf,1,2,metal,models_core.json,0.625,0.65,3
 scissors_2014,0.3,1,metal,models_core.json,0.4,0.65,3
@@ -156,8 +156,8 @@ skillet_closed,0.2,12,metal,models_core.json,0.625,0.65,3
 skillet_open,0.2,12,metal,models_core.json,0.625,0.65,3
 skillet_open_no_lid,0.2,12,metal,models_core.json,0.625,0.65,3
 spunlight_designermesh_lamp,1,10,metal,models_core.json,0.35,0.65,3
-vk0056_tablefork,0.5,0.2,metal,models_full.json,0.6,0.65,3
-vk0060_dessertspoon,0.6,0.2,metal,models_full.json,0.6,0.65,3
+vk0056_tablefork,0.5,0.2,metal,models_core.json,0.6,0.65,3
+vk0060_dessertspoon,0.6,0.2,metal,models_core.json,0.6,0.65,3
 5ft_shelf_metal,0.2,25,metal,models_core.json,0.6,0.65,4
 arco_lamp,1,2,metal,models_core.json,0.35,0.65,4
 dishwasher_4,0.01,300,metal,models_core.json,0.35,0.65,4
@@ -188,7 +188,7 @@ b05_calculator,0.25,0.2,plastic_hard,models_core.json,0.6,0.65,3
 soup_ladle_black_02,1,0.2,plastic_hard,models_core.json,0.7,0.65,3
 aquostv,0.1,8,plastic_hard,models_core.json,0.7,0.65,3
 b006_clyde-clock_vray,0.1,2,plastic_hard,models_full.json,0.35,0.65,3
-b03_pen_4colours,0.2,0.2,plastic_hard,models_full.json,0.7,0.65,3
+b03_pen_4colours,0.2,0.2,plastic_hard,models_core.json,0.7,0.65,3
 b04_plastic_bucket,0.7,0.5,plastic_hard,models_full.json,0.6,0.65,3
 black_lamp,1,5,plastic_hard,models_core.json,0.35,0.65,3
 bork_vacuum,0.1,8,plastic_hard,models_core.json,0.6,0.65,3

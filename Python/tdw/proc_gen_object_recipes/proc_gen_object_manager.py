@@ -22,6 +22,14 @@ class ProcGenObjectManager:
     The appliance model categories. Objects in these categories won't have random rotations.
     """
     APPLIANCE_CATEGORIES: List[str] = Path(resource_filename(__name__, "appliances.txt")).read_text().split("\n")
+    """:class_var
+    Data for shelves. Key = model name. Value = Dictionary: "size" (a 2-element list), "ys" (list of shelf y's).
+    """
+    SHELVES: Dict[str, dict] = loads(Path(resource_filename(__name__, "shelves.json")).read_text())
+    """:class_var
+    Parameters for rectangular arrangements. Key = Category. Value = Dictionary (`"cell_size"`, `"density"`).
+    """
+    RECTANGULAR_ARRANGEMENTS: Dict[str, dict] = loads(Path(resource_filename(__name__, "rectangular_arrangements.json")).read_text())
 
     def __init__(self, random_seed: int = None):
         """
@@ -36,8 +44,18 @@ class ProcGenObjectManager:
         else:
             self.rng = np.random.RandomState(random_seed)
 
-    def get_relational_arrangement(self, category: str, position: Union[np.array, Dict[str, float]],
-                                   rotation: float) -> List[dict]:
+    def get_arrangement(self, category: str, position: Union[np.array, Dict[str, float]],
+                        rotation: float) -> Tuple[List[dict], List[str]]:
+        """
+        Procedurally generate an arrangement of objects.
+
+        :param category: The category of the "root" object. This is NOT the same as its wcategory, though there is overlap. See: ` ProcGenObjectManager.MODEL_NAMES`
+        :param position: The position of the root object as either a numpy array or a dictionary.
+        :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
+
+        :return: Tuple: A list of commands to add the object(s), a list of model categories used.
+        """
+
         assert category in ProcGenObjectManager.MODEL_NAMES, f"Invalid category: {category}"
         # Add the object.
         model_name = ProcGenObjectManager.MODEL_NAMES[category][self.rng.randint(0, len(ProcGenObjectManager.MODEL_NAMES[category]))]
@@ -56,6 +74,7 @@ class ProcGenObjectManager:
                                                                  kinematic=model_name in ProcGenObjectManager.APPLIANCE_CATEGORIES)
         # Get the size of the model.
         model_size = ProcGenObjectManager._get_size(record=record)
+        categories: List[str] = [category]
         # Add objects base on spatial relationship.
         for spatial_relation in SPATIAL_RELATIONS:
             if category not in SPATIAL_RELATIONS[spatial_relation]:
@@ -64,15 +83,35 @@ class ProcGenObjectManager:
             if spatial_relation == SpatialRelation.on_top_of:
                 # Gert the top position of the object.
                 object_top = {"x": position["x"], "y": record.bounds["top"]["y"] + position["y"], "z": position["z"]}
-                commands.extend(self.get_rectangular_arrangement(size=model_size,
-                                                                 categories=SPATIAL_RELATIONS[spatial_relation][category],
-                                                                 center=object_top,
-                                                                 rotation=rotation))
-        return commands
+                cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
+                object_commands, object_categories = self._get_rectangular_arrangement(size=model_size,
+                                                                                       categories=SPATIAL_RELATIONS[spatial_relation][category],
+                                                                                       center=object_top,
+                                                                                       rotation=rotation,
+                                                                                       cell_size=cell_size,
+                                                                                       density=density)
+                categories.extend(object_categories)
+                commands.extend(object_commands)
+            # Put objects on top of the shelves of the root object.
+            elif spatial_relation == SpatialRelation.on_shelf:
+                size = (ProcGenObjectManager.SHELVES[model_name]["size"][0],
+                        ProcGenObjectManager.SHELVES[model_name]["size"][1])
+                for y in ProcGenObjectManager.SHELVES[model_name]["ys"]:
+                    object_top = {"x": position["x"], "y": y + position["y"], "z": position["z"]}
+                    cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
+                    object_commands, object_categories = self._get_rectangular_arrangement(size=size,
+                                                                                           categories=SPATIAL_RELATIONS[spatial_relation][category],
+                                                                                           center=object_top,
+                                                                                           rotation=rotation,
+                                                                                           cell_size=cell_size,
+                                                                                           density=density)
+                    categories.extend(object_categories)
+                    commands.extend(object_commands)
+        return commands, list(set(categories))
 
-    def get_rectangular_arrangement(self, size: Tuple[float, float], center: Union[np.array, Dict[str, float]],
-                                    categories: List[str], rotation: float = 0, probability_empty_cell: float = 0.4,
-                                    cell_size: float = 0.05) -> List[dict]:
+    def _get_rectangular_arrangement(self, size: Tuple[float, float], center: Union[np.array, Dict[str, float]],
+                                     categories: List[str], rotation: float = 0, density: float = 0.4,
+                                     cell_size: float = 0.05) -> Tuple[List[dict], List[str]]:
         """
         Get a random arrangement of objects in a rectangular space.
 
@@ -80,10 +119,10 @@ class ProcGenObjectManager:
         :param center: The position of the center of the rectangle.
         :param categories: Models will be randomly chosen from these categories.
         :param rotation: Rotate the whole arrangement by this angle in degrees around the center position.
-        :param probability_empty_cell: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
+        :param density: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
         :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
 
-        :return: Tuple: A list of commands to add the objects.
+        :return: Tuple: A list of commands to add the objects, the categories of objects.
         """
 
         def __get_circle_mask(circle_x: int, circle_y: int, radius: float) -> np.array:
@@ -134,6 +173,7 @@ class ProcGenObjectManager:
                     model_cell_sizes.append(int(model_semi_major_axis / cell_size) + 1)
                     models_and_categories[model_name] = category
         commands: List[dict] = list()
+        model_categories: List[str] = list()
         # Get all of the sizes in occupancy map space.
         model_cell_sizes = list(set(model_cell_sizes))
         model_cell_sizes.reverse()
@@ -142,7 +182,7 @@ class ProcGenObjectManager:
             if ix == 0 or ix == occupancy_map.shape[0] - 1 or iz == 0 or iz == occupancy_map.shape[1]:
                 continue
             # This position is already occupied. Sometimes, skip a position.
-            if occupancy_map[ix][iz] or self.rng.random() < probability_empty_cell:
+            if occupancy_map[ix][iz] or self.rng.random() < density:
                 continue
             # Get the minimum object semi-major axis.
             sma = model_cell_sizes[0]
@@ -174,6 +214,7 @@ class ProcGenObjectManager:
             object_id = Controller.get_unique_id()
             # Set the rotation.
             model_category = models_and_categories[model_name]
+            model_categories.append(model_category)
             if model_category in ProcGenObjectManager.APPLIANCE_CATEGORIES:
                 object_rotation = 0
             else:
@@ -191,7 +232,7 @@ class ProcGenObjectManager:
                              "position": center_dict})
             # Record the position on the occupancy map.
             occupancy_map[__get_circle_mask(circle_x=ix, circle_y=iz, radius=sma) == True] = True
-        return commands
+        return commands, list(set(model_categories))
 
     @staticmethod
     def _get_size(record: ModelRecord) -> Tuple[float, float]:
@@ -206,3 +247,15 @@ class ProcGenObjectManager:
         front_back = np.linalg.norm(TDWUtils.vector3_to_array(record.bounds["front"]) -
                                     TDWUtils.vector3_to_array(record.bounds["back"]))
         return left_right, front_back
+
+    @staticmethod
+    def _get_rectangular_arrangement_parameters(category: str) -> Tuple[float, float]:
+        """
+        :param category: The category
+
+        :return: Tuple: The cell size and density.
+        """
+
+        if category not in ProcGenObjectManager.RECTANGULAR_ARRANGEMENTS:
+            return 0.05, 0.4
+        return ProcGenObjectManager.RECTANGULAR_ARRANGEMENTS[category]["cell_size"], ProcGenObjectManager.RECTANGULAR_ARRANGEMENTS[category]["density"]

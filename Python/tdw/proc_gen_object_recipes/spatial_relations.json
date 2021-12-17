@@ -14,6 +14,30 @@
       "cup",
       "wineglass"
     ],
+    "dishwasher": [
+      "baking_sheet",
+      "book",
+      "bottle",
+      "bowl",
+      "carving_fork",
+      "coffee_grinder",
+      "coffee_maker",
+      "cup",
+      "fork",
+      "jar",
+      "jug",
+      "knife",
+      "ladle",
+      "pan",
+      "plate",
+      "pot",
+      "spatula",
+      "spoon",
+      "tea_tray",
+      "teakettle",
+      "whisk",
+      "wineglass"
+    ],
     "microwave": [
       "apple",
       "banana",
@@ -47,6 +71,34 @@
       "bread",
       "cup",
       "wineglass"
+    ]
+  },
+  "on_shelf": {
+    "shelf": [
+      "book",
+      "bottle",
+      "bowl",
+      "candle",
+      "carving_fork",
+      "coaster",
+      "coffee_grinder",
+      "coffee_maker",
+      "coin",
+      "cork",
+      "cup",
+      "fork",
+      "house_plant",
+      "knife",
+      "ladle",
+      "jar",
+      "pan",
+      "pen",
+      "pot",
+      "scissors",
+      "soap_dispenser",
+      "spoon",
+      "tea_tray",
+      "vase"
     ]
   }
 }

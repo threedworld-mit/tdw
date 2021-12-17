@@ -1,0 +1,10 @@
+{
+  "microwave": {
+    "cell_size": 0.05,
+    "density": 0.4
+  },
+  "shelf": {
+    "cell_size": 0.0125,
+    "density": 0.8
+  }
+}

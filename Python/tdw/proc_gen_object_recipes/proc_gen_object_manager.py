@@ -1,13 +1,53 @@
 from json import loads
 from pathlib import Path
 from pkg_resources import resource_filename
-from typing import Tuple, List, Union, Dict
+from typing import Tuple, List, Union, Dict, Optional
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian, ModelRecord
 from tdw.proc_gen_object_recipes.spatial_relation import SpatialRelation, SPATIAL_RELATIONS
+from tdw.proc_gen_object_recipes.arrangement_result import ArrangementResult
 from tdw.scene_data.region_bounds import RegionBounds
+
+
+class _ObjectBounds:
+    """
+    Object bound positions based on cached object bounds and the position of the root object, assuming no rotation.
+    """
+    def __init__(self, record: ModelRecord, root_object_position: Dict[str, float]):
+        """
+        :param record: The model record.
+        :param root_object_position: The position of the root object.
+        """
+
+        # Get the bounds extents.
+        left_x = record.bounds["left"]["x"] + root_object_position["x"]
+        right_x = record.bounds["right"]["x"] + root_object_position["x"]
+        if left_x < right_x:
+            self.x_min: float = left_x
+            self.x_max: float = right_x
+        else:
+            self.x_min = right_x
+            self.x_max = left_x
+        front_z = record.bounds["front"]["z"] + root_object_position["z"]
+        back_z = record.bounds["back"]["z"] + root_object_position["z"]
+        if front_z < back_z:
+            self.z_min: float = front_z
+            self.z_max: float = back_z
+        else:
+            self.z_min = back_z
+            self.z_max = front_z
+
+    def is_inside(self, x: float, z: float) -> bool:
+        """
+        :param x: The x coordinate.
+        :param z: The z coordinate.
+
+        :return: True if position (x, z) is within the bounds of this object.
+        """
+
+        return self.x_min <= x <= self.x_max and self.z_min <= z <= self.z_max
 
 
 class ProcGenObjectManager:
@@ -18,11 +58,11 @@ class ProcGenObjectManager:
     """:class_var
     The names of models suitable for proc-gen. Key = The category. Value = A list of model names.
     """
-    MODEL_NAMES: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "models.json")).read_text())
+    MODEL_CATEGORIES: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "models.json")).read_text())
     """:class_var
-    The appliance model categories. Objects in these categories won't have random rotations.
+    Objects in these categories will be kinematic.
     """
-    APPLIANCE_CATEGORIES: List[str] = Path(resource_filename(__name__, "appliances.txt")).read_text().split("\n")
+    KINEMATIC_CATEGORIES: List[str] = Path(resource_filename(__name__, "kinematic_catories.txt")).read_text().split("\n")
     """:class_var
     Data for shelves. Key = model name. Value = Dictionary: "size" (a 2-element list), "ys" (list of shelf y's).
     """
@@ -46,35 +86,62 @@ class ProcGenObjectManager:
             self.rng = np.random.RandomState(random_seed)
 
     def get_arrangement(self, category: str, position: Union[np.array, Dict[str, float]],
-                        rotation: float, region_bounds: RegionBounds) -> Tuple[List[dict], List[str]]:
+                        rotation: float, region_bounds: RegionBounds) -> ArrangementResult:
         """
         Procedurally generate an arrangement of objects.
 
-        :param category: The category of the "root" object. This is NOT the same as its wcategory, though there is overlap. See: ` ProcGenObjectManager.MODEL_NAMES`
+        :param category: The category of the "root" object. This is NOT the same as its wcategory, though there is overlap. See: ` ProcGenObjectManager.MODEL_CATEGORIES`
         :param position: The position of the root object as either a numpy array or a dictionary.
         :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
         :param region_bounds: The bounds of the region.
 
-        :return: Tuple: A list of commands to add the object(s), a list of model categories used.
+        :return: An [`ArrangementResult`](arrangement_result.md).
         """
 
-        assert category in ProcGenObjectManager.MODEL_NAMES, f"Invalid category: {category}"
-        print("TODO constrain the root objects to something that will fit in the region bounds.")
-        # Add the object.
-        model_name = ProcGenObjectManager.MODEL_NAMES[category][self.rng.randint(0, len(ProcGenObjectManager.MODEL_NAMES[category]))]
-        record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+        assert category in ProcGenObjectManager.MODEL_CATEGORIES, f"Invalid category: {category}"
+        # Get the root object position as a dictionary.
         if isinstance(position, dict):
             object_position = position
         elif isinstance(position, np.ndarray) or isinstance(position, list):
             object_position = TDWUtils.array_to_vector3(position)
         else:
             raise Exception(f"Invalid position argument: {position}")
-        commands: List[dict] = Controller.get_add_physics_object(model_name=model_name,
-                                                                 position=object_position,
-                                                                 rotation={"x": 0, "y": rotation, "z": 0},
-                                                                 library="models_core.json",
-                                                                 object_id=Controller.get_unique_id(),
-                                                                 kinematic=model_name in ProcGenObjectManager.APPLIANCE_CATEGORIES)
+        # Get the possible root objects.
+        record = self._get_model_that_fits_in_region(model_names=ProcGenObjectManager.MODEL_CATEGORIES[category][:],
+                                                     object_position=object_position,
+                                                     region_bounds=region_bounds)
+        # There are no root objects that fit.
+        if record is None:
+            return ArrangementResult(success=False, object_ids=[], kinematic_object_ids=[], categories=[], commands=[])
+        return self._get_arrangement_from_root_model(record=record,
+                                                     category=category,
+                                                     root_object_position=object_position,
+                                                     rotation=rotation,
+                                                     region_bounds=region_bounds,
+                                                     commands=[])
+
+    def _get_arrangement_from_root_model(self, record: ModelRecord, category: str,
+                                         root_object_position: Dict[str, float], rotation: float,
+                                         region_bounds: RegionBounds, commands: List[dict]) -> ArrangementResult:
+        """
+        Procedurally generate an arrangement of objects from a root object.
+
+        :param record: The record of the root object.
+        :param category: The category of the "root" object. This is NOT the same as its wcategory, though there is overlap. See: ` ProcGenObjectManager.MODEL_CATEGORIES`
+        :param root_object_position: The position of the root object as a dictionary.
+        :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
+        :param region_bounds: The bounds of the region.
+        :param commands: The list of commands so far.
+
+        :return: An [`ArrangementResult`](arrangement_result.md).
+        """
+
+        commands.extend(Controller.get_add_physics_object(model_name=record.name,
+                                                          position=root_object_position,
+                                                          rotation={"x": 0, "y": rotation, "z": 0},
+                                                          library="models_core.json",
+                                                          object_id=Controller.get_unique_id(),
+                                                          kinematic=record.name in ProcGenObjectManager.KINEMATIC_CATEGORIES))
         # Get the size of the model.
         model_size = ProcGenObjectManager._get_size(record=record)
         categories: List[str] = [category]
@@ -85,10 +152,13 @@ class ProcGenObjectManager:
             # Put objects on top of the root object.
             if spatial_relation == SpatialRelation.on_top_of:
                 # Gert the top position of the object.
-                object_top = {"x": position["x"], "y": record.bounds["top"]["y"] + position["y"], "z": position["z"]}
+                object_top = {"x": root_object_position["x"],
+                              "y": record.bounds["top"]["y"] + root_object_position["y"],
+                              "z": root_object_position["z"]}
                 cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
                 object_commands, object_categories = self._get_rectangular_arrangement(size=model_size,
-                                                                                       categories=SPATIAL_RELATIONS[spatial_relation][category],
+                                                                                       categories=SPATIAL_RELATIONS[
+                                                                                           spatial_relation][category],
                                                                                        center=object_top,
                                                                                        rotation=rotation,
                                                                                        cell_size=cell_size,
@@ -97,23 +167,48 @@ class ProcGenObjectManager:
                 commands.extend(object_commands)
             # Put objects on top of the shelves of the root object.
             elif spatial_relation == SpatialRelation.on_shelf:
-                size = (ProcGenObjectManager.SHELVES[model_name]["size"][0],
-                        ProcGenObjectManager.SHELVES[model_name]["size"][1])
-                for y in ProcGenObjectManager.SHELVES[model_name]["ys"]:
-                    object_top = {"x": position["x"], "y": y + position["y"], "z": position["z"]}
+                size = (ProcGenObjectManager.SHELVES[record.name]["size"][0],
+                        ProcGenObjectManager.SHELVES[record.name]["size"][1])
+                for y in ProcGenObjectManager.SHELVES[record.name]["ys"]:
+                    object_top = {"x": root_object_position["x"],
+                                  "y": y + root_object_position["y"],
+                                  "z": root_object_position["z"]}
                     cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
                     object_commands, object_categories = self._get_rectangular_arrangement(size=size,
-                                                                                           categories=SPATIAL_RELATIONS[spatial_relation][category],
+                                                                                           categories=SPATIAL_RELATIONS[
+                                                                                               spatial_relation][
+                                                                                               category],
                                                                                            center=object_top,
                                                                                            rotation=rotation,
                                                                                            cell_size=cell_size,
                                                                                            density=density)
                     categories.extend(object_categories)
                     commands.extend(object_commands)
+            # Add an arrangement to the left and right of this object, if possible.
             elif spatial_relation == SpatialRelation.left_or_right_of:
-                pass # TODO handle this! Allow those objects to have objects on top of them. Constrain to the bounds of the room!
-
-        return commands, list(set(categories))
+                for is_left in [True, False]:
+                    arrangement_result = self._get_left_or_right_arrangement(root_object_position=root_object_position,
+                                                                             root_object_record=record,
+                                                                             root_object_category=category,
+                                                                             region_bounds=region_bounds,
+                                                                             is_left=is_left,
+                                                                             rotation=rotation,
+                                                                             commands=commands)
+                    # Append the result.
+                    if arrangement_result.success:
+                        commands.extend(arrangement_result.commands)
+                        categories.extend(arrangement_result.categories)
+        # Get a list of object IDs.
+        object_ids: List[int] = list()
+        kinematic_object_ids: List[int] = list()
+        for command in commands:
+            if command["$type"] == "add_object":
+                object_ids.append(command["id"])
+            elif command["$type"] == "set_kinematic_state" and command["kinematic"]:
+                kinematic_object_ids.append(command["id"])
+        # Return a description of the result.
+        return ArrangementResult(success=True, object_ids=object_ids, kinematic_object_ids=kinematic_object_ids,
+                                 categories=list(set(categories)), commands=commands)
 
     def _get_rectangular_arrangement(self, size: Tuple[float, float], center: Union[np.array, Dict[str, float]],
                                      categories: List[str], rotation: float = 0, density: float = 0.4,
@@ -159,7 +254,7 @@ class ProcGenObjectManager:
         # Get the occupancy map.
         occupancy_map: np.array = np.zeros(shape=(len(xs), len(zs)), dtype=bool)
         # Print a warning about bad categories.
-        bad_categories = [c for c in categories if c not in ProcGenObjectManager.MODEL_NAMES]
+        bad_categories = [c for c in categories if c not in ProcGenObjectManager.MODEL_CATEGORIES]
         if len(bad_categories) > 0:
             print(f"WARNING! Invalid model categories: {bad_categories}")
         # Get the semi-minor axis of the rectangle's size.
@@ -169,10 +264,10 @@ class ProcGenObjectManager:
         model_cell_sizes: List[int] = list()
         models_and_categories: Dict[str, str] = dict()
         for category in categories:
-            if category not in ProcGenObjectManager.MODEL_NAMES:
+            if category not in ProcGenObjectManager.MODEL_CATEGORIES:
                 continue
             # Get objects small enough to fit within the rectangle.
-            for model_name in ProcGenObjectManager.MODEL_NAMES[category]:
+            for model_name in ProcGenObjectManager.MODEL_CATEGORIES[category]:
                 record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
                 model_size = ProcGenObjectManager._get_size(record=record)
                 model_semi_major_axis = model_size[0] if model_size[0] > model_size[1] else model_size[1]
@@ -223,7 +318,7 @@ class ProcGenObjectManager:
             # Set the rotation.
             model_category = models_and_categories[model_name]
             model_categories.append(model_category)
-            if model_category in ProcGenObjectManager.APPLIANCE_CATEGORIES:
+            if model_category in ProcGenObjectManager.KINEMATIC_CATEGORIES:
                 object_rotation = 0
             else:
                 object_rotation = self.rng.uniform(0, 360)
@@ -241,6 +336,62 @@ class ProcGenObjectManager:
             # Record the position on the occupancy map.
             occupancy_map[__get_circle_mask(circle_x=ix, circle_y=iz, radius=sma) == True] = True
         return commands, list(set(model_categories))
+
+    def _get_left_or_right_arrangement(self, root_object_position: Dict[str, float], root_object_record: ModelRecord,
+                                       root_object_category: str, region_bounds: RegionBounds,
+                                       is_left: bool, rotation: float, commands: List[dict]) -> ArrangementResult:
+        """
+        Add an arrangement to the left or right of a root object.
+
+        :param root_object_position: The position of the root object.
+        :param root_object_record: The root object record.
+        :param root_object_category: The root object category.
+        :param region_bounds: The bounds of the region (room).
+        :param is_left: If True, add an arrangement to the left of the root object. If False, add an object to the right.
+        :param rotation: The rotation of the root object and the objects to its left and right.
+        :param commands: The commands generated so far.
+
+        :return: An `ArrangementResult`.
+        """
+
+        # Get the bounds positions of all objects so far.
+        object_bounds: List[_ObjectBounds] = list()
+        for command in commands:
+            if command["$type"] == "add_object":
+                r = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(command["name"])
+                object_bounds.append(_ObjectBounds(record=r, root_object_position=root_object_position))
+        # Get an object that fits in the room and doesn't overlap with any existing models.
+        model_names: List[str] = SPATIAL_RELATIONS[SpatialRelation.left_or_right_of][root_object_category][:]
+        self.rng.shuffle(model_names)
+        got_model_name = False
+        record = Controller.MODEL_LIBRARIANS["models_core.json"].records[0]
+        position = {"x": 0, "y": 0, "z": 0}
+        for model_name in model_names:
+            record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+            # Get the position of the object.
+            if is_left:
+                x = root_object_position["x"] - root_object_record.bounds["left"]["x"] - record.bounds["left"]["x"] / 2
+            else:
+                x = root_object_position["x"] + root_object_record.bounds["left"]["x"] + record.bounds["left"]["x"] / 2
+            position = {"x": x, "y": root_object_position["y"], "z": root_object_position["z"]}
+            # Don't use this object if it overlaps with any others.
+            for ob in object_bounds:
+                if ob.is_inside(x=position["x"], z=position["z"]):
+                    continue
+            # Use this object if it fits within the scene region.
+            if ProcGenObjectManager._model_fits_in_region(record=record, region_bounds=region_bounds, position=position):
+                got_model_name = True
+                break
+        # No object fits here.
+        if not got_model_name:
+            return ArrangementResult(success=False, object_ids=[], kinematic_object_ids=[], categories=[], commands=[])
+        # Add an arrangement here.
+        return self._get_arrangement_from_root_model(record=record,
+                                                     root_object_position=position,
+                                                     category=root_object_category,
+                                                     rotation=rotation,
+                                                     region_bounds=region_bounds,
+                                                     commands=commands)
 
     @staticmethod
     def _get_size(record: ModelRecord) -> Tuple[float, float]:
@@ -267,3 +418,40 @@ class ProcGenObjectManager:
         if category not in ProcGenObjectManager.RECTANGULAR_ARRANGEMENTS:
             return 0.05, 0.4
         return ProcGenObjectManager.RECTANGULAR_ARRANGEMENTS[category]["cell_size"], ProcGenObjectManager.RECTANGULAR_ARRANGEMENTS[category]["density"]
+
+    @staticmethod
+    def _model_fits_in_region(record: ModelRecord, position: Dict[str, float], region_bounds: RegionBounds) -> bool:
+        """
+        :param record: The model record.
+        :param position: The position of the object.
+        :param region_bounds: The region (room) bounds.
+
+        :return: True if the model fits in the region.
+        """
+
+        # Get the (x, z) positions of the bounds.
+        for point in [[record.bounds["left"]["x"] + position["x"], record.bounds["left"]["z"] + position["z"]],
+                      [record.bounds["right"]["x"] + position["x"], record.bounds["right"]["z"] + position["z"]],
+                      [record.bounds["front"]["x"] + position["x"], record.bounds["front"]["z"] + position["z"]],
+                      [record.bounds["back"]["x"] + position["x"], record.bounds["back"]["z"] + position["z"]],
+                      [record.bounds["center"]["x"] + position["x"], record.bounds["center"]["z"] + position["z"]]]:
+            if not region_bounds.is_inside(x=point[0], z=point[1]):
+                return False
+        return True
+
+    def _get_model_that_fits_in_region(self, model_names: List[str], object_position: Dict[str, float],
+                                       region_bounds: RegionBounds) -> Optional[ModelRecord]:
+        self.rng.shuffle(model_names)
+        # Get the first object, if any, that fits in the region bounds.
+        got_model_name = False
+        record = Controller.MODEL_LIBRARIANS["models_core.json"].records[0]
+        for mn in model_names:
+            record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(mn)
+            if ProcGenObjectManager._model_fits_in_region(record=record, position=object_position,
+                                                          region_bounds=region_bounds):
+                got_model_name = True
+                break
+        if not got_model_name:
+            return None
+        else:
+            return record

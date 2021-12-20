@@ -6,9 +6,11 @@ import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian, ModelRecord
-from tdw.proc_gen_object_recipes.spatial_relation import SpatialRelation, SPATIAL_RELATIONS
-from tdw.proc_gen_object_recipes.arrangement_result import ArrangementResult
+from tdw.add_ons.proc_gen_object_arrangement.spatial_relation import SpatialRelation, SPATIAL_RELATIONS
+from tdw.add_ons.proc_gen_object_arrangement.arrangement_result import ArrangementResult
 from tdw.scene_data.region_bounds import RegionBounds
+from tdw.scene_data.scene_bounds import SceneBounds
+from tdw.add_ons.add_on import AddOn
 
 
 class _ObjectBounds:
@@ -21,23 +23,10 @@ class _ObjectBounds:
         :param root_object_position: The position of the root object.
         """
 
-        # Get the bounds extents.
-        left_x = record.bounds["left"]["x"] + root_object_position["x"]
-        right_x = record.bounds["right"]["x"] + root_object_position["x"]
-        if left_x < right_x:
-            self.x_min: float = left_x
-            self.x_max: float = right_x
-        else:
-            self.x_min = right_x
-            self.x_max = left_x
-        front_z = record.bounds["front"]["z"] + root_object_position["z"]
-        back_z = record.bounds["back"]["z"] + root_object_position["z"]
-        if front_z < back_z:
-            self.z_min: float = front_z
-            self.z_max: float = back_z
-        else:
-            self.z_min = back_z
-            self.z_max = front_z
+        self.x_min: float = root_object_position["x"] + record.bounds["left"]["x"]
+        self.x_max: float = root_object_position["x"] + record.bounds["right"]["x"]
+        self.z_min: float = root_object_position["z"] + record.bounds["front"]["z"]
+        self.z_max: float = root_object_position["z"] + record.bounds["back"]["z"]
 
     def is_inside(self, x: float, z: float) -> bool:
         """
@@ -50,7 +39,25 @@ class _ObjectBounds:
         return self.x_min <= x <= self.x_max and self.z_min <= z <= self.z_max
 
 
-class ProcGenObjectManager:
+class ProcGenObjectArranger(AddOn):
+    """
+    Procedurally arrange objects using spatial relations and categories.
+    For example, certain object categories can be *on top of* other object categories.
+
+    Note that proc-gen object categories overlap with `record.wcategory` but are not the same.
+    Note also that not all objects in a wcategory suitable for proc-gen and so aren't used by this add-on.
+    To determine all models in a proc-gen category and the corresponding wcategory:
+
+    ```python
+    from tdw.add_ons.proc_gen_object_arranger import ProcGenObjectArranger
+
+    for proc_gen_category in ProcGenObjectArranger.PROC_GEN_CATEGORY_TO_WCATEGORY:
+        wcategory = ProcGenObjectArranger.PROC_GEN_CATEGORY_TO_WCATEGORY[proc_gen_category]
+        print(f"Proc-gen category: {proc_gen_category}", f"wcategory: {wcategory}")
+        for model_name in ProcGenObjectArranger.MODEL_CATEGORIES[proc_gen_category]:
+            print(f"\t{model_name}")
+    ```
+    """
 
     # Cache the model librarian.
     if "models_core.json" not in Controller.MODEL_LIBRARIANS:
@@ -58,25 +65,30 @@ class ProcGenObjectManager:
     """:class_var
     The names of models suitable for proc-gen. Key = The category. Value = A list of model names.
     """
-    MODEL_CATEGORIES: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "models.json")).read_text())
+    MODEL_CATEGORIES: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "proc_gen_object_arrangement/models.json")).read_text())
     """:class_var
     Objects in these categories will be kinematic.
     """
-    KINEMATIC_CATEGORIES: List[str] = Path(resource_filename(__name__, "kinematic_catories.txt")).read_text().split("\n")
+    KINEMATIC_CATEGORIES: List[str] = Path(resource_filename(__name__, "proc_gen_object_arrangement/kinematic_categories.txt")).read_text().split("\n")
     """:class_var
     Data for shelves. Key = model name. Value = Dictionary: "size" (a 2-element list), "ys" (list of shelf y's).
     """
-    SHELVES: Dict[str, dict] = loads(Path(resource_filename(__name__, "shelves.json")).read_text())
+    SHELVES: Dict[str, dict] = loads(Path(resource_filename(__name__, "proc_gen_object_arrangement/shelves.json")).read_text())
     """:class_var
     Parameters for rectangular arrangements. Key = Category. Value = Dictionary (`"cell_size"`, `"density"`).
     """
-    RECTANGULAR_ARRANGEMENTS: Dict[str, dict] = loads(Path(resource_filename(__name__, "rectangular_arrangements.json")).read_text())
+    RECTANGULAR_ARRANGEMENTS: Dict[str, dict] = loads(Path(resource_filename(__name__, "proc_gen_object_arrangement/rectangular_arrangements.json")).read_text())
+    """:class_var
+    A mapping of proc-gen categories to record wcategories.
+    """
+    PROC_GEN_CATEGORY_TO_WCATEGORY: Dict[str, str] = loads(Path(resource_filename(__name__, "proc_gen_object_arrangement/procgen_category_to_wcategory.json")).read_text())
 
     def __init__(self, random_seed: int = None):
         """
         :param random_seed: The random seed. If None, a random seed is randomly selected.
         """
 
+        super().__init__()
         if random_seed is None:
             """:field
             The random number generator.
@@ -84,21 +96,40 @@ class ProcGenObjectManager:
             self.rng: np.random.RandomState = np.random.RandomState()
         else:
             self.rng = np.random.RandomState(random_seed)
+        """:field
+        The [scene bounds](../scene_data/SceneBounds.md). This is set on the second `communicate()` call.
+        """
+        self.scene_bounds: Optional[SceneBounds] = None
+        self._arrangement_results: List[ArrangementResult] = list()
+
+    def get_initialization_commands(self) -> List[dict]:
+        return [{"$type": "send_scene_regions"}]
+
+    def on_send(self, resp: List[bytes]) -> None:
+        if self.scene_bounds is None:
+            self.scene_bounds = SceneBounds(resp=resp)
+
+    def reset(self) -> None:
+        """
+        :return: Call this whenever you reset the scene or load a new scene.
+        """
+
+        self.initialized = False
+        self.scene_bounds = None
 
     def get_arrangement(self, category: str, position: Union[np.array, Dict[str, float]],
-                        rotation: float, region_bounds: RegionBounds) -> ArrangementResult:
+                        rotation: float, region: int = 0) -> None:
         """
         Procedurally generate an arrangement of objects.
 
-        :param category: The category of the "root" object. This is NOT the same as its wcategory, though there is overlap. See: ` ProcGenObjectManager.MODEL_CATEGORIES`
+        :param category: The category of the "root" object.
         :param position: The position of the root object as either a numpy array or a dictionary.
         :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
-        :param region_bounds: The bounds of the region.
-
-        :return: An [`ArrangementResult`](arrangement_result.md).
+        :param region: The index of the region in `self.scene_bounds`.
         """
 
-        assert category in ProcGenObjectManager.MODEL_CATEGORIES, f"Invalid category: {category}"
+        assert category in ProcGenObjectArranger.MODEL_CATEGORIES, f"Invalid category: {category}"
+        region_bounds = self.scene_bounds.rooms[region]
         # Get the root object position as a dictionary.
         if isinstance(position, dict):
             object_position = position
@@ -107,43 +138,50 @@ class ProcGenObjectManager:
         else:
             raise Exception(f"Invalid position argument: {position}")
         # Get the possible root objects.
-        record = self._get_model_that_fits_in_region(model_names=ProcGenObjectManager.MODEL_CATEGORIES[category][:],
+        record = self._get_model_that_fits_in_region(model_names=ProcGenObjectArranger.MODEL_CATEGORIES[category][:],
                                                      object_position=object_position,
                                                      region_bounds=region_bounds)
         # There are no root objects that fit.
         if record is None:
-            return ArrangementResult(success=False, object_ids=[], kinematic_object_ids=[], categories=[], commands=[])
-        return self._get_arrangement_from_root_model(record=record,
-                                                     category=category,
-                                                     root_object_position=object_position,
-                                                     rotation=rotation,
-                                                     region_bounds=region_bounds,
-                                                     commands=[])
+            return
+        result = self._get_arrangement_from_root_model(record=record,
+                                                       category=category,
+                                                       root_object_position=object_position,
+                                                       rotation=rotation,
+                                                       region_bounds=region_bounds,
+                                                       commands=[],
+                                                       is_root=True)
+        if result.success:
+            self._arrangement_results.append(result)
+            # Append the commands.
+            self.commands.extend(result.commands)
 
     def _get_arrangement_from_root_model(self, record: ModelRecord, category: str,
                                          root_object_position: Dict[str, float], rotation: float,
-                                         region_bounds: RegionBounds, commands: List[dict]) -> ArrangementResult:
+                                         region_bounds: RegionBounds, commands: List[dict],
+                                         is_root: bool) -> ArrangementResult:
         """
         Procedurally generate an arrangement of objects from a root object.
 
         :param record: The record of the root object.
-        :param category: The category of the "root" object. This is NOT the same as its wcategory, though there is overlap. See: ` ProcGenObjectManager.MODEL_CATEGORIES`
+        :param category: The category of the "root" object.
         :param root_object_position: The position of the root object as a dictionary.
         :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
         :param region_bounds: The bounds of the region.
         :param commands: The list of commands so far.
+        :param is_root: If True, this is the root object of the whole tree.
 
         :return: An [`ArrangementResult`](arrangement_result.md).
         """
 
+        root_object_id = Controller.get_unique_id()
         commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                           position=root_object_position,
-                                                          rotation={"x": 0, "y": rotation, "z": 0},
                                                           library="models_core.json",
-                                                          object_id=Controller.get_unique_id(),
-                                                          kinematic=record.name in ProcGenObjectManager.KINEMATIC_CATEGORIES))
+                                                          object_id=root_object_id,
+                                                          kinematic=record.name in ProcGenObjectArranger.KINEMATIC_CATEGORIES))
         # Get the size of the model.
-        model_size = ProcGenObjectManager._get_size(record=record)
+        model_size = ProcGenObjectArranger._get_size(record=record)
         categories: List[str] = [category]
         # Add objects base on spatial relationship.
         for spatial_relation in SPATIAL_RELATIONS:
@@ -156,20 +194,20 @@ class ProcGenObjectManager:
                               "y": record.bounds["top"]["y"] + root_object_position["y"],
                               "z": root_object_position["z"]}
                 cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
-                object_commands, object_categories = self._get_rectangular_arrangement(size=model_size,
+                surface_size = (model_size[0] * 0.8, model_size[1] * 0.8)
+                object_commands, object_categories = self._get_rectangular_arrangement(size=surface_size,
                                                                                        categories=SPATIAL_RELATIONS[
                                                                                            spatial_relation][category],
                                                                                        center=object_top,
-                                                                                       rotation=rotation,
                                                                                        cell_size=cell_size,
                                                                                        density=density)
                 categories.extend(object_categories)
                 commands.extend(object_commands)
             # Put objects on top of the shelves of the root object.
             elif spatial_relation == SpatialRelation.on_shelf:
-                size = (ProcGenObjectManager.SHELVES[record.name]["size"][0],
-                        ProcGenObjectManager.SHELVES[record.name]["size"][1])
-                for y in ProcGenObjectManager.SHELVES[record.name]["ys"]:
+                size = (ProcGenObjectArranger.SHELVES[record.name]["size"][0],
+                        ProcGenObjectArranger.SHELVES[record.name]["size"][1])
+                for y in ProcGenObjectArranger.SHELVES[record.name]["ys"]:
                     object_top = {"x": root_object_position["x"],
                                   "y": y + root_object_position["y"],
                                   "z": root_object_position["z"]}
@@ -179,13 +217,12 @@ class ProcGenObjectManager:
                                                                                                spatial_relation][
                                                                                                category],
                                                                                            center=object_top,
-                                                                                           rotation=rotation,
                                                                                            cell_size=cell_size,
                                                                                            density=density)
                     categories.extend(object_categories)
                     commands.extend(object_commands)
             # Add an arrangement to the left and right of this object, if possible.
-            elif spatial_relation == SpatialRelation.left_or_right_of:
+            elif spatial_relation == SpatialRelation.left_or_right_of and is_root:
                 for is_left in [True, False]:
                     arrangement_result = self._get_left_or_right_arrangement(root_object_position=root_object_position,
                                                                              root_object_record=record,
@@ -204,14 +241,36 @@ class ProcGenObjectManager:
         for command in commands:
             if command["$type"] == "add_object":
                 object_ids.append(command["id"])
-            elif command["$type"] == "set_kinematic_state" and command["kinematic"]:
+            elif command["$type"] == "set_kinematic_state" and command["is_kinematic"]:
                 kinematic_object_ids.append(command["id"])
+        # Rotate the root object.
+        if is_root:
+            parent_commands = []
+            for command in commands:
+                if command["$type"] == "add_object" and command["id"] != root_object_id:
+                    parent_commands.append({"$type": "parent_object_to_object",
+                                            "id": command["id"],
+                                            "parent_id": root_object_id})
+            commands.extend(parent_commands)
+            commands.append({"$type": "rotate_object_by",
+                             "angle": rotation,
+                             "id": root_object_id,
+                             "axis": "yaw",
+                             "is_world": True,
+                             "use_centroid": False})
+            # Unparent everything.
+            unparent_commands = []
+            for command in commands:
+                if command["$type"] == "add_object" and command["id"] != root_object_id:
+                    unparent_commands.append({"$type": "unparent_object",
+                                              "id": command["id"]})
+            commands.extend(unparent_commands)
         # Return a description of the result.
         return ArrangementResult(success=True, object_ids=object_ids, kinematic_object_ids=kinematic_object_ids,
                                  categories=list(set(categories)), commands=commands)
 
     def _get_rectangular_arrangement(self, size: Tuple[float, float], center: Union[np.array, Dict[str, float]],
-                                     categories: List[str], rotation: float = 0, density: float = 0.4,
+                                     categories: List[str], density: float = 0.4,
                                      cell_size: float = 0.05) -> Tuple[List[dict], List[str]]:
         """
         Get a random arrangement of objects in a rectangular space.
@@ -219,7 +278,6 @@ class ProcGenObjectManager:
         :param size: The size of the rectangle in worldspace coordinates.
         :param center: The position of the center of the rectangle.
         :param categories: Models will be randomly chosen from these categories.
-        :param rotation: Rotate the whole arrangement by this angle in degrees around the center position.
         :param density: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
         :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
 
@@ -254,7 +312,7 @@ class ProcGenObjectManager:
         # Get the occupancy map.
         occupancy_map: np.array = np.zeros(shape=(len(xs), len(zs)), dtype=bool)
         # Print a warning about bad categories.
-        bad_categories = [c for c in categories if c not in ProcGenObjectManager.MODEL_CATEGORIES]
+        bad_categories = [c for c in categories if c not in ProcGenObjectArranger.MODEL_CATEGORIES]
         if len(bad_categories) > 0:
             print(f"WARNING! Invalid model categories: {bad_categories}")
         # Get the semi-minor axis of the rectangle's size.
@@ -264,12 +322,12 @@ class ProcGenObjectManager:
         model_cell_sizes: List[int] = list()
         models_and_categories: Dict[str, str] = dict()
         for category in categories:
-            if category not in ProcGenObjectManager.MODEL_CATEGORIES:
+            if category not in ProcGenObjectArranger.MODEL_CATEGORIES:
                 continue
             # Get objects small enough to fit within the rectangle.
-            for model_name in ProcGenObjectManager.MODEL_CATEGORIES[category]:
+            for model_name in ProcGenObjectArranger.MODEL_CATEGORIES[category]:
                 record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
-                model_size = ProcGenObjectManager._get_size(record=record)
+                model_size = ProcGenObjectArranger._get_size(record=record)
                 model_semi_major_axis = model_size[0] if model_size[0] > model_size[1] else model_size[1]
                 if model_semi_major_axis < semi_minor_axis:
                     model_sizes[model_name] = model_semi_major_axis
@@ -318,7 +376,7 @@ class ProcGenObjectManager:
             # Set the rotation.
             model_category = models_and_categories[model_name]
             model_categories.append(model_category)
-            if model_category in ProcGenObjectManager.KINEMATIC_CATEGORIES:
+            if model_category in ProcGenObjectArranger.KINEMATIC_CATEGORIES:
                 object_rotation = 0
             else:
                 object_rotation = self.rng.uniform(0, 360)
@@ -328,11 +386,6 @@ class ProcGenObjectManager:
                                                               rotation={"x": 0, "y": object_rotation, "z": 0},
                                                               object_id=object_id,
                                                               library="models_core.json"))
-            commands.append({"$type": "rotate_object_around",
-                             "id": object_id,
-                             "axis": "yaw",
-                             "angle": rotation,
-                             "position": center_dict})
             # Record the position on the occupancy map.
             occupancy_map[__get_circle_mask(circle_x=ix, circle_y=iz, radius=sma) == True] = True
         return commands, list(set(model_categories))
@@ -361,37 +414,46 @@ class ProcGenObjectManager:
                 r = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(command["name"])
                 object_bounds.append(_ObjectBounds(record=r, root_object_position=root_object_position))
         # Get an object that fits in the room and doesn't overlap with any existing models.
-        model_names: List[str] = SPATIAL_RELATIONS[SpatialRelation.left_or_right_of][root_object_category][:]
-        self.rng.shuffle(model_names)
+        model_categories: List[str] = SPATIAL_RELATIONS[SpatialRelation.left_or_right_of][root_object_category][:]
+        self.rng.shuffle(model_categories)
         got_model_name = False
         record = Controller.MODEL_LIBRARIANS["models_core.json"].records[0]
         position = {"x": 0, "y": 0, "z": 0}
-        for model_name in model_names:
-            record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
-            # Get the position of the object.
-            if is_left:
-                x = root_object_position["x"] - root_object_record.bounds["left"]["x"] - record.bounds["left"]["x"] / 2
-            else:
-                x = root_object_position["x"] + root_object_record.bounds["left"]["x"] + record.bounds["left"]["x"] / 2
-            position = {"x": x, "y": root_object_position["y"], "z": root_object_position["z"]}
-            # Don't use this object if it overlaps with any others.
-            for ob in object_bounds:
-                if ob.is_inside(x=position["x"], z=position["z"]):
-                    continue
-            # Use this object if it fits within the scene region.
-            if ProcGenObjectManager._model_fits_in_region(record=record, region_bounds=region_bounds, position=position):
-                got_model_name = True
+        for model_category in model_categories:
+            if got_model_name:
                 break
+            model_names = ProcGenObjectArranger.MODEL_CATEGORIES[model_category][:]
+            self.rng.shuffle(model_names)
+            for model_name in model_names:
+                record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+                # Get the position of the object.
+                if is_left:
+                    x = root_object_position["x"] + root_object_record.bounds["left"]["x"] + record.bounds["left"]["x"]
+                else:
+                    x = root_object_position["x"] + root_object_record.bounds["right"]["x"] + record.bounds["right"]["x"]
+                position = {"x": x, "y": root_object_position["y"], "z": root_object_position["z"]}
+                # Don't use this object if it overlaps with any others.
+                in_bounds = False
+                for ob in object_bounds:
+                    if ob.is_inside(x=position["x"], z=position["z"]):
+                        in_bounds = True
+                        break
+                if in_bounds:
+                    continue
+                # Use this object if it fits within the scene region.
+                if ProcGenObjectArranger._model_fits_in_region(record=record, region_bounds=region_bounds, position=position):
+                    got_model_name = True
+                    break
         # No object fits here.
         if not got_model_name:
             return ArrangementResult(success=False, object_ids=[], kinematic_object_ids=[], categories=[], commands=[])
-        # Add an arrangement here.
         return self._get_arrangement_from_root_model(record=record,
                                                      root_object_position=position,
                                                      category=root_object_category,
                                                      rotation=rotation,
                                                      region_bounds=region_bounds,
-                                                     commands=commands)
+                                                     commands=[],
+                                                     is_root=False)
 
     @staticmethod
     def _get_size(record: ModelRecord) -> Tuple[float, float]:
@@ -415,9 +477,9 @@ class ProcGenObjectManager:
         :return: Tuple: The cell size and density.
         """
 
-        if category not in ProcGenObjectManager.RECTANGULAR_ARRANGEMENTS:
+        if category not in ProcGenObjectArranger.RECTANGULAR_ARRANGEMENTS:
             return 0.05, 0.4
-        return ProcGenObjectManager.RECTANGULAR_ARRANGEMENTS[category]["cell_size"], ProcGenObjectManager.RECTANGULAR_ARRANGEMENTS[category]["density"]
+        return ProcGenObjectArranger.RECTANGULAR_ARRANGEMENTS[category]["cell_size"], ProcGenObjectArranger.RECTANGULAR_ARRANGEMENTS[category]["density"]
 
     @staticmethod
     def _model_fits_in_region(record: ModelRecord, position: Dict[str, float], region_bounds: RegionBounds) -> bool:
@@ -447,8 +509,8 @@ class ProcGenObjectManager:
         record = Controller.MODEL_LIBRARIANS["models_core.json"].records[0]
         for mn in model_names:
             record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(mn)
-            if ProcGenObjectManager._model_fits_in_region(record=record, position=object_position,
-                                                          region_bounds=region_bounds):
+            if ProcGenObjectArranger._model_fits_in_region(record=record, position=object_position,
+                                                           region_bounds=region_bounds):
                 got_model_name = True
                 break
         if not got_model_name:

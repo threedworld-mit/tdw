@@ -38,6 +38,50 @@
       "whisk",
       "wineglass"
     ],
+    "kitchen_counter": [
+      "apple",
+      "baking_sheet",
+      "banana",
+      "book",
+      "bottle",
+      "bowl",
+      "bread",
+      "candle",
+      "carving_fork",
+      "chocolate",
+      "coaster",
+      "coffee_grinder",
+      "coffee_maker",
+      "coin",
+      "cork",
+      "cup",
+      "fork",
+      "jar",
+      "jug",
+      "knife",
+      "ladle",
+      "microwave",
+      "orange",
+      "pan",
+      "pen",
+      "pepper",
+      "plate",
+      "pot",
+      "salt",
+      "sandwich",
+      "scissors",
+      "soap_dispenser",
+      "spaghetti_seriver",
+      "spatula",
+      "spoon",
+      "stove",
+      "tea_tray",
+      "teakettle",
+      "toaster",
+      "vase",
+      "whisk",
+      "wineglass"
+    ],
     "microwave": [
       "apple",
       "banana",
@@ -99,6 +143,16 @@
       "spoon",
       "tea_tray",
       "vase"
+    ]
+  },
+  "left_or_right_of": {
+    "stove": [
+      "kitchen_counter"
+    ],
+    "kitchen_counter": [
+      "kitchen_counter",
+      "refrigerator",
+      "dishwasher"
     ]
   }
 }

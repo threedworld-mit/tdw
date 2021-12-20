@@ -12,6 +12,7 @@ class SpatialRelation(Enum):
 
     on_top_of = 1
     on_shelf = 2
+    left_or_right_of = 3
 
 
 def __get() -> Dict[SpatialRelation, Dict[str, List[str]]]:

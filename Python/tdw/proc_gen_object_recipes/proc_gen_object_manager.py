@@ -7,6 +7,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian, ModelRecord
 from tdw.proc_gen_object_recipes.spatial_relation import SpatialRelation, SPATIAL_RELATIONS
+from tdw.scene_data.region_bounds import RegionBounds
 
 
 class ProcGenObjectManager:
@@ -45,18 +46,20 @@ class ProcGenObjectManager:
             self.rng = np.random.RandomState(random_seed)
 
     def get_arrangement(self, category: str, position: Union[np.array, Dict[str, float]],
-                        rotation: float) -> Tuple[List[dict], List[str]]:
+                        rotation: float, region_bounds: RegionBounds) -> Tuple[List[dict], List[str]]:
         """
         Procedurally generate an arrangement of objects.
 
         :param category: The category of the "root" object. This is NOT the same as its wcategory, though there is overlap. See: ` ProcGenObjectManager.MODEL_NAMES`
         :param position: The position of the root object as either a numpy array or a dictionary.
         :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
+        :param region_bounds: The bounds of the region.
 
         :return: Tuple: A list of commands to add the object(s), a list of model categories used.
         """
 
         assert category in ProcGenObjectManager.MODEL_NAMES, f"Invalid category: {category}"
+        print("TODO constrain the root objects to something that will fit in the region bounds.")
         # Add the object.
         model_name = ProcGenObjectManager.MODEL_NAMES[category][self.rng.randint(0, len(ProcGenObjectManager.MODEL_NAMES[category]))]
         record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
@@ -107,6 +110,9 @@ class ProcGenObjectManager:
                                                                                            density=density)
                     categories.extend(object_categories)
                     commands.extend(object_commands)
+            elif spatial_relation == SpatialRelation.left_or_right_of:
+                pass # TODO handle this! Allow those objects to have objects on top of them. Constrain to the bounds of the room!
+
         return commands, list(set(categories))
 
     def _get_rectangular_arrangement(self, size: Tuple[float, float], center: Union[np.array, Dict[str, float]],

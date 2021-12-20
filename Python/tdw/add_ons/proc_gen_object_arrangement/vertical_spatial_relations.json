@@ -71,7 +71,7 @@
       "sandwich",
       "scissors",
       "soap_dispenser",
-      "spaghetti_seriver",
+      "spaghetti_server",
       "spatula",
       "spoon",
       "stove",
@@ -143,16 +143,6 @@
       "spoon",
       "tea_tray",
       "vase"
-    ]
-  },
-  "left_or_right_of": {
-    "stove": [
-      "kitchen_counter"
-    ],
-    "kitchen_counter": [
-      "kitchen_counter",
-      "refrigerator",
-      "dishwasher"
     ]
   }
 }

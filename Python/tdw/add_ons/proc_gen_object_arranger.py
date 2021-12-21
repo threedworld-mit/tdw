@@ -118,8 +118,8 @@ class ProcGenObjectArranger(AddOn):
         self.initialized = False
         self.scene_bounds = None
 
-    def get_vertical_arrangement(self, category: str, position: Union[np.array, Dict[str, float]],
-                                 rotation: float, region: int = 0) -> Optional[ModelRecord]:
+    def get_vertical_arrangement_from_category(self, category: str, position: Union[np.array, Dict[str, float]],
+                                               rotation: float, region: int = 0) -> Optional[ModelRecord]:
         """
         Procedurally generate a vertical arrangement of objects on top of a root object, on the shelves of a root object, etc.
 
@@ -144,120 +144,137 @@ class ProcGenObjectArranger(AddOn):
         record = self._get_model_that_fits_in_region(model_names=ProcGenObjectArranger.MODEL_CATEGORIES[category][:],
                                                      object_position=object_position,
                                                      region_bounds=region_bounds)
-        # There are no root objects that fit.
-        if record is None:
+        return self._get_vertical_arrangement(record=record, category=category, object_position=object_position,
+                                              rotation=rotation)
+
+    def get_vertical_arrangement_from_model(self, model_name: str, category: str,
+                                            position: Union[np.array, Dict[str, float]], rotation: float,
+                                            region: int = 0) -> Optional[ModelRecord]:
+        """
+        Procedurally generate a vertical arrangement of objects on top of a root object, on the shelves of a root object, etc.
+
+        :param model_name: The model name of the "root" object.
+        :param category: The model proc-gen category.
+        :param position: The position of the root object as either a numpy array or a dictionary.
+        :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
+        :param region: The index of the region in `self.scene_bounds`.
+
+        :return: The model record of the root object. If no models were added to the scene, this is None.
+        """
+
+        region_bounds = self.scene_bounds.rooms[region]
+        # Get the root object position as a dictionary.
+        if isinstance(position, dict):
+            object_position = position
+        elif isinstance(position, np.ndarray) or isinstance(position, list):
+            object_position = TDWUtils.array_to_vector3(position)
+        else:
+            raise Exception(f"Invalid position argument: {position}")
+        # Get the possible root objects.
+        record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+        # The root object doesn't fit.
+        if not self._model_fits_in_region(record=record, position=object_position, region_bounds=region_bounds):
             return None
-        root_object_id = Controller.get_unique_id()
-        commands = Controller.get_add_physics_object(model_name=record.name,
-                                                     position=object_position,
-                                                     library="models_core.json",
-                                                     object_id=root_object_id,
-                                                     kinematic=record.name in ProcGenObjectArranger.KINEMATIC_CATEGORIES)
-        # Get the size of the model.
-        model_size = ProcGenObjectArranger._get_size(record=record)
-        categories: List[str] = [category]
-        # Add objects base on spatial relationship.
-        for spatial_relation in VERTICAL_SPATIAL_RELATIONS:
-            if category not in VERTICAL_SPATIAL_RELATIONS[spatial_relation]:
-                continue
-            # Put objects on top of the root object.
-            if spatial_relation == VerticalSpatialRelations.on_top_of:
-                # Gert the top position of the object.
-                object_top = {"x": object_position["x"],
-                              "y": record.bounds["top"]["y"] + object_position["y"],
-                              "z": object_position["z"]}
-                cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
-                surface_size = (model_size[0] * 0.8, model_size[1] * 0.8)
-                object_commands, object_categories = self._get_rectangular_arrangement(size=surface_size,
-                                                                                       categories=VERTICAL_SPATIAL_RELATIONS[
-                                                                                           spatial_relation][category],
-                                                                                       center=object_top,
-                                                                                       cell_size=cell_size,
-                                                                                       density=density)
-                categories.extend(object_categories)
-                commands.extend(object_commands)
-            # Put objects on top of the shelves of the root object.
-            elif spatial_relation == VerticalSpatialRelations.on_shelf:
-                size = (ProcGenObjectArranger.SHELVES[record.name]["size"][0],
-                        ProcGenObjectArranger.SHELVES[record.name]["size"][1])
-                for y in ProcGenObjectArranger.SHELVES[record.name]["ys"]:
-                    object_top = {"x": object_position["x"],
-                                  "y": y + object_position["y"],
-                                  "z": object_position["z"]}
-                    cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
-                    object_commands, object_categories = self._get_rectangular_arrangement(size=size,
-                                                                                           categories=VERTICAL_SPATIAL_RELATIONS[spatial_relation][category],
-                                                                                           center=object_top,
-                                                                                           cell_size=cell_size,
-                                                                                           density=density)
-                    categories.extend(object_categories)
-                    commands.extend(object_commands)
-        # Rotate everything.
-        rotate_commands = ProcGenObjectArranger._get_rotation_commands(root_object_id=root_object_id,
-                                                                       rotation=rotation,
-                                                                       commands=commands)
-        commands.extend(rotate_commands)
-        self.commands.extend(commands)
-        return record
+        return self._get_vertical_arrangement(record=record, category=category, object_position=object_position,
+                                              rotation=rotation)
 
     def get_lateral_arrangement(self, wall: CardinalDirection, room_type: RoomType = RoomType.kitchen, room_id: int = 0) -> None:
         room = self.scene_bounds.rooms[room_id]
         if wall == CardinalDirection.north:
             position = {"x": room.x_min + ProcGenObjectArranger._WALL_DEPTH + 0.4,
                         "y": 0,
-                        "z": room.z_max - ProcGenObjectArranger._WALL_DEPTH - 0.4}
+                        "z": room.z_max - ProcGenObjectArranger._WALL_DEPTH}
             direction = (1, 0)
             rotation: int = 0
+            offset_direction = -1
+            fixed_coordinate = position["z"]
         elif wall == CardinalDirection.south:
             position = {"x": room.x_min + ProcGenObjectArranger._WALL_DEPTH + 0.4,
                         "y": 0,
-                        "z": room.z_min + ProcGenObjectArranger._WALL_DEPTH + 0.4}
+                        "z": room.z_min + ProcGenObjectArranger._WALL_DEPTH}
             direction = (1, 0)
             rotation = 180
+            offset_direction = 1
+            fixed_coordinate = position["z"]
         elif wall == CardinalDirection.west:
-            position = {"x": room.x_max - ProcGenObjectArranger._WALL_DEPTH - 0.4,
+            position = {"x": room.x_max - ProcGenObjectArranger._WALL_DEPTH,
                         "y": 0,
                         "z": room.z_min + ProcGenObjectArranger._WALL_DEPTH + 0.4}
             direction = (0, 1)
             rotation = 90
+            offset_direction = -1
+            fixed_coordinate = position["x"]
         elif wall == CardinalDirection.east:
-            position = {"x": room.x_min + ProcGenObjectArranger._WALL_DEPTH + 0.4,
+            position = {"x": room.x_min + ProcGenObjectArranger._WALL_DEPTH,
                         "y": 0,
                         "z": room.z_min + ProcGenObjectArranger._WALL_DEPTH + 0.4}
             direction = (0, 1)
             rotation = 270
+            offset_direction = 1
+            fixed_coordinate = position["x"]
         else:
             raise Exception(wall)
         done = False
         used_categories: List[str] = list()
+        object_position = {"x": 0, "y": 0, "z": 0}
         while not done:
             # Get the name of a model.
             categories = ROOM_TYPE_LATERAL_SPATIAL_RELATIONS[room_type][:]
             categories = [c for c in categories if c not in used_categories]
             self.rng.shuffle(categories)
-            got_models = False
-            record: Optional[ModelRecord] = None
-            for category in categories:
-                rot = rotation - 180 if category != "kitchen_counter" else rotation
-                record = self.get_vertical_arrangement(category=category,
-                                                       position={"x": position["x"], "y": position["y"], "z": position["z"]},
-                                                       rotation=rot)
-                # Added a vertical arrangement.
-                if record is not None:
-                    got_models = True
-                    # We used a one-shot category.
-                    if category != "kitchen_counter":
-                        used_categories.append(category)
+            got_model = False
+            model_name = ""
+            category = ""
+            for c in categories:
+                model_names = ProcGenObjectArranger.MODEL_CATEGORIES[c][:]
+                self.rng.shuffle(model_names)
+                # Try to find a model that fits.
+                got_model = False
+                for m in model_names:
+                    # Get the record.
+                    record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(m)
+                    # Get the size.
+                    model_size = self._get_size(record=record)
+                    # Get the position.
+                    if direction[0] != 0:
+                        p_x = position["x"] + model_size[1] * 0.5 * direction[0]
+                        p_z = position["z"] + model_size[0] * 0.25 * offset_direction
+                    elif direction[1] != 0:
+                        p_x = position["x"] + model_size[0] * 0.25 * offset_direction
+                        p_z = position["z"] + model_size[1] * 0.5 * direction[1]
+                    else:
+                        raise Exception(direction)
+                    # If the model fits in the region, then we can add it.
+                    object_position = {"x": p_x, "y": position["y"], "z": p_z}
+                    if self._model_fits_in_region(record=record, position=object_position, region_bounds=room):
+                        got_model = True
+                        model_name = m
+                        category = c
+                        break
+                if got_model:
                     break
-            # Done adding models.
-            if not got_models:
+            if not got_model:
                 done = True
             else:
+                # Add the object.
+                rot = rotation - 180 if category != "kitchen_counter" else rotation
+                record = self.get_vertical_arrangement_from_model(model_name=model_name,
+                                                                  category=category,
+                                                                  position=object_position,
+                                                                  rotation=rot)
+                # Remember that we used this category.
+                if category != "kitchen_counter":
+                    used_categories.append(category)
+                # Move the position.
+                position = {"x": object_position["x"], "y": object_position["y"], "z": object_position["z"]}
                 size = self._get_size(record=record)
+                # Additionally, move the position by this object's size.
                 if direction[0] != 0:
-                    position["x"] += size[0] * direction[0]
+                    position["x"] += size[0] * 0.5 * direction[0]
+                    position["z"] = fixed_coordinate
                 elif direction[1] != 0:
-                    position["z"] += size[1] * direction[1]
+                    position["x"] = fixed_coordinate
+                    position["z"] += size[0] * 0.5 * direction[1]
 
     def _get_rectangular_arrangement(self, size: Tuple[float, float], center: Union[np.array, Dict[str, float]],
                                      categories: List[str], density: float = 0.4,
@@ -379,6 +396,72 @@ class ProcGenObjectArranger(AddOn):
             # Record the position on the occupancy map.
             occupancy_map[__get_circle_mask(circle_x=ix, circle_y=iz, radius=sma) == True] = True
         return commands, list(set(model_categories))
+
+    def _get_vertical_arrangement(self, record: ModelRecord, category: str, object_position: Dict[str, float],
+                                  rotation: float) -> Optional[ModelRecord]:
+        """
+        Procedurally generate a vertical arrangement of objects on top of a root object, on the shelves of a root object, etc.
+
+        :param record: The model record of the "root" object.
+        :param category: The proc-gen category of the root object.
+        :param object_position: The position of the root object as a dictionary.
+        :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
+
+        :return: The model record of the root object. If no models were added to the scene, this is None.
+        """
+
+        root_object_id = Controller.get_unique_id()
+        commands = Controller.get_add_physics_object(model_name=record.name,
+                                                     position=object_position,
+                                                     library="models_core.json",
+                                                     object_id=root_object_id,
+                                                     kinematic=record.name in ProcGenObjectArranger.KINEMATIC_CATEGORIES)
+        # Get the size of the model.
+        model_size = ProcGenObjectArranger._get_size(record=record)
+        categories: List[str] = [category]
+        # Add objects base on spatial relationship.
+        for spatial_relation in VERTICAL_SPATIAL_RELATIONS:
+            if category not in VERTICAL_SPATIAL_RELATIONS[spatial_relation]:
+                continue
+            # Put objects on top of the root object.
+            if spatial_relation == VerticalSpatialRelations.on_top_of:
+                # Gert the top position of the object.
+                object_top = {"x": object_position["x"],
+                              "y": record.bounds["top"]["y"] + object_position["y"],
+                              "z": object_position["z"]}
+                cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
+                surface_size = (model_size[0] * 0.8, model_size[1] * 0.8)
+                object_commands, object_categories = self._get_rectangular_arrangement(size=surface_size,
+                                                                                       categories=VERTICAL_SPATIAL_RELATIONS[
+                                                                                           spatial_relation][category],
+                                                                                       center=object_top,
+                                                                                       cell_size=cell_size,
+                                                                                       density=density)
+                categories.extend(object_categories)
+                commands.extend(object_commands)
+            # Put objects on top of the shelves of the root object.
+            elif spatial_relation == VerticalSpatialRelations.on_shelf:
+                size = (ProcGenObjectArranger.SHELVES[record.name]["size"][0],
+                        ProcGenObjectArranger.SHELVES[record.name]["size"][1])
+                for y in ProcGenObjectArranger.SHELVES[record.name]["ys"]:
+                    object_top = {"x": object_position["x"],
+                                  "y": y + object_position["y"],
+                                  "z": object_position["z"]}
+                    cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
+                    object_commands, object_categories = self._get_rectangular_arrangement(size=size,
+                                                                                           categories=VERTICAL_SPATIAL_RELATIONS[spatial_relation][category],
+                                                                                           center=object_top,
+                                                                                           cell_size=cell_size,
+                                                                                           density=density)
+                    categories.extend(object_categories)
+                    commands.extend(object_commands)
+        # Rotate everything.
+        rotate_commands = ProcGenObjectArranger._get_rotation_commands(root_object_id=root_object_id,
+                                                                       rotation=rotation,
+                                                                       commands=commands)
+        commands.extend(rotate_commands)
+        self.commands.extend(commands)
+        return record
 
     @staticmethod
     def _get_size(record: ModelRecord) -> Tuple[float, float]:

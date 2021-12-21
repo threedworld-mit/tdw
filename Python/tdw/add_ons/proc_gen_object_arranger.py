@@ -415,7 +415,7 @@ class ProcGenObjectArranger(AddOn):
                                                      position=object_position,
                                                      library="models_core.json",
                                                      object_id=root_object_id,
-                                                     kinematic=record.name in ProcGenObjectArranger.KINEMATIC_CATEGORIES)
+                                                     kinematic=category in ProcGenObjectArranger.KINEMATIC_CATEGORIES)
         # Get the size of the model.
         model_size = ProcGenObjectArranger._get_size(record=record)
         categories: List[str] = [category]

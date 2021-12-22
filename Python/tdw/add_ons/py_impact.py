@@ -844,8 +844,8 @@ class PyImpact(CollisionManager):
         summed_master = summed_master.overlay(padded_current)
 
         # Extract 100ms "chunk" of sound to send over to Unity.
-        start_idx = 100 * scrape_event_count
-        unity_chunk = summed_master[-(len(summed_master) - start_idx):][:100]
+        start_idx = 50 * scrape_event_count
+        unity_chunk = summed_master[-(len(summed_master) - start_idx):][:50]
         # Update stored summed waveform.
         self._scrape_summed_masters[scrape_key] = summed_master
 

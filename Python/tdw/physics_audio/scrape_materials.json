@@ -97,7 +97,7 @@
   },
   "wood_beech_honey": {
     "audio_material": "wood_medium",
-    "scrape_material": "poplar_wood"
+    "scrape_material": "plywood"
   },
   "wood_beech_natural": {
     "audio_material": "wood_medium",

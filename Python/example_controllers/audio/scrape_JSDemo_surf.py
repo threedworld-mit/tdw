@@ -39,7 +39,7 @@ lib_flex = ModelLibrarian("models_flex.json")
 #cube_mass = 1.0
 cube_bounciness = 0.4
 for scrape_surface_model_name, surface_audio_material, surface_reso, surface_friction in zip(["glass_table", "quatre_dining_table", "small_table_green_marble"],
-                                                                                             [AudioMaterial.glass, AudioMaterial.plastic_hard, AudioMaterial.ceramic],
+                                                                                             [AudioMaterial.glass, AudioMaterial.wood_medium, AudioMaterial.ceramic],
                                                                                              [0.85, 0.3, 0.45],
                                                                                              [0.35, 0.5, 0.47]):
     surface_record = lib_core.get_record(scrape_surface_model_name)

@@ -9,11 +9,11 @@
   },
   "ceramic_tiles_brazilian": {
     "audio_material": "ceramic",
-    "scrape_material": "ceramic"
+    "scrape_material": "vinyl"
   },
   "ceramic_tiles_brown_tomato": {
     "audio_material": "ceramic",
-    "scrape_material": "ceramic"
+    "scrape_material": "vinyl"
   },
   "chrome": {
     "audio_material": "metal",
@@ -25,19 +25,19 @@
   },
   "concrete_raw_brushed_fine": {
     "audio_material": "ceramic",
-    "scrape_material": "ceramic"
+    "scrape_material": "vinyl"
   },
   "cork_compact": {
     "audio_material": "cardboard",
-    "scrape_material": "rough_wood"
+    "scrape_material": "bass_wood"
   },
   "cork_heavy": {
     "audio_material": "cardboard",
-    "scrape_material": "rough_wood"
+    "scrape_material": "bass_wood"
   },
   "cork_simple": {
     "audio_material": "cardboard",
-    "scrape_material": "rough_wood"
+    "scrape_material": "bass_wood"
   },
   "glass_clear": {
     "audio_material": "glass",
@@ -73,11 +73,11 @@
   },
   "parquet_long_horizontal_clean": {
     "audio_material": "wood_hard",
-    "scrape_material": "poplar_wood"
+    "scrape_material": "plywood"
   },
   "parquet_wood_ipe": {
     "audio_material": "wood_hard",
-    "scrape_material": "poplar_wood"
+    "scrape_material": "plywood"
   },
   "plastic_vinyl_glossy_black": {
     "audio_material": "plastic_hard",
@@ -93,22 +93,22 @@
   },
   "wood_american_cherry": {
     "audio_material": "wood_medium",
-    "scrape_material": "poplar_wood"
+    "scrape_material": "plywood"
   },
   "wood_beech_honey": {
     "audio_material": "wood_medium",
-    "scrape_material": "poplar_wood"
+    "scrape_material": "plywood"
   },
   "wood_beech_natural": {
     "audio_material": "wood_medium",
-    "scrape_material": "poplar_wood"
+    "scrape_material": "plywood"
   },
   "wood_black_walnut_striped": {
     "audio_material": "wood_hard",
-    "scrape_material": "poplar_wood"
+    "scrape_material": "plywood"
   },
   "wood_teak": {
     "audio_material": "wood_medium",
-    "scrape_material": "poplar_wood"
+    "scrape_material": "plywood"
   }
 }

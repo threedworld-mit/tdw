@@ -138,7 +138,7 @@ _Returns:_  The name of the floor material.
 
 #### get_impact_sound
 
-**`self.get_impact_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
+**`self.get_impact_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, primary_resonance, secondary_resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
 
 Produce sound of two colliding objects as a byte array.
 
@@ -151,7 +151,8 @@ Produce sound of two colliding objects as a byte array.
 | secondary_material |  str |  | The material label for the secondary (other) object. |
 | primary_amp |  float |  | Sound amplitude of primary (target) object. |
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
-| resonance |  float |  | The resonances of the objects. |
+| primary_resonance |  float |  | The resonance of the primary (target) object. |
+| secondary_resonance |  float |  | The resonance of the secondary (other) object. |
 | velocity |  np.array |  | The velocity. |
 | contact_normals |  List[np.array] |  | The collision contact normals. |
 | primary_mass |  float |  | The mass of the primary (target) object. |
@@ -161,7 +162,7 @@ _Returns:_  Sound data as a Base64Sound object.
 
 #### get_impact_sound_command
 
-**`self.get_impact_sound_command(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_points, contact_normals, primary_mass, secondary_mass)`**
+**`self.get_impact_sound_command(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, primary_resonance, secondary_resonance, velocity, contact_points, contact_normals, primary_mass, secondary_mass)`**
 
 Create an impact sound, and return a valid command to play audio data in TDW.
 "target" should usually be the smaller object, which will play the sound.
@@ -176,7 +177,8 @@ Create an impact sound, and return a valid command to play audio data in TDW.
 | secondary_material |  str |  | The material label for the secondary (other) object. |
 | primary_amp |  float |  | Sound amplitude of primary (target) object. |
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
-| resonance |  float |  | The resonances of the objects. |
+| primary_resonance |  float |  | The resonance of the primary (target) object. |
+| secondary_resonance |  float |  | The resonance of the secondary (other) object. |
 | velocity |  np.array |  | The velocity. |
 | contact_points |  List[np.array] |  | The collision contact points. |
 | contact_normals |  List[np.array] |  | The collision contact normals. |
@@ -187,7 +189,7 @@ _Returns:_  A `play_audio_data` or `play_point_source_data` command that can be 
 
 #### get_scrape_sound_command
 
-**`self.get_scrape_sound_command(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_points, contact_normals, primary_mass, secondary_mass, scrape_material)`**
+**`self.get_scrape_sound_command(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, primary_resonance, secondary_resonance, velocity, contact_points, contact_normals, primary_mass, secondary_mass, scrape_material)`**
 
 
 | Parameter | Type | Default | Description |
@@ -198,7 +200,8 @@ _Returns:_  A `play_audio_data` or `play_point_source_data` command that can be 
 | secondary_material |  str |  | The material label for the secondary (other) object. |
 | primary_amp |  float |  | Sound amplitude of primary (target) object. |
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
-| resonance |  float |  | The resonances of the objects. |
+| primary_resonance |  float |  | The resonance of the primary (target) object. |
+| secondary_resonance |  float |  | The resonance of the secondary (other) object. |
 | velocity |  np.array |  | The velocity. |
 | contact_points |  np.array |  | The collision contact points. |
 | contact_normals |  List[np.array] |  | The collision contact normals. |
@@ -210,7 +213,7 @@ _Returns:_  A command to play a scrape sound.
 
 #### get_scrape_sound
 
-**`self.get_scrape_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, resonance, velocity, contact_normals, primary_mass, secondary_mass, scrape_material)`**
+**`self.get_scrape_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, primary_resonance, secondary_resonance, velocity, contact_normals, primary_mass, secondary_mass, scrape_material)`**
 
 Create a scrape sound, and return a valid command to play audio data in TDW.
 "target" should usually be the smaller object, which will play the sound.
@@ -225,7 +228,8 @@ Create a scrape sound, and return a valid command to play audio data in TDW.
 | secondary_material |  str |  | The material label for the secondary (other) object. |
 | primary_amp |  float |  | Sound amplitude of primary (target) object. |
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
-| resonance |  float |  | The resonances of the objects. |
+| primary_resonance |  float |  | The resonance of the primary (target) object. |
+| secondary_resonance |  float |  | The resonance of the secondary (other) object. |
 | velocity |  np.array |  | The velocity. |
 | contact_normals |  List[np.array] |  | The collision contact normals. |
 | primary_mass |  float |  | The mass of the primary (target) object. |

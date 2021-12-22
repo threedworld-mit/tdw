@@ -550,7 +550,6 @@ class PyImpact(CollisionManager):
         :param secondary_amp: Sound amplitude of the secondary (other) object.
         :param primary_resonance: The resonance of the primary (target) object.
         :param secondary_resonance: The resonance of the secondary (other) object.
-        :param resonance: The resonances of the objects.
         :param velocity: The velocity.
         :param contact_points: The collision contact points.
         :param contact_normals: The collision contact normals.

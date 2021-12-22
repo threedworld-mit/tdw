@@ -82,7 +82,8 @@ while theta < 360:
                                                          secondary_material="ceramic_4",
                                                          secondary_amp=0.5,
                                                          secondary_mass=100,
-                                                         resonance=0.1,
+                                                         primary_resonance=0.4,
+                                                         secondary_resonance=0.2,
                                                          scrape_material=ScrapeMaterial.ceramic))
         py_impact.reset()
     sleep(0.15)

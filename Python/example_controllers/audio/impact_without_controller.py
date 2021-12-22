@@ -26,5 +26,7 @@ for i in range(5):
                                        secondary_material="stone_4",
                                        secondary_amp=0.5,
                                        secondary_mass=100,
-                                       resonance=0.2)
+                                       primary_resonance=0.2,
+                                       secondary_resonance=0.1)
     sound.write(path=output_directory.joinpath(f"{i}.wav"))
+    py_impact.reset()

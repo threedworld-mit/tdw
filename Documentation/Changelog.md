@@ -26,6 +26,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Fixed: `PyImpact` seems to be "missing" impact sounds because roll sounds haven't been implemented yet. Now, all "roll" events are handled as "impact events".
 - Fixed: `PyImpact.reset()` doesn't stop ongoing audio.
 - Fixed: `PyImpact` scrape sounds are often rougher-sounding than they should be (`PyImpact` now uses smoother-sounding scrape materials).
+- Replaced `resonance` parameter in all `PyImpact` functions with `primary_resonance` and `secondary_resonance` parameters.
+- Adjusted some default static object audio values.
 - Added: `TDWUtils.bytes_to_megabytes(b)` Convert a quantity of bytes to a quantity of megabytes.
 - Added: `QuaternionUtils.is_left_of(origin, target, forward)` Returns True if `target` is to the left of `origin` otherwise returns False.
 - Modifed `TDWUtils.get_bounds_extents`:

@@ -286,7 +286,8 @@ class PyImpact(CollisionManager):
                                                             secondary_amp=PyImpact.FLOOR_AMP,
                                                             secondary_material=self._get_floor_material_name(),
                                                             secondary_mass=PyImpact.FLOOR_MASS,
-                                                            resonance=audio.resonance)
+                                                            primary_resonance=audio.resonance,
+                                                            secondary_resonance=audio.resonance)
                 # Generate an object sound.
                 else:
                     target_audio = self._static_audio_data[self.collision_events[object_id].primary_id]
@@ -304,7 +305,8 @@ class PyImpact(CollisionManager):
                                                             secondary_material=other_audio.material.name + "_" + str(
                                                                 other_audio.size),
                                                             secondary_mass=other_audio.mass,
-                                                            resonance=target_audio.resonance)
+                                                            primary_resonance=target_audio.resonance,
+                                                            secondary_resonance=other_audio.resonance)
             # Generate a scrape sound.
             elif self.collision_events[object_id].collision_type == CollisionAudioType.scrape and self.collision_events[object_id].secondary_id in self._scrape_objects:
                 scrape_surface_id = self.collision_events[object_id].secondary_id
@@ -323,7 +325,8 @@ class PyImpact(CollisionManager):
                                                             secondary_amp=other_audio.amp,
                                                             secondary_material=other_audio.material.name + "_" + str(other_audio.size),
                                                             secondary_mass=other_audio.mass,
-                                                            resonance=target_audio.resonance,
+                                                            primary_resonance=target_audio.resonance,
+                                                            secondary_resonance=other_audio.resonance,
                                                             scrape_material=self._scrape_objects[scrape_surface_id].scrape_material)
             # Append impact sound commands.
             if command is not None:
@@ -436,7 +439,7 @@ class PyImpact(CollisionManager):
     def get_impact_sound(self, velocity: np.array, contact_normals: List[np.array],
                          primary_id: int, primary_material: str, primary_amp: float, primary_mass: float,
                          secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
-                         secondary_mass: float, resonance: float) -> Optional[Base64Sound]:
+                         secondary_mass: float, primary_resonance: float, secondary_resonance: float) -> Optional[Base64Sound]:
         """
         Produce sound of two colliding objects as a byte array.
 
@@ -446,7 +449,8 @@ class PyImpact(CollisionManager):
         :param secondary_material: The material label for the secondary (other) object.
         :param primary_amp: Sound amplitude of primary (target) object.
         :param secondary_amp: Sound amplitude of the secondary (other) object.
-        :param resonance: The resonances of the objects.
+        :param primary_resonance: The resonance of the primary (target) object.
+        :param secondary_resonance: The resonance of the secondary (other) object.
         :param velocity: The velocity.
         :param contact_normals: The collision contact normals.
         :param primary_mass: The mass of the primary (target) object.
@@ -490,7 +494,8 @@ class PyImpact(CollisionManager):
                                                               mat2=secondary_material,
                                                               id1=primary_id,
                                                               id2=secondary_id,
-                                                              resonance=resonance)
+                                                              primary_resonance=primary_resonance,
+                                                              secondary_resonance=secondary_resonance)
             # Save collision info - we will need for later collisions.
             amp = self.object_modes[secondary_id][primary_id].amp
             self.object_modes[secondary_id][primary_id].init_speed = normal_speed
@@ -504,7 +509,7 @@ class PyImpact(CollisionManager):
             modes_2 = self.object_modes[secondary_id][primary_id].obj2_modes
             modes_1.powers = modes_1.powers + self.rng.normal(0, 2, len(modes_1.powers))
             modes_2.powers = modes_2.powers + self.rng.normal(0, 2, len(modes_2.powers))
-            sound = PyImpact._synth_impact_modes(modes_1, modes_2, mass, resonance)
+            sound = PyImpact._synth_impact_modes(modes_1, modes_2, mass, primary_resonance, secondary_resonance)
             self.object_modes[secondary_id][primary_id].obj1_modes = modes_1
             self.object_modes[secondary_id][primary_id].obj2_modes = modes_2
 
@@ -531,7 +536,7 @@ class PyImpact(CollisionManager):
                                  contact_normals: List[np.array], primary_id: int,
                                  primary_material: str, primary_amp: float, primary_mass: float,
                                  secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
-                                 secondary_mass: float, resonance: float) -> Optional[dict]:
+                                 secondary_mass: float, primary_resonance: float, secondary_resonance: float) -> Optional[dict]:
         """
         Create an impact sound, and return a valid command to play audio data in TDW.
         "target" should usually be the smaller object, which will play the sound.
@@ -543,7 +548,8 @@ class PyImpact(CollisionManager):
         :param secondary_material: The material label for the secondary (other) object.
         :param primary_amp: Sound amplitude of primary (target) object.
         :param secondary_amp: Sound amplitude of the secondary (other) object.
-        :param resonance: The resonances of the objects.
+        :param primary_resonance: The resonance of the primary (target) object.
+        :param secondary_resonance: The resonance of the secondary (other) object.
         :param velocity: The velocity.
         :param contact_points: The collision contact points.
         :param contact_normals: The collision contact normals.
@@ -557,7 +563,7 @@ class PyImpact(CollisionManager):
                                       primary_material=primary_material, primary_amp=primary_amp,
                                       primary_mass=primary_mass, secondary_id=secondary_id,
                                       secondary_material=secondary_material, secondary_amp=secondary_amp,
-                                      secondary_mass=secondary_mass, resonance=resonance)
+                                      secondary_mass=secondary_mass, primary_resonance=primary_resonance, secondary_resonance=secondary_resonance)
         if sound is not None:
             # Use the primary object ID for the audio source ID to prevent a droning effect.
             return self._get_audio_command(audio_source_id=primary_id, contact_points=contact_points, sound=sound)
@@ -565,8 +571,8 @@ class PyImpact(CollisionManager):
         else:
             return None
 
-    def _make_impact_audio(self, amp2re1: float, mass: float, id1: int, id2: int, resonance: float,
-                           mat1: str = 'cardboard', mat2: str = 'cardboard') -> (np.array, Modes, Modes):
+    def _make_impact_audio(self, amp2re1: float, mass: float, id1: int, id2: int, primary_resonance: float,
+                           secondary_resonance: float, mat1: str = 'cardboard', mat2: str = 'cardboard') -> (np.array, Modes, Modes):
         """
         Generate an impact sound.
 
@@ -576,7 +582,8 @@ class PyImpact(CollisionManager):
         :param mass: The mass of the smaller of the two colliding objects.
         :param id1: The ID for the one of the colliding objects.
         :param id2: The ID for the other object.
-        :param resonance: The resonance of the objects.
+        :param primary_resonance: The resonance of one of the colliding objects.
+        :param secondary_resonance: The resonance of the other object.
 
         :return The sound, and the object modes.
         """
@@ -594,13 +601,13 @@ class PyImpact(CollisionManager):
         modes_2 = self.object_modes[id2][id1].obj2_modes
         # Scale the two sounds as specified.
         modes_2.decay_times = modes_2.decay_times + 20 * np.log10(amp2re1)
-        snth = PyImpact._synth_impact_modes(modes_1, modes_2, mass, resonance)
+        snth = PyImpact._synth_impact_modes(modes_1, modes_2, mass, primary_resonance, secondary_resonance)
         return snth, modes_1, modes_2
 
     def _get_impulse_response(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
                               primary_material: str, primary_amp: float, primary_mass: float,
                               secondary_id: int, secondary_material: str, secondary_amp: float, secondary_mass: float,
-                              resonance: float) -> Tuple[np.array, float]:
+                              primary_resonance: float, secondary_resonance: float) -> Tuple[np.array, float]:
         """
         Generate an impulse response from the modes for two specified objects.
 
@@ -610,7 +617,8 @@ class PyImpact(CollisionManager):
         :param secondary_material: The material label for the secondary (other) object.
         :param primary_amp: Sound amplitude of primary (target) object.
         :param secondary_amp: Sound amplitude of the secondary (other) object.
-        :param resonance: The resonances of the objects.
+        :param primary_resonance: The resonance of the primary (target) object.
+        :param secondary_resonance: The resonances of the secondary (other) object.
         :param velocity: The velocity.
         :param contact_normals: The collision contact normals.
         :param primary_mass: The mass of the primary (target) object.
@@ -622,12 +630,12 @@ class PyImpact(CollisionManager):
         self.get_impact_sound(velocity=velocity, contact_normals=contact_normals, primary_id=primary_id,
                               primary_material=primary_material, primary_amp=primary_amp, primary_mass=primary_mass,
                               secondary_id=secondary_id, secondary_material=secondary_material,
-                              secondary_amp=secondary_amp, secondary_mass=secondary_mass, resonance=resonance)
+                              secondary_amp=secondary_amp, secondary_mass=secondary_mass, primary_resonance=primary_resonance, secondary_resonance=secondary_resonance)
 
         modes_1 = self.object_modes[secondary_id][primary_id].obj1_modes
         modes_2 = self.object_modes[secondary_id][primary_id].obj2_modes
-        h1 = modes_1.sum_modes(resonance=resonance)
-        h2 = modes_2.sum_modes(resonance=resonance)
+        h1 = modes_1.sum_modes(resonance=primary_resonance)
+        h2 = modes_2.sum_modes(resonance=secondary_resonance)
         h = Modes.mode_add(h1, h2)
         return h, min(modes_1.frequencies)
 
@@ -635,7 +643,7 @@ class PyImpact(CollisionManager):
                                  contact_normals: List[np.array], primary_id: int,
                                  primary_material: str, primary_amp: float, primary_mass: float,
                                  secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
-                                 secondary_mass: float, resonance: float,
+                                 secondary_mass: float, primary_resonance: float, secondary_resonance: float,
                                  scrape_material: ScrapeMaterial) -> Optional[dict]:
         """
         :param primary_id: The object ID for the primary (target) object.
@@ -644,7 +652,8 @@ class PyImpact(CollisionManager):
         :param secondary_material: The material label for the secondary (other) object.
         :param primary_amp: Sound amplitude of primary (target) object.
         :param secondary_amp: Sound amplitude of the secondary (other) object.
-        :param resonance: The resonances of the objects.
+        :param primary_resonance: The resonance of the primary (target) object.
+        :param secondary_resonance: The resonance of the secondary (other) object.
         :param velocity: The velocity.
         :param contact_points: The collision contact points.
         :param contact_normals: The collision contact normals.
@@ -665,7 +674,8 @@ class PyImpact(CollisionManager):
                                       secondary_material=secondary_material,
                                       secondary_amp=secondary_amp,
                                       secondary_mass=secondary_mass,
-                                      resonance=resonance,
+                                      primary_resonance=primary_resonance,
+                                      secondary_resonance=secondary_resonance,
                                       scrape_material=scrape_material)
         if sound is None:
             return None
@@ -678,7 +688,7 @@ class PyImpact(CollisionManager):
     def get_scrape_sound(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
                          primary_material: str, primary_amp: float, primary_mass: float,
                          secondary_id: int, secondary_material: str, secondary_amp: float, secondary_mass: float,
-                         resonance: float, scrape_material: ScrapeMaterial) -> Optional[Base64Sound]:
+                         primary_resonance: float, secondary_resonance: float, scrape_material: ScrapeMaterial) -> Optional[Base64Sound]:
         """
         Create a scrape sound, and return a valid command to play audio data in TDW.
         "target" should usually be the smaller object, which will play the sound.
@@ -690,7 +700,8 @@ class PyImpact(CollisionManager):
         :param secondary_material: The material label for the secondary (other) object.
         :param primary_amp: Sound amplitude of primary (target) object.
         :param secondary_amp: Sound amplitude of the secondary (other) object.
-        :param resonance: The resonances of the objects.
+        :param primary_resonance: The resonance of the primary (target) object.
+        :param secondary_resonance: The resonance of the secondary (other) object.
         :param velocity: The velocity.
         :param contact_normals: The collision contact normals.
         :param primary_mass: The mass of the primary (target) object.
@@ -740,7 +751,8 @@ class PyImpact(CollisionManager):
                                                                 secondary_material=secondary_material,
                                                                 secondary_amp=secondary_amp,
                                                                 secondary_mass=secondary_mass,
-                                                                resonance=resonance)
+                                                                primary_resonance=primary_resonance,
+                                                                secondary_resonance=secondary_resonance)
         # Cache the scrape material.
         # Don't do this when PyImpact is initialized because scrape surfaces are large files!
         # We don't want them in memory all the time and they can be a bit slow to load.
@@ -842,20 +854,21 @@ class PyImpact(CollisionManager):
         return sound
 
     @staticmethod
-    def _synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, resonance: float) -> np.array:
+    def _synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, primary_resonance: float, secondary_resonance: float) -> np.array:
         """
         Generate an impact sound from specified modes for two objects, and the mass of the smaller object.
 
         :param modes1: Modes of object 1. A numpy array with: column1=mode frequencies (Hz); column2=mode onset powers in dB; column3=mode RT60s in milliseconds;
         :param modes2: Modes of object 2. Formatted as modes1/modes2.
         :param mass: the mass of the smaller of the two colliding objects.
-        :param resonance: The resonance of the objects.
+        :param primary_resonance: The resonance of the object 1.
+        :param secondary_resonance: The resonance of the object 2.
 
         :return The impact sound.
         """
 
-        h1 = modes1.sum_modes(resonance=resonance)
-        h2 = modes2.sum_modes(resonance=resonance)
+        h1 = modes1.sum_modes(resonance=primary_resonance)
+        h2 = modes2.sum_modes(resonance=secondary_resonance)
         h = Modes.mode_add(h1, h2)
         if len(h) == 0:
             return None

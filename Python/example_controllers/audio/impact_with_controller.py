@@ -80,9 +80,11 @@ while theta < 360:
                                                      secondary_material=impact_sound_floor,
                                                      secondary_amp=0.5,
                                                      secondary_mass=100,
-                                                     resonance=0.1))
+                                                     primary_resonance=0.1,
+                                                     secondary_resonance=0.2))
     sleep(0.15)
     theta += d_theta
+    py_impact.reset(initial_amp=0.5)
 sleep(0.15)
 AudioUtils.stop()
 c.communicate({"$type": "terminate"})

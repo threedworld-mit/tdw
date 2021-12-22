@@ -29,15 +29,15 @@
   },
   "cork_compact": {
     "audio_material": "cardboard",
-    "scrape_material": "bass_wood"
+    "scrape_material": "rough_wood"
   },
   "cork_heavy": {
     "audio_material": "cardboard",
-    "scrape_material": "bass_wood"
+    "scrape_material": "rough_wood"
   },
   "cork_simple": {
     "audio_material": "cardboard",
-    "scrape_material": "bass_wood"
+    "scrape_material": "rough_wood"
   },
   "glass_clear": {
     "audio_material": "glass",

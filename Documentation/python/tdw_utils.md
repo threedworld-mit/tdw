@@ -489,17 +489,19 @@ _Returns:_  A dictionary of the bounds. Key = the name of the position. Value = 
 
 #### get_bounds_extents
 
-**`TDWUtils.get_bounds_extents(bounds, index)`**
+**`TDWUtils.get_bounds_extents(bounds)`**
+
+**`TDWUtils.get_bounds_extents(bounds, index=0)`**
 
 _This is a static function._
 
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| bounds |  Bounds |  | Bounds output data. |
-| index |  int |  | The index in `bounds` of the target object. |
+| bounds |  Union[Bounds, Dict[str, Dict[str, float] |  | Bounds output data or cached bounds data from a record (`record.bounds`). |
+| index |  int  | 0 | The index in `bounds` of the target object. Ignored if `bounds` is a dictionary. |
 
-_Returns:_  The width (left to right), length (front to back), and height (top to bottom) of the bounds as a numpy array.
+_Returns:_  The width (left to right), height (top to bottom), and length (front to back), of the bounds as a numpy array.
 
 #### get_closest_position_in_bounds
 

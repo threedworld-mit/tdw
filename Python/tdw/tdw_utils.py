@@ -734,3 +734,21 @@ class TDWUtils:
         """
 
         return b / (1 << 20)
+
+    @staticmethod
+    def get_circle_mask(shape: Tuple[int, int], row: int, column: int, radius: int) -> np.array:
+        """
+        Get elements in an array within a circle.
+
+        :param shape: The shape of the source array as (rows, columns).
+        :param row: The row (axis 0) of the center of the circle.
+        :param column: The column (axis 1) of the circle.
+        :param radius: The radius of the circle in indices.
+
+        :return: A boolean array with shape `shape`. Elements that are True are within the circle.
+        """
+
+        # Source: https://www.semicolonworld.com/question/44279/how-to-apply-a-disc-shaped-mask-to-a-numpy-array
+        nx, ny = shape
+        oy, ox = np.ogrid[-row:nx - row, -column:ny - column]
+        return ox * ox + oy * oy <= radius * radius

@@ -30,7 +30,8 @@ for i in range(5):
                                        secondary_material="stone_4",
                                        secondary_amp=0.5,
                                        secondary_mass=100,
-                                       resonance=0.2,
+                                       primary_resonance=0.2,
+                                       secondary_resonance=0.1,
                                        scrape_material=ScrapeMaterial.ceramic)
         if sound is None:
             sound = s

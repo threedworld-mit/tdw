@@ -151,7 +151,7 @@ print(audio.size)
 - The *primary* object (`primary_id`, `primary_mass`, etc.) is the "collider" or "target" object. For impact sounds this is always the object with the less mass.
 - The *secondary* object (`secondary_id`, `secondary_mass`, etc.) is the "collidee" or "other" object. If the primary object is colliding with the floor, `secondary_id` is None.
 - The `primary_material` and `secondary_material` fields are strings rather than [`AudioMaterial`](../../python/physics_audio/audio_material.md). This is because they have a *size bucket* suffix. Sizes range from 0 to 5. Floor materials should generally be size 4 or 5. For example, if the floor is `AudioMaterial.stone` and the size is 4, then `secondary_material="stone_4"`.
-- `resonance` should always be the resonance value of the primary object.
+- `primary_resonance` and `secondary_resonance` values correspond to the primary and secondary objects.
 - The object returned by `get_impact_sound()` is a [`Base64Sound`](../../python/physics_audio/base64_sound.md), which contains the raw sound byte data and a base64 string that can be sent to the TDW build.
 
 ```python
@@ -161,7 +161,7 @@ from tdw.add_ons.py_impact import PyImpact
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 py_impact = PyImpact()
-output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("make_sound_without_controller")
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("impact_without_controller")
 if not output_directory.exists():
     output_directory.mkdir()
 print(f"Audio will be saved to: {output_directory}")
@@ -179,7 +179,8 @@ for i in range(5):
                                        secondary_material="stone_4",
                                        secondary_amp=0.5,
                                        secondary_mass=100,
-                                       resonance=0.2)
+                                       primary_resonance=0.2,
+                                       secondary_resonance=0.1)
     sound.write(path=output_directory.joinpath(f"{i}.wav"))
     py_impact.reset()
 ```
@@ -233,7 +234,7 @@ contact_normals: List[np.array] = list()
 for i in range(3):
     contact_normals.append(np.array([0, 1, 0]))
 velocity = np.array([0, -1.5, 0])
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("make_sound_with_controller/audio.wav")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("impact_with_controller/audio.wav")
 print(f"Audio will be saved to: {path}")
 if not path.parent.exists():
     path.parent.mkdir(parents=True)
@@ -268,10 +269,11 @@ while theta < 360:
                                                      secondary_material=impact_sound_floor,
                                                      secondary_amp=0.5,
                                                      secondary_mass=100,
-                                                     resonance=0.1))
-    py_impact.reset(initial_amp=0.9)
+                                                     primary_resonance=0.1,
+                                                     secondary_resonance=0.2))
     sleep(0.15)
     theta += d_theta
+    py_impact.reset(initial_amp=0.5)
 sleep(0.15)
 AudioUtils.stop()
 c.communicate({"$type": "terminate"})
@@ -419,7 +421,8 @@ for i in range(5):
                                        secondary_material="stone_4",
                                        secondary_amp=0.5,
                                        secondary_mass=100,
-                                       resonance=0.2,
+                                       primary_resonance=0.2,
+                                       secondary_resonance=0.1,
                                        scrape_material=ScrapeMaterial.ceramic)
         if sound is None:
             sound = s
@@ -512,7 +515,8 @@ while theta < 360:
                                                          secondary_material="ceramic_4",
                                                          secondary_amp=0.5,
                                                          secondary_mass=100,
-                                                         resonance=0.1,
+                                                         primary_resonance=0.4,
+                                                         secondary_resonance=0.2,
                                                          scrape_material=ScrapeMaterial.ceramic))
         py_impact.reset()
     sleep(0.15)

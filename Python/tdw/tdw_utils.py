@@ -607,17 +607,24 @@ class TDWUtils:
                 "center": np.array(bounds.get_center(index))}
 
     @staticmethod
-    def get_bounds_extents(bounds: Bounds, index: int) -> np.array:
+    def get_bounds_extents(bounds: Union[Bounds, Dict[str, Dict[str, float]]], index: int = 0) -> np.array:
         """
-        :param bounds: Bounds output data.
-        :param index: The index in `bounds` of the target object.
+        :param bounds: Bounds output data or cached bounds data from a record (`record.bounds`).
+        :param index: The index in `bounds` of the target object. Ignored if `bounds` is a dictionary.
 
-        :return: The width (left to right), length (front to back), and height (top to bottom) of the bounds as a numpy array.
+        :return: The width (left to right), height (top to bottom), and length (front to back), of the bounds as a numpy array.
         """
 
-        return np.array([np.linalg.norm(np.array(bounds.get_left(index)) - np.array(bounds.get_right(index))),
-                         np.linalg.norm(np.array(bounds.get_front(index)) - np.array(bounds.get_back(index))),
-                         np.linalg.norm(np.array(bounds.get_top(index)) - np.array(bounds.get_bottom(index)))])
+        if isinstance(bounds, Bounds):
+            return np.array([np.linalg.norm(np.array(bounds.get_left(index)) - np.array(bounds.get_right(index))),
+                             np.linalg.norm(np.array(bounds.get_top(index)) - np.array(bounds.get_bottom(index))),
+                             np.linalg.norm(np.array(bounds.get_front(index)) - np.array(bounds.get_back(index)))])
+        elif isinstance(bounds, dict):
+            return np.array([np.linalg.norm(TDWUtils.vector3_to_array(bounds["left"]) - TDWUtils.vector3_to_array(bounds["right"])),
+                             np.linalg.norm(TDWUtils.vector3_to_array(bounds["top"]) - TDWUtils.vector3_to_array(bounds["bottom"])),
+                             np.linalg.norm(TDWUtils.vector3_to_array(bounds["front"]) - TDWUtils.vector3_to_array(bounds["back"]))])
+        else:
+            raise Exception(f"Invalid bounds data: {bounds}")
 
     @staticmethod
     def get_closest_position_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array:

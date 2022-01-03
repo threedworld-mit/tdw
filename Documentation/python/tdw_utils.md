@@ -594,3 +594,21 @@ _This is a static function._
 
 _Returns:_  A quantity of megabytes.
 
+#### get_circle_mask
+
+**`TDWUtils.get_circle_mask(shape, row, column, radius)`**
+
+_This is a static function._
+
+Get elements in an array within a circle.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| shape |  Tuple[int, int] |  | The shape of the source array as (rows, columns). |
+| row |  int |  | The row (axis 0) of the center of the circle. |
+| column |  int |  | The column (axis 1) of the circle. |
+| radius |  int |  | The radius of the circle in indices. |
+
+_Returns:_  A boolean array with shape `shape`. Elements that are True are within the circle.
+

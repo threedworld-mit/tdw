@@ -324,7 +324,13 @@ class TDWUtils:
         :return A PIL image.
         """
 
-        return Image.open(io.BytesIO(images.get_image(index)))
+        pass_mask = images.get_pass_mask(index)
+        # The depth passes aren't png files, so we need to convert them.
+        if pass_mask == "_depth" or pass_mask == "_depth_simple":
+            # Save the image.
+            return Image.fromarray(TDWUtils.get_shaped_depth_pass(images=images, index=index))
+        else:
+            return Image.open(io.BytesIO(images.get_image(index)))
 
     @staticmethod
     def get_random_position_on_nav_mesh(c: Controller, width: float, length: float, x_e=0, z_e=0, bake=True, rng=random.uniform) -> Tuple[float, float, float]:

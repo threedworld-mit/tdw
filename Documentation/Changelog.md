@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.2
+
+### Command API
+
+#### New Commands
+
+| Command            | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `set_hinge_limits` | Set the angle limits of a hinge joint. This will work with hinges, motors, and springs. |
+
 ## v1.9.1
 
 ### Command API

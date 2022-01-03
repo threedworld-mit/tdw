@@ -342,6 +342,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`set_hinge_limits`](#set_hinge_limits) | Set the angle limits of a hinge joint. This will work with hinges, motors, and springs.  |
 | [`set_motor`](#set_motor) | Set the target velocity and force of a motor.  |
 | [`set_spring`](#set_spring) | Set the target position of a spring.  |
 | [`set_sub_object_light`](#set_sub_object_light) | Turn a light on or off.  |
@@ -4638,6 +4639,30 @@ Stop a motion capture animation on a humanoid.
 # SubObjectCommand
 
 These commands can only be used for sub-objects of a composite object. Additionally, these commands may require the object to be a particular "machine type". To determine which objects are sub-objects of a given parent, send send_composite_objects to receive CompositeObjects output data.
+
+***
+
+## **`set_hinge_limits`**
+
+Set the angle limits of a hinge joint. This will work with hinges, motors, and springs. 
+
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
+
+    - <font style="color:deepskyblue">**Type:** `hinge`</font>
+
+```python
+{"$type": "set_hinge_limits", "id": 1}
+```
+
+```python
+{"$type": "set_hinge_limits", "id": 1, "min_limit": 0, "max_limit": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"min_limit"` | float | The minimum angle in degrees. | 0 |
+| `"max_limit"` | float | The maximum angle in degrees. | 0 |
+| `"id"` | int | The unique object ID. | |
 
 ***
 

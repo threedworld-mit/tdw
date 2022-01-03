@@ -325,9 +325,7 @@ class TDWUtils:
         """
 
         pass_mask = images.get_pass_mask(index)
-        # The depth passes aren't png files, so we need to convert them.
         if pass_mask == "_depth" or pass_mask == "_depth_simple":
-            # Save the image.
             return Image.fromarray(TDWUtils.get_shaped_depth_pass(images=images, index=index))
         else:
             return Image.open(io.BytesIO(images.get_image(index)))

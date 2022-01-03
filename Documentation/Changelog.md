@@ -34,6 +34,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Modifed `TDWUtils.get_bounds_extents`:
   - The function now accepts either `Bounds` output data or a cached bounds dictionary from `record.bounds` (in which case the `index` parameter is ignored).
   - The order of the returned array is: width, height, length (was width, length, height).
+- Fixed: `TDWUtils.get_pil_images()` doesn't work for `_depth` or `_depth_simple`.
 
 
 ### Model library

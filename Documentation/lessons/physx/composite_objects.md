@@ -2,7 +2,7 @@
 
 # Composite objects (objects with affordances)
 
-**Composite objects** are objects in TDW that have multiple "sub-objects". Sub-objects are differences from [sub-*meshes*](../objects_and_scenes/materials_textures_colors.md) in that they appear in [output data](../core_concepts/output_data.md) as separate objects with separate IDs and [segmentation colors](../visual_perception/id.md).
+**Composite objects** are objects in TDW that have multiple "sub-objects". Sub-objects are different from [sub-*meshes*](../objects_and_scenes/materials_textures_colors.md) in that they appear in [output data](../core_concepts/output_data.md) as separate objects with separate IDs and [segmentation colors](../visual_perception/id.md).
 
 Composite objects can be:
 

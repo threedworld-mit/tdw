@@ -1,6 +1,7 @@
 from typing import List, Union, Dict
 from pathlib import Path
 from PIL.Image import Image
+import PIL.Image
 from tdw.add_ons.add_on import AddOn
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Images
@@ -164,8 +165,13 @@ class ImageCapture(AddOn):
         for avatar_id in self.images:
             images[avatar_id] = dict()
             for i in range(self.images[avatar_id].get_num_passes()):
-                images[avatar_id][self.images[avatar_id].get_pass_mask(i)] = \
-                    TDWUtils.get_pil_image(images=self.images[avatar_id], index=i)
+                pass_mask = self.images[avatar_id].get_pass_mask(i)
+                # The depth passes aren't png files, so we need to convert them.
+                if pass_mask == "_depth" or pass_mask == "_depth_simple":
+                    image = PIL.Image.fromarray(TDWUtils.get_shaped_depth_pass(images=self.images[avatar_id], index=i))
+                else:
+                    image = TDWUtils.get_pil_image(images=self.images[avatar_id], index=i)
+                images[avatar_id][self.images[avatar_id].get_pass_mask(i)] = image
         return images
 
     def _get_pass_mask_commands(self, pass_masks: List[str] = None) -> List[dict]:

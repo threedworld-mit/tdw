@@ -1,0 +1,4 @@
+microwave
+refrigerator
+stove
+dishwasher

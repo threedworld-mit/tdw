@@ -35,14 +35,6 @@
     "b03_loafbread",
     "bread"
   ],
-  "cabinet": [
-    "cabinet_full_height_white_wood",
-    "cabinet_full_height_wood_beach_honey",
-    "cabinet_24_door_drawer_wood_beach_honey",
-    "cabinet_24_singledoor_wood_beach_honey",
-    "cabinet_24_two_drawer_white_wood",
-    "cabinet_24_two_drawer_wood_beach_honey"
-  ],
   "wall_cabinet": [
     "24_in_wall_cabinet_white_wood",
     "24_in_wall_cabinet_wood_beach_honey",
@@ -53,7 +45,11 @@
     "cabinet_24_white_wood",
     "cabinet_24_wood_beach_honey",
     "cabinet_36_white_wood",
-    "cabinet_36_wood_beach_honey"
+    "cabinet_36_wood_beach_honey",
+    "cabinet_24_door_drawer_wood_beach_honey",
+    "cabinet_24_singledoor_wood_beach_honey",
+    "cabinet_24_two_drawer_white_wood",
+    "cabinet_24_two_drawer_wood_beach_honey"
   ],
   "candle": [
     "b04_candle_holder_metal",
@@ -131,10 +127,8 @@
     "b03_db_apps_tech_08_07_composite",
     "b03_db_apps_tech_08_08_composite",
     "b04_db_apps_tech_08_03",
-    "b05_db_apps_tech_08_09",
     "b05_db_apps_tech_08_09_composite",
-    "dishwasher_4",
-    "vray_032"
+    "dishwasher_4"
   ],
   "fork": [
     "pcylinder222",

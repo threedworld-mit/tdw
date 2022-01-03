@@ -14,7 +14,7 @@ from tdw.add_ons.add_on import AddOn
 from tdw.cardinal_direction import CardinalDirection
 
 
-class _VerticalSpatialRelations(Enum):
+class _VerticalSpatialRelation(Enum):
     """
     Enum values to define vertical spatial relations.
     """
@@ -92,6 +92,8 @@ class ProcGenObjects(AddOn):
     A mapping of proc-gen categories to record wcategories.
     """
     PROC_GEN_CATEGORY_TO_WCATEGORY: Dict[str, str] = loads(Path(resource_filename(__name__, "proc_gen_objects/procgen_category_to_wcategory.json")).read_text())
+    # Categories that should only appear once in a scene.
+    _UNIQUE_CATEGORIES: List[str] = Path(resource_filename(__name__, "proc_gen_objects/unique_categories.txt")).read_text().split("\n")
     _WALL_DEPTH: float = 0.28
 
     def __init__(self, random_seed: int = None):
@@ -113,33 +115,27 @@ class ProcGenObjects(AddOn):
         self.scene_bounds: Optional[SceneBounds] = None
         # Get the vertical spatial relations.
         vertical_spatial_relations_data = loads(Path(resource_filename(__name__, "vertical_spatial_relations.json")).read_text())
-        self._vertical_spatial_relations: Dict[_VerticalSpatialRelations, Dict[str, List[str]]] = dict()
+        self._vertical_spatial_relations: Dict[_VerticalSpatialRelation, Dict[str, List[str]]] = dict()
         for r in vertical_spatial_relations_data:
-            self._vertical_spatial_relations[_VerticalSpatialRelations[r]] = dict()
+            self._vertical_spatial_relations[_VerticalSpatialRelation[r]] = dict()
             for c in vertical_spatial_relations_data[r]:
-                self._vertical_spatial_relations[_VerticalSpatialRelations[r]][c] = vertical_spatial_relations_data[r][c]
+                self._vertical_spatial_relations[_VerticalSpatialRelation[r]][c] = vertical_spatial_relations_data[r][c]
+        self._used_unique_categories: List[str] = list()
 
     def get_initialization_commands(self) -> List[dict]:
+        self._used_unique_categories.clear()
+        self.scene_bounds = None
         return [{"$type": "send_scene_regions"}]
 
     def on_send(self, resp: List[bytes]) -> None:
         if self.scene_bounds is None:
             self.scene_bounds = SceneBounds(resp=resp)
 
-    def reset(self) -> None:
+    def add_shelf(self, position: Union[np.array, Dict[str, float]], rotation: float,
+                  region: int = 0) -> Optional[ModelRecord]:
         """
-        :return: Call this whenever you reset the scene or load a new scene.
-        """
+        Procedurally generate a shelf with objects on each shelf.
 
-        self.initialized = False
-        self.scene_bounds = None
-
-    def get_vertical_arrangement_from_category(self, category: str, position: Union[np.array, Dict[str, float]],
-                                               rotation: float, region: int = 0) -> Optional[ModelRecord]:
-        """
-        Procedurally generate a vertical arrangement of objects on top of a root object, on the shelves of a root object, etc.
-
-        :param category: The category of the "root" object.
         :param position: The position of the root object as either a numpy array or a dictionary.
         :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
         :param region: The index of the region in `self.scene_bounds`.
@@ -147,7 +143,74 @@ class ProcGenObjects(AddOn):
         :return: The model record of the root object. If no models were added to the scene, this is None.
         """
 
-        assert category in ProcGenObjects.MODEL_CATEGORIES, f"Invalid category: {category}"
+        record, root_object_id, position = self._get_root_object(category="shelf", position=position, region=region)
+        if record is None:
+            return None
+        size = (ProcGenObjects.SHELVES[record.name]["size"][0], ProcGenObjects.SHELVES[record.name]["size"][1])
+        # Add objects to each shelf.
+        on_shelf_categories = self._vertical_spatial_relations[_VerticalSpatialRelation.on_shelf]["shelf"]
+        for y in ProcGenObjects.SHELVES[record.name]["ys"]:
+            object_top = {"x": position["x"], "y": y + position["y"], "z": position["z"]}
+            cell_size, density = self._get_rectangular_arrangement_parameters(category="shelf")
+            object_commands, object_categories = self._get_rectangular_arrangement(size=size,
+                                                                                   categories=on_shelf_categories,
+                                                                                   center=object_top,
+                                                                                   cell_size=cell_size,
+                                                                                   density=density)
+            self.commands.extend(object_commands)
+        # Rotate everything.
+        self._add_rotation_commands(root_object_id=root_object_id, rotation=rotation)
+        return record
+
+    def add_kitchen_counter(self, position: Union[np.array, Dict[str, float]], rotation: float,
+                            region: int = 0) -> Optional[ModelRecord]:
+        """
+        Procedurally generate a kitchen counter with objects on it.
+        Sometimes, a kitchen counter will have a microwave, which can have objects on top of it.
+        There will never be more than 1 microwave in the scene.
+
+        :param position: The position of the root object as either a numpy array or a dictionary.
+        :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
+        :param region: The index of the region in `self.scene_bounds`.
+
+        :return: The model record of the root object. If no models were added to the scene, this is None.
+        """
+
+        # Add objects on the kitchen counter.
+        if self.rng.random() < 0.5 or "microwave" not in self._used_unique_categories:
+            return self._get_objects_on_top_of(position=position, rotation=rotation, region=region,
+                                               category="kitchen_counter")
+        # Add a microwave on the kitchen counter.
+        else:
+            record, root_object_id, object_position = self._get_root_object(category="kitchen_counter",
+                                                                            position=position,
+                                                                            region=region)
+            if record is None:
+                return None
+            # Rotate the kitchen counter.
+            self._add_rotation_commands(root_object_id=root_object_id, rotation=rotation)
+            # Get the top position of the kitchen counter.
+            object_top = {"x": object_position["x"],
+                          "y": record.bounds["top"]["y"] + object_position["y"],
+                          "z": object_position["z"]}
+            # Add a microwave and add objects on top of the microwave.
+            self._get_objects_on_top_of(position=object_top, rotation=rotation, region=region, category="microwave",
+                                        parent=record)
+            return record
+
+    def _get_root_object(self, category: str, position: Union[np.array, Dict[str, float]], region: int = 0,
+                         parent: ModelRecord = None) -> Tuple[Optional[ModelRecord], int, Dict[str, float]]:
+        """
+        Try to add a root object to the scene.
+
+        :param category: The category of the root object.
+        :param position: The position of the root object as either a numpy array or a dictionary.
+        :param region: The index of the region in `self.scene_bounds`.
+        :param parent: The record of the parent object.
+
+        :return: Tuple: A model record (None if the object wasn't added), the object ID (-1 if the object wasn't added), the object position as a dictionary.
+        """
+
         region_bounds = self.scene_bounds.rooms[region]
         # Get the root object position as a dictionary.
         if isinstance(position, dict):
@@ -159,40 +222,57 @@ class ProcGenObjects(AddOn):
         # Get the possible root objects.
         record = self._get_model_that_fits_in_region(model_names=ProcGenObjects.MODEL_CATEGORIES[category][:],
                                                      object_position=object_position,
-                                                     region_bounds=region_bounds)
-        return self._get_vertical_arrangement(record=record, category=category, object_position=object_position,
-                                              rotation=rotation)
+                                                     region_bounds=region_bounds,
+                                                     parent=parent)
+        if record is None:
+            return None, -1, object_position
+        # Record that this category has been used.
+        if category in ProcGenObjects._UNIQUE_CATEGORIES:
+            self._used_unique_categories.append(category)
+        root_object_id = Controller.get_unique_id()
+        self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
+                                                               position=object_position,
+                                                               library="models_core.json",
+                                                               object_id=root_object_id,
+                                                               kinematic=category in ProcGenObjects.KINEMATIC_CATEGORIES))
+        return record, root_object_id, object_position
 
-    def get_vertical_arrangement_from_model(self, model_name: str, category: str,
-                                            position: Union[np.array, Dict[str, float]], rotation: float,
-                                            region: int = 0) -> Optional[ModelRecord]:
+    def _get_objects_on_top_of(self, category: str, position: Union[np.array, Dict[str, float]], rotation: float,
+                               region: int = 0, parent: ModelRecord = None) -> Optional[ModelRecord]:
         """
-        Procedurally generate a vertical arrangement of objects on top of a root object, on the shelves of a root object, etc.
+        Add a root object and add objects on  top of it.
 
-        :param model_name: The model name of the "root" object.
-        :param category: The model proc-gen category.
-        :param position: The position of the root object as either a numpy array or a dictionary.
-        :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
+        :param category: The category of the root object.
+        :param position: The position of the root object.
+        :param rotation: The rotation of the root object.
         :param region: The index of the region in `self.scene_bounds`.
+        :param parent: The record of the parent object. Can be None.
 
-        :return: The model record of the root object. If no models were added to the scene, this is None.
+        :return: A model record if anything was added to the scene.
         """
 
-        region_bounds = self.scene_bounds.rooms[region]
-        # Get the root object position as a dictionary.
-        if isinstance(position, dict):
-            object_position = position
-        elif isinstance(position, np.ndarray) or isinstance(position, list):
-            object_position = TDWUtils.array_to_vector3(position)
-        else:
-            raise Exception(f"Invalid position argument: {position}")
-        # Get the possible root objects.
-        record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
-        # The root object doesn't fit.
-        if not self._model_fits_in_region(record=record, position=object_position, region_bounds=region_bounds):
+        record, root_object_id, object_position = self._get_root_object(category=category, position=position,
+                                                                        region=region, parent=parent)
+        if record is None:
             return None
-        return self._get_vertical_arrangement(record=record, category=category, object_position=object_position,
-                                              rotation=rotation)
+        model_size = self._get_size(record=record)
+        # Get the top position of the object.
+        object_top = {"x": object_position["x"],
+                      "y": record.bounds["top"]["y"] + object_position["y"],
+                      "z": object_position["z"]}
+        # Get the dimensions of the object's occupancy map.
+        cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
+        surface_size = (model_size[0] * 0.8, model_size[1] * 0.8)
+        # Add objects on top of the root object.
+        object_commands, object_categories = self._get_rectangular_arrangement(size=surface_size,
+                                                                               categories=self._vertical_spatial_relations[_VerticalSpatialRelation.on_top_of][category],
+                                                                               center=object_top,
+                                                                               cell_size=cell_size,
+                                                                               density=density)
+        self.commands.extend(object_commands)
+        # Rotate everything.
+        self._add_rotation_commands(root_object_id=root_object_id, rotation=rotation)
+        return record
 
     def get_lateral_arrangement(self, wall: CardinalDirection, room_type: RoomType = RoomType.kitchen, room_id: int = 0) -> None:
         room = self.scene_bounds.rooms[room_id]
@@ -307,21 +387,6 @@ class ProcGenObjects(AddOn):
         :return: Tuple: A list of commands to add the objects, the categories of objects.
         """
 
-        def __get_circle_mask(circle_x: int, circle_y: int, radius: float) -> np.array:
-            """
-            Source: https://www.semicolonworld.com/question/44279/how-to-apply-a-disc-shaped-mask-to-a-numpy-array
-
-            :param circle_x: The x coordinate of the circle.
-            :param circle_y: The y coordinate of the circle.
-            :param radius: The radius of the circle in indices.
-
-            :return: A boolean array. True = The element is within the circle.
-            """
-
-            nx, ny = occupancy_map.shape
-            oy, ox = np.ogrid[-circle_x:nx - circle_x, -circle_y:ny - circle_y]
-            return ox * ox + oy * oy <= radius * radius
-
         # Get numpy array and dictionary representations of the center position.
         if isinstance(center, dict):
             center_dict = center
@@ -376,7 +441,8 @@ class ProcGenObjects(AddOn):
                     break
                 else:
                     # Define the circle.
-                    circle_mask = __get_circle_mask(circle_x=ix, circle_y=iz, radius=mcs)
+                    circle_mask = TDWUtils.get_circle_mask(shape=(occupancy_map.shape[0], occupancy_map.shape[1]),
+                                                           row=ix, column=iz, radius=mcs)
                     # There is overlap. Stop here.
                     if np.count_nonzero((circle_mask == True) & (occupancy_map == True)) > 0:
                         break
@@ -410,73 +476,9 @@ class ProcGenObjects(AddOn):
                                                               object_id=object_id,
                                                               library="models_core.json"))
             # Record the position on the occupancy map.
-            occupancy_map[__get_circle_mask(circle_x=ix, circle_y=iz, radius=sma) == True] = True
+            occupancy_map[TDWUtils.get_circle_mask(shape=(occupancy_map.shape[0], occupancy_map.shape[1]),
+                                                   row=ix, column=iz, radius=sma) == True] = True
         return commands, list(set(model_categories))
-
-    def _get_vertical_arrangement(self, record: ModelRecord, category: str, object_position: Dict[str, float],
-                                  rotation: float) -> Optional[ModelRecord]:
-        """
-        Procedurally generate a vertical arrangement of objects on top of a root object, on the shelves of a root object, etc.
-
-        :param record: The model record of the "root" object.
-        :param category: The proc-gen category of the root object.
-        :param object_position: The position of the root object as a dictionary.
-        :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
-
-        :return: The model record of the root object. If no models were added to the scene, this is None.
-        """
-
-        root_object_id = Controller.get_unique_id()
-        commands = Controller.get_add_physics_object(model_name=record.name,
-                                                     position=object_position,
-                                                     library="models_core.json",
-                                                     object_id=root_object_id,
-                                                     kinematic=category in ProcGenObjects.KINEMATIC_CATEGORIES)
-        # Get the size of the model.
-        model_size = ProcGenObjects._get_size(record=record)
-        categories: List[str] = [category]
-        # Add objects base on spatial relationship.
-        for spatial_relation in self._vertical_spatial_relations:
-            if category not in self._vertical_spatial_relations[spatial_relation]:
-                continue
-            # Put objects on top of the root object.
-            if spatial_relation == _VerticalSpatialRelations.on_top_of:
-                # Gert the top position of the object.
-                object_top = {"x": object_position["x"],
-                              "y": record.bounds["top"]["y"] + object_position["y"],
-                              "z": object_position["z"]}
-                cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
-                surface_size = (model_size[0] * 0.8, model_size[1] * 0.8)
-                object_commands, object_categories = self._get_rectangular_arrangement(size=surface_size,
-                                                                                       categories=self._vertical_spatial_relations[spatial_relation][category],
-                                                                                       center=object_top,
-                                                                                       cell_size=cell_size,
-                                                                                       density=density)
-                categories.extend(object_categories)
-                commands.extend(object_commands)
-            # Put objects on top of the shelves of the root object.
-            elif spatial_relation == _VerticalSpatialRelations.on_shelf:
-                size = (ProcGenObjects.SHELVES[record.name]["size"][0],
-                        ProcGenObjects.SHELVES[record.name]["size"][1])
-                for y in ProcGenObjects.SHELVES[record.name]["ys"]:
-                    object_top = {"x": object_position["x"],
-                                  "y": y + object_position["y"],
-                                  "z": object_position["z"]}
-                    cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
-                    object_commands, object_categories = self._get_rectangular_arrangement(size=size,
-                                                                                           categories=self._vertical_spatial_relations[spatial_relation][category],
-                                                                                           center=object_top,
-                                                                                           cell_size=cell_size,
-                                                                                           density=density)
-                    categories.extend(object_categories)
-                    commands.extend(object_commands)
-        # Rotate everything.
-        rotate_commands = ProcGenObjects._get_rotation_commands(root_object_id=root_object_id,
-                                                                rotation=rotation,
-                                                                commands=commands)
-        commands.extend(rotate_commands)
-        self.commands.extend(commands)
-        return record
 
     @staticmethod
     def _get_size(record: ModelRecord) -> Tuple[float, float]:
@@ -524,8 +526,10 @@ class ProcGenObjects(AddOn):
                 return False
         return True
 
-    def _get_model_that_fits_in_region(self, model_names: List[str], object_position: Dict[str, float],
-                                       region_bounds: RegionBounds) -> Optional[ModelRecord]:
+    def _get_model_that_fits_in_region(self, model_names: List[str],
+                                       object_position: Dict[str, float],
+                                       region_bounds: RegionBounds,
+                                       parent: ModelRecord = None) -> Optional[ModelRecord]:
         self.rng.shuffle(model_names)
         # Get the first object, if any, that fits in the region bounds.
         got_model_name = False
@@ -533,7 +537,8 @@ class ProcGenObjects(AddOn):
         for mn in model_names:
             record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(mn)
             if ProcGenObjects._model_fits_in_region(record=record, position=object_position,
-                                                    region_bounds=region_bounds):
+                                                    region_bounds=region_bounds) and \
+                    (parent is None or self._fits_inside(parent, record)):
                 got_model_name = True
                 break
         if not got_model_name:
@@ -541,19 +546,17 @@ class ProcGenObjects(AddOn):
         else:
             return record
 
-    @staticmethod
-    def _get_rotation_commands(root_object_id: int, rotation: float, commands: List[dict]) -> List[dict]:
+    def _add_rotation_commands(self, root_object_id: int, rotation: float) -> None:
         """
+        Add commands to parent the objects to the root object, rotate the root object, and unparent the objects.
+
         :param root_object_id: The ID of the root object.
         :param rotation: The rotation of the root object.
-        :param commands: The list of commands so far.
-
-        :return: Commands to parent the objects to the root object, rotate the root object, and unparent the objects.
         """
 
         cmds = []
         # Parent all objects to the root object.
-        for command in commands:
+        for command in self.commands:
             if command["$type"] == "add_object" and command["id"] != root_object_id:
                 cmds.append({"$type": "parent_object_to_object",
                              "id": command["id"],
@@ -566,8 +569,21 @@ class ProcGenObjects(AddOn):
                      "is_world": True,
                      "use_centroid": False})
         # Unparent all of the objects from the root object.
-        for command in commands:
+        for command in self.commands:
             if command["$type"] == "add_object" and command["id"] != root_object_id:
                 cmds.append({"$type": "unparent_object",
                              "id": command["id"]})
-        return cmds
+        self.commands.extend(cmds)
+
+    @staticmethod
+    def _fits_inside(parent: ModelRecord, child: ModelRecord) -> bool:
+        """
+        :param parent: The record of the parent object.
+        :param child: The record of the child object.
+
+        :return: True if the child object fits in the the parent object.
+        """
+
+        parent_extents = TDWUtils.get_bounds_extents(parent.bounds)
+        child_extents = TDWUtils.get_bounds_extents(child.bounds)
+        return parent_extents[0] > child_extents[0] and parent_extents[2] > child_extents[2]

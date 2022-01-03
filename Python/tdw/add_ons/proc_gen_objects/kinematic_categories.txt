@@ -1,4 +1,3 @@
-cabinet
 wall_cabinet
 kitchen_counter
 dishwasher

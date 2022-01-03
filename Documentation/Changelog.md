@@ -41,6 +41,14 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Flagged models as do_not_use in `models_core.json`: coffeecup004, mug, salt
 - Flagged models as do_not_use in `models_full.json`: coffeecup004, mug, salt, b03_closed_soda_can, b04_chocolate, b04_coffee_grinder_sunbeam_em0700, b04_glass, b04_whyskeyglass, b05_beko_oie_22500x_2013_corona, croissant, jar, peppermill, pineapple_juice, pineapple_juice_carton, spagheti-server, b03_can-opened
 
+### Documentation
+
+#### Modified Documentation
+
+| Document                             | Modification                                                 |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `lessons/3d_models/custom_models.md` | Fixed: Two of the example controllers don't work because they try to load JSON from the file path rather than the file text. |
+
 ## v1.9.0
 
 ### New Features

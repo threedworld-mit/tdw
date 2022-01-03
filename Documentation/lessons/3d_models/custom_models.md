@@ -176,7 +176,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
 
 model_name = "chair"
-model_record = ModelRecord(loads(Path.home().joinpath("tdw_asset_bundles/chair/record.json")))
+model_record = ModelRecord(loads(Path.home().joinpath("tdw_asset_bundles/chair/record.json").read_text()))
 c = Controller()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "add_object",
@@ -212,7 +212,7 @@ from tdw.librarian import ModelLibrarian, ModelRecord
 # Convert from a relative to absolute path to load the librarian.
 librarian = ModelLibrarian(library=str(Path("models_custom.json").resolve()))
 
-record = ModelRecord(loads(Path.home().joinpath("tdw_asset_bundles/chair/record.json")))
+record = ModelRecord(loads(Path.home().joinpath("tdw_asset_bundles/chair/record.json").read_text()))
 
 librarian.add_or_update_record(record=record, overwrite=False, write=True)
 ```

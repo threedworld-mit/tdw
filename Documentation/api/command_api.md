@@ -327,7 +327,7 @@
 | [`set_mass`](#set_mass) | Set the mass of an object. |
 | [`set_object_collision_detection_mode`](#set_object_collision_detection_mode) | Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object.  |
 | [`set_object_drag`](#set_object_drag) | Set the drag of an object's RigidBody. Both drag and angular_drag can be safely changed on-the-fly. |
-| [`set_object_physics_solver_iterations`](#set_object_physics_solver_iterations) | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: set_physics_solver_iterations which sets the global default number of solver iterations. |
+| [`set_object_physics_solver_iterations`](#set_object_physics_solver_iterations) | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: [set_physics_solver_iterations](#set_physics_solver_iterations) which sets the global default number of solver iterations. |
 | [`set_primitive_visual_material`](#set_primitive_visual_material) | Set the material of an object created via load_primitive_from_resources  |
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
 | [`show_collider_hulls`](#show_collider_hulls) | Show the collider hulls of the object.  |
@@ -4532,7 +4532,7 @@ Set the drag of an object's RigidBody. Both drag and angular_drag can be safely 
 
 ## **`set_object_physics_solver_iterations`**
 
-Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: set_physics_solver_iterations which sets the global default number of solver iterations.
+Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: [set_physics_solver_iterations](#set_physics_solver_iterations) which sets the global default number of solver iterations.
 
 
 ```python

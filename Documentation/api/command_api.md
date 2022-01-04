@@ -287,6 +287,7 @@
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
 | [`parent_object_to_avatar`](#parent_object_to_avatar) | Parent an object to an avatar. The object won't change its position or rotation relative to the avatar. Only use this command in non-physics simulations. |
+| [`parent_object_to_object`](#parent_object_to_object) | Parent an object to an object. In a non-physics simulation or on the frame that the two objects are first created, rotating or moving the parent object will rotate or move the child object. In subsequent physics steps, the child will move independently of the parent object (like any object). |
 | [`remove_nav_mesh_obstacle`](#remove_nav_mesh_obstacle) | Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle).  |
 | [`rotate_object_around`](#rotate_object_around) | Rotate an object by a given angle and axis around a position. |
 | [`rotate_object_by`](#rotate_object_by) | Rotate an object by a given angle around a given axis. |
@@ -343,6 +344,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`set_hinge_limits`](#set_hinge_limits) | Set the angle limits of a hinge joint. This will work with hinges, motors, and springs.  |
 | [`set_motor`](#set_motor) | Set the target velocity and force of a motor.  |
 | [`set_spring`](#set_spring) | Set the target position of a spring.  |
 | [`set_sub_object_light`](#set_sub_object_light) | Turn a light on or off.  |
@@ -3910,6 +3912,22 @@ Parent an object to an avatar. The object won't change its position or rotation 
 
 ***
 
+## **`parent_object_to_object`**
+
+Parent an object to an object. In a non-physics simulation or on the frame that the two objects are first created, rotating or moving the parent object will rotate or move the child object. In subsequent physics steps, the child will move independently of the parent object (like any object).
+
+
+```python
+{"$type": "parent_object_to_object", "parent_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"parent_id"` | int | The ID of the parent object in the scene. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`remove_nav_mesh_obstacle`**
 
 Remove a NavMesh obstacle from an object (see make_nav_mesh_obstacle). 
@@ -4659,6 +4677,30 @@ Stop a motion capture animation on a humanoid.
 # SubObjectCommand
 
 These commands can only be used for sub-objects of a composite object. Additionally, these commands may require the object to be a particular "machine type". To determine which objects are sub-objects of a given parent, send send_composite_objects to receive CompositeObjects output data.
+
+***
+
+## **`set_hinge_limits`**
+
+Set the angle limits of a hinge joint. This will work with hinges, motors, and springs. 
+
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
+
+    - <font style="color:deepskyblue">**Type:** `hinge`</font>
+
+```python
+{"$type": "set_hinge_limits", "id": 1}
+```
+
+```python
+{"$type": "set_hinge_limits", "id": 1, "min_limit": 0, "max_limit": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"min_limit"` | float | The minimum angle in degrees. | 0 |
+| `"max_limit"` | float | The maximum angle in degrees. | 0 |
+| `"id"` | int | The unique object ID. | |
 
 ***
 

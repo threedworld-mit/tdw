@@ -149,6 +149,7 @@ class BinaryManager:
         thread.start()
 
         context = zmq.Context()
+        # noinspection PyUnresolvedReferences
         socket = context.socket(zmq.REP)
         socket.bind("tcp://*:%s" % port)
         while True:
@@ -168,28 +169,28 @@ def _get_binary_manager_args():
         "--listening_port",
         default="5556",
         type=str,
-        help="Default=5556",
+        help="The socket port",
     )
     # Build path
     parser.add_argument(
         "--build_path",
         default=os.environ.get("TDW_BUILD_PATH"),
-        help="Unity build path",
+        help="The path to the build",
     )
     # OpenGL version
     parser.add_argument(
         "--force_glcore42",
         type=bool,
-        default=True,
+        default=False,
         help="Use OpenGL 4.2 instead of latest system version",
     )
     # Build screen width
     parser.add_argument(
-        "--screen_width", default=256, type=int, help="Unity build screen width"
+        "--screen_width", default=256, type=int, help="Screen width in pixels"
     )
     # Build screen height
     parser.add_argument(
-        "--screen_height", default=256, type=int, help="Unity build screen height"
+        "--screen_height", default=256, type=int, help="Screen height in pixels"
     )
     # Render GPUs
     parser.add_argument(

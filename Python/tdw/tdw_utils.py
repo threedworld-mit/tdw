@@ -1,25 +1,17 @@
 import numpy as np
 import random
 import math
-import zmq
-import time
 from scipy.spatial import distance
 from tdw.output_data import IsOnNavMesh, Images, Bounds
 from PIL import Image
 import io
 import os
-from threading import Thread
 from tdw.controller import Controller
 from typing import List, Tuple, Dict, Optional, Union
-import socket
-from contextlib import closing
 from tdw.librarian import ModelRecord
 from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
-from subprocess import check_output, Popen, call
-import re
-from psutil import pid_exists
 import base64
 
 
@@ -332,7 +324,11 @@ class TDWUtils:
         :return A PIL image.
         """
 
-        return Image.open(io.BytesIO(images.get_image(index)))
+        pass_mask = images.get_pass_mask(index)
+        if pass_mask == "_depth" or pass_mask == "_depth_simple":
+            return Image.fromarray(TDWUtils.get_shaped_depth_pass(images=images, index=index))
+        else:
+            return Image.open(io.BytesIO(images.get_image(index)))
 
     @staticmethod
     def get_random_position_on_nav_mesh(c: Controller, width: float, length: float, x_e=0, z_e=0, bake=True, rng=random.uniform) -> Tuple[float, float, float]:
@@ -518,125 +514,6 @@ class TDWUtils:
         return commands
 
     @staticmethod
-    def _send_start_build(socket, controller_address: str) -> dict:
-        """
-        This sends a command to the launch_binaries daemon running on a remote node
-        to start a binary connected to the given controller address.
-
-        :param socket: The zmq socket.
-        :param controller_address: The host name or ip address of node running the controller.
-
-        :return Build info dictionary containing build port.
-        """
-        request = {"type": "start_build",
-                   "controller_address": controller_address}
-        socket.send_json(request)
-        build_info = socket.recv_json()
-        return build_info
-
-    @staticmethod
-    def _send_keep_alive(socket, build_info: dict) -> dict:
-        """
-        This sends a command to the launch_binaries daemon running on a remote node
-        to mark a given binary as still alive, preventing garbage collection.
-
-        :param socket: The zmq socket.
-        :param build_info: A diciontary containing the build_port.
-
-        :return a heartbeat indicating build is still alive.
-        """
-
-        build_port = build_info["build_port"]
-        request = {"type": "keep_alive", "build_port": build_port}
-        socket.send_json(request)
-        heartbeat = socket.recv_json()
-        return heartbeat
-
-    @staticmethod
-    def _send_kill_build(socket, build_info: dict) -> dict:
-        """
-        This sends a command to the launch_binaries daemon running on a remote node to terminate a given binary.
-
-        :param socket: The zmq socket.
-        :param build_info: A diciontary containing the build_port.
-
-        :return A kill_status indicating build has been succesfully terminated.
-        """
-
-        build_port = build_info["build_port"]
-        request = {"type": "kill_build", "build_port": build_port}
-        socket.send_json(request)
-        kill_status = socket.recv_json()
-        return kill_status
-
-    @staticmethod
-    def _keep_alive_thread(socket, build_info: dict) -> None:
-        """
-        This is a wrapper around the keep alive command to be executed in a separate thread.
-
-        :param socket: The zmq socket.
-        :param build_info: A diciontary containing the build_port.
-        """
-        while True:
-            TDWUtils._send_keep_alive(socket, build_info)
-            time.sleep(60)
-
-    @staticmethod
-    def launch_build(listener_port: int, build_address: str, controller_address: str) -> dict:
-        """
-        Connect to a remote binary_manager daemon and launch an instance of a TDW build.
-
-        Returns the necessary information for a local controller to connect.
-        Use this function to automatically launching binaries on remote (or local) nodes, and to
-        automatically shut down the build after controller is finished. Call in the constructor
-        of a controller and pass the build_port returned in build_info to the parent Controller class.
-
-        :param listener_port: The port launch_binaries is listening on.
-        :param build_address: Remote IP or hostname of node running launch_binaries.
-        :param controller_address: IP or hostname of node running controller.
-
-        :return The build_info dictionary containing build_port.
-        """
-
-        context = zmq.Context()
-        socket = context.socket(zmq.REQ)
-        socket.connect("tcp://" + build_address + ":%s" % listener_port)
-        build_info = TDWUtils._send_start_build(socket, controller_address)
-        thread = Thread(target=TDWUtils._keep_alive_thread,
-                        args=(socket, build_info))
-        thread.setDaemon(True)
-        thread.start()
-        return build_info
-
-    @staticmethod
-    def get_unity_args(arg_dict: dict) -> List[str]:
-        """
-        :param arg_dict: A dictionary of arguments. Key=The argument prefix (e.g. port) Value=Argument value.
-
-        :return The formatted command line string that is accepted by unity arg parser.
-        """
-
-        formatted_args = []
-        for key, value in arg_dict.items():
-            prefix = "-" + key + "="
-            if type(value) == list:
-                prefix += ",".join([str(v) for v in value])
-            else:
-                prefix += str(value)
-            formatted_args += [prefix]
-        return formatted_args
-
-    @staticmethod
-    def find_free_port() -> int:
-        """
-        :return a free port.
-        """
-
-        with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
-            s.bind(("", 0))
-            return int(s.getsockname()[1])
-
-    @staticmethod
     def get_unit_scale(record: ModelRecord) -> float:
         """
         :param record: The model record.
@@ -647,11 +524,14 @@ class TDWUtils:
         bounds = record.bounds
 
         # Get the "unit scale" of the object.
-        s = 1 / max(
-            bounds['top']['y'] - bounds['bottom']['y'],
-            bounds['front']['z'] - bounds['back']['z'],
-            bounds['right']['x'] - bounds['left']['x'])
-        return s
+        try:
+            s = 1 / max(
+                bounds['top']['y'] - bounds['bottom']['y'],
+                bounds['front']['z'] - bounds['back']['z'],
+                bounds['right']['x'] - bounds['left']['x'])
+            return s
+        except ZeroDivisionError:
+            return 1
 
     @staticmethod
     def validate_amazon_s3() -> bool:
@@ -731,17 +611,24 @@ class TDWUtils:
                 "center": np.array(bounds.get_center(index))}
 
     @staticmethod
-    def get_bounds_extents(bounds: Bounds, index: int) -> np.array:
+    def get_bounds_extents(bounds: Union[Bounds, Dict[str, Dict[str, float]]], index: int = 0) -> np.array:
         """
-        :param bounds: Bounds output data.
-        :param index: The index in `bounds` of the target object.
+        :param bounds: Bounds output data or cached bounds data from a record (`record.bounds`).
+        :param index: The index in `bounds` of the target object. Ignored if `bounds` is a dictionary.
 
-        :return: The width (left to right), length (front to back), and height (top to bottom) of the bounds as a numpy array.
+        :return: The width (left to right), height (top to bottom), and length (front to back), of the bounds as a numpy array.
         """
 
-        return np.array([np.linalg.norm(np.array(bounds.get_left(index)) - np.array(bounds.get_right(index))),
-                         np.linalg.norm(np.array(bounds.get_front(index)) - np.array(bounds.get_back(index))),
-                         np.linalg.norm(np.array(bounds.get_top(index)) - np.array(bounds.get_bottom(index)))])
+        if isinstance(bounds, Bounds):
+            return np.array([np.linalg.norm(np.array(bounds.get_left(index)) - np.array(bounds.get_right(index))),
+                             np.linalg.norm(np.array(bounds.get_top(index)) - np.array(bounds.get_bottom(index))),
+                             np.linalg.norm(np.array(bounds.get_front(index)) - np.array(bounds.get_back(index)))])
+        elif isinstance(bounds, dict):
+            return np.array([np.linalg.norm(TDWUtils.vector3_to_array(bounds["left"]) - TDWUtils.vector3_to_array(bounds["right"])),
+                             np.linalg.norm(TDWUtils.vector3_to_array(bounds["top"]) - TDWUtils.vector3_to_array(bounds["bottom"])),
+                             np.linalg.norm(TDWUtils.vector3_to_array(bounds["front"]) - TDWUtils.vector3_to_array(bounds["back"]))])
+        else:
+            raise Exception(f"Invalid bounds data: {bounds}")
 
     @staticmethod
     def get_closest_position_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array:
@@ -842,295 +729,30 @@ class TDWUtils:
         # Source: https://github.com/Unity-Technologies/URDF-Importer/blob/c41208565419b04907496baa93ad1b675d41dc20/com.unity.robotics.urdf-importer/Runtime/Extensions/TransformExtensions.cs#L85-L92
         return np.radians(np.array([-euler_angles[2], euler_angles[0], -euler_angles[1]]))
 
+    @staticmethod
+    def bytes_to_megabytes(b: int) -> float:
+        """
+        :param b: A quantity of bytes.
 
-class AudioUtils:
-    """
-    Utility class for recording audio in TDW using [fmedia](https://stsaz.github.io/fmedia/).
+        :return: A quantity of megabytes.
+        """
 
-    Usage:
-
-    ```python
-    from tdw.tdw_utils import AudioUtils
-    from tdw.controller import Controller
-
-    c = Controller()
-
-    initialize_trial()  # Your code here.
-
-    # Begin recording audio. Automatically stop recording at 10 seconds.
-    AudioUtils.start(output_path="path/to/file.wav", until=(0, 10))
-
-    do_trial()  # Your code here.
-
-    # Stop recording.
-    AudioUtils.stop()
-    ```
-    """
-
-    # The process ID of the audio recorder.
-    RECORDER_PID: Optional[int] = None
-    # The audio capture device.
-    DEVICE: Optional[str] = None
+        return b / (1 << 20)
 
     @staticmethod
-    def get_system_audio_device() -> str:
+    def get_circle_mask(shape: Tuple[int, int], row: int, column: int, radius: int) -> np.array:
         """
-        :return: The audio device that can be used to capture system audio.
-        """
+        Get elements in an array within a circle.
 
-        devices = check_output(["fmedia", "--list-dev"]).decode("utf-8").split("Capture:")[1]
-        dev_search = re.search("device #(.*): Stereo Mix", devices, flags=re.MULTILINE)
-        assert dev_search is not None, "No suitable audio capture device found:\n" + devices
-        return dev_search.group(1)
+        :param shape: The shape of the source array as (rows, columns).
+        :param row: The row (axis 0) of the center of the circle.
+        :param column: The column (axis 1) of the circle.
+        :param radius: The radius of the circle in indices.
 
-    @staticmethod
-    def start(output_path: Union[str, Path], until: Optional[Tuple[int, int]] = None) -> None:
-        """
-        Start recording audio.
-
-        :param output_path: The path to the output file.
-        :param until: If not None, fmedia will record until `minutes:seconds`. The value must be a tuple of 2 integers. If None, fmedia will record until you send `AudioUtils.stop()`.
+        :return: A boolean array with shape `shape`. Elements that are True are within the circle.
         """
 
-        if isinstance(output_path, str):
-            p = Path(output_path).resolve()
-        else:
-            p = output_path
-
-        # Create the directory.
-        if not p.parent.exists():
-            p.parent.mkdir(parents=True)
-
-        # Set the capture device.
-        if AudioUtils.DEVICE is None:
-            AudioUtils.DEVICE = AudioUtils.get_system_audio_device()
-        fmedia_call = ["fmedia",
-                       "--record",
-                       f"--dev-capture={AudioUtils.DEVICE}",
-                       f"--out={str(p.resolve())}",
-                       "--globcmd=listen"]
-        # Automatically stop recording.
-        if until is not None:
-            fmedia_call.append(f"--until={TDWUtils.zero_padding(until[0], 2)}:{TDWUtils.zero_padding(until[1], 2)}")
-        with open(os.devnull, "w+") as f:
-            AudioUtils.RECORDER_PID = Popen(fmedia_call,
-                                            stderr=f).pid
-
-    @staticmethod
-    def stop() -> None:
-        """
-        Stop recording audio (if any fmedia process is running).
-        """
-
-        if AudioUtils.RECORDER_PID is not None:
-            with open(os.devnull, "w+") as f:
-                call(['fmedia', '--globcmd=quit'], stderr=f, stdout=f)
-            AudioUtils.RECORDER_PID = None
-
-    @staticmethod
-    def is_recording() -> bool:
-        """
-        :return: True if the fmedia recording process still exists.
-        """
-
-        return AudioUtils.RECORDER_PID is not None and pid_exists(AudioUtils.RECORDER_PID)
-
-
-class QuaternionUtils:
-    """
-    Helper functions for using quaternions.
-
-    Quaternions are always numpy arrays in the following order: `[x, y, z, w]`.
-    This is the order returned in all Output Data objects.
-
-    Vectors are always numpy arrays in the following order: `[x, y, z]`.
-    """
-
-    """:class_var
-    The global up directional vector.
-    """
-    UP = np.array([0, 1, 0])
-    """:class_var
-    The global forward directional vector.
-    """
-    FORWARD: np.array = np.array([0, 0, 1])
-    """:class_var
-    The quaternion identity rotation.
-    """
-    IDENTITY = np.array([0, 0, 0, 1])
-
-    @staticmethod
-    def get_inverse(q: np.array) -> np.array:
-        """
-        Source: https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Quaternion.cs
-
-        :param q: The quaternion.
-
-        :return: The inverse of the quaternion.
-        """
-
-        x = q[0]
-        y = q[1]
-        z = q[2]
-        w = q[3]
-
-        ls = x * x + y * y + z * z + w * w
-        inv = 1.0 / ls
-
-        return np.array([-x * inv, -y * inv, -z * inv, w * inv])
-
-    @staticmethod
-    def multiply(q1: np.array, q2: np.array) -> np.array:
-        """
-        Multiply two quaternions.
-        Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
-
-        :param q1: The first quaternion.
-        :param q2: The second quaternion.
-        :return: The multiplied quaternion: `q1 * q2`
-        """
-
-        x1 = q1[0]
-        y1 = q1[1]
-        z1 = q1[2]
-        w1 = q1[3]
-
-        x2 = q2[0]
-        y2 = q2[1]
-        z2 = q2[2]
-        w2 = q2[3]
-
-        w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
-        x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
-        y = w1 * y2 + y1 * w2 + z1 * x2 - x1 * z2
-        z = w1 * z2 + z1 * w2 + x1 * y2 - y1 * x2
-        return np.array([x, y, z, w])
-
-    @staticmethod
-    def get_conjugate(q: np.array) -> np.array:
-        """
-        Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
-
-        :param q: The quaternion.
-
-        :return: The conjugate of the quaternion: `[-x, -y, -z, w]`
-        """
-
-        x = q[0]
-        y = q[1]
-        z = q[2]
-        w = q[3]
-
-        return np.array([-x, -y, -z, w])
-
-    @staticmethod
-    def multiply_by_vector(q: np.array, v: np.array) -> np.array:
-        """
-        Multiply a quaternion by a vector.
-        Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
-
-        :param q: The quaternion.
-        :param v: The vector.
-
-        :return: A directional vector calculated from: `q * v`
-        """
-
-        q2 = (v[0], v[1], v[2], 0.0)
-        return QuaternionUtils.multiply(QuaternionUtils.multiply(q, q2), QuaternionUtils.get_conjugate(q))[:-1]
-
-    @staticmethod
-    def world_to_local_vector(position: np.array, origin: np.array, rotation: np.array) -> np.array:
-        """
-        Convert a vector position in absolute world coordinates to relative local coordinates.
-        Source: https://answers.unity.com/questions/601062/what-inversetransformpoint-does-need-explanation-p.html
-
-        :param position: The position vector in world coordinates.
-        :param origin: The origin vector of the local space in world coordinates.
-        :param rotation: The rotation quaternion of the local coordinate space.
-
-        :return: `position` in local coordinates.
-        """
-
-        return QuaternionUtils.multiply_by_vector(q=QuaternionUtils.get_inverse(q=rotation), v=position - origin)
-
-    @staticmethod
-    def get_up_direction(q: np.array) -> np.array:
-        """
-        :param q: The rotation as a quaternion.
-
-        :return: A directional vector corresponding to the "up" direction from the quaternion.
-        """
-
-        return QuaternionUtils.multiply_by_vector(q, QuaternionUtils.UP)
-
-    @staticmethod
-    def euler_angles_to_quaternion(euler: np.array) -> np.array:
-        """
-        Convert Euler angles to a quaternion.
-
-        :param euler: The Euler angles vector.
-
-        :return: The quaternion representation of the Euler angles.
-        """
-
-        roll = euler[0]
-        pitch = euler[1]
-        yaw = euler[2]
-        cy = np.cos(yaw * 0.5)
-        sy = np.sin(yaw * 0.5)
-        cp = np.cos(pitch * 0.5)
-        sp = np.sin(pitch * 0.5)
-        cr = np.cos(roll * 0.5)
-        sr = np.sin(roll * 0.5)
-
-        w = cy * cp * cr + sy * sp * sr
-        x = cy * cp * sr - sy * sp * cr
-        y = sy * cp * sr + cy * sp * cr
-        z = sy * cp * cr - cy * sp * sr
-        return np.array([x, y, z, w])
-
-    @staticmethod
-    def quaternion_to_euler_angles(quaternion: np.array) -> np.array:
-        """
-        Convert a quaternion to Euler angles.
-
-        :param quaternion: A quaternion as a nump array.
-
-        :return: The Euler angles representation of the quaternion.
-        """
-
-        x = quaternion[0]
-        y = quaternion[1]
-        z = quaternion[2]
-        w = quaternion[3]
-        ysqr = y * y
-
-        t0 = +2.0 * (w * x + y * z)
-        t1 = +1.0 - 2.0 * (x * x + ysqr)
-        ex = np.degrees(np.arctan2(t0, t1))
-
-        t2 = +2.0 * (w * y - z * x)
-        t2 = np.where(t2 > +1.0, +1.0, t2)
-
-        t2 = np.where(t2 < -1.0, -1.0, t2)
-        ey = np.degrees(np.arcsin(t2))
-
-        t3 = +2.0 * (w * z + x * y)
-        t4 = +1.0 - 2.0 * (ysqr + z * z)
-        ez = np.degrees(np.arctan2(t3, t4))
-
-        return np.array([ex, ey, ez])
-
-    @staticmethod
-    def get_y_angle(q1: np.array, q2: np.array) -> float:
-        """
-        Source: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
-
-        :param q1: The first quaternion.
-        :param q2: The second quaternion.
-
-        :return: The angle between the two quaternions in degrees around the y axis.
-        """
-
-        qd = QuaternionUtils.multiply(QuaternionUtils.get_conjugate(q1), q2)
-        return np.rad2deg(2 * np.arcsin(np.clip(qd[1], -1, 1)))
+        # Source: https://www.semicolonworld.com/question/44279/how-to-apply-a-disc-shaped-mask-to-a-numpy-array
+        nx, ny = shape
+        oy, ox = np.ogrid[-row:nx - row, -column:ny - column]
+        return ox * ox + oy * oy <= radius * radius

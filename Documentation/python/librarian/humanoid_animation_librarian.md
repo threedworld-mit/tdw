@@ -1,6 +1,6 @@
 # Humanoid Animation Librarian
 
-A **Humanoid Animation Librarian** is a [Librarian](librarian.md) wrapper class for a humanoid animation records database. Use this metadata in conjunction with [humanoids](humanoid_librarian.md).
+A **Humanoid Animation Librarian** is a humanoid animation records database. Use this metadata in conjunction with [humanoids](humanoid_librarian.md).
 
 ## Default Libraries
 

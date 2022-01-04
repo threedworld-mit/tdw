@@ -1,6 +1,6 @@
 # HDRI Skybox Librarian
 
-An  **HDRI Skybox Librarian** is a [Librarian](librarian.md) wrapper class for an HDRI skybox records database. 
+An  **HDRI Skybox Librarian** is an HDRI skybox records database. 
 
 An **HDRI skybox** is a background image with real-world lighting data. See the `hdri.py` example controller.
 

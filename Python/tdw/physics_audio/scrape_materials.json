@@ -1,0 +1,114 @@
+{
+  "aluminium_brushed": {
+    "audio_material": "metal",
+    "scrape_material": "sanded_acrylic"
+  },
+  "cardboard_corrugated": {
+    "audio_material": "cardboard",
+    "scrape_material": "plywood"
+  },
+  "ceramic_tiles_brazilian": {
+    "audio_material": "ceramic",
+    "scrape_material": "vinyl"
+  },
+  "ceramic_tiles_brown_tomato": {
+    "audio_material": "ceramic",
+    "scrape_material": "vinyl"
+  },
+  "chrome": {
+    "audio_material": "metal",
+    "scrape_material": "sanded_acrylic"
+  },
+  "chrome2": {
+    "audio_material": "metal",
+    "scrape_material": "sanded_acrylic"
+  },
+  "concrete_raw_brushed_fine": {
+    "audio_material": "ceramic",
+    "scrape_material": "vinyl"
+  },
+  "cork_compact": {
+    "audio_material": "cardboard",
+    "scrape_material": "rough_wood"
+  },
+  "cork_heavy": {
+    "audio_material": "cardboard",
+    "scrape_material": "rough_wood"
+  },
+  "cork_simple": {
+    "audio_material": "cardboard",
+    "scrape_material": "rough_wood"
+  },
+  "glass_clear": {
+    "audio_material": "glass",
+    "scrape_material": "acrylic"
+  },
+  "granite_beige_french": {
+    "audio_material": "stone",
+    "scrape_material": "vinyl"
+  },
+  "granite_black": {
+    "audio_material": "stone",
+    "scrape_material": "vinyl"
+  },
+  "marble_green": {
+    "audio_material": "stone",
+    "scrape_material": "vinyl"
+  },
+  "marble_new_emperador_dark": {
+    "audio_material": "stone",
+    "scrape_material": "vinyl"
+  },
+  "marble_portoro_gold_clean": {
+    "audio_material": "stone",
+    "scrape_material": "vinyl"
+  },
+  "marble_white": {
+    "audio_material": "stone",
+    "scrape_material": "vinyl"
+  },
+  "metal_galvanized": {
+    "audio_material": "metal",
+    "scrape_material": "sanded_acrylic"
+  },
+  "parquet_long_horizontal_clean": {
+    "audio_material": "wood_hard",
+    "scrape_material": "plywood"
+  },
+  "parquet_wood_ipe": {
+    "audio_material": "wood_hard",
+    "scrape_material": "plywood"
+  },
+  "plastic_vinyl_glossy_black": {
+    "audio_material": "plastic_hard",
+    "scrape_material": "pvc"
+  },
+  "plastic_vinyl_glossy_white": {
+    "audio_material": "plastic_hard",
+    "scrape_material": "pvc"
+  },
+  "travertine_barcelona": {
+    "audio_material": "stone",
+    "scrape_material": "vinyl"
+  },
+  "wood_american_cherry": {
+    "audio_material": "wood_medium",
+    "scrape_material": "plywood"
+  },
+  "wood_beech_honey": {
+    "audio_material": "wood_medium",
+    "scrape_material": "plywood"
+  },
+  "wood_beech_natural": {
+    "audio_material": "wood_medium",
+    "scrape_material": "plywood"
+  },
+  "wood_black_walnut_striped": {
+    "audio_material": "wood_hard",
+    "scrape_material": "plywood"
+  },
+  "wood_teak": {
+    "audio_material": "wood_medium",
+    "scrape_material": "plywood"
+  }
+}

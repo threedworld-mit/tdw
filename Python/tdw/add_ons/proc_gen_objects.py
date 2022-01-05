@@ -97,6 +97,7 @@ class ProcGenObjects(AddOn):
     UNIQUE_CATEGORIES: List[str] = Path(resource_filename(__name__, "proc_gen_objects/unique_categories.txt")).read_text().split("\n")
     _TABLE_SHAPES: Dict[str, List[str]] = Path(resource_filename(__name__, "proc_gen_objects/table_shapes.json")).read_text().split("\n")
     _WALL_DEPTH: float = 0.28
+    _CANONICAL_ROTATIONS: Dict[str, float] = loads(Path(resource_filename(__name__, "proc_gen_objects/canonical_rotations.json")).read_text())
 
     def __init__(self, random_seed: int = None):
         """
@@ -127,6 +128,12 @@ class ProcGenObjects(AddOn):
     def get_initialization_commands(self) -> List[dict]:
         self._used_unique_categories.clear()
         self.scene_bounds = None
+        # Set the wood type.
+        kitchen_counter_wood_type = self.rng.choice(["white_wood", "wood_beach_honey"])
+        kitchen_counters = ProcGenObjects.MODEL_CATEGORIES["kitchen_counter"]
+        ProcGenObjects.MODEL_CATEGORIES["kitchen_counter"] = [k for k in kitchen_counters if kitchen_counter_wood_type in k]
+        kitchen_cabinets = ProcGenObjects.MODEL_CATEGORIES["wall_cabinet"]
+        ProcGenObjects.MODEL_CATEGORIES["wall_cabinet"] = [k for k in kitchen_cabinets if kitchen_counter_wood_type in k]
         return [{"$type": "send_scene_regions"}]
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -167,7 +174,8 @@ class ProcGenObjects(AddOn):
         # Rotate everything.
         self._add_rotation_commands(parent_object_id=root_object_id,
                                     child_object_ids=child_object_ids,
-                                    rotation=rotation)
+                                    rotation=rotation,
+                                    parent_object_name=record.name)
         return record
 
     def add_kitchen_counter(self, position: Union[np.array, Dict[str, float]], rotation: float,
@@ -198,7 +206,8 @@ class ProcGenObjects(AddOn):
             if record is None:
                 return None
             # Rotate the kitchen counter.
-            self._add_rotation_commands(parent_object_id=root_object_id, child_object_ids=[], rotation=rotation)
+            self._add_rotation_commands(parent_object_id=root_object_id, child_object_ids=[], rotation=rotation,
+                                        parent_object_name=record.name)
             # Get the top position of the kitchen counter.
             object_top = {"x": object_position["x"],
                           "y": record.bounds["top"]["y"] + object_position["y"],
@@ -476,7 +485,8 @@ class ProcGenObjects(AddOn):
                                                                    library="models_core.json"))
         self._add_rotation_commands(parent_object_id=root_object_id,
                                     child_object_ids=child_object_ids,
-                                    rotation=rotation)
+                                    rotation=rotation,
+                                    parent_object_name=record.name)
         return record
 
     def add_kitchen_counters_and_appliances(self, region: int = 0) -> None:
@@ -519,7 +529,7 @@ class ProcGenObjects(AddOn):
             # Add the other side.
             short_wall = short_walls[self.rng.randint(0, len(short_walls))]
             position = self._get_lateral_arrangement_start_position(wall=short_wall, region=region, offset_corner=True)
-            categories = ["kitchen_counter", "kitchen_counter", "refrigerator", "shelf"]
+            categories = ["kitchen_counter", "kitchen_counter", "refrigerator", "shelf", "kitchen_counter"]
             self._add_lateral_arrangement(wall=short_wall, position=position, categories=categories)
         # U-shaped or G-shaped.
         else:
@@ -537,7 +547,7 @@ class ProcGenObjects(AddOn):
                 short_walls.reverse()
             wall = short_walls[0]
             position = self._get_lateral_arrangement_start_position(wall=wall, region=region, offset_corner=True)
-            categories = ["kitchen_counter", "kitchen_counter", "refrigerator", "shelf"]
+            categories = ["kitchen_counter", "kitchen_counter", "refrigerator", "shelf", "kitchen_counter"]
             if self.rng.random() < 0.5:
                 categories.reverse()
             self._add_lateral_arrangement(wall=wall, position=position, categories=categories)
@@ -634,7 +644,8 @@ class ProcGenObjects(AddOn):
                                                                         density=density)
         self.commands.extend(object_commands)
         # Rotate everything.
-        self._add_rotation_commands(parent_object_id=root_object_id, child_object_ids=object_ids, rotation=rotation)
+        self._add_rotation_commands(parent_object_name=record.name, parent_object_id=root_object_id,
+                                    child_object_ids=object_ids, rotation=rotation)
         return record
 
     def _add_lateral_arrangement(self, wall: CardinalDirection, position: Union[np.array, Dict[str, float]],
@@ -673,9 +684,8 @@ class ProcGenObjects(AddOn):
         for category in categories:
             # Add a kitchen counter.
             if category == "kitchen_counter":
-                # All kitchen counters need to be rotated 180 degrees relative to everything else.
                 record = self.add_kitchen_counter(position={k: v for k, v in object_position.items()},
-                                                  rotation=rotation + 180,
+                                                  rotation=rotation,
                                                   region=region,
                                                   direction=direction)
                 if record is None:
@@ -683,7 +693,7 @@ class ProcGenObjects(AddOn):
             # Add a shelf.
             elif category == "shelf":
                 record = self.add_shelf(position={k: v for k, v in object_position.items()},
-                                        rotation=rotation + 90,
+                                        rotation=rotation,
                                         region=region,
                                         direction=direction)
                 if record is None:
@@ -697,10 +707,14 @@ class ProcGenObjects(AddOn):
                 if record is None:
                     return
                 # Add the object.
+                if record.name in ProcGenObjects._CANONICAL_ROTATIONS:
+                    r = rotation + ProcGenObjects._CANONICAL_ROTATIONS[record.name]
+                else:
+                    r = rotation
                 self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                        object_id=Controller.get_unique_id(),
                                                                        position=position,
-                                                                       rotation={"x": 0, "y": rotation, "z": 0},
+                                                                       rotation={"x": 0, "y": r, "z": 0},
                                                                        library="models_core.json",
                                                                        kinematic=True))
             # Update the position.
@@ -937,15 +951,20 @@ class ProcGenObjects(AddOn):
         else:
             return record, position
 
-    def _add_rotation_commands(self, parent_object_id: int, child_object_ids: List[int], rotation: float) -> None:
+    def _add_rotation_commands(self, parent_object_name: str, parent_object_id: int, child_object_ids: List[int], rotation: float) -> None:
         """
         Add commands to parent the child objects to the parent object, rotate the parent object, and unparent the child objects.
 
+        :param parent_object_name: The name of the parent object.
         :param parent_object_id: The ID of the parent object.
         :param child_object_ids: The IDs of the child objects.
         :param rotation: The rotation of the parent object.
         """
 
+        if parent_object_name in ProcGenObjects._CANONICAL_ROTATIONS:
+            r = rotation + ProcGenObjects._CANONICAL_ROTATIONS[parent_object_name]
+        else:
+            r = rotation
         # Parent all objects to the root object.
         for child_object_id in child_object_ids:
             self.commands.append({"$type": "parent_object_to_object",
@@ -953,7 +972,7 @@ class ProcGenObjects(AddOn):
                                   "parent_id": parent_object_id})
         # Rotate the root object.
         self.commands.append({"$type": "rotate_object_by",
-                              "angle": rotation,
+                              "angle": r,
                               "id": parent_object_id,
                               "axis": "yaw",
                               "is_world": True,

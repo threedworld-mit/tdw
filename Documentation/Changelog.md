@@ -20,6 +20,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 - Added new composite object mechanism type: `prismatic_joint`
 
+### Example controllers
+
+- Added: `physx/kinematic_composite_object.py`
+
 ### Documentation
 
 #### Removed Documentation
@@ -27,6 +31,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | Document                                         | Reason                                                       |
 | ------------------------------------------------ | ------------------------------------------------------------ |
 | `composite_objects/creating_composite_object.md` | This is not a feature we expect most users to be able to do because it requires Unity Editor experience. This document has been edited and moved to the private TDWBase repo. |
+| `lessons/physx/composite_objects.md`             | Added example code for setting kinematic states of sub-objects. |
 
 ## v1.9.1
 

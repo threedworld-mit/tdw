@@ -59,13 +59,14 @@ for i in range(len(resp) - 1):
 
 The "sub-object machine type" determines which API command can be used for this sub-object:
 
-| Machine type | Behavior                                                     | Example                | Command(s)                                                   |
-| ------------ | ------------------------------------------------------------ | ---------------------- | ------------------------------------------------------------ |
-| `"light"`    | Can be turned on and off.                                    | A lightbulb            | [`set_sub_object_light`](../../api/command_api.md#set_sub_object_light) |
-| `"motor"`    | Can rotate on a pivot point around an axis by applying a target velocity and a force magnitude. | A helicopter propeller | [`set_motor`](../../api/command_api.md#set_motor)<br>[`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
-| `"hinge"`    | Swings freely on a pivot point around an axis.               | A box with a lid       | [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
-| `"spring"`   | Can rotate on a pivot point around an axis by applying a target position. The motion will appear "spring-like". | Jack-in-the-box        | [`set_spring`](../../api/command_api.md#set_spring)<br>[`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
-| `"none"`     | (no mechanism)                                               | A chest of drawers     |                                                              |
+| Machine type        | Behavior                                                     | Example                | Command(s)                                                   |
+| ------------------- | ------------------------------------------------------------ | ---------------------- | ------------------------------------------------------------ |
+| `"light"`           | Can be turned on and off.                                    | A lightbulb            | [`set_sub_object_light`](../../api/command_api.md#set_sub_object_light) |
+| `"motor"`           | Can rotate on a pivot point around an axis by applying a target velocity and a force magnitude. | A helicopter propeller | [`set_motor`](../../api/command_api.md#set_motor)<br>[`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
+| `"hinge"`           | Swings freely on a pivot point around an axis.               | A box with a lid       | [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
+| `"spring"`          | Can rotate on a pivot point around an axis by applying a target position. The motion will appear "spring-like". | Jack-in-the-box        | [`set_spring`](../../api/command_api.md#set_spring)<br>[`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
+| `"prismatic_joint"` | Can move linearly along an axis                              | A chest of drawers     |                                                              |
+| `"none"`            | (no mechanism)                                               | A basket with a lid    |                                                              |
 
 ***
 

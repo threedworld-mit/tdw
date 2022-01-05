@@ -16,6 +16,18 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `set_hinge_limits` | Set the angle limits of a hinge joint. This will work with hinges, motors, and springs. |
 | `set_object_physics_solver_iterations` | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. |
 
+### Build
+
+- Added new composite object mechanism type: `prismatic_joint`
+
+### Documentation
+
+#### Removed Documentation
+
+| Document                                         | Reason                                                       |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| `composite_objects/creating_composite_object.md` | This is not a feature we expect most users to be able to do because it requires Unity Editor experience. This document has been edited and moved to the private TDWBase repo. |
+
 ## v1.9.1
 
 ### Command API

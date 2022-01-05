@@ -194,7 +194,7 @@ class ProcGenObjects(AddOn):
         """
 
         # Add objects on the kitchen counter.
-        if self.rng.random() < 0.5 or "microwave" not in self._used_unique_categories:
+        if self.rng.random() < 0.5 or "microwave" in self._used_unique_categories:
             return self._get_objects_on_top_of(position=position, rotation=rotation, region=region,
                                                category="kitchen_counter", direction=direction)
         # Add a microwave on the kitchen counter.
@@ -738,32 +738,35 @@ class ProcGenObjects(AddOn):
         :return: The starting position for a lateral arrangement along the wall.
         """
 
-        offset = 0.6081842 * 2
+        corner_offset = 0.6081842 * 2
+        offset_wall = 0.0762 * 3
         room = self.scene_bounds.rooms[region]
         if wall == CardinalDirection.north:
             position = {"x": room.x_min + ProcGenObjects._WALL_DEPTH,
                         "y": 0,
-                        "z": room.z_max - ProcGenObjects._WALL_DEPTH}
+                        "z": room.z_max - ProcGenObjects._WALL_DEPTH - offset_wall}
             if offset_corner:
-                position["x"] -= offset
+                position["x"] += corner_offset
         elif wall == CardinalDirection.south:
             position = {"x": room.x_min + ProcGenObjects._WALL_DEPTH,
                         "y": 0,
                         "z": room.z_min + ProcGenObjects._WALL_DEPTH}
             if offset_corner:
-                position["x"] += offset
+                position["x"] += corner_offset
         elif wall == CardinalDirection.west:
             position = {"x": room.x_max - ProcGenObjects._WALL_DEPTH,
                         "y": 0,
-                        "z": room.z_min - ProcGenObjects._WALL_DEPTH}
+                        "z": room.z_min + ProcGenObjects._WALL_DEPTH}
             if offset_corner:
-                position["z"] += offset
+                position["z"] += corner_offset
         elif wall == CardinalDirection.east:
-            position = {"x": room.x_min + ProcGenObjects._WALL_DEPTH,
+            position = {"x": room.x_min + ProcGenObjects._WALL_DEPTH + offset_wall,
                         "y": 0,
                         "z": room.z_min + ProcGenObjects._WALL_DEPTH}
             if offset_corner:
-                position["z"] += offset
+                position["z"] -= offset_wall
+            self.commands.append({"$type": "add_position_marker",
+                                  "position": position})
         else:
             raise Exception(wall)
         return position

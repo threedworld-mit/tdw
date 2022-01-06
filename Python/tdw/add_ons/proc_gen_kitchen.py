@@ -34,6 +34,14 @@ class ProcGenKitchen(ProcGenObjects):
                                            "square_or_circle": ["enzo_industrial_loft_pine_metal_round_dining_table",
                                                                 "quatre_dining_table"]}
     _KITCHEN_COUNTER_TOP_SIZE: float = 0.6096
+    _FLOOR_VISUAL_MATERIALS: Dict[str, List[str]] = {"Ceramic": ["ceramic_tiles_beige_tan", "ceramic_tiles_brazilian",
+                                                                 "ceramic_tiles_brown_tomato", "ceramic_tiles_golden_sand",
+                                                                 "ceramic_tiles_moka"],
+                                                     "Wood": ["parquet_alternating_orange", "parquet_european_ash_grey",
+                                                              "parquet_long_horizontal_clean", "parquet_wood_ipe",
+                                                              "parquet_wood_mahogany", "parquet_wood_oak_brown",
+                                                              "parquet_wood_olive", "parquet_wood_red_cedar",
+                                                              "parquet_wood_wenge"]}
 
     def __init__(self, random_seed: int = None, region: int = 0):
         super().__init__(random_seed=random_seed)
@@ -41,7 +49,6 @@ class ProcGenKitchen(ProcGenObjects):
         self._region: int = region
 
     def get_initialization_commands(self) -> List[dict]:
-        commands = super().get_initialization_commands()
         # Set the wood type and counter top visual material.
         kitchen_counter_wood_type = self.rng.choice(["white_wood", "wood_beach_honey"])
         kitchen_counters = ProcGenObjects.MODEL_CATEGORIES["kitchen_counter"]
@@ -52,9 +59,30 @@ class ProcGenKitchen(ProcGenObjects):
             self._counter_top_material = "granite_beige_french"
         else:
             self._counter_top_material = "granite_black"
+        # Set the size of the kitchen.
+        width = self.rng.randint(6, 9)
+        length = self.rng.randint(5, 7)
+        # Create the empty room.
+        if self.rng.random() < 0.5:
+            commands = [TDWUtils.create_empty_room(width, length)]
+        else:
+            commands = [TDWUtils.create_empty_room(length, width)]
+        # Add the other commands.
+        commands.extend(super().get_initialization_commands())
         return commands
 
-    def _add_table(self, position: Dict[str, float], rotation: float, table_settings: bool = True,
+    def create(self) -> None:
+        """
+        Create the kitchen. Add kitchen appliances, counter tops, etc. and a table. Objects will be placed on surfaces.
+        """
+
+        # Add the table.
+        #self._add_table()
+        # Add the work triangle.
+        #self._add_work_triangle()
+        self._add_straight_work_triangle()
+
+    def _add_table(self, table_settings: bool = True,
                    plate_model_name: str = None, fork_model_name: str = None, knife_model_name: str = None,
                    spoon_model_name: str = None, centerpiece_model_name: str = None) -> Optional[ModelRecord]:
         """
@@ -63,8 +91,6 @@ class ProcGenKitchen(ProcGenObjects):
         The plates sometimes have food on them.
         Sometimes, there is a large object (i.e. a bowl or jug) in the center of the table.
 
-        :param position: The position of the root object.
-        :param rotation: The root object's rotation in degrees around the y axis; all other objects will be likewise rotated.
         :param table_settings: If True, add tables settings (plates, forks, knives, etc.) in front of each chair.
         :param plate_model_name: If not None, this is the model name of the plates. If None, the plate is `plate06`.
         :param fork_model_name: If not None, this is the model name of the forks. If None, the model name of the forks is random (all fork objects use the same model).
@@ -91,6 +117,12 @@ class ProcGenKitchen(ProcGenObjects):
             centerpiece_category = centerpiece_categories[self.rng.randint(0, len(centerpiece_categories))]
             centerpieces = ProcGenObjects.MODEL_CATEGORIES[centerpiece_category]
             centerpiece_model_name = centerpieces[self.rng.randint(0, len(centerpieces))]
+        # Get the position of the table.
+        room_center = self.scene_bounds.rooms[self._region].center
+        position = {"x": room_center[0] + self.rng.uniform(-0.1, 0.1),
+                    "y": 0,
+                    "z": room_center[2] + self.rng.uniform(-0.1, 0.1)}
+        rotation = self.rng.uniform(-5, 5)
         # Add the table.
         root_object_id = Controller.get_unique_id()
         tables = ProcGenObjects.MODEL_CATEGORIES["table"]
@@ -208,7 +240,8 @@ class ProcGenKitchen(ProcGenObjects):
                                            plate_position[2] - q[0] + self.rng.uniform(-0.03, 0.03)])
                 q = v * self.rng.uniform(0.3, 0.4)
                 spoon_position = np.array([plate_position[0] + q[1] + self.rng.uniform(-0.03, 0.03),
-                                           plate_position[1]])
+                                           plate_position[1],
+                                           plate_position[2]])
                 # Get the rotation of the fork, knife, and spoon.
                 if bound == "left":
                     rotation = 90
@@ -389,23 +422,25 @@ class ProcGenKitchen(ProcGenObjects):
         if face_away_from == CardinalDirection.north:
             rotation: int = 0
         elif face_away_from == CardinalDirection.south:
-            rotation = 360
+            rotation = 180
         elif face_away_from == CardinalDirection.west:
-            rotation = 90
-        elif face_away_from == CardinalDirection.east:
             rotation = 270
+        elif face_away_from == CardinalDirection.east:
+            rotation = 90
         else:
             raise Exception(face_away_from)
         # Add objects on the kitchen counter.
         if self.rng.random() < 0.5 or "microwave" in self._used_unique_categories:
-            return self.add_object_with_other_objects_on_top(record=record, position=position, rotation=rotation,
+            return self.add_object_with_other_objects_on_top(record=record,
+                                                             position={k: v for k, v in position.items()},
+                                                             rotation=rotation,
                                                              category="kitchen_counter")
         # Add a microwave on the kitchen counter.
         else:
             root_object_id = Controller.get_unique_id()
             self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                    object_id=root_object_id,
-                                                                   position=position,
+                                                                   position={k: v for k, v in position.items()},
                                                                    rotation={"x": 0, "y": rotation, "z": 0},
                                                                    library="models_core.json",
                                                                    kinematic=True))
@@ -413,9 +448,13 @@ class ProcGenKitchen(ProcGenObjects):
             object_top = {"x": position["x"],
                           "y": record.bounds["top"]["y"] + position["y"],
                           "z": position["z"]}
+            microwave_model_names = ProcGenObjects.MODEL_CATEGORIES["microwave"]
+            microwave_model_name = microwave_model_names[self.rng.randint(0, len(microwave_model_names))]
+            microwave_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(microwave_model_name)
             # Add a microwave and add objects on top of the microwave.
-            self.add_object_with_other_objects_on_top(record=record, position=object_top, rotation=rotation,
+            self.add_object_with_other_objects_on_top(record=microwave_record, position=object_top, rotation=rotation,
                                                       category="microwave")
+            self._used_unique_categories.append("microwave")
 
     def _add_kitchen_counter_top_at_position(self, position: Dict[str, float]) -> None:
         """
@@ -478,7 +517,7 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         def __add_half_extent_to_position() -> Dict[str, float]:
-            ex = ProcGenObjects._get_long_extent(model_name=model_name)
+            ex = ProcGenObjects._get_lateral_length(model_name=model_name)
             if direction == CardinalDirection.north:
                 position["z"] += ex / 2
             elif direction == CardinalDirection.south:
@@ -493,13 +532,28 @@ class ProcGenKitchen(ProcGenObjects):
 
         distance = 0
         for category in categories:
+            # Add a floating kitchen counter top.
+            if category == "floating_kitchen_counter_top":
+                self._add_kitchen_counter_top_at_position(position=position)
+                extent = ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2
+                if direction == CardinalDirection.north:
+                    position["z"] += extent
+                elif direction == CardinalDirection.south:
+                    position["z"] -= extent
+                elif direction == CardinalDirection.east:
+                    position["x"] += extent
+                elif direction == CardinalDirection.west:
+                    position["x"] -= extent
+                else:
+                    raise Exception(direction)
+                continue
             # Choose a random starting object.
             model_names = ProcGenObjects.MODEL_CATEGORIES[category][:]
             self.rng.shuffle(model_names)
             model_name = ""
             got_model_name = False
             for m in model_names:
-                extent = ProcGenObjects._get_long_extent(model_name=m)
+                extent = ProcGenObjects._get_lateral_length(model_name=m)
                 # The model must fit within the distance of the lateral arrangement.
                 if distance + extent < length:
                     got_model_name = True
@@ -518,20 +572,10 @@ class ProcGenKitchen(ProcGenObjects):
             elif category == "shelf":
                 self._add_shelf(record=record, position=position, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
-            # Add a floating kitchen counter top.
-            elif category == "floating_kitchen_counter_top":
-                self._add_kitchen_counter_top_at_position(position=position)
-                extent = ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2
-                if direction == CardinalDirection.north:
-                    position["z"] += extent
-                elif direction == CardinalDirection.south:
-                    position["z"] -= extent
-                elif direction == CardinalDirection.east:
-                    position["x"] += extent
-                elif direction == CardinalDirection.west:
-                    position["x"] -= extent
-                else:
-                    raise Exception(direction)
+            else:
+                print(category)
+                self._add_kitchen_counter(record=record, position=position, face_away_from=face_away_from)
+                position = __add_half_extent_to_position()
 
     def _get_longer_walls(self) -> Tuple[List[CardinalDirection], float]:
         """
@@ -584,22 +628,23 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         room = self.scene_bounds.rooms[self._region]
+        s = ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 4
         if corner == OrdinalDirection.northwest:
-            return {"x": room.x_min + ProcGenObjects._WALL_DEPTH + ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2,
+            return {"x": room.x_min + ProcGenObjects._WALL_DEPTH + s,
                     "y": 0,
-                    "z": room.z_max - ProcGenObjects._WALL_DEPTH - ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2}
+                    "z": room.z_max - ProcGenObjects._WALL_DEPTH - s}
         elif corner == OrdinalDirection.northeast:
-            return {"x": room.x_max - ProcGenObjects._WALL_DEPTH - ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2,
+            return {"x": room.x_max - ProcGenObjects._WALL_DEPTH - s,
                     "y": 0,
-                    "z": room.z_max - ProcGenObjects._WALL_DEPTH - ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2}
+                    "z": room.z_max - ProcGenObjects._WALL_DEPTH - s}
         elif corner == OrdinalDirection.southwest:
-            return {"x": room.x_min + ProcGenObjects._WALL_DEPTH + ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2,
+            return {"x": room.x_min + ProcGenObjects._WALL_DEPTH + s,
                     "y": 0,
-                    "z": room.z_min + ProcGenObjects._WALL_DEPTH + ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2}
+                    "z": room.z_min + ProcGenObjects._WALL_DEPTH + s}
         elif corner == OrdinalDirection.southeast:
-            return {"x": room.x_max - ProcGenObjects._WALL_DEPTH - ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2,
+            return {"x": room.x_max - ProcGenObjects._WALL_DEPTH - s,
                     "y": 0,
-                    "z": room.z_min + ProcGenObjects._WALL_DEPTH + ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2}
+                    "z": room.z_min + ProcGenObjects._WALL_DEPTH + s}
         else:
             raise Exception(corner)
 
@@ -655,7 +700,7 @@ class ProcGenKitchen(ProcGenObjects):
                 return CardinalDirection.north, CardinalDirection.west
         elif corner == OrdinalDirection.southeast:
             if wall == CardinalDirection.south:
-                return CardinalDirection.east, CardinalDirection.south
+                return CardinalDirection.west, CardinalDirection.south
             elif wall == CardinalDirection.east:
                 return CardinalDirection.north, CardinalDirection.east
         raise Exception(corner, wall)
@@ -722,6 +767,15 @@ class ProcGenKitchen(ProcGenObjects):
                                       categories=["floating_kitchen_counter_top", "kitchen_counter", "sink", "kitchen_counter", "kitchen_counter"],
                                       length=length)
         # Get a corner from the longer wall.
+        # TODO directions.
+        if longer_wall == CardinalDirection.north:
+            corners = [OrdinalDirection.northwest, OrdinalDirection.northeast]
+        elif longer_wall == CardinalDirection.south:
+            corners = [OrdinalDirection.southwest, OrdinalDirection.southeast]
+        elif longer_wall == CardinalDirection.east:
+            corners = [OrdinalDirection.northeast, OrdinalDirection.southeast]
+        elif longer_wall == CardinalDirection.west:
+            corners = [OrdinalDirection.northwest, OrdinalDirection.southwest]
         corner = corners[self.rng.randint(0, len(corners))]
         # Get the shorter wall.
         shorter_wall = self._get_90_degree_wall(corner=corner, wall=longer_wall)
@@ -775,7 +829,7 @@ class ProcGenKitchen(ProcGenObjects):
                                       length=self._get_shorter_walls()[1])
 
     @staticmethod
-    def _mirror_x(positions: List[Dict[str]]) -> List[dict]:
+    def _mirror_x(positions: List[Dict[str, float]]) -> List[dict]:
         """
         :param positions: A list of positions.
 
@@ -785,7 +839,7 @@ class ProcGenKitchen(ProcGenObjects):
         return [{"x": -p["x"], "y": p["y"], "z": p["z"]} for p in positions]
 
     @staticmethod
-    def _mirror_z(positions: List[Dict[str]]) -> List[dict]:
+    def _mirror_z(positions: List[Dict[str, float]]) -> List[dict]:
         """
         :param positions: A list of positions.
 

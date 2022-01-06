@@ -85,10 +85,6 @@ class ProcGenObjects(AddOn):
     A mapping of proc-gen categories to record wcategories.
     """
     PROC_GEN_CATEGORY_TO_WCATEGORY: Dict[str, str] = loads(Path(resource_filename(__name__, "proc_gen_objects/procgen_category_to_wcategory.json")).read_text())
-    """:class_var
-    Categories that should only appear once in a scene.
-    """
-    UNIQUE_CATEGORIES: List[str] = Path(resource_filename(__name__, "proc_gen_objects/unique_categories.txt")).read_text().split("\n")
     _WALL_DEPTH: float = 0.28
 
     def __init__(self, random_seed: int = None, region: int = 0):
@@ -340,12 +336,11 @@ class ProcGenObjects(AddOn):
         cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
         surface_size = (model_size[0] * 0.8, model_size[2] * 0.8)
         # Add objects on top of the root object.
-        object_commands, object_ids = self.add_rectangular_arrangement(size=surface_size,
-                                                                       categories=self._vertical_spatial_relations[_VerticalSpatialRelation.on_top_of][category],
-                                                                       center=object_top,
-                                                                       cell_size=cell_size,
-                                                                       density=density)
-        self.commands.extend(object_commands)
+        object_ids = self.add_rectangular_arrangement(size=surface_size,
+                                                      categories=self._vertical_spatial_relations[_VerticalSpatialRelation.on_top_of][category],
+                                                      center=object_top,
+                                                      cell_size=cell_size,
+                                                      density=density)
         # Rotate everything.
         self.add_rotation_commands(parent_object_id=root_object_id, child_object_ids=object_ids, rotation=rotation)
 
@@ -362,7 +357,7 @@ class ProcGenObjects(AddOn):
         return ProcGenObjects.RECTANGULAR_ARRANGEMENTS[category]["cell_size"], ProcGenObjects.RECTANGULAR_ARRANGEMENTS[category]["density"]
 
     @staticmethod
-    def _get_long_extent(model_name: str) -> float:
+    def _get_lateral_length(model_name: str) -> float:
         """
         :param model_name: The model name.
 
@@ -370,8 +365,5 @@ class ProcGenObjects(AddOn):
         """
 
         record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
-        extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
-        if extents[0] > extents[2]:
-            return extents[0]
-        else:
-            return extents[2]
+        return TDWUtils.get_bounds_extents(bounds=record.bounds)[0]
+

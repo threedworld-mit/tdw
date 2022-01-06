@@ -80,7 +80,7 @@ class ProcGenKitchen(ProcGenObjects):
         #self._add_table()
         # Add the work triangle.
         #self._add_work_triangle()
-        self._add_straight_work_triangle()
+        self._add_l_work_triangle()
 
     def _add_table(self, table_settings: bool = True,
                    plate_model_name: str = None, fork_model_name: str = None, knife_model_name: str = None,
@@ -766,6 +766,10 @@ class ProcGenKitchen(ProcGenObjects):
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
                                       categories=["floating_kitchen_counter_top", "kitchen_counter", "sink", "kitchen_counter", "kitchen_counter"],
                                       length=length)
+        print("wall", longer_wall)
+        print("corner", corner)
+        print("direction", direction)
+        print("face_away_from", face_away_from)
         # Get a corner from the longer wall.
         # TODO directions.
         if longer_wall == CardinalDirection.north:
@@ -786,6 +790,10 @@ class ProcGenKitchen(ProcGenObjects):
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
                                       categories=["kitchen_counter", "kitchen_counter", "refrigerator", "shelf"],
                                       length=length)
+        print("wall", shorter_wall)
+        print("corner", corner)
+        print("direction", direction)
+        print("face_away_from", face_away_from)
         return longer_wall, shorter_wall
 
     def _add_u_work_triangle(self) -> None:

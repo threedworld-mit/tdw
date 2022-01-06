@@ -456,7 +456,36 @@ class ProcGenKitchen(ProcGenObjects):
                                                       category="microwave")
             self._used_unique_categories.append("microwave")
 
-    def _add_kitchen_counter_top_at_position(self, position: Dict[str, float]) -> None:
+    def _add_refrigerator(self, record: ModelRecord, position: Dict[str, float],
+                          face_away_from: CardinalDirection) -> None:
+        """
+        Procedurally generate a refrigerator.
+
+        :param record: The model record.
+        :param position: The position.
+        :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
+
+        :return: The model record of the root object. If no models were added to the scene, this is None.
+        """
+
+        if face_away_from == CardinalDirection.north:
+            rotation: int = 180
+        elif face_away_from == CardinalDirection.south:
+            rotation = 0
+        elif face_away_from == CardinalDirection.west:
+            rotation = 90
+        elif face_away_from == CardinalDirection.east:
+            rotation = 270
+        else:
+            raise Exception(face_away_from)
+        self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
+                                                               object_id=Controller.get_unique_id(),
+                                                               position={k: v for k, v in position.items()},
+                                                               rotation={"x": 0, "y": rotation, "z": rotation},
+                                                               library="models_core.json",
+                                                               kinematic=True))
+
+    def _add_kitchen_counter_top(self, position: Dict[str, float]) -> None:
         """
         Add a floating (kinematic) kitchen counter top to the scene.
 
@@ -534,7 +563,7 @@ class ProcGenKitchen(ProcGenObjects):
         for category in categories:
             # Add a floating kitchen counter top.
             if category == "floating_kitchen_counter_top":
-                self._add_kitchen_counter_top_at_position(position=position)
+                self._add_kitchen_counter_top(position=position)
                 extent = ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2
                 if direction == CardinalDirection.north:
                     position["z"] += extent
@@ -571,6 +600,9 @@ class ProcGenKitchen(ProcGenObjects):
                 position = __add_half_extent_to_position()
             elif category == "shelf":
                 self._add_shelf(record=record, position=position, face_away_from=face_away_from)
+                position = __add_half_extent_to_position()
+            elif category == "refrigerator":
+                self._add_refrigerator(record=record, position=position, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
             else:
                 print(category)

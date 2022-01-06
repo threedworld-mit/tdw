@@ -29,8 +29,10 @@ for i in range(len(resp) - 1):
                                  "use_gravity": False})
                 # Make the sub-objects non-kinematic.
                 for k in range(composite_objects.get_num_sub_objects(j)):
-                    commands.append({"$type": "set_kinematic_state",
-                                     "id": composite_objects.get_sub_object_id(j, k),
-                                     "is_kinematic": False,
-                                     "use_gravity": True})
+                    machine_type = composite_objects.get_sub_object_machine_type(i, k)
+                    if machine_type == "hinge":
+                        commands.append({"$type": "set_kinematic_state",
+                                         "id": composite_objects.get_sub_object_id(j, k),
+                                         "is_kinematic": False,
+                                         "use_gravity": True})
 c.communicate({"$type": "terminate"})

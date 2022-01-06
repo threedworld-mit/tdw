@@ -237,7 +237,7 @@ Instead, consider using `create_many_asset_bundles(library_path)` for large numb
 
 ## .fbx unit scale
 
-The unit scale of the source .fbx file must be meters. If not, the physics colliders will likely be at the wrong scale.
+The unit scale of the exported .fbx file must be meters. If not, the physics colliders will likely be at the wrong scale.
 
 ## Export .fbx files from Blender 2.8
 

@@ -585,7 +585,7 @@ class ProcGenKitchen(ProcGenObjects):
         room = self.scene_bounds.rooms[self._region]
         x = (room.x_max - room.x_min) - ProcGenObjects._WALL_DEPTH * 2
         z = (room.z_max - room.z_min) - ProcGenObjects._WALL_DEPTH * 2
-        if x > z:
+        if x < z:
             return [CardinalDirection.west, CardinalDirection.east], x
         else:
             return [CardinalDirection.north, CardinalDirection.south], z
@@ -598,7 +598,7 @@ class ProcGenKitchen(ProcGenObjects):
         room = self.scene_bounds.rooms[self._region]
         x = (room.x_max - room.x_min) - ProcGenObjects._WALL_DEPTH * 2
         z = (room.z_max - room.z_min) - ProcGenObjects._WALL_DEPTH * 2
-        if x < z:
+        if x > z:
             return [CardinalDirection.west, CardinalDirection.east], x
         else:
             return [CardinalDirection.north, CardinalDirection.south], z

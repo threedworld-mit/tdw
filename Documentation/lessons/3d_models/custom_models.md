@@ -235,6 +235,10 @@ You could convert many models to asset bundles by creating a loop that repeatedl
 
 Instead, consider using `create_many_asset_bundles(library_path)` for large numbers of models. This function will walk through `asset_bundle_creator/Assets/Resources/models/` searching for .obj and .fbx models. It will convert these models to asset bundles.
 
+## .fbx unit scale
+
+The unit scale of the source .fbx file must be meters. If not, the physics colliders will likely be at the wrong scale.
+
 ## Export .fbx files from Blender 2.8
 
 Blender can be fussy when exporting to Unity. If you export a .obj, you shouldn't have any problems. If you export a .fbx, there may be problems with the model's scale, as well as the collider's scale.

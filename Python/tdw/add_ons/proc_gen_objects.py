@@ -7,10 +7,8 @@ import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian, ModelRecord
-from tdw.scene_data.region_bounds import RegionBounds
 from tdw.scene_data.scene_bounds import SceneBounds
 from tdw.add_ons.add_on import AddOn
-from tdw.cardinal_direction import CardinalDirection
 
 
 class _VerticalSpatialRelation(Enum):
@@ -351,133 +349,6 @@ class ProcGenObjects(AddOn):
         # Rotate everything.
         self.add_rotation_commands(parent_object_id=root_object_id, child_object_ids=object_ids, rotation=rotation)
 
-
-
-    def add_kitchen_counters_and_appliances(self, region: int = 0) -> None:
-        # Decide which layout to use.
-        roll = self.rng.random()
-        room = self.scene_bounds.rooms[region]
-        if room.bounds[0] > room.bounds[2]:
-            long_walls = [CardinalDirection.north, CardinalDirection.south]
-            short_walls = [CardinalDirection.west, CardinalDirection.east]
-        else:
-            long_walls = [CardinalDirection.east, CardinalDirection.west]
-            short_walls = [CardinalDirection.north, CardinalDirection.south]
-        # Straight.
-        if roll < 1. / 5:
-            wall = long_walls[self.rng.randint(0, len(long_walls))]
-            position = self._get_lateral_arrangement_start_position(wall=wall, region=region)
-            categories = ["refrigerator", "kitchen_counter", "sink", "dishwasher", "stove", "kitchen_counter"]
-            if self.rng.random() < 0.5:
-                categories.reverse()
-            self._add_lateral_arrangement(wall=wall, position=position, categories=categories)
-        # Parallel.
-        elif roll < 2. / 5:
-            if self.rng.random() < 0.5:
-                long_walls.reverse()
-            for wall, categories in zip(long_walls, [["refrigerator", "kitchen_counter", "sink", "dishwasher"],
-                                                     ["kitchen_counter", "stove", "kitchen_counter", "kitchen_counter"]]):
-                if self.rng.random() < 0.5:
-                    categories.reverse()
-                position = self._get_lateral_arrangement_start_position(wall=wall, region=region)
-                self._add_lateral_arrangement(wall=wall, position=position, categories=categories)
-        # L-shaped.
-        elif roll < 3. / 5:
-            # TODO add the corner piece!
-            long_wall = long_walls[self.rng.randint(0, len(long_walls))]
-            position = self._get_lateral_arrangement_start_position(wall=long_wall, region=region)
-            categories = ["kitchen_counter", "dishwasher", "sink", "kitchen_counter", "stove", "kitchen_counter"]
-            if self.rng.random() < 0.5:
-                categories.reverse()
-            self._add_lateral_arrangement(wall=long_wall, position=position, categories=categories)
-            # Add the other side.
-            short_wall = short_walls[self.rng.randint(0, len(short_walls))]
-            position = self._get_lateral_arrangement_start_position(wall=short_wall, region=region, offset_corner=True)
-            categories = ["kitchen_counter", "kitchen_counter", "refrigerator", "shelf", "kitchen_counter"]
-            self._add_lateral_arrangement(wall=short_wall, position=position, categories=categories)
-        # U-shaped or G-shaped.
-        else:
-            # TODO add the corner piece!
-            if self.rng.random():
-                long_walls.reverse()
-            wall = long_walls[0]
-            position = self._get_lateral_arrangement_start_position(wall=wall, region=region)
-            categories = ["kitchen_counter", "dishwasher", "sink", "kitchen_counter", "kitchen_counter", "kitchen_counter"]
-            if self.rng.random() < 0.5:
-                categories.reverse()
-            self._add_lateral_arrangement(wall=wall, position=position, categories=categories)
-            # Add the other side.
-            if self.rng.random():
-                short_walls.reverse()
-            wall = short_walls[0]
-            position = self._get_lateral_arrangement_start_position(wall=wall, region=region, offset_corner=True)
-            categories = ["kitchen_counter", "kitchen_counter", "refrigerator", "shelf", "kitchen_counter"]
-            if self.rng.random() < 0.5:
-                categories.reverse()
-            self._add_lateral_arrangement(wall=wall, position=position, categories=categories)
-            # Add the other-other side.
-            wall = short_walls[1]
-            position = self._get_lateral_arrangement_start_position(wall=wall, region=region, offset_corner=True)
-            categories = ["kitchen_counter", "stove", "kitchen_counter", "kitchen_counter"]
-            if self.rng.random() < 0.5:
-                categories.reverse()
-            self._add_lateral_arrangement(wall=wall, position=position, categories=categories)
-            # G-shaped.
-            if roll > .4 / 5:
-                wall = long_walls[1]
-                position = self._get_lateral_arrangement_start_position(wall=wall, region=region, offset_corner=True)
-                categories = ["kitchen_counter", "kitchen_counter"]
-                self._add_lateral_arrangement(wall=wall, position=position, categories=categories)
-
-
-
-
-
-
-
-    def _get_lateral_arrangement_start_position(self, wall: CardinalDirection, region: int = 0,
-                                                offset_corner: bool = False) -> Dict[str, float]:
-        """
-        :param wall: The wall.
-        :param region: The ID of the region.
-        :param offset_corner: If True, offset the corner.
-
-        :return: The starting position for a lateral arrangement along the wall.
-        """
-
-        corner_offset = 0.6081842 * 2
-        offset_wall = 0.0762 * 3
-        room = self.scene_bounds.rooms[region]
-        if wall == CardinalDirection.north:
-            position = {"x": room.x_min + ProcGenObjects._WALL_DEPTH,
-                        "y": 0,
-                        "z": room.z_max - ProcGenObjects._WALL_DEPTH - offset_wall}
-            if offset_corner:
-                position["x"] += corner_offset
-        elif wall == CardinalDirection.south:
-            position = {"x": room.x_min + ProcGenObjects._WALL_DEPTH,
-                        "y": 0,
-                        "z": room.z_min + ProcGenObjects._WALL_DEPTH}
-            if offset_corner:
-                position["x"] += corner_offset
-        elif wall == CardinalDirection.west:
-            position = {"x": room.x_max - ProcGenObjects._WALL_DEPTH,
-                        "y": 0,
-                        "z": room.z_min + ProcGenObjects._WALL_DEPTH}
-            if offset_corner:
-                position["z"] += corner_offset
-        elif wall == CardinalDirection.east:
-            position = {"x": room.x_min + ProcGenObjects._WALL_DEPTH + offset_wall,
-                        "y": 0,
-                        "z": room.z_min + ProcGenObjects._WALL_DEPTH}
-            if offset_corner:
-                position["z"] -= offset_wall
-            self.commands.append({"$type": "add_position_marker",
-                                  "position": position})
-        else:
-            raise Exception(wall)
-        return position
-
     @staticmethod
     def _get_rectangular_arrangement_parameters(category: str) -> Tuple[float, float]:
         """
@@ -489,3 +360,18 @@ class ProcGenObjects(AddOn):
         if category not in ProcGenObjects.RECTANGULAR_ARRANGEMENTS:
             return 0.05, 0.4
         return ProcGenObjects.RECTANGULAR_ARRANGEMENTS[category]["cell_size"], ProcGenObjects.RECTANGULAR_ARRANGEMENTS[category]["density"]
+
+    @staticmethod
+    def _get_long_extent(model_name: str) -> float:
+        """
+        :param model_name: The model name.
+
+        :return: The model bound's longest extent.
+        """
+
+        record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+        extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
+        if extents[0] > extents[2]:
+            return extents[0]
+        else:
+            return extents[2]

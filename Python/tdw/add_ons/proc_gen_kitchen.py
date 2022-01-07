@@ -96,7 +96,7 @@ class ProcGenKitchen(ProcGenObjects):
         #self._add_table()
         # Add the work triangle.
         #self._add_work_triangle()
-        self._add_l_work_triangle(lw=CardinalDirection.south, c=OrdinalDirection.southeast)
+        self._add_l_work_triangle(lw=CardinalDirection.north, c=OrdinalDirection.northwest)
 
     def _add_table(self, table_settings: bool = True,
                    plate_model_name: str = None, fork_model_name: str = None, knife_model_name: str = None,
@@ -412,7 +412,7 @@ class ProcGenKitchen(ProcGenObjects):
             cell_size, density = self._get_rectangular_arrangement_parameters(category="shelf")
             object_ids = self.add_rectangular_arrangement(size=size,
                                                           categories=ProcGenKitchen._ON_SHELF,
-                                                          center=object_top,
+                                                          position=object_top,
                                                           cell_size=cell_size,
                                                           density=density)
             child_object_ids.extend(object_ids)
@@ -507,7 +507,7 @@ class ProcGenKitchen(ProcGenObjects):
         """
         Add a floating (kinematic) kitchen counter top to the scene.
 
-        :param position: The position of the kitchen counter top. The y coordinate will be adjusted.
+        :param position: The position of the kitchen counter top. The y coordinate will be adjusted to be 0.9.
         """
 
         object_id = Controller.get_unique_id()
@@ -528,6 +528,11 @@ class ProcGenKitchen(ProcGenObjects):
                               {"$type": "set_kinematic_state",
                                "id": object_id,
                                "kinematic": True}])
+        # Add objects on top of the counter.
+        self.add_rectangular_arrangement(size=(ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE,
+                                               ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE),
+                                         position={"x": position["x"], "y": 0.9167836, "z": position["z"]},
+                                         categories=self._vertical_spatial_relations["on_top_of"]["kitchen_counter"])
 
     def _get_chair_position(self, chair_record: ModelRecord, table_bottom: np.array,
                             table_bound_point: np.array) -> np.array:
@@ -605,6 +610,7 @@ class ProcGenKitchen(ProcGenObjects):
                 if distance + extent < length:
                     got_model_name = True
                     model_name = m
+                    distance += extent
                     break
             if not got_model_name:
                 return
@@ -849,9 +855,11 @@ class ProcGenKitchen(ProcGenObjects):
         position = self._get_corner_position(corner=corner)
         # Offset the position.
         position = self._get_position_offset_from_direction(position=position, direction=direction)
+        category_lists = [["kitchen_counter", "kitchen_counter", "refrigerator", "shelf"],
+                          ["kitchen_counter", "refrigerator", "kitchen_counter", "shelf"]]
+        categories: List[str] = category_lists[self.rng.randint(0, len(category_lists))]
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
-                                      categories=["kitchen_counter", "kitchen_counter", "refrigerator", "shelf"],
-                                      length=length)
+                                      categories=categories, length=length)
         print("wall", shorter_wall)
         print("corner", corner)
         print("direction", direction)

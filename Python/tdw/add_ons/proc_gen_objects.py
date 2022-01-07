@@ -1,49 +1,13 @@
-from enum import Enum
 from json import loads
 from pathlib import Path
 from pkg_resources import resource_filename
-from typing import Tuple, List, Union, Dict, Optional
+from typing import Tuple, List, Dict, Optional
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian, ModelRecord
 from tdw.scene_data.scene_bounds import SceneBounds
 from tdw.add_ons.add_on import AddOn
-
-
-class _VerticalSpatialRelation(Enum):
-    """
-    Enum values to define vertical spatial relations.
-    """
-
-    on_top_of = 1
-    on_shelf = 2
-
-
-class _ObjectBounds:
-    """
-    Object bound positions based on cached object bounds and the position of the root object, assuming no rotation.
-    """
-    def __init__(self, record: ModelRecord, root_object_position: Dict[str, float]):
-        """
-        :param record: The model record.
-        :param root_object_position: The position of the root object.
-        """
-
-        self.x_min: float = root_object_position["x"] + record.bounds["left"]["x"]
-        self.x_max: float = root_object_position["x"] + record.bounds["right"]["x"]
-        self.z_min: float = root_object_position["z"] + record.bounds["front"]["z"]
-        self.z_max: float = root_object_position["z"] + record.bounds["back"]["z"]
-
-    def is_inside(self, x: float, z: float) -> bool:
-        """
-        :param x: The x coordinate.
-        :param z: The z coordinate.
-
-        :return: True if position (x, z) is within the bounds of this object.
-        """
-
-        return self.x_min <= x <= self.x_max and self.z_min <= z <= self.z_max
 
 
 class ProcGenObjects(AddOn):
@@ -106,12 +70,7 @@ class ProcGenObjects(AddOn):
         """
         self.scene_bounds: Optional[SceneBounds] = None
         # Get the vertical spatial relations.
-        vertical_spatial_relations_data = loads(Path(resource_filename(__name__, "proc_gen_objects/vertical_spatial_relations.json")).read_text())
-        self._vertical_spatial_relations: Dict[_VerticalSpatialRelation, Dict[str, List[str]]] = dict()
-        for r in vertical_spatial_relations_data:
-            self._vertical_spatial_relations[_VerticalSpatialRelation[r]] = dict()
-            for c in vertical_spatial_relations_data[r]:
-                self._vertical_spatial_relations[_VerticalSpatialRelation[r]][c] = vertical_spatial_relations_data[r][c]
+        self._vertical_spatial_relations: Dict[str, Dict[str, List[str]]] = loads(Path(resource_filename(__name__, "proc_gen_objects/vertical_spatial_relations.json")).read_text())
         self._used_unique_categories: List[str] = list()
         self._region: int = region
 
@@ -204,13 +163,13 @@ class ProcGenObjects(AddOn):
             self.commands.append({"$type": "unparent_object",
                                   "id": child_object_id})
 
-    def add_rectangular_arrangement(self, size: Tuple[float, float], center: Union[np.array, Dict[str, float]],
+    def add_rectangular_arrangement(self, size: Tuple[float, float], position: Dict[str, float],
                                     categories: List[str], density: float = 0.4, cell_size: float = 0.05) -> List[int]:
         """
         Get a random arrangement of objects in a rectangular space.
 
         :param size: The size of the rectangle in worldspace coordinates.
-        :param center: The position of the center of the rectangle.
+        :param position: The position of the center of the rectangle.
         :param categories: Models will be randomly chosen from these categories.
         :param density: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
         :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
@@ -219,10 +178,10 @@ class ProcGenObjects(AddOn):
         """
 
         # Get numpy array and dictionary representations of the center position.
-        if isinstance(center, dict):
-            center_dict = center
+        if isinstance(position, dict):
+            center_dict = position
         else:
-            center_dict = TDWUtils.array_to_vector3(center)
+            center_dict = TDWUtils.array_to_vector3(position)
         if size[0] > size[1]:
             size = (size[1], size[0])
         # Get the x, z positions.
@@ -337,8 +296,8 @@ class ProcGenObjects(AddOn):
         surface_size = (model_size[0] * 0.8, model_size[2] * 0.8)
         # Add objects on top of the root object.
         object_ids = self.add_rectangular_arrangement(size=surface_size,
-                                                      categories=self._vertical_spatial_relations[_VerticalSpatialRelation.on_top_of][category],
-                                                      center=object_top,
+                                                      categories=self._vertical_spatial_relations["on_top_of"][category],
+                                                      position=object_top,
                                                       cell_size=cell_size,
                                                       density=density)
         # Rotate everything.
@@ -370,4 +329,3 @@ class ProcGenObjects(AddOn):
             return TDWUtils.get_bounds_extents(bounds=record.bounds)[2]
         else:
             return TDWUtils.get_bounds_extents(bounds=record.bounds)[0]
-

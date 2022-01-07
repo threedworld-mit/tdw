@@ -43,10 +43,20 @@ class ProcGenKitchen(ProcGenObjects):
                                                               "parquet_wood_olive", "parquet_wood_red_cedar",
                                                               "parquet_wood_wenge"]}
 
-    def __init__(self, random_seed: int = None, region: int = 0):
+    def __init__(self, random_seed: int = None, create_scene: bool = True, region: int = 0,
+                 region_size: Tuple[int, int] = None):
+        """
+        :param random_seed: The random seed. If None, the seed is random.
+        :param create_scene: If True, create a new scene with a single room and set the materials of the floor, walls, etc.
+        :param region: The ID of the kitchen region in the scene. If there is only one room, the ID is 0.
+        :param region_size: The size of the region (width, length) in meters. If None, the size is will be random. If `create_scene == False`, this is ignored.
+        """
+        
         super().__init__(random_seed=random_seed)
         self._counter_top_material: str = ""
+        self._create_scene: bool = create_scene
         self._region: int = region
+        self._region_size: Optional[Tuple[int, int]] = region_size
 
     def get_initialization_commands(self) -> List[dict]:
         # Set the wood type and counter top visual material.
@@ -59,17 +69,23 @@ class ProcGenKitchen(ProcGenObjects):
             self._counter_top_material = "granite_beige_french"
         else:
             self._counter_top_material = "granite_black"
-        # Set the size of the kitchen.
-        width = self.rng.randint(6, 9)
-        length = self.rng.randint(5, 7)
-        # Create the empty room.
-        if self.rng.random() < 0.5:
-            commands = [TDWUtils.create_empty_room(width, length)]
+        if self._create_scene:
+            # Explicitly set the size of the room.
+            if self._region_size is not None:
+                commands = [TDWUtils.create_empty_room(self._region_size[0], self._region_size[1])]
+            # Set a random  room size.
+            else:
+                width = self.rng.randint(6, 9)
+                length = self.rng.randint(5, 7)
+                if self.rng.random() < 0.5:
+                    commands = [TDWUtils.create_empty_room(width, length)]
+                else:
+                    commands = [TDWUtils.create_empty_room(length, width)]
+            # Add the other commands.
+            commands.extend(super().get_initialization_commands())
+            return commands
         else:
-            commands = [TDWUtils.create_empty_room(length, width)]
-        # Add the other commands.
-        commands.extend(super().get_initialization_commands())
-        return commands
+            return super().get_initialization_commands()
 
     def create(self) -> None:
         """

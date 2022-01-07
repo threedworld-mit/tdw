@@ -71,7 +71,7 @@ model_name = "chair"
 model_path = Path(model_name + ".fbx")
 a = AssetBundleCreator()
 obj_path, is_new = a.fbx_to_obj(model_path)
-wrl_path = a.obj_to_wrl(model_path)
+wrl_path = a.obj_to_wrl(obj_path)
 obj_colliders_path = a.wrl_to_obj(wrl_path, model_name)
 copied_file_paths = a.move_files_to_unity_project(obj_colliders_path, model_path)
 prefab_path, report_path = a.create_prefab(f"{model_name}_colliders.obj", model_name, model_path.suffix)
@@ -234,6 +234,10 @@ custom_librarian.add_or_update_record(record=record, overwrite=False, write=True
 You could convert many models to asset bundles by creating a loop that repeatedly calls `AssetBundleCreator.create_asset_bundles()`. **This is not a good idea.** Repeatedly calling Unity from a Python script is actually very slow. (It also appears to slow down over many consecutive calls).
 
 Instead, consider using `create_many_asset_bundles(library_path)` for large numbers of models. This function will walk through `asset_bundle_creator/Assets/Resources/models/` searching for .obj and .fbx models. It will convert these models to asset bundles.
+
+## .fbx unit scale
+
+The unit scale of the exported .fbx file must be meters. If not, the physics colliders will likely be at the wrong scale.
 
 ## Export .fbx files from Blender 2.8
 

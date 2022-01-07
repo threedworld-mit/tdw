@@ -26,9 +26,9 @@ for record in lib.records:
 
 ## Manipulating composite objects
 
-Sub-objects will respond to TDW commands just like any other object; you can, for example, [apply forces](forces.md) to individual sub-objects. Sub-objects likewise appear as separate objects in the output data.
+### Specialist sub-object commands
 
-Some sub-objects have additional functionality and specialized commands. To determine what they are, you must first send [`send_composite_objects`](../../api/command_api.md#send_composite_objects) which returns [`CompositeObjects`](../../api/output_data.md#CompositeObjects) output data:
+Some sub-objects have specialized commands, depending on which *machine type* they are. To determine the machine type, you must first send [`send_composite_objects`](../../api/command_api.md#send_composite_objects) which returns [`CompositeObjects`](../../api/output_data.md#CompositeObjects) output data:
 
 ```python
 from tdw.controller import Controller
@@ -59,13 +59,61 @@ for i in range(len(resp) - 1):
 
 The "sub-object machine type" determines which API command can be used for this sub-object:
 
-| Machine type | Behavior                                                     | Example                | Command(s)                                                   |
-| ------------ | ------------------------------------------------------------ | ---------------------- | ------------------------------------------------------------ |
-| `"light"`    | Can be turned on and off.                                    | A lightbulb            | [`set_sub_object_light`](../../api/command_api.md#set_sub_object_light) |
-| `"motor"`    | Can rotate on a pivot point around an axis by applying a target velocity and a force magnitude. | A helicopter propeller | [`set_motor`](../../api/command_api.md#set_motor)<br>[`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
-| `"hinge"`    | Swings freely on a pivot point around an axis.               | A box with a lid       | [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
-| `"spring"`   | Can rotate on a pivot point around an axis by applying a target position. The motion will appear "spring-like". | Jack-in-the-box        | [`set_spring`](../../api/command_api.md#set_spring)<br>[`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
-| `"none"`     | (no mechanism)                                               | A chest of drawers     |                                                              |
+| Machine type        | Behavior                                                     | Example                | Command(s)                                                   |
+| ------------------- | ------------------------------------------------------------ | ---------------------- | ------------------------------------------------------------ |
+| `"light"`           | Can be turned on and off.                                    | A lightbulb            | [`set_sub_object_light`](../../api/command_api.md#set_sub_object_light) |
+| `"motor"`           | Can rotate on a pivot point around an axis by applying a target velocity and a force magnitude. | A helicopter propeller | [`set_motor`](../../api/command_api.md#set_motor)<br>[`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
+| `"hinge"`           | Swings freely on a pivot point around an axis.               | A box with a lid       | [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
+| `"spring"`          | Can rotate on a pivot point around an axis by applying a target position. The motion will appear "spring-like". | Jack-in-the-box        | [`set_spring`](../../api/command_api.md#set_spring)<br>[`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
+| `"prismatic_joint"` | Can move linearly along an axis                              | A chest of drawers     |                                                              |
+| `"none"`            | (no mechanism)                                               | A basket with a lid    |                                                              |
+
+### General object commands
+
+Sub-objects will respond to TDW commands just like any other object; you can, for example, [apply forces](forces.md) to individual sub-objects. Sub-objects likewise appear as separate objects in the output data.
+
+In this example, we'll add a microwave to the scene. We'll set the root object to be [kinematic](physics_object.md) and set the sub-objects (in this case, the microwave's door) to be non-kinematic:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.output_data import OutputData, CompositeObjects
+
+"""
+Make a composite object kinematic but make its sub-objects non-kinematic.
+"""
+
+c = Controller()
+# Create the scene and add the object.
+object_id = c.get_unique_id()
+resp = c.communicate([TDWUtils.create_empty_room(12, 12),
+                      c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+                                       object_id=object_id),
+                      {"$type": "send_composite_objects",
+                       "frequency": "once"}])
+# Get the composite object IDs. Assign each object a random color.
+commands = []
+for i in range(len(resp) - 1):
+    r_id = OutputData.get_data_type_id(resp[i])
+    if r_id == "comp":
+        composite_objects = CompositeObjects(resp[i])
+        for j in range(composite_objects.get_num()):
+            if composite_objects.get_object_id(j) == object_id:
+                # Make the root object kinematic.
+                commands.append({"$type": "set_kinematic_state",
+                                 "id": object_id,
+                                 "is_kinematic": True,
+                                 "use_gravity": False})
+                # Make the sub-objects non-kinematic.
+                for k in range(composite_objects.get_num_sub_objects(j)):
+                    machine_type = composite_objects.get_sub_object_machine_type(i, k)
+                    if machine_type == "hinge":
+                        commands.append({"$type": "set_kinematic_state",
+                                         "id": composite_objects.get_sub_object_id(j, k),
+                                         "is_kinematic": False,
+                                         "use_gravity": True})
+c.communicate({"$type": "terminate"})
+```
 
 ***
 
@@ -78,6 +126,7 @@ The "sub-object machine type" determines which API command can be used for this 
 Example controllers:
 
 - [composite_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/composite_object.py) Demonstration of how to use composite sub-objects with a test model.
+- [kinematic_composite_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/kinematic_composite_object.py) Make a composite object kinematic but make its sub-objects non-kinematic.
 
 Python API:
 

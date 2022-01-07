@@ -33,7 +33,9 @@ class ProcGenKitchen(ProcGenObjects):
     _TABLE_SHAPES: Dict[str, List[str]] = {"rectangle": ["dining_room_table"],
                                            "square_or_circle": ["enzo_industrial_loft_pine_metal_round_dining_table",
                                                                 "quatre_dining_table"]}
+    # The length of one side of the floating kitchen counter top.
     _KITCHEN_COUNTER_TOP_SIZE: float = 0.6096
+    # The possible floor visual materials. Key = Material type. Value = A list of material names.
     _FLOOR_VISUAL_MATERIALS: Dict[str, List[str]] = {"Ceramic": ["ceramic_tiles_beige_tan", "ceramic_tiles_brazilian",
                                                                  "ceramic_tiles_brown_tomato", "ceramic_tiles_golden_sand",
                                                                  "ceramic_tiles_moka"],
@@ -42,6 +44,11 @@ class ProcGenKitchen(ProcGenObjects):
                                                               "parquet_wood_mahogany", "parquet_wood_oak_brown",
                                                               "parquet_wood_olive", "parquet_wood_red_cedar",
                                                               "parquet_wood_wenge"]}
+    # The possible wall visual materials.
+    _WALL_VISUAL_MATERIALS: List[str] = ["concrete", "concrete_01", "concrete_worn_scratched", "bricks_salem_matt_used",
+                                         "in_white_plaster", "limestone_white", "paint_matte", "plaster_fine_spray",
+                                         "plaster_stucco_brushed", "plaster_stucco_california",
+                                         "plaster_ultra_fine_spray"]
 
     def __init__(self, random_seed: int = None, create_scene: bool = True, region: int = 0,
                  region_size: Tuple[int, int] = None):
@@ -79,8 +86,10 @@ class ProcGenKitchen(ProcGenObjects):
                 length = self.rng.randint(5, 7)
                 if self.rng.random() < 0.5:
                     commands = [TDWUtils.create_empty_room(width, length)]
+                    self._region_size = (width, length)
                 else:
                     commands = [TDWUtils.create_empty_room(length, width)]
+                    self._region_size = (length, width)
             # Add the other commands.
             commands.extend(super().get_initialization_commands())
             return commands
@@ -95,8 +104,9 @@ class ProcGenKitchen(ProcGenObjects):
         # Add the table.
         #self._add_table()
         # Add the work triangle.
-        #self._add_work_triangle()
-        pass
+        self._add_work_triangle()
+        if self._create_scene:
+            self._set_room_visual_materials()
 
     def _add_table(self, table_settings: bool = True,
                    plate_model_name: str = None, fork_model_name: str = None, knife_model_name: str = None,
@@ -907,23 +917,39 @@ class ProcGenKitchen(ProcGenObjects):
             self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
                                           categories=categories, length=length)
 
-    @staticmethod
-    def _mirror_x(positions: List[Dict[str, float]]) -> List[dict]:
+    def _set_room_visual_materials(self) -> None:
         """
-        :param positions: A list of positions.
-
-        :return: A list of positions with the x coordinate sign flipped.
+        Set the visual materials of the floor and walls.
         """
 
-        return [{"x": -p["x"], "y": p["y"], "z": p["z"]} for p in positions]
-
-    @staticmethod
-    def _mirror_z(positions: List[Dict[str, float]]) -> List[dict]:
-        """
-        :param positions: A list of positions.
-
-        :return: A list of positions with the z coordinate sign flipped.
-        """
-
-        return [{"x": p["x"], "y": p["y"], "z": -p["z"]} for p in positions]
-
+        floor_material_types = list(ProcGenKitchen._FLOOR_VISUAL_MATERIALS.keys())
+        # Get a type of floor material.
+        floor_material_type = floor_material_types[self.rng.randint(0, len(floor_material_types))]
+        # Get a r andom material.
+        floor_materials = ProcGenKitchen._FLOOR_VISUAL_MATERIALS[floor_material_type]
+        floor_material = floor_materials[self.rng.randint(0, len(floor_materials))]
+        # Scale the texture to prevent stretching.
+        if self._region_size[0] == self._region_size[1]:
+            x = 1
+            y = 1
+        elif self._region_size[0] > self._region_size[1]:
+            x = (self._region_size[0] + 1) / self._region_size[1]
+            y = 1
+        else:
+            x = 1
+            y = (self._region_size[1] + 1) / self._region_size[0]
+        # Get a random wall material.
+        wall_material = ProcGenKitchen._WALL_VISUAL_MATERIALS[self.rng.randint(0, len(ProcGenKitchen._WALL_VISUAL_MATERIALS))]
+        # Add the commands.
+        self.commands.extend([Controller.get_add_material(material_name=floor_material,
+                                                          library="materials_med.json"),
+                              {"$type": "set_proc_gen_floor_material",
+                               "name": floor_material},
+                              {"$type": "set_proc_gen_floor_texture_scale",
+                               "scale": {"x": x, "y": y}},
+                              Controller.get_add_material(material_name=wall_material,
+                                                          library="materials_med.json"),
+                              {"$type": "set_proc_gen_walls_material",
+                               "name": wall_material},
+                              {"$type": "set_proc_gen_walls_texture_scale",
+                               "scale": {"x": 0.5, "y": 1.5}}])

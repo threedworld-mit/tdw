@@ -365,5 +365,9 @@ class ProcGenObjects(AddOn):
         """
 
         record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
-        return TDWUtils.get_bounds_extents(bounds=record.bounds)[0]
+        # Shelves are rotated 90 degrees.
+        if record.name in ProcGenObjects.MODEL_CATEGORIES["shelf"]:
+            return TDWUtils.get_bounds_extents(bounds=record.bounds)[2]
+        else:
+            return TDWUtils.get_bounds_extents(bounds=record.bounds)[0]
 

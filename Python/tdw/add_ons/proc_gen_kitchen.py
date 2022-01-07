@@ -14,10 +14,10 @@ class ProcGenKitchen(ProcGenObjects):
                             "coffee_maker", "coin", "cork", "cup", "fork", "house_plant", "knife", "ladle", "jar",
                             "pan", "pen", "pot", "scissors", "soap_dispenser", "spoon", "tea_tray", "vase"]
     # Data for shelves. Key = model name. Value = Dictionary: "size" (a 2-element list), "ys" (list of shelf y's).
-    _SHELVES: Dict[str, dict] = {"4ft_shelf_metal": {"size": [0.9451682, 0.3857702],
+    _SHELVES: Dict[str, dict] = {"4ft_shelf_metal": {"size": [0.56710092, 0.2314623],
                                                      "ys": [0.40797001123428345, 0.8050058484077454,
                                                             1.200427532196045]},
-                                 "4ft_wood_shelving": {"size": [0.9451682, 0.3857702],
+                                 "4ft_wood_shelving": {"size": [0.56710092, 0.2314623],
                                                        "ys": [0.40797001123428345, 0.8050058484077454,
                                                               1.200427532196045]},
                                  "5ft_shelf_metal": {"size": [0.56710092, 0.2314623],
@@ -402,7 +402,7 @@ class ProcGenKitchen(ProcGenObjects):
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                library="models_core.json",
                                                                object_id=root_object_id,
-                                                               position=position,
+                                                               position={k: v for k, v in position.items()},
                                                                kinematic=True))
         size = (ProcGenKitchen._SHELVES[record.name]["size"][0], ProcGenKitchen._SHELVES[record.name]["size"][1])
         # Add objects to each shelf.
@@ -468,7 +468,9 @@ class ProcGenKitchen(ProcGenObjects):
             microwave_model_name = microwave_model_names[self.rng.randint(0, len(microwave_model_names))]
             microwave_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(microwave_model_name)
             # Add a microwave and add objects on top of the microwave.
-            self.add_object_with_other_objects_on_top(record=microwave_record, position=object_top, rotation=rotation,
+            self.add_object_with_other_objects_on_top(record=microwave_record,
+                                                      position=object_top,
+                                                      rotation=rotation - 180,
                                                       category="microwave")
             self._used_unique_categories.append("microwave")
 
@@ -497,7 +499,7 @@ class ProcGenKitchen(ProcGenObjects):
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
                                                                position={k: v for k, v in position.items()},
-                                                               rotation={"x": 0, "y": rotation, "z": rotation},
+                                                               rotation={"x": 0, "y": rotation, "z": 0},
                                                                library="models_core.json",
                                                                kinematic=True))
 
@@ -787,8 +789,12 @@ class ProcGenKitchen(ProcGenObjects):
         corner = corners[self.rng.randint(0, len(corners))]
         position = self._get_corner_position(corner=corner)
         direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=longer_wall)
+        categories = ["refrigerator", "dishwasher", "sink", "kitchen_counter", "stove", "kitchen_counter", "shelf"]
+        # Reverse the order.
+        if self.rng.random() < 0.5:
+            categories.reverse()
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
-                                      categories=["refrigerator", "kitchen_counter", "sink", "stove", "kitchen_counter"],
+                                      categories=categories,
                                       length=length)
 
     def _add_parallel_work_triangle(self) -> None:

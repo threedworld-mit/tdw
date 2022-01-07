@@ -96,7 +96,7 @@ class ProcGenKitchen(ProcGenObjects):
         #self._add_table()
         # Add the work triangle.
         #self._add_work_triangle()
-        self._add_l_work_triangle()
+        self._add_l_work_triangle(lw=CardinalDirection.south, c=OrdinalDirection.southeast)
 
     def _add_table(self, table_settings: bool = True,
                    plate_model_name: str = None, fork_model_name: str = None, knife_model_name: str = None,
@@ -610,6 +610,9 @@ class ProcGenKitchen(ProcGenObjects):
                 return
             # Add half of the long extent to the position.
             position = __add_half_extent_to_position()
+            # Out of bounds. Stop here.
+            if not self.scene_bounds.rooms[self._region].is_inside(position["x"], position["z"]):
+                break
             # Get the record.
             record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
             # Add the objects.
@@ -636,9 +639,9 @@ class ProcGenKitchen(ProcGenObjects):
         x = (room.x_max - room.x_min) - ProcGenObjects._WALL_DEPTH * 2
         z = (room.z_max - room.z_min) - ProcGenObjects._WALL_DEPTH * 2
         if x < z:
-            return [CardinalDirection.west, CardinalDirection.east], x
+            return [CardinalDirection.west, CardinalDirection.east], z
         else:
-            return [CardinalDirection.north, CardinalDirection.south], z
+            return [CardinalDirection.north, CardinalDirection.south], x
 
     def _get_shorter_walls(self) -> Tuple[List[CardinalDirection], float]:
         """
@@ -649,9 +652,9 @@ class ProcGenKitchen(ProcGenObjects):
         x = (room.x_max - room.x_min) - ProcGenObjects._WALL_DEPTH * 2
         z = (room.z_max - room.z_min) - ProcGenObjects._WALL_DEPTH * 2
         if x > z:
-            return [CardinalDirection.west, CardinalDirection.east], x
+            return [CardinalDirection.west, CardinalDirection.east], z
         else:
-            return [CardinalDirection.north, CardinalDirection.south], z
+            return [CardinalDirection.north, CardinalDirection.south], x
 
     @staticmethod
     def _get_corners_from_wall(wall: CardinalDirection) -> List[OrdinalDirection]:
@@ -755,17 +758,6 @@ class ProcGenKitchen(ProcGenObjects):
                 return CardinalDirection.north, CardinalDirection.east
         raise Exception(corner, wall)
 
-    @staticmethod
-    def _get_90_degree_wall(corner: OrdinalDirection, wall: CardinalDirection) -> CardinalDirection:
-        """
-        :param corner: The corner.
-        :param wall: The wall.
-
-        :return: The wall at 90 degrees from the original wall.
-        """
-
-        return CardinalDirection(corner.value - wall.value)
-
     def _add_work_triangle(self) -> None:
         """
         Add a kitchen work triangle of counters and appliances.
@@ -783,6 +775,10 @@ class ProcGenKitchen(ProcGenObjects):
             self._add_u_work_triangle()
 
     def _add_straight_work_triangle(self) -> None:
+        """
+        Add a lateral arrangement of kitchen counters and appliances along one of the longer walls.
+        """
+
         longer_walls, length = self._get_longer_walls()
         longer_wall = longer_walls[self.rng.randint(0, len(longer_walls))]
         corners = self._get_corners_from_wall(wall=longer_wall)
@@ -790,7 +786,6 @@ class ProcGenKitchen(ProcGenObjects):
         position = self._get_corner_position(corner=corner)
         direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=longer_wall)
         categories = ["refrigerator", "dishwasher", "sink", "kitchen_counter", "stove", "kitchen_counter", "shelf"]
-        # Reverse the order.
         if self.rng.random() < 0.5:
             categories.reverse()
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
@@ -798,10 +793,16 @@ class ProcGenKitchen(ProcGenObjects):
                                       length=length)
 
     def _add_parallel_work_triangle(self) -> None:
+        """
+        Add two lateral arrangements of kitchen counters and appliances along each of the longer walls.
+        """
+
         longer_walls, length = self._get_longer_walls()
         self.rng.shuffle(longer_walls)
         for wall, categories in zip(longer_walls, [["kitchen_counter", "stove", "kitchen_counter", "kitchen_counter", "kitchen_counter"],
-                                                   ["refrigerator", "kitchen_counter", "sink", "kitchen_counter", "kitchen_counter"]]):
+                                                   ["refrigerator", "dishwasher", "sink", "kitchen_counter", "kitchen_counter"]]):
+            if self.rng.random() < 0.5:
+                categories.reverse()
             corners = self._get_corners_from_wall(wall=wall)
             corner = corners[self.rng.randint(0, len(corners))]
             position = self._get_corner_position(corner=corner)
@@ -810,33 +811,40 @@ class ProcGenKitchen(ProcGenObjects):
                                           categories=categories,
                                           length=length)
 
-    def _add_l_work_triangle(self) -> Tuple[CardinalDirection, CardinalDirection]:
+    def _add_l_work_triangle(self, lw: CardinalDirection = None, c: OrdinalDirection = None) -> Tuple[CardinalDirection, CardinalDirection]:
+        """
+        Add two lateral arrangements of kitchen counters and appliances, one along one of the longer walls and one along one of the shorter walls.
+
+        :param lw: The longer wall. Use this for debugging.
+        :param c: The corner. Use this for debugging.
+        """
+
         longer_walls, length = self._get_longer_walls()
         longer_wall = longer_walls[self.rng.randint(0, len(longer_walls))]
+        if lw is not None:
+            assert lw in longer_walls, (lw, longer_walls)
+            longer_wall = lw
         corners = self._get_corners_from_wall(wall=longer_wall)
         corner = corners[self.rng.randint(0, len(corners))]
+        if c is not None:
+            assert c in corners, (c, corners)
+            corner = c
         position = self._get_corner_position(corner=corner)
         direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=longer_wall)
+        categories = ["floating_kitchen_counter_top", "sink", "dishwasher", "stove", "kitchen_counter", "shelf"]
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
-                                      categories=["floating_kitchen_counter_top", "kitchen_counter", "sink", "kitchen_counter", "kitchen_counter"],
-                                      length=length)
+                                      categories=categories, length=length)
         print("wall", longer_wall)
         print("corner", corner)
         print("direction", direction)
         print("face_away_from", face_away_from)
-        # Get a corner from the longer wall.
-        # TODO directions.
-        if longer_wall == CardinalDirection.north:
-            corners = [OrdinalDirection.northwest, OrdinalDirection.northeast]
-        elif longer_wall == CardinalDirection.south:
-            corners = [OrdinalDirection.southwest, OrdinalDirection.southeast]
-        elif longer_wall == CardinalDirection.east:
-            corners = [OrdinalDirection.northeast, OrdinalDirection.southeast]
-        elif longer_wall == CardinalDirection.west:
-            corners = [OrdinalDirection.northwest, OrdinalDirection.southwest]
-        corner = corners[self.rng.randint(0, len(corners))]
+        print("length", length)
         # Get the shorter wall.
-        shorter_wall = self._get_90_degree_wall(corner=corner, wall=longer_wall)
+        shorter_wall = CardinalDirection(corner.value - longer_wall.value)
+        # Get the length of the shorter wall.
+        shorter_walls, length = self._get_shorter_walls()
+        length -= ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE
+        # Get everything else.
         direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=shorter_wall)
         position = self._get_corner_position(corner=corner)
         # Offset the position.
@@ -848,6 +856,7 @@ class ProcGenKitchen(ProcGenObjects):
         print("corner", corner)
         print("direction", direction)
         print("face_away_from", face_away_from)
+        print("length", length)
         return longer_wall, shorter_wall
 
     def _add_u_work_triangle(self) -> None:

@@ -26,12 +26,17 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ### Documentation
 
+#### Modified Documentation
+
+| Document                             | Modification                                                 |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md` | Added example code for setting kinematic states of sub-objects. |
+
 #### Removed Documentation
 
 | Document                                         | Reason                                                       |
 | ------------------------------------------------ | ------------------------------------------------------------ |
 | `composite_objects/creating_composite_object.md` | This is not a feature we expect most users to be able to do because it requires Unity Editor experience. This document has been edited and moved to the private TDWBase repo. |
-| `lessons/physx/composite_objects.md`             | Added example code for setting kinematic states of sub-objects. |
 
 ## v1.9.1
 

@@ -16,11 +16,17 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `set_hinge_limits` | Set the angle limits of a hinge joint. This will work with hinges, motors, and springs. |
 | `set_object_physics_solver_iterations` | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. |
 
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `send_model_report` | Added tests for prismatic joint mechanisms (ConfigureableJoint components) |
+
 ### Build
 
 - Added new composite object mechanism type: `prismatic_joint`
 
-### Example controllers
+### Example Controllers
 
 - Added: `physx/kinematic_composite_object.py`
 
@@ -135,12 +141,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `set_painting_texture`            | `set_textured_quad`                          |
 | `show_painting`                   | `show_textured_quad`                         |
 | `teleport_painting`               | `teleport_textured_quad`                     |
-
-#### Modified Commands
-
-| Command             | Modification                                                 |
-| ------------------- | ------------------------------------------------------------ |
-| `send_model_report` | Added parameter `flex`: If True, this model is expected to be Flex-compatible. |
 
 #### Removed Commands
 

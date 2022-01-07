@@ -37,6 +37,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | Document                             | Modification                                                 |
 | ------------------------------------ | ------------------------------------------------------------ |
 | `lessons/physx/composite_objects.md` | Added example code for setting kinematic states of sub-objects. |
+| `lessons/3d_models/custom_models.md` | Added a section regarding .fbx unit scales; .fbx files must be in meters. |
 
 #### Removed Documentation
 

@@ -11,8 +11,9 @@ It is possible to add any 3D model to TDW. However, the underlying Unity engine 
 - The `tdw` module
 - Python 3.6+
 - Unity Hub
-- Unity Editor 2020.3.24f1 (installed via Unity Hub)
+- Unity Editor 2020.3.24f1
   - Build options must enabled for Windows, OS X, and Linux (these can  be set when installing Unity).
+  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `AssetBundleCreator` constructor (see below).
 - A .fbx or .obj+.mtl model
 
 ## The `AssetBundleCreator`
@@ -55,7 +56,19 @@ asset_bundle_paths, record_path = a.create_asset_bundle(model_path=model_path,
                                                         wcategory=wcategory)
 ```
 
- There is one other optional parameter, `scale`, which should usually be set to 1 (the default value). Setting it to another value will scale the model by this factor whenever it is instantiated in TDW.
+There is one other optional parameter, `scale`, which should usually be set to 1 (the default value). Setting it to another value will scale the model by this factor whenever it is instantiated in TDW.
+
+### Unity Editor path
+
+If you installed Unity Editor via Unity Hub, `AssetBundleCreator` should be able to automatically find the Unity Editor executable.
+
+If the Unity Editor executable is in an unexpected location, you will need to explicitly set its location in the `AssetBundleCreator` by setting the optional `unity_editor_path` parameter:
+
+```python
+from tdw.asset_bundle_creator import AssetBundleCreatorBase
+
+a = AssetBundleCreatorBase(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
+```
 
 ### Intermediate API calls
 

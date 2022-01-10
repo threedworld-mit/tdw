@@ -34,12 +34,13 @@ For more information, see: `Documentation/misc_frontend/add_local_object.md`.
 
 **`AssetBundleCreator()`**
 
-**`AssetBundleCreator(quiet=False, display="0")`**
+**`AssetBundleCreator(quiet=False, display="0", unity_editor_path=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | quiet |  bool  | False | If true, don't print any messages to console. |
 | display |  str  | "0" | The display to launch Unity Editor on. Ignored if this isn't Linux. |
+| unity_editor_path |  Union[Path, str] | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
 
 #### create_asset_bundle
 
@@ -302,6 +303,12 @@ This function will create collider .obj files if there aren't any already
 | library_path |  str |  | The path to the library file. |
 | cleanup |  bool  | True | If true, remove all temp files when done. |
 | vhacd_resolution |  int  | 8000000 | The V-HACD voxel resolution. A higher number will create more accurate physics colliders, but it will take more time to initially create the asset bundle. |
+
+#### cleanup
+
+**`self.cleanup()`**
+
+Delete all files from `~/asset_bundle_creator` with these extensions: .obj, .fbx, .mtl, .mat, .jpg, .prefab
 
 #### get_unity_project
 

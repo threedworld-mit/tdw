@@ -10,7 +10,9 @@ The `RobotCreator` can download a .urdf or .xacro file plus all relevant texture
 
 - Windows 10, OS X, or Linux
   - On a remote Linux server, you'll need a valid virtual display (see the `display` parameter of the constructor)
-- Unity Editor 2020.3.24f1 (must be installed via Unity Hub)
+- Unity Editor 2020.3.24f1
+  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `RobotCreator` constructor (see below).
+
 - Python3 and the `tdw` module
 - git
 
@@ -72,6 +74,18 @@ print(record.urls)
 ```
 
 The first time that this script is run, it will clone [the robot_creator repo](https://github.com/alters-mit/robot_creator) (a Unity project used for creating robots) to your home directory.
+
+### Unity Editor path
+
+If you installed Unity Editor via Unity Hub, `RobotCreator` should be able to automatically find the Unity Editor executable.
+
+If the Unity Editor executable is in an unexpected location, you will need to explicitly set its location in the `RobotCreator` by setting the optional `unity_editor_path` parameter:
+
+```python
+from tdw.robot_creator import RobotCreator
+
+a = RobotCreator(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
+```
 
 ## Edit the prefab
 

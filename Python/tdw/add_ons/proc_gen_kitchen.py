@@ -36,19 +36,27 @@ class ProcGenKitchen(ProcGenObjects):
     # The length of one side of the floating kitchen counter top.
     _KITCHEN_COUNTER_TOP_SIZE: float = 0.6096
     # The possible floor visual materials. Key = Material type. Value = A list of material names.
-    _FLOOR_VISUAL_MATERIALS: Dict[str, List[str]] = {"Ceramic": ["ceramic_tiles_beige_tan", "ceramic_tiles_brazilian",
-                                                                 "ceramic_tiles_brown_tomato", "ceramic_tiles_golden_sand",
-                                                                 "ceramic_tiles_moka"],
-                                                     "Wood": ["parquet_alternating_orange", "parquet_european_ash_grey",
-                                                              "parquet_long_horizontal_clean", "parquet_wood_ipe",
-                                                              "parquet_wood_mahogany", "parquet_wood_oak_brown",
-                                                              "parquet_wood_olive", "parquet_wood_red_cedar",
-                                                              "parquet_wood_wenge"]}
-    # The possible wall visual materials.
-    _WALL_VISUAL_MATERIALS: List[str] = ["concrete", "concrete_01", "concrete_worn_scratched", "bricks_salem_matt_used",
-                                         "in_white_plaster", "limestone_white", "paint_matte", "plaster_fine_spray",
-                                         "plaster_stucco_brushed", "plaster_stucco_california",
-                                         "plaster_ultra_fine_spray"]
+    _FLOOR_VISUAL_MATERIALS: List[str] = ["ceramic_tiles_brazilian", "ceramic_tiles_moka", "parquet_european_ash_grey",
+                                          "ceramic_tiles_brown_tomato", "parquet_long_horizontal_clean",
+                                          "ceramic_tiles_golden_sand", "tiles_granite_sera_grey", "parquet_wood_wenge",
+                                          "concrete_terrazzo", "ceramic_tiles_green", "parquet_wood_ipe",
+                                          "concrete_spotted"]
+    # The possible wall visual materials. Key = Material name. Value = A list of colors.
+    _WALL_VISUAL_MATERIALS: Dict[str, List[Dict[str, float]]] = {"plaster_stucco_brushed": [{"r": 1, "g": 1, "b": 1, "a": 1},
+                                                                                            {"r": 0.677, "g": 0.677, "b": 0.677, "a": 1},
+                                                                                            {"r": 0.4421951, "g": 0.4859999, "b": 0.321732, "a": 1},
+                                                                                            {"r": 0.605, "g": 0.2966277, "b": 0.241395, "a": 1},
+                                                                                            {"r": 0.27621, "g": 0.4615875, "b": 0.594, "a": 1}],
+                                                                 "concrete_raw_brushed_fine": [{"r": 1, "g": 1, "b": 1, "a": 1}],
+                                                                 "concrete_spotted": [{"r": 1, "g": 1, "b": 1, "a": 1}],
+                                                                 "plaster_facade_grey": [{"r": 1, "g": 1, "b": 1, "a": 1}],
+                                                                 "plaster_stucco_california": [{"r": 1, "g": 1, "b": 1, "a": 1}],
+                                                                 "plaster_fine_spray": [{"r": 1, "g": 1, "b": 1, "a": 1},
+                                                                                        {"r": 0.677, "g": 0.677, "b": 0.677, "a": 1},
+                                                                                        {"r": 0.605, "g": 0.2966277, "b": 0.241395, "a": 1},
+                                                                                        {"r": 0.27621, "g": 0.4615875, "b": 0.594, "a": 1}],
+                                                                 "plaster_ultra_fine_spray": [{"r": 1, "g": 1, "b": 1, "a": 1},
+                                                                                              {"r": 0.7512034, "g": 0.794, "b": 0.677282, "a": 1}]}
 
     def __init__(self, random_seed: int = None, create_scene: bool = True, region: int = 0,
                  region_size: Tuple[int, int] = None):
@@ -104,7 +112,7 @@ class ProcGenKitchen(ProcGenObjects):
         # Add the table.
         #self._add_table()
         # Add the work triangle.
-        self._add_work_triangle()
+        # self._add_work_triangle()
         if self._create_scene:
             self._set_room_visual_materials()
 
@@ -969,12 +977,14 @@ class ProcGenKitchen(ProcGenObjects):
         Set the visual materials of the floor and walls.
         """
 
-        floor_material_types = list(ProcGenKitchen._FLOOR_VISUAL_MATERIALS.keys())
-        # Get a type of floor material.
-        floor_material_type = floor_material_types[self.rng.randint(0, len(floor_material_types))]
-        # Get a r andom material.
-        floor_materials = ProcGenKitchen._FLOOR_VISUAL_MATERIALS[floor_material_type]
-        floor_material = floor_materials[self.rng.randint(0, len(floor_materials))]
+        # Get a random floor visual material.
+        floor_material = ProcGenKitchen._FLOOR_VISUAL_MATERIALS[self.rng.randint(0, len(ProcGenKitchen._FLOOR_VISUAL_MATERIALS))]
+        # Get a random wall material.
+        wall_materials = list(ProcGenKitchen._WALL_VISUAL_MATERIALS.keys())
+        wall_material = wall_materials[self.rng.randint(0, len(wall_materials))]
+        # Get a random color.
+        wall_colors = ProcGenKitchen._WALL_VISUAL_MATERIALS[wall_material]
+        wall_color = wall_colors[self.rng.randint(0, len(wall_colors))]
         # Scale the texture to prevent stretching.
         if self._region_size[0] == self._region_size[1]:
             x = 1
@@ -985,8 +995,6 @@ class ProcGenKitchen(ProcGenObjects):
         else:
             x = 1
             y = (self._region_size[1] + 1) / self._region_size[0]
-        # Get a random wall material.
-        wall_material = ProcGenKitchen._WALL_VISUAL_MATERIALS[self.rng.randint(0, len(ProcGenKitchen._WALL_VISUAL_MATERIALS))]
         # Add the commands.
         self.commands.extend([Controller.get_add_material(material_name=floor_material,
                                                           library="materials_med.json"),
@@ -999,4 +1007,6 @@ class ProcGenKitchen(ProcGenObjects):
                               {"$type": "set_proc_gen_walls_material",
                                "name": wall_material},
                               {"$type": "set_proc_gen_walls_texture_scale",
-                               "scale": {"x": 0.5, "y": 1.5}}])
+                               "scale": {"x": 0.5, "y": 1.5}},
+                              {"$type": "set_proc_gen_walls_color",
+                               "color": wall_color}])

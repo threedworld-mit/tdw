@@ -30,9 +30,8 @@ class ProcGenKitchen(ProcGenObjects):
                                                        "ys": [0.23687607, 0.63232845, 1.02965784, 1.42135918,
                                                               1.81870043]}}
     # The shapes of the tables.
-    _TABLE_SHAPES: Dict[str, List[str]] = {"rectangle": ["dining_room_table"],
-                                           "square_or_circle": ["enzo_industrial_loft_pine_metal_round_dining_table",
-                                                                "quatre_dining_table"]}
+    _TABLE_SHAPES: Dict[str, List[str]] = {"two": ["metal_lab_table", "sm_table_white", "small_table_green_marble"],
+                                           "four": ["dining_room_table", "quatre_dining_table"]}
     # The length of one side of the floating kitchen counter top.
     _KITCHEN_COUNTER_TOP_SIZE: float = 0.6096
     # The possible floor visual materials. Key = Material type. Value = A list of material names.
@@ -159,7 +158,7 @@ class ProcGenKitchen(ProcGenObjects):
         rotation = self.rng.uniform(-5, 5)
         # Add the table.
         root_object_id = Controller.get_unique_id()
-        tables = ProcGenObjects.MODEL_CATEGORIES["table"]
+        tables = ProcGenObjects.MODEL_CATEGORIES["kitchen_table"]
         table_model_name = tables[self.rng.randint(0, len(tables))]
         record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(table_model_name)
         self.commands.extend(Controller.get_add_physics_object(model_name=table_model_name,
@@ -189,30 +188,17 @@ class ProcGenKitchen(ProcGenObjects):
         chair_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(chair_model_name)
         chair_bound_points: List[np.array] = list()
         # Add chairs around the table.
-        if table_shape == "square_or_circle":
-            for side in ["left", "right", "front", "back"]:
-                chair_bound_points.append(np.array([record.bounds[side]["x"] + position["x"],
-                                                    0,
-                                                    record.bounds[side]["z"] + position["z"]]))
-        # Add chairs around the longer sides of the table.
+        if table_shape == "four":
+            sides = ["left", "right", "front", "back"]
+        # Add chairs on the shorter sides of the table.
+        elif table_shape == "two":
+            sides = ["left", "right"]
         else:
-            table_extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
-            if table_extents[0] > table_extents[2]:
-                for side in ["front", "back"]:
-                    chair_bound_points.extend([np.array([record.bounds[side]["x"] + position["x"],
-                                                         0,
-                                                         table_extents[2] * 0.25 + position["z"]]),
-                                               np.array([record.bounds[side]["x"] + position["x"],
-                                                         0,
-                                                         table_extents[2] * 0.75 + position["z"]])])
-            else:
-                for side in ["left", "right"]:
-                    chair_bound_points.extend([np.array([table_extents[0] * 0.25 + position["x"],
-                                                         0,
-                                                         record.bounds[side]["z"] + position["z"]]),
-                                               np.array([table_extents[0] * 0.75 + position["x"],
-                                                         0,
-                                                         record.bounds[side]["z"] + position["z"]])])
+            raise Exception(table_shape)
+        for side in sides:
+            chair_bound_points.append(np.array([record.bounds[side]["x"] + position["x"],
+                                                0,
+                                                record.bounds[side]["z"] + position["z"]]))
         # Add the chairs.
         for chair_bound_point in chair_bound_points:
             chair_position = self._get_chair_position(chair_record=chair_record,

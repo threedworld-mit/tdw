@@ -22,6 +22,14 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | ------------------- | ------------------------------------------------------------ |
 | `send_model_report` | Added tests for prismatic joint mechanisms (ConfigureableJoint components) |
 
+### `tdw` module
+
+- Added optional parameter `unity_editor_path` to the `AssetBundleCreator`constructor to optionally explicitly set the path to the Unity Editor executable.
+- Added: `AssetBundleCreator.cleanup()` Clean up intermediary files.
+- Added optional parameter `unity_editor_path` to the `RobotCreator`constructor to optionally explicitly set the path to the Unity Editor executable.
+- Changed the names of all undocumented fields in `AssetBundleCreator` and `RobotCreator` to private (added an `_` to the start of the variable names).
+- Added optional parameters `description_infix` and `branch` to `RobotCreator.create_asset_bundles()` to handle unexpected .urdf URLs.
+
 ### Build
 
 - Added new composite object mechanism type: `prismatic_joint`
@@ -37,7 +45,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | Document                             | Modification                                                 |
 | ------------------------------------ | ------------------------------------------------------------ |
 | `lessons/physx/composite_objects.md` | Added example code for setting kinematic states of sub-objects. |
-| `lessons/3d_models/custom_models.md` | Added a section regarding .fbx unit scales; .fbx files must be in meters. |
+| `lessons/3d_models/custom_models.md` | Added a section regarding .fbx unit scales; .fbx files must be in meters.<br>Added a section explaining how to manually set the Unity Editor path. |
+| `lessons/robots/custom_robots.md`    | Added a section explaining how to manually set the Unity Editor path. |
 
 #### Removed Documentation
 

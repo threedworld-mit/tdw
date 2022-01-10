@@ -20,18 +20,19 @@ Download a .urdf or .xacro file and convert it into an asset bundle that is usab
 
 **`RobotCreator()`**
 
-**`RobotCreator(quiet=False, display="0")`**
+**`RobotCreator(quiet=False, display="0", unity_editor_path=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | quiet |  bool  | False | If true, don't print any messages to console. |
 | display |  str  | "0" | The display to launch Unity Editor on. Ignored if this isn't Linux. |
+| unity_editor_path |  Union[Path, str] | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
 
 #### create_asset_bundles
 
 **`self.create_asset_bundles(urdf_url)`**
 
-**`self.create_asset_bundles(urdf_url, required_repo_urls=None, xacro_args=None, immovable=True, up="y")`**
+**`self.create_asset_bundles(urdf_url, required_repo_urls=None, xacro_args=None, immovable=True, up="y", description_infix=None, branch=None)`**
 
 Given the URL of a .urdf file or a .xacro file, create asset bundles of the robot.
 
@@ -50,6 +51,8 @@ This is a wrapper function for:
 | xacro_args |  Dict[str, str] | None | Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file). For example, the Sawyer robot requires this to add the gripper: `{"electric_gripper": "true"}` |
 | immovable |  bool  | True | If True, the base of the robot is immovable. |
 | up |  str  | "y" | The up direction. Used when importing the robot into Unity. Options: `"y"` or `"z"`. Usually, this should be the default value (`"y"`). |
+| description_infix |  str  | None | The name of the description infix within the .urdf URL, such as `fetch_description`. Only set this if the urdf URL is non-standard; otherwise `RobotCreator` should be able to find this automatically. |
+| branch |  str  | None | The name of the branch of the repo. If None, defaults to `"master"`. |
 
 _Returns:_  A `RobotRecord` object. The `urls` field contains the paths to each asset bundle.
 
@@ -86,7 +89,7 @@ _Returns:_  The temporary directory.
 
 **`self.copy_files(urdf_url, local_repo_path, repo_paths)`**
 
-**`self.copy_files(urdf_url, local_repo_path, repo_paths, xacro_args=None)`**
+**`self.copy_files(urdf_url, local_repo_path, repo_paths, xacro_args=None, branch=None)`**
 
 Copy and convert files required to create a prefab.
 
@@ -101,6 +104,7 @@ Copy and convert files required to create a prefab.
 | local_repo_path |  Path |  | The path to the local repo. |
 | repo_paths |  Dict[str, Path] |  | A dictionary of required repos (including the one that the .urdf or .xacro is in). Key = The description path infix, e.g. "sawyer_description". Value = The path to the local repo. |
 | xacro_args |  Dict[str, str] | None | Names and values for the `arg` tags in the .xacro file. Can be None for a .urdf or .xacro file and always ignored for a .urdf file. |
+| branch |  str  | None | The name of the branch of the repo. If None, defaults to `"master"`. |
 
 _Returns:_  The path to the .urdf file in the Unity project.
 

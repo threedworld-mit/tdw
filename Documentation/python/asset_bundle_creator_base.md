@@ -20,12 +20,13 @@ Base class for creating asset bundles.
 
 **`AssetBundleCreatorBase()`**
 
-**`AssetBundleCreatorBase(quiet=False, display="0")`**
+**`AssetBundleCreatorBase(quiet=False, display="0", unity_editor_path=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| quiet |  bool  | False | If true, don't print any messages to console. |
+| quiet |  bool  | False | If True, don't print any messages to console. |
 | display |  str  | "0" | The display to launch Unity Editor on. Ignored if this isn't Linux. |
+| unity_editor_path |  Union[Path, str] | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
 
 #### get_base_unity_call
 

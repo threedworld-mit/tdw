@@ -108,14 +108,15 @@ class ProcGenKitchen(ProcGenObjects):
         Create the kitchen. Add kitchen appliances, counter tops, etc. and a table. Objects will be placed on surfaces.
         """
 
-        # Add the table.
-        #self._add_table()
         # Add the work triangle.
-        # self._add_work_triangle()
+        used_walls = self._add_work_triangle()
+        # Add the table.
+        self._add_table(used_walls=used_walls)
+        # Set the wall and floor.
         if self._create_scene:
             self._set_room_visual_materials()
 
-    def _add_table(self, table_settings: bool = True,
+    def _add_table(self, used_walls: List[CardinalDirection], table_settings: bool = True,
                    plate_model_name: str = None, fork_model_name: str = None, knife_model_name: str = None,
                    spoon_model_name: str = None, centerpiece_model_name: str = None) -> Optional[ModelRecord]:
         """
@@ -124,6 +125,7 @@ class ProcGenKitchen(ProcGenObjects):
         The plates sometimes have food on them.
         Sometimes, there is a large object (i.e. a bowl or jug) in the center of the table.
 
+        :param used_walls: The walls used in the work triangle. This is used to offset the table position.
         :param table_settings: If True, add tables settings (plates, forks, knives, etc.) in front of each chair.
         :param plate_model_name: If not None, this is the model name of the plates. If None, the plate is `plate06`.
         :param fork_model_name: If not None, this is the model name of the forks. If None, the model name of the forks is random (all fork objects use the same model).
@@ -155,6 +157,16 @@ class ProcGenKitchen(ProcGenObjects):
         position = {"x": room_center[0] + self.rng.uniform(-0.1, 0.1),
                     "y": 0,
                     "z": room_center[2] + self.rng.uniform(-0.1, 0.1)}
+        # Apply offsets.
+        offset_distance = 0.1
+        if CardinalDirection.north in used_walls:
+            position["z"] -= offset_distance
+        if CardinalDirection.south in used_walls:
+            position["z"] += offset_distance
+        if CardinalDirection.east in used_walls:
+            position["x"] -= offset_distance
+        if CardinalDirection.west in used_walls:
+            position["x"] += offset_distance
         rotation = self.rng.uniform(-5, 5)
         # Add the table.
         root_object_id = Controller.get_unique_id()
@@ -221,7 +233,7 @@ class ProcGenKitchen(ProcGenObjects):
                                    "axis": "yaw"}])
         # Add table settings.
         if table_settings:
-            for bound in ["left", "right", "front", "back"]:
+            for bound in sides:
                 table_bound_point = np.array([record.bounds[bound]["x"] + position["x"],
                                               0,
                                               record.bounds[bound]["z"] + position["z"]])
@@ -544,6 +556,32 @@ class ProcGenKitchen(ProcGenObjects):
             size = (extents[0], extents[2])
         self._add_kitchen_counter_top(position=position, size=size)
 
+    def _add_stove(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection) -> None:
+        """
+        Procedurally generate a stove with objects on it.
+
+        :param record: The model record.
+        :param position: The position of the root object as either a numpy array or a dictionary.
+        :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
+
+        :return: The model record of the root object. If no models were added to the scene, this is None.
+        """
+
+        if face_away_from == CardinalDirection.north:
+            rotation: int = 270
+        elif face_away_from == CardinalDirection.south:
+            rotation = 90
+        elif face_away_from == CardinalDirection.west:
+            rotation = 0
+        elif face_away_from == CardinalDirection.east:
+            rotation = 180
+        else:
+            raise Exception(face_away_from)
+        return self.add_object_with_other_objects_on_top(record=record,
+                                                         position={k: v for k, v in position.items()},
+                                                         rotation=rotation,
+                                                         category="stove")
+
     def _add_kitchen_counter_top(self, position: Dict[str, float], size: Tuple[float, float] = None) -> None:
         """
         Add a floating (kinematic) kitchen counter top to the scene.
@@ -682,6 +720,9 @@ class ProcGenKitchen(ProcGenObjects):
             elif category == "dishwasher":
                 self._add_dishwasher(record=record, position=position, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
+            elif category == "stove":
+                self._add_stove(record=record, position=position, face_away_from=face_away_from)
+                position = __add_half_extent_to_position()
             else:
                 print(category)
                 self._add_kitchen_counter(record=record, position=position, face_away_from=face_away_from)
@@ -815,25 +856,29 @@ class ProcGenKitchen(ProcGenObjects):
                 return CardinalDirection.north, CardinalDirection.east
         raise Exception(corner, wall)
 
-    def _add_work_triangle(self) -> None:
+    def _add_work_triangle(self) -> List[CardinalDirection]:
         """
         Add a kitchen work triangle of counters and appliances.
         Source: https://kbcrate.com/kitchen-design-kitchen-work-triangle-improve-workspace/
+
+        :return: A list of unused walls.
         """
 
         roll = self.rng.random()
         if roll < 0.25:
-            self._add_straight_work_triangle()
+            return self._add_straight_work_triangle()
         elif roll < 0.5:
-            self._add_parallel_work_triangle()
+            return self._add_parallel_work_triangle()
         elif roll < 0.75:
-            self._add_l_work_triangle()
+            return self._add_l_work_triangle()
         else:
-            self._add_u_work_triangle()
+            return self._add_u_work_triangle()
 
-    def _add_straight_work_triangle(self) -> None:
+    def _add_straight_work_triangle(self) -> List[CardinalDirection]:
         """
         Add a lateral arrangement of kitchen counters and appliances along one of the longer walls.
+
+        :return: A list of unused walls.
         """
 
         longer_walls, length = self._get_longer_walls()
@@ -848,10 +893,15 @@ class ProcGenKitchen(ProcGenObjects):
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
                                       categories=categories,
                                       length=length)
+        walls = [c for c in CardinalDirection]
+        walls.remove(longer_wall)
+        return walls
 
-    def _add_parallel_work_triangle(self) -> None:
+    def _add_parallel_work_triangle(self) -> List[CardinalDirection]:
         """
         Add two lateral arrangements of kitchen counters and appliances along each of the longer walls.
+
+        :return: A list of unused walls.
         """
 
         longer_walls, length = self._get_longer_walls()
@@ -867,10 +917,14 @@ class ProcGenKitchen(ProcGenObjects):
             self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
                                           categories=categories,
                                           length=length)
+        shorter_walls, length = self._get_shorter_walls()
+        return shorter_walls
 
-    def _add_l_work_triangle(self) -> None:
+    def _add_l_work_triangle(self) -> List[CardinalDirection]:
         """
         Add an L shape of two lateral arrangements of kitchen counters and appliances, one along one of the longer walls and one along one of the shorter walls.
+
+        :return: A list of unused walls.
         """
 
         longer_walls, length = self._get_longer_walls()
@@ -897,10 +951,16 @@ class ProcGenKitchen(ProcGenObjects):
         categories: List[str] = category_lists[self.rng.randint(0, len(category_lists))]
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
                                       categories=categories, length=length)
+        walls = [c for c in CardinalDirection]
+        walls.remove(longer_wall)
+        walls.remove(shorter_wall)
+        return walls
 
-    def _add_u_work_triangle(self) -> None:
+    def _add_u_work_triangle(self) -> List[CardinalDirection]:
         """
         Add one long lateral arrangement and two shorter lateral arrangements in a U shape.
+
+        :return: A list of unused walls.
         """
 
         # Add the longer wall.
@@ -957,6 +1017,8 @@ class ProcGenKitchen(ProcGenObjects):
             position = self._get_position_offset_from_direction(position=position, direction=direction)
             self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
                                           categories=categories, length=length)
+        longer_walls.remove(longer_wall)
+        return longer_walls
 
     def _set_room_visual_materials(self) -> None:
         """

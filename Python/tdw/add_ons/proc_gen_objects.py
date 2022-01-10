@@ -49,6 +49,9 @@ class ProcGenObjects(AddOn):
     A mapping of proc-gen categories to record wcategories.
     """
     PROC_GEN_CATEGORY_TO_WCATEGORY: Dict[str, str] = loads(Path(resource_filename(__name__, "proc_gen_objects/procgen_category_to_wcategory.json")).read_text())
+    # The names of the models that are rotated 90 degrees.
+    _MODEL_NAMES_NINETY_DEGREES: List[str] = ["4ft_shelf_metal", "4ft_wood_shelving", "5ft_shelf_metal",
+                                              "5ft_wood_shelving", "6ft_shelf_metal", "6ft_wood_shelving", "gas_stove"]
     _WALL_DEPTH: float = 0.28
 
     def __init__(self, random_seed: int = None, region: int = 0):
@@ -325,7 +328,7 @@ class ProcGenObjects(AddOn):
 
         record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
         # Shelves are rotated 90 degrees.
-        if record.name in ProcGenObjects.MODEL_CATEGORIES["shelf"]:
+        if record.name in ProcGenObjects._MODEL_NAMES_NINETY_DEGREES:
             return TDWUtils.get_bounds_extents(bounds=record.bounds)[2]
         else:
             return TDWUtils.get_bounds_extents(bounds=record.bounds)[0]

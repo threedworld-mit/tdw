@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List, Dict, Optional, Tuple
 import numpy as np
 from tdw.controller import Controller
@@ -6,6 +7,16 @@ from tdw.add_ons.proc_gen_objects import ProcGenObjects
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
 from tdw.librarian import ModelRecord
+from tdw.add_ons.occupancy_map import OccupancyMap
+
+
+class _GenerationState(Enum):
+    getting_scene_bounds = 1
+    adding_initial_objects = 2
+    getting_initial_occupancy_map = 3
+    adding_secondary_objects = 4
+    getting_final_occupancy_map = 5
+    setting_kinematic_states = 6
 
 
 class ProcGenKitchen(ProcGenObjects):
@@ -31,7 +42,9 @@ class ProcGenKitchen(ProcGenObjects):
                                                               1.81870043]}}
     # The shapes of the tables.
     _TABLE_SHAPES: Dict[str, List[str]] = {"two": ["metal_lab_table", "sm_table_white", "small_table_green_marble"],
-                                           "four": ["dining_room_table", "quatre_dining_table"]}
+                                           "four": ["dining_room_table", "enzo_industrial_loft_pine_metal_round_dining_table",
+                                                    "b03_restoration_hardware_pedestal_salvaged_round_tables",
+                                                    "b04_03_077", "b05_table_new"]}
     # The length of one side of the floating kitchen counter top.
     _KITCHEN_COUNTER_TOP_SIZE: float = 0.6096
     # The possible floor visual materials. Key = Material type. Value = A list of material names.
@@ -56,23 +69,40 @@ class ProcGenKitchen(ProcGenObjects):
                                                                                         {"r": 0.27621, "g": 0.4615875, "b": 0.594, "a": 1}],
                                                                  "plaster_ultra_fine_spray": [{"r": 1, "g": 1, "b": 1, "a": 1},
                                                                                               {"r": 0.7512034, "g": 0.794, "b": 0.677282, "a": 1}]}
+    _PROC_GEN_ROOM_WALL_DEPTH: float = 0.28
+    _STREAMED_SCENE_NAMES: List[str] = ["mm_craftroom_1a", "mm_craftroom_1b", "mm_craftroom_2a", "mm_craftroom_2b",
+                                        "mm_craftroom_3a", "mm_craftroom_3b", "mm_craftroom_4a", "mm_craftroom_4b",
+                                        "mm_kitchen_1a", "mm_kitchen_1b", "mm_kitchen_2a", "mm_kitchen_2b",
+                                        "mm_kitchen_3a", "mm_kitchen_3b", "mm_kitchen_4a", "mm_kitchen_4b"]
 
-    def __init__(self, random_seed: int = None, create_scene: bool = True, region: int = 0,
+    def __init__(self, random_seed: int = None, create_scene: str = None, region: int = 0,
                  region_size: Tuple[int, int] = None):
         """
         :param random_seed: The random seed. If None, the seed is random.
-        :param create_scene: If True, create a new scene with a single room and set the materials of the floor, walls, etc.
+        :param create_scene: Sets the procedural for creating the scene. If None, no scene will be created. If `"proc_gen_room"` a box-shaped room will be procedurally generated. If `"streamed_scene"` a random kitchen streamed scene will be selected.
         :param region: The ID of the kitchen region in the scene. If there is only one room, the ID is 0.
-        :param region_size: The size of the region (width, length) in meters. If None, the size is will be random. If `create_scene == False`, this is ignored.
+        :param region_size: The size of the region (width, length) in meters. If None, the size is will be random. If `create_scene != "proc_gen_room"`, this is ignored.
         """
         
         super().__init__(random_seed=random_seed)
         self._counter_top_material: str = ""
-        self._create_scene: bool = create_scene
+        self._create_scene: Optional[str] = create_scene
         self._region: int = region
         self._region_size: Optional[Tuple[int, int]] = region_size
+        if self._create_scene is not None and self._create_scene == "proc_gen_room":
+            self._wall_depth: float = ProcGenKitchen._PROC_GEN_ROOM_WALL_DEPTH
+        else:
+            self._wall_depth = 0
+        """:field
+        If True, the scene is still being generated. This will remain True for several `communicate()` calls.
+        """
+        self.generating: bool = True
+        self._state: _GenerationState = _GenerationState.getting_scene_bounds
+        self._occupancy_map: OccupancyMap = OccupancyMap()
 
     def get_initialization_commands(self) -> List[dict]:
+        self.generating = True
+        self._occupancy_map = OccupancyMap()
         # Set the wood type and counter top visual material.
         kitchen_counter_wood_type = self.rng.choice(["white_wood", "wood_beach_honey"])
         kitchen_counters = ProcGenObjects.MODEL_CATEGORIES["kitchen_counter"]
@@ -83,7 +113,10 @@ class ProcGenKitchen(ProcGenObjects):
             self._counter_top_material = "granite_beige_french"
         else:
             self._counter_top_material = "granite_black"
-        if self._create_scene:
+        if self._create_scene is None:
+            return super().get_initialization_commands()
+        # Create a random box-shaped room.
+        elif self._create_scene == "proc_gen_room":
             # Explicitly set the size of the room.
             if self._region_size is not None:
                 commands = [TDWUtils.create_empty_room(self._region_size[0], self._region_size[1])]
@@ -100,10 +133,31 @@ class ProcGenKitchen(ProcGenObjects):
             # Add the other commands.
             commands.extend(super().get_initialization_commands())
             return commands
-        else:
-            return super().get_initialization_commands()
+        # Add a random mm_kitchen scene.
+        elif self._create_scene == "streamed_scene":
+            scene_name: str = ProcGenKitchen._STREAMED_SCENE_NAMES[self.rng.randint(0, len(ProcGenKitchen._STREAMED_SCENE_NAMES))]
+            commands = [Controller.get_add_scene(scene_name=scene_name)]
+            commands.extend(super().get_initialization_commands())
+            return commands
 
-    def create(self) -> None:
+    def on_send(self, resp: List[bytes]) -> None:
+        super().on_send(resp=resp)
+        # Frame 1: If we got the scene bounds, add the initial objects.
+        if self._state == _GenerationState.getting_scene_bounds and self.scene_bounds is not None:
+            self._state = _GenerationState.adding_initial_objects
+            self._add_initial_objects()
+        # Frame 2: We added the objects. Get an occupancy map.
+        elif self._state == _GenerationState.adding_initial_objects:
+            self._state = _GenerationState.getting_initial_occupancy_map
+            self._occupancy_map.initialized = True
+            self._occupancy_map.scene_bounds = self.scene_bounds
+            self._occupancy_map.generate()
+        # Frame 3: We got the initial occupancy map. Add secondary objects.
+        elif self._state == _GenerationState.getting_initial_occupancy_map:
+            # Set the occupancy map.
+            self._occupancy_map.on_send(resp=resp)
+
+    def _add_initial_objects(self) -> None:
         """
         Create the kitchen. Add kitchen appliances, counter tops, etc. and a table. Objects will be placed on surfaces.
         """
@@ -113,7 +167,7 @@ class ProcGenKitchen(ProcGenObjects):
         # Add the table.
         self._add_table(used_walls=used_walls)
         # Set the wall and floor.
-        if self._create_scene:
+        if self._create_scene == "proc_gen_room":
             self._set_room_visual_materials()
 
     def _add_table(self, used_walls: List[CardinalDirection], table_settings: bool = True,
@@ -734,8 +788,8 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         room = self.scene_bounds.rooms[self._region]
-        x = (room.x_max - room.x_min) - ProcGenObjects._WALL_DEPTH * 2
-        z = (room.z_max - room.z_min) - ProcGenObjects._WALL_DEPTH * 2
+        x = (room.x_max - room.x_min) - self._wall_depth * 2
+        z = (room.z_max - room.z_min) - self._wall_depth * 2
         if x < z:
             return [CardinalDirection.west, CardinalDirection.east], z
         else:
@@ -747,8 +801,8 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         room = self.scene_bounds.rooms[self._region]
-        x = (room.x_max - room.x_min) - ProcGenObjects._WALL_DEPTH * 2
-        z = (room.z_max - room.z_min) - ProcGenObjects._WALL_DEPTH * 2
+        x = (room.x_max - room.x_min) - self._wall_depth * 2
+        z = (room.z_max - room.z_min) - self._wall_depth * 2
         if x > z:
             return [CardinalDirection.west, CardinalDirection.east], z
         else:
@@ -781,21 +835,21 @@ class ProcGenKitchen(ProcGenObjects):
         room = self.scene_bounds.rooms[self._region]
         s = ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 4
         if corner == OrdinalDirection.northwest:
-            return {"x": room.x_min + ProcGenObjects._WALL_DEPTH + s,
+            return {"x": room.x_min + self._wall_depth + s,
                     "y": 0,
-                    "z": room.z_max - ProcGenObjects._WALL_DEPTH - s}
+                    "z": room.z_max - self._wall_depth - s}
         elif corner == OrdinalDirection.northeast:
-            return {"x": room.x_max - ProcGenObjects._WALL_DEPTH - s,
+            return {"x": room.x_max - self._wall_depth - s,
                     "y": 0,
-                    "z": room.z_max - ProcGenObjects._WALL_DEPTH - s}
+                    "z": room.z_max - self._wall_depth - s}
         elif corner == OrdinalDirection.southwest:
-            return {"x": room.x_min + ProcGenObjects._WALL_DEPTH + s,
+            return {"x": room.x_min + self._wall_depth + s,
                     "y": 0,
-                    "z": room.z_min + ProcGenObjects._WALL_DEPTH + s}
+                    "z": room.z_min + self._wall_depth + s}
         elif corner == OrdinalDirection.southeast:
-            return {"x": room.x_max - ProcGenObjects._WALL_DEPTH - s,
+            return {"x": room.x_max - self._wall_depth - s,
                     "y": 0,
-                    "z": room.z_min + ProcGenObjects._WALL_DEPTH + s}
+                    "z": room.z_min + self._wall_depth + s}
         else:
             raise Exception(corner)
 

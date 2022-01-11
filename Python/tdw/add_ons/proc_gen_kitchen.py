@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import List, Dict, Optional, Tuple
 import numpy as np
+from scipy.signal import convolve2d
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.proc_gen_objects import ProcGenObjects
@@ -8,6 +9,7 @@ from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
 from tdw.librarian import ModelRecord
 from tdw.add_ons.occupancy_map import OccupancyMap
+from tdw.add_ons.kinematic_composite_objects import KinematicCompositeObjects
 
 
 class _GenerationState(Enum):
@@ -15,8 +17,9 @@ class _GenerationState(Enum):
     adding_initial_objects = 2
     getting_initial_occupancy_map = 3
     adding_secondary_objects = 4
-    getting_final_occupancy_map = 5
-    setting_kinematic_states = 6
+    setting_kinematic_states = 5
+    finishing = 6
+    done = 7
 
 
 class ProcGenKitchen(ProcGenObjects):
@@ -44,7 +47,7 @@ class ProcGenKitchen(ProcGenObjects):
     _TABLE_SHAPES: Dict[str, List[str]] = {"two": ["metal_lab_table", "sm_table_white", "small_table_green_marble"],
                                            "four": ["dining_room_table", "enzo_industrial_loft_pine_metal_round_dining_table",
                                                     "b03_restoration_hardware_pedestal_salvaged_round_tables",
-                                                    "b04_03_077", "b05_table_new"]}
+                                                    "b05_table_new"]}
     # The length of one side of the floating kitchen counter top.
     _KITCHEN_COUNTER_TOP_SIZE: float = 0.6096
     # The possible floor visual materials. Key = Material type. Value = A list of material names.
@@ -74,6 +77,7 @@ class ProcGenKitchen(ProcGenObjects):
                                         "mm_craftroom_3a", "mm_craftroom_3b", "mm_craftroom_4a", "mm_craftroom_4b",
                                         "mm_kitchen_1a", "mm_kitchen_1b", "mm_kitchen_2a", "mm_kitchen_2b",
                                         "mm_kitchen_3a", "mm_kitchen_3b", "mm_kitchen_4a", "mm_kitchen_4b"]
+    _SECONDARY_CATEGORIES: List[str] = ["floor_lamp", "side_table", "basket"]
 
     def __init__(self, random_seed: int = None, create_scene: str = None, region: int = 0,
                  region_size: Tuple[int, int] = None):
@@ -89,10 +93,7 @@ class ProcGenKitchen(ProcGenObjects):
         self._create_scene: Optional[str] = create_scene
         self._region: int = region
         self._region_size: Optional[Tuple[int, int]] = region_size
-        if self._create_scene is not None and self._create_scene == "proc_gen_room":
-            self._wall_depth: float = ProcGenKitchen._PROC_GEN_ROOM_WALL_DEPTH
-        else:
-            self._wall_depth = 0
+        self._wall_depth: float = ProcGenKitchen._PROC_GEN_ROOM_WALL_DEPTH
         """:field
         If True, the scene is still being generated. This will remain True for several `communicate()` calls.
         """
@@ -102,6 +103,7 @@ class ProcGenKitchen(ProcGenObjects):
 
     def get_initialization_commands(self) -> List[dict]:
         self.generating = True
+        self._state = _GenerationState.getting_scene_bounds
         self._occupancy_map = OccupancyMap()
         # Set the wood type and counter top visual material.
         kitchen_counter_wood_type = self.rng.choice(["white_wood", "wood_beach_honey"])
@@ -152,10 +154,31 @@ class ProcGenKitchen(ProcGenObjects):
             self._occupancy_map.initialized = True
             self._occupancy_map.scene_bounds = self.scene_bounds
             self._occupancy_map.generate()
+            self.commands.extend(self._occupancy_map.commands)
         # Frame 3: We got the initial occupancy map. Add secondary objects.
         elif self._state == _GenerationState.getting_initial_occupancy_map:
             # Set the occupancy map.
             self._occupancy_map.on_send(resp=resp)
+            self._add_secondary_objects()
+            # Get the final occupancy map.
+            self._state = _GenerationState.setting_kinematic_states
+            self._occupancy_map.generate()
+            self.commands.extend(self._occupancy_map.commands)
+            # Request static object data.
+            self.commands.append({"$type": "send_composite_objects",
+                                  "frequency": "once"})
+        # Frame 4: Set the correct kinematic state of composite sub-objects.
+        elif self._state == _GenerationState.setting_kinematic_states:
+            # Make joints non-kinematic.
+            kinematic_composite_objects = KinematicCompositeObjects()
+            kinematic_composite_objects.initialized = True
+            kinematic_composite_objects.on_send(resp=resp)
+            self.commands.extend(kinematic_composite_objects.commands)
+            self._state = _GenerationState.finishing
+        # Frame 5: We're done.
+        elif self._state == _GenerationState.finishing:
+            self.generating = False
+            self._state = _GenerationState.done
 
     def _add_initial_objects(self) -> None:
         """
@@ -608,7 +631,7 @@ class ProcGenKitchen(ProcGenObjects):
             size = (extents[2], extents[0])
         else:
             size = (extents[0], extents[2])
-        self._add_kitchen_counter_top(position=position, size=size)
+        self._add_kitchen_counter_top(position={k: v for k, v in position.items()}, size=size)
 
     def _add_stove(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection) -> None:
         """
@@ -622,13 +645,13 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         if face_away_from == CardinalDirection.north:
-            rotation: int = 270
+            rotation: int = 90
         elif face_away_from == CardinalDirection.south:
-            rotation = 90
+            rotation = 270
         elif face_away_from == CardinalDirection.west:
-            rotation = 0
-        elif face_away_from == CardinalDirection.east:
             rotation = 180
+        elif face_away_from == CardinalDirection.east:
+            rotation = 0
         else:
             raise Exception(face_away_from)
         return self.add_object_with_other_objects_on_top(record=record,
@@ -1112,3 +1135,64 @@ class ProcGenKitchen(ProcGenObjects):
                                "scale": {"x": 0.5, "y": 1.5}},
                               {"$type": "set_proc_gen_walls_color",
                                "color": wall_color}])
+
+    def _add_secondary_objects(self) -> None:
+        # Get the unoccupied edges of the occupancy map.
+        # Source: https://stackoverflow.com/a/41202798
+        k = np.ones((3, 3), dtype=int)
+        q = convolve2d(self._occupancy_map.occupancy_map, k, 'same') < 0
+        self._occupancy_map.occupancy_map[(q == True) & (self._occupancy_map.occupancy_map == 0)] = 9
+        positions: List[Tuple[float, float]] = list()
+        for ix, iy in np.ndindex(self._occupancy_map.occupancy_map.shape):
+            x, z = self._occupancy_map.get_occupancy_position(ix, iy)
+            if self._occupancy_map.occupancy_map[ix][iy] == 9 and self._occupancy_map.scene_bounds.rooms[self._region].is_inside(x, z):
+                positions.append((x, z))
+        for position in positions:
+            p = {"x": position[0] + self.rng.uniform(-0.05, 0.05),
+                 "y": 0,
+                 "z": position[1] + self.rng.uniform(-0.05, 0.05)}
+            # Skip most of the positions.
+            if self.rng.random() > 0.125:
+                continue
+            # Choose a random category.
+            category = ProcGenKitchen._SECONDARY_CATEGORIES[self.rng.randint(0, len(ProcGenKitchen._SECONDARY_CATEGORIES))]
+            if category == "side_table":
+                if self.rng.random() < 0.5:
+                    rotation = 90
+                else:
+                    rotation = 0
+            else:
+                rotation = self.rng.uniform(0, 360)
+            model_name = ProcGenObjects.MODEL_CATEGORIES[category][
+                self.rng.randint(0, len(ProcGenObjects.MODEL_CATEGORIES[category]))]
+            record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+            if not self.model_fits_in_region(record=record, position=p):
+                continue
+            self.commands.extend(Controller.get_add_physics_object(model_name=model_name,
+                                                                   object_id=Controller.get_unique_id(),
+                                                                   position=p,
+                                                                   rotation={"x": 0, "y": rotation, "z": 0},
+                                                                   library="models_core.json",
+                                                                   kinematic=True))
+            # Add items in the basket.
+            if category == "basket":
+                extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
+                d = extents[0] if extents[0] < extents[2] else extents[2]
+                d *= 0.6
+                r = d / 2
+                y = extents[1]
+                model_names = ["vase_02", "jug04", "jug05"]
+                for i in range(2, self.rng.randint(4, 6)):
+                    model_name = model_names[self.rng.randint(0, len(model_names))]
+                    q = TDWUtils.get_random_point_in_circle(center=np.array([p["x"], y, p["z"]]),
+                                                            radius=r)
+                    q[1] = y
+                    self.commands.extend(Controller.get_add_physics_object(model_name=model_name,
+                                                                           object_id=Controller.get_unique_id(),
+                                                                           position=TDWUtils.array_to_vector3(q),
+                                                                           rotation={"x": float(self.rng.uniform(0, 360)),
+                                                                                     "y": float(self.rng.uniform(0, 360)),
+                                                                                     "z": float(self.rng.uniform(0, 360))},
+                                                                           library="models_core.json",
+                                                                           scale_factor={"x": 0.5, "y": 0.5, "z": 0.5}))
+                    y += 0.25

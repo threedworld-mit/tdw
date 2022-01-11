@@ -21,9 +21,7 @@
     "basket_18inx18inx12iin_bamboo",
     "basket_18inx18inx12iin_plastic_lattice",
     "basket_18inx18inx12iin_wicker",
-    "basket_18inx18inx12iin_wood_mesh",
-    "large_mesh_basket",
-    "trashbin"
+    "basket_18inx18inx12iin_wood_mesh"
   ],
   "book": [
     "cgaxis_models_65_06_vray",
@@ -172,7 +170,6 @@
     "sm_table_white",
     "small_table_green_marble",
     "b03_restoration_hardware_pedestal_salvaged_round_tables",
-    "b04_03_077",
     "b05_table_new"
   ],
   "knife": [
@@ -263,6 +260,13 @@
     "5ft_wood_shelving",
     "6ft_shelf_metal",
     "6ft_wood_shelving"
+  ],
+  "side_table": [
+    "b04_03_077",
+    "de_castelli_placas_table",
+    "lg_table_marble_green",
+    "lg_table_white",
+    "side_table_wood"
   ],
   "sink": [
     "cabinet_24_white_wood"

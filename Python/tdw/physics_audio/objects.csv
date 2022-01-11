@@ -161,7 +161,7 @@ vk0060_dessertspoon,0.6,0.2,metal,models_core.json,0.6,0.65,3
 5ft_shelf_metal,0.2,25,metal,models_core.json,0.6,0.65,4
 arco_lamp,1,2,metal,models_core.json,0.35,0.65,4
 dishwasher_4,0.01,300,metal,models_core.json,0.35,0.65,4
-gas_stove,0.01,400,metal,models_full.json,0.35,0.65,4
+gas_stove,0.01,400,metal,models_core.json,0.35,0.65,4
 metal_lab_shelf,0.02,330,metal,models_core.json,0.35,0.65,4
 pot,0.2,12,metal,models_core.json,0.625,0.65,4
 round_bowl_large_metal_perf,0.02,5,metal,models_core.json,0.5,0.65,4

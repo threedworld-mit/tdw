@@ -5263,6 +5263,204 @@
             "wcategory": "jug",
             "wnid": "n03603722"
         },
+        "b03_restoration_hardware_pedestal_salvaged_round_tables": {
+            "asset_bundle_sizes": {
+                "Darwin": 11288525,
+                "Linux": 11460691,
+                "Windows": 11152565
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.788139e-07,
+                    "y": 0.3808053,
+                    "z": -0.61
+                },
+                "bottom": {
+                    "x": 1.788139e-07,
+                    "y": -5.960464e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 1.788139e-07,
+                    "y": 0.3808053,
+                    "z": 0
+                },
+                "front": {
+                    "x": 1.788139e-07,
+                    "y": 0.3808054,
+                    "z": 0.61
+                },
+                "left": {
+                    "x": -0.61,
+                    "y": 0.3808053,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.6100003,
+                    "y": 0.3808053,
+                    "z": 0
+                },
+                "top": {
+                    "x": 1.788139e-07,
+                    "y": 0.7616107,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_restoration_hardware_pedestal_salvaged_round_tables",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Cylinder02"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Cylinder03"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Cylinder04"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Cylinder05"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Cylinder06"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Cylinder07"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Cylinder08"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Cylinder09"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Floor_Object01"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Floor_Object02"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Floor_Object03"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Floor_Object04"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Line01"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Line03"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Line09"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Line10"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Line11"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Line12"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Line13"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Rectangle01"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Rectangle02"
+                },
+                {
+                    "materials": [
+                        "Material_2125640947"
+                    ],
+                    "name": "Rectangle03"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_restoration_hardware_pedestal_salvaged_round_tables",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_restoration_hardware_pedestal_salvaged_round_tables",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_restoration_hardware_pedestal_salvaged_round_tables"
+            },
+            "volume": 0.1324361264705658,
+            "wcategory": "dining table",
+            "wnid": "n03201208"
+        },
         "b03_roller_skate": {
             "asset_bundle_sizes": {
                 "Darwin": 10924085,
@@ -5480,6 +5678,153 @@
             "volume": 1.8397153326077387e-05,
             "wcategory": "toothbrush",
             "wnid": "n04453156"
+        },
+        "b04_03_077": {
+            "asset_bundle_sizes": {
+                "Darwin": 559150,
+                "Linux": 715420,
+                "Windows": 412210
+            },
+            "bounds": {
+                "back": {
+                    "x": -5.960464e-08,
+                    "y": 0.305,
+                    "z": -0.4
+                },
+                "bottom": {
+                    "x": -5.960464e-08,
+                    "y": -5.960464e-08,
+                    "z": -5.960464e-08
+                },
+                "center": {
+                    "x": -5.960464e-08,
+                    "y": 0.305,
+                    "z": -5.960464e-08
+                },
+                "front": {
+                    "x": -5.960464e-08,
+                    "y": 0.305,
+                    "z": 0.3999999
+                },
+                "left": {
+                    "x": -0.4,
+                    "y": 0.305,
+                    "z": -5.960464e-08
+                },
+                "right": {
+                    "x": 0.3999999,
+                    "y": 0.305,
+                    "z": -5.960464e-08
+                },
+                "top": {
+                    "x": -5.960464e-08,
+                    "y": 0.6100001,
+                    "z": -5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_03_077",
+            "physics_quality": 0.26118466942092805,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_782",
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b04_03_077"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_03_077",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_03_077",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_03_077"
+            },
+            "volume": 0.016556253656744957,
+            "wcategory": "dining table",
+            "wnid": "n03201208"
+        },
+        "b04_11_02_041": {
+            "asset_bundle_sizes": {
+                "Darwin": 2280011,
+                "Linux": 2674269,
+                "Windows": 1999191
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.192093e-07,
+                    "y": 0.6150362,
+                    "z": -0.2608439
+                },
+                "bottom": {
+                    "x": -1.192093e-07,
+                    "y": 0,
+                    "z": -2.980232e-08
+                },
+                "center": {
+                    "x": -1.192093e-07,
+                    "y": 0.6150362,
+                    "z": -2.980232e-08
+                },
+                "front": {
+                    "x": -1.192093e-07,
+                    "y": 0.6150362,
+                    "z": 0.2608439
+                },
+                "left": {
+                    "x": -0.2608439,
+                    "y": 0.6150362,
+                    "z": -2.980232e-08
+                },
+                "right": {
+                    "x": 0.2608437,
+                    "y": 0.6150362,
+                    "z": -2.980232e-08
+                },
+                "top": {
+                    "x": -1.192093e-07,
+                    "y": 1.230072,
+                    "z": -2.980232e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_11_02_041",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_681",
+                        "plastic_vinyl_glossy_orange",
+                        "aluminium_brushed"
+                    ],
+                    "name": "B04_11_02_041"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_11_02_041",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_11_02_041",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_11_02_041"
+            },
+            "volume": 0.12581215798854828,
+            "wcategory": "floor lamp",
+            "wnid": "n03367059"
         },
         "b04_3d_jar_180_gr_01": {
             "asset_bundle_sizes": {
@@ -7151,6 +7496,80 @@
             "volume": 0.0008168190834112465,
             "wcategory": "jar",
             "wnid": "n03593526"
+        },
+        "b04_kevin_reilly_pattern_floor_lamp": {
+            "asset_bundle_sizes": {
+                "Darwin": 25441437,
+                "Linux": 25697885,
+                "Windows": 25231480
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.8190006,
+                    "z": -0.2436779
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.8190006,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.8190006,
+                    "z": 0.2436779
+                },
+                "left": {
+                    "x": -0.2437276,
+                    "y": 0.8190006,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.2437276,
+                    "y": 0.8190006,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1.638001,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_kevin_reilly_pattern_floor_lamp",
+            "physics_quality": 0.8866289869168634,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Kevin_Reilly_Pattern_Floor_Lamp_mtl_1",
+                        "SolidTiles_Opaque",
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "B04_Kevin_Reilly_Pattern_Floor_Lamp"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_kevin_reilly_pattern_floor_lamp",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_kevin_reilly_pattern_floor_lamp",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_kevin_reilly_pattern_floor_lamp"
+            },
+            "volume": 0.017646554857492447,
+            "wcategory": "floor lamp",
+            "wnid": "n03367059"
         },
         "b04_lighter": {
             "asset_bundle_sizes": {
@@ -22790,6 +23209,80 @@
             "wcategory": "gas cooker",
             "wnid": "n03425595"
         },
+        "duncan_floor_lamp_crate_and_barrel": {
+            "asset_bundle_sizes": {
+                "Darwin": 6213058,
+                "Linux": 6610497,
+                "Windows": 5932553
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.7528091,
+                    "z": -0.1718643
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -0.0004142821
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.7528091,
+                    "z": -0.0004142821
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.7528091,
+                    "z": 0.1710357
+                },
+                "left": {
+                    "x": -0.2329357,
+                    "y": 0.7528091,
+                    "z": -0.0004142821
+                },
+                "right": {
+                    "x": 0.2329357,
+                    "y": 0.7528091,
+                    "z": -0.0004142821
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1.505618,
+                    "z": -0.0004142821
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "duncan_floor_lamp_crate_and_barrel",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "canvas_beige_2sided",
+                        "rubber_black",
+                        "steel_brushed"
+                    ],
+                    "name": "DUNCAN_FLOOR_LAMP_CRATE_AND_BARREL"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/duncan_floor_lamp_crate_and_barrel",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/duncan_floor_lamp_crate_and_barrel",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/duncan_floor_lamp_crate_and_barrel"
+            },
+            "volume": 0.020052483305335045,
+            "wcategory": "floor lamp",
+            "wnid": "n03367059"
+        },
         "easter4": {
             "asset_bundle_sizes": {
                 "Darwin": 2573811,
@@ -27265,6 +27758,408 @@
             "wcategory": "painting",
             "wnid": "n00609236"
         },
+        "gas_stove": {
+            "asset_bundle_sizes": {
+                "Darwin": 6954522,
+                "Linux": 7227199,
+                "Windows": 6712470
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.02231109,
+                    "y": 0.4397311,
+                    "z": -0.486932
+                },
+                "bottom": {
+                    "x": -0.02231109,
+                    "y": 0,
+                    "z": 0.0130682
+                },
+                "center": {
+                    "x": -0.02231109,
+                    "y": 0.4397311,
+                    "z": 0.0130682
+                },
+                "front": {
+                    "x": -0.02231109,
+                    "y": 0.4397311,
+                    "z": 0.5130684
+                },
+                "left": {
+                    "x": -0.353299,
+                    "y": 0.4397311,
+                    "z": 0.0130682
+                },
+                "right": {
+                    "x": 0.3086768,
+                    "y": 0.4397311,
+                    "z": 0.0130682
+                },
+                "top": {
+                    "x": -0.02231109,
+                    "y": 0.8794622,
+                    "z": 0.0130682
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 90.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "gas_stove",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_007"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_008"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_017"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_120"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_121"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_ruchki"
+                    ],
+                    "name": "SieMatic_Classic_123"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_124"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_127"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Hrom"
+                    ],
+                    "name": "SieMatic_Classic_128"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_129"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Hrom"
+                    ],
+                    "name": "SieMatic_Classic_130"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_131"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_132"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_ruchki"
+                    ],
+                    "name": "SieMatic_Classic_133"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_134"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_135"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_steklo"
+                    ],
+                    "name": "SieMatic_Classic_136"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_ruchki"
+                    ],
+                    "name": "SieMatic_Classic_137"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_138"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_139"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_140"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_151"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_poverhnost'"
+                    ],
+                    "name": "SieMatic_Classic_152"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_160"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_ruchki"
+                    ],
+                    "name": "SieMatic_Classic_161"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_191"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Display_plita"
+                    ],
+                    "name": "SieMatic_Classic_193"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_194"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_195"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_111"
+                    ],
+                    "name": "SieMatic_Classic_196"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_197"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_198"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_199"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Mebel'"
+                    ],
+                    "name": "SieMatic_Classic_200"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Mebel'"
+                    ],
+                    "name": "SieMatic_Classic_201"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_203"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_207"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_ruchki"
+                    ],
+                    "name": "SieMatic_Classic_208"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_209"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_210"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_232"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_ruchki"
+                    ],
+                    "name": "SieMatic_Classic_233"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_235"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_236"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_238"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_239"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_steklo"
+                    ],
+                    "name": "SieMatic_Classic_240"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_256"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_ruchki"
+                    ],
+                    "name": "SieMatic_Classic_257"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_258"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Hrom"
+                    ],
+                    "name": "SieMatic_Classic_259"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_260"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Hrom"
+                    ],
+                    "name": "SieMatic_Classic_261"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Reshetka_Plita"
+                    ],
+                    "name": "SieMatic_Classic_263"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_ruchki"
+                    ],
+                    "name": "SieMatic_Classic_269"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova"
+                    ],
+                    "name": "SieMatic_Classic_270"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/gas_stove",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/gas_stove",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/gas_stove"
+            },
+            "volume": 0.4864041805267334,
+            "wcategory": "gas cooker",
+            "wnid": "n03425595"
+        },
         "generic_toothbrush_001": {
             "asset_bundle_sizes": {
                 "Darwin": 737485,
@@ -31181,6 +32076,90 @@
             "volume": 0.03197437524795532,
             "wcategory": "chair",
             "wnid": "n03001627"
+        },
+        "large_mesh_basket": {
+            "asset_bundle_sizes": {
+                "Darwin": 10584048,
+                "Linux": 10723978,
+                "Windows": 10432704
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.490116e-08,
+                    "y": 0.1937284,
+                    "z": -0.1355821
+                },
+                "bottom": {
+                    "x": -1.490116e-08,
+                    "y": 0,
+                    "z": -2.980232e-08
+                },
+                "center": {
+                    "x": -1.490116e-08,
+                    "y": 0.1937284,
+                    "z": -2.980232e-08
+                },
+                "front": {
+                    "x": -1.490116e-08,
+                    "y": 0.1937284,
+                    "z": 0.135582
+                },
+                "left": {
+                    "x": -0.1588941,
+                    "y": 0.1937284,
+                    "z": -2.980232e-08
+                },
+                "right": {
+                    "x": 0.158894,
+                    "y": 0.1937284,
+                    "z": -2.980232e-08
+                },
+                "top": {
+                    "x": -1.490116e-08,
+                    "y": 0.3874567,
+                    "z": -2.980232e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "large_mesh_basket",
+            "physics_quality": 0.7361752711199502,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Indigo"
+                    ],
+                    "name": "Line011"
+                },
+                {
+                    "materials": [
+                        "Indigo"
+                    ],
+                    "name": "Line012"
+                },
+                {
+                    "materials": [
+                        "Indigo"
+                    ],
+                    "name": "Plane006"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/large_mesh_basket",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/large_mesh_basket",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/large_mesh_basket"
+            },
+            "volume": 0.0039747897535562515,
+            "wcategory": "basket",
+            "wnid": "n02801938"
         },
         "lawnmower": {
             "asset_bundle_sizes": {
@@ -44469,6 +45448,78 @@
             "volume": 0.07273335009813309,
             "wcategory": "coffee table, cocktail table",
             "wnid": "n03063968"
+        },
+        "trashbin": {
+            "asset_bundle_sizes": {
+                "Darwin": 3464267,
+                "Linux": 3525700,
+                "Windows": 3452384
+            },
+            "bounds": {
+                "back": {
+                    "x": -5.960464e-08,
+                    "y": 0.1773433,
+                    "z": -0.1510236
+                },
+                "bottom": {
+                    "x": -5.960464e-08,
+                    "y": -2.980232e-08,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": -5.960464e-08,
+                    "y": 0.1773433,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": -5.960464e-08,
+                    "y": 0.1773433,
+                    "z": 0.1510236
+                },
+                "left": {
+                    "x": -0.1510237,
+                    "y": 0.1773433,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.1510236,
+                    "y": 0.1773433,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": -5.960464e-08,
+                    "y": 0.3546866,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "trashbin",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "trashBin"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/trashbin",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/trashbin",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/trashbin"
+            },
+            "volume": 0.011639025062322617,
+            "wcategory": "basket",
+            "wnid": "n02801938"
         },
         "tray_02": {
             "asset_bundle_sizes": {

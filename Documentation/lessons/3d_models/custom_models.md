@@ -65,9 +65,9 @@ If you installed Unity Editor via Unity Hub, `AssetBundleCreator` should be able
 If the Unity Editor executable is in an unexpected location, you will need to explicitly set its location in the `AssetBundleCreator` by setting the optional `unity_editor_path` parameter:
 
 ```python
-from tdw.asset_bundle_creator import AssetBundleCreatorBase
+from tdw.asset_bundle_creator import AssetBundleCreator
 
-a = AssetBundleCreatorBase(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
+a = AssetBundleCreator(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
 ```
 
 ### Intermediate API calls

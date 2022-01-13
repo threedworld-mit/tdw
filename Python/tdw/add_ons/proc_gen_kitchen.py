@@ -53,6 +53,14 @@ class ProcGenKitchen(ProcGenObjects):
     A list of streamed scene names.
     """
     STREAMED_SCENES: List[str] = Path(resource_filename(__name__, "proc_gen_kitchen_data/streamed_scenes.txt")).read_text().split("\n")
+    """:class_var
+    The y value (height) of the wall cabinets.
+    """
+    WALL_CABINET_Y: float = 1.289581
+    """:class_var
+    Dictionary: The name of a kitchen counter model, and its corresponding wall cabinet.
+    """
+    COUNTERS_AND_CABINETS: Dict[str, str] = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/counters_and_cabinets.json")).read_text())
 
     def __init__(self, random_seed: int = None, region: int = None):
         """
@@ -95,7 +103,6 @@ class ProcGenKitchen(ProcGenObjects):
         else:
             self._counter_top_material = "granite_black"
         self.scene_name = ProcGenKitchen.STREAMED_SCENES[self.rng.randint(0, len(ProcGenKitchen.STREAMED_SCENES))]
-        self.scene_name = "mm_craftroom_4a"
         commands = [Controller.get_add_scene(scene_name=self.scene_name)]
         commands.extend(super().get_initialization_commands())
         return commands
@@ -111,11 +118,8 @@ class ProcGenKitchen(ProcGenObjects):
         # Parse the raycast data and add the initial objects.
         elif self._state == _GenerationState.raycasting_scene_bounds:
             self._get_continuous_walls_and_windows_and_add_initial_objects(resp=resp)
-        # Add secondary objects.d
+        # Add secondary objects.
         elif self._state == _GenerationState.adding_initial_objects:
-            self._add_secondary_objects(resp=resp)
-        #  Add secondary objects.
-        elif self._state == _GenerationState.getting_initial_occupancy_map:
             self._add_secondary_objects(resp=resp)
         # Set the correct kinematic state of composite sub-objects.
         elif self._state == _GenerationState.setting_kinematic_states:
@@ -427,7 +431,7 @@ class ProcGenKitchen(ProcGenObjects):
             spoons = ProcGenObjects.MODEL_CATEGORIES["spoon"]
             spoon_model_name = spoons[self.rng.randint(0, len(spoons))]
         if centerpiece_model_name is None:
-            centerpiece_categories = ["jug", "vase", "pot", "bowl", "pan"]
+            centerpiece_categories = ["jug", "vase", "bowl"]
             centerpiece_category = centerpiece_categories[self.rng.randint(0, len(centerpiece_categories))]
             centerpieces = ProcGenObjects.MODEL_CATEGORIES[centerpiece_category]
             centerpiece_model_name = centerpieces[self.rng.randint(0, len(centerpieces))]
@@ -742,10 +746,21 @@ class ProcGenKitchen(ProcGenObjects):
             raise Exception(face_away_from)
         # Add objects on the kitchen counter.
         if self.rng.random() < 0.5 or "microwave" in self._used_unique_categories:
-            return self.add_object_with_other_objects_on_top(record=record,
-                                                             position={k: v for k, v in position.items()},
-                                                             rotation=rotation,
-                                                             category="kitchen_counter")
+            self.add_object_with_other_objects_on_top(record=record,
+                                                      position={k: v for k, v in position.items()},
+                                                      rotation=rotation,
+                                                      category="kitchen_counter")
+            # Add a wall cabinet if one exists and there is no window here.
+            if record.name in ProcGenKitchen.COUNTERS_AND_CABINETS and self._walls_with_windows & face_away_from.value == 0:
+                self.commands.extend(Controller.get_add_physics_object(
+                    model_name=ProcGenKitchen.COUNTERS_AND_CABINETS[record.name],
+                    position={"x": position["x"],
+                              "y": ProcGenKitchen.WALL_CABINET_Y,
+                              "z": position["z"]},
+                    rotation={"x": 0, "y": rotation, "z": 0},
+                    object_id=Controller.get_unique_id(),
+                    library="models_core.json",
+                    kinematic=True))
         # Add a microwave on the kitchen counter.
         else:
             root_object_id = Controller.get_unique_id()

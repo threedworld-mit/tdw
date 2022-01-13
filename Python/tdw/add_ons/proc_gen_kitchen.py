@@ -13,18 +13,21 @@ from tdw.ordinal_direction import OrdinalDirection
 from tdw.librarian import ModelRecord
 from tdw.add_ons.occupancy_map import OccupancyMap
 from tdw.add_ons.kinematic_composite_objects import KinematicCompositeObjects
-from tdw.output_data import OutputData, Rigidbodies, Raycast
+from tdw.output_data import OutputData, Raycast
 
 
 class _GenerationState(Enum):
+    """
+    Enum values used to track the generation state.
+    """
+
     start = 0
     getting_raycast_occupancy_map = 1
     raycasting_scene_bounds = 2
     adding_initial_objects = 3
     adding_secondary_objects = 4
     setting_kinematic_states = 5
-    waiting_for_objects_to_stop_moving = 6
-    done = 7
+    done = 6
 
 
 class ProcGenKitchen(ProcGenObjects):
@@ -79,7 +82,10 @@ class ProcGenKitchen(ProcGenObjects):
         """
         self.generating: bool = True
         self._state: _GenerationState = _GenerationState.start
-        self._occupancy_map: OccupancyMap = OccupancyMap()
+        """:field
+        An [`OccupancyMap` add-on](occupancy_map.md). This can be used like any other occupancy map. It is used internally by `ProGenKitchen` while generating the scene. The 'final' values of the occupancy map reflect the scene when `self.generating` is set to `False` (i.e. when scene generation is complete). 
+        """
+        self.occupancy_map: OccupancyMap = OccupancyMap()
         self._non_continuous_walls: int = 0
         self._walls_with_windows: int = 0
         self._painting_positions: Dict[int, Dict[str, float]] = dict()
@@ -90,8 +96,8 @@ class ProcGenKitchen(ProcGenObjects):
         self._non_continuous_walls = 0
         self._walls_with_windows = 0
         self._painting_positions.clear()
-        self._occupancy_map = OccupancyMap()
-        self._occupancy_map.initialized = True
+        self.occupancy_map = OccupancyMap()
+        self.occupancy_map.initialized = True
         # Set the wood type and counter top visual material.
         kitchen_counter_wood_type = self.rng.choice(["white_wood", "wood_beach_honey"])
         kitchen_counters = ProcGenObjects.MODEL_CATEGORIES["kitchen_counter"]
@@ -124,29 +130,6 @@ class ProcGenKitchen(ProcGenObjects):
         # Set the correct kinematic state of composite sub-objects.
         elif self._state == _GenerationState.setting_kinematic_states:
             self._set_composite_object_kinematic_states(resp=resp)
-        # Wait for objects to stop moving.
-        elif self._state == _GenerationState.waiting_for_objects_to_stop_moving:
-            sleeping = True
-            for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i])
-                if r_id == "rigi":
-                    rigidbodies = Rigidbodies(resp[i])
-                    for j in range(rigidbodies.get_num()):
-                        if not rigidbodies.get_sleeping(j):
-                            sleeping = False
-                            break
-                    break
-            # Everything is done moving. Generation is complete.
-            if sleeping:
-                self.generating = False
-                self._state = _GenerationState.done
-                # Stop requesting Rigidbody data.
-                self.commands.append({"$type": "send_rigidbodies",
-                                      "frequency": "never"})
-            # Let the objects move.
-            else:
-                self.commands.append({"$type": "step_physics",
-                                      "frames": 50})
 
     def _get_raycast_occupancy_map(self) -> None:
         """
@@ -175,14 +158,14 @@ class ProcGenKitchen(ProcGenObjects):
         :param resp: The response from the build.
         """
 
-        self._occupancy_map.on_send(resp=resp)
+        self.occupancy_map.on_send(resp=resp)
         room = self.scene_bounds.rooms[self._region]
         # Iterate through the occupancy map positions.
-        for ix, iy in np.ndindex(self._occupancy_map.occupancy_map.shape):
+        for ix, iy in np.ndindex(self.occupancy_map.occupancy_map.shape):
             # Ignore any cell that is out of bounds.
-            if self._occupancy_map.occupancy_map[ix][iy] != 0:
+            if self.occupancy_map.occupancy_map[ix][iy] != 0:
                 continue
-            x, z = self._occupancy_map.get_occupancy_position(ix, iy)
+            x, z = self.occupancy_map.get_occupancy_position(ix, iy)
             # Ignore any cell that isn't in the room.
             if not room.is_inside(x, z):
                 continue
@@ -289,16 +272,17 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         # Set the occupancy map, which includes the initial objects.
-        self._occupancy_map.on_send(resp=resp)
+        self.occupancy_map.on_send(resp=resp)
         # Get the unoccupied edges of the occupancy map.
         # Source: https://stackoverflow.com/a/41202798
         k = np.ones((3, 3), dtype=int)
-        q = convolve2d(self._occupancy_map.occupancy_map, k, 'same') < 0
-        self._occupancy_map.occupancy_map[(q == True) & (self._occupancy_map.occupancy_map == 0)] = 9
+        q = convolve2d(self.occupancy_map.occupancy_map, k, 'same') < 0
+        # noinspection PyPep8
+        self.occupancy_map.occupancy_map[(q == True) & (self.occupancy_map.occupancy_map == 0)] = 9
         positions: List[Tuple[float, float]] = list()
-        for ix, iy in np.ndindex(self._occupancy_map.occupancy_map.shape):
-            x, z = self._occupancy_map.get_occupancy_position(ix, iy)
-            if self._occupancy_map.occupancy_map[ix][iy] == 9 and self._occupancy_map.scene_bounds.rooms[self._region].is_inside(x, z):
+        for ix, iy in np.ndindex(self.occupancy_map.occupancy_map.shape):
+            x, z = self.occupancy_map.get_occupancy_position(ix, iy)
+            if self.occupancy_map.occupancy_map[ix][iy] == 9 and self.occupancy_map.scene_bounds.rooms[self._region].is_inside(x, z):
                 positions.append((x, z))
         for position in positions:
             p = {"x": position[0] + self.rng.uniform(-0.05, 0.05),
@@ -364,17 +348,16 @@ class ProcGenKitchen(ProcGenObjects):
         :param resp: The response from the build.
         """
 
-        self._occupancy_map.on_send(resp=resp)
+        self.occupancy_map.on_send(resp=resp)
         # Make joints non-kinematic.
         kinematic_composite_objects = KinematicCompositeObjects()
         kinematic_composite_objects.initialized = True
         kinematic_composite_objects.on_send(resp=resp)
         self.commands.extend(kinematic_composite_objects.commands)
-        self._state = _GenerationState.waiting_for_objects_to_stop_moving
-        self.commands.extend([{"$type": "send_rigidbodies",
-                               "frequency": "always"},
-                              {"$type": "step_physics",
-                               "frames": 50}])
+        self._state = _GenerationState.done
+        self.commands.append({"$type": "step_physics",
+                              "frames": 100})
+        self.generating = False
 
     def _generate_occupancy_map(self, cell_size: float) -> None:
         """
@@ -383,11 +366,11 @@ class ProcGenKitchen(ProcGenObjects):
         :param cell_size: The cell size.
         """
 
-        self._occupancy_map = OccupancyMap(cell_size=cell_size)
-        self._occupancy_map.initialized = True
-        self._occupancy_map.scene_bounds = self.scene_bounds
-        self._occupancy_map.generate()
-        self.commands.extend(self._occupancy_map.commands)
+        self.occupancy_map = OccupancyMap(cell_size=cell_size)
+        self.occupancy_map.initialized = True
+        self.occupancy_map.scene_bounds = self.scene_bounds
+        self.occupancy_map.generate()
+        self.commands.extend(self.occupancy_map.commands)
 
     def _add_initial_objects(self) -> None:
         """
@@ -450,7 +433,7 @@ class ProcGenKitchen(ProcGenObjects):
             position["x"] -= offset_distance
         if CardinalDirection.west in used_walls:
             position["x"] += offset_distance
-        rotation = self.rng.uniform(-5, 5)
+        rotation = self.rng.uniform(-10, 10)
         # Add the table.
         root_object_id = Controller.get_unique_id()
         tables = ProcGenObjects.MODEL_CATEGORIES["kitchen_table"]
@@ -487,7 +470,7 @@ class ProcGenKitchen(ProcGenObjects):
             sides = ["left", "right", "front", "back"]
         # Add chairs on the shorter sides of the table.
         elif table_shape == "2":
-            sides = ["left", "right"]
+            sides = ["front", "back"]
         else:
             raise Exception(table_shape)
         for side in sides:
@@ -517,146 +500,14 @@ class ProcGenKitchen(ProcGenObjects):
         # Add table settings.
         if table_settings:
             for bound in sides:
-                table_bound_point = np.array([record.bounds[bound]["x"] + position["x"],
-                                              0,
-                                              record.bounds[bound]["z"] + position["z"]])
-                # Get a position for the plate.
-                # Get the vector towards the center.
-                v = np.array([position["x"], position["z"]]) - \
-                    np.array([table_bound_point[0], table_bound_point[2]])
-                # Get the normalized direction.
-                v = v / np.linalg.norm(v)
-                # Move the plates inward.
-                v *= float(self.rng.uniform(0.15, 0.2))
-                # Get a slightly perturbed position.
-                plate_position = np.array([float(table_bound_point[0] + v[0] + self.rng.uniform(-0.03, 0.03)),
-                                          top_arr[1],
-                                          float(table_bound_point[2] + v[1] + self.rng.uniform(-0.03, 0.03))])
-                # Add the plate.
-                object_id = Controller.get_unique_id()
-                child_object_ids.append(object_id)
-                self.commands.extend(Controller.get_add_physics_object(model_name=plate_model_name,
-                                                                       position=TDWUtils.array_to_vector3(plate_position),
-                                                                       object_id=object_id,
-                                                                       library="models_core.json"))
-                # Get the direction from the plate to the center.
-                v = np.array([position["x"], position["z"]]) - \
-                    np.array([plate_position[0], plate_position[2]])
-                v / np.linalg.norm(v)
-                # Get the positions of the fork, knife, and spoon.
-                q = v * self.rng.uniform(0.2, 0.3)
-                fork_position = np.array([plate_position[0] - q[1] + self.rng.uniform(-0.03, 0.03),
-                                          plate_position[1],
-                                          plate_position[2] + q[0] + self.rng.uniform(-0.03, 0.03)])
-                # Get the knife position.
-                q = v * self.rng.uniform(0.2, 0.3)
-                knife_position = np.array([plate_position[0] + q[1] + self.rng.uniform(-0.03, 0.03),
-                                           plate_position[1],
-                                           plate_position[2] - q[0] + self.rng.uniform(-0.03, 0.03)])
-                q = v * self.rng.uniform(0.3, 0.4)
-                spoon_position = np.array([plate_position[0] + q[1] + self.rng.uniform(-0.03, 0.03),
-                                           plate_position[1],
-                                           plate_position[2]])
-                # Get the rotation of the fork, knife, and spoon.
-                if bound == "left":
-                    rotation = 90
-                elif bound == "right":
-                    rotation = 270
-                elif bound == "front":
-                    rotation = 180
-                else:
-                    rotation = 0
-                # Add a fork.
-                object_id = Controller.get_unique_id()
-                child_object_ids.append(object_id)
-                self.commands.extend(Controller.get_add_physics_object(model_name=fork_model_name,
-                                                                       object_id=object_id,
-                                                                       position=TDWUtils.array_to_vector3(fork_position),
-                                                                       rotation={"x": 0,
-                                                                                 "y": rotation + float(self.rng.uniform(-15, 15)),
-                                                                                 "z": 0},
-                                                                       library="models_core.json"))
-                # Add a knife.
-                object_id = Controller.get_unique_id()
-                child_object_ids.append(object_id)
-                self.commands.extend(Controller.get_add_physics_object(model_name=knife_model_name,
-                                                                       object_id=object_id,
-                                                                       position=TDWUtils.array_to_vector3(knife_position),
-                                                                       rotation={"x": 0,
-                                                                                 "y": rotation + float(self.rng.uniform(-15, 15)),
-                                                                                 "z": 0},
-                                                                       library="models_core.json"))
-                # Add a spoon.
-                object_id = Controller.get_unique_id()
-                child_object_ids.append(object_id)
-                self.commands.extend(Controller.get_add_physics_object(model_name=spoon_model_name,
-                                                                       object_id=object_id,
-                                                                       position=TDWUtils.array_to_vector3(spoon_position),
-                                                                       rotation={"x": 0,
-                                                                                 "y": rotation + float(self.rng.uniform(-15, 15)),
-                                                                                 "z": 0},
-                                                                       library="models_core.json"))
-                # Add a cup.
-                if self.rng.random() > 0.33:
-                    # Get the position of the cup.
-                    q = v * self.rng.uniform(0.2, 0.3)
-                    r = v * self.rng.uniform(0.25, 0.3)
-                    cup_position = np.array([plate_position[0] + q[1] + r[0] + self.rng.uniform(-0.03, 0.03),
-                                             plate_position[1],
-                                             plate_position[2] - q[0] + r[1] + self.rng.uniform(-0.03, 0.03)])
-                    # Add a coaster.
-                    if self.rng.random() > 0.5:
-                        coasters = ProcGenObjects.MODEL_CATEGORIES["coaster"]
-                        coaster_model_name: str = coasters[self.rng.randint(0, len(coasters))]
-                        object_id = Controller.get_unique_id()
-                        child_object_ids.append(object_id)
-                        self.commands.extend(Controller.get_add_physics_object(model_name=coaster_model_name,
-                                                                               position=TDWUtils.array_to_vector3(cup_position),
-                                                                               rotation={"x": 0, "y": float(self.rng.randint(-25, 25)), "z": 0},
-                                                                               object_id=object_id,
-                                                                               library="models_core.json"))
-                        coaster_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(coaster_model_name)
-                        y = cup_position[1] + coaster_record.bounds["top"]["y"]
-                    else:
-                        y = cup_position[1]
-                    # Add a cup or wine glass.
-                    if self.rng.random() > 0.5:
-                        cup_category = "cup"
-                    else:
-                        cup_category = "wineglass"
-                    cups = ProcGenObjects.MODEL_CATEGORIES[cup_category]
-                    cup_model_name = cups[self.rng.randint(0, len(cups))]
-                    # Add the cup.
-                    object_id = Controller.get_unique_id()
-                    child_object_ids.append(object_id)
-                    self.commands.extend(Controller.get_add_physics_object(model_name=cup_model_name,
-                                                                           object_id=object_id,
-                                                                           position={"x": float(cup_position[0]),
-                                                                                     "y": y,
-                                                                                     "z": float(cup_position[2])},
-                                                                           rotation={"x": 0,
-                                                                                     "y": float(self.rng.uniform(0, 360)),
-                                                                                     "z": 0},
-                                                                           library="models_core.json"))
-                plate_height = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(plate_model_name).bounds["top"]["y"]
-                # Add food.
-                if self.rng.random() < 0.66:
-                    food_categories = ["apple", "banana", "chocolate", "orange", "sandwich"]
-                    food_category: str = food_categories[self.rng.randint(0, len(food_categories))]
-                    food = ProcGenObjects.MODEL_CATEGORIES[food_category]
-                    food_model_name = food[self.rng.randint(0, len(food))]
-                    food_position = [plate_position[0] + self.rng.uniform(-0.05, 0.05),
-                                     plate_position[1] + plate_height,
-                                     plate_position[2] + self.rng.uniform(-0.05, 0.05)]
-                    object_id = Controller.get_unique_id()
-                    child_object_ids.append(object_id)
-                    self.commands.extend(Controller.get_add_physics_object(model_name=food_model_name,
-                                                                           object_id=object_id,
-                                                                           position=TDWUtils.array_to_vector3(food_position),
-                                                                           rotation={"x": 0,
-                                                                                     "y": rotation + float(self.rng.uniform(0, 360)),
-                                                                                     "z": 0},
-                                                                           library="models_core.json"))
+                self._add_table_setting(position={"x": record.bounds[bound]["x"] + position["x"],
+                                                  "y": 0,
+                                                  "z": record.bounds[bound]["z"] + position["z"]},
+                                        table_top=top,
+                                        plate_model_name=plate_model_name,
+                                        fork_model_name=fork_model_name,
+                                        knife_model_name=knife_model_name,
+                                        spoon_model_name=spoon_model_name)
         # Add a centerpiece.
         if self.rng.random() < 0.75:
             object_id = Controller.get_unique_id()
@@ -744,19 +595,40 @@ class ProcGenKitchen(ProcGenObjects):
             rotation = 90
         else:
             raise Exception(face_away_from)
+        extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         # Add objects on the kitchen counter.
-        if self.rng.random() < 0.5 or "microwave" in self._used_unique_categories:
+        if extents[0] < 0.7 or "microwave" in self._used_unique_categories:
             self.add_object_with_other_objects_on_top(record=record,
                                                       position={k: v for k, v in position.items()},
                                                       rotation=rotation,
                                                       category="kitchen_counter")
             # Add a wall cabinet if one exists and there is no window here.
             if record.name in ProcGenKitchen.COUNTERS_AND_CABINETS and self._walls_with_windows & face_away_from.value == 0:
+                wall_cabinet_model_name = ProcGenKitchen.COUNTERS_AND_CABINETS[record.name]
+                wall_cabinet_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(wall_cabinet_model_name)
+                wall_cabinet_extents = TDWUtils.get_bounds_extents(bounds=wall_cabinet_record.bounds)
+                room = self.scene_bounds.rooms[self._region]
+                if face_away_from == CardinalDirection.north:
+                    wall_cabinet_position = {"x": position["x"],
+                                             "y": ProcGenKitchen.WALL_CABINET_Y,
+                                             "z": room.z_max - wall_cabinet_extents[2] / 2}
+                elif face_away_from == CardinalDirection.south:
+                    wall_cabinet_position = {"x": position["x"],
+                                             "y": ProcGenKitchen.WALL_CABINET_Y,
+                                             "z": room.z_min + wall_cabinet_extents[2] / 2}
+                elif face_away_from == CardinalDirection.west:
+                    wall_cabinet_position = {"x": room.x_max - wall_cabinet_extents[2] / 2,
+                                             "y": ProcGenKitchen.WALL_CABINET_Y,
+                                             "z": position["z"]}
+                elif face_away_from == CardinalDirection.east:
+                    wall_cabinet_position = {"x": room.x_min - wall_cabinet_extents[2] / 2,
+                                             "y": ProcGenKitchen.WALL_CABINET_Y,
+                                             "z": position["z"]}
+                else:
+                    raise Exception(face_away_from)
                 self.commands.extend(Controller.get_add_physics_object(
                     model_name=ProcGenKitchen.COUNTERS_AND_CABINETS[record.name],
-                    position={"x": position["x"],
-                              "y": ProcGenKitchen.WALL_CABINET_Y,
-                              "z": position["z"]},
+                    position=wall_cabinet_position,
                     rotation={"x": 0, "y": rotation, "z": 0},
                     object_id=Controller.get_unique_id(),
                     library="models_core.json",
@@ -1164,9 +1036,17 @@ class ProcGenKitchen(ProcGenObjects):
             if self._non_continuous_walls & w.value == 0:
                 longer_walls_ok = False
                 break
-        triangles = [self._add_straight_work_triangle, self._add_l_work_triangle, self._add_u_work_triangle]
+        triangles = [self._add_straight_work_triangle, self._add_l_work_triangle]
         if longer_walls_ok:
-            triangles.append(self._add_u_work_triangle)
+            triangles.append(self._add_parallel_work_triangle())
+        shorter_walls, length = self._get_shorter_walls()
+        shorter_walls_ok = True
+        for w in shorter_walls:
+            if self._non_continuous_walls & w.value == 0:
+                shorter_walls_ok = False
+                break
+        if shorter_walls_ok:
+            triangles.append(self._add_u_work_triangle())
         return self.rng.choice(triangles)()
 
     def _add_straight_work_triangle(self) -> List[CardinalDirection]:
@@ -1330,3 +1210,123 @@ class ProcGenKitchen(ProcGenObjects):
             return ws[0]
         else:
             return ws[self.rng.randint(0, len(ws))]
+
+    def _add_table_setting(self, position: Dict[str, float], table_top: Dict[str, float], plate_model_name: str,
+                           fork_model_name: str, knife_model_name: str, spoon_model_name: str) -> None:
+        """
+        Add a table setting at a table.
+
+        :param position: The bound point position. The plate position will be adjusted off of this.
+        :param table_top: The position of the top-center of the table.
+        :param plate_model_name: The model name of the plate.
+        :param fork_model_name: The model name of the fork.
+        :param knife_model_name: The model name of the knife.
+        :param spoon_model_name: The model name of the spoon.
+        """
+
+        child_object_ids: List[int] = list()
+        # Get the vector towards the center.
+        v = np.array([position["x"], position["z"]]) - np.array([table_top["x"], table_top["z"]])
+        # Get the normalized direction.
+        v = v / np.linalg.norm(v)
+        # Move the plates inward.
+        v *= -float(self.rng.uniform(0.15, 0.2))
+        # Get a slightly perturbed position for the plate.
+        plate_position: Dict[str, float] = {"x": float(position["x"] + v[0] + self.rng.uniform(-0.03, 0.03)),
+                                            "y": table_top["y"],
+                                            "z": float(position["z"] + v[1] + self.rng.uniform(-0.03, 0.03))}
+        # Add the plate.
+        plate_id = Controller.get_unique_id()
+        child_object_ids.append(plate_id)
+        self.commands.extend(Controller.get_add_physics_object(model_name=plate_model_name,
+                                                               position=plate_position,
+                                                               object_id=plate_id,
+                                                               library="models_core.json"))
+        # Get the direction from the plate to the center.
+        plate_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(name=plate_model_name)
+        plate_extents = TDWUtils.get_bounds_extents(bounds=plate_record.bounds)
+        # Add a knife, fork, and spoon.
+        fork_x = plate_position["x"] - (plate_extents[0] / 2 + self.rng.uniform(0.03, 0.05))
+        knife_x = plate_position["x"] + plate_extents[0] / 2 + self.rng.uniform(0.03, 0.05)
+        spoon_x = knife_x + self.rng.uniform(0.03, 0.07)
+        for model_name, x in zip([fork_model_name, knife_model_name, spoon_model_name], [fork_x, knife_x, spoon_x]):
+            object_id = Controller.get_unique_id()
+            child_object_ids.append(object_id)
+            self.commands.extend(Controller.get_add_physics_object(model_name=model_name,
+                                                                   object_id=object_id,
+                                                                   position={"x": x,
+                                                                             "y": table_top["y"],
+                                                                             "z": plate_position["z"] + self.rng.uniform(-0.03, 0.03)},
+                                                                   rotation={"x": 0,
+                                                                             "y": self.rng.uniform(-5, 5),
+                                                                             "z": 0},
+                                                                   library="models_core.json"))
+        # Add a cup.
+        if self.rng.random() > 0.33:
+            cup_position = {"x": spoon_x + self.rng.uniform(-0.05, 0.01),
+                            "y": table_top["y"],
+                            "z": plate_position["z"] + plate_extents[2] / 2 + self.rng.uniform(0.06, 0.09)}
+            # Add a coaster.
+            if self.rng.random() > 0.5:
+                coasters = ProcGenObjects.MODEL_CATEGORIES["coaster"]
+                coaster_model_name: str = coasters[self.rng.randint(0, len(coasters))]
+                coaster_id = Controller.get_unique_id()
+                child_object_ids.append(coaster_id)
+                self.commands.extend(Controller.get_add_physics_object(model_name=coaster_model_name,
+                                                                       position=cup_position,
+                                                                       rotation={"x": 0,
+                                                                                 "y": float(self.rng.randint(-25, 25)),
+                                                                                 "z": 0},
+                                                                       object_id=coaster_id,
+                                                                       library="models_core.json"))
+                coaster_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(coaster_model_name)
+                y = cup_position["y"] + coaster_record.bounds["top"]["y"]
+            else:
+                y = cup_position["y"]
+            # Add a cup or wine glass.
+            cups = ProcGenObjects.MODEL_CATEGORIES["cup" if self.rng.random() < 0.5 else "wineglass"]
+            cup_model_name = cups[self.rng.randint(0, len(cups))]
+            # Add the cup.
+            cup_id = Controller.get_unique_id()
+            child_object_ids.append(cup_id)
+            self.commands.extend(Controller.get_add_physics_object(model_name=cup_model_name,
+                                                                   object_id=cup_id,
+                                                                   position={"x": cup_position["x"],
+                                                                             "y": y,
+                                                                             "z": cup_position["z"]},
+                                                                   rotation={"x": 0,
+                                                                             "y": float(self.rng.uniform(0, 360)),
+                                                                             "z": 0},
+                                                                   library="models_core.json"))
+        # Add food.
+        if self.rng.random() < 0.66:
+            food_categories = ["apple", "banana", "chocolate", "orange", "sandwich"]
+            food_category: str = food_categories[self.rng.randint(0, len(food_categories))]
+            food = ProcGenObjects.MODEL_CATEGORIES[food_category]
+            food_model_name = food[self.rng.randint(0, len(food))]
+            food_id = Controller.get_unique_id()
+            child_object_ids.append(food_id)
+            self.commands.extend(Controller.get_add_physics_object(model_name=food_model_name,
+                                                                   object_id=food_id,
+                                                                   position={"x": plate_position["x"] + self.rng.uniform(-0.03, 0.03),
+                                                                             "y": plate_position["y"] + plate_extents[1],
+                                                                             "z": plate_position["z"] + self.rng.uniform(-0.03, 0.03)},
+                                                                   rotation={"x": 0,
+                                                                             "y": self.rng.uniform(0, 360),
+                                                                             "z": 0},
+                                                                   library="models_core.json"))
+        # Parent everything to the plate.
+        for child_object_id in child_object_ids:
+            self.commands.append({"$type": "parent_object_to_object",
+                                  "parent_id": plate_id,
+                                  "id": child_object_id})
+        # Rotate the plate to look at the center of the table.
+        self.commands.append({"$type": "object_look_at_position",
+                              "position": {"x": table_top["x"],
+                                           "y": plate_position["y"],
+                                           "z": table_top["z"]},
+                              "id": plate_id})
+        # Unparent everything.
+        for child_object_id in child_object_ids:
+            self.commands.append({"$type": "unparent_object",
+                                  "id": child_object_id})

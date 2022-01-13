@@ -36,24 +36,24 @@ class ProcGenObjects(AddOn):
     """:class_var
     The names of models suitable for proc-gen. Key = The category. Value = A list of model names.
     """
-    MODEL_CATEGORIES: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "proc_gen_objects/models.json")).read_text())
+    MODEL_CATEGORIES: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/models.json")).read_text())
     """:class_var
     Objects in these categories will be kinematic.
     """
-    KINEMATIC_CATEGORIES: List[str] = Path(resource_filename(__name__, "proc_gen_objects/kinematic_categories.txt")).read_text().split("\n")
+    KINEMATIC_CATEGORIES: List[str] = Path(resource_filename(__name__, "proc_gen_objects_data/kinematic_categories.txt")).read_text().split("\n")
     """:class_var
     Parameters for rectangular arrangements. Key = Category. Value = Dictionary (`"cell_size"`, `"density"`).
     """
-    RECTANGULAR_ARRANGEMENTS: Dict[str, dict] = loads(Path(resource_filename(__name__, "proc_gen_objects/rectangular_arrangements.json")).read_text())
+    RECTANGULAR_ARRANGEMENTS: Dict[str, dict] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/rectangular_arrangements.json")).read_text())
     """:class_var
     A mapping of proc-gen categories to record wcategories.
     """
-    PROC_GEN_CATEGORY_TO_WCATEGORY: Dict[str, str] = loads(Path(resource_filename(__name__, "proc_gen_objects/procgen_category_to_wcategory.json")).read_text())
+    PROC_GEN_CATEGORY_TO_WCATEGORY: Dict[str, str] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/procgen_category_to_wcategory.json")).read_text())
     """:class_var
     The names of the models that are rotated 90 degrees.
     """
-    MODEL_NAMES_NINETY_DEGREES: List[str] = ["4ft_shelf_metal", "4ft_wood_shelving", "5ft_shelf_metal",
-                                             "5ft_wood_shelving", "6ft_shelf_metal", "6ft_wood_shelving", "gas_stove"]
+    MODEL_NAMES_NINETY_DEGREES: List[str] = Path(resource_filename(__name__, "proc_gen_objects_data/model_names_ninety_degrees.txt")).read_text().split("\n")
+    _VERTICAL_SPATIAL_RELATIONS: Dict[str, Dict[str, List[str]]] = loads( Path(resource_filename(__name__, "proc_gen_objects_data/vertical_spatial_relations.json")).read_text())
 
     def __init__(self, random_seed: int = None, region: int = 0):
         """
@@ -73,8 +73,6 @@ class ProcGenObjects(AddOn):
         The [scene bounds](../scene_data/SceneBounds.md). This is set on the second `communicate()` call.
         """
         self.scene_bounds: Optional[SceneBounds] = None
-        # Get the vertical spatial relations.
-        self._vertical_spatial_relations: Dict[str, Dict[str, List[str]]] = loads(Path(resource_filename(__name__, "proc_gen_objects/vertical_spatial_relations.json")).read_text())
         self._used_unique_categories: List[str] = list()
         self._region: int = region
 
@@ -300,7 +298,7 @@ class ProcGenObjects(AddOn):
         surface_size = (model_size[0] * 0.8, model_size[2] * 0.8)
         # Add objects on top of the root object.
         object_ids = self.add_rectangular_arrangement(size=surface_size,
-                                                      categories=self._vertical_spatial_relations["on_top_of"][category],
+                                                      categories=ProcGenObjects._VERTICAL_SPATIAL_RELATIONS["on_top_of"][category],
                                                       position=object_top,
                                                       cell_size=cell_size,
                                                       density=density)

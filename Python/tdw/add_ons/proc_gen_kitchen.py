@@ -1,4 +1,7 @@
+from pathlib import Path
+from pkg_resources import resource_filename
 from enum import Enum
+from json import loads
 from typing import List, Dict, Optional, Tuple
 import numpy as np
 from scipy.signal import convolve2d
@@ -10,100 +13,73 @@ from tdw.ordinal_direction import OrdinalDirection
 from tdw.librarian import ModelRecord
 from tdw.add_ons.occupancy_map import OccupancyMap
 from tdw.add_ons.kinematic_composite_objects import KinematicCompositeObjects
+from tdw.output_data import OutputData, Rigidbodies, Raycast
 
 
 class _GenerationState(Enum):
     getting_scene_bounds = 1
-    adding_initial_objects = 2
-    getting_initial_occupancy_map = 3
-    adding_secondary_objects = 4
-    setting_kinematic_states = 5
-    finishing = 6
-    done = 7
+    raycasting_actual_bounds = 2
+    adding_initial_objects = 3
+    getting_initial_occupancy_map = 4
+    adding_secondary_objects = 5
+    setting_kinematic_states = 6
+    waiting_for_objects_to_stop_moving = 7
+    done = 8
 
 
 class ProcGenKitchen(ProcGenObjects):
-    # Categories of models that can be on shelves.
-    _ON_SHELF: List[str] = ["book", "bottle", "bowl", "candle", "carving_fork", "coaster", "coffee_grinder",
-                            "coffee_maker", "coin", "cork", "cup", "fork", "house_plant", "knife", "ladle", "jar",
-                            "pan", "pen", "pot", "scissors", "soap_dispenser", "spoon", "tea_tray", "vase"]
-    # Data for shelves. Key = model name. Value = Dictionary: "size" (a 2-element list), "ys" (list of shelf y's).
-    _SHELVES: Dict[str, dict] = {"4ft_shelf_metal": {"size": [0.56710092, 0.2314623],
-                                                     "ys": [0.40797001123428345, 0.8050058484077454,
-                                                            1.200427532196045]},
-                                 "4ft_wood_shelving": {"size": [0.56710092, 0.2314623],
-                                                       "ys": [0.40797001123428345, 0.8050058484077454,
-                                                              1.200427532196045]},
-                                 "5ft_shelf_metal": {"size": [0.56710092, 0.2314623],
-                                                     "ys": [0.33903638,  0.73496544, 1.13089252, 1.51810455]},
-                                 "5ft_wood_shelving": {"size": [0.56710092, 0.2314623],
-                                                       "ys": [0.33903608, 0.73496497, 1.1308918, 1.51810372]},
-                                 "6ft_shelf_metal": {"size": [0.56710068, 0.2314629],
-                                                     "ys": [0.23687799, 0.63233, 1.02965903, 1.4213599, 1.81870079]},
-                                 "6ft_wood_shelving": {"size": [0.56710068, 0.2314629],
-                                                       "ys": [0.23687607, 0.63232845, 1.02965784, 1.42135918,
-                                                              1.81870043]}}
-    # The shapes of the tables.
-    _TABLE_SHAPES: Dict[str, List[str]] = {"two": ["metal_lab_table", "sm_table_white", "small_table_green_marble"],
-                                           "four": ["dining_room_table", "enzo_industrial_loft_pine_metal_round_dining_table",
-                                                    "b03_restoration_hardware_pedestal_salvaged_round_tables",
-                                                    "b05_table_new"]}
-    # The length of one side of the floating kitchen counter top.
-    _KITCHEN_COUNTER_TOP_SIZE: float = 0.6096
-    # The possible floor visual materials. Key = Material type. Value = A list of material names.
-    _FLOOR_VISUAL_MATERIALS: List[str] = ["ceramic_tiles_brazilian", "ceramic_tiles_moka", "parquet_european_ash_grey",
-                                          "ceramic_tiles_brown_tomato", "parquet_long_horizontal_clean",
-                                          "ceramic_tiles_golden_sand", "tiles_granite_sera_grey", "parquet_wood_wenge",
-                                          "concrete_terrazzo", "ceramic_tiles_green", "parquet_wood_ipe",
-                                          "concrete_spotted"]
-    # The possible wall visual materials. Key = Material name. Value = A list of colors.
-    _WALL_VISUAL_MATERIALS: Dict[str, List[Dict[str, float]]] = {"plaster_stucco_brushed": [{"r": 1, "g": 1, "b": 1, "a": 1},
-                                                                                            {"r": 0.677, "g": 0.677, "b": 0.677, "a": 1},
-                                                                                            {"r": 0.4421951, "g": 0.4859999, "b": 0.321732, "a": 1},
-                                                                                            {"r": 0.605, "g": 0.2966277, "b": 0.241395, "a": 1},
-                                                                                            {"r": 0.27621, "g": 0.4615875, "b": 0.594, "a": 1}],
-                                                                 "concrete_raw_brushed_fine": [{"r": 1, "g": 1, "b": 1, "a": 1}],
-                                                                 "concrete_spotted": [{"r": 1, "g": 1, "b": 1, "a": 1}],
-                                                                 "plaster_facade_grey": [{"r": 1, "g": 1, "b": 1, "a": 1}],
-                                                                 "plaster_stucco_california": [{"r": 1, "g": 1, "b": 1, "a": 1}],
-                                                                 "plaster_fine_spray": [{"r": 1, "g": 1, "b": 1, "a": 1},
-                                                                                        {"r": 0.677, "g": 0.677, "b": 0.677, "a": 1},
-                                                                                        {"r": 0.605, "g": 0.2966277, "b": 0.241395, "a": 1},
-                                                                                        {"r": 0.27621, "g": 0.4615875, "b": 0.594, "a": 1}],
-                                                                 "plaster_ultra_fine_spray": [{"r": 1, "g": 1, "b": 1, "a": 1},
-                                                                                              {"r": 0.7512034, "g": 0.794, "b": 0.677282, "a": 1}]}
-    _PROC_GEN_ROOM_WALL_DEPTH: float = 0.28
-    _STREAMED_SCENE_NAMES: List[str] = ["mm_craftroom_1a", "mm_craftroom_1b", "mm_craftroom_2a", "mm_craftroom_2b",
-                                        "mm_craftroom_3a", "mm_craftroom_3b", "mm_craftroom_4a", "mm_craftroom_4b",
-                                        "mm_kitchen_1a", "mm_kitchen_1b", "mm_kitchen_2a", "mm_kitchen_2b",
-                                        "mm_kitchen_3a", "mm_kitchen_3b", "mm_kitchen_4a", "mm_kitchen_4b"]
-    _SECONDARY_CATEGORIES: List[str] = ["floor_lamp", "side_table", "basket"]
+    """
+    (TODO)
+    """
 
-    def __init__(self, random_seed: int = None, create_scene: str = None, region: int = 0,
-                 region_size: Tuple[int, int] = None):
+    """:class_var
+    Categories of models that can be placed on a shelf.
+    """
+    ON_SHELF: List[str] = Path(resource_filename(__name__, "proc_gen_kitchen_data/categories_on_shelf.txt")).read_text().split("\n")
+    """:class_var
+    Data for shelves. Key = model name. Value = Dictionary: "size" (a 2-element list), "ys" (list of shelf y's).
+    """
+    SHELF_DIMENSIONS: Dict[str, dict] = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/shelf_dimensions.json")).read_text())
+    """:class_var
+    The number of chairs around kitchen tables. Key = The number as a string. Value = A list of model names.
+    """
+    NUMBER_OF_CHAIRS_AROUND_TABLE: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/chairs_around_tables.json")).read_text())
+    """:class_var
+    The length of one side of the floating kitchen counter top.
+    """
+    KITCHEN_COUNTER_TOP_SIZE: float = 0.6096
+    _SECONDARY_CATEGORIES: List[str] = ["floor_lamp", "side_table", "basket"]
+    """:class_var
+    A list of streamed scene names.
+    """
+    STREAMED_SCENES: List[str] = Path(resource_filename(__name__, "proc_gen_kitchen_data/streamed_scenes.txt")).read_text().split("\n")
+
+    def __init__(self, random_seed: int = None, region: int = None):
         """
         :param random_seed: The random seed. If None, the seed is random.
-        :param create_scene: Sets the procedural for creating the scene. If None, no scene will be created. If `"proc_gen_room"` a box-shaped room will be procedurally generated. If `"streamed_scene"` a random kitchen streamed scene will be selected.
-        :param region: The ID of the kitchen region in the scene. If there is only one room, the ID is 0.
-        :param region_size: The size of the region (width, length) in meters. If None, the size is will be random. If `create_scene != "proc_gen_room"`, this is ignored.
+        :param region: The ID of the scene region. If None, the *largest* region in the scene will be used; this can be useful for scenes with a single irregularly shaped room (which might be divided into multiple regions).
         """
         
-        super().__init__(random_seed=random_seed)
+        super().__init__(random_seed=random_seed, region=region)
         self._counter_top_material: str = ""
-        self._create_scene: Optional[str] = create_scene
-        self._region: int = region
-        self._region_size: Optional[Tuple[int, int]] = region_size
-        self._wall_depth: float = ProcGenKitchen._PROC_GEN_ROOM_WALL_DEPTH
+        """:field
+        The name of the scene. This will be chosen randomly during scene generation.
+        """
+        self.scene_name: str = ""
         """:field
         If True, the scene is still being generated. This will remain True for several `communicate()` calls.
         """
         self.generating: bool = True
         self._state: _GenerationState = _GenerationState.getting_scene_bounds
         self._occupancy_map: OccupancyMap = OccupancyMap()
+        self._non_continuous_walls: int = 0
+        self._walls_with_windows: int = 0
 
     def get_initialization_commands(self) -> List[dict]:
         self.generating = True
         self._state = _GenerationState.getting_scene_bounds
+        self._non_continuous_walls = 0
+        self._walls_with_windows = 0
         self._occupancy_map = OccupancyMap()
         # Set the wood type and counter top visual material.
         kitchen_counter_wood_type = self.rng.choice(["white_wood", "wood_beach_honey"])
@@ -115,37 +91,105 @@ class ProcGenKitchen(ProcGenObjects):
             self._counter_top_material = "granite_beige_french"
         else:
             self._counter_top_material = "granite_black"
-        if self._create_scene is None:
-            return super().get_initialization_commands()
-        # Create a random box-shaped room.
-        elif self._create_scene == "proc_gen_room":
-            # Explicitly set the size of the room.
-            if self._region_size is not None:
-                commands = [TDWUtils.create_empty_room(self._region_size[0], self._region_size[1])]
-            # Set a random  room size.
-            else:
-                width = self.rng.randint(6, 9)
-                length = self.rng.randint(5, 7)
-                if self.rng.random() < 0.5:
-                    commands = [TDWUtils.create_empty_room(width, length)]
-                    self._region_size = (width, length)
-                else:
-                    commands = [TDWUtils.create_empty_room(length, width)]
-                    self._region_size = (length, width)
-            # Add the other commands.
-            commands.extend(super().get_initialization_commands())
-            return commands
-        # Add a random mm_kitchen scene.
-        elif self._create_scene == "streamed_scene":
-            scene_name: str = ProcGenKitchen._STREAMED_SCENE_NAMES[self.rng.randint(0, len(ProcGenKitchen._STREAMED_SCENE_NAMES))]
-            commands = [Controller.get_add_scene(scene_name=scene_name)]
-            commands.extend(super().get_initialization_commands())
-            return commands
+        self.scene_name = ProcGenKitchen.STREAMED_SCENES[self.rng.randint(0, len(ProcGenKitchen.STREAMED_SCENES))]
+        commands = [Controller.get_add_scene(scene_name=self.scene_name)]
+        commands.extend(super().get_initialization_commands())
+        return commands
 
     def on_send(self, resp: List[bytes]) -> None:
         super().on_send(resp=resp)
         # Frame 1: If we got the scene bounds, add the initial objects.
         if self._state == _GenerationState.getting_scene_bounds and self.scene_bounds is not None:
+            # Get the region we're going to use (the larger one).
+            if self._region is None:
+                largest_region_index = 0
+                for room in self.scene_bounds.rooms:
+                    if room.bounds[0] > room.bounds[0] and room.bounds[1] > room.bounds[1]:
+                        largest_region_index = room.region_id
+                self._region = largest_region_index
+            # Raycast to determine the "actual" scene bounds and where the windows are.
+            room = self.scene_bounds.rooms[self._region]
+            origin = TDWUtils.array_to_vector3(room.center)
+            origin_low = {"x": origin["x"], "y": 0.1, "z": origin["z"]}
+            origin_high = {"x": origin["x"], "y": 1.5, "z": origin["z"]}
+            for cardinal_direction, x_range, z_range, direction in zip([CardinalDirection.north,
+                                                                        CardinalDirection.south,
+                                                                        CardinalDirection.west,
+                                                                        CardinalDirection.east],
+                                                                       [np.arange(room.x_min + 0.1, room.x_max, step=0.1),
+                                                                        np.arange(room.x_min + 0.1, room.x_max, step=0.1),
+                                                                        [origin["z"]],
+                                                                        [origin["z"]]],
+                                                                       [[origin["x"]],
+                                                                        [origin["x"]],
+                                                                        np.arange(room.z_min + 0.1, room.z_max, step=0.1),
+                                                                        np.arange(room.z_min + 0.1, room.z_max, step=0.1)],
+                                                                       [(0, 1), (0, -1), (-1, 0), (1, 0)]):
+                for x in x_range:
+                    for z in z_range:
+                        self.commands.extend([{"$type": "send_raycast",
+                                               "origin": origin_high,
+                                               "destination": {"x": x + direction[0] * 1000,
+                                                               "y": origin_high["y"],
+                                                               "z": z + direction[1] * 1000},
+                                               "id": cardinal_direction.value + 1000},
+                                              {"$type": "send_raycast",
+                                               "origin": {"x": x, "y": origin_low["y"], "z": z},
+                                               "destination": {"x": x + direction[0] * 1000,
+                                                               "y": origin_low["y"],
+                                                               "z": z + direction[1] * 1000},
+                                               "id": cardinal_direction.value}])
+            self._state = _GenerationState.raycasting_actual_bounds
+        elif self._state == _GenerationState.raycasting_actual_bounds:
+            # Parse the raycast data.
+            room = self.scene_bounds.rooms[self._region]
+            for i in range(len(resp) - 1):
+                r_id = OutputData.get_data_type_id(resp[i])
+                if r_id == "rayc":
+                    raycast = Raycast(resp[i])
+                    raycast_id = raycast.get_raycast_id()
+                    # This is raycast for continuous walls.
+                    if raycast_id < 1000:
+                        # We already know the wall is non-continuous.
+                        if self._non_continuous_walls & raycast_id > 0:
+                            continue
+                        d = CardinalDirection(raycast.get_raycast_id())
+                        p = raycast.get_point()
+                        if d == CardinalDirection.north:
+                            v = np.linalg.norm(room.z_max - p[2])
+                            if v > 0.1:
+                                self._non_continuous_walls += raycast_id
+                            else:
+                                self.scene_bounds.rooms[self._region].z_max = p[2]
+                        elif d == CardinalDirection.south:
+                            v = np.linalg.norm(room.z_min - p[2])
+                            if v > 0.1:
+                                self._non_continuous_walls += raycast_id
+                            else:
+                                self.scene_bounds.rooms[self._region].z_min = p[2]
+                        elif d == CardinalDirection.west:
+                            v = np.linalg.norm(room.x_min - p[0])
+                            if v > 0.1:
+                                self._non_continuous_walls += raycast_id
+                            else:
+                                self.scene_bounds.rooms[self._region].x_min = p[0]
+                        elif d == CardinalDirection.east:
+                            v = np.linalg.norm(room.x_max - p[0])
+                            if v > 0.1:
+                                self._non_continuous_walls += raycast_id
+                            else:
+                                self.scene_bounds.rooms[self._region].x_max = p[0]
+                        else:
+                            raise Exception(d)
+                    # This is a raycast for windows.
+                    else:
+                        raycast_id -= 1000
+                        # We already know the wall is non-continuous.
+                        if self._walls_with_windows & raycast_id > 0:
+                            continue
+                        if not raycast.get_hit():
+                            self._walls_with_windows += raycast_id
+            # Now that we have corrected bounds, added the objects.
             self._state = _GenerationState.adding_initial_objects
             self._add_initial_objects()
         # Frame 2: We added the objects. Get an occupancy map.
@@ -174,11 +218,34 @@ class ProcGenKitchen(ProcGenObjects):
             kinematic_composite_objects.initialized = True
             kinematic_composite_objects.on_send(resp=resp)
             self.commands.extend(kinematic_composite_objects.commands)
-            self._state = _GenerationState.finishing
-        # Frame 5: We're done.
-        elif self._state == _GenerationState.finishing:
-            self.generating = False
-            self._state = _GenerationState.done
+            self._state = _GenerationState.waiting_for_objects_to_stop_moving
+            self.commands.extend([{"$type": "send_rigidbodies",
+                                   "frequency": "always"},
+                                  {"$type": "step_physics",
+                                   "frames": 50}])
+        # Frames 5 to n: Wait for objects to stop moving.
+        elif self._state == _GenerationState.waiting_for_objects_to_stop_moving:
+            sleeping = True
+            for i in range(len(resp) - 1):
+                r_id = OutputData.get_data_type_id(resp[i])
+                if r_id == "rigi":
+                    rigidbodies = Rigidbodies(resp[i])
+                    for j in range(rigidbodies.get_num()):
+                        if not rigidbodies.get_sleeping(j):
+                            sleeping = False
+                            break
+                    break
+            # Everything is done moving. Generation is complete.
+            if sleeping:
+                self.generating = False
+                self._state = _GenerationState.done
+                # Stop requesting Rigidbody data.
+                self.commands.append({"$type": "send_rigidbodies",
+                                      "frequency": "never"})
+            # Let the objects move.
+            else:
+                self.commands.append({"$type": "step_physics",
+                                      "frames": 50})
 
     def _add_initial_objects(self) -> None:
         """
@@ -189,9 +256,6 @@ class ProcGenKitchen(ProcGenObjects):
         used_walls = self._add_work_triangle()
         # Add the table.
         self._add_table(used_walls=used_walls)
-        # Set the wall and floor.
-        if self._create_scene == "proc_gen_room":
-            self._set_room_visual_materials()
 
     def _add_table(self, used_walls: List[CardinalDirection], table_settings: bool = True,
                    plate_model_name: str = None, fork_model_name: str = None, knife_model_name: str = None,
@@ -257,8 +321,8 @@ class ProcGenKitchen(ProcGenObjects):
         child_object_ids: List[int] = list()
         # Get the shape of the table.
         table_shape = ""
-        for shape in ProcGenKitchen._TABLE_SHAPES:
-            if record.name in ProcGenKitchen._TABLE_SHAPES[shape]:
+        for shape in ProcGenKitchen.NUMBER_OF_CHAIRS_AROUND_TABLE:
+            if record.name in ProcGenKitchen.NUMBER_OF_CHAIRS_AROUND_TABLE[shape]:
                 table_shape = shape
                 break
         assert table_shape != "", f"Unknown table shape for {record.name}"
@@ -277,10 +341,10 @@ class ProcGenKitchen(ProcGenObjects):
         chair_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(chair_model_name)
         chair_bound_points: List[np.array] = list()
         # Add chairs around the table.
-        if table_shape == "four":
+        if table_shape == "4":
             sides = ["left", "right", "front", "back"]
         # Add chairs on the shorter sides of the table.
-        elif table_shape == "two":
+        elif table_shape == "2":
             sides = ["left", "right"]
         else:
             raise Exception(table_shape)
@@ -497,14 +561,14 @@ class ProcGenKitchen(ProcGenObjects):
                                                                object_id=root_object_id,
                                                                position={k: v for k, v in position.items()},
                                                                kinematic=True))
-        size = (ProcGenKitchen._SHELVES[record.name]["size"][0], ProcGenKitchen._SHELVES[record.name]["size"][1])
+        size = (ProcGenKitchen.SHELF_DIMENSIONS[record.name]["size"][0], ProcGenKitchen.SHELF_DIMENSIONS[record.name]["size"][1])
         # Add objects to each shelf.
         child_object_ids: List[int] = list()
-        for y in ProcGenKitchen._SHELVES[record.name]["ys"]:
+        for y in ProcGenKitchen.SHELF_DIMENSIONS[record.name]["ys"]:
             object_top = {"x": position["x"], "y": y + position["y"], "z": position["z"]}
             cell_size, density = self._get_rectangular_arrangement_parameters(category="shelf")
             object_ids = self.add_rectangular_arrangement(size=size,
-                                                          categories=ProcGenKitchen._ON_SHELF,
+                                                          categories=ProcGenKitchen.ON_SHELF,
                                                           position=object_top,
                                                           cell_size=cell_size,
                                                           density=density)
@@ -668,9 +732,9 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         if size is None:
-            scale_factor = {"x": ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE,
+            scale_factor = {"x": ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE,
                             "y": 0.0371,
-                            "z": ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE}
+                            "z": ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE}
         else:
             scale_factor = {"x": size[0],
                             "y": 0.0371,
@@ -690,12 +754,12 @@ class ProcGenKitchen(ProcGenObjects):
                                "scale_factor": scale_factor},
                               {"$type": "set_kinematic_state",
                                "id": object_id,
-                               "kinematic": True}])
+                               "is_kinematic": True}])
         # Add objects on top of the counter.
-        self.add_rectangular_arrangement(size=(ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE,
-                                               ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE),
+        self.add_rectangular_arrangement(size=(ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE * 0.8,
+                                               ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE * 0.8),
                                          position={"x": position["x"], "y": 0.9167836, "z": position["z"]},
-                                         categories=self._vertical_spatial_relations["on_top_of"]["kitchen_counter"])
+                                         categories=ProcGenObjects._VERTICAL_SPATIAL_RELATIONS["on_top_of"]["kitchen_counter"])
 
     def _get_chair_position(self, chair_record: ModelRecord, table_bottom: np.array,
                             table_bound_point: np.array) -> np.array:
@@ -750,7 +814,7 @@ class ProcGenKitchen(ProcGenObjects):
             # Add a floating kitchen counter top.
             if category == "floating_kitchen_counter_top":
                 self._add_kitchen_counter_top(position=position)
-                extent = ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2
+                extent = ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE / 2
                 if direction == CardinalDirection.north:
                     position["z"] += extent
                 elif direction == CardinalDirection.south:
@@ -811,8 +875,8 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         room = self.scene_bounds.rooms[self._region]
-        x = (room.x_max - room.x_min) - self._wall_depth * 2
-        z = (room.z_max - room.z_min) - self._wall_depth * 2
+        x = room.x_max - room.x_min
+        z = room.z_max - room.z_min
         if x < z:
             return [CardinalDirection.west, CardinalDirection.east], z
         else:
@@ -824,8 +888,8 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         room = self.scene_bounds.rooms[self._region]
-        x = (room.x_max - room.x_min) - self._wall_depth * 2
-        z = (room.z_max - room.z_min) - self._wall_depth * 2
+        x = room.x_max - room.x_min
+        z = room.z_max - room.z_min
         if x > z:
             return [CardinalDirection.west, CardinalDirection.east], z
         else:
@@ -856,23 +920,23 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         room = self.scene_bounds.rooms[self._region]
-        s = ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 4
+        s = ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE / 2
         if corner == OrdinalDirection.northwest:
-            return {"x": room.x_min + self._wall_depth + s,
+            return {"x": room.x_min + s,
                     "y": 0,
-                    "z": room.z_max - self._wall_depth - s}
+                    "z": room.z_max - s}
         elif corner == OrdinalDirection.northeast:
-            return {"x": room.x_max - self._wall_depth - s,
+            return {"x": room.x_max - s,
                     "y": 0,
-                    "z": room.z_max - self._wall_depth - s}
+                    "z": room.z_max - s}
         elif corner == OrdinalDirection.southwest:
-            return {"x": room.x_min + self._wall_depth + s,
+            return {"x": room.x_min + s,
                     "y": 0,
-                    "z": room.z_min + self._wall_depth + s}
+                    "z": room.z_min + s}
         elif corner == OrdinalDirection.southeast:
-            return {"x": room.x_max - self._wall_depth - s,
+            return {"x": room.x_max - s,
                     "y": 0,
-                    "z": room.z_min + self._wall_depth + s}
+                    "z": room.z_min + s}
         else:
             raise Exception(corner)
 
@@ -888,17 +952,17 @@ class ProcGenKitchen(ProcGenObjects):
         if direction == CardinalDirection.north:
             return {"x": position["x"],
                     "y": position["y"],
-                    "z": position["z"] + ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2}
+                    "z": position["z"] + ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE / 2}
         elif direction == CardinalDirection.south:
             return {"x": position["x"],
                     "y": position["y"],
-                    "z": position["z"] - ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2}
+                    "z": position["z"] - ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE / 2}
         elif direction == CardinalDirection.west:
-            return {"x": position["x"] - ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2,
+            return {"x": position["x"] - ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE / 2,
                     "y": position["y"],
                     "z": position["z"]}
         elif direction == CardinalDirection.east:
-            return {"x": position["x"] + ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE / 2,
+            return {"x": position["x"] + ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE / 2,
                     "y": position["y"],
                     "z": position["z"]}
         raise Exception(direction)
@@ -941,15 +1005,16 @@ class ProcGenKitchen(ProcGenObjects):
         :return: A list of unused walls.
         """
 
-        roll = self.rng.random()
-        if roll < 0.25:
-            return self._add_straight_work_triangle()
-        elif roll < 0.5:
-            return self._add_parallel_work_triangle()
-        elif roll < 0.75:
-            return self._add_l_work_triangle()
-        else:
-            return self._add_u_work_triangle()
+        longer_walls, length = self._get_longer_walls()
+        longer_walls_ok = True
+        for w in longer_walls:
+            if w.value in self._non_continuous_walls:
+                longer_walls_ok = False
+                break
+        triangles = [self._add_straight_work_triangle, self._add_l_work_triangle, self._add_u_work_triangle]
+        if longer_walls_ok:
+            triangles.append(self._add_u_work_triangle)
+        return self.rng.choice(triangles)()
 
     def _add_straight_work_triangle(self) -> List[CardinalDirection]:
         """
@@ -959,7 +1024,7 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         longer_walls, length = self._get_longer_walls()
-        longer_wall = longer_walls[self.rng.randint(0, len(longer_walls))]
+        longer_wall = self._get_wall(walls=longer_walls)
         corners = self._get_corners_from_wall(wall=longer_wall)
         corner = corners[self.rng.randint(0, len(corners))]
         position = self._get_corner_position(corner=corner)
@@ -1005,7 +1070,7 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         longer_walls, length = self._get_longer_walls()
-        longer_wall = longer_walls[self.rng.randint(0, len(longer_walls))]
+        longer_wall = self._get_wall(walls=longer_walls)
         corners = self._get_corners_from_wall(wall=longer_wall)
         corner = corners[self.rng.randint(0, len(corners))]
         position = self._get_corner_position(corner=corner)
@@ -1017,7 +1082,7 @@ class ProcGenKitchen(ProcGenObjects):
         shorter_wall = CardinalDirection(corner.value - longer_wall.value)
         # Get the length of the shorter wall.
         shorter_walls, length = self._get_shorter_walls()
-        length -= ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE
+        length -= ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE
         # Get everything else.
         direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=shorter_wall)
         position = self._get_corner_position(corner=corner)
@@ -1042,15 +1107,16 @@ class ProcGenKitchen(ProcGenObjects):
 
         # Add the longer wall.
         longer_walls, length = self._get_longer_walls()
-        length -= ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE
-        longer_wall = longer_walls[self.rng.randint(0, len(longer_walls))]
+        length -= ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE
+        longer_wall = self._get_wall(walls=longer_walls)
         corners = self._get_corners_from_wall(wall=longer_wall)
         corner = corners[self.rng.randint(0, len(corners))]
         position = self._get_corner_position(corner=corner)
         direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=longer_wall)
-        categories = ["floating_kitchen_counter_top", "sink", "kitchen_counter", "stove", "kitchen_counter"]
+        categories = ["sink", "kitchen_counter", "stove", "kitchen_counter"]
         if self.rng.random() < 0.5:
             categories.reverse()
+        categories.insert(0, "floating_kitchen_counter_top")
         # Fill the rest of the lateral arrangement.
         for i in range(20):
             categories.append("kitchen_counter")
@@ -1080,7 +1146,7 @@ class ProcGenKitchen(ProcGenObjects):
         self._add_kitchen_counter_top(position=opposite_corner_position)
         # Get the length of the shorter wall.
         shorter_walls, length = self._get_shorter_walls()
-        length -= ProcGenKitchen._KITCHEN_COUNTER_TOP_SIZE
+        length -= ProcGenKitchen.KITCHEN_COUNTER_TOP_SIZE
         if self.rng.random() < 0.5:
             corners.reverse()
         for corner, categories in zip(corners, [["kitchen_counter", "refrigerator", "kitchen_counter", "shelf"],
@@ -1097,46 +1163,24 @@ class ProcGenKitchen(ProcGenObjects):
         longer_walls.remove(longer_wall)
         return longer_walls
 
-    def _set_room_visual_materials(self) -> None:
+    def _get_wall(self, walls: List[CardinalDirection]) -> CardinalDirection:
         """
-        Set the visual materials of the floor and walls.
+        :param walls: A list of walls.
+
+        :return: A valid continuous wall.
         """
 
-        # Get a random floor visual material.
-        floor_material = ProcGenKitchen._FLOOR_VISUAL_MATERIALS[self.rng.randint(0, len(ProcGenKitchen._FLOOR_VISUAL_MATERIALS))]
-        # Get a random wall material.
-        wall_materials = list(ProcGenKitchen._WALL_VISUAL_MATERIALS.keys())
-        wall_material = wall_materials[self.rng.randint(0, len(wall_materials))]
-        # Get a random color.
-        wall_colors = ProcGenKitchen._WALL_VISUAL_MATERIALS[wall_material]
-        wall_color = wall_colors[self.rng.randint(0, len(wall_colors))]
-        # Scale the texture to prevent stretching.
-        if self._region_size[0] == self._region_size[1]:
-            x = 1
-            y = 1
-        elif self._region_size[0] > self._region_size[1]:
-            x = (self._region_size[0] + 1) / self._region_size[1]
-            y = 1
+        ws = [w for w in walls if w.value not in self._non_continuous_walls]
+        if len(ws) == 1:
+            return ws[0]
         else:
-            x = 1
-            y = (self._region_size[1] + 1) / self._region_size[0]
-        # Add the commands.
-        self.commands.extend([Controller.get_add_material(material_name=floor_material,
-                                                          library="materials_med.json"),
-                              {"$type": "set_proc_gen_floor_material",
-                               "name": floor_material},
-                              {"$type": "set_proc_gen_floor_texture_scale",
-                               "scale": {"x": x, "y": y}},
-                              Controller.get_add_material(material_name=wall_material,
-                                                          library="materials_med.json"),
-                              {"$type": "set_proc_gen_walls_material",
-                               "name": wall_material},
-                              {"$type": "set_proc_gen_walls_texture_scale",
-                               "scale": {"x": 0.5, "y": 1.5}},
-                              {"$type": "set_proc_gen_walls_color",
-                               "color": wall_color}])
+            return ws[self.rng.randint(0, len(ws))]
 
     def _add_secondary_objects(self) -> None:
+        """
+        Add "secondary objects" in unoccupied spaces around the edges of the room.
+        """
+
         # Get the unoccupied edges of the occupancy map.
         # Source: https://stackoverflow.com/a/41202798
         k = np.ones((3, 3), dtype=int)

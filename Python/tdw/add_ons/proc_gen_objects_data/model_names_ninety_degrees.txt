@@ -1,0 +1,7 @@
+4ft_shelf_metal
+4ft_wood_shelving
+5ft_shelf_metal
+5ft_wood_shelving
+6ft_shelf_metal
+6ft_wood_shelving
+gas_stove

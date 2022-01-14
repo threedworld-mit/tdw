@@ -1,0 +1,15 @@
+{
+  "proc_gen_room": [
+    {
+      "bounds_offsets": {
+        "east": 0.0999999,
+        "north": 0.0999999,
+        "south": 0.0999999,
+        "west": 0.0999999
+      },
+      "non_continuous_walls": 0,
+      "region_id": 0,
+      "walls_with_windows": 0
+    }
+  ]
+}

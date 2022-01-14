@@ -1,4 +1,300 @@
 {
+  "mm_craftroom_1a": [
+    {
+      "bounds_offsets": {
+        "east": 0.00853848,
+        "north": 0.01085639,
+        "south": 0.03480673,
+        "west": 0.01480865
+      },
+      "non_continuous_walls": 2,
+      "region_id": 1,
+      "walls_with_windows": 6
+    },
+    {
+      "bounds_offsets": {
+        "east": 0.01995707,
+        "north": 0.0052104,
+        "south": 0.00513625,
+        "west": 0
+      },
+      "non_continuous_walls": 8,
+      "region_id": 0,
+      "walls_with_windows": 2
+    }
+  ],
+  "mm_craftroom_1b": [
+    {
+      "bounds_offsets": {
+        "east": 0.00853848,
+        "north": 0.01085639,
+        "south": 0.03480673,
+        "west": 0.01480865
+      },
+      "non_continuous_walls": 2,
+      "region_id": 1,
+      "walls_with_windows": 6
+    },
+    {
+      "bounds_offsets": {
+        "east": 0.01995707,
+        "north": 0.0052104,
+        "south": 0.00513625,
+        "west": 0
+      },
+      "non_continuous_walls": 8,
+      "region_id": 0,
+      "walls_with_windows": 2
+    }
+  ],
+  "mm_craftroom_2a": [
+    {
+      "bounds_offsets": {
+        "east": 0.01159644,
+        "north": 0.0163734,
+        "south": 0.02361631,
+        "west": 0.00951838
+      },
+      "non_continuous_walls": 0,
+      "region_id": 0,
+      "walls_with_windows": 6
+    }
+  ],
+  "mm_craftroom_2b": [
+    {
+      "bounds_offsets": {
+        "east": 0.01159644,
+        "north": 0.0163734,
+        "south": 0.02361631,
+        "west": 0.00951838
+      },
+      "non_continuous_walls": 0,
+      "region_id": 0,
+      "walls_with_windows": 6
+    }
+  ],
+  "mm_craftroom_3a": [
+    {
+      "bounds_offsets": {
+        "east": 0.00382924,
+        "north": 0.0113585,
+        "south": 0.00372124,
+        "west": 0.02090836
+      },
+      "non_continuous_walls": 0,
+      "region_id": 0,
+      "walls_with_windows": 6
+    }
+  ],
+  "mm_craftroom_3b": [
+    {
+      "bounds_offsets": {
+        "east": 0.00382924,
+        "north": 0.0113585,
+        "south": 0.00372124,
+        "west": 0.02090836
+      },
+      "non_continuous_walls": 0,
+      "region_id": 0,
+      "walls_with_windows": 6
+    }
+  ],
+  "mm_craftroom_4a": [
+    {
+      "bounds_offsets": {
+        "east": 0.00677538,
+        "north": 0.02772999,
+        "south": 0.01268411,
+        "west": 0.01156807
+      },
+      "non_continuous_walls": 4,
+      "region_id": 1,
+      "walls_with_windows": 4
+    },
+    {
+      "bounds_offsets": {
+        "east": 0.00910425,
+        "north": 0,
+        "south": 0.00122356,
+        "west": 0.02062082
+      },
+      "non_continuous_walls": 1,
+      "region_id": 0,
+      "walls_with_windows": 14
+    }
+  ],
+  "mm_craftroom_4b": [
+    {
+      "bounds_offsets": {
+        "east": 0.00677538,
+        "north": 0.02772999,
+        "south": 0.01268411,
+        "west": 0.01156807
+      },
+      "non_continuous_walls": 4,
+      "region_id": 1,
+      "walls_with_windows": 4
+    },
+    {
+      "bounds_offsets": {
+        "east": 0.00910425,
+        "north": 0,
+        "south": 0.00122356,
+        "west": 0.02062082
+      },
+      "non_continuous_walls": 1,
+      "region_id": 0,
+      "walls_with_windows": 14
+    }
+  ],
+  "mm_kitchen_1a": [
+    {
+      "bounds_offsets": {
+        "east": 0.00853848,
+        "north": 0.01085639,
+        "south": 0.03480673,
+        "west": 0.01480865
+      },
+      "non_continuous_walls": 2,
+      "region_id": 1,
+      "walls_with_windows": 6
+    },
+    {
+      "bounds_offsets": {
+        "east": 0.01995707,
+        "north": 0.0052104,
+        "south": 0.00513625,
+        "west": 0
+      },
+      "non_continuous_walls": 8,
+      "region_id": 0,
+      "walls_with_windows": 2
+    }
+  ],
+  "mm_kitchen_1b": [
+    {
+      "bounds_offsets": {
+        "east": 0.00853848,
+        "north": 0.01085639,
+        "south": 0.03480673,
+        "west": 0.01480865
+      },
+      "non_continuous_walls": 2,
+      "region_id": 1,
+      "walls_with_windows": 6
+    },
+    {
+      "bounds_offsets": {
+        "east": 0.01995707,
+        "north": 0.0052104,
+        "south": 0.00513625,
+        "west": 0
+      },
+      "non_continuous_walls": 8,
+      "region_id": 0,
+      "walls_with_windows": 2
+    }
+  ],
+  "mm_kitchen_2a": [
+    {
+      "bounds_offsets": {
+        "east": 0.01159644,
+        "north": 0.0163734,
+        "south": 0.02361631,
+        "west": 0.00951838
+      },
+      "non_continuous_walls": 0,
+      "region_id": 0,
+      "walls_with_windows": 6
+    }
+  ],
+  "mm_kitchen_2b": [
+    {
+      "bounds_offsets": {
+        "east": 0.01159644,
+        "north": 0.0163734,
+        "south": 0.02361631,
+        "west": 0.00951838
+      },
+      "non_continuous_walls": 0,
+      "region_id": 0,
+      "walls_with_windows": 6
+    }
+  ],
+  "mm_kitchen_3a": [
+    {
+      "bounds_offsets": {
+        "east": 0.00382924,
+        "north": 0.0113585,
+        "south": 0.00372124,
+        "west": 0.02090836
+      },
+      "non_continuous_walls": 0,
+      "region_id": 0,
+      "walls_with_windows": 6
+    }
+  ],
+  "mm_kitchen_3b": [
+    {
+      "bounds_offsets": {
+        "east": 0.00382924,
+        "north": 0.0113585,
+        "south": 0.00372124,
+        "west": 0.02090836
+      },
+      "non_continuous_walls": 0,
+      "region_id": 0,
+      "walls_with_windows": 6
+    }
+  ],
+  "mm_kitchen_4a": [
+    {
+      "bounds_offsets": {
+        "east": 0.00677538,
+        "north": 0.02772999,
+        "south": 0.01268411,
+        "west": 0.01156807
+      },
+      "non_continuous_walls": 4,
+      "region_id": 1,
+      "walls_with_windows": 4
+    },
+    {
+      "bounds_offsets": {
+        "east": 0.00910425,
+        "north": 0,
+        "south": 0.00122356,
+        "west": 0.02062082
+      },
+      "non_continuous_walls": 1,
+      "region_id": 0,
+      "walls_with_windows": 14
+    }
+  ],
+  "mm_kitchen_4b": [
+    {
+      "bounds_offsets": {
+        "east": 0.00677538,
+        "north": 0.02772999,
+        "south": 0.01268411,
+        "west": 0.01156807
+      },
+      "non_continuous_walls": 4,
+      "region_id": 1,
+      "walls_with_windows": 4
+    },
+    {
+      "bounds_offsets": {
+        "east": 0.00910425,
+        "north": 0,
+        "south": 0.00122356,
+        "west": 0.02062082
+      },
+      "non_continuous_walls": 1,
+      "region_id": 0,
+      "walls_with_windows": 14
+    }
+  ],
   "proc_gen_room": [
     {
       "bounds_offsets": {

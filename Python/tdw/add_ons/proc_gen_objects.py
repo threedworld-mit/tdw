@@ -1,16 +1,16 @@
 from json import loads
 from pathlib import Path
 from pkg_resources import resource_filename
-from typing import Tuple, List, Dict, Optional
+from typing import Tuple, List, Dict, Optional, Union
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian, ModelRecord
-from tdw.scene_data.scene_bounds import SceneBounds
-from tdw.add_ons.add_on import AddOn
+from tdw.add_ons.occupancy_map import OccupancyMap
+from tdw.cardinal_direction import CardinalDirection
 
 
-class ProcGenObjects(AddOn):
+class ProcGenObjects(OccupancyMap):
     """
     Procedurally arrange objects using spatial relations and categories.
     For example, certain object categories can be *on top of* other object categories.
@@ -53,15 +53,20 @@ class ProcGenObjects(AddOn):
     The names of the models that are rotated 90 degrees.
     """
     MODEL_NAMES_NINETY_DEGREES: List[str] = Path(resource_filename(__name__, "proc_gen_objects_data/model_names_ninety_degrees.txt")).read_text().split("\n")
-    _VERTICAL_SPATIAL_RELATIONS: Dict[str, Dict[str, List[str]]] = loads( Path(resource_filename(__name__, "proc_gen_objects_data/vertical_spatial_relations.json")).read_text())
+    _VERTICAL_SPATIAL_RELATIONS: Dict[str, Dict[str, List[str]]] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/vertical_spatial_relations.json")).read_text())
 
-    def __init__(self, random_seed: int = None, region: int = 0):
+    def __init__(self, cell_size: float = 0.5, random_seed: int = None, region: int = 0,
+                 non_continuous_walls: Union[int, List[CardinalDirection]] = 0,
+                 walls_with_windows: Union[int, List[CardinalDirection]] = 0):
         """
+        :param cell_size: The occupancy map cell size.
         :param random_seed: The random seed. If None, a random seed is randomly selected.
         :param region: The ID of the scene region.
+        :param non_continuous_walls: Directions of non-continuous walls (for example, a wall with a doorway). This can either be a list of [`CardinalDirection`](../cardinal_direction.md) values or a bitwise sum of the values of the cardinal directions (for example, `3` is `[CardinalDirection.north, CardinalDirection.south]`.
+        :param walls_with_windows: Directions of walls with windows. This can either be a list of [`CardinalDirection`](../cardinal_direction.md) values or a bitwise sum of the values of the cardinal directions (for example, `3` is `[CardinalDirection.north, CardinalDirection.south]`.
         """
 
-        super().__init__()
+        super().__init__(cell_size=cell_size)
         if random_seed is None:
             """:field
             The random number generator.
@@ -69,21 +74,16 @@ class ProcGenObjects(AddOn):
             self.rng: np.random.RandomState = np.random.RandomState()
         else:
             self.rng = np.random.RandomState(random_seed)
-        """:field
-        The [scene bounds](../scene_data/SceneBounds.md). This is set on the second `communicate()` call.
-        """
-        self.scene_bounds: Optional[SceneBounds] = None
         self._used_unique_categories: List[str] = list()
         self._region: int = region
-
-    def get_initialization_commands(self) -> List[dict]:
-        self._used_unique_categories.clear()
-        self.scene_bounds = None
-        return [{"$type": "send_scene_regions"}]
-
-    def on_send(self, resp: List[bytes]) -> None:
-        if self.scene_bounds is None:
-            self.scene_bounds = SceneBounds(resp=resp)
+        if isinstance(non_continuous_walls, int):
+            self._non_continuous_walls: int = non_continuous_walls
+        else:
+            self._non_continuous_walls = sum([c.value for c in non_continuous_walls])
+        if isinstance(walls_with_windows, int):
+            self._walls_with_windows: int = walls_with_windows
+        else:
+            self._walls_with_windows = sum([c.value for c in walls_with_windows])
 
     @staticmethod
     def fits_inside_parent(parent: ModelRecord, child: ModelRecord) -> bool:
@@ -304,6 +304,29 @@ class ProcGenObjects(AddOn):
                                                       density=density)
         # Rotate everything.
         self.add_rotation_commands(parent_object_id=root_object_id, child_object_ids=object_ids, rotation=rotation)
+
+    def reset(self, region: int = 0, non_continuous_walls: Union[int, List[CardinalDirection]] = 0,
+              walls_with_windows: Union[int, List[CardinalDirection]] = 0) -> None:
+        """
+        Reset the procedural generator. Call this when resetting the scene.
+
+        :param region: The ID of the scene region.
+        :param non_continuous_walls: Directions of non-continuous walls (for example, a wall with a doorway). This can either be a list of [`CardinalDirection`](../cardinal_direction.md) values or a bitwise sum of the values of the cardinal directions (for example, `3` is `[CardinalDirection.north, CardinalDirection.south]`.
+        :param walls_with_windows: Directions of walls with windows. This can either be a list of [`CardinalDirection`](../cardinal_direction.md) values or a bitwise sum of the values of the cardinal directions (for example, `3` is `[CardinalDirection.north, CardinalDirection.south]`.
+        """
+
+        self.initialized = False
+        self.generate()
+        self._used_unique_categories.clear()
+        self._region = region
+        if isinstance(non_continuous_walls, int):
+            self._non_continuous_walls = [c for c in CardinalDirection if non_continuous_walls & c.value != 0]
+        else:
+            self._non_continuous_walls = non_continuous_walls
+        if isinstance(walls_with_windows, int):
+            self._walls_with_windows = [c for c in CardinalDirection if walls_with_windows & c.value != 0]
+        else:
+            self._walls_with_windows = walls_with_windows
 
     @staticmethod
     def _get_rectangular_arrangement_parameters(category: str) -> Tuple[float, float]:

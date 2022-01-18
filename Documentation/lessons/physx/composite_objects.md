@@ -72,7 +72,7 @@ The "sub-object machine type" determines which API command can be used for this 
 
 Sub-objects will respond to TDW commands just like any other object; you can, for example, [apply forces](forces.md) to individual sub-objects. Sub-objects likewise appear as separate objects in the output data.
 
-In this example, we'll add a microwave to the scene. We'll set the root object to be [kinematic](physics_object.md) and set the sub-objects (in this case, the microwave's door) to be non-kinematic:
+In this example, we'll add a microwave to the scene. We'll set the root object to be [kinematic](physics_objects.md) and set the sub-objects (in this case, the microwave's door) to be non-kinematic:
 
 ```python
 from tdw.controller import Controller

@@ -1,13 +1,12 @@
 from json import loads
 from pathlib import Path
 from pkg_resources import resource_filename
-from typing import Tuple, List, Dict, Optional, Union
+from typing import Tuple, List, Dict, Optional
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian, ModelRecord
 from tdw.add_ons.occupancy_map import OccupancyMap
-from tdw.cardinal_direction import CardinalDirection
 
 
 class ProcGenObjects(OccupancyMap):
@@ -55,15 +54,10 @@ class ProcGenObjects(OccupancyMap):
     MODEL_NAMES_NINETY_DEGREES: List[str] = Path(resource_filename(__name__, "proc_gen_objects_data/model_names_ninety_degrees.txt")).read_text().split("\n")
     _VERTICAL_SPATIAL_RELATIONS: Dict[str, Dict[str, List[str]]] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/vertical_spatial_relations.json")).read_text())
 
-    def __init__(self, cell_size: float = 0.5, random_seed: int = None, region: int = 0,
-                 non_continuous_walls: Union[int, List[CardinalDirection]] = 0,
-                 walls_with_windows: Union[int, List[CardinalDirection]] = 0):
+    def __init__(self, cell_size: float = 0.5, random_seed: int = None):
         """
         :param cell_size: The occupancy map cell size.
         :param random_seed: The random seed. If None, a random seed is randomly selected.
-        :param region: The ID of the scene region.
-        :param non_continuous_walls: Directions of non-continuous walls (for example, a wall with a doorway). This can either be a list of [`CardinalDirection`](../cardinal_direction.md) values or a bitwise sum of the values of the cardinal directions (for example, `3` is `[CardinalDirection.north, CardinalDirection.south]`.
-        :param walls_with_windows: Directions of walls with windows. This can either be a list of [`CardinalDirection`](../cardinal_direction.md) values or a bitwise sum of the values of the cardinal directions (for example, `3` is `[CardinalDirection.north, CardinalDirection.south]`.
         """
 
         super().__init__(cell_size=cell_size)
@@ -75,15 +69,6 @@ class ProcGenObjects(OccupancyMap):
         else:
             self.rng = np.random.RandomState(random_seed)
         self._used_unique_categories: List[str] = list()
-        self._region: int = region
-        if isinstance(non_continuous_walls, int):
-            self._non_continuous_walls: int = non_continuous_walls
-        else:
-            self._non_continuous_walls = sum([c.value for c in non_continuous_walls])
-        if isinstance(walls_with_windows, int):
-            self._walls_with_windows: int = walls_with_windows
-        else:
-            self._walls_with_windows = sum([c.value for c in walls_with_windows])
 
     @staticmethod
     def fits_inside_parent(parent: ModelRecord, child: ModelRecord) -> bool:
@@ -98,10 +83,11 @@ class ProcGenObjects(OccupancyMap):
         child_extents = TDWUtils.get_bounds_extents(child.bounds)
         return parent_extents[0] > child_extents[0] and parent_extents[2] > child_extents[2]
 
-    def model_fits_in_region(self, record: ModelRecord, position: Dict[str, float]) -> bool:
+    def model_fits_in_region(self, record: ModelRecord, position: Dict[str, float], region: int) -> bool:
         """
         :param record: The model record.
         :param position: The position of the object.
+        :param region: The index of the region in `self.scene_bounds.rooms`.
 
         :return: True if the model fits in the region.
         """
@@ -112,14 +98,15 @@ class ProcGenObjects(OccupancyMap):
                       [record.bounds["front"]["x"] + position["x"], record.bounds["front"]["z"] + position["z"]],
                       [record.bounds["back"]["x"] + position["x"], record.bounds["back"]["z"] + position["z"]],
                       [record.bounds["center"]["x"] + position["x"], record.bounds["center"]["z"] + position["z"]]]:
-            if not self.scene_bounds.rooms[self._region].is_inside(x=point[0], z=point[1]):
+            if not self.scene_bounds.rooms[region].is_inside(x=point[0], z=point[1]):
                 return False
         return True
 
-    def get_model_that_fits_in_region(self, category: str, position: Dict[str, float]) -> Optional[ModelRecord]:
+    def get_model_that_fits_in_region(self, category: str, position: Dict[str, float], region: int) -> Optional[ModelRecord]:
         """
         :param category: The model category.
         :param position: The position of the object.
+        :param region: The index of the region in `self.scene_bounds.rooms`.
 
         :return: A random model that fits in the region at `position`. If this returns None, no model fits.
         """
@@ -131,7 +118,7 @@ class ProcGenObjects(OccupancyMap):
         record = Controller.MODEL_LIBRARIANS["models_core.json"].records[0]
         for mn in model_names:
             record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(mn)
-            if self.model_fits_in_region(record=record, position=position):
+            if self.model_fits_in_region(record=record, position=position, region=region):
                 got_model_name = True
                 break
         if not got_model_name:
@@ -305,28 +292,14 @@ class ProcGenObjects(OccupancyMap):
         # Rotate everything.
         self.add_rotation_commands(parent_object_id=root_object_id, child_object_ids=object_ids, rotation=rotation)
 
-    def reset(self, region: int = 0, non_continuous_walls: Union[int, List[CardinalDirection]] = 0,
-              walls_with_windows: Union[int, List[CardinalDirection]] = 0) -> None:
+    def reset(self) -> None:
         """
         Reset the procedural generator. Call this when resetting the scene.
-
-        :param region: The ID of the scene region.
-        :param non_continuous_walls: Directions of non-continuous walls (for example, a wall with a doorway). This can either be a list of [`CardinalDirection`](../cardinal_direction.md) values or a bitwise sum of the values of the cardinal directions (for example, `3` is `[CardinalDirection.north, CardinalDirection.south]`.
-        :param walls_with_windows: Directions of walls with windows. This can either be a list of [`CardinalDirection`](../cardinal_direction.md) values or a bitwise sum of the values of the cardinal directions (for example, `3` is `[CardinalDirection.north, CardinalDirection.south]`.
         """
 
         self.initialized = False
         self.generate()
         self._used_unique_categories.clear()
-        self._region = region
-        if isinstance(non_continuous_walls, int):
-            self._non_continuous_walls = [c for c in CardinalDirection if non_continuous_walls & c.value != 0]
-        else:
-            self._non_continuous_walls = non_continuous_walls
-        if isinstance(walls_with_windows, int):
-            self._walls_with_windows = [c for c in CardinalDirection if walls_with_windows & c.value != 0]
-        else:
-            self._walls_with_windows = walls_with_windows
 
     @staticmethod
     def _get_rectangular_arrangement_parameters(category: str) -> Tuple[float, float]:

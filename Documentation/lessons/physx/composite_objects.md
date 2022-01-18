@@ -70,7 +70,7 @@ The "sub-object machine type" determines which API command can be used for this 
 
 ### Kinematic states
 
-If you send [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state) for a composite object, the command will only affect [kinematic state](physics_objects.md) the top-level object. To set the state for the top-level object *and* all sub-objects, send  [`set_composite_object_kinematic_state`](../../api/command_api.md#set_composite_object_kinematic_state):
+If you send [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state) for a composite object, the command will only affect the [kinematic state](physics_objects.md) of the top-level object. To set the state for the top-level object *and* all sub-objects, send  [`set_composite_object_kinematic_state`](../../api/command_api.md#set_composite_object_kinematic_state):
 
 ```python
 from tdw.controller import Controller
@@ -93,7 +93,7 @@ c.communicate({"$type": "terminate"})
 
 Sub-objects will respond to TDW commands just like any other object; you can, for example, [apply forces](forces.md) to individual sub-objects. Sub-objects likewise appear as separate objects in the output data.
 
-In the previous example, we used `set_composite_object_kinematic_state` to set uniformly set the kinematic states of *all* sub-objects. In this example, we'll use `CompositeObjects` output data to get the IDs and machine types of each sub-object and set only hinges to be non-kinematic:
+In the previous example, we used `set_composite_object_kinematic_state` to uniformly set the kinematic states of *all* sub-objects. In this example, we'll use `CompositeObjects` output data to get the IDs and machine types of each sub-object and set only hinges to be non-kinematic:
 
 ```python
 from tdw.controller import Controller

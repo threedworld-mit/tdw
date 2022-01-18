@@ -11,7 +11,6 @@ from tdw.add_ons.proc_gen_objects import ProcGenObjects
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
 from tdw.librarian import ModelRecord
-from tdw.add_ons.kinematic_composite_objects import KinematicCompositeObjects
 
 
 class _GenerationState(Enum):
@@ -22,8 +21,7 @@ class _GenerationState(Enum):
     start = 0
     adding_initial_objects = 3
     adding_secondary_objects = 4
-    setting_kinematic_states = 5
-    done = 6
+    done = 5
 
 
 class ProcGenKitchen(ProcGenObjects):
@@ -97,9 +95,6 @@ class ProcGenKitchen(ProcGenObjects):
         # Add secondary objects.
         elif self._state == _GenerationState.adding_initial_objects:
             self._add_secondary_objects()
-        # Set the correct kinematic state of composite sub-objects.
-        elif self._state == _GenerationState.setting_kinematic_states:
-            self._set_composite_object_kinematic_states(resp=resp)
 
     def _add_secondary_objects(self, region: int) -> None:
         """
@@ -169,30 +164,13 @@ class ProcGenKitchen(ProcGenObjects):
                                                                            scale_factor={"x": 0.5, "y": 0.5, "z": 0.5}))
                     y += 0.25
         # Set kinematic objects.
-        self._state = _GenerationState.setting_kinematic_states
+        self._state = _GenerationState.done
+        self.generating = False
         # Generate the final occupancy map.
         self.generate()
         # Request static object data.
         self.commands.append({"$type": "send_composite_objects",
                               "frequency": "once"})
-
-    def _set_composite_object_kinematic_states(self, resp: List[bytes]):
-        """
-        Set the kinematic state of composite sub-objects. Generate the final occupancy map.
-
-        :param resp: The response from the build.
-        """
-
-        self.occupancy_map.on_send(resp=resp)
-        # Make joints non-kinematic.
-        kinematic_composite_objects = KinematicCompositeObjects()
-        kinematic_composite_objects.initialized = True
-        kinematic_composite_objects.on_send(resp=resp)
-        self.commands.extend(kinematic_composite_objects.commands)
-        self._state = _GenerationState.done
-        self.commands.append({"$type": "step_physics",
-                              "frames": 100})
-        self.generating = False
 
     def _add_initial_objects(self) -> None:
         """

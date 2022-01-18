@@ -6,10 +6,11 @@ import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian, ModelRecord
-from tdw.add_ons.occupancy_map import OccupancyMap
+from tdw.add_ons.add_on import AddOn
+from tdw.scene_data.scene_bounds import SceneBounds
 
 
-class ProcGenObjects(OccupancyMap):
+class ProcGenObjects(AddOn):
     """
     Procedurally arrange objects using spatial relations and categories.
     For example, certain object categories can be *on top of* other object categories.
@@ -54,13 +55,12 @@ class ProcGenObjects(OccupancyMap):
     MODEL_NAMES_NINETY_DEGREES: List[str] = Path(resource_filename(__name__, "proc_gen_objects_data/model_names_ninety_degrees.txt")).read_text().split("\n")
     _VERTICAL_SPATIAL_RELATIONS: Dict[str, Dict[str, List[str]]] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/vertical_spatial_relations.json")).read_text())
 
-    def __init__(self, cell_size: float = 0.5, random_seed: int = None):
+    def __init__(self, random_seed: int = None, cell_size: float = 0.6096):
         """
-        :param cell_size: The occupancy map cell size.
         :param random_seed: The random seed. If None, a random seed is randomly selected.
         """
 
-        super().__init__(cell_size=cell_size)
+        super().__init__()
         if random_seed is None:
             """:field
             The random number generator.
@@ -69,6 +69,30 @@ class ProcGenObjects(OccupancyMap):
         else:
             self.rng = np.random.RandomState(random_seed)
         self._used_unique_categories: List[str] = list()
+        self.scene_bounds: Optional[SceneBounds] = None
+        self._cell_size: float = cell_size
+
+    def get_initialization_commands(self) -> List[dict]:
+        return [{"$type": "send_scene_regions"}]
+
+    def on_send(self, resp: List[bytes]) -> None:
+        # Set the scene bounds.
+        if self.scene_bounds is None:
+            self.scene_bounds = SceneBounds(resp=resp)
+
+    def get_region_occupancy_map(self, region: int) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        :param region: The index of the region in `self.scene_bounds.rooms`.
+
+        :return: Tuple: A 2D occupancy map of the room with all floor spaces marked unoccupied (`0`), an array of shape (width, length, 2) with the worldspace coordinates.
+        """
+
+        xs = np.arange(self.scene_bounds.rooms[region].x_min, self.scene_bounds.rooms[region].x_max, self._cell_size)
+        zs = np.arange(self.scene_bounds.rooms[region].z_min, self.scene_bounds.rooms[region].z_max, self._cell_size)
+        a = np.zeros(shape=(len(xs), len(zs), 2))
+        a[:, :, 0] = xs[:, np.newaxis]
+        a[:, :, 1] = zs[np.newaxis, :]
+        return np.zeros(shape=(len(xs), len(zs)), dtype=np.uint8), a
 
     @staticmethod
     def fits_inside_parent(parent: ModelRecord, child: ModelRecord) -> bool:
@@ -298,7 +322,6 @@ class ProcGenObjects(OccupancyMap):
         """
 
         self.initialized = False
-        self.generate()
         self._used_unique_categories.clear()
 
     @staticmethod

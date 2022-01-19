@@ -331,6 +331,17 @@ class TDWUtils:
             return Image.open(io.BytesIO(images.get_image(index)))
 
     @staticmethod
+    def get_segmentation_colors(id_pass: np.array) -> np.array:
+        """
+        :param id_pass: The ID pass image as a numpy array.
+
+        :return: A list of unique colors in the ID pass.
+        """
+
+        # Source: https://stackoverflow.com/a/48904991
+        return np.unique(id_pass.reshape(-1, id_pass.shape[2]), axis=0)
+
+    @staticmethod
     def get_random_position_on_nav_mesh(c: Controller, width: float, length: float, x_e=0, z_e=0, bake=True, rng=random.uniform) -> Tuple[float, float, float]:
         """
         Returns a random position on a NavMesh.

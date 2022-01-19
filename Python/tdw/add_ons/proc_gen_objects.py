@@ -46,10 +46,6 @@ class ProcGenObjects(AddOn):
     """
     RECTANGULAR_ARRANGEMENTS: Dict[str, dict] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/rectangular_arrangements.json")).read_text())
     """:class_var
-    A mapping of proc-gen categories to record wcategories.
-    """
-    PROC_GEN_CATEGORY_TO_WCATEGORY: Dict[str, str] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/procgen_category_to_wcategory.json")).read_text())
-    """:class_var
     The names of the models that are rotated 90 degrees.
     """
     MODEL_NAMES_NINETY_DEGREES: List[str] = Path(resource_filename(__name__, "proc_gen_objects_data/model_names_ninety_degrees.txt")).read_text().split("\n")

@@ -348,6 +348,7 @@ class ProcGenObjects(AddOn):
 
         self.initialized = False
         self._used_unique_categories.clear()
+        self.scene_bounds = None
 
     @staticmethod
     def _get_rectangular_arrangement_parameters(category: str) -> Tuple[float, float]:

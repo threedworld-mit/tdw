@@ -7,4 +7,3 @@ sink
 stove
 table
 floor_lamp
-house_plant

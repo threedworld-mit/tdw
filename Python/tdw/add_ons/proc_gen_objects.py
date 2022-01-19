@@ -53,11 +53,15 @@ class ProcGenObjects(AddOn):
     The names of the models that are rotated 90 degrees.
     """
     MODEL_NAMES_NINETY_DEGREES: List[str] = Path(resource_filename(__name__, "proc_gen_objects_data/model_names_ninety_degrees.txt")).read_text().split("\n")
-    _VERTICAL_SPATIAL_RELATIONS: Dict[str, Dict[str, List[str]]] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/vertical_spatial_relations.json")).read_text())
+    """:class_var
+    A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category.
+    """
+    ON_TOP_OF: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/on_top_of.json")).read_text())
 
     def __init__(self, random_seed: int = None, cell_size: float = 0.6096):
         """
         :param random_seed: The random seed. If None, a random seed is randomly selected.
+        :param cell_size: The cell size in meters when generating a temporary occupancy map. This is also used to position certain objects in subclasses of `ProcGenObjects`; for example, [`ProcGenKitchen`](proc_gen_kitchen.md) uses this value to arrange kitchen countertops.
         """
 
         super().__init__()
@@ -69,13 +73,34 @@ class ProcGenObjects(AddOn):
         else:
             self.rng = np.random.RandomState(random_seed)
         self._used_unique_categories: List[str] = list()
+        """:field
+        The scene bounds. This is set after the first `communicate()` call.
+        """
         self.scene_bounds: Optional[SceneBounds] = None
-        self._cell_size: float = cell_size
+        """:field
+        The cell size in meters when generating a temporary occupancy map. This is also used to position certain objects in subclasses of `ProcGenObjects`; for example, [`ProcGenKitchen`](proc_gen_kitchen.md) uses this value to arrange kitchen countertops.
+        """
+        self.cell_size: float = cell_size
 
     def get_initialization_commands(self) -> List[dict]:
+        """
+        This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+        :return: A list of commands that will initialize this add-on.
+        """
+
         return [{"$type": "send_scene_regions"}]
 
     def on_send(self, resp: List[bytes]) -> None:
+        """
+        This is called after commands are sent to the build and a response is received.
+
+        Use this function to send commands to the build on the next frame, given the `resp` response.
+        Any commands in the `self.commands` list will be sent on the next frame.
+
+        :param resp: The response from the build.
+        """
+
         # Set the scene bounds.
         if self.scene_bounds is None:
             self.scene_bounds = SceneBounds(resp=resp)
@@ -87,8 +112,8 @@ class ProcGenObjects(AddOn):
         :return: Tuple: A 2D occupancy map of the room with all floor spaces marked unoccupied (`0`), an array of shape (width, length, 2) with the worldspace coordinates.
         """
 
-        xs = np.arange(self.scene_bounds.rooms[region].x_min, self.scene_bounds.rooms[region].x_max, self._cell_size)
-        zs = np.arange(self.scene_bounds.rooms[region].z_min, self.scene_bounds.rooms[region].z_max, self._cell_size)
+        xs = np.arange(self.scene_bounds.rooms[region].x_min, self.scene_bounds.rooms[region].x_max, self.cell_size)
+        zs = np.arange(self.scene_bounds.rooms[region].z_min, self.scene_bounds.rooms[region].z_max, self.cell_size)
         a = np.zeros(shape=(len(xs), len(zs), 2))
         a[:, :, 0] = xs[:, np.newaxis]
         a[:, :, 1] = zs[np.newaxis, :]
@@ -309,7 +334,7 @@ class ProcGenObjects(AddOn):
         surface_size = (model_size[0] * 0.8, model_size[2] * 0.8)
         # Add objects on top of the root object.
         object_ids = self.add_rectangular_arrangement(size=surface_size,
-                                                      categories=ProcGenObjects._VERTICAL_SPATIAL_RELATIONS["on_top_of"][category],
+                                                      categories=ProcGenObjects.ON_TOP_OF[category],
                                                       position=object_top,
                                                       cell_size=cell_size,
                                                       density=density)

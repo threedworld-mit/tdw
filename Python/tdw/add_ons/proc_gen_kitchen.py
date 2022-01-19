@@ -30,7 +30,10 @@ class ProcGenKitchen(ProcGenObjects):
     The number of chairs around kitchen tables. Key = The number as a string. Value = A list of model names.
     """
     NUMBER_OF_CHAIRS_AROUND_TABLE: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/chairs_around_tables.json")).read_text())
-    _SECONDARY_CATEGORIES: List[str] = ["side_table", "basket"]
+    """:class_var
+    Categories of "secondary objects" that can be scattered around the room.
+    """
+    SECONDARY_CATEGORIES: List[str] = ["side_table", "basket"]
     """:class_var
     The y value (height) of the wall cabinets.
     """
@@ -45,10 +48,20 @@ class ProcGenKitchen(ProcGenObjects):
     TALL_CATEGORIES: List[str] = ["refrigerator", "shelf"]
 
     def __init__(self, random_seed: int = None):
+        """
+        :param random_seed: The random seed. If None, a random seed is randomly selected.
+        """
+
         super().__init__(random_seed=random_seed)
         self._counter_top_material: str = ""
 
     def get_initialization_commands(self) -> List[dict]:
+        """
+        This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+        :return: A list of commands that will initialize this add-on.
+        """
+
         # Set the wood type and counter top visual material.
         kitchen_counter_wood_type = self.rng.choice(["white_wood", "wood_beach_honey"])
         kitchen_counters = ProcGenObjects.MODEL_CATEGORIES["kitchen_counter"]
@@ -63,6 +76,9 @@ class ProcGenKitchen(ProcGenObjects):
 
     def create(self, region: RegionWalls, alcoves: List[RegionWalls]) -> None:
         """
+        Create a kitchen. Populate it with a table and chairs, kitchen counters and wall cabinets, and appliances.
+        Objects may be on top of or inside of larger objects.
+
         :param region: The [`RegionWalls`](../scene_data/region_walls.md) data describing the region.
         :param alcoves: A list of `RegionWalls` that are treated as part of a continuous kitchen, for example the smaller region of an L-shaped room.
         """
@@ -122,7 +138,7 @@ class ProcGenKitchen(ProcGenObjects):
                  "y": 0,
                  "z": position[1] + self.rng.uniform(-0.05, 0.05)}
             # Choose a random category.
-            category = ProcGenKitchen._SECONDARY_CATEGORIES[self.rng.randint(0, len(ProcGenKitchen._SECONDARY_CATEGORIES))]
+            category = ProcGenKitchen.SECONDARY_CATEGORIES[self.rng.randint(0, len(ProcGenKitchen.SECONDARY_CATEGORIES))]
             if category == "side_table":
                 if self.rng.random() < 0.5:
                     rotation = 90
@@ -578,7 +594,7 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         if size is None:
-            scale_factor = {"x": self._cell_size, "y": 0.0371, "z": self._cell_size}
+            scale_factor = {"x": self.cell_size, "y": 0.0371, "z": self.cell_size}
         else:
             scale_factor = {"x": size[0], "y": 0.0371, "z": size[1]}
         object_id = Controller.get_unique_id()
@@ -598,9 +614,9 @@ class ProcGenKitchen(ProcGenObjects):
                                "id": object_id,
                                "is_kinematic": True}])
         # Add objects on top of the counter.
-        self.add_rectangular_arrangement(size=(self._cell_size * 0.8, self._cell_size * 0.8),
+        self.add_rectangular_arrangement(size=(self.cell_size * 0.8, self.cell_size * 0.8),
                                          position={"x": position["x"], "y": 0.9167836, "z": position["z"]},
-                                         categories=ProcGenObjects._VERTICAL_SPATIAL_RELATIONS["on_top_of"]["kitchen_counter"])
+                                         categories=ProcGenObjects.ON_TOP_OF["kitchen_counter"])
 
     def _get_chair_position(self, chair_record: ModelRecord, table_bottom: np.array,
                             table_bound_point: np.array) -> np.array:
@@ -657,7 +673,7 @@ class ProcGenKitchen(ProcGenObjects):
             # Add a floating kitchen counter top.
             if category == "floating_kitchen_counter_top":
                 self._add_kitchen_counter_top(position=position)
-                extent = self._cell_size / 2
+                extent = self.cell_size / 2
                 if direction == CardinalDirection.north:
                     position["z"] += extent
                 elif direction == CardinalDirection.south:
@@ -775,7 +791,7 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         room = self.scene_bounds.rooms[region]
-        s = self._cell_size / 2
+        s = self.cell_size / 2
         if corner == OrdinalDirection.northwest:
             return {"x": room.x_min + s,
                     "y": 0,
@@ -806,17 +822,17 @@ class ProcGenKitchen(ProcGenObjects):
         if direction == CardinalDirection.north:
             return {"x": position["x"],
                     "y": position["y"],
-                    "z": position["z"] + self._cell_size / 2}
+                    "z": position["z"] + self.cell_size / 2}
         elif direction == CardinalDirection.south:
             return {"x": position["x"],
                     "y": position["y"],
-                    "z": position["z"] - self._cell_size / 2}
+                    "z": position["z"] - self.cell_size / 2}
         elif direction == CardinalDirection.west:
-            return {"x": position["x"] - self._cell_size / 2,
+            return {"x": position["x"] - self.cell_size / 2,
                     "y": position["y"],
                     "z": position["z"]}
         elif direction == CardinalDirection.east:
-            return {"x": position["x"] + self._cell_size / 2,
+            return {"x": position["x"] + self.cell_size / 2,
                     "y": position["y"],
                     "z": position["z"]}
         raise Exception(direction)
@@ -890,7 +906,14 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         longer_walls, length = self._get_longer_walls(region=region.region)
-        longer_wall = self._get_wall(walls=longer_walls, non_continuous_walls=region.non_continuous_walls)
+        ws = [w for w in longer_walls if region.non_continuous_walls & w.value == 0]
+        # Prefer walls with windows, if possible.
+        walls_with_windows = [w for w in ws if region.walls_with_windows & w.value != 0]
+        if len(walls_with_windows) >= 1:
+            longer_wall = walls_with_windows[self.rng.randint(0, len(walls_with_windows))]
+        # Use either of the walls.
+        else:
+            longer_wall = self._get_wall(walls=longer_walls, non_continuous_walls=region.non_continuous_walls)
         corners = self._get_corners_from_wall(wall=longer_wall)
         corner = corners[self.rng.randint(0, len(corners))]
         position = self._get_corner_position(corner=corner, region=region.region)
@@ -912,10 +935,25 @@ class ProcGenKitchen(ProcGenObjects):
         :return: A list of used walls.
         """
 
+        lateral_0 = ["kitchen_counter", "stove", "kitchen_counter", "kitchen_counter", "kitchen_counter"]
+        lateral_1 = ["refrigerator", "dishwasher", "sink", "kitchen_counter", "kitchen_counter"]
         longer_walls, length = self._get_longer_walls(region=region.region)
-        self.rng.shuffle(longer_walls)
-        for wall, categories in zip(longer_walls, [["kitchen_counter", "stove", "kitchen_counter", "kitchen_counter", "kitchen_counter"],
-                                                   ["refrigerator", "dishwasher", "sink", "kitchen_counter", "kitchen_counter"]]):
+        # Prefer to place the sink at a wall with windows.
+        ws = [w for w in longer_walls if region.non_continuous_walls & w.value == 0]
+        walls_with_windows = [w for w in ws if region.walls_with_windows & w.value != 0]
+        walls_without_windows = [w for w in ws if region.walls_with_windows & w.value == 0]
+        if len(walls_with_windows) >= 1:
+            window_wall = walls_with_windows[self.rng.randint(0, len(walls_with_windows))]
+            lateral_arrangements = [lateral_1, lateral_0]
+            walls = [window_wall]
+            walls.extend(walls_without_windows)
+        # Use either of the walls.
+        else:
+            walls = longer_walls
+            self.rng.shuffle(walls)
+            lateral_arrangements = [lateral_0, lateral_1]
+            self.rng.shuffle(lateral_arrangements)
+        for wall, categories in zip(walls, lateral_arrangements):
             if self.rng.random() < 0.5:
                 categories.reverse()
             corners = self._get_corners_from_wall(wall=wall)
@@ -937,7 +975,13 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         longer_walls, length = self._get_longer_walls(region=region.region)
-        longer_wall = self._get_wall(walls=longer_walls, non_continuous_walls=region.non_continuous_walls)
+        # Prefer a wall with windows if possible.
+        walls_with_windows = [w for w in longer_walls if region.walls_with_windows & w.value != 0]
+        if len(walls_with_windows) >= 1:
+            longer_wall = walls_with_windows[self.rng.randint(0, len(walls_with_windows))]
+        # Use either of the walls.
+        else:
+            longer_wall = self._get_wall(walls=longer_walls, non_continuous_walls=region.non_continuous_walls)
         corners = self._get_corners_from_wall(wall=longer_wall)
         corner = corners[self.rng.randint(0, len(corners))]
         position = self._get_corner_position(corner=corner, region=region.region)
@@ -950,7 +994,7 @@ class ProcGenKitchen(ProcGenObjects):
         shorter_wall = CardinalDirection(corner.value - longer_wall.value)
         # Get the length of the shorter wall.
         shorter_walls, length = self._get_shorter_walls(region=region.region)
-        length -= self._cell_size
+        length -= self.cell_size
         # Get everything else.
         direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=shorter_wall)
         position = self._get_corner_position(corner=corner, region=region.region)
@@ -975,8 +1019,14 @@ class ProcGenKitchen(ProcGenObjects):
 
         # Add the longer wall.
         longer_walls, length = self._get_longer_walls(region=region.region)
-        length -= self._cell_size
-        longer_wall = self._get_wall(walls=longer_walls, non_continuous_walls=region.non_continuous_walls)
+        # Prefer a wall with windows if possible.
+        walls_with_windows = [w for w in longer_walls if region.walls_with_windows & w.value != 0]
+        if len(walls_with_windows) >= 1:
+            longer_wall = walls_with_windows[self.rng.randint(0, len(walls_with_windows))]
+        # Use either of the walls.
+        else:
+            longer_wall = self._get_wall(walls=longer_walls, non_continuous_walls=region.non_continuous_walls)
+        length -= self.cell_size
         corners = self._get_corners_from_wall(wall=longer_wall)
         corner = corners[self.rng.randint(0, len(corners))]
         position = self._get_corner_position(corner=corner, region=region.region)
@@ -1015,7 +1065,7 @@ class ProcGenKitchen(ProcGenObjects):
         self._add_kitchen_counter_top(position=opposite_corner_position)
         # Get the length of the shorter wall.
         shorter_walls, length = self._get_shorter_walls(region=region.region)
-        length -= self._cell_size
+        length -= self.cell_size
         if self.rng.random() < 0.5:
             corners.reverse()
         for corner, categories in zip(corners, [["kitchen_counter", "refrigerator", "kitchen_counter", "shelf"],

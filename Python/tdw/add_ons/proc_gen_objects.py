@@ -67,6 +67,7 @@ class ProcGenObjects(AddOn):
             """
             self.rng: np.random.RandomState = np.random.RandomState()
         else:
+            print("Random seed:", random_seed)
             self.rng = np.random.RandomState(random_seed)
         self._used_unique_categories: List[str] = list()
         """:field

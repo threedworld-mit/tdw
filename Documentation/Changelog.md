@@ -4,6 +4,42 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.3
+
+### Command API
+
+#### New Commands
+
+| Command                                | Description                                                  |
+| -------------------------------------- | ------------------------------------------------------------ |
+| `set_composite_object_kinematic_state` | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
+| `add_compass_rose`                     | Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc. |
+| `destroy_compass_rose`                 | Destroy a compass rose in the scene.                         |
+
+#### Modified Commands
+
+| Command               | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| `set_kinematic_state` | For composite objects, this sets the state only for the top-level object (previous,  it set the state for all sub-objects as well). See: `set_composite_object_kinematic_state` |
+
+### Example controllers
+
+- Added: `non_physics/compass_rose.py`
+
+### Documentation
+
+#### New Documentation
+
+| Documentation                         | Description                                    |
+| ------------------------------------- | ---------------------------------------------- |
+| `lessons/non_physics/compass_rose.md` | Tutorial document explaining the compass rose. |
+
+#### Modified Documentation
+
+| Document                             | Modification                                                 |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md` | Clarified how to use various means to set kinematic states of sub-objects. |
+
 ## v1.9.2
 
 ### Command API

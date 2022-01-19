@@ -225,6 +225,13 @@
 | [`rotate_sensor_container_towards_position`](#rotate_sensor_container_towards_position) | Rotate the sensor container towards a position at a given angular speed per frame.  |
 | [`rotate_sensor_container_towards_rotation`](#rotate_sensor_container_towards_rotation) | Rotate the sensor container towards a target rotation.  |
 
+**Compass Rose Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_compass_rose`](#add_compass_rose) | Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc.  |
+| [`destroy_compass_rose`](#destroy_compass_rose) | Destroy the compasss rose in the scene. |
+
 **Create Reverb Space Command**
 
 | Command | Description |
@@ -333,6 +340,7 @@
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
 | [`apply_torque_to_object`](#apply_torque_to_object) | Apply a torque to the object's rigidbody. |
 | [`set_color_in_substructure`](#set_color_in_substructure) | Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API. |
+| [`set_composite_object_kinematic_state`](#set_composite_object_kinematic_state) | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
 | [`set_mass`](#set_mass) | Set the mass of an object. |
 | [`set_object_collision_detection_mode`](#set_object_collision_detection_mode) | Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object.  |
@@ -3247,6 +3255,41 @@ Rotate the sensor container towards a target rotation.
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
+# CompassRoseCommand
+
+These commands add or remove a non-physical compass rose to the scene.
+
+***
+
+## **`add_compass_rose`**
+
+Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "add_compass_rose"}
+```
+
+```python
+{"$type": "add_compass_rose", "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | Position of the compass rose. | {"x": 0, "y": 0, "z": 0} |
+
+***
+
+## **`destroy_compass_rose`**
+
+Destroy the compasss rose in the scene.
+
+
+```python
+{"$type": "destroy_compass_rose"}
+```
+
 # CreateReverbSpaceCommand
 
 Base class to create a ResonanceAudio Room, sized to the dimensions of the current room environment.
@@ -4551,6 +4594,28 @@ Set the color of a specific child object in the model's substructure. See: Model
 
 ***
 
+## **`set_composite_object_kinematic_state`**
+
+Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics.
+
+
+```python
+{"$type": "set_composite_object_kinematic_state", "id": 1}
+```
+
+```python
+{"$type": "set_composite_object_kinematic_state", "id": 1, "is_kinematic": False, "use_gravity": False, "sub_objects": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"is_kinematic"` | bool | If True, the top-level Rigidbody will be kinematic, and won't respond to physics. | False |
+| `"use_gravity"` | bool | If True, the top-level object will respond to gravity. | False |
+| `"sub_objects"` | bool | If True, apply the values for is_kinematic and use_gravity to each of the composite object's sub-objects. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`set_kinematic_state`**
 
 Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics.
@@ -4566,8 +4631,8 @@ Set an object's Rigidbody to be kinematic or not. A kinematic object won't respo
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"is_kinematic"` | bool | If true, the Rigidbody will be kinematic, and won't respond to physics. | False |
-| `"use_gravity"` | bool | If true, the object will respond to gravity. | False |
+| `"is_kinematic"` | bool | If True, the Rigidbody will be kinematic, and won't respond to physics. | False |
+| `"use_gravity"` | bool | If True, the object will respond to gravity. | False |
 | `"id"` | int | The unique object ID. | |
 
 ***

@@ -68,11 +68,32 @@ The "sub-object machine type" determines which API command can be used for this 
 | `"prismatic_joint"` | Can move linearly along an axis                              | A chest of drawers     |                                                              |
 | `"none"`            | (no mechanism)                                               | A basket with a lid    |                                                              |
 
-### General object commands
+### Kinematic states
+
+If you send [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state) for a composite object, the command will only affect the [kinematic state](physics_objects.md) of the top-level object. To set the state for the top-level object *and* all sub-objects, send  [`set_composite_object_kinematic_state`](../../api/command_api.md#set_composite_object_kinematic_state):
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller()
+object_id = c.get_unique_id()
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+                                object_id=object_id),
+               {"$type": "set_composite_object_kinematic_state",
+                "id": object_id,
+                "is_kinematic": True,
+                "use_gravity": False,
+                "sub_objects": True}])
+c.communicate({"$type": "terminate"})
+```
+
+### General object commands and kinematic states
 
 Sub-objects will respond to TDW commands just like any other object; you can, for example, [apply forces](forces.md) to individual sub-objects. Sub-objects likewise appear as separate objects in the output data.
 
-In this example, we'll add a microwave to the scene. We'll set the root object to be [kinematic](physics_objects.md) and set the sub-objects (in this case, the microwave's door) to be non-kinematic:
+In the previous example, we used `set_composite_object_kinematic_state` to uniformly set the kinematic states of *all* sub-objects. In this example, we'll use `CompositeObjects` output data to get the IDs and machine types of each sub-object and set only hinges to be non-kinematic:
 
 ```python
 from tdw.controller import Controller
@@ -113,6 +134,7 @@ for i in range(len(resp) - 1):
                                          "is_kinematic": False,
                                          "use_gravity": True})
 c.communicate({"$type": "terminate"})
+
 ```
 
 ***
@@ -139,6 +161,8 @@ Command API:
 - [`set_spring`](../../api/command_api.md#set_spring) 
 - [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits)
 - [`send_composite_objects`](../../api/command_api.md#send_composite_objects)
+- [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state)
+- [`set_composite_object_kinematic_state`](../../api/command_api.md#set_composite_object_kinematic_state)
 
 Output Data:
 

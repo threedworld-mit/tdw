@@ -234,6 +234,10 @@ class OccupancyMap(AddOn):
                                   "shape": "square"})
 
     def hide(self) -> None:
+        """
+        Remove all positions markers (the blue squares created by `self.show()`).
+        """
+
         self.commands.append({"$type": "remove_position_markers"})
 
     def reset(self) -> None:

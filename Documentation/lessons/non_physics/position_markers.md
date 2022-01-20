@@ -4,7 +4,7 @@
 
 *Position markers are most useful when setting up a scene. If you haven't done so already, we recommend you read the [Objects and Scenes tutorial](../objects_and_scenes/overview.md).*
 
-**Position markers** are simply non-physics objects that can be used to mark a position. They are useful when debugging a scene.
+**Position markers** are simple non-physics objects that can be used to mark a position. They are useful when debugging a scene.
 
 Consider this model, `arflex_hollywood_sofa`:
 
@@ -81,7 +81,7 @@ Position markers aren't [objects](../core_concepts/objects.md) in the TDW sense 
 
 ***
 
-**Next: [Textured quads](textured_quads.md)**
+**Next: [Line renderers](line_renderers.md)**
 
 [Return to the README](../../../README.md)
 

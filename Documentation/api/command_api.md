@@ -225,6 +225,13 @@
 | [`rotate_sensor_container_towards_position`](#rotate_sensor_container_towards_position) | Rotate the sensor container towards a position at a given angular speed per frame.  |
 | [`rotate_sensor_container_towards_rotation`](#rotate_sensor_container_towards_rotation) | Rotate the sensor container towards a target rotation.  |
 
+**Compass Rose Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_compass_rose`](#add_compass_rose) | Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc.  |
+| [`destroy_compass_rose`](#destroy_compass_rose) | Destroy the compasss rose in the scene. |
+
 **Create Reverb Space Command**
 
 | Command | Description |
@@ -258,6 +265,16 @@
 | [`set_post_process`](#set_post_process) | Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled) |
 | [`simulate_physics`](#simulate_physics) | Toggle whether to simulate physics per list of sent commands (i.e. per frame). If false, the simulation won't step the physics forward. Initial value = True (simulate physics per frame). |
 | [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Linux: True (use temporary URLs). On Windows and OS X: False (download S3 objects directly, without using temporary URLs). |
+
+**Line Renderer Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_line_renderer`](#add_line_renderer) | Add a 3D line to the scene. |
+| [`add_points_to_line_renderer`](#add_points_to_line_renderer) | Add points to an existing line in the scene. |
+| [`destroy_line_renderer`](#destroy_line_renderer) | Destroy an existing line in the scene from the scene. |
+| [`remove_points_from_line_renderer`](#remove_points_from_line_renderer) | Remove points from an existing line in the scene. |
+| [`simplify_line_renderer`](#simplify_line_renderer) | Simplify a 3D line to the scene by removing intermediate points. |
 
 **Load From Resources**
 
@@ -323,6 +340,7 @@
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
 | [`apply_torque_to_object`](#apply_torque_to_object) | Apply a torque to the object's rigidbody. |
 | [`set_color_in_substructure`](#set_color_in_substructure) | Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API. |
+| [`set_composite_object_kinematic_state`](#set_composite_object_kinematic_state) | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
 | [`set_mass`](#set_mass) | Set the mass of an object. |
 | [`set_object_collision_detection_mode`](#set_object_collision_detection_mode) | Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object.  |
@@ -3237,6 +3255,41 @@ Rotate the sensor container towards a target rotation.
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
+# CompassRoseCommand
+
+These commands add or remove a non-physical compass rose to the scene.
+
+***
+
+## **`add_compass_rose`**
+
+Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "add_compass_rose"}
+```
+
+```python
+{"$type": "add_compass_rose", "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | Position of the compass rose. | {"x": 0, "y": 0, "z": 0} |
+
+***
+
+## **`destroy_compass_rose`**
+
+Destroy the compasss rose in the scene.
+
+
+```python
+{"$type": "destroy_compass_rose"}
+```
+
 # CreateReverbSpaceCommand
 
 Base class to create a ResonanceAudio Room, sized to the dimensions of the current room environment.
@@ -3590,6 +3643,107 @@ Toggle whether to download asset bundles (models, scenes, etc.) directly from by
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"value"` | bool | Boolean value. | |
+
+# LineRendererCommand
+
+These commands show, remove, or adjust 3D lines in the scene.
+
+***
+
+## **`add_line_renderer`**
+
+Add a 3D line to the scene.
+
+
+```python
+{"$type": "add_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "start_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "end_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "id": 1}
+```
+
+```python
+{"$type": "add_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "start_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "end_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "id": 1, "start_width": 1, "end_width": 1, "loop": False, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"points"` | Vector3 [] | The points or vertices along the line. This must have at least 2 elements. | |
+| `"start_color"` | Color | The start color of the line. | |
+| `"end_color"` | Color | The end color of the line. If it's different than start_color, the colors will have an even gradient along the line. | |
+| `"start_width"` | float | The start width of the line in meters. | 1 |
+| `"end_width"` | float | The end width of the line in meters. | 1 |
+| `"loop"` | bool | If True, the start and end positions of the line will connect together to form a continuous loop. | False |
+| `"position"` | Vector3 | The position of the line. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique ID of the line. | |
+
+***
+
+## **`add_points_to_line_renderer`**
+
+Add points to an existing line in the scene.
+
+
+```python
+{"$type": "add_points_to_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"points"` | Vector3 [] | Additional points on the line. | |
+| `"id"` | int | The unique ID of the line. | |
+
+***
+
+## **`destroy_line_renderer`**
+
+Destroy an existing line in the scene from the scene.
+
+
+```python
+{"$type": "destroy_line_renderer", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the line. | |
+
+***
+
+## **`remove_points_from_line_renderer`**
+
+Remove points from an existing line in the scene.
+
+
+```python
+{"$type": "remove_points_from_line_renderer", "id": 1}
+```
+
+```python
+{"$type": "remove_points_from_line_renderer", "id": 1, "count": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"count"` | int | Remove this many points from the end of the line. | 0 |
+| `"id"` | int | The unique ID of the line. | |
+
+***
+
+## **`simplify_line_renderer`**
+
+Simplify a 3D line to the scene by removing intermediate points.
+
+
+```python
+{"$type": "simplify_line_renderer", "id": 1}
+```
+
+```python
+{"$type": "simplify_line_renderer", "id": 1, "tolerance": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"tolerance"` | float | A value greater than 0 used to simplify the line. Points within the tolerance parameter will be removed. A value of 0 means that all points will be included. | 0 |
+| `"id"` | int | The unique ID of the line. | |
 
 # LoadFromResources
 
@@ -4440,6 +4594,28 @@ Set the color of a specific child object in the model's substructure. See: Model
 
 ***
 
+## **`set_composite_object_kinematic_state`**
+
+Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics.
+
+
+```python
+{"$type": "set_composite_object_kinematic_state", "id": 1}
+```
+
+```python
+{"$type": "set_composite_object_kinematic_state", "id": 1, "is_kinematic": False, "use_gravity": False, "sub_objects": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"is_kinematic"` | bool | If True, the top-level Rigidbody will be kinematic, and won't respond to physics. | False |
+| `"use_gravity"` | bool | If True, the top-level object will respond to gravity. | False |
+| `"sub_objects"` | bool | If True, apply the values for is_kinematic and use_gravity to each of the composite object's sub-objects. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`set_kinematic_state`**
 
 Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics.
@@ -4455,8 +4631,8 @@ Set an object's Rigidbody to be kinematic or not. A kinematic object won't respo
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"is_kinematic"` | bool | If true, the Rigidbody will be kinematic, and won't respond to physics. | False |
-| `"use_gravity"` | bool | If true, the object will respond to gravity. | False |
+| `"is_kinematic"` | bool | If True, the Rigidbody will be kinematic, and won't respond to physics. | False |
+| `"use_gravity"` | bool | If True, the object will respond to gravity. | False |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -5035,7 +5211,7 @@ Make this object a ResonanceAudioSoundSource and play the audio data.
 
 # PositionMarkerCommand
 
-These commands show or hide position markers. They can be useful for debugging as scene.
+These commands show or hide position markers. They can be useful for debugging.
 
 ***
 

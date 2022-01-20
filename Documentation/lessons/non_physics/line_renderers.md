@@ -75,7 +75,7 @@ class LineRenderer(Controller):
 
 
 if __name__ == "__main__":
-    c = LineRenderer(launch_build=False)
+    c = LineRenderer()
     c.run()
 ```
 
@@ -161,7 +161,7 @@ class LineRenderer(Controller):
 
 
 if __name__ == "__main__":
-    c = LineRenderer(launch_build=False)
+    c = LineRenderer()
     c.run()
 ```
 

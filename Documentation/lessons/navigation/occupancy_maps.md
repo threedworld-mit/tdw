@@ -130,6 +130,65 @@ Output:
  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]]
 ```
 
+## Scene reset
+
+When [resetting a scene](../objects_and_scenes/reset_scene.md), call `occupancy_map.reset()`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.occupancy_map import OccupancyMap
+
+c = Controller()
+occupancy_map = OccupancyMap(cell_size=0.5)
+c.add_ons.append(occupancy_map)
+object_id = c.get_unique_id()
+c.communicate([TDWUtils.create_empty_room(6, 6)])
+occupancy_map.generate()
+c.communicate([])
+print(occupancy_map.occupancy_map)
+occupancy_map.reset()
+c.communicate([{"$type": "load_scene",
+                "scene_name": "ProcGenScene"},
+               TDWUtils.create_empty_room(8, 4)])
+occupancy_map.generate()
+c.communicate([])
+print(occupancy_map.occupancy_map)
+c.communicate({"$type": "terminate"})
+```
+
+Output:
+
+```
+[[-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+ [-1  0  0  0  0  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0  0  0  0  0 -1]
+ [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]]
+ 
+[[-1 -1 -1 -1 -1 -1 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1  0  0  0  0  0 -1]
+ [-1 -1 -1 -1 -1 -1 -1]]
+```
+
 ## Limitations
 
 - Occupancy maps are static. If an object in the scene moves, `occupancy_map.occupancy_map` won't update until you call `occupancy_map.generate()` again.

@@ -27,6 +27,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | --------------------- | ------------------------------------------------------------ |
 | `set_kinematic_state` | For composite objects, this sets the state only for the top-level object (previous,  it set the state for all sub-objects as well). See: `set_composite_object_kinematic_state` |
 
+### `tdw` module
+
+- Added: `OccupancyMap.reset()` Reset the occupancy map. Call this when resetting a scene.
+
 ### Example controllers
 
 - Added: `non_physics/compass_rose.py`
@@ -43,9 +47,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### Modified Documentation
 
-| Document                             | Modification                                                 |
-| ------------------------------------ | ------------------------------------------------------------ |
-| `lessons/physx/composite_objects.md` | Clarified how to use various means to set kinematic states of sub-objects. |
+| Document                               | Modification                                                 |
+| -------------------------------------- | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md`   | Clarified how to use various means to set kinematic states of sub-objects. |
+| `lessons/navigation/occupancy_maps.md` | Added a section for resetting a scene.                       |
 
 ## v1.9.2
 

@@ -15,6 +15,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `set_composite_object_kinematic_state` | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
 | `add_compass_rose`                     | Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc. |
 | `destroy_compass_rose`                 | Destroy a compass rose in the scene.                         |
+| `add_line_renderer`                    | Add a 3D line to the scene.                                  |
+| `add_points_to_line_renderer`          | Add points to an existing line in the scene.                 |
+| `destroy_line_renderer`                | Destroy an existing line in the scene from the scene.        |
+| `remove_points_from_line_renderer`     | Remove points from an existing line in the scene.            |
+| `simplify_line_renderer`               | Simplify a 3D line to the scene by removing intermediate points. |
 
 #### Modified Commands
 
@@ -25,14 +30,16 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 ### Example controllers
 
 - Added: `non_physics/compass_rose.py`
+- Added: `non_physics/line_renderer.py`
 
 ### Documentation
 
 #### New Documentation
 
-| Documentation                         | Description                                    |
-| ------------------------------------- | ---------------------------------------------- |
-| `lessons/non_physics/compass_rose.md` | Tutorial document explaining the compass rose. |
+| Documentation                           | Description                                    |
+| --------------------------------------- | ---------------------------------------------- |
+| `lessons/non_physics/compass_rose.md`   | Tutorial document explaining the compass rose. |
+| `lessons/non_physics/line_renderers.md` | Tutorial document explaining line renderers.   |
 
 #### Modified Documentation
 

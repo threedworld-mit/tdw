@@ -225,6 +225,13 @@
 | [`rotate_sensor_container_towards_position`](#rotate_sensor_container_towards_position) | Rotate the sensor container towards a position at a given angular speed per frame.  |
 | [`rotate_sensor_container_towards_rotation`](#rotate_sensor_container_towards_rotation) | Rotate the sensor container towards a target rotation.  |
 
+**Compass Rose Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_compass_rose`](#add_compass_rose) | Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc.  |
+| [`destroy_compass_rose`](#destroy_compass_rose) | Destroy the compasss rose in the scene. |
+
 **Create Reverb Space Command**
 
 | Command | Description |
@@ -3237,6 +3244,41 @@ Rotate the sensor container towards a target rotation.
 | `"speed"` | float | The maximum angular speed that the sensor container will rotate per frame. | 3 |
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+# CompassRoseCommand
+
+These commands add or remove a non-physical compass rose to the scene.
+
+***
+
+## **`add_compass_rose`**
+
+Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "add_compass_rose"}
+```
+
+```python
+{"$type": "add_compass_rose", "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | Position of the compass rose. | {"x": 0, "y": 0, "z": 0} |
+
+***
+
+## **`destroy_compass_rose`**
+
+Destroy the compasss rose in the scene.
+
+
+```python
+{"$type": "destroy_compass_rose"}
+```
 
 # CreateReverbSpaceCommand
 

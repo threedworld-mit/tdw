@@ -17,7 +17,7 @@ class VRObservedObjects(Controller):
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.done = False
-        self.vr = VR(rig_type=RigType.oculus_touch, image_passes=["_id"])
+        self.vr = VR(rig_type=RigType.oculus_touch, vr_rig_output_data=True, image_passes=["_id"])
         self.object_manager = ObjectManager(transforms=False, rigidbodies=False, bounds=False)
         keyboard = Keyboard()
         self.add_ons.extend([keyboard, self.object_manager, self.vr])

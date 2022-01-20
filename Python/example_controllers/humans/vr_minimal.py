@@ -15,7 +15,7 @@ class VirtualReality(Controller):
         self.done = False
 
         keyboard = Keyboard()
-        vr = VR(rig_type=RigType.oculus_touch)
+        vr = VR(rig_type=RigType.oculus_touch, vr_rig_output_data=False, image_passes=None)
         self.add_ons.extend([vr, keyboard])
         keyboard.listen(key="Escape", function=self.quit)
 

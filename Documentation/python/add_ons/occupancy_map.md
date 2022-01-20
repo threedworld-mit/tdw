@@ -108,6 +108,14 @@ These blue squares don't interact with the physics engine.
 
 **`self.hide()`**
 
+Remove all positions markers (the blue squares created by `self.show()`).
+
+#### reset
+
+**`self.reset()`**
+
+Reset the occupancy map. Call this when resetting a scene.
+
 #### on_send
 
 **`self.on_send(resp)`**

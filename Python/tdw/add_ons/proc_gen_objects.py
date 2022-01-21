@@ -68,6 +68,7 @@ class ProcGenObjects(AddOn):
             self.random_seed: int = Controller.get_unique_id()
         else:
             self.random_seed = random_seed
+        print("Random seed: ", self.random_seed)
         """:field
         The random number generator.
         """

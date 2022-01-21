@@ -96,25 +96,18 @@ class ProcGenKitchen(ProcGenObjects):
         # Generate a blank occupancy map.
         occupancy_map, positions_map = self.get_region_occupancy_map(region=region)
         for command in self.commands:
-            if command["$type"] != "add_object" or command["$type"] != "load_primitive_from_resources":
+            if command["$type"] != "add_object" and command["$type"] != "load_primitive_from_resources":
                 continue
             # Ignore small objects above the ground.
-            if command["$type"] != "load_primitive_from_resources" and command["position"]["y"] > 0:
+            if command["$type"] == "add_object" and command["position"]["y"] > 0:
                 continue
             # Get the position of the object.
             pos = np.array([command["position"]["x"], command["position"]["z"]])
-            # Get the nearest position on the occupancy map.
-            nearest_ix = 0
-            nearest_iz = 0
-            nearest_distance = np.inf
+            # Mark occupancy cells near this position as occupied.
             for ix, iz in np.ndindex(occupancy_map.shape):
                 d = np.linalg.norm(pos - positions_map[ix][iz])
-                if d < nearest_distance:
-                    nearest_ix = ix
-                    nearest_iz = iz
-                    nearest_distance = d
-            # Mark this position as occupied.
-            occupancy_map[nearest_ix][nearest_iz] = 1
+                if d < self.cell_size:
+                    occupancy_map[ix][iz] = 1
         # Get the borders of the map.
         mask = np.zeros(shape=occupancy_map.shape, dtype=np.uint8)
         mask[0, :] = 1
@@ -893,9 +886,12 @@ class ProcGenKitchen(ProcGenObjects):
             if region.non_continuous_walls & w.value == 0:
                 longer_walls_ok = False
                 break
-        triangles: List[Callable[[RegionWalls], List[CardinalDirection]]] = [self._add_straight_work_triangle, self._add_l_work_triangle]
+        triangles: List[Callable[[RegionWalls], List[CardinalDirection]]] = [self._add_l_work_triangle]
+        # Prefer parallel over straight.
         if longer_walls_ok:
             triangles.append(self._add_parallel_work_triangle)
+        else:
+            triangles.append(self._add_straight_work_triangle)
         shorter_walls, length = self._get_shorter_walls(region=region.region)
         shorter_walls_ok = True
         for w in shorter_walls:

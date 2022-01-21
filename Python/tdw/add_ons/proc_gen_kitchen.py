@@ -3,7 +3,6 @@ from pkg_resources import resource_filename
 from json import loads
 from typing import List, Dict, Optional, Tuple, Callable
 import numpy as np
-from scipy.signal import convolve2d
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.proc_gen_objects import ProcGenObjects
@@ -22,6 +21,10 @@ class ProcGenKitchen(ProcGenObjects):
     Categories of models that can be placed on a shelf.
     """
     ON_SHELF: List[str] = Path(resource_filename(__name__, "proc_gen_kitchen_data/categories_on_shelf.txt")).read_text().split("\n")
+    """:class_var
+    Categories of models that can be placed in a basket.
+    """
+    IN_BASKET: List[str] = Path(resource_filename(__name__, "proc_gen_kitchen_data/categories_in_basket.txt")).read_text().split("\n")
     """:class_var
     Data for shelves. Key = model name. Value = Dictionary: "size" (a 2-element list), "ys" (list of shelf y's).
     """
@@ -83,110 +86,24 @@ class ProcGenKitchen(ProcGenObjects):
         :param alcoves: A list of `RegionWalls` that are treated as part of a continuous kitchen, for example the smaller region of an L-shaped room.
         """
 
-        self._add_initial_objects(region=region, alcoves=alcoves)
-        self._add_secondary_objects(region=region.region)
+        used_walls = self._add_initial_objects(region=region, alcoves=alcoves)
+        self._add_secondary_arrangement(used_walls=used_walls, region=region)
 
-    def _add_secondary_objects(self, region: int) -> None:
-        """
-        Add "secondary objects" in unoccupied spaces around the edges of the room.
-
-        :param region: The index of the region in `self.scene_bounds.rooms`.
-        """
-
-        # Generate a blank occupancy map.
-        occupancy_map, positions_map = self.get_region_occupancy_map(region=region)
-        for command in self.commands:
-            if command["$type"] != "add_object" and command["$type"] != "load_primitive_from_resources":
-                continue
-            # Ignore small objects above the ground.
-            if command["$type"] == "add_object" and command["position"]["y"] > 0:
-                continue
-            # Get the position of the object.
-            pos = np.array([command["position"]["x"], command["position"]["z"]])
-            # Mark occupancy cells near this position as occupied.
-            for ix, iz in np.ndindex(occupancy_map.shape):
-                d = np.linalg.norm(pos - positions_map[ix][iz])
-                if d < self.cell_size:
-                    occupancy_map[ix][iz] = 1
-        # Get the borders of the map.
-        mask = np.zeros(shape=occupancy_map.shape, dtype=np.uint8)
-        mask[0, :] = 1
-        mask[-1, :] = 1
-        mask[:, 0] = 1
-        mask[:, -1] = 1
-        occupancy_map[mask == 0] = 1
-        # Fill gaps.
-        k = np.ones((3, 3), dtype=int)
-        q = convolve2d(occupancy_map, k, 'same') < 0
-        occupancy_map[(q == True) & (occupancy_map == 0)] = 1
-        positions = []
-        for ix, iy in np.ndindex(occupancy_map.shape):
-            if occupancy_map[ix][iy] == 0:
-                positions.append(positions_map[ix][iy])
-        for position in positions:
-            # Skip most of the positions.
-            if self.rng.random() > 0.125:
-                continue
-            p = {"x": position[0] + self.rng.uniform(-0.05, 0.05),
-                 "y": 0,
-                 "z": position[1] + self.rng.uniform(-0.05, 0.05)}
-            # Choose a random category.
-            category = ProcGenKitchen.SECONDARY_CATEGORIES[self.rng.randint(0, len(ProcGenKitchen.SECONDARY_CATEGORIES))]
-            if category == "side_table":
-                if self.rng.random() < 0.5:
-                    rotation = 90
-                else:
-                    rotation = 0
-            else:
-                rotation = self.rng.uniform(0, 360)
-            model_name = ProcGenObjects.MODEL_CATEGORIES[category][
-                self.rng.randint(0, len(ProcGenObjects.MODEL_CATEGORIES[category]))]
-            record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
-            if not self.model_fits_in_region(record=record, position=p, region=region):
-                continue
-            self.commands.extend(Controller.get_add_physics_object(model_name=model_name,
-                                                                   object_id=Controller.get_unique_id(),
-                                                                   position=p,
-                                                                   rotation={"x": 0, "y": rotation, "z": 0},
-                                                                   library="models_core.json",
-                                                                   kinematic=True))
-            # Add items in the basket.
-            if category == "basket":
-                extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
-                d = extents[0] if extents[0] < extents[2] else extents[2]
-                d *= 0.6
-                r = d / 2
-                y = extents[1]
-                model_names = ["vase_02", "jug04", "jug05"]
-                for i in range(2, self.rng.randint(4, 6)):
-                    model_name = model_names[self.rng.randint(0, len(model_names))]
-                    q = TDWUtils.get_random_point_in_circle(center=np.array([p["x"], y, p["z"]]),
-                                                            radius=r)
-                    q[1] = y
-                    self.commands.extend(Controller.get_add_physics_object(model_name=model_name,
-                                                                           object_id=Controller.get_unique_id(),
-                                                                           position=TDWUtils.array_to_vector3(q),
-                                                                           rotation={"x": float(self.rng.uniform(0, 360)),
-                                                                                     "y": float(self.rng.uniform(0, 360)),
-                                                                                     "z": float(self.rng.uniform(0, 360))},
-                                                                           library="models_core.json",
-                                                                           scale_factor={"x": 0.5, "y": 0.5, "z": 0.5}))
-                    y += 0.25
-        self.commands.append({"$type": "step_physics",
-                              "frames": 50})
-
-    def _add_initial_objects(self, region: RegionWalls, alcoves: List[RegionWalls]) -> None:
+    def _add_initial_objects(self, region: RegionWalls, alcoves: List[RegionWalls]) -> List[CardinalDirection]:
         """
         Create the kitchen. Add kitchen appliances, counter tops, etc. and a table. Objects will be placed on surfaces.
 
         :param region: The [`RegionWalls`](../scene_data/region_walls.md) data describing the region.
         :param alcoves: A list of `RegionWalls` that are treated as part of a continuous kitchen, for example the smaller region of an L-shaped room.
+
+        :return: The walls used by the work triangle.
         """
 
         # Add the work triangle.
         used_walls = self._add_work_triangle(region=region)
         # Add the table.
         self._add_table(region=region, used_walls=used_walls, alcoves=alcoves)
+        return used_walls
 
     def _add_table(self, region: RegionWalls, used_walls: List[CardinalDirection], alcoves: List[RegionWalls],
                    table_settings: bool = True, plate_model_name: str = None, fork_model_name: str = None,
@@ -261,13 +178,8 @@ class ProcGenKitchen(ProcGenObjects):
             position = {"x": p[0] + self.rng.uniform(-0.1, 0.1),
                         "y": 0,
                         "z": p[2] + self.rng.uniform(-0.1, 0.1)}
-        # Sometimes, rotate the table 45 degrees.
-        if self.rng.random() < 0.5:
-            rotation = 0
-        else:
-            rotation = 45 if self.rng.random() < 0.5 else -45
         # Apply a random rotation.
-        rotation += self.rng.uniform(-10, 10)
+        rotation = self.rng.uniform(-10, 10)
         # Add the table.
         root_object_id = Controller.get_unique_id()
         # Prefer a large table.
@@ -732,6 +644,16 @@ class ProcGenKitchen(ProcGenObjects):
             elif c == "stove":
                 self._add_stove(record=record, position=position, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
+            elif c == "side_table":
+                self._add_side_table(record=record, position=position, face_away_from=face_away_from)
+                # Add a little extra space.
+                for i in range(2):
+                    position = __add_half_extent_to_position()
+            elif c == "basket":
+                self._add_basket(record=record, position=position, face_away_from=face_away_from)
+                # Add a little extra space.
+                for i in range(2):
+                    position = __add_half_extent_to_position()
             else:
                 print(c)
                 self._add_kitchen_counter(record=record, position=position, face_away_from=face_away_from,
@@ -1225,3 +1147,99 @@ class ProcGenKitchen(ProcGenObjects):
         for child_object_id in child_object_ids:
             self.commands.append({"$type": "unparent_object",
                                   "id": child_object_id})
+
+    def _add_secondary_arrangement(self, used_walls: List[CardinalDirection], region: RegionWalls) -> None:
+        walls: List[CardinalDirection] = [c for c in used_walls if region.non_continuous_walls & c.value == 0 and c not in used_walls]
+        if len(walls) == 0:
+            return
+        for wall in walls:
+            categories = []
+            for i in range(10):
+                categories.append(ProcGenKitchen.SECONDARY_CATEGORIES[self.rng.randint(0, len(ProcGenKitchen.SECONDARY_CATEGORIES))])
+            corners = self._get_corners_from_wall(wall=wall)
+            corner = corners[self.rng.randint(0, len(corners))]
+            position = self._get_corner_position(corner=corner, region=region.region)
+            direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=wall)
+            longer_walls, length = self._get_longer_walls(region=region.region)
+            if wall not in longer_walls:
+                shorter_walls, length = self._get_shorter_walls(region=region.region)
+            self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
+                                          categories=categories, length=length, region=region.region,
+                                          walls_with_windows=region.walls_with_windows)
+
+    def _add_side_table(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection) -> None:
+        """
+        Procedurally generate a side table with objects on it.
+
+        :param record: The model record.
+        :param position: The position of the root object as either a numpy array or a dictionary.
+        :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
+
+        :return: The model record of the root object. If no models were added to the scene, this is None.
+        """
+
+        if face_away_from == CardinalDirection.north:
+            rotation: int = 90
+        elif face_away_from == CardinalDirection.south:
+            rotation = 270
+        elif face_away_from == CardinalDirection.west:
+            rotation = 180
+        elif face_away_from == CardinalDirection.east:
+            rotation = 0
+        else:
+            raise Exception(face_away_from)
+        return self.add_object_with_other_objects_on_top(record=record,
+                                                         position={k: v for k, v in position.items()},
+                                                         rotation=rotation,
+                                                         category="side_table")
+
+    def _add_basket(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection) -> None:
+        """
+        Procedurally generate a basket with objects in it.
+
+        :param record: The model record.
+        :param position: The position of the root object as either a numpy array or a dictionary.
+        :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
+
+        :return: The model record of the root object. If no models were added to the scene, this is None.
+        """
+
+        if face_away_from == CardinalDirection.north:
+            direction = (0, -1)
+        elif face_away_from == CardinalDirection.south:
+            direction = (0, 1)
+        elif face_away_from == CardinalDirection.west:
+            direction = (1, 0)
+        elif face_away_from == CardinalDirection.east:
+            direction = (-1, 0)
+        else:
+            raise Exception(face_away_from)
+        rotation = self.rng.uniform(-360, 360)
+        basket_position = {"x": position["x"] + direction[0] * self.rng.uniform(0.25, 0.5),
+                           "y": 0,
+                           "z": position["z"] + direction[1] + self.rng.uniform(0.25, 0.5)}
+        self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
+                                                               object_id=Controller.get_unique_id(),
+                                                               position=basket_position,
+                                                               rotation={"x": 0, "y": rotation, "z": 0},
+                                                               library="models_core.json",
+                                                               kinematic=False))
+        extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
+        d = extents[0] if extents[0] < extents[2] else extents[2]
+        d *= 0.6
+        r = d / 2
+        y = extents[1]
+        for i in range(2, self.rng.randint(4, 6)):
+            model_name = ProcGenKitchen.IN_BASKET[self.rng.randint(0, len(ProcGenKitchen.IN_BASKET))]
+            q = TDWUtils.get_random_point_in_circle(center=np.array([basket_position["x"], y, basket_position["z"]]),
+                                                    radius=r)
+            q[1] = y
+            self.commands.extend(Controller.get_add_physics_object(model_name=model_name,
+                                                                   object_id=Controller.get_unique_id(),
+                                                                   position=TDWUtils.array_to_vector3(q),
+                                                                   rotation={"x": float(self.rng.uniform(0, 360)),
+                                                                             "y": float(self.rng.uniform(0, 360)),
+                                                                             "z": float(self.rng.uniform(0, 360))},
+                                                                   library="models_core.json",
+                                                                   scale_factor={"x": 0.5, "y": 0.5, "z": 0.5}))
+            y += 0.25

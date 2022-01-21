@@ -101,6 +101,17 @@
     "sandwich",
     "orange"
   ],
+  "side_table": [
+    "book",
+    "bottle",
+    "bowl",
+    "candle",
+    "coffee_grinder",
+    "coffee_maker",
+    "house_plant",
+    "jar",
+    "jug"
+  ],
   "stove": [
     "baking_sheet",
     "pan",

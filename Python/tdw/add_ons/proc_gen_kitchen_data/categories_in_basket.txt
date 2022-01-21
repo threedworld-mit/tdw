@@ -1,0 +1,8 @@
+coin
+cork
+fork
+knife
+pen
+scissors
+spoon
+tea_tray

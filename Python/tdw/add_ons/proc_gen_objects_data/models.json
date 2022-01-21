@@ -180,6 +180,12 @@
   "ladle": [
     "soup_ladle_black_02"
   ],
+  "large_kitchen_table": [
+    "dining_room_table",
+    "enzo_industrial_loft_pine_metal_round_dining_table",
+    "b03_restoration_hardware_pedestal_salvaged_round_tables",
+    "b05_table_new"
+  ],
   "microwave": [
     "appliance-ge-profile-microwave",
     "appliance-ge-profile-microwave3",

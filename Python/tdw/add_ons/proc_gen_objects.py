@@ -63,12 +63,15 @@ class ProcGenObjects(AddOn):
         super().__init__()
         if random_seed is None:
             """:field
-            The random number generator.
+            The random seed.
             """
-            self.rng: np.random.RandomState = np.random.RandomState()
+            self.random_seed: int = Controller.get_unique_id()
         else:
-            print("Random seed:", random_seed)
-            self.rng = np.random.RandomState(random_seed)
+            self.random_seed = random_seed
+        """:field
+        The random number generator.
+        """
+        self.rng = np.random.RandomState(self.random_seed)
         self._used_unique_categories: List[str] = list()
         """:field
         The scene bounds. This is set after the first `communicate()` call.

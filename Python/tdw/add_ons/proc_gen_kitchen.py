@@ -268,10 +268,20 @@ class ProcGenKitchen(ProcGenObjects):
             position = {"x": p[0] + self.rng.uniform(-0.1, 0.1),
                         "y": 0,
                         "z": p[2] + self.rng.uniform(-0.1, 0.1)}
-        rotation = self.rng.uniform(-10, 10)
+        # Sometimes, rotate the table 45 degrees.
+        if self.rng.random() < 0.5:
+            rotation = 0
+        else:
+            rotation = 45 if self.rng.random() < 0.5 else -45
+        # Apply a random rotation.
+        rotation += self.rng.uniform(-10, 10)
         # Add the table.
         root_object_id = Controller.get_unique_id()
-        tables = ProcGenObjects.MODEL_CATEGORIES["kitchen_table"]
+        # Prefer a large table.
+        if len(alcoves) > 0:
+            tables = ProcGenObjects.MODEL_CATEGORIES["large_kitchen_table"]
+        else:
+            tables = ProcGenObjects.MODEL_CATEGORIES["kitchen_table"]
         table_model_name = tables[self.rng.randint(0, len(tables))]
         record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(table_model_name)
         self.commands.extend(Controller.get_add_physics_object(model_name=table_model_name,
@@ -454,11 +464,11 @@ class ProcGenKitchen(ProcGenObjects):
                                              "y": ProcGenKitchen.WALL_CABINET_Y,
                                              "z": room.z_min + wall_cabinet_extents[2] / 2}
                 elif face_away_from == CardinalDirection.west:
-                    wall_cabinet_position = {"x": room.x_max - wall_cabinet_extents[2] / 2,
+                    wall_cabinet_position = {"x": room.x_min + wall_cabinet_extents[2] / 2,
                                              "y": ProcGenKitchen.WALL_CABINET_Y,
                                              "z": position["z"]}
                 elif face_away_from == CardinalDirection.east:
-                    wall_cabinet_position = {"x": room.x_min - wall_cabinet_extents[2] / 2,
+                    wall_cabinet_position = {"x": room.x_max - wall_cabinet_extents[2] / 2,
                                              "y": ProcGenKitchen.WALL_CABINET_Y,
                                              "z": position["z"]}
                 else:

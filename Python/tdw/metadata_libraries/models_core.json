@@ -5263,6 +5263,96 @@
             "wcategory": "jug",
             "wnid": "n03603722"
         },
+        "b03_radiator_alum_12": {
+            "asset_bundle_sizes": {
+                "Darwin": 12268081,
+                "Linux": 12362932,
+                "Windows": 12067564
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.639128e-07,
+                    "y": 0.2993745,
+                    "z": -0.5251607
+                },
+                "bottom": {
+                    "x": 1.639128e-07,
+                    "y": -2.980232e-08,
+                    "z": -5.960464e-08
+                },
+                "center": {
+                    "x": 1.639128e-07,
+                    "y": 0.2993745,
+                    "z": -5.960464e-08
+                },
+                "front": {
+                    "x": 1.639128e-07,
+                    "y": 0.2993745,
+                    "z": 0.5251606
+                },
+                "left": {
+                    "x": -0.06527405,
+                    "y": 0.2993745,
+                    "z": -5.960464e-08
+                },
+                "right": {
+                    "x": 0.06527438,
+                    "y": 0.2993745,
+                    "z": -5.960464e-08
+                },
+                "top": {
+                    "x": 1.639128e-07,
+                    "y": 0.598749,
+                    "z": -5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_radiator_alum_12",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder007"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Object10423613"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Object10423614"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Plane019"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_radiator_alum_12",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_radiator_alum_12",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_radiator_alum_12"
+            },
+            "volume": 0.027808964252471924,
+            "wcategory": "radiator",
+            "wnid": "n04041069"
+        },
         "b03_restoration_hardware_pedestal_salvaged_round_tables": {
             "asset_bundle_sizes": {
                 "Darwin": 11288525,
@@ -9472,6 +9562,222 @@
             "volume": 0.000246829615207389,
             "wcategory": "candle",
             "wnid": "n02948072"
+        },
+        "b05_castironradiator": {
+            "asset_bundle_sizes": {
+                "Darwin": 15137950,
+                "Linux": 15535531,
+                "Windows": 14869078
+            },
+            "bounds": {
+                "back": {
+                    "x": 5.960464e-08,
+                    "y": 0.355347,
+                    "z": -0.08989769
+                },
+                "bottom": {
+                    "x": 5.960464e-08,
+                    "y": -2.980232e-08,
+                    "z": 1.490116e-08
+                },
+                "center": {
+                    "x": 5.960464e-08,
+                    "y": 0.355347,
+                    "z": 1.490116e-08
+                },
+                "front": {
+                    "x": 5.960464e-08,
+                    "y": 0.355347,
+                    "z": 0.08989772
+                },
+                "left": {
+                    "x": -0.2891028,
+                    "y": 0.355347,
+                    "z": 1.490116e-08
+                },
+                "right": {
+                    "x": 0.2891029,
+                    "y": 0.355347,
+                    "z": 1.490116e-08
+                },
+                "top": {
+                    "x": 5.960464e-08,
+                    "y": 0.710694,
+                    "z": 1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b05_castironradiator",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "ceramic_porcelain"
+                    ],
+                    "name": "Cap001"
+                },
+                {
+                    "materials": [
+                        "ceramic_porcelain"
+                    ],
+                    "name": "Cap002"
+                },
+                {
+                    "materials": [
+                        "ceramic_porcelain"
+                    ],
+                    "name": "Mount001"
+                },
+                {
+                    "materials": [
+                        "ceramic_porcelain"
+                    ],
+                    "name": "Mount002"
+                },
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "Rib001"
+                },
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "Rib002"
+                },
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "Rib003"
+                },
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "Rib004"
+                },
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "Rib005"
+                },
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "Rib006"
+                },
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "Rib007"
+                },
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "Rib008"
+                },
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "Rib009"
+                },
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "Rib010"
+                },
+                {
+                    "materials": [
+                        "iron_forged"
+                    ],
+                    "name": "Rib011"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "Valve001"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "Valve001_Base"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "Valve001_Nut001"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "Valve001_Nut002"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "Valve001_Pipe"
+                },
+                {
+                    "materials": [
+                        "steel_brushed_shiny"
+                    ],
+                    "name": "Valve002"
+                },
+                {
+                    "materials": [
+                        "steel_brushed_shiny"
+                    ],
+                    "name": "Valve002_Base"
+                },
+                {
+                    "materials": [
+                        "steel_brushed_shiny"
+                    ],
+                    "name": "Valve002_Nut001"
+                },
+                {
+                    "materials": [
+                        "steel_brushed_shiny"
+                    ],
+                    "name": "Valve002_Nut002"
+                },
+                {
+                    "materials": [
+                        "steel_brushed_shiny"
+                    ],
+                    "name": "Valve002_Pipe"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b05_castironradiator",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_castironradiator",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_castironradiator"
+            },
+            "volume": 0.0429682694375515,
+            "wcategory": "radiator",
+            "wnid": "n04041069"
         },
         "b05_cgaxis_models_37_17_vray": {
             "asset_bundle_sizes": {
@@ -27609,6 +27915,97 @@
             "wcategory": "picture",
             "wnid": "n03876519"
         },
+        "fredericia_spine_stool_1": {
+            "asset_bundle_sizes": {
+                "Darwin": 13285315,
+                "Linux": 13514713,
+                "Windows": 13139239
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.3716885,
+                    "z": -0.1751294
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -5.960464e-08
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.3716885,
+                    "z": -5.960464e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.3716885,
+                    "z": 0.1751293
+                },
+                "left": {
+                    "x": -0.2123594,
+                    "y": 0.3716885,
+                    "z": -5.960464e-08
+                },
+                "right": {
+                    "x": 0.2123594,
+                    "y": 0.3716885,
+                    "z": -5.960464e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.743377,
+                    "z": -5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "fredericia_spine_stool_1",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "Spine_legs_00"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "Spine_legs_elem_01"
+                },
+                {
+                    "materials": [
+                        "leather_pigskin"
+                    ],
+                    "name": "Spine_seat_textile_00"
+                },
+                {
+                    "materials": [
+                        "chrome2",
+                        "chrome2"
+                    ],
+                    "name": "Spine_seat_wood_00"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/fredericia_spine_stool_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fredericia_spine_stool_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fredericia_spine_stool_1"
+            },
+            "volume": 0.054028816521167755,
+            "wcategory": "stool",
+            "wnid": "n04326896"
+        },
         "fridge_large": {
             "asset_bundle_sizes": {
                 "Darwin": 1679345,
@@ -33462,6 +33859,80 @@
             "wcategory": "table",
             "wnid": "n04379243"
         },
+        "mater_high_stool_al_69": {
+            "asset_bundle_sizes": {
+                "Darwin": 8282343,
+                "Linux": 8428305,
+                "Windows": 8140692
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.3279461,
+                    "z": -0.1754941
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -5.960464e-08,
+                    "z": -2.980232e-08
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.3279462,
+                    "z": -2.980232e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.3279461,
+                    "z": 0.1754941
+                },
+                "left": {
+                    "x": -0.2238722,
+                    "y": 0.3279461,
+                    "z": -2.980232e-08
+                },
+                "right": {
+                    "x": 0.2238722,
+                    "y": 0.3279461,
+                    "z": -2.980232e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.6558923,
+                    "z": -2.980232e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "mater_high_stool_al_69",
+            "physics_quality": 0.9249897450914127,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "mater_high_stool_al_69_mtl_1",
+                        "mater_high_stool_al_69_mtl_3",
+                        "mater_high_stool_al_69_mtl_2"
+                    ],
+                    "name": "mater_high_stool_al_69"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/mater_high_stool_al_69",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/mater_high_stool_al_69",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/mater_high_stool_al_69"
+            },
+            "volume": 0.04630348086357117,
+            "wcategory": "stool",
+            "wnid": "n04326896"
+        },
         "measuring_pan": {
             "asset_bundle_sizes": {
                 "Darwin": 757341,
@@ -38521,6 +38992,145 @@
             "volume": 0.18763524293899536,
             "wcategory": "table",
             "wnid": "n04379243"
+        },
+        "radiator_pub_2015": {
+            "asset_bundle_sizes": {
+                "Darwin": 2767196,
+                "Linux": 3080366,
+                "Windows": 2530046
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.043081e-07,
+                    "y": 0.3456091,
+                    "z": -0.3072571
+                },
+                "bottom": {
+                    "x": 1.043081e-07,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 1.043081e-07,
+                    "y": 0.3456091,
+                    "z": 0
+                },
+                "front": {
+                    "x": 1.043081e-07,
+                    "y": 0.3456091,
+                    "z": 0.3072571
+                },
+                "left": {
+                    "x": -0.1336296,
+                    "y": 0.3456091,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1336299,
+                    "y": 0.3456091,
+                    "z": 0
+                },
+                "top": {
+                    "x": 1.043081e-07,
+                    "y": 0.6912182,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "radiator_pub_2015",
+            "physics_quality": -1,
+            "scale_factor": 0.254,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Nut_1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Nut_2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Nut_3"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Nut_4"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Nut_5"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Nut_6"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Nut_7"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Radiator"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Tube_1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Tube_2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Tube_3"
+                },
+                {
+                    "materials": [
+                        "Standardmaterial2",
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Valve"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/radiator_pub_2015",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/radiator_pub_2015",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/radiator_pub_2015"
+            },
+            "volume": 0.047355640679597855,
+            "wcategory": "radiator",
+            "wnid": "n04041069"
         },
         "rattan_basket": {
             "asset_bundle_sizes": {
@@ -45136,6 +45746,84 @@
             "volume": 0.003598012262955308,
             "wcategory": "toaster",
             "wnid": "n04442312"
+        },
+        "tolix_bar_stool": {
+            "asset_bundle_sizes": {
+                "Darwin": 833895,
+                "Linux": 1230995,
+                "Windows": 556586
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.3112764,
+                    "z": -0.1718651
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -2.980232e-08,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.3112764,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.3112764,
+                    "z": 0.171865
+                },
+                "left": {
+                    "x": -0.1880361,
+                    "y": 0.3112764,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.1880361,
+                    "y": 0.3112764,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.6225528,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "tolix_bar_stool",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Tolix Bar Stool"
+                },
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_red"
+                    ],
+                    "name": "Tolix Bar Stool 1"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/tolix_bar_stool",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/tolix_bar_stool",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/tolix_bar_stool"
+            },
+            "volume": 0.008928902447223663,
+            "wcategory": "stool",
+            "wnid": "n04326896"
         },
         "toothbrush": {
             "asset_bundle_sizes": {

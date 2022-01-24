@@ -34,13 +34,9 @@ class ProcGenKitchen(ProcGenObjects):
     """
     NUMBER_OF_CHAIRS_AROUND_TABLE: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/chairs_around_tables.json")).read_text())
     """:class_var
-    Categories of "secondary objects" that can be scattered around the main region.
+    Categories of "secondary objects".
     """
-    SECONDARY_MAIN_CATEGORIES: List[str] = ["side_table", "basket", "shelf", "painting", "void", "radiator", "stool"]
-    """:class_var
-    Categories of "secondary objects" that can be scattered around the alcove region(s).
-    """
-    SECONDARY_ALCOVE_CATEGORIES: List[str] = ["side_table", "basket", "painting", "void", "radiator", "stool"]
+    SECONDARY_CATEGORIES: Dict[str, Dict[str, int]] = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/secondary_categories.json")).read_text())
     """:class_var
     The y value (height) of the wall cabinets.
     """
@@ -65,6 +61,9 @@ class ProcGenKitchen(ProcGenObjects):
 
         super().__init__(random_seed=random_seed)
         self._counter_top_material: str = ""
+        self._kitchen_counters: List[str] = list()
+        self._wall_cabinets: List[str] = list()
+        self._radiators: List[str] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -76,13 +75,14 @@ class ProcGenKitchen(ProcGenObjects):
         # Set the wood type and counter top visual material.
         kitchen_counter_wood_type = self.rng.choice(["white_wood", "wood_beach_honey"])
         kitchen_counters = ProcGenObjects.MODEL_CATEGORIES["kitchen_counter"]
-        ProcGenObjects.MODEL_CATEGORIES["kitchen_counter"] = [k for k in kitchen_counters if kitchen_counter_wood_type in k]
+        self._kitchen_counters = [k for k in kitchen_counters if kitchen_counter_wood_type in k]
         kitchen_cabinets = ProcGenObjects.MODEL_CATEGORIES["wall_cabinet"]
-        ProcGenObjects.MODEL_CATEGORIES["wall_cabinet"] = [k for k in kitchen_cabinets if kitchen_counter_wood_type in k]
+        self._wall_cabinets = [k for k in kitchen_cabinets if kitchen_counter_wood_type in k]
         if kitchen_counter_wood_type == "white_wood":
             self._counter_top_material = "granite_beige_french"
         else:
             self._counter_top_material = "granite_black"
+        self._radiators = [ProcGenObjects.MODEL_CATEGORIES["radiator"][self.rng.randint(0, len(ProcGenObjects.MODEL_CATEGORIES["radiator"]))]]
         return super().get_initialization_commands()
 
     def create(self, region: RegionWalls, alcoves: List[RegionWalls]) -> None:
@@ -96,10 +96,10 @@ class ProcGenKitchen(ProcGenObjects):
 
         used_walls = self._add_initial_objects(region=region, alcoves=alcoves)
         self._add_secondary_arrangement(used_walls=used_walls, region=region,
-                                        possible_categories=ProcGenKitchen.SECONDARY_MAIN_CATEGORIES[:])
+                                        possible_categories=ProcGenKitchen.SECONDARY_CATEGORIES["main"])
         for alcove in alcoves:
             self._add_secondary_arrangement(used_walls=[], region=alcove,
-                                            possible_categories=ProcGenKitchen.SECONDARY_ALCOVE_CATEGORIES[:])
+                                            possible_categories=ProcGenKitchen.SECONDARY_CATEGORIES["alcove"])
         self.commands.append({"$type": "step_physics",
                               "frames": 50})
 
@@ -651,7 +651,14 @@ class ProcGenKitchen(ProcGenObjects):
                         position["x"] -= exv / 2
                 continue
             # Choose a random starting object.
-            model_names = ProcGenObjects.MODEL_CATEGORIES[c][:]
+            if c == "kitchen_counter":
+                model_names = self._kitchen_counters[:]
+            elif c == "wall_cabinet":
+                model_names = self._wall_cabinets[:]
+            elif c == "radiator":
+                model_names = self._radiators[:]
+            else:
+                model_names = ProcGenObjects.MODEL_CATEGORIES[c][:]
             self.rng.shuffle(model_names)
             model_name = ""
             got_model_name = False
@@ -708,11 +715,11 @@ class ProcGenKitchen(ProcGenObjects):
                 for i in range(2):
                     position = __add_half_extent_to_position()
             elif c == "stool":
-                self._add_misc_object(record=record, position=position, face_away_from=face_away_from)
+                self._add_stool(record=record, position=position)
                 for i in range(2):
                     position = __add_half_extent_to_position()
             elif c == "suitcase":
-                self._add_misc_object(record=record, position=position, face_away_from=face_away_from)
+                self._add_suitcase(record=record, position=position, face_away_from=face_away_from)
                 for i in range(2):
                     position = __add_half_extent_to_position()
             else:
@@ -973,7 +980,14 @@ class ProcGenKitchen(ProcGenObjects):
         # Use either of the walls.
         else:
             longer_wall = self._get_wall(walls=longer_walls, non_continuous_walls=region.non_continuous_walls)
-        corners = self._get_corners_from_wall(wall=longer_wall)
+        all_corners = self._get_corners_from_wall(wall=longer_wall)
+        shorter_walls = []
+        corners = []
+        for corner in all_corners:
+            shorter_wall = CardinalDirection(corner.value - longer_wall.value)
+            if region.non_continuous_walls & shorter_wall.value == 0:
+                shorter_walls.append(shorter_wall)
+                corners.append(corner)
         corner = corners[self.rng.randint(0, len(corners))]
         position = self._get_corner_position(corner=corner, region=region.region)
         direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=longer_wall)
@@ -982,9 +996,7 @@ class ProcGenKitchen(ProcGenObjects):
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
                                       categories=categories, length=length, region=region.region,
                                       walls_with_windows=region.walls_with_windows)
-        # Get the shorter wall.
         shorter_wall = CardinalDirection(corner.value - longer_wall.value)
-        # Get the length of the shorter wall.
         shorter_walls, length = self._get_shorter_walls(region=region.region)
         length -= self.cell_size
         # Get everything else.
@@ -1104,9 +1116,12 @@ class ProcGenKitchen(ProcGenObjects):
         :return: The extended list of categories.
         """
 
-        possible_categories = ["basket", "void", "radiator", "stool", "suitcase"]
-        if region.walls_with_windows & wall.value == 0:
-            possible_categories.append("painting")
+        possible_categories = []
+        for c in ProcGenKitchen.SECONDARY_CATEGORIES["append"]:
+            if c == "painting" and region.walls_with_windows & wall.value != 0:
+                continue
+            for i in range(ProcGenKitchen.SECONDARY_CATEGORIES["append"][c]):
+                possible_categories.append(c)
         for i in range(10):
             categories.append(possible_categories[self.rng.randint(0, len(possible_categories))])
         return categories
@@ -1231,23 +1246,30 @@ class ProcGenKitchen(ProcGenObjects):
             self.commands.append({"$type": "unparent_object",
                                   "id": child_object_id})
 
-    def _add_secondary_arrangement(self, used_walls: List[CardinalDirection], region: RegionWalls, possible_categories: List[str]) -> None:
+    def _add_secondary_arrangement(self, used_walls: List[CardinalDirection], region: RegionWalls, possible_categories: Dict[str, int]) -> None:
         # Get a list of continuous unused walls.
         walls: List[CardinalDirection] = [c for c in CardinalDirection if region.non_continuous_walls & c.value == 0 and c not in used_walls]
         for wall in walls:
+            wall_categories = []
             # Don't put paintings on windows.
-            if region.walls_with_windows & wall.value != 0:
-                possible_categories.remove("painting")
+            for c in possible_categories:
+                if c == "painting" and region.walls_with_windows & wall.value != 0:
+                    continue
+                for i in range(possible_categories[c]):
+                    wall_categories.append(c)
             categories = ["void"]
             for i in range(10):
-                categories.append(possible_categories[self.rng.randint(0, len(possible_categories))])
+                categories.append(wall_categories[self.rng.randint(0, len(wall_categories))])
             corners = self._get_corners_from_wall(wall=wall)
             corner = corners[self.rng.randint(0, len(corners))]
             position = self._get_corner_position(corner=corner, region=region.region)
             direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=wall)
+            position = self._get_position_offset_from_direction(position=position, direction=direction)
+            direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=wall)
             longer_walls, length = self._get_longer_walls(region=region.region)
             if wall not in longer_walls:
                 shorter_walls, length = self._get_shorter_walls(region=region.region)
+            length -= self.cell_size * 2
             self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
                                           categories=categories, length=length, region=region.region,
                                           walls_with_windows=region.walls_with_windows,
@@ -1373,7 +1395,7 @@ class ProcGenKitchen(ProcGenObjects):
         else:
             raise Exception(face_away_from)
         # Set the y coordinate between 1.1 and the height of the room minus the height of the painting.
-        painting_position["y"] = float(self.rng.uniform(1.1, self.scene_bounds.rooms[region].y_max - extents[1]))
+        painting_position["y"] = float(self.rng.uniform(1.1, self.scene_bounds.rooms[region].bounds[1] - extents[1]))
         # Add the painting.
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
@@ -1393,16 +1415,9 @@ class ProcGenKitchen(ProcGenObjects):
         :param region: The region that the painting is in.
         """
 
-        radiators = ProcGenObjects.MODEL_CATEGORIES["radiator"][:]
-        model_name = radiators[self.rng.randint(0, len(radiators))]
-        print("TODO move radiators to core library.")
-        rotation: float = 0
-        for i, c in enumerate([c for c in CardinalDirection]):
-            if c == face_away_from:
-                rotation = ProcGenKitchen.RADIATOR_ROTATIONS[model_name]["rotations"][i]
-                break
+        rotation = ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["rotations"][face_away_from.name]
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
-        depth = extents[ProcGenKitchen.RADIATOR_ROTATIONS[model_name]["depth"]]
+        depth = extents[ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["depth"]]
         radiator_position = {k: v for k, v in position.items()}
         if face_away_from == CardinalDirection.north:
             radiator_position["z"] = self.scene_bounds.rooms[region].z_max - depth
@@ -1414,12 +1429,11 @@ class ProcGenKitchen(ProcGenObjects):
             radiator_position["x"] = self.scene_bounds.rooms[region].x_max - depth
         else:
             raise Exception(face_away_from)
-        # Add the radiator.
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
                                                                position=radiator_position,
                                                                rotation={"x": 0, "y": rotation, "z": 0},
-                                                               library="models_full.json",
+                                                               library="models_core.json",
                                                                kinematic=True))
 
     def _add_stool(self, record: ModelRecord, position: Dict[str, float]) -> None:
@@ -1432,17 +1446,16 @@ class ProcGenKitchen(ProcGenObjects):
         :return: The model record of the root object. If no models were added to the scene, this is None.
         """
 
-        # Add the dishwasher.
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
                                                                position={k: v for k, v in position.items()},
                                                                rotation={"x": 0, "y": self.rng.uniform(0, 360), "z": 0},
                                                                library="models_core.json",
-                                                               kinematic=True))
+                                                               kinematic=False))
 
-    def _add_misc_object(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection) -> None:
+    def _add_suitcase(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection) -> None:
         """
-        Add a misc. single object to the scene.
+        Add a suitcase to the scene.
 
         :param record: The model record.
         :param position: The position.
@@ -1461,11 +1474,9 @@ class ProcGenKitchen(ProcGenObjects):
             rotation = 270
         else:
             raise Exception(face_away_from)
-
-        # Add the dishwasher.
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
                                                                position={k: v for k, v in position.items()},
                                                                rotation={"x": 0, "y": rotation, "z": 0},
                                                                library="models_core.json",
-                                                               kinematic=True))
+                                                               kinematic=False))

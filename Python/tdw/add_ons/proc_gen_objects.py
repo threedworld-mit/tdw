@@ -328,18 +328,22 @@ class ProcGenObjects(AddOn):
         # Rotate everything.
         self.add_rotation_commands(parent_object_id=root_object_id, child_object_ids=object_ids, rotation=rotation)
 
-    def reset(self, new_random_seed: bool = True) -> None:
+    def reset(self, set_random_seed: bool = False, random_seed: int = None) -> None:
         """
         Reset the procedural generator. Call this when resetting the scene.
 
-        :param new_random_seed: If True, set a new random seed.
+        :param set_random_seed: If True, set a new random seed.
+        :param random_seed: The random seed. If None, a random seed is randomly selected. Ignored if `set_random_seed == False`
         """
 
         self.initialized = False
         self._used_unique_categories.clear()
         self.scene_bounds = None
-        if new_random_seed:
-            self.random_seed = Controller.get_unique_id()
+        if set_random_seed:
+            if random_seed is None:
+                self.random_seed = Controller.get_unique_id()
+            else:
+                self.random_seed = random_seed
             self.rng = np.random.RandomState(self.random_seed)
 
     @staticmethod
@@ -365,6 +369,9 @@ class ProcGenObjects(AddOn):
         record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
         # Shelves are rotated 90 degrees.
         if record.name in ProcGenObjects.MODEL_NAMES_NINETY_DEGREES:
-            return TDWUtils.get_bounds_extents(bounds=record.bounds)[2]
+            ex = TDWUtils.get_bounds_extents(bounds=record.bounds)[2]
         else:
-            return TDWUtils.get_bounds_extents(bounds=record.bounds)[0]
+            ex = TDWUtils.get_bounds_extents(bounds=record.bounds)[0]
+        if record.name in ProcGenObjects.MODEL_CATEGORIES["basket"]:
+            ex *= 2
+        return ex

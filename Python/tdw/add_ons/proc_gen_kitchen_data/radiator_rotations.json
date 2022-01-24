@@ -1,5 +1,11 @@
 {
-  "b03_radiator_alum_12": {"rotations": [270, 180, 90, 0], "depth": 0},
-  "b05_castironradiator": {"rotations": [180, 90, 0, 270], "depth": 2},
-  "radiator_pub_2015": {"rotations": [90, 0, 270, 180], "depth": 2}
+  "b03_radiator_alum_12": {
+    "rotations": {"north": 270, "east": 180, "south": 90, "west": 0},
+    "depth": 0},
+  "b05_castironradiator": {
+    "rotations": {"north":  180, "east":  90, "south":  0, "west":  270},
+    "depth": 2},
+  "radiator_pub_2015": {
+    "rotations": {"north": 90, "east": 0, "south": 270, "west":  180},
+    "depth": 2}
 }

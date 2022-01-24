@@ -1,0 +1,5 @@
+{
+  "main": {"side_table": 1, "basket": 2, "shelf": 2, "painting": 4, "void": 3, "radiator": 1, "stool": 2, "suitcase":  1},
+  "alcove": {"side_table": 1, "basket": 2, "painting": 4, "void": 3, "radiator": 1, "stool": 2, "suitcase": 2},
+  "append": {"basket": 1, "painting": 3, "void": 2, "radiator": 1, "stool": 1, "suitcase": 2}
+}

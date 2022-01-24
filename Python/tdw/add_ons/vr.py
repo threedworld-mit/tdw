@@ -16,17 +16,18 @@ class VR(AddOn):
     """
     AVATAR_ID = "vr"
 
-    def __init__(self, rig_type: RigType = RigType.auto_hand, vr_rig_output_data: bool = True, image_passes: List[str] = None):
+    def __init__(self, rig_type: RigType = RigType.auto_hand, rig_transform_output_data: bool = True,
+                 image_passes: List[str] = None):
         """
         :param rig_type: The [`RigType`](../vr_data/rig_type.md).
-        :param vr_rig_output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
+        :param rig_transform_output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
         :param image_passes: A list of image passes e.g. `"_img"` or `"_id"`. If None, the VR headset will still render images but it won't convert them into output data. Note: Image output data can significantly slow down a TDW simulation.
         """
 
         super().__init__()
         self._rig_type: RigType = rig_type
         self._set_graspable: bool = True
-        self._vr_rig_output_data: bool = vr_rig_output_data
+        self._rig_transform_output_data: bool = rig_transform_output_data
         """:field
         The [`Transform`](../object_data/transform.md) for the root rig object. If `vr_rig_output_data == False`, this is never updated.
         """
@@ -54,7 +55,7 @@ class VR(AddOn):
                      "rig_type": self._rig_type.value},
                     {"$type": "send_static_rigidbodies",
                      "frequency": "once"}]
-        if self._vr_rig_output_data:
+        if self._rig_transform_output_data:
             commands.append({"$type": "send_vr_rig",
                              "frequency": "always"})
         if self._image_passes is not None:

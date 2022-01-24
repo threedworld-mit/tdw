@@ -1,6 +1,8 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.keyboard import Keyboard
+from tdw.add_ons.vr import VR
+from tdw.vr_data.rig_type import RigType
 
 
 class VirtualReality(Controller):
@@ -13,18 +15,16 @@ class VirtualReality(Controller):
         self.done = False
 
         keyboard = Keyboard()
-        self.add_ons.append(keyboard)
+        vr = VR(rig_type=RigType.oculus_touch, vr_rig_output_data=False, image_passes=None)
+        self.add_ons.extend([vr, keyboard])
         keyboard.listen(key="Escape", function=self.quit)
 
     def run(self) -> None:
         object_id = self.get_unique_id()
         self.communicate([TDWUtils.create_empty_room(12, 12),
-                          {"$type": "create_vr_rig"},
                           self.get_add_object(model_name="rh10",
                                               object_id=object_id,
-                                              position={"x": 0, "y": 0, "z": 1.2}),
-                          {"$type": "set_graspable",
-                           "id": object_id}])
+                                              position={"x": 0, "y": 0, "z": 1.2})])
         while not self.done:
             self.communicate([])
         self.communicate({"$type": "terminate"})

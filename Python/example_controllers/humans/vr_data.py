@@ -1,7 +1,8 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.keyboard import Keyboard
-from tdw.output_data import OutputData, VRRig
+from tdw.add_ons.vr import VR
+from tdw.vr_data.rig_type import RigType
 
 
 class VRData(Controller):
@@ -14,7 +15,8 @@ class VRData(Controller):
         self.done = False
 
         keyboard = Keyboard()
-        self.add_ons.append(keyboard)
+        self.vr = VR(rig_type=RigType.oculus_touch, vr_rig_output_data=True, image_passes=None)
+        self.add_ons.extend([keyboard, self.vr])
         keyboard.listen(key="Escape", function=self.quit)
 
     def run(self) -> None:
@@ -31,8 +33,6 @@ class VRData(Controller):
                                                     object_id=box_id,
                                                     position={"x": 0.2, "y": 1.0, "z": 0.5},
                                                     library="models_core.json"))
-        self.communicate([{"$type": "set_graspable",
-                           "id": box_id}])
         # Add the ball object and make it graspable.
         sphere_id = self.get_unique_id()
         commands.extend(self.get_add_physics_object(model_name="prim_sphere",
@@ -40,38 +40,24 @@ class VRData(Controller):
                                                     position={"x": 0.2, "y": 3.0, "z": 0.5},
                                                     library="models_special.json",
                                                     scale_factor={"x": 0.2, "y": 0.2, "z": 0.2}))
-        commands.append({"$type": "set_graspable",
-                         "id": sphere_id})
-        # Receive VR data per frame.
-        commands.append({"$type": "send_vr_rig",
-                         "frequency": "always"})
         # Send the commands.
-        resp = self.communicate(commands)
+        self.communicate(commands)
         # Loop until the Escape key is pressed.
         while not self.done:
-            for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i])
-                # Parse VR data.
-                if r_id == "vrri":
-                    vr_rig = VRRig(resp[i])
-                    print("Position", vr_rig.get_position())
-                    print("Rotation", vr_rig.get_rotation())
-                    print("Forward", vr_rig.get_forward())
-
-                    print("Head position", vr_rig.get_head_position())
-                    print("Head rotation", vr_rig.get_head_rotation())
-                    print("Head forward", vr_rig.get_head_forward())
-
-                    print("Left hand position", vr_rig.get_left_hand_position())
-                    print("Left hand rotation", vr_rig.get_left_hand_rotation())
-                    print("Left hand forward", vr_rig.get_left_hand_forward())
-
-                    print("Right hand position", vr_rig.get_right_hand_position())
-                    print("Right hand rotation", vr_rig.get_right_hand_rotation())
-                    print("Right hand forward", vr_rig.get_right_hand_forward())
-
-                    print("")
-            resp = self.communicate([])
+            print("Position", self.vr.rig.position)
+            print("Rotation", self.vr.rig.rotation)
+            print("Forward", self.vr.rig.forward)
+            print("Head position", self.vr.head.position)
+            print("Head rotation", self.vr.head.rotation)
+            print("Head forward", self.vr.head.forward)
+            print("Left hand position", self.vr.left_hand.position)
+            print("Left hand rotation", self.vr.left_hand.rotation)
+            print("Left hand forward", self.vr.left_hand.forward)
+            print("Right hand position", self.vr.right_hand.position)
+            print("Right hand rotation", self.vr.right_hand.rotation)
+            print("Right hand forward", self.vr.right_hand.forward)
+            print("")
+            self.communicate([])
         self.communicate({"$type": "terminate"})
 
     def quit(self):

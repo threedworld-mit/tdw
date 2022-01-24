@@ -106,20 +106,6 @@ class ProcGenObjects(AddOn):
         if self.scene_bounds is None:
             self.scene_bounds = SceneBounds(resp=resp)
 
-    def get_region_occupancy_map(self, region: int) -> Tuple[np.ndarray, np.ndarray]:
-        """
-        :param region: The index of the region in `self.scene_bounds.rooms`.
-
-        :return: Tuple: A 2D occupancy map of the room with all floor spaces marked unoccupied (`0`), an array of shape (width, length, 2) with the worldspace coordinates.
-        """
-
-        xs = np.arange(self.scene_bounds.rooms[region].x_min, self.scene_bounds.rooms[region].x_max, self.cell_size)
-        zs = np.arange(self.scene_bounds.rooms[region].z_min, self.scene_bounds.rooms[region].z_max, self.cell_size)
-        a = np.zeros(shape=(len(xs), len(zs), 2))
-        a[:, :, 0] = xs[:, np.newaxis]
-        a[:, :, 1] = zs[np.newaxis, :]
-        return np.zeros(shape=(len(xs), len(zs)), dtype=np.uint8), a
-
     @staticmethod
     def fits_inside_parent(parent: ModelRecord, child: ModelRecord) -> bool:
         """
@@ -342,14 +328,19 @@ class ProcGenObjects(AddOn):
         # Rotate everything.
         self.add_rotation_commands(parent_object_id=root_object_id, child_object_ids=object_ids, rotation=rotation)
 
-    def reset(self) -> None:
+    def reset(self, new_random_seed: bool = True) -> None:
         """
         Reset the procedural generator. Call this when resetting the scene.
+
+        :param new_random_seed: If True, set a new random seed.
         """
 
         self.initialized = False
         self._used_unique_categories.clear()
         self.scene_bounds = None
+        if new_random_seed:
+            self.random_seed = Controller.get_unique_id()
+            self.rng = np.random.RandomState(self.random_seed)
 
     @staticmethod
     def _get_rectangular_arrangement_parameters(category: str) -> Tuple[float, float]:

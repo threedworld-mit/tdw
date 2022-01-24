@@ -242,6 +242,11 @@
     "pan3",
     "pot"
   ],
+  "radiator": [
+    "b03_radiator_alum_12",
+    "b05_castironradiator",
+    "radiator_pub_2015"
+  ],
   "refrigerator": [
     "b03_ka90ivi20r_2013__vray",
     "b05_db_apps_tech_06_02_2",
@@ -299,8 +304,23 @@
     "vk0078_fruitspoon",
     "vk0080_soupspoon"
   ],
+  "stool": [
+    "fredericia_spine_stool_1",
+    "mater_high_stool_al_69",
+    "tolix_bar_stool"
+  ],
   "stove": [
     "gas_stove"
+  ],
+  "suitcase": [
+    "duffle_bag",
+    "green_bag",
+    "kids_luggage_1",
+    "kids_luggage_2",
+    "white_shopping_bag",
+    "b04_backpack",
+    "backpack",
+    "hiker_backpack"
   ],
   "table": [
     "dining_room_table",

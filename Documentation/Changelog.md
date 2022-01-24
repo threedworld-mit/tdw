@@ -31,6 +31,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 - Added: `OccupancyMap.reset()` Reset the occupancy map. Call this when resetting a scene.
 
+### Model library
+
+- Flagged models as do_not_use in `models_full.json`: b03_radiator_old, b05_ikea_nutid_side_by_side_refrigerator
+
 ### Example controllers
 
 - Added: `non_physics/compass_rose.py`

@@ -15,18 +15,14 @@ class ProcGenObjects(AddOn):
     Procedurally arrange objects using spatial relations and categories.
     For example, certain object categories can be *on top of* other object categories.
 
-    Note that proc-gen object categories overlap with `record.wcategory` but are not the same.
-    Note also that not all objects in a wcategory suitable for proc-gen and so aren't used by this add-on.
-    To determine all models in a proc-gen category and the corresponding wcategory:
+    Note regarding categories: Every "category" parameter *always* refers to specialized "proc-gen categories" that overlap with `record.wcategory` but are not the same. To get a mapping:
 
     ```python
     from tdw.add_ons.proc_gen_objects import ProcGenObjects
 
-    for proc_gen_category in ProcGenObjects.PROC_GEN_CATEGORY_TO_WCATEGORY:
-        wcategory = ProcGenObjects.PROC_GEN_CATEGORY_TO_WCATEGORY[proc_gen_category]
-        print(f"Proc-gen category: {proc_gen_category}", f"wcategory: {wcategory}")
-        for model_name in ProcGenObjects.MODEL_CATEGORIES[proc_gen_category]:
-            print(f"\t{model_name}")
+    categories = ProcGenObjects.get_categories_and_wcategories()
+    for model_name in categories:
+        print(model_name, categories[model_name]["category"], categories[model_name]["wcategory"], categories[model_name]["wnid"])
     ```
     """
 
@@ -57,7 +53,7 @@ class ProcGenObjects(AddOn):
     def __init__(self, random_seed: int = None, cell_size: float = 0.6096):
         """
         :param random_seed: The random seed. If None, a random seed is randomly selected.
-        :param cell_size: The cell size in meters when generating a temporary occupancy map. This is also used to position certain objects in subclasses of `ProcGenObjects`; for example, [`ProcGenKitchen`](proc_gen_kitchen.md) uses this value to arrange kitchen countertops.
+        :param cell_size: The cell size in meters. This is also used to position certain objects in subclasses of `ProcGenObjects`.
         """
 
         super().__init__()
@@ -75,11 +71,11 @@ class ProcGenObjects(AddOn):
         self.rng = np.random.RandomState(self.random_seed)
         self._used_unique_categories: List[str] = list()
         """:field
-        The scene bounds. This is set after the first `communicate()` call.
+        The [`SceneBounds`](../scene_data/scene_bounds.md). This is set after initializing or resetting `ProcGenObjects` and then calling `c.communicate()`.
         """
         self.scene_bounds: Optional[SceneBounds] = None
         """:field
-        The cell size in meters when generating a temporary occupancy map. This is also used to position certain objects in subclasses of `ProcGenObjects`; for example, [`ProcGenKitchen`](proc_gen_kitchen.md) uses this value to arrange kitchen countertops.
+        The cell size in meters. This is also used to position certain objects in subclasses of `ProcGenObjects`.
         """
         self.cell_size: float = cell_size
 
@@ -102,7 +98,6 @@ class ProcGenObjects(AddOn):
         :param resp: The response from the build.
         """
 
-        # Set the scene bounds.
         if self.scene_bounds is None:
             self.scene_bounds = SceneBounds(resp=resp)
 
@@ -317,7 +312,7 @@ class ProcGenObjects(AddOn):
                       "y": record.bounds["top"]["y"] + position["y"],
                       "z": position["z"]}
         # Get the dimensions of the object's occupancy map.
-        cell_size, density = self._get_rectangular_arrangement_parameters(category=category)
+        cell_size, density = self.get_rectangular_arrangement_parameters(category=category)
         surface_size = (model_size[0] * 0.8, model_size[2] * 0.8)
         # Add objects on top of the root object.
         object_ids = self.add_rectangular_arrangement(size=surface_size,
@@ -347,8 +342,25 @@ class ProcGenObjects(AddOn):
             self.rng = np.random.RandomState(self.random_seed)
 
     @staticmethod
-    def _get_rectangular_arrangement_parameters(category: str) -> Tuple[float, float]:
+    def get_categories_and_wcategories() -> Dict[str, Dict[str, str]]:
         """
+        :return: A dictionary of the categories of every model that can be used by `ProcGenObjects`. Key = The model name. Value = A dictionary with the following keys: `"category"` (the `ProcGenObjects` category), `"wcategory"` (the value of `record.wcategory`), and `"wnid"` (the value of `record.wnid`).
+        """
+
+        categories: Dict[str, Dict[str, str]] = dict()
+        for category in ProcGenObjects.MODEL_CATEGORIES:
+            for model_name in ProcGenObjects.MODEL_CATEGORIES[category]:
+                record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+                categories[model_name] = {"category": category,
+                                          "wcategory": record.wcategory,
+                                          "wnid": record.wnid}
+        return categories
+
+    @staticmethod
+    def get_rectangular_arrangement_parameters(category: str) -> Tuple[float, float]:
+        """
+        Given a category, get the default rectangular arrangement parameters.
+
         :param category: The category
 
         :return: Tuple: The cell size and density.
@@ -359,7 +371,7 @@ class ProcGenObjects(AddOn):
         return ProcGenObjects.RECTANGULAR_ARRANGEMENTS[category]["cell_size"], ProcGenObjects.RECTANGULAR_ARRANGEMENTS[category]["density"]
 
     @staticmethod
-    def _get_lateral_length(model_name: str) -> float:
+    def get_lateral_length(model_name: str) -> float:
         """
         :param model_name: The model name.
 
@@ -372,6 +384,4 @@ class ProcGenObjects(AddOn):
             ex = TDWUtils.get_bounds_extents(bounds=record.bounds)[2]
         else:
             ex = TDWUtils.get_bounds_extents(bounds=record.bounds)[0]
-        if record.name in ProcGenObjects.MODEL_CATEGORIES["basket"]:
-            ex *= 2
         return ex

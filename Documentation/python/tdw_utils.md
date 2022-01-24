@@ -303,6 +303,19 @@ Do NOT use this function to save image data to disk; `save_image` is much faster
 
 _Returns:_  A PIL image.
 
+#### get_segmentation_colors
+
+**`TDWUtils.get_segmentation_colors(id_pass)`**
+
+_This is a static function._
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| id_pass |  np.array |  | The ID pass image as a numpy array. |
+
+_Returns:_  A list of unique colors in the ID pass.
+
 #### get_random_position_on_nav_mesh
 
 **`TDWUtils.get_random_position_on_nav_mesh(c, width, length)`**

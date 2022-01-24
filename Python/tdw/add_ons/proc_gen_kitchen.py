@@ -323,7 +323,7 @@ class ProcGenKitchen(ProcGenObjects):
         child_object_ids: List[int] = list()
         for y in ProcGenKitchen.SHELF_DIMENSIONS[record.name]["ys"]:
             object_top = {"x": position["x"], "y": y + position["y"], "z": position["z"]}
-            cell_size, density = self._get_rectangular_arrangement_parameters(category="shelf")
+            cell_size, density = self.get_rectangular_arrangement_parameters(category="shelf")
             object_ids = self.add_rectangular_arrangement(size=size,
                                                           categories=ProcGenKitchen.ON_SHELF,
                                                           position=object_top,
@@ -585,7 +585,7 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         def __add_half_extent_to_position() -> Dict[str, float]:
-            ex = ProcGenObjects._get_lateral_length(model_name=model_name)
+            ex = ProcGenObjects.get_lateral_length(model_name=model_name)
             pos = {k: v for k, v in position.items()}
             if direction == CardinalDirection.north:
                 pos["z"] += ex / 2
@@ -663,7 +663,7 @@ class ProcGenKitchen(ProcGenObjects):
             model_name = ""
             got_model_name = False
             for m in model_names:
-                extent = ProcGenObjects._get_lateral_length(model_name=m)
+                extent = ProcGenObjects.get_lateral_length(model_name=m)
                 # The model must fit within the distance of the lateral arrangement.
                 if distance + extent < length:
                     got_model_name = True

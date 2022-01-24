@@ -339,6 +339,7 @@ class ProcGenObjects(AddOn):
                 self.random_seed = Controller.get_unique_id()
             else:
                 self.random_seed = random_seed
+            print("Random seed:", self.random_seed)
             self.rng = np.random.RandomState(self.random_seed)
 
     @staticmethod

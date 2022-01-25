@@ -202,13 +202,20 @@ class ProcGenKitchen(ProcGenObjects):
     Categories of models that are tall and might obscure windows.
     """
     TALL_CATEGORIES: List[str] = ["refrigerator", "shelf"]
+    """:class_var
+    Kitchen table models that can have centerpieces.
+    """
+    KITCHEN_TABLES_WITH_CENTERPIECES: List[str] = ["dining_room_table",
+                                                   "enzo_industrial_loft_pine_metal_round_dining_table",
+                                                   "b03_restoration_hardware_pedestal_salvaged_round_tables"]
 
-    def __init__(self, random_seed: int = None):
+    def __init__(self, random_seed: int = None, print_random_seed: bool = True):
         """
         :param random_seed: The random seed. If None, a random seed is randomly selected.
+        :param print_random_seed: If True, print the random seed. This can be useful for debugging.
         """
 
-        super().__init__(random_seed=random_seed)
+        super().__init__(random_seed=random_seed, print_random_seed=print_random_seed)
         self._counter_top_material: str = ""
         self._kitchen_counters: List[str] = list()
         self._wall_cabinets: List[str] = list()
@@ -337,7 +344,7 @@ class ProcGenKitchen(ProcGenObjects):
                 position["x"] += offset_distance
         # Position the table between the main region and an alcove.
         else:
-            p = (np.array(self.scene_bounds.rooms[region.region].center) + np.array(self.scene_bounds.rooms[alcove.region].center)) * 0.25
+            p = (np.array(self.scene_bounds.rooms[region.region].center) + np.array(self.scene_bounds.rooms[alcove.region].center)) * self.rng.uniform(0.35, 0.65)
             position = {"x": p[0] + self.rng.uniform(-0.1, 0.1),
                         "y": 0,
                         "z": p[2] + self.rng.uniform(-0.1, 0.1)}
@@ -422,7 +429,7 @@ class ProcGenKitchen(ProcGenObjects):
                                         knife_model_name=knife_model_name,
                                         spoon_model_name=spoon_model_name)
         # Add a centerpiece.
-        if self.rng.random() < 0.75:
+        if self.rng.random() < 0.75 and table_model_name in ProcGenKitchen.KITCHEN_TABLES_WITH_CENTERPIECES:
             object_id = Controller.get_unique_id()
             child_object_ids.append(object_id)
             self.commands.extend(Controller.get_add_physics_object(model_name=centerpiece_model_name,

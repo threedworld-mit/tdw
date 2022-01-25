@@ -50,13 +50,15 @@ class ProcGenObjects(AddOn):
     """
     ON_TOP_OF: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/on_top_of.json")).read_text())
 
-    def __init__(self, random_seed: int = None, cell_size: float = 0.6096):
+    def __init__(self, random_seed: int = None, cell_size: float = 0.6096, print_random_seed: bool = True):
         """
         :param random_seed: The random seed. If None, a random seed is randomly selected.
         :param cell_size: The cell size in meters. This is also used to position certain objects in subclasses of `ProcGenObjects`.
+        :param print_random_seed: If True, print the random seed. This can be useful for debugging.
         """
 
         super().__init__()
+        self._print_random_seed: bool = print_random_seed
         if random_seed is None:
             """:field
             The random seed.
@@ -64,7 +66,8 @@ class ProcGenObjects(AddOn):
             self.random_seed: int = Controller.get_unique_id()
         else:
             self.random_seed = random_seed
-        print("Random seed: ", self.random_seed)
+        if self._print_random_seed:
+            print("Random seed: ", self.random_seed)
         """:field
         The random number generator.
         """
@@ -339,7 +342,8 @@ class ProcGenObjects(AddOn):
                 self.random_seed = Controller.get_unique_id()
             else:
                 self.random_seed = random_seed
-            print("Random seed:", self.random_seed)
+            if self._print_random_seed:
+                print("Random seed:", self.random_seed)
             self.rng = np.random.RandomState(self.random_seed)
 
     @staticmethod

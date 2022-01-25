@@ -30,6 +30,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 ### `tdw` module
 
 - Added: `OccupancyMap.reset()` Reset the occupancy map. Call this when resetting a scene.
+- Improved how cross-fading works in `PyImpact` between audio chunks during a scrape.
 
 ### Example controllers
 

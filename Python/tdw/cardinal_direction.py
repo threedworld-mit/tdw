@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntFlag
 
 
-class CardinalDirection(Enum):
+class CardinalDirection(IntFlag):
     """
     Enum for cardinal directions.
     """

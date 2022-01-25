@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntFlag
 
 
-class OrdinalDirection(Enum):
+class OrdinalDirection(IntFlag):
     """
     Enum for ordinal directions.
     """

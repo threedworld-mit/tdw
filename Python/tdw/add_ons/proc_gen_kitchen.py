@@ -321,10 +321,10 @@ class ProcGenKitchen(ProcGenObjects):
             for a in alcoves:
                 for c in CardinalDirection:
                     try:
-                        d = c.value << 2
+                        d = c << 2
                     except ValueError:
-                        d = c.value >> 2
-                    if region.non_continuous_walls & c.value != 0 and a.non_continuous_walls & d != 0:
+                        d = c >> 2
+                    if region.non_continuous_walls & c != 0 and a.non_continuous_walls & d != 0:
                         alcove = a
                         break
         # If there are no valid alcoves, the position is in the center offset from the used walls.
@@ -525,7 +525,7 @@ class ProcGenKitchen(ProcGenObjects):
                                                       rotation=rotation,
                                                       category="kitchen_counter")
             # Add a wall cabinet if one exists and there is no window here.
-            if record.name in ProcGenKitchen.COUNTERS_AND_CABINETS and walls_with_windows & face_away_from.value == 0:
+            if record.name in ProcGenKitchen.COUNTERS_AND_CABINETS and walls_with_windows & face_away_from == 0:
                 wall_cabinet_model_name = ProcGenKitchen.COUNTERS_AND_CABINETS[record.name]
                 wall_cabinet_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(wall_cabinet_model_name)
                 wall_cabinet_extents = TDWUtils.get_bounds_extents(bounds=wall_cabinet_record.bounds)
@@ -773,7 +773,7 @@ class ProcGenKitchen(ProcGenObjects):
                     raise Exception(direction)
                 continue
             # Remove tall objects from walls with windows.
-            if walls_with_windows & face_away_from.value != 0 and category in ProcGenKitchen.TALL_CATEGORIES:
+            if walls_with_windows & face_away_from != 0 and category in ProcGenKitchen.TALL_CATEGORIES:
                 c = "kitchen_counter"
             else:
                 c = category
@@ -1029,7 +1029,7 @@ class ProcGenKitchen(ProcGenObjects):
         longer_walls, length = self._get_longer_walls(region=region.region)
         longer_walls_ok = True
         for w in longer_walls:
-            if region.non_continuous_walls & w.value == 0:
+            if region.non_continuous_walls & w == 0:
                 longer_walls_ok = False
                 break
         triangles: List[Callable[[RegionWalls], List[CardinalDirection]]] = [self._add_l_work_triangle]
@@ -1041,7 +1041,7 @@ class ProcGenKitchen(ProcGenObjects):
         shorter_walls, length = self._get_shorter_walls(region=region.region)
         shorter_walls_ok = True
         for w in shorter_walls:
-            if region.non_continuous_walls & w.value == 0:
+            if region.non_continuous_walls & w == 0:
                 shorter_walls_ok = False
                 break
         if shorter_walls_ok:
@@ -1058,9 +1058,9 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         longer_walls, length = self._get_longer_walls(region=region.region)
-        ws = [w for w in longer_walls if region.non_continuous_walls & w.value == 0]
+        ws = [w for w in longer_walls if region.non_continuous_walls & w == 0]
         # Prefer walls with windows, if possible.
-        walls_with_windows = [w for w in ws if region.walls_with_windows & w.value != 0]
+        walls_with_windows = [w for w in ws if region.walls_with_windows & w != 0]
         if len(walls_with_windows) >= 1:
             longer_wall = walls_with_windows[self.rng.randint(0, len(walls_with_windows))]
         # Use either of the walls.
@@ -1092,9 +1092,9 @@ class ProcGenKitchen(ProcGenObjects):
         lateral_1 = ["refrigerator", "dishwasher", "sink", "kitchen_counter", "kitchen_counter"]
         longer_walls, length = self._get_longer_walls(region=region.region)
         # Prefer to place the sink at a wall with windows.
-        ws = [w for w in longer_walls if region.non_continuous_walls & w.value == 0]
-        walls_with_windows = [w for w in ws if region.walls_with_windows & w.value != 0]
-        walls_without_windows = [w for w in ws if region.walls_with_windows & w.value == 0]
+        ws = [w for w in longer_walls if region.non_continuous_walls & w == 0]
+        walls_with_windows = [w for w in ws if region.walls_with_windows & w != 0]
+        walls_without_windows = [w for w in ws if region.walls_with_windows & w == 0]
         if len(walls_with_windows) >= 1:
             window_wall = walls_with_windows[self.rng.randint(0, len(walls_with_windows))]
             lateral_arrangements = [lateral_1, lateral_0]
@@ -1130,7 +1130,7 @@ class ProcGenKitchen(ProcGenObjects):
 
         longer_walls, length = self._get_longer_walls(region=region.region)
         # Prefer a wall with windows if possible.
-        walls_with_windows = [w for w in longer_walls if region.walls_with_windows & w.value != 0]
+        walls_with_windows = [w for w in longer_walls if region.walls_with_windows & w != 0]
         if len(walls_with_windows) >= 1:
             longer_wall = walls_with_windows[self.rng.randint(0, len(walls_with_windows))]
         # Use either of the walls.
@@ -1140,8 +1140,8 @@ class ProcGenKitchen(ProcGenObjects):
         shorter_walls = []
         corners = []
         for corner in all_corners:
-            shorter_wall = CardinalDirection(corner.value - longer_wall.value)
-            if region.non_continuous_walls & shorter_wall.value == 0:
+            shorter_wall = CardinalDirection(corner - longer_wall)
+            if region.non_continuous_walls & shorter_wall == 0:
                 shorter_walls.append(shorter_wall)
                 corners.append(corner)
         corner = corners[self.rng.randint(0, len(corners))]
@@ -1152,7 +1152,7 @@ class ProcGenKitchen(ProcGenObjects):
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
                                       categories=categories, length=length, region=region.region,
                                       walls_with_windows=region.walls_with_windows)
-        shorter_wall = CardinalDirection(corner.value - longer_wall.value)
+        shorter_wall = CardinalDirection(corner - longer_wall)
         shorter_walls, length = self._get_shorter_walls(region=region.region)
         length -= self.cell_size
         # Get everything else.
@@ -1180,7 +1180,7 @@ class ProcGenKitchen(ProcGenObjects):
         # Add the longer wall.
         longer_walls, length = self._get_longer_walls(region=region.region)
         # Prefer a wall with windows if possible.
-        walls_with_windows = [w for w in longer_walls if region.walls_with_windows & w.value != 0]
+        walls_with_windows = [w for w in longer_walls if region.walls_with_windows & w != 0]
         if len(walls_with_windows) >= 1:
             longer_wall = walls_with_windows[self.rng.randint(0, len(walls_with_windows))]
         # Use either of the walls.
@@ -1232,7 +1232,7 @@ class ProcGenKitchen(ProcGenObjects):
         for corner, categories in zip(corners, [["kitchen_counter", "refrigerator", "kitchen_counter", "shelf"],
                                                 ["kitchen_counter", "dishwasher", "kitchen_counter", "kitchen_counter"]]):
             # Get the wall.
-            shorter_wall = CardinalDirection(corner.value - longer_wall.value)
+            shorter_wall = CardinalDirection(corner - longer_wall)
             # Get everything else.
             direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=shorter_wall)
             position = self._get_corner_position(corner=corner, region=region.region)
@@ -1253,7 +1253,7 @@ class ProcGenKitchen(ProcGenObjects):
         :return: A valid continuous wall.
         """
 
-        ws = [w for w in walls if non_continuous_walls & w.value == 0]
+        ws = [w for w in walls if non_continuous_walls & w == 0]
         if len(ws) == 0:
             raise Exception(non_continuous_walls, walls)
         if len(ws) == 1:
@@ -1274,7 +1274,7 @@ class ProcGenKitchen(ProcGenObjects):
 
         possible_categories = []
         for c in ProcGenKitchen.SECONDARY_CATEGORIES["append"]:
-            if c == "painting" and region.walls_with_windows & wall.value != 0:
+            if c == "painting" and region.walls_with_windows & wall != 0:
                 continue
             for i in range(ProcGenKitchen.SECONDARY_CATEGORIES["append"][c]):
                 possible_categories.append(c)
@@ -1404,12 +1404,12 @@ class ProcGenKitchen(ProcGenObjects):
 
     def _add_secondary_arrangement(self, used_walls: List[CardinalDirection], region: RegionWalls, possible_categories: Dict[str, int]) -> None:
         # Get a list of continuous unused walls.
-        walls: List[CardinalDirection] = [c for c in CardinalDirection if region.non_continuous_walls & c.value == 0 and c not in used_walls]
+        walls: List[CardinalDirection] = [c for c in CardinalDirection if region.non_continuous_walls & c == 0 and c not in used_walls]
         for wall in walls:
             wall_categories = []
             # Don't put paintings on windows.
             for c in possible_categories:
-                if c == "painting" and region.walls_with_windows & wall.value != 0:
+                if c == "painting" and region.walls_with_windows & wall != 0:
                     continue
                 for i in range(possible_categories[c]):
                     wall_categories.append(c)

@@ -34,10 +34,10 @@ The following "work triangle" arrangements are possible:
 
 | Shape    | Requirements                                                 | Preference                                                   | Categories                                                   | Reversible      |
 | -------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | --------------- |
-| Straight | At least one continuous *longer* wall.                       | A wall without windows.                                      | `["refrigerator", "dishwasher", "sink", "kitchen_counter", "stove", "kitchen_counter", "shelf"]` | Yes             |
-| Parallel | Two continuous *longer* walls.                               | *Only for the list with the "sink":* A wall without windows. | `["kitchen_counter", "stove", "kitchen_counter", "kitchen_counter", "kitchen_counter"]`<br>`["refrigerator", "dishwasher", "sink", "kitchen_counter", "kitchen_counter"]` | Yes<br>Yes      |
-| L-Shape  | At least one continuous *longer* wall and one continuous *shorter* wall that share a corner. | *Longer wall:* A wall without windows.                       | *Longer wall:* `["floating_kitchen_counter_top", "sink", "dishwasher", "stove", "kitchen_counter", "shelf"]`<br><br>*Shorter wall:* `["kitchen_counter", "kitchen_counter", "refrigerator", "shelf"]` *OR* `["kitchen_counter", "refrigerator", "kitchen_counter", "shelf"]` | No<br>No        |
-| U-Shape  | At least one continuous *longer* wall. Two continuous *shorter* walls. | *Longer wall:* A wall without windows.                       | *Longer wall:* `["sink", "kitchen_counter", "stove", "kitchen_counter"]`<br>*Shorter wall:* `["kitchen_counter", "refrigerator", "kitchen_counter", "shelf"]` *OR* `["kitchen_counter", "dishwasher", "kitchen_counter", "kitchen_counter"]` | Yes<br>No<br>No |
+| Straight | At least one continuous *longer* wall.                       | A wall with windows.                                      | `["refrigerator", "dishwasher", "sink", "kitchen_counter", "stove", "kitchen_counter", "shelf"]` | Yes             |
+| Parallel | Two continuous *longer* walls.                               | *Only for the list with the "sink":* A wall with windows. | `["kitchen_counter", "stove", "kitchen_counter", "kitchen_counter", "kitchen_counter"]`<br>`["refrigerator", "dishwasher", "sink", "kitchen_counter", "kitchen_counter"]` | Yes<br>Yes      |
+| L-Shape  | At least one continuous *longer* wall and one continuous *shorter* wall that share a corner. | *Longer wall:* A wall with windows.                       | *Longer wall:* `["floating_kitchen_counter_top", "sink", "dishwasher", "stove", "kitchen_counter", "shelf"]`<br><br>*Shorter wall:* `["kitchen_counter", "kitchen_counter", "refrigerator", "shelf"]` *OR* `["kitchen_counter", "refrigerator", "kitchen_counter", "shelf"]` | No<br>No        |
+| U-Shape  | At least one continuous *longer* wall. Two continuous *shorter* walls. | *Longer wall:* A wall with windows.                       | *Longer wall:* `["sink", "kitchen_counter", "stove", "kitchen_counter"]`<br>*Shorter wall:* `["kitchen_counter", "refrigerator", "kitchen_counter", "shelf"]` *OR* `["kitchen_counter", "dishwasher", "kitchen_counter", "kitchen_counter"]` | Yes<br>No<br>No |
 
 Additionally, the longer arrangement(s) of a "work triangle" may be extended with secondary sub-arrangements from the following categories: `["basket", "painting", "void", "radiator", "stool", "suitcase"]`.
 
@@ -173,6 +173,7 @@ A void is a special null category that just creates a gap in the secondary later
 | `COUNTERS_AND_CABINETS` | Dict[str, str] | A dictionary of the name of a kitchen counter model, and its corresponding wall cabinet. |
 | `RADIATOR_ROTATIONS` | dict | The rotations of the radiator models. |
 | `TALL_CATEGORIES` | List[str] | Categories of models that are tall and might obscure windows. |
+| `KITCHEN_TABLES_WITH_CENTERPIECES` | List[str] | Kitchen table models that can have centerpieces. |
 
 ***
 
@@ -194,11 +195,12 @@ A void is a special null category that just creates a gap in the secondary later
 
 **`ProcGenKitchen()`**
 
-**`ProcGenKitchen(random_seed=None)`**
+**`ProcGenKitchen(random_seed=None, print_random_seed=True)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | random_seed |  int  | None | The random seed. If None, a random seed is randomly selected. |
+| print_random_seed |  bool  | True | If True, print the random seed. This can be useful for debugging. |
 
 #### get_initialization_commands
 

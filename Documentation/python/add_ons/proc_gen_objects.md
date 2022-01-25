@@ -47,12 +47,13 @@ for model_name in categories:
 
 **`ProcGenObjects()`**
 
-**`ProcGenObjects(random_seed=None, cell_size=0.6096)`**
+**`ProcGenObjects(random_seed=None, cell_size=0.6096, print_random_seed=True)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | random_seed |  int  | None | The random seed. If None, a random seed is randomly selected. |
 | cell_size |  float  | 0.6096 | The cell size in meters. This is also used to position certain objects in subclasses of `ProcGenObjects`. |
+| print_random_seed |  bool  | True | If True, print the random seed. This can be useful for debugging. |
 
 #### get_initialization_commands
 

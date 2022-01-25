@@ -4,6 +4,116 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.3
+
+### Command API
+
+#### New Commands
+
+| Command                                | Description                                                  |
+| -------------------------------------- | ------------------------------------------------------------ |
+| `set_composite_object_kinematic_state` | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
+| `add_compass_rose`                     | Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc. |
+| `destroy_compass_rose`                 | Destroy a compass rose in the scene.                         |
+| `add_line_renderer`                    | Add a 3D line to the scene.                                  |
+| `add_points_to_line_renderer`          | Add points to an existing line in the scene.                 |
+| `destroy_line_renderer`                | Destroy an existing line in the scene from the scene.        |
+| `remove_points_from_line_renderer`     | Remove points from an existing line in the scene.            |
+| `simplify_line_renderer`               | Simplify a 3D line to the scene by removing intermediate points. |
+
+#### Modified Commands
+
+| Command               | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| `set_kinematic_state` | For composite objects, this sets the state only for the top-level object (previous,  it set the state for all sub-objects as well). See: `set_composite_object_kinematic_state` |
+
+### `tdw` module
+
+- Added: `OccupancyMap.reset()` Reset the occupancy map. Call this when resetting a scene.
+
+### Example controllers
+
+- Added: `non_physics/compass_rose.py`
+- Added: `non_physics/line_renderer.py`
+
+### Documentation
+
+#### New Documentation
+
+| Documentation                           | Description                                    |
+| --------------------------------------- | ---------------------------------------------- |
+| `lessons/non_physics/compass_rose.md`   | Tutorial document explaining the compass rose. |
+| `lessons/non_physics/line_renderers.md` | Tutorial document explaining line renderers.   |
+
+#### Modified Documentation
+
+| Document                               | Modification                                                 |
+| -------------------------------------- | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md`   | Clarified how to use various means to set kinematic states of sub-objects. |
+| `lessons/navigation/occupancy_maps.md` | Added a section for resetting a scene.                       |
+
+## v1.9.2
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `parent_object_to_object` | Parent an object to an object. In a non-physics simulation or on the frame that the two objects are first created, rotating or moving the parent object will rotate or move the child object. In subsequent physics steps, the child will move independently of the parent object (like any object). |
+| `set_hinge_limits` | Set the angle limits of a hinge joint. This will work with hinges, motors, and springs. |
+| `set_object_physics_solver_iterations` | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. |
+
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `send_model_report` | Added tests for prismatic joint mechanisms (ConfigureableJoint components) |
+
+### `tdw` module
+
+- Added optional parameter `unity_editor_path` to the `AssetBundleCreator`constructor to optionally explicitly set the path to the Unity Editor executable.
+- Added: `AssetBundleCreator.cleanup()` Clean up intermediary files.
+- Added optional parameter `unity_editor_path` to the `RobotCreator`constructor to optionally explicitly set the path to the Unity Editor executable.
+- Changed the names of all undocumented fields in `AssetBundleCreator` and `RobotCreator` to private (added an `_` to the start of the variable names).
+- Added optional parameters `description_infix` and `branch` to `RobotCreator.create_asset_bundles()` to handle unexpected .urdf URLs.
+
+### Build
+
+- Added new composite object mechanism type: `prismatic_joint`
+
+### Model Library
+
+- Added to `models_core.json`: large_mesh_basket, trashbin, b04_11_02_041, b04_kevin_reilly_pattern_floor_lamp, duncan_floor_lamp_crate_and_barrel, b03_restoration_hardware_pedestal_salvaged_round_tables, b04_03_077, gas_stove
+
+### Robot Library
+
+- Fixed various issues with fetch robot's wheels:
+  - Added four revolute joints for the non-motorized wheels: non_motorized_wheel_front_left, non_motorized_wheel_front_right, non_motorized_wheel_back_left, non_motorized_wheel_back_right.
+  - Removed bellows_link_2 as a joint (it was causing fetch to turn and was otherwise non-functional) but kept the visual mesh.
+  - Removed estop_link as a joint (it didn't do anything) but kept the visual mesh.
+  - Removed laser_link fixed joint and visual mesh (it didn't do anything).
+
+### Example Controllers
+
+- Added: `physx/kinematic_composite_object.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                             | Modification                                                 |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md` | Added example code for setting kinematic states of sub-objects. |
+| `lessons/3d_models/custom_models.md` | Added a section regarding .fbx unit scales; .fbx files must be in meters.<br>Added a section explaining how to manually set the Unity Editor path. |
+| `lessons/robots/custom_robots.md`    | Added a section explaining how to manually set the Unity Editor path. |
+
+#### Removed Documentation
+
+| Document                                         | Reason                                                       |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| `composite_objects/creating_composite_object.md` | This is not a feature we expect most users to be able to do because it requires Unity Editor experience. This document has been edited and moved to the private TDWBase repo. |
+
 ## v1.9.1
 
 ### Command API
@@ -30,17 +140,27 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Replaced `resonance` parameter in all `PyImpact` functions with `primary_resonance` and `secondary_resonance` parameters.
 - Adjusted some default static object audio values.
 - Added: `TDWUtils.bytes_to_megabytes(b)` Convert a quantity of bytes to a quantity of megabytes.
+- Added: `TDWUtils.get_circle_mask(arr, row, column, radius)`. Get elements in an array within a circle.
 - Added: `QuaternionUtils.is_left_of(origin, target, forward)` Returns True if `target` is to the left of `origin` otherwise returns False.
 - Modifed `TDWUtils.get_bounds_extents`:
   - The function now accepts either `Bounds` output data or a cached bounds dictionary from `record.bounds` (in which case the `index` parameter is ignored).
   - The order of the returned array is: width, height, length (was width, length, height).
+- Fixed: `TDWUtils.get_pil_images()` doesn't work for `_depth` or `_depth_simple`.
 
 
 ### Model library
 
 - Added to `models_core.json`: apple, b03_banana_01_high, b04_banana, banana_fix2, cgaxis_models_65_06_vray, cgaxis_models_65_14_vray, b04_bottle-2014-2018, b04_bottle_2_max, int_kitchen_accessories_le_creuset_bowl_30cm, b03_loafbread, bread, b03_iron_candle_vray, b04_candle_holder_metal, b05_candles_max_vray2, b05_candlestick_with_candles002_max2017_vray, b05_cgaxis_models_37_17_vray, candles_max_vray, cgaxis_models_20_05_vray, cgaxis_models_37_15_vray, lantern_2010, chair_thonet_marshall, b05_snickers, chocolate_bar001, b05_coffee_grinder, cafe_2010, cgaxis_models_61_17_vray, coffee_grinder, kitchen_aid_coffee_grinder, b06_circle, ripple, coffeecup004_fix, cup, b03_db_apps_tech_08_04_composite, b03_db_apps_tech_08_07_composite, b03_db_apps_tech_08_08_composite, b04_db_apps_tech_08_03, b05_db_apps_tech_08_09, b05_db_apps_tech_08_09_composite, vray_032, pcylinder222, vk0010_dinner_fork_subd0, vk0011_dessert_fork_subd0, vk0056_tablefork, vk0067_fishfork, cgaxis_models_50_12_vray, cgaxis_models_50_24_vray, b04_3d_jar_180_gr_01, b04_honey_jar, b04_honey_jar_max_2014, b05_sugerjar_a001_2015, b03_pot, b04_low, stelton_emma_tea_vacuum_jug, vk0007_steak_knife, vk0014_dinner_knife_subd2, vk0055_tableknife, b03_bosch_cbg675bs1b_2013\_\_vray_composite, b05_whirlpool_microwave_wmc30516as_v-ray, cgaxis_models_10_11_vray, vm_v5_070, vray_062, b04_orange_00, orange, b03_696615_object001, b03_object05, int_kitchen_accessories_le_creuset_frying_pan_28cm, measuring_pan, object05, pan01, pan02, pan03, pan04, pan05, b03_pen, b05_ball-point_pen-obj, cylinder01, wooden_pepper_mill, plate05, plate06, plate07, b03_aluminum_pan, b03_cooking_pot_01, pan1, pan3, b03_ka90ivi20r_2013\_\_vray, b05_db_apps_tech_06_02_2, b05_ikea_nutid_side_by_side_refrigerator, b05_cylinder001, b03_burger, b04_scissors_2013, b05_bathroom_dispenser, b05_gold_glass_soap_dispenser(max), blue_edition_liquid_soap02, filler_2010, kosmos_black_soap_dispenser, soap_dispenser_01, b01_spatula, vk0002_teaspoon, vk0054_teaspoon, vk0058_tablespoon, vk0060_dessertspoon, vk0078_fruitspoon, vk0080_soupspoon, b05_beko_oie_22500x_2013\_\_corona, b05_dacor_double_wall_oven, b05_max2013vray_oven_by_whirlpool_akzm8910ixl, duhovka, vraymax2013_oven_akzm6610ixl_by_whirlpool, metal_lab_table, teatray, kettle_2, tea_kettle_model, teakettle_01, v3_tf_04_01, vray_041, vray_044, b05_delonghi_icona_toaster, b06_21_dualit_original_toaster_4x, russell_hobbs_2013\_\_vray, vray_077, vray_083, vray_084, vray_085, amphora_jar_vase, b04_new, vase_laura_deko_vase_set, b04_cantate_crystal_wine_glass, b04_wineglass
 - Flagged models as do_not_use in `models_core.json`: coffeecup004, mug, salt
-- Flagged models as do_not_use in `models_full.json`: coffeecup004, mug, salt, b03_closed_soda_can, b04_chocolate, b04_coffee_grinder_sunbeam_em0700, b04_glass, b04_whyskeyglass, b05_beko_oie_22500x_2013_corona, croissant, jar, peppermill, pineapple_juice, pineapple_juice_carton, spagheti-server, b03_can-opened
+- Flagged models as do_not_use in `models_full.json`: coffeecup004, mug, salt, b03_closed_soda_can, b04_chocolate, b04_coffee_grinder_sunbeam_em0700, b04_glass, b04_whyskeyglass, b05_beko_oie_22500x_2013_corona, croissant, jar, peppermill, pineapple_juice, pineapple_juice_carton, spagheti-server, b03_can-opened,  b03_db_apps_tech_08_01
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                             | Modification                                                 |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `lessons/3d_models/custom_models.md` | Fixed: Two of the example controllers don't work because they try to load JSON from the file path rather than the file text. |
 
 ## v1.9.0
 
@@ -92,12 +212,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `set_painting_texture`            | `set_textured_quad`                          |
 | `show_painting`                   | `show_textured_quad`                         |
 | `teleport_painting`               | `teleport_textured_quad`                     |
-
-#### Modified Commands
-
-| Command             | Modification                                                 |
-| ------------------- | ------------------------------------------------------------ |
-| `send_model_report` | Added parameter `flex`: If True, this model is expected to be Flex-compatible. |
 
 #### Removed Commands
 

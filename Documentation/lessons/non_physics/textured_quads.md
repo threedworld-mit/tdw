@@ -106,7 +106,7 @@ However, in TDW, textured quads are treated very differently than standard [obje
 
 ***
 
-**Next: [Non-physics humanoids](humanoids.md)**
+**Next: [Compass rose](compass_rose.md)**
 
 [Return to the README](../../../README.md)
 

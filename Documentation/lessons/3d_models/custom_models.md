@@ -11,8 +11,9 @@ It is possible to add any 3D model to TDW. However, the underlying Unity engine 
 - The `tdw` module
 - Python 3.6+
 - Unity Hub
-- Unity Editor 2020.3.24f1 (installed via Unity Hub)
+- Unity Editor 2020.3.24f1
   - Build options must enabled for Windows, OS X, and Linux (these can  be set when installing Unity).
+  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `AssetBundleCreator` constructor (see below).
 - A .fbx or .obj+.mtl model
 
 ## The `AssetBundleCreator`
@@ -55,7 +56,19 @@ asset_bundle_paths, record_path = a.create_asset_bundle(model_path=model_path,
                                                         wcategory=wcategory)
 ```
 
- There is one other optional parameter, `scale`, which should usually be set to 1 (the default value). Setting it to another value will scale the model by this factor whenever it is instantiated in TDW.
+There is one other optional parameter, `scale`, which should usually be set to 1 (the default value). Setting it to another value will scale the model by this factor whenever it is instantiated in TDW.
+
+### Unity Editor path
+
+If you installed Unity Editor via Unity Hub, `AssetBundleCreator` should be able to automatically find the Unity Editor executable.
+
+If the Unity Editor executable is in an unexpected location, you will need to explicitly set its location in the `AssetBundleCreator` by setting the optional `unity_editor_path` parameter:
+
+```python
+from tdw.asset_bundle_creator import AssetBundleCreator
+
+a = AssetBundleCreator(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
+```
 
 ### Intermediate API calls
 
@@ -71,7 +84,7 @@ model_name = "chair"
 model_path = Path(model_name + ".fbx")
 a = AssetBundleCreator()
 obj_path, is_new = a.fbx_to_obj(model_path)
-wrl_path = a.obj_to_wrl(model_path)
+wrl_path = a.obj_to_wrl(obj_path)
 obj_colliders_path = a.wrl_to_obj(wrl_path, model_name)
 copied_file_paths = a.move_files_to_unity_project(obj_colliders_path, model_path)
 prefab_path, report_path = a.create_prefab(f"{model_name}_colliders.obj", model_name, model_path.suffix)
@@ -176,7 +189,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
 
 model_name = "chair"
-model_record = ModelRecord(loads(Path.home().joinpath("tdw_asset_bundles/chair/record.json")))
+model_record = ModelRecord(loads(Path.home().joinpath("tdw_asset_bundles/chair/record.json").read_text()))
 c = Controller()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "add_object",
@@ -212,7 +225,7 @@ from tdw.librarian import ModelLibrarian, ModelRecord
 # Convert from a relative to absolute path to load the librarian.
 librarian = ModelLibrarian(library=str(Path("models_custom.json").resolve()))
 
-record = ModelRecord(loads(Path.home().joinpath("tdw_asset_bundles/chair/record.json")))
+record = ModelRecord(loads(Path.home().joinpath("tdw_asset_bundles/chair/record.json").read_text()))
 
 librarian.add_or_update_record(record=record, overwrite=False, write=True)
 ```
@@ -234,6 +247,10 @@ custom_librarian.add_or_update_record(record=record, overwrite=False, write=True
 You could convert many models to asset bundles by creating a loop that repeatedly calls `AssetBundleCreator.create_asset_bundles()`. **This is not a good idea.** Repeatedly calling Unity from a Python script is actually very slow. (It also appears to slow down over many consecutive calls).
 
 Instead, consider using `create_many_asset_bundles(library_path)` for large numbers of models. This function will walk through `asset_bundle_creator/Assets/Resources/models/` searching for .obj and .fbx models. It will convert these models to asset bundles.
+
+## .fbx unit scale
+
+The unit scale of the exported .fbx file must be meters. If not, the physics colliders will likely be at the wrong scale.
 
 ## Export .fbx files from Blender 2.8
 

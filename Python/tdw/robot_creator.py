@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 from os import getcwd, chdir, walk, devnull
 import re
 from platform import system
@@ -20,15 +20,18 @@ class RobotCreator(AssetBundleCreatorBase):
     # The root temporary directory.
     TEMP_ROOT = Path.home().joinpath("robot_creator/temp_robots")
 
-    def __init__(self, quiet: bool = False, display: str = ":0"):
+    def __init__(self, quiet: bool = False, display: str = ":0", unity_editor_path: Union[Path, str] = None):
         """
         :param quiet: If true, don't print any messages to console.
         :param display: The display to launch Unity Editor on. Ignored if this isn't Linux.
+        :param unity_editor_path: The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically.
         """
 
-        super().__init__(quiet=quiet, display=display)
+        super().__init__(quiet=quiet, display=display, unity_editor_path=unity_editor_path)
 
-    def create_asset_bundles(self, urdf_url: str, required_repo_urls: Dict[str, str] = None, xacro_args: Dict[str, str] = None, immovable: bool = True, up: str = "y") -> RobotRecord:
+    def create_asset_bundles(self, urdf_url: str, required_repo_urls: Dict[str, str] = None,
+                             xacro_args: Dict[str, str] = None, immovable: bool = True, up: str = "y",
+                             description_infix: str = None, branch: str = None) -> RobotRecord:
         """
         Given the URL of a .urdf file or a .xacro file, create asset bundles of the robot.
 
@@ -44,6 +47,8 @@ class RobotCreator(AssetBundleCreatorBase):
         :param xacro_args: Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file). For example, the Sawyer robot requires this to add the gripper: `{"electric_gripper": "true"}`
         :param immovable: If True, the base of the robot is immovable.
         :param up: The up direction. Used when importing the robot into Unity. Options: `"y"` or `"z"`. Usually, this should be the default value (`"y"`).
+        :param description_infix: The name of the description infix within the .urdf URL, such as `fetch_description`. Only set this if the urdf URL is non-standard; otherwise `RobotCreator` should be able to find this automatically.
+        :param branch: The name of the branch of the repo. If None, defaults to `"master"`.
 
         :return: A `RobotRecord` object. The `urls` field contains the paths to each asset bundle.
         """
@@ -54,7 +59,9 @@ class RobotCreator(AssetBundleCreatorBase):
         # Clone the repo.
         repo_paths: Dict[str, Path] = dict()
         local_repo_path = self.clone_repo(url=urdf_url)
-        repo_paths[RobotCreator._get_description_infix(url=urdf_url)] = local_repo_path
+        if description_infix is None:
+            description_infix = RobotCreator._get_description_infix(url=urdf_url)
+        repo_paths[description_infix] = local_repo_path
 
         # Clone the required repos.
         for description in required_repo_urls:
@@ -64,7 +71,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
         # Copy the files, create a .urdf file (if needed), and creator collider objects.
         urdf_path = self.copy_files(urdf_url=urdf_url, local_repo_path=local_repo_path, repo_paths=repo_paths,
-                                    xacro_args=xacro_args)
+                                    xacro_args=xacro_args, branch=branch)
 
         # Create the prefab.
         prefab = self.urdf_to_prefab(urdf_path=urdf_path, immovable=immovable, up=up)
@@ -125,18 +132,19 @@ class RobotCreator(AssetBundleCreatorBase):
         # Change directory.
         cwd = getcwd()
         chdir(str(RobotCreator.TEMP_ROOT.resolve()))
-        if not self.quiet:
+        if not self._quiet:
             print(f"Cloning: {repo_url}")
         # Clone the repo.
         call(["git", "clone", repo_url],
              stderr=open(devnull, "wb"))
         chdir(cwd)
         assert local_repo_path.exists(), f"Can't find: {local_repo_path.resolve()}"
-        if not self.quiet:
+        if not self._quiet:
             print("...Done!")
         return local_repo_path
 
-    def copy_files(self, urdf_url: str, local_repo_path: Path, repo_paths: Dict[str, Path], xacro_args: Dict[str, str] = None) -> Path:
+    def copy_files(self, urdf_url: str, local_repo_path: Path, repo_paths: Dict[str, Path],
+                   xacro_args: Dict[str, str] = None, branch: str = None) -> Path:
         """
         Copy and convert files required to create a prefab.
 
@@ -148,14 +156,17 @@ class RobotCreator(AssetBundleCreatorBase):
         :param local_repo_path: The path to the local repo.
         :param repo_paths: A dictionary of required repos (including the one that the .urdf or .xacro is in). Key = The description path infix, e.g. "sawyer_description". Value = The path to the local repo.
         :param xacro_args: Names and values for the `arg` tags in the .xacro file. Can be None for a .urdf or .xacro file and always ignored for a .urdf file.
+        :param branch: The name of the branch of the repo. If None, defaults to `"master"`.
 
         :return: The path to the .urdf file in the Unity project.
         """
 
         page_url = self._raw_to_page(url=urdf_url)
-        repo_path = re.search(r"(.*)/blob/master/(.*)", page_url).group(2)
+        if branch is None:
+            branch = "master"
+        repo_path = re.search(r"(.*)/blob/" + branch + r"/(.*)", page_url).group(2)
         urdf_path = local_repo_path.joinpath(repo_path)
-        dst_root = self.project_path.joinpath(f"Assets/robots")
+        dst_root = self._project_path.joinpath(f"Assets/robots")
         if not dst_root.exists():
             dst_root.mkdir(parents=True)
         # Convert the .xacro file to a .urdf file.
@@ -198,7 +209,7 @@ class RobotCreator(AssetBundleCreatorBase):
                 mesh_dst.parent.mkdir(parents=True)
             # Copy the mesh file to the Unity project.
             copy_file(src=str(mesh_src.resolve()), dst=str(mesh_dst.resolve()))
-        if not self.quiet:
+        if not self._quiet:
             print("Copied the .urdf and the meshes to the Unity project.")
         return urdf_dst
 
@@ -258,7 +269,7 @@ class RobotCreator(AssetBundleCreatorBase):
                                 copy_file(src=str(src.resolve()), dst=str(dst.resolve()))
                             if src not in xacros and src not in checked:
                                 xacros.append(src)
-        if not self.quiet:
+        if not self._quiet:
             print("Copied all required xacro files to a temp directory.")
         # "Repair" all of the required .xacro files.
         for f in xacro_dir.iterdir():
@@ -279,7 +290,7 @@ class RobotCreator(AssetBundleCreatorBase):
         if urdf_path.exists():
             urdf_path.unlink()
         move_file(src=str(x.parent.joinpath(urdf_name).resolve()), dst=str(urdf_path.resolve()))
-        if not self.quiet:
+        if not self._quiet:
             print(f"Created {str(urdf_path.resolve())}")
         urdf_path = Path(str(urdf_path.resolve()))
         chdir(cwd)
@@ -310,13 +321,13 @@ class RobotCreator(AssetBundleCreatorBase):
                           f"-urdf='{str(urdf_path.resolve())}'",
                           f"-immovable={'true' if immovable else 'false'}",
                           f"-up={up}"])
-        if not self.quiet:
+        if not self._quiet:
             print("Creating a .prefab from a .urdf file...")
         call(urdf_call)
         RobotCreator._check_log()
-        prefab_path = self.project_path.joinpath(f"Assets/prefabs/{name}.prefab")
+        prefab_path = self._project_path.joinpath(f"Assets/prefabs/{name}.prefab")
         assert prefab_path.exists(), f"Prefab not found: {prefab_path}"
-        if not self.quiet:
+        if not self._quiet:
             print("...Done!")
         return prefab_path
 
@@ -332,19 +343,19 @@ class RobotCreator(AssetBundleCreatorBase):
         asset_bundles_call = self.get_base_unity_call()[:]
         asset_bundles_call.extend(["-executeMethod", "Creator.CreateAssetBundles",
                                    f"-robot='{name}'"])
-        if not self.quiet:
+        if not self._quiet:
             print("Creating asset bundles...")
         call(asset_bundles_call)
         RobotCreator._check_log()
         # Verify that the asset bundles exist.
-        asset_bundles_root_dir = self.project_path.joinpath(f"Assets/asset_bundles/{name}")
+        asset_bundles_root_dir = self._project_path.joinpath(f"Assets/asset_bundles/{name}")
         asset_bundle_paths: Dict[str, Path] = dict()
         for build_target in UNITY_TO_SYSTEM:
             asset_bundle_path = asset_bundles_root_dir.joinpath(f"{build_target}/{name}")
             asset_bundle_path = Path(str(Path(asset_bundle_path.resolve())))
             assert asset_bundle_path.exists(), f"Couldn't find asset bundle: {asset_bundle_path.resolve()}"
             asset_bundle_paths[UNITY_TO_SYSTEM[build_target]] = asset_bundle_path
-        if not self.quiet:
+        if not self._quiet:
             print("...Done!")
         return asset_bundle_paths
 

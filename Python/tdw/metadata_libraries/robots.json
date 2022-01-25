@@ -1,242 +1,242 @@
 {
-  "description": "Robot asset bundles",
-  "records": {
-    "baxter": {
-      "ik": [],
-      "immovable": true,
-      "name": "baxter",
-      "source": "https://github.com/RethinkRobotics/baxter_common",
-      "targets": {},
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/baxter",
-        "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/baxter",
-        "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/baxter"
-      }
-    },
-    "fetch": {
-      "ik": [],
-      "immovable": false,
-      "name": "fetch",
-      "source": "https://github.com/openai/roboschool",
-      "targets": {},
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/fetch",
-        "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/fetch",
-        "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/fetch"
-      }
-    },
-    "niryo_one": {
-      "ik": [],
-      "immovable": true,
-      "name": "niryo_one",
-      "source": "https://github.com/NiryoRobotics/niryo_one_ros",
-      "targets": {},
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/niryo_one",
-        "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/niryo_one",
-        "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/niryo_one"
-      }
-    },
-    "sawyer": {
-      "ik": [],
-      "immovable": true,
-      "name": "sawyer",
-      "source": "https://github.com/RethinkRobotics/sawyer_robot",
-      "targets": {},
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/sawyer",
-        "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/sawyer",
-        "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/sawyer"
-      }
-    },
-    "shadowhand": {
-      "ik": [],
-      "immovable": true,
-      "name": "shadowhand",
-      "source": "https://github.com/shadow-robot/simox_ros",
-      "targets": {},
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/shadowhand",
-        "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/shadowhand",
-        "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/shadowhand"
-      }
-    },
-    "ur10": {
-      "ik": [],
-      "immovable": true,
-      "name": "ur10",
-      "source": "https://github.com/ros-industrial/robot_movement_interface",
-      "targets": {
-        "upper_arm_link": {
-          "target": -5,
-          "type": "revolute"
+    "description": "Robot asset bundles",
+    "records": {
+        "baxter": {
+            "ik": [],
+            "immovable": true,
+            "name": "baxter",
+            "source": "https://github.com/RethinkRobotics/baxter_common",
+            "targets": {},
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/baxter",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/baxter",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/baxter"
+            }
+        },
+        "fetch": {
+            "ik": [],
+            "immovable": false,
+            "name": "fetch",
+            "source": "https://github.com/openai/roboschool",
+            "targets": {},
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.3.24f1/fetch",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.3.24f1/fetch",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.3.24f1/fetch"
+            }
+        },
+        "niryo_one": {
+            "ik": [],
+            "immovable": true,
+            "name": "niryo_one",
+            "source": "https://github.com/NiryoRobotics/niryo_one_ros",
+            "targets": {},
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/niryo_one",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/niryo_one",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/niryo_one"
+            }
+        },
+        "sawyer": {
+            "ik": [],
+            "immovable": true,
+            "name": "sawyer",
+            "source": "https://github.com/RethinkRobotics/sawyer_robot",
+            "targets": {},
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/sawyer",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/sawyer",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/sawyer"
+            }
+        },
+        "shadowhand": {
+            "ik": [],
+            "immovable": true,
+            "name": "shadowhand",
+            "source": "https://github.com/shadow-robot/simox_ros",
+            "targets": {},
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/shadowhand",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/shadowhand",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/shadowhand"
+            }
+        },
+        "ur10": {
+            "ik": [],
+            "immovable": true,
+            "name": "ur10",
+            "source": "https://github.com/ros-industrial/robot_movement_interface",
+            "targets": {
+                "upper_arm_link": {
+                    "target": -5,
+                    "type": "revolute"
+                }
+            },
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur10",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur10",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur10"
+            }
+        },
+        "ur3": {
+            "ik": [],
+            "immovable": true,
+            "name": "ur3",
+            "source": "https://github.com/Unity-Technologies/articulations-robot-demo",
+            "targets": {},
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur3"
+            }
+        },
+        "ur5": {
+            "ik": [
+                [
+                    {
+                        "bounds": [
+                            -6.283185307179586,
+                            6.283185307179586
+                        ],
+                        "name": "shoulder_link",
+                        "orientation": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "rotation": [
+                            0,
+                            -1,
+                            0
+                        ],
+                        "translation_vector": [
+                            0.0,
+                            0.08915899,
+                            0.0
+                        ]
+                    },
+                    {
+                        "bounds": [
+                            -6.283185307179586,
+                            6.283185307179586
+                        ],
+                        "name": "upper_arm_link",
+                        "orientation": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "rotation": [
+                            1,
+                            0,
+                            0
+                        ],
+                        "translation_vector": [
+                            -0.13585,
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "bounds": [
+                            -6.283185307179586,
+                            6.283185307179586
+                        ],
+                        "name": "forearm_link",
+                        "orientation": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "rotation": [
+                            1,
+                            0,
+                            0
+                        ],
+                        "translation_vector": [
+                            0.1196999,
+                            0.0,
+                            0.425001
+                        ]
+                    },
+                    {
+                        "bounds": [
+                            -6.283185307179586,
+                            6.283185307179586
+                        ],
+                        "name": "wrist_1_link",
+                        "orientation": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "rotation": [
+                            1,
+                            0,
+                            0
+                        ],
+                        "translation_vector": [
+                            0.0,
+                            0.0,
+                            0.3922516
+                        ]
+                    },
+                    {
+                        "bounds": [
+                            -6.283185307179586,
+                            6.283185307179586
+                        ],
+                        "name": "wrist_2_link",
+                        "orientation": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "rotation": [
+                            0,
+                            -1,
+                            0
+                        ],
+                        "translation_vector": [
+                            -0.093,
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "bounds": [
+                            null,
+                            null
+                        ],
+                        "name": "wrist_3_link",
+                        "orientation": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "rotation": null,
+                        "translation_vector": [
+                            0.0,
+                            -0.09465025,
+                            0.0
+                        ]
+                    }
+                ]
+            ],
+            "immovable": true,
+            "name": "ur5",
+            "source": "https://github.com/ros-industrial/robot_movement_interface",
+            "targets": {
+                "upper_arm_link": {
+                    "target": -5,
+                    "type": "revolute"
+                }
+            },
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur5",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur5",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur5"
+            }
         }
-      },
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur10",
-        "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur10",
-        "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur10"
-      }
-    },
-    "ur3": {
-      "ik": [],
-      "immovable": true,
-      "name": "ur3",
-      "source": "https://github.com/Unity-Technologies/articulations-robot-demo",
-      "targets": {},
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur3",
-        "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur3",
-        "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur3"
-      }
-    },
-    "ur5": {
-      "ik": [
-        [
-          {
-            "bounds": [
-              -6.283185307179586,
-              6.283185307179586
-            ],
-            "name": "shoulder_link",
-            "orientation": [
-              0,
-              0,
-              0
-            ],
-            "rotation": [
-              0,
-              -1,
-              0
-            ],
-            "translation_vector": [
-              0.0,
-              0.08915899,
-              0.0
-            ]
-          },
-          {
-            "bounds": [
-              -6.283185307179586,
-              6.283185307179586
-            ],
-            "name": "upper_arm_link",
-            "orientation": [
-              0,
-              0,
-              0
-            ],
-            "rotation": [
-              1,
-              0,
-              0
-            ],
-            "translation_vector": [
-              -0.13585,
-              0.0,
-              0.0
-            ]
-          },
-          {
-            "bounds": [
-              -6.283185307179586,
-              6.283185307179586
-            ],
-            "name": "forearm_link",
-            "orientation": [
-              0,
-              0,
-              0
-            ],
-            "rotation": [
-              1,
-              0,
-              0
-            ],
-            "translation_vector": [
-              0.1196999,
-              0.0,
-              0.425001
-            ]
-          },
-          {
-            "bounds": [
-              -6.283185307179586,
-              6.283185307179586
-            ],
-            "name": "wrist_1_link",
-            "orientation": [
-              0,
-              0,
-              0
-            ],
-            "rotation": [
-              1,
-              0,
-              0
-            ],
-            "translation_vector": [
-              0.0,
-              0.0,
-              0.3922516
-            ]
-          },
-          {
-            "bounds": [
-              -6.283185307179586,
-              6.283185307179586
-            ],
-            "name": "wrist_2_link",
-            "orientation": [
-              0,
-              0,
-              0
-            ],
-            "rotation": [
-              0,
-              -1,
-              0
-            ],
-            "translation_vector": [
-              -0.093,
-              0.0,
-              0.0
-            ]
-          },
-          {
-            "bounds": [
-              null,
-              null
-            ],
-            "name": "wrist_3_link",
-            "orientation": [
-              0,
-              0,
-              0
-            ],
-            "rotation": null,
-            "translation_vector": [
-              0.0,
-              -0.09465025,
-              0.0
-            ]
-          }
-        ]
-      ],
-      "immovable": true,
-      "name": "ur5",
-      "source": "https://github.com/ros-industrial/robot_movement_interface",
-      "targets": {
-        "upper_arm_link": {
-          "target": -5,
-          "type": "revolute"
-        }
-      },
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.2/ur5",
-        "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.2/ur5",
-        "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/ur5"
-      }
     }
-  }
 }

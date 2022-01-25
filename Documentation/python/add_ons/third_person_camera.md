@@ -75,8 +75,6 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 - `position` The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
 
-- `look_at_target` The target object or position that the camera will look at. Can be None (the camera won't look at a target).
-
 - `follow_object` The ID of the object the camera will try to follow. Can be None (the camera won't follow an object).
 
 - `follow_rotate` If `follow_object` is not None, this determines whether the camera will follow the object's rotation.
@@ -144,6 +142,16 @@ Rotate the camera.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | rotation |  Dict[str, float] |  | Rotate the camera by these angles (in degrees). Keys are `"x"`, `"y"`, `"z"` and correspond to `(pitch, yaw, roll)`. |
+
+#### look_at
+
+**`self.look_at(target)`**
+
+Look at a target position or object. The camera will continue to look at the target until you call `camera.look_at(None)`.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| target |  Union[int, Dict[str, float] |  | The look at target. Can be an int (an object ID), an `(x, y, z)` dictionary (a position), or None (stop looking at a target). |
 
 #### before_send
 

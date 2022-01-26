@@ -1,9 +1,9 @@
-from typing import List, Optional, Dict
+from typing import List
 import numpy as np
 from tdw.add_ons.add_on import AddOn
 from tdw.vr_data.rig_type import RigType
 from tdw.object_data.transform import Transform
-from tdw.output_data import OutputData, VRRig, StaticRigidbodies, Images
+from tdw.output_data import OutputData, VRRig, StaticRigidbodies
 
 
 class VR(AddOn):
@@ -16,56 +16,46 @@ class VR(AddOn):
     """
     AVATAR_ID = "vr"
 
-    def __init__(self, rig_type: RigType = RigType.auto_hand, rig_transform_output_data: bool = True,
-                 image_passes: List[str] = None):
+    def __init__(self, rig_type: RigType = RigType.auto_hand, output_data: bool = True, attach_avatar: bool = False):
         """
         :param rig_type: The [`RigType`](../vr_data/rig_type.md).
-        :param rig_transform_output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
-        :param image_passes: A list of image passes e.g. `"_img"` or `"_id"`. If None, the VR headset will still render images but it won't convert them into output data. Note: Image output data can significantly slow down a TDW simulation.
+        :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
+        :param attach_avatar: If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`.
         """
 
         super().__init__()
         self._rig_type: RigType = rig_type
         self._set_graspable: bool = True
-        self._rig_transform_output_data: bool = rig_transform_output_data
+        self._output_data: bool = output_data
+        self._attach_avatar: bool = attach_avatar
         """:field
-        The [`Transform`](../object_data/transform.md) for the root rig object. If `vr_rig_output_data == False`, this is never updated.
+        The [`Transform`](../object_data/transform.md) data of the root rig object. If `output_data == False`, this is never updated.
         """
         self.rig: Transform = VR._get_empty_transform()
         """:field
-        The [`Transform`](../object_data/transform.md) for the left hand. If `vr_rig_output_data == False`, this is never updated.
+        The [`Transform`](../object_data/transform.md) data of the left hand. If `output_data == False`, this is never updated.
         """
         self.left_hand: Transform = VR._get_empty_transform()
         """:field
-        The [`Transform`](../object_data/transform.md) for the right hand. If `vr_rig_output_data == False`, this is never updated.
+        The [`Transform`](../object_data/transform.md) data of the right hand. If `output_data == False`, this is never updated.
         """
         self.right_hand: Transform = VR._get_empty_transform()
         """:field
-        The [`Transform`](../object_data/transform.md) for the head. If `vr_rig_output_data == False`, this is never updated.
+        The [`Transform`](../object_data/transform.md) data of the head. If `output_data == False`, this is never updated.
         """
         self.head: Transform = VR._get_empty_transform()
-        """:field
-        The images data as a dictionary. Key = Image pass. Value = The image. If `image_passes is None`, this is always empty.
-        """
-        self.images: Dict[str, np.array] = dict()
-        self._image_passes: Optional[List[str]] = image_passes
 
     def get_initialization_commands(self) -> List[dict]:
         commands = [{"$type": "create_vr_rig",
                      "rig_type": self._rig_type.value},
                     {"$type": "send_static_rigidbodies",
                      "frequency": "once"}]
-        if self._rig_transform_output_data:
+        if self._output_data:
             commands.append({"$type": "send_vr_rig",
                              "frequency": "always"})
-        if self._image_passes is not None:
-            commands.extend([{"$type": "attach_avatar_to_vr_rig",
-                              "id": VR.AVATAR_ID},
-                             {"$type": "set_pass_masks",
-                              "pass_masks": self._image_passes,
-                              "avatar_id": VR.AVATAR_ID},
-                             {"$type": "send_images",
-                              "frequency": "always"}])
+        if self._attach_avatar is not None:
+            commands.append({"$type": "attach_avatar_to_vr_rig",
+                             "id": VR.AVATAR_ID})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -97,13 +87,6 @@ class VR(AddOn):
                 self.head.position = np.array(vr_rig.get_head_position())
                 self.head.rotation = np.array(vr_rig.get_head_rotation())
                 self.head.forward = np.array(vr_rig.get_head_forward())
-            # Get image data.
-            elif r_id == "imag":
-                images = Images(resp[i])
-                if images.get_avatar_id() == VR.AVATAR_ID:
-                    self.images.clear()
-                    for j in range(images.get_num_passes()):
-                        self.images[images.get_pass_mask(j)] = images.get_image(j)
 
     def reset(self) -> None:
         """

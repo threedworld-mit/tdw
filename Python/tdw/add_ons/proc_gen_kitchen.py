@@ -220,6 +220,7 @@ class ProcGenKitchen(ProcGenObjects):
         self._kitchen_counters: List[str] = list()
         self._wall_cabinets: List[str] = list()
         self._radiators: List[str] = list()
+        self._sinks: List[str] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -230,10 +231,9 @@ class ProcGenKitchen(ProcGenObjects):
 
         # Set the wood type and counter top visual material.
         kitchen_counter_wood_type = self.rng.choice(["white_wood", "wood_beach_honey"])
-        kitchen_counters = ProcGenObjects.MODEL_CATEGORIES["kitchen_counter"]
-        self._kitchen_counters = [k for k in kitchen_counters if kitchen_counter_wood_type in k]
-        kitchen_cabinets = ProcGenObjects.MODEL_CATEGORIES["wall_cabinet"]
-        self._wall_cabinets = [k for k in kitchen_cabinets if kitchen_counter_wood_type in k]
+        self._kitchen_counters = [k for k in ProcGenObjects.MODEL_CATEGORIES["kitchen_counter"] if kitchen_counter_wood_type in k]
+        self._wall_cabinets = [k for k in ProcGenObjects.MODEL_CATEGORIES["wall_cabinet"] if kitchen_counter_wood_type in k]
+        self._sinks = [k for k in ProcGenObjects.MODEL_CATEGORIES["sink"] if kitchen_counter_wood_type in k]
         if kitchen_counter_wood_type == "white_wood":
             self._counter_top_material = "granite_beige_french"
         else:
@@ -813,6 +813,8 @@ class ProcGenKitchen(ProcGenObjects):
                 model_names = self._wall_cabinets[:]
             elif c == "radiator":
                 model_names = self._radiators[:]
+            elif c == "sink":
+                model_names = self._sinks[:]
             else:
                 model_names = ProcGenObjects.MODEL_CATEGORIES[c][:]
             self.rng.shuffle(model_names)
@@ -851,6 +853,9 @@ class ProcGenKitchen(ProcGenObjects):
                 position = __add_half_extent_to_position()
             elif c == "stove":
                 self._add_stove(record=record, position=position, face_away_from=face_away_from)
+                position = __add_half_extent_to_position()
+            elif c == "sink":
+                self._add_sink(record=record, position=position, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
             elif c == "side_table":
                 self._add_side_table(record=record, position=position, face_away_from=face_away_from, region=region)
@@ -1636,3 +1641,31 @@ class ProcGenKitchen(ProcGenObjects):
                                                                rotation={"x": 0, "y": rotation, "z": 0},
                                                                library="models_core.json",
                                                                kinematic=False))
+
+    def _add_sink(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection) -> None:
+        """
+        Add a sink to the scene. For now, this is a placeholder cube.
+
+        :param record: The model record.
+        :param position: The position.
+        :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
+
+        :return: The model record of the root object. If no models were added to the scene, this is None.
+        """
+
+        if face_away_from == CardinalDirection.north:
+            rotation: int = 0
+        elif face_away_from == CardinalDirection.south:
+            rotation = 180
+        elif face_away_from == CardinalDirection.west:
+            rotation = 270
+        elif face_away_from == CardinalDirection.east:
+            rotation = 90
+        else:
+            raise Exception(face_away_from)
+        self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
+                                                               object_id=Controller.get_unique_id(),
+                                                               position={k: v for k, v in position.items()},
+                                                               rotation={"x": 0, "y": rotation, "z": 0},
+                                                               library="models_core.json",
+                                                               kinematic=True))

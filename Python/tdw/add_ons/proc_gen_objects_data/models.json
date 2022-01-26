@@ -278,7 +278,8 @@
     "side_table_wood"
   ],
   "sink": [
-    "cabinet_24_white_wood"
+    "sink_base_white_wood",
+    "sink_base_wood_beach_honey"
   ],
   "soap_dispenser": [
     "b05_bathroom_dispenser",

@@ -5,9 +5,11 @@
 There are two components to TDW's lighting model:
 
 1. **Direct lighting:** a single light source representing the sun, used for dynamic lighting – the type of lighting that causes objects to cast shadows in a scene. 
-2. **HDRI (High Dynamic Range Image) skyboxes** used for general environmental lighting. 
+2. **HDRI (High Dynamic Range Image) skyboxes** used for general environmental lighting. Using an HDRI skybox can *significantly* improve the photorealism of a scene.
 
 Additionally, some scenes have **point light sources.**
+
+This document is an overview of how lighting works in TDW. [A document later in this tutorial](interior_lighting.md) explains how  to use an add-on to achieve good-looking lighting in an interior scene using HDRI skyboxes and [post-processing](post_processing.md).
 
 ## Direct lighting
 
@@ -63,6 +65,20 @@ print(record.location)  # interior
 ```
 
 There are other fields in an `HDRISkyboxRecord`;  these are mainly used internally to set the lighting parameters correctly.
+
+This will output the entire skybox library to a .csv file:
+
+```python
+from tdw.librarian import HDRISkyboxLibrarian
+
+lib = HDRISkyboxLibrarian()
+text = "name,location,sun_elevation,sun_initial_angle,sun_intensity,exposure,initial_skybox_rotation\n"
+for record in lib.records:
+    text += f"{record.name},{record.location},{record.sun_elevation},{record.sun_initial_angle},{record.sun_intensity},{record.exposure},{record.initial_skybox_rotation}\n"
+text = text.strip()
+with open("skyboxes.csv", "w") as f:
+    f.write(text)
+```
 
 This controller loads a [streamed scene](../core_concepts/scenes.md) and adds an HDRI skybox. Note that the controller uses a wrapper function, `get_add_hdri_skybox(skybox_name)`, to generate a valid command.
 

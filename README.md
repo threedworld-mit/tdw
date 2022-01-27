@@ -86,6 +86,7 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 1. [Overview](Documentation/lessons/photorealism/overview.md)
 2. [Lighting (HDRI skyboxes)](Documentation/lessons/photorealism/lighting.md)
 3. [Post-processing](Documentation/lessons/photorealism/post_processing.md)
+3. [Interior lighting (the `InteriorSceneLighting` add-on)](Documentation/lessons/photorealism/interior_lighting.md)
 4. [Depth of field](Documentation/lessons/photorealism/depth_of_field.md)
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)

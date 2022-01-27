@@ -34,7 +34,7 @@ The object's kinematic state determines whether it will respond to physics. Othe
 
 ## Default physics values and `get_add_physics_object()`
 
-To apply default physics values to objects, the `Controller` class includes a wrapper function: [`get_add_physics_object()`](../../python/controller.md). This is similar to `Controller.get_add_object()` but there is a key difference: This controller returns a *list* of commands rather than a *single* command. Note that in this example we're using *extend* instead of *append* to add a list to another list:
+To apply default physics values to objects, the `Controller` class includes a wrapper function: [`get_add_physics_object()`](../../python/controller.md). This is similar to `Controller.get_add_object()` but there is a key difference: This controller returns a *list* of commands rather than a *single* command. **You must add this list of commands to an existing list via *extend* rather than *append*:**
 
 ```python
 from tdw.controller import Controller

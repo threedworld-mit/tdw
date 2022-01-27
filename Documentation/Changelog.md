@@ -33,6 +33,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Replaced `ThirdPersonCamera.look_at_target` with  `ThirdPersonCamera.look_at(target)` in order to allow the camera to look at a target on the next `communicate()` call.
 - Improved how cross-fading works in `PyImpact` between audio chunks during a scrape.
 - Added: `InteriorSceneLighting` Add an HDRI skybox to the scene from a curated list of skyboxes and set post-processing values.
+- Fixed: `AudioUtils` (and, by extension, `PhysicsAudioRecorder`) doesn't work on OS X.
 
 ### Model library
 
@@ -62,6 +63,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `lessons/physx/composite_objects.md`   | Clarified how to use various means to set kinematic states of sub-objects. |
 | `lessons/navigation/occupancy_maps.md` | Added a section for resetting a scene.                       |
 | `lessons/photorealism/lighting.md`     | Added an example of how to convert the HDRI skybox library data to a .csv file. |
+| `lessons/objects_and_scenes/materials_textures_colors.md` | Added a missing line of code in one of the examples.         |
+| `lessons/audio/recording_audio.md`                         | Added instructions for installing fmedia on all platforms (including OS X) |
 
 ## v1.9.2
 

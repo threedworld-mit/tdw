@@ -61,6 +61,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | -------------------------------------- | ------------------------------------------------------------ |
 | `lessons/physx/composite_objects.md`   | Clarified how to use various means to set kinematic states of sub-objects. |
 | `lessons/navigation/occupancy_maps.md` | Added a section for resetting a scene.                       |
+| `lessons/photorealism/lighting.md`     | Added an example of how to convert the HDRI skybox library data to a .csv file. |
 
 ## v1.9.2
 

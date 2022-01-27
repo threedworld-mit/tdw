@@ -63,7 +63,7 @@ for i in range(10):
 c.communicate({"$type": "terminate"})
 ```
 
-You can manually optionally manually set the skybox in the constructor as well as in `reset()`. Note that `hdri_skybox` in the *constructor* will only set the HDRI skybox for the *first* scene; by default, `reset()` will still choose a random skybox:
+You can manually set the skybox in the constructor as well as in `reset()`. Note that `hdri_skybox` in the *constructor* will only set the HDRI skybox for the *first* scene; by default, `reset()` will still choose a random skybox:
 
 ```python
 from tdw.controller import Controller

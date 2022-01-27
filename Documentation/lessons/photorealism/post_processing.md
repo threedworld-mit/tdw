@@ -28,7 +28,7 @@ There are additional post-processing commands that are meant to be set *dynamica
 
 ***
 
-**Next: [Depth of field](depth_of_field.md)**
+**Next: [Interior lighting (the `InteriorSceneLighting` add-on)](interior_lighting.md)**
 
 [Return to the README](../../../README.md)
 

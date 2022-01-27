@@ -206,6 +206,7 @@ c = Controller()
 object_id = c.get_unique_id()
 
 model_record = ModelLibrarian().get_record("white_lounger_chair")
+material_name = "parquet_long_horizontal_clean"
 cam = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": -0.6},
                         look_at=object_id)
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("set_visual_material")

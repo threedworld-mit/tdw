@@ -32,6 +32,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Added: `OccupancyMap.reset()` Reset the occupancy map. Call this when resetting a scene.
 - Replaced `ThirdPersonCamera.look_at_target` with  `ThirdPersonCamera.look_at(target)` in order to allow the camera to look at a target on the next `communicate()` call.
 - Improved how cross-fading works in `PyImpact` between audio chunks during a scrape.
+- Fixed: `AudioUtils` (and, by extension, `PhysicsAudioRecorder`) doesn't work on OS X.
 
 ### Model library
 
@@ -54,10 +55,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### Modified Documentation
 
-| Document                               | Modification                                                 |
-| -------------------------------------- | ------------------------------------------------------------ |
-| `lessons/physx/composite_objects.md`   | Clarified how to use various means to set kinematic states of sub-objects. |
-| `lessons/navigation/occupancy_maps.md` | Added a section for resetting a scene.                       |
+| Document                                                   | Modification                                                 |
+| ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md`                       | Clarified how to use various means to set kinematic states of sub-objects. |
+| `lessons/navigation/occupancy_maps.md`                     | Added a section for resetting a scene.                       |
+| `lessons/objects_and_scenes/materials_textures_colords.md` | Added a missing line of code in one of the examples.         |
+| `lessons/audio/recording_audio.md`                         | Added instructions for installing fmedia on all platforms (including OS X) |
 
 ## v1.9.2
 

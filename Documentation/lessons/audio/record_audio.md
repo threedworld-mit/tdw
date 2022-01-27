@@ -9,17 +9,18 @@
 ## Requirements
 
 - [See audio playback requirements.](initialize_audio.md)
-
 - The controller and build must be on the same computer.
-
 - [fmedia](https://stsaz.github.io/fmedia/) See below for how to install.
-
-- Your audio drivers must be set up to allow for recording off of the system. One of the audio devices on your computer must be "Stereo Mix". If not, you need to upgrade or replace your audio drivers; how to do this will vary greatly by operating system and hardware. To check if you have the correct audio device, run this program; if it raises an exception, you don't have a "Stereo Mix" audio device:
-
+- Your audio drivers must be set up to allow for recording off of the system. To check if you have the correct audio device, run this program; if it raises an exception, you don't have an appropriate audio device:
+  
   ```python
   from tdw.audio_utils import AudioUtils
   AudioUtils.get_system_audio_device()
   ```
+  
+    - *Windows and Linux:* The correct audio device is "Stereo Mix"; if your computer doesn't have this audio device,  upgrade or replace your audio drivers; how to do this will vary greatly by operating system and hardware.
+  
+    - *OS X:* The correct audio device is "iShowU Audio Capture"; see below for how to install it. 
 
 ### Install fmedia
 

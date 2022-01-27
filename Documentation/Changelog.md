@@ -58,13 +58,14 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### Modified Documentation
 
-| Document                               | Modification                                                 |
-| -------------------------------------- | ------------------------------------------------------------ |
-| `lessons/physx/composite_objects.md`   | Clarified how to use various means to set kinematic states of sub-objects. |
-| `lessons/navigation/occupancy_maps.md` | Added a section for resetting a scene.                       |
-| `lessons/photorealism/lighting.md`     | Added an example of how to convert the HDRI skybox library data to a .csv file. |
+| Document                                                  | Modification                                                 |
+| --------------------------------------------------------- | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md`                      | Clarified how to use various means to set kinematic states of sub-objects. |
+| `lessons/navigation/occupancy_maps.md`                    | Added a section for resetting a scene.                       |
+| `lessons/photorealism/lighting.md`                        | Added an example of how to convert the HDRI skybox library data to a .csv file. |
 | `lessons/objects_and_scenes/materials_textures_colors.md` | Added a missing line of code in one of the examples.         |
-| `lessons/audio/recording_audio.md`                         | Added instructions for installing fmedia on all platforms (including OS X) |
+| `lessons/audio/recording_audio.md`                        | Added instructions for installing fmedia on all platforms (including OS X) |
+| `lessons/troubleshooting/common_errors.md`                | Added a section for low render quality.                      |
 
 ## v1.9.2
 

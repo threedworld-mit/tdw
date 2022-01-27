@@ -33,6 +33,8 @@ class InteriorSceneLighting(AddOn):
 
     def get_initialization_commands(self) -> List[dict]:
         return [Controller.get_add_hdri_skybox(skybox_name=self.hdri_skybox),
+                {'$type': 'set_render_quality',
+                 'render_quality': 5},
                 {'$type': 'set_aperture',
                  'aperture': 8},
                 {'$type': 'set_focus_distance',

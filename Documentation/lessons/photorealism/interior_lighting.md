@@ -109,6 +109,20 @@ for i in range(10):
 c.communicate({"$type": "terminate"})
 ```
 
+## Optional parameters
+
+You can optionally set the post-processing values in the constructor or in `reset()`. Note that you can't adjust post-exposure because that is set automatically.
+
+```python
+from tdw.add_ons.interior_scene_lighting import InteriorSceneLighting
+
+interior_scene_lighting = InteriorSceneLighting(focus_distance=2.5,
+                                                aperture=8,
+                                                ambient_occlusion_intensity=0.125,
+                                                ambient_occlusion_thickness_modifier=3.5,
+                                                shadow_strength=1)
+```
+
 ## Example controller and images
 
 This controller loads a scene and populates it with objects [from a JSON file](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/interior_scene.json). It then uses `InteriorSceneLighting` to create images of each HDRI skybox in the interior scene subset:

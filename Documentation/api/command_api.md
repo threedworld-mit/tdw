@@ -542,6 +542,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_collider_intersections`](#send_collider_intersections) | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider.  |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
 | [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
 | [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations.  |
@@ -6517,6 +6518,40 @@ Send log messages to the controller.
 # SendDataCommand
 
 These commands send data to the controller.
+
+***
+
+## **`send_collider_intersections`**
+
+Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`ObjectColliderIntersection`](output_data.md#ObjectColliderIntersection), [`EnvironmentColliderIntersection`](output_data.md#EnvironmentColliderIntersection)</font>
+
+```python
+{"$type": "send_collider_intersections"}
+```
+
+```python
+{"$type": "send_collider_intersections", "obj_intersection_ids": [], "env_intersection_ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"obj_intersection_ids"` | int [] | Pairs of object IDs, for example <computeroutput>[[0, 1], [0, 2]]</computeroutput>. Object IDs pairs in this array will be tested for collider intersections with each other. | [] |
+| `"env_intersection_ids"` | int [] | A one-dimensional list of object IDs, for example <computeroutput>[0, 1, 2]</computeroutput>. Object IDs in this list will be tested for collider intersections with the environment. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
 
 ***
 

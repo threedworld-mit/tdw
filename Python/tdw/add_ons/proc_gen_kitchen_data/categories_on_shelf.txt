@@ -21,4 +21,3 @@ scissors
 soap_dispenser
 spoon
 tea_tray
-vase

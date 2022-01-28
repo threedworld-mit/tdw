@@ -518,10 +518,14 @@ class ProcGenKitchen(ProcGenObjects):
         else:
             raise Exception(face_away_from)
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
+        kitchen_counter_position = self._get_object_position(region=region,
+                                                             position=position,
+                                                             wall=face_away_from,
+                                                             depth=extents[2])
         # Add objects on the kitchen counter.
         if extents[0] < 0.7 or "microwave" in self._used_unique_categories:
             self.add_object_with_other_objects_on_top(record=record,
-                                                      position={k: v for k, v in position.items()},
+                                                      position=kitchen_counter_position,
                                                       rotation=rotation,
                                                       category="kitchen_counter")
             # Add a wall cabinet if one exists and there is no window here.
@@ -531,43 +535,42 @@ class ProcGenKitchen(ProcGenObjects):
                 wall_cabinet_extents = TDWUtils.get_bounds_extents(bounds=wall_cabinet_record.bounds)
                 room = self.scene_bounds.rooms[region]
                 if face_away_from == CardinalDirection.north:
-                    wall_cabinet_position = {"x": position["x"],
+                    wall_cabinet_position = {"x": kitchen_counter_position["x"],
                                              "y": ProcGenKitchen.WALL_CABINET_Y,
                                              "z": room.z_max - wall_cabinet_extents[2] / 2}
                 elif face_away_from == CardinalDirection.south:
-                    wall_cabinet_position = {"x": position["x"],
+                    wall_cabinet_position = {"x": kitchen_counter_position["x"],
                                              "y": ProcGenKitchen.WALL_CABINET_Y,
                                              "z": room.z_min + wall_cabinet_extents[2] / 2}
                 elif face_away_from == CardinalDirection.west:
                     wall_cabinet_position = {"x": room.x_min + wall_cabinet_extents[2] / 2,
                                              "y": ProcGenKitchen.WALL_CABINET_Y,
-                                             "z": position["z"]}
+                                             "z": kitchen_counter_position["z"]}
                 elif face_away_from == CardinalDirection.east:
                     wall_cabinet_position = {"x": room.x_max - wall_cabinet_extents[2] / 2,
                                              "y": ProcGenKitchen.WALL_CABINET_Y,
-                                             "z": position["z"]}
+                                             "z": kitchen_counter_position["z"]}
                 else:
                     raise Exception(face_away_from)
-                self.commands.extend(Controller.get_add_physics_object(
-                    model_name=ProcGenKitchen.COUNTERS_AND_CABINETS[record.name],
-                    position=wall_cabinet_position,
-                    rotation={"x": 0, "y": rotation, "z": 0},
-                    object_id=Controller.get_unique_id(),
-                    library="models_core.json",
-                    kinematic=True))
+                self.commands.extend(Controller.get_add_physics_object(model_name=ProcGenKitchen.COUNTERS_AND_CABINETS[record.name],
+                                                                       position=wall_cabinet_position,
+                                                                       rotation={"x": 0, "y": rotation, "z": 0},
+                                                                       object_id=Controller.get_unique_id(),
+                                                                       library="models_core.json",
+                                                                       kinematic=True))
         # Add a microwave on the kitchen counter.
         else:
             root_object_id = Controller.get_unique_id()
             self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                    object_id=root_object_id,
-                                                                   position={k: v for k, v in position.items()},
+                                                                   position=kitchen_counter_position,
                                                                    rotation={"x": 0, "y": rotation, "z": 0},
                                                                    library="models_core.json",
                                                                    kinematic=True))
             # Get the top position of the kitchen counter.
-            object_top = {"x": position["x"],
-                          "y": record.bounds["top"]["y"] + position["y"],
-                          "z": position["z"]}
+            object_top = {"x": kitchen_counter_position["x"],
+                          "y": record.bounds["top"]["y"] + kitchen_counter_position["y"],
+                          "z": kitchen_counter_position["z"]}
             microwave_model_names = ProcGenObjects.MODEL_CATEGORIES["microwave"]
             microwave_model_name = microwave_model_names[self.rng.randint(0, len(microwave_model_names))]
             microwave_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(microwave_model_name)
@@ -643,12 +646,13 @@ class ProcGenKitchen(ProcGenObjects):
             size = (extents[0], extents[2])
         self._add_kitchen_counter_top(position={k: v for k, v in position.items()}, size=size)
 
-    def _add_stove(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection) -> None:
+    def _add_stove(self, record: ModelRecord, position: Dict[str, float], region: int, face_away_from: CardinalDirection) -> None:
         """
         Procedurally generate a stove with objects on it.
 
         :param record: The model record.
         :param position: The position of the root object as either a numpy array or a dictionary.
+        :param region: The region index.
         :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
 
         :return: The model record of the root object. If no models were added to the scene, this is None.
@@ -664,8 +668,14 @@ class ProcGenKitchen(ProcGenObjects):
             rotation = 0
         else:
             raise Exception(face_away_from)
+        extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
+        # TODO this only works for gas_stove
+        depth = extents[2] - 0.16595 * 2
         return self.add_object_with_other_objects_on_top(record=record,
-                                                         position={k: v for k, v in position.items()},
+                                                         position=self._get_object_position(region=region,
+                                                                                            position=position,
+                                                                                            wall=face_away_from,
+                                                                                            depth=depth),
                                                          rotation=rotation,
                                                          category="stove")
 
@@ -755,7 +765,7 @@ class ProcGenKitchen(ProcGenObjects):
                 raise Exception(direction)
             return pos
 
-        distance = 0
+        distance = self.cell_size / 2
         for category in categories:
             # Add a floating kitchen counter top.
             if category == "floating_kitchen_counter_top":
@@ -771,6 +781,7 @@ class ProcGenKitchen(ProcGenObjects):
                     position["x"] -= extent
                 else:
                     raise Exception(direction)
+                distance += extent
                 continue
             # Remove tall objects from walls with windows.
             if walls_with_windows & face_away_from != 0 and category in ProcGenKitchen.TALL_CATEGORIES:
@@ -805,6 +816,7 @@ class ProcGenKitchen(ProcGenObjects):
                         position["x"] += exv / 2
                     elif direction == CardinalDirection.west:
                         position["x"] -= exv / 2
+                distance += exv / 2
                 continue
             # Choose a random starting object.
             if c == "kitchen_counter":
@@ -826,17 +838,19 @@ class ProcGenKitchen(ProcGenObjects):
                 if distance + extent < length:
                     got_model_name = True
                     model_name = m
+                    if "36" in model_name:
+                        print(model_name, distance, extent, length)
                     distance += extent
                     break
             if not got_model_name:
                 return
             # Add half of the long extent to the position.
             position = __add_half_extent_to_position()
+            # Get the record.
+            record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
             # Out of bounds. Stop here.
             if not self.scene_bounds.rooms[region].is_inside(position["x"], position["z"]):
                 break
-            # Get the record.
-            record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
             # Add the objects.
             if c == "kitchen_counter":
                 self._add_kitchen_counter(record=record, position=position, face_away_from=face_away_from,
@@ -852,10 +866,10 @@ class ProcGenKitchen(ProcGenObjects):
                 self._add_dishwasher(record=record, position=position, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
             elif c == "stove":
-                self._add_stove(record=record, position=position, face_away_from=face_away_from)
+                self._add_stove(record=record, position=position, region=region, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
             elif c == "sink":
-                self._add_sink(record=record, position=position, face_away_from=face_away_from)
+                self._add_sink(record=record, position=position, region=region, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
             elif c == "side_table":
                 self._add_side_table(record=record, position=position, face_away_from=face_away_from, region=region)
@@ -1573,26 +1587,18 @@ class ProcGenKitchen(ProcGenObjects):
         :param record: The radiator record.
         :param position: The position of the radiator (this will be adjusted so that the painting is on the wall).
         :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
-        :param region: The region that the painting is in.
+        :param region: The region that the radiator is in.
         """
 
         rotation = ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["rotations"][face_away_from.name]
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         depth = extents[ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["depth"]]
-        radiator_position = {k: v for k, v in position.items()}
-        if face_away_from == CardinalDirection.north:
-            radiator_position["z"] = self.scene_bounds.rooms[region].z_max - depth
-        elif face_away_from == CardinalDirection.south:
-            radiator_position["z"] = self.scene_bounds.rooms[region].z_min + depth
-        elif face_away_from == CardinalDirection.west:
-            radiator_position["x"] = self.scene_bounds.rooms[region].x_min + depth
-        elif face_away_from == CardinalDirection.east:
-            radiator_position["x"] = self.scene_bounds.rooms[region].x_max - depth
-        else:
-            raise Exception(face_away_from)
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
-                                                               position=radiator_position,
+                                                               position=self._get_object_position(region=region,
+                                                                                                  position=position,
+                                                                                                  wall=face_away_from,
+                                                                                                  depth=depth),
                                                                rotation={"x": 0, "y": rotation, "z": 0},
                                                                library="models_core.json",
                                                                kinematic=True))
@@ -1642,12 +1648,13 @@ class ProcGenKitchen(ProcGenObjects):
                                                                library="models_core.json",
                                                                kinematic=False))
 
-    def _add_sink(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection) -> None:
+    def _add_sink(self, record: ModelRecord, position: Dict[str, float], region: int, face_away_from: CardinalDirection) -> None:
         """
         Add a sink to the scene. For now, this is a placeholder cube.
 
         :param record: The model record.
         :param position: The position.
+        :param region: The region index.
         :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
 
         :return: The model record of the root object. If no models were added to the scene, this is None.
@@ -1663,9 +1670,34 @@ class ProcGenKitchen(ProcGenObjects):
             rotation = 90
         else:
             raise Exception(face_away_from)
+        extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
-                                                               position={k: v for k, v in position.items()},
+                                                               position=self._get_object_position(region=region,
+                                                                                                  position=position,
+                                                                                                  wall=face_away_from,
+                                                                                                  depth=extents[2]),
                                                                rotation={"x": 0, "y": rotation, "z": 0},
                                                                library="models_core.json",
                                                                kinematic=True))
+
+    def _get_object_position(self, region: int, position: Dict[str, float], wall: CardinalDirection, depth: float) -> Dict[str, float]:
+        room = self.scene_bounds.rooms[region]
+        if wall == CardinalDirection.north:
+            return {"x": position["x"],
+                    "y": 0,
+                    "z": room.z_max - depth / 2}
+        elif wall == CardinalDirection.south:
+            return {"x": position["x"],
+                    "y": 0,
+                    "z": room.z_min + depth / 2}
+        elif wall == CardinalDirection.west:
+            return {"x": room.x_min + depth / 2,
+                    "y": 0,
+                    "z": position["z"]}
+        elif wall == CardinalDirection.east:
+            return {"x": room.x_max - depth / 2,
+                    "y": 0,
+                    "z": position["z"]}
+        else:
+            raise Exception(wall)

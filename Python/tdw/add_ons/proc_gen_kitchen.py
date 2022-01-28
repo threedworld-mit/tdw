@@ -393,6 +393,25 @@ class ProcGenKitchen(ProcGenObjects):
             sides = ["front", "back"]
         else:
             raise Exception(table_shape)
+        # Remove sides too close to used walls.
+        tc = np.array([position["x"], position["z"]])
+        for side_direction, cardinal_direction in zip(["front", "right", "back", "left"],
+                                                      [c for c in CardinalDirection]):
+            if side_direction in sides and cardinal_direction in used_walls:
+                if cardinal_direction == CardinalDirection.north:
+                    cp = np.array([position["x"], self.scene_bounds.rooms[region.region].z_max])
+                elif cardinal_direction == CardinalDirection.south:
+                    cp = np.array([position["x"], self.scene_bounds.rooms[region.region].z_min])
+                elif cardinal_direction == CardinalDirection.west:
+                    cp = np.array([self.scene_bounds.rooms[region.region].x_min, position["z"]])
+                elif cardinal_direction == CardinalDirection.east:
+                    cp = np.array([self.scene_bounds.rooms[region.region].x_max, position["z"]])
+                else:
+                    raise Exception(cardinal_direction)
+                cd = np.linalg.norm(tc - cp)
+                # Remove this side.
+                if cd < 2:
+                    sides.remove(side_direction)
         for side in sides:
             chair_bound_points.append(np.array([record.bounds[side]["x"] + position["x"],
                                                 0,
@@ -1601,7 +1620,7 @@ class ProcGenKitchen(ProcGenObjects):
 
         rotation = ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["rotations"][face_away_from.name]
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
-        depth = extents[ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["depth"]]
+        depth = extents[ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["depth"]] / 2
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
                                                                position=self._get_object_position(region=region,

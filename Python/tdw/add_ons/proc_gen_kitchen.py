@@ -581,13 +581,14 @@ class ProcGenKitchen(ProcGenObjects):
                                                       category="microwave")
             self._used_unique_categories.append("microwave")
 
-    def _add_refrigerator(self, record: ModelRecord, position: Dict[str, float],
+    def _add_refrigerator(self, record: ModelRecord, position: Dict[str, float], region: int,
                           face_away_from: CardinalDirection) -> None:
         """
         Procedurally generate a refrigerator.
 
         :param record: The model record.
         :param position: The position.
+        :param region: The region index.
         :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
 
         :return: The model record of the root object. If no models were added to the scene, this is None.
@@ -603,19 +604,25 @@ class ProcGenKitchen(ProcGenObjects):
             rotation = 270
         else:
             raise Exception(face_away_from)
+        extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
-                                                               position={k: v for k, v in position.items()},
+                                                               position=self._get_object_position(region=region,
+                                                                                                  position=position,
+                                                                                                  wall=face_away_from,
+                                                                                                  depth=extents[2]),
                                                                rotation={"x": 0, "y": rotation, "z": 0},
                                                                library="models_core.json",
                                                                kinematic=True))
 
-    def _add_dishwasher(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection) -> None:
+    def _add_dishwasher(self, record: ModelRecord, position: Dict[str, float], region: int,
+                        face_away_from: CardinalDirection) -> None:
         """
         Procedurally generate a dishwasher.
 
         :param record: The model record.
         :param position: The position.
+        :param region: The region index.
         :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
 
         :return: The model record of the root object. If no models were added to the scene, this is None.
@@ -631,20 +638,24 @@ class ProcGenKitchen(ProcGenObjects):
             rotation = 270
         else:
             raise Exception(face_away_from)
+        extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
+        fridge_position = self._get_object_position(region=region,
+                                                    position=position,
+                                                    wall=face_away_from,
+                                                    depth=extents[2])
         # Add the dishwasher.
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
-                                                               position={k: v for k, v in position.items()},
+                                                               position=fridge_position,
                                                                rotation={"x": 0, "y": rotation, "z": 0},
                                                                library="models_core.json",
                                                                kinematic=True))
         # Add a kitchen counter top.
-        extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         if face_away_from == CardinalDirection.west or face_away_from == CardinalDirection.east:
             size = (extents[2], extents[0])
         else:
             size = (extents[0], extents[2])
-        self._add_kitchen_counter_top(position={k: v for k, v in position.items()}, size=size)
+        self._add_kitchen_counter_top(position={k: v for k, v in fridge_position.items()}, size=size)
 
     def _add_stove(self, record: ModelRecord, position: Dict[str, float], region: int, face_away_from: CardinalDirection) -> None:
         """
@@ -697,7 +708,7 @@ class ProcGenKitchen(ProcGenObjects):
                                "id": object_id,
                                "position": {"x": position["x"], "y": 0.9, "z": position["z"]},
                                "orientation": {"x": 0, "y": 0, "z": 0}},
-                              Controller.get_add_material(self._counter_top_material, "materials_low.json"),
+                              Controller.get_add_material(self._counter_top_material, "materials_med.json"),
                               {"$type": "set_primitive_visual_material",
                                "name": self._counter_top_material,
                                "id": object_id},
@@ -838,8 +849,6 @@ class ProcGenKitchen(ProcGenObjects):
                 if distance + extent < length:
                     got_model_name = True
                     model_name = m
-                    if "36" in model_name:
-                        print(model_name, distance, extent, length)
                     distance += extent
                     break
             if not got_model_name:
@@ -860,10 +869,10 @@ class ProcGenKitchen(ProcGenObjects):
                 self._add_shelf(record=record, position=position, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
             elif c == "refrigerator":
-                self._add_refrigerator(record=record, position=position, face_away_from=face_away_from)
+                self._add_refrigerator(record=record, position=position, region=region, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
             elif c == "dishwasher":
-                self._add_dishwasher(record=record, position=position, face_away_from=face_away_from)
+                self._add_dishwasher(record=record, position=position, region=region, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
             elif c == "stove":
                 self._add_stove(record=record, position=position, region=region, face_away_from=face_away_from)

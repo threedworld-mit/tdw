@@ -8,7 +8,7 @@ import io
 import os
 from tdw.controller import Controller
 from typing import List, Tuple, Dict, Optional, Union
-from tdw.librarian import ModelRecord
+from tdw.librarian import ModelRecord, ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian
 from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
@@ -767,3 +767,45 @@ class TDWUtils:
         nx, ny = shape
         oy, ox = np.ogrid[-row:nx - row, -column:ny - column]
         return ox * ox + oy * oy <= radius * radius
+
+    @staticmethod
+    def set_default_libraries(scene_library: Union[str, Path] = None, model_library: Union[str, Path] = None,
+                              skybox_library: Union[str, Path] = None, material_library: Union[str, Path] = None) -> None:
+        """
+        Set the path to the default libraries.
+        This is an easy way to use local copies of remote libraries and avoid having to download asset bundles at runtime.
+
+        :param scene_library: The absolute path to a local scene library file. If None, the default remote S3 library will be used.
+        :param model_library: The absolute path to a local model library file. If None, the default remote S3 library will be used.
+        :param skybox_library: The absolute path to a local HDRI skybox library file. If None, the default remote S3 library will be used.
+        :param material_library: The absolute path to a local material library file. If None, the default remote S3 library will be used.
+        """
+
+        if model_library is not None:
+            if isinstance(model_library, Path):
+                Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian(str(model_library.resolve()))
+            elif isinstance(model_library, str):
+                Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian(model_library)
+            else:
+                raise Exception(model_library)
+        if scene_library is not None:
+            if isinstance(scene_library, Path):
+                Controller.SCENE_LIBRARIANS["scenes.json"] = SceneLibrarian(str(scene_library.resolve()))
+            elif isinstance(skybox_library, str):
+                Controller.SCENE_LIBRARIANS["scenes.json"] = SceneLibrarian(scene_library)
+            else:
+                raise Exception(scene_library)
+        if skybox_library is not None:
+            if isinstance(skybox_library, Path):
+                Controller.HDRI_SKYBOX_LIBRARIANS["hdri_skyboxes.json"] = HDRISkyboxLibrarian(str(skybox_library.resolve()))
+            elif isinstance(skybox_library, str):
+                Controller.HDRI_SKYBOX_LIBRARIANS["hdri_skyboxes.json"] = HDRISkyboxLibrarian(skybox_library)
+            else:
+                raise Exception(skybox_library)
+        if material_library is not None:
+            if isinstance(material_library, Path):
+                Controller.MATERIAL_LIBRARIANS["materials_med.json"] = MaterialLibrarian(str(material_library.resolve()))
+            elif isinstance(material_library, str):
+                Controller.MATERIAL_LIBRARIANS["materials_med.json"] = MaterialLibrarian(material_library)
+            else:
+                raise Exception(material_library)

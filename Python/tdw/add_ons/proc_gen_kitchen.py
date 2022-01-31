@@ -208,6 +208,7 @@ class ProcGenKitchen(ProcGenObjects):
     KITCHEN_TABLES_WITH_CENTERPIECES: List[str] = ["dining_room_table",
                                                    "enzo_industrial_loft_pine_metal_round_dining_table",
                                                    "b03_restoration_hardware_pedestal_salvaged_round_tables"]
+    _DISHWASHER_OFFSET: float = 0.025
 
     def __init__(self, random_seed: int = None, print_random_seed: bool = True):
         """
@@ -635,7 +636,7 @@ class ProcGenKitchen(ProcGenObjects):
                                                                kinematic=True))
 
     def _add_dishwasher(self, record: ModelRecord, position: Dict[str, float], region: int,
-                        face_away_from: CardinalDirection) -> None:
+                        face_away_from: CardinalDirection, direction: CardinalDirection) -> None:
         """
         Procedurally generate a dishwasher.
 
@@ -643,6 +644,7 @@ class ProcGenKitchen(ProcGenObjects):
         :param position: The position.
         :param region: The region index.
         :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
+        :param direction: The direction of the arrangement.
 
         :return: The model record of the root object. If no models were added to the scene, this is None.
         """
@@ -657,6 +659,18 @@ class ProcGenKitchen(ProcGenObjects):
             rotation = 270
         else:
             raise Exception(face_away_from)
+
+        # Shift the position a bit.
+        if direction == CardinalDirection.north:
+            position["z"] += ProcGenKitchen._DISHWASHER_OFFSET
+        elif direction == CardinalDirection.south:
+            position["z"] -= ProcGenKitchen._DISHWASHER_OFFSET
+        elif direction == CardinalDirection.east:
+            position["x"] += ProcGenKitchen._DISHWASHER_OFFSET
+        elif direction == CardinalDirection.west:
+            position["x"] -= ProcGenKitchen._DISHWASHER_OFFSET
+        else:
+            raise Exception(direction)
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         fridge_position = self._get_object_position(region=region,
                                                     position=position,
@@ -669,12 +683,21 @@ class ProcGenKitchen(ProcGenObjects):
                                                                rotation={"x": 0, "y": rotation, "z": 0},
                                                                library="models_core.json",
                                                                kinematic=True))
-        # Add a kitchen counter top.
-        if face_away_from == CardinalDirection.west or face_away_from == CardinalDirection.east:
-            size = (extents[2], extents[0])
+        # Shift the position a bit.
+        if direction == CardinalDirection.north:
+            position["z"] += ProcGenKitchen._DISHWASHER_OFFSET
+        elif direction == CardinalDirection.south:
+            position["z"] -= ProcGenKitchen._DISHWASHER_OFFSET
+        elif direction == CardinalDirection.east:
+            position["x"] += ProcGenKitchen._DISHWASHER_OFFSET
+        elif direction == CardinalDirection.west:
+            position["x"] -= ProcGenKitchen._DISHWASHER_OFFSET
         else:
-            size = (extents[0], extents[2])
-        self._add_kitchen_counter_top(position={k: v for k, v in fridge_position.items()}, size=size)
+            raise Exception(direction)
+        # Add a kitchen counter top.
+        size = (extents[0] + ProcGenKitchen._DISHWASHER_OFFSET * 2, self.cell_size)
+        self._add_kitchen_counter_top(position={k: v for k, v in fridge_position.items()},
+                                      face_away_from=face_away_from, size=size)
 
     def _add_stove(self, record: ModelRecord, position: Dict[str, float], region: int, face_away_from: CardinalDirection) -> None:
         """
@@ -709,11 +732,13 @@ class ProcGenKitchen(ProcGenObjects):
                                                          rotation=rotation,
                                                          category="stove")
 
-    def _add_kitchen_counter_top(self, position: Dict[str, float], size: Tuple[float, float] = None) -> None:
+    def _add_kitchen_counter_top(self, position: Dict[str, float], face_away_from: CardinalDirection,
+                                 size: Tuple[float, float] = None) -> None:
         """
         Add a floating (kinematic) kitchen counter top to the scene.
 
         :param position: The position of the kitchen counter top. The y coordinate will be adjusted to be 0.9.
+        :param face_away_from: The wall.
         :param size: If not None, this is the (x, z) size of the counter top.
         """
 
@@ -721,12 +746,16 @@ class ProcGenKitchen(ProcGenObjects):
             scale_factor = {"x": self.cell_size, "y": 0.0371, "z": self.cell_size}
         else:
             scale_factor = {"x": size[0], "y": 0.0371, "z": size[1]}
+        if face_away_from == CardinalDirection.west or face_away_from == CardinalDirection.east:
+            rotation = 90
+        else:
+            rotation = 0
         object_id = Controller.get_unique_id()
         self.commands.extend([{"$type": "load_primitive_from_resources",
                                "primitive_type": "Cube",
                                "id": object_id,
                                "position": {"x": position["x"], "y": 0.9, "z": position["z"]},
-                               "orientation": {"x": 0, "y": 0, "z": 0}},
+                               "orientation": {"x": 0, "y": rotation, "z": 0}},
                               Controller.get_add_material(self._counter_top_material, "materials_med.json"),
                               {"$type": "set_primitive_visual_material",
                                "name": self._counter_top_material,
@@ -799,7 +828,7 @@ class ProcGenKitchen(ProcGenObjects):
         for category in categories:
             # Add a floating kitchen counter top.
             if category == "floating_kitchen_counter_top":
-                self._add_kitchen_counter_top(position=position)
+                self._add_kitchen_counter_top(position=position, face_away_from=face_away_from)
                 extent = self.cell_size / 2
                 if direction == CardinalDirection.north:
                     position["z"] += extent
@@ -891,7 +920,8 @@ class ProcGenKitchen(ProcGenObjects):
                 self._add_refrigerator(record=record, position=position, region=region, face_away_from=face_away_from)
                 position = __add_half_extent_to_position()
             elif c == "dishwasher":
-                self._add_dishwasher(record=record, position=position, region=region, face_away_from=face_away_from)
+                self._add_dishwasher(record=record, position=position, region=region, face_away_from=face_away_from,
+                                     direction=direction)
                 position = __add_half_extent_to_position()
             elif c == "stove":
                 self._add_stove(record=record, position=position, region=region, face_away_from=face_away_from)
@@ -1270,7 +1300,7 @@ class ProcGenKitchen(ProcGenObjects):
             raise Exception(longer_wall, corner)
         opposite_corner_position = self._get_corner_position(corner=opposite_corner, region=region.region)
         # Add a counter top at the end.
-        self._add_kitchen_counter_top(position=opposite_corner_position)
+        self._add_kitchen_counter_top(position=opposite_corner_position, face_away_from=face_away_from)
         # Get the length of the shorter wall.
         shorter_walls, length = self._get_shorter_walls(region=region.region)
         length -= self.cell_size

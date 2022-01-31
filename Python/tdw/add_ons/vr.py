@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict, Optional
 import numpy as np
 from tdw.add_ons.add_on import AddOn
 from tdw.vr_data.rig_type import RigType
@@ -16,11 +16,13 @@ class VR(AddOn):
     """
     AVATAR_ID = "vr"
 
-    def __init__(self, rig_type: RigType = RigType.auto_hand, output_data: bool = True, attach_avatar: bool = False):
+    def __init__(self, rig_type: RigType = RigType.auto_hand, output_data: bool = True, attach_avatar: bool = False,
+                 position: Dict[str, float] = None):
         """
         :param rig_type: The [`RigType`](../vr_data/rig_type.md).
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
         :param attach_avatar: If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`.
+        :param position: The initial position of the VR rig. If None, the initial position is `{"x": 0, "y": 0, "z": 0}`.
         """
 
         super().__init__()
@@ -28,6 +30,7 @@ class VR(AddOn):
         self._set_graspable: bool = True
         self._output_data: bool = output_data
         self._attach_avatar: bool = attach_avatar
+        self._initial_position: Optional[Dict[str, float]] = position
         """:field
         The [`Transform`](../object_data/transform.md) data of the root rig object. If `output_data == False`, this is never updated.
         """
@@ -56,6 +59,11 @@ class VR(AddOn):
         if self._attach_avatar is not None:
             commands.append({"$type": "attach_avatar_to_vr_rig",
                              "id": VR.AVATAR_ID})
+        if self._initial_position is None:
+            commands.append({"$type": "teleport_vr_rig",
+                             "position": self._initial_position})
+        else:
+            rig_position = self._initial_position
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -88,13 +96,26 @@ class VR(AddOn):
                 self.head.rotation = np.array(vr_rig.get_head_rotation())
                 self.head.forward = np.array(vr_rig.get_head_forward())
 
-    def reset(self) -> None:
+    def teleport(self, position: Dict[str, float]) -> None:
+        """
+        Teleport the VR rig to a new position.
+
+        :param position: The new position.
+        """
+
+        self.commands.append({"$type": "teleport_vr_rig",
+                              "position": position})
+
+    def reset(self, position: Dict[str, float] = None) -> None:
         """
         Reset the VR rig. Call this whenever a scene is reset.
+
+        :param position: The initial position of the VR rig. If None, the initial position is `{"x": 0, "y": 0, "z": 0}`.
         """
 
         self.initialized = False
         self._set_graspable = True
+        self._initial_position = position
 
     @staticmethod
     def _get_empty_transform() -> Transform:

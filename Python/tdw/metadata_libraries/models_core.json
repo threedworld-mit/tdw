@@ -11185,8 +11185,8 @@
                 "z": 0
             },
             "composite_object": false,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Bad rotation (approx. 45 degrees)",
             "flex": false,
             "name": "b05_ikea_nutid_side_by_side_refrigerator",
             "physics_quality": 0.9399683779113078,

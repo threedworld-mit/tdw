@@ -7,3 +7,7 @@
 gas_stove
 radiator_pub_2015
 b03_radiator_alum_12
+elf_painting
+its_about_time_painting
+silver_frame_painting
+framed_painting

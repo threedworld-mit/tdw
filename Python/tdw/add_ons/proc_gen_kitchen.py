@@ -199,6 +199,10 @@ class ProcGenKitchen(ProcGenObjects):
     """
     RADIATOR_ROTATIONS: dict = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/radiator_rotations.json")).read_text())
     """:class_var
+    Offset values for the bounds extents of specific models.
+    """
+    BOUNDS_OFFSETS: dict = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/bounds_offsets.json")).read_text())
+    """:class_var
     Categories of models that are tall and might obscure windows.
     """
     TALL_CATEGORIES: List[str] = ["refrigerator", "shelf"]
@@ -541,7 +545,8 @@ class ProcGenKitchen(ProcGenObjects):
         kitchen_counter_position = self._get_object_position(region=region,
                                                              position=position,
                                                              wall=face_away_from,
-                                                             depth=extents[2])
+                                                             depth=extents[2],
+                                                             model_name=record.name)
         # Add objects on the kitchen counter.
         if extents[0] < 0.7 or "microwave" in self._used_unique_categories:
             self.add_object_with_other_objects_on_top(record=record,
@@ -630,7 +635,8 @@ class ProcGenKitchen(ProcGenObjects):
                                                                position=self._get_object_position(region=region,
                                                                                                   position=position,
                                                                                                   wall=face_away_from,
-                                                                                                  depth=extents[2]),
+                                                                                                  depth=extents[2],
+                                                                                                  model_name=record.name),
                                                                rotation={"x": 0, "y": rotation, "z": 0},
                                                                library="models_core.json",
                                                                kinematic=True))
@@ -675,7 +681,8 @@ class ProcGenKitchen(ProcGenObjects):
         fridge_position = self._get_object_position(region=region,
                                                     position=position,
                                                     wall=face_away_from,
-                                                    depth=extents[2])
+                                                    depth=extents[2],
+                                                    model_name=record.name)
         # Add the dishwasher.
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
@@ -722,13 +729,12 @@ class ProcGenKitchen(ProcGenObjects):
         else:
             raise Exception(face_away_from)
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
-        # TODO this only works for gas_stove
-        depth = extents[2] - 0.16595 * 2
         return self.add_object_with_other_objects_on_top(record=record,
                                                          position=self._get_object_position(region=region,
                                                                                             position=position,
                                                                                             wall=face_away_from,
-                                                                                            depth=depth),
+                                                                                            depth=extents[2],
+                                                                                            model_name=record.name),
                                                          rotation=rotation,
                                                          category="stove")
 
@@ -893,6 +899,9 @@ class ProcGenKitchen(ProcGenObjects):
             got_model_name = False
             for m in model_names:
                 extent = ProcGenObjects.get_lateral_length(model_name=m)
+                # Add a little offset.
+                if m in ProcGenKitchen.BOUNDS_OFFSETS and "width" in ProcGenKitchen.BOUNDS_OFFSETS[m]:
+                    extent += ProcGenKitchen.BOUNDS_OFFSETS[m]["width"]
                 # The model must fit within the distance of the lateral arrangement.
                 if distance + extent < length:
                     got_model_name = True
@@ -935,7 +944,8 @@ class ProcGenKitchen(ProcGenObjects):
                 for i in range(2):
                     position = __add_half_extent_to_position()
             elif c == "basket":
-                self._add_basket(record=record, position=position, face_away_from=face_away_from)
+                self._add_basket(record=record, position=position, face_away_from=face_away_from, region=region,
+                                 direction=direction)
                 # Add a little extra space.
                 for i in range(2):
                     position = __add_half_extent_to_position()
@@ -1152,7 +1162,7 @@ class ProcGenKitchen(ProcGenObjects):
             categories.reverse()
         categories = self._append_secondary_categories(categories=categories, wall=longer_wall, region=region)
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
-                                      categories=categories, length=length, region=region.region,
+                                      categories=categories, length=length - self.cell_size / 2, region=region.region,
                                       walls_with_windows=region.walls_with_windows)
         return [longer_wall]
 
@@ -1192,7 +1202,7 @@ class ProcGenKitchen(ProcGenObjects):
             position = self._get_corner_position(corner=corner, region=region.region)
             direction, face_away_from = self._get_directions_from_corner(corner=corner, wall=wall)
             self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
-                                          categories=categories, length=length, region=region.region,
+                                          categories=categories, length=length - self.cell_size / 2, region=region.region,
                                           walls_with_windows=region.walls_with_windows)
         return longer_walls
 
@@ -1227,7 +1237,7 @@ class ProcGenKitchen(ProcGenObjects):
         categories = ["floating_kitchen_counter_top", "sink", "dishwasher", "stove", "kitchen_counter", "shelf"]
         categories = self._append_secondary_categories(categories=categories, wall=longer_wall, region=region)
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
-                                      categories=categories, length=length, region=region.region,
+                                      categories=categories, length=length - self.cell_size / 2, region=region.region,
                                       walls_with_windows=region.walls_with_windows)
         shorter_wall = CardinalDirection(corner - longer_wall)
         shorter_walls, length = self._get_shorter_walls(region=region.region)
@@ -1277,7 +1287,7 @@ class ProcGenKitchen(ProcGenObjects):
         for i in range(20):
             categories.append("kitchen_counter")
         self._add_lateral_arrangement(position=position, direction=direction, face_away_from=face_away_from,
-                                      categories=categories, length=length, region=region.region,
+                                      categories=categories, length=length - self.cell_size / 2, region=region.region,
                                       walls_with_windows=region.walls_with_windows)
         # Get the opposite corner.
         if longer_wall == CardinalDirection.north and corner == OrdinalDirection.northeast:
@@ -1549,29 +1559,34 @@ class ProcGenKitchen(ProcGenObjects):
                                                          rotation=rotation,
                                                          category="side_table")
 
-    def _add_basket(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection) -> None:
+    def _add_basket(self, record: ModelRecord, position: Dict[str, float], face_away_from: CardinalDirection,
+                    direction: CardinalDirection, region: int) -> None:
         """
         Procedurally generate a basket with objects in it.
 
         :param record: The model record.
         :param position: The position of the root object as either a numpy array or a dictionary.
         :param face_away_from: The direction that the object is facing away from. For example, if this is `north`, then the object is looking southwards.
+        :param direction: The direction of the arrangement.
+        :param region: The region index.
         """
 
-        if face_away_from == CardinalDirection.north:
-            direction = (0, -1)
-        elif face_away_from == CardinalDirection.south:
-            direction = (0, 1)
-        elif face_away_from == CardinalDirection.west:
-            direction = (1, 0)
-        elif face_away_from == CardinalDirection.east:
-            direction = (-1, 0)
+        rotation = self.rng.uniform(-10, 10)
+        extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
+        basket_position = self._get_object_position(model_name=record.name,
+                                                    position=position,
+                                                    wall=face_away_from,
+                                                    region=region,
+                                                    depth=extents[2] * self.rng.uniform(1.15, 1.25))
+        width = ProcGenKitchen.BOUNDS_OFFSETS[record.name]["width"] / 2
+        if direction == CardinalDirection.north:
+            basket_position["z"] += width
+        elif direction == CardinalDirection.south:
+            basket_position["z"] -= width
+        elif direction == CardinalDirection.west:
+            basket_position["x"] -= width
         else:
-            raise Exception(face_away_from)
-        rotation = self.rng.uniform(-360, 360)
-        basket_position = {"x": position["x"] + direction[0] * self.rng.uniform(0.01, 0.03),
-                           "y": 0,
-                           "z": position["z"] + direction[1] * self.rng.uniform(0.01, 0.03)}
+            basket_position["x"] += width
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
                                                                position=basket_position,
@@ -1650,13 +1665,14 @@ class ProcGenKitchen(ProcGenObjects):
 
         rotation = ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["rotations"][face_away_from.name]
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
-        depth = extents[ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["depth"]] / 2
+        depth = extents[ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["depth"]]
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
                                                                position=self._get_object_position(region=region,
                                                                                                   position=position,
                                                                                                   wall=face_away_from,
-                                                                                                  depth=depth),
+                                                                                                  depth=depth,
+                                                                                                  model_name=record.name),
                                                                rotation={"x": 0, "y": rotation, "z": 0},
                                                                library="models_core.json",
                                                                kinematic=True))
@@ -1734,13 +1750,28 @@ class ProcGenKitchen(ProcGenObjects):
                                                                position=self._get_object_position(region=region,
                                                                                                   position=position,
                                                                                                   wall=face_away_from,
-                                                                                                  depth=extents[2]),
+                                                                                                  depth=extents[2],
+                                                                                                  model_name=record.name),
                                                                rotation={"x": 0, "y": rotation, "z": 0},
                                                                library="models_core.json",
                                                                kinematic=True))
 
-    def _get_object_position(self, region: int, position: Dict[str, float], wall: CardinalDirection, depth: float) -> Dict[str, float]:
+    def _get_object_position(self, model_name: str, region: int, position: Dict[str, float], wall: CardinalDirection,
+                             depth: float) -> Dict[str, float]:
+        """
+        Get the position of the model along a way using its depth.
+
+        :param model_name: The model name.
+        :param region: The region index.
+        :param position: The original position.
+        :param wall: The wall.
+        :param depth: The expected depth of the model. This may be further offset.
+
+        :return: The position.
+        """
         room = self.scene_bounds.rooms[region]
+        if model_name in ProcGenKitchen.BOUNDS_OFFSETS and "depth" in ProcGenKitchen.BOUNDS_OFFSETS[model_name]:
+            depth -= ProcGenKitchen.BOUNDS_OFFSETS[model_name]["depth"]
         if wall == CardinalDirection.north:
             return {"x": position["x"],
                     "y": 0,

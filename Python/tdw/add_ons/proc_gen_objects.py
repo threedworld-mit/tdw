@@ -397,7 +397,7 @@ class ProcGenObjects(AddOn):
         """
         :param region: The index of the region in `self.scene_bounds.rooms`.
 
-        :return: Tuple: A list of the longer walls, the length of the wall.
+        :return: Tuple: A list of the longer walls as [`CardinalDirection` values](../cardinal_direction.md), the length of the wall.
         """
 
         room = self.scene_bounds.rooms[region]
@@ -412,7 +412,7 @@ class ProcGenObjects(AddOn):
         """
         :param region: The index of the region in `self.scene_bounds.rooms`.
 
-        :return: Tuple: A list of the shorter walls, the length of the wall.
+        :return: Tuple: A list of the shorter walls as [`CardinalDirection` values](../cardinal_direction.md), the length of the wall.
         """
 
         room = self.scene_bounds.rooms[region]
@@ -426,9 +426,9 @@ class ProcGenObjects(AddOn):
     @staticmethod
     def get_corners_from_wall(wall: CardinalDirection) -> List[OrdinalDirection]:
         """
-        :param wall: The wall.
+        :param wall: The wall as a [`CardinalDirection`](../cardinal_direction.md).
 
-        :return: The corners of the wall.
+        :return: The corners of the wall as a 2-element list of [`OrdinalDirection`](../ordinal_direction.md).
         """
 
         if wall == CardinalDirection.north:

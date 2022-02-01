@@ -218,7 +218,7 @@ _Returns:_  The model bound's longest extent.
 | --- | --- | --- | --- |
 | region |  int |  | The index of the region in `self.scene_bounds.rooms`. |
 
-_Returns:_  Tuple: A list of the longer walls, the length of the wall.
+_Returns:_  Tuple: A list of the longer walls as [`CardinalDirection` values](../cardinal_direction.md), the length of the wall.
 
 #### get_shorter_walls
 
@@ -229,7 +229,7 @@ _Returns:_  Tuple: A list of the longer walls, the length of the wall.
 | --- | --- | --- | --- |
 | region |  int |  | The index of the region in `self.scene_bounds.rooms`. |
 
-_Returns:_  Tuple: A list of the shorter walls, the length of the wall.
+_Returns:_  Tuple: A list of the shorter walls as [`CardinalDirection` values](../cardinal_direction.md), the length of the wall.
 
 #### get_corners_from_wall
 
@@ -240,7 +240,7 @@ _This is a static function._
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| wall |  CardinalDirection |  | The wall. |
+| wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](../cardinal_direction.md). |
 
-_Returns:_  The corners of the wall.
+_Returns:_  The corners of the wall as a 2-element list of [`OrdinalDirection`](../ordinal_direction.md).
 

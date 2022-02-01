@@ -203,6 +203,10 @@ class ProcGenKitchen(ProcGenObjects):
     """
     BOUNDS_OFFSETS: dict = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/bounds_offsets.json")).read_text())
     """:class_var
+    A dictionary of canonical rotations for kitchen appliances. Key = The model name. Value = A dictionary: Key = The wall as a string. Value = The rotation in degrees.
+    """
+    APPLICANCE_ROTATIONS: Dict[str, Dict[str, int]] = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/appliance_rotations.json")).read_text())
+    """:class_var
     Categories of models that are tall and might obscure windows.
     """
     TALL_CATEGORIES: List[str] = ["refrigerator", "shelf"]
@@ -481,16 +485,6 @@ class ProcGenKitchen(ProcGenObjects):
         :return: The model record of the root object. If no models were added to the scene, this is None.
         """
 
-        if face_away_from == CardinalDirection.north:
-            rotation: int = 270
-        elif face_away_from == CardinalDirection.south:
-            rotation = 90
-        elif face_away_from == CardinalDirection.west:
-            rotation = 0
-        elif face_away_from == CardinalDirection.east:
-            rotation = 180
-        else:
-            raise Exception(face_away_from)
         # Add the shelf.
         root_object_id = Controller.get_unique_id()
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
@@ -513,7 +507,7 @@ class ProcGenKitchen(ProcGenObjects):
         # Rotate everything.
         self.add_rotation_commands(parent_object_id=root_object_id,
                                    child_object_ids=child_object_ids,
-                                   rotation=rotation)
+                                   rotation=ProcGenKitchen.APPLICANCE_ROTATIONS[record.name][face_away_from.name])
 
     def _add_kitchen_counter(self, record: ModelRecord, position: Dict[str, float],
                              face_away_from: CardinalDirection, region: int, walls_with_windows: int) -> None:
@@ -531,16 +525,7 @@ class ProcGenKitchen(ProcGenObjects):
         :return: The model record of the root object. If no models were added to the scene, this is None.
         """
 
-        if face_away_from == CardinalDirection.north:
-            rotation: int = 0
-        elif face_away_from == CardinalDirection.south:
-            rotation = 180
-        elif face_away_from == CardinalDirection.west:
-            rotation = 270
-        elif face_away_from == CardinalDirection.east:
-            rotation = 90
-        else:
-            raise Exception(face_away_from)
+        rotation = ProcGenKitchen.APPLICANCE_ROTATIONS[record.name][face_away_from.name]
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         kitchen_counter_position = self._get_object_position(region=region,
                                                              position=position,
@@ -619,16 +604,7 @@ class ProcGenKitchen(ProcGenObjects):
         :return: The model record of the root object. If no models were added to the scene, this is None.
         """
 
-        if face_away_from == CardinalDirection.north:
-            rotation: int = 180
-        elif face_away_from == CardinalDirection.south:
-            rotation = 0
-        elif face_away_from == CardinalDirection.west:
-            rotation = 90
-        elif face_away_from == CardinalDirection.east:
-            rotation = 270
-        else:
-            raise Exception(face_away_from)
+        rotation = ProcGenKitchen.APPLICANCE_ROTATIONS[record.name][face_away_from.name]
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
@@ -655,17 +631,7 @@ class ProcGenKitchen(ProcGenObjects):
         :return: The model record of the root object. If no models were added to the scene, this is None.
         """
 
-        if face_away_from == CardinalDirection.north:
-            rotation: int = 180
-        elif face_away_from == CardinalDirection.south:
-            rotation = 0
-        elif face_away_from == CardinalDirection.west:
-            rotation = 90
-        elif face_away_from == CardinalDirection.east:
-            rotation = 270
-        else:
-            raise Exception(face_away_from)
-
+        rotation = ProcGenKitchen.APPLICANCE_ROTATIONS[record.name][face_away_from.name]
         # Shift the position a bit.
         if direction == CardinalDirection.north:
             position["z"] += ProcGenKitchen._DISHWASHER_OFFSET
@@ -718,16 +684,7 @@ class ProcGenKitchen(ProcGenObjects):
         :return: The model record of the root object. If no models were added to the scene, this is None.
         """
 
-        if face_away_from == CardinalDirection.north:
-            rotation: int = 90
-        elif face_away_from == CardinalDirection.south:
-            rotation = 270
-        elif face_away_from == CardinalDirection.west:
-            rotation = 180
-        elif face_away_from == CardinalDirection.east:
-            rotation = 0
-        else:
-            raise Exception(face_away_from)
+        rotation = ProcGenKitchen.APPLICANCE_ROTATIONS[record.name][face_away_from.name]
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         return self.add_object_with_other_objects_on_top(record=record,
                                                          position=self._get_object_position(region=region,

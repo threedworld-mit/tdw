@@ -1,0 +1,182 @@
+{
+  "24_in_wall_cabinet_white_wood": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "24_in_wall_cabinet_wood_beach_honey": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "36_in_wall_cabinet_white_wood": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "36_in_wall_cabinet_wood_beach_honey": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "4ft_shelf_metal": {
+    "east": 180,
+    "north": 270,
+    "south": 90,
+    "west": 0
+  },
+  "4ft_wood_shelving": {
+    "east": 180,
+    "north": 270,
+    "south": 90,
+    "west": 0
+  },
+  "5ft_shelf_metal": {
+    "east": 180,
+    "north": 270,
+    "south": 90,
+    "west": 0
+  },
+  "5ft_wood_shelving": {
+    "east": 180,
+    "north": 270,
+    "south": 90,
+    "west": 0
+  },
+  "6ft_shelf_metal": {
+    "east": 180,
+    "north": 270,
+    "south": 90,
+    "west": 0
+  },
+  "6ft_wood_shelving": {
+    "east": 180,
+    "north": 270,
+    "south": 90,
+    "west": 0
+  },
+  "b03_db_apps_tech_08_04_composite": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "b03_db_apps_tech_08_07_composite": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "b03_db_apps_tech_08_08_composite": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "b03_ka90ivi20r_2013__vray": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "b04_db_apps_tech_08_03": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "b05_db_apps_tech_06_02_2": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "b05_db_apps_tech_08_09_composite": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "cabinet_24_door_drawer_wood_beach_honey": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "cabinet_24_singledoor_wood_beach_honey": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "cabinet_24_two_drawer_white_wood": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "cabinet_24_two_drawer_wood_beach_honey": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "cabinet_24_white_wood": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "cabinet_24_wood_beach_honey": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "cabinet_36_white_wood": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "cabinet_36_wood_beach_honey": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "dishwasher_4": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "fridge_large": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "gas_stove": {
+    "east": 0,
+    "north": 90,
+    "south": 270,
+    "west": 180
+  },
+  "sink_base_white_wood": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "sink_base_wood_beach_honey": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  }
+}

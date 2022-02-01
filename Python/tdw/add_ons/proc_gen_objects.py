@@ -8,6 +8,8 @@ from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian, ModelRecord
 from tdw.add_ons.add_on import AddOn
 from tdw.scene_data.scene_bounds import SceneBounds
+from tdw.cardinal_direction import CardinalDirection
+from tdw.ordinal_direction import OrdinalDirection
 
 
 class ProcGenObjects(AddOn):
@@ -390,3 +392,50 @@ class ProcGenObjects(AddOn):
         else:
             ex = TDWUtils.get_bounds_extents(bounds=record.bounds)[0]
         return ex
+
+    def get_longer_walls(self, region: int) -> Tuple[List[CardinalDirection], float]:
+        """
+        :param region: The index of the region in `self.scene_bounds.rooms`.
+
+        :return: Tuple: A list of the longer walls, the length of the wall.
+        """
+
+        room = self.scene_bounds.rooms[region]
+        x = room.x_max - room.x_min
+        z = room.z_max - room.z_min
+        if x < z:
+            return [CardinalDirection.west, CardinalDirection.east], z
+        else:
+            return [CardinalDirection.north, CardinalDirection.south], x
+
+    def get_shorter_walls(self, region: int) -> Tuple[List[CardinalDirection], float]:
+        """
+        :param region: The index of the region in `self.scene_bounds.rooms`.
+
+        :return: Tuple: A list of the shorter walls, the length of the wall.
+        """
+
+        room = self.scene_bounds.rooms[region]
+        x = room.x_max - room.x_min
+        z = room.z_max - room.z_min
+        if x > z:
+            return [CardinalDirection.west, CardinalDirection.east], z
+        else:
+            return [CardinalDirection.north, CardinalDirection.south], x
+
+    @staticmethod
+    def get_corners_from_wall(wall: CardinalDirection) -> List[OrdinalDirection]:
+        """
+        :param wall: The wall.
+
+        :return: The corners of the wall.
+        """
+
+        if wall == CardinalDirection.north:
+            return [OrdinalDirection.northwest, OrdinalDirection.northeast]
+        elif wall == CardinalDirection.south:
+            return [OrdinalDirection.southwest, OrdinalDirection.southeast]
+        elif wall == CardinalDirection.west:
+            return [OrdinalDirection.northwest, OrdinalDirection.southwest]
+        elif wall == CardinalDirection.east:
+            return [OrdinalDirection.northeast, OrdinalDirection.southeast]

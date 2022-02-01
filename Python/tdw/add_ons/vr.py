@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict
 import numpy as np
 from tdw.add_ons.add_on import AddOn
 from tdw.vr_data.rig_type import RigType
@@ -17,13 +17,12 @@ class VR(AddOn):
     AVATAR_ID: str = "vr"
 
     def __init__(self, rig_type: RigType = RigType.oculus_touch_controller_human_hands, output_data: bool = True,
-                 set_graspable: bool = True, position: Dict[str, float] = None, attach_avatar: bool = False,
-                 avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9):
+                 set_graspable: bool = True, attach_avatar: bool = False, avatar_camera_width: int = 512,
+                 headset_aspect_ratio: float = 0.9):
         """
         :param rig_type: The [`RigType`](../vr_data/rig_type.md).
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
         :param set_graspable: If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/physx/composite_objects.md) as graspable by the VR rig.
-        :param position: The initial position of the VR rig. If None, the initial position is `{"x": 0, "y": 0, "z": 0}`.
         :param attach_avatar: If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`.
         :param avatar_camera_width: The width of the avatar's camera in pixels. *This is not the same as the VR headset's screen resolution!* This only affects the avatar that is created if `attach_avatar` is `True`. Generally, you will want this to lower than the headset's actual pixel width, otherwise the framerate will be too slow.
         :param headset_aspect_ratio: The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices.
@@ -33,7 +32,6 @@ class VR(AddOn):
         self._rig_type: RigType = rig_type
         self._set_graspable: bool = set_graspable
         self._output_data: bool = output_data
-        self._initial_position: Optional[Dict[str, float]] = position
         self._attach_avatar: bool = attach_avatar
         self._avatar_camera_width: int = avatar_camera_width
         self._avatar_camera_height: int = int((1 / headset_aspect_ratio) * self._avatar_camera_width)
@@ -56,7 +54,7 @@ class VR(AddOn):
 
     def get_initialization_commands(self) -> List[dict]:
         commands = [{"$type": "create_vr_rig",
-                     "rig_type": self._rig_type.value}]
+                     "rig_type": self._rig_type.name}]
         if self._set_graspable:
             commands.append({"$type": "send_static_rigidbodies",
                              "frequency": "once"})
@@ -69,9 +67,6 @@ class VR(AddOn):
                              {"$type": "set_screen_size",
                               "width": self._avatar_camera_width,
                               "height": self._avatar_camera_height}])
-        if self._initial_position is None:
-            commands.append({"$type": "teleport_vr_rig",
-                             "position": self._initial_position})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -114,21 +109,28 @@ class VR(AddOn):
         self.commands.append({"$type": "teleport_vr_rig",
                               "position": position})
 
-    def reset(self, output_data: bool = True, set_graspable: bool = True, position: Dict[str, float] = None,
-              attach_avatar: bool = False) -> None:
+    def rotate(self, rotation: float) -> None:
+        """
+        Rotate the VR rig by an angle.
+
+        :param rotation: The angle in degrees.
+        """
+
+        self.commands.append({"$type": "rotate_vr_rig",
+                              "rotation": rotation})
+
+    def reset(self, output_data: bool = True, set_graspable: bool = True, attach_avatar: bool = False) -> None:
         """
         Reset the VR rig. Call this whenever a scene is reset.
 
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
         :param set_graspable: If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/physx/composite_objects.md) as graspable by the VR rig.
-        :param position: The initial position of the VR rig. If None, the initial position is `{"x": 0, "y": 0, "z": 0}`.
         :param attach_avatar: If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`.
         """
 
         self.initialized = False
         self._set_graspable = set_graspable
         self._output_data = output_data
-        self._initial_position = position
         self._attach_avatar = attach_avatar
 
     @staticmethod

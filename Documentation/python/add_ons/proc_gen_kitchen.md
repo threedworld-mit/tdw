@@ -172,6 +172,7 @@ A void is a special null category that just creates a gap in the secondary later
 | `WALL_CABINET_Y` | float | The y value (height) of the wall cabinets. |
 | `COUNTERS_AND_CABINETS` | Dict[str, str] | A dictionary of the name of a kitchen counter model, and its corresponding wall cabinet. |
 | `RADIATOR_ROTATIONS` | dict | The rotations of the radiator models. |
+| `BOUNDS_OFFSETS` | dict | Offset values for the bounds extents of specific models. |
 | `TALL_CATEGORIES` | List[str] | Categories of models that are tall and might obscure windows. |
 | `KITCHEN_TABLES_WITH_CENTERPIECES` | List[str] | Kitchen table models that can have centerpieces. |
 
@@ -367,6 +368,41 @@ _This is a static function._
 | model_name |  str |  | The model name. |
 
 _Returns:_  The model bound's longest extent.
+
+#### get_longer_walls
+
+**`self.get_longer_walls(region)`**
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| region |  int |  | The index of the region in `self.scene_bounds.rooms`. |
+
+_Returns:_  Tuple: A list of the longer walls, the length of the wall.
+
+#### get_shorter_walls
+
+**`self.get_shorter_walls(region)`**
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| region |  int |  | The index of the region in `self.scene_bounds.rooms`. |
+
+_Returns:_  Tuple: A list of the shorter walls, the length of the wall.
+
+#### get_corners_from_wall
+
+**`ProcGenObjects(AddOn).get_corners_from_wall(wall)`**
+
+_This is a static function._
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| wall |  CardinalDirection |  | The wall. |
+
+_Returns:_  The corners of the wall.
 
 
 

@@ -1,27 +1,27 @@
 {
   "24_in_wall_cabinet_white_wood": {
-    "east": 270,
+    "east": 90,
     "north": 180,
     "south": 0,
-    "west": 90
+    "west": 270
   },
   "24_in_wall_cabinet_wood_beach_honey": {
-    "east": 270,
+    "east": 90,
     "north": 180,
     "south": 0,
-    "west": 90
+    "west": 270
   },
   "36_in_wall_cabinet_white_wood": {
-    "east": 270,
+    "east": 90,
     "north": 180,
     "south": 0,
-    "west": 90
+    "west": 270
   },
   "36_in_wall_cabinet_wood_beach_honey": {
-    "east": 270,
+    "east": 90,
     "north": 180,
     "south": 0,
-    "west": 90
+    "west": 270
   },
   "4ft_shelf_metal": {
     "east": 180,
@@ -83,6 +83,12 @@
     "south": 0,
     "west": 90
   },
+  "b04_backpack": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
   "b04_db_apps_tech_08_03": {
     "east": 270,
     "north": 180,
@@ -101,55 +107,85 @@
     "south": 0,
     "west": 90
   },
-  "cabinet_24_door_drawer_wood_beach_honey": {
+  "backpack": {
     "east": 270,
     "north": 180,
     "south": 0,
     "west": 90
+  },
+  "cabinet_24_door_drawer_wood_beach_honey": {
+    "east": 90,
+    "north": 180,
+    "south": 0,
+    "west": 270
   },
   "cabinet_24_singledoor_wood_beach_honey": {
-    "east": 270,
+    "east": 90,
     "north": 180,
     "south": 0,
-    "west": 90
+    "west": 270
   },
   "cabinet_24_two_drawer_white_wood": {
-    "east": 270,
+    "east": 90,
     "north": 180,
     "south": 0,
-    "west": 90
+    "west": 270
   },
   "cabinet_24_two_drawer_wood_beach_honey": {
-    "east": 270,
+    "east": 90,
     "north": 180,
     "south": 0,
-    "west": 90
+    "west": 270
   },
   "cabinet_24_white_wood": {
-    "east": 270,
+    "east": 90,
     "north": 180,
     "south": 0,
-    "west": 90
+    "west": 270
   },
   "cabinet_24_wood_beach_honey": {
-    "east": 270,
+    "east": 90,
     "north": 180,
     "south": 0,
-    "west": 90
+    "west": 270
   },
   "cabinet_36_white_wood": {
-    "east": 270,
+    "east": 90,
     "north": 180,
     "south": 0,
-    "west": 90
+    "west": 270
   },
   "cabinet_36_wood_beach_honey": {
+    "east": 90,
+    "north": 180,
+    "south": 0,
+    "west": 270
+  },
+  "de_castelli_placas_table": {
+    "east": 0,
+    "north": 90,
+    "south": 270,
+    "west": 180
+  },
+  "dishwasher_4": {
     "east": 270,
     "north": 180,
     "south": 0,
     "west": 90
   },
-  "dishwasher_4": {
+  "duffle_bag": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "elf_painting": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "framed_painting": {
     "east": 270,
     "north": 180,
     "south": 0,
@@ -167,6 +203,60 @@
     "south": 270,
     "west": 180
   },
+  "green_bag": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "hiker_backpack": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "its_about_time_painting": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "kids_luggage_1": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "kids_luggage_2": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "lg_table_marble_green": {
+    "east": 0,
+    "north": 90,
+    "south": 270,
+    "west": 180
+  },
+  "lg_table_white": {
+    "east": 0,
+    "north": 90,
+    "south": 270,
+    "west": 180
+  },
+  "side_table_wood": {
+    "east": 0,
+    "north": 90,
+    "south": 270,
+    "west": 180
+  },
+  "silver_frame_painting": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
   "sink_base_white_wood": {
     "east": 270,
     "north": 180,
@@ -174,6 +264,12 @@
     "west": 90
   },
   "sink_base_wood_beach_honey": {
+    "east": 270,
+    "north": 180,
+    "south": 0,
+    "west": 90
+  },
+  "white_shopping_bag": {
     "east": 270,
     "north": 180,
     "south": 0,

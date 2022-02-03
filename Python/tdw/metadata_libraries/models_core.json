@@ -4812,8 +4812,8 @@
                 "z": 0
             },
             "composite_object": false,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "No colliders on the bottom",
             "flex": true,
             "name": "b03_object05",
             "physics_quality": -1,

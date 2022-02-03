@@ -47,6 +47,8 @@ from tdw.FBOutput import Categories as Cats
 from tdw.FBOutput import StaticRigidbodies as StatRig
 from tdw.FBOutput import RobotJointVelocities as RoJoVe
 from tdw.FBOutput import EmptyObjects as Empty
+from tdw.FBOutput import StaticCompositeObjects as StatComp
+from tdw.FBOutput import DynamicCompositeObjects as DynComp
 import numpy as np
 from typing import Tuple, Optional
 
@@ -681,6 +683,7 @@ class CompositeObjects(OutputData):
                      MachineType.MachineType.none: "none"}
 
     def get_data(self) -> Comp.CompositeObjects:
+        print("CompositeObjects has been deprecated. Use StaticCompositeObjects and/or DynamicCompositeObjects instead.")
         return Comp.CompositeObjects.GetRootAsCompositeObjects(self.bytes, 0)
 
     def get_num(self) -> int:
@@ -1201,3 +1204,69 @@ class EmptyObjects(OutputData):
 
     def get_position(self, index: int) -> np.array:
         return self._positions[index]
+
+
+class StaticCompositeObjects(OutputData):
+    MACHINE_TYPES = {MachineType.MachineType.light: "light",
+                     MachineType.MachineType.motor: "motor",
+                     MachineType.MachineType.hinge: "hinge",
+                     MachineType.MachineType.spring: "spring",
+                     MachineType.MachineType.prismatic_joint: "prismatic_joint",
+                     MachineType.MachineType.none: "none"}
+
+    def get_data(self) -> StatComp.StaticCompositeObjects:
+        return StatComp.StaticCompositeObjects.GetRootAsStaticCompositeObjects(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.ObjectsLength()
+
+    def get_object_id(self, index: int) -> int:
+        return self.data.Objects(index).Id()
+
+    def get_num_sub_objects(self, index: int) -> int:
+        return self.data.Objects(index).SubObjectsLength()
+
+    def get_sub_object_id(self, index: int, sub_object_index: int) -> int:
+        return self.data.Objects(index).SubObjects(sub_object_index).Id()
+
+    def get_sub_object_machine_type(self, index: int, sub_object_index: int) -> str:
+        return CompositeObjects.MACHINE_TYPES[self.data.Objects(index).SubObjects(sub_object_index).MachineType()]
+
+    def get_num_hinges(self, index: int) -> int:
+        return self.data.Objects(index).HingesLength()
+
+    def get_hinge_id(self, index: int, hinge_index: int) -> int:
+        return self.data.Objects(index).Hinges(hinge_index).Id()
+
+    def get_hinge_has_limits(self, index: int, hinge_index: int) -> bool:
+        return self.data.Objects(index).Hinges(hinge_index).HasLimits()
+
+    def get_hinge_min_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Hinges(hinge_index).MinLimit()
+
+    def get_hinge_max_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Hinges(hinge_index).MaxLimit()
+
+    def get_hinge_axis(self, index: int, hinge_index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Objects(index).Hinges(hinge_index).Axis())
+
+    def get_num_motors(self, index: int) -> int:
+        return self.data.Objects(index).MotorsLength()
+
+    def get_motor_id(self, index: int, motor_index: int) -> int:
+        return self.data.Objects(index).Motors(motor_index).Id()
+
+    def get_motor_force(self, index: int, motor_index: int) -> float:
+        return self.data.Objects(index).Motors(motor_index).Force()
+
+    def get_num_springs(self, index: int) -> int:
+        return self.data.Objects(index).SpringsLength()
+
+    def get_spring_id(self, index: int, spring_index: int) -> int:
+        return self.data.Objects(index).Springs(spring_index).Id()
+
+    def get_spring_spring(self, index: int, spring_index: int) -> float:
+        return self.data.Objects(index).Springs(spring_index).Spring()
+
+    def get_spring_damper(self, index: int, spring_index: int) -> float:
+        return self.data.Objects(index).Springs(spring_index).Damper()

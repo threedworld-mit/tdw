@@ -401,7 +401,7 @@ class ProcGenObjects(AddOn):
             ex = TDWUtils.get_bounds_extents(bounds=record.bounds)[0]
         return ex
 
-    def get_longer_walls(self, region: int) -> Tuple[List[CardinalDirection], float]:
+    def _get_longer_walls(self, region: int) -> Tuple[List[CardinalDirection], float]:
         """
         :param region: The index of the region in `self.scene_bounds.rooms`.
 
@@ -416,7 +416,7 @@ class ProcGenObjects(AddOn):
         else:
             return [CardinalDirection.north, CardinalDirection.south], x
 
-    def get_shorter_walls(self, region: int) -> Tuple[List[CardinalDirection], float]:
+    def _get_shorter_walls(self, region: int) -> Tuple[List[CardinalDirection], float]:
         """
         :param region: The index of the region in `self.scene_bounds.rooms`.
 
@@ -432,7 +432,7 @@ class ProcGenObjects(AddOn):
             return [CardinalDirection.north, CardinalDirection.south], x
 
     @staticmethod
-    def get_corners_from_wall(wall: CardinalDirection) -> List[OrdinalDirection]:
+    def _get_corners_from_wall(wall: CardinalDirection) -> List[OrdinalDirection]:
         """
         :param wall: The wall as a [`CardinalDirection`](../cardinal_direction.md).
 
@@ -449,7 +449,7 @@ class ProcGenObjects(AddOn):
             return [OrdinalDirection.northeast, OrdinalDirection.southeast]
 
     @staticmethod
-    def get_direction_from_corner(corner: OrdinalDirection, wall: CardinalDirection) -> CardinalDirection:
+    def _get_direction_from_corner(corner: OrdinalDirection, wall: CardinalDirection) -> CardinalDirection:
         """
         Given an corner an a wall, get the direction that a lateral arrangement will run along.
 
@@ -573,8 +573,8 @@ class ProcGenObjects(AddOn):
             sub_arrangement.function(record=record, position={k: v for k, v in position.items()}, wall=wall, direction=direction, region=region)
             position = __add_half_extent_to_position(sub_arrangement.position_offset_multiplier)
 
-    def get_position_along_wall(self, model_name: str, region: int, position: Dict[str, float], wall: CardinalDirection,
-                                depth: float) -> Dict[str, float]:
+    def _get_position_along_wall(self, model_name: str, region: int, position: Dict[str, float],
+                                 wall: CardinalDirection, depth: float) -> Dict[str, float]:
         """
         Get the position of an object or sub-arrangement along a way using its depth.
 
@@ -609,8 +609,8 @@ class ProcGenObjects(AddOn):
         else:
             raise Exception(wall)
 
-    def get_position_offset_from_direction(self, position: Dict[str, float],
-                                           direction: CardinalDirection) -> Dict[str, float]:
+    def _get_position_offset_from_direction(self, position: Dict[str, float],
+                                            direction: CardinalDirection) -> Dict[str, float]:
         """
         :param position: The corner position.
         :param direction: The direction.
@@ -636,7 +636,7 @@ class ProcGenObjects(AddOn):
                     "z": position["z"]}
         raise Exception(direction)
 
-    def get_corner_position(self, corner: OrdinalDirection, region: int) -> Dict[str, float]:
+    def _get_corner_position(self, corner: OrdinalDirection, region: int) -> Dict[str, float]:
         """
         :param corner: The corner.
         :param region: The index of the region in `self.scene_bounds.rooms`.

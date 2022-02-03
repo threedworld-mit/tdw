@@ -21,11 +21,11 @@ for model_name in categories:
 
 | Variable | Type | Description |
 | --- | --- | --- |
-| `MODEL_CATEGORIES` | Dict[str, List[str]] | The names of models suitable for proc-gen. Key = The category. Value = A list of model names. |
 | `KINEMATIC_CATEGORIES` | List[str] | Objects in these categories will be kinematic. |
 | `RECTANGULAR_ARRANGEMENTS` | Dict[str, dict] | Parameters for rectangular arrangements. Key = Category. Value = Dictionary (`"cell_size"`, `"density"`). |
 | `MODEL_NAMES_NINETY_DEGREES` | List[str] | The names of the models that are rotated 90 degrees. |
 | `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. |
+| `BOUNDS_OFFSETS` | dict | Offset values for the bounds extents of specific models. |
 
 ***
 
@@ -76,58 +76,6 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-#### fits_inside_parent
-
-**`ProcGenObjects(AddOn).fits_inside_parent(parent, child)`**
-
-_This is a static function._
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| parent |  ModelRecord |  | The record of the parent object. |
-| child |  ModelRecord |  | The record of the child object. |
-
-_Returns:_  True if the child object fits in the the parent object.
-
-#### model_fits_in_region
-
-**`self.model_fits_in_region(record, position, region)`**
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| record |  ModelRecord |  | The model record. |
-| position |  Dict[str, float] |  | The position of the object. |
-| region |  int |  | The index of the region in `self.scene_bounds.rooms`. |
-
-_Returns:_  True if the model fits in the region.
-
-#### get_model_that_fits_in_region
-
-**`self.get_model_that_fits_in_region(category, position, region)`**
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| category |  str |  | The model category. |
-| position |  Dict[str, float] |  | The position of the object. |
-| region |  int |  | The index of the region in `self.scene_bounds.rooms`. |
-
-_Returns:_  A random model that fits in the region at `position`. If this returns None, no model fits.
-
-#### add_rotation_commands
-
-**`self.add_rotation_commands(parent_object_id, child_object_ids, rotation)`**
-
-Add commands to parent the child objects to the parent object, rotate the parent object, and unparent the child objects.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| parent_object_id |  int |  | The ID of the parent object. |
-| child_object_ids |  List[int] |  | The IDs of the child objects. |
-| rotation |  float |  | The rotation of the parent object. |
-
 #### add_rectangular_arrangement
 
 **`self.add_rectangular_arrangement(size, position, categories)`**
@@ -175,72 +123,26 @@ Reset the procedural generator. Call this when resetting the scene.
 
 #### get_categories_and_wcategories
 
-**`ProcGenObjects(AddOn).get_categories_and_wcategories()`**
+**`self.get_categories_and_wcategories()`**
 
-_This is a static function._
+_Returns:_  A dictionary of the categories of every model that can be used by `ProcGenObjects` and their corresponding `wcategory` and `wnid`. Key = The model name. Value = A dictionary with the following keys: `"category"` (the `ProcGenObjects` category), `"wcategory"` (the value of `record.wcategory`), and `"wnid"` (the value of `record.wnid`).
 
-_Returns:_  A dictionary of the categories of every model that can be used by `ProcGenObjects`. Key = The model name. Value = A dictionary with the following keys: `"category"` (the `ProcGenObjects` category), `"wcategory"` (the value of `record.wcategory`), and `"wnid"` (the value of `record.wnid`).
+#### add_lateral_arrangement
 
-#### get_rectangular_arrangement_parameters
+**`self.add_lateral_arrangement(position, wall, direction, sub_arrangements, length, region)`**
 
-**`ProcGenObjects(AddOn).get_rectangular_arrangement_parameters(category)`**
+**`self.add_lateral_arrangement(position, wall, direction, sub_arrangements, length, region, check_object_positions=False)`**
 
-_This is a static function._
-
-Given a category, get the default rectangular arrangement parameters.
-
+Create a linear arrangement of objects, each one adjacent to the next.
+The objects can have other objects on top of them.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| category |  str |  | The category |
-
-_Returns:_  Tuple: The cell size and density.
-
-#### get_lateral_length
-
-**`ProcGenObjects(AddOn).get_lateral_length(model_name)`**
-
-_This is a static function._
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| model_name |  str |  | The model name. |
-
-_Returns:_  The model bound's longest extent.
-
-#### get_longer_walls
-
-**`self.get_longer_walls(region)`**
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| region |  int |  | The index of the region in `self.scene_bounds.rooms`. |
-
-_Returns:_  Tuple: A list of the longer walls as [`CardinalDirection` values](../cardinal_direction.md), the length of the wall.
-
-#### get_shorter_walls
-
-**`self.get_shorter_walls(region)`**
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| region |  int |  | The index of the region in `self.scene_bounds.rooms`. |
-
-_Returns:_  Tuple: A list of the shorter walls as [`CardinalDirection` values](../cardinal_direction.md), the length of the wall.
-
-#### get_corners_from_wall
-
-**`ProcGenObjects(AddOn).get_corners_from_wall(wall)`**
-
-_This is a static function._
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](../cardinal_direction.md). |
-
-_Returns:_  The corners of the wall as a 2-element list of [`OrdinalDirection`](../ordinal_direction.md).
+| position |  Dict[str, float] |  | The start position of the lateral arrangement. |
+| wall |  CardinalDirection |  | The wall that the lateral arrangement runs along. |
+| direction |  CardinalDirection |  | The direction that the lateral arrangement runs towards. |
+| sub_arrangements |  List[LateralSubArrangement] |  | The ordered list of sub-arrangements. |
+| length |  float |  | The maximum length of the lateral arrangement. |
+| region |  RegionWalls |  | [The `RegionWalls` data.](../scene_data/region_walls.md) |
+| check_object_positions |  bool  | False | If True, try to avoid placing objects near existing objects. |
 

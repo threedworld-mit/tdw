@@ -26,21 +26,57 @@ class StaticSpring(object):
         return 0
 
     # StaticSpring
-    def Spring(self):
+    def HasLimits(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
+
+    # StaticSpring
+    def MinLimit(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
+        return 0.0
+
+    # StaticSpring
+    def MaxLimit(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
+        return 0.0
+
+    # StaticSpring
+    def Axis(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            x = o + self._tab.Pos
+            from .Vector3 import Vector3
+            obj = Vector3()
+            obj.Init(self._tab.Bytes, x)
+            return obj
+        return None
+
+    # StaticSpring
+    def Spring(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
     # StaticSpring
     def Damper(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
-def StaticSpringStart(builder): builder.StartObject(3)
+def StaticSpringStart(builder): builder.StartObject(7)
 def StaticSpringAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
-def StaticSpringAddSpring(builder, spring): builder.PrependFloat32Slot(1, spring, 0.0)
-def StaticSpringAddDamper(builder, damper): builder.PrependFloat32Slot(2, damper, 0.0)
+def StaticSpringAddHasLimits(builder, hasLimits): builder.PrependBoolSlot(1, hasLimits, 0)
+def StaticSpringAddMinLimit(builder, minLimit): builder.PrependFloat32Slot(2, minLimit, 0.0)
+def StaticSpringAddMaxLimit(builder, maxLimit): builder.PrependFloat32Slot(3, maxLimit, 0.0)
+def StaticSpringAddAxis(builder, axis): builder.PrependStructSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(axis), 0)
+def StaticSpringAddSpring(builder, spring): builder.PrependFloat32Slot(5, spring, 0.0)
+def StaticSpringAddDamper(builder, damper): builder.PrependFloat32Slot(6, damper, 0.0)
 def StaticSpringEnd(builder): return builder.EndObject()

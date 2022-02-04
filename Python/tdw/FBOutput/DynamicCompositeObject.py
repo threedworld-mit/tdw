@@ -45,8 +45,30 @@ class DynamicCompositeObject(object):
             return self._tab.VectorLen(o)
         return 0
 
-def DynamicCompositeObjectStart(builder): builder.StartObject(2)
+    # DynamicCompositeObject
+    def Lights(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            x = self._tab.Vector(o)
+            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 4
+            x = self._tab.Indirect(x)
+            from .DynamicLight import DynamicLight
+            obj = DynamicLight()
+            obj.Init(self._tab.Bytes, x)
+            return obj
+        return None
+
+    # DynamicCompositeObject
+    def LightsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def DynamicCompositeObjectStart(builder): builder.StartObject(3)
 def DynamicCompositeObjectAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
 def DynamicCompositeObjectAddHinges(builder, hinges): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(hinges), 0)
 def DynamicCompositeObjectStartHingesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def DynamicCompositeObjectAddLights(builder, lights): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(lights), 0)
+def DynamicCompositeObjectStartLightsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def DynamicCompositeObjectEnd(builder): return builder.EndObject()

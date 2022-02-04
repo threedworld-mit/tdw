@@ -1207,13 +1207,6 @@ class EmptyObjects(OutputData):
 
 
 class StaticCompositeObjects(OutputData):
-    MACHINE_TYPES = {MachineType.MachineType.light: "light",
-                     MachineType.MachineType.motor: "motor",
-                     MachineType.MachineType.hinge: "hinge",
-                     MachineType.MachineType.spring: "spring",
-                     MachineType.MachineType.prismatic_joint: "prismatic_joint",
-                     MachineType.MachineType.none: "none"}
-
     def get_data(self) -> StatComp.StaticCompositeObjects:
         return StatComp.StaticCompositeObjects.GetRootAsStaticCompositeObjects(self.bytes, 0)
 
@@ -1223,14 +1216,17 @@ class StaticCompositeObjects(OutputData):
     def get_object_id(self, index: int) -> int:
         return self.data.Objects(index).Id()
 
-    def get_num_sub_objects(self, index: int) -> int:
-        return self.data.Objects(index).SubObjectsLength()
+    def get_num_non_machines(self, index: int) -> int:
+        return self.data.Objects(index).NonMachinesLength()
 
-    def get_sub_object_id(self, index: int, sub_object_index: int) -> int:
-        return self.data.Objects(index).SubObjects(sub_object_index).Id()
+    def get_non_machine_id(self, index: int, non_machine_index: int) -> int:
+        return self.data.Objects(index).NonMachines(non_machine_index).Id()
 
-    def get_sub_object_machine_type(self, index: int, sub_object_index: int) -> str:
-        return CompositeObjects.MACHINE_TYPES[self.data.Objects(index).SubObjects(sub_object_index).MachineType()]
+    def get_num_lights(self, index: int) -> int:
+        return self.data.Objects(index).LightsLength()
+
+    def get_light_id(self, index: int, light_index: int) -> int:
+        return self.data.Objects(index).Lights(light_index).Id()
 
     def get_num_hinges(self, index: int) -> int:
         return self.data.Objects(index).HingesLength()
@@ -1256,6 +1252,18 @@ class StaticCompositeObjects(OutputData):
     def get_motor_id(self, index: int, motor_index: int) -> int:
         return self.data.Objects(index).Motors(motor_index).Id()
 
+    def get_motor_has_limits(self, index: int, hinge_index: int) -> bool:
+        return self.data.Objects(index).Motors(hinge_index).HasLimits()
+
+    def get_motor_min_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Motors(hinge_index).MinLimit()
+
+    def get_motor_max_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Motors(hinge_index).MaxLimit()
+
+    def get_motor_axis(self, index: int, hinge_index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Objects(index).Motors(hinge_index).Axis())
+
     def get_motor_force(self, index: int, motor_index: int) -> float:
         return self.data.Objects(index).Motors(motor_index).Force()
 
@@ -1265,8 +1273,64 @@ class StaticCompositeObjects(OutputData):
     def get_spring_id(self, index: int, spring_index: int) -> int:
         return self.data.Objects(index).Springs(spring_index).Id()
 
+    def get_spring_has_limits(self, index: int, hinge_index: int) -> bool:
+        return self.data.Objects(index).Springs(hinge_index).HasLimits()
+
+    def get_spring_min_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Springs(hinge_index).MinLimit()
+
+    def get_spring_max_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Springs(hinge_index).MaxLimit()
+
+    def get_spring_axis(self, index: int, hinge_index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Objects(index).Springs(hinge_index).Axis())
+
     def get_spring_spring(self, index: int, spring_index: int) -> float:
         return self.data.Objects(index).Springs(spring_index).Spring()
 
     def get_spring_damper(self, index: int, spring_index: int) -> float:
         return self.data.Objects(index).Springs(spring_index).Damper()
+
+    def get_num_prismatic_joints(self, index: int) -> int:
+        return self.data.Objects(index).PrismaticJointsLength()
+
+    def get_prismatic_joint_id(self, index: int, prismatic_joint_index: int) -> int:
+        return self.data.Objects(index).PrismaticJoints(prismatic_joint_index).Id()
+
+    def get_prismatic_joint_limit(self, index: int, prismatic_joint_index: int) -> float:
+        return self.data.Objects(index).PrismaticJoints(prismatic_joint_index).Limit()
+
+    def get_prismatic_joint_axis(self, index: int, prismatic_joint_index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Objects(index).PrismaticJoints(prismatic_joint_index).Axis())
+
+
+class DynamicCompositeObjects(OutputData):
+    def get_data(self) -> DynComp.DynamicCompositeObjects:
+        return DynComp.DynamicCompositeObjects.GetRootAsDynamicCompositeObjects(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.ObjectsLength()
+
+    def get_object_id(self, index: int) -> int:
+        return self.data.Objects(index).Id()
+
+    def get_num_hinges(self, index: int) -> int:
+        return self.data.Objects(index).HingesLength()
+
+    def get_hinge_id(self, index: int, hinge_index: int) -> int:
+        return self.data.Objects(index).Hinges(hinge_index).Id()
+
+    def get_hinge_angle(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Hinges(hinge_index).Angle()
+
+    def get_hinge_velocity(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Hinges(hinge_index).Velocity()
+
+    def get_num_lights(self, index: int) -> int:
+        return self.data.Objects(index).LightLength()
+
+    def get_light_id(self, index: int, light_index: int) -> int:
+        return self.data.Objects(index).Lights(light_index).Id()
+
+    def get_light_is_on(self, index: int, light_index: int) -> bool:
+        return self.data.Objects(index).Lights(light_index).IsOn()

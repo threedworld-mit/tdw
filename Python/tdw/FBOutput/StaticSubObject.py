@@ -25,14 +25,6 @@ class StaticSubObject(object):
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-    # StaticSubObject
-    def MachineType(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
-        return 1
-
-def StaticSubObjectStart(builder): builder.StartObject(2)
+def StaticSubObjectStart(builder): builder.StartObject(1)
 def StaticSubObjectAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
-def StaticSubObjectAddMachineType(builder, machineType): builder.PrependUint8Slot(1, machineType, 1)
 def StaticSubObjectEnd(builder): return builder.EndObject()

@@ -26,13 +26,49 @@ class StaticMotor(object):
         return 0
 
     # StaticMotor
-    def Force(self):
+    def HasLimits(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
+
+    # StaticMotor
+    def MinLimit(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
-def StaticMotorStart(builder): builder.StartObject(2)
+    # StaticMotor
+    def MaxLimit(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
+        return 0.0
+
+    # StaticMotor
+    def Axis(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            x = o + self._tab.Pos
+            from .Vector3 import Vector3
+            obj = Vector3()
+            obj.Init(self._tab.Bytes, x)
+            return obj
+        return None
+
+    # StaticMotor
+    def Force(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
+        return 0.0
+
+def StaticMotorStart(builder): builder.StartObject(6)
 def StaticMotorAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
-def StaticMotorAddForce(builder, force): builder.PrependFloat32Slot(1, force, 0.0)
+def StaticMotorAddHasLimits(builder, hasLimits): builder.PrependBoolSlot(1, hasLimits, 0)
+def StaticMotorAddMinLimit(builder, minLimit): builder.PrependFloat32Slot(2, minLimit, 0.0)
+def StaticMotorAddMaxLimit(builder, maxLimit): builder.PrependFloat32Slot(3, maxLimit, 0.0)
+def StaticMotorAddAxis(builder, axis): builder.PrependStructSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(axis), 0)
+def StaticMotorAddForce(builder, force): builder.PrependFloat32Slot(5, force, 0.0)
 def StaticMotorEnd(builder): return builder.EndObject()

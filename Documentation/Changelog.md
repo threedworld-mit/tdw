@@ -4,6 +4,26 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.4
+
+### `tdw` module
+
+- Added: `TDWUtils.get_segmentation_colors(id_pass)`. Returns a list of unique colors in the ID pass. 
+- Added: `TDWUtils.download_asset_bundles(path, models, scenes, materials, hdri_skyboxes, robots, humanoids, humanoid_animations)` 
+- Added: `TDWUtils.set_default_libraries(model_library=None, scene_library=None, material_library=None, hdri_skybox_library=None, robot_library=None, humanoid_library=None, humanoid_animation_library=None)` Set the path to the default libraries.
+
+### Model library
+
+- Flagged models as do_not_use in `models_core.json` and `models_full.json`:  b03_object05, b03_pot
+
+### Documentation
+
+#### New Documentation
+
+| Document                                 | Description                            |
+| ---------------------------------------- | -------------------------------------- |
+| `lessons/misc/download_asset_bundles.md` | How and why to download asset bundles. |
+
 ## v1.9.3
 
 ### Command API

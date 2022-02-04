@@ -29,6 +29,8 @@ class ContainerManager(TriggerCollisionListener):
         self.container_trigger_colliders:  Dict[int, List[int]] = dict()
 
     def get_initialization_commands(self) -> List[dict]:
+        self._getting_model_names = True
+        self.container_trigger_colliders.clear()
         return [{"$type": "send_segmentation_colors"}]
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -52,11 +54,6 @@ class ContainerManager(TriggerCollisionListener):
                                 for collider in ContainerManager.CONTAINERS[model_name]["sphere"]:
                                     self.add_sphere_collider(object_id=object_id, position=collider["position"],
                                                              diameter=collider["diameter"])
-
-    def reset(self) -> None:
-        super().reset()
-        self._getting_model_names = True
-        self.container_trigger_colliders.clear()
 
     def contains(self, container_id: int, object_id: int) -> bool:
         """

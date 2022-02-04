@@ -28,6 +28,10 @@ class TriggerCollisionListener(AddOn):
         self.trigger_collisions: List[Tuple[int, int]] = list()
 
     def get_initialization_commands(self) -> List[dict]:
+        self.trigger_collisions.clear()
+        self.trigger_colliders.clear()
+        TriggerCollisionListener._NEXT_TRIGGER_ID = 0
+
         return []
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -43,16 +47,6 @@ class TriggerCollisionListener(AddOn):
                     self.trigger_collisions.append(trigger_id)
                 if trigger_collision.get_state() == "exit":
                     self.trigger_collisions.remove(trigger_id)
-
-    def reset(self) -> None:
-        """
-        Reset the proximity listener.
-        """
-
-        self.initialized = False
-        self.trigger_collisions.clear()
-        self.trigger_colliders.clear()
-        TriggerCollisionListener._NEXT_TRIGGER_ID = 0
 
     @final
     def add_box_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],

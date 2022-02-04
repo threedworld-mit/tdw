@@ -1,4 +1,4 @@
-from typing import List, Tuple, Dict
+from typing import List, Dict
 from overrides import final
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, TriggerCollision
@@ -19,13 +19,13 @@ class TriggerCollisionListener(AddOn):
 
         super().__init__()
         """:field
-        A dictionary of trigger colliders. Key = The object ID. Value = A list of trigger collider IDs.
+        A dictionary of trigger colliders. Key = The trigger ID. Value = The object ID.
         """
-        self.trigger_colliders:  Dict[int, List[int]] = dict()
+        self.trigger_colliders:  Dict[int, int] = dict()
         """:field
-        Trigger ID pairs describing trigger collisions on this frame.
+        Trigger ID pairs describing trigger collisions on this frame. Key = The trigger collider ID. Value = A list of object IDs that collided with the trigger collider.
         """
-        self.trigger_collisions: List[Tuple[int, int]] = list()
+        self.trigger_collisions: Dict[int, List[int]] = dict()
 
     def get_initialization_commands(self) -> List[dict]:
         self.trigger_collisions.clear()
@@ -39,14 +39,20 @@ class TriggerCollisionListener(AddOn):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "trco":
                 trigger_collision = TriggerCollision(resp[i])
-                # Get the IDs and form them into a tuple key.
-                trigger_id = TriggerCollisionListener._get_trigger_id(trigger_collision.get_collider_id(),
-                                                                      trigger_collision.get_collidee_id())
+                trigger_id = trigger_collision.get_trigger_id()
+                collider_id = trigger_collision.get_collider_id()
                 # Begin a trigger collision.
                 if trigger_collision.get_state() == "enter":
-                    self.trigger_collisions.append(trigger_id)
+                    collidee_id = trigger_collision.get_collidee_id()
+                    assert collidee_id in self.trigger_colliders[trigger_id], self.trigger_colliders[trigger_id]
+                    if trigger_id not in self.trigger_collisions:
+                        self.trigger_collisions[trigger_id] = list()
+                    self.trigger_collisions[trigger_id].append(trigger_id)
                 if trigger_collision.get_state() == "exit":
-                    self.trigger_collisions.remove(trigger_id)
+                    if trigger_id in self.trigger_collisions:
+                        self.trigger_collisions[trigger_id].remove(collider_id)
+                        if len(self.trigger_collisions[trigger_id]) == 0:
+                            del self.trigger_collisions[trigger_id]
 
     @final
     def add_box_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
@@ -102,10 +108,7 @@ class TriggerCollisionListener(AddOn):
         :param trigger_id: The unique ID of the trigger collider.
         """
 
-        if object_id not in self.trigger_colliders:
-            self.trigger_colliders[object_id] = list()
-        assert trigger_id not in self.trigger_colliders[object_id], \
-            f"Object {object_id} already has a trigger collider with ID {trigger_id}"
+        assert trigger_id not in self.trigger_colliders, f"Trigger {trigger_id} already exists."
         if trigger_id is None:
             trigger_id = TriggerCollisionListener._NEXT_TRIGGER_ID
             TriggerCollisionListener._NEXT_TRIGGER_ID += 1
@@ -119,12 +122,5 @@ class TriggerCollisionListener(AddOn):
                               "scale": scale,
                               "position": position,
                               "rotation": rotation})
-        self.trigger_colliders[object_id].append(trigger_id)
+        self.trigger_colliders[trigger_id] = object_id
         return trigger_id
-
-    @staticmethod
-    def _get_trigger_id(a: int, b: int) -> Tuple[int, int]:
-        if a < b:
-            return a, b
-        else:
-            return b, a

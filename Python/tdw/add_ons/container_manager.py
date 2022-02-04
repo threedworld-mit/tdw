@@ -21,12 +21,20 @@ class ContainerManager(TriggerCollisionListener):
     CONTAINERS: dict = loads(Path(resource_filename(__name__, "container_manager_data/colliders.json").read_text()))
 
     def __init__(self):
+        """
+        (no parameters)
+        """
+
         super().__init__()
         self._getting_model_names: bool = True
         """:field
-        A dictionary of trigger colliders used for containers. Key = The object ID. Value = A list of trigger collider IDs.
+        A dictionary of trigger colliders used for containers. Key = The trigger ID. Value = The object ID.
         """
-        self.container_trigger_colliders:  Dict[int, List[int]] = dict()
+        self.container_trigger_colliders:  Dict[int, int] = dict()
+        """:field
+        A dictionary of trigger colliders used for containers that is updated per-frame. Key = The trigger ID. Value = The object ID of the colliding object.
+        """
+        self.container_trigger_collisions: Dict[int, int] = dict()
 
     def get_initialization_commands(self) -> List[dict]:
         self._getting_model_names = True
@@ -54,13 +62,13 @@ class ContainerManager(TriggerCollisionListener):
                                 for collider in ContainerManager.CONTAINERS[model_name]["sphere"]:
                                     self.add_sphere_collider(object_id=object_id, position=collider["position"],
                                                              diameter=collider["diameter"])
+        super().on_send(resp=resp)
+        # Get container collisions.
+        self.container_trigger_collisions = {k: v for k, v in self.container_trigger_collisions.items() if k in self.container_trigger_colliders}
 
     def _add_trigger_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
                               rotation: Dict[str, float], shape: str, trigger_id: int = None) -> int:
         trigger_id = super()._add_trigger_collider(object_id=object_id, position=position, scale=scale,
                                                    rotation=rotation, shape=shape, trigger_id=trigger_id)
-        # Add the trigger collider to the container collider dictionary.
-        if object_id not in self.container_trigger_colliders:
-            self.container_trigger_colliders[object_id] = list()
-        self.trigger_colliders[object_id].append(trigger_id)
+        self.container_trigger_colliders[trigger_id] = object_id
         return trigger_id

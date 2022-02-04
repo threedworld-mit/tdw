@@ -55,22 +55,6 @@ class ContainerManager(TriggerCollisionListener):
                                     self.add_sphere_collider(object_id=object_id, position=collider["position"],
                                                              diameter=collider["diameter"])
 
-    def contains(self, container_id: int, object_id: int) -> bool:
-        """
-        :param container_id: The ID of a container object.
-        :param object_id: The ID of an object that might be in the container.
-
-        :return: True if object `container_id` contains object `object_id` on this frame.
-        """
-
-        # This is not a container.
-        if container_id not in self.container_trigger_colliders:
-            return False
-        # Get the trigger ID tuple.
-        trigger_id = TriggerCollisionListener._get_trigger_id(container_id, object_id)
-        # Return True if the key is in the list of collisions.
-        return trigger_id in self.trigger_collisions
-
     def _add_trigger_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
                               rotation: Dict[str, float], shape: str, trigger_id: int = None) -> int:
         trigger_id = super()._add_trigger_collider(object_id=object_id, position=position, scale=scale,

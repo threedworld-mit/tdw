@@ -46,18 +46,13 @@ class CompositeObjectManager(AddOn):
                     o = CompositeObjectDynamic(dynamic_composite_objects=dynamic_composite_objects, object_index=j)
                     self.dynamic[o.object_id] = o
 
-    def is_open(self, open_at: float = 30) -> Dict[int, List[int]]:
+    def is_open(self, object_id: int, sub_object_id: int, open_at: float = 30) -> bool:
         """
-        :param open_at: A threshold of 'openness' in degrees. All hinges, springs, and motors at angles greater than or equal to this threshold are considered 'open'.
+        :param object_id: The ID of the root object.
+        :param sub_object_id: The ID of one of the root object's hinges, motors, or springs.
+        :param open_at: A threshold of 'openness' in degrees. If the sub-object's angle is greater than or equal to this, it is considered 'open'.
 
-        :return: A dictionary. Key = Object IDs. Value = A list of IDs of hinge, spring, and motor sub-objects that are 'open'.
+        :return: True if the hinge, motor, or spring is open.
         """
 
-        objects: Dict[int, List[int]] = dict()
-        for object_id in self.dynamic:
-            for sub_object_id in self.dynamic[object_id].hinges:
-                if self.dynamic[object_id].hinges[sub_object_id].angle >= open_at:
-                    if object_id not in objects:
-                        objects[object_id] = list()
-                    objects[object_id].append(sub_object_id)
-        return objects
+        return self.dynamic[object_id].hinges[sub_object_id].angle >= open_at

@@ -6,5 +6,5 @@ class RigType(Enum):
     Enum values for VR rigs.
     """
 
-    oculus_touch = 1  # A VR rig based on Oculus headset and Oculus Touch controllers.
-    auto_hand = 2  # A VR rig based on Oculus Quest headset, Touch controllers and AutoHand grasping.
+    oculus_touch_controller_robot_hands = 1  # Oculus Touch controller. Hands are rendered as robot hands.
+    oculus_touch_controller_human_hands = 2  # Oculus Touch controller. Hands are rendered as human hands.

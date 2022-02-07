@@ -3,10 +3,11 @@ from json import dumps
 from pathlib import Path
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.keyboard import Keyboard
 from tdw.add_ons.object_manager import ObjectManager
-from tdw.add_ons.vr import VR
-from tdw.vr_data.rig_type import RigType
+from tdw.add_ons.oculus_touch import OculusTouch
+from tdw.vr_data.oculus_touch_button import OculusTouchButton
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 class VRObservedObjects(Controller):
@@ -17,11 +18,16 @@ class VRObservedObjects(Controller):
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.done = False
-        self.vr = VR(rig_type=RigType.oculus_touch, vr_rig_output_data=True, image_passes=["_id"])
+        # Add the VR rig.
+        self.vr = OculusTouch(human_hands=False, output_data=True, attach_avatar=True, set_graspable=False)
+        # Quit when the left trigger button is pressed.
+        self.vr.listen(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        # Enable image capture.
+        self.image_capture = ImageCapture(avatar_ids=[OculusTouch.AVATAR_ID], pass_masks=["_id"],
+                                          path=EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("vr_observed_objects"))
+        # Add an object manager just to get the static object data.
         self.object_manager = ObjectManager(transforms=False, rigidbodies=False, bounds=False)
-        keyboard = Keyboard()
-        self.add_ons.extend([keyboard, self.object_manager, self.vr])
-        keyboard.listen(key="Escape", function=self.quit)
+        self.add_ons.extend([self.object_manager, self.vr, self.image_capture])
         self.frame_data: List[dict] = list()
 
     def run(self) -> None:
@@ -43,11 +49,15 @@ class VRObservedObjects(Controller):
                                                     position={"x": 0.2, "y": 3.0, "z": 0.5},
                                                     library="models_special.json",
                                                     scale_factor={"x": 0.2, "y": 0.2, "z": 0.2}))
+        # Send the commands.
         self.communicate(commands)
+        # Set image capture so that it doesn't save images.
+        self.image_capture.set(frequency="always", avatar_ids=[OculusTouch.AVATAR_ID], pass_masks=["_id"], save=False)
         # Loop until the Escape key is pressed.
         while not self.done:
             visible_objects = []
-            segmentation_colors = TDWUtils.get_segmentation_colors(id_pass=self.vr.images["_id"])
+            # Get an array of all of the unique segmentation colors in the _id pass.
+            segmentation_colors = TDWUtils.get_segmentation_colors(id_pass=self.image_capture.images["_id"])
             for segmentation_color in segmentation_colors:
                 # Convert to tuples to enable equality testing.
                 sc = tuple(segmentation_color)

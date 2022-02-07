@@ -1,4 +1,4 @@
-##### Human user interaction
+##### Keyboard controls
 
 # Keyboard controls
 
@@ -184,7 +184,7 @@ The `Keyboard` add-on sends [`send_keyboard`](../../api/command_api.md#send_keyb
 
 ***
 
-**Next: [Virtual reality](vr.md)**
+**This is the last document in the "Keyboard Controls" tutorial.**
 
 [Return to the README](../../../README.md)
 
@@ -192,8 +192,8 @@ The `Keyboard` add-on sends [`send_keyboard`](../../api/command_api.md#send_keyb
 
 Example controllers:
 
-- [keyboard_minimal.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/humans/keyboard_minimal.py) Minimal keyboard example. Press Escape to quit.
-- [keyboard_controls.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/humans/keyboard_controls.py) Use arrow keys to move an avatar.
+- [keyboard_minimal.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/keyboard/keyboard_minimal.py) Minimal keyboard example. Press Escape to quit.
+- [keyboard_controls.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/keyboard/keyboard_controls.py) Use arrow keys to move an avatar.
 
 Python API:
 

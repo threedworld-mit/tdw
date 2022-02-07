@@ -42,11 +42,17 @@ c.move_by(2)
 
 ![](images/reach_high.gif)
 
-### [Human](../humans/overview.md)
+### [Virtual reality (VR)](../vr/overview.md)
 
-Human users can directly control TDW. A human can move an agent using keyboard controls. A human can also directly control an embodied virtual reality agent.
+A human agent can directly control an embodied virtual reality agent.
 
-**Trade-offs:** The VR agent can't walk around large spaces without instantaneous teleport actions and doesn't have colliders except on its hands.
+**Trade-offs:** You must have VR hardware in order to use VR in TDW. There are fairly high system requirements. Only one human agent may use VR in any given simulation.
+
+### [Keyboard controls](../keyboard/keyboard.md)
+
+A human can move an agent using keyboard input.
+
+**Trade-offs:** There is no built-in "keyboard agent" in TDW. Rather, TDW accepts arbitrary keyboard input, which can be defined as input for an agent.
 
 ### [Embodied avatar](../embodied_avatars/embodied_avatar.md)
 

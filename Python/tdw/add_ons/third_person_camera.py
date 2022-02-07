@@ -85,10 +85,8 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
 
         super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, field_of_view=field_of_view)
 
-        """:field
-        The target object or position that the camera will look at. Can be None (the camera won't look at a target).
-        """
-        self.look_at_target: Optional[Union[int, Dict[str, float]]] = look_at
+        # The target object or position that the camera will look at. Can be None (the camera won't look at a target).
+        self._look_at: Optional[Union[int, Dict[str, float]]] = look_at
         """:field
         The ID of the object the camera will try to follow. Can be None (the camera won't follow an object).
         """
@@ -105,7 +103,7 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
 
     def on_send(self, resp: List[bytes]) -> None:
         # Look at and focus on a target object or position.
-        if self.look_at_target is not None:
+        if self._look_at is not None:
             self.commands.extend(self._get_look_at_commands())
         # Follow a target object.
         if self.follow_object is not None and self.position is not None:
@@ -146,28 +144,38 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
                                   "angle": rotation[q],
                                   "avatar_id": self.avatar_id})
 
+    def look_at(self, target: Union[int, Dict[str, float]] = None) -> None:
+        """
+        Look at a target position or object. The camera will continue to look at the target until you call `camera.look_at(None)`.
+
+        :param target: The look at target. Can be an int (an object ID), an `(x, y, z)` dictionary (a position), or None (stop looking at a target).
+        """
+
+        self._look_at = target
+        self.commands.extend(self._get_look_at_commands())
+
     def _get_look_at_commands(self) -> List[dict]:
         """
         :return: A command for looking at a target.
         """
 
         commands = []
-        if self.look_at_target is None:
+        if self._look_at is None:
             return commands
         # Look at and focus on the object.
-        elif isinstance(self.look_at_target, int):
+        elif isinstance(self._look_at, int):
             commands.extend([{"$type": "look_at",
-                              "object_id": self.look_at_target,
+                              "object_id": self._look_at,
                               "use_centroid": True,
                               "avatar_id": self.avatar_id},
                              {"$type": "focus_on_object",
-                              "object_id": self.look_at_target,
+                              "object_id": self._look_at,
                               "use_centroid": True,
                               "avatar_id": self.avatar_id}])
-        elif isinstance(self.look_at_target, dict):
+        elif isinstance(self._look_at, dict):
             commands.append({"$type": "look_at_position",
-                             "position": self.look_at_target,
+                             "position": self._look_at,
                              "avatar_id": self.avatar_id})
         else:
-            raise TypeError(f"Invalid look-at target: {self.look_at_target}")
+            raise TypeError(f"Invalid look-at target: {self._look_at}")
         return commands

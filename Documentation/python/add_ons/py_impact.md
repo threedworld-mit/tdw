@@ -58,7 +58,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 | Variable | Type | Description |
 | --- | --- | --- |
-| `SILENCE_50MS` | AudioSegment | 50ms of silence. Used for scrapes. |
+| `SILENCE_100MS` | AudioSegment | 100ms of silence. Used for scrapes. |
 | `SCRAPE_MAX_VELOCITY` | float | The maximum velocity allowed for a scrape. |
 | `SCRAPE_M_PER_PIXEL` | float | Meters per pixel on the scrape surface. |
 | `DEFAULT_AMP` | float | The default amp value for objects. |

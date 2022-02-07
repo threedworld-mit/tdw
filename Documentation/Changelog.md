@@ -27,6 +27,19 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | --------------------- | ------------------------------------------------------------ |
 | `set_kinematic_state` | For composite objects, this sets the state only for the top-level object (previous,  it set the state for all sub-objects as well). See: `set_composite_object_kinematic_state` |
 
+### `tdw` module
+
+- Added: `OccupancyMap.reset()` Reset the occupancy map. Call this when resetting a scene.
+- Replaced `ThirdPersonCamera.look_at_target` with  `ThirdPersonCamera.look_at(target)` in order to allow the camera to look at a target on the next `communicate()` call.
+- Improved how cross-fading works in `PyImpact` between audio chunks during a scrape.
+- Added: `InteriorSceneLighting` Add an HDRI skybox to the scene from a curated list of skyboxes and set post-processing values.
+- Fixed: `AudioUtils` (and, by extension, `PhysicsAudioRecorder`) doesn't work on OS X.
+
+### Model library
+
+- Flagged models as do_not_use in `models_full.json`: b03_radiator_old, b05_ikea_nutid_side_by_side_refrigerator
+- Added to `models_core.json`:  b03_radiator_alum_12, b05_castironradiator, radiator_pub_2015, fredericia_spine_stool_1, mater_high_stool_al_69, tolix_bar_stool
+
 ### Example controllers
 
 - Added: `non_physics/compass_rose.py`
@@ -36,16 +49,23 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### New Documentation
 
-| Documentation                           | Description                                    |
-| --------------------------------------- | ---------------------------------------------- |
-| `lessons/non_physics/compass_rose.md`   | Tutorial document explaining the compass rose. |
-| `lessons/non_physics/line_renderers.md` | Tutorial document explaining line renderers.   |
+| Documentation                               | Description                                                  |
+| ------------------------------------------- | ------------------------------------------------------------ |
+| `lessons/non_physics/compass_rose.md`       | Tutorial document explaining the compass rose.               |
+| `lessons/non_physics/line_renderers.md`     | Tutorial document explaining line renderers.                 |
+| `lessons/photorealism/interior_lighting.md` | Tutorial document explaining how to use the new `InteriorSceneLighting` add-on. |
+| `python/add_ons/interior_scene_lighting.md` | API document for `InteriorSceneLighting`.                    |
 
 #### Modified Documentation
 
-| Document                             | Modification                                                 |
-| ------------------------------------ | ------------------------------------------------------------ |
-| `lessons/physx/composite_objects.md` | Clarified how to use various means to set kinematic states of sub-objects. |
+| Document                                                  | Modification                                                 |
+| --------------------------------------------------------- | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md`                      | Clarified how to use various means to set kinematic states of sub-objects. |
+| `lessons/navigation/occupancy_maps.md`                    | Added a section for resetting a scene.                       |
+| `lessons/photorealism/lighting.md`                        | Added an example of how to convert the HDRI skybox library data to a .csv file. |
+| `lessons/objects_and_scenes/materials_textures_colors.md` | Added a missing line of code in one of the examples.         |
+| `lessons/audio/recording_audio.md`                        | Added instructions for installing fmedia on all platforms (including OS X) |
+| `lessons/troubleshooting/common_errors.md`                | Added a section for low render quality.                      |
 
 ## v1.9.2
 

@@ -1,6 +1,7 @@
 from typing import Optional, Union, Tuple
 from pathlib import Path
 import os
+from platform import system
 from subprocess import check_output, Popen, call
 import re
 from psutil import pid_exists
@@ -42,7 +43,10 @@ class AudioUtils:
         """
 
         devices = check_output(["fmedia", "--list-dev"]).decode("utf-8").split("Capture:")[1]
-        dev_search = re.search("device #(.*): Stereo Mix", devices, flags=re.MULTILINE)
+        if system() == "Darwin":
+            dev_search = re.search("device #(.*): iShowU Audio Capture", devices, flags=re.MULTILINE)
+        else:
+            dev_search = re.search("device #(.*): Stereo Mix", devices, flags=re.MULTILINE)
         assert dev_search is not None, "No suitable audio capture device found:\n" + devices
         return dev_search.group(1)
 

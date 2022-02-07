@@ -1,7 +1,9 @@
 from typing import List, Dict
 from overrides import final
 from tdw.tdw_utils import TDWUtils
-from tdw.output_data import OutputData, TriggerCollision
+from tdw.output_data import OutputData
+from tdw.output_data import TriggerCollision as Trigger
+from tdw.collision_data.trigger_collision import TriggerCollision
 from tdw.add_ons.add_on import AddOn
 
 
@@ -21,38 +23,21 @@ class TriggerCollisionListener(AddOn):
         """:field
         A dictionary of trigger colliders. Key = The trigger ID. Value = The object ID.
         """
-        self.trigger_colliders:  Dict[int, int] = dict()
+        self.colliders:  Dict[int, int] = dict()
         """:field
-        Trigger ID pairs describing trigger collisions on this frame. Key = The trigger collider ID. Value = A list of object IDs that collided with the trigger collider.
+        A list of [`TriggerCollision`](../collision_data/trigger_collision.md) events from this frame.
         """
-        self.trigger_collisions: Dict[int, List[int]] = dict()
+        self.collisions: List[TriggerCollision] = list()
 
     def get_initialization_commands(self) -> List[dict]:
-        self.trigger_collisions.clear()
-        self.trigger_colliders.clear()
-        TriggerCollisionListener._NEXT_TRIGGER_ID = 0
-
         return []
 
     def on_send(self, resp: List[bytes]) -> None:
+        self.collisions.clear()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "trco":
-                trigger_collision = TriggerCollision(resp[i])
-                trigger_id = trigger_collision.get_trigger_id()
-                collider_id = trigger_collision.get_collider_id()
-                # Begin a trigger collision.
-                if trigger_collision.get_state() == "enter":
-                    collidee_id = trigger_collision.get_collidee_id()
-                    assert collidee_id in self.trigger_colliders[trigger_id], self.trigger_colliders[trigger_id]
-                    if trigger_id not in self.trigger_collisions:
-                        self.trigger_collisions[trigger_id] = list()
-                    self.trigger_collisions[trigger_id].append(trigger_id)
-                if trigger_collision.get_state() == "exit":
-                    if trigger_id in self.trigger_collisions:
-                        self.trigger_collisions[trigger_id].remove(collider_id)
-                        if len(self.trigger_collisions[trigger_id]) == 0:
-                            del self.trigger_collisions[trigger_id]
+                self.collisions.append(TriggerCollision(Trigger(resp[i])))
 
     @final
     def add_box_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
@@ -108,7 +93,7 @@ class TriggerCollisionListener(AddOn):
         :param trigger_id: The unique ID of the trigger collider.
         """
 
-        assert trigger_id not in self.trigger_colliders, f"Trigger {trigger_id} already exists."
+        assert trigger_id not in self.colliders, f"Trigger {trigger_id} already exists."
         if trigger_id is None:
             trigger_id = TriggerCollisionListener._NEXT_TRIGGER_ID
             TriggerCollisionListener._NEXT_TRIGGER_ID += 1
@@ -116,11 +101,20 @@ class TriggerCollisionListener(AddOn):
                               "id": object_id,
                               "shape": shape,
                               "enter": True,
-                              "stay": False,
+                              "stay": True,
                               "exit": True,
                               "trigger_id": trigger_id,
                               "scale": scale,
                               "position": position,
                               "rotation": rotation})
-        self.trigger_colliders[trigger_id] = object_id
+        self.colliders[trigger_id] = object_id
         return trigger_id
+
+    def reset(self) -> None:
+        """
+        Reset this add-on. Call this before resetting a scene.
+        """
+
+        self.collisions.clear()
+        self.colliders.clear()
+        TriggerCollisionListener._NEXT_TRIGGER_ID = 0

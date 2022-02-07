@@ -14,7 +14,15 @@ class TriggerCollision:
         """:field
         The ID of the trigger collider.
         """
-        self.trigger_collider_id: int = collision.get_trigger_id()
+        self.trigger_id: int = collision.get_trigger_id()
+        """:field
+        The ID of the collidee object (the object that has the trigger collider).
+        """
+        self.collidee_id: int = collision.get_collidee_id()
+        """:field
+        The ID of the collider object (the object the collided with the trigger collider).
+        """
+        self.collider_id: int = collision.get_collider_id()
         """:field
         The state of the collision.
         """

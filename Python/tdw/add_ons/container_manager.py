@@ -18,7 +18,7 @@ class ContainerManager(TriggerCollisionListener):
     """:class_var
     A dictionary of all container model names and their trigger colliders.
     """
-    CONTAINERS: dict = loads(Path(resource_filename(__name__, "container_manager_data/colliders.json").read_text()))
+    CONTAINERS: dict = loads(Path(resource_filename(__name__, "container_manager_data/colliders.json")).read_text())
 
     def __init__(self):
         """
@@ -30,15 +30,13 @@ class ContainerManager(TriggerCollisionListener):
         """:field
         A dictionary of trigger colliders used for containers. Key = The trigger ID. Value = The object ID.
         """
-        self.container_trigger_colliders:  Dict[int, int] = dict()
+        self.container_colliders:  Dict[int, int] = dict()
         """:field
-        A dictionary of trigger colliders used for containers that is updated per-frame. Key = The trigger ID. Value = The object ID of the colliding object.
+        A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container ID *(not the trigger ID)*. Value = A list of object IDs contained by the container.
         """
-        self.container_trigger_collisions: Dict[int, int] = dict()
+        self.containment: Dict[int, List[int]] = dict()
 
     def get_initialization_commands(self) -> List[dict]:
-        self._getting_model_names = True
-        self.container_trigger_colliders.clear()
         return [{"$type": "send_segmentation_colors"}]
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -47,6 +45,7 @@ class ContainerManager(TriggerCollisionListener):
             self._getting_model_names = False
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
+                # Use the model names from SegmentationColors output data to add trigger colliders.
                 if r_id == "segm":
                     segmentation_colors = SegmentationColors(resp[i])
                     for j in range(segmentation_colors.get_num()):
@@ -63,12 +62,31 @@ class ContainerManager(TriggerCollisionListener):
                                     self.add_sphere_collider(object_id=object_id, position=collider["position"],
                                                              diameter=collider["diameter"])
         super().on_send(resp=resp)
-        # Get container collisions.
-        self.container_trigger_collisions = {k: v for k, v in self.container_trigger_collisions.items() if k in self.container_trigger_colliders}
+        # Get containment.
+        self.containment.clear()
+        for trigger_collision in self.collisions:
+            # This trigger collision involved a container trigger collider and an enter or stay event.
+            # Therefore, the container contains the collider object.
+            if trigger_collision.trigger_id in self.container_colliders and \
+                    (trigger_collision.state == "enter" or trigger_collision.state == "stay"):
+                if trigger_collision.collidee_id not in self.containment:
+                    self.containment[trigger_collision.collidee_id] = list()
+                if trigger_collision.collider_id not in self.containment[trigger_collision.collidee_id]:
+                    self.containment[trigger_collision.collidee_id].append(trigger_collision.collider_id)
 
     def _add_trigger_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
                               rotation: Dict[str, float], shape: str, trigger_id: int = None) -> int:
         trigger_id = super()._add_trigger_collider(object_id=object_id, position=position, scale=scale,
                                                    rotation=rotation, shape=shape, trigger_id=trigger_id)
-        self.container_trigger_colliders[trigger_id] = object_id
+        self.container_colliders[trigger_id] = object_id
         return trigger_id
+
+    def reset(self) -> None:
+        """
+        Reset this add-on. Call this before resetting a scene.
+        """
+
+        super().reset()
+        self._getting_model_names = True
+        self.container_colliders.clear()
+        self.containment.clear()

@@ -363,7 +363,8 @@
 | Command | Description |
 | --- | --- |
 | [`set_hinge_limits`](#set_hinge_limits) | Set the angle limits of a hinge joint. This will work with hinges, motors, and springs.  |
-| [`set_motor`](#set_motor) | Set the target velocity and force of a motor.  |
+| [`set_motor_force`](#set_motor_force) | Set the force a motor.  |
+| [`set_motor_target_velocity`](#set_motor_target_velocity) | Set the target velocity a motor.  |
 | [`set_spring_damper`](#set_spring_damper) | Set the damper value of a spring.  |
 | [`set_spring_force`](#set_spring_force) | Set the force of a spring.  |
 | [`set_spring_target_position`](#set_spring_target_position) | Set the target position of a spring.  |
@@ -4882,22 +4883,40 @@ Set the angle limits of a hinge joint. This will work with hinges, motors, and s
 
 ***
 
-## **`set_motor`**
+## **`set_motor_force`**
 
-Set the target velocity and force of a motor. 
+Set the force a motor. 
 
 - <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
 
     - <font style="color:deepskyblue">**Type:** `motor`</font>
 
 ```python
-{"$type": "set_motor", "target_velocity": 0.125, "force": 0.125, "id": 1}
+{"$type": "set_motor_force", "force": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | float | The force of the motor. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_motor_target_velocity`**
+
+Set the target velocity a motor. 
+
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
+
+    - <font style="color:deepskyblue">**Type:** `motor`</font>
+
+```python
+{"$type": "set_motor_target_velocity", "target_velocity": 0.125, "id": 1}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"target_velocity"` | float | The target velocity of the motor. | |
-| `"force"` | float | The force of the motor. | |
 | `"id"` | int | The unique object ID. | |
 
 ***

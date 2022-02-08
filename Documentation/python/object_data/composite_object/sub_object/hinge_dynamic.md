@@ -2,7 +2,7 @@
 
 `from tdw.object_data.composite_object.sub_object.hinge_dynamic import HingeDynamic`
 
-Dynamic data for a hinge sub-object of a composite object.
+Dynamic data for a hinge, motor, or spring sub-object of a composite object.
 
 ***
 

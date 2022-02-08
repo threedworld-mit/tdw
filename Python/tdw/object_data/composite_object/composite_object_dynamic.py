@@ -6,7 +6,7 @@ from tdw.object_data.composite_object.sub_object.hinge_dynamic import HingeDynam
 
 class CompositeObjectDynamic:
     """
-    Static data for a composite object and its sub-objects.
+    Dynamic data for a composite object and its sub-objects.
     
     Note that not all sub-objects will be in this output data because some of them don't have specialized dynamic properties.
     For example, non-machines have dynamic positions, velocities, etc. but these can be found in `Transforms` and `Rigidbodies` data, respectively.

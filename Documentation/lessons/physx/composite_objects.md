@@ -2,7 +2,7 @@
 
 # Composite objects (objects with affordances)
 
-**Composite objects** are objects in TDW that have multiple "sub-objects". Sub-objects are different from [sub-*meshes*](../objects_and_scenes/materials_textures_colors.md) in that they appear in [output data](../core_concepts/output_data.md) as separate objects with separate IDs and [segmentation colors](../visual_perception/id.md).
+**Composite objects** are objects in TDW that have multiple "sub-objects". Sub-objects appear in [output data](../core_concepts/output_data.md) as separate objects with separate IDs and [segmentation colors](../visual_perception/id.md).
 
 Composite objects can be:
 
@@ -10,6 +10,22 @@ Composite objects can be:
 - Objects with hinged motorized joints such as a fan
 - Multiple disconnected objects such as a pot with a lid 
 - An object with a light source such as a lamp
+
+##  Add a composite object to the scene
+
+Adding a composite object to the scene is exactly the same as adding any other object:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller()
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+                                object_id=c.get_unique_id())])
+```
+
+Model `b03_bosch_cbg675bs1b_2013__vray_composite` is a microwave with one sub-object (the door). Note that we needed to set the `object_id` of the *root* object; all sub-objects, in this case the microwave door, will receive random object IDs.
 
 ## Composite objects in the model library
 
@@ -24,22 +40,7 @@ for record in lib.records:
         print(record.name)
 ```
 
-## Add a composite object to the scene
-
-Adding a composite object to the scene is exactly the same as adding any other object:
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-
-c = Controller()
-# Create the scene and add the object.
-c.communicate([TDWUtils.create_empty_room(12, 12),
-               c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
-                                object_id=c.get_unique_id())])
-```
-
-Model `b03_bosch_cbg675bs1b_2013__vray_composite` is a microwave with one sub-object (the door). Note that we needed to set the `object_id` of the *root* object; all sub-objects, in this case the microwave door, will receive random object IDs.
+All model records have a `substructure` field; this is *not* indicative of a composite object's structure and describes a totally separate concept in TDW. The "substructure" data reflects the underlying mesh data and is used [when setting the visual materials of an object](../objects_and_scenes/materials_textures_colors.md); the data otherwise doesn't imply anything about an object's behavior or affordances. A model can have a complex substructure hierarchy while still being a single non-composite object. In TDW, a distinction is made between *sub-meshes* which are included in the substructure data and *sub-objects* which are components of composite objects.
 
 ## Machine types
 
@@ -66,6 +67,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.composite_object_manager import CompositeObjectManager
 
 c = Controller()
+# Add a composite object manager.
 composite_object_manager = CompositeObjectManager()
 c.add_ons.append(composite_object_manager)
 # Create the scene and add the object.
@@ -115,7 +117,6 @@ from tdw.add_ons.composite_object_manager import CompositeObjectManager
 c = Controller()
 composite_object_manager = CompositeObjectManager()
 c.add_ons.append(composite_object_manager)
-# Create the scene and add the object.
 c.communicate([TDWUtils.create_empty_room(12, 12),
                c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
                                 object_id=c.get_unique_id())])
@@ -150,7 +151,6 @@ from tdw.add_ons.composite_object_manager import CompositeObjectManager
 c = Controller()
 composite_object_manager = CompositeObjectManager()
 c.add_ons.append(composite_object_manager)
-# Create the scene and add the object.
 object_id = c.get_unique_id()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
@@ -190,6 +190,8 @@ Output:
 ### Reset
 
 Call `composite_object_manager.reset()` whenever [resetting a scene](../objects_and_scenes/reset_scene.md).
+
+You can destroy composite objects with [`destroy_object`](../../api/command_api.md#destroy_object); this will destroy the root object and all of its sub-objects.
 
 ### Low-level description
 
@@ -276,7 +278,6 @@ camera = ThirdPersonCamera(position={"x": 1, "y": 1.5, "z": 0.3},
                            look_at={"x": 0, "y": 0, "z": 0})
 composite_object_manager = CompositeObjectManager()
 c.add_ons.extend([camera, composite_object_manager])
-# Create the scene and add the object.
 object_id = c.get_unique_id()
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend(Controller.get_add_physics_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
@@ -298,6 +299,77 @@ Result:
 
 ![](images/microwave_door.gif)
 
+## Semantic States
+
+It is possible to use composite object output data to determine **semantic states** of objects.
+
+For **lights**, see `composite_object_manager.dynamic[object_id].lights[sub_object_id].is_on`
+
+For **hinges, motors, and springs** it is possible to determine whether an object is "open" by defining an angle threshold; if the current angle is above the threshold, then the object is "open":
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.composite_object_manager import CompositeObjectManager
+
+
+class CompositeObjectOpen(Controller):
+    """
+    Determine when a composite object is "open".
+    """
+
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        self.communicate(TDWUtils.create_empty_room(12, 12))
+        self.composite_object_manager = CompositeObjectManager()
+        self.add_ons.append(self.composite_object_manager)
+
+    def trial(self, open_at: float):
+        # Reset the composite object manager.
+        self.composite_object_manager.reset()
+        # Add the object.
+        object_id = Controller.get_unique_id()
+        self.communicate(Controller.get_add_physics_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+                                                           object_id=object_id,
+                                                           kinematic=True))
+        # Get the hinge ID.
+        hinge_id = list(self.composite_object_manager.static[object_id].hinges.keys())[0]
+        # Apply a torque to the hinge.
+        self.communicate({"$type": "apply_torque_to_object",
+                          "id": hinge_id,
+                          "torque": {"x": 0.5, "y": 0, "z": 0}})
+        for i in range(200):
+            # Get the angle of the hinge.
+            angle = self.composite_object_manager.dynamic[object_id].hinges[hinge_id].angle
+            # Check if the hinge is open.
+            is_open = angle >= open_at
+            if is_open:
+                print(f"Microwave door is open on frame {i} at angle {angle}.")
+                break
+            self.communicate([])
+        # Destroy the object.
+        self.communicate({"$type": "destroy_object",
+                          "id": object_id})
+
+
+if __name__ == "__main__":
+    c = CompositeObjectOpen()
+    c.trial(open_at=30)
+    c.communicate({"$type": "terminate"})
+
+
+if __name__ == "__main__":
+    c = CompositeObjectOpen()
+    c.trial(open_at=30)
+    c.communicate({"$type": "terminate"})
+```
+
+Output:
+
+```
+Microwave door is open on frame 16 at angle 30.119487762451172.
+```
+
 ***
 
 **Next: [Skip physics frames](step_physics.md)**
@@ -310,6 +382,7 @@ Example controllers:
 
 - [composite_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/composite_object.py) Demonstration of how to use composite sub-objects with a test model.
 - [composite_object_torque.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/composite_object_torque.py) Apply a torque to the door of a microwave.
+- [composite_object_open.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/composite_object_open.py) Determine when a composite object is "open".
 
 Python API:
 
@@ -343,7 +416,8 @@ Command API:
 - [`send_transforms`](../../api/command_api.md#send_transforms)
 - [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state)
 - [`set_composite_object_kinematic_state`](../../api/command_api.md#set_composite_object_kinematic_state)
-- [`apply_torque_to_object`](../../api/command_api.md#**`apply_torque_to_object`**)
+- [`apply_torque_to_object`](../../api/command_api.md#apply_torque_to_object)
+- [`destroy_object`](../../api/command_api.md#destroy_object)
 
 Output Data:
 

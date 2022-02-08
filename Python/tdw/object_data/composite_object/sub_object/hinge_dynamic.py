@@ -4,7 +4,7 @@ from tdw.object_data.composite_object.sub_object.sub_object_dynamic import SubOb
 
 class HingeDynamic(SubObjectDynamic):
     """
-    Dynamic data for a hinge sub-object of a composite object.
+    Dynamic data for a hinge, motor, or spring sub-object of a composite object.
     """
 
     def __init__(self, dynamic_composite_objects: DynamicCompositeObjects, object_index: int, sub_object_index: int):

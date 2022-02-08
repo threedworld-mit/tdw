@@ -302,7 +302,7 @@ scrape_model = ScrapeModel(model_name=model_name,
                            visual_material="cardboard_corrugated",
                            audio_material=AudioMaterial.cardboard,
                            scrape_material=ScrapeMaterial.plywood,
-                           sub_objects=[ScrapeSubObject(sub_object_name="ir",
+                           sub_objects=[ScrapeSubObject(name="ir",
                                                         material_index=0)])
 py_impact = PyImpact(scrape_objects={object_id: scrape_model})
 audio_intializer = AudioInitializer(avatar_id="a")

@@ -898,6 +898,7 @@ class PyImpact(CollisionManager):
         self.initialized = False
         self._static_audio_data.clear()
         self._static_audio_data_overrides.clear()
+        self._scrape_objects.clear()
         # Use scrape surfaces.
         if self._scrape and scrape_objects is not None:
             for k in scrape_objects:

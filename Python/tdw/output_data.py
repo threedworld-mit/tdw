@@ -1285,8 +1285,8 @@ class StaticCompositeObjects(OutputData):
     def get_spring_axis(self, index: int, hinge_index: int) -> Tuple[float, float, float]:
         return OutputData._get_xyz(self.data.Objects(index).Springs(hinge_index).Axis())
 
-    def get_spring_spring(self, index: int, spring_index: int) -> float:
-        return self.data.Objects(index).Springs(spring_index).Spring()
+    def get_spring_force(self, index: int, spring_index: int) -> float:
+        return self.data.Objects(index).Springs(spring_index).Force()
 
     def get_spring_damper(self, index: int, spring_index: int) -> float:
         return self.data.Objects(index).Springs(spring_index).Damper()
@@ -1327,7 +1327,7 @@ class DynamicCompositeObjects(OutputData):
         return self.data.Objects(index).Hinges(hinge_index).Velocity()
 
     def get_num_lights(self, index: int) -> int:
-        return self.data.Objects(index).LightLength()
+        return self.data.Objects(index).LightsLength()
 
     def get_light_id(self, index: int, light_index: int) -> int:
         return self.data.Objects(index).Lights(light_index).Id()

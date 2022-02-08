@@ -13,6 +13,10 @@ class CompositeObjectManager(AddOn):
     """
 
     def __init__(self):
+        """
+        (no parameters)
+        """
+
         super().__init__()
         """:field
         A dictionary of [`CompositeObjectStatic`](../object_data/composite_object/composite_object_static.md) data that is set when this add-on intializes. Key = The object ID.
@@ -24,8 +28,6 @@ class CompositeObjectManager(AddOn):
         self.dynamic: Dict[int, CompositeObjectDynamic] = dict()
 
     def get_initialization_commands(self) -> List[dict]:
-        self.static.clear()
-        self.dynamic.clear()
         return [{"$type": "send_static_composite_objects"},
                 {"$type": "send_dynamic_composite_objects",
                  "frequency": "always"}]
@@ -56,3 +58,12 @@ class CompositeObjectManager(AddOn):
         """
 
         return self.dynamic[object_id].hinges[sub_object_id].angle >= open_at
+
+    def reset(self) -> None:
+        """
+        Reset this add-on. Call this when resetting the scene.
+        """
+
+        self.initialized = False
+        self.static.clear()
+        self.dynamic.clear()

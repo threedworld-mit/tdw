@@ -18,9 +18,9 @@ class SpringStatic(HingeStaticBase):
         super().__init__(static_composite_objects=static_composite_objects, object_index=object_index,
                          sub_object_index=sub_object_index)
         """:field
-        The springiness value.
+        The forcce value.
         """
-        self.spring: float = static_composite_objects.get_spring_spring(object_index, sub_object_index)
+        self.force: float = static_composite_objects.get_spring_force(object_index, sub_object_index)
         """:field
         The spring damper value.
         """

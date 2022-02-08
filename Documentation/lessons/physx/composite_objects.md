@@ -238,58 +238,65 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 c.communicate({"$type": "terminate"})
 ```
 
+If you call `Controller.get_add_physics_object()` and set the `kinematic` parameter, it will automatically send `set_composite_object_kinematic_state` for composite objects and `set_kinematic_state` for non-composite objects.
+
+The following example is exactly the same as the above example:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+
+c = Controller()
+object_id = c.get_unique_id()
+commands = [TDWUtils.create_empty_room(12, 12)]
+commands.extend(Controller.get_add_physics_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+                                                  object_id=object_id,
+                                                  kinematic=True))
+c.communicate(commands)
+```
+
 ## General object commands
 
 Sub-objects will respond to TDW commands just like any other object; you can, for example, [apply forces](forces.md) to individual sub-objects. Sub-objects likewise appear as separate objects in the output data.
 
-In the previous example, we used `set_composite_object_kinematic_state` to uniformly set the kinematic states of *all* sub-objects. In this example, we'll set only the microwave's door to be non-kinematic:
+In this example, we'll add the microwave to the scene and make it kinematic (as explained above, the door will remain non-kinematic). Then, we'll apply a torque to the door:
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.composite_object_manager import CompositeObjectManager
-from tdw.output_data import OutputData, StaticRigidbodies
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 """
-Make a composite object kinematic but make its sub-objects non-kinematic.
+Apply a torque to the door of a microwave.
 """
 
 c = Controller()
+camera = ThirdPersonCamera(position={"x": 1, "y": 1.5, "z": 0.3},
+                           look_at={"x": 0, "y": 0, "z": 0})
 composite_object_manager = CompositeObjectManager()
-c.add_ons.append(composite_object_manager)
+c.add_ons.extend([camera, composite_object_manager])
 # Create the scene and add the object.
 object_id = c.get_unique_id()
-c.communicate([TDWUtils.create_empty_room(12, 12),
-               c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
-                                object_id=object_id)])
-# Get the composite object IDs. Assign each object a random color.
-commands = []
-for object_id in composite_object_manager.static:
-    # Make the root object kinematic.
-    commands.append({"$type": "set_kinematic_state",
-                     "id": object_id,
-                     "is_kinematic": True,
-                     "use_gravity": False})
-    print("Object ID:", object_id)
-    # Make all hinges non-kinematic.
-    for sub_object_id in composite_object_manager.static[object_id].hinges:
-        commands.append({"$type": "set_kinematic_state",
-                         "id": sub_object_id,
-                         "is_kinematic": False,
-                         "use_gravity": True})
-        print("Sub-object ID:", sub_object_id)
-# Request static rigidbody data to confirm that the kinematic states were set.
-commands.append({"$type": "send_static_rigidbodies"})
-resp = c.communicate(commands)
-kinematic = dict()
-for i in range(len(resp) - 1):
-    r_id = OutputData.get_data_type_id(resp[i])
-    if r_id == "srig":
-        srig = StaticRigidbodies(resp[i])
-        for j in range(srig.get_num()):
-            print(srig.get_id(j), srig.get_kinematic(j))
+commands = [TDWUtils.create_empty_room(12, 12)]
+commands.extend(Controller.get_add_physics_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+                                                  object_id=object_id,
+                                                  kinematic=True))
+c.communicate(commands)
+# Get the hinge ID.
+hinge_id = list(composite_object_manager.static[object_id].hinges.keys())[0]
+# Apply a torque to the hinge.
+c.communicate({"$type": "apply_torque_to_object",
+               "id": hinge_id,
+               "torque": {"x": 0.5, "y": 0, "z": 0}})
+for i in range(200):
+    c.communicate([])
 c.communicate({"$type": "terminate"})
 ```
+
+Result:
+
+![](images/microwave_door.gif)
 
 ***
 
@@ -302,7 +309,7 @@ c.communicate({"$type": "terminate"})
 Example controllers:
 
 - [composite_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/composite_object.py) Demonstration of how to use composite sub-objects with a test model.
-- [kinematic_composite_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/kinematic_composite_object.py) Make a composite object kinematic but make its sub-objects non-kinematic.
+- [composite_object_torque.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/composite_object_torque.py) Apply a torque to the door of a microwave.
 
 Python API:
 
@@ -336,6 +343,7 @@ Command API:
 - [`send_transforms`](../../api/command_api.md#send_transforms)
 - [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state)
 - [`set_composite_object_kinematic_state`](../../api/command_api.md#set_composite_object_kinematic_state)
+- [`apply_torque_to_object`](../../api/command_api.md#**`apply_torque_to_object`**)
 
 Output Data:
 

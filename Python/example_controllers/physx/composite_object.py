@@ -54,8 +54,10 @@ class CompositeObject(Controller):
         is_on = self.composite_object_manager.dynamic[o_id].lights[light_id].is_on
         force = self.composite_object_manager.static[o_id].motors[motor_id].force
         # Start the motor and turn the light on.
-        self.communicate([{"$type": "set_motor",
+        self.communicate([{"$type": "set_motor_target_velocity",
                            "target_velocity": 500,
+                           "id": motor_id},
+                          {"$type": "set_motor_force",
                            "force": force + 500,
                            "id": motor_id},
                           {"$type": "set_sub_object_light",

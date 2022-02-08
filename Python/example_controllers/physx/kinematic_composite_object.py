@@ -7,7 +7,7 @@ from tdw.output_data import OutputData, StaticRigidbodies
 Make a composite object kinematic but make its sub-objects non-kinematic.
 """
 
-c = Controller(launch_build=False)
+c = Controller()
 composite_object_manager = CompositeObjectManager()
 c.add_ons.append(composite_object_manager)
 # Create the scene and add the object.

@@ -24,51 +24,200 @@ for record in lib.records:
         print(record.name)
 ```
 
-## Manipulating composite objects
+## Add a composite object to the scene
 
-### Specialist sub-object commands
-
-Some sub-objects have specialized commands, depending on which *machine type* they are. To determine the machine type, you must first send [`send_composite_objects`](../../api/command_api.md#send_composite_objects) which returns [`CompositeObjects`](../../api/output_data.md#CompositeObjects) output data:
+Adding a composite object to the scene is exactly the same as adding any other object:
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.output_data import OutputData,CompositeObjects
 
 c = Controller()
-object_id = c.get_unique_id()
-resp = c.communicate([TDWUtils.create_empty_room(12, 12),
-                      c.get_add_object(model_name="puzzle_box_composite",
-                                       object_id=object_id),
-                      {"$type": "send_composite_objects"}])
-for i in range(len(resp) - 1):
-    r_id = OutputData.get_data_type_id(resp[i])
-    if r_id == "comp":
-        composite_objects = CompositeObjects(resp[i])
-        # Iterate through each composite object.
-        for j in range(composite_objects.get_num()):
-            # Get the target composite object.
-            if composite_objects.get_object_id(j) == object_id:
-                # Iterate through each sub-object.
-                for k in range(composite_objects.get_num_sub_objects(j)):
-                    sub_object_id = composite_objects.get_sub_object_id(j, k)
-                    sub_object_machine_type = composite_objects.get_sub_object_machine_type(j, k)
-                    print(sub_object_id, sub_object_machine_type)
-    c.communicate({"$type": "terminate"})
+# Create the scene and add the object.
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+                                object_id=c.get_unique_id())])
 ```
 
-The "sub-object machine type" determines which API command can be used for this sub-object:
+Model `b03_bosch_cbg675bs1b_2013__vray_composite` is a microwave with one sub-object (the door). Note that we needed to set the `object_id` of the *root* object; all sub-objects, in this case the microwave door, will receive random object IDs.
 
-| Machine type        | Behavior                                                     | Example                | Command(s)                                                   |
-| ------------------- | ------------------------------------------------------------ | ---------------------- | ------------------------------------------------------------ |
-| `"light"`           | Can be turned on and off.                                    | A lightbulb            | [`set_sub_object_light`](../../api/command_api.md#set_sub_object_light) |
-| `"motor"`           | Can rotate on a pivot point around an axis by applying a target velocity and a force magnitude. | A helicopter propeller | [`set_motor_force`](../../api/command_api.md#set_motor_force)<br>[`set_motor_target_velocity`](../../api/command_api.md#set_motor_target_velocity)<br/>[`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
-| `"hinge"`           | Swings freely on a pivot point around an axis.               | A box with a lid       | [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
-| `"spring"`          | Can rotate on a pivot point around an axis by applying a target position. The motion will appear "spring-like". | An oven door           | [`set_spring_target_position`](../../api/command_api.md#set_spring_target_position)<br>[`set_spring_damper`](../../api/command_api.md#set_spring_damper)<br>[`set_spring_force`](../../api/command_api.md#set_spring_force)<br>[`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) |
-| `"prismatic_joint"` | Can move linearly along an axis                              | A chest of drawers     |                                                              |
-| `"none"`            | (no mechanism)                                               | A basket with a lid    |                                                              |
+## Machine types
 
-### Kinematic states
+Composite sub-objects have **machine types** that determine their behavior, their output data, and the commands that can be used to adjust them. In the above example, the microwave's door is a *hinge*.
+
+ The following machine types are supported in TDW:
+
+| Machine type    | Behavior                                                     | Example             |
+| --------------- | ------------------------------------------------------------ | ------------------- |
+| Light           | Can be turned on and off.                                    | A lightbulb         |
+| Motor           | Can rotate on a pivot point around an axis by applying a target velocity and a force magnitude. | A ceiling fan       |
+| Hinge           | Swings freely on a pivot point around an axis.               | A box with a lid    |
+| Spring          | Can rotate on a pivot point around an axis by applying a target position. The motion will appear "spring-like". | An oven door        |
+| Prismatic Joint | Can move linearly along an axis                              | A chest of drawers  |
+| None            | (no mechanism)                                               | A basket with a lid |
+
+## The `CompositeObjectManager` add-on
+
+The [`CompositeObjectManager`](../../python/add_ons/composite_object_manager.md) add-on is a useful wrapper for composite object output data. To use it, add it to `c.add_ons` and add a composite object to the scene:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.composite_object_manager import CompositeObjectManager
+
+c = Controller()
+composite_object_manager = CompositeObjectManager()
+c.add_ons.append(composite_object_manager)
+# Create the scene and add the object.
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+                                object_id=c.get_unique_id())])
+for object_id in composite_object_manager.static:
+    print(object_id)
+    composite_object = composite_object_manager.static[object_id]
+    for hinge_id in composite_object.hinges:
+        print("Hinge ID:", hinge_id)
+        hinge = composite_object_manager.static[object_id].hinges[hinge_id]
+        if hinge.has_limits:
+            print("Hinge limits:", hinge.min_limit, hinge.max_limit)
+c.communicate({"$type": "terminate"})
+```
+
+Output:
+
+```
+4489108
+Hinge ID: 743332436
+```
+
+### Static data
+
+Static data (data that isn't expected to change per-frame) is cached in `composite_object_manager.static` as a dictionary where the key is the object ID of the root object and the value is a [`CompositeObjectStatic`](../../python/object_data/composite_object/composite_object_static.md).
+
+`CompositeObjectStatic` has dictionaries of each machine type, where the key is the sub-object ID:
+
+| Dictionary         | Data Type                                                    |
+| ------------------ | ------------------------------------------------------------ |
+| `lights`           | [`LightStatic`](../../python/object_data/composite_object/sub_object/light_static.md) |
+| `motors`           | [`MotorStatic`](../../python/object_data/composite_object/sub_object/motor_static.md) |
+| `springs`          | [`SpringStatic`](../../python/object_data/composite_object/sub_object/spring_static.md) |
+| `hinges`           | [`HingeStatic`](../../python/object_data/composite_object/sub_object/hinge_static.md) |
+| `prismatic_joints` | [`PrismaticJointStatic`](../../python/object_data/composite_object/sub_object/prismatic_joint_static.md) |
+| `non_machines`     | [`NonMachineStatic`](../../python/object_data/composite_object/sub_object/non_machine_static.md) |
+
+This example prints the sub-object ID of each sub-object; in this case it will just print the ID of the microwave door:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.composite_object_manager import CompositeObjectManager
+
+c = Controller()
+composite_object_manager = CompositeObjectManager()
+c.add_ons.append(composite_object_manager)
+# Create the scene and add the object.
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+                                object_id=c.get_unique_id())])
+for object_id in composite_object_manager.static:
+    composite_object_static = composite_object_manager.static[object_id]
+    for sub_object_id in composite_object_static.lights:
+        print(composite_object_static.lights[sub_object_id].sub_object_id)
+    for sub_object_id in composite_object_static.motors:
+        print(composite_object_static.motors[sub_object_id].sub_object_id)
+    for sub_object_id in composite_object_static.springs:
+        print(composite_object_static.springs[sub_object_id].sub_object_id)
+    for sub_object_id in composite_object_static.hinges:
+        print(composite_object_static.lights[sub_object_id].sub_object_id)
+    for sub_object_id in composite_object_static.prismatic_joints:
+        print(composite_object_static.prismatic_joints[sub_object_id].sub_object_id)
+    for sub_object_id in composite_object_static.non_machines:
+        print(composite_object_static.non_machines[sub_object_id].sub_object_id)
+c.communicate({"$type": "terminate"})
+```
+
+### Dynamic  data
+
+`composite_object_manager.dynamic` is a dictionary of dynamic data that is updated per-frame. The dictionary key is the root object ID and the value is a [`CompositeObjectDynamic`](../../python/object_data/composite_object/composite_object_dynamic.md).
+
+In this example, we'll add the microwave to the scene but set its initial position high above the floor and its initial pitch angle facing downwards; this will cause the door to open. The controller will then print the angle of the door at the start and end of the simulation:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.composite_object_manager import CompositeObjectManager
+
+c = Controller()
+composite_object_manager = CompositeObjectManager()
+c.add_ons.append(composite_object_manager)
+# Create the scene and add the object.
+object_id = c.get_unique_id()
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+                                object_id=object_id,
+                                position={"x": 0, "y": 20, "z": 0},
+                                rotation={"x": -90, "y": 0, "z": 0})])
+# Get the ID of the door.
+static = composite_object_manager.static[object_id]
+door_id = list(static.hinges)[0]
+# Print the initial angle of the door.
+angle = composite_object_manager.dynamic[object_id].hinges[door_id].angle
+print(angle)
+for i in range(200):
+    c.communicate([])
+# Print the final angle of the door.
+angle = composite_object_manager.dynamic[object_id].hinges[door_id].angle
+print(angle)
+c.communicate({"$type": "terminate"})
+```
+
+Output:
+
+```
+0.018078269436955452
+38.08620834350586
+```
+
+`CompositeObjectDynamic` has dictionaries for only *certain* machine types; some machine types, such as non-machines, don't have specialized dynamic states. Note that if you want to receive the position, velocity, etc. of a composite-sub object, send standard object data commands such as [`send_transforms`](../../api/command_api.md#send_transforms) or use an [`ObjectManager`](../../python/add_ons/object_manager.md).
+
+| Dictionary | Data type                                                    |
+| ---------- | ------------------------------------------------------------ |
+| `lights`   | [`LightDynamic`](../../python/object_data/composite_object/sub_object/light_dynamic.md) |
+| `hinges`   | [`HingeDynamic`](../../python/object_data/composite_object/sub_object/hinge_dynamic.md) |
+
+`hinges` contains data for all motors, springs and hinges, because the dynamic data (angle and velocity) is the same for all of these machine types.
+
+### Reset
+
+Call `composite_object_manager.reset()` whenever [resetting a scene](../objects_and_scenes/reset_scene.md).
+
+### Low-level description
+
+When a scene is initialized, `CompositeObjectManager` sends [`send_static_composite_objects`](../../api/command_api.md#send_static_composite_objects) to receive [`StaticCompositeObjects`](../../api/output_data,md#StaticCompositeObjects) output data and caches it as a list of [`CompositeObjectStatic`](../../python/object_data/composite_object/composite_object_static.md) data objects. It also sends [`send_dynamic_composite_objects`](../../api/command_api.md#send_dynamic_composite_objects) to receive [`DynamicCompositeObjects`](../../api/output_data.md#DynamicCompositeObjects) per-frame and temporarily save it as a list of [`CompositeObjectDynamic`](../../python/object_data/composite_object/composite_object_dynamic.md) data objects.
+
+## Manipulating composite objects
+
+### Lights
+
+Turn lights on and off with [`set_sub_object_light`](../../api/command_api.md#set_sub_object_light).
+
+### Motors
+
+Set the motor force with [`set_motor_force`](../../api/command_api.md#set_motor_force). Set the hinge limits with [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) (in the build, "motor" is a sub-category of "hinge"). The motor force and hinge limits are static properties that won't be updated in the cached data of `composite_object_manager.static[object_id].motors`
+
+Set the target velocity (degrees per second) with [`set_motor_target_velocity`](../../api/command_api.md#set_motor_target_velocity). This is a dynamic property that will affect `composite_object_manager.static[object_id].motors[sub_object_id].velocity` and `composite_object_manager.static[object_id].motors[sub_object_id].angle`
+
+### Springs
+
+Set the spring force with [`set_spring_force`](../../api/command_api.md#set_spring_force). Set the spring damper value with [`set_spring_damper`](../../api/command_api.md#set_spring_damper). Set the hinge limits with [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) (in the build, "spring" is a sub-category of "hinge"). The spring force, spring damper, and hinge limits are static properties that won't be updated in the cached data of `composite_object_manager.static[object_id].springs`
+
+Set the target position (angle in degrees) with [`set_spring_target_position`](../../api/command_api.md#set_spring_target_position). This is a dynamic property that will affect `composite_object_manager.static[object_id].springs[sub_object_id].velocity` and `composite_object_manager.static[object_id].springs[sub_object_id].angle`
+
+### Hinges
+
+Set the hinge limits with [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits). The hinge limits are static properties that won't be updated in the cached data of `composite_object_manager.static[object_id].hinges`
+
+## Kinematic states
 
 If you send [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state) for a composite object, the command will only affect the [kinematic state](physics_objects.md) of the top-level object. To set the state for the top-level object *and* all sub-objects, send  [`set_composite_object_kinematic_state`](../../api/command_api.md#set_composite_object_kinematic_state):
 
@@ -89,52 +238,57 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 c.communicate({"$type": "terminate"})
 ```
 
-### General object commands and kinematic states
+## General object commands
 
 Sub-objects will respond to TDW commands just like any other object; you can, for example, [apply forces](forces.md) to individual sub-objects. Sub-objects likewise appear as separate objects in the output data.
 
-In the previous example, we used `set_composite_object_kinematic_state` to uniformly set the kinematic states of *all* sub-objects. In this example, we'll use `CompositeObjects` output data to get the IDs and machine types of each sub-object and set only hinges to be non-kinematic:
+In the previous example, we used `set_composite_object_kinematic_state` to uniformly set the kinematic states of *all* sub-objects. In this example, we'll set only the microwave's door to be non-kinematic:
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.output_data import OutputData, CompositeObjects
+from tdw.add_ons.composite_object_manager import CompositeObjectManager
+from tdw.output_data import OutputData, StaticRigidbodies
 
 """
 Make a composite object kinematic but make its sub-objects non-kinematic.
 """
 
 c = Controller()
+composite_object_manager = CompositeObjectManager()
+c.add_ons.append(composite_object_manager)
 # Create the scene and add the object.
 object_id = c.get_unique_id()
-resp = c.communicate([TDWUtils.create_empty_room(12, 12),
-                      c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
-                                       object_id=object_id),
-                      {"$type": "send_composite_objects",
-                       "frequency": "once"}])
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+                                object_id=object_id)])
 # Get the composite object IDs. Assign each object a random color.
 commands = []
+for object_id in composite_object_manager.static:
+    # Make the root object kinematic.
+    commands.append({"$type": "set_kinematic_state",
+                     "id": object_id,
+                     "is_kinematic": True,
+                     "use_gravity": False})
+    print("Object ID:", object_id)
+    # Make all hinges non-kinematic.
+    for sub_object_id in composite_object_manager.static[object_id].hinges:
+        commands.append({"$type": "set_kinematic_state",
+                         "id": sub_object_id,
+                         "is_kinematic": False,
+                         "use_gravity": True})
+        print("Sub-object ID:", sub_object_id)
+# Request static rigidbody data to confirm that the kinematic states were set.
+commands.append({"$type": "send_static_rigidbodies"})
+resp = c.communicate(commands)
+kinematic = dict()
 for i in range(len(resp) - 1):
     r_id = OutputData.get_data_type_id(resp[i])
-    if r_id == "comp":
-        composite_objects = CompositeObjects(resp[i])
-        for j in range(composite_objects.get_num()):
-            if composite_objects.get_object_id(j) == object_id:
-                # Make the root object kinematic.
-                commands.append({"$type": "set_kinematic_state",
-                                 "id": object_id,
-                                 "is_kinematic": True,
-                                 "use_gravity": False})
-                # Make the sub-objects non-kinematic.
-                for k in range(composite_objects.get_num_sub_objects(j)):
-                    machine_type = composite_objects.get_sub_object_machine_type(i, k)
-                    if machine_type == "hinge":
-                        commands.append({"$type": "set_kinematic_state",
-                                         "id": composite_objects.get_sub_object_id(j, k),
-                                         "is_kinematic": False,
-                                         "use_gravity": True})
+    if r_id == "srig":
+        srig = StaticRigidbodies(resp[i])
+        for j in range(srig.get_num()):
+            print(srig.get_id(j), srig.get_kinematic(j))
 c.communicate({"$type": "terminate"})
-
 ```
 
 ***
@@ -153,6 +307,20 @@ Example controllers:
 Python API:
 
 - [`ModelRecord.composite_object`](../../python/librarian/model_librarian.md) True if the record is for a composite object.
+- [`ObjectManager`](../../python/add_ons/object_manager.md)
+- [`CompositeObjectManager`](../../python/add_ons/composite_object_manager.md)
+  - [`CompositeObjectStatic`](../../python/object_data/composite_object/composite_object_static.md)
+    - [`LightStatic`](../../python/object_data/composite_object/sub_object/light_static.md)
+    - [`MotorStatic`](../../python/object_data/composite_object/sub_object/motor_static.md)
+    - [`SpringStatic`](../../python/object_data/composite_object/sub_object/spring_static.md)
+    - [`HingeStatic`](../../python/object_data/composite_object/sub_object/hinge_static.md)
+    - [`PrismaticJointStatic`](../../python/object_data/composite_object/sub_object/prismatic_joint_static.md)
+    - [`NonMachineStatic`](../../python/object_data/composite_object/sub_object/non_machine_static.md)
+
+  - [`CompositeObjectDynamic`](../../python/object_data/composite_object/composite_object_dynamic.md)
+    - [`LightDynamic`](../../python/object_data/composite_object/sub_object/light_dynamic.md)
+    - [`HingeDynamic`](../../python/object_data/composite_object/sub_object/hinge_dynamic.md)
+
 
 Command API:
 
@@ -163,10 +331,13 @@ Command API:
 - [`set_spring_damper`](../../api/command_api.md#set_spring_damper)
 - [`set_spring_force`](../../api/command_api.md#set_spring_force) 
 - [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits)
-- [`send_composite_objects`](../../api/command_api.md#send_composite_objects)
+- [`send_static_composite_objects`](../../api/command_api.md#send_static_composite_objects)
+- [`send_dynamic_composite_objects`](../../api/command_api.md#send_dynamic_composite_objects)
+- [`send_transforms`](../../api/command_api.md#send_transforms)
 - [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state)
 - [`set_composite_object_kinematic_state`](../../api/command_api.md#set_composite_object_kinematic_state)
 
 Output Data:
 
-- [`CompositeObjects`](../../api/output_data.md#CompositeObjects) 
+- [`CompositeObjectsStatic`](../../api/output_data.md#CompositeObjectsStatic) 
+- [`CompositeObjectsDynamic`](../../api/output_data.md#CompositeObjectsDynamic) 

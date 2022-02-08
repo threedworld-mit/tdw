@@ -4,6 +4,24 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.4
+
+### Command API
+
+#### New Commands
+
+| Command                      | Description                          |
+| ---------------------------- | ------------------------------------ |
+| `set_spring_target_position` | Set the target position of a spring. |
+| `set_spring_damper`          | Set the damper value of a spring.    |
+| `set_spring_force`           | Set the force of a spring.           |
+
+#### Removed Commands
+
+| Command      | Reason                                     |
+| ------------ | ------------------------------------------ |
+| `set_spring` | Replaced with `set_spring_target_position` |
+
 ## v1.9.3
 
 ### Command API

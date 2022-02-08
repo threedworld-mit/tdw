@@ -364,7 +364,9 @@
 | --- | --- |
 | [`set_hinge_limits`](#set_hinge_limits) | Set the angle limits of a hinge joint. This will work with hinges, motors, and springs.  |
 | [`set_motor`](#set_motor) | Set the target velocity and force of a motor.  |
-| [`set_spring`](#set_spring) | Set the target position of a spring.  |
+| [`set_spring_damper`](#set_spring_damper) | Set the damper value of a spring.  |
+| [`set_spring_force`](#set_spring_force) | Set the force of a spring.  |
+| [`set_spring_target_position`](#set_spring_target_position) | Set the target position of a spring.  |
 | [`set_sub_object_light`](#set_sub_object_light) | Turn a light on or off.  |
 
 **Visual Material Command**
@@ -4900,7 +4902,45 @@ Set the target velocity and force of a motor.
 
 ***
 
-## **`set_spring`**
+## **`set_spring_damper`**
+
+Set the damper value of a spring. 
+
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
+
+    - <font style="color:deepskyblue">**Type:** `spring`</font>
+
+```python
+{"$type": "set_spring_damper", "damper": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"damper"` | float | The damper value of the spring. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_spring_force`**
+
+Set the force of a spring. 
+
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
+
+    - <font style="color:deepskyblue">**Type:** `spring`</font>
+
+```python
+{"$type": "set_spring_force", "spring_force": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"spring_force"` | float | The force of the spring. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_spring_target_position`**
 
 Set the target position of a spring. 
 
@@ -4909,7 +4949,7 @@ Set the target position of a spring.
     - <font style="color:deepskyblue">**Type:** `spring`</font>
 
 ```python
-{"$type": "set_spring", "target_position": 0.125, "id": 1}
+{"$type": "set_spring_target_position", "target_position": 0.125, "id": 1}
 ```
 
 | Parameter | Type | Description | Default |

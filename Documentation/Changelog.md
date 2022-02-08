@@ -25,6 +25,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `set_spring` | Replaced with `set_spring_target_position`                   |
 | `set_motor`  | Replaced with `set_motor_target_velocity` and `set_motor_force` |
 
+### `tdw` module
+
+- Fixed: Can't override the visual materials of scrape surfaces in `PyImpact`
+
 ## v1.9.3
 
 ### Command API

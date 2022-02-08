@@ -913,7 +913,6 @@ class PyImpact(CollisionManager):
         self._scrape_summed_masters.clear()
         self._scrape_start_velocities.clear()
         self._scrape_events_count.clear()
-        self._scrape_objects.clear()
         self._scrape_previous_indices.clear()
         # Stop all ongoing audio.
         self.commands.append({"$type": "stop_all_audio"})
@@ -971,7 +970,8 @@ class PyImpact(CollisionManager):
                     categories[object_id] = segm.get_object_category(j)
                     # Enable a scrape surface.
                     if self._scrape and (model_name in DEFAULT_SCRAPE_MODELS or object_id in self._scrape_objects):
-                        self._scrape_objects[object_id] = DEFAULT_SCRAPE_MODELS[model_name]
+                        if object_id not in self._scrape_objects:
+                            self._scrape_objects[object_id] = DEFAULT_SCRAPE_MODELS[model_name]
                         # Add the visual material.
                         material_record = PyImpact.__VISUAL_MATERIAL_LIBRARIAN.get_record(
                             name=self._scrape_objects[object_id].visual_material)

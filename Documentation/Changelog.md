@@ -6,8 +6,28 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ## v1.9.4
 
+### Command API
+
+#### New Commands
+
+| Command                      | Description                          |
+| ---------------------------- | ------------------------------------ |
+| `set_spring_target_position` | Set the target position of a spring. |
+| `set_spring_damper`          | Set the damper value of a spring.    |
+| `set_spring_force`           | Set the force of a spring.           |
+| `set_motor_target_velocity`  | Set the target velocity of a motor.  |
+| `set_motor_force`            | Set the force of a motor.            |
+
+#### Removed Commands
+
+| Command      | Reason                                                       |
+| ------------ | ------------------------------------------------------------ |
+| `set_spring` | Replaced with `set_spring_target_position`                   |
+| `set_motor`  | Replaced with `set_motor_target_velocity` and `set_motor_force` |
+
 ### `tdw` module
 
+- Fixed: Can't override the visual materials of scrape surfaces in `PyImpact`
 - Added: `TDWUtils.get_segmentation_colors(id_pass)`. Returns a list of unique colors in the ID pass. 
 - Added: `TDWUtils.download_asset_bundles(path, models, scenes, materials, hdri_skyboxes, robots, humanoids, humanoid_animations)` 
 - Added: `TDWUtils.set_default_libraries(model_library=None, scene_library=None, material_library=None, hdri_skybox_library=None, robot_library=None, humanoid_library=None, humanoid_animation_library=None)` Set the path to the default libraries.

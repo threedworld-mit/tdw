@@ -201,23 +201,29 @@ When a scene is initialized, `CompositeObjectManager` sends [`send_static_compos
 
 ### Lights
 
-Turn lights on and off with [`set_sub_object_light`](../../api/command_api.md#set_sub_object_light).
+- Turn lights on and off with [`set_sub_object_light`](../../api/command_api.md#set_sub_object_light).
 
 ### Motors
 
-Set the motor force with [`set_motor_force`](../../api/command_api.md#set_motor_force). Set the hinge limits with [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) (in the build, "motor" is a sub-category of "hinge"). The motor force and hinge limits are static properties that won't be updated in the cached data of `composite_object_manager.static[object_id].motors`
+In general, you shouldn't adjust the motor force or hinge limits because these are static values. Setting the target velocity will make the motor start to move, assuming that it has a non-zero force: 
 
-Set the target velocity (degrees per second) with [`set_motor_target_velocity`](../../api/command_api.md#set_motor_target_velocity). This is a dynamic property that will affect `composite_object_manager.static[object_id].motors[sub_object_id].velocity` and `composite_object_manager.static[object_id].motors[sub_object_id].angle`
+- Set the maximum motor force with [`set_motor_force`](../../api/command_api.md#set_motor_force). This is normally considered static data and won't update `composite_object_manager.static[object_id].motors[motor_id].force`
+- Set the hinge limits with [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) (in the build, "motor" is a sub-category of "hinge"). This is normally considered static data and won't update `composite_object_manager.static[object_id].motors[motor_id].min_limit` or `composite_object_manager.static[object_id].motors[motor_id].max_limit`
+
+- Set the target velocity (degrees per second) with [`set_motor_target_velocity`](../../api/command_api.md#set_motor_target_velocity). This is a dynamic property that will affect `composite_object_manager.static[object_id].motors[motor_id].velocity` and `composite_object_manager.static[object_id].motors[motor_id].angle`
 
 ### Springs
 
-Set the spring force with [`set_spring_force`](../../api/command_api.md#set_spring_force). Set the spring damper value with [`set_spring_damper`](../../api/command_api.md#set_spring_damper). Set the hinge limits with [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) (in the build, "spring" is a sub-category of "hinge"). The spring force, spring damper, and hinge limits are static properties that won't be updated in the cached data of `composite_object_manager.static[object_id].springs`
+In general, you shouldn't adjust the spring force. You *can* safely adjust the damper but you usually won't need to do. Setting the target position will make the spring start to move, assuming that it has a non-zero force:
 
-Set the target position (angle in degrees) with [`set_spring_target_position`](../../api/command_api.md#set_spring_target_position). This is a dynamic property that will affect `composite_object_manager.static[object_id].springs[sub_object_id].velocity` and `composite_object_manager.static[object_id].springs[sub_object_id].angle`
+- Set the spring damper value with [`set_spring_damper`](../../api/command_api.md#set_spring_damper). The damper value affects how freely the spring will swing. This is normally considered static data and won't update `composite_object_manager.static[object_id].springs[spring_id].damper`
+- Set the spring force with [`set_spring_force`](../../api/command_api.md#set_spring_force). A non-zero will allow the joint to move when a target position is set. This is normally considered static data and won't update `composite_object_manager.static[object_id].springs[spring_id].force`
+- Set the hinge limits with [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) (in the build, "spring" is a sub-category of "hinge"). This is normally considered static data and won't update `composite_object_manager.static[object_id].springs[spring_id].min_limit` or `composite_object_manager.static[object_id].springs[spring_id].max_limit`
+- Set the target position (angle in degrees) with [`set_spring_target_position`](../../api/command_api.md#set_spring_target_position). This is a dynamic property that *will* affect `composite_object_manager.static[object_id].springs[spring_id].velocity` and `composite_object_manager.static[object_id].springs[spring_id].angle`
 
 ### Hinges
 
-Set the hinge limits with [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits). The hinge limits are static properties that won't be updated in the cached data of `composite_object_manager.static[object_id].hinges`
+- Set the hinge limits with [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits). This is normally considered static data and won't update `composite_object_manager.static[object_id].hinges[hinge_id].min_limit` or `composite_object_manager.static[object_id].hinges[hinge_id].max_limit`
 
 ## Kinematic states
 

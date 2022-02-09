@@ -214,10 +214,10 @@ In general, you shouldn't adjust the motor force or hinge limits because these a
 
 ### Springs
 
-In general, you shouldn't adjust the spring force. You *can* safely adjust the damper but you usually won't need to do. Setting the target position will make the spring start to move, assuming that it has a non-zero force:
+In general, you shouldn't adjust the spring force. You *can* safely adjust the damper but you usually won't need to. Setting the target position will make the spring start to move, assuming that it has a non-zero force:
 
 - Set the spring damper value with [`set_spring_damper`](../../api/command_api.md#set_spring_damper). The damper value affects how freely the spring will swing. This is normally considered static data and won't update `composite_object_manager.static[object_id].springs[spring_id].damper`
-- Set the spring force with [`set_spring_force`](../../api/command_api.md#set_spring_force). A non-zero will allow the joint to move when a target position is set. This is normally considered static data and won't update `composite_object_manager.static[object_id].springs[spring_id].force`
+- Set the spring force with [`set_spring_force`](../../api/command_api.md#set_spring_force). A non-zero force will allow the joint to move when a target position is set. This is normally considered static data and won't update `composite_object_manager.static[object_id].springs[spring_id].force`
 - Set the hinge limits with [`set_hinge_limits`](../../api/command_api.md#set_hinge_limits) (in the build, "spring" is a sub-category of "hinge"). This is normally considered static data and won't update `composite_object_manager.static[object_id].springs[spring_id].min_limit` or `composite_object_manager.static[object_id].springs[spring_id].max_limit`
 - Set the target position (angle in degrees) with [`set_spring_target_position`](../../api/command_api.md#set_spring_target_position). This is a dynamic property that *will* affect `composite_object_manager.static[object_id].springs[spring_id].velocity` and `composite_object_manager.static[object_id].springs[spring_id].angle`
 

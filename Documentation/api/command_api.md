@@ -571,12 +571,14 @@
 | --- | --- |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
+| [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
 | [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
+| [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -7090,7 +7092,7 @@ Options for when to send data.
 
 Send data for every composite object in the scene. 
 
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`CompositeObjects`](output_data.md#CompositeObjects)</font>
@@ -7101,6 +7103,38 @@ Send data for every composite object in the scene.
 
 ```python
 {"$type": "send_composite_objects", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_dynamic_composite_objects`**
+
+Send dynamic data for every composite object in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`DynamicCompositeObjects`](output_data.md#DynamicCompositeObjects)</font>
+
+```python
+{"$type": "send_dynamic_composite_objects"}
+```
+
+```python
+{"$type": "send_dynamic_composite_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7296,6 +7330,38 @@ Receive data about the sub-regions within a scene in the scene. Only send this c
 
 ```python
 {"$type": "send_scene_regions", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_composite_objects`**
+
+Send static data for every composite object in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticCompositeObjects`](output_data.md#StaticCompositeObjects)</font>
+
+```python
+{"$type": "send_static_composite_objects"}
+```
+
+```python
+{"$type": "send_static_composite_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

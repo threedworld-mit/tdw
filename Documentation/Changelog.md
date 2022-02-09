@@ -4,6 +4,75 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.5
+
+### Command API
+
+#### New Commands
+
+| Command                          | Description                                                |
+| -------------------------------- | ---------------------------------------------------------- |
+| `send_static_composite_objects`  | Send static data for every composite object in the scene.  |
+| `send_dynamic_composite_objects` | Send dynamic data for every composite object in the scene. |
+
+#### Deprecated Commands 
+
+| Command                  | Reason                                                       | 
+| ------------------------ | ------------------------------------------------------------ | 
+| `send_composite_objects` | Replaced with `send_static_composite_objects` and `send_dynamic_composite_objects` | 
+
+### Output Data 
+
+#### New Output Data 
+
+| Output Data               | Description                    | 
+| ------------------------- | ------------------------------ | 
+| `CompositeObjectsStatic`  | Static composite object data.  | 
+| `CompositeObjectsDynamic` | Dynamic composite object data. | 
+
+#### Deprecated Output Data 
+
+| Output Data        | Reason                                                       | 
+| ------------------ | ------------------------------------------------------------ | 
+| `CompositeObjects` | Replaced with `CompositeObjectsStatic` and `CompositeObjectsDynamic` | 
+
+### `tdw` module
+
+- Added: `CompositeObjectManager` an add-on for managing composite object data. 
+- Added the following composite object data classes: 
+  - `CompositeObjectStatic` Static data for a composite object and its sub-objects. 
+    - `LightStatic` Static data for a light sub-object of a composite object. 
+    - `MotorStatic` Static data for a motor sub-object of a composite object. 
+    - `SpringStatic` Static data for a spring sub-object of a composite object. 
+    - `HingeStatic` Static data for a hinge sub-object of a composite object. 
+    - `PrismaticJointStatic` Static data for a prismatic joint sub-object of a composite object. 
+    - `NonMachineStatic` Static data for a non-machine sub-object of a composite object. 
+  - `CompositeObjectDynamic` Dynamic data for a composite object and its sub-objects. 
+    - `LightDynamic` Dynamic data for a light sub-object of a composite object. 
+    - `HingeDynamic` Dynamic data for a hinge, motor, or spring sub-object of a composite object. 
+
+### Example Controllers
+
+- Edited `physx/composite_object.py` to use the `CompositeObjectManager`
+- Removed `physx/kinematic_composite_object.py`
+- Added `physx/composite_object_open.py`
+- Added `physx/composite_object_torque.py`
+
+### Documentation 
+
+#### New Documentation 
+
+| Document                                                     | Description                                      | 
+| ------------------------------------------------------------ | ------------------------------------------------ | 
+| `python/add_ons/composite_object_manager.md`                 | API document for `CompositeObjectManager`        | 
+| `python/object_data/composite_object/composite_object_static.md`<br>`python/object_data/composite_object/composite_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/sub_object_static.md`<br>`python/object_data/composite_object/sub_object/light_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static_base.md`<br>`python/object_data/composite_object/sub_object/motor_static.md`<br>`python/object_data/composite_object/sub_object/spring_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static.md`<br>`python/object_data/composite_object/sub_object/prismatic_joint_static.md`<br>`python/object_data/composite_object/sub_object/non_machine_static.md`<br>`python/object_data/composite_object/sub_object/sub_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/light_dynamic.md`<br>`python/object_data/composite_object/sub_object/hinge_dynamic.md` | API documents for composite object data classes. | 
+
+#### Modified Documentation 
+
+| Document                             | Modification                                                 | 
+| ------------------------------------ | ------------------------------------------------------------ | 
+| `lessons/physx/composite_objects.md` | Rewrote most of the document to explain how to use the `CompositeObjectManager`.<br>Added a section explaining how to determine if an object is "open".<br>Clarified the difference between sub-meshes and sub-objects.<br>Added more example code. | 
+
 ## v1.9.4
 
 ### Command API

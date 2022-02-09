@@ -52,7 +52,7 @@ Composite sub-objects have **machine types** that determine their behavior, thei
 | --------------- | ------------------------------------------------------------ | ------------------- |
 | Light           | Can be turned on and off.                                    | A lightbulb         |
 | Motor           | Can rotate on a pivot point around an axis by applying a target velocity and a force magnitude. | A ceiling fan       |
-| Hinge           | Swings freely on a pivot point around an axis.               | A box with a lid    |
+| Hinge           | Swings freely on a pivot point around an axis.               | A pot with a lid    |
 | Spring          | Can rotate on a pivot point around an axis by applying a target position. The motion will appear "spring-like". | An oven door        |
 | Prismatic Joint | Can move linearly along an axis                              | A chest of drawers  |
 | None            | (no mechanism)                                               | A basket with a lid |

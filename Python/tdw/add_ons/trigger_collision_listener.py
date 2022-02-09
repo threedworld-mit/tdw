@@ -23,7 +23,7 @@ class TriggerCollisionListener(AddOn):
         """:field
         A dictionary of trigger colliders. Key = The trigger ID. Value = The object ID.
         """
-        self.colliders:  Dict[int, int] = dict()
+        self.trigger_ids:  Dict[int, int] = dict()
         """:field
         A list of [`TriggerCollision`](../collision_data/trigger_collision.md) events from this frame.
         """
@@ -39,7 +39,6 @@ class TriggerCollisionListener(AddOn):
             if r_id == "trco":
                 self.collisions.append(TriggerCollision(Trigger(resp[i])))
 
-    @final
     def add_box_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
                          rotation: Dict[str, float] = None, trigger_id: int = None) -> int:
         """
@@ -60,7 +59,6 @@ class TriggerCollisionListener(AddOn):
                                                 shape="cube", trigger_id=trigger_id)
         return trigger_id
 
-    @final
     def add_sphere_collider(self, object_id: int, position: Dict[str, float], diameter: float,
                             trigger_id: int = None) -> int:
         """
@@ -80,6 +78,7 @@ class TriggerCollisionListener(AddOn):
                                                 shape="sphere", trigger_id=trigger_id)
         return trigger_id
 
+    @final
     def _add_trigger_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
                               rotation: Dict[str, float], shape: str, trigger_id: int = None) -> int:
         """
@@ -93,7 +92,7 @@ class TriggerCollisionListener(AddOn):
         :param trigger_id: The unique ID of the trigger collider.
         """
 
-        assert trigger_id not in self.colliders, f"Trigger {trigger_id} already exists."
+        assert trigger_id not in self.trigger_ids, f"Trigger {trigger_id} already exists."
         if trigger_id is None:
             trigger_id = TriggerCollisionListener._NEXT_TRIGGER_ID
             TriggerCollisionListener._NEXT_TRIGGER_ID += 1
@@ -107,7 +106,7 @@ class TriggerCollisionListener(AddOn):
                               "scale": scale,
                               "position": position,
                               "rotation": rotation})
-        self.colliders[trigger_id] = object_id
+        self.trigger_ids[trigger_id] = object_id
         return trigger_id
 
     def reset(self) -> None:
@@ -116,5 +115,5 @@ class TriggerCollisionListener(AddOn):
         """
 
         self.collisions.clear()
-        self.colliders.clear()
+        self.trigger_ids.clear()
         TriggerCollisionListener._NEXT_TRIGGER_ID = 0

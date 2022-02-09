@@ -38,22 +38,35 @@ class ContainerManager(TriggerCollisionListener):
         """:field
         A dictionary of trigger colliders used for containers. Key = The trigger ID. Value = The object ID.
         """
-        self.container_colliders:  Dict[int, int] = dict()
+        self.container_trigger_ids:  Dict[int, int] = dict()
         """:field
         A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container ID *(not the trigger ID)*. Value = A list of [`ContainmentEvent`](container_manager_data/containment_event.md) data.
         """
         self.containment: Dict[int, List[ContainmentEvent]] = dict()
-        """:field
-        Tags describing each collider. Key = The trigger ID. Value = [`ContainerColliderTag`](container_manager_data/container_collider_tag.md).
-        """
-        self.tags: Dict[int, ContainerColliderTag] = dict()
+        # Tags describing each collider. Key = The trigger ID. Value = `ContainerColliderTag`.
+        self._tags: Dict[int, ContainerColliderTag] = dict()
 
     def get_initialization_commands(self) -> List[dict]:
+        """
+        This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+        :return: A list of commands that will initialize this add-on.
+        """
+
         return [{"$type": "send_segmentation_colors"},
                 {"$type": "send_rigidbodies",
                  "frequency": "always"}]
 
     def on_send(self, resp: List[bytes]) -> None:
+        """
+        This is called after commands are sent to the build and a response is received.
+
+        Use this function to send commands to the build on the next frame, given the `resp` response.
+        Any commands in the `self.commands` list will be sent on the next frame.
+
+        :param resp: The response from the build.
+        """
+
         # Get model names.
         if self._getting_model_names:
             self._getting_model_names = False
@@ -67,18 +80,17 @@ class ContainerManager(TriggerCollisionListener):
                         model_name = segmentation_colors.get_object_name(j).lower()
                         # This is a container. Add trigger colliders.
                         if model_name in ContainerManager.CONTAINERS:
-                            if "cube" in ContainerManager.CONTAINERS[model_name]:
+                            if "box" in ContainerManager.CONTAINERS[model_name]:
                                 for collider in ContainerManager.CONTAINERS[model_name]["cube"]:
-                                    trigger_collider = self.add_box_collider(object_id=object_id,
-                                                                             position=collider["position"],
-                                                                             scale=collider["scale"])
-                                    self.tags[trigger_collider] = ContainerColliderTag[collider["tag"]]
+                                    self.add_box_collider(object_id=object_id,
+                                                          position=collider["position"],
+                                                          scale=collider["scale"])
                             if "sphere" in ContainerManager.CONTAINERS[model_name]:
                                 for collider in ContainerManager.CONTAINERS[model_name]["sphere"]:
-                                    trigger_collider = self.add_sphere_collider(object_id=object_id,
-                                                                                position=collider["position"],
-                                                                                diameter=collider["diameter"])
-                                    self.tags[trigger_collider] = ContainerColliderTag[collider["tag"]]
+                                    self.add_sphere_collider(object_id=object_id,
+                                                             position=collider["position"],
+                                                             diameter=collider["diameter"])
+                    break
         super().on_send(resp=resp)
         # Get all sleeping objects.
         sleeping: List[int] = list()
@@ -98,7 +110,7 @@ class ContainerManager(TriggerCollisionListener):
         # 3. The trigger event is "enter" or "stay".
         for trigger_collision in self.collisions:
             if trigger_collision.collider_id in sleeping and \
-                    trigger_collision.trigger_id in self.container_colliders and \
+                    trigger_collision.trigger_id in self.container_trigger_ids and \
                     (trigger_collision.state == "enter" or trigger_collision.state == "stay"):
                 if trigger_collision.collidee_id not in self.containment:
                     self.containment[trigger_collision.collidee_id] = list()
@@ -106,13 +118,52 @@ class ContainerManager(TriggerCollisionListener):
                 if trigger_collision.collider_id not in self.containment[trigger_collision.collidee_id]:
                     self.containment[trigger_collision.collidee_id].append(ContainmentEvent(container_id=trigger_collision.collidee_id,
                                                                                             object_id=trigger_collision.collider_id,
-                                                                                            tag=self.tags[trigger_collision.trigger_id]))
+                                                                                            tag=self._tags[trigger_collision.trigger_id]))
 
-    def _add_trigger_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
-                              rotation: Dict[str, float], shape: str, trigger_id: int = None) -> int:
-        trigger_id = super()._add_trigger_collider(object_id=object_id, position=position, scale=scale,
-                                                   rotation=rotation, shape=shape, trigger_id=trigger_id)
-        self.container_colliders[trigger_id] = object_id
+    def add_box_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
+                         rotation: Dict[str, float] = None, trigger_id: int = None,
+                         tag: ContainerColliderTag = ContainerColliderTag.on) -> int:
+        """
+        Add a box-shaped trigger collider to an object. Optionally, set the trigger collider's containment semantic tag.
+
+        :param object_id: The ID of the object.
+        :param position: The position of the trigger collider relative to the parent object.
+        :param scale: The scale of the trigger collider.
+        :param rotation: The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param trigger_id: The unique ID of the trigger collider. If None, an ID will be automatically assigned.
+        :param tag: The semantic [`ContainerColliderTag`](collision_manager_data/container_collider_tag.md).
+
+        :return: The ID of the trigger collider.
+        """
+
+        trigger_id = super().add_box_collider(object_id=object_id, position=position, scale=scale, rotation=rotation,
+                                              trigger_id=trigger_id)
+        # Remember the tag.
+        self._tags[trigger_id] = ContainerColliderTag[tag]
+        # Remember the IDs.
+        self.container_trigger_ids[trigger_id] = object_id
+        return trigger_id
+
+    def add_sphere_collider(self, object_id: int, position: Dict[str, float], diameter: float, trigger_id: int = None,
+                            tag: ContainerColliderTag = ContainerColliderTag.on) -> int:
+        """
+        Add a sphere-shaped trigger collider to an object. Optionally, set the trigger collider's containment semantic tag.
+
+        :param object_id: The ID of the object.
+        :param position: The position of the trigger collider relative to the parent object.
+        :param diameter: The diameter of the trigger collider.
+        :param trigger_id: The unique ID of the trigger collider. If None, an ID will be automatically assigned.
+        :param tag: The semantic [`ContainerColliderTag`](collision_manager_data/container_collider_tag.md).
+
+        :return: The ID of the trigger collider.
+        """
+
+        trigger_id = super().add_sphere_collider(object_id=object_id, position=position, diameter=diameter,
+                                                 trigger_id=trigger_id)
+        # Remember the tag.
+        self._tags[trigger_id] = ContainerColliderTag[tag]
+        # Remember the IDs.
+        self.container_trigger_ids[trigger_id] = object_id
         return trigger_id
 
     def reset(self) -> None:
@@ -122,6 +173,6 @@ class ContainerManager(TriggerCollisionListener):
 
         super().reset()
         self._getting_model_names = True
-        self.container_colliders.clear()
+        self.container_trigger_ids.clear()
         self.containment.clear()
-        self.tags.clear()
+        self._tags.clear()

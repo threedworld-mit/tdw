@@ -1,6 +1,6 @@
 {
   "24_in_wall_cabinet_white_wood": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00011101,
@@ -17,7 +17,7 @@
     ]
   },
   "24_in_wall_cabinet_wood_beach_honey": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00011101,
@@ -34,7 +34,7 @@
     ]
   },
   "36_in_wall_cabinet_white_wood": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00217299,
@@ -51,7 +51,7 @@
     ]
   },
   "36_in_wall_cabinet_wood_beach_honey": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00217299,
@@ -68,7 +68,7 @@
     ]
   },
   "4ft_shelf_metal": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -111,7 +111,7 @@
     ]
   },
   "4ft_wood_shelving": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -154,7 +154,7 @@
     ]
   },
   "5ft_shelf_metal": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -210,7 +210,7 @@
     ]
   },
   "5ft_wood_shelving": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -266,7 +266,7 @@
     ]
   },
   "6ft_shelf_metal": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -335,7 +335,7 @@
     ]
   },
   "6ft_wood_shelving": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -404,7 +404,7 @@
     ]
   },
   "amphora_jar_vase": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -421,7 +421,7 @@
     ]
   },
   "appliance-ge-profile-microwave": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.06556807,
@@ -438,7 +438,7 @@
     ]
   },
   "appliance-ge-profile-microwave3": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -1.052e-05,
@@ -455,7 +455,7 @@
     ]
   },
   "b03_696615_object001": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -472,7 +472,7 @@
     ]
   },
   "b03_bosch_cbg675bs1b_2013__vray_composite": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00116101,
@@ -489,7 +489,7 @@
     ]
   },
   "b03_db_apps_tech_08_04_composite": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00048402,
@@ -506,7 +506,7 @@
     ]
   },
   "b03_db_apps_tech_08_07_composite": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00038452,
@@ -523,7 +523,7 @@
     ]
   },
   "b03_db_apps_tech_08_08_composite": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -1.983e-05,
@@ -540,7 +540,7 @@
     ]
   },
   "b03_ka90ivi20r_2013__vray": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.0008601,
@@ -557,7 +557,7 @@
     ]
   },
   "b03_restoration_hardware_pedestal_salvaged_round_tables": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00088453,
@@ -574,7 +574,7 @@
     ]
   },
   "b04_bowl_smooth": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -591,7 +591,7 @@
     ]
   },
   "b04_db_apps_tech_08_03": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00039601,
@@ -608,7 +608,7 @@
     ]
   },
   "b04_low": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -625,7 +625,7 @@
     ]
   },
   "b04_new": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -642,7 +642,7 @@
     ]
   },
   "b05_db_apps_tech_06_02_2": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00157642,
@@ -659,7 +659,7 @@
     ]
   },
   "b05_db_apps_tech_08_09_composite": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00011948,
@@ -676,7 +676,7 @@
     ]
   },
   "b05_table_new": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00271827,
@@ -693,7 +693,7 @@
     ]
   },
   "b05_whirlpool_microwave_wmc30516as_v-ray": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -2.4e-07,
@@ -710,7 +710,7 @@
     ]
   },
   "baking_sheet01": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -727,7 +727,7 @@
     ]
   },
   "baking_sheet07": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -744,7 +744,7 @@
     ]
   },
   "basket_18inx18inx12iin_bamboo": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -761,7 +761,7 @@
     ]
   },
   "basket_18inx18inx12iin_plastic_lattice": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -778,7 +778,7 @@
     ]
   },
   "basket_18inx18inx12iin_wicker": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -795,7 +795,7 @@
     ]
   },
   "basket_18inx18inx12iin_wood_mesh": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -812,7 +812,7 @@
     ]
   },
   "cabinet_24_door_drawer_wood_beach_honey": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -1.422e-05,
@@ -829,7 +829,7 @@
     ]
   },
   "cabinet_24_singledoor_wood_beach_honey": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00053208,
@@ -846,7 +846,7 @@
     ]
   },
   "cabinet_24_two_drawer_white_wood": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00056812,
@@ -863,7 +863,7 @@
     ]
   },
   "cabinet_24_two_drawer_wood_beach_honey": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00056812,
@@ -880,7 +880,7 @@
     ]
   },
   "cabinet_24_white_wood": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00051673,
@@ -897,7 +897,7 @@
     ]
   },
   "cabinet_24_wood_beach_honey": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00051673,
@@ -914,7 +914,7 @@
     ]
   },
   "cabinet_36_white_wood": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00072852,
@@ -931,7 +931,7 @@
     ]
   },
   "cabinet_36_wood_beach_honey": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00072852,
@@ -948,7 +948,7 @@
     ]
   },
   "cgaxis_models_10_11_vray": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -4.497e-05,
@@ -965,7 +965,7 @@
     ]
   },
   "chair_annabelle": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00130233,
@@ -982,7 +982,7 @@
     ]
   },
   "chair_billiani_doll": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.0009137,
@@ -999,7 +999,7 @@
     ]
   },
   "chair_thonet_marshall": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00199921,
@@ -1016,7 +1016,7 @@
     ]
   },
   "chair_willisau_riale": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00215499,
@@ -1033,7 +1033,7 @@
     ]
   },
   "de_castelli_placas_table": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.03947214,
@@ -1050,7 +1050,7 @@
     ]
   },
   "dining_room_table": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00045308,
@@ -1067,7 +1067,7 @@
     ]
   },
   "dishwasher_4": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00590059,
@@ -1084,7 +1084,7 @@
     ]
   },
   "emeco_navy_chair": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 7.065e-05,
@@ -1101,7 +1101,7 @@
     ]
   },
   "enzo_industrial_loft_pine_metal_round_dining_table": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00155357,
@@ -1118,7 +1118,7 @@
     ]
   },
   "fredericia_spine_stool_1": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00107983,
@@ -1135,7 +1135,7 @@
     ]
   },
   "fridge_large": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00370219,
@@ -1152,7 +1152,7 @@
     ]
   },
   "gas_stove": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.01800852,
@@ -1169,7 +1169,7 @@
     ]
   },
   "int_kitchen_accessories_le_creuset_bowl_30cm": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -1186,7 +1186,7 @@
     ]
   },
   "jug03": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -1203,7 +1203,7 @@
     ]
   },
   "lg_table_marble_green": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -1.189e-05,
@@ -1220,7 +1220,7 @@
     ]
   },
   "lg_table_white": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -1.281e-05,
@@ -1237,7 +1237,7 @@
     ]
   },
   "mater_high_stool_al_69": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00067162,
@@ -1254,7 +1254,7 @@
     ]
   },
   "measuring_pan": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -1271,7 +1271,7 @@
     ]
   },
   "microwave": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.020578,
@@ -1288,7 +1288,7 @@
     ]
   },
   "pan3": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -1305,7 +1305,7 @@
     ]
   },
   "plate05": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00010856,
@@ -1322,7 +1322,7 @@
     ]
   },
   "plate06": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 2.733e-05,
@@ -1339,7 +1339,7 @@
     ]
   },
   "plate07": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 1.57e-05,
@@ -1356,7 +1356,7 @@
     ]
   },
   "quatre_dining_table": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00010645,
@@ -1373,7 +1373,7 @@
     ]
   },
   "serving_bowl": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -1390,7 +1390,7 @@
     ]
   },
   "side_table_wood": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 5.1e-07,
@@ -1407,7 +1407,7 @@
     ]
   },
   "skillet_open_no_lid": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -1424,7 +1424,7 @@
     ]
   },
   "sm_table_white": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00035945,
@@ -1441,7 +1441,7 @@
     ]
   },
   "small_table_green_marble": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -0.00035968,
@@ -1458,7 +1458,7 @@
     ]
   },
   "teatray": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -1475,7 +1475,7 @@
     ]
   },
   "tolix_bar_stool": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": -7.37e-05,
@@ -1492,7 +1492,7 @@
     ]
   },
   "vase_05": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -1509,7 +1509,7 @@
     ]
   },
   "vase_06": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -1526,7 +1526,7 @@
     ]
   },
   "vase_laura_deko_vase_set": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0,
@@ -1543,7 +1543,7 @@
     ]
   },
   "vm_v5_070": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00010156,
@@ -1560,7 +1560,7 @@
     ]
   },
   "vray_062": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00307465,
@@ -1577,7 +1577,7 @@
     ]
   },
   "wood_chair": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00012799,
@@ -1594,7 +1594,7 @@
     ]
   },
   "yellow_side_chair": {
-    "cube": [
+    "box": [
       {
         "position": {
           "x": 0.00154154,

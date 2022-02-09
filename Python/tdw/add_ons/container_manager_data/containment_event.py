@@ -10,7 +10,7 @@ class ContainmentEvent:
         """
         :param container_id: The ID of the container.
         :param object_id: The ID of the contained object.
-        :param tag: A [`ContainerColliderTag`](container_collider_tag.md) describing the semantic nature of the event.
+        :param tag: A semantic [`ContainerColliderTag`](container_collider_tag.md) describing the semantic nature of the event.
         """
 
         """:field

@@ -6,14 +6,11 @@ from pathlib import Path
 import platform
 
 
-"""
-Create a composite object from a local asset bundle.
-Test that the object loaded correctly.
-Apply sub-object commands to the sub-objects.
-"""
-
-
 class CompositeObject(Controller):
+    """
+    Create a composite object from a local asset bundle. Apply sub-object commands to the sub-objects.
+    """
+
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.composite_object_manager = CompositeObjectManager()

@@ -22,6 +22,8 @@ Static data for a composite object and its sub-objects.
 
 - `prismatic_joints` [`PrismaticJointStatic`](sub_object/prismatic_joint_static.md) sub-objects such as a desk drawer. Key = The sub-object ID.
 
+- `sub_object_ids` A flat list of all sub-object IDs.
+
 ***
 
 ## Functions

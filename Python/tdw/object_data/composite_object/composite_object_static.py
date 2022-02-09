@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 from tdw.output_data import StaticCompositeObjects
 from tdw.object_data.composite_object.sub_object.non_machine_static import NonMachineStatic
 from tdw.object_data.composite_object.sub_object.light_static import LightStatic
@@ -22,7 +22,7 @@ class CompositeObjectStatic:
         """:field
         The ID of the root object.
         """
-        self.object_id = static_composite_objects.get_object_id(object_index)
+        self.object_id: int = static_composite_objects.get_object_id(object_index)
         """:field
         [`NonMachineStatic`](sub_object/non_machine_static.md) sub-objects such as puzzle pieces. Key = The sub-object ID.
         """
@@ -65,3 +65,13 @@ class CompositeObjectStatic:
         for i in range(static_composite_objects.get_num_prismatic_joints(object_index)):
             sub_object = PrismaticJointStatic(static_composite_objects, object_index, i)
             self.prismatic_joints[sub_object.sub_object_id] = sub_object
+        """:field
+        A flat list of all sub-object IDs.
+        """
+        self.sub_object_ids: List[int] = list()
+        self.sub_object_ids.extend(self.non_machines.keys())
+        self.sub_object_ids.extend(self.lights.keys())
+        self.sub_object_ids.extend(self.hinges.keys())
+        self.sub_object_ids.extend(self.springs.keys())
+        self.sub_object_ids.extend(self.motors.keys())
+        self.sub_object_ids.extend(self.prismatic_joints.keys())

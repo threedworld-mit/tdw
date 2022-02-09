@@ -1,7 +1,7 @@
 from tdw.output_data import TriggerCollision as Trigger
 
 
-class TriggerCollision:
+class TriggerCollisionEvent:
     """
     Data for a trigger collision event.
     """

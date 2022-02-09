@@ -2,8 +2,8 @@ from typing import List, Dict
 from overrides import final
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData
-from tdw.output_data import TriggerCollision as Trigger
-from tdw.collision_data.trigger_collision import TriggerCollision
+from tdw.output_data import TriggerCollision
+from tdw.collision_data.trigger_collision_event import TriggerCollisionEvent
 from tdw.add_ons.add_on import AddOn
 
 
@@ -25,9 +25,9 @@ class TriggerCollisionManager(AddOn):
         """
         self.trigger_ids:  Dict[int, int] = dict()
         """:field
-        A list of [`TriggerCollision`](../collision_data/trigger_collision.md) events from this frame.
+        A list of [`TriggerCollisionEvent`](../collision_data/trigger_collision_event.md) from this frame.
         """
-        self.collisions: List[TriggerCollision] = list()
+        self.collisions: List[TriggerCollisionEvent] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         return []
@@ -37,7 +37,7 @@ class TriggerCollisionManager(AddOn):
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "trco":
-                self.collisions.append(TriggerCollision(Trigger(resp[i])))
+                self.collisions.append(TriggerCollisionEvent(TriggerCollision(resp[i])))
 
     def add_box_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
                          rotation: Dict[str, float] = None, trigger_id: int = None) -> int:

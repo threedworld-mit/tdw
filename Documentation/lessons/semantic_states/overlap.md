@@ -1,6 +1,6 @@
-##### Objects and Scenes
+##### Semantic States
 
-# `Overlap` output data
+# Proximity to a region (`Overlap` output data)
 
 ## `Overlap` output data
 
@@ -176,7 +176,7 @@ The jug is in the bowl!
 
 ***
 
-**Next: [Reset a scene](reset_scene.md)**
+**Next: [Proximity to other objects (`TriggerCollisionManager` add-on)](trigger_collisons.md)**
 
 [Return to the README](../../../README.md)
 

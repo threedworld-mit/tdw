@@ -1,6 +1,8 @@
-##### Objects and Scenes
+##### Semantic States
 
-# `Raycast` output data
+# Line of sight (`Raycast` output data)
+
+*Note that this document doesn't cover visual perception, which is a separate topic. [Read this for more information.](../visual_perception/overview.md)*
 
 A **raycast** is a ray cast from an origin position to a destination position; it returns useful information such as whether the ray hit something in between the two points (and if so, what it hit and where). Raycasts are commonly used in video games to solve many problems such as determining line of sight or procedural generation. 
 
@@ -172,7 +174,7 @@ Result:
 
 ***
 
-**Next: [`Overlap` output data](overlap.md)**
+**Next: [Proximity to a region (`Overlap` output data)](overlap.md)**
 
 [Return to the README](../../../README.md)
 

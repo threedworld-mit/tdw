@@ -60,8 +60,8 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 1. Overview
 2. Line of sight (`Raycast` output data)
 3. Proximity to a region (`Overlap` output data)
-4. Proximity to other objects (`TriggerCollisionManager` add-on)
-5. Containment
+4. Proximity to other objects (the `TriggerCollisionManager` add-on)
+5. Containment (the `ContainerManager` add-on)
 6. Openness
 7. Grasped
 8. Occupancy maps

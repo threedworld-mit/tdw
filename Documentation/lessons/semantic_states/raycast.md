@@ -182,8 +182,8 @@ Result:
 
 Example controllers:
 
-- [raycast.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/raycast.py) Use raycast data to place an object in a bowl.
-- [spherecast.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/spherecast.py) Use spherecast data to place an object in a bowl.
+- [raycast.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/semantic_states/raycast.py) Use raycast data to place an object in a bowl.
+- [spherecast.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/semantic_states/spherecast.py) Use spherecast data to place an object in a bowl.
 
 Command API:
 

@@ -176,7 +176,7 @@ The jug is in the bowl!
 
 ***
 
-**Next: [Proximity to other objects (`TriggerCollisionManager` add-on)](trigger_collisons.md)**
+**Next: [Proximity to other objects (the `TriggerCollisionManager` add-on)](trigger_collisons.md)**
 
 [Return to the README](../../../README.md)
 
@@ -184,7 +184,7 @@ The jug is in the bowl!
 
 Example controllers:
 
-- [overlap.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/overlap.py) Use overlap data to determine if an object is in a bowl.
+- [overlap.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/semantic_states/overlap.py) Use overlap data to determine if an object is in a bowl.
 
 Python API:
 

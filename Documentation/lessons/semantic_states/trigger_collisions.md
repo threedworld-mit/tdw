@@ -1,6 +1,6 @@
 ##### Semantic States
 
-# Proximity to other objects (`TriggerCollisionManager` add-on)
+# Proximity to other objects (the `TriggerCollisionManager` add-on)
 
 *For more information regarding physics collisions, [read this.](../physx/collisions.md)*
 
@@ -136,3 +136,27 @@ Call `trigger_collision_manager.reset()` whenever you [reset a scene](../objects
 
 Add trigger colliders to objects with [`add_trigger_collider`](../../api/command_api.md#add_trigger_collider). Once a trigger collider is added to an object, it will send [`TriggerCollision`](../../api/output_data.md#TriggerCollision) output data whenever there is a trigger collision event.
 
+***
+
+**Next: [Containment (the `ContainerManager` add-on)](containment.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [trigger_collisions.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/semantic_states/trigger_collisions.py) An example of how to attach trigger colliders to objects and listen for trigger collision events.
+
+Python API:
+
+- [`TriggerCollisionManager`](../../python/add_ons/trigger_collision_manager.md)
+- [`TriggerCollisionEvent`](../../python/collision_data/trigger_collision_event.md)
+
+Command API:
+
+-  [`add_trigger_collider`](../../api/command_api.md#add_trigger_collider)
+
+Output data:
+
+- [`TriggerCollision`](../../api/output_data.md#TriggerCollision)

@@ -1,6 +1,6 @@
-# TriggerCollision
+# TriggerCollisionEvent
 
-`from tdw.collision_data.trigger_collision import TriggerCollision`
+`from tdw.collision_data.trigger_collision_event import TriggerCollisionEvent`
 
 Data for a trigger collision event.
 
@@ -22,7 +22,7 @@ Data for a trigger collision event.
 
 #### \_\_init\_\_
 
-**`TriggerCollision(collision)`**
+**`TriggerCollisionEvent(collision)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |

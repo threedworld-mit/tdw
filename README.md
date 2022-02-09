@@ -238,9 +238,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [Benchmark](Documentation/python/add_ons/benchmark.md)
 - [CinematicCamera](Documentation/python/add_ons/cinematic_camera.md)
 - [CollisionManager](Documentation/python/add_ons/collision_manager.md)
+- [CompositeObjectManager](Documentation/python/add_ons/composite_object_manager.md)
+- [ContainerManager](Documentation/python/add_ons/container_manager.md)
 - [EmbodiedAvatar](Documentation/python/add_ons/embodied_avatar.md)
 - [Floorplan](Documentation/python/add_ons/floorplan.md)
 - [ImageCapture](Documentation/python/add_ons/image_capture.md)
+- [InteriorSceneLighting](Documentation/python/add_ons/interior_scene_lighting.md)
 - [Keyboard](Documentation/python/add_ons/keyboard.md)
 - [Logger](Documentation/python/add_ons/logger.md)
 - [ModelVerifier](Documentation/python/add_ons/model_verifier.md)
@@ -255,12 +258,19 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [StepPhysics](Documentation/python/add_ons/step_physics.md)
 - [ThirdPersonCamera](Documentation/python/add_ons/third_person_camera.md)
 - [ThirdPersonCameraBase](Documentation/python/add_ons/third_person_camera_base.md)
+- [TriggerCollisionManager](Documentation/python/add_ons/trigger_collision_manager.md)
+
+**tdw.add_ons.container_manager_data**
+
+- [ContainerColliderTag](Documentation/python/add_ons/container_manager_data/container_collider_tag.md)
+- [ContainmentEvent](Documentation/python/add_ons/container_manager_data/containment_event.md)
 
 **tdw.collision_data**
 
 - [CollisionBase](Documentation/python/collision_data/collision_base.md)
 - [CollisionObjEnv](Documentation/python/collision_data/collision_obj_env.md)
 - [CollisionObjObj](Documentation/python/collision_data/collision_obj_obj.md)
+- [TriggerCollisionEvent](Documentation/python/collision_data/trigger_collision_event.md)
 
 **tdw.flex_data**
 
@@ -291,6 +301,25 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [Rigidbody](Documentation/python/object_data/rigidbody.md)
 - [Transform](Documentation/python/object_data/transform.md)
 
+**tdw.object_data.composite_object**
+
+- [CompositeObjectDynamic](Documentation/python/object_data/composite_object/composite_object_dynamic.md)
+- [CompositeObjectStatic](Documentation/python/object_data/composite_object/composite_object_static.md)
+
+**tdw.object_data.composite_object.sub_object**
+
+- [HingeDynamic](Documentation/python/object_data/composite_object/sub_object/hinge_dynamic.md)
+- [HingeStatic](Documentation/python/object_data/composite_object/sub_object/hinge_static.md)
+- [HingeStaticBase](Documentation/python/object_data/composite_object/sub_object/hinge_static_base.md)
+- [LightDynamic](Documentation/python/object_data/composite_object/sub_object/light_dynamic.md)
+- [LightStatic](Documentation/python/object_data/composite_object/sub_object/light_static.md)
+- [MotorStatic](Documentation/python/object_data/composite_object/sub_object/motor_static.md)
+- [NonMachineStatic](Documentation/python/object_data/composite_object/sub_object/non_machine_static.md)
+- [PrismaticJointStatic](Documentation/python/object_data/composite_object/sub_object/prismatic_joint_static.md)
+- [SpringStatic](Documentation/python/object_data/composite_object/sub_object/spring_static.md)
+- [SubObjectDynamic](Documentation/python/object_data/composite_object/sub_object/sub_object_dynamic.md)
+- [SubObjectStatic](Documentation/python/object_data/composite_object/sub_object/sub_object_static.md)
+
 **tdw.physics_audio**
 
 - [AudioMaterial](Documentation/python/physics_audio/audio_material.md)
@@ -307,7 +336,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 **tdw.release**
 
 - [Build](Documentation/python/release/build.md)
-- [Pypi](Documentation/python/release/pypi.md)
+- [PyPi](Documentation/python/release/pypi.md)
 
 **tdw.robot_data**
 
@@ -325,6 +354,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [SceneBounds](Documentation/python/scene_data/scene_bounds.md)
 
 # 4. Performance benchmarks
+
 1. [Performance benchmarks](Documentation/benchmark/benchmark.md)
 2. [Image capture](Documentation/benchmark/image_capture.md)
 3. [Object data](Documentation/benchmark/object_data.md)

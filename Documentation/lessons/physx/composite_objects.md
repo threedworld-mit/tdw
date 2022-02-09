@@ -195,7 +195,7 @@ You can destroy composite objects with [`destroy_object`](../../api/command_api.
 
 ### Low-level description
 
-When a scene is initialized, `CompositeObjectManager` sends [`send_static_composite_objects`](../../api/command_api.md#send_static_composite_objects) to receive [`StaticCompositeObjects`](../../api/output_data,md#StaticCompositeObjects) output data and caches it as a list of [`CompositeObjectStatic`](../../python/object_data/composite_object/composite_object_static.md) data objects. It also sends [`send_dynamic_composite_objects`](../../api/command_api.md#send_dynamic_composite_objects) to receive [`DynamicCompositeObjects`](../../api/output_data.md#DynamicCompositeObjects) per-frame and temporarily save it as a list of [`CompositeObjectDynamic`](../../python/object_data/composite_object/composite_object_dynamic.md) data objects.
+When a scene is initialized, `CompositeObjectManager` sends [`send_static_composite_objects`](../../api/command_api.md#send_static_composite_objects) to receive [`StaticCompositeObjects`](../../api/output_data.md#StaticCompositeObjects) output data and caches it as a list of [`CompositeObjectStatic`](../../python/object_data/composite_object/composite_object_static.md) data objects. It also sends [`send_dynamic_composite_objects`](../../api/command_api.md#send_dynamic_composite_objects) to receive [`DynamicCompositeObjects`](../../api/output_data.md#DynamicCompositeObjects) per-frame and temporarily save it as a list of [`CompositeObjectDynamic`](../../python/object_data/composite_object/composite_object_dynamic.md) data objects.
 
 ## Manipulating composite objects
 

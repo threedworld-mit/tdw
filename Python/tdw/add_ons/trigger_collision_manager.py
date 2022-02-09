@@ -7,7 +7,7 @@ from tdw.collision_data.trigger_collision import TriggerCollision
 from tdw.add_ons.add_on import AddOn
 
 
-class TriggerCollisionListener(AddOn):
+class TriggerCollisionManager(AddOn):
     """
     Listen for trigger collisions between objects.
     """
@@ -94,8 +94,8 @@ class TriggerCollisionListener(AddOn):
 
         assert trigger_id not in self.trigger_ids, f"Trigger {trigger_id} already exists."
         if trigger_id is None:
-            trigger_id = TriggerCollisionListener._NEXT_TRIGGER_ID
-            TriggerCollisionListener._NEXT_TRIGGER_ID += 1
+            trigger_id = TriggerCollisionManager._NEXT_TRIGGER_ID
+            TriggerCollisionManager._NEXT_TRIGGER_ID += 1
         self.commands.append({"$type": "add_trigger_collider",
                               "id": object_id,
                               "shape": shape,
@@ -116,4 +116,4 @@ class TriggerCollisionListener(AddOn):
 
         self.collisions.clear()
         self.trigger_ids.clear()
-        TriggerCollisionListener._NEXT_TRIGGER_ID = 0
+        TriggerCollisionManager._NEXT_TRIGGER_ID = 0

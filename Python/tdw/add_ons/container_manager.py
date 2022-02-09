@@ -3,12 +3,12 @@ from pkg_resources import resource_filename
 from pathlib import Path
 from typing import List, Dict
 from tdw.output_data import OutputData, SegmentationColors, Rigidbodies
-from tdw.add_ons.trigger_collision_listener import TriggerCollisionListener
+from tdw.add_ons.trigger_collision_manager import TriggerCollisionManager
 from tdw.add_ons.container_manager_data.container_collider_tag import ContainerColliderTag
 from tdw.add_ons.container_manager_data.containment_event import ContainmentEvent
 
 
-class ContainerManager(TriggerCollisionListener):
+class ContainerManager(TriggerCollisionManager):
     """
     Manage trigger collisions for 'container' objects.
 

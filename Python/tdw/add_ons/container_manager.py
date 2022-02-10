@@ -87,15 +87,18 @@ class ContainerManager(TriggerCollisionManager):
                                 if isinstance(trigger_collider_data, ContainerBoxTriggerCollider):
                                     self.add_box_collider(object_id=object_id,
                                                           position=trigger_collider_data.position,
-                                                          scale=trigger_collider_data.scale)
+                                                          scale=trigger_collider_data.scale,
+                                                          tag=trigger_collider_data.tag)
                                 elif isinstance(trigger_collider_data, ContainerCylinderTriggerCollider):
                                     self.add_cylinder_collider(object_id=object_id,
                                                                position=trigger_collider_data.position,
-                                                               scale=trigger_collider_data.scale)
+                                                               scale=trigger_collider_data.scale,
+                                                               tag=trigger_collider_data.tag)
                                 elif isinstance(trigger_collider_data, ContainerSphereTriggerCollider):
                                     self.add_sphere_collider(object_id=object_id,
                                                              position=trigger_collider_data.position,
-                                                             diameter=trigger_collider_data.diameter)
+                                                             diameter=trigger_collider_data.diameter,
+                                                             tag=trigger_collider_data.tag)
                                 else:
                                     raise Exception(trigger_collider_data)
                     break
@@ -157,7 +160,7 @@ class ContainerManager(TriggerCollisionManager):
         trigger_id = super().add_cylinder_collider(object_id=object_id, position=position, scale=scale, rotation=rotation,
                                                    trigger_id=trigger_id)
         # Remember the tag.
-        self._tags[trigger_id] = ContainerColliderTag[tag]
+        self._tags[trigger_id] = tag
         # Remember the IDs.
         self.container_trigger_ids[trigger_id] = object_id
         return trigger_id
@@ -179,7 +182,7 @@ class ContainerManager(TriggerCollisionManager):
         trigger_id = super().add_sphere_collider(object_id=object_id, position=position, diameter=diameter,
                                                  trigger_id=trigger_id)
         # Remember the tag.
-        self._tags[trigger_id] = ContainerColliderTag[tag]
+        self._tags[trigger_id] = tag
         # Remember the IDs.
         self.container_trigger_ids[trigger_id] = object_id
         return trigger_id

@@ -5,6 +5,11 @@ from typing import List, Dict
 from tdw.output_data import OutputData, SegmentationColors
 from tdw.add_ons.trigger_collision_manager import TriggerCollisionManager
 from tdw.add_ons.container_manager_data.container_collider_tag import ContainerColliderTag
+from tdw.add_ons.container_manager_data.container_trigger_collider import ContainerTriggerCollider
+from tdw.add_ons.container_manager_data.container_box_trigger_collider import ContainerBoxTriggerCollider
+from tdw.add_ons.container_manager_data.container_sphere_trigger_collider import ContainerSphereTriggerCollider
+from tdw.add_ons.container_manager_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
+from tdw.add_ons.container_manager_data.container_trigger_collider_decoder import ContainerTriggerColliderDecoder
 from tdw.add_ons.container_manager_data.containment_event import ContainmentEvent
 
 
@@ -25,7 +30,8 @@ class ContainerManager(TriggerCollisionManager):
     """:class_var
     A dictionary of all container model names and their trigger colliders.
     """
-    CONTAINERS: dict = loads(Path(resource_filename(__name__, "container_manager_data/colliders.json")).read_text())
+    CONTAINERS: Dict[str, List[ContainerTriggerCollider]] = loads(Path(resource_filename(__name__, "container_manager_data/colliders.json")).read_text(),
+                                                                  cls=ContainerTriggerColliderDecoder)
 
     def __init__(self):
         """
@@ -77,16 +83,21 @@ class ContainerManager(TriggerCollisionManager):
                         model_name = segmentation_colors.get_object_name(j).lower()
                         # This is a container. Add trigger colliders.
                         if model_name in ContainerManager.CONTAINERS:
-                            if "box" in ContainerManager.CONTAINERS[model_name]:
-                                for collider in ContainerManager.CONTAINERS[model_name]["cube"]:
+                            for trigger_collider_data in ContainerManager.CONTAINERS[model_name]:
+                                if isinstance(trigger_collider_data, ContainerBoxTriggerCollider):
                                     self.add_box_collider(object_id=object_id,
-                                                          position=collider["position"],
-                                                          scale=collider["scale"])
-                            if "sphere" in ContainerManager.CONTAINERS[model_name]:
-                                for collider in ContainerManager.CONTAINERS[model_name]["sphere"]:
+                                                          position=trigger_collider_data.position,
+                                                          scale=trigger_collider_data.scale)
+                                elif isinstance(trigger_collider_data, ContainerCylinderTriggerCollider):
+                                    self.add_cylinder_collider(object_id=object_id,
+                                                               position=trigger_collider_data.position,
+                                                               scale=trigger_collider_data.scale)
+                                elif isinstance(trigger_collider_data, ContainerSphereTriggerCollider):
                                     self.add_sphere_collider(object_id=object_id,
-                                                             position=collider["position"],
-                                                             diameter=collider["diameter"])
+                                                             position=trigger_collider_data.position,
+                                                             diameter=trigger_collider_data.diameter)
+                                else:
+                                    raise Exception(trigger_collider_data)
                     break
         super().on_send(resp=resp)
         # Get containment.
@@ -121,6 +132,30 @@ class ContainerManager(TriggerCollisionManager):
 
         trigger_id = super().add_box_collider(object_id=object_id, position=position, scale=scale, rotation=rotation,
                                               trigger_id=trigger_id)
+        # Remember the tag.
+        self._tags[trigger_id] = tag
+        # Remember the IDs.
+        self.container_trigger_ids[trigger_id] = object_id
+        return trigger_id
+
+    def add_cylinder_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
+                              rotation: Dict[str, float] = None, trigger_id: int = None,
+                              tag: ContainerColliderTag = ContainerColliderTag.on) -> int:
+        """
+        Add a cylinder-shaped trigger collider to an object. Optionally, set the trigger collider's containment semantic tag.
+
+        :param object_id: The ID of the object.
+        :param position: The position of the trigger collider relative to the parent object.
+        :param scale: The scale of the trigger collider.
+        :param rotation: The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param trigger_id: The unique ID of the trigger collider. If None, an ID will be automatically assigned.
+        :param tag: The semantic [`ContainerColliderTag`](collision_manager_data/container_collider_tag.md).
+
+        :return: The ID of the trigger collider.
+        """
+
+        trigger_id = super().add_cylinder_collider(object_id=object_id, position=position, scale=scale, rotation=rotation,
+                                                   trigger_id=trigger_id)
         # Remember the tag.
         self._tags[trigger_id] = ContainerColliderTag[tag]
         # Remember the IDs.

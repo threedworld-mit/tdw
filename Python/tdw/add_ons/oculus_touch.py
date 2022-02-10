@@ -1,4 +1,4 @@
-from typing import List, Union, Callable, Dict
+from typing import List, Callable, Dict
 from tdw.add_ons.vr import VR
 from tdw.vr_data.rig_type import RigType
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
@@ -36,8 +36,8 @@ class OculusTouch(VR):
                          headset_resolution_scale=headset_resolution_scale)
         self._set_graspable: bool = set_graspable
         # Button press events.
-        self._button_press_events_left: Dict[OculusTouchButton, Union[Callable, List[dict]]] = dict()
-        self._button_press_events_right: Dict[OculusTouchButton, Union[Callable, List[dict]]] = dict()
+        self._button_press_events_left: Dict[OculusTouchButton, Callable[[], None]] = dict()
+        self._button_press_events_right: Dict[OculusTouchButton, Callable[[], None]] = dict()
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -70,35 +70,20 @@ class OculusTouch(VR):
                 for buttons, events in zip([oculus_touch_buttons.get_left(), oculus_touch_buttons.get_right()],
                                            [self._button_press_events_left, self._button_press_events_right]):
                     for button in buttons:
+                        # Invoke the button press event.
                         if button in events:
-                            # Append commands to the next `communicate()` call.
-                            if isinstance(events[button], list):
-                                self.commands.extend(events[button])
-                            # Invoke a function.
-                            else:
-                                events[button]()
+                            events[button]()
 
-    def listen(self, button: OculusTouchButton, is_left: bool, commands: Union[dict, List[dict]] = None,
-               function: Callable = None) -> None:
+    def listen_to_button(self, button: OculusTouchButton, is_left: bool, function: Callable[[], None]) -> None:
         """
         Listen for Oculus Touch controller button presses.
 
         :param button: The Oculus Touch controller button.
         :param is_left: If True, this is the left controller. If False, this is the right controller.
-        :param commands: Commands to be sent when the key is pressed. Can be None.
-        :param function: Function to invoke when the key is pressed. Can be None.
+        :param function: The function to invoke when the button is pressed. This function must have no arguments and return None.
         """
 
-        response: Union[Callable, List[dict]]
-        if commands is not None:
-            if isinstance(commands, dict):
-                commands = [commands]
-            response = commands
-        elif function is not None:
-            response = function
-        else:
-            return
         if is_left:
-            self._button_press_events_left[button] = response
+            self._button_press_events_left[button] = function
         else:
-            self._button_press_events_right[button] = response
+            self._button_press_events_right[button] = function

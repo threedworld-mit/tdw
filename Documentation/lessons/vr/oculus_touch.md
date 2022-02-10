@@ -2,7 +2,16 @@
 
 # Oculus Touch
 
-The **Oculus Touch** is a VR rig that uses an Oculus headset (Rift, Rift S, Quest, or Quest 2) and Touch controllers. It supports head and hand tracking, grasping and dropping objects, controller button input, and teleporting around the room.
+The **Oculus Touch** is a VR rig that uses an Oculus headset and Touch controllers. It supports head and hand tracking, grasping and dropping objects, controller button input, and teleporting around the room.
+
+## Requirements
+
+- Windows 10 or 11
+- [A compatible GPU](https://support.oculus.com/articles/headsets-and-accessories/oculus-link/oculus-link-compatibility/)
+- Oculus headset (Rift, Rift S, Quest, or Quest 2)
+- *Quest and Quest 2:* An Oculus Link Cable
+  - A USB-C port
+- [The Oculus PC app](https://www.oculus.com/setup/)
 
 ## The `OculusTouch` add-on
 

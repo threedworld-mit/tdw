@@ -15,7 +15,7 @@ class VRData(Controller):
 
         self.vr = OculusTouch(human_hands=False, output_data=True)
         # Quit when the left trigger button is pressed.
-        self.vr.listen(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
         self.add_ons.extend([self.vr])
 
     def run(self) -> None:

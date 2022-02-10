@@ -10,7 +10,9 @@ In TDW, trigger colliders can be used to determine how close one object is to an
 
 ## The `TriggerCollisionManager` add-on
 
-The simplest way to add trigger colliders to objects is to use the [`TriggerCollisionManager`](../../python/add_ons/trigger_collision_manager.md) add-on. (Note that there is an even higher-level implementation of this that uses pre-defined trigger colliders; see [Containment](containment.md), the next document in this section.)
+The simplest way to add trigger colliders to objects is to use the [`TriggerCollisionManager`](../../python/add_ons/trigger_collision_manager.md) add-on. 
+
+There is an even higher-level implementation of  this add-on that uses pre-defined trigger colliders; see [Containment](containment.md), the next document in this section.
 
 In this example, we'll create a scene and add two objects, a basket and a small ball. We'll attach a trigger collider to the basket using `trigger_collision_manager.add_box_collider()`. Then we'll [apply a force](../physx/forces.md) to both objects. Even though both objects move, the trigger collider will still detect when the ball is in the basket:
 
@@ -113,18 +115,22 @@ Add box-shaped colliders with `trigger_collision_manager.add_box_collider(object
 - `rotation` is optional. It is Euler angles relative to the parent object. If this isn't set, it will default to `{"x": 0, "y": 0, "z": 0}`. 
 - `trigger_id` is optional. It is the ID of the trigger collider, which can be useful if an object has multiple trigger colliders. If this isn't set, it defaults to a random integer.
 
+Add cylinder-shaped colliders with `trigger_collision_manager.add_cylinder_collider(object_id, position, scale, rotation, trigger_id)`.
+
+- `position` is *relative* to the parent object; the trigger collider will always move with the parent object.
+- `scale` is the dimensions of the trigger collider. 
+- `rotation` is optional. It is Euler angles relative to the parent object. If this isn't set, it will default to `{"x": 0, "y": 0, "z": 0}`. 
+- `trigger_id` is optional. It is the ID of the trigger collider, which can be useful if an object has multiple trigger colliders. If this isn't set, it defaults to a random integer.
+
 Add sphere-shaped colliders with `trigger_collision_manager.add_sphere_collider(object_id, position, diameter)`.
 
 - `position` is *relative* to the parent object; the trigger collider will always move with the parent object. 
 - `diameter` is the diameter of the trigger collider.
-- `rotation` is optional. It is Euler angles relative to the parent object. If this isn't set, it will default to `{"x": 0, "y": 0, "z": 0}`. 
 - `trigger_id` is optional. It is the ID of the trigger collider, which can be useful if an object has multiple trigger colliders. If this isn't set, it defaults to a random integer.
 
-### Static output data
+The three functions listed above will update `trigger_collision_manager.trigger_ids`, a dictionary. The key is a trigger ID and the value is an object ID.
 
-When `trigger_collision_manager` is first initialized, it caches `trigger_collision_manager.trigger_ids`, a dictionary; the key is a trigger ID and the value is an object ID.
-
-### Dynamic output data
+### Output data
 
 On every `c.communicate()` call, `trigger_collision_manager.collisions` updates. This is a dictionary; the key is the collider ID and the value is a [`TriggerCollisionEvent`](../../python/collision_data/trigger_collision_event.md). The collidee is the object that has the trigger collider and the collider is the object that is colliding with it.
 

@@ -11,7 +11,7 @@ This add-on assigns trigger collisions based on a pre-defined dictionary of mode
 An object is 'contained' by a 'container' if:
 
 1. There is a trigger "enter" or "stay" event.
-2. The trigger event is between the object and one of the container trigger colliders.
+2. The trigger event is between the object and one of the trigger colliders added via this add-on.
 
 ***
 
@@ -29,9 +29,7 @@ An object is 'contained' by a 'container' if:
 
 - `collisions` A list of [`TriggerCollisionEvent`](../collision_data/trigger_collision_event.md) from this frame.
 
-- `container_trigger_ids` A dictionary of trigger colliders used for containers. Key = The trigger ID. Value = The object ID.
-
-- `containment` A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container ID *(not the trigger ID)*. Value = A list of [`ContainmentEvent`](container_manager_data/containment_event.md) data.
+- `events` A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container ID *(not the trigger ID)*. Value = A list of [`ContainmentEvent`](container_manager_data/containment_event.md) data.
 
 ***
 

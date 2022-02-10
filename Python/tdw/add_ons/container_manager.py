@@ -24,7 +24,7 @@ class ContainerManager(TriggerCollisionManager):
     An object is 'contained' by a 'container' if:
 
     1. There is a trigger "enter" or "stay" event.
-    2. The trigger event is between the object and one of the container trigger colliders.
+    2. The trigger event is between the object and one of the trigger colliders added via this add-on.
     """
 
     """:class_var
@@ -41,13 +41,9 @@ class ContainerManager(TriggerCollisionManager):
         super().__init__()
         self._getting_model_names: bool = True
         """:field
-        A dictionary of trigger colliders used for containers. Key = The trigger ID. Value = The object ID.
-        """
-        self.container_trigger_ids:  Dict[int, int] = dict()
-        """:field
         A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container ID *(not the trigger ID)*. Value = A list of [`ContainmentEvent`](container_manager_data/containment_event.md) data.
         """
-        self.containment: Dict[int, List[ContainmentEvent]] = dict()
+        self.events: Dict[int, List[ContainmentEvent]] = dict()
         # Tags describing each collider. Key = The trigger ID. Value = `ContainerColliderTag`.
         self._tags: Dict[int, ContainerColliderTag] = dict()
 
@@ -104,18 +100,18 @@ class ContainerManager(TriggerCollisionManager):
                     break
         super().on_send(resp=resp)
         # Get containment.
-        self.containment.clear()
+        self.events.clear()
         # Get objects that are in containers.
         for trigger_collision in self.collisions:
-            if trigger_collision.trigger_id in self.container_trigger_ids and \
+            if trigger_collision.trigger_id in self.trigger_ids and \
                     (trigger_collision.state == "enter" or trigger_collision.state == "stay"):
-                if trigger_collision.collidee_id not in self.containment:
-                    self.containment[trigger_collision.collidee_id] = list()
+                if trigger_collision.collidee_id not in self.events:
+                    self.events[trigger_collision.collidee_id] = list()
                 # Record the event.
-                if trigger_collision.collider_id not in self.containment[trigger_collision.collidee_id]:
-                    self.containment[trigger_collision.collidee_id].append(ContainmentEvent(container_id=trigger_collision.collidee_id,
-                                                                                            object_id=trigger_collision.collider_id,
-                                                                                            tag=self._tags[trigger_collision.trigger_id]))
+                if trigger_collision.collider_id not in self.events[trigger_collision.collidee_id]:
+                    self.events[trigger_collision.collidee_id].append(ContainmentEvent(container_id=trigger_collision.collidee_id,
+                                                                                       object_id=trigger_collision.collider_id,
+                                                                                       tag=self._tags[trigger_collision.trigger_id]))
 
     def add_box_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
                          rotation: Dict[str, float] = None, trigger_id: int = None,
@@ -137,8 +133,6 @@ class ContainerManager(TriggerCollisionManager):
                                               trigger_id=trigger_id)
         # Remember the tag.
         self._tags[trigger_id] = tag
-        # Remember the IDs.
-        self.container_trigger_ids[trigger_id] = object_id
         return trigger_id
 
     def add_cylinder_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
@@ -161,8 +155,6 @@ class ContainerManager(TriggerCollisionManager):
                                                    trigger_id=trigger_id)
         # Remember the tag.
         self._tags[trigger_id] = tag
-        # Remember the IDs.
-        self.container_trigger_ids[trigger_id] = object_id
         return trigger_id
 
     def add_sphere_collider(self, object_id: int, position: Dict[str, float], diameter: float, trigger_id: int = None,
@@ -183,8 +175,6 @@ class ContainerManager(TriggerCollisionManager):
                                                  trigger_id=trigger_id)
         # Remember the tag.
         self._tags[trigger_id] = tag
-        # Remember the IDs.
-        self.container_trigger_ids[trigger_id] = object_id
         return trigger_id
 
     def reset(self) -> None:
@@ -194,6 +184,5 @@ class ContainerManager(TriggerCollisionManager):
 
         super().reset()
         self._getting_model_names = True
-        self.container_trigger_ids.clear()
-        self.containment.clear()
+        self.events.clear()
         self._tags.clear()

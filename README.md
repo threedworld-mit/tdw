@@ -64,7 +64,6 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 5. Containment (the `ContainerManager` add-on)
 6. Openness
 7. Grasped
-8. Occupancy maps
 
 ### 2.1.3 3D Model Libraries
 
@@ -187,6 +186,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Overview](Documentation/lessons/navigation/overview.md)
 2. [NavMesh pathfinding](Documentation/lessons/navigation/nav_mesh.md)
+2. [Occupancy maps](Documentation/lessons/navigation/occupancy_maps.md)
 
 ## 2.11 Non-physics objects
 

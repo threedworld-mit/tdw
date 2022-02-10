@@ -25,8 +25,15 @@ class ContainerTriggerCollider(ABC):
         self.position: Dict[str, float] = {"x": round(position["x"], 8),
                                            "y": round(position["y"], 8),
                                            "z": round(position["z"], 8)}
+        """:field
+        The [`TriggerColliderShape`](../../collision_data/trigger_collider_shape.md).
+        """
         self.shape: TriggerColliderShape = self._get_shape()
 
     @abstractmethod
     def _get_shape(self) -> TriggerColliderShape:
+        """
+        :return: The shape of the collider.
+        """
+
         raise Exception()

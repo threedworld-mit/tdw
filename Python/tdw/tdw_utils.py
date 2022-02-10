@@ -1,6 +1,9 @@
 import numpy as np
 import random
 import math
+from platform import system
+from requests import get
+from tqdm import tqdm
 from scipy.spatial import distance
 from tdw.output_data import IsOnNavMesh, Images, Bounds
 from PIL import Image
@@ -8,7 +11,8 @@ import io
 import os
 from tdw.controller import Controller
 from typing import List, Tuple, Dict, Optional, Union
-from tdw.librarian import ModelRecord
+from tdw.librarian import ModelRecord, ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
+    RobotLibrarian, HumanoidLibrarian, HumanoidAnimationLibrarian
 from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
@@ -767,3 +771,145 @@ class TDWUtils:
         nx, ny = shape
         oy, ox = np.ogrid[-row:nx - row, -column:ny - column]
         return ox * ox + oy * oy <= radius * radius
+
+    @staticmethod
+    def download_asset_bundles(path: Union[str, Path], models: Dict[str, List[str]] = None, scenes: Dict[str, List[str]] = None,
+                               materials: Dict[str, List[str]] = None, hdri_skyboxes: Dict[str, List[str]] = None,
+                               robots: Dict[str, List[str]] = None, humanoids: Dict[str, List[str]] = None,
+                               humanoid_animations: Dict[str, List[str]] = None) -> None:
+        """
+        Download asset bundles from TDW's remote S3 server. Create local librarian .json files for each type (models, scenes, etc.).
+        This can be useful to speed up the process of scene creation; it is always faster to load local asset bundles though it still takes time to load them into memory.
+
+        Note that if you wish to download asset bundles from tdw-private (`models_full.json`) you need valid S3 credentials.
+
+        For each parameter (`models`, `scenes`, etc.), if the value is `None`, no asset bundles will be downloaded.
+
+        Asset bundles will only be downloaded for your operating system. For example, if you want Linux asset bundles, call this function on Linux.
+
+        :param path: The root directory of all of the asset bundles and librarian files.
+        :param models: A dictionary of models. Key = The model library, for example `"models_core.json"`. Value = A list of model names.
+        :param scenes: A dictionary of scenes. Key = The model library, for example `"scenes.json"`. Value = A list of scene names.
+        :param materials: A dictionary of materials. Key = The material library, for example `"materials_med.json"`. Value = A list of material names.
+        :param hdri_skyboxes: A dictionary of HDRI skyboxes. Key = The HDRI skybox library, for example `"hdri_skyboxes.json"`. Value = A list of HDRI skybox names.
+        :param robots: A dictionary of robots. Key = The robot library, for example `"robots.json"`. Value = A list of robot names.
+        :param humanoids: A dictionary of humanoids. Key = The model library, for example `"humanoids.json"`. Value = A list of humanoid names.
+        :param humanoid_animations: A dictionary of humanoid animations. Key = The model library, for example `"humanoid_animations.json"`. Value = A list of humanoid animation names.
+        """
+
+        if isinstance(path, str):
+            output_directory = Path(path)
+        else:
+            output_directory = path
+        if not output_directory.exists():
+            output_directory.mkdir(parents=True)
+        private_bucket_prefix: str = "https://tdw-private.s3.amazonaws.com/"
+        validated_s3: bool = False
+        for asset_bundles, librarian_type, filename in zip([models, scenes, materials, hdri_skyboxes, robots,
+                                                            humanoids, humanoid_animations],
+                                                           [ModelLibrarian, SceneLibrarian, MaterialLibrarian,
+                                                            HDRISkyboxLibrarian, RobotLibrarian, HumanoidLibrarian,
+                                                            HumanoidAnimationLibrarian],
+                                                           ["models", "scenes", "materials", "hdri_skyboxes",
+                                                            "robots", "humanoids", "humanoid_animations"]):
+            if asset_bundles is None:
+                continue
+            num_total = 0
+            for remote_librarian_key in asset_bundles:
+                num_total += len(asset_bundles[remote_librarian_key])
+            if num_total == 0:
+                continue
+            pbar = tqdm(total=num_total)
+            librarian_path = output_directory.joinpath(filename + ".json")
+            # Create the library.
+            if not librarian_path.exists():
+                librarian_type.create_library(description=filename, path=str(librarian_path.resolve()))
+            # Load the local librarian.
+            local_librarian = librarian_type(str(librarian_path.resolve()))
+            # Create the  asset bundles directory.
+            asset_bundles_directory = output_directory.joinpath(filename)
+            if not asset_bundles_directory.exists():
+                asset_bundles_directory.mkdir(parents=True)
+            # Load each remote librarian.
+            for remote_librarian_key in asset_bundles:
+                remote_librarian = librarian_type(remote_librarian_key)
+                # Download each asset bundle.
+                for asset_bundle_name in asset_bundles[remote_librarian_key]:
+                    remote_record = remote_librarian.get_record(asset_bundle_name)
+                    asset_bundle_path = asset_bundles_directory.joinpath(asset_bundle_name)
+                    # This asset bundle already exists.
+                    if asset_bundle_path.exists():
+                        pbar.update(1)
+                        continue
+                    pbar.set_description(asset_bundle_name)
+                    url = remote_record.urls[system()]
+                    if private_bucket_prefix in url:
+                        # Make sure we can download from tdw-private.
+                        if not validated_s3:
+                            if not TDWUtils.validate_amazon_s3():
+                                print(asset_bundle_name, remote_librarian_key)
+                                return
+                            validated_s3 = True
+                        s3_key = url.split(private_bucket_prefix)[1]
+                        session = boto3.Session(profile_name="tdw")
+                        s3 = session.resource("s3")
+                        resp = s3.meta.client.get_object(Bucket='tdw-private', Key=s3_key)
+                        status_code = resp["ResponseMetadata"]["HTTPStatusCode"]
+                        assert status_code == 200, (url, status_code)
+                        # Save the asset bundle.
+                        asset_bundle_path.write_bytes(resp["Body"].read())
+                    else:
+                        resp = get(url)
+                        assert resp.status_code == 200, (url, resp.status_code)
+                        # Save the asset bundle.
+                        asset_bundle_path.write_bytes(resp.content)
+                    pbar.update(1)
+                    # Update and write the record.
+                    remote_record.urls = {system(): "file:///" + str(asset_bundle_path.resolve()).replace("\\", "/")}
+                    local_record = local_librarian.get_record(asset_bundle_name)
+                    local_librarian.add_or_update_record(remote_record, overwrite=local_record is not None, write=True)
+            pbar.close()
+
+    @staticmethod
+    def set_default_libraries(model_library: Union[str, Path] = None, scene_library: Union[str, Path] = None,
+                              material_library: Union[str, Path] = None, hdri_skybox_library: Union[str, Path] = None,
+                              robot_library: Union[str, Path] = None, humanoid_library: Union[str, Path] = None,
+                              humanoid_animation_library: Union[str, Path] = None) -> None:
+        """
+        Set the path to the default libraries.
+
+        If any of the parameters of this function are left as `None`, the default remote S3 librarian will be used.
+
+        :param model_library: The absolute path to a local model library file.
+        :param scene_library: The absolute path to a local scene library file.
+        :param material_library: The absolute path to a local material library file.
+        :param hdri_skybox_library: The absolute path to a local HDRI skybox library file.
+        :param robot_library: The absolute path to a local robot library file.
+        :param humanoid_library: The absolute path to a local humanoid library file.
+        :param humanoid_animation_library: The absolute path to a local humanoid animation library file.
+        """
+
+        for library_path, librarian_type, library_dictionary in zip([model_library, scene_library, material_library,
+                                                                     hdri_skybox_library, robot_library,
+                                                                     humanoid_library, humanoid_animation_library],
+                                                                    [ModelLibrarian, SceneLibrarian, MaterialLibrarian,
+                                                                     HDRISkyboxLibrarian, RobotLibrarian,
+                                                                     HumanoidLibrarian, HumanoidAnimationLibrarian],
+                                                                    [Controller.MODEL_LIBRARIANS,
+                                                                     Controller.SCENE_LIBRARIANS,
+                                                                     Controller.MATERIAL_LIBRARIANS,
+                                                                     Controller.HDRI_SKYBOX_LIBRARIANS,
+                                                                     Controller.ROBOT_LIBRARIANS,
+                                                                     Controller.HUMANOID_LIBRARIANS,
+                                                                     Controller.HUMANOID_ANIMATION_LIBRARIANS]):
+            if library_path is None:
+                continue
+            # Get the path.
+            if isinstance(library_path, Path):
+                path = str(library_path.resolve())
+            elif isinstance(model_library, str):
+                path = str(Path(library_path).resolve())
+            else:
+                raise Exception(library_path)
+            library = librarian_type(path)
+            library_dictionary[library.get_default_library()] = library

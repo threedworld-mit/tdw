@@ -363,8 +363,11 @@
 | Command | Description |
 | --- | --- |
 | [`set_hinge_limits`](#set_hinge_limits) | Set the angle limits of a hinge joint. This will work with hinges, motors, and springs.  |
-| [`set_motor`](#set_motor) | Set the target velocity and force of a motor.  |
-| [`set_spring`](#set_spring) | Set the target position of a spring.  |
+| [`set_motor_force`](#set_motor_force) | Set the force a motor.  |
+| [`set_motor_target_velocity`](#set_motor_target_velocity) | Set the target velocity a motor.  |
+| [`set_spring_damper`](#set_spring_damper) | Set the damper value of a spring.  |
+| [`set_spring_force`](#set_spring_force) | Set the force of a spring.  |
+| [`set_spring_target_position`](#set_spring_target_position) | Set the target position of a spring.  |
 | [`set_sub_object_light`](#set_sub_object_light) | Turn a light on or off.  |
 
 **Visual Material Command**
@@ -568,12 +571,14 @@
 | --- | --- |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
+| [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
 | [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
+| [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -4880,27 +4885,83 @@ Set the angle limits of a hinge joint. This will work with hinges, motors, and s
 
 ***
 
-## **`set_motor`**
+## **`set_motor_force`**
 
-Set the target velocity and force of a motor. 
+Set the force a motor. 
 
 - <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
 
     - <font style="color:deepskyblue">**Type:** `motor`</font>
 
 ```python
-{"$type": "set_motor", "target_velocity": 0.125, "force": 0.125, "id": 1}
+{"$type": "set_motor_force", "force": 0.125, "id": 1}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"target_velocity"` | float | The target velocity of the motor. | |
 | `"force"` | float | The force of the motor. | |
 | `"id"` | int | The unique object ID. | |
 
 ***
 
-## **`set_spring`**
+## **`set_motor_target_velocity`**
+
+Set the target velocity a motor. 
+
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
+
+    - <font style="color:deepskyblue">**Type:** `motor`</font>
+
+```python
+{"$type": "set_motor_target_velocity", "target_velocity": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"target_velocity"` | float | The target velocity of the motor. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_spring_damper`**
+
+Set the damper value of a spring. 
+
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
+
+    - <font style="color:deepskyblue">**Type:** `spring`</font>
+
+```python
+{"$type": "set_spring_damper", "damper": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"damper"` | float | The damper value of the spring. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_spring_force`**
+
+Set the force of a spring. 
+
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
+
+    - <font style="color:deepskyblue">**Type:** `spring`</font>
+
+```python
+{"$type": "set_spring_force", "spring_force": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"spring_force"` | float | The force of the spring. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_spring_target_position`**
 
 Set the target position of a spring. 
 
@@ -4909,7 +4970,7 @@ Set the target position of a spring.
     - <font style="color:deepskyblue">**Type:** `spring`</font>
 
 ```python
-{"$type": "set_spring", "target_position": 0.125, "id": 1}
+{"$type": "set_spring_target_position", "target_position": 0.125, "id": 1}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7031,7 +7092,7 @@ Options for when to send data.
 
 Send data for every composite object in the scene. 
 
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`CompositeObjects`](output_data.md#CompositeObjects)</font>
@@ -7042,6 +7103,38 @@ Send data for every composite object in the scene.
 
 ```python
 {"$type": "send_composite_objects", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_dynamic_composite_objects`**
+
+Send dynamic data for every composite object in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`DynamicCompositeObjects`](output_data.md#DynamicCompositeObjects)</font>
+
+```python
+{"$type": "send_dynamic_composite_objects"}
+```
+
+```python
+{"$type": "send_dynamic_composite_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7237,6 +7330,38 @@ Receive data about the sub-regions within a scene in the scene. Only send this c
 
 ```python
 {"$type": "send_scene_regions", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_composite_objects`**
+
+Send static data for every composite object in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticCompositeObjects`](output_data.md#StaticCompositeObjects)</font>
+
+```python
+{"$type": "send_static_composite_objects"}
+```
+
+```python
+{"$type": "send_static_composite_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

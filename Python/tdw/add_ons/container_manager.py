@@ -2,7 +2,7 @@ from json import loads
 from pkg_resources import resource_filename
 from pathlib import Path
 from typing import List, Dict
-from tdw.output_data import OutputData, SegmentationColors, Rigidbodies
+from tdw.output_data import OutputData, SegmentationColors
 from tdw.add_ons.trigger_collision_manager import TriggerCollisionManager
 from tdw.add_ons.container_manager_data.container_collider_tag import ContainerColliderTag
 from tdw.add_ons.container_manager_data.containment_event import ContainmentEvent
@@ -18,9 +18,8 @@ class ContainerManager(TriggerCollisionManager):
 
     An object is 'contained' by a 'container' if:
 
-    1. The object isn't moving (the Rigidbody is sleeping).
-    2. There is a trigger "enter" or "stay" event.
-    3. The trigger event is between the object and one of the container trigger colliders.
+    1. There is a trigger "enter" or "stay" event.
+    2. The trigger event is between the object and one of the container trigger colliders.
     """
 
     """:class_var
@@ -53,9 +52,7 @@ class ContainerManager(TriggerCollisionManager):
         :return: A list of commands that will initialize this add-on.
         """
 
-        return [{"$type": "send_segmentation_colors"},
-                {"$type": "send_rigidbodies",
-                 "frequency": "always"}]
+        return [{"$type": "send_segmentation_colors"}]
 
     def on_send(self, resp: List[bytes]) -> None:
         """
@@ -92,25 +89,11 @@ class ContainerManager(TriggerCollisionManager):
                                                              diameter=collider["diameter"])
                     break
         super().on_send(resp=resp)
-        # Get all sleeping objects.
-        sleeping: List[int] = list()
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "rigi":
-                rigidbodies = Rigidbodies(resp[i])
-                for j in range(rigidbodies.get_num()):
-                    if rigidbodies.get_sleeping(j):
-                        sleeping.append(rigidbodies.get_id(j))
-                break
         # Get containment.
         self.containment.clear()
-        # An object is contained by a container if:
-        # 1. The object is sleeping.
-        # 2. The trigger collider is a container collider.
-        # 3. The trigger event is "enter" or "stay".
+        # Get objects that are in containers.
         for trigger_collision in self.collisions:
-            if trigger_collision.collider_id in sleeping and \
-                    trigger_collision.trigger_id in self.container_trigger_ids and \
+            if trigger_collision.trigger_id in self.container_trigger_ids and \
                     (trigger_collision.state == "enter" or trigger_collision.state == "stay"):
                 if trigger_collision.collidee_id not in self.containment:
                     self.containment[trigger_collision.collidee_id] = list()

@@ -26,5 +26,5 @@ Data for a trigger collision event.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| collision |  Trigger |  | The trigger collision output data. |
+| collision |  TriggerCollision |  | The [`TriggerCollision`](../../api/output_data.md#TriggerCollision) output data. |
 

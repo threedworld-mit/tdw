@@ -1,4 +1,4 @@
-from tdw.output_data import TriggerCollision as Trigger
+from tdw.output_data import TriggerCollision
 
 
 class TriggerCollisionEvent:
@@ -6,9 +6,9 @@ class TriggerCollisionEvent:
     Data for a trigger collision event.
     """
 
-    def __init__(self, collision: Trigger):
+    def __init__(self, collision: TriggerCollision):
         """
-        :param collision: The trigger collision output data.
+        :param collision: The [`TriggerCollision`](../../api/output_data.md#TriggerCollision) output data.
         """
 
         """:field

@@ -24,37 +24,24 @@ Listen for trigger collisions between objects.
 
 #### get_initialization_commands
 
-**`self.get_initialization_commands(object_id, position, scale, rotation, trigger_id)`**
+**`self.get_initialization_commands()`**
 
-Add a box-shaped trigger collider to an object.
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
 
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  |  | The ID of the object. |
-| position |  |  | The position of the trigger collider relative to the parent object. |
-| scale |  |  | The scale of the trigger collider. |
-| rotation |  |  | The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| trigger_id |  |  | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
-
-_Returns:_  The ID of the trigger collider.
+_Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
-**`self.on_send(object_id, position, scale, rotation, trigger_id)`**
+**`self.on_send(resp)`**
 
-Add a box-shaped trigger collider to an object.
+This is called after commands are sent to the build and a response is received.
 
+Use this function to send commands to the build on the next frame, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the next frame.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| object_id |  |  | The ID of the object. |
-| position |  |  | The position of the trigger collider relative to the parent object. |
-| scale |  |  | The scale of the trigger collider. |
-| rotation |  |  | The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| trigger_id |  |  | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
-
-_Returns:_  The ID of the trigger collider.
+| resp |  List[bytes] |  | The response from the build. |
 
 #### add_box_collider
 
@@ -63,6 +50,25 @@ _Returns:_  The ID of the trigger collider.
 **`self.add_box_collider(object_id, position, scale, rotation=None, trigger_id=None)`**
 
 Add a box-shaped trigger collider to an object.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| object_id |  int |  | The ID of the object. |
+| position |  Dict[str, float] |  | The position of the trigger collider relative to the parent object. |
+| scale |  Dict[str, float] |  | The scale of the trigger collider. |
+| rotation |  Dict[str, float] | None | The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| trigger_id |  int  | None | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
+
+_Returns:_  The ID of the trigger collider.
+
+#### add_cylinder_collider
+
+**`self.add_cylinder_collider(object_id, position, scale)`**
+
+**`self.add_cylinder_collider(object_id, position, scale, rotation=None, trigger_id=None)`**
+
+Add a cylinder-shaped trigger collider to an object.
 
 
 | Parameter | Type | Default | Description |

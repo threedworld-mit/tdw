@@ -10,9 +10,8 @@ This add-on assigns trigger collisions based on a pre-defined dictionary of mode
 
 An object is 'contained' by a 'container' if:
 
-1. The object isn't moving (the Rigidbody is sleeping).
-2. There is a trigger "enter" or "stay" event.
-3. The trigger event is between the object and one of the container trigger colliders.
+1. There is a trigger "enter" or "stay" event.
+2. The trigger event is between the object and one of the container trigger colliders.
 
 ***
 
@@ -20,7 +19,7 @@ An object is 'contained' by a 'container' if:
 
 | Variable | Type | Description |
 | --- | --- | --- |
-| `CONTAINERS` | dict | A dictionary of all container model names and their trigger colliders. |
+| `CONTAINERS` | Dict[str, List[ContainerTriggerCollider]] | A dictionary of all container model names and their trigger colliders. |
 
 ***
 
@@ -46,20 +45,11 @@ An object is 'contained' by a 'container' if:
 
 #### get_initialization_commands
 
-**`self.get_initialization_commands(object_id, position, scale, rotation, trigger_id)`**
+**`self.get_initialization_commands()`**
 
-Add a box-shaped trigger collider to an object.
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
 
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  |  | The ID of the object. |
-| position |  |  | The position of the trigger collider relative to the parent object. |
-| scale |  |  | The scale of the trigger collider. |
-| rotation |  |  | The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| trigger_id |  |  | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
-
-_Returns:_  The ID of the trigger collider.
+_Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
@@ -78,9 +68,9 @@ Any commands in the `self.commands` list will be sent on the next frame.
 
 **`self.add_box_collider(object_id, position, scale)`**
 
-**`self.add_box_collider(object_id, position, scale, rotation=None, trigger_id=None)`**
+**`self.add_box_collider(object_id, position, scale, rotation=None, trigger_id=None, tag=ContainerColliderTag.on)`**
 
-Add a box-shaped trigger collider to an object.
+Add a box-shaped trigger collider to an object. Optionally, set the trigger collider's containment semantic tag.
 
 
 | Parameter | Type | Default | Description |
@@ -90,6 +80,27 @@ Add a box-shaped trigger collider to an object.
 | scale |  Dict[str, float] |  | The scale of the trigger collider. |
 | rotation |  Dict[str, float] | None | The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | trigger_id |  int  | None | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
+| tag |  ContainerColliderTag  | ContainerColliderTag.on | The semantic [`ContainerColliderTag`](collision_manager_data/container_collider_tag.md). |
+
+_Returns:_  The ID of the trigger collider.
+
+#### add_cylinder_collider
+
+**`self.add_cylinder_collider(object_id, position, scale)`**
+
+**`self.add_cylinder_collider(object_id, position, scale, rotation=None, trigger_id=None, tag=ContainerColliderTag.on)`**
+
+Add a cylinder-shaped trigger collider to an object. Optionally, set the trigger collider's containment semantic tag.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| object_id |  int |  | The ID of the object. |
+| position |  Dict[str, float] |  | The position of the trigger collider relative to the parent object. |
+| scale |  Dict[str, float] |  | The scale of the trigger collider. |
+| rotation |  Dict[str, float] | None | The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| trigger_id |  int  | None | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
+| tag |  ContainerColliderTag  | ContainerColliderTag.on | The semantic [`ContainerColliderTag`](collision_manager_data/container_collider_tag.md). |
 
 _Returns:_  The ID of the trigger collider.
 
@@ -117,39 +128,4 @@ _Returns:_  The ID of the trigger collider.
 **`self.reset()`**
 
 Reset this add-on. Call this before resetting a scene.
-
-#### on_send
-
-**`self.on_send(object_id, position, scale, rotation, trigger_id)`**
-
-Add a box-shaped trigger collider to an object.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  |  | The ID of the object. |
-| position |  |  | The position of the trigger collider relative to the parent object. |
-| scale |  |  | The scale of the trigger collider. |
-| rotation |  |  | The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| trigger_id |  |  | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
-
-_Returns:_  The ID of the trigger collider.
-
-#### add_sphere_collider
-
-**`self.add_sphere_collider(object_id, position, diameter)`**
-
-**`self.add_sphere_collider(object_id, position, diameter, trigger_id=None)`**
-
-Add a sphere-shaped trigger collider to an object.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the object. |
-| position |  Dict[str, float] |  | The position of the trigger collider relative to the parent object. |
-| diameter |  float |  | The diameter of the trigger collider. |
-| trigger_id |  int  | None | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
-
-_Returns:_  The ID of the trigger collider.
 

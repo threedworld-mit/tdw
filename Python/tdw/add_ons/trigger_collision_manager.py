@@ -31,9 +31,24 @@ class TriggerCollisionManager(AddOn):
         self.collisions: List[TriggerCollisionEvent] = list()
 
     def get_initialization_commands(self) -> List[dict]:
+        """
+        This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+        :return: A list of commands that will initialize this add-on.
+        """
+
         return []
 
     def on_send(self, resp: List[bytes]) -> None:
+        """
+        This is called after commands are sent to the build and a response is received.
+
+        Use this function to send commands to the build on the next frame, given the `resp` response.
+        Any commands in the `self.commands` list will be sent on the next frame.
+
+        :param resp: The response from the build.
+        """
+
         self.collisions.clear()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])

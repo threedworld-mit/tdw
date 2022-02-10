@@ -262,7 +262,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 **tdw.add_ons.container_manager_data**
 
+- [ContainerBoxTriggerCollider](Documentation/python/add_ons/container_manager_data/container_box_trigger_collider.md)
 - [ContainerColliderTag](Documentation/python/add_ons/container_manager_data/container_collider_tag.md)
+- [ContainerCylinderTriggerCollider](Documentation/python/add_ons/container_manager_data/container_cylinder_trigger_collider.md)
+- [ContainerNonUniformScaleTriggerCollider](Documentation/python/add_ons/container_manager_data/container_non_uniform_scale_trigger_collider.md)
+- [ContainerSphereTriggerCollider](Documentation/python/add_ons/container_manager_data/container_sphere_trigger_collider.md)
+- [ContainerTriggerCollider](Documentation/python/add_ons/container_manager_data/container_trigger_collider.md)
 - [ContainmentEvent](Documentation/python/add_ons/container_manager_data/containment_event.md)
 
 **tdw.collision_data**
@@ -270,6 +275,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CollisionBase](Documentation/python/collision_data/collision_base.md)
 - [CollisionObjEnv](Documentation/python/collision_data/collision_obj_env.md)
 - [CollisionObjObj](Documentation/python/collision_data/collision_obj_obj.md)
+- [TriggerColliderShape](Documentation/python/collision_data/trigger_collider_shape.md)
 - [TriggerCollisionEvent](Documentation/python/collision_data/trigger_collision_event.md)
 
 **tdw.flex_data**

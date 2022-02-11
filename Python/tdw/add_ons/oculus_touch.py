@@ -58,7 +58,8 @@ class OculusTouch(VR):
                     static_rigidbodies = StaticRigidbodies(resp[i])
                     for j in range(static_rigidbodies.get_num()):
                         if not static_rigidbodies.get_kinematic(j):
-                            self.commands.append({"$type": "set_vr_graspable"})
+                            self.commands.append({"$type": "set_vr_graspable",
+                                                  "id": static_rigidbodies.get_id(j)})
                     break
         super().on_send(resp=resp)
         # Get the button presses.

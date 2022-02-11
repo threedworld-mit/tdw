@@ -10,7 +10,7 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
-class VRObservedObjects(Controller):
+class OculusTouchImageCapture(Controller):
     """
     Add several objects to the scene. Record which objects are visible to the VR agent.
     """
@@ -79,5 +79,5 @@ class VRObservedObjects(Controller):
 
 
 if __name__ == "__main__":
-    c = VRObservedObjects()
+    c = OculusTouchImageCapture()
     c.run()

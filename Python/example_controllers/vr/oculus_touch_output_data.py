@@ -4,7 +4,7 @@ from tdw.add_ons.oculus_touch import OculusTouch
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 
 
-class VRData(Controller):
+class OculusTouchOutputData(Controller):
     """
     Add several objects to the scene and parse VR output data.
     """
@@ -19,6 +19,7 @@ class VRData(Controller):
         self.add_ons.extend([self.vr])
 
     def run(self) -> None:
+        self.vr.set_position(position={"x": 0, "y": 0, "z": -0.2})
         commands = [TDWUtils.create_empty_room(12, 12)]
         # Add the table object and make it kinematic.
         commands.extend(self.get_add_physics_object(model_name="small_table_green_marble",
@@ -66,5 +67,5 @@ class VRData(Controller):
 
 
 if __name__ == "__main__":
-    c = VRData()
+    c = OculusTouchOutputData()
     c.run()

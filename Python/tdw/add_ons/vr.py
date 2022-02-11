@@ -121,9 +121,9 @@ class VR(AddOn, ABC):
                 self.held_right = vr_rig.get_held_right()
                 break
 
-    def teleport(self, position: Dict[str, float]) -> None:
+    def set_position(self, position: Dict[str, float]) -> None:
         """
-        Teleport the VR rig to a new position.
+        Set the position of the VR rig.
 
         :param position: The new position.
         """
@@ -131,15 +131,15 @@ class VR(AddOn, ABC):
         self.commands.append({"$type": "teleport_vr_rig",
                               "position": position})
 
-    def rotate(self, rotation: float) -> None:
+    def rotate_by(self, angle: float) -> None:
         """
         Rotate the VR rig by an angle.
 
-        :param rotation: The angle in degrees.
+        :param angle: The angle in degrees.
         """
 
-        self.commands.append({"$type": "rotate_vr_rig",
-                              "rotation": rotation})
+        self.commands.append({"$type": "rotate_vr_rig_by",
+                              "angle": angle})
 
     def reset(self) -> None:
         """

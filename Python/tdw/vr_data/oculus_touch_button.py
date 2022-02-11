@@ -12,7 +12,4 @@ class OculusTouchButton(IntFlag):
     secondary_button = 8
     trigger_button = 16
     primary_2d_axis_click = 32
-    primary_2d_axis_touch = 64
-    secondary_2d_axis_click = 128
-    primary_touch = 256
-    secondary_touch = 512
+    secondary_2d_axis_click = 64

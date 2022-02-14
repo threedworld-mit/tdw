@@ -34,9 +34,17 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 - Added new composite object mechanism type: `prismatic_joint`
 
-### Model library
+### Model Library
 
 - Added to `models_core.json`: large_mesh_basket, trashbin, b04_11_02_041, b04_kevin_reilly_pattern_floor_lamp, duncan_floor_lamp_crate_and_barrel, b03_restoration_hardware_pedestal_salvaged_round_tables, b04_03_077, gas_stove
+
+### Robot Library
+
+- Fixed various issues with fetch robot's wheels:
+  - Added four revolute joints for the non-motorized wheels: non_motorized_wheel_front_left, non_motorized_wheel_front_right, non_motorized_wheel_back_left, non_motorized_wheel_back_right.
+  - Removed bellows_link_2 as a joint (it was causing fetch to turn and was otherwise non-functional) but kept the visual mesh.
+  - Removed estop_link as a joint (it didn't do anything) but kept the visual mesh.
+  - Removed laser_link fixed joint and visual mesh (it didn't do anything).
 
 ### Example Controllers
 

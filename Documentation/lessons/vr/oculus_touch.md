@@ -314,9 +314,9 @@ Set the hand model with the optional constructor parameter `human_hands` (defaul
 
 ### Teleport and rotate the VR rig
 
-You can "teleport" by clicking down the left control stick; release to teleport to the location at the end of the rendered arc. You can programatically set the rig's position with `vr.set_position(position)`. This can be useful for setting the initial position of the rig.
+You can "teleport" around your scene by clicking down the left control stick; release to teleport to the location at the end of the rendered arc. This can be useful when your virtual scene space is larger than your real-world (Guardian) space, and you cannot simply walk to certain areas within your virtual space. You can programatically set the rig's position in the scene with `vr.set_position(position)`. This can be useful for initially placing yourself at a particular location within your scene.
 
-You can rotate the rig by physically moving. You can programatically rotate the rig with `vr.rotate_by(angle)`. This can be useful for setting the initial rotation of the rig.
+You can rotate the rig by physically turning your body. You can programatically rotate the rig with `vr.rotate_by(angle)`. This can be useful for setting the initial rotation of the rig, in order to start off facing a particular direction in your scene. 
 
 ### Reset
 

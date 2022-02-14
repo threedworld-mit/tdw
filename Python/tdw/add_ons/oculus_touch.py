@@ -88,3 +88,11 @@ class OculusTouch(VR):
             self._button_press_events_left[button] = function
         else:
             self._button_press_events_right[button] = function
+
+    def reset(self) -> None:
+        """
+        Reset the VR rig. Call this whenever a scene is reset.
+        """
+
+        super().reset()
+        self._set_graspable = False

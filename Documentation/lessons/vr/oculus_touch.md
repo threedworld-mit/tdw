@@ -273,13 +273,32 @@ You can rotate the rig by physically moving. You can programatically rotate the 
 
 ### Reset
 
-Whenever a new scene is loaded, you must call `vr.reset()` to re-initialize the VR add-on.
+Whenever a new scene is loaded, you must call `vr.reset()` to re-initialize the VR add-on:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_touch import OculusTouch
+
+c = Controller()
+vr = OculusTouch()
+c.add_ons.append(vr)
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="rh10",
+                                object_id=Controller.get_unique_id(),
+                                position={"x": 0, "y": 0, "z": 0.5})])
+vr.reset()
+c.communicate([{"$type": "load_scene",
+                "scene_name": "ProcGenScene"},
+               TDWUtils.create_empty_room(12, 12)])
+c.communicate({"$type" : "terminate"})
+```
 
 ## Collision detection
 
 *For more information regarding collision detection, [read this](../physx/collisions.md).*
 
-The Oculus Touch rig has a small collider at its base. Each palm has a Rigibody and a collider. The base and the palms will be detected if [collision detection is enabled](../physx/collisions.md). If you are using [PyImpact](../audio/py_impact.md) (see below), tapping your hands together will create a faint sound.
+The Oculus Touch rig has a small collider at its base. Each palm has a Rigidbody and a collider. The base and the palms will be detected if [collision detection is enabled](../physx/collisions.md). If you are using [PyImpact](../audio/py_impact.md) (see below), tapping your hands together will create a faint sound.
 
 ## Audio
 

@@ -72,6 +72,7 @@ class VR(AddOn, ABC):
         :return: A list of commands that will initialize this add-on.
         """
 
+        # Create the VR rig.
         commands = [{"$type": "create_vr_rig",
                      "sync_timestep_with_vr": True,
                      "rig_type": self._rig_type.name},
@@ -79,9 +80,11 @@ class VR(AddOn, ABC):
                      "resolution_scale_factor": self._headset_resolution_scale},
                     {"$type": "set_post_process",
                      "value": False}]
+        # Send VR data per frame.
         if self._output_data:
             commands.append({"$type": "send_vr_rig",
                              "frequency": "always"})
+        # Enable image capture.
         if self._attach_avatar is not None:
             commands.extend([{"$type": "attach_avatar_to_vr_rig",
                              "id": VR.AVATAR_ID},
@@ -147,6 +150,7 @@ class VR(AddOn, ABC):
         """
 
         self.initialized = False
+        self.commands.clear()
         self.rig = VR._get_empty_transform()
         self.left_hand = VR._get_empty_transform()
         self.right_hand = VR._get_empty_transform()

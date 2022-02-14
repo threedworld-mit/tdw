@@ -116,13 +116,13 @@ class PyImpact(CollisionManager):
     """
     ROBOT_JOINT_MATERIAL: AudioMaterial = AudioMaterial.metal
     """:class_var
-    The [material](../physics_audio/audio_material.md) used for human body parts such as in VR.
+    The [material](../physics_audio/audio_material.md) used for human body parts in VR.
     """
-    HUMAN_MATERIAL: AudioMaterial = AudioMaterial.cardboard
+    VR_HUMAN_MATERIAL: AudioMaterial = AudioMaterial.cardboard
     """:class_var
     The assumed bounciness value for human body parts such as in VR.
     """
-    HUMAN_BOUNCINESS: float = 0.3
+    VR_HUMAN_BOUNCINESS: float = 0.3
     """:class_var
     The amp value for the floor.
     """
@@ -1011,8 +1011,8 @@ class PyImpact(CollisionManager):
             elif r_id == "soct":
                 soct = StaticOculusTouch(resp[i])
                 if soct.get_human_hands():
-                    vr_material = PyImpact.HUMAN_MATERIAL
-                    vr_bounciness = PyImpact.HUMAN_BOUNCINESS
+                    vr_material = PyImpact.VR_HUMAN_MATERIAL
+                    vr_bounciness = PyImpact.VR_HUMAN_BOUNCINESS
                 else:
                     vr_material = PyImpact.ROBOT_JOINT_MATERIAL
                     vr_bounciness = PyImpact.ROBOT_JOINT_BOUNCINESS

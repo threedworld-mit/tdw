@@ -2,7 +2,7 @@
 
 `from tdw.vr_data.oculus_touch_button import OculusTouchButton`
 
-Oculus touch buttons.
+Enum values for Oculus Touch buttons.
 
 | Value | Description |
 | --- | --- |

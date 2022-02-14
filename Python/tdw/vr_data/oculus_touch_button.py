@@ -3,7 +3,7 @@ from enum import IntFlag
 
 class OculusTouchButton(IntFlag):
     """
-    Oculus touch buttons.
+    Enum values for Oculus Touch buttons.
     """
 
     grip_button = 1

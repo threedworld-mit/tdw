@@ -6,6 +6,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ## v1.9.5
 
+### New Features
+
+- **Added support for the Oculus Quest 2 with Touch controllers.**
+
 ### Command API
 
 #### New Commands
@@ -59,7 +63,9 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 - Added: `OculusTouch` an add-on for the Oculus Touch VR rig.
   - Added abstract base class `VR`
-
+- Added the following VR data classes:
+  - `OculusTouchButton` Enum values for Oculus Touch buttons.
+  - `RigType` Enum values for VR rigs.
 - Added: `CompositeObjectManager` an add-on for managing composite object data. 
 - Added the following composite object data classes: 
   - `CompositeObjectStatic` Static data for a composite object and its sub-objects. 
@@ -73,6 +79,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
     - `LightDynamic` Dynamic data for a light sub-object of a composite object. 
     - `HingeDynamic` Dynamic data for a hinge, motor, or spring sub-object of a composite object. 
 - `PyImpact` will create impact sounds for VR nodes (e.g. hands).
+  - Added: `VR_HUMAN_MATERIAL` and `VR_HUMAN_BOUNCINESS`
+
 
 ### Example Controllers
 
@@ -80,21 +88,40 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Removed `physx/kinematic_composite_object.py`
 - Added `physx/composite_object_open.py`
 - Added `physx/composite_object_torque.py`
+- Moved `humans/keyboard_controls.py` to `keyboard/keyboard_controls.py`
+- Moved `humans/keyboard_minimal.py` to `keyboard/keyboard_minimal.py`
+- Removed `humans/vr_minimal.py` 
+- Removed `humans/vr_observed_objects.py`
+- Added `vr/oculus_touch_button_listener.py`
+- Added `vr/oculus_touch_image_capture.py`
+- Added `vr/oculus_touch_minimal.py` 
+- Added `vr/oculus_touch_output_data.py`
+- Added `vr/oculus_touch_py_impact.py`
 
 ### Documentation 
 
 #### New Documentation 
 
-| Document                                                     | Description                                      | 
-| ------------------------------------------------------------ | ------------------------------------------------ | 
-| `python/add_ons/composite_object_manager.md`                 | API document for `CompositeObjectManager`        | 
-| `python/object_data/composite_object/composite_object_static.md`<br>`python/object_data/composite_object/composite_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/sub_object_static.md`<br>`python/object_data/composite_object/sub_object/light_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static_base.md`<br>`python/object_data/composite_object/sub_object/motor_static.md`<br>`python/object_data/composite_object/sub_object/spring_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static.md`<br>`python/object_data/composite_object/sub_object/prismatic_joint_static.md`<br>`python/object_data/composite_object/sub_object/non_machine_static.md`<br>`python/object_data/composite_object/sub_object/sub_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/light_dynamic.md`<br>`python/object_data/composite_object/sub_object/hinge_dynamic.md` | API documents for composite object data classes. | 
+| Document                                                     | Description                                                |
+| ------------------------------------------------------------ | ---------------------------------------------------------- |
+| `python/add_ons/composite_object_manager.md`                 | API document for `CompositeObjectManager`                  |
+| `python/object_data/composite_object/composite_object_static.md`<br>`python/object_data/composite_object/composite_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/sub_object_static.md`<br>`python/object_data/composite_object/sub_object/light_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static_base.md`<br>`python/object_data/composite_object/sub_object/motor_static.md`<br>`python/object_data/composite_object/sub_object/spring_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static.md`<br>`python/object_data/composite_object/sub_object/prismatic_joint_static.md`<br>`python/object_data/composite_object/sub_object/non_machine_static.md`<br>`python/object_data/composite_object/sub_object/sub_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/light_dynamic.md`<br>`python/object_data/composite_object/sub_object/hinge_dynamic.md` | API documents for composite object data classes.           |
+| `lessons/vr/overview.md`                                     | Overview of VR.                                            |
+| `lessons/vr/oculus_touch.md`                                 | Tutorial on the Oculus Touch rig and `OculusTouch` add-on. |
 
 #### Modified Documentation 
 
-| Document                             | Modification                                                 | 
-| ------------------------------------ | ------------------------------------------------------------ | 
-| `lessons/physx/composite_objects.md` | Rewrote most of the document to explain how to use the `CompositeObjectManager`.<br>Added a section explaining how to determine if an object is "open".<br>Clarified the difference between sub-meshes and sub-objects.<br>Added more example code. | 
+| Document                             | Modification                                                 |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md` | Rewrote most of the document to explain how to use the `CompositeObjectManager`.<br>Added a section explaining how to determine if an object is "open".<br>Clarified the difference between sub-meshes and sub-objects.<br>Added more example code. |
+| `lessons/agents/overview.md`         | Split "Humans" section into "Keyboard controls" and "VR".    |
+| `lessons/humans/keyboard.md`         | Moved to: `lessons/keyboard/keyboard.md`                     |
+
+#### Removed Documentation
+
+| Document               | Reason                                          |
+| ---------------------- | ----------------------------------------------- |
+| `lessons/humans/vr.md` | Replaced with new VR documentation (see above). |
 
 ## v1.9.4
 

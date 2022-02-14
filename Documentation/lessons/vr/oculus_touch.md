@@ -6,7 +6,7 @@ The **Oculus Touch** is a VR rig that uses an Oculus headset and Touch controlle
 
 ## Requirements
 
-- Windows 10 or 11
+- Windows 10
 - [A compatible GPU](https://support.oculus.com/articles/headsets-and-accessories/oculus-link/oculus-link-compatibility/)
 - Oculus headset (Rift, Rift S, Quest, or Quest 2)
 - *Quest and Quest 2:* An Oculus Link Cable

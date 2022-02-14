@@ -81,6 +81,9 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - `PyImpact` will create impact sounds for VR nodes (e.g. hands).
   - Added: `VR_HUMAN_MATERIAL` and `VR_HUMAN_BOUNCINESS`
 
+### Build
+
+- Dropped support for Flex in VR (this never worked very well).
 
 ### Example Controllers
 
@@ -93,6 +96,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Removed `humans/vr_minimal.py` 
 - Removed `humans/vr_observed_objects.py`
 - Added `vr/oculus_touch_button_listener.py`
+- Added `vr/oculus_touch_composite_object.py`
 - Added `vr/oculus_touch_image_capture.py`
 - Added `vr/oculus_touch_minimal.py` 
 - Added `vr/oculus_touch_output_data.py`
@@ -108,6 +112,9 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `python/object_data/composite_object/composite_object_static.md`<br>`python/object_data/composite_object/composite_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/sub_object_static.md`<br>`python/object_data/composite_object/sub_object/light_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static_base.md`<br>`python/object_data/composite_object/sub_object/motor_static.md`<br>`python/object_data/composite_object/sub_object/spring_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static.md`<br>`python/object_data/composite_object/sub_object/prismatic_joint_static.md`<br>`python/object_data/composite_object/sub_object/non_machine_static.md`<br>`python/object_data/composite_object/sub_object/sub_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/light_dynamic.md`<br>`python/object_data/composite_object/sub_object/hinge_dynamic.md` | API documents for composite object data classes.           |
 | `lessons/vr/overview.md`                                     | Overview of VR.                                            |
 | `lessons/vr/oculus_touch.md`                                 | Tutorial on the Oculus Touch rig and `OculusTouch` add-on. |
+| `python/add_ons/oculus_touch.md`                             | API document for `OculusTouch` add-on.                     |
+| `python/add_ons/vr.md`                                       | API document for `VR` abstract class.                      |
+| `python/vr_data/oculus_touch_button`<br>`python/vr_data/rig_type.md` | API documents for VR data classes.                         |
 
 #### Modified Documentation 
 

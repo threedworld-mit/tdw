@@ -213,6 +213,7 @@ class OculusTouchCompositeObject(Controller):
         self.vr = OculusTouch(human_hands=False, output_data=True, attach_avatar=True, set_graspable=False)
         # Quit when the left trigger button is pressed.
         self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        self.add_ons.append(self.vr)
 
     def run(self) -> None:
         self.communicate(Controller.get_add_physics_object(model_name="vm_v5_072_composite",

@@ -62,6 +62,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [CompositeObjects](#CompositeObjects) | Data for all composite objects currently in the scene. | `comp` |
+| [DynamicCompositeObjects](#DynamicCompositeObjects) | Dynamic data for composite objects. | `dcom` |
 | [EmptyObjects](#EmptyObjects) | The position of each empty object in the scene. | `empt` |
 | [EnvironmentColliderIntersection](#EnvironmentColliderIntersection) | Data for an whose colliders are intersecting with an environment collider such as a wall. | `enci` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
@@ -90,6 +91,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [SceneRegions](#SceneRegions) | Data regarding the scene regions. | `sreg` |
 | [ScreenPosition](#ScreenPosition) | A position on the screen converted from a worldspace position. | `scre` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
+| [StaticCompositeObjects](#StaticCompositeObjects) | Static data for composite objects. | `scom` |
 | [StaticRigidbodies](#StaticRigidbodies) | Static rigibody data (mass, kinematic state, etc.) for objects in the scene. | `srig` |
 | [StaticRobot](#StaticRobot) | Static data for a robot in the scene. | `srob` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
@@ -332,6 +334,26 @@ Data for all composite objects currently in the scene.
 | `get_num_sub_objects(index)` | The number of sub objects. | `int` |
 | `get_sub_object_id(index, sub_object_index)` | The ID of the sub object. | `int` |
 | `get_sub_object_machine_type(index, sub_object_index)` | The type of the sub object machine. | `str` |
+
+## DynamicCompositeObjects
+
+`d = DynamicCompositeObjects(byte_array)`
+
+**Identifier:** `dcom`
+
+Dynamic data for composite objects.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_object_id(index)` | The ID of the object. | `int` |
+| `get_num_hinges(index)` | The number of hinges. | `int` |
+| `get_hinge_id(index, hinge_index)` | The ID of the hinge. | `int` |
+| `get_hinge_angle(index, hinge_index)` | The angle of the hinge. | `float` |
+| `get_hinge_velocity(index, hinge_index)` | The velocity of the hinge. | `float` |
+| `get_num_lights(index)` | The number of lights. | `int` |
+| `get_light_id(index, light_index)` | The ID of the light. | `int` |
+| `get_light_is_on(index, light_index)` | The on of the light is. | `bool` |
 
 ## EmptyObjects
 
@@ -769,6 +791,48 @@ Color segmentation data for objects in the scene.
 | `get_object_color(index)` | The color of the object. | `Tuple[float, float, float]` |
 | `get_object_name(index)` | The name of the object. | `str` |
 | `get_object_category(index)` | The category of the object. | `str` |
+
+## StaticCompositeObjects
+
+`s = StaticCompositeObjects(byte_array)`
+
+**Identifier:** `scom`
+
+Static data for composite objects.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_object_id(index)` | The ID of the object. | `int` |
+| `get_num_non_machines(index)` | The number of non machines. | `int` |
+| `get_non_machine_id(index, non_machine_index)` | The ID of the non machine. | `int` |
+| `get_num_lights(index)` | The number of lights. | `int` |
+| `get_light_id(index, light_index)` | The ID of the light. | `int` |
+| `get_num_hinges(index)` | The number of hinges. | `int` |
+| `get_hinge_id(index, hinge_index)` | The ID of the hinge. | `int` |
+| `get_hinge_has_limits(index, hinge_index)` | The limits of the hinge has. | `bool` |
+| `get_hinge_min_limit(index, hinge_index)` | The limit of the hinge min. | `float` |
+| `get_hinge_max_limit(index, hinge_index)` | The limit of the hinge max. | `float` |
+| `get_hinge_axis(index, hinge_index)` | The axis of the hinge. | `Tuple[float, float, float]` |
+| `get_num_motors(index)` | The number of motors. | `int` |
+| `get_motor_id(index, motor_index)` | The ID of the motor. | `int` |
+| `get_motor_has_limits(index, hinge_index)` | The limits of the motor has. | `bool` |
+| `get_motor_min_limit(index, hinge_index)` | The limit of the motor min. | `float` |
+| `get_motor_max_limit(index, hinge_index)` | The limit of the motor max. | `float` |
+| `get_motor_axis(index, hinge_index)` | The axis of the motor. | `Tuple[float, float, float]` |
+| `get_motor_force(index, motor_index)` | The force of the motor. | `float` |
+| `get_num_springs(index)` | The number of springs. | `int` |
+| `get_spring_id(index, spring_index)` | The ID of the spring. | `int` |
+| `get_spring_has_limits(index, hinge_index)` | The limits of the spring has. | `bool` |
+| `get_spring_min_limit(index, hinge_index)` | The limit of the spring min. | `float` |
+| `get_spring_max_limit(index, hinge_index)` | The limit of the spring max. | `float` |
+| `get_spring_axis(index, hinge_index)` | The axis of the spring. | `Tuple[float, float, float]` |
+| `get_spring_force(index, spring_index)` | The force of the spring. | `float` |
+| `get_spring_damper(index, spring_index)` | The damper of the spring. | `float` |
+| `get_num_prismatic_joints(index)` | The number of prismatic joints. | `int` |
+| `get_prismatic_joint_id(index, prismatic_joint_index)` | The ID of the prismatic joint. | `int` |
+| `get_prismatic_joint_limit(index, prismatic_joint_index)` | The limit of the prismatic joint. | `float` |
+| `get_prismatic_joint_axis(index, prismatic_joint_index)` | The axis of the prismatic joint. | `Tuple[float, float, float]` |
 
 ## StaticRigidbodies
 

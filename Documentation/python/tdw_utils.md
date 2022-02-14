@@ -640,17 +640,6 @@ For each parameter (`models`, `scenes`, etc.), if the value is `None`, no asset 
 
 Asset bundles will only be downloaded for your operating system. For example, if you want Linux asset bundles, call this function on Linux.
 
-Example usage:
-
-```python
-from tdw.tdw_utils import TDWUtils
-
-TDWUtils.download_asset_bundles(path="D:/local_asset_bundles",
-models={"models_core.json": ["iron_box", "rh10"],
-"models_flex.json": ["cube"]},
-robots={"robots.json": ["ur5"]})
-```
-
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | path |  Union[str, Path] |  | The root directory of all of the asset bundles and librarian files. |
@@ -671,24 +660,6 @@ robots={"robots.json": ["ur5"]})
 _This is a static function._
 
 Set the path to the default libraries.
-This is an easy way to use local copies of remote libraries and avoid having to download asset bundles at runtime.
-
-For example, this:
-
-```python
-from tdw.tdw_utils import TDWUtils
-
-TDWUtils.set_default_libraries(model_library="D:/local_asset_bundles/models.json")
-```
-
-...does the same thing as this:
-
-```python
-from tdw.controller import Controller
-from tdw.librarian import ModelLibrarian
-
-Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian("D:/local_asset_bundles/models.json")
-```
 
 If any of the parameters of this function are left as `None`, the default remote S3 librarian will be used.
 

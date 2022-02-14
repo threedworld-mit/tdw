@@ -196,6 +196,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [C# source code](Documentation/lessons/misc/c_sharp_sources.md)
 2. [Freezing your code](Documentation/lessons/misc/freeze.md)
+2. [Download asset bundles](Documentation/lessons/misc/download_asset_bundles.md)
 
 # 3. API Documentation
 

@@ -237,6 +237,27 @@ Result:
 
 ![](images/oculus_touch/composite_object.gif)
 
+### Non-graspable
+
+If you want certain non-kinematic objects to be non-graspable you can set the optional `non_graspable` parameter in the constructor:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_touch import OculusTouch
+
+c = Controller()
+object_id = Controller.get_unique_id()
+vr = OculusTouch(non_graspable=[object_id])
+c.add_ons.append(vr)
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="rh10",
+                                object_id=object_id,
+                                position={"x": 0, "y": 0, "z": 0.5})])
+while True:
+    c.communicate([])
+```
+
 ### Output data
 
 The `OculusTouch` add-on saves the head, rig base, and hands data per-frame as [`Transform` objects](../../python/object_data/transform.md). `vr.held_left` and `vr.held_right` are arrays of IDs of objects held in the left and right hands:
@@ -339,6 +360,32 @@ vr.reset()
 c.communicate([{"$type": "load_scene",
                 "scene_name": "ProcGenScene"},
                TDWUtils.create_empty_room(12, 12)])
+c.communicate({"$type" : "terminate"})
+```
+
+If you want to reset a scene with an explicitly-defined non-graspable object, you must set the `non_graspable` parameter in both the constructor and in `reset()`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_touch import OculusTouch
+
+c = Controller()
+object_id = Controller.get_unique_id()
+vr = OculusTouch(non_graspable=[object_id])
+c.add_ons.append(vr)
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="rh10",
+                                object_id=object_id,
+                                position={"x": 0, "y": 0, "z": 0.5})])
+object_id = Controller.get_unique_id()
+vr.reset(non_graspable=[object_id])
+c.communicate([{"$type": "load_scene",
+                "scene_name": "ProcGenScene"},
+               TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="rh10",
+                                object_id=object_id,
+                                position={"x": 0, "y": 0, "z": 0.5})])
 c.communicate({"$type" : "terminate"})
 ```
 

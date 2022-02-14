@@ -16,7 +16,7 @@ class OculusTouch(VR):
 
     def __init__(self, human_hands: bool = True, set_graspable: bool = True, output_data: bool = True,
                  attach_avatar: bool = False, avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
-                 headset_resolution_scale: float = 1.0):
+                 headset_resolution_scale: float = 1.0, non_graspable: List[int] = None):
         """
         :param human_hands: If True, visualize the hands as human hands. If False, visualize the hands as robot hands.
         :param set_graspable: If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/physx/composite_objects.md) as graspable by the VR rig.
@@ -25,6 +25,7 @@ class OculusTouch(VR):
         :param avatar_camera_width: The width of the avatar's camera in pixels. *This is not the same as the VR headset's screen resolution!* This only affects the avatar that is created if `attach_avatar` is `True`. Generally, you will want this to lower than the headset's actual pixel width, otherwise the framerate will be too slow.
         :param headset_aspect_ratio: The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices.
         :param headset_resolution_scale: The headset resolution scale controls the actual size of eye textures as a multiplier of the device's default resolution. A value greater than 1 improves image quality but at a slight performance cost. Range: 0.5 to 1.75
+        :param non_graspable: A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
         """
 
         if human_hands:
@@ -38,6 +39,11 @@ class OculusTouch(VR):
         # Button press events.
         self._button_press_events_left: Dict[OculusTouchButton, Callable[[], None]] = dict()
         self._button_press_events_right: Dict[OculusTouchButton, Callable[[], None]] = dict()
+        # Non-graspable objects.
+        if non_graspable is None:
+            self._non_graspable: List[int] = list()
+        else:
+            self._non_graspable: List[int] = non_graspable
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -57,9 +63,10 @@ class OculusTouch(VR):
                 if r_id == "srig":
                     static_rigidbodies = StaticRigidbodies(resp[i])
                     for j in range(static_rigidbodies.get_num()):
-                        if not static_rigidbodies.get_kinematic(j):
+                        object_id = static_rigidbodies.get_id(j)
+                        if not static_rigidbodies.get_kinematic(j) and object_id not in self._non_graspable:
                             self.commands.append({"$type": "set_vr_graspable",
-                                                  "id": static_rigidbodies.get_id(j)})
+                                                  "id": object_id})
                     break
         super().on_send(resp=resp)
         # Get the button presses.
@@ -89,10 +96,16 @@ class OculusTouch(VR):
         else:
             self._button_press_events_right[button] = function
 
-    def reset(self) -> None:
+    def reset(self, non_graspable: List[int] = None) -> None:
         """
         Reset the VR rig. Call this whenever a scene is reset.
+
+        :param non_graspable: A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
         """
 
         super().reset()
         self._set_graspable = False
+        if non_graspable is None:
+            self._non_graspable = list()
+        else:
+            self._non_graspable = non_graspable

@@ -67,6 +67,8 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 | `DEFAULT_SIZE` | int | The default audio size "bucket" for objects. |
 | `ROBOT_JOINT_BOUNCINESS` | float | The assumed bounciness value for robot joints. |
 | `ROBOT_JOINT_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for robot joints. |
+| `HUMAN_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for human body parts such as in VR. |
+| `HUMAN_BOUNCINESS` | float | The assumed bounciness value for human body parts such as in VR. |
 | `FLOOR_AMP` | float | The amp value for the floor. |
 | `FLOOR_SIZE` | int | The size "bucket" for the floor. |
 | `FLOOR_MASS` | int | The mass of the floor. |

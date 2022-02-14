@@ -84,6 +84,12 @@ Listen for Oculus Touch controller button presses.
 | is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
 | function |  Callable[[] |  | The function to invoke when the button is pressed. This function must have no arguments and return None. |
 
+#### reset
+
+**`self.reset()`**
+
+Reset the VR rig. Call this whenever a scene is reset.
+
 #### on_send
 
 **`self.on_send(resp)`**
@@ -97,31 +103,23 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-#### teleport
+#### set_position
 
-**`self.teleport(position)`**
+**`self.set_position(position)`**
 
-Teleport the VR rig to a new position.
+Set the position of the VR rig.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | position |  Dict[str, float] |  | The new position. |
 
-#### rotate
+#### rotate_by
 
-**`self.rotate(rotation)`**
+**`self.rotate_by(angle)`**
 
 Rotate the VR rig by an angle.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| rotation |  float |  | The angle in degrees. |
-
-#### reset
-
-**`self.reset()`**
-
-Reset the VR rig. Call this whenever a scene is reset.
-
-
+| angle |  float |  | The angle in degrees. |
 

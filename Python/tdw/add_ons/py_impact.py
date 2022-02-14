@@ -1010,7 +1010,7 @@ class PyImpact(CollisionManager):
             # Add VR nodes.
             elif r_id == "soct":
                 soct = StaticOculusTouch(resp[i])
-                if soct.get_is_human_hands():
+                if soct.get_human_hands():
                     vr_material = PyImpact.HUMAN_MATERIAL
                     vr_bounciness = PyImpact.HUMAN_BOUNCINESS
                 else:

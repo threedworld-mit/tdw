@@ -12,7 +12,4 @@ Oculus touch buttons.
 | `secondary_button` |  |
 | `trigger_button` |  |
 | `primary_2d_axis_click` |  |
-| `primary_2d_axis_touch` |  |
 | `secondary_2d_axis_click` |  |
-| `primary_touch` |  |
-| `secondary_touch` |  |

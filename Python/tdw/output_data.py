@@ -694,7 +694,7 @@ class StaticOculusTouch(OutputData):
     def get_right_hand_id(self) -> int:
         return self.data.RightHandId()
 
-    def get_is_human_hands(self) -> bool:
+    def get_human_hands(self) -> bool:
         return self.data.HumanHands()
 
 

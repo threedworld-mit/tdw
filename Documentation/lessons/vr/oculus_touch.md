@@ -298,7 +298,7 @@ c.communicate({"$type" : "terminate"})
 
 *For more information regarding collision detection, [read this](../physx/collisions.md).*
 
-The Oculus Touch rig has a small collider at its base. Each palm has a Rigidbody and a collider. The base and the palms will be detected if [collision detection is enabled](../physx/collisions.md). If you are using [PyImpact](../audio/py_impact.md) (see below), tapping your hands together will create a faint sound.
+The Oculus Touch rig can send basic haptics data. The rig has a small collider at its base. Each palm has a Rigidbody and a collider. The base and the palms will be detected if [collision detection is enabled](../physx/collisions.md) as if they were standard TDW objects. If you are using [PyImpact](../audio/py_impact.md) (see below), tapping your hands together will create a faint sound.
 
 ## Audio
 

@@ -10,10 +10,21 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### New Commands
 
-| Command                          | Description                                                |
-| -------------------------------- | ---------------------------------------------------------- |
-| `send_static_composite_objects`  | Send static data for every composite object in the scene.  |
-| `send_dynamic_composite_objects` | Send dynamic data for every composite object in the scene. |
+| Command                          | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `send_static_composite_objects`  | Send static data for every composite object in the scene.    |
+| `send_dynamic_composite_objects` | Send dynamic data for every composite object in the scene.   |
+| `rotate_vr_rig`                  | Rotate the VR rig by an angle.                               |
+| `set_vr_resolution_scale`        | Controls the actual size of eye textures as a multiplier of the device's default resolution. |
+| `send_oculus_touch_buttons`      | Send data for buttons pressed on Oculus Touch controllers.   |
+| `send_static_oculus_touch`       | Send static data for the Oculus Touch rig.                   |
+
+#### Modified Commands
+
+| Command         | Modification                                                 |
+| --------------- | ------------------------------------------------------------ |
+| `create_vr_rig` | Added parameter `rig_type`: The type of VR rig to instantiate.<br>Added parameter `sync_timestep_with_vr`: Whether to sync Time.fixedDeltaTime with the VR device refresh rate. Doing this improves physics behavior in VR; this parameter should almost always be True. |
+| `set_graspable` | Renamed to `set_vr_graspable`<br>Added parameter `joint_break_force`: The joint break force for this graspable object. Lower values mean it's easier to break the joint. |
 
 #### Deprecated Commands 
 
@@ -25,10 +36,18 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### New Output Data 
 
-| Output Data               | Description                    | 
-| ------------------------- | ------------------------------ | 
-| `CompositeObjectsStatic`  | Static composite object data.  | 
-| `CompositeObjectsDynamic` | Dynamic composite object data. | 
+| Output Data               | Description                                              |
+| ------------------------- | -------------------------------------------------------- |
+| `CompositeObjectsStatic`  | Static composite object data.                            |
+| `CompositeObjectsDynamic` | Dynamic composite object data.                           |
+| `OculusTouchButtons`      | Which Oculus Touch controller buttons have been pressed. |
+| `StaticOculusTouch`       | Static data for the Oculus Touch rig.                    |
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `VRRig`     | Added: `get_held_left()` Returns the IDs of the objects held by the left hand.<br>Added: `get_held_right()` Returns the IDs of the objects held by the right hand. |
 
 #### Deprecated Output Data 
 
@@ -37,6 +56,9 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `CompositeObjects` | Replaced with `CompositeObjectsStatic` and `CompositeObjectsDynamic` | 
 
 ### `tdw` module
+
+- Added: `OculusTouch` an add-on for the Oculus Touch VR rig.
+  - Added abstract base class `VR`
 
 - Added: `CompositeObjectManager` an add-on for managing composite object data. 
 - Added the following composite object data classes: 
@@ -50,6 +72,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `CompositeObjectDynamic` Dynamic data for a composite object and its sub-objects. 
     - `LightDynamic` Dynamic data for a light sub-object of a composite object. 
     - `HingeDynamic` Dynamic data for a hinge, motor, or spring sub-object of a composite object. 
+- `PyImpact` will create impact sounds for VR nodes (e.g. hands).
 
 ### Example Controllers
 

@@ -72,25 +72,25 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-#### teleport
+#### set_position
 
-**`self.teleport(position)`**
+**`self.set_position(position)`**
 
-Teleport the VR rig to a new position.
+Set the position of the VR rig.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | position |  Dict[str, float] |  | The new position. |
 
-#### rotate
+#### rotate_by
 
-**`self.rotate(rotation)`**
+**`self.rotate_by(angle)`**
 
 Rotate the VR rig by an angle.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| rotation |  float |  | The angle in degrees. |
+| angle |  float |  | The angle in degrees. |
 
 #### reset
 

@@ -48,11 +48,12 @@ from tdw.FBOutput import StaticRigidbodies as StatRig
 from tdw.FBOutput import RobotJointVelocities as RoJoVe
 from tdw.FBOutput import EmptyObjects as Empty
 from tdw.FBOutput import OculusTouchButtons as OculusTouch
+from tdw.FBOutput import StaticOculusTouch as StatOc
 from tdw.FBOutput import StaticCompositeObjects as StatComp
 from tdw.FBOutput import DynamicCompositeObjects as DynComp
+from tdw.vr_data.oculus_touch_button import OculusTouchButton
 import numpy as np
 from typing import Tuple, Optional, List
-from tdw.vr_data.oculus_touch_button import OculusTouchButton
 
 
 class OutputDataUndefinedError(Exception):
@@ -678,6 +679,23 @@ class OculusTouchButtons(OutputData):
     @staticmethod
     def _get_buttons(v: int) -> List[OculusTouchButton]:
         return [OculusTouchButtons.BUTTONS[i] for (i, b) in enumerate(OculusTouchButtons.BUTTONS) if v & (1 << i) != 0]
+
+
+class StaticOculusTouch(OutputData):
+    def get_data(self) -> StatOc.StaticOculusTouch:
+        return StatOc.StaticOculusTouch.GetRootAsStaticOculusTouch(self.bytes, 0)
+
+    def get_body_id(self) -> int:
+        return self.data.BodyId()
+
+    def get_left_hand_id(self) -> int:
+        return self.data.LeftHandId()
+
+    def get_right_hand_id(self) -> int:
+        return self.data.RightHandId()
+
+    def get_is_human_hands(self) -> bool:
+        return self.data.HumanHands()
 
 
 class LogMessage(OutputData):

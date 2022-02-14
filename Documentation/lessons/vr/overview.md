@@ -24,6 +24,18 @@ All VR rigs share some common commands and output data and they all have unique 
 
 ![](images/vr.drawio.png)
 
+## VR and photorealism
+
+*For more information regarding photorealism, [read this](../photorealism/overview.md).*
+
+In VR, [post-processing](../photorealism/post_processing.md) is disabled for three main reasons: 
+
+1. Photorealism can affect performance. 
+2. Some post-processing effects don't work in VR. 
+3. Some post-processing settings such as [depth of field](../photorealism/depth_of_field.md) are difficult to dynamically adjust for a VR rig.
+
+Other visual effects such as [HDRI skyboxes](../photorealism/lighting.md) *do* work in VR.
+
 ***
 
 **Next: [Oculus Touch](oculus_touch.md)**

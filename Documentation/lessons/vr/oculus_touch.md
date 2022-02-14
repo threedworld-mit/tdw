@@ -275,6 +275,12 @@ You can rotate the rig by physically moving. You can programatically rotate the 
 
 Whenever a new scene is loaded, you must call `vr.reset()` to re-initialize the VR add-on.
 
+## Collision detection
+
+*For more information regarding collision detection, [read this](../physx/collisions.md).*
+
+The Oculus Touch rig has a small collider at its base. Each palm has a Rigibody and a collider. The base and the palms will be detected if [collision detection is enabled](../physx/collisions.md). If you are using [PyImpact](../audio/py_impact.md) (see below), tapping your hands together will create a faint sound.
+
 ## Audio
 
 *For more information regarding audio in TDW, [read this](../audio/overview.md).*
@@ -382,6 +388,8 @@ Position and rotation:
 - [`teleport_vr_rig`](../../api/command_api.md#teleport_vr_rig)
 - [`rotate_vr_rig_by`](../../api/command_api.md#rotate_vr_rig_by)
 
+On the backend, the root body and hands are cached as objects with their own IDs (generated randomly by the build). `PyImpact` will automatically search for the Oculus Touch rig's object IDs by sending [`send_static_oculus_touch`](../../api/command_api.md#send_static_oculus_touch) which returns [`StaticOculusTouch`](../../api/output_data.md#StaticOculusTouch). This data is *only* used by `PyImpact` (it is *not* used by `OculusTouchRig`) though in the future it might have other useful applications.
+
 ***
 
 **This is the last document in the "Virtual Reality (VR)" tutorial.**
@@ -417,9 +425,11 @@ Command API:
 - [`set_vr_graspable`](../../api/command_api.md#set_vr_graspable)
 - [`teleport_vr_rig`](../../api/command_api.md#teleport_vr_rig)
 - [`rotate_vr_rig_by`](../../api/command_api.md#rotate_vr_rig_by)
+- [`send_static_oculus_touch`](../../api/command_api.md#send_static_oculus_touch)
 
 Output Data:
 
 - [`VRRig`](../../api/output_data.md#VRRig)
 - [`OculusTouchButtons`](../../api/output_data.md#OculusTouchButtons)
 - [`StaticRigidbodies`](../../api/output_data.md#StaticRigidbodies)
+- [`StaticOculusTouch`](../../api/output_data.md#StaticOculusTouch)

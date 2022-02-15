@@ -30578,6 +30578,93 @@
             "wcategory": "coffee grinder",
             "wnid": "n03063485"
         },
+        "kenmore_refr_74049_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 8335038,
+                "Linux": 8566137,
+                "Windows": 8329390
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0002835095,
+                    "y": 0.8951124,
+                    "z": -0.4529269
+                },
+                "bottom": {
+                    "x": -0.0002835095,
+                    "y": 0,
+                    "z": -0.0008530319
+                },
+                "center": {
+                    "x": -0.0002835095,
+                    "y": 0.8951124,
+                    "z": -0.0008530319
+                },
+                "front": {
+                    "x": -0.0002835095,
+                    "y": 0.8951124,
+                    "z": 0.4512208
+                },
+                "left": {
+                    "x": -0.4394968,
+                    "y": 0.8951124,
+                    "z": -0.0008530319
+                },
+                "right": {
+                    "x": 0.4389298,
+                    "y": 0.8951124,
+                    "z": -0.0008530319
+                },
+                "top": {
+                    "x": -0.0002835095,
+                    "y": 1.790225,
+                    "z": -0.0008530319
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "kenmore_refr_74049_composite",
+            "physics_quality": 0.9602070313650564,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "kenmore_refr_74049_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "ice_led_disp",
+                        "glass"
+                    ],
+                    "name": "left-hand-door"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "kenmore_logo"
+                    ],
+                    "name": "right-hand-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/kenmore_refr_74049_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/kenmore_refr_74049_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/kenmore_refr_74049_composite"
+            },
+            "volume": 0.8722786,
+            "wcategory": "refrigerator",
+            "wnid": "n04070727"
+        },
         "kettle": {
             "asset_bundle_sizes": {
                 "Darwin": 508613,

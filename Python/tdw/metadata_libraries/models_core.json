@@ -47458,6 +47458,87 @@
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
         },
+        "vm_v5_070_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1147252,
+                "Linux": 1416960,
+                "Windows": 1130603
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1436948,
+                    "z": -0.2230527
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -2.980232e-08,
+                    "z": -0.0002521873
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1436948,
+                    "z": -0.0002521873
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1436948,
+                    "z": 0.2225484
+                },
+                "left": {
+                    "x": -0.2590987,
+                    "y": 0.1436948,
+                    "z": -0.0002521873
+                },
+                "right": {
+                    "x": 0.2590987,
+                    "y": 0.1436948,
+                    "z": -0.0002521873
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.2873897,
+                    "z": -0.0002521873
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vm_v5_070_composite",
+            "physics_quality": 1.020976722343652,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "Silver_Plastic",
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "vm_v5_070_composite"
+                },
+                {
+                    "materials": [
+                        "Silver_Plastic",
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "microwave-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vm_v5_070_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vm_v5_070_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vm_v5_070_composite"
+            },
+            "volume": 0.003739415,
+            "wcategory": "microwave",
+            "wnid": "n03761084"
+        },
         "vray_032": {
             "asset_bundle_sizes": {
                 "Darwin": 742634,

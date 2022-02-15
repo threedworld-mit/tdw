@@ -32,7 +32,7 @@ class OculusTouchPyImpact(Controller):
         self.trial_done = False
         # Reset PyImpact.
         self.py_impact.reset()
-        self.vr.reset(recreate=False)
+        self.vr.reset()
         # Choose a random model.
         model_name = random.choice(OculusTouchPyImpact.MODEL_NAMES)
         # Add the model.

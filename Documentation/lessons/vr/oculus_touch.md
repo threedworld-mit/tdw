@@ -342,7 +342,7 @@ You can rotate the rig by physically turning your body. You can programatically 
 
 ### Reset
 
-Whenever a new scene is loaded, you must call `vr.reset()` to re-initialize the VR add-on:
+Whenever you reset a scene, you must call `vr.reset()` to re-initialize the VR add-on:
 
 ```python
 from tdw.controller import Controller
@@ -492,6 +492,7 @@ The `OculusTouchRig` initializes the rig with the following commands:
 - [`set_screen_size`](../../api/command_api.md#set_screen_size) (If `attach_avatar` in the constructor is True; this sets the size of the images captured by the avatar)
 - [`send_static_rigidbodies`](../../api/command_api.md#send_static_rigidbodies) (Only once, and only if `set_graspable` in the constructor is True. This will return [`StaticRigidbodies`](../../api/output_data.md#StaticRigidbodies) output data, which is used to set graspable objects)
 - [`send_oculus_touch_buttons`](../../api/command_api.md#send_oculus_touch_buttons) (Sends [`OculusTouchButtons`](../../api/output_data.md#OculusTouchButtons) output data every frame)
+-  [`send_static_oculus_touch`](../../api/command_api.md#send_static_oculus_touch) (Sends [`StaticOculusTouch`](../../api/output_data.md#StaticOculusTouch) output data on the first frame)
 
 On the second `communicate()` call after initialization:
 
@@ -502,7 +503,7 @@ Position and rotation:
 - [`teleport_vr_rig`](../../api/command_api.md#teleport_vr_rig)
 - [`rotate_vr_rig_by`](../../api/command_api.md#rotate_vr_rig_by)
 
-On the backend, the root body and hands are cached as objects with their own IDs (generated randomly by the build). `PyImpact` will automatically search for the Oculus Touch rig's object IDs by sending [`send_static_oculus_touch`](../../api/command_api.md#send_static_oculus_touch) which returns [`StaticOculusTouch`](../../api/output_data.md#StaticOculusTouch). This data is *only* used by `PyImpact` (it is *not* used by `OculusTouchRig`) though in the future it might have other useful applications.
+On the backend, the root body and hands are cached as objects with their own IDs (generated randomly by the build).
 
 ***
 

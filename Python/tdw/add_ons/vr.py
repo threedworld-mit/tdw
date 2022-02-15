@@ -85,7 +85,7 @@ class VR(AddOn, ABC):
             commands.append({"$type": "send_vr_rig",
                              "frequency": "always"})
         # Enable image capture.
-        if self._attach_avatar is not None:
+        if self._attach_avatar:
             commands.extend([{"$type": "attach_avatar_to_vr_rig",
                              "id": VR.AVATAR_ID},
                              {"$type": "set_screen_size",

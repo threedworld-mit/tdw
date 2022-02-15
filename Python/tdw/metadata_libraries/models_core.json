@@ -10384,7 +10384,7 @@
             "substructure": [
                 {
                     "materials": [
-                        "SolidTiles_Opaque",
+                        "DB_Apps_Tech_08_09_05",
                         "DB_Apps_Tech_08_09_02"
                     ],
                     "name": "b05_db_apps_tech_08_09_composite"
@@ -10394,7 +10394,7 @@
                         "DB_Apps_Tech_08_09_06",
                         "SolidTiles_Transparent",
                         "DB_Apps_Tech_08_09_02",
-                        "SolidTiles_Opaque",
+                        "DB_Apps_Tech_08_09_05",
                         "DB_Apps_Tech_08_09_05"
                     ],
                     "name": "door"
@@ -10403,7 +10403,7 @@
             "urls": {
                 "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b05_db_apps_tech_08_09_composite",
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b05_db_apps_tech_08_09_composite",
-                "Windows": "file:///C:\\Users\\laure\\asset_bundle_creator\\Assets\\NewAssetBundles\\b05_db_apps_tech_08_09_composite\\StandaloneWindows64\\b05_db_apps_tech_08_09_composite"
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b05_db_apps_tech_08_09_composite"
             },
             "volume": 0.1177204,
             "wcategory": "dishwasher",

@@ -28249,6 +28249,98 @@
             "wcategory": "gas cooker",
             "wnid": "n03425595"
         },
+        "gas_stove_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 2182185,
+                "Linux": 2432974,
+                "Windows": 2173336
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004862845,
+                    "y": 0.4376931,
+                    "z": -0.5000009
+                },
+                "bottom": {
+                    "x": -0.0004862845,
+                    "y": 0,
+                    "z": -7.748604e-07
+                },
+                "center": {
+                    "x": -0.0004862845,
+                    "y": 0.4376931,
+                    "z": -7.748604e-07
+                },
+                "front": {
+                    "x": -0.0004862845,
+                    "y": 0.4376931,
+                    "z": 0.4999993
+                },
+                "left": {
+                    "x": -0.3319607,
+                    "y": 0.4376931,
+                    "z": -7.748604e-07
+                },
+                "right": {
+                    "x": 0.3309882,
+                    "y": 0.4376931,
+                    "z": -7.748604e-07
+                },
+                "top": {
+                    "x": -0.0004862845,
+                    "y": 0.8753863,
+                    "z": -7.748604e-07
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "gas_stove_composite",
+            "physics_quality": 0.971774691871305,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_ruchki",
+                        "SieMatic_Classic_Reshetka_Plita",
+                        "SieMatic_Classic_Plita_gazovaya_osnova",
+                        "SieMatic_Classic_Hrom",
+                        "SieMatic_Classic_Plita_poverhnost'",
+                        "SieMatic_Classic_Display_plita",
+                        "SieMatic_Classic_111"
+                    ],
+                    "name": "gas_stove_composite"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova",
+                        "SieMatic_Classic_Plita_steklo"
+                    ],
+                    "name": "left-door"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova",
+                        "SieMatic_Classic_Plita_steklo"
+                    ],
+                    "name": "right-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/gas_stove_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/gas_stove_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/gas_stove_composite"
+            },
+            "volume": 0.2845431,
+            "wcategory": "gas cooker",
+            "wnid": "n03425595"
+        },
         "generic_toothbrush_001": {
             "asset_bundle_sizes": {
                 "Darwin": 737485,

@@ -7040,6 +7040,87 @@
             "wcategory": "dishwasher",
             "wnid": "n03207941"
         },
+        "b04_db_apps_tech_08_03_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 471946,
+                "Linux": 658243,
+                "Windows": 465006
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0003877878,
+                    "y": 0.4247236,
+                    "z": -0.2993796
+                },
+                "bottom": {
+                    "x": 0.0003877878,
+                    "y": -5.960464e-08,
+                    "z": 0.0001605749
+                },
+                "center": {
+                    "x": 0.0003877878,
+                    "y": 0.4247236,
+                    "z": 0.0001605749
+                },
+                "front": {
+                    "x": 0.0003877878,
+                    "y": 0.4247236,
+                    "z": 0.2997008
+                },
+                "left": {
+                    "x": -0.3005056,
+                    "y": 0.4247236,
+                    "z": 0.0001605749
+                },
+                "right": {
+                    "x": 0.3012812,
+                    "y": 0.4247236,
+                    "z": 0.0001605749
+                },
+                "top": {
+                    "x": 0.0003877878,
+                    "y": 0.8494473,
+                    "z": 0.0001605749
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_db_apps_tech_08_03_composite",
+            "physics_quality": 0.8900454026674358,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b04_db_apps_tech_08_03_composite"
+                },
+                {
+                    "materials": [
+                        "DB_Apps_Tech_08_03_02",
+                        "SolidTiles_Transparent",
+                        "SolidTiles_Opaque",
+                        "DB_Apps_Tech_08_03_04"
+                    ],
+                    "name": "door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b04_db_apps_tech_08_03_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b04_db_apps_tech_08_03_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b04_db_apps_tech_08_03_composite"
+            },
+            "volume": 0.1485921,
+            "wcategory": "dishwasher",
+            "wnid": "n03207941"
+        },
         "b04_default": {
             "asset_bundle_sizes": {
                 "Darwin": 15777684,

@@ -250,6 +250,8 @@ class PyImpact(CollisionManager):
         self._scrape_start_velocities: Dict[Tuple[int, int], float] = dict()
         # Initialize the scraping event counter.
         self._scrape_events_count: Dict[Tuple[int, int], int] = dict()
+        # Ignore collisions that include these object IDs.
+        self._excluded_objects: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_rigidbodies",
@@ -385,6 +387,9 @@ class PyImpact(CollisionManager):
         for object_ids in self.obj_collisions:
             collider_id = object_ids.int1
             collidee_id = object_ids.int2
+            # Ignore this collision.
+            if collider_id in self._excluded_objects or collidee_id in self._excluded_objects:
+                continue
             event = CollisionAudioEvent(collision=self.obj_collisions[object_ids],
                                         object_0_static=self._static_audio_data[collider_id],
                                         object_0_dynamic=rigidbody_data[collider_id],
@@ -398,6 +403,8 @@ class PyImpact(CollisionManager):
                 collision_events_per_object[event.primary_id] = list()
             collision_events_per_object[event.primary_id].append(event)
         for object_id in self.env_collisions:
+            if object_id in self._excluded_objects:
+                continue
             event = CollisionAudioEvent(collision=self.env_collisions[object_id],
                                         object_0_static=self._static_audio_data[object_id],
                                         object_0_dynamic=rigidbody_data[object_id],
@@ -924,6 +931,7 @@ class PyImpact(CollisionManager):
         self._scrape_start_velocities.clear()
         self._scrape_events_count.clear()
         self._scrape_previous_indices.clear()
+        self._excluded_objects.clear()
         # Stop all ongoing audio.
         self.commands.append({"$type": "stop_all_audio"})
 
@@ -1026,6 +1034,8 @@ class PyImpact(CollisionManager):
                                                       size=PyImpact.DEFAULT_SIZE,
                                                       amp=PyImpact.DEFAULT_AMP,
                                                       object_id=vr_id))
+                    if vr_name == "vr_node_body":
+                        self._excluded_objects.append(vr_id)
         need_to_derive: List[int] = list()
         for object_id in names:
             name = names[object_id]

@@ -100,5 +100,5 @@ class InteriorSceneLighting(AddOn):
             return hdri_skybox
         else:
             if rng is None:
-                rng = np.random.RandomState = np.random.RandomState()
+                rng: np.random.RandomState = np.random.RandomState()
             return rng.choice(list(InteriorSceneLighting.SKYBOX_NAMES_AND_POST_EXPOSURE_VALUES.keys()))

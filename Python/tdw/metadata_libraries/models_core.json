@@ -22622,6 +22622,85 @@
             "wcategory": "chair",
             "wnid": "n03001627"
         },
+        "db_apps_tech_08_10_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 425751,
+                "Linux": 680472,
+                "Windows": 419825
+            },
+            "bounds": {
+                "back": {
+                    "x": -5.960464e-08,
+                    "y": 0.48812,
+                    "z": -0.389769
+                },
+                "bottom": {
+                    "x": -5.960464e-08,
+                    "y": -5.960464e-08,
+                    "z": -0.001206756
+                },
+                "center": {
+                    "x": -5.960464e-08,
+                    "y": 0.48812,
+                    "z": -0.001206756
+                },
+                "front": {
+                    "x": -5.960464e-08,
+                    "y": 0.48812,
+                    "z": 0.3873554
+                },
+                "left": {
+                    "x": -0.3529076,
+                    "y": 0.48812,
+                    "z": -0.001206756
+                },
+                "right": {
+                    "x": 0.3529075,
+                    "y": 0.48812,
+                    "z": -0.001206756
+                },
+                "top": {
+                    "x": -5.960464e-08,
+                    "y": 0.97624,
+                    "z": -0.001206756
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "db_apps_tech_08_10_composite",
+            "physics_quality": 0.8850027008460799,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "DB_Apps_Tech_08_10_03"
+                    ],
+                    "name": "db_apps_tech_08_10_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "DB_Apps_Tech_08_10_03"
+                    ],
+                    "name": "dishwasher-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/db_apps_tech_08_10_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/db_apps_tech_08_10_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/db_apps_tech_08_10_composite"
+            },
+            "volume": 0.2708214,
+            "wcategory": "dishwasher",
+            "wnid": "n03207941"
+        },
         "de_castelli_placas_table": {
             "asset_bundle_sizes": {
                 "Darwin": 3810648,

@@ -44,9 +44,13 @@ class OculusTouch(VR):
             self._non_graspable: List[int] = list()
         else:
             self._non_graspable: List[int] = non_graspable
+        self._create: bool = True
 
     def get_initialization_commands(self) -> List[dict]:
-        commands = super().get_initialization_commands()
+        if self._create:
+            commands = super().get_initialization_commands()
+        else:
+            commands = []
         if self._set_graspable:
             commands.append({"$type": "send_static_rigidbodies",
                              "frequency": "once"})
@@ -96,16 +100,18 @@ class OculusTouch(VR):
         else:
             self._button_press_events_right[button] = function
 
-    def reset(self, non_graspable: List[int] = None) -> None:
+    def reset(self, non_graspable: List[int] = None, recreate: bool = True) -> None:
         """
         Reset the VR rig. Call this whenever a scene is reset.
 
         :param non_graspable: A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
+        :param recreate: If True, recreate the VR rig and request static Rigidbodies data. If False, request static Rigidbodies data. Set this to False if you're resetting a scene by destroying and recreating objects but not unloading the scene itself.
         """
 
-        super().reset()
-        self._set_graspable = False
+        self._set_graspable = True
         if non_graspable is None:
             self._non_graspable = list()
         else:
             self._non_graspable = non_graspable
+        self._create = recreate
+        super().reset()

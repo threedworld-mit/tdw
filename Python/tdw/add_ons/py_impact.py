@@ -1034,8 +1034,7 @@ class PyImpact(CollisionManager):
                                                       size=PyImpact.DEFAULT_SIZE,
                                                       amp=PyImpact.DEFAULT_AMP,
                                                       object_id=vr_id))
-                    if vr_name == "vr_node_body":
-                        self._excluded_objects.append(vr_id)
+                    self._excluded_objects.append(vr_id)
         need_to_derive: List[int] = list()
         for object_id in names:
             name = names[object_id]

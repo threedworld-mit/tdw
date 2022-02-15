@@ -17,7 +17,7 @@ class OculusTouchPyImpact(Controller):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.simulation_done = False
         self.trial_done = False
-        self.vr = OculusTouch(set_graspable=False)
+        self.vr = OculusTouch(set_graspable=True)
         # Quit when the left trigger button is pressed.
         self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
         # End the trial when the right trigger button is pressed.
@@ -32,16 +32,17 @@ class OculusTouchPyImpact(Controller):
         self.trial_done = False
         # Reset PyImpact.
         self.py_impact.reset()
+        self.vr.reset(recreate=False)
         # Choose a random model.
         model_name = random.choice(OculusTouchPyImpact.MODEL_NAMES)
         # Add the model.
         object_id_0 = Controller.get_unique_id()
         commands = Controller.get_add_physics_object(model_name=model_name,
                                                      object_id=object_id_0,
-                                                     position={"x": 0, "y": 0, "z": 1.2})
+                                                     position={"x": 0, "y": 0, "z": 0.6})
         object_id_1 = Controller.get_unique_id()
         commands.extend(Controller.get_add_physics_object(model_name="vase_02",
-                                                          position={"x": 0, "y": 3, "z": 1.2},
+                                                          position={"x": 0, "y": 3, "z": 0.6},
                                                           object_id=object_id_1))
         self.communicate(commands)
         # Wait until the trial is done.

@@ -17882,9 +17882,9 @@
         },
         "cabinet_24_single_door_wood_beech_honey_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 14986077,
-                "Linux": 15222108,
-                "Windows": 14975593
+                "Darwin": 14986795,
+                "Linux": 15223830,
+                "Windows": 14976247
             },
             "bounds": {
                 "back": {

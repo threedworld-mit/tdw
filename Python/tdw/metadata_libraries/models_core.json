@@ -17962,9 +17962,9 @@
         },
         "cabinet_24_single_door_wood_oak_white_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 1108218,
-                "Linux": 1345261,
-                "Windows": 1099061
+                "Darwin": 1107755,
+                "Linux": 1345340,
+                "Windows": 1099353
             },
             "bounds": {
                 "back": {

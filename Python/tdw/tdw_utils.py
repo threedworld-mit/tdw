@@ -907,7 +907,7 @@ class TDWUtils:
             # Get the path.
             if isinstance(library_path, Path):
                 path = str(library_path.resolve())
-            elif isinstance(model_library, str):
+            elif isinstance(library_path, str):
                 path = str(Path(library_path).resolve())
             else:
                 raise Exception(library_path)

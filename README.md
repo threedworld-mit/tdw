@@ -231,14 +231,17 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [Benchmark](Documentation/python/add_ons/benchmark.md)
 - [CinematicCamera](Documentation/python/add_ons/cinematic_camera.md)
 - [CollisionManager](Documentation/python/add_ons/collision_manager.md)
+- [CompositeObjectManager](Documentation/python/add_ons/composite_object_manager.md)
 - [EmbodiedAvatar](Documentation/python/add_ons/embodied_avatar.md)
 - [Floorplan](Documentation/python/add_ons/floorplan.md)
 - [ImageCapture](Documentation/python/add_ons/image_capture.md)
+- [InteriorSceneLighting](Documentation/python/add_ons/interior_scene_lighting.md)
 - [Keyboard](Documentation/python/add_ons/keyboard.md)
 - [Logger](Documentation/python/add_ons/logger.md)
 - [ModelVerifier](Documentation/python/add_ons/model_verifier.md)
 - [ObjectManager](Documentation/python/add_ons/object_manager.md)
 - [OccupancyMap](Documentation/python/add_ons/occupancy_map.md)
+- [OculusTouch](Documentation/python/add_ons/oculus_touch.md)
 - [PhysicsAudioRecorder](Documentation/python/add_ons/physics_audio_recorder.md)
 - [PyImpact](Documentation/python/add_ons/py_impact.md)
 - [ResonanceAudioInitializer](Documentation/python/add_ons/resonance_audio_initializer.md)
@@ -248,6 +251,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [StepPhysics](Documentation/python/add_ons/step_physics.md)
 - [ThirdPersonCamera](Documentation/python/add_ons/third_person_camera.md)
 - [ThirdPersonCameraBase](Documentation/python/add_ons/third_person_camera_base.md)
+- [VR](Documentation/python/add_ons/vr.md)
 
 **tdw.collision_data**
 
@@ -284,6 +288,25 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [Rigidbody](Documentation/python/object_data/rigidbody.md)
 - [Transform](Documentation/python/object_data/transform.md)
 
+**tdw.object_data.composite_object**
+
+- [CompositeObjectDynamic](Documentation/python/object_data/composite_object/composite_object_dynamic.md)
+- [CompositeObjectStatic](Documentation/python/object_data/composite_object/composite_object_static.md)
+
+**tdw.object_data.composite_object.sub_object**
+
+- [HingeDynamic](Documentation/python/object_data/composite_object/sub_object/hinge_dynamic.md)
+- [HingeStatic](Documentation/python/object_data/composite_object/sub_object/hinge_static.md)
+- [HingeStaticBase](Documentation/python/object_data/composite_object/sub_object/hinge_static_base.md)
+- [LightDynamic](Documentation/python/object_data/composite_object/sub_object/light_dynamic.md)
+- [LightStatic](Documentation/python/object_data/composite_object/sub_object/light_static.md)
+- [MotorStatic](Documentation/python/object_data/composite_object/sub_object/motor_static.md)
+- [NonMachineStatic](Documentation/python/object_data/composite_object/sub_object/non_machine_static.md)
+- [PrismaticJointStatic](Documentation/python/object_data/composite_object/sub_object/prismatic_joint_static.md)
+- [SpringStatic](Documentation/python/object_data/composite_object/sub_object/spring_static.md)
+- [SubObjectDynamic](Documentation/python/object_data/composite_object/sub_object/sub_object_dynamic.md)
+- [SubObjectStatic](Documentation/python/object_data/composite_object/sub_object/sub_object_static.md)
+
 **tdw.physics_audio**
 
 - [AudioMaterial](Documentation/python/physics_audio/audio_material.md)
@@ -300,7 +323,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 **tdw.release**
 
 - [Build](Documentation/python/release/build.md)
-- [Pypi](Documentation/python/release/pypi.md)
+- [PyPi](Documentation/python/release/pypi.md)
 
 **tdw.robot_data**
 
@@ -316,6 +339,11 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [RegionBounds](Documentation/python/scene_data/region_bounds.md)
 - [SceneBounds](Documentation/python/scene_data/scene_bounds.md)
+
+**tdw.vr_data**
+
+- [OculusTouchButton](Documentation/python/vr_data/oculus_touch_button.md)
+- [RigType](Documentation/python/vr_data/rig_type.md)
 
 # 4. Performance benchmarks
 1. [Performance benchmarks](Documentation/benchmark/benchmark.md)

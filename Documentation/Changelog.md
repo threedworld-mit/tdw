@@ -81,6 +81,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - `PyImpact` will create impact sounds for VR nodes (e.g. hands).
   - Added: `VR_HUMAN_MATERIAL` and `VR_HUMAN_BOUNCINESS`
 - Fixed: `InteriorSceneLighting` sets the random number generator incorrectly such that all other attempts to create a numpy RandomState fail.
+- Fixed: `TDWUtils.set_default_libraries()` raises an exception if `model_library` isn't set and one of the set paths is a string.
 
 ### Build
 

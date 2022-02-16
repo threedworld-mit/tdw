@@ -10,7 +10,7 @@ import scipy.signal as sg
 from scipy.ndimage import gaussian_filter1d, uniform_filter1d
 from pydub import AudioSegment
 from tdw.output_data import OutputData, Rigidbodies, StaticRobot, SegmentationColors, StaticRigidbodies, \
-    RobotJointVelocities
+    RobotJointVelocities, StaticOculusTouch
 from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.object_audio_static import ObjectAudioStatic, DEFAULT_OBJECT_AUDIO_STATIC_DATA
 from tdw.physics_audio.modes import Modes
@@ -115,6 +115,14 @@ class PyImpact(CollisionManager):
     The [material](../physics_audio/audio_material.md) used for robot joints.
     """
     ROBOT_JOINT_MATERIAL: AudioMaterial = AudioMaterial.metal
+    """:class_var
+    The [material](../physics_audio/audio_material.md) used for human body parts in VR.
+    """
+    VR_HUMAN_MATERIAL: AudioMaterial = AudioMaterial.cardboard
+    """:class_var
+    The assumed bounciness value for human body parts such as in VR.
+    """
+    VR_HUMAN_BOUNCINESS: float = 0.3
     """:class_var
     The amp value for the floor.
     """
@@ -242,6 +250,8 @@ class PyImpact(CollisionManager):
         self._scrape_start_velocities: Dict[Tuple[int, int], float] = dict()
         # Initialize the scraping event counter.
         self._scrape_events_count: Dict[Tuple[int, int], int] = dict()
+        # Ignore collisions that include these object IDs.
+        self._excluded_objects: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_rigidbodies",
@@ -255,7 +265,8 @@ class PyImpact(CollisionManager):
                  "collision_types": ["obj", "env"]},
                 {"$type": "send_static_robots"},
                 {"$type": "send_segmentation_colors"},
-                {"$type": "send_static_rigidbodies"}]
+                {"$type": "send_static_rigidbodies"},
+                {"$type": "send_static_oculus_touch"}]
 
     def on_send(self, resp: List[bytes]) -> None:
         super().on_send(resp=resp)
@@ -376,6 +387,9 @@ class PyImpact(CollisionManager):
         for object_ids in self.obj_collisions:
             collider_id = object_ids.int1
             collidee_id = object_ids.int2
+            # Ignore this collision.
+            if collider_id in self._excluded_objects or collidee_id in self._excluded_objects:
+                continue
             event = CollisionAudioEvent(collision=self.obj_collisions[object_ids],
                                         object_0_static=self._static_audio_data[collider_id],
                                         object_0_dynamic=rigidbody_data[collider_id],
@@ -389,6 +403,8 @@ class PyImpact(CollisionManager):
                 collision_events_per_object[event.primary_id] = list()
             collision_events_per_object[event.primary_id].append(event)
         for object_id in self.env_collisions:
+            if object_id in self._excluded_objects:
+                continue
             event = CollisionAudioEvent(collision=self.env_collisions[object_id],
                                         object_0_static=self._static_audio_data[object_id],
                                         object_0_dynamic=rigidbody_data[object_id],
@@ -915,6 +931,7 @@ class PyImpact(CollisionManager):
         self._scrape_start_velocities.clear()
         self._scrape_events_count.clear()
         self._scrape_previous_indices.clear()
+        self._excluded_objects.clear()
         # Stop all ongoing audio.
         self.commands.append({"$type": "stop_all_audio"})
 
@@ -960,6 +977,7 @@ class PyImpact(CollisionManager):
         robot_joints: Dict[int, dict] = dict()
         object_masses: Dict[int, float] = dict()
         object_bouncinesses: Dict[int, float] = dict()
+        vr_nodes: List[ObjectAudioStatic] = list()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "segm":
@@ -997,6 +1015,26 @@ class PyImpact(CollisionManager):
                 for j in range(srig.get_num()):
                     object_masses[srig.get_id(j)] = srig.get_mass(j)
                     object_bouncinesses[srig.get_id(j)] = srig.get_bounciness(j)
+            # Add VR nodes.
+            elif r_id == "soct":
+                soct = StaticOculusTouch(resp[i])
+                if soct.get_human_hands():
+                    vr_material = PyImpact.VR_HUMAN_MATERIAL
+                    vr_bounciness = PyImpact.VR_HUMAN_BOUNCINESS
+                else:
+                    vr_material = PyImpact.ROBOT_JOINT_MATERIAL
+                    vr_bounciness = PyImpact.ROBOT_JOINT_BOUNCINESS
+                for vr_id, vr_name in zip([soct.get_body_id(), soct.get_left_hand_id(), soct.get_right_hand_id()],
+                                          ["vr_node_body", "vr_node_left_hand", "vr_node_right_hand"]):
+                    vr_nodes.append(ObjectAudioStatic(name=vr_name,
+                                                      mass=10,
+                                                      material=vr_material,
+                                                      bounciness=vr_bounciness,
+                                                      resonance=PyImpact.DEFAULT_RESONANCE,
+                                                      size=PyImpact.DEFAULT_SIZE,
+                                                      amp=PyImpact.DEFAULT_AMP,
+                                                      object_id=vr_id))
+                    self._excluded_objects.append(vr_id)
         need_to_derive: List[int] = list()
         for object_id in names:
             name = names[object_id]
@@ -1069,6 +1107,9 @@ class PyImpact(CollisionManager):
                                                                   size=PyImpact.DEFAULT_SIZE,
                                                                   amp=PyImpact.DEFAULT_AMP,
                                                                   object_id=joint_id)
+        # Add VR nodes.
+        for vr_node in vr_nodes:
+            self._static_audio_data[vr_node.object_id] = vr_node
 
     @staticmethod
     def _normalize_16bit_int(arr: np.array) -> np.array:

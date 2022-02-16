@@ -47,12 +47,15 @@ from tdw.FBOutput import Categories as Cats
 from tdw.FBOutput import StaticRigidbodies as StatRig
 from tdw.FBOutput import RobotJointVelocities as RoJoVe
 from tdw.FBOutput import EmptyObjects as Empty
+from tdw.FBOutput import OculusTouchButtons as OculusTouch
+from tdw.FBOutput import StaticOculusTouch as StatOc
 from tdw.FBOutput import StaticCompositeObjects as StatComp
 from tdw.FBOutput import DynamicCompositeObjects as DynComp
+from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 import numpy as np
-from typing import Tuple, Optional
+from typing import Tuple, Optional, List
 
 
 class OutputDataUndefinedError(Exception):
@@ -655,6 +658,46 @@ class VRRig(OutputData):
 
     def get_head_forward(self) -> Tuple[float, float, float]:
         return OutputData._get_vector3(self._get_simple_transform(2).Forward)
+
+    def get_held_left(self) -> np.array:
+        return self.data.HeldLeftAsNumpy()
+
+    def get_held_right(self) -> np.array:
+        return self.data.HeldRightAsNumpy()
+
+
+class OculusTouchButtons(OutputData):
+    BUTTONS = [b for b in OculusTouchButton]
+
+    def get_data(self) -> OculusTouch.OculusTouchButtons:
+        return OculusTouch.OculusTouchButtons.GetRootAsOculusTouchButtons(self.bytes, 0)
+
+    def get_left(self) -> List[OculusTouchButton]:
+        return self._get_buttons(v=self.data.Left())
+
+    def get_right(self) -> List[OculusTouchButton]:
+        return self._get_buttons(v=self.data.Right())
+
+    @staticmethod
+    def _get_buttons(v: int) -> List[OculusTouchButton]:
+        return [OculusTouchButtons.BUTTONS[i] for (i, b) in enumerate(OculusTouchButtons.BUTTONS) if v & (1 << i) != 0]
+
+
+class StaticOculusTouch(OutputData):
+    def get_data(self) -> StatOc.StaticOculusTouch:
+        return StatOc.StaticOculusTouch.GetRootAsStaticOculusTouch(self.bytes, 0)
+
+    def get_body_id(self) -> int:
+        return self.data.BodyId()
+
+    def get_left_hand_id(self) -> int:
+        return self.data.LeftHandId()
+
+    def get_right_hand_id(self) -> int:
+        return self.data.RightHandId()
+
+    def get_human_hands(self) -> bool:
+        return self.data.HumanHands()
 
 
 class LogMessage(OutputData):

@@ -157,11 +157,14 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Magnebot API (external repo)](https://github.com/alters-mit/magnebot)
 
-### 2.10.3 Human user interaction
+### 2.10.3 Virtual Reality (VR)
 
-1. [Overview](Documentation/lessons/humans/overview.md)
-2. [Keyboard controls](Documentation/lessons/humans/overview.md)
-3. [Virtual reality](Documentation/lessons/humans/vr.md)
+1. [Overview](Documentation/lessons/vr/overview.md)
+2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
+
+### 2.10.4 Keyboard controls
+
+1. [Keyboard controls](Documentation/lessons/keyboard/keyboard.md)
 
 ### 2.10.4 Embodied avatars
 

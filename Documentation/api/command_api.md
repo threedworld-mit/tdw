@@ -312,8 +312,8 @@
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
 | [`scale_object`](#scale_object) | Scale the object by a factor from its current scale. |
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
-| [`set_graspable`](#set_graspable) | Make an object graspable for a VR rig with Oculus touch controllers.  |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
+| [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
 | [`unparent_object`](#unparent_object) | Unparent an object from its current parent (an avatar, an avatar's camera, etc.). If the object doesn't have a parent, this command doesn't do anything. |
 
@@ -578,8 +578,10 @@
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
+| [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
+| [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -626,6 +628,8 @@
 | --- | --- |
 | [`attach_avatar_to_vr_rig`](#attach_avatar_to_vr_rig) | Attach an avatar (A_Img_Caps_Kinematic) to the VR rig in the scene. This avatar will work like all others, i.e it can send images and other data. The avatar will match the position and rotation of the VR rig's head. By default, this feature is disabled because it slows down the simulation's FPS.  |
 | [`destroy_vr_rig`](#destroy_vr_rig) | Destroy the current VR rig.  |
+| [`rotate_vr_rig_by`](#rotate_vr_rig_by) | Rotate the VR rig by an angle.  |
+| [`set_vr_resolution_scale`](#set_vr_resolution_scale) | Controls the actual size of eye textures as a multiplier of the device's default resolution.  |
 | [`teleport_vr_rig`](#teleport_vr_rig) | Teleport the VR rig to a new position.  |
 
 # Command
@@ -749,6 +753,24 @@ Create an Oculus VR rig. For more information, see: Documentation/misc_frontend/
 ```python
 {"$type": "create_vr_rig"}
 ```
+
+```python
+{"$type": "create_vr_rig", "rig_type": "oculus_touch_robot_hands", "sync_timestep_with_vr": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rig_type"` | VrRigType | The type of VR rig to instantiate. | "oculus_touch_robot_hands" |
+| `"sync_timestep_with_vr"` | bool | Whether to sync Time.fixedDeltaTime with the VR device refresh rate. Doing this improves physics behavior in VR; this parameter should almost always be True. | True |
+
+#### VrRigType
+
+The type of VR rig to add to the scene.
+
+| Value | Description |
+| --- | --- |
+| `"oculus_touch_robot_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as robot hands. |
+| `"oculus_touch_human_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as human hands. |
 
 ***
 
@@ -4250,22 +4272,6 @@ Set the albedo RGBA color of an object.
 
 ***
 
-## **`set_graspable`**
-
-Make an object graspable for a VR rig with Oculus touch controllers. 
-
-- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
-
-```python
-{"$type": "set_graspable", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_physic_material`**
 
 Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to.
@@ -4280,6 +4286,27 @@ Set the physic material of an object and apply friction and bounciness values to
 | `"dynamic_friction"` | float | Friction when the object is already moving. A higher value means that the object will come to rest very quickly. Must be between 0 and 1. | |
 | `"static_friction"` | float | Friction when the object is not moving. A higher value means that a lot of force will be needed to make the object start moving. Must be between 0 and 1. | |
 | `"bounciness"` | float | The bounciness of the object. A higher value means that the object will bounce without losing much energy. Must be between 0 and 1. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_vr_graspable`**
+
+Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "set_vr_graspable", "id": 1}
+```
+
+```python
+{"$type": "set_vr_graspable", "id": 1, "joint_break_force": 3500}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"joint_break_force"` | float | The joint break force for this graspable object. Lower values mean it's easier to break the joint. | 3500 |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -7351,6 +7378,39 @@ Options for when to send data.
 
 ***
 
+## **`send_oculus_touch_buttons`**
+
+Send data for buttons pressed on Oculus Touch controllers. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`OculusTouchButtons`](output_data.md#OculusTouchButtons)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "send_oculus_touch_buttons"}
+```
+
+```python
+{"$type": "send_oculus_touch_buttons", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_scene_regions`**
 
 Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene. 
@@ -7397,6 +7457,39 @@ Send static data for every composite object in the scene.
 
 ```python
 {"$type": "send_static_composite_objects", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_oculus_touch`**
+
+Send static data for the Oculus Touch rig. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticOculusTouch`](output_data.md#StaticOculusTouch)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "send_static_oculus_touch"}
+```
+
+```python
+{"$type": "send_static_oculus_touch", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8001,6 +8094,42 @@ Destroy the current VR rig.
 ```python
 {"$type": "destroy_vr_rig"}
 ```
+
+***
+
+## **`rotate_vr_rig_by`**
+
+Rotate the VR rig by an angle. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "rotate_vr_rig_by", "angle": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The angle of rotation in degrees. | |
+
+***
+
+## **`set_vr_resolution_scale`**
+
+Controls the actual size of eye textures as a multiplier of the device's default resolution. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "set_vr_resolution_scale"}
+```
+
+```python
+{"$type": "set_vr_resolution_scale", "resolution_scale_factor": 1.0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"resolution_scale_factor"` | float | Texture resolution scale factor. A value greater than 1.0 improves image quality but at a slight performance cost. Range: 0.5 to 1.75 | 1.0 |
 
 ***
 

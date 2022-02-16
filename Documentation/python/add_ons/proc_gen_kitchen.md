@@ -213,15 +213,14 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### create
 
-**`self.create(region, alcoves)`**
+**`self.create(room)`**
 
 Create a kitchen. Populate it with a table and chairs, kitchen counters and wall cabinets, and appliances.
 Objects may be on top of or inside of larger objects.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| region |  RegionWalls |  | The [`RegionWalls`](../scene_data/region_walls.md) data describing the region. |
-| alcoves |  List[RegionWalls] |  | A list of `RegionWalls` that are treated as part of a continuous kitchen, for example the smaller region of an L-shaped room. |
+| room |  Room |  | The [`Room`](../scene_data/room.md) that the kitchen is in. |
 
 #### on_send
 

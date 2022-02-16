@@ -13,7 +13,7 @@
 | [`apply_force`](#apply_force) | Apply a force into the world to an target position. The force will impact any objects between the origin and the target position. |
 | [`create_avatar`](#create_avatar) | Create an avatar (agent). |
 | [`create_empty_environment`](#create_empty_environment) | Create an empty environment. This must be called after load_scene.  |
-| [`create_vr_rig`](#create_vr_rig) | Create an Oculus VR rig. For more information, see: Documentation/misc_frontend/vr.md |
+| [`create_vr_rig`](#create_vr_rig) | Create a VR rig. If there is already a VR rig in the scene, this fails silently. For more information, see: Documentation/misc_frontend/vr.md |
 | [`destroy_all_objects`](#destroy_all_objects) | Destroy all objects and avatars in the scene.  |
 | [`do_nothing`](#do_nothing) | Do nothing. Useful for benchmarking.  |
 | [`enable_reflection_probes`](#enable_reflection_probes) | Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation. |
@@ -747,7 +747,7 @@ Create an empty environment. This must be called after load_scene.
 
 ## **`create_vr_rig`**
 
-Create an Oculus VR rig. For more information, see: Documentation/misc_frontend/vr.md
+Create a VR rig. If there is already a VR rig in the scene, this fails silently. For more information, see: Documentation/misc_frontend/vr.md
 
 
 ```python

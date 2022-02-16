@@ -42491,6 +42491,108 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "sink_cabinet_unit_wood_oak_white_chrome_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1194777,
+                "Linux": 1433620,
+                "Windows": 1185503
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": -0.3228034
+                },
+                "bottom": {
+                    "x": -0.0004142523,
+                    "y": 0,
+                    "z": 0.0007175803
+                },
+                "center": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "front": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": 0.3242386
+                },
+                "left": {
+                    "x": -0.7624142,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "right": {
+                    "x": 0.7615857,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "top": {
+                    "x": -0.0004142523,
+                    "y": 0.930789,
+                    "z": 0.0007175803
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "sink_cabinet_unit_wood_oak_white_chrome_composite",
+            "physics_quality": 1.069506026850489,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "granite_grey_dark",
+                        "chrome2"
+                    ],
+                    "name": "sink_cabinet_unit_wood_oak_white_chrome_composite"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_ll"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_rl"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_rr"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_lr"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/sink_cabinet_unit_wood_oak_white_chrome_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/sink_cabinet_unit_wood_oak_white_chrome_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/sink_cabinet_unit_wood_oak_white_chrome_composite"
+            },
+            "volume": 0.2114339,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "sink_cabinet_unit_wood_oak_white_porcelain_composite": {
             "asset_bundle_sizes": {
                 "Darwin": 1745750,

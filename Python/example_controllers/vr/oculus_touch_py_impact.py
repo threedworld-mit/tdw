@@ -39,10 +39,10 @@ class OculusTouchPyImpact(Controller):
         object_id_0 = Controller.get_unique_id()
         commands = Controller.get_add_physics_object(model_name=model_name,
                                                      object_id=object_id_0,
-                                                     position={"x": 0, "y": 0, "z": 0.6})
+                                                     position={"x": 0, "y": 0, "z": 0.7})
         object_id_1 = Controller.get_unique_id()
         commands.extend(Controller.get_add_physics_object(model_name="vase_02",
-                                                          position={"x": 0, "y": 3, "z": 0.6},
+                                                          position={"x": 0, "y": 3, "z": 0.7},
                                                           object_id=object_id_1))
         self.communicate(commands)
         # Wait until the trial is done.

@@ -80,6 +80,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
 | [Occlusion](#Occlusion) | To what extent parts of the scene environment (such as walls) are occluding objects. | `occl` |
+| [OculusTouchButtons](#OculusTouchButtons) | Which Oculus Touch controller buttons have been pressed. | `octb` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
@@ -90,6 +91,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [ScreenPosition](#ScreenPosition) | A position on the screen converted from a worldspace position. | `scre` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
 | [StaticCompositeObjects](#StaticCompositeObjects) | Static data for composite objects. | `scom` |
+| [StaticOculusTouch](#StaticOculusTouch) | Static data for the Oculus Touch rig. | `soct` |
 | [StaticRigidbodies](#StaticRigidbodies) | Static rigibody data (mass, kinematic state, etc.) for objects in the scene. | `srig` |
 | [StaticRobot](#StaticRobot) | Static data for a robot in the scene. | `srob` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
@@ -617,6 +619,19 @@ To what extent parts of the scene environment (such as walls) are occluding obje
 | `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
 | `get_occluded()` | How much of the objects in the frame are occluded by the environment, between 0 (no occlusion) and 1 (fully occluded). | `float` |
 
+## OculusTouchButtons
+
+`o = OculusTouchButtons(byte_array)`
+
+**Identifier:** `octb`
+
+Which Oculus Touch controller buttons have been pressed.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_left()` | Bitwise sum of buttons pressed on the left controller. | `List[OculusTouchButton]` |
+| `get_right()` | Bitwise sum of buttons pressed on the right controller. | `List[OculusTouchButton]` |
+
 ## Overlap
 
 `o = Overlap(byte_array)`
@@ -803,6 +818,21 @@ Static data for composite objects.
 | `get_prismatic_joint_limit(index, prismatic_joint_index)` | The limit of the prismatic joint. | `float` |
 | `get_prismatic_joint_axis(index, prismatic_joint_index)` | The axis of the prismatic joint. | `Tuple[float, float, float]` |
 
+## StaticOculusTouch
+
+`s = StaticOculusTouch(byte_array)`
+
+**Identifier:** `soct`
+
+Static data for the Oculus Touch rig.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_body_id()` | The ID of the body. | `int` |
+| `get_left_hand_id()` | The ID of the left hand. | `int` |
+| `get_right_hand_id()` | The ID of the right hand. | `int` |
+| `get_human_hands()` | If True, the hands are human hands. | `bool` |
+
 ## StaticRigidbodies
 
 `s = StaticRigidbodies(byte_array)`
@@ -951,4 +981,6 @@ Data about the VR rig currently in the scene.
 | `get_head_position()` | The position of the head. | `Tuple[float, float, float]` |
 | `get_head_rotation()` | The rotation of the head. | `Tuple[float, float, float, float]` |
 | `get_head_forward()` | The forward of the head. | `Tuple[float, float, float]` |
+| `get_held_left()` | The IDs of the objects held by the left hand. | `np.array` |
+| `get_held_right()` | The IDs of the objects held by the right hand. | `np.array` |
 

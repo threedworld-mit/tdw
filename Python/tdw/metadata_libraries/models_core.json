@@ -17962,45 +17962,45 @@
         },
         "cabinet_24_single_door_wood_oak_white_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 1107755,
-                "Linux": 1345340,
-                "Windows": 1099353
+                "Darwin": 1108876,
+                "Linux": 1345063,
+                "Windows": 1100027
             },
             "bounds": {
                 "back": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.4605807,
                     "z": -0.3226809
                 },
                 "bottom": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "center": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.4605807,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "front": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.4605807,
-                    "z": 0.3257121
+                    "z": 0.3217121
                 },
                 "left": {
-                    "x": -0.3056358,
+                    "x": -0.3054422,
                     "y": 0.4605807,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "right": {
                     "x": 0.3051473,
                     "y": 0.4605807,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "top": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.9211614,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 }
             },
             "canonical_rotation": {
@@ -18013,7 +18013,7 @@
             "do_not_use_reason": "",
             "flex": false,
             "name": "cabinet_24_single_door_wood_oak_white_composite",
-            "physics_quality": 0.9025684747949471,
+            "physics_quality": 0.9019135773091904,
             "scale_factor": 1,
             "substructure": [
                 {
@@ -18036,7 +18036,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_24_single_door_wood_oak_white_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_24_single_door_wood_oak_white_composite"
             },
-            "volume": 0.08960097,
+            "volume": 0.08959951,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },

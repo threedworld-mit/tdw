@@ -10,6 +10,7 @@ from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
 from tdw.librarian import ModelRecord
 from tdw.scene_data.region_walls import RegionWalls
+from tdw.scene_data.room import Room
 from tdw.add_ons.proc_gen_objects_data.lateral_sub_arrangement import LateralSubArrangement
 
 
@@ -246,14 +247,20 @@ class ProcGenKitchen(ProcGenObjects):
             self._counter_top_material = "granite_black"
         return commands
 
-    def create(self, region: RegionWalls, alcoves: List[RegionWalls]) -> None:
+    def create(self, room: Room) -> None:
         """
         Create a kitchen. Populate it with a table and chairs, kitchen counters and wall cabinets, and appliances.
         Objects may be on top of or inside of larger objects.
 
-        :param region: The [`RegionWalls`](../scene_data/region_walls.md) data describing the region.
-        :param alcoves: A list of `RegionWalls` that are treated as part of a continuous kitchen, for example the smaller region of an L-shaped room.
+        :param room: The [`Room`](../scene_data/room.md) that the kitchen is in.
         """
+
+        alcoves = [alcove.walls for alcove in room.alcoves]
+        region = room.main_region.walls
+        # Set the true bounds.
+        self.scene_bounds.rooms[room.main_region.bounds.region_id] = room.main_region.bounds
+        for alcove in room.alcoves:
+            self.scene_bounds.rooms[alcove.bounds.region_id] = alcove.bounds
 
         used_walls = self._add_initial_objects(region=region, alcoves=alcoves)
         self._add_secondary_arrangement(used_walls=used_walls, region=region,
@@ -1304,15 +1311,18 @@ class ProcGenKitchen(ProcGenObjects):
         painting_position = {k: v for k, v in position.items()}
         if wall == CardinalDirection.north:
             painting_position["z"] = self.scene_bounds.rooms[region.region].z_max - depth
+            rotation = 180
         elif wall == CardinalDirection.south:
             painting_position["z"] = self.scene_bounds.rooms[region.region].z_min + depth
+            rotation = 0
         elif wall == CardinalDirection.west:
             painting_position["x"] = self.scene_bounds.rooms[region.region].x_min + depth
+            rotation = 90
         elif wall == CardinalDirection.east:
             painting_position["x"] = self.scene_bounds.rooms[region.region].x_max - depth
+            rotation = 270
         else:
             raise Exception(wall)
-        rotation = ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["rotations"][wall.name]
         # Set the y coordinate between 1.1 and the height of the room minus the height of the painting.
         painting_position["y"] = float(self.rng.uniform(1.1, self.scene_bounds.rooms[region.region].bounds[1] - extents[1]))
         # Add the painting.
@@ -1338,6 +1348,7 @@ class ProcGenKitchen(ProcGenObjects):
         rotation = ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["rotations"][wall.name]
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         depth = extents[ProcGenKitchen.RADIATOR_ROTATIONS[record.name]["depth"]]
+        self._used_unique_categories.append("radiator")
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
                                                                position=self._get_position_along_wall(region=region.region,
@@ -1443,8 +1454,12 @@ class ProcGenKitchen(ProcGenObjects):
                 sub_arrangements.append(LateralSubArrangement(category=c, function=self._add_side_table,
                                                               position_offset_multiplier=2))
             elif c == "radiator":
-                sub_arrangements.append(LateralSubArrangement(category=c, function=self._add_radiator,
-                                                              position_offset_multiplier=2))
+                if c in self._used_unique_categories:
+                    sub_arrangements.append(LateralSubArrangement(category="basket", function=self._add_basket,
+                                                                  position_offset_multiplier=2))
+                else:
+                    sub_arrangements.append(LateralSubArrangement(category=c, function=self._add_radiator,
+                                                                  position_offset_multiplier=2))
             elif c == "suitcase":
                 sub_arrangements.append(LateralSubArrangement(category=c, function=self._add_suitcase,
                                                               position_offset_multiplier=2))

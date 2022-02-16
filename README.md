@@ -232,6 +232,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CinematicCamera](Documentation/python/add_ons/cinematic_camera.md)
 - [CollisionManager](Documentation/python/add_ons/collision_manager.md)
 - [CompositeObjectManager](Documentation/python/add_ons/composite_object_manager.md)
+- [ContainerManager](Documentation/python/add_ons/container_manager.md)
 - [EmbodiedAvatar](Documentation/python/add_ons/embodied_avatar.md)
 - [Floorplan](Documentation/python/add_ons/floorplan.md)
 - [ImageCapture](Documentation/python/add_ons/image_capture.md)
@@ -251,13 +252,26 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [StepPhysics](Documentation/python/add_ons/step_physics.md)
 - [ThirdPersonCamera](Documentation/python/add_ons/third_person_camera.md)
 - [ThirdPersonCameraBase](Documentation/python/add_ons/third_person_camera_base.md)
+- [TriggerCollisionManager](Documentation/python/add_ons/trigger_collision_manager.md)
 - [VR](Documentation/python/add_ons/vr.md)
+
+**tdw.add_ons.container_manager_data**
+
+- [ContainerBoxTriggerCollider](Documentation/python/add_ons/container_manager_data/container_box_trigger_collider.md)
+- [ContainerColliderTag](Documentation/python/add_ons/container_manager_data/container_collider_tag.md)
+- [ContainerCylinderTriggerCollider](Documentation/python/add_ons/container_manager_data/container_cylinder_trigger_collider.md)
+- [ContainerNonUniformScaleTriggerCollider](Documentation/python/add_ons/container_manager_data/container_non_uniform_scale_trigger_collider.md)
+- [ContainerSphereTriggerCollider](Documentation/python/add_ons/container_manager_data/container_sphere_trigger_collider.md)
+- [ContainerTriggerCollider](Documentation/python/add_ons/container_manager_data/container_trigger_collider.md)
+- [ContainmentEvent](Documentation/python/add_ons/container_manager_data/containment_event.md)
 
 **tdw.collision_data**
 
 - [CollisionBase](Documentation/python/collision_data/collision_base.md)
 - [CollisionObjEnv](Documentation/python/collision_data/collision_obj_env.md)
 - [CollisionObjObj](Documentation/python/collision_data/collision_obj_obj.md)
+- [TriggerColliderShape](Documentation/python/collision_data/trigger_collider_shape.md)
+- [TriggerCollisionEvent](Documentation/python/collision_data/trigger_collision_event.md)
 
 **tdw.flex_data**
 

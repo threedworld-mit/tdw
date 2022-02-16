@@ -37735,6 +37735,84 @@
             "wcategory": "pot",
             "wnid": "n03990474"
         },
+        "pot_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1159761,
+                "Linux": 1207202,
+                "Windows": 1153977
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0001533031,
+                    "y": 0.1104878,
+                    "z": -0.06504706
+                },
+                "bottom": {
+                    "x": 0.0001533031,
+                    "y": 0,
+                    "z": 0.08750089
+                },
+                "center": {
+                    "x": 0.0001533031,
+                    "y": 0.1104878,
+                    "z": 0.08750089
+                },
+                "front": {
+                    "x": 0.0001533031,
+                    "y": 0.1104878,
+                    "z": 0.2400488
+                },
+                "left": {
+                    "x": -0.1286866,
+                    "y": 0.1104878,
+                    "z": 0.08750089
+                },
+                "right": {
+                    "x": 0.1289932,
+                    "y": 0.1104878,
+                    "z": 0.08750089
+                },
+                "top": {
+                    "x": 0.0001533031,
+                    "y": 0.2209756,
+                    "z": 0.08750089
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "pot_composite",
+            "physics_quality": 1.0105115993893006,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "pot_composite"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "lid"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/pot_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/pot_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/pot_composite"
+            },
+            "volume": 0.003023678,
+            "wcategory": "pot",
+            "wnid": "n03990474"
+        },
         "printer_hp_laserjet1321": {
             "asset_bundle_sizes": {
                 "Darwin": 416264,

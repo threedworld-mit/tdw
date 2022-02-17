@@ -67,7 +67,7 @@ class InteriorSceneLighting(AddOn):
               focus_distance: float = 2.5, ambient_occlusion_intensity: float = 0.125,
               ambient_occlusion_thickness_modifier: float = 3.5, shadow_strength: float = 1):
         """
-        Reset the HDRI skybox. Call this when resetting a scene.
+        Reset the add-on. Call this when you reset a scene.
 
         :param hdri_skybox: The name of the HDRI skybox. If None, a random skybox will be selected.
         :param rng: The random number generator for the purpose of selecting a random HDRI skybox. If None, a new random number generator will be created as needed.
@@ -78,7 +78,7 @@ class InteriorSceneLighting(AddOn):
         :param shadow_strength: The shadow strength of all lights in the scene.
         """
 
-        self.initialized = False
+        super().reset()
         self.hdri_skybox = InteriorSceneLighting._get_hdri_skybox(hdri_skybox=hdri_skybox, rng=rng)
         self._aperture = aperture
         self._focus_distance = focus_distance

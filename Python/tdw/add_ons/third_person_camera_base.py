@@ -106,6 +106,21 @@ class ThirdPersonCameraBase(AddOn, ABC):
 
         pass
 
+    def reset(self, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+              field_of_view: int = None) -> None:
+        """
+        Reset the add-on. Call this when you reset a scene.
+
+        :param position: The initial position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param field_of_view: If not None, set the field of view.
+        """
+
+        super().reset()
+        self.position = position
+        self._rotation = rotation
+        self._field_of_view: float = field_of_view
+
     def _get_avatar_type(self) -> str:
         """
         :return: The type of avatar.

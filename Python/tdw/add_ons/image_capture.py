@@ -125,6 +125,29 @@ class ImageCapture(AddOn):
                                   "frequency": "once",
                                   "ids": self.avatar_ids})
 
+    def reset(self, path: Union[str, Path] = None, png: bool = False, pass_masks: List[str] = None) -> None:
+        """
+        Reset the add-on. Call this when you reset a scene.
+
+        :param path: The path to the output directory. If None, use the current path.
+        :param png: If True, images will be lossless png files. If False, images will be jpgs. Usually, jpg is sufficient.
+        :param pass_masks: A list of image passes that will be captured by the avatars. If None, defaults to `["_img"]`. For a description of each of pass mask, [read this](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_pass_masks).
+        """
+
+        super().reset()
+        if path is not None:
+            if isinstance(path, str):
+                self.path = Path(path)
+            else:
+                self.path = path
+            if not self.path.exists():
+                self.path.mkdir(parents=True)
+        self._png = png
+        self._pass_mask_commands = self._get_pass_mask_commands(pass_masks=pass_masks)
+        self._frequency = "always"
+        self._save: bool = True
+        self.images.clear()
+
     def set(self, frequency: str = "always", avatar_ids: List[str] = None, pass_masks: List[str] = None, save: bool = True) -> None:
         """
         Set the frequency of images and which avatars will capture images.
@@ -182,4 +205,3 @@ class ImageCapture(AddOn):
             if pm not in ImageCapture._PASS_MASKS:
                 raise Exception(f"Invalid pass mask: {pm}")
         return [{"$type": "set_pass_masks", "pass_masks": pass_masks, "avatar_id": a} for a in self.avatar_ids]
-

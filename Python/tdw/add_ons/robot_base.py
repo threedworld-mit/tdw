@@ -89,10 +89,9 @@ class RobotBase(AddOn, ABC):
         :param rotation: The rotation of the robot.
         """
 
-        self.initialized = False
+        super().reset()
         self.static = None
         self.dynamic = None
-        self.commands.clear()
         if position is not None:
             self.initial_position = position
         if rotation is not None:

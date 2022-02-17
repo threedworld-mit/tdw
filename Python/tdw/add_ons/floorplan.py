@@ -96,4 +96,7 @@ class Floorplan(AddOn):
         return []
 
     def on_send(self, resp: List[bytes]) -> None:
-        pass
+        return
+
+    def reset(self) -> None:
+        return

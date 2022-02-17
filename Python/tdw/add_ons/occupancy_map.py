@@ -139,6 +139,13 @@ class OccupancyMap(AddOn):
                 for p in n:
                     self.occupancy_map[p[0]][p[1]] = -1
 
+    def reset(self) -> None:
+        super().reset()
+        self.occupancy_map = None
+        self.scene_bounds = None
+        self._occupancy_map_size = (0, 0)
+        self._ignore_objects.clear()
+
     def generate(self, ignore_objects: List[int] = None) -> None:
         """
         Generate an occupancy map.
@@ -239,14 +246,3 @@ class OccupancyMap(AddOn):
         """
 
         self.commands.append({"$type": "remove_position_markers"})
-
-    def reset(self) -> None:
-        """
-        Reset the occupancy map. Call this when resetting a scene.
-        """
-
-        self.initialized = False
-        self.occupancy_map = None
-        self.scene_bounds = None
-        self._occupancy_map_size = (0, 0)
-        self._ignore_objects.clear()

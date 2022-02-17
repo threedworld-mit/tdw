@@ -94,6 +94,20 @@ class OculusTouch(VR):
                         if button in events:
                             events[button]()
 
+    def reset(self, non_graspable: List[int] = None) -> None:
+        """
+        Reset the add-on. Call this when you reset a scene.
+
+        :param non_graspable: A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
+        """
+
+        self._set_graspable = True
+        if non_graspable is None:
+            self._non_graspable = list()
+        else:
+            self._non_graspable = non_graspable
+        super().reset()
+
     def listen_to_button(self, button: OculusTouchButton, is_left: bool, function: Callable[[], None]) -> None:
         """
         Listen for Oculus Touch controller button presses.
@@ -107,17 +121,3 @@ class OculusTouch(VR):
             self._button_press_events_left[button] = function
         else:
             self._button_press_events_right[button] = function
-
-    def reset(self, non_graspable: List[int] = None) -> None:
-        """
-        Reset the VR rig. Call this whenever a scene is reset.
-
-        :param non_graspable: A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
-        """
-
-        self._set_graspable = True
-        if non_graspable is None:
-            self._non_graspable = list()
-        else:
-            self._non_graspable = non_graspable
-        super().reset()

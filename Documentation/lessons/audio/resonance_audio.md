@@ -151,6 +151,63 @@ c.add_ons.append(audio_initializer)
 c.communicate([])
 ```
 
+## Re-initialize audio
+
+To reset, destroy the avatar and call `audio_intializer.reset()`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.resonance_audio_initializer import ResonanceAudioInitializer
+
+c = Controller()
+audio_initializer = AudioInitializer(avatar_id="a", framerate=60)
+c.add_ons.append(audio_initializer)
+commands = [TDWUtils.create_empty_room(12, 12)]
+commands.extend(TDWUtils.create_avatar(avatar_id="a"))
+c.communicate(commands)
+
+c.communicate({"$type": "destroy_avatar",
+               "avatar_id": "a"})
+audio_initializer.reset()
+c.communicate(TDWUtils.create_avatar(avatar_id="a"))
+```
+
+This will revert the scene's Resonance Audio materials to default values. To use non-default values, set the optional parameters in `reset()`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.resonance_audio_initializer import ResonanceAudioInitializer
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+
+c = Controller()
+audio_initializer = ResonanceAudioInitializer(avatar_id="a",
+                                              framerate=60,
+                                              floor="tile",
+                                              ceiling="brick",
+                                              front_wall="concrete",
+                                              back_wall="smoothPlaster",
+                                              left_wall="metal",
+                                              right_wall="metal",
+                                              region_id=-1)
+camera = ThirdPersonCamera(avatar_id="a")
+# Note the order: The camera must be added before audio is initialized.
+c.add_ons.extend([camera, audio_initializer])
+c.communicate(TDWUtils.create_empty_room(12, 12))
+
+c.communicate({"$type": "destroy_avatar",
+               "avatar_id": "a"})
+audio_initializer.reset(floor="tile",
+                        ceiling="brick",
+                        front_wall="concrete",
+                        back_wall="smoothPlaster",
+                        left_wall="metal",
+                        right_wall="metal",
+                        region_id=-1)
+c.communicate([])
+```
+
 ## Play audio
 
 You can call `audio_intializer.play(path, position)` to play a .wav file. 

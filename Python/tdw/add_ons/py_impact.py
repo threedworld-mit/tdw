@@ -902,16 +902,16 @@ class PyImpact(CollisionManager):
     def reset(self, initial_amp: float = 0.5, static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None,
               scrape_objects: Dict[int, ScrapeModel] = None) -> None:
         """
-        Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
+        Reset the add-on. Call this when you reset a scene.
 
         :param initial_amp: The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
         :param static_audio_data_overrides: If not None, a dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values.
         :param scrape_objects: A dictionary of [scrape objects](../physics_audio/scrape_model.md) in the scene. Key = Object ID. Ignored if None or `scrape == False` in the constructor.
         """
 
+        super().reset()
         assert 0 < initial_amp < 1, f"initial_amp is {initial_amp} (must be > 0 and < 1)."
         self._cached_audio_info = False
-        self.initialized = False
         self._static_audio_data.clear()
         self._static_audio_data_overrides.clear()
         self._scrape_objects.clear()

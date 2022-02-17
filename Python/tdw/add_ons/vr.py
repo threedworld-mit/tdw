@@ -124,6 +124,19 @@ class VR(AddOn, ABC):
                 self.held_right = vr_rig.get_held_right()
                 break
 
+    def reset(self) -> None:
+        """
+        Reset the add-on. Call this when you reset a scene.
+        """
+
+        super().reset()
+        self.rig = VR._get_empty_transform()
+        self.left_hand = VR._get_empty_transform()
+        self.right_hand = VR._get_empty_transform()
+        self.head = VR._get_empty_transform()
+        self.held_left = np.array([], dtype=int)
+        self.held_right = np.array([], dtype=int)
+
     def set_position(self, position: Dict[str, float]) -> None:
         """
         Set the position of the VR rig.
@@ -143,20 +156,6 @@ class VR(AddOn, ABC):
 
         self.commands.append({"$type": "rotate_vr_rig_by",
                               "angle": angle})
-
-    def reset(self) -> None:
-        """
-        Reset the VR rig. Call this whenever a scene is reset.
-        """
-
-        self.initialized = False
-        self.commands.clear()
-        self.rig = VR._get_empty_transform()
-        self.left_hand = VR._get_empty_transform()
-        self.right_hand = VR._get_empty_transform()
-        self.head = VR._get_empty_transform()
-        self.held_left = np.array([], dtype=int)
-        self.held_right = np.array([], dtype=int)
 
     @staticmethod
     def _get_empty_transform() -> Transform:

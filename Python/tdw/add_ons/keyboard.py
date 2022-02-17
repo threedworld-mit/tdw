@@ -35,6 +35,9 @@ class Keyboard(AddOn):
                 for j in range(keys.get_num_released()):
                     self._do_event(k=keys.get_released(j), events=self._release)
 
+    def reset(self) -> None:
+        super().reset()
+
     def listen(self, key: str, commands: Union[dict, List[dict]] = None, function: Callable = None,
                events: List[str] = None) -> None:
         """

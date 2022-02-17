@@ -176,6 +176,35 @@ class CinematicCamera(ThirdPersonCameraBase):
             else:
                 raise Exception(f"Invalid rotate target type: {self._move_target_type}")
 
+    def reset(self, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+              field_of_view: int = None, move_speed: float = 0.1, rotate_speed: float = 1,
+              field_of_view_speed: float = 0.1, look_at: Union[int, Dict[str, float]] = None) -> None:
+        """
+        Reset the add-on. Call this when you reset a scene.
+
+        :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param field_of_view: If not None, set the field of view.
+        :param move_speed: The directional speed of the camera. This can later be adjusted by setting `self.move_speed`.
+        :param rotate_speed: The angular speed of the camera. This can later be adjusted by setting `self.rotate_speed`.
+        :param look_at: If not None, the cinematic camera will look at this object (if int) or position (if dictionary).
+        :param field_of_view_speed: Adjust the field of view by this value per frame.
+        """
+
+        super().reset(position=position, rotation=rotation, field_of_view=field_of_view)
+        self.move_speed = move_speed
+        self.rotate_speed = rotate_speed
+        self.field_of_view_speed = field_of_view_speed
+        self._sensor_forward = np.array([0, 0, 0])
+        self._sensor_rotation = np.array([0, 0, 0, 0])
+        self._move_target = None
+        self._move_to_object_offset = {"x": 0, "y": 0, "z": 0}
+        self._move_target_type = _MoveTargetType.position
+        self._rotate_target = None
+        self._rotate_target_type = _RotateTargetType.position
+        self._look_at = look_at
+        self._field_of_view_target = self._field_of_view
+
     def move_to_position(self, target: Dict[str, float], relative: bool = False) -> None:
         """
         Start moving towards a target position.

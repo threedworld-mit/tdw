@@ -61,3 +61,8 @@ class CollisionManager(AddOn):
                 collision = EnvironmentCollision(resp[i])
                 coe = CollisionObjEnv(collision=collision)
                 self.env_collisions[collision.get_object_id()] = coe
+
+    def reset(self) -> None:
+        super().reset()
+        self.obj_collisions.clear()
+        self.env_collisions.clear()

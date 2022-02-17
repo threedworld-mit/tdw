@@ -55,6 +55,13 @@ class AudioInitializerBase(AddOn, ABC):
 
         return
 
+    def reset(self) -> None:
+        """
+        Reset the add-on. Call this when you reset a scene.
+        """
+
+        super().reset()
+
     @final
     def play(self, path: Union[str, Path], position: Union[np.array, Dict[str, float]], audio_id: int = None,
              object_id: int = None) -> None:

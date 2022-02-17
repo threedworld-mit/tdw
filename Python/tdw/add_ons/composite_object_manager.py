@@ -61,9 +61,9 @@ class CompositeObjectManager(AddOn):
 
     def reset(self) -> None:
         """
-        Reset this add-on. Call this when resetting the scene.
+        Reset the add-on. Call this when you reset a scene.
         """
 
-        self.initialized = False
+        super().reset()
         self.static.clear()
         self.dynamic.clear()

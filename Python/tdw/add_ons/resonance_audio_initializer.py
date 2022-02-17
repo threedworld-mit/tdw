@@ -45,7 +45,7 @@ class ResonanceAudioInitializer(AudioInitializerBase):
         """:field
         The ID of the scene region (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room.
         """
-        self.region_id = region_id
+        self.region_id: int = region_id
         """:field
         The floor material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
         """
@@ -82,6 +82,28 @@ class ResonanceAudioInitializer(AudioInitializerBase):
                             "reverb_left_wall_material": self.left_wall,
                             "reverb_right_wall_material": self.right_wall})
         return commands
+
+    def reset(self, region_id: int = -1, floor: str = "parquet", ceiling: str = "acousticTile",
+              front_wall: str = "smoothPlaster", back_wall: str = "smoothPlaster", left_wall: str = "smoothPlaster",
+              right_wall: str = "smoothPlaster") -> None:
+        """
+        :param region_id: The ID of the scene region (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room.
+        :param floor: The floor material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+        :param ceiling: The ceiling material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+        :param front_wall: The front wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+        :param back_wall: The back wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+        :param left_wall: The left wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+        :param right_wall: The right wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
+        """
+
+        super().reset()
+        self.region_id = region_id
+        self.floor = floor
+        self.ceiling = ceiling
+        self.front_wall = front_wall
+        self.back_wall = back_wall
+        self.left_wall = left_wall
+        self.right_wall = right_wall
 
     def _get_sensor_command_name(self) -> str:
         return "add_environ_audio_sensor"

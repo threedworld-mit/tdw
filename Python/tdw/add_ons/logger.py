@@ -86,6 +86,9 @@ class Logger(AddOn):
         if self.record:
             self.playback.append(commands[:])
 
+    def reset(self) -> None:
+        return
+
     def save(self) -> None:
         """
         Write the record of commands sent to the local disk.

@@ -113,6 +113,26 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
                                   "rotation": self.follow_rotate,
                                   "avatar_id": self.avatar_id})
 
+    def reset(self, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+              field_of_view: int = None, look_at: Union[int, Dict[str, float]] = None,
+              follow_object: int = None, follow_rotate: bool = False) -> None:
+        """
+        Reset the add-on. Call this when you reset a scene.
+
+        :param position: The initial position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param field_of_view: If not None, set the field of view.
+        :param look_at: If not None, rotate look at this target every frame. Overrides `rotation`. Can be an int (an object ID) or an `(x, y, z)` dictionary (a position).
+        :param field_of_view: If not None, set the field of view.
+        :param follow_object: If not None, follow an object per frame. The `position` parameter will be treated as a relative value from the target object rather than worldspace coordinates.
+        :param follow_rotate: If True, match the rotation of the object. Ignored if `follow_object` is None.
+        """
+
+        super().reset(position=position, rotation=rotation, field_of_view=field_of_view)
+        self._look_at = look_at
+        self.follow_object = follow_object
+        self.follow_rotate = follow_rotate
+
     def teleport(self, position: Dict[str, float], absolute: bool = True) -> None:
         """
         Teleport the camera to a new position.

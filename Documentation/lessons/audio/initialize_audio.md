@@ -83,7 +83,7 @@ By setting the target framerate to 60, the audio rate will match the physics and
 
 ## Re-initialize audio
 
-To reset, destroy the avatar and set `audio_intializer.initialized = False`:
+To reset, destroy the avatar and call `audio_intializer.reset()`:
 
 ```python
 from tdw.controller import Controller
@@ -99,8 +99,8 @@ c.communicate(commands)
 
 c.communicate({"$type": "destroy_avatar",
                "avatar_id": "a"})
-audio_initializer.initialized = False
-c.communicate(commands)
+audio_initializer.reset()
+c.communicate(TDWUtils.create_avatar(avatar_id="a"))
 ```
 
 ## Play audio

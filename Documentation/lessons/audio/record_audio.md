@@ -136,6 +136,10 @@ recorder = PhysicsAudioRecorder(max_frames=1000)
 c.add_ons.extend([audio, py_impact, recorder])
 ```
 
+## Reset
+
+Call `recorder.reset()` when  resetting a scene.
+
 ## "Rube Goldberg" example controller
 
 [rube_goldberg.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/rube_goldberg.py) combines a [photorealistic environment](../photorealism/overview.md), a [physics simulation](../physx/physx.md), and PyImpact. It creates a "Rube Goldberg machine" from a set of objects that will collide when the first is struck by a ball.

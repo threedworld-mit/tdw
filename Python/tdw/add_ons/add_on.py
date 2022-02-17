@@ -75,3 +75,11 @@ class AddOn(ABC):
         """
 
         pass
+
+    def reset(self) -> None:
+        """
+        Reset the add-on. Call this when you reset a scene.
+        """
+
+        self.initialized = False
+        self.commands.clear()

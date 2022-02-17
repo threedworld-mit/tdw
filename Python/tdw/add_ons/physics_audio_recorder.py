@@ -76,6 +76,9 @@ class PhysicsAudioRecorder(AddOn):
         if sleeping and not playing_audio:
             self.stop()
 
+    def reset(self) -> None:
+        super().reset()
+
     def start(self, path: Union[str, Path]) -> None:
         """
         Start recording.

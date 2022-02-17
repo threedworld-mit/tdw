@@ -24,3 +24,6 @@ class StepPhysics(AddOn):
     def on_send(self, resp: List[bytes]) -> None:
         self.commands.append({"$type": "step_physics",
                               "frames": self.num_frames})
+
+    def reset(self) -> None:
+        return

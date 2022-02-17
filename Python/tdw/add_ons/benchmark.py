@@ -42,6 +42,9 @@ class Benchmark(AddOn):
             self.times.append(t1 - self._t0)
             self._t0 = t1
 
+    def reset(self) -> None:
+        return
+
     def start(self) -> None:
         """
         Start bencharking each `communicate()` call and clear `self.times`.

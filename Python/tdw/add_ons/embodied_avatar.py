@@ -29,6 +29,8 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
         :param dynamic_friction: The dynamic friction coefficient of the avatar.
         :param static_friction: The static friction coefficient of the avatar.
         :param bounciness: The bounciness of the avatar.
+        :param drag: The drag value of the Rigidbody.
+        :param angular_drag: The angular drag value of the Rigidbody.
         """
 
         super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, field_of_view=field_of_view)
@@ -99,6 +101,46 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
                              "scale_factor": self._scale_factor,
                              "avatar_id": self.avatar_id})
         return commands
+
+    def reset(self, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+              field_of_view: int = None, color: Dict[str, float] = None, body: AvatarBody = AvatarBody.capsule,
+              scale_factor: Dict[str, float] = None, mass: float = 80, dynamic_friction: float = 0.3,
+              static_friction: float = 0.3, bounciness: float = 0.7, drag: float = 1, angular_drag: float = 0.5) -> None:
+        """
+        Reset the add-on. Call this when you reset a scene.
+
+        :param position: The initial position of the avatar. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The initial rotation of the avatar. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param field_of_view: The initial field of view.
+        :param color: The color of the avatar as an `r, g, b, a` dictionary where each value is between 0 and 1. Can be None.
+        :param body: [The body of the avatar.](avatar_body.md)
+        :param scale_factor: Scale the avatar by this factor. Can be None.
+        :param mass: The mass of the avatar.
+        :param dynamic_friction: The dynamic friction coefficient of the avatar.
+        :param static_friction: The static friction coefficient of the avatar.
+        :param bounciness: The bounciness of the avatar.
+        :param drag: The drag value of the Rigidbody.
+        :param angular_drag: The angular drag value of the Rigidbody.
+        """
+
+        super().reset(position=position, rotation=rotation, field_of_view=field_of_view)
+        self.transform = Transform(position=np.array([0, 0, 0]),
+                                   rotation=np.array([0, 0, 0, 0]),
+                                   forward=np.array([0, 0, 0]))
+        self.rigidbody = Rigidbody(velocity=np.array([0, 0, 0]),
+                                   angular_velocity=np.array([0, 0, 0]),
+                                   sleeping=True)
+        self.camera_rotation = np.array([0, 0, 0, 0])
+        self.is_moving = False
+        self._body = body
+        self._mass = mass
+        self._dynamic_friction = dynamic_friction
+        self._static_friction = static_friction
+        self._bounciness = bounciness
+        self._drag = drag
+        self._angular_drag = angular_drag
+        self._color = color
+        self._scale_factor = scale_factor
 
     def apply_force(self, force: Union[float, int, Dict[str, float], np.ndarray]) -> None:
         """

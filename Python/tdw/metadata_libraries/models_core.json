@@ -23558,6 +23558,85 @@
             "wcategory": "dishwasher",
             "wnid": "n03207941"
         },
+        "dishwasher_4_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 346911,
+                "Linux": 395048,
+                "Windows": 341670
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.005819201,
+                    "y": 0.40203,
+                    "z": -0.3109349
+                },
+                "bottom": {
+                    "x": -0.005819201,
+                    "y": -5.960464e-08,
+                    "z": 0.01660261
+                },
+                "center": {
+                    "x": -0.005819201,
+                    "y": 0.40203,
+                    "z": 0.01660261
+                },
+                "front": {
+                    "x": -0.005819201,
+                    "y": 0.40203,
+                    "z": 0.3441401
+                },
+                "left": {
+                    "x": -0.3014335,
+                    "y": 0.40203,
+                    "z": 0.01660261
+                },
+                "right": {
+                    "x": 0.2897951,
+                    "y": 0.40203,
+                    "z": 0.01660261
+                },
+                "top": {
+                    "x": -0.005819201,
+                    "y": 0.8040601,
+                    "z": 0.01660261
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "dishwasher_4_composite",
+            "physics_quality": 0.8633564870457076,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2",
+                        "chrome2"
+                    ],
+                    "name": "dishwasher_4_composite"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/dishwasher_4_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/dishwasher_4_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/dishwasher_4_composite"
+            },
+            "volume": 0.08937375,
+            "wcategory": "dishwasher",
+            "wnid": "n03207941"
+        },
         "duffle_bag": {
             "asset_bundle_sizes": {
                 "Darwin": 9701438,

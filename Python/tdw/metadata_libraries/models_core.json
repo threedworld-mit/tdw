@@ -19073,6 +19073,85 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "cabinet_full_height_wood_beech_honey_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 14618315,
+                "Linux": 14853262,
+                "Windows": 14606964
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": -0.3228036
+                },
+                "bottom": {
+                    "x": -0.0001472831,
+                    "y": 0,
+                    "z": 0.001454264
+                },
+                "center": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "front": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": 0.3257121
+                },
+                "left": {
+                    "x": -0.3052947,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "right": {
+                    "x": 0.3050001,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "top": {
+                    "x": -0.0001472831,
+                    "y": 2.082663,
+                    "z": 0.001454264
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_full_height_wood_beech_honey_composite",
+            "physics_quality": 0.9927314464296293,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "cabinet_full_height_wood_beech_honey_composite"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "cabinet_full_height_door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/cabinet_full_height_wood_beech_honey_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_full_height_wood_beech_honey_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_full_height_wood_beech_honey_composite"
+            },
+            "volume": 0.1073094,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "cafe_2010": {
             "asset_bundle_sizes": {
                 "Darwin": 29466006,

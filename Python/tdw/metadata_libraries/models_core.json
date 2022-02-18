@@ -18188,45 +18188,45 @@
         },
         "cabinet_24_single_door_wood_beech_honey_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 14986077,
-                "Linux": 15222108,
-                "Windows": 14975593
+                "Darwin": 14989332,
+                "Linux": 15220621,
+                "Windows": 14976317
             },
             "bounds": {
                 "back": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.4605807,
                     "z": -0.3226809
                 },
                 "bottom": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "center": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.4605807,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "front": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.4605807,
-                    "z": 0.3257121
+                    "z": 0.3217121
                 },
                 "left": {
-                    "x": -0.3056358,
+                    "x": -0.3054422,
                     "y": 0.4605807,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "right": {
                     "x": 0.3051473,
                     "y": 0.4605807,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "top": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.9211614,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 }
             },
             "canonical_rotation": {
@@ -18239,7 +18239,7 @@
             "do_not_use_reason": "",
             "flex": false,
             "name": "cabinet_24_single_door_wood_beech_honey_composite",
-            "physics_quality": 0.9025684747949471,
+            "physics_quality": 0.9019135773091904,
             "scale_factor": 1,
             "substructure": [
                 {
@@ -18262,51 +18262,51 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_24_single_door_wood_beech_honey_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_24_single_door_wood_beech_honey_composite"
             },
-            "volume": 0.08960097,
+            "volume": 0.08959951,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
         "cabinet_24_single_door_wood_oak_white_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 1107755,
-                "Linux": 1345340,
-                "Windows": 1099353
+                "Darwin": 1108876,
+                "Linux": 1345063,
+                "Windows": 1100027
             },
             "bounds": {
                 "back": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.4605807,
                     "z": -0.3226809
                 },
                 "bottom": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "center": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.4605807,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "front": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.4605807,
-                    "z": 0.3257121
+                    "z": 0.3217121
                 },
                 "left": {
-                    "x": -0.3056358,
+                    "x": -0.3054422,
                     "y": 0.4605807,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "right": {
                     "x": 0.3051473,
                     "y": 0.4605807,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 },
                 "top": {
-                    "x": -0.0002442598,
+                    "x": -0.0001474321,
                     "y": 0.9211614,
-                    "z": 0.001515597
+                    "z": -0.0004843771
                 }
             },
             "canonical_rotation": {
@@ -18319,7 +18319,7 @@
             "do_not_use_reason": "",
             "flex": false,
             "name": "cabinet_24_single_door_wood_oak_white_composite",
-            "physics_quality": 0.9025684747949471,
+            "physics_quality": 0.9019135773091904,
             "scale_factor": 1,
             "substructure": [
                 {
@@ -18342,7 +18342,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_24_single_door_wood_oak_white_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_24_single_door_wood_oak_white_composite"
             },
-            "volume": 0.08960097,
+            "volume": 0.08959951,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -19376,6 +19376,164 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_full_height_wood_beach_honey"
             },
             "volume": 0.12262017279863358,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_full_height_wood_beech_honey_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 14618315,
+                "Linux": 14853262,
+                "Windows": 14606964
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": -0.3228036
+                },
+                "bottom": {
+                    "x": -0.0001472831,
+                    "y": 0,
+                    "z": 0.001454264
+                },
+                "center": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "front": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": 0.3257121
+                },
+                "left": {
+                    "x": -0.3052947,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "right": {
+                    "x": 0.3050001,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "top": {
+                    "x": -0.0001472831,
+                    "y": 2.082663,
+                    "z": 0.001454264
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_full_height_wood_beech_honey_composite",
+            "physics_quality": 0.9927314464296293,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "cabinet_full_height_wood_beech_honey_composite"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "cabinet_full_height_door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/cabinet_full_height_wood_beech_honey_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_full_height_wood_beech_honey_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_full_height_wood_beech_honey_composite"
+            },
+            "volume": 0.1073094,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_full_height_wood_oak_white_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 737395,
+                "Linux": 973824,
+                "Windows": 728003
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": -0.3228036
+                },
+                "bottom": {
+                    "x": -0.0001472831,
+                    "y": 0,
+                    "z": 0.001454264
+                },
+                "center": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "front": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": 0.3257121
+                },
+                "left": {
+                    "x": -0.3052947,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "right": {
+                    "x": 0.3050001,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "top": {
+                    "x": -0.0001472831,
+                    "y": 2.082663,
+                    "z": 0.001454264
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_full_height_wood_oak_white_composite",
+            "physics_quality": 0.9927314464296293,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "cabinet_full_height_wood_oak_white_composite"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "cabinet_full_height_door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/cabinet_full_height_wood_oak_white_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_full_height_wood_oak_white_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_full_height_wood_oak_white_composite"
+            },
+            "volume": 0.1073094,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -23861,6 +24019,85 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/dishwasher_4"
             },
             "volume": 0.32725971937179565,
+            "wcategory": "dishwasher",
+            "wnid": "n03207941"
+        },
+        "dishwasher_4_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 346911,
+                "Linux": 395048,
+                "Windows": 341670
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.005819201,
+                    "y": 0.40203,
+                    "z": -0.3109349
+                },
+                "bottom": {
+                    "x": -0.005819201,
+                    "y": -5.960464e-08,
+                    "z": 0.01660261
+                },
+                "center": {
+                    "x": -0.005819201,
+                    "y": 0.40203,
+                    "z": 0.01660261
+                },
+                "front": {
+                    "x": -0.005819201,
+                    "y": 0.40203,
+                    "z": 0.3441401
+                },
+                "left": {
+                    "x": -0.3014335,
+                    "y": 0.40203,
+                    "z": 0.01660261
+                },
+                "right": {
+                    "x": 0.2897951,
+                    "y": 0.40203,
+                    "z": 0.01660261
+                },
+                "top": {
+                    "x": -0.005819201,
+                    "y": 0.8040601,
+                    "z": 0.01660261
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "dishwasher_4_composite",
+            "physics_quality": 0.8633564870457076,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2",
+                        "chrome2"
+                    ],
+                    "name": "dishwasher_4_composite"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/dishwasher_4_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/dishwasher_4_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/dishwasher_4_composite"
+            },
+            "volume": 0.08937375,
             "wcategory": "dishwasher",
             "wnid": "n03207941"
         },

@@ -1,6 +1,10 @@
+from pathlib import Path
+from json import loads
+from pkg_resources import resource_filename
 from abc import ABC, abstractmethod
-from typing import Dict
+from typing import Dict, List
 from tdw.add_ons.container_manager_data.container_collider_tag import ContainerColliderTag
+from tdw.add_ons.container_manager_data.container_trigger_collider_decoder import ContainerTriggerColliderDecoder
 from tdw.collision_data.trigger_collider_shape import TriggerColliderShape
 
 
@@ -37,3 +41,8 @@ class ContainerTriggerCollider(ABC):
         """
 
         raise Exception()
+
+
+# A dictionary of all container model names and their trigger colliders.
+CONTAINERS: Dict[str, List[ContainerTriggerCollider]] = loads(Path(resource_filename(__name__, "colliders.json")).read_text(),
+                                                              cls=ContainerTriggerColliderDecoder)

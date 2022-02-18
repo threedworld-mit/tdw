@@ -5,9 +5,9 @@
 [`ContainerManager`](../../python/add_ons/container_manager.md) is a high-level implementation of [`TriggerCollisionManager`](trigger_collisions.md) that adds pre-defined trigger colliders to certain objects, each with a semantic tag. Only a subset of objects in TDW that could be containers have these predefined trigger colliders; more will be added over time. To print the current full list:
 
 ```python
-from tdw.add_ons.container_manager import ContainerManager
+from tdw.add_ons.container_manager_data.container_trigger_collider import CONTAINERS
 
-for k in ContainerManager.CONTAINERS:
+for k in CONTAINERS:
     print(k)
 ```
 

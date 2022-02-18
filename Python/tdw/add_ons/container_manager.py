@@ -1,15 +1,11 @@
-from json import loads
-from pkg_resources import resource_filename
-from pathlib import Path
 from typing import List, Dict
 from tdw.output_data import OutputData, SegmentationColors
 from tdw.add_ons.trigger_collision_manager import TriggerCollisionManager
 from tdw.add_ons.container_manager_data.container_collider_tag import ContainerColliderTag
-from tdw.add_ons.container_manager_data.container_trigger_collider import ContainerTriggerCollider
+from tdw.add_ons.container_manager_data.container_trigger_collider import CONTAINERS
 from tdw.add_ons.container_manager_data.container_box_trigger_collider import ContainerBoxTriggerCollider
 from tdw.add_ons.container_manager_data.container_sphere_trigger_collider import ContainerSphereTriggerCollider
 from tdw.add_ons.container_manager_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
-from tdw.add_ons.container_manager_data.container_trigger_collider_decoder import ContainerTriggerColliderDecoder
 from tdw.add_ons.container_manager_data.containment_event import ContainmentEvent
 
 
@@ -26,12 +22,6 @@ class ContainerManager(TriggerCollisionManager):
     1. There is a trigger "enter" or "stay" event.
     2. The trigger event is between the object and one of the trigger colliders added via this add-on.
     """
-
-    """:class_var
-    A dictionary of all container model names and their trigger colliders.
-    """
-    CONTAINERS: Dict[str, List[ContainerTriggerCollider]] = loads(Path(resource_filename(__name__, "container_manager_data/colliders.json")).read_text(),
-                                                                  cls=ContainerTriggerColliderDecoder)
 
     def __init__(self):
         """
@@ -78,8 +68,8 @@ class ContainerManager(TriggerCollisionManager):
                         object_id = segmentation_colors.get_object_id(j)
                         model_name = segmentation_colors.get_object_name(j).lower()
                         # This is a container. Add trigger colliders.
-                        if model_name in ContainerManager.CONTAINERS:
-                            for trigger_collider_data in ContainerManager.CONTAINERS[model_name]:
+                        if model_name in CONTAINERS:
+                            for trigger_collider_data in CONTAINERS[model_name]:
                                 if isinstance(trigger_collider_data, ContainerBoxTriggerCollider):
                                     self.add_box_collider(object_id=object_id,
                                                           position=trigger_collider_data.position,

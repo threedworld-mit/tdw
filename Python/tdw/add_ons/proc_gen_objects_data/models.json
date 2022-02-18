@@ -108,9 +108,9 @@
     "b03_db_apps_tech_08_04_composite",
     "b03_db_apps_tech_08_07_composite",
     "b03_db_apps_tech_08_08_composite",
-    "b04_db_apps_tech_08_03",
+    "b04_db_apps_tech_08_03_composite",
     "b05_db_apps_tech_08_09_composite",
-    "dishwasher_4"
+    "dishwasher_4_composite"
   ],
   "floor_lamp": [
     "alma_floor_lamp",
@@ -147,6 +147,10 @@
     "stelton_emma_tea_vacuum_jug"
   ],
   "kitchen_counter": [
+    "cabinet_24_single_door_wood_beech_honey_composite",
+    "cabinet_24_single_door_wood_oak_white_composite",
+    "cabinet_24_two_door_wood_beech_honey_composite",
+    "cabinet_24_two_door_wood_oak_white_composite",
     "cabinet_24_white_wood",
     "cabinet_24_wood_beach_honey",
     "cabinet_36_white_wood",
@@ -185,8 +189,8 @@
     "b05_whirlpool_microwave_wmc30516as_v-ray",
     "cgaxis_models_10_11_vray",
     "microwave",
-    "vm_v5_070",
-    "vray_062"
+    "vm_v5_070_composite",
+    "vray_062_composite"
   ],
   "orange": [
     "b04_orange_00",
@@ -230,7 +234,9 @@
     "b03_cooking_pot_01",
     "pan1",
     "pan3",
-    "pot"
+    "pot",
+    "b03_aluminum_pan_composite",
+    "pot_composite"
   ],
   "radiator": [
     "b03_radiator_alum_12",
@@ -240,7 +246,9 @@
   "refrigerator": [
     "b03_ka90ivi20r_2013__vray",
     "b05_db_apps_tech_06_02_2",
-    "fridge_large"
+    "fridge_large",
+    "b03_ka90ivi20r_2013__vray_composite",
+    "kenmore_refr_74049_composite"
   ],
   "salt": [
     "b05_cylinder001"
@@ -267,8 +275,10 @@
     "side_table_wood"
   ],
   "sink": [
-    "sink_base_white_wood",
-    "sink_base_wood_beach_honey"
+    "sink_cabinet_unit_wood_beech_honey_chrome_composite",
+    "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
+    "sink_cabinet_unit_wood_oak_white_chrome_composite",
+    "sink_cabinet_unit_wood_oak_white_porcelain_composite"
   ],
   "soap_dispenser": [
     "b05_bathroom_dispenser",
@@ -300,7 +310,7 @@
     "tolix_bar_stool"
   ],
   "stove": [
-    "gas_stove"
+    "gas_stove_composite"
   ],
   "suitcase": [
     "duffle_bag",

@@ -1,15 +1,13 @@
 [
   {
     "counter_models": [
-      "cabinet_24_wood_beach_honey",
-      "cabinet_36_wood_beach_honey",
-      "cabinet_24_door_drawer_wood_beach_honey",
-      "cabinet_24_singledoor_wood_beach_honey",
-      "cabinet_24_two_drawer_wood_beach_honey"
+      "cabinet_24_single_door_wood_beech_honey_composite",
+      "cabinet_24_two_door_wood_beech_honey_composite"
     ],
     "counter_top_material": "granite_black",
     "sink_models": [
-      "sink_base_wood_beach_honey"
+      "sink_cabinet_unit_wood_beech_honey_chrome_composite",
+      "sink_cabinet_unit_wood_beech_honey_porcelain_composite"
     ],
     "wall_cabinet_models": [
       "24_in_wall_cabinet_wood_beach_honey",
@@ -18,13 +16,13 @@
   },
   {
     "counter_models": [
-      "cabinet_24_white_wood",
-      "cabinet_36_white_wood",
-      "cabinet_24_two_drawer_white_wood"
+      "cabinet_24_single_door_wood_beech_honey_composite",
+      "cabinet_24_single_door_wood_oak_white_composite"
     ],
     "counter_top_material": "granite_beige_french",
     "sink_models": [
-      "sink_base_white_wood"
+      "sink_cabinet_unit_wood_oak_white_chrome_composite",
+      "sink_cabinet_unit_wood_oak_white_porcelain_composite"
     ],
     "wall_cabinet_models": [
       "24_in_wall_cabinet_white_wood",

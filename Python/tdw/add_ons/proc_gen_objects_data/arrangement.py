@@ -1,8 +1,10 @@
+from json import loads
+from pathlib import Path
+from pkg_resources import resource_filename
 from typing import Dict, List, Tuple
 from abc import ABC, abstractmethod
 from overrides import final
 import numpy as np
-from tdw.librarian import ModelRecord
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 
@@ -12,11 +14,24 @@ class Arrangement(ABC):
     A procedurally-generated spatial arrangement of objects.
     """
 
-    def __init__(self, record: ModelRecord, position: Dict[str, float], rng: np.random.RandomState):
-        self._record: ModelRecord = record
+    """:class_var
+    A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names.
+    """
+    MODEL_CATEGORIES: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "models.json")).read_text())
+
+    def __init__(self, position: Dict[str, float], rng: np.random.RandomState):
+        """
+        :param position: The position of the root object. This might be adjusted.
+        :param rng: The random number generator.
+        """
+
         self._position: Dict[str, float] = self._get_position(position={k: v for k, v in position.items()})
         self._rotation: float = self._get_rotation()
         self._rng: np.random.RandomState = rng
+        """:field
+        A list of all of the object IDs in this arrangement.
+        """
+        self.object_ids: List[int] = list()
 
     @abstractmethod
     def get_commands(self) -> List[dict]:
@@ -45,43 +60,14 @@ class Arrangement(ABC):
         raise Exception()
 
     @final
-    def _get_rotation_commands(self, parent_object_id: int, child_object_ids: List[int], rotation: float) -> List[dict]:
-        """
-        :param parent_object_id: The ID of the parent object.
-        :param child_object_ids: The IDs of the child objects.
-        :param rotation: The rotation of the parent object.
-
-        :return: A list of commands to parent the child objects to the parent object, rotate the parent object, and unparent the child objects.
-        """
-
-        commands = []
-        # Parent all objects to the root object.
-        for child_object_id in child_object_ids:
-            commands.append({"$type": "parent_object_to_object",
-                             "id": child_object_id,
-                             "parent_id": parent_object_id})
-        # Rotate the root object.
-        commands.append({"$type": "rotate_object_by",
-                         "angle": rotation,
-                         "id": parent_object_id,
-                         "axis": "yaw",
-                         "is_world": True,
-                         "use_centroid": False})
-        # Unparent all of the objects from the root object.
-        for child_object_id in child_object_ids:
-            commands.append({"$type": "unparent_object",
-                             "id": child_object_id})
-        return commands
-
-    @final
-    def _add_rectangular_arrangement(self, size: Tuple[float, float], position: Dict[str, float], model_names: Dict[str, List[str]],
+    def _add_rectangular_arrangement(self, size: Tuple[float, float], position: Dict[str, float], categories: List[str],
                                      density: float = 0.4, cell_size: float = 0.05) -> Tuple[List[dict], List[int]]:
         """
         Get a random arrangement of objects in a rectangular space.
 
         :param size: The size of the rectangle in worldspace coordinates.
         :param position: The position of the center of the rectangle.
-        :param model_names: A dictionary of potential model names. Key = The category. Value = A list of model names.
+        :param categories: A list of potential model categories.
         :param density: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
         :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
 
@@ -107,9 +93,9 @@ class Arrangement(ABC):
         model_sizes: Dict[str, float] = dict()
         model_cell_sizes: List[int] = list()
         models_and_categories: Dict[str, str] = dict()
-        for category in model_names:
+        for category in categories:
             # Get objects small enough to fit within the rectangle.
-            for model_name in model_names[category]:
+            for model_name in Arrangement.MODEL_CATEGORIES[category]:
                 record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
                 model_size = TDWUtils.get_bounds_extents(bounds=record.bounds)
                 model_semi_major_axis = model_size[0] if model_size[0] > model_size[2] else model_size[2]
@@ -159,6 +145,7 @@ class Arrangement(ABC):
             object_id = Controller.get_unique_id()
             # Set the rotation.
             object_ids.append(object_id)
+            self.object_ids.append(object_id)
             # Add the object.
             commands.extend(Controller.get_add_physics_object(model_name=model_name,
                                                               position={"x": x, "y": center_dict["y"], "z": z},
@@ -169,42 +156,3 @@ class Arrangement(ABC):
             occupancy_map[TDWUtils.get_circle_mask(shape=(occupancy_map.shape[0], occupancy_map.shape[1]),
                                                    row=ix, column=iz, radius=sma) == True] = True
         return commands, object_ids
-
-    @final
-    def _add_object_with_other_objects_on_top(self, record: ModelRecord, position: Dict[str, float], rotation: float,
-                                              categories: List[str], density: float = 0.4, cell_size: float = 0.05) -> List[dict]:
-        """
-        Add a root object and add objects on  top of it.
-
-        :param record: The model record of the root object.
-        :param position: The position of the root object.
-        :param rotation: The rotation of the root object.
-        :param categories: A list of categories of models that can be on top of the root model.
-        :param density: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
-        :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
-
-        :return: A list of commands.
-        """
-
-        commands = []
-        model_size = TDWUtils.get_bounds_extents(bounds=record.bounds)
-        root_object_id = Controller.get_unique_id()
-        commands.extend(Controller.get_add_physics_object(model_name=record.name,
-                                                          object_id=root_object_id,
-                                                          position=position,
-                                                          library="models_core.json",
-                                                          kinematic=True))
-        # Add objects on top of the root object.
-        on_top_commands, object_ids = self._add_rectangular_arrangement(size=(model_size[0] * 0.8, model_size[2] * 0.8),
-                                                                        categories=categories,
-                                                                        position={"x": position["x"],
-                                                                                  "y": record.bounds["top"]["y"] + position["y"],
-                                                                                  "z": position["z"]},
-                                                                        cell_size=cell_size,
-                                                                        density=density)
-        commands.extend(on_top_commands)
-        # Rotate everything.
-        commands.extend(self._get_rotation_commands(parent_object_id=root_object_id,
-                                                    child_object_ids=object_ids,
-                                                    rotation=rotation))
-        return commands

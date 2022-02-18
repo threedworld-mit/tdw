@@ -1,0 +1,160 @@
+from typing import Dict, List
+from abc import ABC, abstractmethod
+from json import loads
+from pathlib import Path
+from pkg_resources import resource_filename
+from overrides import final
+import numpy as np
+from tdw.librarian import ModelRecord
+from tdw.controller import Controller
+from tdw.add_ons.proc_gen_objects_data.arrangement import Arrangement
+from tdw.add_ons.container_manager_data.container_trigger_collider import CONTAINERS
+from tdw.add_ons.container_manager_data.container_box_trigger_collider import ContainerBoxTriggerCollider
+from tdw.add_ons.container_manager_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
+from tdw.add_ons.container_manager_data.container_collider_tag import ContainerColliderTag
+
+
+class ArrangementWithRootObject(Arrangement, ABC):
+    """
+    A procedurally-generated spatial arrangement of objects with a root object.
+    """
+
+    """:class_var
+    A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category.
+    """
+    ON_TOP_OF: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "on_top_of.json")).read_text())
+    """:class_var
+    A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category.
+    """
+    ENCLOSED_BY: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "enclosed_by.json")).read_text())
+
+    def __init__(self, record: ModelRecord, position: Dict[str, float], rng: np.random.RandomState):
+        """
+        :param record: The record of the root object.
+        :param position: The position of the root object. This might be adjusted.
+        :param rng: The random number generator.
+        """
+
+        self._record: ModelRecord = record
+        self.root_object_id: int = Controller.get_unique_id()
+        super().__init__(position=position, rng=rng)
+        self.object_ids.append(self.root_object_id)
+
+    @final
+    def _add_root_object(self) -> List[dict]:
+        """
+        :return: A list of commands to add the root object.
+        """
+
+        return Controller.get_add_physics_object(model_name=self._record.name,
+                                                 object_id=self.root_object_id,
+                                                 position=self._position,
+                                                 library="models_core.json",
+                                                 kinematic=True)
+
+    @final
+    def _add_object_with_other_objects_on_top(self, density: float = 0.4, cell_size: float = 0.05,
+                                              rotate: bool = True) -> List[dict]:
+        """
+        Add the root object and add objects on top of it.
+
+        :param density: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
+        :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
+        :param rotate: If True, append rotation commands.
+
+        :return: A list of commands.
+        """
+
+        categories: List[str] = ArrangementWithRootObject.ON_TOP_OF[self._get_category()]
+        commands = self._add_root_object()
+        for collider in CONTAINERS[self._record.name]:
+            # Use all of the "on" colliders.
+            if collider.tag == ContainerColliderTag.on:
+                if isinstance(collider, ContainerBoxTriggerCollider):
+                    scale = collider.scale
+                elif isinstance(collider, ContainerCylinderTriggerCollider):
+                    scale = collider.scale
+                else:
+                    raise Exception(collider)
+                # Add objects on top of the root object.
+                on_top_commands, object_ids = self._add_rectangular_arrangement(size=(scale["x"] * 0.8, scale["z"] * 0.8),
+                                                                                categories=categories,
+                                                                                position={"x": self._position["x"],
+                                                                                          "y": self._record.bounds["top"]["y"] + self._position["y"],
+                                                                                          "z": self._position["z"]},
+                                                                                cell_size=cell_size,
+                                                                                density=density)
+                commands.extend(on_top_commands)
+        # Rotate everything.
+        if rotate:
+            commands.extend(self._get_rotation_commands())
+        return commands
+
+    def _add_objects_inside(self, density: float = 0.4, cell_size: float = 0.05, rotate: bool = True) -> List[dict]:
+        """
+        Add objects inside the root object.
+
+        :param density: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
+        :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
+        :param rotate: If True, append rotation commands.
+
+        :return: A list of commands.
+        """
+
+        categories: List[str] = ArrangementWithRootObject.ENCLOSED_BY[self._get_category()]
+        commands = []
+        for collider in CONTAINERS[self._record.name]:
+            # Use all of the "enclosed" colliders.
+            if collider.tag == ContainerColliderTag.enclosed:
+                if isinstance(collider, ContainerBoxTriggerCollider):
+                    scale = collider.scale
+                else:
+                    raise Exception(collider)
+                # Add objects on top of the root object.
+                on_top_commands, object_ids = self._add_rectangular_arrangement(
+                    size=(scale["x"] * 0.8, scale["z"] * 0.8),
+                    categories=categories,
+                    position={"x": self._position["x"] + collider.position["x"],
+                              "y": self._position["y"] + (collider.position["y"] - collider.scale["y"] / 2),
+                              "z": self._position["z"] + collider.position["z"]},
+                    cell_size=cell_size,
+                    density=density)
+                commands.extend(on_top_commands)
+        # Rotate everything.
+        if rotate:
+            commands.extend(self._get_rotation_commands())
+        return commands
+
+    @final
+    def _get_rotation_commands(self) -> List[dict]:
+        """
+        :return: A list of commands to parent the child objects to the parent object, rotate the parent object, and unparent the child objects.
+        """
+
+        child_object_ids = [object_id for object_id in self.object_ids if object_id != self.root_object_id]
+        commands = []
+        # Parent all objects to the root object.
+        for child_object_id in child_object_ids:
+            commands.append({"$type": "parent_object_to_object",
+                             "id": child_object_id,
+                             "parent_id": self.root_object_id})
+        # Rotate the root object.
+        commands.append({"$type": "rotate_object_by",
+                         "angle": self._rotation,
+                         "id": self.root_object_id,
+                         "axis": "yaw",
+                         "is_world": True,
+                         "use_centroid": False})
+        # Unparent all of the objects from the root object.
+        for child_object_id in child_object_ids:
+            commands.append({"$type": "unparent_object",
+                             "id": child_object_id})
+        return commands
+
+    @abstractmethod
+    def _get_category(self) -> str:
+        """
+        :return: The category of the root object.
+        """
+
+        raise Exception()

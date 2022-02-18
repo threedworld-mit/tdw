@@ -83,6 +83,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Fixed some bad-sound scrape materials in `PyImpact`: `sandpaper`, `vinyl`, and `poplar_wood`
 - Fixed: `InteriorSceneLighting` sets the random number generator incorrectly such that all other attempts to create a numpy RandomState fail.
 - Fixed: `TDWUtils.set_default_libraries()` raises an exception if `model_library` isn't set and one of the set paths is a string.
+- Fixed: `AssetBundleCreator.write_physics_quality()` resets remote URLs for Windows asset bundles.
+
+### Model library
+
+- Added models `models_core.json` and `models_full.json`: b03\_aluminum\_pan\_composite, b03\_ka90ivi20r\_2013\_\_vray\_composite, b04\_db\_apps\_tech\_08\_03\_composite, cabinet\_24\_single\_door\_wood\_beech\_honey\_composite, cabinet\_24\_single\_door\_wood\_oak\_white\_composite, cabinet\_24\_two\_door\_wood\_beech\_honey\_composite, cabinet\_24\_two\_door\_wood\_oak\_white\_composite, cabinet\_full\_height\_wood\_beech\_honey\_composite, cabinet\_full\_height\_wood\_oak\_white\_composite, db\_apps\_tech\_08\_10\_composite, dishwasher\_4\_composite, gas\_stove\_composite, kenmore\_refr\_74049\_composite, pot\_composite, sink\_cabinet\_unit\_wood\_beech\_honey\_chrome\_composite, sink\_cabinet\_unit\_wood\_beech\_honey\_porcelain\_composite, sink\_cabinet\_unit\_wood\_oak\_white\_chrome\_composite, sink\_cabinet\_unit\_wood\_oak\_white\_porcelain\_composite, vm\_v5\_070\_composite, vray\_062\_composite
 
 ### Build
 

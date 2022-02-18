@@ -3141,6 +3141,84 @@
             "wcategory": "pot",
             "wnid": "n03990474"
         },
+        "b03_aluminum_pan_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 5751458,
+                "Linux": 5892720,
+                "Windows": 5740859
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1370697,
+                    "z": -0.1617834
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1370697,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1370697,
+                    "z": 0.1617834
+                },
+                "left": {
+                    "x": -0.206893,
+                    "y": 0.1370697,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.206893,
+                    "y": 0.1370697,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.2741393,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_aluminum_pan_composite",
+            "physics_quality": 1.0956554902003752,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "aluminum_pan"
+                    ],
+                    "name": "b03_aluminum_pan_composite"
+                },
+                {
+                    "materials": [
+                        "aluminum_pan"
+                    ],
+                    "name": "lid"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b03_aluminum_pan_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b03_aluminum_pan_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b03_aluminum_pan_composite"
+            },
+            "volume": 0.00967073,
+            "wcategory": "pot",
+            "wnid": "n03990474"
+        },
         "b03_banana_01_high": {
             "asset_bundle_sizes": {
                 "Darwin": 8946969,
@@ -4520,6 +4598,95 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_ka90ivi20r_2013__vray"
             },
             "volume": 1.1270360946655273,
+            "wcategory": "refrigerator",
+            "wnid": "n04070727"
+        },
+        "b03_ka90ivi20r_2013__vray_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 2112870,
+                "Linux": 2400322,
+                "Windows": 2102250
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0007430315,
+                    "y": 0.8858269,
+                    "z": -0.3455898
+                },
+                "bottom": {
+                    "x": 0.0007430315,
+                    "y": -1.192093e-07,
+                    "z": 0.001577139
+                },
+                "center": {
+                    "x": 0.0007430315,
+                    "y": 0.8858269,
+                    "z": 0.001577139
+                },
+                "front": {
+                    "x": 0.0007430315,
+                    "y": 0.8858269,
+                    "z": 0.348744
+                },
+                "left": {
+                    "x": -0.455626,
+                    "y": 0.8858269,
+                    "z": 0.001577139
+                },
+                "right": {
+                    "x": 0.457112,
+                    "y": 0.8858269,
+                    "z": 0.001577139
+                },
+                "top": {
+                    "x": 0.0007430315,
+                    "y": 1.771654,
+                    "z": 0.001577139
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_ka90ivi20r_2013__vray_composite",
+            "physics_quality": 0.944836458759293,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "KA90IVI20R_001",
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b03_ka90ivi20r_2013__vray_composite"
+                },
+                {
+                    "materials": [
+                        "KA90IVI20R_004",
+                        "SolidTiles_Opaque",
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "righthand-door"
+                },
+                {
+                    "materials": [
+                        "KA90IVI20R_008",
+                        "SolidTiles_Opaque",
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "lefthand-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b03_ka90ivi20r_2013__vray_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b03_ka90ivi20r_2013__vray_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b03_ka90ivi20r_2013__vray_composite"
+            },
+            "volume": 0.2538965,
             "wcategory": "refrigerator",
             "wnid": "n04070727"
         },
@@ -7038,6 +7205,87 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_db_apps_tech_08_03"
             },
             "volume": 0.01614828035235405,
+            "wcategory": "dishwasher",
+            "wnid": "n03207941"
+        },
+        "b04_db_apps_tech_08_03_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 471946,
+                "Linux": 658243,
+                "Windows": 465006
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0003877878,
+                    "y": 0.4247236,
+                    "z": -0.2993796
+                },
+                "bottom": {
+                    "x": 0.0003877878,
+                    "y": -5.960464e-08,
+                    "z": 0.0001605749
+                },
+                "center": {
+                    "x": 0.0003877878,
+                    "y": 0.4247236,
+                    "z": 0.0001605749
+                },
+                "front": {
+                    "x": 0.0003877878,
+                    "y": 0.4247236,
+                    "z": 0.2997008
+                },
+                "left": {
+                    "x": -0.3005056,
+                    "y": 0.4247236,
+                    "z": 0.0001605749
+                },
+                "right": {
+                    "x": 0.3012812,
+                    "y": 0.4247236,
+                    "z": 0.0001605749
+                },
+                "top": {
+                    "x": 0.0003877878,
+                    "y": 0.8494473,
+                    "z": 0.0001605749
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_db_apps_tech_08_03_composite",
+            "physics_quality": 0.8900454026674358,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b04_db_apps_tech_08_03_composite"
+                },
+                {
+                    "materials": [
+                        "DB_Apps_Tech_08_03_02",
+                        "SolidTiles_Transparent",
+                        "SolidTiles_Opaque",
+                        "DB_Apps_Tech_08_03_04"
+                    ],
+                    "name": "door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b04_db_apps_tech_08_03_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b04_db_apps_tech_08_03_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b04_db_apps_tech_08_03_composite"
+            },
+            "volume": 0.1485921,
             "wcategory": "dishwasher",
             "wnid": "n03207941"
         },
@@ -10545,45 +10793,45 @@
         },
         "b05_db_apps_tech_08_09_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 2105233,
-                "Linux": 2359209,
-                "Windows": 1865655
+                "Darwin": 1835146,
+                "Linux": 2081964,
+                "Windows": 1820523
             },
             "bounds": {
                 "back": {
-                    "x": 3.649,
-                    "y": 0.4442485,
-                    "z": 1.576208
+                    "x": 5.960464e-08,
+                    "y": 0.4402485,
+                    "z": -0.3057916
                 },
                 "bottom": {
-                    "x": 3.649,
-                    "y": -5.960464e-08,
-                    "z": 1.882
+                    "x": 5.960464e-08,
+                    "y": -0.004000068,
+                    "z": 0.001313657
                 },
                 "center": {
-                    "x": 3.649,
-                    "y": 0.4442485,
-                    "z": 1.882
+                    "x": 5.960464e-08,
+                    "y": 0.4402485,
+                    "z": 0.001313657
                 },
                 "front": {
-                    "x": 3.649,
-                    "y": 0.4442485,
-                    "z": 2.187792
+                    "x": 5.960464e-08,
+                    "y": 0.4402485,
+                    "z": 0.308419
                 },
                 "left": {
-                    "x": 3.326884,
-                    "y": 0.4442485,
-                    "z": 1.882
+                    "x": -0.322116,
+                    "y": 0.4402485,
+                    "z": 0.001313657
                 },
                 "right": {
-                    "x": 3.971116,
-                    "y": 0.4442485,
-                    "z": 1.882
+                    "x": 0.3221161,
+                    "y": 0.4402485,
+                    "z": 0.001313657
                 },
                 "top": {
-                    "x": 3.649,
-                    "y": 0.888497,
-                    "z": 1.882
+                    "x": 5.960464e-08,
+                    "y": 0.884497,
+                    "z": 0.001313657
                 }
             },
             "canonical_rotation": {
@@ -10596,33 +10844,33 @@
             "do_not_use_reason": "",
             "flex": false,
             "name": "b05_db_apps_tech_08_09_composite",
-            "physics_quality": 0.9999982430988924,
+            "physics_quality": 0.07865905753044014,
             "scale_factor": 1,
             "substructure": [
                 {
                     "materials": [
-                        "SolidTiles_Opaque_db_apps_tech_08_09",
-                        "DB_Apps_Tech_08_08_02"
+                        "DB_Apps_Tech_08_09_05",
+                        "DB_Apps_Tech_08_09_02"
                     ],
                     "name": "b05_db_apps_tech_08_09_composite"
                 },
                 {
                     "materials": [
-                        "SolidTiles_Opaque_db_apps_tech_08_09",
+                        "DB_Apps_Tech_08_09_06",
+                        "SolidTiles_Transparent",
                         "DB_Apps_Tech_08_09_02",
                         "DB_Apps_Tech_08_09_05",
-                        "DB_Apps_Tech_08_09_06",
-                        "SolidTiles_Transparent_db_apps_tech_08_09"
+                        "DB_Apps_Tech_08_09_05"
                     ],
-                    "name": "door_db_apps_tech_08_09"
+                    "name": "door"
                 }
             ],
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2019.2//b05_db_apps_tech_08_09_composite",
-                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2019.2//b05_db_apps_tech_08_09_composite",
-                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2//b05_db_apps_tech_08_09_composite"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b05_db_apps_tech_08_09_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b05_db_apps_tech_08_09_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b05_db_apps_tech_08_09_composite"
             },
-            "volume": 0.12684263288974762,
+            "volume": 0.1177204,
             "wcategory": "dishwasher",
             "wnid": "n03207941"
         },
@@ -17938,6 +18186,166 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "cabinet_24_single_door_wood_beech_honey_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 14989332,
+                "Linux": 15220621,
+                "Windows": 14976317
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001474321,
+                    "y": 0.4605807,
+                    "z": -0.3226809
+                },
+                "bottom": {
+                    "x": -0.0001474321,
+                    "y": 0,
+                    "z": -0.0004843771
+                },
+                "center": {
+                    "x": -0.0001474321,
+                    "y": 0.4605807,
+                    "z": -0.0004843771
+                },
+                "front": {
+                    "x": -0.0001474321,
+                    "y": 0.4605807,
+                    "z": 0.3217121
+                },
+                "left": {
+                    "x": -0.3054422,
+                    "y": 0.4605807,
+                    "z": -0.0004843771
+                },
+                "right": {
+                    "x": 0.3051473,
+                    "y": 0.4605807,
+                    "z": -0.0004843771
+                },
+                "top": {
+                    "x": -0.0001474321,
+                    "y": 0.9211614,
+                    "z": -0.0004843771
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_single_door_wood_beech_honey_composite",
+            "physics_quality": 0.9019135773091904,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "granite_grey_dark"
+                    ],
+                    "name": "cabinet_24_single_door_wood_beech_honey_composite"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "cabinet_24_door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/cabinet_24_single_door_wood_beech_honey_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_24_single_door_wood_beech_honey_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_24_single_door_wood_beech_honey_composite"
+            },
+            "volume": 0.08959951,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_24_single_door_wood_oak_white_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1108876,
+                "Linux": 1345063,
+                "Windows": 1100027
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001474321,
+                    "y": 0.4605807,
+                    "z": -0.3226809
+                },
+                "bottom": {
+                    "x": -0.0001474321,
+                    "y": 0,
+                    "z": -0.0004843771
+                },
+                "center": {
+                    "x": -0.0001474321,
+                    "y": 0.4605807,
+                    "z": -0.0004843771
+                },
+                "front": {
+                    "x": -0.0001474321,
+                    "y": 0.4605807,
+                    "z": 0.3217121
+                },
+                "left": {
+                    "x": -0.3054422,
+                    "y": 0.4605807,
+                    "z": -0.0004843771
+                },
+                "right": {
+                    "x": 0.3051473,
+                    "y": 0.4605807,
+                    "z": -0.0004843771
+                },
+                "top": {
+                    "x": -0.0001474321,
+                    "y": 0.9211614,
+                    "z": -0.0004843771
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_single_door_wood_oak_white_composite",
+            "physics_quality": 0.9019135773091904,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "granite_grey_dark"
+                    ],
+                    "name": "cabinet_24_single_door_wood_oak_white_composite"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "cabinet_24_door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/cabinet_24_single_door_wood_oak_white_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_24_single_door_wood_oak_white_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_24_single_door_wood_oak_white_composite"
+            },
+            "volume": 0.08959951,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "cabinet_24_singledoor_wood_beach_honey": {
             "asset_bundle_sizes": {
                 "Darwin": 4240226,
@@ -18020,6 +18428,180 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_24_singledoor_wood_beach_honey"
             },
             "volume": 0.36150357127189636,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_24_two_door_wood_beech_honey_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 14994975,
+                "Linux": 15232089,
+                "Windows": 14986232
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.000807941,
+                    "y": 0.4605808,
+                    "z": -0.3190247
+                },
+                "bottom": {
+                    "x": -0.000807941,
+                    "y": 0,
+                    "z": 0.003843367
+                },
+                "center": {
+                    "x": -0.000807941,
+                    "y": 0.4605808,
+                    "z": 0.003843367
+                },
+                "front": {
+                    "x": -0.000807941,
+                    "y": 0.4605808,
+                    "z": 0.3267115
+                },
+                "left": {
+                    "x": -0.3066162,
+                    "y": 0.4605808,
+                    "z": 0.003843367
+                },
+                "right": {
+                    "x": 0.3050004,
+                    "y": 0.4605808,
+                    "z": 0.003843367
+                },
+                "top": {
+                    "x": -0.000807941,
+                    "y": 0.9211616,
+                    "z": 0.003843367
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_two_door_wood_beech_honey_composite",
+            "physics_quality": 0.9017063431841388,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "granite_grey_dark"
+                    ],
+                    "name": "cabinet_24_two_door_wood_beech_honey_composite"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "door_l"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "door_r"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/cabinet_24_two_door_wood_beech_honey_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_24_two_door_wood_beech_honey_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_24_two_door_wood_beech_honey_composite"
+            },
+            "volume": 0.1017231,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_24_two_door_wood_oak_white_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1118973,
+                "Linux": 1355758,
+                "Windows": 1109820
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.000807941,
+                    "y": 0.4605808,
+                    "z": -0.3190247
+                },
+                "bottom": {
+                    "x": -0.000807941,
+                    "y": 0,
+                    "z": 0.003843367
+                },
+                "center": {
+                    "x": -0.000807941,
+                    "y": 0.4605808,
+                    "z": 0.003843367
+                },
+                "front": {
+                    "x": -0.000807941,
+                    "y": 0.4605808,
+                    "z": 0.3267115
+                },
+                "left": {
+                    "x": -0.3066162,
+                    "y": 0.4605808,
+                    "z": 0.003843367
+                },
+                "right": {
+                    "x": 0.3050004,
+                    "y": 0.4605808,
+                    "z": 0.003843367
+                },
+                "top": {
+                    "x": -0.000807941,
+                    "y": 0.9211616,
+                    "z": 0.003843367
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_two_door_wood_oak_white_composite",
+            "physics_quality": 0.9017063431841388,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "granite_grey_dark"
+                    ],
+                    "name": "cabinet_24_two_door_wood_oak_white_composite"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "door_l"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "door_r"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/cabinet_24_two_door_wood_oak_white_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_24_two_door_wood_oak_white_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_24_two_door_wood_oak_white_composite"
+            },
+            "volume": 0.1017231,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -18794,6 +19376,164 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/cabinet_full_height_wood_beach_honey"
             },
             "volume": 0.12262017279863358,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_full_height_wood_beech_honey_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 14618315,
+                "Linux": 14853262,
+                "Windows": 14606964
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": -0.3228036
+                },
+                "bottom": {
+                    "x": -0.0001472831,
+                    "y": 0,
+                    "z": 0.001454264
+                },
+                "center": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "front": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": 0.3257121
+                },
+                "left": {
+                    "x": -0.3052947,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "right": {
+                    "x": 0.3050001,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "top": {
+                    "x": -0.0001472831,
+                    "y": 2.082663,
+                    "z": 0.001454264
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_full_height_wood_beech_honey_composite",
+            "physics_quality": 0.9927314464296293,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "cabinet_full_height_wood_beech_honey_composite"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "cabinet_full_height_door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/cabinet_full_height_wood_beech_honey_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_full_height_wood_beech_honey_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_full_height_wood_beech_honey_composite"
+            },
+            "volume": 0.1073094,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "cabinet_full_height_wood_oak_white_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 737395,
+                "Linux": 973824,
+                "Windows": 728003
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": -0.3228036
+                },
+                "bottom": {
+                    "x": -0.0001472831,
+                    "y": 0,
+                    "z": 0.001454264
+                },
+                "center": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "front": {
+                    "x": -0.0001472831,
+                    "y": 1.041331,
+                    "z": 0.3257121
+                },
+                "left": {
+                    "x": -0.3052947,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "right": {
+                    "x": 0.3050001,
+                    "y": 1.041331,
+                    "z": 0.001454264
+                },
+                "top": {
+                    "x": -0.0001472831,
+                    "y": 2.082663,
+                    "z": 0.001454264
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_full_height_wood_oak_white_composite",
+            "physics_quality": 0.9927314464296293,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "cabinet_full_height_wood_oak_white_composite"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "cabinet_full_height_door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/cabinet_full_height_wood_oak_white_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_full_height_wood_oak_white_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_full_height_wood_oak_white_composite"
+            },
+            "volume": 0.1073094,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -22839,6 +23579,85 @@
             "wcategory": "chair",
             "wnid": "n03001627"
         },
+        "db_apps_tech_08_10_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 425751,
+                "Linux": 680472,
+                "Windows": 419825
+            },
+            "bounds": {
+                "back": {
+                    "x": -5.960464e-08,
+                    "y": 0.48812,
+                    "z": -0.389769
+                },
+                "bottom": {
+                    "x": -5.960464e-08,
+                    "y": -5.960464e-08,
+                    "z": -0.001206756
+                },
+                "center": {
+                    "x": -5.960464e-08,
+                    "y": 0.48812,
+                    "z": -0.001206756
+                },
+                "front": {
+                    "x": -5.960464e-08,
+                    "y": 0.48812,
+                    "z": 0.3873554
+                },
+                "left": {
+                    "x": -0.3529076,
+                    "y": 0.48812,
+                    "z": -0.001206756
+                },
+                "right": {
+                    "x": 0.3529075,
+                    "y": 0.48812,
+                    "z": -0.001206756
+                },
+                "top": {
+                    "x": -5.960464e-08,
+                    "y": 0.97624,
+                    "z": -0.001206756
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "db_apps_tech_08_10_composite",
+            "physics_quality": 0.8850027008460799,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "DB_Apps_Tech_08_10_03"
+                    ],
+                    "name": "db_apps_tech_08_10_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "DB_Apps_Tech_08_10_03"
+                    ],
+                    "name": "dishwasher-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/db_apps_tech_08_10_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/db_apps_tech_08_10_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/db_apps_tech_08_10_composite"
+            },
+            "volume": 0.2708214,
+            "wcategory": "dishwasher",
+            "wnid": "n03207941"
+        },
         "de_castelli_placas_table": {
             "asset_bundle_sizes": {
                 "Darwin": 3810648,
@@ -23200,6 +24019,85 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/dishwasher_4"
             },
             "volume": 0.32725971937179565,
+            "wcategory": "dishwasher",
+            "wnid": "n03207941"
+        },
+        "dishwasher_4_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 346911,
+                "Linux": 395048,
+                "Windows": 341670
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.005819201,
+                    "y": 0.40203,
+                    "z": -0.3109349
+                },
+                "bottom": {
+                    "x": -0.005819201,
+                    "y": -5.960464e-08,
+                    "z": 0.01660261
+                },
+                "center": {
+                    "x": -0.005819201,
+                    "y": 0.40203,
+                    "z": 0.01660261
+                },
+                "front": {
+                    "x": -0.005819201,
+                    "y": 0.40203,
+                    "z": 0.3441401
+                },
+                "left": {
+                    "x": -0.3014335,
+                    "y": 0.40203,
+                    "z": 0.01660261
+                },
+                "right": {
+                    "x": 0.2897951,
+                    "y": 0.40203,
+                    "z": 0.01660261
+                },
+                "top": {
+                    "x": -0.005819201,
+                    "y": 0.8040601,
+                    "z": 0.01660261
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "dishwasher_4_composite",
+            "physics_quality": 0.8633564870457076,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2",
+                        "chrome2"
+                    ],
+                    "name": "dishwasher_4_composite"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/dishwasher_4_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/dishwasher_4_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/dishwasher_4_composite"
+            },
+            "volume": 0.08937375,
             "wcategory": "dishwasher",
             "wnid": "n03207941"
         },
@@ -28557,6 +29455,98 @@
             "wcategory": "gas cooker",
             "wnid": "n03425595"
         },
+        "gas_stove_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 2182185,
+                "Linux": 2432974,
+                "Windows": 2173336
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004862845,
+                    "y": 0.4376931,
+                    "z": -0.5000009
+                },
+                "bottom": {
+                    "x": -0.0004862845,
+                    "y": 0,
+                    "z": -7.748604e-07
+                },
+                "center": {
+                    "x": -0.0004862845,
+                    "y": 0.4376931,
+                    "z": -7.748604e-07
+                },
+                "front": {
+                    "x": -0.0004862845,
+                    "y": 0.4376931,
+                    "z": 0.4999993
+                },
+                "left": {
+                    "x": -0.3319607,
+                    "y": 0.4376931,
+                    "z": -7.748604e-07
+                },
+                "right": {
+                    "x": 0.3309882,
+                    "y": 0.4376931,
+                    "z": -7.748604e-07
+                },
+                "top": {
+                    "x": -0.0004862845,
+                    "y": 0.8753863,
+                    "z": -7.748604e-07
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "gas_stove_composite",
+            "physics_quality": 0.971774691871305,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_ruchki",
+                        "SieMatic_Classic_Reshetka_Plita",
+                        "SieMatic_Classic_Plita_gazovaya_osnova",
+                        "SieMatic_Classic_Hrom",
+                        "SieMatic_Classic_Plita_poverhnost'",
+                        "SieMatic_Classic_Display_plita",
+                        "SieMatic_Classic_111"
+                    ],
+                    "name": "gas_stove_composite"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova",
+                        "SieMatic_Classic_Plita_steklo"
+                    ],
+                    "name": "left-door"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Plita_gazovaya_osnova",
+                        "SieMatic_Classic_Plita_steklo"
+                    ],
+                    "name": "right-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/gas_stove_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/gas_stove_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/gas_stove_composite"
+            },
+            "volume": 0.2845431,
+            "wcategory": "gas cooker",
+            "wnid": "n03425595"
+        },
         "generic_toothbrush_001": {
             "asset_bundle_sizes": {
                 "Darwin": 737485,
@@ -30885,6 +31875,93 @@
             "volume": 0.0072278412990272045,
             "wcategory": "coffee grinder",
             "wnid": "n03063485"
+        },
+        "kenmore_refr_74049_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 8335038,
+                "Linux": 8566137,
+                "Windows": 8329390
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0002835095,
+                    "y": 0.8951124,
+                    "z": -0.4529269
+                },
+                "bottom": {
+                    "x": -0.0002835095,
+                    "y": 0,
+                    "z": -0.0008530319
+                },
+                "center": {
+                    "x": -0.0002835095,
+                    "y": 0.8951124,
+                    "z": -0.0008530319
+                },
+                "front": {
+                    "x": -0.0002835095,
+                    "y": 0.8951124,
+                    "z": 0.4512208
+                },
+                "left": {
+                    "x": -0.4394968,
+                    "y": 0.8951124,
+                    "z": -0.0008530319
+                },
+                "right": {
+                    "x": 0.4389298,
+                    "y": 0.8951124,
+                    "z": -0.0008530319
+                },
+                "top": {
+                    "x": -0.0002835095,
+                    "y": 1.790225,
+                    "z": -0.0008530319
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "kenmore_refr_74049_composite",
+            "physics_quality": 0.9602070313650564,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "kenmore_refr_74049_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "ice_led_disp",
+                        "glass"
+                    ],
+                    "name": "left-hand-door"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "kenmore_logo"
+                    ],
+                    "name": "right-hand-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/kenmore_refr_74049_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/kenmore_refr_74049_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/kenmore_refr_74049_composite"
+            },
+            "volume": 0.8722786,
+            "wcategory": "refrigerator",
+            "wnid": "n04070727"
         },
         "kettle": {
             "asset_bundle_sizes": {
@@ -37700,6 +38777,84 @@
             "wcategory": "pot",
             "wnid": "n03990474"
         },
+        "pot_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1159761,
+                "Linux": 1207202,
+                "Windows": 1153977
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0001533031,
+                    "y": 0.1104878,
+                    "z": -0.06504706
+                },
+                "bottom": {
+                    "x": 0.0001533031,
+                    "y": 0,
+                    "z": 0.08750089
+                },
+                "center": {
+                    "x": 0.0001533031,
+                    "y": 0.1104878,
+                    "z": 0.08750089
+                },
+                "front": {
+                    "x": 0.0001533031,
+                    "y": 0.1104878,
+                    "z": 0.2400488
+                },
+                "left": {
+                    "x": -0.1286866,
+                    "y": 0.1104878,
+                    "z": 0.08750089
+                },
+                "right": {
+                    "x": 0.1289932,
+                    "y": 0.1104878,
+                    "z": 0.08750089
+                },
+                "top": {
+                    "x": 0.0001533031,
+                    "y": 0.2209756,
+                    "z": 0.08750089
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "pot_composite",
+            "physics_quality": 1.0105115993893006,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "pot_composite"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "lid"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/pot_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/pot_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/pot_composite"
+            },
+            "volume": 0.003023678,
+            "wcategory": "pot",
+            "wnid": "n03990474"
+        },
         "printer_hp_laserjet1321": {
             "asset_bundle_sizes": {
                 "Darwin": 416264,
@@ -42412,6 +43567,414 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2019.2/sink_base_wood_beach_honey"
             },
             "volume": 0.23190130293369293,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "sink_cabinet_unit_wood_beech_honey_chrome_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 15098118,
+                "Linux": 15389362,
+                "Windows": 15086961
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": -0.3228034
+                },
+                "bottom": {
+                    "x": -0.0004142523,
+                    "y": 0,
+                    "z": 0.0007175803
+                },
+                "center": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "front": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": 0.3242386
+                },
+                "left": {
+                    "x": -0.7624142,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "right": {
+                    "x": 0.7615857,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "top": {
+                    "x": -0.0004142523,
+                    "y": 0.930789,
+                    "z": 0.0007175803
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "sink_cabinet_unit_wood_beech_honey_chrome_composite",
+            "physics_quality": 1.069506026850489,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "granite_grey_dark",
+                        "chrome2"
+                    ],
+                    "name": "sink_cabinet_unit_wood_beech_honey_chrome_composite"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_ll"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_rl"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_rr"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_lr"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/sink_cabinet_unit_wood_beech_honey_chrome_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/sink_cabinet_unit_wood_beech_honey_chrome_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/sink_cabinet_unit_wood_beech_honey_chrome_composite"
+            },
+            "volume": 0.2114339,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "sink_cabinet_unit_wood_beech_honey_porcelain_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 15622556,
+                "Linux": 15863319,
+                "Windows": 15616189
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": -0.3228034
+                },
+                "bottom": {
+                    "x": -0.0004142523,
+                    "y": 0,
+                    "z": 0.0007175803
+                },
+                "center": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "front": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": 0.3242386
+                },
+                "left": {
+                    "x": -0.7624142,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "right": {
+                    "x": 0.7615857,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "top": {
+                    "x": -0.0004142523,
+                    "y": 0.930789,
+                    "z": 0.0007175803
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
+            "physics_quality": 1.069506026850489,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "granite_grey_dark",
+                        "ceramic_porcelain"
+                    ],
+                    "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_ll"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_rl"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_rr"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_lr"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/sink_cabinet_unit_wood_beech_honey_porcelain_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/sink_cabinet_unit_wood_beech_honey_porcelain_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/sink_cabinet_unit_wood_beech_honey_porcelain_composite"
+            },
+            "volume": 0.2114339,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "sink_cabinet_unit_wood_oak_white_chrome_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1194777,
+                "Linux": 1433620,
+                "Windows": 1185503
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": -0.3228034
+                },
+                "bottom": {
+                    "x": -0.0004142523,
+                    "y": 0,
+                    "z": 0.0007175803
+                },
+                "center": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "front": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": 0.3242386
+                },
+                "left": {
+                    "x": -0.7624142,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "right": {
+                    "x": 0.7615857,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "top": {
+                    "x": -0.0004142523,
+                    "y": 0.930789,
+                    "z": 0.0007175803
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "sink_cabinet_unit_wood_oak_white_chrome_composite",
+            "physics_quality": 1.069506026850489,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "granite_grey_dark",
+                        "chrome2"
+                    ],
+                    "name": "sink_cabinet_unit_wood_oak_white_chrome_composite"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_ll"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_rl"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_rr"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_lr"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/sink_cabinet_unit_wood_oak_white_chrome_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/sink_cabinet_unit_wood_oak_white_chrome_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/sink_cabinet_unit_wood_oak_white_chrome_composite"
+            },
+            "volume": 0.2114339,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "sink_cabinet_unit_wood_oak_white_porcelain_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1745750,
+                "Linux": 1984715,
+                "Windows": 1736557
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": -0.3228034
+                },
+                "bottom": {
+                    "x": -0.0004142523,
+                    "y": 0,
+                    "z": 0.0007175803
+                },
+                "center": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "front": {
+                    "x": -0.0004142523,
+                    "y": 0.4653945,
+                    "z": 0.3242386
+                },
+                "left": {
+                    "x": -0.7624142,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "right": {
+                    "x": 0.7615857,
+                    "y": 0.4653945,
+                    "z": 0.0007175803
+                },
+                "top": {
+                    "x": -0.0004142523,
+                    "y": 0.930789,
+                    "z": 0.0007175803
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "sink_cabinet_unit_wood_oak_white_porcelain_composite",
+            "physics_quality": 1.069506026850489,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "granite_grey_dark",
+                        "ceramic_porcelain"
+                    ],
+                    "name": "sink_cabinet_unit_wood_oak_white_porcelain_composite"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_ll"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_rl"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_rr"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "sink_door_lr"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/sink_cabinet_unit_wood_oak_white_porcelain_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/sink_cabinet_unit_wood_oak_white_porcelain_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/sink_cabinet_unit_wood_oak_white_porcelain_composite"
+            },
+            "volume": 0.2114339,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -48146,6 +49709,87 @@
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
         },
+        "vm_v5_070_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1147252,
+                "Linux": 1416960,
+                "Windows": 1130603
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1436948,
+                    "z": -0.2230527
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -2.980232e-08,
+                    "z": -0.0002521873
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1436948,
+                    "z": -0.0002521873
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1436948,
+                    "z": 0.2225484
+                },
+                "left": {
+                    "x": -0.2590987,
+                    "y": 0.1436948,
+                    "z": -0.0002521873
+                },
+                "right": {
+                    "x": 0.2590987,
+                    "y": 0.1436948,
+                    "z": -0.0002521873
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.2873897,
+                    "z": -0.0002521873
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vm_v5_070_composite",
+            "physics_quality": 1.020976722343652,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "Silver_Plastic",
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "vm_v5_070_composite"
+                },
+                {
+                    "materials": [
+                        "Silver_Plastic",
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "microwave-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vm_v5_070_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vm_v5_070_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vm_v5_070_composite"
+            },
+            "volume": 0.003739415,
+            "wcategory": "microwave",
+            "wnid": "n03761084"
+        },
         "vray_032": {
             "asset_bundle_sizes": {
                 "Darwin": 742634,
@@ -48714,6 +50358,85 @@
             },
             "volume": 0.08177333325147629,
             "wcategory": "microwave, microwave oven",
+            "wnid": "n03761084"
+        },
+        "vray_062_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 544800,
+                "Linux": 700493,
+                "Windows": 535315
+            },
+            "bounds": {
+                "back": {
+                    "x": 5.960464e-08,
+                    "y": 0.2187769,
+                    "z": -0.2298086
+                },
+                "bottom": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": 0.0005131364
+                },
+                "center": {
+                    "x": 5.960464e-08,
+                    "y": 0.2187769,
+                    "z": 0.0005131364
+                },
+                "front": {
+                    "x": 5.960464e-08,
+                    "y": 0.2187769,
+                    "z": 0.2308349
+                },
+                "left": {
+                    "x": -0.3853476,
+                    "y": 0.2187769,
+                    "z": 0.0005131364
+                },
+                "right": {
+                    "x": 0.3853477,
+                    "y": 0.2187769,
+                    "z": 0.0005131364
+                },
+                "top": {
+                    "x": 5.960464e-08,
+                    "y": 0.4375538,
+                    "z": 0.0005131364
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_062_composite",
+            "physics_quality": 1.0707178230564511,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "04_-_Default"
+                    ],
+                    "name": "vray_062_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_062_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_062_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_062_composite"
+            },
+            "volume": 0.0791821,
+            "wcategory": "microwave",
             "wnid": "n03761084"
         },
         "vray_077": {

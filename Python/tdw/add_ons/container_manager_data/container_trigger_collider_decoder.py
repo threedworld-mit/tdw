@@ -1,9 +1,5 @@
 import json
 from tdw.add_ons.container_manager_data.container_collider_tag import ContainerColliderTag
-from tdw.add_ons.container_manager_data.container_box_trigger_collider import ContainerBoxTriggerCollider
-from tdw.add_ons.container_manager_data.container_sphere_trigger_collider import ContainerSphereTriggerCollider
-from tdw.add_ons.container_manager_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
-from tdw.collision_data.trigger_collider_shape import TriggerColliderShape
 
 
 class ContainerTriggerColliderDecoder(json.JSONDecoder):
@@ -16,6 +12,10 @@ class ContainerTriggerColliderDecoder(json.JSONDecoder):
 
     @staticmethod
     def dict_to_object(dictionary):
+        from tdw.add_ons.container_manager_data.container_box_trigger_collider import ContainerBoxTriggerCollider
+        from tdw.add_ons.container_manager_data.container_sphere_trigger_collider import ContainerSphereTriggerCollider
+        from tdw.add_ons.container_manager_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
+        from tdw.collision_data.trigger_collider_shape import TriggerColliderShape
         if "shape" in dictionary and "tag" in dictionary:
             shape = TriggerColliderShape[dictionary["shape"]]
             tag = ContainerColliderTag[dictionary["tag"]]

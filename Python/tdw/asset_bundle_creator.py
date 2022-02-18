@@ -614,6 +614,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         c = Controller()
         v = ModelVerifier()
         r: ModelRecord = ModelRecord(json.loads(Path(record_path).read_text(encoding="utf-8")))
+        original_url = r.urls[platform.system()]
         r.urls[platform.system()] = f"file:///{str(asset_bundle_path)}"
         v.set_tests(name=r.name, source=r, model_report=False, missing_materials=False, physics_quality=True)
         c.add_ons.append(v)
@@ -624,6 +625,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         c.socket.close()
         # Write the physics quality.
         r.physics_quality = float(v.reports[0])
+        r.urls[platform.system()] = original_url
         record_path.write_text(json.dumps(r.__dict__), encoding="utf-8")
 
     def validate(self, record_path: Path, asset_bundle_path: Path) -> Tuple[bool, str]:

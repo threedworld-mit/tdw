@@ -38395,45 +38395,45 @@
         },
         "pot_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 1159761,
-                "Linux": 1207202,
-                "Windows": 1153977
+                "Darwin": 1150047,
+                "Linux": 1199353,
+                "Windows": 1144330
             },
             "bounds": {
                 "back": {
-                    "x": 0.0001533031,
-                    "y": 0.1104878,
-                    "z": -0.06504706
+                    "x": 0,
+                    "y": 0.1102757,
+                    "z": -0.1525479
                 },
                 "bottom": {
-                    "x": 0.0001533031,
+                    "x": 0,
                     "y": 0,
-                    "z": 0.08750089
+                    "z": 0
                 },
                 "center": {
-                    "x": 0.0001533031,
-                    "y": 0.1104878,
-                    "z": 0.08750089
+                    "x": 0,
+                    "y": 0.1102757,
+                    "z": 0
                 },
                 "front": {
-                    "x": 0.0001533031,
-                    "y": 0.1104878,
-                    "z": 0.2400488
+                    "x": 0,
+                    "y": 0.1102757,
+                    "z": 0.1525479
                 },
                 "left": {
-                    "x": -0.1286866,
-                    "y": 0.1104878,
-                    "z": 0.08750089
+                    "x": -0.1288399,
+                    "y": 0.1102757,
+                    "z": 0
                 },
                 "right": {
-                    "x": 0.1289932,
-                    "y": 0.1104878,
-                    "z": 0.08750089
+                    "x": 0.1288399,
+                    "y": 0.1102757,
+                    "z": 0
                 },
                 "top": {
-                    "x": 0.0001533031,
-                    "y": 0.2209756,
-                    "z": 0.08750089
+                    "x": 0,
+                    "y": 0.2205514,
+                    "z": 0
                 }
             },
             "canonical_rotation": {
@@ -38446,18 +38446,18 @@
             "do_not_use_reason": "",
             "flex": false,
             "name": "pot_composite",
-            "physics_quality": 1.0105115993893006,
+            "physics_quality": 1.0241226830677745,
             "scale_factor": 1,
             "substructure": [
                 {
                     "materials": [
-                        "chrome2"
+                        "Metal_brushed"
                     ],
                     "name": "pot_composite"
                 },
                 {
                     "materials": [
-                        "chrome2"
+                        "Metal_brushed"
                     ],
                     "name": "lid"
                 }
@@ -38467,7 +38467,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/pot_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/pot_composite"
             },
-            "volume": 0.003023678,
+            "volume": 0.00304373,
             "wcategory": "pot",
             "wnid": "n03990474"
         },

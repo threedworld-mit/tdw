@@ -80,6 +80,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
     - `HingeDynamic` Dynamic data for a hinge, motor, or spring sub-object of a composite object. 
 - `PyImpact` will create impact sounds for VR nodes (e.g. hands).
   - Added: `VR_HUMAN_MATERIAL` and `VR_HUMAN_BOUNCINESS`
+- Fixed some bad-sound scrape materials in `PyImpact`: `sandpaper`, `vinyl`, and `poplar_wood`
 - Fixed: `InteriorSceneLighting` sets the random number generator incorrectly such that all other attempts to create a numpy RandomState fail.
 - Fixed: `TDWUtils.set_default_libraries()` raises an exception if `model_library` isn't set and one of the set paths is a string.
 

@@ -3962,6 +3962,7 @@ The shape of the trigger collider.
 | --- | --- |
 | `"cube"` |  |
 | `"sphere"` |  |
+| `"cylinder"` |  |
 
 ***
 

@@ -4,6 +4,32 @@ import pkg_resources
 from pathlib import Path
 import platform
 from secrets import token_hex
+from tdw.collision_data.trigger_collider_shape import TriggerColliderShape
+from tdw.container_data.container_collider_tag import ContainerColliderTag
+from tdw.container_data.container_trigger_collider import ContainerTriggerCollider
+from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
+from tdw.container_data.container_sphere_trigger_collider import ContainerSphereTriggerCollider
+from tdw.container_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
+
+
+class _Encoder(json.JSONEncoder):
+    """
+    JSON encoder for misc. record data.
+    """
+
+    def default(self, obj):
+        if isinstance(obj, ContainerColliderTag):
+            return obj.name
+        elif isinstance(obj, TriggerColliderShape):
+            return obj.name
+        elif isinstance(obj, ContainerBoxTriggerCollider):
+            return obj.__dict__
+        elif isinstance(obj, ContainerSphereTriggerCollider):
+            return obj.__dict__
+        elif isinstance(obj, ContainerCylinderTriggerCollider):
+            return obj.__dict__
+        else:
+            return super(_Encoder, self).default(obj)
 
 
 class _Record:
@@ -67,6 +93,7 @@ class ModelRecord(_Record):
             self.physics_quality: float = -1
             self.asset_bundle_sizes: Dict[str, int] = {"Windows": -1, "Darwin": -1, "Linux": -1}
             self.composite_object = False
+            self.container_colliders: List[ContainerTriggerCollider] = list()
         else:
             self.wnid: str = data["wnid"]
             self.wcategory: str = data["wcategory"]
@@ -84,6 +111,25 @@ class ModelRecord(_Record):
                 self.volume: float = 0
             else:
                 self.volume: float = data["volume"]
+            self.container_colliders: List[ContainerTriggerCollider] = list()
+            for container in data["container_colliders"]:
+                shape = TriggerColliderShape[container["shape"]]
+                tag = ContainerColliderTag[container["tag"]]
+                if shape == TriggerColliderShape.box:
+                    obj = ContainerBoxTriggerCollider(tag=tag,
+                                                      position=container["position"],
+                                                      scale=container["scale"])
+                elif shape == TriggerColliderShape.cylinder:
+                    obj = ContainerCylinderTriggerCollider(tag=tag,
+                                                           position=container["position"],
+                                                           scale=container["scale"])
+                elif shape == TriggerColliderShape.sphere:
+                    obj = ContainerSphereTriggerCollider(tag=tag,
+                                                         position=container["position"],
+                                                         diameter=container["diameter"])
+                else:
+                    raise Exception(shape)
+                self.container_colliders.append(obj)
 
 
 class MaterialRecord(_Record):
@@ -363,9 +409,9 @@ class _Librarian(Generic[T]):
 
         with open(self.library, "wt") as f:
             if pretty:
-                json.dump(self.data, f, sort_keys=True, indent=4)
+                json.dump(self.data, f, sort_keys=True, indent=4, cls=_Encoder)
             else:
-                json.dump(self.data, f)
+                json.dump(self.data, f, cls=_Encoder)
 
     def get_valid_record_name(self, name: str, overwrite: bool) -> Tuple[bool, str, List[str]]:
         """

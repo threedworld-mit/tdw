@@ -32,6 +32,13 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Added cached trigger collision data to model records. Not all records have container trigger colliders; see `model_record.trigger_colliders`.
   - (Backend) Added: `tdw.librarian._Encoder` JSONEncoder extension that is used within `_Librarian` classes. For now, this just handles container collider data.
 
+### Example Controllers
+
+- Moved composite object controllers from `physx/` to `semantic_states/`
+- Moved overlap and raycast controllers from `objects_and_scenes/` to `semantic_states/`
+- Added: `semantic_states/containment.py`
+- Added: `semantic_states/trigger_collisions.py`
+
 ### Documentation
 
 #### New Documentation

@@ -8,10 +8,10 @@ import numpy as np
 from tdw.librarian import ModelRecord
 from tdw.controller import Controller
 from tdw.add_ons.proc_gen_objects_data.arrangement import Arrangement
-from tdw.add_ons.container_manager_data.container_trigger_collider import CONTAINERS
-from tdw.add_ons.container_manager_data.container_box_trigger_collider import ContainerBoxTriggerCollider
-from tdw.add_ons.container_manager_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
-from tdw.add_ons.container_manager_data.container_collider_tag import ContainerColliderTag
+from tdw.container_data.container_trigger_collider import ContainerTriggerCollider
+from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
+from tdw.container_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
+from tdw.container_data.container_collider_tag import ContainerColliderTag
 
 
 class ArrangementWithRootObject(Arrangement, ABC):
@@ -67,7 +67,7 @@ class ArrangementWithRootObject(Arrangement, ABC):
 
         categories: List[str] = ArrangementWithRootObject.ON_TOP_OF[self._get_category()]
         commands = self._add_root_object()
-        for collider in CONTAINERS[self._record.name]:
+        for collider in self._record.container_colliders:
             # Use all of the "on" colliders.
             if collider.tag == ContainerColliderTag.on:
                 if isinstance(collider, ContainerBoxTriggerCollider):
@@ -79,9 +79,7 @@ class ArrangementWithRootObject(Arrangement, ABC):
                 # Add objects on top of the root object.
                 on_top_commands, object_ids = self._add_rectangular_arrangement(size=(scale["x"] * 0.8, scale["z"] * 0.8),
                                                                                 categories=categories,
-                                                                                position={"x": self._position["x"],
-                                                                                          "y": self._record.bounds["top"]["y"] + self._position["y"],
-                                                                                          "z": self._position["z"]},
+                                                                                position=self._get_collider_position(collider=collider),
                                                                                 cell_size=cell_size,
                                                                                 density=density)
                 commands.extend(on_top_commands)
@@ -103,7 +101,7 @@ class ArrangementWithRootObject(Arrangement, ABC):
 
         categories: List[str] = ArrangementWithRootObject.ENCLOSED_BY[self._get_category()]
         commands = []
-        for collider in CONTAINERS[self._record.name]:
+        for collider in self._record.container_colliders:
             # Use all of the "enclosed" colliders.
             if collider.tag == ContainerColliderTag.enclosed:
                 if isinstance(collider, ContainerBoxTriggerCollider):
@@ -111,19 +109,28 @@ class ArrangementWithRootObject(Arrangement, ABC):
                 else:
                     raise Exception(collider)
                 # Add objects on top of the root object.
-                on_top_commands, object_ids = self._add_rectangular_arrangement(
-                    size=(scale["x"] * 0.8, scale["z"] * 0.8),
-                    categories=categories,
-                    position={"x": self._position["x"] + collider.position["x"],
-                              "y": self._position["y"] + (collider.position["y"] - collider.scale["y"] / 2),
-                              "z": self._position["z"] + collider.position["z"]},
-                    cell_size=cell_size,
-                    density=density)
+                on_top_commands, object_ids = self._add_rectangular_arrangement(size=(scale["x"] * 0.8, scale["z"] * 0.8),
+                                                                                categories=categories,
+                                                                                position=self._get_collider_position(collider=collider),
+                                                                                cell_size=cell_size,
+                                                                                density=density)
                 commands.extend(on_top_commands)
         # Rotate everything.
         if rotate:
             commands.extend(self._get_rotation_commands())
         return commands
+
+    @final
+    def _get_collider_position(self, collider: ContainerTriggerCollider) -> Dict[str, float]:
+        """
+        :param collider: The collider.
+
+        :return: The worldspace position of the collider.
+        """
+
+        return {"x": self._position["x"] + collider.bottom_center_position["x"],
+                "y": self._position["y"] + collider.bottom_center_position["y"],
+                "z": self._position["z"] + collider.bottom_center_position["z"]}
 
     @final
     def _get_rotation_commands(self) -> List[dict]:

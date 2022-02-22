@@ -1,8 +1,7 @@
 from typing import Dict, List
 import numpy as np
-from tdw.add_ons.container_manager_data.container_trigger_collider import CONTAINERS
-from tdw.add_ons.container_manager_data.container_box_trigger_collider import ContainerBoxTriggerCollider
-from tdw.add_ons.container_manager_data.container_collider_tag import ContainerColliderTag
+from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
+from tdw.container_data.container_collider_tag import ContainerColliderTag
 from tdw.add_ons.proc_gen_objects_data.arrangement_with_root_object import ArrangementWithRootObject
 from tdw.add_ons.proc_gen_objects_data.plate import Plate
 from tdw.librarian import ModelRecord
@@ -40,13 +39,11 @@ class Microwave(ArrangementWithRootObject):
         # Add a plate with food.
         if self._rng.random() < self._plate_probability:
             # Get the inside collider.
-            for collider in CONTAINERS[self._record.name]:
+            for collider in self._record.container_colliders:
                 if collider.tag == ContainerColliderTag.inside and isinstance(collider, ContainerBoxTriggerCollider):
                     plate = Plate(food_probability=1,
                                   record=Controller.MODEL_LIBRARIANS["models_core.json"].get_record("plate06"),
-                                  position={"x": self._position["x"],
-                                            "y": collider.position["y"] - collider.scale["y"] / 2,
-                                            "z": self._position["z"]},
+                                  position=self._get_collider_position(collider=collider),
                                   rng=self._rng)
                     commands.extend(plate.get_commands())
                     self.object_ids.extend(plate.object_ids)

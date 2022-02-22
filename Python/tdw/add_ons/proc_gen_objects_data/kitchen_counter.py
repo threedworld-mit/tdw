@@ -81,7 +81,7 @@ class KitchenCounter(KitchenCabinet):
             if self._rng.random() > self._empty:
                 commands.extend(self._add_objects_inside(rotate=False))
             # Add a wall cabinet.
-            if self._record.name in KitchenCounter.COUNTERS_AND_CABINETS and self._region.walls.walls_with_windows & self._wall == 0:
+            if self._record.name in KitchenCounter.COUNTERS_AND_CABINETS and self._region.walls_with_windows & self._wall == 0:
                 wall_cabinet = WallCabinet(wall=self._wall,
                                            region=self._region,
                                            record=Controller.MODEL_LIBRARIANS["models_core.json"].get_record(KitchenCounter.COUNTERS_AND_CABINETS[self._record.name]),

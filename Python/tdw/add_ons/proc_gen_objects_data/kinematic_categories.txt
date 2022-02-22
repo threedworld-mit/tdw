@@ -1,9 +1,0 @@
-wall_cabinet
-kitchen_counter
-dishwasher
-microwave
-refrigerator
-sink
-stove
-table
-floor_lamp

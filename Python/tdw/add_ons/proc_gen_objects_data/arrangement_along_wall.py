@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Tuple
 from abc import ABC, abstractmethod
 import numpy as np
 from tdw.add_ons.proc_gen_objects_data.arrangement_with_root_object import ArrangementWithRootObject
@@ -32,17 +32,17 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         if self._wall == CardinalDirection.north:
             return {"x": position["x"],
                     "y": 0,
-                    "z": self._region.bounds.z_max - depth / 2}
+                    "z": self._region.z_max - depth / 2}
         elif self._wall == CardinalDirection.south:
             return {"x": position["x"],
                     "y": 0,
-                    "z": self._region.bounds.z_min + depth / 2}
+                    "z": self._region.z_min + depth / 2}
         elif self._wall == CardinalDirection.west:
-            return {"x": self._region.bounds.x_min + depth / 2,
+            return {"x": self._region.x_min + depth / 2,
                     "y": 0,
                     "z": position["z"]}
         elif self._wall == CardinalDirection.east:
-            return {"x": self._region.bounds.x_max - depth / 2,
+            return {"x": self._region.x_max - depth / 2,
                     "y": 0,
                     "z": position["z"]}
         else:

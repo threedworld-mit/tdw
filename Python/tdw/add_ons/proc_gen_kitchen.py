@@ -191,7 +191,7 @@ class ProcGenKitchen(ProcGenObjects):
                         break
         # If there are no valid alcoves, the position is in the center offset from the used walls.
         if alcove is None:
-            room_center = self.scene_bounds.rooms[region.region].center
+            room_center = self.scene_bounds.rooms[region.region_id].center
             position = {"x": room_center[0] + self.rng.uniform(-0.1, 0.1),
                         "y": 0,
                         "z": room_center[2] + self.rng.uniform(-0.1, 0.1)}
@@ -206,7 +206,7 @@ class ProcGenKitchen(ProcGenObjects):
                 position["x"] += offset_distance
         # Position the table between the main region and an alcove.
         else:
-            p = (np.array(self.scene_bounds.rooms[region.region].center) + np.array(self.scene_bounds.rooms[alcove.region].center)) * self.rng.uniform(0.35, 0.65)
+            p = (np.array(self.scene_bounds.rooms[region.region_id].center) + np.array(self.scene_bounds.rooms[alcove.region_id].center)) * self.rng.uniform(0.35, 0.65)
             position = {"x": p[0] + self.rng.uniform(-0.1, 0.1),
                         "y": 0,
                         "z": p[2] + self.rng.uniform(-0.1, 0.1)}
@@ -262,13 +262,13 @@ class ProcGenKitchen(ProcGenObjects):
                                                       [c for c in CardinalDirection]):
             if side_direction in sides and cardinal_direction in used_walls:
                 if cardinal_direction == CardinalDirection.north:
-                    cp = np.array([position["x"], self.scene_bounds.rooms[region.region].z_max])
+                    cp = np.array([position["x"], self.scene_bounds.rooms[region.region_id].z_max])
                 elif cardinal_direction == CardinalDirection.south:
-                    cp = np.array([position["x"], self.scene_bounds.rooms[region.region].z_min])
+                    cp = np.array([position["x"], self.scene_bounds.rooms[region.region_id].z_min])
                 elif cardinal_direction == CardinalDirection.west:
-                    cp = np.array([self.scene_bounds.rooms[region.region].x_min, position["z"]])
+                    cp = np.array([self.scene_bounds.rooms[region.region_id].x_min, position["z"]])
                 elif cardinal_direction == CardinalDirection.east:
-                    cp = np.array([self.scene_bounds.rooms[region.region].x_max, position["z"]])
+                    cp = np.array([self.scene_bounds.rooms[region.region_id].x_max, position["z"]])
                 else:
                     raise Exception(cardinal_direction)
                 cd = np.linalg.norm(tc - cp)
@@ -384,7 +384,7 @@ class ProcGenKitchen(ProcGenObjects):
 
         rotation = ProcGenKitchen.OBJECT_ROTATIONS[record.name][wall.name]
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
-        kitchen_counter_position = self._get_position_along_wall(region=region.region,
+        kitchen_counter_position = self._get_position_along_wall(region=region.region_id,
                                                                  position=position,
                                                                  wall=wall,
                                                                  depth=extents[2],
@@ -400,7 +400,7 @@ class ProcGenKitchen(ProcGenObjects):
                 wall_cabinet_model_name = ProcGenKitchen.COUNTERS_AND_CABINETS[record.name]
                 wall_cabinet_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(wall_cabinet_model_name)
                 wall_cabinet_extents = TDWUtils.get_bounds_extents(bounds=wall_cabinet_record.bounds)
-                room = self.scene_bounds.rooms[region.region]
+                room = self.scene_bounds.rooms[region.region_id]
                 if wall == CardinalDirection.north:
                     wall_cabinet_position = {"x": kitchen_counter_position["x"],
                                              "y": ProcGenKitchen.WALL_CABINET_Y,
@@ -466,7 +466,7 @@ class ProcGenKitchen(ProcGenObjects):
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
-                                                               position=self._get_position_along_wall(region=region.region,
+                                                               position=self._get_position_along_wall(region=region.region_id,
                                                                                                       position=position,
                                                                                                       wall=wall,
                                                                                                       depth=extents[2],
@@ -502,7 +502,7 @@ class ProcGenKitchen(ProcGenObjects):
         else:
             raise Exception(direction)
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
-        fridge_position = self._get_position_along_wall(region=region.region,
+        fridge_position = self._get_position_along_wall(region=region.region_id,
                                                         position=position,
                                                         wall=wall,
                                                         depth=extents[2],
@@ -547,7 +547,7 @@ class ProcGenKitchen(ProcGenObjects):
         rotation = ProcGenKitchen.OBJECT_ROTATIONS[record.name][wall.name]
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         return self.add_object_with_other_objects_on_top(record=record,
-                                                         position=self._get_position_along_wall(region=region.region,
+                                                         position=self._get_position_along_wall(region=region.region_id,
                                                                                                 position=position,
                                                                                                 wall=wall,
                                                                                                 depth=extents[2],
@@ -641,7 +641,7 @@ class ProcGenKitchen(ProcGenObjects):
         :return: A list of used walls.
         """
 
-        longer_walls, length = self._get_longer_walls(region=region.region)
+        longer_walls, length = self._get_longer_walls(region=region.region_id)
         longer_walls_ok = True
         for w in longer_walls:
             if region.non_continuous_walls & w == 0:
@@ -653,7 +653,7 @@ class ProcGenKitchen(ProcGenObjects):
             triangles.append(self._add_parallel_work_triangle)
         else:
             triangles.append(self._add_straight_work_triangle)
-        shorter_walls, length = self._get_shorter_walls(region=region.region)
+        shorter_walls, length = self._get_shorter_walls(region=region.region_id)
         shorter_walls_ok = True
         for w in shorter_walls:
             if region.non_continuous_walls & w == 0:
@@ -672,7 +672,7 @@ class ProcGenKitchen(ProcGenObjects):
         :return: A list of used walls.
         """
 
-        longer_walls, length = self._get_longer_walls(region=region.region)
+        longer_walls, length = self._get_longer_walls(region=region.region_id)
         ws = [w for w in longer_walls if region.non_continuous_walls & w == 0]
         # Prefer walls with windows, if possible.
         walls_with_windows = [w for w in ws if region.walls_with_windows & w != 0]
@@ -683,7 +683,7 @@ class ProcGenKitchen(ProcGenObjects):
             longer_wall = self._get_wall(walls=longer_walls, non_continuous_walls=region.non_continuous_walls)
         corners = self._get_corners_from_wall(wall=longer_wall)
         corner = corners[self.rng.randint(0, len(corners))]
-        position = self._get_corner_position(corner=corner, region=region.region)
+        position = self._get_corner_position(corner=corner, region=region.region_id)
         direction = self._get_direction_from_corner(corner=corner, wall=longer_wall)
         categories = ["refrigerator", "dishwasher", "sink", "kitchen_counter", "stove", "kitchen_counter", "shelf"]
         if self.rng.random() < 0.5:
@@ -706,7 +706,7 @@ class ProcGenKitchen(ProcGenObjects):
 
         lateral_0 = ["kitchen_counter", "stove", "kitchen_counter", "kitchen_counter", "kitchen_counter"]
         lateral_1 = ["refrigerator", "dishwasher", "sink", "kitchen_counter", "kitchen_counter"]
-        longer_walls, length = self._get_longer_walls(region=region.region)
+        longer_walls, length = self._get_longer_walls(region=region.region_id)
         # Prefer to place the sink at a wall with windows.
         ws = [w for w in longer_walls if region.non_continuous_walls & w == 0]
         walls_with_windows = [w for w in ws if region.walls_with_windows & w != 0]
@@ -728,7 +728,7 @@ class ProcGenKitchen(ProcGenObjects):
             categories = self._append_secondary_categories(categories=categories, wall=wall, region=region)
             corners = self._get_corners_from_wall(wall=wall)
             corner = corners[self.rng.randint(0, len(corners))]
-            position = self._get_corner_position(corner=corner, region=region.region)
+            position = self._get_corner_position(corner=corner, region=region.region_id)
             direction = self._get_direction_from_corner(corner=corner, wall=wall)
             sub_arrangements = self._get_sub_arrangements(categories=categories, wall=wall, region=region)
             self.add_lateral_arrangement(position=position, direction=direction, wall=wall,
@@ -745,7 +745,7 @@ class ProcGenKitchen(ProcGenObjects):
         :return: A list of used walls.
         """
 
-        longer_walls, length = self._get_longer_walls(region=region.region)
+        longer_walls, length = self._get_longer_walls(region=region.region_id)
         # Prefer a wall with windows if possible.
         walls_with_windows = [w for w in longer_walls if region.walls_with_windows & w != 0]
         if len(walls_with_windows) >= 1:
@@ -762,7 +762,7 @@ class ProcGenKitchen(ProcGenObjects):
                 shorter_walls.append(shorter_wall)
                 corners.append(corner)
         corner = corners[self.rng.randint(0, len(corners))]
-        position = self._get_corner_position(corner=corner, region=region.region)
+        position = self._get_corner_position(corner=corner, region=region.region_id)
         direction = self._get_direction_from_corner(corner=corner, wall=longer_wall)
         categories = ["floating_kitchen_counter_top", "sink", "dishwasher", "stove", "kitchen_counter", "shelf"]
         categories = self._append_secondary_categories(categories=categories, wall=longer_wall, region=region)
@@ -771,11 +771,11 @@ class ProcGenKitchen(ProcGenObjects):
                                      sub_arrangements=sub_arrangements, length=length - self.cell_size / 2,
                                      region=region)
         shorter_wall = CardinalDirection(corner - longer_wall)
-        shorter_walls, length = self._get_shorter_walls(region=region.region)
+        shorter_walls, length = self._get_shorter_walls(region=region.region_id)
         length -= self.cell_size
         # Get everything else.
         direction = self._get_direction_from_corner(corner=corner, wall=shorter_wall)
-        position = self._get_corner_position(corner=corner, region=region.region)
+        position = self._get_corner_position(corner=corner, region=region.region_id)
         # Offset the position.
         position = self._get_position_offset_from_direction(position=position, direction=direction)
         category_lists = [["kitchen_counter", "kitchen_counter", "refrigerator", "shelf"],
@@ -796,7 +796,7 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         # Add the longer wall.
-        longer_walls, length = self._get_longer_walls(region=region.region)
+        longer_walls, length = self._get_longer_walls(region=region.region_id)
         # Prefer a wall with windows if possible.
         walls_with_windows = [w for w in longer_walls if region.walls_with_windows & w != 0]
         if len(walls_with_windows) >= 1:
@@ -807,7 +807,7 @@ class ProcGenKitchen(ProcGenObjects):
         length -= self.cell_size
         corners = self._get_corners_from_wall(wall=longer_wall)
         corner = corners[self.rng.randint(0, len(corners))]
-        position = self._get_corner_position(corner=corner, region=region.region)
+        position = self._get_corner_position(corner=corner, region=region.region_id)
         direction = self._get_direction_from_corner(corner=corner, wall=longer_wall)
         categories = ["sink", "kitchen_counter", "stove", "kitchen_counter"]
         categories = self._append_secondary_categories(categories=categories, wall=longer_wall, region=region)
@@ -840,11 +840,11 @@ class ProcGenKitchen(ProcGenObjects):
             opposite_corner = OrdinalDirection.northeast
         else:
             raise Exception(longer_wall, corner)
-        opposite_corner_position = self._get_corner_position(corner=opposite_corner, region=region.region)
+        opposite_corner_position = self._get_corner_position(corner=opposite_corner, region=region.region_id)
         # Add a counter top at the end.
         self._add_kitchen_counter_top_object(position=opposite_corner_position, wall=longer_wall)
         # Get the length of the shorter wall.
-        shorter_walls, length = self._get_shorter_walls(region=region.region)
+        shorter_walls, length = self._get_shorter_walls(region=region.region_id)
         length -= self.cell_size
         if self.rng.random() < 0.5:
             corners.reverse()
@@ -854,7 +854,7 @@ class ProcGenKitchen(ProcGenObjects):
             shorter_wall = CardinalDirection(corner - longer_wall)
             # Get everything else.
             direction = self._get_direction_from_corner(corner=corner, wall=shorter_wall)
-            position = self._get_corner_position(corner=corner, region=region.region)
+            position = self._get_corner_position(corner=corner, region=region.region_id)
             # Offset the position.
             position = self._get_position_offset_from_direction(position=position, direction=direction)
             sub_arrangements = self._get_sub_arrangements(categories=categories, wall=shorter_wall, region=region)
@@ -1037,13 +1037,13 @@ class ProcGenKitchen(ProcGenObjects):
                 categories.append(wall_categories[self.rng.randint(0, len(wall_categories))])
             corners = self._get_corners_from_wall(wall=wall)
             corner = corners[self.rng.randint(0, len(corners))]
-            position = self._get_corner_position(corner=corner, region=region.region)
+            position = self._get_corner_position(corner=corner, region=region.region_id)
             direction = self._get_direction_from_corner(corner=corner, wall=wall)
             position = self._get_position_offset_from_direction(position=position, direction=direction)
             direction = self._get_direction_from_corner(corner=corner, wall=wall)
-            longer_walls, length = self._get_longer_walls(region=region.region)
+            longer_walls, length = self._get_longer_walls(region=region.region_id)
             if wall not in longer_walls:
-                shorter_walls, length = self._get_shorter_walls(region=region.region)
+                shorter_walls, length = self._get_shorter_walls(region=region.region_id)
             length -= self.cell_size * 2
             sub_arrangements = self._get_sub_arrangements(categories=categories, wall=wall, region=region)
             self.add_lateral_arrangement(position=position, direction=direction, wall=wall,
@@ -1063,7 +1063,7 @@ class ProcGenKitchen(ProcGenObjects):
         """
 
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds) * 1.05
-        room = self.scene_bounds.rooms[region.region]
+        room = self.scene_bounds.rooms[region.region_id]
         if wall == CardinalDirection.north:
             side_table_position = {"x": position["x"],
                                    "y": 0,
@@ -1105,7 +1105,7 @@ class ProcGenKitchen(ProcGenObjects):
         basket_position = self._get_position_along_wall(model_name=record.name,
                                                         position=position,
                                                         wall=wall,
-                                                        region=region.region,
+                                                        region=region.region_id,
                                                         depth=extents[2] * self.rng.uniform(1.15, 1.25))
         width = ProcGenKitchen.BOUNDS_OFFSETS[record.name]["width"] / 2
         if direction == CardinalDirection.north:
@@ -1160,21 +1160,21 @@ class ProcGenKitchen(ProcGenObjects):
         depth = extents[2]
         painting_position = {k: v for k, v in position.items()}
         if wall == CardinalDirection.north:
-            painting_position["z"] = self.scene_bounds.rooms[region.region].z_max - depth
+            painting_position["z"] = self.scene_bounds.rooms[region.region_id].z_max - depth
             rotation = 180
         elif wall == CardinalDirection.south:
-            painting_position["z"] = self.scene_bounds.rooms[region.region].z_min + depth
+            painting_position["z"] = self.scene_bounds.rooms[region.region_id].z_min + depth
             rotation = 0
         elif wall == CardinalDirection.west:
-            painting_position["x"] = self.scene_bounds.rooms[region.region].x_min + depth
+            painting_position["x"] = self.scene_bounds.rooms[region.region_id].x_min + depth
             rotation = 90
         elif wall == CardinalDirection.east:
-            painting_position["x"] = self.scene_bounds.rooms[region.region].x_max - depth
+            painting_position["x"] = self.scene_bounds.rooms[region.region_id].x_max - depth
             rotation = 270
         else:
             raise Exception(wall)
         # Set the y coordinate between 1.1 and the height of the room minus the height of the painting.
-        painting_position["y"] = float(self.rng.uniform(1.1, self.scene_bounds.rooms[region.region].bounds[1] - extents[1]))
+        painting_position["y"] = float(self.rng.uniform(1.1, self.scene_bounds.rooms[region.region_id].bounds[1] - extents[1]))
         # Add the painting.
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
@@ -1201,7 +1201,7 @@ class ProcGenKitchen(ProcGenObjects):
         self._used_unique_categories.append("radiator")
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
-                                                               position=self._get_position_along_wall(region=region.region,
+                                                               position=self._get_position_along_wall(region=region.region_id,
                                                                                                       position=position,
                                                                                                       wall=wall,
                                                                                                       depth=depth,
@@ -1265,7 +1265,7 @@ class ProcGenKitchen(ProcGenObjects):
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         self.commands.extend(Controller.get_add_physics_object(model_name=record.name,
                                                                object_id=Controller.get_unique_id(),
-                                                               position=self._get_position_along_wall(region=region.region,
+                                                               position=self._get_position_along_wall(region=region.region_id,
                                                                                                       position=position,
                                                                                                       wall=wall,
                                                                                                       depth=extents[2],

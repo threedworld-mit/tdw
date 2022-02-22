@@ -10,6 +10,8 @@ from tdw.container_data.container_trigger_collider import ContainerTriggerCollid
 from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
 from tdw.container_data.container_sphere_trigger_collider import ContainerSphereTriggerCollider
 from tdw.container_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
+from tdw.scene_data.room import Room
+from tdw.scene_data.interior_region import InteriorRegion
 
 
 class _Encoder(json.JSONEncoder):
@@ -28,6 +30,11 @@ class _Encoder(json.JSONEncoder):
             return obj.__dict__
         elif isinstance(obj, ContainerCylinderTriggerCollider):
             return obj.__dict__
+        elif isinstance(obj, Room):
+            return obj.__dict__
+        elif isinstance(obj, InteriorRegion):
+            return {"region_id": obj.region_id, "center": list(obj.center), "bounds": list(obj.bounds),
+                    "non_continuous_walls": obj.non_continuous_walls, "walls_with_windows": obj.walls_with_windows}
         else:
             return super(_Encoder, self).default(obj)
 
@@ -154,6 +161,7 @@ class SceneRecord(_Record):
     def __init__(self, data: Optional[dict] = None):
         super().__init__(data)
 
+        self.rooms: List[Room] = list()
         if data is None:
             self.description: str = ""
             self.hdri: bool = False
@@ -162,6 +170,20 @@ class SceneRecord(_Record):
             self.description: str = data["description"]
             self.hdri: bool = data["hdri"]
             self.location: str = data["location"]
+            for room_data in data["rooms"]:
+                main_region = InteriorRegion(region_id=room_data["main_region"]["bounds"]["region_id"],
+                                             center=tuple(room_data["main_region"]["bounds"]["center"]),
+                                             bounds=tuple(room_data["main_region"]["bounds"]["bounds"]),
+                                             non_continuous_walls=room_data["main_region"]["walls"]["non_continuous_walls"],
+                                             walls_with_windows=room_data["main_region"]["walls"]["walls_without_windows"])
+                alcoves = []
+                for alcove_data in room_data["alcoves"]:
+                    alcoves.append(InteriorRegion(region_id=alcove_data["bounds"]["region_id"],
+                                                  center=tuple(alcove_data["bounds"]["center"]),
+                                                  bounds=tuple(alcove_data["bounds"]["bounds"]),
+                                                  non_continuous_walls=alcove_data["walls"]["non_continuous_walls"],
+                                                  walls_with_windows=alcove_data["walls"]["walls_without_windows"]))
+                self.rooms.append(Room(main_region=main_region, alcoves=alcoves))
 
 
 class HDRISkyboxRecord(_Record):

@@ -5,10 +5,10 @@ from typing import Tuple, List, Dict, Optional
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
-from tdw.librarian import ModelLibrarian, ModelRecord
+from tdw.librarian import ModelLibrarian, ModelRecord, SceneLibrarian, SceneRecord
 from tdw.add_ons.add_on import AddOn
-from tdw.scene_data.scene_bounds import SceneBounds
-from tdw.scene_data.region_walls import RegionWalls
+from tdw.scene_data.room import Room
+from tdw.scene_data.region_bounds import RegionBounds
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
 from tdw.add_ons.proc_gen_objects_data.lateral_sub_arrangement import LateralSubArrangement
@@ -78,17 +78,10 @@ class ProcGenObjects(AddOn):
         self.rng = np.random.RandomState(self.random_seed)
         self._used_unique_categories: List[str] = list()
         """:field
-        The [`SceneBounds`](../scene_data/scene_bounds.md). This is set after initializing or resetting `ProcGenObjects` and then calling `c.communicate()`.
+        The record of the scene. This is set by `self.add_random_single_room_scene()`.
         """
-        self.scene_bounds: Optional[SceneBounds] = None
-        """:field
-        The cell size in meters. This is also used to position certain objects in subclasses of `ProcGenObjects`.
-        """
-        self.cell_size: float = cell_size
-        """:class_var
-        A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names.
-        """
-        self.model_categories: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "proc_gen_objects_data/models.json")).read_text())
+        self.scene_record: Optional[SceneRecord] = None
+        self._region_bounds: Dict[int, RegionBounds] = dict()
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -97,7 +90,7 @@ class ProcGenObjects(AddOn):
         :return: A list of commands that will initialize this add-on.
         """
 
-        return [{"$type": "send_scene_regions"}]
+        return []
 
     def on_send(self, resp: List[bytes]) -> None:
         """
@@ -109,8 +102,58 @@ class ProcGenObjects(AddOn):
         :param resp: The response from the build.
         """
 
-        if self.scene_bounds is None:
-            self.scene_bounds = SceneBounds(resp=resp)
+        return
+
+    def reset(self, set_random_seed: bool = False, random_seed: int = None) -> None:
+        """
+        Reset the procedural generator. Call this when resetting the scene.
+
+        :param set_random_seed: If True, set a new random seed.
+        :param random_seed: The random seed. If None, a random seed is randomly selected. Ignored if `set_random_seed == False`
+        """
+
+        self.initialized = False
+        self._used_unique_categories.clear()
+        if set_random_seed:
+            if random_seed is None:
+                self.random_seed = Controller.get_unique_id()
+            else:
+                self.random_seed = random_seed
+            if self._print_random_seed:
+                print("Random seed:", self.random_seed)
+            self.rng = np.random.RandomState(self.random_seed)
+
+    def add_random_single_room_scene(self) -> None:
+        """
+        Load a random single-room streamed scene. Cache the record as `self.scene_record`.
+        """
+
+        if "scenes.json" not in Controller.SCENE_LIBRARIANS:
+            Controller.SCENE_LIBRARIANS["scenes.json"] = SceneLibrarian()
+        # Get all interior scenes with one room.
+        records = [record for record in Controller.SCENE_LIBRARIANS["scenes.json"].records if record.location == "interior" and len(record.rooms) == 1]
+        self.scene_record = records[self.rng.randint(0, len(records))]
+        self._region_bounds.clear()
+        # Cache the regions.
+        for room in self.scene_record.rooms:
+            self._region_bounds[room.main_region.region_id] = room.main_region
+            for alcove in room.alcoves:
+                self._region_bounds[alcove.region_id] = alcove
+        self.commands.append(Controller.get_add_scene(scene_name=self.scene_record.name))
+
+    def get_categories_and_wcategories(self) -> Dict[str, Dict[str, str]]:
+        """
+        :return: A dictionary of the categories of every model that can be used by `ProcGenObjects` and their corresponding `wcategory` and `wnid`. Key = The model name. Value = A dictionary with the following keys: `"category"` (the `ProcGenObjects` category), `"wcategory"` (the value of `record.wcategory`), and `"wnid"` (the value of `record.wnid`).
+        """
+
+        categories: Dict[str, Dict[str, str]] = dict()
+        for category in self.model_categories:
+            for model_name in self.model_categories[category]:
+                record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+                categories[model_name] = {"category": category,
+                                          "wcategory": record.wcategory,
+                                          "wnid": record.wnid}
+        return categories
 
     @staticmethod
     def _fits_inside_parent(parent: ModelRecord, child: ModelRecord) -> bool:
@@ -140,7 +183,7 @@ class ProcGenObjects(AddOn):
                       [record.bounds["front"]["x"] + position["x"], record.bounds["front"]["z"] + position["z"]],
                       [record.bounds["back"]["x"] + position["x"], record.bounds["back"]["z"] + position["z"]],
                       [record.bounds["center"]["x"] + position["x"], record.bounds["center"]["z"] + position["z"]]]:
-            if not self.scene_bounds.rooms[region].is_inside(x=point[0], z=point[1]):
+            if not self._region_bounds[region].is_inside(x=point[0], z=point[1]):
                 return False
         return True
 
@@ -167,46 +210,6 @@ class ProcGenObjects(AddOn):
             return None
         else:
             return record
-
-
-
-
-
-    def reset(self, set_random_seed: bool = False, random_seed: int = None) -> None:
-        """
-        Reset the procedural generator. Call this when resetting the scene.
-
-        :param set_random_seed: If True, set a new random seed.
-        :param random_seed: The random seed. If None, a random seed is randomly selected. Ignored if `set_random_seed == False`
-        """
-
-        self.initialized = False
-        self._used_unique_categories.clear()
-        self.scene_bounds = None
-        if set_random_seed:
-            if random_seed is None:
-                self.random_seed = Controller.get_unique_id()
-            else:
-                self.random_seed = random_seed
-            if self._print_random_seed:
-                print("Random seed:", self.random_seed)
-            self.rng = np.random.RandomState(self.random_seed)
-        # Reload the model categories in case it was altered.
-        self.model_categories = loads(Path(resource_filename(__name__, "proc_gen_objects_data/models.json")).read_text())
-
-    def get_categories_and_wcategories(self) -> Dict[str, Dict[str, str]]:
-        """
-        :return: A dictionary of the categories of every model that can be used by `ProcGenObjects` and their corresponding `wcategory` and `wnid`. Key = The model name. Value = A dictionary with the following keys: `"category"` (the `ProcGenObjects` category), `"wcategory"` (the value of `record.wcategory`), and `"wnid"` (the value of `record.wnid`).
-        """
-
-        categories: Dict[str, Dict[str, str]] = dict()
-        for category in self.model_categories:
-            for model_name in self.model_categories[category]:
-                record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
-                categories[model_name] = {"category": category,
-                                          "wcategory": record.wcategory,
-                                          "wnid": record.wnid}
-        return categories
 
     @staticmethod
     def _get_rectangular_arrangement_parameters(category: str) -> Tuple[float, float]:
@@ -405,7 +408,7 @@ class ProcGenObjects(AddOn):
             # Get the record.
             record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
             # Out of bounds. Stop here.
-            if not self.scene_bounds.rooms[region.region].is_inside(position["x"], position["z"]):
+            if not self.scene_bounds.rooms[region.region_id].is_inside(position["x"], position["z"]):
                 break
             # Add the objects.
             sub_arrangement.function(record=record, position={k: v for k, v in position.items()}, wall=wall, direction=direction, region=region)

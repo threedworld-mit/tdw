@@ -16,11 +16,11 @@ class Shelf(ArrangementAlongWall):
 
     def _get_rotation(self) -> float:
         if self._wall == CardinalDirection.north:
-            return 90
+            return 270
         elif self._wall == CardinalDirection.east:
             return 180
         elif self._wall == CardinalDirection.south:
-            return 270
+            return 90
         else:
             return 0
 

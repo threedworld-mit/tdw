@@ -4,8 +4,6 @@
 
 Manage trigger collisions for 'container' objects.
 
-This add-on assigns trigger collisions based on a pre-defined dictionary of models and collider shapes, positions, etc. There are many models in TDW that could be containers but haven't been added to this dictionary yet. See: `ContainerManager.CONTAINERS`.
-
 'Containers' can be concave objects such as baskets but they don't have to be. For example, a table surface can be a 'container' and if another object is on that surface, the table is currently 'containing' that object.
 
 An object is 'contained' by a 'container' if:
@@ -15,21 +13,13 @@ An object is 'contained' by a 'container' if:
 
 ***
 
-## Class Variables
-
-| Variable | Type | Description |
-| --- | --- | --- |
-| `CONTAINERS` | Dict[str, List[ContainerTriggerCollider]] | A dictionary of all container model names and their trigger colliders. |
-
-***
-
 ## Fields
 
 - `trigger_ids` A dictionary of trigger colliders. Key = The trigger ID. Value = The object ID.
 
 - `collisions` A list of [`TriggerCollisionEvent`](../collision_data/trigger_collision_event.md) from this frame.
 
-- `events` A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container ID *(not the trigger ID)*. Value = A list of [`ContainmentEvent`](container_manager_data/containment_event.md) data.
+- `events` A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container ID *(not the trigger ID)*. Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
 
 ***
 
@@ -78,7 +68,7 @@ Add a box-shaped trigger collider to an object. Optionally, set the trigger coll
 | scale |  Dict[str, float] |  | The scale of the trigger collider. |
 | rotation |  Dict[str, float] | None | The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | trigger_id |  int  | None | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
-| tag |  ContainerColliderTag  | ContainerColliderTag.on | The semantic [`ContainerColliderTag`](collision_manager_data/container_collider_tag.md). |
+| tag |  ContainerColliderTag  | ContainerColliderTag.on | The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md). |
 
 _Returns:_  The ID of the trigger collider.
 
@@ -98,7 +88,7 @@ Add a cylinder-shaped trigger collider to an object. Optionally, set the trigger
 | scale |  Dict[str, float] |  | The scale of the trigger collider. |
 | rotation |  Dict[str, float] | None | The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | trigger_id |  int  | None | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
-| tag |  ContainerColliderTag  | ContainerColliderTag.on | The semantic [`ContainerColliderTag`](collision_manager_data/container_collider_tag.md). |
+| tag |  ContainerColliderTag  | ContainerColliderTag.on | The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md). |
 
 _Returns:_  The ID of the trigger collider.
 
@@ -117,7 +107,7 @@ Add a sphere-shaped trigger collider to an object. Optionally, set the trigger c
 | position |  Dict[str, float] |  | The position of the trigger collider relative to the parent object. |
 | diameter |  float |  | The diameter of the trigger collider. |
 | trigger_id |  int  | None | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
-| tag |  ContainerColliderTag  | ContainerColliderTag.on | The semantic [`ContainerColliderTag`](collision_manager_data/container_collider_tag.md). |
+| tag |  ContainerColliderTag  | ContainerColliderTag.on | The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md). |
 
 _Returns:_  The ID of the trigger collider.
 

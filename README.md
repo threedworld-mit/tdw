@@ -49,19 +49,27 @@
 5. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
 6. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
 7. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)
-8. [`Raycast` output data](Documentation/lessons/objects_and_scenes/raycast.md)
-9. [`Overlap` output data](Documentation/lessons/objects_and_scenes/overlap.md)
 10. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
 
 High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 
-## 2.2 3D Model Libraries
+### 2.2.2 3D Model Libraries
 
 1. [Overview](Documentation/lessons/3d_models/overview.md)
 2. [Free models](Documentation/lessons/3d_models/free_models.md)
 3. [Non-free models](Documentation/lessons/3d_models/non_free_models.md)
 4. [Add your own models to TDW](Documentation/lessons/3d_models/custom_models.md)
 5. [Add ShapeNet models to TDW](Documentation/lessons/3d_models/shapenet.md)
+
+### 2.2.3 Semantic States
+
+1. [Overview](Documentation/lessons/semantic_states/overview.md)
+2. [Line of sight (`Raycast` output data)](Documentation/lessons/semantic_states/raycast.md)
+3. [Proximity to region (`Overlap` output data)](Documentation/lessons/semantic_states/overlap.md)
+3. [Proximity to other objects (the `TriggerCollisionManager` add-on)](Documentation/lessons/semantic_states/trigger_collisions.md)
+3. [Containment (the `ContainerManager` add-on)](Documentation/lessons/semantic_states/containment.md)
+4. [Composite objects (objects with affordances)](Documentation/lessons/semantic_states/composite_objects.md)
+4. [Grasped objects](Documentation/lessons/semantic_states/grasped.md)
 
 ## 2.3 Visual Perception
 
@@ -102,9 +110,8 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 3. [`Rigidbodies` output data](Documentation/lessons/physx/rigidbodies.md)
 4. [`Collision` output data](Documentation/lessons/physx/collisions.md)
 5. [Apply forces to objects](Documentation/lessons/physx/forces.md)
-6. [Composite objects (objects with affordances)](Documentation/lessons/physx/composite_objects.md)
-7. [Skip physics frames](Documentation/lessons/physx/step_physics.md)
-8. [Disable physics](Documentation/lessons/physx/disable_physics.md)
+6. [Skip physics frames](Documentation/lessons/physx/step_physics.md)
+7. [Disable physics](Documentation/lessons/physx/disable_physics.md)
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
@@ -255,16 +262,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [TriggerCollisionManager](Documentation/python/add_ons/trigger_collision_manager.md)
 - [VR](Documentation/python/add_ons/vr.md)
 
-**tdw.add_ons.container_manager_data**
-
-- [ContainerBoxTriggerCollider](Documentation/python/add_ons/container_manager_data/container_box_trigger_collider.md)
-- [ContainerColliderTag](Documentation/python/add_ons/container_manager_data/container_collider_tag.md)
-- [ContainerCylinderTriggerCollider](Documentation/python/add_ons/container_manager_data/container_cylinder_trigger_collider.md)
-- [ContainerNonUniformScaleTriggerCollider](Documentation/python/add_ons/container_manager_data/container_non_uniform_scale_trigger_collider.md)
-- [ContainerSphereTriggerCollider](Documentation/python/add_ons/container_manager_data/container_sphere_trigger_collider.md)
-- [ContainerTriggerCollider](Documentation/python/add_ons/container_manager_data/container_trigger_collider.md)
-- [ContainmentEvent](Documentation/python/add_ons/container_manager_data/containment_event.md)
-
 **tdw.collision_data**
 
 - [CollisionBase](Documentation/python/collision_data/collision_base.md)
@@ -272,6 +269,16 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CollisionObjObj](Documentation/python/collision_data/collision_obj_obj.md)
 - [TriggerColliderShape](Documentation/python/collision_data/trigger_collider_shape.md)
 - [TriggerCollisionEvent](Documentation/python/collision_data/trigger_collision_event.md)
+
+**tdw.container_data**
+
+- [ContainerBoxTriggerCollider](Documentation/python/container_data/container_box_trigger_collider.md)
+- [ContainerColliderTag](Documentation/python/container_data/container_collider_tag.md)
+- [ContainerCylinderTriggerCollider](Documentation/python/container_data/container_cylinder_trigger_collider.md)
+- [ContainerNonUniformScaleTriggerCollider](Documentation/python/container_data/container_non_uniform_scale_trigger_collider.md)
+- [ContainerSphereTriggerCollider](Documentation/python/container_data/container_sphere_trigger_collider.md)
+- [ContainerTriggerCollider](Documentation/python/container_data/container_trigger_collider.md)
+- [ContainmentEvent](Documentation/python/container_data/containment_event.md)
 
 **tdw.flex_data**
 

@@ -5,7 +5,7 @@ from tdw.add_ons.container_manager import ContainerManager
 from tdw.add_ons.object_manager import ObjectManager
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
-from tdw.add_ons.container_manager_data.container_collider_tag import ContainerColliderTag
+from tdw.container_data.container_collider_tag import ContainerColliderTag
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 

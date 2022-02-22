@@ -1,6 +1,6 @@
 ##### Semantic States
 
-# Proximity to a region (`Overlap` output data)
+# Proximity to region (`Overlap` output data)
 
 ## `Overlap` output data
 
@@ -176,7 +176,7 @@ The jug is in the bowl!
 
 ***
 
-**Next: [Proximity to other objects (the `TriggerCollisionManager` add-on)](trigger_collisons.md)**
+**Next: [Proximity to other objects (the `TriggerCollisionManager` add-on)](trigger_collisions.md)**
 
 [Return to the README](../../../README.md)
 

@@ -12,11 +12,11 @@ There's a few unusual qualities to raycast data that should be noted here:
 
 - `send_raycast` has an `id` parameter. The returned `Raycast` data will have a matching ID. You can use this ID to send multiple `send_raycast` commands on the same frame and match them to their output.
 - Raycasting does *not* require an avatar (camera).
-- Unlike output data you've seen so far such as [`Transforms`](../core_concepts/output_data.md) or [`Bounds`](bounds.md), `Raycast` output data is always sent exactly once; there isn't an option to raycast per-frame.
+- Unlike output data you've seen so far such as [`Transforms`](../core_concepts/output_data.md) or [`Bounds`](../objects_and_scenes/bounds.md), `Raycast` output data is always sent exactly once; there isn't an option to raycast per-frame.
 
 ## Raycasts and object placement
 
-Suppose we want to add a bowl to the scene and put an object in the bowl. [`Bounds` output data](bounds.md) alone is insufficient for this because it will tell us the y (height) value of the bottom of the bowl but not y value for the top side of the interior surface.
+Suppose we want to add a bowl to the scene and put an object in the bowl. [`Bounds` output data](../objects_and_scenes/bounds.md) alone is insufficient for this because it will tell us the y (height) value of the bottom of the bowl but not y value for the top side of the interior surface.
 
 In the below examples, we'll  first learn how to raycast and then use the raycast data to place an object in a bowl.
 
@@ -174,7 +174,7 @@ Result:
 
 ***
 
-**Next: [Proximity to a region (`Overlap` output data)](overlap.md)**
+**Next: [Proximity to region (`Overlap` output data)](overlap.md)**
 
 [Return to the README](../../../README.md)
 

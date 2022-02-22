@@ -53,7 +53,7 @@ Output:
  [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]]
 ```
 
-Note that it takes two `communicate()` calls to create the occupancy map; the first gets the bounds of the scene and the second divides the bounds into cells and requests [`Raycast`](../objects_and_scenes/raycast.md) and [`Overlap`](../objects_and_scenes/overlap.md) data per cell.
+Note that it takes two `communicate()` calls to create the occupancy map; the first gets the bounds of the scene and the second divides the bounds into cells and requests [`Raycast`](../semantic_states/raycast.md) and [`Overlap`](../semantic_states/overlap.md) data per cell.
 
 `occupancy_map.generate()` prepares to send commands to the build but doesn't actually send commands to the build (only a controller can do that). You always need to send `occupancy_map.generate()` *then* `c.communicate(commands)`.
 

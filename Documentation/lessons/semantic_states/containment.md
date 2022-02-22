@@ -2,13 +2,15 @@
 
 # Containment (the `ContainerManager` add-on)
 
-[`ContainerManager`](../../python/add_ons/container_manager.md) is a high-level implementation of [`TriggerCollisionManager`](trigger_collisions.md) that adds pre-defined trigger colliders to certain objects, each with a semantic tag. Only a subset of objects in TDW that could be containers have these predefined trigger colliders; more will be added over time. To print the current full list:
+[`ContainerManager`](../../python/add_ons/container_manager.md) is a high-level implementation of [`TriggerCollisionManager`](trigger_collisions.md) that adds pre-defined trigger colliders to certain objects, each with a semantic tag. Only a subset of objects in TDW that could be containers have these predefined trigger colliders; more will be added over time. To print the current full list, see [`model_record.trigger_colliders`](../../python/librarian/model_librarian.md):
 
 ```python
-from tdw.add_ons.container_manager_data.container_trigger_collider import CONTAINERS
+from tdw.librarian import ModelLibrarian
 
-for k in CONTAINERS:
-    print(k)
+librarian = ModelLibrarian()
+for record in librarian.records:
+    if len(record.container_colliders) > 0:
+        print(record.name)
 ```
 
 To use the `ContainerManager` you must add it to `c.add_ons`, add at least one of the objects in `ContainerManager.CONTAINERS`, and add a second object that will be contained by the first object:
@@ -48,53 +50,75 @@ Result:
 Output:
 
 ```
-129 13566232 14793386 ContainerColliderTag.on
-129 13566232 14793386 ContainerColliderTag.on
-130 13566232 14793386 ContainerColliderTag.on
-168 13566232 14793386 ContainerColliderTag.on
-168 13566232 14793386 ContainerColliderTag.on
-169 13566232 14793386 ContainerColliderTag.on
-170 13566232 14793386 ContainerColliderTag.on
-171 13566232 14793386 ContainerColliderTag.on
-172 13566232 14793386 ContainerColliderTag.on
-173 13566232 14793386 ContainerColliderTag.on
-174 13566232 14793386 ContainerColliderTag.on
-175 13566232 14793386 ContainerColliderTag.on
-176 13566232 14793386 ContainerColliderTag.on
-177 13566232 14793386 ContainerColliderTag.on
-178 13566232 14793386 ContainerColliderTag.on
-179 13566232 14793386 ContainerColliderTag.on
-180 13566232 14793386 ContainerColliderTag.on
-181 13566232 14793386 ContainerColliderTag.on
-182 13566232 14793386 ContainerColliderTag.on
-183 13566232 14793386 ContainerColliderTag.on
-184 13566232 14793386 ContainerColliderTag.on
-185 13566232 14793386 ContainerColliderTag.on
-186 13566232 14793386 ContainerColliderTag.on
-187 13566232 14793386 ContainerColliderTag.on
-188 13566232 14793386 ContainerColliderTag.on
-189 13566232 14793386 ContainerColliderTag.on
-190 13566232 14793386 ContainerColliderTag.on
-191 13566232 14793386 ContainerColliderTag.on
-192 13566232 14793386 ContainerColliderTag.on
-193 13566232 14793386 ContainerColliderTag.on
-194 13566232 14793386 ContainerColliderTag.on
-195 13566232 14793386 ContainerColliderTag.on
-196 13566232 14793386 ContainerColliderTag.on
-197 13566232 14793386 ContainerColliderTag.on
-198 13566232 14793386 ContainerColliderTag.on
-199 13566232 14793386 ContainerColliderTag.on
+30 5786712 4618970 ContainerColliderTag.on
+62 5786712 4618970 ContainerColliderTag.on
+81 5786712 4618970 ContainerColliderTag.on
+82 5786712 4618970 ContainerColliderTag.on
+83 5786712 4618970 ContainerColliderTag.on
+84 5786712 4618970 ContainerColliderTag.on
+
+...
 ```
 
 ## Fields
 
 `ContainerManager` inherits the fields of [`TriggerCollisionManager`](../../python/add_ons/trigger_collision_manager.md): `trigger_ids` and `collisions`.
 
-Additionally, `container_manager.events` is a list of [`ContainmentEvent`](../../python/add_ons/container_manager_data/containment_event.md) data. This is updated per-frame and lists instances in which one object contains another. Key = The container ID. Value = The event: 
+Additionally, `container_manager.events` is a list of [`ContainmentEvent`](../../python/container_data/containment_event.md) data. This is updated per-frame and lists instances in which one object contains another. Key = The container ID. Value = The event: 
 
 - `container_id` is the ID of the container.
 - `object_id` is the ID of the object being contained.
-- `tag` is a [`ContainerColliderTag`](../../python/add_ons/container_manager_data/container_collider_tag.md), a semantic description of the containment event. In the above example, the box was *on* the shelf.
+- `tag` is a [`ContainerColliderTag`](../../python/container_data/container_collider_tag.md), a semantic description of the containment event. In the above example, the box was *on* the shelf.
+
+## Tags and multiple colliders
+
+As with `TriggerCollisionManager` and the underlying trigger collider system, an object in TDW can have more than one trigger collider. In the context of `ContainerManager`, colliders can be differentiated via `ContainerColliderTag`.
+
+In this example, we'll add a microwave object that has two trigger colliders: one with the `on` tag (on the top of the microwave) and one with the `enclosed` tag (inside the microwave). We'll add two objects, one on top of the microwave and one inside, and output the containment data. Note that we have to wait a few frames for the trigger event to register; this is usually due to the the objects' positions not lining up precisely with the trigger collider volumes:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.container_manager import ContainerManager
+
+c = Controller()
+container_manager = ContainerManager()
+c.add_ons.append(container_manager)
+commands = [TDWUtils.create_empty_room(12, 12)]
+container_id = Controller.get_unique_id()
+commands.extend(Controller.get_add_physics_object(model_name="vm_v5_070_composite",
+                                                  object_id=container_id,
+                                                  kinematic=True))
+box_id = Controller.get_unique_id()
+commands.extend(Controller.get_add_physics_object(model_name="iron_box",
+                                                  object_id=box_id,
+                                                  position={"x": 0, "y": 0.289, "z": 0}))
+coaster_id = Controller.get_unique_id()
+commands.extend(Controller.get_add_physics_object(model_name="square_coaster_001_cork",
+                                                  object_id=coaster_id,
+                                                  position={"x": 0, "y": 0.007, "z": 0}))
+print("Microwave:", container_id)
+print("Box:", box_id)
+print("Coaster:", coaster_id)
+c.communicate(commands)
+for i in range(2):
+    c.communicate([])
+    for object_id in container_manager.events:
+        for event in container_manager.events[object_id]:
+            print(i, event.container_id, event.object_id, event.tag)
+c.communicate({"$type": "terminate"})
+```
+
+Output:
+
+```
+Microwave: 6375706
+Box: 6537680
+Coaster: 8365543
+0 6375706 8365543 ContainerColliderTag.enclosed
+1 6375706 8365543 ContainerColliderTag.enclosed
+1 6375706 6537680 ContainerColliderTag.on
+```
 
 ## Functions
 
@@ -107,7 +131,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.container_manager import ContainerManager
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.add_ons.container_manager_data.container_collider_tag import ContainerColliderTag
+from tdw.container_data.container_collider_tag import ContainerColliderTag
 
 c = Controller()
 container_manager = ContainerManager()
@@ -139,105 +163,27 @@ c.communicate({"$type": "terminate"})
 Output (note the `inside` events, which are generated by the sphere collider):
 
 ```
-39 15123665 8891277 ContainerColliderTag.inside
-39 15123665 8891277 ContainerColliderTag.inside
-40 15123665 8891277 ContainerColliderTag.inside
-41 15123665 8891277 ContainerColliderTag.inside
-42 15123665 8891277 ContainerColliderTag.inside
-43 15123665 8891277 ContainerColliderTag.inside
-44 15123665 8891277 ContainerColliderTag.inside
-45 15123665 8891277 ContainerColliderTag.inside
-46 15123665 8891277 ContainerColliderTag.inside
-47 15123665 8891277 ContainerColliderTag.inside
-48 15123665 8891277 ContainerColliderTag.inside
-49 15123665 8891277 ContainerColliderTag.inside
-50 15123665 8891277 ContainerColliderTag.inside
-51 15123665 8891277 ContainerColliderTag.inside
-52 15123665 8891277 ContainerColliderTag.inside
-53 15123665 8891277 ContainerColliderTag.inside
-54 15123665 8891277 ContainerColliderTag.inside
-72 15123665 8891277 ContainerColliderTag.inside
-72 15123665 8891277 ContainerColliderTag.inside
-73 15123665 8891277 ContainerColliderTag.inside
-74 15123665 8891277 ContainerColliderTag.inside
-75 15123665 8891277 ContainerColliderTag.inside
-76 15123665 8891277 ContainerColliderTag.inside
-77 15123665 8891277 ContainerColliderTag.inside
-78 15123665 8891277 ContainerColliderTag.inside
-79 15123665 8891277 ContainerColliderTag.inside
-80 15123665 8891277 ContainerColliderTag.inside
-81 15123665 8891277 ContainerColliderTag.inside
-82 15123665 8891277 ContainerColliderTag.inside
-83 15123665 8891277 ContainerColliderTag.inside
-84 15123665 8891277 ContainerColliderTag.inside
-85 15123665 8891277 ContainerColliderTag.inside
-86 15123665 8891277 ContainerColliderTag.inside
-87 15123665 8891277 ContainerColliderTag.inside
-88 15123665 8891277 ContainerColliderTag.inside
-89 15123665 8891277 ContainerColliderTag.inside
-90 15123665 8891277 ContainerColliderTag.inside
-91 15123665 8891277 ContainerColliderTag.inside
-92 15123665 8891277 ContainerColliderTag.inside
-93 15123665 8891277 ContainerColliderTag.inside
-94 15123665 8891277 ContainerColliderTag.inside
-95 15123665 8891277 ContainerColliderTag.inside
-96 15123665 8891277 ContainerColliderTag.inside
-97 15123665 8891277 ContainerColliderTag.inside
-98 15123665 8891277 ContainerColliderTag.inside
-99 15123665 8891277 ContainerColliderTag.inside
-100 15123665 8891277 ContainerColliderTag.inside
-101 15123665 8891277 ContainerColliderTag.inside
-102 15123665 8891277 ContainerColliderTag.inside
-103 15123665 8891277 ContainerColliderTag.inside
-104 15123665 8891277 ContainerColliderTag.inside
-105 15123665 8891277 ContainerColliderTag.inside
-106 15123665 8891277 ContainerColliderTag.inside
-107 15123665 8891277 ContainerColliderTag.inside
-108 15123665 8891277 ContainerColliderTag.inside
-109 15123665 8891277 ContainerColliderTag.inside
-110 15123665 8891277 ContainerColliderTag.inside
-111 15123665 8891277 ContainerColliderTag.inside
-112 15123665 8891277 ContainerColliderTag.inside
-113 15123665 8891277 ContainerColliderTag.inside
-114 15123665 8891277 ContainerColliderTag.inside
-115 15123665 8891277 ContainerColliderTag.inside
-116 15123665 8891277 ContainerColliderTag.inside
-129 15123665 8891277 ContainerColliderTag.on
-129 15123665 8891277 ContainerColliderTag.on
-130 15123665 8891277 ContainerColliderTag.on
-168 15123665 8891277 ContainerColliderTag.on
-168 15123665 8891277 ContainerColliderTag.on
-169 15123665 8891277 ContainerColliderTag.on
-170 15123665 8891277 ContainerColliderTag.on
-171 15123665 8891277 ContainerColliderTag.on
-172 15123665 8891277 ContainerColliderTag.on
-173 15123665 8891277 ContainerColliderTag.on
-174 15123665 8891277 ContainerColliderTag.on
-175 15123665 8891277 ContainerColliderTag.on
-176 15123665 8891277 ContainerColliderTag.on
-177 15123665 8891277 ContainerColliderTag.on
-178 15123665 8891277 ContainerColliderTag.on
-179 15123665 8891277 ContainerColliderTag.on
-180 15123665 8891277 ContainerColliderTag.on
-181 15123665 8891277 ContainerColliderTag.on
-182 15123665 8891277 ContainerColliderTag.on
-183 15123665 8891277 ContainerColliderTag.on
-184 15123665 8891277 ContainerColliderTag.on
-185 15123665 8891277 ContainerColliderTag.on
-186 15123665 8891277 ContainerColliderTag.on
-187 15123665 8891277 ContainerColliderTag.on
-188 15123665 8891277 ContainerColliderTag.on
-189 15123665 8891277 ContainerColliderTag.on
-190 15123665 8891277 ContainerColliderTag.on
-191 15123665 8891277 ContainerColliderTag.on
-192 15123665 8891277 ContainerColliderTag.on
-193 15123665 8891277 ContainerColliderTag.on
-194 15123665 8891277 ContainerColliderTag.on
-195 15123665 8891277 ContainerColliderTag.on
-196 15123665 8891277 ContainerColliderTag.on
-197 15123665 8891277 ContainerColliderTag.on
-198 15123665 8891277 ContainerColliderTag.on
-199 15123665 8891277 ContainerColliderTag.on
+20 3388069 10924604 ContainerColliderTag.inside
+21 3388069 10924604 ContainerColliderTag.inside
+
+...
+
+30 3388069 10924604 ContainerColliderTag.on
+
+...
+
+37 3388069 10924604 ContainerColliderTag.inside
+38 3388069 10924604 ContainerColliderTag.inside
+39 3388069 10924604 ContainerColliderTag.inside
+40 3388069 10924604 ContainerColliderTag.inside
+
+...
+
+62 3388069 10924604 ContainerColliderTag.on
+81 3388069 10924604 ContainerColliderTag.on
+82 3388069 10924604 ContainerColliderTag.on
+
+...
 ```
 
 ## Visualize containment
@@ -373,7 +319,7 @@ You may wish to record the raw containment data and then further filter it for c
 
 ***
 
-**Next: [Openness](openness.md)**
+**Next: [Composite objects (objects with affordances)](composite_objects.md)**
 
 [Return to the README](../../../README.md)
 
@@ -386,7 +332,7 @@ Example controllers:
 Python API:
 
 - [`ContainerManager`](../../python/add_ons/container_manager.md)
-- [`ContainmentEvent`](../../python/add_ons/container_manager_data/containment_event.md)
-- [`ContainerColliderTag`](../../python/add_ons/container_manager_data/container_collider_tag.md)
+- [`ContainmentEvent`](../../python/container_data/containment_event.md)
+- [`ContainerColliderTag`](../../python/container_data/container_collider_tag.md)
 - [`TriggerCollisionManager`](../../python/add_ons/trigger_collision_manager.md)
-
+- [`ModelLibrarian`](../../python/librarian/model_librarian.md)

@@ -1,0 +1,83 @@
+{
+  "12_06_001": {
+    "offset": 0.021029483527420074,
+    "rotations": {
+      "east": 90,
+      "north": 0,
+      "south": 180,
+      "west": 270
+    }
+  },
+  "b03_12_06_027": {
+    "offset": 0.07083268463611614,
+    "rotations": {
+      "east": 270,
+      "north": 180,
+      "south": 0,
+      "west": 90
+    }
+  },
+  "b04_faucet1": {
+    "offset": 0.07221649587154623,
+    "rotations": {
+      "east": 90,
+      "north": 0,
+      "south": 180,
+      "west": 270
+    }
+  },
+  "b04_p22732_cc_cp_2013": {
+    "offset": 0.02108675241470366,
+    "rotations": {
+      "east": 90,
+      "north": 0,
+      "south": 180,
+      "west": 270
+    }
+  },
+  "b04_p25050_slc_ad_2013": {
+    "offset": 0.05260365083813679,
+    "rotations": {
+      "east": 90,
+      "north": 0,
+      "south": 180,
+      "west": 270
+    }
+  },
+  "b05_p24409_00_cp_2013": {
+    "offset": 0.054283816367387834,
+    "rotations": {
+      "east": 90,
+      "north": 0,
+      "south": 180,
+      "west": 270
+    }
+  },
+  "brizo_solna": {
+    "offset": 0.06365342438220993,
+    "rotations": {
+      "east": 90,
+      "north": 0,
+      "south": 180,
+      "west": 270
+    }
+  },
+  "kitchen_faucet": {
+    "offset": 0,
+    "rotations": {
+      "east": 180,
+      "north": 90,
+      "south": 270,
+      "west": 0
+    }
+  },
+  "pixamoon_free_test_faucet_001_publish": {
+    "offset": 0.027987256646156474,
+    "rotations": {
+      "east": 90,
+      "north": 0,
+      "south": 180,
+      "west": 270
+    }
+  }
+}

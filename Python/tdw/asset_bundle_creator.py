@@ -548,7 +548,8 @@ class AssetBundleCreator(AssetBundleCreatorBase):
                        "do_not_use_reason": record.do_not_use_reason,
                        "canonical_rotation": record.canonical_rotation,
                        "physics_quality": -1,
-                       "asset_bundle_sizes": record.asset_bundle_sizes}
+                       "asset_bundle_sizes": record.asset_bundle_sizes,
+                       "container_colliders": []}
 
         # Serialize the record.
         record_data = json.dumps(record_data)

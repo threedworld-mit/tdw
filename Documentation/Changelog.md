@@ -29,8 +29,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `ContainerSphereTriggerCollider` Data for a sphere-shaped container trigger collider.
   - `ContainerTriggerCollider` Abstract base class for container trigger collider data.
   - `ContainmentEvent` Wrapper for containment trigger collision data.
+
+### Model Library
+
 - Added cached trigger collision data to model records. Not all records have container trigger colliders; see `model_record.trigger_colliders`.
   - (Backend) Added: `tdw.librarian._Encoder` JSONEncoder extension that is used within `_Librarian` classes. For now, this just handles container collider data.
+- Added models `models_core.json` and `models_full.json`: cabinet_36_two_door_wood_oak_white_composite, cabinet_36_two_door_wood_beech_honey_composite
 
 ### Example Controllers
 
@@ -61,8 +65,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `lessons/objects_and_scenes/raycast.md` | Moved to: `lessons/semantic_states/raycast.md`           |
 | `lessons/objects_and_scenes/overlap.md` | Moved to: `lessons/semantic_states/overlap.md`           |
 | `lessons/physx/composite_objects.md`    | Moved to: `lessons/semantic_states/composite_objects.md` |
-
-
 
 ## v1.9.5
 

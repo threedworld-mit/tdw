@@ -20378,6 +20378,46 @@
                 "z": 0
             },
             "composite_object": true,
+            "container_colliders": [
+                {
+                    "bottom_center_position": {
+                        "x": 0.00021029,
+                        "y": 0.92260003,
+                        "z": -0.00253588
+                    },
+                    "position": {
+                        "x": 0.00021029,
+                        "y": 0.92760003,
+                        "z": -0.00253588
+                    },
+                    "scale": {
+                        "x": 0.91608471,
+                        "y": 0.01,
+                        "z": 0.63827711
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                },
+                {
+                    "bottom_center_position": {
+                        "x": 0.00072876,
+                        "y": 0.100670855,
+                        "z": -0.02190749
+                    },
+                    "position": {
+                        "x": 0.00072876,
+                        "y": 0.48571201,
+                        "z": -0.02190749
+                    },
+                    "scale": {
+                        "x": 0.89158767,
+                        "y": 0.77008231,
+                        "z": 0.56176373
+                    },
+                    "shape": "box",
+                    "tag": "enclosed"
+                }
+            ],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": false,
@@ -20465,6 +20505,46 @@
                 "z": 0
             },
             "composite_object": true,
+            "container_colliders": [
+                {
+                    "bottom_center_position": {
+                        "x": 0.00021029,
+                        "y": 0.92260003,
+                        "z": -0.00253588
+                    },
+                    "position": {
+                        "x": 0.00021029,
+                        "y": 0.92760003,
+                        "z": -0.00253588
+                    },
+                    "scale": {
+                        "x": 0.91608471,
+                        "y": 0.01,
+                        "z": 0.63827711
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                },
+                {
+                    "bottom_center_position": {
+                        "x": 0.00072876,
+                        "y": 0.10067082999999999,
+                        "z": -0.02190749
+                    },
+                    "position": {
+                        "x": 0.00072876,
+                        "y": 0.485712,
+                        "z": -0.02190749
+                    },
+                    "scale": {
+                        "x": 0.89158767,
+                        "y": 0.77008234,
+                        "z": 0.56176373
+                    },
+                    "shape": "box",
+                    "tag": "enclosed"
+                }
+            ],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": false,

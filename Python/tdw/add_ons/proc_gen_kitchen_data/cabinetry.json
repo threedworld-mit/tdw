@@ -2,7 +2,8 @@
   {
     "counter_models": [
       "cabinet_24_single_door_wood_beech_honey_composite",
-      "cabinet_24_two_door_wood_beech_honey_composite"
+      "cabinet_24_two_door_wood_beech_honey_composite",
+      "cabinet_36_two_door_wood_beech_honey_composite"
     ],
     "counter_top_material": "granite_black",
     "sink_models": [
@@ -17,7 +18,8 @@
   {
     "counter_models": [
       "cabinet_24_single_door_wood_beech_honey_composite",
-      "cabinet_24_single_door_wood_oak_white_composite"
+      "cabinet_24_two_door_wood_oak_white_composite",
+      "cabinet_36_two_door_wood_oak_white_composite"
     ],
     "counter_top_material": "granite_beige_french",
     "sink_models": [

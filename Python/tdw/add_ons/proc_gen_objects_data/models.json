@@ -151,14 +151,8 @@
     "cabinet_24_single_door_wood_oak_white_composite",
     "cabinet_24_two_door_wood_beech_honey_composite",
     "cabinet_24_two_door_wood_oak_white_composite",
-    "cabinet_24_white_wood",
-    "cabinet_24_wood_beach_honey",
-    "cabinet_36_white_wood",
-    "cabinet_36_wood_beach_honey",
-    "cabinet_24_door_drawer_wood_beach_honey",
-    "cabinet_24_singledoor_wood_beach_honey",
-    "cabinet_24_two_drawer_white_wood",
-    "cabinet_24_two_drawer_wood_beach_honey"
+    "cabinet_36_two_door_wood_oak_white_composite",
+    "cabinet_36_two_door_wood_beech_honey_composite"
   ],
   "kitchen_table": [
     "dining_room_table",

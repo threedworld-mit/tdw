@@ -1,12 +1,6 @@
 {
-  "b04_backpack": {
-    "width": 0.05
-  },
   "b03_radiator_alum_12": {
     "depth": -0.032
-  },
-  "backpack": {
-    "width": 0.05
   },
   "basket_18inx18inx12iin_bamboo": {
     "width": 0.05
@@ -20,25 +14,7 @@
   "basket_18inx18inx12iin_wood_mesh": {
     "width": 0.05
   },
-  "duffle_bag": {
-    "width": 0.05
-  },
   "gas_stove": {
     "depth": 0.3319
-  },
-  "green_bag": {
-    "width": 0.05
-  },
-  "hiker_backpack": {
-    "width": 0.05
-  },
-  "kids_luggage_1": {
-    "width": 0.05
-  },
-  "kids_luggage_2": {
-    "width": 0.05
-  },
-  "white_shopping_bag": {
-    "width": 0.05
   }
 }

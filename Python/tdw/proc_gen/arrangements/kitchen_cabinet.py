@@ -11,15 +11,19 @@ class KitchenCabinet(ArrangementAlongWall, ABC):
     """
 
     @final
+    def get_length(self) -> float:
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0]
+
+    @final
     def _get_rotation(self) -> float:
         if self._wall == CardinalDirection.north:
             return 180
         elif self._wall == CardinalDirection.east:
-            return 90
+            return 270
         elif self._wall == CardinalDirection.south:
             return 0
         else:
-            return 270
+            return 90
 
     @final
     def _get_depth(self) -> float:

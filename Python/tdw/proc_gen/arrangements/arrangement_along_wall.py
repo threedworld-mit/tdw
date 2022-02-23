@@ -28,7 +28,6 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
 
     def _get_position(self, position: Dict[str, float]) -> Dict[str, float]:
         depth = self._get_depth()
-        print("TODO bounds offsets")
         if self._wall == CardinalDirection.north:
             return {"x": position["x"],
                     "y": 0,
@@ -47,6 +46,14 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
                     "z": position["z"]}
         else:
             raise Exception(self._wall)
+
+    @abstractmethod
+    def get_length(self) -> float:
+        """
+        :return: The lateral extent of the object.
+        """
+
+        raise Exception()
 
     @abstractmethod
     def _get_depth(self) -> float:

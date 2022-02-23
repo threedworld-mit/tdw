@@ -1,4 +1,5 @@
-from typing import Tuple
+from typing import Tuple, List
+from tdw.cardinal_direction import CardinalDirection
 from tdw.output_data import SceneRegions
 
 
@@ -60,6 +61,30 @@ class RegionBounds:
         """
 
         return self.x_min <= x <= self.x_max and self.z_min <= z <= self.z_max
+
+    def get_longer_sides(self) -> Tuple[List[CardinalDirection], float]:
+        """
+        :return: Tuple: A list of the longer sides as [`CardinalDirection` values](../cardinal_direction.md), the length of the sides.
+        """
+
+        x = self.x_max - self.x_min
+        z = self.z_max - self.z_min
+        if x < z:
+            return [CardinalDirection.west, CardinalDirection.east], z
+        else:
+            return [CardinalDirection.north, CardinalDirection.south], x
+
+    def get_shorter_sides(self) -> Tuple[List[CardinalDirection], float]:
+        """
+        :return: Tuple: A list of the shorter sides as [`CardinalDirection` values](../cardinal_direction.md), the length of the sides.
+        """
+
+        x = self.x_max - self.x_min
+        z = self.z_max - self.z_min
+        if x > z:
+            return [CardinalDirection.west, CardinalDirection.east], z
+        else:
+            return [CardinalDirection.north, CardinalDirection.south], x
 
 
 def get_from_scene_regions(scene_regions: SceneRegions, i: int) -> RegionBounds:

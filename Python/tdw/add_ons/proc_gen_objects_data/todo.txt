@@ -2,9 +2,8 @@ sink
 stove
 side_table
 radiator
-suitcase
 basket
-stool
 kitchen_counter_top
 void
+table
 kitchen_table

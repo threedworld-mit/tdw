@@ -16,6 +16,9 @@ class Painting(ArrangementAlongWall):
     def get_commands(self) -> List[dict]:
         return self._add_root_object()
 
+    def get_length(self) -> float:
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0]
+
     def _get_position(self, position: Dict[str, float]) -> Dict[str, float]:
         pos = super()._get_position(position=position)
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)

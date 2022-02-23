@@ -211,20 +211,6 @@ class ProcGenObjects(AddOn):
         else:
             return record
 
-    @staticmethod
-    def _get_rectangular_arrangement_parameters(category: str) -> Tuple[float, float]:
-        """
-        Given a category, get the default rectangular arrangement parameters.
-
-        :param category: The category
-
-        :return: Tuple: The cell size and density.
-        """
-
-        if category not in ProcGenObjects.RECTANGULAR_ARRANGEMENTS:
-            return 0.05, 0.4
-        return ProcGenObjects.RECTANGULAR_ARRANGEMENTS[category]["cell_size"], ProcGenObjects.RECTANGULAR_ARRANGEMENTS[category]["density"]
-
     def _get_lateral_length(self, model_name: str) -> float:
         """
         :param model_name: The model name.
@@ -241,86 +227,6 @@ class ProcGenObjects(AddOn):
         else:
             ex = TDWUtils.get_bounds_extents(bounds=record.bounds)[0]
         return ex
-
-    def _get_longer_walls(self, region: int) -> Tuple[List[CardinalDirection], float]:
-        """
-        :param region: The index of the region in `self.scene_bounds.rooms`.
-
-        :return: Tuple: A list of the longer walls as [`CardinalDirection` values](../cardinal_direction.md), the length of the wall.
-        """
-
-        room = self.scene_bounds.rooms[region]
-        x = room.x_max - room.x_min
-        z = room.z_max - room.z_min
-        if x < z:
-            return [CardinalDirection.west, CardinalDirection.east], z
-        else:
-            return [CardinalDirection.north, CardinalDirection.south], x
-
-    def _get_shorter_walls(self, region: int) -> Tuple[List[CardinalDirection], float]:
-        """
-        :param region: The index of the region in `self.scene_bounds.rooms`.
-
-        :return: Tuple: A list of the shorter walls as [`CardinalDirection` values](../cardinal_direction.md), the length of the wall.
-        """
-
-        room = self.scene_bounds.rooms[region]
-        x = room.x_max - room.x_min
-        z = room.z_max - room.z_min
-        if x > z:
-            return [CardinalDirection.west, CardinalDirection.east], z
-        else:
-            return [CardinalDirection.north, CardinalDirection.south], x
-
-    @staticmethod
-    def _get_corners_from_wall(wall: CardinalDirection) -> List[OrdinalDirection]:
-        """
-        :param wall: The wall as a [`CardinalDirection`](../cardinal_direction.md).
-
-        :return: The corners of the wall as a 2-element list of [`OrdinalDirection`](../ordinal_direction.md).
-        """
-
-        if wall == CardinalDirection.north:
-            return [OrdinalDirection.northwest, OrdinalDirection.northeast]
-        elif wall == CardinalDirection.south:
-            return [OrdinalDirection.southwest, OrdinalDirection.southeast]
-        elif wall == CardinalDirection.west:
-            return [OrdinalDirection.northwest, OrdinalDirection.southwest]
-        elif wall == CardinalDirection.east:
-            return [OrdinalDirection.northeast, OrdinalDirection.southeast]
-
-    @staticmethod
-    def _get_direction_from_corner(corner: OrdinalDirection, wall: CardinalDirection) -> CardinalDirection:
-        """
-        Given an corner an a wall, get the direction that a lateral arrangement will run along.
-
-        :param corner: The corner as an [`OrdinalDirection`](../ordinal_direction.md).
-        :param wall: The wall as a [`CardinalDirection`](../cardinal_direction.md).
-
-        :return: Tuple: direction, wall
-        """
-
-        if corner == OrdinalDirection.northwest:
-            if wall == CardinalDirection.north:
-                return CardinalDirection.east
-            elif wall == CardinalDirection.west:
-                return CardinalDirection.south
-        elif corner == OrdinalDirection.northeast:
-            if wall == CardinalDirection.north:
-                return CardinalDirection.west
-            elif wall == CardinalDirection.east:
-                return CardinalDirection.south
-        elif corner == OrdinalDirection.southwest:
-            if wall == CardinalDirection.south:
-                return CardinalDirection.east
-            elif wall == CardinalDirection.west:
-                return CardinalDirection.north
-        elif corner == OrdinalDirection.southeast:
-            if wall == CardinalDirection.south:
-                return CardinalDirection.west
-            elif wall == CardinalDirection.east:
-                return CardinalDirection.north
-        raise Exception(corner, wall)
 
     def add_lateral_arrangement(self, position: Dict[str, float], direction: CardinalDirection,
                                 sub_arrangements: List[LateralSubArrangement], wall: CardinalDirection,

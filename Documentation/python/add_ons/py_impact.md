@@ -58,7 +58,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 | Variable | Type | Description |
 | --- | --- | --- |
-| `SILENCE_50MS` | AudioSegment | 50ms of silence. Used for scrapes. |
+| `SILENCE_100MS` | AudioSegment | 100ms of silence. Used for scrapes. |
 | `SCRAPE_MAX_VELOCITY` | float | The maximum velocity allowed for a scrape. |
 | `SCRAPE_M_PER_PIXEL` | float | Meters per pixel on the scrape surface. |
 | `DEFAULT_AMP` | float | The default amp value for objects. |
@@ -67,6 +67,8 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 | `DEFAULT_SIZE` | int | The default audio size "bucket" for objects. |
 | `ROBOT_JOINT_BOUNCINESS` | float | The assumed bounciness value for robot joints. |
 | `ROBOT_JOINT_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for robot joints. |
+| `VR_HUMAN_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for human body parts in VR. |
+| `VR_HUMAN_BOUNCINESS` | float | The assumed bounciness value for human body parts such as in VR. |
 | `FLOOR_AMP` | float | The amp value for the floor. |
 | `FLOOR_SIZE` | int | The size "bucket" for the floor. |
 | `FLOOR_MASS` | int | The mass of the floor. |

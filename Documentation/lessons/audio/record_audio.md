@@ -9,17 +9,41 @@
 ## Requirements
 
 - [See audio playback requirements.](initialize_audio.md)
-
 - The controller and build must be on the same computer.
-
-- [fmedia](https://stsaz.github.io/fmedia/) The install instructions are listed on the fmedia homepage and vary between operating systems.
-
-- Your audio drivers must be set up to allow for recording off of the system. One of the audio devices on your computer must be "Stereo Mix". If not, you need to upgrade or replace your audio drivers; how to do this will vary greatly by operating system and hardware. To check if you have the correct audio device, run this program; if it raises an exception, you don't have a "Stereo Mix" audio device:
-
+- [fmedia](https://stsaz.github.io/fmedia/) See below for how to install.
+- Your audio drivers must be set up to allow for recording off of the system. To check if you have the correct audio device, run this program; if it raises an exception, you don't have an appropriate audio device:
+  
   ```python
   from tdw.audio_utils import AudioUtils
   AudioUtils.get_system_audio_device()
   ```
+  
+    - *Windows and Linux:* The correct audio device is "Stereo Mix"; if your computer doesn't have this audio device,  upgrade or replace your audio drivers; how to do this will vary greatly by operating system and hardware.
+  
+    - *OS X:* The correct audio device is "iShowU Audio Capture"; see below for how to install it. 
+
+### Install fmedia
+
+#### Windows
+
+1. [Download fmedia.](https://stsaz.github.io/fmedia/)
+2. Unpack archive to the directory of your choice.
+3. Run the following command from console (cmd.exe): `"C:\Program Files\fmedia\fmedia.exe" --install`
+
+#### OS X
+
+1. [Download fmedia.](https://stsaz.github.io/fmedia/)
+2. Unpack archive to the directory of your choice.
+3. [Add the location of the fmedia directory to the $PATH variable.](https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion/)
+4. Download [iShowU Audio Capture](https://support.shinywhitebox.com).
+5. Go to “Audio MIDI Setup” on your Mac and create a new device with multiple output channels that should include the “iShowU Audio Capture” and the usual device that you use for audio output in your computer.
+
+#### Linux
+
+1. [Download fmedia](https://stsaz.github.io/fmedia/)
+2. Unpack archive to the directory of your choice:  `tar Jxf ./fmedia-1.0-linux-amd64.tar.xz -C /usr/local`  
+3. Create a symbolic link: `ln -s /usr/local/fmedia-1/fmedia /usr/local/bin/fmedia`
+
 
 ## Record audio with `AudioUtils`
 

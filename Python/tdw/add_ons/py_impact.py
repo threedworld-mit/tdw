@@ -7,10 +7,10 @@ from pkg_resources import resource_filename
 from typing import Dict, Optional, Union, List, Tuple
 import numpy as np
 import scipy.signal as sg
-from scipy.ndimage import gaussian_filter1d
+from scipy.ndimage import gaussian_filter1d, uniform_filter1d
 from pydub import AudioSegment
 from tdw.output_data import OutputData, Rigidbodies, StaticRobot, SegmentationColors, StaticRigidbodies, \
-    RobotJointVelocities
+    RobotJointVelocities, StaticOculusTouch
 from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.object_audio_static import ObjectAudioStatic, DEFAULT_OBJECT_AUDIO_STATIC_DATA
 from tdw.physics_audio.modes import Modes
@@ -80,13 +80,13 @@ class PyImpact(CollisionManager):
     """
 
     """:class_var
-    50ms of silence. Used for scrapes.
+    100ms of silence. Used for scrapes.
     """
-    SILENCE_50MS: AudioSegment = AudioSegment.silent(duration=50, frame_rate=SAMPLE_RATE)
+    SILENCE_100MS: AudioSegment = AudioSegment.silent(duration=100, frame_rate=SAMPLE_RATE)
     """:class_var
     The maximum velocity allowed for a scrape.
     """
-    SCRAPE_MAX_VELOCITY: float = 5.0
+    SCRAPE_MAX_VELOCITY: float = 1
     """:class_var
     Meters per pixel on the scrape surface.
     """
@@ -115,6 +115,14 @@ class PyImpact(CollisionManager):
     The [material](../physics_audio/audio_material.md) used for robot joints.
     """
     ROBOT_JOINT_MATERIAL: AudioMaterial = AudioMaterial.metal
+    """:class_var
+    The [material](../physics_audio/audio_material.md) used for human body parts in VR.
+    """
+    VR_HUMAN_MATERIAL: AudioMaterial = AudioMaterial.cardboard
+    """:class_var
+    The assumed bounciness value for human body parts such as in VR.
+    """
+    VR_HUMAN_BOUNCINESS: float = 0.3
     """:class_var
     The amp value for the floor.
     """
@@ -242,6 +250,8 @@ class PyImpact(CollisionManager):
         self._scrape_start_velocities: Dict[Tuple[int, int], float] = dict()
         # Initialize the scraping event counter.
         self._scrape_events_count: Dict[Tuple[int, int], int] = dict()
+        # Ignore collisions that include these object IDs.
+        self._excluded_objects: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_rigidbodies",
@@ -255,7 +265,8 @@ class PyImpact(CollisionManager):
                  "collision_types": ["obj", "env"]},
                 {"$type": "send_static_robots"},
                 {"$type": "send_segmentation_colors"},
-                {"$type": "send_static_rigidbodies"}]
+                {"$type": "send_static_rigidbodies"},
+                {"$type": "send_static_oculus_touch"}]
 
     def on_send(self, resp: List[bytes]) -> None:
         super().on_send(resp=resp)
@@ -376,6 +387,9 @@ class PyImpact(CollisionManager):
         for object_ids in self.obj_collisions:
             collider_id = object_ids.int1
             collidee_id = object_ids.int2
+            # Ignore this collision.
+            if collider_id in self._excluded_objects or collidee_id in self._excluded_objects:
+                continue
             event = CollisionAudioEvent(collision=self.obj_collisions[object_ids],
                                         object_0_static=self._static_audio_data[collider_id],
                                         object_0_dynamic=rigidbody_data[collider_id],
@@ -389,6 +403,8 @@ class PyImpact(CollisionManager):
                 collision_events_per_object[event.primary_id] = list()
             collision_events_per_object[event.primary_id].append(event)
         for object_id in self.env_collisions:
+            if object_id in self._excluded_objects:
+                continue
             event = CollisionAudioEvent(collision=self.env_collisions[object_id],
                                         object_0_static=self._static_audio_data[object_id],
                                         object_0_dynamic=rigidbody_data[object_id],
@@ -716,7 +732,7 @@ class PyImpact(CollisionManager):
             self._scrape_previous_indices[scrape_key] = 0
 
         # Initialize scrape variables; if this is an in=process scrape, these will be replaced bu te stored values.
-        summed_master = AudioSegment.silent(duration=0, frame_rate=SAMPLE_RATE)
+        summed_master = AudioSegment.silent(duration=2000, frame_rate=SAMPLE_RATE)
         scrape_event_count = 0
 
         # Is this a new scrape?
@@ -736,8 +752,8 @@ class PyImpact(CollisionManager):
             self._scrape_start_velocities[scrape_key] = mag
 
         # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
-        db2 = 40 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 1
-        db1 = 20 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 10
+        db2 = 40 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 4
+        db1 = 20 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 25
 
         # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
         # We also get the lowest-frequency IR mode, which we use to set the high-pass filter cutoff below.
@@ -768,9 +784,10 @@ class PyImpact(CollisionManager):
             #   Apply a variable Gaussian average
             #   Calculate the horizontal and vertical forces
             #   Convolve the force with the impulse response
+            scrape_surface = gaussian_filter1d(scrape_surface, 5)
             dsdx = (scrape_surface[1:] - scrape_surface[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
             d2sdx2 = (dsdx[1:] - dsdx[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
-            rough_ratio = (np.std(scrape_surface) / (9 * 10 ** -4)) ** 0.85
+            rough_ratio = (np.std(scrape_surface) / (3 * 10 ** -4)) ** 1
             r_gain = 20 * np.log10(rough_ratio)
             self.scrape_surface_data[scrape_material] = {"dsdx": dsdx,
                                                          "d2sdx2": d2sdx2,
@@ -791,21 +808,15 @@ class PyImpact(CollisionManager):
         if final_ind > len(self.scrape_surface_data[scrape_material]["surface"]) - 1:
             self._scrape_previous_indices[scrape_key] = 0
             final_ind = num_pts
-            slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][
-                                                self._scrape_previous_indices[scrape_key]:final_ind])
-            curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][
-                                                self._scrape_previous_indices[scrape_key]:final_ind])
-        else:
-            slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][
-                                                self._scrape_previous_indices[scrape_key]:final_ind])
-            curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][
-                                                self._scrape_previous_indices[scrape_key]:final_ind])
-
+        slope_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["dsdx"][
+                                            self._scrape_previous_indices[scrape_key]:final_ind])
+        curve_int = np.interp(vect2, vect1, self.scrape_surface_data[scrape_material]["d2sdx2"][
+                                            self._scrape_previous_indices[scrape_key]:final_ind])
         self._scrape_previous_indices[scrape_key] = final_ind
 
-        curve_int_tan = np.tanh(curve_int / (100 * primary_mass))
+        curve_int_tan = np.tanh(curve_int / (1000 * primary_mass))
 
-        d2_section = gaussian_filter1d(curve_int_tan, 6)
+        d2_section = uniform_filter1d(curve_int_tan, 5)
 
         vert_force = d2_section
         hor_force = slope_int
@@ -813,20 +824,8 @@ class PyImpact(CollisionManager):
         t_force2 = vert_force / max(np.abs(vert_force))
         t_force1 = hor_force[:len(vert_force)]
 
-        noise_seg1 = AudioSegment(t_force1.tobytes(),
-                                  frame_rate=SAMPLE_RATE,
-                                  sample_width=SAMPLE_WIDTH,
-                                  channels=CHANNELS)
-        noise_seg2 = AudioSegment(t_force2.tobytes(),
-                                  frame_rate=SAMPLE_RATE,
-                                  sample_width=SAMPLE_WIDTH,
-                                  channels=CHANNELS)
-        # Fade head and tail.
-        noise_seg_fade1 = noise_seg1.fade_in(4).fade_out(4)
-        noise_seg_fade2 = noise_seg2.fade_in(4).fade_out(4)
-        # Convolve the band-pass filtered sound with the impulse response.
-        conv1 = sg.fftconvolve(scraping_ir, noise_seg_fade1.get_array_of_samples())
-        conv2 = sg.fftconvolve(scraping_ir, noise_seg_fade2.get_array_of_samples())
+        conv1 = sg.fftconvolve(scraping_ir, t_force1)
+        conv2 = sg.fftconvolve(scraping_ir, t_force2)
 
         # Again, we need this as an AudioSegment for overlaying with the previous frame's segment.
         # Convert to 16-bit integers for Unity, normalizing to make sure to minimize loss of precision from truncating floating values.
@@ -848,16 +847,14 @@ class PyImpact(CollisionManager):
 
         noise_seg_conv = noise_seg_conv1.overlay(noise_seg_conv2)
         # Apply roughness gain.
-        noise_seg_conv = noise_seg_conv.apply_gain(self.scrape_surface_data[scrape_material]["r_gain"] + 4)
+        noise_seg_conv = noise_seg_conv.apply_gain(self.scrape_surface_data[scrape_material]["r_gain"])
 
-        # Pad the end of master with 50 ms of silence, the start of the current segment with (n * 50ms) of silence, and overlay.
-        padded_current = (PyImpact.SILENCE_50MS * scrape_event_count) + noise_seg_conv
-        summed_master = summed_master + PyImpact.SILENCE_50MS
-        summed_master = summed_master.overlay(padded_current)
-
+        # Pad the end of master with 100ms of silence, the start of the current segment with (n * 100ms) of silence, and overlay.
+        summed_master = summed_master + PyImpact.SILENCE_100MS
+        summed_master = summed_master.overlay(noise_seg_conv, position=100 * scrape_event_count)
         # Extract 100ms "chunk" of sound to send over to Unity.
         start_idx = 100 * scrape_event_count
-        unity_chunk = summed_master[-(len(summed_master) - start_idx):][:100]
+        unity_chunk = summed_master[start_idx:start_idx + 100]
         # Update stored summed waveform.
         self._scrape_summed_masters[scrape_key] = summed_master
 
@@ -917,6 +914,7 @@ class PyImpact(CollisionManager):
         self.initialized = False
         self._static_audio_data.clear()
         self._static_audio_data_overrides.clear()
+        self._scrape_objects.clear()
         # Use scrape surfaces.
         if self._scrape and scrape_objects is not None:
             for k in scrape_objects:
@@ -932,8 +930,8 @@ class PyImpact(CollisionManager):
         self._scrape_summed_masters.clear()
         self._scrape_start_velocities.clear()
         self._scrape_events_count.clear()
-        self._scrape_objects.clear()
         self._scrape_previous_indices.clear()
+        self._excluded_objects.clear()
         # Stop all ongoing audio.
         self.commands.append({"$type": "stop_all_audio"})
 
@@ -979,6 +977,7 @@ class PyImpact(CollisionManager):
         robot_joints: Dict[int, dict] = dict()
         object_masses: Dict[int, float] = dict()
         object_bouncinesses: Dict[int, float] = dict()
+        vr_nodes: List[ObjectAudioStatic] = list()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "segm":
@@ -990,7 +989,8 @@ class PyImpact(CollisionManager):
                     categories[object_id] = segm.get_object_category(j)
                     # Enable a scrape surface.
                     if self._scrape and (model_name in DEFAULT_SCRAPE_MODELS or object_id in self._scrape_objects):
-                        self._scrape_objects[object_id] = DEFAULT_SCRAPE_MODELS[model_name]
+                        if object_id not in self._scrape_objects:
+                            self._scrape_objects[object_id] = DEFAULT_SCRAPE_MODELS[model_name]
                         # Add the visual material.
                         material_record = PyImpact.__VISUAL_MATERIAL_LIBRARIAN.get_record(
                             name=self._scrape_objects[object_id].visual_material)
@@ -1015,6 +1015,26 @@ class PyImpact(CollisionManager):
                 for j in range(srig.get_num()):
                     object_masses[srig.get_id(j)] = srig.get_mass(j)
                     object_bouncinesses[srig.get_id(j)] = srig.get_bounciness(j)
+            # Add VR nodes.
+            elif r_id == "soct":
+                soct = StaticOculusTouch(resp[i])
+                if soct.get_human_hands():
+                    vr_material = PyImpact.VR_HUMAN_MATERIAL
+                    vr_bounciness = PyImpact.VR_HUMAN_BOUNCINESS
+                else:
+                    vr_material = PyImpact.ROBOT_JOINT_MATERIAL
+                    vr_bounciness = PyImpact.ROBOT_JOINT_BOUNCINESS
+                for vr_id, vr_name in zip([soct.get_body_id(), soct.get_left_hand_id(), soct.get_right_hand_id()],
+                                          ["vr_node_body", "vr_node_left_hand", "vr_node_right_hand"]):
+                    vr_nodes.append(ObjectAudioStatic(name=vr_name,
+                                                      mass=10,
+                                                      material=vr_material,
+                                                      bounciness=vr_bounciness,
+                                                      resonance=PyImpact.DEFAULT_RESONANCE,
+                                                      size=PyImpact.DEFAULT_SIZE,
+                                                      amp=PyImpact.DEFAULT_AMP,
+                                                      object_id=vr_id))
+                    self._excluded_objects.append(vr_id)
         need_to_derive: List[int] = list()
         for object_id in names:
             name = names[object_id]
@@ -1087,6 +1107,9 @@ class PyImpact(CollisionManager):
                                                                   size=PyImpact.DEFAULT_SIZE,
                                                                   amp=PyImpact.DEFAULT_AMP,
                                                                   object_id=joint_id)
+        # Add VR nodes.
+        for vr_node in vr_nodes:
+            self._static_audio_data[vr_node.object_id] = vr_node
 
     @staticmethod
     def _normalize_16bit_int(arr: np.array) -> np.array:

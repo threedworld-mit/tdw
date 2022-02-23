@@ -4,6 +4,303 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.6
+
+### Command API
+
+#### Modified Commands
+
+| Command                | Modification                              |
+| ---------------------- | ----------------------------------------- |
+| `add_trigger_collider` | Added trigger collider shape `"cylinder"` |
+
+### `tdw` module
+
+- Added `TriggerCollisionManager` add-on. Manager per-frame trigger collision data.
+- Added the following trigger collider/collision data classes:
+  - `TriggerColliderShape` Enum describing the shape of the collider.
+  - `TriggerCollisionEvent` Wrapper for trigger collision data.
+- Added `ContainerManager` add-on. Manager per-frame containment data. This is a subclass of `TriggerCollisionManager`.
+- Added the following container trigger collider/collision data classes:
+  - `ContainerBoxTriggerCollider` Data for a box-shaped container trigger collider.
+  - `ContainerColliderTag` Enum of semantic tags for container trigger colliders.
+  - `ContainerCylinderTriggerCollider` Data for a cylinder-shaped container trigger collider.
+  - `ContainerNonUniformScaleTriggerCollider` Abstract class for container trigger colliders with non-uniform scales.
+  - `ContainerSphereTriggerCollider` Data for a sphere-shaped container trigger collider.
+  - `ContainerTriggerCollider` Abstract base class for container trigger collider data.
+  - `ContainmentEvent` Wrapper for containment trigger collision data.
+- Added cached trigger collision data to model records. Not all records have container trigger colliders; see `model_record.trigger_colliders`.
+  - (Backend) Added: `tdw.librarian._Encoder` JSONEncoder extension that is used within `_Librarian` classes. For now, this just handles container collider data.
+
+### Example Controllers
+
+- Moved composite object controllers from `physx/` to `semantic_states/`
+- Moved overlap and raycast controllers from `objects_and_scenes/` to `semantic_states/`
+- Added: `semantic_states/containment.py`
+- Added: `semantic_states/trigger_collisions.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                                 |
+| ------------------------------------------------------------ | ----------------------------------------------------------- |
+| `lessons/semantic_states/containment.md`                     | Documentation for how to use the `ContainerManager`.        |
+| `lessons/semantic_state/grasped.md`                          | Overview of "grasped" semantic states with various agents.  |
+| `lessons/semantic_states/overview.md`                        | Overview of semantic states.                                |
+| `lessons/semantic_states/trigger_collisions.md`              | Documentation for how to use the `TriggerCollisionManager`. |
+| `python/add_ons/container_manager.md`                        | API documentation for `ContainerManager`.                   |
+| `python/add_ons/trigger_collision_manager.md`                | API documentation for `TriggerCollisionManager`.            |
+| `python/collision_data/trigger_collider_shape.md`<br>`python/collision_data/trigger_collision_event.md` | API documentation for trigger collision data classes.       |
+| `python/container_data/container_box_trigger_collider.md`<br>`python/container_data/container_collider_tag.md`<br>`python/container_data/container_cylinder_trigger_collider.md`<br>`python/container_data/container_non_uniform_scale_trigger_collider.md`<br>`python/container_data/container_sphere_trigger_collider.md`<br>`python/container_data/container_trigger_collider.md`<br>`python/container_data/containment_event.md` | API documentation for containment data classes.             |
+
+#### Modified Documentation
+
+| Document                                | Modification                                             |
+| --------------------------------------- | -------------------------------------------------------- |
+| `lessons/objects_and_scenes/raycast.md` | Moved to: `lessons/semantic_states/raycast.md`           |
+| `lessons/objects_and_scenes/overlap.md` | Moved to: `lessons/semantic_states/overlap.md`           |
+| `lessons/physx/composite_objects.md`    | Moved to: `lessons/semantic_states/composite_objects.md` |
+
+
+
+## v1.9.5
+
+### New Features
+
+- **Added support for the Oculus Quest 2 with Touch controllers.**
+
+### Command API
+
+#### New Commands
+
+| Command                          | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `send_static_composite_objects`  | Send static data for every composite object in the scene.    |
+| `send_dynamic_composite_objects` | Send dynamic data for every composite object in the scene.   |
+| `rotate_vr_rig`                  | Rotate the VR rig by an angle.                               |
+| `set_vr_resolution_scale`        | Controls the actual size of eye textures as a multiplier of the device's default resolution. |
+| `send_oculus_touch_buttons`      | Send data for buttons pressed on Oculus Touch controllers.   |
+| `send_static_oculus_touch`       | Send static data for the Oculus Touch rig.                   |
+
+#### Modified Commands
+
+| Command         | Modification                                                 |
+| --------------- | ------------------------------------------------------------ |
+| `create_vr_rig` | Added parameter `rig_type`: The type of VR rig to instantiate.<br>Added parameter `sync_timestep_with_vr`: Whether to sync Time.fixedDeltaTime with the VR device refresh rate. Doing this improves physics behavior in VR; this parameter should almost always be True. |
+| `set_graspable` | Renamed to `set_vr_graspable`<br>Added parameter `joint_break_force`: The joint break force for this graspable object. Lower values mean it's easier to break the joint. |
+
+#### Deprecated Commands 
+
+| Command                  | Reason                                                       | 
+| ------------------------ | ------------------------------------------------------------ | 
+| `send_composite_objects` | Replaced with `send_static_composite_objects` and `send_dynamic_composite_objects` | 
+
+### Output Data 
+
+#### New Output Data 
+
+| Output Data               | Description                                              |
+| ------------------------- | -------------------------------------------------------- |
+| `CompositeObjectsStatic`  | Static composite object data.                            |
+| `CompositeObjectsDynamic` | Dynamic composite object data.                           |
+| `OculusTouchButtons`      | Which Oculus Touch controller buttons have been pressed. |
+| `StaticOculusTouch`       | Static data for the Oculus Touch rig.                    |
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `VRRig`     | Added: `get_held_left()` Returns the IDs of the objects held by the left hand.<br>Added: `get_held_right()` Returns the IDs of the objects held by the right hand. |
+
+#### Deprecated Output Data 
+
+| Output Data        | Reason                                                       | 
+| ------------------ | ------------------------------------------------------------ | 
+| `CompositeObjects` | Replaced with `CompositeObjectsStatic` and `CompositeObjectsDynamic` | 
+
+### `tdw` module
+
+- Added: `OculusTouch` an add-on for the Oculus Touch VR rig.
+  - Added abstract base class `VR`
+- Added the following VR data classes:
+  - `OculusTouchButton` Enum values for Oculus Touch buttons.
+  - `RigType` Enum values for VR rigs.
+- Added: `CompositeObjectManager` an add-on for managing composite object data. 
+- Added the following composite object data classes: 
+  - `CompositeObjectStatic` Static data for a composite object and its sub-objects. 
+    - `LightStatic` Static data for a light sub-object of a composite object. 
+    - `MotorStatic` Static data for a motor sub-object of a composite object. 
+    - `SpringStatic` Static data for a spring sub-object of a composite object. 
+    - `HingeStatic` Static data for a hinge sub-object of a composite object. 
+    - `PrismaticJointStatic` Static data for a prismatic joint sub-object of a composite object. 
+    - `NonMachineStatic` Static data for a non-machine sub-object of a composite object. 
+  - `CompositeObjectDynamic` Dynamic data for a composite object and its sub-objects. 
+    - `LightDynamic` Dynamic data for a light sub-object of a composite object. 
+    - `HingeDynamic` Dynamic data for a hinge, motor, or spring sub-object of a composite object. 
+- `PyImpact` will create impact sounds for VR nodes (e.g. hands).
+  - Added: `VR_HUMAN_MATERIAL` and `VR_HUMAN_BOUNCINESS`
+- Fixed some bad-sound scrape materials in `PyImpact`: `sandpaper`, `vinyl`, and `poplar_wood`
+- Fixed: `InteriorSceneLighting` sets the random number generator incorrectly such that all other attempts to create a numpy RandomState fail.
+- Fixed: `TDWUtils.set_default_libraries()` raises an exception if `model_library` isn't set and one of the set paths is a string.
+- Fixed: `AssetBundleCreator.write_physics_quality()` resets remote URLs for Windows asset bundles.
+
+### Model library
+
+- Added models `models_core.json` and `models_full.json`: b03\_aluminum\_pan\_composite, b03\_ka90ivi20r\_2013\_\_vray\_composite, b04\_db\_apps\_tech\_08\_03\_composite, cabinet\_24\_single\_door\_wood\_beech\_honey\_composite, cabinet\_24\_single\_door\_wood\_oak\_white\_composite, cabinet\_24\_two\_door\_wood\_beech\_honey\_composite, cabinet\_24\_two\_door\_wood\_oak\_white\_composite, cabinet\_full\_height\_wood\_beech\_honey\_composite, cabinet\_full\_height\_wood\_oak\_white\_composite, db\_apps\_tech\_08\_10\_composite, dishwasher\_4\_composite, gas\_stove\_composite, kenmore\_refr\_74049\_composite, pot\_composite, sink\_cabinet\_unit\_wood\_beech\_honey\_chrome\_composite, sink\_cabinet\_unit\_wood\_beech\_honey\_porcelain\_composite, sink\_cabinet\_unit\_wood\_oak\_white\_chrome\_composite, sink\_cabinet\_unit\_wood\_oak\_white\_porcelain\_composite, vm\_v5\_070\_composite, vray\_062\_composite
+
+### Build
+
+- Dropped support for Flex in VR (this never worked very well).
+
+### Example Controllers
+
+- Edited `physx/composite_object.py` to use the `CompositeObjectManager`
+- Removed `physx/kinematic_composite_object.py`
+- Added `physx/composite_object_open.py`
+- Added `physx/composite_object_torque.py`
+- Moved `humans/keyboard_controls.py` to `keyboard/keyboard_controls.py`
+- Moved `humans/keyboard_minimal.py` to `keyboard/keyboard_minimal.py`
+- Removed `humans/vr_minimal.py` 
+- Removed `humans/vr_observed_objects.py`
+- Added `vr/oculus_touch_button_listener.py`
+- Added `vr/oculus_touch_composite_object.py`
+- Added `vr/oculus_touch_image_capture.py`
+- Added `vr/oculus_touch_minimal.py` 
+- Added `vr/oculus_touch_output_data.py`
+- Added `vr/oculus_touch_py_impact.py`
+
+### Documentation 
+
+#### New Documentation 
+
+| Document                                                     | Description                                                |
+| ------------------------------------------------------------ | ---------------------------------------------------------- |
+| `python/add_ons/composite_object_manager.md`                 | API document for `CompositeObjectManager`                  |
+| `python/object_data/composite_object/composite_object_static.md`<br>`python/object_data/composite_object/composite_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/sub_object_static.md`<br>`python/object_data/composite_object/sub_object/light_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static_base.md`<br>`python/object_data/composite_object/sub_object/motor_static.md`<br>`python/object_data/composite_object/sub_object/spring_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static.md`<br>`python/object_data/composite_object/sub_object/prismatic_joint_static.md`<br>`python/object_data/composite_object/sub_object/non_machine_static.md`<br>`python/object_data/composite_object/sub_object/sub_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/light_dynamic.md`<br>`python/object_data/composite_object/sub_object/hinge_dynamic.md` | API documents for composite object data classes.           |
+| `lessons/vr/overview.md`                                     | Overview of VR.                                            |
+| `lessons/vr/oculus_touch.md`                                 | Tutorial on the Oculus Touch rig and `OculusTouch` add-on. |
+| `python/add_ons/oculus_touch.md`                             | API document for `OculusTouch` add-on.                     |
+| `python/add_ons/vr.md`                                       | API document for `VR` abstract class.                      |
+| `python/vr_data/oculus_touch_button`<br>`python/vr_data/rig_type.md` | API documents for VR data classes.                         |
+
+#### Modified Documentation 
+
+| Document                             | Modification                                                 |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md` | Rewrote most of the document to explain how to use the `CompositeObjectManager`.<br>Added a section explaining how to determine if an object is "open".<br>Clarified the difference between sub-meshes and sub-objects.<br>Added more example code. |
+| `lessons/agents/overview.md`         | Split "Humans" section into "Keyboard controls" and "VR".    |
+| `lessons/humans/keyboard.md`         | Moved to: `lessons/keyboard/keyboard.md`                     |
+
+#### Removed Documentation
+
+| Document               | Reason                                          |
+| ---------------------- | ----------------------------------------------- |
+| `lessons/humans/vr.md` | Replaced with new VR documentation (see above). |
+
+## v1.9.4
+
+### Command API
+
+#### New Commands
+
+| Command                      | Description                          |
+| ---------------------------- | ------------------------------------ |
+| `set_spring_target_position` | Set the target position of a spring. |
+| `set_spring_damper`          | Set the damper value of a spring.    |
+| `set_spring_force`           | Set the force of a spring.           |
+| `set_motor_target_velocity`  | Set the target velocity of a motor.  |
+| `set_motor_force`            | Set the force of a motor.            |
+
+#### Removed Commands
+
+| Command      | Reason                                                       |
+| ------------ | ------------------------------------------------------------ |
+| `set_spring` | Replaced with `set_spring_target_position`                   |
+| `set_motor`  | Replaced with `set_motor_target_velocity` and `set_motor_force` |
+
+### `tdw` module
+
+- Fixed: Can't override the visual materials of scrape surfaces in `PyImpact`
+- Added: `TDWUtils.get_segmentation_colors(id_pass)`. Returns a list of unique colors in the ID pass. 
+- Added: `TDWUtils.download_asset_bundles(path, models, scenes, materials, hdri_skyboxes, robots, humanoids, humanoid_animations)` 
+- Added: `TDWUtils.set_default_libraries(model_library=None, scene_library=None, material_library=None, hdri_skybox_library=None, robot_library=None, humanoid_library=None, humanoid_animation_library=None)` Set the path to the default libraries.
+
+### Model library
+
+- Flagged models as do_not_use in `models_core.json` and `models_full.json`:  b03_object05, b03_pot, b05_ikea_nutid_side_by_side_refrigerator
+
+### Documentation
+
+#### New Documentation
+
+| Document                                 | Description                            |
+| ---------------------------------------- | -------------------------------------- |
+| `lessons/misc/download_asset_bundles.md` | How and why to download asset bundles. |
+
+## v1.9.3
+
+### Command API
+
+#### New Commands
+
+| Command                                | Description                                                  |
+| -------------------------------------- | ------------------------------------------------------------ |
+| `set_composite_object_kinematic_state` | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
+| `add_compass_rose`                     | Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc. |
+| `destroy_compass_rose`                 | Destroy a compass rose in the scene.                         |
+| `add_line_renderer`                    | Add a 3D line to the scene.                                  |
+| `add_points_to_line_renderer`          | Add points to an existing line in the scene.                 |
+| `destroy_line_renderer`                | Destroy an existing line in the scene from the scene.        |
+| `remove_points_from_line_renderer`     | Remove points from an existing line in the scene.            |
+| `simplify_line_renderer`               | Simplify a 3D line to the scene by removing intermediate points. |
+
+#### Modified Commands
+
+| Command               | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| `set_kinematic_state` | For composite objects, this sets the state only for the top-level object (previous,  it set the state for all sub-objects as well). See: `set_composite_object_kinematic_state` |
+
+### `tdw` module
+
+- Added: `OccupancyMap.reset()` Reset the occupancy map. Call this when resetting a scene.
+- Replaced `ThirdPersonCamera.look_at_target` with  `ThirdPersonCamera.look_at(target)` in order to allow the camera to look at a target on the next `communicate()` call.
+- Improved how cross-fading works in `PyImpact` between audio chunks during a scrape.
+- Added: `InteriorSceneLighting` Add an HDRI skybox to the scene from a curated list of skyboxes and set post-processing values.
+- Fixed: `AudioUtils` (and, by extension, `PhysicsAudioRecorder`) doesn't work on OS X.
+
+### Model library
+
+- Flagged models as do_not_use in `models_full.json`: b03_radiator_old, b05_ikea_nutid_side_by_side_refrigerator
+- Added to `models_core.json`:  b03_radiator_alum_12, b05_castironradiator, radiator_pub_2015, fredericia_spine_stool_1, mater_high_stool_al_69, tolix_bar_stool
+
+### Example controllers
+
+- Added: `non_physics/compass_rose.py`
+- Added: `non_physics/line_renderer.py`
+
+### Documentation
+
+#### New Documentation
+
+| Documentation                               | Description                                                  |
+| ------------------------------------------- | ------------------------------------------------------------ |
+| `lessons/non_physics/compass_rose.md`       | Tutorial document explaining the compass rose.               |
+| `lessons/non_physics/line_renderers.md`     | Tutorial document explaining line renderers.                 |
+| `lessons/photorealism/interior_lighting.md` | Tutorial document explaining how to use the new `InteriorSceneLighting` add-on. |
+| `python/add_ons/interior_scene_lighting.md` | API document for `InteriorSceneLighting`.                    |
+
+#### Modified Documentation
+
+| Document                                                  | Modification                                                 |
+| --------------------------------------------------------- | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md`                      | Clarified how to use various means to set kinematic states of sub-objects. |
+| `lessons/navigation/occupancy_maps.md`                    | Added a section for resetting a scene.                       |
+| `lessons/photorealism/lighting.md`                        | Added an example of how to convert the HDRI skybox library data to a .csv file. |
+| `lessons/objects_and_scenes/materials_textures_colors.md` | Added a missing line of code in one of the examples.         |
+| `lessons/audio/recording_audio.md`                        | Added instructions for installing fmedia on all platforms (including OS X) |
+| `lessons/troubleshooting/common_errors.md`                | Added a section for low render quality.                      |
+
 ## v1.9.2
 
 ### Command API

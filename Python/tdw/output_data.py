@@ -47,8 +47,13 @@ from tdw.FBOutput import Categories as Cats
 from tdw.FBOutput import StaticRigidbodies as StatRig
 from tdw.FBOutput import RobotJointVelocities as RoJoVe
 from tdw.FBOutput import EmptyObjects as Empty
+from tdw.FBOutput import OculusTouchButtons as OculusTouch
+from tdw.FBOutput import StaticOculusTouch as StatOc
+from tdw.FBOutput import StaticCompositeObjects as StatComp
+from tdw.FBOutput import DynamicCompositeObjects as DynComp
+from tdw.vr_data.oculus_touch_button import OculusTouchButton
 import numpy as np
-from typing import Tuple, Optional
+from typing import Tuple, Optional, List
 
 
 class OutputDataUndefinedError(Exception):
@@ -652,6 +657,46 @@ class VRRig(OutputData):
     def get_head_forward(self) -> Tuple[float, float, float]:
         return OutputData._get_vector3(self._get_simple_transform(2).Forward)
 
+    def get_held_left(self) -> np.array:
+        return self.data.HeldLeftAsNumpy()
+
+    def get_held_right(self) -> np.array:
+        return self.data.HeldRightAsNumpy()
+
+
+class OculusTouchButtons(OutputData):
+    BUTTONS = [b for b in OculusTouchButton]
+
+    def get_data(self) -> OculusTouch.OculusTouchButtons:
+        return OculusTouch.OculusTouchButtons.GetRootAsOculusTouchButtons(self.bytes, 0)
+
+    def get_left(self) -> List[OculusTouchButton]:
+        return self._get_buttons(v=self.data.Left())
+
+    def get_right(self) -> List[OculusTouchButton]:
+        return self._get_buttons(v=self.data.Right())
+
+    @staticmethod
+    def _get_buttons(v: int) -> List[OculusTouchButton]:
+        return [OculusTouchButtons.BUTTONS[i] for (i, b) in enumerate(OculusTouchButtons.BUTTONS) if v & (1 << i) != 0]
+
+
+class StaticOculusTouch(OutputData):
+    def get_data(self) -> StatOc.StaticOculusTouch:
+        return StatOc.StaticOculusTouch.GetRootAsStaticOculusTouch(self.bytes, 0)
+
+    def get_body_id(self) -> int:
+        return self.data.BodyId()
+
+    def get_left_hand_id(self) -> int:
+        return self.data.LeftHandId()
+
+    def get_right_hand_id(self) -> int:
+        return self.data.RightHandId()
+
+    def get_human_hands(self) -> bool:
+        return self.data.HumanHands()
+
 
 class LogMessage(OutputData):
     LOG_TYPES = {MessageType.MessageType.error: "error",
@@ -681,6 +726,7 @@ class CompositeObjects(OutputData):
                      MachineType.MachineType.none: "none"}
 
     def get_data(self) -> Comp.CompositeObjects:
+        print("CompositeObjects has been deprecated. Use StaticCompositeObjects and/or DynamicCompositeObjects instead.")
         return Comp.CompositeObjects.GetRootAsCompositeObjects(self.bytes, 0)
 
     def get_num(self) -> int:
@@ -1201,3 +1247,133 @@ class EmptyObjects(OutputData):
 
     def get_position(self, index: int) -> np.array:
         return self._positions[index]
+
+
+class StaticCompositeObjects(OutputData):
+    def get_data(self) -> StatComp.StaticCompositeObjects:
+        return StatComp.StaticCompositeObjects.GetRootAsStaticCompositeObjects(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.ObjectsLength()
+
+    def get_object_id(self, index: int) -> int:
+        return self.data.Objects(index).Id()
+
+    def get_num_non_machines(self, index: int) -> int:
+        return self.data.Objects(index).NonMachinesLength()
+
+    def get_non_machine_id(self, index: int, non_machine_index: int) -> int:
+        return self.data.Objects(index).NonMachines(non_machine_index).Id()
+
+    def get_num_lights(self, index: int) -> int:
+        return self.data.Objects(index).LightsLength()
+
+    def get_light_id(self, index: int, light_index: int) -> int:
+        return self.data.Objects(index).Lights(light_index).Id()
+
+    def get_num_hinges(self, index: int) -> int:
+        return self.data.Objects(index).HingesLength()
+
+    def get_hinge_id(self, index: int, hinge_index: int) -> int:
+        return self.data.Objects(index).Hinges(hinge_index).Id()
+
+    def get_hinge_has_limits(self, index: int, hinge_index: int) -> bool:
+        return self.data.Objects(index).Hinges(hinge_index).HasLimits()
+
+    def get_hinge_min_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Hinges(hinge_index).MinLimit()
+
+    def get_hinge_max_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Hinges(hinge_index).MaxLimit()
+
+    def get_hinge_axis(self, index: int, hinge_index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Objects(index).Hinges(hinge_index).Axis())
+
+    def get_num_motors(self, index: int) -> int:
+        return self.data.Objects(index).MotorsLength()
+
+    def get_motor_id(self, index: int, motor_index: int) -> int:
+        return self.data.Objects(index).Motors(motor_index).Id()
+
+    def get_motor_has_limits(self, index: int, hinge_index: int) -> bool:
+        return self.data.Objects(index).Motors(hinge_index).HasLimits()
+
+    def get_motor_min_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Motors(hinge_index).MinLimit()
+
+    def get_motor_max_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Motors(hinge_index).MaxLimit()
+
+    def get_motor_axis(self, index: int, hinge_index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Objects(index).Motors(hinge_index).Axis())
+
+    def get_motor_force(self, index: int, motor_index: int) -> float:
+        return self.data.Objects(index).Motors(motor_index).Force()
+
+    def get_num_springs(self, index: int) -> int:
+        return self.data.Objects(index).SpringsLength()
+
+    def get_spring_id(self, index: int, spring_index: int) -> int:
+        return self.data.Objects(index).Springs(spring_index).Id()
+
+    def get_spring_has_limits(self, index: int, hinge_index: int) -> bool:
+        return self.data.Objects(index).Springs(hinge_index).HasLimits()
+
+    def get_spring_min_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Springs(hinge_index).MinLimit()
+
+    def get_spring_max_limit(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Springs(hinge_index).MaxLimit()
+
+    def get_spring_axis(self, index: int, hinge_index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Objects(index).Springs(hinge_index).Axis())
+
+    def get_spring_force(self, index: int, spring_index: int) -> float:
+        return self.data.Objects(index).Springs(spring_index).Force()
+
+    def get_spring_damper(self, index: int, spring_index: int) -> float:
+        return self.data.Objects(index).Springs(spring_index).Damper()
+
+    def get_num_prismatic_joints(self, index: int) -> int:
+        return self.data.Objects(index).PrismaticJointsLength()
+
+    def get_prismatic_joint_id(self, index: int, prismatic_joint_index: int) -> int:
+        return self.data.Objects(index).PrismaticJoints(prismatic_joint_index).Id()
+
+    def get_prismatic_joint_limit(self, index: int, prismatic_joint_index: int) -> float:
+        return self.data.Objects(index).PrismaticJoints(prismatic_joint_index).Limit()
+
+    def get_prismatic_joint_axis(self, index: int, prismatic_joint_index: int) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Objects(index).PrismaticJoints(prismatic_joint_index).Axis())
+
+
+class DynamicCompositeObjects(OutputData):
+    def get_data(self) -> DynComp.DynamicCompositeObjects:
+        return DynComp.DynamicCompositeObjects.GetRootAsDynamicCompositeObjects(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.ObjectsLength()
+
+    def get_object_id(self, index: int) -> int:
+        return self.data.Objects(index).Id()
+
+    def get_num_hinges(self, index: int) -> int:
+        return self.data.Objects(index).HingesLength()
+
+    def get_hinge_id(self, index: int, hinge_index: int) -> int:
+        return self.data.Objects(index).Hinges(hinge_index).Id()
+
+    def get_hinge_angle(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Hinges(hinge_index).Angle()
+
+    def get_hinge_velocity(self, index: int, hinge_index: int) -> float:
+        return self.data.Objects(index).Hinges(hinge_index).Velocity()
+
+    def get_num_lights(self, index: int) -> int:
+        return self.data.Objects(index).LightsLength()
+
+    def get_light_id(self, index: int, light_index: int) -> int:
+        return self.data.Objects(index).Lights(light_index).Id()
+
+    def get_light_is_on(self, index: int, light_index: int) -> bool:
+        return self.data.Objects(index).Lights(light_index).IsOn()

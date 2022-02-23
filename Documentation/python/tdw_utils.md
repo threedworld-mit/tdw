@@ -303,6 +303,19 @@ Do NOT use this function to save image data to disk; `save_image` is much faster
 
 _Returns:_  A PIL image.
 
+#### get_segmentation_colors
+
+**`TDWUtils.get_segmentation_colors(id_pass)`**
+
+_This is a static function._
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| id_pass |  np.array |  | The ID pass image as a numpy array. |
+
+_Returns:_  A list of unique colors in the ID pass.
+
 #### get_random_position_on_nav_mesh
 
 **`TDWUtils.get_random_position_on_nav_mesh(c, width, length)`**
@@ -611,4 +624,52 @@ Get elements in an array within a circle.
 | radius |  int |  | The radius of the circle in indices. |
 
 _Returns:_  A boolean array with shape `shape`. Elements that are True are within the circle.
+
+#### download_asset_bundles
+
+**`TDWUtils.download_asset_bundles(path, models, scenes, materials, hdri_skyboxes, robots, humanoids, humanoid_animations)`**
+
+_This is a static function._
+
+Download asset bundles from TDW's remote S3 server. Create local librarian .json files for each type (models, scenes, etc.).
+This can be useful to speed up the process of scene creation; it is always faster to load local asset bundles though it still takes time to load them into memory.
+
+Note that if you wish to download asset bundles from tdw-private (`models_full.json`) you need valid S3 credentials.
+
+For each parameter (`models`, `scenes`, etc.), if the value is `None`, no asset bundles will be downloaded.
+
+Asset bundles will only be downloaded for your operating system. For example, if you want Linux asset bundles, call this function on Linux.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| path |  Union[str, Path] |  | The root directory of all of the asset bundles and librarian files. |
+| models |  Dict[str, List[str] |  | A dictionary of models. Key = The model library, for example `"models_core.json"`. Value = A list of model names. |
+| scenes |  Dict[str, List[str] |  | A dictionary of scenes. Key = The model library, for example `"scenes.json"`. Value = A list of scene names. |
+| materials |  Dict[str, List[str] |  | A dictionary of materials. Key = The material library, for example `"materials_med.json"`. Value = A list of material names. |
+| hdri_skyboxes |  Dict[str, List[str] |  | A dictionary of HDRI skyboxes. Key = The HDRI skybox library, for example `"hdri_skyboxes.json"`. Value = A list of HDRI skybox names. |
+| robots |  Dict[str, List[str] |  | A dictionary of robots. Key = The robot library, for example `"robots.json"`. Value = A list of robot names. |
+| humanoids |  Dict[str, List[str] |  | A dictionary of humanoids. Key = The model library, for example `"humanoids.json"`. Value = A list of humanoid names. |
+| humanoid_animations |  Dict[str, List[str] |  | A dictionary of humanoid animations. Key = The model library, for example `"humanoid_animations.json"`. Value = A list of humanoid animation names. |
+
+#### set_default_libraries
+
+**`TDWUtils.set_default_libraries()`**
+
+**`TDWUtils.set_default_libraries(model_library=None, scene_library=None, material_library=None, hdri_skybox_library=None, robot_library=None, humanoid_library=None, humanoid_animation_library=None)`**
+
+_This is a static function._
+
+Set the path to the default libraries.
+
+If any of the parameters of this function are left as `None`, the default remote S3 librarian will be used.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| model_library |  Union[str, Path] | None | The absolute path to a local model library file. |
+| scene_library |  Union[str, Path] | None | The absolute path to a local scene library file. |
+| material_library |  Union[str, Path] | None | The absolute path to a local material library file. |
+| hdri_skybox_library |  Union[str, Path] | None | The absolute path to a local HDRI skybox library file. |
+| robot_library |  Union[str, Path] | None | The absolute path to a local robot library file. |
+| humanoid_library |  Union[str, Path] | None | The absolute path to a local humanoid library file. |
+| humanoid_animation_library |  Union[str, Path] | None | The absolute path to a local humanoid animation library file. |
 

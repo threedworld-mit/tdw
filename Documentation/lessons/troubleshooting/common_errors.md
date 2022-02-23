@@ -34,6 +34,15 @@ If after reading this document you're still unsure how to fix your error, [pleas
   - On Linux servers, make sure that TDW is using a GPU.
   - [Read the documentation for performance optimizations](performance_optimizations.md).
 
+**There are no shadows in the scene / rendering quality is generally poor**
+
+- **Cause:** There are two common causes:
+  - You're running TDW without a GPU or your GPU isn't powerful. Certain rendering steps won't occur if the GPU is incapable of doing them; some of the more obvious examples are shadows and reflections.
+  - You're using a low render quality setting. Render quality settings can sometimes carry between build process instances; this appears to be a Unity Engine bug.
+- **Solution:**
+  - On Linux servers, make sure that TDW is using a GPU.
+  - Send [`{"$type": "set_render_quality", "render_quality": 5}`](../../api/command_api.md#set_render_quality) to set the build to the maximum render quality level.
+
 **[Linux:] Can't launch the simulation in a Docker container**
 
 - **Cause:** Either there is a problem with your Docker image or you have `launch_build=True` in the `Controller` constructor.

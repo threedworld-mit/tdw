@@ -84,11 +84,59 @@ class VRRig(object):
             return obj
         return None
 
-def VRRigStart(builder): builder.StartObject(6)
+    # VRRig
+    def HeldLeft(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # VRRig
+    def HeldLeftAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
+        return 0
+
+    # VRRig
+    def HeldLeftLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # VRRig
+    def HeldRight(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # VRRig
+    def HeldRightAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
+        return 0
+
+    # VRRig
+    def HeldRightLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def VRRigStart(builder): builder.StartObject(8)
 def VRRigAddPosition(builder, position): builder.PrependStructSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(position), 0)
 def VRRigAddRotation(builder, rotation): builder.PrependStructSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(rotation), 0)
 def VRRigAddForward(builder, forward): builder.PrependStructSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(forward), 0)
 def VRRigAddLeftHand(builder, leftHand): builder.PrependStructSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(leftHand), 0)
 def VRRigAddRightHand(builder, rightHand): builder.PrependStructSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(rightHand), 0)
 def VRRigAddHead(builder, head): builder.PrependStructSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(head), 0)
+def VRRigAddHeldLeft(builder, heldLeft): builder.PrependUOffsetTRelativeSlot(6, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(heldLeft), 0)
+def VRRigStartHeldLeftVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def VRRigAddHeldRight(builder, heldRight): builder.PrependUOffsetTRelativeSlot(7, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(heldRight), 0)
+def VRRigStartHeldRightVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def VRRigEnd(builder): return builder.EndObject()

@@ -13,7 +13,7 @@
 | [`apply_force`](#apply_force) | Apply a force into the world to an target position. The force will impact any objects between the origin and the target position. |
 | [`create_avatar`](#create_avatar) | Create an avatar (agent). |
 | [`create_empty_environment`](#create_empty_environment) | Create an empty environment. This must be called after load_scene.  |
-| [`create_vr_rig`](#create_vr_rig) | Create an Oculus VR rig. For more information, see: Documentation/misc_frontend/vr.md |
+| [`create_vr_rig`](#create_vr_rig) | Create a VR rig. If there is already a VR rig in the scene, this fails silently. For more information, see: Documentation/misc_frontend/vr.md |
 | [`destroy_all_objects`](#destroy_all_objects) | Destroy all objects and avatars in the scene.  |
 | [`do_nothing`](#do_nothing) | Do nothing. Useful for benchmarking.  |
 | [`enable_reflection_probes`](#enable_reflection_probes) | Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation. |
@@ -225,6 +225,13 @@
 | [`rotate_sensor_container_towards_position`](#rotate_sensor_container_towards_position) | Rotate the sensor container towards a position at a given angular speed per frame.  |
 | [`rotate_sensor_container_towards_rotation`](#rotate_sensor_container_towards_rotation) | Rotate the sensor container towards a target rotation.  |
 
+**Compass Rose Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_compass_rose`](#add_compass_rose) | Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc.  |
+| [`destroy_compass_rose`](#destroy_compass_rose) | Destroy the compasss rose in the scene. |
+
 **Create Reverb Space Command**
 
 | Command | Description |
@@ -258,6 +265,16 @@
 | [`set_post_process`](#set_post_process) | Toggle whether post-processing is enabled in the scene. Disabling post-processing will make rendered images "flatter". Initial value = True (post-processing is enabled) |
 | [`simulate_physics`](#simulate_physics) | Toggle whether to simulate physics per list of sent commands (i.e. per frame). If false, the simulation won't step the physics forward. Initial value = True (simulate physics per frame). |
 | [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Linux: True (use temporary URLs). On Windows and OS X: False (download S3 objects directly, without using temporary URLs). |
+
+**Line Renderer Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_line_renderer`](#add_line_renderer) | Add a 3D line to the scene. |
+| [`add_points_to_line_renderer`](#add_points_to_line_renderer) | Add points to an existing line in the scene. |
+| [`destroy_line_renderer`](#destroy_line_renderer) | Destroy an existing line in the scene from the scene. |
+| [`remove_points_from_line_renderer`](#remove_points_from_line_renderer) | Remove points from an existing line in the scene. |
+| [`simplify_line_renderer`](#simplify_line_renderer) | Simplify a 3D line to the scene by removing intermediate points. |
 
 **Load From Resources**
 
@@ -295,8 +312,8 @@
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
 | [`scale_object`](#scale_object) | Scale the object by a factor from its current scale. |
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
-| [`set_graspable`](#set_graspable) | Make an object graspable for a VR rig with Oculus touch controllers.  |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
+| [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
 | [`unparent_object`](#unparent_object) | Unparent an object from its current parent (an avatar, an avatar's camera, etc.). If the object doesn't have a parent, this command doesn't do anything. |
 
@@ -323,6 +340,7 @@
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
 | [`apply_torque_to_object`](#apply_torque_to_object) | Apply a torque to the object's rigidbody. |
 | [`set_color_in_substructure`](#set_color_in_substructure) | Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API. |
+| [`set_composite_object_kinematic_state`](#set_composite_object_kinematic_state) | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
 | [`set_mass`](#set_mass) | Set the mass of an object. |
 | [`set_object_collision_detection_mode`](#set_object_collision_detection_mode) | Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object.  |
@@ -345,8 +363,11 @@
 | Command | Description |
 | --- | --- |
 | [`set_hinge_limits`](#set_hinge_limits) | Set the angle limits of a hinge joint. This will work with hinges, motors, and springs.  |
-| [`set_motor`](#set_motor) | Set the target velocity and force of a motor.  |
-| [`set_spring`](#set_spring) | Set the target position of a spring.  |
+| [`set_motor_force`](#set_motor_force) | Set the force a motor.  |
+| [`set_motor_target_velocity`](#set_motor_target_velocity) | Set the target velocity a motor.  |
+| [`set_spring_damper`](#set_spring_damper) | Set the damper value of a spring.  |
+| [`set_spring_force`](#set_spring_force) | Set the force of a spring.  |
+| [`set_spring_target_position`](#set_spring_target_position) | Set the target position of a spring.  |
 | [`set_sub_object_light`](#set_sub_object_light) | Turn a light on or off.  |
 
 **Visual Material Command**
@@ -550,12 +571,16 @@
 | --- | --- |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
+| [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
 | [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
+| [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
+| [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
+| [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -602,6 +627,8 @@
 | --- | --- |
 | [`attach_avatar_to_vr_rig`](#attach_avatar_to_vr_rig) | Attach an avatar (A_Img_Caps_Kinematic) to the VR rig in the scene. This avatar will work like all others, i.e it can send images and other data. The avatar will match the position and rotation of the VR rig's head. By default, this feature is disabled because it slows down the simulation's FPS.  |
 | [`destroy_vr_rig`](#destroy_vr_rig) | Destroy the current VR rig.  |
+| [`rotate_vr_rig_by`](#rotate_vr_rig_by) | Rotate the VR rig by an angle.  |
+| [`set_vr_resolution_scale`](#set_vr_resolution_scale) | Controls the actual size of eye textures as a multiplier of the device's default resolution.  |
 | [`teleport_vr_rig`](#teleport_vr_rig) | Teleport the VR rig to a new position.  |
 
 # Command
@@ -719,12 +746,30 @@ Create an empty environment. This must be called after load_scene.
 
 ## **`create_vr_rig`**
 
-Create an Oculus VR rig. For more information, see: Documentation/misc_frontend/vr.md
+Create a VR rig. If there is already a VR rig in the scene, this fails silently. For more information, see: Documentation/misc_frontend/vr.md
 
 
 ```python
 {"$type": "create_vr_rig"}
 ```
+
+```python
+{"$type": "create_vr_rig", "rig_type": "oculus_touch_robot_hands", "sync_timestep_with_vr": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rig_type"` | VrRigType | The type of VR rig to instantiate. | "oculus_touch_robot_hands" |
+| `"sync_timestep_with_vr"` | bool | Whether to sync Time.fixedDeltaTime with the VR device refresh rate. Doing this improves physics behavior in VR; this parameter should almost always be True. | True |
+
+#### VrRigType
+
+The type of VR rig to add to the scene.
+
+| Value | Description |
+| --- | --- |
+| `"oculus_touch_robot_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as robot hands. |
+| `"oculus_touch_human_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as human hands. |
 
 ***
 
@@ -3237,6 +3282,41 @@ Rotate the sensor container towards a target rotation.
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
+# CompassRoseCommand
+
+These commands add or remove a non-physical compass rose to the scene.
+
+***
+
+## **`add_compass_rose`**
+
+Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "add_compass_rose"}
+```
+
+```python
+{"$type": "add_compass_rose", "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | Position of the compass rose. | {"x": 0, "y": 0, "z": 0} |
+
+***
+
+## **`destroy_compass_rose`**
+
+Destroy the compasss rose in the scene.
+
+
+```python
+{"$type": "destroy_compass_rose"}
+```
+
 # CreateReverbSpaceCommand
 
 Base class to create a ResonanceAudio Room, sized to the dimensions of the current room environment.
@@ -3591,6 +3671,107 @@ Toggle whether to download asset bundles (models, scenes, etc.) directly from by
 | --- | --- | --- | --- |
 | `"value"` | bool | Boolean value. | |
 
+# LineRendererCommand
+
+These commands show, remove, or adjust 3D lines in the scene.
+
+***
+
+## **`add_line_renderer`**
+
+Add a 3D line to the scene.
+
+
+```python
+{"$type": "add_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "start_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "end_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "id": 1}
+```
+
+```python
+{"$type": "add_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "start_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "end_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "id": 1, "start_width": 1, "end_width": 1, "loop": False, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"points"` | Vector3 [] | The points or vertices along the line. This must have at least 2 elements. | |
+| `"start_color"` | Color | The start color of the line. | |
+| `"end_color"` | Color | The end color of the line. If it's different than start_color, the colors will have an even gradient along the line. | |
+| `"start_width"` | float | The start width of the line in meters. | 1 |
+| `"end_width"` | float | The end width of the line in meters. | 1 |
+| `"loop"` | bool | If True, the start and end positions of the line will connect together to form a continuous loop. | False |
+| `"position"` | Vector3 | The position of the line. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique ID of the line. | |
+
+***
+
+## **`add_points_to_line_renderer`**
+
+Add points to an existing line in the scene.
+
+
+```python
+{"$type": "add_points_to_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"points"` | Vector3 [] | Additional points on the line. | |
+| `"id"` | int | The unique ID of the line. | |
+
+***
+
+## **`destroy_line_renderer`**
+
+Destroy an existing line in the scene from the scene.
+
+
+```python
+{"$type": "destroy_line_renderer", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the line. | |
+
+***
+
+## **`remove_points_from_line_renderer`**
+
+Remove points from an existing line in the scene.
+
+
+```python
+{"$type": "remove_points_from_line_renderer", "id": 1}
+```
+
+```python
+{"$type": "remove_points_from_line_renderer", "id": 1, "count": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"count"` | int | Remove this many points from the end of the line. | 0 |
+| `"id"` | int | The unique ID of the line. | |
+
+***
+
+## **`simplify_line_renderer`**
+
+Simplify a 3D line to the scene by removing intermediate points.
+
+
+```python
+{"$type": "simplify_line_renderer", "id": 1}
+```
+
+```python
+{"$type": "simplify_line_renderer", "id": 1, "tolerance": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"tolerance"` | float | A value greater than 0 used to simplify the line. Points within the tolerance parameter will be removed. A value of 0 means that all points will be included. | 0 |
+| `"id"` | int | The unique ID of the line. | |
+
 # LoadFromResources
 
 Load something of type T from resources.
@@ -3780,6 +3961,7 @@ The shape of the trigger collider.
 | --- | --- |
 | `"cube"` |  |
 | `"sphere"` |  |
+| `"cylinder"` |  |
 
 ***
 
@@ -4090,22 +4272,6 @@ Set the albedo RGBA color of an object.
 
 ***
 
-## **`set_graspable`**
-
-Make an object graspable for a VR rig with Oculus touch controllers. 
-
-- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
-
-```python
-{"$type": "set_graspable", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_physic_material`**
 
 Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to.
@@ -4120,6 +4286,27 @@ Set the physic material of an object and apply friction and bounciness values to
 | `"dynamic_friction"` | float | Friction when the object is already moving. A higher value means that the object will come to rest very quickly. Must be between 0 and 1. | |
 | `"static_friction"` | float | Friction when the object is not moving. A higher value means that a lot of force will be needed to make the object start moving. Must be between 0 and 1. | |
 | `"bounciness"` | float | The bounciness of the object. A higher value means that the object will bounce without losing much energy. Must be between 0 and 1. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_vr_graspable`**
+
+Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "set_vr_graspable", "id": 1}
+```
+
+```python
+{"$type": "set_vr_graspable", "id": 1, "joint_break_force": 3500}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"joint_break_force"` | float | The joint break force for this graspable object. Lower values mean it's easier to break the joint. | 3500 |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -4440,6 +4627,28 @@ Set the color of a specific child object in the model's substructure. See: Model
 
 ***
 
+## **`set_composite_object_kinematic_state`**
+
+Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics.
+
+
+```python
+{"$type": "set_composite_object_kinematic_state", "id": 1}
+```
+
+```python
+{"$type": "set_composite_object_kinematic_state", "id": 1, "is_kinematic": False, "use_gravity": False, "sub_objects": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"is_kinematic"` | bool | If True, the top-level Rigidbody will be kinematic, and won't respond to physics. | False |
+| `"use_gravity"` | bool | If True, the top-level object will respond to gravity. | False |
+| `"sub_objects"` | bool | If True, apply the values for is_kinematic and use_gravity to each of the composite object's sub-objects. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`set_kinematic_state`**
 
 Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics.
@@ -4455,8 +4664,8 @@ Set an object's Rigidbody to be kinematic or not. A kinematic object won't respo
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"is_kinematic"` | bool | If true, the Rigidbody will be kinematic, and won't respond to physics. | False |
-| `"use_gravity"` | bool | If true, the object will respond to gravity. | False |
+| `"is_kinematic"` | bool | If True, the Rigidbody will be kinematic, and won't respond to physics. | False |
+| `"use_gravity"` | bool | If True, the object will respond to gravity. | False |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -4704,27 +4913,83 @@ Set the angle limits of a hinge joint. This will work with hinges, motors, and s
 
 ***
 
-## **`set_motor`**
+## **`set_motor_force`**
 
-Set the target velocity and force of a motor. 
+Set the force a motor. 
 
 - <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
 
     - <font style="color:deepskyblue">**Type:** `motor`</font>
 
 ```python
-{"$type": "set_motor", "target_velocity": 0.125, "force": 0.125, "id": 1}
+{"$type": "set_motor_force", "force": 0.125, "id": 1}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"target_velocity"` | float | The target velocity of the motor. | |
 | `"force"` | float | The force of the motor. | |
 | `"id"` | int | The unique object ID. | |
 
 ***
 
-## **`set_spring`**
+## **`set_motor_target_velocity`**
+
+Set the target velocity a motor. 
+
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
+
+    - <font style="color:deepskyblue">**Type:** `motor`</font>
+
+```python
+{"$type": "set_motor_target_velocity", "target_velocity": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"target_velocity"` | float | The target velocity of the motor. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_spring_damper`**
+
+Set the damper value of a spring. 
+
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
+
+    - <font style="color:deepskyblue">**Type:** `spring`</font>
+
+```python
+{"$type": "set_spring_damper", "damper": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"damper"` | float | The damper value of the spring. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_spring_force`**
+
+Set the force of a spring. 
+
+- <font style="color:deepskyblue">**Sub-Object**: This command will only work with a sub-object of a Composite Object. The sub-object must be of the correct type. To determine which Composite Objects are currently in the scene, and the types of their sub-objects, send the [send_composite_objects](#send_composite_objects) command.</font>
+
+    - <font style="color:deepskyblue">**Type:** `spring`</font>
+
+```python
+{"$type": "set_spring_force", "spring_force": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"spring_force"` | float | The force of the spring. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_spring_target_position`**
 
 Set the target position of a spring. 
 
@@ -4733,7 +4998,7 @@ Set the target position of a spring.
     - <font style="color:deepskyblue">**Type:** `spring`</font>
 
 ```python
-{"$type": "set_spring", "target_position": 0.125, "id": 1}
+{"$type": "set_spring_target_position", "target_position": 0.125, "id": 1}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5035,7 +5300,7 @@ Make this object a ResonanceAudioSoundSource and play the audio data.
 
 # PositionMarkerCommand
 
-These commands show or hide position markers. They can be useful for debugging as scene.
+These commands show or hide position markers. They can be useful for debugging.
 
 ***
 
@@ -6855,7 +7120,7 @@ Options for when to send data.
 
 Send data for every composite object in the scene. 
 
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`CompositeObjects`](output_data.md#CompositeObjects)</font>
@@ -6866,6 +7131,38 @@ Send data for every composite object in the scene.
 
 ```python
 {"$type": "send_composite_objects", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_dynamic_composite_objects`**
+
+Send dynamic data for every composite object in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`DynamicCompositeObjects`](output_data.md#DynamicCompositeObjects)</font>
+
+```python
+{"$type": "send_dynamic_composite_objects"}
+```
+
+```python
+{"$type": "send_dynamic_composite_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7047,6 +7344,39 @@ Options for when to send data.
 
 ***
 
+## **`send_oculus_touch_buttons`**
+
+Send data for buttons pressed on Oculus Touch controllers. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`OculusTouchButtons`](output_data.md#OculusTouchButtons)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "send_oculus_touch_buttons"}
+```
+
+```python
+{"$type": "send_oculus_touch_buttons", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_scene_regions`**
 
 Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene. 
@@ -7061,6 +7391,71 @@ Receive data about the sub-regions within a scene in the scene. Only send this c
 
 ```python
 {"$type": "send_scene_regions", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_composite_objects`**
+
+Send static data for every composite object in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticCompositeObjects`](output_data.md#StaticCompositeObjects)</font>
+
+```python
+{"$type": "send_static_composite_objects"}
+```
+
+```python
+{"$type": "send_static_composite_objects", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_oculus_touch`**
+
+Send static data for the Oculus Touch rig. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticOculusTouch`](output_data.md#StaticOculusTouch)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "send_static_oculus_touch"}
+```
+
+```python
+{"$type": "send_static_oculus_touch", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7665,6 +8060,42 @@ Destroy the current VR rig.
 ```python
 {"$type": "destroy_vr_rig"}
 ```
+
+***
+
+## **`rotate_vr_rig_by`**
+
+Rotate the VR rig by an angle. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "rotate_vr_rig_by", "angle": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The angle of rotation in degrees. | |
+
+***
+
+## **`set_vr_resolution_scale`**
+
+Controls the actual size of eye textures as a multiplier of the device's default resolution. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "set_vr_resolution_scale"}
+```
+
+```python
+{"$type": "set_vr_resolution_scale", "resolution_scale_factor": 1.0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"resolution_scale_factor"` | float | Texture resolution scale factor. A value greater than 1.0 improves image quality but at a slight performance cost. Range: 0.5 to 1.75 | 1.0 |
 
 ***
 

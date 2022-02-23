@@ -52,7 +52,7 @@ c.communicate({"$type": "terminate"})
 
 If you saved png files instead of jpg files, replace `img_%04d.jpg` with `img_%04d.png`
 
-If you're using Windows and get an error, make sure that ffmpeg is in your [path environment variable](https://www.thewindowsclub.com/how-to-install-ffmpeg-on-windows-10).
+If you're using Windows and get an error, make sure that ffmpeg is in your [path environment variable](https://www.geeksforgeeks.org/how-to-install-ffmpeg-on-windows/).
 
 ## Option B: Record using ffmpeg
 

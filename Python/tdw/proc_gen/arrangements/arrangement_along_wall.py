@@ -1,7 +1,7 @@
-from typing import Dict, Tuple
+from typing import Dict
 from abc import ABC, abstractmethod
 import numpy as np
-from tdw.add_ons.proc_gen_objects_data.arrangement_with_root_object import ArrangementWithRootObject
+from tdw.proc_gen.arrangements.arrangement_with_root_object import ArrangementWithRootObject
 from tdw.scene_data.interior_region import InteriorRegion
 from tdw.cardinal_direction import CardinalDirection
 from tdw.librarian import ModelRecord

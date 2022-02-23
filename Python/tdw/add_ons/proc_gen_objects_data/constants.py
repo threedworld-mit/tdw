@@ -1,1 +1,0 @@
-DEFAULT_CELL_SIZE: float = 0.6096

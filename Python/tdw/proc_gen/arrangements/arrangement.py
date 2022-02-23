@@ -17,7 +17,11 @@ class Arrangement(ABC):
     """:class_var
     A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names.
     """
-    MODEL_CATEGORIES: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "models.json")).read_text())
+    MODEL_CATEGORIES: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "data/models.json")).read_text())
+    """:class_var
+    The default span used for arranging objects next to each other.
+    """
+    DEFAULT_CELL_SIZE: float = 0.6096
 
     def __init__(self, position: Dict[str, float], rng: np.random.RandomState):
         """

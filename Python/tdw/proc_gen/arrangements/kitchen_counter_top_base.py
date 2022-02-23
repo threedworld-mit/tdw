@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Dict, List, Tuple
 import numpy as np
 from tdw.controller import Controller
-from tdw.add_ons.proc_gen_objects_data.arrangement_along_wall import ArrangementAlongWall
+from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWall
 from tdw.scene_data.interior_region import InteriorRegion
 from tdw.cardinal_direction import CardinalDirection
 from tdw.librarian import ModelRecord

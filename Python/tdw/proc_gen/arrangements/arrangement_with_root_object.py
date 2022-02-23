@@ -7,7 +7,7 @@ from overrides import final
 import numpy as np
 from tdw.librarian import ModelRecord
 from tdw.controller import Controller
-from tdw.add_ons.proc_gen_objects_data.arrangement import Arrangement
+from tdw.proc_gen.arrangements.arrangement import Arrangement
 from tdw.container_data.container_trigger_collider import ContainerTriggerCollider
 from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
 from tdw.container_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
@@ -22,11 +22,11 @@ class ArrangementWithRootObject(Arrangement, ABC):
     """:class_var
     A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category.
     """
-    ON_TOP_OF: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "on_top_of.json")).read_text())
+    ON_TOP_OF: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())
     """:class_var
     A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category.
     """
-    ENCLOSED_BY: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "enclosed_by.json")).read_text())
+    ENCLOSED_BY: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())
 
     def __init__(self, record: ModelRecord, position: Dict[str, float], rng: np.random.RandomState):
         """

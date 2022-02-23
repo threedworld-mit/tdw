@@ -4,8 +4,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.scene_data.interior_region import InteriorRegion
 from tdw.cardinal_direction import CardinalDirection
 from tdw.librarian import ModelRecord
-from tdw.add_ons.proc_gen_objects_data.kitchen_counter_top_base import KitchenCounterTopBase
-from tdw.add_ons.proc_gen_objects_data.constants import DEFAULT_CELL_SIZE
+from tdw.proc_gen.arrangements.kitchen_counter_top_base import KitchenCounterTopBase
 
 
 class Dishwasher(KitchenCounterTopBase):
@@ -43,7 +42,25 @@ class Dishwasher(KitchenCounterTopBase):
         return commands
 
     def _get_position(self, position: Dict[str, float]) -> Dict[str, float]:
-        pos = super()._get_position(position=position)
+        depth = self._get_depth()
+        if self._wall == CardinalDirection.north:
+            pos = {"x": position["x"],
+                   "y": 0,
+                   "z": self._region.z_max - depth / 2}
+        elif self._wall == CardinalDirection.south:
+            pos = {"x": position["x"],
+                   "y": 0,
+                   "z": self._region.z_min + depth / 2}
+        elif self._wall == CardinalDirection.west:
+            pos = {"x": self._region.x_min + depth / 2,
+                   "y": 0,
+                   "z": position["z"]}
+        elif self._wall == CardinalDirection.east:
+            pos = {"x": self._region.x_max - depth / 2,
+                   "y": 0,
+                   "z": position["z"]}
+        else:
+            raise Exception(self._wall)
         # Offset the position to leave a little gap.
         if self._direction == CardinalDirection.north:
             pos["z"] += Dishwasher._DISHWASHER_OFFSET
@@ -70,9 +87,6 @@ class Dishwasher(KitchenCounterTopBase):
     def _get_depth(self) -> float:
         return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2]
 
-    def _get_category(self) -> str:
-        return "dishwasher"
-
     def _get_size(self) -> Tuple[float, float]:
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
-        return extents[0] + Dishwasher._DISHWASHER_OFFSET * 2, DEFAULT_CELL_SIZE
+        return extents[0] + Dishwasher._DISHWASHER_OFFSET * 2, Dishwasher.DEFAULT_CELL_SIZE

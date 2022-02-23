@@ -4,9 +4,9 @@ from pkg_resources import resource_filename
 from typing import Dict, List
 import numpy as np
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.proc_gen_objects_data.kitchen_cabinet import KitchenCabinet
-from tdw.add_ons.proc_gen_objects_data.wall_cabinet import WallCabinet
-from tdw.add_ons.proc_gen_objects_data.microwave import Microwave
+from tdw.proc_gen.arrangements.kitchen_cabinet import KitchenCabinet
+from tdw.proc_gen.arrangements.wall_cabinet import WallCabinet
+from tdw.proc_gen.arrangements.microwave import Microwave
 from tdw.scene_data.interior_region import InteriorRegion
 from tdw.cardinal_direction import CardinalDirection
 from tdw.librarian import ModelRecord
@@ -32,7 +32,7 @@ class KitchenCounter(KitchenCabinet):
     """:class_var
     A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category.
     """
-    COUNTERS_AND_CABINETS: Dict[str, str] = loads(Path(resource_filename(__name__, "counters_and_cabinets.json")).read_text())
+    COUNTERS_AND_CABINETS: Dict[str, str] = loads(Path(resource_filename(__name__, "data/counters_and_cabinets.json")).read_text())
 
     def __init__(self, allow_microwave: bool, wall: CardinalDirection, region: InteriorRegion, record: ModelRecord, position: Dict[str, float],
                  rng: np.random.RandomState, microwave_plate: float = 0.7, empty: float = 0.15):

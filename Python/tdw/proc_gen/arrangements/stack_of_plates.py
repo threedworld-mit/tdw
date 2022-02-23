@@ -1,7 +1,7 @@
 from typing import Dict, List
 import numpy as np
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.proc_gen_objects_data.arrangement import Arrangement
+from tdw.proc_gen.arrangements.arrangement import Arrangement
 from tdw.controller import Controller
 
 

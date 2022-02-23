@@ -1,5 +1,5 @@
 from typing import Dict, List
-from tdw.add_ons.proc_gen_objects_data.kitchen_cabinet import KitchenCabinet
+from tdw.proc_gen.arrangements.kitchen_cabinet import KitchenCabinet
 
 
 class WallCabinet(KitchenCabinet):

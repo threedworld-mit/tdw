@@ -1,7 +1,7 @@
 from abc import ABC
 from overrides import final
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.proc_gen_objects_data.arrangement_along_wall import ArrangementAlongWall
+from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWall
 from tdw.cardinal_direction import CardinalDirection
 
 

@@ -2,8 +2,8 @@ from typing import Dict, List
 import numpy as np
 from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
 from tdw.container_data.container_collider_tag import ContainerColliderTag
-from tdw.add_ons.proc_gen_objects_data.arrangement_with_root_object import ArrangementWithRootObject
-from tdw.add_ons.proc_gen_objects_data.plate import Plate
+from tdw.proc_gen.arrangements.arrangement_with_root_object import ArrangementWithRootObject
+from tdw.proc_gen.arrangements.plate import Plate
 from tdw.librarian import ModelRecord
 from tdw.controller import Controller
 from tdw.cardinal_direction import CardinalDirection

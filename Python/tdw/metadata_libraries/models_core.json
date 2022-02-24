@@ -19132,6 +19132,92 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "cabinet_36_wall_wood_beech_honey_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 14622721,
+                "Linux": 14858618,
+                "Windows": 14615812
+            },
+            "bounds": {
+                "back": {
+                    "x": 9.715557e-06,
+                    "y": 0.3826747,
+                    "z": -0.1720332
+                },
+                "bottom": {
+                    "x": 9.715557e-06,
+                    "y": 0,
+                    "z": 0.0318253
+                },
+                "center": {
+                    "x": 9.715557e-06,
+                    "y": 0.3826747,
+                    "z": 0.0318253
+                },
+                "front": {
+                    "x": 9.715557e-06,
+                    "y": 0.3826747,
+                    "z": 0.2356838
+                },
+                "left": {
+                    "x": -0.4570084,
+                    "y": 0.3826747,
+                    "z": 0.0318253
+                },
+                "right": {
+                    "x": 0.4570279,
+                    "y": 0.3826747,
+                    "z": 0.0318253
+                },
+                "top": {
+                    "x": 9.715557e-06,
+                    "y": 0.7653494,
+                    "z": 0.0318253
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_36_wall_wood_beech_honey_composite",
+            "physics_quality": 0.9807541424755328,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey"
+                    ],
+                    "name": "cabinet_36_wall_wood_beech_honey_composite"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "door_left"
+                },
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "chrome2"
+                    ],
+                    "name": "door_right"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/cabinet_36_wall_wood_beech_honey_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_36_wall_wood_beech_honey_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_36_wall_wood_beech_honey_composite"
+            },
+            "volume": 0.04600024,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "cabinet_36_wall_wood_oak_white_composite": {
             "asset_bundle_sizes": {
                 "Darwin": 741120,

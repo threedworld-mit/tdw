@@ -101,7 +101,7 @@ c.communicate({"$type": "terminate"})
 
 - The `resonance` values should usually be less than 1.0, and small solid objects (e.g. dominos) should have very small values i.e. around 0.15. Thin-walled objects, especially made from materials such as glass or metal, can have values slightly > 1.0 but going too high can create unnatural-sounding resonances.
 
-- The `size` should correlate with the object's volume. `size` is an integer between 0 and 1.
+- The `size` should correlate with the object's volume. `size` is an integer between 0 and 5.
 
 Having set values, define an `ObjectAudioStatic` object and pass it into `PyImpact`:
 

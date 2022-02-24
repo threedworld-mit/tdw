@@ -28,14 +28,16 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Fixed: `send_audio_sources` checks for object IDs instead of audio source IDs and therefore doesn't work.
 - Fixed: `PyImpact` doesn't play valid impact audio events. Now, it uses `AudioSourceDone` output data to check the time between impact events.
   - Added optional parameter `min_time_between_audio_events` to the constructor.
+- Fixed: `PyImpact` doesn't calculate `size` values accurately. Added `PyImpact.get_size(model)`.
 
 ### Documentation
 
 #### Modified Documentation
 
-| Document                     | Modification                                               |
-| ---------------------------- | ---------------------------------------------------------- |
-| `lessons/audio/py_impact.md` | Added a section regarding `min_time_between_impact_events` |
+| Document                              | Modification                                               |
+| ------------------------------------- | ---------------------------------------------------------- |
+| `lessons/audio/py_impact.md`          | Added a section regarding `min_time_between_impact_events` |
+| `lessons/audio/py_impact_advanced.md` | Added better guidance for how to set `size` values.        |
 
 ## v1.9.5
 

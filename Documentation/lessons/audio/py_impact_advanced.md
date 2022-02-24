@@ -90,20 +90,27 @@ c.communicate({"$type": "terminate"})
   mass = volume * density
   ```
 
-- Decide on a `bounciness` value that makes sense for the object; the value must be between 0 and 1.
+- `size` is an integer between 0 and 5. The value is derived from the extents of the model's bounds. Get the size value by calling `PyImpact.get_size(model_record)`:
 
+```python
+from tdw.librarian import ModelLibrarian
+from tdw.add_ons.py_impact import PyImpact
+
+model_name = "cabinet_24_door_drawer_wood_beach_honey"
+record = ModelLibrarian().get_record(model_name)
+size = PyImpact.get_size(model=record)
+print(size)  # 4
+```
+
+- Decide on a `bounciness` value that makes sense for the object; the value must be between 0 and 1.
 - When setting values for the relative amplitude values of objects (`amp`), it may be helpful to consider the object's:
 
   - **Thickness**: Thin objects (boards, sheets, planks, hollow boxes) make more sound than thick solid blocks
   - **Material**: Hard objects (metal, glass, ceramic) make more sound than soft (foam, rubber). Cardboard is a bit of outlier because it is soft, but is also almost always really, really thin which makes it surprisingly loud.
   - **Size**: For objects of similar thickness, bigger are usually louder than smaller.
   - In PyImpact, these object amplitude values are scaled relative to the initial amplitude value passed in via `p = PyImpact(initial_amp=0.5)`. This value must be > 0 and < 1. In certain situations, such as multiple closely-packed collision events, distortion of the audio can occur if this value is set too high.
-
 - The `resonance` values should usually be less than 1.0, and small solid objects (e.g. dominos) should have very small values i.e. around 0.15. Thin-walled objects, especially made from materials such as glass or metal, can have values slightly > 1.0 but going too high can create unnatural-sounding resonances.
-
-- The `size` should correlate with the object's volume. `size` is an integer between 0 and 5.
-
-Having set values, define an `ObjectAudioStatic` object and pass it into `PyImpact`:
+- Having set values, define an `ObjectAudioStatic` object and pass it into `PyImpact`:
 
 ```python
 from tdw.librarian import ModelLibrarian

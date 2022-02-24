@@ -241,6 +241,19 @@ Create a scrape sound, and return a valid command to play audio data in TDW.
 
 _Returns:_  A [`Base64Sound`](../physics_audio/base64_sound.md) object or None if no sound.
 
+#### get_size
+
+**`PyImpact(CollisionManager).get_size(model)`**
+
+_This is a static function._
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| model |  Union[np.ndarray, ModelRecord] |  | Either the extents of an object or a model record. |
+
+_Returns:_  The `size` integer of the object.
+
 #### reset
 
 **`self.reset()`**

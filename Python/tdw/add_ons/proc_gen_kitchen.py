@@ -610,27 +610,6 @@ class ProcGenKitchen(ProcGenObjects):
                                          position={"x": position["x"], "y": 0.9167836, "z": position["z"]},
                                          categories=ProcGenObjects.ON_TOP_OF["kitchen_counter"])
 
-    def _get_chair_position(self, chair_record: ModelRecord, table_bottom: np.array,
-                            table_bound_point: np.array) -> np.array:
-        """
-        :param chair_record: The chair model record.
-        :param table_bottom: The bottom-center position of the table.
-        :param table_bound_point: The bounds position.
-
-        :return: A position for a chair around the table.
-        """
-
-        position_to_center = table_bound_point - table_bottom
-        position_to_center_normalized = position_to_center / np.linalg.norm(position_to_center)
-        # Scoot the chair back by half of its front-back extent.
-        half_extent = (np.linalg.norm(TDWUtils.vector3_to_array(chair_record.bounds["front"]) -
-                                      TDWUtils.vector3_to_array(chair_record.bounds["back"]))) / 2
-        # Move the chair position back. Add some randomness for spice.
-        chair_position = table_bound_point + (position_to_center_normalized *
-                                              (half_extent + self.rng.uniform(-0.1, -0.05)))
-        chair_position[1] = 0
-        return chair_position
-
     def _add_work_triangle(self, region: RegionWalls) -> List[CardinalDirection]:
         """
         Add a kitchen work triangle of counters and appliances.

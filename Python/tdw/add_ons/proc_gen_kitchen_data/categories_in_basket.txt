@@ -1,7 +1,0 @@
-coin
-cork
-fork
-knife
-pen
-scissors
-spoon

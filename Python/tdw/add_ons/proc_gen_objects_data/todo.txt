@@ -1,8 +1,6 @@
 sink
 stove
-side_table
 radiator
-basket
 kitchen_counter_top
 void
 table

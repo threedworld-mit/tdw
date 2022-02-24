@@ -18656,6 +18656,92 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "cabinet_24_wall_wood_oak_white_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 741806,
+                "Linux": 978912,
+                "Windows": 732537
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.001019686,
+                    "y": 0.3847069,
+                    "z": -0.1668077
+                },
+                "bottom": {
+                    "x": -0.001019686,
+                    "y": 0,
+                    "z": 0.03237242
+                },
+                "center": {
+                    "x": -0.001019686,
+                    "y": 0.3847069,
+                    "z": 0.03237242
+                },
+                "front": {
+                    "x": -0.001019686,
+                    "y": 0.3847069,
+                    "z": 0.2315525
+                },
+                "left": {
+                    "x": -0.3060198,
+                    "y": 0.3847069,
+                    "z": 0.03237242
+                },
+                "right": {
+                    "x": 0.3039804,
+                    "y": 0.3847069,
+                    "z": 0.03237242
+                },
+                "top": {
+                    "x": -0.001019686,
+                    "y": 0.7694138,
+                    "z": 0.03237242
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "cabinet_24_wall_wood_oak_white_composite",
+            "physics_quality": 0.9003765244134005,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_oak_white"
+                    ],
+                    "name": "cabinet_24_wall_wood_oak_white_composite"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "door_left"
+                },
+                {
+                    "materials": [
+                        "wood_oak_white",
+                        "chrome2"
+                    ],
+                    "name": "door_right"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/cabinet_24_wall_wood_oak_white_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_24_wall_wood_oak_white_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_24_wall_wood_oak_white_composite"
+            },
+            "volume": 0.03048842,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "cabinet_24_white_wood": {
             "asset_bundle_sizes": {
                 "Darwin": 4186308,

@@ -4,6 +4,39 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.6
+
+### Command API
+
+#### Modified Commands
+
+| Command              | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `send_audio_sources` | Removed optional parameter `ids` because it was non-functional. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data       | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `AudioSourceDone` | Output data that announces that an audio source is done playing. |
+
+### `tdw` module
+
+- Fixed: Error when initializing `PyImpact` if there isn't a VR rig in the scene.
+- Fixed: `send_audio_sources` checks for object IDs instead of audio source IDs and therefore doesn't work.
+- Fixed: `PyImpact` doesn't play valid impact audio events. Now, it uses `AudioSourceDone` output data to check the time between impact events.
+  - Added optional parameter `min_time_between_audio_events` to the constructor.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                                               |
+| ---------------------------- | ---------------------------------------------------------- |
+| `lessons/audio/py_impact.md` | Added a section regarding `min_time_between_impact_events` |
+
 ## v1.9.5
 
 ### New Features

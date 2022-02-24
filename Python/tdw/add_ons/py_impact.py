@@ -10,7 +10,7 @@ import scipy.signal as sg
 from scipy.ndimage import gaussian_filter1d, uniform_filter1d
 from pydub import AudioSegment
 from tdw.output_data import OutputData, Rigidbodies, StaticRobot, SegmentationColors, StaticRigidbodies, \
-    RobotJointVelocities, StaticOculusTouch
+    RobotJointVelocities, StaticOculusTouch, AudioSourceDone
 from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.object_audio_static import ObjectAudioStatic, DEFAULT_OBJECT_AUDIO_STATIC_DATA
 from tdw.physics_audio.modes import Modes
@@ -142,7 +142,7 @@ class PyImpact(CollisionManager):
                  static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None,
                  resonance_audio: bool = False, floor: AudioMaterial = AudioMaterial.wood_medium,
                  rng: np.random.RandomState = None, auto: bool = True, scrape: bool = True,
-                 scrape_objects: Dict[int, ScrapeModel] = None):
+                 scrape_objects: Dict[int, ScrapeModel] = None, max_impact_audio_events_per_object: int = 3):
         """
         :param initial_amp: The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
         :param prevent_distortion: If True, clamp amp values to <= 0.99
@@ -151,9 +151,10 @@ class PyImpact(CollisionManager):
         :param resonance_audio: If True, the simulation is using Resonance Audio.
         :param floor: The floor material.
         :param rng: The random number generator. If None, a random number generator with a random seed is created.
-        :param auto: If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio.
+        :param auto: If True, PyImpact will evaluate the simulation state per `communicate()` call and automatically generate audio.
         :param scrape: If True, initialize certain objects as scrape surfaces: Change their visual material(s) and enable them for scrape audio. See: `tdw.physics_audio.scrape_model.DEFAULT_SCRAPE_MODELS`
         :param scrape_objects: If `scrape == True` and this is not None, this dictionary can be used to manually set scrape surfaces. Key = Object ID. Value = [`ScrapeModel`](../physics_audio/scrape_model.md).
+        :param max_impact_audio_events_per_object: The maximum number of concurrent audio events per object.
         """
 
         super().__init__()
@@ -253,6 +254,10 @@ class PyImpact(CollisionManager):
         # Ignore collisions that include these object IDs.
         self._excluded_objects: List[int] = list()
 
+        # Ongoing impact audio events. Key = Audio source ID. Value = Number of events.
+        self._impact_audio_sources: Dict[int, int] = dict()
+        self._max_impact_audio_events_per_object: int = max_impact_audio_events_per_object
+
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_rigidbodies",
                  "frequency": "always"},
@@ -277,6 +282,14 @@ class PyImpact(CollisionManager):
         # Don't automatically generate audio.
         if not self.auto:
             return
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            # Mark this audio source as done.
+            if r_id == "ausd":
+                audio_source_id = AudioSourceDone(resp[i]).get_id()
+                # The audio source might not be in this dictionary (for example if this was a scrape event).
+                if audio_source_id in self._impact_audio_sources:
+                    self._impact_audio_sources[audio_source_id] -= 1
         # Get collision events.
         self._get_collision_types(resp=resp)
         for object_id in self.collision_events:
@@ -581,8 +594,14 @@ class PyImpact(CollisionManager):
                                       secondary_material=secondary_material, secondary_amp=secondary_amp,
                                       secondary_mass=secondary_mass, primary_resonance=primary_resonance, secondary_resonance=secondary_resonance)
         if sound is not None:
-            # Use the primary object ID for the audio source ID to prevent a droning effect.
-            return self._get_audio_command(audio_source_id=primary_id, contact_points=contact_points, sound=sound)
+            if primary_id not in self._impact_audio_sources:
+                self._impact_audio_sources[primary_id] = 0
+            # Don't play too many impact events to avoid a droning effect.
+            if self._impact_audio_sources[primary_id] >= self._max_impact_audio_events_per_object:
+                return None
+            else:
+                self._impact_audio_sources[primary_id] += 1
+                return self._get_audio_command(audio_source_id=primary_id, contact_points=contact_points, sound=sound)
         # If PyImpact failed to generate a sound (which is rare!), fail silently here.
         else:
             return None
@@ -932,6 +951,10 @@ class PyImpact(CollisionManager):
         self._scrape_events_count.clear()
         self._scrape_previous_indices.clear()
         self._excluded_objects.clear()
+        # Clear impact count.
+        self._impact_audio_sources.clear()
+        # Clear ongoing commands.
+        self.commands.clear()
         # Stop all ongoing audio.
         self.commands.append({"$type": "stop_all_audio"})
 

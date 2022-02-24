@@ -51,6 +51,7 @@ from tdw.FBOutput import OculusTouchButtons as OculusTouch
 from tdw.FBOutput import StaticOculusTouch as StatOc
 from tdw.FBOutput import StaticCompositeObjects as StatComp
 from tdw.FBOutput import DynamicCompositeObjects as DynComp
+from tdw.FBOutput import AudioSourceDone as AudDone
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 import numpy as np
 from typing import Tuple, Optional, List
@@ -851,6 +852,14 @@ class AudioSources(OutputData):
 
     def get_samples(self) -> np.array:
         return self.data.SamplesAsNumpy()
+
+
+class AudioSourceDone(OutputData):
+    def get_data(self) -> AudDone.AudioSourceDone:
+        return AudDone.AudioSourceDone.GetRootAsAudioSourceDone(self.bytes, 0)
+
+    def get_id(self):
+        return self.data.Id()
 
 
 class Raycast(OutputData):

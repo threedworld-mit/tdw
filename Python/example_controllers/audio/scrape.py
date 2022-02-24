@@ -14,7 +14,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 Record scrape sounds.
 """
 
-c = Controller(launch_build=False)
+c = Controller()
 camera = ThirdPersonCamera(position={"x": 1.3, "y": 2.1, "z": -1.1},
                            look_at={"x": 0, "y": 0.5, "z": 0},
                            avatar_id="a")

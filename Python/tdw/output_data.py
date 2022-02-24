@@ -858,7 +858,7 @@ class AudioSourceDone(OutputData):
     def get_data(self) -> AudDone.AudioSourceDone:
         return AudDone.AudioSourceDone.GetRootAsAudioSourceDone(self.bytes, 0)
 
-    def get_id(self):
+    def get_id(self) -> int:
         return self.data.Id()
 
 

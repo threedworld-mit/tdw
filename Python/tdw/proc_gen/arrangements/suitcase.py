@@ -6,7 +6,9 @@ from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWal
 
 class Suitcase(ArrangementAlongWall):
     """
-    The suitcase model is chosen randomly; see `Suitcase.MODEL_CATEGORIES["suitcase"]`.
+    A suitcase.
+
+    - The suitcase model is chosen randomly; see `Suitcase.MODEL_CATEGORIES["suitcase"]`.
     """
 
     def get_commands(self) -> List[dict]:

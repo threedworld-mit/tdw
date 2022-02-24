@@ -9,13 +9,13 @@ from tdw.proc_gen.arrangements.kitchen_counter_top_base import KitchenCounterTop
 
 class Dishwasher(KitchenCounterTopBase):
     """
-    A dishwasher has a floating kitchen counter top on above it.
+    A dishwasher with a kitchen counter top with objects on it.
 
-    The floating kitchen counter top always has a rectangular arrangement of objects on top of it; see `Dishwasher.ON_TOP_OF["kitchen_counter"]`.
-
-    The dishwasher model is chosen randomly; see `Dishwasher.MODEL_CATEGORIES["dishwasher"]`.
-
-    Dishwashers are kinematic but their sub-objects are non-kinematic.
+    - The dishwasher model is chosen randomly; see `Dishwasher.MODEL_CATEGORIES["dishwasher"]`.
+    - The dishwasher has a floating kitchen counter top above it.
+    - The floating kitchen counter top always has a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `Dishwasher.ON_TOP_OF["kitchen_counter"]`.
+    - All dishwashers have a door that can be opened.
+    - The root object of the dishwasher is kinematic and the door sub-object is non-kinematic.
     """
 
     _DISHWASHER_OFFSET: float = 0.025

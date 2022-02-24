@@ -7,9 +7,10 @@ from tdw.controller import Controller
 
 class StackOfPlates(Arrangement):
     """
-    A stack of plates. The plate model is chosen randomly and is the same for each plate; see `StackOfPlates.MODEL_CATEGORIES["plate"]`.
+    A stack of plates.
 
-    The number of plates in the stack is random; see `min_num` and `max_num` in the constructor.
+    - The plate model is chosen randomly and is the same for each plate; see `StackOfPlates.MODEL_CATEGORIES["plate"]`.
+    - The number of plates in the stack is random; see `min_num` and `max_num` in the constructor.
     """
 
     def __init__(self, min_num: int, max_num: int, position: Dict[str, float], rng: np.random.RandomState):

@@ -8,11 +8,14 @@ from tdw.controller import Controller
 
 class Plate(ArrangementWithRootObject):
     """
-    A kitchen plate may have food on top of it; see `food_probability` in the constructor.
+    A kitchen plate.
 
-    The possible food categories are `Plate.FOOD_CATEGORIES`; see `Plate.MODEL_CATEGORIES` for a list of models within those categories.
-
-    The plate model is chosen randomly; see `Plate.MODEL_CATEGORIES["plate"]`.
+    - The plate model is chosen randomly; see `TableSetting.MODEL_CATEGORIES["plate"]`.
+    - The plate might have food on it; see `food_probability` in the constructor.
+      - The possible food categories are `TableSetting.FOOD_CATEGORIES`.
+      - See `TableSetting.MODEL_CATEGORIES` for a list of models within those categories.
+      - The position of the food is perturbed randomly.
+      - The rotation of the food is random.
     """
 
     """:class_var

@@ -1,13 +1,3 @@
-4ft_shelf_metal
-4ft_wood_shelving
-5ft_shelf_metal
-5ft_wood_shelving
-6ft_shelf_metal
-6ft_wood_shelving
 gas_stove
 radiator_pub_2015
 b03_radiator_alum_12
-elf_painting
-its_about_time_painting
-silver_frame_painting
-framed_painting

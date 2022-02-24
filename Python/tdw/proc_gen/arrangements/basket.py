@@ -7,13 +7,16 @@ from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWal
 
 class Basket(ArrangementAlongWall):
     """
-    A basket has random objects inside it; see `Basket.INSIDE_OF["basket"]`. The rotations of these objects are random. The starting positions of the objects are random, but they are placed at (x, z) coordinates within the basket and at a y coordinate above the basket. Each y coordinate is higher than the other; the change in height is random but is guaranteed to prevent interpenetration. The objects will eventually fall into the basket.
+    A basket with random objects.
 
-    The basket is placed along a wall at a random distance offset and rotated randomly between 0 and 10 degrees.
-
-    The basket model is random.
-
-    The basket object is non-kinematic.
+    - The basket model is chosen random; see `Basket.MODEL_CATEGORIES["basket"]`.
+    - There are 2-5 objects in the basket.
+    - The objects in the basic are chosen randomly; see `Basket.INSIDE_OF["basket"]`.
+    - The rotations of these objects are random.
+    - The starting positions of the objects are random, but they are placed at (x, z) coordinates within the basket and at a y coordinate _above_ the basket. Each y coordinate is higher than the other; the change in height is random but is guaranteed to prevent interpenetration.
+    - The basket is placed along a wall at a random distance offset: `extent * random.uniform(1.15, 1.25)`.
+    - The basket is rotated randomly between -10 and 10 degrees.
+    - The basket object is non-kinematic.
     """
     
     def get_commands(self) -> List[dict]:
@@ -23,7 +26,7 @@ class Basket(ArrangementAlongWall):
         d *= 0.6
         r = d / 2
         y = extents[1]
-        for i in range(2, self._rng.randint(4, 6)):
+        for i in range(self._rng.randint(2, 6)):
             category = Basket.INSIDE_OF["basket"][self._rng.randint(0, len(Basket.INSIDE_OF["basket"]))]
             model_name = Basket.MODEL_CATEGORIES[category][self._rng.randint(0, len(Basket.MODEL_CATEGORIES[category]))]
             q = TDWUtils.get_random_point_in_circle(center=np.array([self._position["x"], y, self._position["z"]]),

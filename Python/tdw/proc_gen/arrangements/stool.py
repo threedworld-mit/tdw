@@ -5,9 +5,11 @@ from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWal
 
 class Stool(ArrangementAlongWall):
     """
-    The stool model is chosen randomly; see `Stool.MODEL_CATEGORIES["stool"]`.
+    A stool.
 
-    The stool's rotation is random.
+    - The stool model is chosen randomly; see `Stool.MODEL_CATEGORIES["stool"]`.
+    - The stool's rotation is random.
+    - The stool is non-kinematic.
     """
 
     def get_commands(self) -> List[dict]:

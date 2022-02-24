@@ -6,11 +6,11 @@ from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWal
 
 class SideTable(ArrangementAlongWall):
     """
-    A side table always has a rectangular arrangement of objects on top of it; see `SideTable.ON_TOP_OF["side_table"]`. Due to its size, there are usually only a few objects.
+    A small side table.
 
-    The side table model is chosen randomly; see `SideTable.MODEL_CATEGORIES["side_table"]`.
-
-    Side tables are non-kinematic.
+    - The side table model is chosen randomly; see `SideTable.MODEL_CATEGORIES["side_table"]`.
+    - The side table always has a rectangular arrangement of objects on top of it; see `SideTable.ON_TOP_OF["side_table"]`.
+    - The side table is non-kinematic.
     """
 
     def get_commands(self) -> List[dict]:

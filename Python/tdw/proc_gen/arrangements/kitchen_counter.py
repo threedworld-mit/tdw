@@ -17,16 +17,15 @@ class KitchenCounter(KitchenCabinet):
     """
     A kitchen counter can have objects on it, in it, and above it.
 
-    A kitchen counter longer than 0.7 meters may have a [`Microwave`](microwave.md); see `allow_microwave` in the constructor.
-
-    The microwave may have a [`Plate`](plate.md); see `microwave_plate` in the constructor. If it does have a plate, the plate always has food on it.
-
-    If the kitchen counter does _not_ have a microwave:
-
+    - The kitchen counter  model is chosen randomly; see `KitchenCounter.MODEL_CATEGORIES["kitchen_counter"]`.
+    - A kitchen counter longer than 0.7 meters may have a [`Microwave`](microwave.md); see `allow_microwave` in the constructor.
+    - If the kitchen counter does _not_ have a microwave:
       - If the kitchen counter is alongside a wall without windows and has a corresponding wall cabinet model, a [`WallCabinet`](wall_cabinet.md) will be added above it; see `KitchenCounter.COUNTERS_AND_CABINETS`.
-      - The kitchen counter will have a rectangular arrangement of objects on top of it; see `KitchenCounter.ON_TOP_OF["kitchen_counter"]`.
-
-    The interior of the kitchen counter may be empty; see `empty` in the constructor. If the interior is _not_ empty, the kitchen counter will have a rectangular arrangement of objects inside of it; see `KitchenCounter.ENCLOSED_BY["kitchen_counter"]`.
+      - The kitchen counter will have a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `KitchenCounter.ON_TOP_OF["kitchen_counter"]`.
+    - The interior of the kitchen counter may be empty; see `empty` in the constructor.
+    - If the interior is _not_ empty, the kitchen counter will have a rectangular arrangement of objects inside of it. The objects are chosen randomly; see `KitchenCounter.ENCLOSED_BY["kitchen_counter"]`.
+    - All kitchen counters have doors that can open.
+    - The root object of the kitchen counter is kinematic and the door sub-objects are non-kinematic.
     """
 
     """:class_var
@@ -35,7 +34,7 @@ class KitchenCounter(KitchenCabinet):
     COUNTERS_AND_CABINETS: Dict[str, str] = loads(Path(resource_filename(__name__, "data/counters_and_cabinets.json")).read_text())
 
     def __init__(self, allow_microwave: bool, wall: CardinalDirection, region: InteriorRegion, record: ModelRecord, position: Dict[str, float],
-                 rng: np.random.RandomState, microwave_plate: float = 0.7, empty: float = 0.15):
+                 rng: np.random.RandomState, microwave_plate: float = 0.7, empty: float = 0.1):
         """
         :param allow_microwave: If True, and if this kitchen counter is longer than 0.7 meters, there will be a [`Microwave`](microwave.md) instead of an arrangement of objects on the counter top.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.

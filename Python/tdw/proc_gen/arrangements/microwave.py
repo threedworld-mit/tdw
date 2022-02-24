@@ -11,13 +11,13 @@ from tdw.cardinal_direction import CardinalDirection
 
 class Microwave(ArrangementWithRootObject):
     """
-    A microwave always has a rectangular arrangement of objects on top of it; see `Microwave.ON_TOP_OF["microwave"]`.
+    A microwave can have objects on top of it and inside of it.
 
-    A microwave may have a [`Plate`](plate.md) inside it; see `plate_probability` in the constructor. The plate will always have food on it.
-
-    The microwave model is chosen randomly; see `Microwave.MODEL_CATEGORIES["microwave"]`.
-
-    Microwaves are kinematic but their sub-objects are non-kinematic.
+    - The microwave model is chosen randomly; see `Microwave.MODEL_CATEGORIES["microwave"]`
+    - A microwave always has a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `Microwave.ON_TOP_OF["microwave"]`.
+    - A microwave may have a [`Plate`](plate.md) inside it; see `plate_probability` in the constructor. The plate will always have food on it.
+    - All microwaves have a door that can be opened.
+    - The root object of the microwave is kinematic and the door sub-object is non-kinematic.
     """
 
     def __init__(self, plate_probability: float, wall: CardinalDirection, record: ModelRecord,

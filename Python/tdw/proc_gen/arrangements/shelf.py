@@ -6,9 +6,11 @@ from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWal
 
 class Shelf(ArrangementAlongWall):
     """
-    A shelf object has multiple shelves and rectangular arrangements of random objects on each shelf; see `Shelf.ON_TOP_OF["shelf"]`.
+    Shelving with objects on the shelves.
 
-    The shelf model is chosen randomly; see `Shelf.MODEL_CATEGORIES["shelf"]`.
+    - The shelf model is chosen randomly; see `Shelf.MODEL_CATEGORIES["shelf"]`.
+    - Each shelf of the object has a rectangular arrangement of objects. The objects are chosen randomly; see `Shelf.ON_TOP_OF["shelf"]`.
+    - The shelf object is kinematic.
     """
 
     def get_commands(self) -> List[dict]:

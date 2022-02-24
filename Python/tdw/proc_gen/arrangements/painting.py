@@ -6,11 +6,11 @@ from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWal
 
 class Painting(ArrangementAlongWall):
     """
-    A painting is flush to the wall and above the ground.
+    A painting hanging on the wall.
 
-    The height of the painting is random, from 1.1 meters to `(ceiling_height - painting_height)`.
-
-    The painting model is chosen randomly; see `Painting.MODEL_CATEGORIES["painting"]`.
+    - The painting model is chosen randomly; see `Painting.MODEL_CATEGORIES["painting"]`.
+    - The height of the painting is random, from 1.1 meters to `(ceiling_height - painting_height)`.
+    - The painting is kinematic.
     """
 
     def get_commands(self) -> List[dict]:

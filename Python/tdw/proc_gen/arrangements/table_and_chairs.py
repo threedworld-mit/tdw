@@ -15,11 +15,9 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
     Abstract base class for a table with chairs around it.
     """
 
-    def __init__(self, table_rotation_range: float, chair_rotation_range: float, used_walls: int,
-                 region: InteriorRegion, record: ModelRecord, position: Dict[str, float], rng: np.random.RandomState):
+    def __init__(self, used_walls: int, region: InteriorRegion, record: ModelRecord, position: Dict[str, float],
+                 rng: np.random.RandomState):
         """
-        :param table_rotation_range: The table will be randomly rotated up to +/- this angle in degrees. Can be 0.
-        :param chair_rotation_range: The chairs will each be randomly rotated up to +/- this angle in degrees relative to the table. Can be 0.
         :param used_walls: Bitwise sum of walls with objects.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the table is in.
         :param record: The record of the root object.
@@ -29,8 +27,7 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
 
         self._used_walls: int = used_walls
         self._region: InteriorRegion = region
-        self._table_rotation_range: float = table_rotation_range
-        self._chair_rotation_range: float = chair_rotation_range
+        self._bound_point_positions: List[np.array] = list()
         super().__init__(record=record, position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
@@ -51,7 +48,6 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
         chairs = TableAndChairs.MODEL_CATEGORIES[self._get_chair_category()]
         chair_model_name: str = chairs[self._rng.randint(0, len(chairs))]
         chair_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(chair_model_name)
-        chair_positions: List[np.array] = list()
         tc = np.array([self._position["x"], self._position["z"]])
         for chair_direction in chair_directions:
             # Check if we're too close to a used wall.
@@ -69,12 +65,12 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
                 cd = np.linalg.norm(tc - cp)
                 # Add this side.
                 if cd > 2:
-                    chair_positions.append(self._get_chair_bound_position(cardinal_direction=chair_direction))
+                    self._bound_point_positions.append(self._get_chair_bound_position(cardinal_direction=chair_direction))
             else:
-                chair_positions.append(self._get_chair_bound_position(cardinal_direction=chair_direction))
-        pass
+                self._bound_point_positions.append(self._get_chair_bound_position(cardinal_direction=chair_direction))
         # Add the chairs.
-        for chair_bound_point in chair_positions:
+        rotation_range = self._get_chair_rotation_range()
+        for chair_bound_point in self._bound_point_positions:
             chair_position = self._get_chair_position(chair_record=chair_record,
                                                       table_bound_point=chair_bound_point)
             object_id = Controller.get_unique_id()
@@ -84,12 +80,16 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
                                                               object_id=object_id,
                                                               library="models_core.json"))
             self.object_ids.append(object_id)
+            if rotation_range == 0:
+                rotation = 0
+            else:
+                rotation = float(self._rng.uniform(-15, 15))
             # Look at the bottom-center and add a little rotation for spice.
             commands.extend([{"$type": "object_look_at_position",
                               "position": self._position,
                               "id": object_id},
                              {"$type": "rotate_object_by",
-                              "angle": float(self._rng.uniform(-15, 15)),
+                              "angle": rotation,
                               "id": object_id,
                               "axis": "yaw"}])
         commands.extend(self._get_rotation_commands())
@@ -97,14 +97,19 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
 
     @abstractmethod
     def _get_chair_category(self) -> str:
+        """
+        :return: The category of the chair models.
+        """
+
         raise Exception()
 
-    @final
-    def _get_rotation(self) -> float:
-        if self._table_rotation_range == 0:
-            return 0
-        else:
-            return float(self._rng.uniform(-self._table_rotation_range, self._table_rotation_range))
+    @abstractmethod
+    def _get_chair_rotation_range(self) -> float:
+        """
+        :return: The range in rotation in degrees that the chairs can be rotated relative to the table.
+        """
+
+        raise Exception()
 
     @final
     def _get_chair_bound_position(self, cardinal_direction: CardinalDirection) -> np.array:
@@ -142,6 +147,6 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
         half_extent = TDWUtils.get_bounds_extents(bounds=chair_record.bounds)[2] / 2
         # Move the chair position back. Add some randomness for spice.
         chair_position = table_bound_point + (position_to_center_normalized *
-                                              (half_extent + self.rng.uniform(-0.1, -0.05)))
+                                              (half_extent + self._rng.uniform(-0.1, -0.05)))
         chair_position[1] = 0
         return chair_position

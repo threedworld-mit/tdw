@@ -7,10 +7,8 @@ void
 
 # TEST
 
-cup_and_oaster
-dishwasher
+cup_and_coaster
 kitchen_table
-painting
 radiator
 refrigerator
 shelf

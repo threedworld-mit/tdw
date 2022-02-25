@@ -20217,46 +20217,6 @@
                 "z": 0
             },
             "composite_object": true,
-            "container_colliders": [
-                {
-                    "bottom_center_position": {
-                        "x": -0.00028375,
-                        "y": 0.76645648,
-                        "z": 0.01391269
-                    },
-                    "position": {
-                        "x": -0.00028375,
-                        "y": 0.77145648,
-                        "z": 0.01391269
-                    },
-                    "scale": {
-                        "x": 0.60912943,
-                        "y": 0.01,
-                        "z": 0.36148885
-                    },
-                    "shape": "box",
-                    "tag": "on"
-                },
-                {
-                    "bottom_center_position": {
-                        "x": 0.00049461,
-                        "y": 0.012264904999999993,
-                        "z": 0.00915202
-                    },
-                    "position": {
-                        "x": 0.00049461,
-                        "y": 0.38389626,
-                        "z": 0.00915202
-                    },
-                    "scale": {
-                        "x": 0.59178308,
-                        "y": 0.74326271,
-                        "z": 0.31756692
-                    },
-                    "shape": "box",
-                    "tag": "enclosed"
-                }
-            ],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": false,
@@ -20343,46 +20303,6 @@
                 "z": 0
             },
             "composite_object": true,
-            "container_colliders": [
-                {
-                    "bottom_center_position": {
-                        "x": -0.00028351,
-                        "y": 0.76645684,
-                        "z": 0.01391266
-                    },
-                    "position": {
-                        "x": -0.00028351,
-                        "y": 0.77145684,
-                        "z": 0.01391266
-                    },
-                    "scale": {
-                        "x": 0.60912925,
-                        "y": 0.01,
-                        "z": 0.36148889
-                    },
-                    "shape": "box",
-                    "tag": "on"
-                },
-                {
-                    "bottom_center_position": {
-                        "x": 0.0004946,
-                        "y": 0.012264910000000018,
-                        "z": 0.00915197
-                    },
-                    "position": {
-                        "x": 0.0004946,
-                        "y": 0.38389644,
-                        "z": 0.00915197
-                    },
-                    "scale": {
-                        "x": 0.5917834,
-                        "y": 0.74326306,
-                        "z": 0.31756698
-                    },
-                    "shape": "box",
-                    "tag": "enclosed"
-                }
-            ],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": false,
@@ -20971,28 +20891,6 @@
                 "z": 0
             },
             "composite_object": true,
-            "container_colliders": [
-                {
-                    "bottom_center_position": {
-                        "x": -0.00042892,
-                        "y": 0.765625,
-                        "z": -0.00028682
-                    },
-                    "position": {
-                        "x": -0.00042892,
-                        "y": 0.770625,
-                        "z": -0.00028682
-                    },
-                    "scale": {
-                        "x": 0.91345811,
-                        "y": 0.01,
-                        "z": 0.34538412
-                    },
-                    "shape": "box",
-                    "tag": "on"
-                },
-                null
-            ],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": false,
@@ -21079,28 +20977,6 @@
                 "z": 0
             },
             "composite_object": true,
-            "container_colliders": [
-                {
-                    "bottom_center_position": {
-                        "x": -0.00042892,
-                        "y": 0.765625,
-                        "z": -0.00028682
-                    },
-                    "position": {
-                        "x": -0.00042892,
-                        "y": 0.770625,
-                        "z": -0.00028682
-                    },
-                    "scale": {
-                        "x": 0.91345811,
-                        "y": 0.01,
-                        "z": 0.34538412
-                    },
-                    "shape": "box",
-                    "tag": "on"
-                },
-                null
-            ],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": false,

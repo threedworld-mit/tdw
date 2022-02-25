@@ -9,7 +9,10 @@ class Painting(ArrangementAlongWall):
     A painting hanging on the wall.
 
     - The painting model is chosen randomly; see `Painting.MODEL_CATEGORIES["painting"]`.
-    - The height of the painting is random, from 1.1 meters to `(ceiling_height - painting_height)`.
+    - The painting is placed next to a wall.
+      - The painting's position is automatically adjusted to set it flush to the way.
+      - The painting is automatically rotated so that it faces away from the wall.
+      - The height of the painting is random, from 1.1 meters to `(ceiling_height - painting_height)`.
     - The painting is kinematic.
     """
 

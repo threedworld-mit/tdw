@@ -17,7 +17,10 @@ class KitchenCounter(KitchenCabinet):
     """
     A kitchen counter can have objects on it, in it, and above it.
 
-    - The kitchen counter  model is chosen randomly; see `KitchenCounter.MODEL_CATEGORIES["kitchen_counter"]`.
+    - The kitchen counter model is chosen randomly; see `KitchenCounter.MODEL_CATEGORIES["kitchen_counter"]`.
+    - The kitchen counter is placed next to a wall.
+      - The kitchen counter's position is automatically adjusted to set it flush to the way.
+      - The kitchen counter is automatically rotated so that it faces away from the wall.
     - A kitchen counter longer than 0.7 meters may have a [`Microwave`](microwave.md); see `allow_microwave` in the constructor.
     - If the kitchen counter does _not_ have a microwave:
       - If the kitchen counter is alongside a wall without windows and has a corresponding wall cabinet model, a [`WallCabinet`](wall_cabinet.md) will be added above it; see `KitchenCounter.COUNTERS_AND_CABINETS`.

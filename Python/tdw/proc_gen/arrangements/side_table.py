@@ -9,6 +9,9 @@ class SideTable(ArrangementAlongWall):
     A small side table.
 
     - The side table model is chosen randomly; see `SideTable.MODEL_CATEGORIES["side_table"]`.
+    - The side table is placed next to a wall.
+      - The side table's position is automatically adjusted to set it flush to the way.
+      - The side table is automatically rotated so that it faces away from the wall.
     - The side table always has a rectangular arrangement of objects on top of it; see `SideTable.ON_TOP_OF["side_table"]`.
     - The side table is non-kinematic.
     """

@@ -12,6 +12,9 @@ class Dishwasher(KitchenCounterTopBase):
     A dishwasher with a kitchen counter top with objects on it.
 
     - The dishwasher model is chosen randomly; see `Dishwasher.MODEL_CATEGORIES["dishwasher"]`.
+    - The dishwasher is placed next to a wall.
+      - The dishwasher's position is automatically adjusted to set it flush to the way.
+      - The dishwasher is automatically rotated so that it faces away from the wall.
     - The dishwasher has a floating kitchen counter top above it.
     - The floating kitchen counter top always has a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `Dishwasher.ON_TOP_OF["kitchen_counter"]`.
     - All dishwashers have a door that can be opened.

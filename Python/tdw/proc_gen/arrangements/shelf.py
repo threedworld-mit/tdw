@@ -9,6 +9,9 @@ class Shelf(ArrangementAlongWall):
     Shelving with objects on the shelves.
 
     - The shelf model is chosen randomly; see `Shelf.MODEL_CATEGORIES["shelf"]`.
+    - The shelf is placed next to a wall.
+      - The shelf's position is automatically adjusted to set it flush to the way.
+      - The shelf is automatically rotated so that it faces away from the wall.
     - Each shelf of the object has a rectangular arrangement of objects. The objects are chosen randomly; see `Shelf.ON_TOP_OF["shelf"]`.
     - The shelf object is kinematic.
     """

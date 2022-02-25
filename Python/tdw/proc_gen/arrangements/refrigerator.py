@@ -3,16 +3,16 @@ from tdw.tdw_utils import TDWUtils
 from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWall
 
 
-class Stool(ArrangementAlongWall):
+class Refrigerator(ArrangementAlongWall):
     """
-    A stool.
+    A refrigerator.
 
-    - The stool model is chosen randomly; see `Stool.MODEL_CATEGORIES["stool"]`.
-    - The stool is placed next to a wall.
-      - The stool's position is automatically adjusted to set it flush to the way.
-      - The stool is automatically rotated so that it faces away from the wall.
-    - The stool's rotation is random.
-    - The stool is non-kinematic.
+    - The refrigerator model is chosen randomly; see `Refrigerator.MODEL_CATEGORIES["refrigerator"]`.
+    - The refrigerator is placed next to a wall.
+      - The refrigerator's position is automatically adjusted to set it flush to the way.
+      - The refrigerator is automatically rotated so that it faces away from the wall.
+    - The refrigerator's rotation is random.
+    - The refrigerator is non-kinematic.
     """
 
     def get_commands(self) -> List[dict]:
@@ -25,7 +25,7 @@ class Stool(ArrangementAlongWall):
         return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2]
 
     def _get_category(self) -> str:
-        return "stool"
+        return "refrigerator"
 
     def _get_rotation(self) -> float:
         return self._rng.uniform(0, 360)

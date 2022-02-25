@@ -14,7 +14,7 @@ class Basket(ArrangementAlongWall):
     - The objects in the basic are chosen randomly; see `Basket.INSIDE_OF["basket"]`.
     - The rotations of these objects are random.
     - The starting positions of the objects are random, but they are placed at (x, z) coordinates within the basket and at a y coordinate _above_ the basket. Each y coordinate is higher than the other; the change in height is random but is guaranteed to prevent interpenetration.
-    - The basket is placed along a wall at a random distance offset: `extent * random.uniform(1.15, 1.25)`.
+    - The basket is placed next to a wall at a random distance offset: `extent * random.uniform(1.15, 1.25)`.
     - The basket is rotated randomly between -10 and 10 degrees.
     - The basket object is non-kinematic.
     """

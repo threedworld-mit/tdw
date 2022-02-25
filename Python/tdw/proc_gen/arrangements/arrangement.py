@@ -29,9 +29,9 @@ class Arrangement(ABC):
         :param rng: The random number generator.
         """
 
+        self._rng: np.random.RandomState = rng
         self._position: Dict[str, float] = self._get_position(position={k: v for k, v in position.items()})
         self._rotation: float = self._get_rotation()
-        self._rng: np.random.RandomState = rng
         """:field
         A list of all of the object IDs in this arrangement.
         """

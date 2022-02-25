@@ -1,4 +1,19 @@
+# IMPLEMENT
+
 sink
 stove
 kitchen_counter_top
 void
+
+# TEST
+
+cup_and_oaster
+dishwasher
+kitchen_table
+painting
+radiator
+refrigerator
+shelf
+side_table
+stool
+suitcase

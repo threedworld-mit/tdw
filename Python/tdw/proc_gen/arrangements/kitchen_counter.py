@@ -9,8 +9,8 @@ from tdw.proc_gen.arrangements.wall_cabinet import WallCabinet
 from tdw.proc_gen.arrangements.microwave import Microwave
 from tdw.scene_data.interior_region import InteriorRegion
 from tdw.cardinal_direction import CardinalDirection
+from tdw.ordinal_direction import OrdinalDirection
 from tdw.librarian import ModelRecord
-from tdw.controller import Controller
 
 
 class KitchenCounter(KitchenCabinet):
@@ -36,15 +36,15 @@ class KitchenCounter(KitchenCabinet):
     """
     COUNTERS_AND_CABINETS: Dict[str, str] = loads(Path(resource_filename(__name__, "data/counters_and_cabinets.json")).read_text())
 
-    def __init__(self, allow_microwave: bool, wall: CardinalDirection, region: InteriorRegion,
-                 model: Union[str, ModelRecord], position: Dict[str, float], rng: np.random.RandomState,
+    def __init__(self, allow_microwave: bool, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
+                 region: InteriorRegion, model: Union[str, ModelRecord], rng: np.random.RandomState,
                  microwave_plate: float = 0.7, empty: float = 0.1):
         """
         :param allow_microwave: If True, and if this kitchen counter is longer than 0.7 meters, there will be a [`Microwave`](microwave.md) instead of an arrangement of objects on the counter top.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
-        :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
+        :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
+        :param distance: The distance in meters from the corner along the derived direction.
         :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
-        :param position: The position of the root object. This might be adjusted.
         :param rng: The random number generator.
         :param microwave_plate: The probability (between 0 and 1) of adding a [`Plate`](plate.md) to the inside of the microwave.
         :param empty: The probability (between 0 and 1) of the of the kitchen counter being empty.
@@ -56,45 +56,50 @@ class KitchenCounter(KitchenCabinet):
         self._empty: float = empty
         self._min_num_plates: int = 3
         self._max_num_plates: int = 7
-        super().__init__(wall=wall, region=region, model=model, position=position, rng=rng)
+        super().__init__(corner=corner, wall=wall, distance=distance, region=region, model=model, rng=rng)
 
     def get_commands(self) -> List[dict]:
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
         # Place a microwave on top of the kitchen counter.
-        if extents[0] < 0.7 and self._allow_microwave:
-            root_object_id, commands = self._add_root_object()
+        if extents[0] > 0.7 and self._allow_microwave:
+            commands = self._add_root_object()
+            # Add objects in the cabinet.
+            if self._rng.random() > self._empty:
+                commands.extend(self._add_objects_inside(rotate=False, density=0.1, cell_size=0.04))
+            # Rotate everything.
+            commands.extend(self._get_rotation_commands())
+            # Add the microwave.
             microwave_model_names = self.MODEL_CATEGORIES["microwave"]
             microwave_model_name = microwave_model_names[self._rng.randint(0, len(microwave_model_names))]
-            microwave_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(microwave_model_name)
             microwave = Microwave(plate_probability=self._microwave_plate,
                                   wall=self._wall,
-                                  record=microwave_record,
+                                  model=microwave_model_name,
                                   position={"x": self._position["x"],
                                             "y": self._record.bounds["top"]["y"] + self._position["y"],
                                             "z": self._position["z"]},
                                   rng=self._rng)
             commands.extend(microwave.get_commands())
             self.object_ids.extend(microwave.object_ids)
-            commands.extend(self._get_rotation_commands())
             return commands
         else:
             # Add the kitchen counter and add objects on top of it.
             commands = self._add_object_with_other_objects_on_top(rotate=False)
             # Add objects in the cabinet.
             if self._rng.random() > self._empty:
-                commands.extend(self._add_objects_inside(rotate=False))
+                commands.extend(self._add_objects_inside(rotate=False, density=0.1, cell_size=0.04))
+            # Rotate everything.
+            commands.extend(self._get_rotation_commands())
             # Add a wall cabinet.
             if self._record.name in KitchenCounter.COUNTERS_AND_CABINETS and self._region.walls_with_windows & self._wall == 0:
-                wall_cabinet = WallCabinet(wall=self._wall,
+                wall_cabinet = WallCabinet(corner=self._corner,
+                                           wall=self._wall,
+                                           distance=self._distance,
                                            region=self._region,
                                            model=KitchenCounter.COUNTERS_AND_CABINETS[self._record.name],
-                                           position=self._position,
                                            rng=self._rng)
                 wall_cabinet_commands = wall_cabinet.get_commands()
                 self.object_ids.extend(wall_cabinet.object_ids)
                 commands.extend(wall_cabinet_commands)
-            # Rotate everything.
-            commands.extend(self._get_rotation_commands())
             return commands
 
     def _get_category(self) -> str:

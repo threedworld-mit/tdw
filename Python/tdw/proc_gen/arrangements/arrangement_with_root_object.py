@@ -5,7 +5,7 @@ from pathlib import Path
 from pkg_resources import resource_filename
 from overrides import final
 import numpy as np
-from tdw.librarian import ModelRecord
+from tdw.librarian import ModelRecord, ModelLibrarian
 from tdw.controller import Controller
 from tdw.proc_gen.arrangements.arrangement import Arrangement
 from tdw.container_data.container_trigger_collider import ContainerTriggerCollider
@@ -40,6 +40,8 @@ class ArrangementWithRootObject(Arrangement, ABC):
         """
 
         if isinstance(model, str):
+            if "models_core.json" not in Controller.MODEL_LIBRARIANS:
+                Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian()
             self._record: ModelRecord = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model)
         elif isinstance(model, ModelRecord):
             self._record = model

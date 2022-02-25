@@ -72,13 +72,14 @@ class ProcGenUtils:
         :return: Tuple: A list of commands to create the room, [`Room` data](../scene_data/room.md).
         """
         proc_gen_box_rooms = loads(Path(resource_filename(__name__, "data/proc_gen_box_rooms.json")).read_text())
-        for proc_gen_box_room in proc_gen_box_rooms:
-            if proc_gen_box_room["size"][0] == width and proc_gen_box_room["size"][1] == length:
-                room = Room(main_region=InteriorRegion(region_id=proc_gen_box_room["main_region"]["region_id"],
-                                                       center=tuple(proc_gen_box_room["main_region"]["center"]),
-                                                       bounds=tuple(proc_gen_box_room["main_region"]["bounds"]),
-                                                       non_continuous_walls=proc_gen_box_room["main_region"]["non_continuous_walls"],
-                                                       walls_with_windows=proc_gen_box_room["main_region"]["walls_with_windows"]),
+        for box_scene in proc_gen_box_rooms:
+            if box_scene["size"][0] == width and box_scene["size"][1] == length:
+                box_room = box_scene["room"]
+                room = Room(main_region=InteriorRegion(region_id=box_room["main_region"]["region_id"],
+                                                       center=tuple(box_room["main_region"]["center"]),
+                                                       bounds=tuple(box_room["main_region"]["bounds"]),
+                                                       non_continuous_walls=box_room["main_region"]["non_continuous_walls"],
+                                                       walls_with_windows=box_room["main_region"]["walls_with_windows"]),
                             alcoves=[])
                 return [{"$type": "load_scene",
                          "scene_name": "ProcGenScene"},

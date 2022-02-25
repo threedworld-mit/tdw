@@ -5,7 +5,6 @@ from tdw.container_data.container_collider_tag import ContainerColliderTag
 from tdw.proc_gen.arrangements.arrangement_with_root_object import ArrangementWithRootObject
 from tdw.proc_gen.arrangements.plate import Plate
 from tdw.librarian import ModelRecord
-from tdw.controller import Controller
 from tdw.cardinal_direction import CardinalDirection
 
 
@@ -40,9 +39,9 @@ class Microwave(ArrangementWithRootObject):
         if self._rng.random() < self._plate_probability:
             # Get the inside collider.
             for collider in self._record.container_colliders:
-                if collider.tag == ContainerColliderTag.inside and isinstance(collider, ContainerBoxTriggerCollider):
+                if collider.tag == ContainerColliderTag.enclosed and isinstance(collider, ContainerBoxTriggerCollider):
                     plate = Plate(food_probability=1,
-                                  record=Controller.MODEL_LIBRARIANS["models_core.json"].get_record("plate06"),
+                                  model="plate06",
                                   position=self._get_collider_position(collider=collider),
                                   rng=self._rng)
                     commands.extend(plate.get_commands())
@@ -54,11 +53,11 @@ class Microwave(ArrangementWithRootObject):
         if self._wall == CardinalDirection.north:
             return 180
         elif self._wall == CardinalDirection.east:
-            return 90
+            return 270
         elif self._wall == CardinalDirection.south:
             return 0
         else:
-            return 270
+            return 90
 
     def _get_position(self, position: Dict[str, float]) -> Dict[str, float]:
         return position

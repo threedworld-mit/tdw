@@ -211,23 +211,6 @@ class ProcGenObjects(AddOn):
         else:
             return record
 
-    def _get_lateral_length(self, model_name: str) -> float:
-        """
-        :param model_name: The model name.
-
-        :return: The model bound's longest extent.
-        """
-
-        record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
-        if record is None:
-            return self.cell_size
-        # Shelves are rotated 90 degrees.
-        elif record.name in ProcGenObjects.MODEL_NAMES_NINETY_DEGREES:
-            ex = TDWUtils.get_bounds_extents(bounds=record.bounds)[2]
-        else:
-            ex = TDWUtils.get_bounds_extents(bounds=record.bounds)[0]
-        return ex
-
     def add_lateral_arrangement(self, position: Dict[str, float], direction: CardinalDirection,
                                 sub_arrangements: List[LateralSubArrangement], wall: CardinalDirection,
                                 region: RegionWalls, length: float, check_object_positions: bool = False) -> None:
@@ -319,42 +302,6 @@ class ProcGenObjects(AddOn):
             # Add the objects.
             sub_arrangement.function(record=record, position={k: v for k, v in position.items()}, wall=wall, direction=direction, region=region)
             position = __add_half_extent_to_position(sub_arrangement.position_offset_multiplier)
-
-    def _get_position_along_wall(self, model_name: str, region: int, position: Dict[str, float],
-                                 wall: CardinalDirection, depth: float) -> Dict[str, float]:
-        """
-        Get the position of an object or sub-arrangement along a way using its depth.
-
-        :param model_name: The model name.
-        :param region: The region index.
-        :param position: The original position.
-        :param wall: The wall.
-        :param depth: The expected depth of the model. This may be further offset.
-
-        :return: The position.
-        """
-
-        room = self.scene_bounds.rooms[region]
-        if model_name in ProcGenObjects.BOUNDS_OFFSETS and "depth" in ProcGenObjects.BOUNDS_OFFSETS[model_name]:
-            depth -= ProcGenObjects.BOUNDS_OFFSETS[model_name]["depth"]
-        if wall == CardinalDirection.north:
-            return {"x": position["x"],
-                    "y": 0,
-                    "z": room.z_max - depth / 2}
-        elif wall == CardinalDirection.south:
-            return {"x": position["x"],
-                    "y": 0,
-                    "z": room.z_min + depth / 2}
-        elif wall == CardinalDirection.west:
-            return {"x": room.x_min + depth / 2,
-                    "y": 0,
-                    "z": position["z"]}
-        elif wall == CardinalDirection.east:
-            return {"x": room.x_max - depth / 2,
-                    "y": 0,
-                    "z": position["z"]}
-        else:
-            raise Exception(wall)
 
     def _get_position_offset_from_direction(self, position: Dict[str, float],
                                             direction: CardinalDirection) -> Dict[str, float]:

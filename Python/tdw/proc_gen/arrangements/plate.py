@@ -40,7 +40,7 @@ class Plate(ArrangementWithRootObject):
         :return: A list of commands that will generate the arrangement.
         """
 
-        plate_id, commands = self._add_root_object()
+        commands = self._add_root_object()
         if self._rng.random() < self._food_probability:
             extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
             food_category: str = Plate.FOOD_CATEGORIES[self._rng.randint(0, len(Plate.FOOD_CATEGORIES))]

@@ -1,7 +1,6 @@
 # IMPLEMENT
 
 sink
-stove
 void
 
 # TEST

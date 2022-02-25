@@ -65,7 +65,7 @@ class KitchenCounter(KitchenCabinet):
             commands = self._add_root_object()
             # Add objects in the cabinet.
             if self._rng.random() > self._empty:
-                commands.extend(self._add_objects_inside(rotate=False, density=0.1, cell_size=0.04))
+                commands.extend(self._add_enclosed_objects(rotate=False, density=0.1, cell_size=0.04))
             # Rotate everything.
             commands.extend(self._get_rotation_commands())
             # Add the microwave.
@@ -86,7 +86,7 @@ class KitchenCounter(KitchenCabinet):
             commands = self._add_object_with_other_objects_on_top(rotate=False)
             # Add objects in the cabinet.
             if self._rng.random() > self._empty:
-                commands.extend(self._add_objects_inside(rotate=False, density=0.1, cell_size=0.04))
+                commands.extend(self._add_enclosed_objects(rotate=False, density=0.1, cell_size=0.04))
             # Rotate everything.
             commands.extend(self._get_rotation_commands())
             # Add a wall cabinet.

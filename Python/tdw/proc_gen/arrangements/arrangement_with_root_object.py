@@ -106,13 +106,16 @@ class ArrangementWithRootObject(Arrangement, ABC):
             commands.extend(self._get_rotation_commands())
         return commands
 
-    def _add_objects_inside(self, density: float = 0.4, cell_size: float = 0.05, rotate: bool = True) -> List[dict]:
+    def _add_enclosed_objects(self, density: float = 0.4, cell_size: float = 0.05, rotate: bool = True,
+                              x_scale: float = 0.8, z_scale: float = 0.8) -> List[dict]:
         """
-        Add objects inside the root object.
+        Add objects enclosed by the root object.
 
         :param density: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
         :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
         :param rotate: If True, append rotation commands.
+        :param x_scale: Scale the rectangular space along the x axis by this factor.
+        :param z_scale: Scale the rectangular space along the z axis by this factor.
 
         :return: A list of commands.
         """
@@ -127,7 +130,8 @@ class ArrangementWithRootObject(Arrangement, ABC):
                 else:
                     raise Exception(collider)
                 # Add objects on top of the root object.
-                on_top_commands, object_ids = self._add_rectangular_arrangement(size=(scale["x"] * 0.8, scale["z"] * 0.8),
+                on_top_commands, object_ids = self._add_rectangular_arrangement(size=(scale["x"] * x_scale,
+                                                                                      scale["z"] * z_scale),
                                                                                 categories=categories,
                                                                                 position=self._get_collider_position(collider=collider),
                                                                                 cell_size=cell_size,

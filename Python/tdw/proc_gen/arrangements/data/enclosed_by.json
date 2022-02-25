@@ -14,6 +14,11 @@
     "tea_tray",
     "teakettle"
   ],
+  "stove": [
+    "baking_sheet",
+    "pan",
+    "pot"
+  ],
   "wall_cabinet": [
     "bowl",
     "bottle",

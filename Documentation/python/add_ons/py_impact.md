@@ -111,7 +111,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 **`PyImpact()`**
 
-**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False, static_audio_data_overrides=None, resonance_audio=False, floor=AudioMaterial.wood_medium, rng=None, auto=True, scrape=True, scrape_objects=None)`**
+**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False, static_audio_data_overrides=None, resonance_audio=False, floor=AudioMaterial.wood_medium, rng=None, auto=True, scrape=True, scrape_objects=None, min_time_between_impact_events=0.25)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -122,9 +122,10 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 | resonance_audio |  bool  | False | If True, the simulation is using Resonance Audio. |
 | floor |  AudioMaterial  | AudioMaterial.wood_medium | The floor material. |
 | rng |  np.random.RandomState  | None | The random number generator. If None, a random number generator with a random seed is created. |
-| auto |  bool  | True | If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio. |
+| auto |  bool  | True | If True, PyImpact will evaluate the simulation state per `communicate()` call and automatically generate audio. |
 | scrape |  bool  | True | If True, initialize certain objects as scrape surfaces: Change their visual material(s) and enable them for scrape audio. See: `tdw.physics_audio.scrape_model.DEFAULT_SCRAPE_MODELS` |
 | scrape_objects |  Dict[int, ScrapeModel] | None | If `scrape == True` and this is not None, this dictionary can be used to manually set scrape surfaces. Key = Object ID. Value = [`ScrapeModel`](../physics_audio/scrape_model.md). |
+| min_time_between_impact_events |  float  | 0.25 | The minimum time in seconds between two impact events that involve the same primary object. |
 
 #### get_initialization_commands
 
@@ -239,6 +240,19 @@ Create a scrape sound, and return a valid command to play audio data in TDW.
 | scrape_material |  ScrapeMaterial |  | The [scrape material](../physics_audio/scrape_material.md). |
 
 _Returns:_  A [`Base64Sound`](../physics_audio/base64_sound.md) object or None if no sound.
+
+#### get_size
+
+**`PyImpact(CollisionManager).get_size(model)`**
+
+_This is a static function._
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| model |  Union[np.ndarray, ModelRecord] |  | Either the extents of an object or a model record. |
+
+_Returns:_  The `size` integer of the object.
 
 #### reset
 

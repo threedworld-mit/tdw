@@ -362,10 +362,10 @@
     "vase_laura_deko_vase_set"
   ],
   "wall_cabinet": [
-    "24_in_wall_cabinet_white_wood",
-    "24_in_wall_cabinet_wood_beach_honey",
-    "36_in_wall_cabinet_white_wood",
-    "36_in_wall_cabinet_wood_beach_honey"
+    "cabinet_24_wall_wood_beech_honey_composite",
+    "cabinet_24_wall_wood_oak_white_composite",
+    "cabinet_36_wall_wood_beech_honey_composite",
+    "cabinet_36_wall_wood_oak_white_composite"
   ],
   "whisk": [
     "whisk"

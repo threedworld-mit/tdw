@@ -15,7 +15,9 @@ class Suitcase(ArrangementAlongWall):
     """
 
     def get_commands(self) -> List[dict]:
-        return self._add_root_object()
+        commands = self._add_root_object(kinematic=False)
+        commands.extend(self._get_rotation_commands())
+        return commands
 
     def get_length(self) -> float:
         return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + 0.05

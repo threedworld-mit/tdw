@@ -11,5 +11,3 @@ cup_and_coaster
 kitchen_table
 shelf
 side_table
-stool
-suitcase

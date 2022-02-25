@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 import numpy as np
 from tdw.controller import Controller
 from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWall
@@ -13,18 +13,18 @@ class KitchenCounterTopBase(ArrangementAlongWall, ABC):
     Abstract base class for arrangments that including a floating kitchen counter top.
     """
 
-    def __init__(self, material: str, wall: CardinalDirection, region: InteriorRegion, record: ModelRecord,
+    def __init__(self, material: str, wall: CardinalDirection, region: InteriorRegion, model: Union[str, ModelRecord],
                  position: Dict[str, float], rng: np.random.RandomState):
         """
         :param material: The name of the visual material.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
-        :param record: The model record.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
         :param position: The position of the root object. This might be adjusted.
         :param rng: The random number generator.
         """
 
-        super().__init__(wall=wall, region=region, record=record, position=position, rng=rng)
+        super().__init__(wall=wall, region=region, model=model, position=position, rng=rng)
         self._material: str = material
         self._size: Tuple[float, float] = self._get_size()
 

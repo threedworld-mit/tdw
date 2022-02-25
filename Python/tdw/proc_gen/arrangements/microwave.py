@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Union
 import numpy as np
 from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
 from tdw.container_data.container_collider_tag import ContainerColliderTag
@@ -20,19 +20,19 @@ class Microwave(ArrangementWithRootObject):
     - The root object of the microwave is kinematic and the door sub-object is non-kinematic.
     """
 
-    def __init__(self, plate_probability: float, wall: CardinalDirection, record: ModelRecord,
+    def __init__(self, plate_probability: float, wall: CardinalDirection, model: Union[str, ModelRecord],
                  position: Dict[str, float], rng: np.random.RandomState):
         """
         :param plate_probability: The probability of placing a plate with food inside the microwave.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
-        :param record: The record of the root object.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
         :param position: The position of the root object. This might be adjusted.
         :param rng: The random number generator.
         """
 
         self._plate_probability: float = plate_probability
         self._wall: CardinalDirection = wall
-        super().__init__(record=record, position=position, rng=rng)
+        super().__init__(model=model, position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
         commands = self._add_object_with_other_objects_on_top(cell_size=0.05, density=0.4, rotate=False)

@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Union
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.proc_gen.arrangements.arrangement_with_root_object import ArrangementWithRootObject
@@ -23,16 +23,17 @@ class Plate(ArrangementWithRootObject):
     """
     FOOD_CATEGORIES: List[str] = ["apple", "banana", "chocolate", "orange", "sandwich"]
 
-    def __init__(self, food_probability: float, record: ModelRecord, position: Dict[str, float], rng: np.random.RandomState):
+    def __init__(self, food_probability: float,  model: Union[str, ModelRecord], position: Dict[str, float],
+                 rng: np.random.RandomState):
         """
         :param food_probability: The probability of placing food on the plate.
-        :param record: The record of the root object.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
         :param position: The position of the root object. This might be adjusted.
         :param rng: The random number generator.
         """
 
         self._food_probability: float = food_probability
-        super().__init__(record=record, position=position, rng=rng)
+        super().__init__(model=model, position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
         """

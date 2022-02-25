@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Union
 from abc import ABC, abstractmethod
 from json import loads
 from pathlib import Path
@@ -32,14 +32,19 @@ class ArrangementWithRootObject(Arrangement, ABC):
     """
     INSIDE_OF: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())
 
-    def __init__(self, record: ModelRecord, position: Dict[str, float], rng: np.random.RandomState):
+    def __init__(self, model: Union[str, ModelRecord], position: Dict[str, float], rng: np.random.RandomState):
         """
-        :param record: The record of the root object.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
         :param position: The position of the root object. This might be adjusted.
         :param rng: The random number generator.
         """
 
-        self._record: ModelRecord = record
+        if isinstance(model, str):
+            self._record: ModelRecord = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model)
+        elif isinstance(model, ModelRecord):
+            self._record = model
+        else:
+            raise Exception(f"Invalid model parameter: {model}")
         self.root_object_id: int = Controller.get_unique_id()
         super().__init__(position=position, rng=rng)
         self.object_ids.append(self.root_object_id)

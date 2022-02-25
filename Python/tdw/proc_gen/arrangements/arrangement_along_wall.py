@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Union
 from abc import ABC, abstractmethod
 import numpy as np
 from tdw.proc_gen.arrangements.arrangement_with_root_object import ArrangementWithRootObject
@@ -12,19 +12,19 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
     A procedurally-generated spatial arrangement of objects that is positioned alongside a wall.
     """
 
-    def __init__(self, wall: CardinalDirection, region: InteriorRegion, record: ModelRecord, position: Dict[str, float],
+    def __init__(self, wall: CardinalDirection, region: InteriorRegion, model: Union[str, ModelRecord], position: Dict[str, float],
                  rng: np.random.RandomState):
         """
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
-        :param record: The model record.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
         :param position: The position of the root object. This might be adjusted.
         :param rng: The random number generator.
         """
 
         self._wall: CardinalDirection = wall
         self._region: InteriorRegion = region
-        super().__init__(record=record, position=position, rng=rng)
+        super().__init__(model=model, position=position, rng=rng)
 
     def _get_position(self, position: Dict[str, float]) -> Dict[str, float]:
         depth = self._get_depth()

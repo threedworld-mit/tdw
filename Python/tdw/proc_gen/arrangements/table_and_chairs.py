@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict
+from typing import List, Dict, Union
 import numpy as np
 from overrides import final
 from tdw.cardinal_direction import CardinalDirection
@@ -15,12 +15,12 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
     Abstract base class for a table with chairs around it.
     """
 
-    def __init__(self, used_walls: int, region: InteriorRegion, record: ModelRecord, position: Dict[str, float],
-                 rng: np.random.RandomState):
+    def __init__(self, used_walls: int, region: InteriorRegion, model: Union[str, ModelRecord],
+                 position: Dict[str, float], rng: np.random.RandomState):
         """
         :param used_walls: Bitwise sum of walls with objects.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the table is in.
-        :param record: The record of the root object.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
         :param position: The position of the root object. This might be adjusted.
         :param rng: The random number generator.
         """
@@ -28,7 +28,7 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
         self._used_walls: int = used_walls
         self._region: InteriorRegion = region
         self._bound_point_positions: List[np.array] = list()
-        super().__init__(record=record, position=position, rng=rng)
+        super().__init__(model=model, position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
         commands = self._add_root_object()

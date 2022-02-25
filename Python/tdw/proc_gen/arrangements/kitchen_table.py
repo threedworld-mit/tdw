@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 import numpy as np
 from tdw.cardinal_direction import CardinalDirection
 from tdw.controller import Controller
@@ -37,13 +37,13 @@ class KitchenTable(TableAndChairs):
     """
     CENTERPIECE_CATEGORIES: List[str] = ["jug", "vase", "bowl"]
 
-    def __init__(self, room: Room, used_walls: int, record: ModelRecord, position: Dict[str, float],
+    def __init__(self, room: Room, used_walls: int,  model: Union[str, ModelRecord], position: Dict[str, float],
                  rng: np.random.RandomState, offset_distance: float = 0.1, plate_record: Optional[ModelRecord] = None,
                  food_probability: float = 0.7):
         """
         :param room: The [`Room`] that the table is in.
         :param used_walls: Bitwise sum of walls with objects.
-        :param record: The record of the root object.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
         :param position: The position of the root object. This might be adjusted.
         :param rng: The random number generator.
         :param offset_distance: Offset the position from the used walls by this distance.
@@ -58,7 +58,7 @@ class KitchenTable(TableAndChairs):
         else:
             self._plate_record = plate_record
         self._food_probability = food_probability
-        super().__init__(used_walls=used_walls, region=room.main_region, record=record, position=position, rng=rng)
+        super().__init__(used_walls=used_walls, region=room.main_region, model=model, position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
         commands = super().get_commands()

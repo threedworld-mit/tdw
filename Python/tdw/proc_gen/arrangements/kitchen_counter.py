@@ -1,7 +1,7 @@
 from json import loads
 from pathlib import Path
 from pkg_resources import resource_filename
-from typing import Dict, List
+from typing import Dict, List, Union
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.proc_gen.arrangements.kitchen_cabinet import KitchenCabinet
@@ -36,13 +36,14 @@ class KitchenCounter(KitchenCabinet):
     """
     COUNTERS_AND_CABINETS: Dict[str, str] = loads(Path(resource_filename(__name__, "data/counters_and_cabinets.json")).read_text())
 
-    def __init__(self, allow_microwave: bool, wall: CardinalDirection, region: InteriorRegion, record: ModelRecord, position: Dict[str, float],
-                 rng: np.random.RandomState, microwave_plate: float = 0.7, empty: float = 0.1):
+    def __init__(self, allow_microwave: bool, wall: CardinalDirection, region: InteriorRegion,
+                 model: Union[str, ModelRecord], position: Dict[str, float], rng: np.random.RandomState,
+                 microwave_plate: float = 0.7, empty: float = 0.1):
         """
         :param allow_microwave: If True, and if this kitchen counter is longer than 0.7 meters, there will be a [`Microwave`](microwave.md) instead of an arrangement of objects on the counter top.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
-        :param record: The model record.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
         :param position: The position of the root object. This might be adjusted.
         :param rng: The random number generator.
         :param microwave_plate: The probability (between 0 and 1) of adding a [`Plate`](plate.md) to the inside of the microwave.
@@ -55,7 +56,7 @@ class KitchenCounter(KitchenCabinet):
         self._empty: float = empty
         self._min_num_plates: int = 3
         self._max_num_plates: int = 7
-        super().__init__(wall=wall, region=region, record=record, position=position, rng=rng)
+        super().__init__(wall=wall, region=region, model=model, position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
@@ -86,7 +87,7 @@ class KitchenCounter(KitchenCabinet):
             if self._record.name in KitchenCounter.COUNTERS_AND_CABINETS and self._region.walls_with_windows & self._wall == 0:
                 wall_cabinet = WallCabinet(wall=self._wall,
                                            region=self._region,
-                                           record=Controller.MODEL_LIBRARIANS["models_core.json"].get_record(KitchenCounter.COUNTERS_AND_CABINETS[self._record.name]),
+                                           model=KitchenCounter.COUNTERS_AND_CABINETS[self._record.name],
                                            position=self._position,
                                            rng=self._rng)
                 wall_cabinet_commands = wall_cabinet.get_commands()

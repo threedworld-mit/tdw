@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Union
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.scene_data.interior_region import InteriorRegion
@@ -24,19 +24,19 @@ class Dishwasher(KitchenCounterTopBase):
     _DISHWASHER_OFFSET: float = 0.025
 
     def __init__(self, direction: CardinalDirection, material: str, wall: CardinalDirection, region: InteriorRegion,
-                 record: ModelRecord, position: Dict[str, float], rng: np.random.RandomState):
+                 model: Union[str, ModelRecord], position: Dict[str, float], rng: np.random.RandomState):
         """
         :param direction: The direction of the lateral arrangement.
         :param material: The name of the visual material.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
-        :param record: The model record.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
         :param position: The position of the root object. This might be adjusted.
         :param rng: The random number generator.
         """
 
         self._direction: CardinalDirection = direction
-        super().__init__(material=material, wall=wall, region=region, record=record, position=position, rng=rng)
+        super().__init__(material=material, wall=wall, region=region, model=model, position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
         commands = self._add_root_object()

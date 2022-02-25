@@ -2434,6 +2434,86 @@
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
         },
+        "appliance-ge-profile-microwave3_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 3913472,
+                "Linux": 4081740,
+                "Windows": 3903336
+            },
+            "bounds": {
+                "back": {
+                    "x": 8.940697e-08,
+                    "y": 0.2187983,
+                    "z": -0.190562
+                },
+                "bottom": {
+                    "x": 8.940697e-08,
+                    "y": 0,
+                    "z": 0.02876325
+                },
+                "center": {
+                    "x": 8.940697e-08,
+                    "y": 0.2187983,
+                    "z": 0.02876325
+                },
+                "front": {
+                    "x": 8.940697e-08,
+                    "y": 0.2187983,
+                    "z": 0.2480885
+                },
+                "left": {
+                    "x": -0.3807431,
+                    "y": 0.2187983,
+                    "z": 0.02876325
+                },
+                "right": {
+                    "x": 0.3807433,
+                    "y": 0.2187983,
+                    "z": 0.02876325
+                },
+                "top": {
+                    "x": 8.940697e-08,
+                    "y": 0.4375967,
+                    "z": 0.02876325
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "appliance-ge-profile-microwave3_composite",
+            "physics_quality": 1.0671101315742755,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "resin_polyurethane_gloss_metallic",
+                        "steel_brushed"
+                    ],
+                    "name": "appliance-ge-microwave-body"
+                },
+                {
+                    "materials": [
+                        "resin_polyurethane_gloss_metallic",
+                        "steel_brushed"
+                    ],
+                    "name": "appliance-ge-microwave-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/appliance-ge-profile-microwave3_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/appliance-ge-profile-microwave3_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/appliance-ge-profile-microwave3_composite"
+            },
+            "volume": 0.03495041,
+            "wcategory": "microwave",
+            "wnid": "n03761084"
+        },
         "appliance-ge-profile-microwave_composite": {
             "asset_bundle_sizes": {
                 "Darwin": 3889600,

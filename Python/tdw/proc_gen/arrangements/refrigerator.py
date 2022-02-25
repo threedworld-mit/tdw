@@ -2,6 +2,7 @@ from pathlib import Path
 from pkg_resources import resource_filename
 from json import loads
 from typing import List
+from tdw.tdw_utils import TDWUtils
 from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWall
 
 
@@ -19,13 +20,15 @@ class Refrigerator(ArrangementAlongWall):
     _ROTATIONS = loads(Path(resource_filename(__name__, "data/refrigerators.json")).read_text())
 
     def get_commands(self) -> List[dict]:
-        return self._add_root_object()
+        commands = self._add_root_object()
+        commands.extend(self._get_rotation_commands())
+        return commands
 
     def get_length(self) -> float:
-        return Refrigerator._ROTATIONS[self._record.name]["length"]
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[Refrigerator._ROTATIONS[self._record.name]["length"]]
 
     def _get_depth(self) -> float:
-        return Refrigerator._ROTATIONS[self._record.name]["depth"]
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[Refrigerator._ROTATIONS[self._record.name]["depth"]]
 
     def _get_category(self) -> str:
         return "refrigerator"

@@ -2,6 +2,16 @@
 
 # Containment (the `ContainerManager` add-on)
 
+"Containment" in TDW refers to a [trigger collision event](trigger_collisions.md) involving a tagged "containment" trigger collider. Containment doesn't necessarily imply a cavity-shaped space. In TDW, there are three types of containment: "on", "inside", and "enclosed":
+
+| Containment type | Example                  |
+| ---------------- | ------------------------ |
+| `on`             | An object on a table     |
+| `inside`         | An object in a basket    |
+| `enclosed`       | An object in a microwave |
+
+## The `ContainerManager` add-on
+
 [`ContainerManager`](../../python/add_ons/container_manager.md) is a high-level implementation of [`TriggerCollisionManager`](trigger_collisions.md) that adds pre-defined trigger colliders to certain objects, each with a semantic tag. Only a subset of objects in TDW that could be containers have these predefined trigger colliders; more will be added over time. To print the current full list, see [`model_record.trigger_colliders`](../../python/librarian/model_librarian.md):
 
 ```python

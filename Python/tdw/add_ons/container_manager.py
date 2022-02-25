@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple
+from typing import List, Dict
 from tdw.output_data import OutputData, SegmentationColors, StaticCompositeObjects
 from tdw.add_ons.trigger_collision_manager import TriggerCollisionManager
 from tdw.container_data.container_collider_tag import ContainerColliderTag

@@ -67,7 +67,8 @@ class ArrangementWithRootObject(Arrangement, ABC):
 
     @final
     def _add_object_with_other_objects_on_top(self, density: float = 0.4, cell_size: float = 0.05,
-                                              rotate: bool = True, kinematic: bool = True) -> List[dict]:
+                                              rotate: bool = True, kinematic: bool = True,
+                                              x_scale: float = 0.8, z_scale: float = 0.8) -> List[dict]:
         """
         Add the root object and add objects on top of it.
 
@@ -75,6 +76,8 @@ class ArrangementWithRootObject(Arrangement, ABC):
         :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
         :param rotate: If True, append rotation commands.
         :param kinematic: If True, the root object is kinematic.
+        :param x_scale: Scale the rectangular space along the x axis by this factor.
+        :param z_scale: Scale the rectangular space along the z axis by this factor.
 
         :return: A list of commands.
         """
@@ -91,7 +94,8 @@ class ArrangementWithRootObject(Arrangement, ABC):
                 else:
                     raise Exception(collider)
                 # Add objects on top of the root object.
-                on_top_commands, object_ids = self._add_rectangular_arrangement(size=(scale["x"] * 0.8, scale["z"] * 0.8),
+                on_top_commands, object_ids = self._add_rectangular_arrangement(size=(scale["x"] * x_scale,
+                                                                                      scale["z"] * z_scale),
                                                                                 categories=categories,
                                                                                 position=self._get_collider_position(collider=collider),
                                                                                 cell_size=cell_size,

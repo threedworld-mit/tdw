@@ -9,5 +9,4 @@ void
 
 cup_and_coaster
 kitchen_table
-shelf
 table_setting

@@ -20217,6 +20217,46 @@
                 "z": 0
             },
             "composite_object": true,
+            "container_colliders": [
+                {
+                    "bottom_center_position": {
+                        "x": -0.00221835,
+                        "y": 0.77217001,
+                        "z": 0.01261972
+                    },
+                    "position": {
+                        "x": -0.00221835,
+                        "y": 0.77717001,
+                        "z": 0.01261972
+                    },
+                    "scale": {
+                        "x": 0.60928068,
+                        "y": 0.01,
+                        "z": 0.36082736
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                },
+                {
+                    "bottom_center_position": {
+                        "x": -0.00056393,
+                        "y": 0.012264904999999993,
+                        "z": 0.01207337
+                    },
+                    "position": {
+                        "x": -0.00056393,
+                        "y": 0.3822588,
+                        "z": 0.01207337
+                    },
+                    "scale": {
+                        "x": 0.59014526,
+                        "y": 0.73998779,
+                        "z": 0.32497472
+                    },
+                    "shape": "box",
+                    "tag": "enclosed"
+                }
+            ],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": false,
@@ -20303,6 +20343,46 @@
                 "z": 0
             },
             "composite_object": true,
+            "container_colliders": [
+                {
+                    "bottom_center_position": {
+                        "x": -0.00221835,
+                        "y": 0.77217001,
+                        "z": 0.01261972
+                    },
+                    "position": {
+                        "x": -0.00221835,
+                        "y": 0.77717001,
+                        "z": 0.01261972
+                    },
+                    "scale": {
+                        "x": 0.60928068,
+                        "y": 0.01,
+                        "z": 0.36082736
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                },
+                {
+                    "bottom_center_position": {
+                        "x": -0.00056393,
+                        "y": 0.012264904999999993,
+                        "z": 0.01207337
+                    },
+                    "position": {
+                        "x": -0.00056393,
+                        "y": 0.3822588,
+                        "z": 0.01207337
+                    },
+                    "scale": {
+                        "x": 0.59014526,
+                        "y": 0.73998779,
+                        "z": 0.32497472
+                    },
+                    "shape": "box",
+                    "tag": "enclosed"
+                }
+            ],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": false,
@@ -20891,6 +20971,46 @@
                 "z": 0
             },
             "composite_object": true,
+            "container_colliders": [
+                {
+                    "bottom_center_position": {
+                        "x": -0.00043385,
+                        "y": 0.76666439,
+                        "z": -0.00122118
+                    },
+                    "position": {
+                        "x": -0.00043385,
+                        "y": 0.77166439,
+                        "z": -0.00122118
+                    },
+                    "scale": {
+                        "x": 0.91347435,
+                        "y": 0.01,
+                        "z": 0.34615511
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                },
+                {
+                    "bottom_center_position": {
+                        "x": -2.198e-05,
+                        "y": 0.012498514999999988,
+                        "z": 0.01782134
+                    },
+                    "position": {
+                        "x": -2.198e-05,
+                        "y": 0.38338382,
+                        "z": 0.01782134
+                    },
+                    "scale": {
+                        "x": 0.89318427,
+                        "y": 0.74177061,
+                        "z": 0.34742016
+                    },
+                    "shape": "box",
+                    "tag": "enclosed"
+                }
+            ],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": false,
@@ -20977,6 +21097,46 @@
                 "z": 0
             },
             "composite_object": true,
+            "container_colliders": [
+                {
+                    "bottom_center_position": {
+                        "x": -0.00043385,
+                        "y": 0.76666439,
+                        "z": -0.00122118
+                    },
+                    "position": {
+                        "x": -0.00043385,
+                        "y": 0.77166439,
+                        "z": -0.00122118
+                    },
+                    "scale": {
+                        "x": 0.91347435,
+                        "y": 0.01,
+                        "z": 0.34615511
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                },
+                {
+                    "bottom_center_position": {
+                        "x": -2.198e-05,
+                        "y": 0.012498514999999988,
+                        "z": 0.01782134
+                    },
+                    "position": {
+                        "x": -2.198e-05,
+                        "y": 0.38338382,
+                        "z": 0.01782134
+                    },
+                    "scale": {
+                        "x": 0.89318427,
+                        "y": 0.74177061,
+                        "z": 0.34742016
+                    },
+                    "shape": "box",
+                    "tag": "enclosed"
+                }
+            ],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": false,

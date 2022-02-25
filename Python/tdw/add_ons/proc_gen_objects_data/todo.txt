@@ -1,5 +1,4 @@
 sink
 stove
-radiator
 kitchen_counter_top
 void

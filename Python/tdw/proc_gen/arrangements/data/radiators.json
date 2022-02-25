@@ -1,5 +1,5 @@
 {
-  "b03_ka90ivi20r_2013__vray_composite": {
+  "b03_radiator_alum_12": {
     "depth": 0,
     "depth_offset": 0,
     "length": 2,
@@ -23,7 +23,7 @@
   },
   "radiator_pub_2015": {
     "depth": 0,
-    "depth_offset": -0.032,
+    "depth_offset": 0.032,
     "length": 2,
     "rotations": {
       "north":  90,

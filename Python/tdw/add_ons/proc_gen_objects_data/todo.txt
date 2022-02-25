@@ -9,7 +9,6 @@ void
 
 cup_and_coaster
 kitchen_table
-radiator
 refrigerator
 shelf
 side_table

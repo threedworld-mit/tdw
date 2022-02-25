@@ -1,11 +1,4 @@
 {
-
-  "de_castelli_placas_table": {
-    "east": 0,
-    "north": 90,
-    "south": 270,
-    "west": 180
-  },
   "gas_stove": {
     "east": 0,
     "north": 90,

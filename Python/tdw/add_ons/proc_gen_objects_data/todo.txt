@@ -2,7 +2,6 @@
 
 sink
 stove
-kitchen_counter_top
 void
 
 # TEST

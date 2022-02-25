@@ -33,57 +33,9 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         super().__init__(model=model, position={"x": 0, "y": 0, "z": 0}, rng=rng)
 
     def _get_position(self, position: Dict[str, float]) -> Dict[str, float]:
-        # Get the unit position plus the depth offset.
-        depth = self._get_depth()
-        # Get the depth offset.
-        if self._wall == CardinalDirection.north:
-            z = self._region.z_max - depth / 2
-            if self._corner == OrdinalDirection.northeast:
-                x = self._region.x_max
-            elif self._corner == OrdinalDirection.northwest:
-                x = self._region.x_min
-            else:
-                raise Exception(f"Invalid corner: {self._corner}")
-        elif self._wall == CardinalDirection.south:
-            z = self._region.z_min + depth / 2
-            if self._corner == OrdinalDirection.southeast:
-                x = self._region.x_max
-            elif self._corner == OrdinalDirection.southwest:
-                x = self._region.x_min
-            else:
-                raise Exception(f"Invalid corner: {self._corner}")
-        elif self._wall == CardinalDirection.west:
-            x = self._region.x_min + depth / 2
-            if self._corner == OrdinalDirection.northwest:
-                z = self._region.z_max
-            elif self._corner == OrdinalDirection.southwest:
-                z = self._region.z_min
-            else:
-                raise Exception(f"Invalid corner: {self._corner}")
-        elif self._wall == CardinalDirection.east:
-            x = self._region.x_max - depth / 2
-            if self._corner == OrdinalDirection.northeast:
-                z = self._region.z_max
-            elif self._corner == OrdinalDirection.southeast:
-                z = self._region.z_min
-            else:
-                raise Exception(f"Invalid corner: {self._corner}")
-        else:
-            raise Exception(self._wall)
-        pos = {"x": x, "y": 0, "z": z}
-        # Get the distance offset.
-        distance = self._distance + self.get_length() / 2
-        if self._direction == CardinalDirection.north:
-            pos["z"] += distance
-        elif self._direction == CardinalDirection.south:
-            pos["z"] -= distance
-        elif self._direction == CardinalDirection.west:
-            pos["x"] -= distance
-        elif self._direction == CardinalDirection.east:
-            pos["x"] += distance
-        else:
-            raise Exception(self._direction)
-        return pos
+        return ProcGenUtils.get_position_along_wall(length=self.get_length(), depth=self._get_depth(),
+                                                    corner=self._corner, wall=self._wall, distance=self._distance,
+                                                    region=self._region)
 
     @abstractmethod
     def get_length(self) -> float:

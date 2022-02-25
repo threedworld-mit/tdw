@@ -1,7 +1,5 @@
 sink
 stove
 radiator
-refrigerator
 kitchen_counter_top
 void
-table

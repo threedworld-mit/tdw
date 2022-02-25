@@ -6,12 +6,6 @@
     "south": 270,
     "west": 180
   },
-  "fridge_large": {
-    "east": 270,
-    "north": 180,
-    "south": 0,
-    "west": 90
-  },
   "gas_stove": {
     "east": 0,
     "north": 90,

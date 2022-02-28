@@ -35912,6 +35912,88 @@
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
         },
+        "microwave_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 264346,
+                "Linux": 553720,
+                "Windows": 252163
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.02057832,
+                    "y": 0.1553493,
+                    "z": -0.2068492
+                },
+                "bottom": {
+                    "x": -0.02057832,
+                    "y": 0,
+                    "z": -0.071022
+                },
+                "center": {
+                    "x": -0.02057832,
+                    "y": 0.1553493,
+                    "z": -0.071022
+                },
+                "front": {
+                    "x": -0.02057832,
+                    "y": 0.1553493,
+                    "z": 0.06480518
+                },
+                "left": {
+                    "x": -0.2729224,
+                    "y": 0.1553493,
+                    "z": -0.071022
+                },
+                "right": {
+                    "x": 0.2317657,
+                    "y": 0.1553493,
+                    "z": -0.071022
+                },
+                "top": {
+                    "x": -0.02057832,
+                    "y": 0.3106987,
+                    "z": -0.071022
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "microwave_composite",
+            "physics_quality": 1.0715636938411084,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2",
+                        "chrome",
+                        "plastic_vinyl_glossy_light_gray"
+                    ],
+                    "name": "microwave_composite"
+                },
+                {
+                    "materials": [
+                        "chrome2",
+                        "chrome",
+                        "Glass"
+                    ],
+                    "name": "microwave-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/microwave_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/microwave_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/microwave_composite"
+            },
+            "volume": 0.02799893,
+            "wcategory": "microwave",
+            "wnid": "n03761084"
+        },
         "minotti_helion_3_seater_sofa": {
             "asset_bundle_sizes": {
                 "Darwin": 3323892,

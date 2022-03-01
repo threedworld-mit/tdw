@@ -621,7 +621,7 @@ As mentioned earlier, procedural generation is an unbounded problem and there's 
 
 ***
 
-**Next: [`Raycast` output data](raycast.md)**
+**Next: [Reset a scene](reset_scene.md)**
 
 [Return to the README](../../../README.md)
 

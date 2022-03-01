@@ -17,6 +17,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 ### Build
 
 - Fixed: DllNotFoundException in TDW.app (OS X) due to missing AudioPluginOculusSpatializer.bundle
+- Fixed: Potential memory leak with audio commands
 
 ### `tdw` module
 

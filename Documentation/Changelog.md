@@ -22,10 +22,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | ----------------- | ------------------------------------------------------------ |
 | `AudioSourceDone` | Output data that announces that an audio source is done playing. |
 
-### Build
-
-- Fixed: Potential memory leak with audio commands
-
 ### `tdw` module
 
 - Fixed: Error when initializing `PyImpact` if there isn't a VR rig in the scene.

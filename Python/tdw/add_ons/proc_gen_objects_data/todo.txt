@@ -1,6 +1,5 @@
 # IMPLEMENT
 
-sink
 void
 
 # TEST

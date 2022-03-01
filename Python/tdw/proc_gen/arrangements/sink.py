@@ -20,23 +20,19 @@ class Sink(KitchenCabinet):
         # Add the faucet.
         faucet_keys = list(Sink._FAUCETS.keys())
         faucet_model_name = faucet_keys[self._rng.randint(0, len(faucet_keys))]
+        faucet_model_name = "12_06_001"
         faucet_id = Controller.get_unique_id()
         faucet_commands = Controller.get_add_physics_object(model_name=faucet_model_name,
                                                             object_id=faucet_id,
                                                             position={"x": self._position["x"] + Sink._FAUCETS[faucet_model_name]["position"]["x"],
                                                                       "y": Sink._FAUCETS[faucet_model_name]["position"]["y"],
                                                                       "z": self._position["z"] + Sink._FAUCETS[faucet_model_name]["position"]["z"]},
+                                                            rotation=Sink._FAUCETS[faucet_model_name]["rotation"],
                                                             library="models_full.json",
                                                             kinematic=True)
         self.object_ids.append(faucet_id)
         commands.extend(faucet_commands)
         commands.extend(self._get_rotation_commands())
-        commands.append({"$type": "rotate_object_by",
-                         "angle": Sink._FAUCETS[faucet_model_name]["rotation"]["y"],
-                         "id": faucet_id,
-                         "axis": "yaw",
-                         "is_world": True,
-                         "use_centroid": False})
         return commands
 
     def _get_category(self) -> str:

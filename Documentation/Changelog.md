@@ -16,6 +16,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ### `tdw` module
 
+- Fixed: `struct.error` in `CompositeObjectManager` when deserializing static spring data.
 - Added `TriggerCollisionManager` add-on. Manager per-frame trigger collision data.
 - Added the following trigger collider/collision data classes:
   - `TriggerColliderShape` Enum describing the shape of the collider.

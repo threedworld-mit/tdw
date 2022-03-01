@@ -548,6 +548,7 @@
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
 | [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
 | [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations.  |
+| [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 | [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
@@ -569,6 +570,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
@@ -580,7 +582,6 @@
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
-| [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -595,7 +596,6 @@
 
 | Command | Description |
 | --- | --- |
-| [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_bounds`](#send_bounds) | Send rotated bounds data of objects in the scene.  |
 | [`send_local_transforms`](#send_local_transforms) | Send Transform (position and rotation) data of objects in the scene relative to their parent object.  |
 | [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.  |
@@ -6709,6 +6709,39 @@ Options for when to send data.
 
 ***
 
+## **`send_static_oculus_touch`**
+
+Send static data for the Oculus Touch rig. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticOculusTouch`](output_data.md#StaticOculusTouch)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "send_static_oculus_touch"}
+```
+
+```python
+{"$type": "send_static_oculus_touch", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_static_robots`**
 
 Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots 
@@ -7084,6 +7117,38 @@ These commands send a single data object.
 
 ***
 
+## **`send_audio_sources`**
+
+Send data regarding whether each object in the scene is currently playing a sound. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`AudioSources`](output_data.md#AudioSources)</font>
+
+```python
+{"$type": "send_audio_sources"}
+```
+
+```python
+{"$type": "send_audio_sources", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_categories`**
 
 Send data for the category names and colors of each object in the scene. 
@@ -7441,39 +7506,6 @@ Options for when to send data.
 
 ***
 
-## **`send_static_oculus_touch`**
-
-Send static data for the Oculus Touch rig. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`StaticOculusTouch`](output_data.md#StaticOculusTouch)</font>
-- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
-
-```python
-{"$type": "send_static_oculus_touch"}
-```
-
-```python
-{"$type": "send_static_oculus_touch", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_version`**
 
 Receive data about the build version. 
@@ -7612,39 +7644,6 @@ Options for when to send data.
 # SendObjectsDataCommand
 
 These commands send data about cached objects (models, avatars, etc.)
-
-***
-
-## **`send_audio_sources`**
-
-Send data regarding whether each object in the scene is currently playing a sound. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`AudioSources`](output_data.md#AudioSources)</font>
-
-```python
-{"$type": "send_audio_sources", "ids": [1, 2, 3]}
-```
-
-```python
-{"$type": "send_audio_sources", "ids": [1, 2, 3], "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
 
 ***
 

@@ -197,7 +197,8 @@ class FlexFluids(Controller):
     def run(self, num_trials: int) -> None:
         for i in range(num_trials):
             # Select a random fluid.
-            fluid_name = random.choice(FLUID_TYPES.keys())
+            fluid_keys = list(FLUID_TYPES.keys())
+            fluid_name = random.choice(fluid_keys)
             self.trial(fluid_name=fluid_name)
         self.communicate({"$type": "terminate"})
 

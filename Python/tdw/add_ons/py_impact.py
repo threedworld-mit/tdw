@@ -1,3 +1,4 @@
+from time import time
 from os import urandom
 import base64
 import math
@@ -9,8 +10,10 @@ import numpy as np
 import scipy.signal as sg
 from scipy.ndimage import gaussian_filter1d, uniform_filter1d
 from pydub import AudioSegment
+from tdw.tdw_utils import TDWUtils
+from tdw.librarian import ModelRecord
 from tdw.output_data import OutputData, Rigidbodies, StaticRobot, SegmentationColors, StaticRigidbodies, \
-    RobotJointVelocities, StaticOculusTouch
+    RobotJointVelocities, StaticOculusTouch, AudioSourceDone, Bounds
 from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.object_audio_static import ObjectAudioStatic, DEFAULT_OBJECT_AUDIO_STATIC_DATA
 from tdw.physics_audio.modes import Modes
@@ -142,7 +145,7 @@ class PyImpact(CollisionManager):
                  static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None,
                  resonance_audio: bool = False, floor: AudioMaterial = AudioMaterial.wood_medium,
                  rng: np.random.RandomState = None, auto: bool = True, scrape: bool = True,
-                 scrape_objects: Dict[int, ScrapeModel] = None):
+                 scrape_objects: Dict[int, ScrapeModel] = None, min_time_between_impact_events: float = 0.25):
         """
         :param initial_amp: The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
         :param prevent_distortion: If True, clamp amp values to <= 0.99
@@ -151,9 +154,10 @@ class PyImpact(CollisionManager):
         :param resonance_audio: If True, the simulation is using Resonance Audio.
         :param floor: The floor material.
         :param rng: The random number generator. If None, a random number generator with a random seed is created.
-        :param auto: If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio.
+        :param auto: If True, PyImpact will evaluate the simulation state per `communicate()` call and automatically generate audio.
         :param scrape: If True, initialize certain objects as scrape surfaces: Change their visual material(s) and enable them for scrape audio. See: `tdw.physics_audio.scrape_model.DEFAULT_SCRAPE_MODELS`
         :param scrape_objects: If `scrape == True` and this is not None, this dictionary can be used to manually set scrape surfaces. Key = Object ID. Value = [`ScrapeModel`](../physics_audio/scrape_model.md).
+        :param min_time_between_impact_events: The minimum time in seconds between two impact events that involve the same primary object.
         """
 
         super().__init__()
@@ -253,8 +257,13 @@ class PyImpact(CollisionManager):
         # Ignore collisions that include these object IDs.
         self._excluded_objects: List[int] = list()
 
+        # Ongoing impact audio events. Key = Audio source ID. Value = Time of event.
+        self._impact_events: Dict[int, float] = dict()
+        self._min_time_between_impact_events: float = min_time_between_impact_events
+
     def get_initialization_commands(self) -> List[dict]:
-        return [{"$type": "send_rigidbodies",
+        return [{"$type": "send_bounds"},
+                {"$type": "send_rigidbodies",
                  "frequency": "always"},
                 {"$type": "send_robot_joint_velocities",
                  "frequency": "always"},
@@ -277,6 +286,14 @@ class PyImpact(CollisionManager):
         # Don't automatically generate audio.
         if not self.auto:
             return
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            # Mark this audio source as done.
+            if r_id == "ausd":
+                audio_source_id = AudioSourceDone(resp[i]).get_id()
+                # The audio source might not be in this dictionary (for example if this was a scrape event).
+                if audio_source_id in self._impact_events:
+                    del self._impact_events[audio_source_id]
         # Get collision events.
         self._get_collision_types(resp=resp)
         for object_id in self.collision_events:
@@ -581,8 +598,14 @@ class PyImpact(CollisionManager):
                                       secondary_material=secondary_material, secondary_amp=secondary_amp,
                                       secondary_mass=secondary_mass, primary_resonance=primary_resonance, secondary_resonance=secondary_resonance)
         if sound is not None:
-            # Use the primary object ID for the audio source ID to prevent a droning effect.
-            return self._get_audio_command(audio_source_id=primary_id, contact_points=contact_points, sound=sound)
+            if primary_id not in self._impact_events:
+                self._impact_events[primary_id] = time()
+                return self._get_audio_command(audio_source_id=primary_id, contact_points=contact_points, sound=sound)
+            # Don't play too many impact events to avoid a droning effect.
+            elif time() - self._impact_events[primary_id] < self._min_time_between_impact_events:
+                return None
+            else:
+                return self._get_audio_command(audio_source_id=primary_id, contact_points=contact_points, sound=sound)
         # If PyImpact failed to generate a sound (which is rare!), fail silently here.
         else:
             return None
@@ -899,6 +922,35 @@ class PyImpact(CollisionManager):
         x = x / abs(np.max(x))
         return x
 
+    @staticmethod
+    def get_size(model: Union[np.ndarray, ModelRecord]) -> int:
+        """
+        :param model: Either the extents of an object or a model record.
+
+        :return: The `size` integer of the object.
+        """
+
+        if isinstance(model, np.ndarray):
+            s = sum(model)
+        elif isinstance(model, ModelRecord):
+            s = sum(TDWUtils.get_bounds_extents(bounds=model.bounds))
+        else:
+            raise Exception(f"Invalid extents: {model}")
+        if s <= 0.1:
+            return 0
+        elif s <= 0.02:
+            return 1
+        elif s <= 0.5:
+            return 2
+        elif s <= 1:
+            return 3
+        elif s <= 3:
+            return 4
+        elif s <= 10:
+            return 5
+        else:
+            return 6
+
     def reset(self, initial_amp: float = 0.5, static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None,
               scrape_objects: Dict[int, ScrapeModel] = None) -> None:
         """
@@ -932,6 +984,10 @@ class PyImpact(CollisionManager):
         self._scrape_events_count.clear()
         self._scrape_previous_indices.clear()
         self._excluded_objects.clear()
+        # Clear impact count.
+        self._impact_events.clear()
+        # Clear ongoing commands.
+        self.commands.clear()
         # Stop all ongoing audio.
         self.commands.append({"$type": "stop_all_audio"})
 
@@ -977,9 +1033,14 @@ class PyImpact(CollisionManager):
         robot_joints: Dict[int, dict] = dict()
         object_masses: Dict[int, float] = dict()
         object_bouncinesses: Dict[int, float] = dict()
+        extents: Dict[int, np.array] = dict()
         vr_nodes: List[ObjectAudioStatic] = list()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "boun":
+                boun = Bounds(resp[i])
+                for j in range(boun.get_num()):
+                    extents[boun.get_id(j)] = TDWUtils.get_bounds_extents(bounds=boun, index=j)
             if r_id == "segm":
                 segm = SegmentationColors(resp[i])
                 for j in range(segm.get_num()):
@@ -1059,13 +1120,11 @@ class PyImpact(CollisionManager):
                 amps: List[float] = [a.amp for a in current_values]
                 materials: List[AudioMaterial] = [a.material for a in current_values]
                 resonances: List[float] = [a.resonance for a in current_values]
-                sizes: List[int] = [a.size for a in current_values]
             # Fallback option: Find objects with similar volume.
             else:
                 amps: List[float] = list()
                 materials: List[AudioMaterial] = list()
                 resonances: List[float] = list()
-                sizes: List[int] = list()
                 for m_id in object_masses:
                     if m_id == object_id or m_id not in self._static_audio_data:
                         continue
@@ -1073,25 +1132,22 @@ class PyImpact(CollisionManager):
                         amps.append(self._static_audio_data[m_id].amp)
                         materials.append(self._static_audio_data[m_id].material)
                         resonances.append(self._static_audio_data[m_id].resonance)
-                        sizes.append(self._static_audio_data[m_id].size)
             # Fallback option: Use default values.
             if len(amps) == 0:
                 amp: float = PyImpact.DEFAULT_AMP
                 material: AudioMaterial = PyImpact.DEFAULT_MATERIAL
                 resonance: float = PyImpact.DEFAULT_RESONANCE
-                size: int = PyImpact.DEFAULT_SIZE
             # Get averages or maximums of each value.
             else:
                 amp: float = round(sum(amps) / len(amps), 3)
                 material: AudioMaterial = max(set(materials), key=materials.count)
                 resonance: float = round(sum(resonances) / len(resonances), 3)
-                size: int = int(sum(sizes) / len(sizes))
             derived_data[object_id] = ObjectAudioStatic(name=names[object_id],
                                                         mass=object_masses[object_id],
                                                         material=material,
                                                         bounciness=object_bouncinesses[object_id],
                                                         resonance=resonance,
-                                                        size=size,
+                                                        size=self.get_size(model=extents[object_id]),
                                                         amp=amp,
                                                         object_id=object_id)
         # Add the derived data.

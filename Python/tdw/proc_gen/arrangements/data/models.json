@@ -177,12 +177,12 @@
     "b05_table_new"
   ],
   "microwave": [
-    "appliance-ge-profile-microwave",
-    "appliance-ge-profile-microwave3",
+    "appliance-ge-profile-microwave_composite",
+    "appliance-ge-profile-microwave3_composite",
     "b03_bosch_cbg675bs1b_2013__vray_composite",
     "b05_whirlpool_microwave_wmc30516as_v-ray",
     "cgaxis_models_10_11_vray",
-    "microwave",
+    "microwave_composite",
     "vm_v5_070_composite",
     "vray_062_composite"
   ],

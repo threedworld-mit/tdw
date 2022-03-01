@@ -45,7 +45,7 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | human_hands |  bool  | True | If True, visualize the hands as human hands. If False, visualize the hands as robot hands. |
-| set_graspable |  bool  | True | If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/physx/composite_objects.md) as graspable by the VR rig. |
+| set_graspable |  bool  | True | If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/semantic_states/composite_objects.md) as graspable by the VR rig. |
 | output_data |  bool  | True | If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame. |
 | attach_avatar |  bool  | False | If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`. |
 | avatar_camera_width |  int  | 512 | The width of the avatar's camera in pixels. *This is not the same as the VR headset's screen resolution!* This only affects the avatar that is created if `attach_avatar` is `True`. Generally, you will want this to lower than the headset's actual pixel width, otherwise the framerate will be too slow. |

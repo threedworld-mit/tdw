@@ -4,6 +4,74 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.7
+
+### Command API
+
+#### Modified Commands
+
+| Command                | Modification                              |
+| ---------------------- | ----------------------------------------- |
+| `add_trigger_collider` | Added trigger collider shape `"cylinder"` |
+
+### Build
+
+- Fixed: DllNotFoundException in TDW.app (OS X) due to missing AudioPluginOculusSpatializer.bundle
+
+### `tdw` module
+
+- Fixed: `struct.error` in `CompositeObjectManager` when deserializing static spring data.
+- Added `TriggerCollisionManager` add-on. Manager per-frame trigger collision data.
+- Added the following trigger collider/collision data classes:
+  - `TriggerColliderShape` Enum describing the shape of the collider.
+  - `TriggerCollisionEvent` Wrapper for trigger collision data.
+- Added `ContainerManager` add-on. Manager per-frame containment data. This is a subclass of `TriggerCollisionManager`.
+- Added the following container trigger collider/collision data classes:
+  - `ContainerBoxTriggerCollider` Data for a box-shaped container trigger collider.
+  - `ContainerColliderTag` Enum of semantic tags for container trigger colliders.
+  - `ContainerCylinderTriggerCollider` Data for a cylinder-shaped container trigger collider.
+  - `ContainerNonUniformScaleTriggerCollider` Abstract class for container trigger colliders with non-uniform scales.
+  - `ContainerSphereTriggerCollider` Data for a sphere-shaped container trigger collider.
+  - `ContainerTriggerCollider` Abstract base class for container trigger collider data.
+  - `ContainmentEvent` Wrapper for containment trigger collision data.
+
+### Model Library
+
+- Added cached trigger collision data to model records. Not all records have container trigger colliders; see `model_record.trigger_colliders`.
+  - (Backend) Added: `tdw.librarian._Encoder` JSONEncoder extension that is used within `_Librarian` classes. For now, this just handles container collider data.
+- Added models `models_core.json` and `models_full.json`: cabinet_36_two_door_wood_oak_white_composite, cabinet_36_two_door_wood_beech_honey_composite, cabinet_24_wall_wood_beech_honey_composite, cabinet_24_wall_wood_oak_white_composite, cabinet_36_wall_wood_beech_honey_composite, cabinet_36_wall_wood_oak_white_composite, appliance-ge-profile-microwave3_composite, appliance-ge-profile-microwave_composite, microwave_composite
+
+### Example Controllers
+
+- Moved composite object controllers from `physx/` to `semantic_states/`
+- Moved overlap and raycast controllers from `objects_and_scenes/` to `semantic_states/`
+- Added: `semantic_states/containment.py`
+- Added: `semantic_states/trigger_collisions.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                                 |
+| ------------------------------------------------------------ | ----------------------------------------------------------- |
+| `lessons/semantic_states/containment.md`                     | Documentation for how to use the `ContainerManager`.        |
+| `lessons/semantic_state/grasped.md`                          | Overview of "grasped" semantic states with various agents.  |
+| `lessons/semantic_states/overview.md`                        | Overview of semantic states.                                |
+| `lessons/semantic_states/trigger_collisions.md`              | Documentation for how to use the `TriggerCollisionManager`. |
+| `python/add_ons/container_manager.md`                        | API documentation for `ContainerManager`.                   |
+| `python/add_ons/trigger_collision_manager.md`                | API documentation for `TriggerCollisionManager`.            |
+| `python/collision_data/trigger_collider_shape.md`<br>`python/collision_data/trigger_collision_event.md` | API documentation for trigger collision data classes.       |
+| `python/container_data/container_box_trigger_collider.md`<br>`python/container_data/container_collider_tag.md`<br>`python/container_data/container_cylinder_trigger_collider.md`<br>`python/container_data/container_non_uniform_scale_trigger_collider.md`<br>`python/container_data/container_sphere_trigger_collider.md`<br>`python/container_data/container_trigger_collider.md`<br>`python/container_data/containment_event.md` | API documentation for containment data classes.             |
+
+
+#### Modified Documentation
+
+| Document                                | Modification                                             |
+| --------------------------------------- | -------------------------------------------------------- |
+| `lessons/objects_and_scenes/raycast.md` | Moved to: `lessons/semantic_states/raycast.md`           |
+| `lessons/objects_and_scenes/overlap.md` | Moved to: `lessons/semantic_states/overlap.md`           |
+| `lessons/physx/composite_objects.md`    | Moved to: `lessons/semantic_states/composite_objects.md` |
+
 ## v1.9.6
 
 ### Command API

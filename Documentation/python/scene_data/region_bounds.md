@@ -52,6 +52,18 @@ Data for the bounds of a region in a scene. In an interior scene, this usually c
 
 _Returns:_  True if position (x, z) is in the scene.
 
+#### get_longer_sides
+
+**`self.get_longer_sides()`**
+
+_Returns:_  Tuple: A list of the longer sides as [`CardinalDirection` values](../cardinal_direction.md), the length of the sides.
+
+#### get_shorter_sides
+
+**`self.get_shorter_sides()`**
+
+_Returns:_  Tuple: A list of the shorter sides as [`CardinalDirection` values](../cardinal_direction.md), the length of the sides.
+
 #### get_from_scene_regions
 
 **`self.get_from_scene_regions(scene_regions, i)`**

@@ -35,9 +35,7 @@ for model_name in categories:
 
 - `rng` The random number generator.
 
-- `scene_bounds` The [`SceneBounds`](../scene_data/scene_bounds.md). This is set after initializing or resetting `ProcGenObjects` and then calling `c.communicate()`.
-
-- `cell_size` The cell size in meters. This is also used to position certain objects in subclasses of `ProcGenObjects`.
+- `scene_record` The record of the scene. This is set by `self.add_random_single_room_scene()`.
 
 ***
 
@@ -76,38 +74,6 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-#### add_rectangular_arrangement
-
-**`self.add_rectangular_arrangement(size, position, categories)`**
-
-**`self.add_rectangular_arrangement(size, position, categories, density=0.4, cell_size=0.05)`**
-
-Get a random arrangement of objects in a rectangular space.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| size |  Tuple[float, float] |  | The size of the rectangle in worldspace coordinates. |
-| position |  Dict[str, float] |  | The position of the center of the rectangle. |
-| categories |  List[str] |  | Models will be randomly chosen from these categories. |
-| density |  float  | 0.4 | The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects. |
-| cell_size |  float  | 0.05 | The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement. |
-
-_Returns:_  The IDs of the objects.
-
-#### add_object_with_other_objects_on_top
-
-**`self.add_object_with_other_objects_on_top(record, category, position, rotation)`**
-
-Add a root object and add objects on  top of it.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| record |  ModelRecord |  | The model record of the root object. |
-| category |  str |  | The category of the root object. |
-| position |  Dict[str, float] |  | The position of the root object. |
-| rotation |  float |  | The rotation of the root object. |
-
 #### reset
 
 **`self.reset()`**
@@ -120,6 +86,12 @@ Reset the procedural generator. Call this when resetting the scene.
 | --- | --- | --- | --- |
 | set_random_seed |  bool  | False | If True, set a new random seed. |
 | random_seed |  bool  | False | The random seed. If None, a random seed is randomly selected. Ignored if `set_random_seed == False` |
+
+#### add_random_single_room_scene
+
+**`self.add_random_single_room_scene()`**
+
+Load a random single-room streamed scene. Cache the record as `self.scene_record`.
 
 #### get_categories_and_wcategories
 

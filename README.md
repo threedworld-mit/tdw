@@ -222,8 +222,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [AssetBundleCreator](Documentation/python/asset_bundle_creator.md)
 - [AssetBundleCreatorBase](Documentation/python/asset_bundle_creator_base.md)
 - [AudioUtils](Documentation/python/audio_utils.md)
+- [CardinalDirection](Documentation/python/cardinal_direction.md)
 - [Controller](Documentation/python/controller.md)
 - [IntPair](Documentation/python/int_pair.md)
+- [OrdinalDirection](Documentation/python/ordinal_direction.md)
 - [QuaternionUtils](Documentation/python/quaternion_utils.md)
 - [RemoteBuildLauncher](Documentation/python/remote_build_launcher.md)
 - [RobotCreator](Documentation/python/robot_creator.md)
@@ -251,6 +253,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [OccupancyMap](Documentation/python/add_ons/occupancy_map.md)
 - [OculusTouch](Documentation/python/add_ons/oculus_touch.md)
 - [PhysicsAudioRecorder](Documentation/python/add_ons/physics_audio_recorder.md)
+- [ProcGenKitchen](Documentation/python/add_ons/proc_gen_kitchen.md)
+- [ProcGenObjects](Documentation/python/add_ons/proc_gen_objects.md)
 - [PyImpact](Documentation/python/add_ons/py_impact.md)
 - [ResonanceAudioInitializer](Documentation/python/add_ons/resonance_audio_initializer.md)
 - [Robot](Documentation/python/add_ons/robot.md)
@@ -261,6 +265,14 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ThirdPersonCameraBase](Documentation/python/add_ons/third_person_camera_base.md)
 - [TriggerCollisionManager](Documentation/python/add_ons/trigger_collision_manager.md)
 - [VR](Documentation/python/add_ons/vr.md)
+
+**tdw.add_ons.proc_gen_objects.data**
+
+- [LateralSubArrangement](Documentation/python/add_ons/proc_gen_objects/data/lateral_sub_arrangement.md)
+
+**tdw.add_onts.proc_gen_objects.data**
+
+- [LateralSubArrangement](Documentation/python/add_onts/proc_gen_objects/data/lateral_sub_arrangement.md)
 
 **tdw.collision_data**
 
@@ -358,7 +370,9 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 **tdw.scene_data**
 
+- [InteriorRegion](Documentation/python/scene_data/interior_region.md)
 - [RegionBounds](Documentation/python/scene_data/region_bounds.md)
+- [Room](Documentation/python/scene_data/room.md)
 - [SceneBounds](Documentation/python/scene_data/scene_bounds.md)
 
 **tdw.vr_data**

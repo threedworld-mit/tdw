@@ -14,6 +14,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | ---------------------- | ----------------------------------------- |
 | `add_trigger_collider` | Added trigger collider shape `"cylinder"` |
 
+### Build
+
+- Fixed: DllNotFoundException in TDW.app (OS X) due to missing AudioPluginOculusSpatializer.bundle
+
 ### `tdw` module
 
 - Fixed: `struct.error` in `CompositeObjectManager` when deserializing static spring data.
@@ -85,10 +89,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | Output Data       | Description                                                  |
 | ----------------- | ------------------------------------------------------------ |
 | `AudioSourceDone` | Output data that announces that an audio source is done playing. |
-
-### Build
-
-- Fixed: DllNotFoundException on OS X due to missing Oculus audio spatialization plugin.
 
 ### `tdw` module
 

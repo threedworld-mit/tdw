@@ -26,12 +26,17 @@ class Sink(KitchenCabinet):
                                                             position={"x": self._position["x"] + Sink._FAUCETS[faucet_model_name]["position"]["x"],
                                                                       "y": Sink._FAUCETS[faucet_model_name]["position"]["y"],
                                                                       "z": self._position["z"] + Sink._FAUCETS[faucet_model_name]["position"]["z"]},
-                                                            rotation=Sink._FAUCETS[faucet_model_name]["rotation"],
                                                             library="models_full.json",
                                                             kinematic=True)
         self.object_ids.append(faucet_id)
         commands.extend(faucet_commands)
         commands.extend(self._get_rotation_commands())
+        commands.append({"$type": "rotate_object_by",
+                         "angle": Sink._FAUCETS[faucet_model_name]["rotation"]["y"],
+                         "id": faucet_id,
+                         "axis": "yaw",
+                         "is_world": True,
+                         "use_centroid": False})
         return commands
 
     def _get_category(self) -> str:

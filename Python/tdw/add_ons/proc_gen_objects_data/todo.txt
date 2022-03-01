@@ -1,9 +1,0 @@
-# IMPLEMENT
-
-void
-
-# TEST
-
-cup_and_coaster
-kitchen_table
-table_setting

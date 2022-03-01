@@ -14,6 +14,7 @@ class CupAndCoaster(Arrangement):
       - If there is a coaster, the cup is on top of the coaster.
       - The rotation of the cup is random.
     """
+
     def get_commands(self) -> List[dict]:
         commands = []
         # Add a coaster.

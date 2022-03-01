@@ -140,7 +140,7 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
         :return: A position for a chair around the table.
         """
 
-        table_bottom = np.array(self._position)
+        table_bottom = TDWUtils.vector3_to_array(self._position)
         position_to_center = table_bound_point - table_bottom
         position_to_center_normalized = position_to_center / np.linalg.norm(position_to_center)
         # Scoot the chair back by half of its front-back extent.

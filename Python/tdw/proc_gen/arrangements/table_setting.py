@@ -1,4 +1,5 @@
-from typing import List
+from typing import List, Dict
+import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.proc_gen.arrangements.plate import Plate
@@ -15,6 +16,15 @@ class TableSetting(Plate):
       - The positions of the fork, knife, and spoon are perturbed randomly (0.03 to 0.05 meters).
     - 66% of the time, there is a [`CupAndCoaster`](cup_and_coaster.md).
     """
+
+    def __init__(self, food_probability: float, position: Dict[str, float], rng: np.random.RandomState):
+        """
+        :param food_probability: The probability of placing food on the plate.
+        :param position: The position of the root object. This might be adjusted.
+        :param rng: The random number generator.
+        """
+
+        super().__init__(food_probability=food_probability, model="plate06", position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
         commands = super().get_commands()
@@ -42,4 +52,5 @@ class TableSetting(Plate):
                                                       "z": self._position["z"] + extents[2] / 2 + self._rng.uniform(0.06, 0.09)},
                                             rng=self._rng)
             commands.extend(cup_and_coaster.get_commands())
+            self.object_ids.extend(cup_and_coaster.object_ids)
         return commands

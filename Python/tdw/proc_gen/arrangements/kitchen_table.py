@@ -53,10 +53,6 @@ class KitchenTable(TableAndChairs):
 
         self._room: Room = room
         self._offset_distance: float = offset_distance
-        if plate_record is None:
-            self._plate_record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record("plate06")
-        else:
-            self._plate_record = plate_record
         self._food_probability = food_probability
         super().__init__(used_walls=used_walls, region=room.main_region, model=model, position=position, rng=rng)
 
@@ -72,13 +68,12 @@ class KitchenTable(TableAndChairs):
             # Get the normalized direction.
             v = v / np.linalg.norm(v)
             # Move the plates inward.
-            v *= -float(self._rng.uniform(0.15, 0.2))
+            v *= -float(self._rng.uniform(0.5, 0.6))
             # Get a slightly perturbed position for the plate.
             table_setting = TableSetting(food_probability=self._food_probability,
                                          position={"x": float(top["x"] + v[0] + self._rng.uniform(-0.03, 0.03)),
                                                    "y": top["y"],
                                                    "z": float(top["z"] + v[1] + self._rng.uniform(-0.03, 0.03))},
-                                         record=self._plate_record,
                                          rng=self._rng)
             commands.extend(table_setting.get_commands())
             # Parent everything to the plate.
@@ -137,13 +132,13 @@ class KitchenTable(TableAndChairs):
                    "y": 0,
                    "z": room_center[2] + self._rng.uniform(-0.1, 0.1)}
             # Apply offsets.
-            if CardinalDirection.north in self._used_walls:
+            if self._used_walls & CardinalDirection.north != 0:
                 pos["z"] -= self._offset_distance
-            if CardinalDirection.south in self._used_walls:
+            if self._used_walls & CardinalDirection.south != 0:
                 pos["z"] += self._offset_distance
-            if CardinalDirection.east in self._used_walls:
+            if self._used_walls & CardinalDirection.east != 0:
                 pos["x"] -= self._offset_distance
-            if CardinalDirection.west in self._used_walls:
+            if self._used_walls & CardinalDirection.west != 0:
                 pos["x"] += self._offset_distance
         # Position the table between the main region and an alcove.
         else:

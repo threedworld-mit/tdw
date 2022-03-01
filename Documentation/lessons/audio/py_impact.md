@@ -212,6 +212,10 @@ In order to decide which process to use, PyImpact must first determine the "even
     - If the angular velocity is > 0.5 m/s, the event is `roll`.
     - Otherwise: the event is `scrape`.
 
+## The `min_time_between_impact_events` parameter
+
+`PyImpact` has an optional parameter `min_time_between_impact_events`  that sets the minimum time in seconds between impact audio events. This can be set to 0, but it will likely create an unwanted "droning" effect as objects rattle. Setting this to a higher value will remove unwanted droning but might also remove valid impact sounds. The default setting is meant to be a reasonable compromise between these two extremes that will suffice for most scenarios.
+
 ## Scrape sounds
 
 Scrape sounds can only be generated from a predefined list of models with "scrape surfaces". Each of these models may have more than one "scrape surface", such as shelving. Each surface must have a particular visual material. When `PyImpact` is initialized, it will automatically find objects with scrape surfaces, cache relevant data, and set their visual materials. Note that the floor of the scene won't generate scrape sounds.

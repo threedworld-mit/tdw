@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
-## v1.9.6
+## v1.9.7
 
 ### Command API
 
@@ -34,7 +34,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 - Added cached trigger collision data to model records. Not all records have container trigger colliders; see `model_record.trigger_colliders`.
   - (Backend) Added: `tdw.librarian._Encoder` JSONEncoder extension that is used within `_Librarian` classes. For now, this just handles container collider data.
-- Added models `models_core.json` and `models_full.json`: cabinet_36_two_door_wood_oak_white_composite, cabinet_36_two_door_wood_beech_honey_composite, cabinet_24_wall_wood_beech_honey_composite, cabinet_24_wall_wood_oak_white_composite, cabinet_36_wall_wood_beech_honey_composite, cabinet_36_wall_wood_oak_white_composite
+- Added models `models_core.json` and `models_full.json`: cabinet_36_two_door_wood_oak_white_composite, cabinet_36_two_door_wood_beech_honey_composite, cabinet_24_wall_wood_beech_honey_composite, cabinet_24_wall_wood_oak_white_composite, cabinet_36_wall_wood_beech_honey_composite, cabinet_36_wall_wood_oak_white_composite, appliance-ge-profile-microwave3_composite, appliance-ge-profile-microwave_composite, microwave_composite
 
 ### Example Controllers
 
@@ -58,6 +58,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `python/collision_data/trigger_collider_shape.md`<br>`python/collision_data/trigger_collision_event.md` | API documentation for trigger collision data classes.       |
 | `python/container_data/container_box_trigger_collider.md`<br>`python/container_data/container_collider_tag.md`<br>`python/container_data/container_cylinder_trigger_collider.md`<br>`python/container_data/container_non_uniform_scale_trigger_collider.md`<br>`python/container_data/container_sphere_trigger_collider.md`<br>`python/container_data/container_trigger_collider.md`<br>`python/container_data/containment_event.md` | API documentation for containment data classes.             |
 
+
 #### Modified Documentation
 
 | Document                                | Modification                                             |
@@ -65,6 +66,45 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `lessons/objects_and_scenes/raycast.md` | Moved to: `lessons/semantic_states/raycast.md`           |
 | `lessons/objects_and_scenes/overlap.md` | Moved to: `lessons/semantic_states/overlap.md`           |
 | `lessons/physx/composite_objects.md`    | Moved to: `lessons/semantic_states/composite_objects.md` |
+
+## v1.9.6
+
+### Command API
+
+#### Modified Commands
+
+| Command              | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `send_audio_sources` | Removed optional parameter `ids` because it was non-functional. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data       | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `AudioSourceDone` | Output data that announces that an audio source is done playing. |
+
+### `tdw` module
+
+- Fixed: Error when initializing `PyImpact` if there isn't a VR rig in the scene.
+- Fixed: `send_audio_sources` checks for object IDs instead of audio source IDs and therefore doesn't work.
+- Fixed: `PyImpact` doesn't play valid impact audio events. Now, it uses `AudioSourceDone` output data to check the time between impact events.
+  - Added optional parameter `min_time_between_audio_events` to the constructor.
+- Fixed: `PyImpact` doesn't calculate `size` values accurately. Added `PyImpact.get_size(model)`.
+
+### Example Controllers
+
+- Fixed: TypeError in `fluid.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                              | Modification                                               |
+| ------------------------------------- | ---------------------------------------------------------- |
+| `lessons/audio/py_impact.md`          | Added a section regarding `min_time_between_impact_events` |
+| `lessons/audio/py_impact_advanced.md` | Added better guidance for how to set `size` values.        |
 
 ## v1.9.5
 

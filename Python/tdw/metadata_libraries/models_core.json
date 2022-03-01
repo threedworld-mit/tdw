@@ -2905,6 +2905,247 @@
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
         },
+        "appliance-ge-profile-microwave3_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 3913472,
+                "Linux": 4081740,
+                "Windows": 3903336
+            },
+            "bounds": {
+                "back": {
+                    "x": 8.940697e-08,
+                    "y": 0.2187983,
+                    "z": -0.190562
+                },
+                "bottom": {
+                    "x": 8.940697e-08,
+                    "y": 0,
+                    "z": 0.02876325
+                },
+                "center": {
+                    "x": 8.940697e-08,
+                    "y": 0.2187983,
+                    "z": 0.02876325
+                },
+                "front": {
+                    "x": 8.940697e-08,
+                    "y": 0.2187983,
+                    "z": 0.2480885
+                },
+                "left": {
+                    "x": -0.3807431,
+                    "y": 0.2187983,
+                    "z": 0.02876325
+                },
+                "right": {
+                    "x": 0.3807433,
+                    "y": 0.2187983,
+                    "z": 0.02876325
+                },
+                "top": {
+                    "x": 8.940697e-08,
+                    "y": 0.4375967,
+                    "z": 0.02876325
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "container_colliders": [
+                {
+                    "bottom_center_position": {
+                        "x": -0.00024807,
+                        "y": 0.43916318,
+                        "z": 0.00024891
+                    },
+                    "position": {
+                        "x": -0.00024807,
+                        "y": 0.44416318,
+                        "z": 0.00024891
+                    },
+                    "scale": {
+                        "x": 0.75511563,
+                        "y": 0.01,
+                        "z": 0.38085669
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                },
+                {
+                    "bottom_center_position": {
+                        "x": 0.00027104,
+                        "y": 0.004111429999999999,
+                        "z": -0.00134433
+                    },
+                    "position": {
+                        "x": 0.00027104,
+                        "y": 0.19702163,
+                        "z": -0.00134433
+                    },
+                    "scale": {
+                        "x": 0.75735357,
+                        "y": 0.3858204,
+                        "z": 0.37667753
+                    },
+                    "shape": "box",
+                    "tag": "enclosed"
+                }
+            ],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "appliance-ge-profile-microwave3_composite",
+            "physics_quality": 1.0671101315742755,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "resin_polyurethane_gloss_metallic",
+                        "steel_brushed"
+                    ],
+                    "name": "appliance-ge-microwave-body"
+                },
+                {
+                    "materials": [
+                        "resin_polyurethane_gloss_metallic",
+                        "steel_brushed"
+                    ],
+                    "name": "appliance-ge-microwave-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/appliance-ge-profile-microwave3_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/appliance-ge-profile-microwave3_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/appliance-ge-profile-microwave3_composite"
+            },
+            "volume": 0.03495041,
+            "wcategory": "microwave",
+            "wnid": "n03761084"
+        },
+        "appliance-ge-profile-microwave_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 3889600,
+                "Linux": 4301936,
+                "Windows": 3868672
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.06556809,
+                    "y": 0.209677,
+                    "z": -0.1999325
+                },
+                "bottom": {
+                    "x": -0.06556809,
+                    "y": -1.490116e-07,
+                    "z": 0.01835103
+                },
+                "center": {
+                    "x": -0.06556809,
+                    "y": 0.209677,
+                    "z": 0.01835103
+                },
+                "front": {
+                    "x": -0.06556809,
+                    "y": 0.209677,
+                    "z": 0.2366346
+                },
+                "left": {
+                    "x": -0.4465382,
+                    "y": 0.209677,
+                    "z": 0.01835103
+                },
+                "right": {
+                    "x": 0.315402,
+                    "y": 0.209677,
+                    "z": 0.01835103
+                },
+                "top": {
+                    "x": -0.06556809,
+                    "y": 0.4193541,
+                    "z": 0.01835103
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "container_colliders": [
+                {
+                    "bottom_center_position": {
+                        "x": -0.25995726,
+                        "y": 0.41999829,
+                        "z": -0.01405447
+                    },
+                    "position": {
+                        "x": -0.25995726,
+                        "y": 0.42499829,
+                        "z": -0.01405447
+                    },
+                    "scale": {
+                        "x": 0.37031453,
+                        "y": 0.01,
+                        "z": 0.3708853
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                },
+                {
+                    "bottom_center_position": {
+                        "x": -0.0660259,
+                        "y": 0.0007533149999999766,
+                        "z": -0.02134468
+                    },
+                    "position": {
+                        "x": -0.0660259,
+                        "y": 0.20992671,
+                        "z": -0.02134468
+                    },
+                    "scale": {
+                        "x": 0.74545446,
+                        "y": 0.41834679,
+                        "z": 0.35431091
+                    },
+                    "shape": "box",
+                    "tag": "enclosed"
+                }
+            ],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "appliance-ge-profile-microwave_composite",
+            "physics_quality": 1.0103510167052148,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "plastic_black",
+                        "Metal_brushed"
+                    ],
+                    "name": "ge_microwave_body"
+                },
+                {
+                    "materials": [
+                        "Metal_brushed",
+                        "Glass",
+                        "Metal_brushed"
+                    ],
+                    "name": "microwave-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/appliance-ge-profile-microwave_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/appliance-ge-profile-microwave_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/appliance-ge-profile-microwave_composite"
+            },
+            "volume": 0.01349902,
+            "wcategory": "microwave",
+            "wnid": "n03761084"
+        },
         "aquostv": {
             "asset_bundle_sizes": {
                 "Darwin": 828021,
@@ -38458,6 +38699,128 @@
             },
             "volume": 0.04605881869792938,
             "wcategory": "microwave, microwave oven",
+            "wnid": "n03761084"
+        },
+        "microwave_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 264346,
+                "Linux": 553720,
+                "Windows": 252163
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.02057832,
+                    "y": 0.1553493,
+                    "z": -0.2068492
+                },
+                "bottom": {
+                    "x": -0.02057832,
+                    "y": 0,
+                    "z": -0.071022
+                },
+                "center": {
+                    "x": -0.02057832,
+                    "y": 0.1553493,
+                    "z": -0.071022
+                },
+                "front": {
+                    "x": -0.02057832,
+                    "y": 0.1553493,
+                    "z": 0.06480518
+                },
+                "left": {
+                    "x": -0.2729224,
+                    "y": 0.1553493,
+                    "z": -0.071022
+                },
+                "right": {
+                    "x": 0.2317657,
+                    "y": 0.1553493,
+                    "z": -0.071022
+                },
+                "top": {
+                    "x": -0.02057832,
+                    "y": 0.3106987,
+                    "z": -0.071022
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "container_colliders": [
+                {
+                    "bottom_center_position": {
+                        "x": -0.02055971,
+                        "y": 0.3120122,
+                        "z": -0.07158828
+                    },
+                    "position": {
+                        "x": -0.02055971,
+                        "y": 0.3170122,
+                        "z": -0.07158828
+                    },
+                    "scale": {
+                        "x": 0.5051938,
+                        "y": 0.01,
+                        "z": 0.27197843
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                },
+                {
+                    "bottom_center_position": {
+                        "x": 0.02086879,
+                        "y": 0.13894795999999998,
+                        "z": -0.06266911
+                    },
+                    "position": {
+                        "x": 0.02086879,
+                        "y": 0.20584708,
+                        "z": -0.06266911
+                    },
+                    "scale": {
+                        "x": 0.35635331,
+                        "y": 0.13379824,
+                        "z": 0.23200623
+                    },
+                    "shape": "box",
+                    "tag": "enclosed"
+                }
+            ],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "microwave_composite",
+            "physics_quality": 1.0715636938411084,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2",
+                        "chrome",
+                        "plastic_vinyl_glossy_light_gray"
+                    ],
+                    "name": "microwave_composite"
+                },
+                {
+                    "materials": [
+                        "chrome2",
+                        "chrome",
+                        "Glass"
+                    ],
+                    "name": "microwave-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/microwave_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/microwave_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/microwave_composite"
+            },
+            "volume": 0.02799893,
+            "wcategory": "microwave",
             "wnid": "n03761084"
         },
         "minotti_helion_3_seater_sofa": {

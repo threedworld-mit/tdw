@@ -50,6 +50,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | Data Type | Description | Identifier |
 | --- | --- | --- |
 | [ArrivedAtNavMeshDestination](#ArrivedAtNavMeshDestination) | Sent when a NavMeshAvatar arrives at its destination. | `anmd` |
+| [AudioSourceDone](#AudioSourceDone) | Output data that announces that an audio source is done playing. | `ausd` |
 | [AudioSources](#AudioSources) | Audio data for each object in a scene. Note that this will only tell you if any audio is playing; it won't return the audio itself (use an external program to record audio). | `audi` |
 | [AvatarKinematic](#AvatarKinematic) | Data of a kinematic (non-physics) avatar. | `avki` |
 | [AvatarNonKinematic](#AvatarNonKinematic) | Data of a non-kinematic (physics-enabled) avatar with a single body object. | `avnk` |
@@ -115,6 +116,18 @@ Sent when a NavMeshAvatar arrives at its destination.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_avatar_id()` | The ID of the avatar in each environment. | `str` |
+
+## AudioSourceDone
+
+`a = AudioSourceDone(byte_array)`
+
+**Identifier:** `ausd`
+
+Output data that announces that an audio source is done playing.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The audio source ID. | `int` |
 
 ## AudioSources
 

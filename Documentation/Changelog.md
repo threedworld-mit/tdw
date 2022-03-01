@@ -30,6 +30,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - Added optional parameter `min_time_between_audio_events` to the constructor.
 - Fixed: `PyImpact` doesn't calculate `size` values accurately. Added `PyImpact.get_size(model)`.
 
+### Example Controllers
+
+- Fixed: TypeError in `fluid.py`
+
 ### Documentation
 
 #### Modified Documentation

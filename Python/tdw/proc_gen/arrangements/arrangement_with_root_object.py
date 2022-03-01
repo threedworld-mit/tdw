@@ -11,6 +11,7 @@ from tdw.proc_gen.arrangements.arrangement import Arrangement
 from tdw.container_data.container_trigger_collider import ContainerTriggerCollider
 from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
 from tdw.container_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
+from tdw.container_data.container_sphere_trigger_collider import ContainerSphereTriggerCollider
 from tdw.container_data.container_collider_tag import ContainerColliderTag
 
 
@@ -127,6 +128,46 @@ class ArrangementWithRootObject(Arrangement, ABC):
             if collider.tag == ContainerColliderTag.enclosed:
                 if isinstance(collider, ContainerBoxTriggerCollider):
                     scale = collider.scale
+                else:
+                    raise Exception(collider)
+                # Add objects on top of the root object.
+                on_top_commands, object_ids = self._add_rectangular_arrangement(size=(scale["x"] * x_scale,
+                                                                                      scale["z"] * z_scale),
+                                                                                categories=categories,
+                                                                                position=self._get_collider_position(collider=collider),
+                                                                                cell_size=cell_size,
+                                                                                density=density)
+                commands.extend(on_top_commands)
+        # Rotate everything.
+        if rotate:
+            commands.extend(self._get_rotation_commands())
+        return commands
+
+    def _add_inside_objects(self, density: float = 0.4, cell_size: float = 0.05, rotate: bool = True,
+                            x_scale: float = 0.8, z_scale: float = 0.8) -> List[dict]:
+        """
+        Add objects inside of the root object.
+
+        :param density: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
+        :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
+        :param rotate: If True, append rotation commands.
+        :param x_scale: Scale the rectangular space along the x axis by this factor.
+        :param z_scale: Scale the rectangular space along the z axis by this factor.
+
+        :return: A list of commands.
+        """
+
+        categories: List[str] = ArrangementWithRootObject.INSIDE_OF[self._get_category()]
+        commands = []
+        for collider in self._record.container_colliders:
+            # Use all of the "enclosed" colliders.
+            if collider.tag == ContainerColliderTag.inside:
+                if isinstance(collider, ContainerBoxTriggerCollider):
+                    scale = collider.scale
+                elif isinstance(collider, ContainerCylinderTriggerCollider):
+                    scale = collider.scale
+                elif isinstance(collider, ContainerSphereTriggerCollider):
+                    scale = {"x": collider.diameter, "y": collider.diameter, "z": collider.diameter}
                 else:
                     raise Exception(collider)
                 # Add objects on top of the root object.

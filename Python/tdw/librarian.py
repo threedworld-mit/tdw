@@ -172,18 +172,18 @@ class SceneRecord(_Record):
             self.hdri: bool = data["hdri"]
             self.location: str = data["location"]
             for room_data in data["rooms"]:
-                main_region = InteriorRegion(region_id=room_data["main_region"]["bounds"]["region_id"],
-                                             center=tuple(room_data["main_region"]["bounds"]["center"]),
-                                             bounds=tuple(room_data["main_region"]["bounds"]["bounds"]),
-                                             non_continuous_walls=room_data["main_region"]["walls"]["non_continuous_walls"],
-                                             walls_with_windows=room_data["main_region"]["walls"]["walls_without_windows"])
+                main_region = InteriorRegion(region_id=room_data["main_region"]["region_id"],
+                                             center=tuple(room_data["main_region"]["center"]),
+                                             bounds=tuple(room_data["main_region"]["bounds"]),
+                                             non_continuous_walls=room_data["main_region"]["non_continuous_walls"],
+                                             walls_with_windows=room_data["main_region"]["walls_with_windows"])
                 alcoves = []
                 for alcove_data in room_data["alcoves"]:
-                    alcoves.append(InteriorRegion(region_id=alcove_data["bounds"]["region_id"],
-                                                  center=tuple(alcove_data["bounds"]["center"]),
-                                                  bounds=tuple(alcove_data["bounds"]["bounds"]),
-                                                  non_continuous_walls=alcove_data["walls"]["non_continuous_walls"],
-                                                  walls_with_windows=alcove_data["walls"]["walls_without_windows"]))
+                    alcoves.append(InteriorRegion(region_id=alcove_data["region_id"],
+                                                  center=tuple(alcove_data["center"]),
+                                                  bounds=tuple(alcove_data["bounds"]),
+                                                  non_continuous_walls=alcove_data["non_continuous_walls"],
+                                                  walls_with_windows=alcove_data["walls_with_windows"]))
                 self.rooms.append(Room(main_region=main_region, alcoves=alcoves))
 
 

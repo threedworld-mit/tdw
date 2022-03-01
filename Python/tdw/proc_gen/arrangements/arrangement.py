@@ -23,13 +23,16 @@ class Arrangement(ABC):
     """
     DEFAULT_CELL_SIZE: float = 0.6096
 
-    def __init__(self, position: Dict[str, float], rng: np.random.RandomState):
+    def __init__(self, position: Dict[str, float], rng: np.random.RandomState = None):
         """
         :param position: The position of the root object. This might be adjusted.
-        :param rng: The random number generator.
+        :param rng: The random number generator. If None, a new random number generator is created.
         """
 
-        self._rng: np.random.RandomState = rng
+        if rng is None:
+            self._rng: np.random.RandomState = np.random.RandomState()
+        else:
+            self._rng: np.random.RandomState = rng
         self._position: Dict[str, float] = self._get_position(position={k: v for k, v in position.items()})
         self._rotation: float = self._get_rotation()
         """:field

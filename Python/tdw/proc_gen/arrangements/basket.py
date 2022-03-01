@@ -19,7 +19,7 @@ class Basket(ArrangementAlongWall):
     - The basket object is non-kinematic.
     """
     
-    def get_commands(self) -> List[dict]:
+    def _get_commands(self) -> List[dict]:
         commands = self._add_root_object(kinematic=False)
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
         d = extents[0] if extents[0] < extents[2] else extents[2]

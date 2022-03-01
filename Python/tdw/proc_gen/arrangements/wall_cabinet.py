@@ -21,7 +21,7 @@ class WallCabinet(KitchenCabinet):
     - The root object of the wall cabinet is kinematic and the door sub-objects are non-kinematic.
     """
 
-    def get_commands(self) -> List[dict]:
+    def _get_commands(self) -> List[dict]:
         commands = self._add_root_object()
         # Get the bottom-center position of the inner cavity.
         cabinet_collider: Optional[ContainerBoxTriggerCollider] = None
@@ -29,7 +29,6 @@ class WallCabinet(KitchenCabinet):
             if collider.tag == ContainerColliderTag.enclosed and isinstance(collider, ContainerBoxTriggerCollider):
                 cabinet_collider = collider
                 break
-        assert cabinet_collider is not None
         position = self._get_collider_position(collider=cabinet_collider)
         roll = self._rng.random()
         # Add a stack of plates.
@@ -59,3 +58,6 @@ class WallCabinet(KitchenCabinet):
 
     def _get_category(self) -> str:
         return "wall_cabinet"
+
+    def _get_model_names(self) -> List[str]:
+        return KitchenCabinet._CABINETRY.wall_cabinets

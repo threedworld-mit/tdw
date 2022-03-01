@@ -9,7 +9,7 @@ from tdw.proc_gen.arrangements.kitchen_cabinet import KitchenCabinet
 class Sink(KitchenCabinet):
     _FAUCETS = loads(Path(resource_filename(__name__, "data/faucets.json")).read_text())
 
-    def get_commands(self) -> List[dict]:
+    def _get_commands(self) -> List[dict]:
         # Add objects on the counter top.
         commands = self._add_object_with_other_objects_on_top(rotate=False)
         # Add objects inside the cabinet.
@@ -20,7 +20,6 @@ class Sink(KitchenCabinet):
         # Add the faucet.
         faucet_keys = list(Sink._FAUCETS.keys())
         faucet_model_name = faucet_keys[self._rng.randint(0, len(faucet_keys))]
-        faucet_model_name = "12_06_001"
         faucet_id = Controller.get_unique_id()
         faucet_commands = Controller.get_add_physics_object(model_name=faucet_model_name,
                                                             object_id=faucet_id,
@@ -37,3 +36,6 @@ class Sink(KitchenCabinet):
 
     def _get_category(self) -> str:
         return "sink"
+
+    def _get_model_names(self) -> List[str]:
+        return KitchenCabinet._CABINETRY.sinks

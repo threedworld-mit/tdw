@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, List
 import numpy as np
 from tdw.proc_gen.arrangements.kitchen_counter_top_base import KitchenCounterTopBase
 from tdw.scene_data.interior_region import InteriorRegion
@@ -17,18 +17,29 @@ class KitchenCounterTop(KitchenCounterTopBase):
     """
 
     def __init__(self, material: str, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
-                 region: InteriorRegion, rng: np.random.RandomState):
+                 region: InteriorRegion, wall_length: float = None, rng: np.random.RandomState = None):
         """
         :param material: The name of the visual material.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
         :param distance: The distance in meters from the corner along the derived direction.
-        :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
-        :param rng: The random number generator.
+        :param wall_length: The total length of the lateral arrangement. If None, defaults to the length of the wall.
+        :param rng: The random number generator. If None, a new random number generator is created.
         """
 
+        self._distance: float = distance
         super().__init__(material=material, corner=corner, wall=wall, distance=distance, region=region,
-                         model="iron_box", rng=rng)
+                         wall_length=wall_length, rng=rng)
+
+    def get_commands(self) -> List[dict]:
+        # Add the counter top if it fits in the region.
+        if self._distance + KitchenCounterTopBase.DEFAULT_CELL_SIZE < self._wall_length:
+            return self._add_kitchen_counter_top()
+        else:
+            return []
+
+    def _get_commands(self) -> List[dict]:
+        return []
 
     def get_length(self) -> float:
         return KitchenCounterTopBase.DEFAULT_CELL_SIZE

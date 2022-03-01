@@ -14,7 +14,7 @@ class Suitcase(ArrangementAlongWall):
       - The suitcase is automatically rotated so that it faces away from the wall.
     """
 
-    def get_commands(self) -> List[dict]:
+    def _get_commands(self) -> List[dict]:
         commands = self._add_root_object(kinematic=False)
         commands.extend(self._get_rotation_commands())
         return commands

@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Optional
 from abc import ABC, abstractmethod
 from json import loads
 from pathlib import Path
@@ -33,17 +33,26 @@ class ArrangementWithRootObject(Arrangement, ABC):
     """
     INSIDE_OF: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())
 
-    def __init__(self, model: Union[str, ModelRecord], position: Dict[str, float], rng: np.random.RandomState):
+    def __init__(self, position: Dict[str, float], model: Union[str, ModelRecord] = None, rng: np.random.RandomState = None):
         """
-        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
         :param position: The position of the root object. This might be adjusted.
-        :param rng: The random number generator.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a random model in the category is selected.
+        :param rng: The random number generator. If None, a new random number generator is created.
         """
 
-        if isinstance(model, str):
-            if "models_core.json" not in Controller.MODEL_LIBRARIANS:
-                Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian()
-            self._record: ModelRecord = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model)
+        if "models_core.json" not in Controller.MODEL_LIBRARIANS:
+            Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian()
+        # Choose a random record.
+        if model is None:
+            if rng is None:
+                rng = np.random.RandomState()
+            model_names = Arrangement.MODEL_CATEGORIES[self._get_category()]
+            model_name = model_names[rng.randint(0, len(model_names))]
+            self._record: Optional[ModelRecord] = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+        # Get the record.
+        elif isinstance(model, str):
+            self._record: Optional[ModelRecord] = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model)
+        # This is a record.
         elif isinstance(model, ModelRecord):
             self._record = model
         else:

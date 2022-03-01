@@ -62,6 +62,18 @@ class RegionBounds:
 
         return self.x_min <= x <= self.x_max and self.z_min <= z <= self.z_max
 
+    def get_length(self, side: CardinalDirection) -> float:
+        """
+        :param side: A side of the region as a [`CardinalDirection`](../cardinal_direction.md).
+
+        :return: The length of the side.
+        """
+
+        if side == CardinalDirection.north or side == CardinalDirection.south:
+            return self.x_max - self.x_min
+        else:
+            return self.z_max - self.z_min
+
     def get_longer_sides(self) -> Tuple[List[CardinalDirection], float]:
         """
         :return: Tuple: A list of the longer sides as [`CardinalDirection` values](../cardinal_direction.md), the length of the sides.

@@ -1,7 +1,9 @@
+import importlib
 from json import loads
 from pathlib import Path
 from pkg_resources import resource_filename
 from typing import List, Tuple, Dict
+import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
@@ -150,3 +152,22 @@ class ProcGenUtils:
                          "scene_name": "ProcGenScene"},
                         TDWUtils.create_empty_room(width, length)], room
         raise Exception(f"Room size not found: {width}, {length}")
+
+    @staticmethod
+    def get_lateral_arrangement(categories: List[str], corner: OrdinalDirection, wall: CardinalDirection,
+                                region: InteriorRegion, length: float = None, rng: np.random.RandomState = None) -> List[dict]:
+        if length is None:
+            length = region.get_length(side=wall)
+        distance = 0
+        commands = []
+        for category in categories:
+            # A very dirty hack.
+            klass = getattr(importlib.import_module(f"tdw.proc_gen.arrangements.{category}"),
+                            category.replace("_", " ").title().replace(" ", ""))
+            # Get the arrangement.
+            arrangement = klass(corner=corner, wall=wall, distance=distance, region=region, wall_length=length, rng=rng)
+            # Get the commands.
+            commands.extend(arrangement.get_commands())
+            # Increment the distance.
+            distance += arrangement.get_length()
+        return commands

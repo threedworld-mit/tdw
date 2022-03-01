@@ -21,7 +21,7 @@ class Stove(ArrangementAlongWall):
     - The root object of the stove is non-kinematic and its door sub-objects are kinematic.
     """
 
-    def get_commands(self) -> List[dict]:
+    def _get_commands(self) -> List[dict]:
         commands = self._add_object_with_other_objects_on_top(rotate=False)
         # Get all possible models that can be enclosed by the stove.
         enclose_by_model_names = []

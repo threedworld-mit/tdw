@@ -19,7 +19,7 @@ class Refrigerator(ArrangementAlongWall):
 
     _ROTATIONS = loads(Path(resource_filename(__name__, "data/refrigerators.json")).read_text())
 
-    def get_commands(self) -> List[dict]:
+    def _get_commands(self) -> List[dict]:
         commands = self._add_root_object()
         commands.extend(self._get_rotation_commands())
         return commands

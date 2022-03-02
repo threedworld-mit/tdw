@@ -7,6 +7,7 @@ from overrides import final
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
+from tdw.librarian import ModelLibrarian
 
 
 class Arrangement(ABC):
@@ -39,6 +40,23 @@ class Arrangement(ABC):
         A list of all of the object IDs in this arrangement.
         """
         self.object_ids: List[int] = list()
+
+    @staticmethod
+    def get_categories_and_wcategories() -> Dict[str, Dict[str, str]]:
+        """
+        :return: A dictionary of the categories of every model that can be used by `Arrangement` and their corresponding `wcategory` and `wnid`. Key = The model name. Value = A dictionary with the following keys: `"category"` (the `ProcGenObjects` category), `"wcategory"` (the value of `record.wcategory`), and `"wnid"` (the value of `record.wnid`).
+        """
+
+        categories: Dict[str, Dict[str, str]] = dict()
+        if "models_core.json" not in Controller.MODEL_LIBRARIANS:
+            Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian("models_core.json")
+        for category in Arrangement.MODEL_CATEGORIES:
+            for model_name in Arrangement.MODEL_CATEGORIES:
+                record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+                categories[model_name] = {"category": category,
+                                          "wcategory": record.wcategory,
+                                          "wnid": record.wnid}
+        return categories
 
     @abstractmethod
     def get_commands(self) -> List[dict]:

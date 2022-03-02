@@ -3,7 +3,7 @@ import numpy as np
 from tdw.cardinal_direction import CardinalDirection
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import ModelRecord
+from tdw.librarian import ModelRecord, ModelLibrarian
 from tdw.scene_data.room import Room
 from tdw.scene_data.interior_region import InteriorRegion
 from tdw.proc_gen.arrangements.table_and_chairs import TableAndChairs
@@ -37,24 +37,35 @@ class KitchenTable(TableAndChairs):
     """
     CENTERPIECE_CATEGORIES: List[str] = ["jug", "vase", "bowl"]
 
-    def __init__(self, room: Room, used_walls: int,  model: Union[str, ModelRecord], position: Dict[str, float],
-                 rng: np.random.RandomState, offset_distance: float = 0.1, plate_record: Optional[ModelRecord] = None,
-                 food_probability: float = 0.7):
+    def __init__(self, room: Room, used_walls: int, model: Union[str, ModelRecord] = None,
+                 offset_distance: float = 0.1, food_probability: float = 0.7, rng: np.random.RandomState = None):
         """
         :param room: The [`Room`] that the table is in.
         :param used_walls: Bitwise sum of walls with objects.
-        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
-        :param position: The position of the root object. This might be adjusted.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a random model in the category is selected.
         :param rng: The random number generator.
         :param offset_distance: Offset the position from the used walls by this distance.
-        :param plate_record: The model record for the plate. If None, defaults to plate06.
         :param food_probability: The probability that each plate will have food (0 to 1).
         """
 
+        if "models_core.json" not in Controller.MODEL_LIBRARIANS:
+            Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian()
+        # Choose a random record.
+        if model is None:
+            if rng is None:
+                rng = np.random.RandomState()
+            category = self._get_category()
+            if category not in TableAndChairs.MODEL_CATEGORIES:
+                self._record: Optional[ModelRecord] = None
+            else:
+                model_names = TableAndChairs.MODEL_CATEGORIES[category]
+                model_name = model_names[rng.randint(0, len(model_names))]
+                self._record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
         self._room: Room = room
         self._offset_distance: float = offset_distance
         self._food_probability = food_probability
-        super().__init__(used_walls=used_walls, region=room.main_region, model=model, position=position, rng=rng)
+        super().__init__(used_walls=used_walls, region=room.main_region, model=model,
+                         position={"x": 0, "y": 0, "z": 0}, rng=rng)
 
     def get_commands(self) -> List[dict]:
         commands = super().get_commands()

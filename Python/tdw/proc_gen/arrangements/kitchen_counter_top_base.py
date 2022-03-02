@@ -8,8 +8,7 @@ from tdw.scene_data.interior_region import InteriorRegion
 from tdw.librarian import ModelRecord
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
-from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import CABINETRY
-from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_type import KitchenCabinetType
+from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import KitchenCabinetSet
 
 
 class KitchenCounterTopBase(ArrangementAlongWall, ABC):
@@ -17,27 +16,21 @@ class KitchenCounterTopBase(ArrangementAlongWall, ABC):
     Abstract base class for arrangments that including a floating kitchen counter top.
     """
 
-    def __init__(self, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
-                 region: InteriorRegion, kitchen_cabinet_set: KitchenCabinetType = None,
-                 model: Union[str, ModelRecord] = None, wall_length: float = None, rng: np.random.RandomState = None):
+    def __init__(self, cabinetry: KitchenCabinetSet, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
+                 region: InteriorRegion, model: Union[str, ModelRecord] = None, wall_length: float = None,
+                 rng: np.random.RandomState = None):
         """
+        :param cabinetry: The [`KitchenCabinetSet`](kitchen_cabinets/kitchen_cabinet_set.md).
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
         :param distance: The distance in meters from the corner along the derived direction.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
-        :param kitchen_cabinet_set: The [`KitchenCabinetType`](kitchen_cabinets/kitchen_cabinet_type.md). If `model` is None (i.e. if the model is random), models can only be randomly selected from one set of kitchen cabinets. If this is None, the cabinetry set is random.
         :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected.
         :param wall_length: The total length of the lateral arrangement. If None, defaults to the length of the wall.
         :param rng: The random number generator. If None, a new random number generator is created.
         """
 
-        if kitchen_cabinet_set is None:
-            if rng is None:
-                rng = np.random.RandomState()
-            cabinetry = [c for c in KitchenCabinetType]
-            self._kitchen_cabinet_set: KitchenCabinetType = cabinetry[rng.randint(0, len(cabinetry))]
-        else:
-            self._kitchen_cabinet_set = kitchen_cabinet_set
+        self._material: str = cabinetry.counter_top_material
         super().__init__(corner=corner, wall=wall, distance=distance, region=region, model=model,
                          wall_length=wall_length, rng=rng)
         self._size: Tuple[float, float] = self._get_size()
@@ -55,9 +48,9 @@ class KitchenCounterTopBase(ArrangementAlongWall, ABC):
                      "id": object_id,
                      "position": {"x": self._position["x"], "y": 0.9, "z": self._position["z"]},
                      "orientation": {"x": 0, "y": rotation, "z": 0}},
-                    Controller.get_add_material(CABINETRY[self._kitchen_cabinet_set].counter_top_material, "materials_med.json"),
+                    Controller.get_add_material(self._material, "materials_med.json"),
                     {"$type": "set_primitive_visual_material",
-                     "name": CABINETRY[self._kitchen_cabinet_set].counter_top_material,
+                     "name": self._material,
                      "id": object_id},
                     {"$type": "scale_object",
                      "id": object_id,

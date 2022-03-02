@@ -38,4 +38,4 @@ class Sink(KitchenCabinet):
         return "sink"
 
     def _get_model_names(self) -> List[str]:
-        return KitchenCabinet._CABINETRY.sinks
+        return self._cabinetry.sinks

@@ -46,9 +46,13 @@ class ArrangementWithRootObject(Arrangement, ABC):
         if model is None:
             if rng is None:
                 rng = np.random.RandomState()
-            model_names = Arrangement.MODEL_CATEGORIES[self._get_category()]
-            model_name = model_names[rng.randint(0, len(model_names))]
-            self._record: Optional[ModelRecord] = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+            category = self._get_category()
+            if category not in Arrangement.MODEL_CATEGORIES:
+                self._record: Optional[ModelRecord] = None
+            else:
+                model_names = Arrangement.MODEL_CATEGORIES[category]
+                model_name = model_names[rng.randint(0, len(model_names))]
+                self._record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
         # Get the record.
         elif isinstance(model, str):
             self._record: Optional[ModelRecord] = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model)

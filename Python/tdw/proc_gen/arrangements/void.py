@@ -40,3 +40,6 @@ class Void(ArrangementAlongWall):
 
     def _get_rotation(self) -> float:
         return 0
+
+    def _get_model_names(self) -> List[str]:
+        return []

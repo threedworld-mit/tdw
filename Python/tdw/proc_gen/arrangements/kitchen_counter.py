@@ -7,6 +7,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.proc_gen.arrangements.kitchen_cabinet import KitchenCabinet
 from tdw.proc_gen.arrangements.wall_cabinet import WallCabinet
 from tdw.proc_gen.arrangements.microwave import Microwave
+from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import KitchenCabinetSet
 from tdw.scene_data.interior_region import InteriorRegion
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
@@ -36,10 +37,11 @@ class KitchenCounter(KitchenCabinet):
     """
     COUNTERS_AND_CABINETS: Dict[str, str] = loads(Path(resource_filename(__name__, "data/counters_and_cabinets.json")).read_text())
 
-    def __init__(self, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
+    def __init__(self, cabinetry: KitchenCabinetSet, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
                  region: InteriorRegion, allow_microwave: bool = True, microwave_plate: float = 0.7, empty: float = 0.1,
                  model: Union[str, ModelRecord] = None, wall_length: float = None, rng: np.random.RandomState = None):
         """
+        :param cabinetry: The [`KitchenCabinetSet`](kitchen_cabinets/kitchen_cabinet_set.md).
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
         :param distance: The distance in meters from the corner along the derived direction.
@@ -53,13 +55,16 @@ class KitchenCounter(KitchenCabinet):
         """
 
         self._allow_microwave: bool = allow_microwave
+        """:field
+        If True, this kitchen counter has a microwave.
+        """
         self.has_microwave: bool = False
         self._microwave_plate: float = microwave_plate
         self._empty: float = empty
         self._min_num_plates: int = 3
         self._max_num_plates: int = 7
-        super().__init__(corner=corner, wall=wall, distance=distance, region=region, model=model, rng=rng,
-                         wall_length=wall_length)
+        super().__init__(cabinetry=cabinetry, corner=corner, wall=wall, distance=distance, region=region, model=model,
+                         rng=rng, wall_length=wall_length)
 
     def _get_commands(self) -> List[dict]:
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
@@ -83,6 +88,7 @@ class KitchenCounter(KitchenCabinet):
                                   rng=self._rng)
             commands.extend(microwave.get_commands())
             self.object_ids.extend(microwave.object_ids)
+            self.has_microwave = True
             return commands
         else:
             # Add the kitchen counter and add objects on top of it.
@@ -94,10 +100,12 @@ class KitchenCounter(KitchenCabinet):
             commands.extend(self._get_rotation_commands())
             # Add a wall cabinet.
             if self._record.name in KitchenCounter.COUNTERS_AND_CABINETS and self._region.walls_with_windows & self._wall == 0:
-                wall_cabinet = WallCabinet(corner=self._corner,
+                wall_cabinet = WallCabinet(cabinetry=self._cabinetry,
+                                           corner=self._corner,
                                            wall=self._wall,
                                            distance=self._distance,
                                            region=self._region,
+                                           wall_length=self._wall_length,
                                            model=KitchenCounter.COUNTERS_AND_CABINETS[self._record.name],
                                            rng=self._rng)
                 wall_cabinet_commands = wall_cabinet.get_commands()
@@ -109,4 +117,4 @@ class KitchenCounter(KitchenCabinet):
         return "kitchen_counter"
 
     def _get_model_names(self) -> List[str]:
-        return KitchenCabinet._CABINETRY.kitchen_counters
+        return self._cabinetry.kitchen_counters

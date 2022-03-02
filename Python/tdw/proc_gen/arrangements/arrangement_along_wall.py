@@ -7,7 +7,7 @@ from tdw.proc_gen.arrangements.arrangement_with_root_object import ArrangementWi
 from tdw.scene_data.interior_region import InteriorRegion
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
-from tdw.librarian import ModelRecord
+from tdw.librarian import ModelRecord, ModelLibrarian
 
 
 class ArrangementAlongWall(ArrangementWithRootObject, ABC):
@@ -38,7 +38,9 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
             self._wall_length = wall_length
         if model is None:
             if rng is None:
-                rng = np.random.RandomState()
+                self._rng = np.random.RandomState()
+            else:
+                self._rng = rng
             model = self._get_random_record_that_fits_along_wall(distance=distance)
         super().__init__(model=model, position={"x": 0, "y": 0, "z": 0}, rng=rng)
 
@@ -58,6 +60,8 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         possible_records = []
         for model_name in self._get_model_names():
             # Set the record.
+            if "models_core.json" not in Controller.MODEL_LIBRARIANS:
+                Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian()
             self._record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
             # This record fits.
             if distance + self.get_length() / 2 < self._wall_length:

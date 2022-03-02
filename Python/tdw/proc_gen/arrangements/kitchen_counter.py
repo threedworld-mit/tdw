@@ -36,18 +36,20 @@ class KitchenCounter(KitchenCabinet):
     """
     COUNTERS_AND_CABINETS: Dict[str, str] = loads(Path(resource_filename(__name__, "data/counters_and_cabinets.json")).read_text())
 
-    def __init__(self, allow_microwave: bool, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
-                 region: InteriorRegion, model: Union[str, ModelRecord], rng: np.random.RandomState,
-                 microwave_plate: float = 0.7, empty: float = 0.1):
+    def __init__(self, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
+                 region: InteriorRegion, allow_microwave: bool = True, microwave_plate: float = 0.7, empty: float = 0.1,
+                 model: Union[str, ModelRecord] = None, wall_length: float = None, rng: np.random.RandomState = None):
         """
-        :param allow_microwave: If True, and if this kitchen counter is longer than 0.7 meters, there will be a [`Microwave`](microwave.md) instead of an arrangement of objects on the counter top.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
         :param distance: The distance in meters from the corner along the derived direction.
-        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
-        :param rng: The random number generator.
+        :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
+        :param allow_microwave: If True, and if this kitchen counter is longer than 0.7 meters, there will be a [`Microwave`](microwave.md) instead of an arrangement of objects on the counter top.
         :param microwave_plate: The probability (between 0 and 1) of adding a [`Plate`](plate.md) to the inside of the microwave.
         :param empty: The probability (between 0 and 1) of the of the kitchen counter being empty.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected.
+        :param wall_length: The total length of the lateral arrangement. If None, defaults to the length of the wall.
+        :param rng: The random number generator. If None, a new random number generator is created.
         """
 
         self._allow_microwave: bool = allow_microwave
@@ -56,7 +58,8 @@ class KitchenCounter(KitchenCabinet):
         self._empty: float = empty
         self._min_num_plates: int = 3
         self._max_num_plates: int = 7
-        super().__init__(corner=corner, wall=wall, distance=distance, region=region, model=model, rng=rng)
+        super().__init__(corner=corner, wall=wall, distance=distance, region=region, model=model, rng=rng,
+                         wall_length=wall_length)
 
     def _get_commands(self) -> List[dict]:
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)

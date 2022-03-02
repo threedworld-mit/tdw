@@ -10,14 +10,14 @@ class Void(ArrangementAlongWall):
     An empty space along a wall.
     """
 
-    def __init__(self, length: float, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
-                 region: InteriorRegion):
+    def __init__(self, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
+                 region: InteriorRegion, length: float = ArrangementAlongWall.DEFAULT_CELL_SIZE):
         """
-        :param length: The length of the void.
-        :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
+        :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param distance: The distance in meters from the corner along the derived direction.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
+        :param length: The length of the void.
         """
 
         self._length: float = length

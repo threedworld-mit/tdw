@@ -132,7 +132,7 @@ class ProcGenKitchen(AddOn):
 
     def _get_room(self, scene: Union[str, SceneRecord, Room], room_index: int) -> Room:
         # Set the room.
-        if Controller.SCENE_LIBRARIANS["scenes.json"] is None:
+        if "scenes.json" not in Controller.SCENE_LIBRARIANS:
             Controller.SCENE_LIBRARIANS["scenes.json"] = SceneLibrarian()
         if isinstance(scene, str):
             return Controller.SCENE_LIBRARIANS["scenes.json"].get_record(scene).rooms[room_index]
@@ -414,11 +414,15 @@ class ProcGenKitchen(AddOn):
         :return: A list of commands to add a secondary lateral arrangements on available walls.
         """
 
+        random_categories = []
+        for category in possible_categories:
+            for i in range(possible_categories[category]):
+                random_categories.append(category)
         # Get a list of continuous unused walls.
         for wall in [c for c in CardinalDirection if region.non_continuous_walls & c == 0 and c not in used_walls]:
-            categories = ["void"]
+            categories = []
             for i in range(10):
-                categories.append(possible_categories[self.rng.randint(0, len(possible_categories))])
+                categories.append(random_categories[self.rng.randint(0, len(random_categories))])
             self._adjust_lateral_arrangement_categories(categories=categories, region=region, wall=wall)
             corners = TDWUtils.get_corners_from_wall(wall=wall)
             return self._get_lateral_arrangement(categories=categories,

@@ -66,7 +66,7 @@ class KitchenCounter(KitchenCabinet):
         super().__init__(cabinetry=cabinetry, corner=corner, wall=wall, distance=distance, region=region, model=model,
                          rng=rng, wall_length=wall_length)
 
-    def _get_commands(self) -> List[dict]:
+    def get_commands(self) -> List[dict]:
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
         # Place a microwave on top of the kitchen counter.
         if extents[0] > 0.7 and self._allow_microwave:

@@ -20,7 +20,7 @@ class Dishwasher(KitchenCounterTopBase):
 
     _DISHWASHER_OFFSET: float = 0.025
 
-    def _get_commands(self) -> List[dict]:
+    def get_commands(self) -> List[dict]:
         commands = self._add_root_object()
         commands.extend(super()._add_kitchen_counter_top())
         commands.extend(self._get_rotation_commands())

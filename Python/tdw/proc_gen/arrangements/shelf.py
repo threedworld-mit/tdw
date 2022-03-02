@@ -16,7 +16,7 @@ class Shelf(ArrangementAlongWall):
     - The shelf object is kinematic.
     """
 
-    def _get_commands(self) -> List[dict]:
+    def get_commands(self) -> List[dict]:
         return self._add_object_with_other_objects_on_top(cell_size=0.0125, density=0.8, x_scale=0.75, z_scale=0.8)
 
     def _get_rotation(self) -> float:

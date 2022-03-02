@@ -37,10 +37,8 @@ class KitchenCounterTop(KitchenCounterTopBase):
         if self._distance + KitchenCounterTopBase.DEFAULT_CELL_SIZE < self._wall_length:
             return self._add_kitchen_counter_top()
         else:
+            self.send_commands = False
             return []
-
-    def _get_commands(self) -> List[dict]:
-        return []
 
     def get_length(self) -> float:
         return KitchenCounterTopBase.DEFAULT_CELL_SIZE

@@ -32,6 +32,7 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         self._direction: CardinalDirection = TDWUtils.get_direction_from_corner(corner=corner, wall=self._wall)
         self._distance: float = distance
         self._region: InteriorRegion = region
+        self.send_commands: bool = True
         if wall_length is None:
             self._wall_length: float = self._region.get_length(side=self._wall)
         else:
@@ -43,12 +44,6 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
                 self._rng = rng
             model = self._get_random_record_that_fits_along_wall(distance=distance)
         super().__init__(model=model, position={"x": 0, "y": 0, "z": 0}, rng=rng)
-
-    def get_commands(self) -> List[dict]:
-        if self._record is None:
-            return []
-        else:
-            return self._get_commands()
 
     def _get_random_record_that_fits_along_wall(self, distance: float) -> Optional[ModelRecord]:
         """
@@ -68,6 +63,7 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
                 possible_records.append(self._record)
         # There is no record.
         if len(possible_records) == 0:
+            self.send_commands = False
             return None
         # Choose a random record.
         else:
@@ -88,13 +84,6 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         """
 
         return ArrangementAlongWall.MODEL_CATEGORIES[self._get_category()]
-
-    @abstractmethod
-    def _get_commands(self) -> List[dict]:
-        """
-        :return: A list of commands that will create the arrangement.
-        """
-        raise Exception()
 
     @abstractmethod
     def get_length(self) -> float:

@@ -9,7 +9,7 @@ from tdw.proc_gen.arrangements.kitchen_cabinet import KitchenCabinet
 class Sink(KitchenCabinet):
     _FAUCETS = loads(Path(resource_filename(__name__, "data/faucets.json")).read_text())
 
-    def _get_commands(self) -> List[dict]:
+    def get_commands(self) -> List[dict]:
         # Add objects on the counter top.
         commands = self._add_object_with_other_objects_on_top(rotate=False)
         # Add objects inside the cabinet.

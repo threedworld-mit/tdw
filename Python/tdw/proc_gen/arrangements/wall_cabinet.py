@@ -21,7 +21,7 @@ class WallCabinet(KitchenCabinet):
     - The root object of the wall cabinet is kinematic and the door sub-objects are non-kinematic.
     """
 
-    def _get_commands(self) -> List[dict]:
+    def get_commands(self) -> List[dict]:
         commands = self._add_root_object()
         # Get the bottom-center position of the inner cavity.
         cabinet_collider: Optional[ContainerBoxTriggerCollider] = None

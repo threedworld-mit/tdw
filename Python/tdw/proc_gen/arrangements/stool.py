@@ -15,16 +15,16 @@ class Stool(ArrangementAlongWall):
     - The stool is non-kinematic.
     """
 
-    def _get_commands(self) -> List[dict]:
+    def get_commands(self) -> List[dict]:
         commands = self._add_root_object(kinematic=False)
         commands.extend(self._get_rotation_commands())
         return commands
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0]
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] * 1.5
 
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2]
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * 1.5
 
     def _get_category(self) -> str:
         return "stool"

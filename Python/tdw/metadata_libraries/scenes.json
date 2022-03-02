@@ -299,33 +299,33 @@
           "alcoves": [
             {
               "bounds": [
-                5.176653861999512,
+                1.4703888893127441,
                 2.892470359802246,
-                6.926150321960449
+                3.383854389190674
               ],
               "center": [
-                -0.41321849822998047,
+                2.9284956455230713,
                 -0.09139132499694824,
-                -0.019994735717773438
+                -0.029148340225219727
               ],
               "non_continuous_walls": 8,
-              "region_id": 1,
+              "region_id": 0,
               "walls_with_windows": 2
             }
           ],
           "main_region": {
             "bounds": [
-              1.4703888893127441,
+              5.176653861999512,
               2.892470359802246,
-              3.383854389190674
+              6.926150321960449
             ],
             "center": [
-              2.9284956455230713,
+              -0.41321849822998047,
               -0.09139132499694824,
-              -0.029148340225219727
+              -0.019994735717773438
             ],
             "non_continuous_walls": 3,
-            "region_id": 0,
+            "region_id": 1,
             "walls_with_windows": 4
           }
         }
@@ -346,33 +346,33 @@
           "alcoves": [
             {
               "bounds": [
-                5.176653861999512,
+                1.4703888893127441,
                 2.892470359802246,
-                6.926150321960449
+                3.383854389190674
               ],
               "center": [
-                -0.41321849822998047,
+                2.9284956455230713,
                 -0.09139132499694824,
-                -0.019994735717773438
+                -0.029148340225219727
               ],
               "non_continuous_walls": 8,
-              "region_id": 1,
+              "region_id": 0,
               "walls_with_windows": 2
             }
           ],
           "main_region": {
             "bounds": [
-              1.4703888893127441,
+              5.176653861999512,
               2.892470359802246,
-              3.383854389190674
+              6.926150321960449
             ],
             "center": [
-              2.9284956455230713,
+              -0.41321849822998047,
               -0.09139132499694824,
-              -0.029148340225219727
+              -0.019994735717773438
             ],
             "non_continuous_walls": 3,
-            "region_id": 0,
+            "region_id": 1,
             "walls_with_windows": 4
           }
         }
@@ -388,7 +388,26 @@
       "hdri": true,
       "location": "interior",
       "name": "mm_craftroom_2a",
-      "rooms": [],
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.738027572631836,
+              2.892470359802246,
+              5.9514265060424805
+            ],
+            "center": [
+              0.0010390281677246094,
+              -0.09139132499694824,
+              -0.019994735717773438
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
       "urls": {
         "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2a",
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2a",
@@ -400,7 +419,26 @@
       "hdri": true,
       "location": "interior",
       "name": "mm_craftroom_2b",
-      "rooms": [],
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.738027572631836,
+              2.892470359802246,
+              5.9514265060424805
+            ],
+            "center": [
+              0.0010390281677246094,
+              -0.09139132499694824,
+              -0.019994735717773438
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
       "urls": {
         "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2b",
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2b",
@@ -412,7 +450,26 @@
       "hdri": true,
       "location": "interior",
       "name": "mm_craftroom_3a",
-      "rooms": [],
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.3245527744293213,
+              2.892470359802246,
+              6.899672508239746
+            ],
+            "center": [
+              -0.014862656593322754,
+              -0.09139132499694824,
+              -0.003818511962890625
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
       "urls": {
         "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3a",
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3a",
@@ -424,7 +481,26 @@
       "hdri": true,
       "location": "interior",
       "name": "mm_craftroom_3b",
-      "rooms": [],
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.3245527744293213,
+              2.892470359802246,
+              6.899672508239746
+            ],
+            "center": [
+              -0.014862656593322754,
+              -0.09139132499694824,
+              -0.003818511962890625
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
       "urls": {
         "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3b",
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3b",
@@ -535,33 +611,33 @@
           "alcoves": [
             {
               "bounds": [
-                5.176653861999512,
+                1.4703888893127441,
                 2.892470359802246,
-                6.926150321960449
+                3.383854389190674
               ],
               "center": [
-                -0.41321849822998047,
+                2.9284956455230713,
                 -0.09139132499694824,
-                -0.019994735717773438
+                -0.029148340225219727
               ],
               "non_continuous_walls": 8,
-              "region_id": 1,
+              "region_id": 0,
               "walls_with_windows": 2
             }
           ],
           "main_region": {
             "bounds": [
-              1.4703888893127441,
+              5.176653861999512,
               2.892470359802246,
-              3.383854389190674
+              6.926150321960449
             ],
             "center": [
-              2.9284956455230713,
+              -0.41321849822998047,
               -0.09139132499694824,
-              -0.029148340225219727
+              -0.019994735717773438
             ],
             "non_continuous_walls": 3,
-            "region_id": 0,
+            "region_id": 1,
             "walls_with_windows": 4
           }
         }
@@ -582,33 +658,33 @@
           "alcoves": [
             {
               "bounds": [
-                5.176653861999512,
+                1.4703888893127441,
                 2.892470359802246,
-                6.926150321960449
+                3.383854389190674
               ],
               "center": [
-                -0.41321849822998047,
+                2.9284956455230713,
                 -0.09139132499694824,
-                -0.019994735717773438
+                -0.029148340225219727
               ],
               "non_continuous_walls": 8,
-              "region_id": 1,
+              "region_id": 0,
               "walls_with_windows": 2
             }
           ],
           "main_region": {
             "bounds": [
-              1.4703888893127441,
+              5.176653861999512,
               2.892470359802246,
-              3.383854389190674
+              6.926150321960449
             ],
             "center": [
-              2.9284956455230713,
+              -0.41321849822998047,
               -0.09139132499694824,
-              -0.029148340225219727
+              -0.019994735717773438
             ],
             "non_continuous_walls": 3,
-            "region_id": 0,
+            "region_id": 1,
             "walls_with_windows": 4
           }
         }
@@ -624,7 +700,26 @@
       "hdri": true,
       "location": "interior",
       "name": "mm_kitchen_2a",
-      "rooms": [],
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.738027572631836,
+              2.892470359802246,
+              5.9514265060424805
+            ],
+            "center": [
+              0.0010390281677246094,
+              -0.09139132499694824,
+              -0.019994735717773438
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
       "urls": {
         "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2a",
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2a",
@@ -636,7 +731,26 @@
       "hdri": true,
       "location": "interior",
       "name": "mm_kitchen_2b",
-      "rooms": [],
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.738027572631836,
+              2.892470359802246,
+              5.9514265060424805
+            ],
+            "center": [
+              0.0010390281677246094,
+              -0.09139132499694824,
+              -0.019994735717773438
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
       "urls": {
         "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2b",
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2b",
@@ -648,7 +762,26 @@
       "hdri": true,
       "location": "interior",
       "name": "mm_kitchen_3a",
-      "rooms": [],
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.3245527744293213,
+              2.892470359802246,
+              6.899672508239746
+            ],
+            "center": [
+              -0.014862656593322754,
+              -0.09139132499694824,
+              -0.003818511962890625
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
       "urls": {
         "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3a",
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3a",
@@ -660,7 +793,26 @@
       "hdri": true,
       "location": "interior",
       "name": "mm_kitchen_3b",
-      "rooms": [],
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.3245527744293213,
+              2.892470359802246,
+              6.899672508239746
+            ],
+            "center": [
+              -0.014862656593322754,
+              -0.09139132499694824,
+              -0.003818511962890625
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
       "urls": {
         "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3b",
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3b",

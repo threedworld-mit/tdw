@@ -196,15 +196,16 @@ class ProcGenKitchen(AddOn):
                 raise Exception(category)
             # Add the commands.
             arrangement_commands = arrangement.get_commands()
-            commands.extend(arrangement_commands)
-            # Add the length.
-            distance += arrangement.get_length()
-            # Update the microwave state.
-            if isinstance(arrangement, KitchenCounter) and arrangement.has_microwave:
-                self._allow_microwave = False
-            # Update the radiator state.
-            elif isinstance(arrangement, Radiator) and len(arrangement_commands) > 0:
-                self._allow_radiator = False
+            if arrangement.send_commands:
+                commands.extend(arrangement_commands)
+                # Add the length.
+                distance += arrangement.get_length()
+                # Update the microwave state.
+                if isinstance(arrangement, KitchenCounter) and arrangement.has_microwave:
+                    self._allow_microwave = False
+                # Update the radiator state.
+                elif isinstance(arrangement, Radiator) and len(arrangement_commands) > 0:
+                    self._allow_radiator = False
         return commands
 
     def _add_straight_work_triangle(self) -> Tuple[List[dict], List[CardinalDirection]]:

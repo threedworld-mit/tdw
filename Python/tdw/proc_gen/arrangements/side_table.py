@@ -16,7 +16,7 @@ class SideTable(ArrangementAlongWall):
     - The side table is non-kinematic.
     """
 
-    def _get_commands(self) -> List[dict]:
+    def get_commands(self) -> List[dict]:
         return self._add_object_with_other_objects_on_top(kinematic=False)
 
     def get_length(self) -> float:

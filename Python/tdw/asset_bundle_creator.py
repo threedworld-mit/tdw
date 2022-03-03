@@ -188,7 +188,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         if not self._quiet:
             print(f"Creating: {unity_project_path.resolve()}")
 
-        call([str(AssetBundleCreatorBase.get_editor_path().resolve()),
+        call([str(self._unity_editor_path.resolve()),
               "-createProject",
               str(unity_project_path.resolve()),
               "-quit",

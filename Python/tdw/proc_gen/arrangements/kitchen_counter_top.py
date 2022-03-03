@@ -31,6 +31,7 @@ class KitchenCounterTop(KitchenCounterTopBase):
         self._distance: float = distance
         super().__init__(cabinetry=cabinetry, corner=corner, wall=wall, distance=distance, region=region,
                          wall_length=wall_length, rng=rng)
+        self.send_commands = True
 
     def get_commands(self) -> List[dict]:
         # Add the counter top if it fits in the region.

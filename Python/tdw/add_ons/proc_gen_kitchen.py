@@ -348,7 +348,6 @@ class ProcGenKitchen(AddOn):
         corner = corners[self.rng.randint(0, len(corners))]
         categories = ["floating_kitchen_counter_top", "sink", "dishwasher", "stove", "kitchen_counter", "shelf"]
         categories.extend(self._get_secondary_categories(wall=longer_wall, region=self.room.main_region))
-        print("L", categories)
         self._adjust_lateral_arrangement_categories(categories=categories,
                                                     wall=longer_wall,
                                                     region=self.room.main_region)
@@ -401,7 +400,6 @@ class ProcGenKitchen(AddOn):
         # Fill the rest of the lateral arrangement.
         for i in range(20):
             categories.append("kitchen_counter")
-        print("U", categories)
         commands.extend(self._get_lateral_arrangement(categories=categories,
                                                       corner=corner,
                                                       wall=longer_wall,

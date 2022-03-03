@@ -20,7 +20,7 @@ class Suitcase(ArrangementAlongWall):
         return commands
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + 0.05
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + 0.1
 
     def _get_depth(self) -> float:
         return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2]

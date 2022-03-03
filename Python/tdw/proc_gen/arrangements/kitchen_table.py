@@ -75,16 +75,12 @@ class KitchenTable(TableAndChairs):
         # Add table settings.
         for bound_point in self._bound_point_positions:
             # Get the vector towards the center.
-            v = np.array([bound_point[0], bound_point[2]]) - np.array([top["x"], top["z"]])
-            # Get the normalized direction.
-            v = v / np.linalg.norm(v)
-            # Move the plates inward.
-            v *= -float(self._rng.uniform(0.5, 0.6))
+            v = np.array([bound_point[0], bound_point[2]]) * self._rng.uniform(0.65, 0.7)
             # Get a slightly perturbed position for the plate.
             table_setting = TableSetting(food_probability=self._food_probability,
-                                         position={"x": float(top["x"] + v[0] + self._rng.uniform(-0.03, 0.03)),
+                                         position={"x": top["x"] + v[0] + self._rng.uniform(-0.03, 0.03),
                                                    "y": top["y"],
-                                                   "z": float(top["z"] + v[1] + self._rng.uniform(-0.03, 0.03))},
+                                                   "z": top["z"] + v[1] + self._rng.uniform(-0.03, 0.03)},
                                          rng=self._rng)
             commands.extend(table_setting.get_commands())
             # Parent everything to the plate.

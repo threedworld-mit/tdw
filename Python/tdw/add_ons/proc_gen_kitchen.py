@@ -15,7 +15,6 @@ from tdw.proc_gen.arrangements.arrangement import Arrangement
 from tdw.proc_gen.arrangements.basket import Basket
 from tdw.proc_gen.arrangements.dishwasher import Dishwasher
 from tdw.proc_gen.arrangements.kitchen_counter import KitchenCounter
-from tdw.proc_gen.arrangements.kitchen_counter_top import KitchenCounterTop
 from tdw.proc_gen.arrangements.painting import Painting
 from tdw.proc_gen.arrangements.radiator import Radiator
 from tdw.proc_gen.arrangements.refrigerator import Refrigerator
@@ -26,6 +25,7 @@ from tdw.proc_gen.arrangements.stool import Stool
 from tdw.proc_gen.arrangements.stove import Stove
 from tdw.proc_gen.arrangements.suitcase import Suitcase
 from tdw.proc_gen.arrangements.void import Void
+from tdw.proc_gen.arrangements.kitchen_counter_top import KitchenCounterTop
 from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_type import KitchenCabinetType
 from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import KitchenCabinetSet, CABINETRY
 from tdw.proc_gen.arrangements.kitchen_table import KitchenTable
@@ -41,11 +41,12 @@ class ProcGenKitchen(AddOn):
     """
     SECONDARY_CATEGORIES: Dict[str, Dict[str, int]] = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/secondary_categories.json")).read_text())
 
-    def __init__(self, scene: Union[str, SceneRecord, Room], room_index: int = 0, rng: np.random.RandomState = None):
+    def __init__(self, scene: Union[str, SceneRecord, Room], create_scene: bool = True, room_index: int = 0, rng: Union[int, np.random.RandomState] = None):
         """
-        :param scene: The scene. Can be `str` (the name of the scene), [`SceneRecord`](../../python/librarian/scene_librarian.md), or [`Room`](../scene_data/room.md). The scene must at least one room; see `SceneRecord.rooms`.
+        :param scene: The scene. Can be `str` (the name of the scene), [`SceneRecord`](../../python/librarian/scene_librarian.md), [`Room`](../scene_data/room.md). The scene must at least one room; see `SceneRecord.rooms`.
+        :param create_scene: If True, create the scene as part of the scene setup (assuming that `scene` is `str` or `SceneRecord`).
         :param room_index: The index of the room in `SceneRecord.rooms`. If `scene` is type `Room`, this parameter is ignored.
-        :param rng: The random number generator. If None, a new random number generator is created.
+        :param rng: Either a random seed, a random number generator, or None. If None, a new random number generator is created.
         """
 
         super().__init__()
@@ -55,13 +56,26 @@ class ProcGenKitchen(AddOn):
             The random number generator
             """
             self.rng: np.random.RandomState = np.random.RandomState()
-        else:
+        elif isinstance(rng, int):
+            self.rng = np.random.RandomState(rng)
+        elif isinstance(rng, np.random.RandomState):
             self.rng = rng
+        else:
+            raise Exception(rng)
         # Set the room.
         """:field
         The kitchen [`Room`](../scene_data/room.md).
         """
         self.room: Room = self._get_room(scene=scene, room_index=room_index)
+        if isinstance(scene, str):
+            self._scene: SceneRecord = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(scene)
+            self._create_scene: bool = create_scene
+        elif isinstance(scene, SceneRecord):
+            self._scene = scene
+            self._create_scene = create_scene
+        else:
+            self._scene = None
+            self._create_scene = False
         # Set the cabinetry.
         cabinetry_type = [c for c in KitchenCabinetType]
         """:field
@@ -72,6 +86,10 @@ class ProcGenKitchen(AddOn):
         self._allow_radiator: bool = True
 
     def get_initialization_commands(self) -> List[dict]:
+        if self._create_scene:
+            commands = [Controller.get_add_scene(scene_name=self._scene.name)]
+        else:
+            commands = []
         # Get a work triangle.
         longer_walls, longer_length = self.room.main_region.get_longer_sides()
         both_longer_walls_ok = True
@@ -95,7 +113,8 @@ class ProcGenKitchen(AddOn):
             triangles.append(self._add_u_work_triangle)
         # Add the work triangle.
         triangle = triangles[self.rng.randint(0, len(triangles))]
-        commands, used_walls = triangle()
+        triangle_commands, used_walls = triangle()
+        commands.extend(triangle_commands)
         # Add a kitchen table.
         kitchen_table = KitchenTable(room=self.room, used_walls=sum(used_walls), rng=self.rng)
         commands.extend(kitchen_table.get_commands())
@@ -118,15 +137,38 @@ class ProcGenKitchen(AddOn):
     def on_send(self, resp: List[bytes]) -> None:
         pass
 
-    def reset(self, scene: Union[str, SceneRecord, Room], room_index: int = 0) -> None:
+    def reset(self, scene: Union[str, SceneRecord, Room], create_scene: bool = True, room_index: int = 0,
+              rng: Union[int, np.random.RandomState] = None) -> None:
         """
         Reset the add-on. Call this when you reset a scene.
+
+        :param scene: The scene. Can be `str` (the name of the scene), [`SceneRecord`](../../python/librarian/scene_librarian.md), or [`Room`](../scene_data/room.md). The scene must at least one room; see `SceneRecord.rooms`.
+        :param create_scene: If True, create the scene as part of the scene setup (assuming that `scene` is `str` or `SceneRecord`).
+        :param room_index: The index of the room in `SceneRecord.rooms`. If `scene` is type `Room`, this parameter is ignored.
+        :param rng: Either a random seed, a random number generator, or None. If None, a new random number generator is created.
         """
 
         self.initialized = False
         self.commands.clear()
+        if rng is None:
+            self.rng = np.random.RandomState()
+        elif isinstance(rng, int):
+            self.rng = np.random.RandomState(rng)
+        elif isinstance(rng, np.random.RandomState):
+            self.rng = rng
+        else:
+            raise Exception(rng)
         # Set the room.
         self.room = self._get_room(scene=scene, room_index=room_index)
+        if isinstance(scene, str):
+            self._scene = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(scene)
+            self._create_scene = create_scene
+        elif isinstance(scene, SceneRecord):
+            self._scene = scene
+            self._create_scene = create_scene
+        else:
+            self._scene = None
+            self._create_scene = False
         # Set the cabinetry.
         cabinetry_type = [c for c in KitchenCabinetType]
         self.cabinetry = CABINETRY[cabinetry_type[self.rng.randint(0, len(cabinetry_type))]]
@@ -168,8 +210,7 @@ class ProcGenKitchen(AddOn):
                 p["cabinetry"] = self.cabinetry
                 p["allow_microwave"] = self._allow_microwave
                 arrangement = KitchenCounter(**p)
-                # raise Exception("has_microwave")
-            elif category == "kitchen_counter_top":
+            elif category == "floating_kitchen_counter_top":
                 p = {k: v for k, v in params.items()}
                 p["cabinetry"] = self.cabinetry
                 arrangement = KitchenCounterTop(**p)
@@ -307,6 +348,7 @@ class ProcGenKitchen(AddOn):
         corner = corners[self.rng.randint(0, len(corners))]
         categories = ["floating_kitchen_counter_top", "sink", "dishwasher", "stove", "kitchen_counter", "shelf"]
         categories.extend(self._get_secondary_categories(wall=longer_wall, region=self.room.main_region))
+        print("L", categories)
         self._adjust_lateral_arrangement_categories(categories=categories,
                                                     wall=longer_wall,
                                                     region=self.room.main_region)
@@ -316,8 +358,8 @@ class ProcGenKitchen(AddOn):
                                                       region=self.room.main_region))
         shorter_wall = CardinalDirection(corner - longer_wall)
         # Get everything else.
-        category_lists = [["kitchen_counter", "kitchen_counter", "refrigerator", "shelf"],
-                          ["kitchen_counter", "refrigerator", "kitchen_counter", "shelf"]]
+        category_lists = [["void", "kitchen_counter", "kitchen_counter", "refrigerator", "shelf"],
+                          ["void", "kitchen_counter", "refrigerator", "kitchen_counter", "shelf"]]
         categories: List[str] = category_lists[self.rng.randint(0, len(category_lists))]
         self._adjust_lateral_arrangement_categories(categories=categories,
                                                     wall=shorter_wall,
@@ -359,6 +401,7 @@ class ProcGenKitchen(AddOn):
         # Fill the rest of the lateral arrangement.
         for i in range(20):
             categories.append("kitchen_counter")
+        print("U", categories)
         commands.extend(self._get_lateral_arrangement(categories=categories,
                                                       corner=corner,
                                                       wall=longer_wall,
@@ -384,7 +427,7 @@ class ProcGenKitchen(AddOn):
         else:
             raise Exception(longer_wall, corner)
         # Add a counter top at the end.
-        commands.extend(self._get_lateral_arrangement(categories=["kitchen_counter_top"],
+        commands.extend(self._get_lateral_arrangement(categories=["floating_kitchen_counter_top"],
                                                       corner=opposite_corner,
                                                       wall=longer_wall,
                                                       region=self.room.main_region))
@@ -392,8 +435,8 @@ class ProcGenKitchen(AddOn):
         shorter_walls, shorter_length = self.room.main_region.get_shorter_sides()
         if self.rng.random() < 0.5:
             corners.reverse()
-        for corner, categories in zip(corners, [["kitchen_counter", "refrigerator", "kitchen_counter", "shelf"],
-                                                ["kitchen_counter", "dishwasher", "kitchen_counter", "kitchen_counter"]]):
+        for corner, categories in zip(corners, [["void", "kitchen_counter", "refrigerator", "kitchen_counter", "shelf"],
+                                                ["void", "kitchen_counter", "dishwasher", "kitchen_counter", "kitchen_counter"]]):
             # Get the wall.
             shorter_wall = CardinalDirection(corner - longer_wall)
             self._adjust_lateral_arrangement_categories(categories=categories,
@@ -460,7 +503,6 @@ class ProcGenKitchen(AddOn):
                 categories[i] = "void"
             elif categories[i] == "radiator" and not self._allow_radiator:
                 categories[i] = "basket"
-        print(categories, wall, region.region_id)
 
     def _get_wall(self, walls: List[CardinalDirection], non_continuous_walls: int) -> CardinalDirection:
         """

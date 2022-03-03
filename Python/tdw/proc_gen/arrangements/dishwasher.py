@@ -42,7 +42,7 @@ class Dishwasher(KitchenCounterTopBase):
         return pos
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0]
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + Dishwasher._DISHWASHER_OFFSET * 2
 
     def _get_rotation(self) -> float:
         if self._wall == CardinalDirection.north:
@@ -59,7 +59,7 @@ class Dishwasher(KitchenCounterTopBase):
 
     def _get_size(self) -> Tuple[float, float]:
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
-        return extents[0] + Dishwasher._DISHWASHER_OFFSET * 2, Dishwasher.DEFAULT_CELL_SIZE
+        return extents[0] + Dishwasher._DISHWASHER_OFFSET * 2, extents[2]
 
     def _get_category(self) -> str:
         return "dishwasher"

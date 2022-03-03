@@ -25,7 +25,7 @@ class Radiator(ArrangementAlongWall):
         return commands
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[Radiator._ROTATIONS[self._record.name]["length"]]
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[Radiator._ROTATIONS[self._record.name]["length"]] * 1.15
 
     def _get_depth(self) -> float:
         depth = TDWUtils.get_bounds_extents(bounds=self._record.bounds)[Radiator._ROTATIONS[self._record.name]["depth"]]

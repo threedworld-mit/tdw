@@ -34,16 +34,6 @@ Base class for creating asset bundles.
 
 _Returns:_  The call to launch Unity Editor silently in batchmode, execute something, and then quit.
 
-#### get_editor_path
-
-**`AssetBundleCreatorBase(ABC).get_editor_path()`**
-
-_This is a static function._
-
-Build the asset_bundle_creator Unity project.
-
-_Returns:_  The path to the asset_bundle_creator Unity project.
-
 #### get_unity_project
 
 _(Abstract)_

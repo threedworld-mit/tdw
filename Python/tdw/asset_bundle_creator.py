@@ -157,14 +157,6 @@ class AssetBundleCreator(AssetBundleCreatorBase):
 
         return resources_directory
 
-    @staticmethod
-    def get_editor_path() -> Path:
-        """
-        :return The path to the Unity Editor executable.
-        """
-
-        return super().get_editor_path()
-
     def get_base_unity_call(self) -> List[str]:
         """
         :return The call to launch Unity Editor silently in batchmode, execute something, and then quit.
@@ -201,7 +193,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         filepath = pkg_resources.resource_filename(__name__, package_name)
         assert Path(filepath).exists(), filepath
         # Import the package.
-        call([str(AssetBundleCreatorBase.get_editor_path().resolve()),
+        call([str(self._unity_editor_path.resolve()),
               "-projectPath",
               str(unity_project_path.resolve()),
               "-importPackage",

@@ -22,7 +22,7 @@ class Painting(ArrangementAlongWall):
         return commands
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] * 1.5
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] * 2
 
     def _get_position(self, position: Dict[str, float]) -> Dict[str, float]:
         pos = super()._get_position(position=position)
@@ -31,7 +31,7 @@ class Painting(ArrangementAlongWall):
         return pos
     
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * 2
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * 4
     
     def _get_rotation(self) -> float:
         if self._wall == CardinalDirection.north:

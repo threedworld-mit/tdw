@@ -147,6 +147,6 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
         half_extent = TDWUtils.get_bounds_extents(bounds=chair_record.bounds)[2] / 2
         # Move the chair position back. Add some randomness for spice.
         chair_position = table_bound_point + (position_to_center_normalized *
-                                              (half_extent + self._rng.uniform(-0.1, -0.05)))
+                                              (half_extent + self._rng.uniform(-0.01, -0.02)))
         chair_position[1] = 0
         return chair_position

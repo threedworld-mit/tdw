@@ -40,7 +40,7 @@ class AssetBundleCreatorBase(ABC):
         self._quiet: bool = quiet
         # Get the Unity path.
         if unity_editor_path is None:
-            self._unity_editor_path: Path = AssetBundleCreatorBase.get_editor_path()
+            self._unity_editor_path: Path = AssetBundleCreatorBase._get_editor_path()
         else:
             if isinstance(unity_editor_path, Path):
                 self._unity_editor_path = unity_editor_path
@@ -65,7 +65,7 @@ class AssetBundleCreatorBase(ABC):
                 "-batchmode"]
 
     @staticmethod
-    def get_editor_path() -> Path:
+    def _get_editor_path() -> Path:
         system = platform.system()
 
         # Get the path to the Editor executable.

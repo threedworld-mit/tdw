@@ -35,6 +35,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `ContainerSphereTriggerCollider` Data for a sphere-shaped container trigger collider.
   - `ContainerTriggerCollider` Abstract base class for container trigger collider data.
   - `ContainmentEvent` Wrapper for containment trigger collision data.
+- Fixed: AssertionError `AssetBundleCreator` and `RobotCreator` if `unity_editor_path` is set in the constructor but `asset_bundle_creator/` project path doesn't yet exist.
 
 ### Model Library
 

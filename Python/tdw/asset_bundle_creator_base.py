@@ -38,8 +38,6 @@ class AssetBundleCreatorBase(ABC):
             # Set the display for Linux.
             self._env["DISPLAY"] = display
         self._quiet: bool = quiet
-        self._project_path: Path = self.get_unity_project()
-        assert self._project_path.exists(), self._project_path
         # Get the Unity path.
         if unity_editor_path is None:
             self._unity_editor_path: Path = AssetBundleCreatorBase.get_editor_path()
@@ -52,6 +50,8 @@ class AssetBundleCreatorBase(ABC):
                 raise Exception(f"Invalid Unity editor path: {self._unity_editor_path}")
             assert self._unity_editor_path.exists(), "Unity Editor not found: " + str(self._unity_editor_path.resolve())
         self._unity_call: List[str] = self.get_base_unity_call()
+        self._project_path: Path = self.get_unity_project()
+        assert self._project_path.exists(), self._project_path
 
     def get_base_unity_call(self) -> List[str]:
         """

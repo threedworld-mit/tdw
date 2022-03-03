@@ -202,6 +202,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
               "-batchmode"], env=self._env)
         if not self._quiet:
             print(f"Imported {package_name} into the new project.")
+        return unity_project_path
 
     @staticmethod
     def get_project_path() -> Path:

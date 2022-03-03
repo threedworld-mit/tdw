@@ -102,11 +102,15 @@ class ProcGenKitchen(AddOn):
         # Add secondary arrangements in the room.
         commands.extend(self._get_secondary_lateral_arrangements(used_walls=used_walls,
                                                                  region=self.room.main_region,
-                                                                 possible_categories=ProcGenKitchen.SECONDARY_CATEGORIES["main"]))
+                                                                 possible_categories=ProcGenKitchen.SECONDARY_CATEGORIES["main"],
+                                                                 tall_category_replacement="void"))
+        # Add secondary arrangements in any alcoves.
         for alcove in self.room.alcoves:
-            commands.extend(self._get_secondary_lateral_arrangements(used_walls=used_walls,
+            commands.extend(self._get_secondary_lateral_arrangements(used_walls=[],
                                                                      region=alcove,
-                                                                     possible_categories=ProcGenKitchen.SECONDARY_CATEGORIES["alcove"]))
+                                                                     possible_categories=ProcGenKitchen.SECONDARY_CATEGORIES["alcove"],
+                                                                     tall_category_replacement="basket"))
+        # Allow objects to stop moving.
         commands.append({"$type": "step_physics",
                          "frames": 50})
         return commands
@@ -175,7 +179,6 @@ class ProcGenKitchen(AddOn):
                 arrangement = Radiator(**params)
             elif category == "refrigerator":
                 arrangement = Refrigerator(**params)
-                commands.extend(Refrigerator(**params).get_commands())
             elif category == "shelf":
                 arrangement = Shelf(**params)
             elif category == "side_table":
@@ -406,11 +409,12 @@ class ProcGenKitchen(AddOn):
         return commands, walls
 
     def _get_secondary_lateral_arrangements(self, used_walls: List[CardinalDirection], region: InteriorRegion,
-                                            possible_categories: Dict[str, int]) -> List[dict]:
+                                            possible_categories: Dict[str, int], tall_category_replacement: str) -> List[dict]:
         """
         :param used_walls: A list of walls used in the primary arrangement (work triangle).
         :param region: The region.
         :param possible_categories: All possible categories for this arrangement.
+        :param tall_category_replacement: If we need to replace tall objects, replace them with models from this category.
 
         :return: A list of commands to add a secondary lateral arrangements on available walls.
         """
@@ -424,16 +428,18 @@ class ProcGenKitchen(AddOn):
             categories = []
             for i in range(10):
                 categories.append(random_categories[self.rng.randint(0, len(random_categories))])
-            self._adjust_lateral_arrangement_categories(categories=categories, region=region, wall=wall)
+            self._adjust_lateral_arrangement_categories(categories=categories, region=region, wall=wall,
+                                                        tall_category_replacement=tall_category_replacement)
             corners = TDWUtils.get_corners_from_wall(wall=wall)
             return self._get_lateral_arrangement(categories=categories,
                                                  corner=corners[self.rng.randint(0, len(corners))],
                                                  wall=wall,
-                                                 length=region.get_length(side=wall) - Arrangement.DEFAULT_CELL_SIZE * 2,
+                                                 length=region.get_length(wall) - Arrangement.DEFAULT_CELL_SIZE,
                                                  distance=Arrangement.DEFAULT_CELL_SIZE,
                                                  region=region)
 
-    def _adjust_lateral_arrangement_categories(self, categories: List[str], wall: CardinalDirection, region: InteriorRegion) -> None:
+    def _adjust_lateral_arrangement_categories(self, categories: List[str], wall: CardinalDirection,
+                                               region: InteriorRegion, tall_category_replacement: str = "kitchen_counter") -> None:
         """
         Adjust the lateral arrangement categories given the current scene state.
 
@@ -444,15 +450,17 @@ class ProcGenKitchen(AddOn):
         :param categories: The list of categories.
         :param wall: The wall.
         :param region: The region.
+        :param tall_category_replacement: If we need to replace tall objects, replace them with models from this category.
         """
 
         for i in range(len(categories)):
             if region.walls_with_windows & wall != 0 and categories[i] in ProcGenKitchen.TALL_CATEGORIES:
-                categories[i] = "kitchen_counter"
+                categories[i] = tall_category_replacement
             elif region.walls_with_windows & wall != 0 and categories[i] == "painting":
                 categories[i] = "void"
             elif categories[i] == "radiator" and not self._allow_radiator:
                 categories[i] = "basket"
+        print(categories, wall, region.region_id)
 
     def _get_wall(self, walls: List[CardinalDirection], non_continuous_walls: int) -> CardinalDirection:
         """
@@ -484,4 +492,9 @@ class ProcGenKitchen(AddOn):
                 continue
             for i in range(ProcGenKitchen.SECONDARY_CATEGORIES["append"][c]):
                 possible_categories.append(c)
-        return [possible_categories[self.rng.randint(0, len(possible_categories))] for _ in range(10)]
+        categories = [possible_categories[self.rng.randint(0, len(possible_categories))] for _ in range(10)]
+        self._adjust_lateral_arrangement_categories(categories=categories,
+                                                    wall=wall,
+                                                    region=region,
+                                                    tall_category_replacement="basket")
+        return categories

@@ -32,11 +32,11 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         self._direction: CardinalDirection = TDWUtils.get_direction_from_corner(corner=corner, wall=self._wall)
         self._distance: float = distance
         self._region: InteriorRegion = region
-        self.send_commands: bool = True
         if wall_length is None:
             self._wall_length: float = self._region.get_length(side=self._wall)
         else:
             self._wall_length = wall_length
+        self.send_commands: bool = distance < self._wall_length
         if model is None:
             if rng is None:
                 self._rng = np.random.RandomState()
@@ -52,6 +52,8 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         :return: A random model record that fits along the wall. Can be None.
         """
 
+        if not self.send_commands:
+            return None
         possible_records = []
         for model_name in self._get_model_names():
             # Set the record.

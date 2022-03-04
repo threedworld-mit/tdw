@@ -49,6 +49,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Moved overlap and raycast controllers from `objects_and_scenes/` to `semantic_states/`
 - Added: `semantic_states/containment.py`
 - Added: `semantic_states/trigger_collisions.py`
+- Fixed: `objects_and_scenes/floorplan.py` doesn't hide the roof.
 
 ### Documentation
 

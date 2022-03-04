@@ -25,6 +25,8 @@ print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=["a"], pass_masks=["_img"], path=path)
 
 c.add_ons.extend([floorplan, camera, capture])
+# Initialize the scene.
+c.communicate([])
 # Make the image 720p and hide the roof.
 c.communicate([{"$type": "set_screen_size",
                 "width": 1280,

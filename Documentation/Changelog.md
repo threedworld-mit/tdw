@@ -4,6 +4,24 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.8
+
+### Command API
+
+#### New Commands
+
+| Command                 | Description                                                  |
+| ----------------------- | ------------------------------------------------------------ |
+| `scale_object_and_mass` | Scale the object by a factor from its current scale. Scale its mass proportionally. This command assumes that a canonical mass has already been set. |
+
+### Build
+
+- Removed warning in `scale_object` about Flex objects because `set_flex_scale` isn't a command.
+
+### `tdw` module
+
+- `Controller.get_add_physics_object()` will dynamically scale the "canonical" mass of the object if a value for the `scale_factor` parameter is provided.
+
 ## v1.9.7
 
 ### Command API
@@ -49,6 +67,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Moved overlap and raycast controllers from `objects_and_scenes/` to `semantic_states/`
 - Added: `semantic_states/containment.py`
 - Added: `semantic_states/trigger_collisions.py`
+- Fixed: `objects_and_scenes/floorplan.py` doesn't hide the roof.
 
 ### Documentation
 

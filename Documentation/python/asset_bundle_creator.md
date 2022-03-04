@@ -89,16 +89,6 @@ _Returns:_  The path to `<home>/asset_bundle_creator/Assets/`
 
 _Returns:_  The path to `<home>/asset_bundle_creator/Assets/Resources`
 
-#### get_editor_path
-
-**`AssetBundleCreatorBase(ABC).get_editor_path()`**
-
-_This is a static function._
-
-Build the asset_bundle_creator Unity project.
-
-_Returns:_  The path to the asset_bundle_creator Unity project.
-
 #### get_base_unity_call
 
 **`self.get_base_unity_call()`**

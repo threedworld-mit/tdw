@@ -339,6 +339,7 @@
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
 | [`apply_torque_to_object`](#apply_torque_to_object) | Apply a torque to the object's rigidbody. |
+| [`scale_object_and_mass`](#scale_object_and_mass) | Scale the object by a factor from its current scale. Scale its mass proportionally. This command assumes that a canonical mass has already been set. |
 | [`set_color_in_substructure`](#set_color_in_substructure) | Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API. |
 | [`set_composite_object_kinematic_state`](#set_composite_object_kinematic_state) | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
@@ -4607,6 +4608,26 @@ Apply a torque to the object's rigidbody.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"torque"` | Vector3 | The torque force. | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`scale_object_and_mass`**
+
+Scale the object by a factor from its current scale. Scale its mass proportionally. This command assumes that a canonical mass has already been set.
+
+
+```python
+{"$type": "scale_object_and_mass", "id": 1}
+```
+
+```python
+{"$type": "scale_object_and_mass", "id": 1, "scale_factor": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale_factor"` | Vector3 | Multiply the scale of the object by this vector. (For example, if scale_factor is (2,2,2), then the object's current size will double.) | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The unique object ID. | |
 
 ***

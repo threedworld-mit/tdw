@@ -232,10 +232,6 @@ class Controller:
                 commands.append({"$type": "rotate_object_to_euler_angles",
                                  "euler_angles": rotation,
                                  "id": object_id})
-        if scale_factor is not None:
-            commands.append({"$type": "scale_object",
-                             "scale_factor": scale_factor,
-                             "id": object_id})
         commands.append({"$type": "set_kinematic_state",
                          "id": object_id,
                          "is_kinematic": kinematic,
@@ -295,6 +291,10 @@ class Controller:
                               "static_friction": static_friction,
                               "bounciness": bounciness,
                               "id": object_id}])
+        if scale_factor is not None:
+            commands.append({"$type": "scale_object_and_mass",
+                             "scale_factor": scale_factor,
+                             "id": object_id})
         return commands
 
     @staticmethod

@@ -4,6 +4,7 @@ from pkg_resources import resource_filename
 from typing import Dict, List, Union
 import numpy as np
 from tdw.tdw_utils import TDWUtils
+from tdw.controller import Controller
 from tdw.proc_gen.arrangements.kitchen_cabinet import KitchenCabinet
 from tdw.proc_gen.arrangements.wall_cabinet import WallCabinet
 from tdw.proc_gen.arrangements.microwave import Microwave
@@ -106,7 +107,7 @@ class KitchenCounter(KitchenCabinet):
                                            distance=self._distance,
                                            region=self._region,
                                            wall_length=self._wall_length,
-                                           model=KitchenCounter.COUNTERS_AND_CABINETS[self._record.name],
+                                           model=Controller.MODEL_LIBRARIANS["models_core.json"].get_record(KitchenCounter.COUNTERS_AND_CABINETS[self._record.name]),
                                            rng=self._rng)
                 wall_cabinet_commands = wall_cabinet.get_commands()
                 self.object_ids.extend(wall_cabinet.object_ids)

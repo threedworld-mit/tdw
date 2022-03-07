@@ -60,4 +60,4 @@ class WallCabinet(KitchenCabinet):
         return "wall_cabinet"
 
     def _get_model_names(self) -> List[str]:
-        return KitchenCabinet._CABINETRY.wall_cabinets
+        return self._cabinetry.wall_cabinets

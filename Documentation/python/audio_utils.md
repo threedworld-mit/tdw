@@ -25,6 +25,8 @@ AudioUtils.stop()
 
 ***
 
+## Functions
+
 #### get_system_audio_device
 
 **`AudioUtils.get_system_audio_device()`**

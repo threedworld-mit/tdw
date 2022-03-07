@@ -12,7 +12,9 @@ from tdw.librarian import ModelRecord, ModelLibrarian
 
 class ArrangementAlongWall(ArrangementWithRootObject, ABC):
     """
-    A procedurally-generated spatial arrangement of objects that is positioned alongside a wall.
+    Abstract class procedurally-generated spatial arrangements of objects that are positioned alongside a wall as part of a lateral arrangement.
+
+    Rather than supplying a position and rotation for the object, the arrangement is placed at a `distance` from a `corner` along a `wall` in a `region` and then rotated so that it faces away from the wall.
     """
 
     def __init__(self, corner: OrdinalDirection, wall: CardinalDirection, distance: float, region: InteriorRegion,
@@ -22,7 +24,7 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
         :param distance: The distance in meters from the corner along the derived direction.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
-        :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected. If no model fits, the arrangement will not be added to the scene.
         :param wall_length: The total length of the lateral arrangement. If None, defaults to the length of the wall.
         :param rng: The random number generator. If None, a new random number generator is created.
         """
@@ -44,6 +46,14 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
                 self._rng = rng
             model = self._get_random_record_that_fits_along_wall(distance=distance)
         super().__init__(model=model, position={"x": 0, "y": 0, "z": 0}, rng=rng)
+
+    @abstractmethod
+    def get_commands(self) -> List[dict]:
+        """
+        :return: A list of commands that will generate the arrangement.
+        """
+
+        raise Exception()
 
     def _get_random_record_that_fits_along_wall(self, distance: float) -> Optional[ModelRecord]:
         """

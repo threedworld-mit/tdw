@@ -25,7 +25,7 @@ class KitchenCounterTopBase(ArrangementAlongWall, ABC):
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
         :param distance: The distance in meters from the corner along the derived direction.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
-        :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected. If no model fits, the arrangement will not be added to the scene.
         :param wall_length: The total length of the lateral arrangement. If None, defaults to the length of the wall.
         :param rng: The random number generator. If None, a new random number generator is created.
         """

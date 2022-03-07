@@ -5,15 +5,20 @@ from tdw.proc_gen.arrangements.arrangement import Arrangement
 
 class CupAndCoaster(Arrangement):
     """
-    A cup and coaster.
+    A cup, which sometimes has a coaster underneath it.
 
     - 50% of the time, there is a coaster underneath the cup.
       - The coaster model is chosen randomly; see `CupAndCoaster.MODEL_CATEGORIES["coaster"]`.
-      - The coaster is rotated randomly (-25 to 25 degrees).
+      - The coaster is rotated randomly; see `CupAndCoaster.ROTATION`.
     - The cup model is chosen randomly and can be either a `"cup"` or a `"wineglass"`; see `CupAndCoaster.MODEL_CATEGORIES["cup"]` and `CupAndCoaster.MODEL_CATEGORIES["wineglass"]`.
       - If there is a coaster, the cup is on top of the coaster.
-      - The rotation of the cup is random.
+      - The rotation of the cup is random (0 to 360 degrees).
     """
+
+    """:class_var
+    Coasters are randomly rotated up to +/- this many degrees.
+    """
+    ROTATION: float = 25
 
     def get_commands(self) -> List[dict]:
         commands = []
@@ -25,7 +30,8 @@ class CupAndCoaster(Arrangement):
             commands.extend(Controller.get_add_physics_object(model_name=coaster_model_name,
                                                               position=self._position,
                                                               rotation={"x": 0,
-                                                                        "y": float(self._rng.randint(-25, 25)),
+                                                                        "y": float(self._rng.randint(-CupAndCoaster.ROTATION,
+                                                                                                     CupAndCoaster.ROTATION)),
                                                                         "z": 0},
                                                               object_id=coaster_id,
                                                               library="models_core.json"))

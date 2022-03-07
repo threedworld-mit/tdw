@@ -52,6 +52,17 @@ Data for the bounds of a region in a scene. In an interior scene, this usually c
 
 _Returns:_  True if position (x, z) is in the scene.
 
+#### get_length
+
+**`self.get_length(side)`**
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| side |  CardinalDirection |  | A side of the region as a [`CardinalDirection`](../cardinal_direction.md). |
+
+_Returns:_  The length of the side.
+
 #### get_longer_sides
 
 **`self.get_longer_sides()`**

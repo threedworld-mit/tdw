@@ -18,3 +18,16 @@ Data for a container trigger cylinder collider.
 
 ***
 
+## Functions
+
+#### \_\_init\_\_
+
+**`ContainerTriggerCollider(tag, position)`**
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| tag |  ContainerColliderTag |  | The collider's semantic [`ContainerColliderTag`](container_collider_tag.md). |
+| position |  Dict[str, float] |  | The local position of the collider. |
+
+
+

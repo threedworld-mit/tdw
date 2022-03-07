@@ -108,13 +108,9 @@ if __name__ == "__main__":
 
 ## Fluid actors
 
-A fluid actor requires at least two objects: An object to hold the fluid (a *receptacle*) and the fluid object.
+A fluid actor requires a pre-defined fluid object: Load it via [`load_flex_fluid_from_resources`](../../api/command_api.md#load_flex_fluid_from_resources). Make the fluid body a fluid actor via [`set_flex_fluid_actor`](../../api/command_api.md#set_flex_fluid_actor). When using fluid actors, set the parameter `"fluid_container"` to True and set `"fluid_type"` to the name of the fluid in [`assign_flex_container`](../../api/command_api.md#assign_flex_container).
 
-The best object to use as a receptacle is `fluid_receptacle1x1`, found in `models_special.json`. It does *not* need to be a Flex-enabled object.
-
-The fluid body is a data file located with the TDW build (as opposed to an asset bundle). Load it via [`load_flex_fluid_from_resources`](../../api/command_api.md#load_flex_fluid_from_resources). Make the fluid body a fluid actor via [`set_flex_fluid_actor`](../../api/command_api.md#set_flex_fluid_actor).
-
-When using fluid actors, set the parameter `"fluid_container"` to True and set `"fluid_type"` to the name of the fluid in [`assign_flex_container`](../../api/command_api.md#assign_flex_container).
+You can optionally add a receptacle object, such as `fluid_receptacle1x1`, found in `models_special.json`. It does *not* need to be a Flex-enabled object.
 
 This example adds a random fluid to each trial:
 

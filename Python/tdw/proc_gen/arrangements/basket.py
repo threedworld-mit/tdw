@@ -1,8 +1,13 @@
-from typing import List
+from typing import List, Union
 import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+from tdw.librarian import ModelRecord
 from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWall
+from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import KitchenCabinetSet
+from tdw.cardinal_direction import CardinalDirection
+from tdw.ordinal_direction import OrdinalDirection
+from tdw.scene_data.interior_region import InteriorRegion
 
 
 class Basket(ArrangementAlongWall):
@@ -10,23 +15,51 @@ class Basket(ArrangementAlongWall):
     A basket with random objects.
 
     - The basket model is chosen random; see `Basket.MODEL_CATEGORIES["basket"]`.
-    - There are 2-5 objects in the basket.
-    - The objects in the basic are chosen randomly; see `Basket.INSIDE_OF["basket"]`.
-    - The rotations of these objects are random.
-    - The starting positions of the objects are random, but they are placed at (x, z) coordinates within the basket and at a y coordinate _above_ the basket. Each y coordinate is higher than the other; the change in height is random but is guaranteed to prevent interpenetration.
-    - The basket is placed next to a wall at a random distance offset: `extent * random.uniform(1.15, 1.25)`.
-    - The basket is rotated randomly between -10 and 10 degrees.
-    - The basket object is non-kinematic.
+    - There are a random number of objects in the basket; see `BASKET.MIN_NUM_OBJECTS` and `BASKET.MAX_NUM_OBJECTS`.
+      - The objects are chosen randomly; see `Basket.INSIDE_OF["basket"]`.
+      - The rotations of the objects are random.
+      - The starting positions of the objects are random, but they are placed at (x, z) coordinates within the basket and at a y coordinate _above_ the basket. Each y coordinate is higher than the other to prevent interpenetration; see `Basket.DELTA_Y`.
+    - The basket is placed next to a wall at a random distance offset: `extent * random.uniform(Basket.MIN_OFFSET, Basket.MAX_OFFSET)`.
+    - The basket is rotated randomly; see `Basket.ROTATION`.
     """
+
+    """:class_var
+    The minimum number of objects in a basket.
+    """
+    MIN_NUM_OBJECTS: int = 2
+    """:class_var
+    The maximum number of objects in a basket.
+    """
+    MAX_NUM_OBJECTS: int = 2
+    """:class_var
+    The minimum offset from the wall.
+    """
+    MIN_OFFSET: float = 1.15
+    """:class_var
+    The maximum offset from the wall.
+    """
+    MAX_OFFSET: float = 1.25
+    """:class_var
+    Baskets are randomly rotated up to +/- this many degrees.
+    """
+    ROTATION: float = 10
+    """:class_var
+    Each subsequent object in the basket is placed this many meters above the previous.
+    """
+    DELTA_Y: float = 0.25
     
     def get_commands(self) -> List[dict]:
+        """
+        :return: A list of commands that will generate the arrangement.
+        """
+
         commands = self._add_root_object(kinematic=False)
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
         d = extents[0] if extents[0] < extents[2] else extents[2]
         d *= 0.6
         r = d / 2
         y = extents[1]
-        for i in range(self._rng.randint(2, 6)):
+        for i in range(self._rng.randint(Basket.MIN_NUM_OBJECTS, Basket.MAX_NUM_OBJECTS + 1)):
             category = Basket.INSIDE_OF["basket"][self._rng.randint(0, len(Basket.INSIDE_OF["basket"]))]
             model_name = Basket.MODEL_CATEGORIES[category][self._rng.randint(0, len(Basket.MODEL_CATEGORIES[category]))]
             q = TDWUtils.get_random_point_in_circle(center=np.array([self._position["x"], y, self._position["z"]]),
@@ -39,7 +72,7 @@ class Basket(ArrangementAlongWall):
                                                                         "y": float(self._rng.uniform(0, 360)),
                                                                         "z": float(self._rng.uniform(0, 360))},
                                                               library="models_core.json"))
-            y += 0.25
+            y += Basket.DELTA_Y
         commands.extend(self._get_rotation_commands())
         return commands
 
@@ -50,7 +83,7 @@ class Basket(ArrangementAlongWall):
         return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * self._rng.uniform(1.15, 1.25)
 
     def _get_rotation(self) -> float:
-        return float(self._rng.uniform(-10, 10))
+        return float(self._rng.uniform(-Basket.ROTATION, Basket.ROTATION))
 
     def _get_category(self) -> str:
         return "basket"

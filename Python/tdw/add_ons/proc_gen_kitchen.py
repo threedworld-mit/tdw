@@ -32,6 +32,9 @@ from tdw.proc_gen.arrangements.kitchen_table import KitchenTable
 
 
 class ProcGenKitchen(AddOn):
+    """
+    TODO
+    """
     """:class_var
     Categories of models that are tall and might obscure windows.
     """

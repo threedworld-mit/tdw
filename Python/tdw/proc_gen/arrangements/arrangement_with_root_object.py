@@ -17,7 +17,7 @@ from tdw.container_data.container_collider_tag import ContainerColliderTag
 
 class ArrangementWithRootObject(Arrangement, ABC):
     """
-    A procedurally-generated spatial arrangement of objects with a root object.
+    Abstract class for procedurally-generated spatial arrangements of objects with a single root object.
     """
 
     """:class_var
@@ -36,7 +36,7 @@ class ArrangementWithRootObject(Arrangement, ABC):
     def __init__(self, position: Dict[str, float], model: Union[str, ModelRecord] = None, rng: np.random.RandomState = None):
         """
         :param position: The position of the root object. This might be adjusted.
-        :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a random model in the category is selected.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a random model is selected.
         :param rng: The random number generator. If None, a new random number generator is created.
         """
 

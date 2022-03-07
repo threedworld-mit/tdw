@@ -254,7 +254,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [OculusTouch](Documentation/python/add_ons/oculus_touch.md)
 - [PhysicsAudioRecorder](Documentation/python/add_ons/physics_audio_recorder.md)
 - [ProcGenKitchen](Documentation/python/add_ons/proc_gen_kitchen.md)
-- [ProcGenObjects](Documentation/python/add_ons/proc_gen_objects.md)
 - [PyImpact](Documentation/python/add_ons/py_impact.md)
 - [ResonanceAudioInitializer](Documentation/python/add_ons/resonance_audio_initializer.md)
 - [Robot](Documentation/python/add_ons/robot.md)
@@ -269,10 +268,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 **tdw.add_ons.proc_gen_objects.data**
 
 - [LateralSubArrangement](Documentation/python/add_ons/proc_gen_objects/data/lateral_sub_arrangement.md)
-
-**tdw.add_onts.proc_gen_objects.data**
-
-- [LateralSubArrangement](Documentation/python/add_onts/proc_gen_objects/data/lateral_sub_arrangement.md)
 
 **tdw.collision_data**
 
@@ -352,6 +347,29 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ScrapeMaterial](Documentation/python/physics_audio/scrape_material.md)
 - [ScrapeModel](Documentation/python/physics_audio/scrape_model.md)
 - [ScrapeSubObject](Documentation/python/physics_audio/scrape_sub_object.md)
+
+**tdw.proc_gen.arrangements**
+
+- [Arrangement](Documentation/python/proc_gen/arrangements/arrangement.md)
+- [ArrangementAlongWall](Documentation/python/proc_gen/arrangements/arrangement_along_wall.md)
+- [ArrangementWithRootObject](Documentation/python/proc_gen/arrangements/arrangement_with_root_object.md)
+- [Basket](Documentation/python/proc_gen/arrangements/basket.md)
+- [CupAndCoaster](Documentation/python/proc_gen/arrangements/cup_and_coaster.md)
+- [KitchenCabinet](Documentation/python/proc_gen/arrangements/kitchen_cabinet.md)
+- [KitchenCounterTopBase](Documentation/python/proc_gen/arrangements/kitchen_counter_top_base.md)
+- [Microwave](Documentation/python/proc_gen/arrangements/microwave.md)
+- [Painting](Documentation/python/proc_gen/arrangements/painting.md)
+- [Plate](Documentation/python/proc_gen/arrangements/plate.md)
+- [Radiator](Documentation/python/proc_gen/arrangements/radiator.md)
+- [Refrigerator](Documentation/python/proc_gen/arrangements/refrigerator.md)
+- [Shelf](Documentation/python/proc_gen/arrangements/shelf.md)
+- [SideTable](Documentation/python/proc_gen/arrangements/side_table.md)
+- [StackOfPlates](Documentation/python/proc_gen/arrangements/stack_of_plates.md)
+- [Stool](Documentation/python/proc_gen/arrangements/stool.md)
+- [Stove](Documentation/python/proc_gen/arrangements/stove.md)
+- [Suitcase](Documentation/python/proc_gen/arrangements/suitcase.md)
+- [TableAndChairs](Documentation/python/proc_gen/arrangements/table_and_chairs.md)
+- [Void](Documentation/python/proc_gen/arrangements/void.md)
 
 **tdw.release**
 

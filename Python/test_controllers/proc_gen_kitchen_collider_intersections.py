@@ -34,10 +34,10 @@ class ProcGenKitchenColliderIntersections(Controller):
 
     def run(self) -> None:
         """
-        Run 100 trials with fixed random seeds.
+        Run some trials with fixed random seeds.
         """
 
-        for i in range(1, 10):
+        for i in range(10):
             self.trial(random_seed=i)
         self.communicate({"$type": "terminate"})
 

@@ -6,6 +6,8 @@ Compare the version of the installed tdw Python module to the PyPi version.
 
 ***
 
+## Functions
+
 #### strip_post_release
 
 **`PyPi.strip_post_release(v)`**

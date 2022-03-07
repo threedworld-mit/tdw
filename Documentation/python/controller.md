@@ -61,7 +61,7 @@ Returns a valid add_object command.
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`. |
 | object_id |  int |  | The ID of the new object. |
 
-_Returns:_  An add_object command that the controller can then send.
+_Returns:_  An add_object command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_physics_object
 
@@ -90,7 +90,7 @@ Add an object to the scene with physics values (mass, friction coefficients, etc
 | static_friction |  float  | 0.3 | The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
 | bounciness |  float  | 0.7 | The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
 
-_Returns:_  A list of commands to add the object and apply physics values.
+_Returns:_  A **list** of commands to add the object and apply physics values that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_material
 
@@ -108,7 +108,7 @@ Returns a valid add_material command.
 | material_name |  str |  | The name of the material. |
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `MaterialLibrarian.get_library_filenames()` and `MaterialLibrarian.get_default_library()`. |
 
-_Returns:_  An add_material command that the controller can then send.
+_Returns:_  An add_material command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_scene
 
@@ -126,7 +126,7 @@ Returns a valid add_scene command.
 | scene_name |  str |  | The name of the scene. |
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `SceneLibrarian.get_library_filenames()` and `SceneLibrarian.get_default_library()`. |
 
-_Returns:_  An add_scene command that the controller can then send.
+_Returns:_  An add_scene command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_hdri_skybox
 
@@ -144,7 +144,7 @@ Returns a valid add_hdri_skybox command.
 | skybox_name |  str |  | The name of the skybox. |
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `HDRISkyboxLibrarian.get_library_filenames()` and `HDRISkyboxLibrarian.get_default_library()`. |
 
-_Returns:_  An add_hdri_skybox command that the controller can then send.
+_Returns:_  An add_hdri_skybox command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_humanoid
 
@@ -165,7 +165,7 @@ Returns a valid add_humanoid command.
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `HumanoidLibrarian.get_library_filenames()` and `HumanoidLibrarian.get_default_library()`. |
 | object_id |  int |  | The ID of the new object. |
 
-_Returns:_  An add_humanoid command that the controller can then send.
+_Returns:_  An add_humanoid command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_humanoid_animation
 
@@ -183,7 +183,7 @@ Returns a valid add_humanoid_animation command and the record (which you will ne
 | humanoid_animation_name |  str |  | The name of the animation. |
 | library |  | "" | The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`. |
 
-_Returns:_  An add_humanoid_animation command that the controller can then send.
+_Returns:_  An add_humanoid_animation command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_robot
 
@@ -204,7 +204,7 @@ Returns a valid add_robot command.
 | rotation |  Dict[str, float] | None | The initial rotation of the robot in Euler angles. |
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `RobotLibrarian.get_library_filenames()` and `RobotLibrarian.get_default_library()`. |
 
-_Returns:_  An `add_robot` command that the controller can then send.
+_Returns:_  An `add_robot` command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_version
 

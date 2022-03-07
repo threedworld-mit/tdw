@@ -165,7 +165,7 @@ class Controller:
         :param library: The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`.
         :param object_id: The ID of the new object.
 
-        :return An add_object command that the controller can then send.
+        :return An add_object command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -202,7 +202,7 @@ class Controller:
         :param static_friction: The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
         :param bounciness: The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
 
-        :return: A list of commands to add the object and apply physics values.
+        :return: A **list** of commands to add the object and apply physics values that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -305,7 +305,7 @@ class Controller:
         :param material_name: The name of the material.
         :param library: The path to the records file. If left empty, the default library will be selected. See `MaterialLibrarian.get_library_filenames()` and `MaterialLibrarian.get_default_library()`.
 
-        :return An add_material command that the controller can then send.
+        :return An add_material command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -325,7 +325,7 @@ class Controller:
         :param scene_name: The name of the scene.
         :param library: The path to the records file. If left empty, the default library will be selected. See `SceneLibrarian.get_library_filenames()` and `SceneLibrarian.get_default_library()`.
 
-        :return An add_scene command that the controller can then send.
+        :return An add_scene command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -345,7 +345,7 @@ class Controller:
         :param skybox_name: The name of the skybox.
         :param library: The path to the records file. If left empty, the default library will be selected. See `HDRISkyboxLibrarian.get_library_filenames()` and `HDRISkyboxLibrarian.get_default_library()`.
 
-        :return An add_hdri_skybox command that the controller can then send.
+        :return An add_hdri_skybox command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -373,7 +373,7 @@ class Controller:
         :param library: The path to the records file. If left empty, the default library will be selected. See `HumanoidLibrarian.get_library_filenames()` and `HumanoidLibrarian.get_default_library()`.
         :param object_id: The ID of the new object.
 
-        :return An add_humanoid command that the controller can then send.
+        :return An add_humanoid command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if position is None:
@@ -401,7 +401,7 @@ class Controller:
         :param humanoid_animation_name: The name of the animation.
         :param library: The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`.
 
-        :return An add_humanoid_animation command that the controller can then send.
+        :return An add_humanoid_animation command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -424,7 +424,7 @@ class Controller:
         :param rotation: The initial rotation of the robot in Euler angles.
         :param library: The path to the records file. If left empty, the default library will be selected. See `RobotLibrarian.get_library_filenames()` and `RobotLibrarian.get_default_library()`.
 
-        :return An `add_robot` command that the controller can then send.
+        :return An `add_robot` command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":

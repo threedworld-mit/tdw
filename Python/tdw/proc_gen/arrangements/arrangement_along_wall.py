@@ -61,7 +61,7 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
                 Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian()
             self._record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
             # This record fits.
-            if distance + self.get_length() / 2 < self._wall_length:
+            if distance + self.get_length() < self._wall_length:
                 possible_records.append(self._record)
         # There is no record.
         if len(possible_records) == 0:

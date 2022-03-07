@@ -21,6 +21,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 ### `tdw` module
 
 - `Controller.get_add_physics_object()` will dynamically scale the "canonical" mass of the object if a value for the `scale_factor` parameter is provided.
+- Added optional parameter `device` to `AudioUtils.start()` to enable microphone capture.
 
 ## v1.9.7
 

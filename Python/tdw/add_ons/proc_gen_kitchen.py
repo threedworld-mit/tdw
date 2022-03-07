@@ -464,20 +464,22 @@ class ProcGenKitchen(AddOn):
         for category in possible_categories:
             for i in range(possible_categories[category]):
                 random_categories.append(category)
-        # Get a list of continuous unused walls.
-        for wall in [c for c in CardinalDirection if region.non_continuous_walls & c == 0 and c not in used_walls]:
+        # Add lateral arrangements to continuous unused walls.
+        commands = []
+        for wall in [c for c in CardinalDirection if (region.non_continuous_walls & c == 0) and c not in used_walls]:
             categories = []
             for i in range(10):
                 categories.append(random_categories[self.rng.randint(0, len(random_categories))])
             self._adjust_lateral_arrangement_categories(categories=categories, region=region, wall=wall,
                                                         tall_category_replacement=tall_category_replacement)
             corners = TDWUtils.get_corners_from_wall(wall=wall)
-            return self._get_lateral_arrangement(categories=categories,
-                                                 corner=corners[self.rng.randint(0, len(corners))],
-                                                 wall=wall,
-                                                 length=region.get_length(wall) - Arrangement.DEFAULT_CELL_SIZE,
-                                                 distance=Arrangement.DEFAULT_CELL_SIZE,
-                                                 region=region)
+            commands.extend(self._get_lateral_arrangement(categories=categories,
+                                                          corner=corners[self.rng.randint(0, len(corners))],
+                                                          wall=wall,
+                                                          length=region.get_length(wall) - Arrangement.DEFAULT_CELL_SIZE,
+                                                          distance=Arrangement.DEFAULT_CELL_SIZE,
+                                                          region=region))
+        return commands
 
     def _adjust_lateral_arrangement_categories(self, categories: List[str], wall: CardinalDirection,
                                                region: InteriorRegion, tall_category_replacement: str = "kitchen_counter") -> None:

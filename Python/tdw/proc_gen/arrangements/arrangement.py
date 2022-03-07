@@ -111,7 +111,7 @@ class Arrangement(ABC):
         # Get the occupancy map.
         occupancy_map: np.array = np.zeros(shape=(len(xs), len(zs)), dtype=bool)
         # Get the semi-minor axis of the rectangle's size.
-        semi_minor_axis = (size[0] if size[0] < size[1] else size[1]) - (cell_size * 2)
+        semi_minor_axis = size[0] if size[0] < size[1] else size[1]
         # Get valid objects.
         model_sizes: Dict[str, float] = dict()
         model_cell_sizes: List[int] = list()
@@ -132,7 +132,7 @@ class Arrangement(ABC):
         model_cell_sizes.reverse()
         for ix, iz in np.ndindex(occupancy_map.shape):
             # Exclude edges.
-            if ix == 0 or ix == occupancy_map.shape[0] - 1 or iz == 0 or iz == occupancy_map.shape[1]:
+            if ix == 0 or ix == occupancy_map.shape[0] - 1 or iz == 0 or iz == occupancy_map.shape[1] - 1:
                 continue
             # This position is already occupied. Sometimes, skip a position.
             if occupancy_map[ix][iz] or self._rng.random() < density:

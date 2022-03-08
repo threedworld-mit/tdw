@@ -12,7 +12,7 @@ class Refrigerator(ArrangementAlongWall):
 
     - The refrigerator model is chosen randomly; see `Refrigerator.MODEL_CATEGORIES["refrigerator"]`.
     - The refrigerator is placed next to a wall.
-      - The refrigerator's position is automatically adjusted to set it flush to the way.
+      - The refrigerator's position is automatically adjusted to set it flush to the wall.
       - The refrigerator is automatically rotated so that it faces away from the wall.
     - The refrigerator is non-kinematic.
     """

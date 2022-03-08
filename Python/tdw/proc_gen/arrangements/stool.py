@@ -9,11 +9,17 @@ class Stool(ArrangementAlongWall):
 
     - The stool model is chosen randomly; see `Stool.MODEL_CATEGORIES["stool"]`.
     - The stool is placed next to a wall.
-      - The stool's position is automatically adjusted to set it flush to the way.
+      - The stool's position is automatically adjusted to set it flush to the wall.
       - The stool is automatically rotated so that it faces away from the wall.
+      - The stool's (x, z) positional coordinates are offset by a factor; see `SideTable.OFFSET_FACTOR`.
     - The stool's rotation is random.
     - The stool is non-kinematic.
     """
+
+    """:class_var
+    Offset the (x, z) positional coordinates by this factor.
+    """
+    OFFSET_FACTOR: float = 1.5
 
     def get_commands(self) -> List[dict]:
         commands = self._add_root_object(kinematic=False)
@@ -21,10 +27,10 @@ class Stool(ArrangementAlongWall):
         return commands
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] * 1.5
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] * Stool.OFFSET_FACTOR
 
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * 1.5
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * Stool.OFFSET_FACTOR
 
     def _get_category(self) -> str:
         return "stool"

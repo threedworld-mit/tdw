@@ -19,7 +19,7 @@ class Basket(ArrangementAlongWall):
       - The objects are chosen randomly; see `Basket.INSIDE_OF["basket"]`.
       - The rotations of the objects are random.
       - The starting positions of the objects are random, but they are placed at (x, z) coordinates within the basket and at a y coordinate _above_ the basket. Each y coordinate is higher than the other to prevent interpenetration; see `Basket.DELTA_Y`.
-    - The basket is placed next to a wall at a random distance offset: `extent * random.uniform(Basket.MIN_OFFSET, Basket.MAX_OFFSET)`.
+    - The basket is placed next to a wall at a random distance offset: `extent * random.uniform(Basket.MIN_DEPTH_OFFSET, Basket.MAX_DEPTH_OFFSET)`.
     - The basket is rotated randomly; see `Basket.ROTATION`.
     """
 
@@ -34,11 +34,15 @@ class Basket(ArrangementAlongWall):
     """:class_var
     The minimum offset from the wall.
     """
-    MIN_OFFSET: float = 1.15
+    MIN_DEPTH_OFFSET: float = 1.15
     """:class_var
     The maximum offset from the wall.
     """
-    MAX_OFFSET: float = 1.25
+    MAX_DEPTH_OFFSET: float = 1.25
+    """:class_var
+    Add this length to the basket's length when creating lateral arrangements.
+    """
+    LENGTH_OFFSET: float = 0.1
     """:class_var
     Baskets are randomly rotated up to +/- this many degrees.
     """
@@ -49,10 +53,6 @@ class Basket(ArrangementAlongWall):
     DELTA_Y: float = 0.25
     
     def get_commands(self) -> List[dict]:
-        """
-        :return: A list of commands that will generate the arrangement.
-        """
-
         commands = self._add_root_object(kinematic=False)
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
         d = extents[0] if extents[0] < extents[2] else extents[2]
@@ -77,10 +77,11 @@ class Basket(ArrangementAlongWall):
         return commands
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + 0.1
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + Basket.LENGTH_OFFSET
 
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * self._rng.uniform(1.15, 1.25)
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * self._rng.uniform(Basket.MIN_DEPTH_OFFSET,
+                                                                                              Basket.MAX_DEPTH_OFFSET)
 
     def _get_rotation(self) -> float:
         return float(self._rng.uniform(-Basket.ROTATION, Basket.ROTATION))

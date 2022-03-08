@@ -13,13 +13,28 @@ class Stove(ArrangementAlongWall):
 
     - For now, the stove model is always the same (`gas_stove_composite`).
     - The stove is placed next to a wall.
-      - The stove's position is automatically adjusted to set it flush to the way.
+      - The stove's position is automatically adjusted to set it flush to the wall plus an offset; see `Stove.DEPTH_OFFSET`.
       - The stove is automatically rotated so that it faces away from the wall.
     - The stove always has a rectangular arrangement of objects on top of it; see `Stove.ON_TOP_OF["stove"]`.
     - The stove has two doors that can open and two interior spaces.
-    - 70% of the time, each of the interior spaces may have an object; see `Stove.ENCLOSED_BY["stove"]`.
+    - Sometimes, each of the interior spaces may have one object; see `Stove.PROBABILITY_INSIDE` and `Stove.ENCLOSED_BY["stove"]`.
+      - The positions of the object(s) are perturbed randomly, see `Stove.INSIDE_POSITION_PERTURBATION`.
+      - The rotation of the object(s) is random (0 to 360 degrees).
     - The root object of the stove is non-kinematic and its door sub-objects are kinematic.
     """
+
+    """:class_var
+    Offset the stove from the wall by this distance.
+    """
+    DEPTH_OFFSET: float = 0.16595
+    """:class_var
+    The probability (0 to 1) of adding objects inside each interior space of the stove.
+    """
+    PROBABILITY_INSIDE: float = 0.7
+    """:class_var
+    The (x, z) positional coordinates of objects inside the stove will be randomly perturbed by up to +/- this value.
+    """
+    INSIDE_POSITION_PERTURBATION: float = 0.04
 
     def get_commands(self) -> List[dict]:
         commands = self._add_object_with_other_objects_on_top(rotate=False)
@@ -36,10 +51,10 @@ class Stove(ArrangementAlongWall):
         for collider in self._record.container_colliders:
             # Use all of the "enclosed" colliders.
             if collider.tag == ContainerColliderTag.enclosed and isinstance(collider, ContainerBoxTriggerCollider):
-                if self._rng.random() < 0.7:
+                if self._rng.random() < Stove.PROBABILITY_INSIDE:
                     pos = self._get_collider_position(collider=collider)
-                    pos["x"] += self._rng.uniform(-0.04, 0.04)
-                    pos["z"] += self._rng.uniform(-0.04, 0.04)
+                    pos["x"] += self._rng.uniform(-Stove.INSIDE_POSITION_PERTURBATION, Stove.INSIDE_POSITION_PERTURBATION)
+                    pos["z"] += self._rng.uniform(-Stove.INSIDE_POSITION_PERTURBATION, Stove.INSIDE_POSITION_PERTURBATION)
                     object_id = Controller.get_unique_id()
                     commands.extend(Controller.get_add_physics_object(model_name=enclose_by_model_names[self._rng.randint(0, len(enclose_by_model_names))],
                                                                       object_id=object_id,
@@ -54,7 +69,7 @@ class Stove(ArrangementAlongWall):
         return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2]
 
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + 0.16595
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + Stove.DEPTH_OFFSET
 
     def _get_rotation(self) -> float:
         if self._wall == CardinalDirection.north:

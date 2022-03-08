@@ -26,9 +26,6 @@ class Void(ArrangementAlongWall):
     def get_commands(self) -> List[dict]:
         return []
 
-    def get_commands(self) -> List[dict]:
-        return []
-
     def get_length(self) -> float:
         return self._length
 

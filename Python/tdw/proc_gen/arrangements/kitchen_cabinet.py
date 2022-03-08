@@ -13,7 +13,7 @@ from tdw.scene_data.interior_region import InteriorRegion
 
 class KitchenCabinet(ArrangementAlongWall, ABC):
     """
-    A kitchen counter, wall cabinet, or sink. These all shared the same canonical rotation and height.
+    Abstract class for kitchen counters, wall cabinets, and sinks. These all shared the same canonical rotation and height.
     """
 
     def __init__(self, cabinetry: KitchenCabinetSet, corner: OrdinalDirection, wall: CardinalDirection,

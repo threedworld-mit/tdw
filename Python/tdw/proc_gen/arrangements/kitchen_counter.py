@@ -17,18 +17,18 @@ from tdw.librarian import ModelRecord
 
 class KitchenCounter(KitchenCabinet):
     """
-    A kitchen counter can have objects on it, in it, and above it.
+    A kitchen counter can have objects on it and inside it.
 
     - The kitchen counter model is chosen randomly; see `KitchenCounter.MODEL_CATEGORIES["kitchen_counter"]`.
     - The kitchen counter is placed next to a wall.
-      - The kitchen counter's position is automatically adjusted to set it flush to the way.
+      - The kitchen counter's position is automatically adjusted to set it flush to the wall.
       - The kitchen counter is automatically rotated so that it faces away from the wall.
     - A kitchen counter longer than 0.7 meters may have a [`Microwave`](microwave.md); see `allow_microwave` in the constructor.
-    - If the kitchen counter does _not_ have a microwave:
-      - If the kitchen counter is alongside a wall without windows and has a corresponding wall cabinet model, a [`WallCabinet`](wall_cabinet.md) will be added above it; see `KitchenCounter.COUNTERS_AND_CABINETS`.
-      - The kitchen counter will have a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `KitchenCounter.ON_TOP_OF["kitchen_counter"]`.
+      - If the kitchen counter does _not_ have a microwave:
+        - If the kitchen counter is alongside a wall without windows and has a corresponding wall cabinet model, a [`WallCabinet`](wall_cabinet.md) will be added above it; see `KitchenCounter.COUNTERS_AND_CABINETS`.
+        - The kitchen counter will have a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `KitchenCounter.ON_TOP_OF["kitchen_counter"]`.
     - The interior of the kitchen counter may be empty; see `empty` in the constructor.
-    - If the interior is _not_ empty, the kitchen counter will have a rectangular arrangement of objects inside of it. The objects are chosen randomly; see `KitchenCounter.ENCLOSED_BY["kitchen_counter"]`.
+      - If the interior is _not_ empty, the kitchen counter will have a rectangular arrangement of objects inside of it. The objects are chosen randomly; see `KitchenCounter.ENCLOSED_BY["kitchen_counter"]`.
     - All kitchen counters have doors that can open.
     - The root object of the kitchen counter is kinematic and the door sub-objects are non-kinematic.
     """
@@ -62,8 +62,6 @@ class KitchenCounter(KitchenCabinet):
         self.has_microwave: bool = False
         self._microwave_plate: float = microwave_plate
         self._empty: float = empty
-        self._min_num_plates: int = 3
-        self._max_num_plates: int = 7
         super().__init__(cabinetry=cabinetry, corner=corner, wall=wall, distance=distance, region=region, model=model,
                          rng=rng, wall_length=wall_length)
 
@@ -100,14 +98,16 @@ class KitchenCounter(KitchenCabinet):
             # Rotate everything.
             commands.extend(self._get_rotation_commands())
             # Add a wall cabinet.
-            if self._record.name in KitchenCounter.COUNTERS_AND_CABINETS and self._region.walls_with_windows & self._wall == 0:
+            if self._record.name in KitchenCounter.COUNTERS_AND_CABINETS and \
+                    self._region.walls_with_windows & self._wall == 0:
                 wall_cabinet = WallCabinet(cabinetry=self._cabinetry,
                                            corner=self._corner,
                                            wall=self._wall,
                                            distance=self._distance,
                                            region=self._region,
                                            wall_length=self._wall_length,
-                                           model=Controller.MODEL_LIBRARIANS["models_core.json"].get_record(KitchenCounter.COUNTERS_AND_CABINETS[self._record.name]),
+                                           model=Controller.MODEL_LIBRARIANS["models_core.json"].get_record(
+                                               KitchenCounter.COUNTERS_AND_CABINETS[self._record.name]),
                                            rng=self._rng)
                 wall_cabinet_commands = wall_cabinet.get_commands()
                 self.object_ids.extend(wall_cabinet.object_ids)

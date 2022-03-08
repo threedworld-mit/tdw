@@ -10,7 +10,7 @@ class Suitcase(ArrangementAlongWall):
 
     - The suitcase model is chosen randomly; see `Suitcase.MODEL_CATEGORIES["suitcase"]`.
     - The suitcase is placed next to a wall.
-      - The suitcase's position is automatically adjusted to set it flush to the way.
+      - The suitcase's position is automatically adjusted to set it flush to the wall.
       - The suitcase is automatically rotated so that it faces away from the wall.
     """
 

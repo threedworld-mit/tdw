@@ -47,14 +47,6 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
             model = self._get_random_record_that_fits_along_wall(distance=distance)
         super().__init__(model=model, position={"x": 0, "y": 0, "z": 0}, rng=rng)
 
-    @abstractmethod
-    def get_commands(self) -> List[dict]:
-        """
-        :return: A list of commands that will generate the arrangement.
-        """
-
-        raise Exception()
-
     def _get_random_record_that_fits_along_wall(self, distance: float) -> Optional[ModelRecord]:
         """
         :param distance: The distance from the starting position.

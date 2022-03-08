@@ -15,6 +15,23 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
     Abstract base class for a table with chairs around it.
     """
 
+    """:class_var
+    The minimum surface area required for four chairs; below this, there are only two chairs.
+    """
+    AREA_FOUR_CHAIRS: float = 0.9
+    """:class_var
+    The minimum distace from a "used wall" at which a chair can be placed.
+    """
+    MIN_CHAIR_DISTANCE_FROM_USED_WALL: float = 2
+    """:class_var
+    The minimum random offset of a chair from the edge of the table.
+    """
+    MIN_CHAIR_OFFSET: float = -0.02
+    """:class_var
+    The minimum random offset of a chair from the edge of the table.
+    """
+    MAX_CHAIR_OFFSET: float = -0.01
+
     def __init__(self, used_walls: int, region: InteriorRegion, model: Union[str, ModelRecord],
                  position: Dict[str, float], rng: np.random.RandomState):
         """
@@ -36,7 +53,7 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
         area = extents[0] * extents[2]
         # Allow only two sides.
-        if area < 0.9:
+        if area < TableAndChairs.AREA_FOUR_CHAIRS:
             if extents[0] > extents[2]:
                 chair_directions = [CardinalDirection.east, CardinalDirection.west]
             else:
@@ -64,7 +81,7 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
                     raise Exception(chair_direction)
                 cd = np.linalg.norm(tc - cp)
                 # Add this side.
-                if cd > 2:
+                if cd > TableAndChairs.MIN_CHAIR_DISTANCE_FROM_USED_WALL:
                     self._bound_point_positions.append(self._get_chair_bound_position(cardinal_direction=chair_direction))
             else:
                 self._bound_point_positions.append(self._get_chair_bound_position(cardinal_direction=chair_direction))
@@ -83,7 +100,7 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
             if rotation_range == 0:
                 rotation = 0
             else:
-                rotation = float(self._rng.uniform(-15, 15))
+                rotation = float(self._rng.uniform(-rotation_range, rotation_range))
             # Look at the bottom-center and add a little rotation for spice.
             commands.extend([{"$type": "object_look_at_position",
                               "position": self._position,
@@ -147,6 +164,7 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
         half_extent = TDWUtils.get_bounds_extents(bounds=chair_record.bounds)[2] / 2
         # Move the chair position back. Add some randomness for spice.
         chair_position = table_bound_point + (position_to_center_normalized *
-                                              (half_extent + self._rng.uniform(-0.01, -0.02)))
+                                              (half_extent + self._rng.uniform(TableAndChairs.MIN_CHAIR_OFFSET,
+                                                                               TableAndChairs.MAX_CHAIR_OFFSET)))
         chair_position[1] = 0
         return chair_position

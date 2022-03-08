@@ -11,15 +11,35 @@ class WallCabinet(KitchenCabinet):
 
     - The wall cabinet model is chosen randomly; see `WallCabinet.MODEL_CATEGORIES["wall_cabinet"]`.
     - The wall cabinet is placed next to a wall.
-      - The wall cabinet's position is automatically adjusted to set it flush to the way.
+      - The wall cabinet's position is automatically adjusted to set it flush to the wall.
       - The wall cabinet is automatically rotated so that it faces away from the wall.
+      - The wall cabinet is at a fixed height from the wall, see `WALL_CABINET.Y`.
     - The wall cabinet always has objects inside of it. The contents are random:
-      - 33% of the time, there is a [`StackOfPlates`](stack_of_plates.md).
-      - 66% of the time, there is a rectangular arrangement of random objects:
-        - 33% of the time, the categories are: `["cup", "wineglass"]`.
-        - 33% of the time, the categories are: `["bowl", "bottle", "cup", "jar", "jug", "vase", "wineglass"]`
+      - Sometimes, there is a [`StackOfPlates`](stack_of_plates.md); see `WallCabinet.PROBABILITY_STACK_OF_PLATES`, `WallCabinet.MIN_NUM_PLATES`, and `WallCabinet.MAX_NUM_PLATES`.
+      - Sometimes, there is a rectangular arrangement of random objects; see `WallCabinet.PROBABILITY_CUPS`.
     - The root object of the wall cabinet is kinematic and the door sub-objects are non-kinematic.
     """
+
+    """:class_var
+    The value of the y positional coordinate (the height) of the wall cabinet.
+    """
+    Y: float = 1.289581
+    """:class_var
+    To decide what is within the cabinet, a random number between 0 and 1 is generated. If the number is below this value, a [`StackOfPlates`](stack_of_plates.md) is added.
+    """
+    PROBABILITY_STACK_OF_PLATES: float = 0.33
+    """:class_var
+    To decide what is within the cabinet, a random number between 0 and 1 is generated. If the number is below this value, a rectangular arrangement of cups and glasses is added. If the number is above this value, random objects are added (see `WallCabinet.ENCLOSED_BY["wall_cabinet"]`).
+    """
+    PROBABILITY_CUPS: float = 0.66
+    """:class_var
+    The minimum number of plates in a stack of plates.
+    """
+    MIN_NUM_PLATES: int = 3
+    """:class_var
+    The maximum number of plates in a stack of plates.
+    """
+    MAX_NUM_PLATES: int = 8
 
     def get_commands(self) -> List[dict]:
         commands = self._add_root_object()
@@ -32,13 +52,16 @@ class WallCabinet(KitchenCabinet):
         position = self._get_collider_position(collider=cabinet_collider)
         roll = self._rng.random()
         # Add a stack of plates.
-        if roll < 0.33:
-            stack_of_plates = StackOfPlates(min_num=3, max_num=8, position=position, rng=self._rng)
+        if roll < WallCabinet.PROBABILITY_STACK_OF_PLATES:
+            stack_of_plates = StackOfPlates(min_num=WallCabinet.MIN_NUM_PLATES,
+                                            max_num=WallCabinet.MAX_NUM_PLATES,
+                                            position=position,
+                                            rng=self._rng)
             commands.extend(stack_of_plates.get_commands())
             self.object_ids.extend(stack_of_plates.object_ids)
         # Add a rectangular arrangement.
         else:
-            if roll < 0.66:
+            if roll < WallCabinet.PROBABILITY_CUPS:
                 categories = ["cup", "wineglass"]
             else:
                 categories = WallCabinet.ENCLOSED_BY["wall_cabinet"]
@@ -53,7 +76,7 @@ class WallCabinet(KitchenCabinet):
 
     def _get_position(self, position: Dict[str, float]) -> Dict[str, float]:
         pos = super()._get_position(position=position)
-        pos["y"] = 1.289581
+        pos["y"] = WallCabinet.Y
         return pos
 
     def _get_category(self) -> str:

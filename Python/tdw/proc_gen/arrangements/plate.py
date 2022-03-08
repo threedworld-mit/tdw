@@ -23,13 +23,13 @@ class Plate(ArrangementWithRootObject):
     """
     FOOD_CATEGORIES: List[str] = ["apple", "banana", "chocolate", "orange", "sandwich"]
 
-    def __init__(self, food_probability: float,  model: Union[str, ModelRecord], position: Dict[str, float],
-                 rng: np.random.RandomState):
+    def __init__(self, food_probability: float, position: Dict[str, float],
+                 model: Union[str, ModelRecord] = None, rng: np.random.RandomState = None):
         """
         :param food_probability: The probability of placing food on the plate.
-        :param model: Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a random model is selected.
         :param position: The position of the root object. This might be adjusted.
-        :param rng: The random number generator.
+        :param rng: The random number generator. If None, a new random number generator is created.
         """
 
         self._food_probability: float = food_probability
@@ -50,9 +50,9 @@ class Plate(ArrangementWithRootObject):
             self.object_ids.append(food_id)
             commands.extend(Controller.get_add_physics_object(model_name=food_model_name,
                                                               object_id=food_id,
-                                                              position={"x": self._position["x"] + self._rng.uniform(-0.03, 0.03),
+                                                              position={"x": self._position["x"],
                                                                         "y": self._position["y"] + extents[1],
-                                                                        "z": self._position["z"] + self._rng.uniform(-0.03, 0.03)},
+                                                                        "z": self._position["z"]},
                                                               rotation={"x": 0,
                                                                         "y": self._rng.uniform(0, 360),
                                                                         "z": 0},

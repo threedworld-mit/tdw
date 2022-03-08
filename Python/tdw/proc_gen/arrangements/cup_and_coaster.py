@@ -24,14 +24,16 @@ class CupAndCoaster(Arrangement):
         commands = []
         # Add a coaster.
         if self._rng.random() > 0.5:
-            coaster_model_name: str = CupAndCoaster.MODEL_CATEGORIES["coaster"][self._rng.randint(0, len(CupAndCoaster.MODEL_CATEGORIES["coaster"]))]
+            coaster_model_name: str = CupAndCoaster.MODEL_CATEGORIES["coaster"][
+                self._rng.randint(0, len(CupAndCoaster.MODEL_CATEGORIES["coaster"]))]
             coaster_id = Controller.get_unique_id()
             self.object_ids.append(coaster_id)
             commands.extend(Controller.get_add_physics_object(model_name=coaster_model_name,
                                                               position=self._position,
                                                               rotation={"x": 0,
-                                                                        "y": float(self._rng.randint(-CupAndCoaster.ROTATION,
-                                                                                                     CupAndCoaster.ROTATION)),
+                                                                        "y": float(self._rng.randint(
+                                                                            -CupAndCoaster.ROTATION,
+                                                                            CupAndCoaster.ROTATION)),
                                                                         "z": 0},
                                                               object_id=coaster_id,
                                                               library="models_core.json"))
@@ -41,7 +43,8 @@ class CupAndCoaster(Arrangement):
             y = self._position["y"]
         # Add a cup or wine glass.
         cup_category = "cup" if self._rng.random() < 0.5 else "wineglass"
-        cup_model_name = CupAndCoaster.MODEL_CATEGORIES[cup_category][self._rng.randint(0, len(CupAndCoaster.MODEL_CATEGORIES[cup_category]))]
+        cup_model_name = CupAndCoaster.MODEL_CATEGORIES[cup_category][
+            self._rng.randint(0, len(CupAndCoaster.MODEL_CATEGORIES[cup_category]))]
         # Add the cup.
         cup_id = Controller.get_unique_id()
         self.object_ids.append(cup_id)

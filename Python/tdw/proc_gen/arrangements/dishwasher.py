@@ -10,15 +10,19 @@ class Dishwasher(KitchenCounterTopBase):
 
     - The dishwasher model is chosen randomly; see `Dishwasher.MODEL_CATEGORIES["dishwasher"]`.
     - The dishwasher is placed next to a wall.
-      - The dishwasher's position is automatically adjusted to set it flush to the way.
+      - The dishwasher's position is automatically adjusted to set it flush to the wall.
       - The dishwasher is automatically rotated so that it faces away from the wall.
+      - The dishwasher's position along the wall is slightly offset; see `Dishwasher.LENGTH_OFFSET`.
     - The dishwasher has a floating kitchen counter top above it.
     - The floating kitchen counter top always has a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `Dishwasher.ON_TOP_OF["kitchen_counter"]`.
     - All dishwashers have a door that can be opened.
     - The root object of the dishwasher is kinematic and the door sub-object is non-kinematic.
     """
 
-    _DISHWASHER_OFFSET: float = 0.025
+    """:class_var
+    Offset the position and length of the dishwasher by this distance.
+    """
+    LENGTH_OFFSET: float = 0.025
 
     def get_commands(self) -> List[dict]:
         commands = self._add_root_object()
@@ -30,19 +34,19 @@ class Dishwasher(KitchenCounterTopBase):
         pos = super()._get_position(position=position)
         # Offset the position to leave a little gap.
         if self._direction == CardinalDirection.north:
-            pos["z"] += Dishwasher._DISHWASHER_OFFSET
+            pos["z"] += Dishwasher.LENGTH_OFFSET
         elif self._direction == CardinalDirection.south:
-            pos["z"] -= Dishwasher._DISHWASHER_OFFSET
+            pos["z"] -= Dishwasher.LENGTH_OFFSET
         elif self._direction == CardinalDirection.east:
-            pos["x"] += Dishwasher._DISHWASHER_OFFSET
+            pos["x"] += Dishwasher.LENGTH_OFFSET
         elif self._direction == CardinalDirection.west:
-            pos["x"] -= Dishwasher._DISHWASHER_OFFSET
+            pos["x"] -= Dishwasher.LENGTH_OFFSET
         else:
             raise Exception(self._direction)
         return pos
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + Dishwasher._DISHWASHER_OFFSET * 2
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + Dishwasher.LENGTH_OFFSET * 2
 
     def _get_rotation(self) -> float:
         if self._wall == CardinalDirection.north:
@@ -59,7 +63,7 @@ class Dishwasher(KitchenCounterTopBase):
 
     def _get_size(self) -> Tuple[float, float]:
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
-        return extents[0] + Dishwasher._DISHWASHER_OFFSET * 2, extents[2]
+        return extents[0] + Dishwasher.LENGTH_OFFSET * 2, extents[2]
 
     def _get_category(self) -> str:
         return "dishwasher"

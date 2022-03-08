@@ -61,6 +61,9 @@ class ArrangementWithRootObject(Arrangement, ABC):
             self._record = model
         else:
             raise Exception(f"Invalid model parameter: {model}")
+        """:field
+        The ID of the root object.
+        """
         self.root_object_id: int = Controller.get_unique_id()
         super().__init__(position=position, rng=rng)
         self.object_ids.append(self.root_object_id)

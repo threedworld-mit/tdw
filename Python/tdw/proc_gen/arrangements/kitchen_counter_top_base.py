@@ -13,7 +13,7 @@ from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import Kitch
 
 class KitchenCounterTopBase(ArrangementAlongWall, ABC):
     """
-    Abstract base class for arrangments that including a floating kitchen counter top.
+    Abstract base class for arrangements that including a floating kitchen counter top.
     """
 
     def __init__(self, cabinetry: KitchenCabinetSet, corner: OrdinalDirection, wall: CardinalDirection, distance: float,

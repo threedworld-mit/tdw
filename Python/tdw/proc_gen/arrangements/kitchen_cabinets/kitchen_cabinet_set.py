@@ -2,7 +2,6 @@ import json
 from pkg_resources import resource_filename
 from typing import Dict, List, Union
 from pathlib import Path
-import numpy as np
 from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_type import KitchenCabinetType
 
 

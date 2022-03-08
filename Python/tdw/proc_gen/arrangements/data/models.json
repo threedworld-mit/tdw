@@ -224,7 +224,7 @@
   ],
   "pot": [
     "b03_aluminum_pan",
-    "b03_cooking_pot_01",
+    "b03_cooking_pot_01_composite",
     "pan1",
     "pan3",
     "pot",
@@ -238,7 +238,8 @@
   ],
   "refrigerator": [
     "b03_ka90ivi20r_2013__vray_composite",
-    "kenmore_refr_74049_composite"
+    "kenmore_refr_74049_composite",
+    "fridge_larger_composite"
   ],
   "salt": [
     "b05_cylinder001"

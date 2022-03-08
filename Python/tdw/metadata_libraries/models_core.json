@@ -4575,6 +4575,84 @@
             "wcategory": "pot",
             "wnid": "n03990474"
         },
+        "b03_cooking_pot_01_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 39841384,
+                "Linux": 39999061,
+                "Windows": 39833822
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1493778,
+                    "z": -0.2594649
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -2.533197e-07,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1493778,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1493778,
+                    "z": 0.2594649
+                },
+                "left": {
+                    "x": -0.275449,
+                    "y": 0.1493778,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.275449,
+                    "y": 0.1493778,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.2987558,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_cooking_pot_01_composite",
+            "physics_quality": 0.9434479054775626,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "cooking_pot_01_MT"
+                    ],
+                    "name": "b03_cooking_pot_01_composite"
+                },
+                {
+                    "materials": [
+                        "cooking_pot_01_MT"
+                    ],
+                    "name": "top"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b03_cooking_pot_01_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b03_cooking_pot_01_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b03_cooking_pot_01_composite"
+            },
+            "volume": 0.0158465,
+            "wcategory": "pot",
+            "wnid": "n03990474"
+        },
         "b03_db_apps_tech_08_04_composite": {
             "asset_bundle_sizes": {
                 "Darwin": 1322813,
@@ -31792,6 +31870,95 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fridge_large"
             },
             "volume": 1.375571370124817,
+            "wcategory": "refrigerator",
+            "wnid": "n04070727"
+        },
+        "fridge_large_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 880538,
+                "Linux": 1116784,
+                "Windows": 872091
+            },
+            "bounds": {
+                "back": {
+                    "x": 4.148777,
+                    "y": 0.8799996,
+                    "z": -4.407858
+                },
+                "bottom": {
+                    "x": 4.148777,
+                    "y": 0,
+                    "z": -3.951429
+                },
+                "center": {
+                    "x": 4.148777,
+                    "y": 0.8799996,
+                    "z": -3.951429
+                },
+                "front": {
+                    "x": 4.148777,
+                    "y": 0.8799996,
+                    "z": -3.494999
+                },
+                "left": {
+                    "x": 3.757554,
+                    "y": 0.8799996,
+                    "z": -3.951429
+                },
+                "right": {
+                    "x": 4.54,
+                    "y": 0.8799996,
+                    "z": -3.951429
+                },
+                "top": {
+                    "x": 4.148777,
+                    "y": 1.759999,
+                    "z": -3.951429
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "fridge_large_composite",
+            "physics_quality": 0.9536320094652013,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome",
+                        "chrome"
+                    ],
+                    "name": "fridge_body"
+                },
+                {
+                    "materials": [
+                        "resin_polyurethane_gloss_metallic",
+                        "resin_polyurethane_gloss_resin_polyurethane_gloss_glossiness",
+                        "chrome",
+                        "chrome"
+                    ],
+                    "name": "fridge-left-door"
+                },
+                {
+                    "materials": [
+                        "chrome",
+                        "chrome"
+                    ],
+                    "name": "fridge-right-door"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/fridge_large_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/fridge_large_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/fridge_large_composite"
+            },
+            "volume": 0.5247683,
             "wcategory": "refrigerator",
             "wnid": "n04070727"
         },

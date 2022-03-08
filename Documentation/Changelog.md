@@ -27,9 +27,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### Modified Documentation
 
-| Document                        | Modification                                         |
-| ------------------------------- | ---------------------------------------------------- |
-| `lessons/audio/record_audio.md` | Added a section for how to record from a microphone. |
+| Document                        | Modification                                                 |
+| ------------------------------- | ------------------------------------------------------------ |
+| `lessons/audio/record_audio.md` | Added a section for how to record from a microphone.         |
+| `python/controller.md`          | Clarified how the wrapper functions that return commands work. |
 
 ## v1.9.7
 

@@ -28,9 +28,10 @@ Data for a container trigger cylinder collider.
 
 \_\_init\_\_
 
-**`ContainerCylinderTriggerCollider(tag, position)`**
+**`ContainerCylinderTriggerCollider(tag, position, scale)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | tag |  ContainerColliderTag |  | The collider's semantic [`ContainerColliderTag`](container_collider_tag.md). |
 | position |  Dict[str, float] |  | The local position of the collider. |
+| scale |  Dict[str, float] |  | The scale of the collider. |

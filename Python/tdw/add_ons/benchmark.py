@@ -29,13 +29,34 @@ class Benchmark(AddOn):
         self.fps: float = -1
 
     def get_initialization_commands(self) -> List[dict]:
+        """
+        This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+        :return: A list of commands that will initialize this add-on.
+        """
+
         return []
 
     def before_send(self, commands: List[dict]) -> None:
+        """
+        Update the time.
+
+        :param commands: The commands that are about to be sent to the build.
+        """
+
         if self._benchmarking:
             self._t0 = time()
 
     def on_send(self, resp: List[bytes]) -> None:
+        """
+        This is called after commands are sent to the build and a response is received.
+
+        Use this function to send commands to the build on the next frame, given the `resp` response.
+        Any commands in the `self.commands` list will be sent on the next frame.
+
+        :param resp: The response from the build.
+        """
+
         # Clock the benchmark.
         if self._benchmarking:
             t1 = time()
@@ -44,7 +65,7 @@ class Benchmark(AddOn):
 
     def start(self) -> None:
         """
-        Start bencharking each `communicate()` call and clear `self.times`.
+        Start benchmarking each `communicate()` call and clear `self.times`.
         """
 
         self.fps = -1

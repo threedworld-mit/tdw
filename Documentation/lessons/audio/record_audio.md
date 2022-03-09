@@ -83,6 +83,19 @@ AudioUtils.stop()
 c.communicate({"$type": "terminate"})
 ```
 
+## Record audio from a microphone
+
+To record audio from a non-default audio device such as a microphone, set the `device` parameter in `AudioUtils.start()`:
+
+```python
+from tdw.audio_utils import AudioUtils
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("audio_utils/audio.wav")
+print(f"Audio will be saved to: {path}")
+AudioUtils.start(output_path=path, device="Headset Microphone")
+```
+
 ## Record audio with `PhysicsAudioRecorder`
 
 [`PhysicsAudioRecorder`](../../python/add_ons/physics_audio_recorder.md) is an add-on that augments `AudioUtils` for generating audio clips of sounds created via [`PyImpact`](py_impact.md). This is most convenient when generating audio datasets.

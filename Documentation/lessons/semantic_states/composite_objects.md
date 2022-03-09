@@ -1,6 +1,8 @@
-##### Physics (PhysX)
+##### Semantic States
 
 # Composite objects (objects with affordances)
+
+*Composite objects utilize the PhysX physics engine. If you haven't done so already, please read [the documentation for PhysX in TDW](../physx/physx.md)*.
 
 **Composite objects** are objects in TDW that have multiple "sub-objects". Sub-objects appear in [output data](../core_concepts/output_data.md) as separate objects with separate IDs and [segmentation colors](../visual_perception/id.md).
 
@@ -227,7 +229,7 @@ In general, you shouldn't adjust the spring force. You *can* safely adjust the d
 
 ## Kinematic states
 
-If you send [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state) for a composite object, the command will only affect the [kinematic state](physics_objects.md) of the top-level object. To set the state for the top-level object *and* all sub-objects, send  [`set_composite_object_kinematic_state`](../../api/command_api.md#set_composite_object_kinematic_state):
+If you send [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state) for a composite object, the command will only affect the [kinematic state](../physx/physics_objects.md) of the top-level object. To set the state for the top-level object *and* all sub-objects, send  [`set_composite_object_kinematic_state`](../../api/command_api.md#set_composite_object_kinematic_state):
 
 ```python
 from tdw.controller import Controller
@@ -265,7 +267,7 @@ c.communicate(commands)
 
 ## General object commands
 
-Sub-objects will respond to TDW commands just like any other object; you can, for example, [apply forces](forces.md) to individual sub-objects. Sub-objects likewise appear as separate objects in the output data.
+Sub-objects will respond to TDW commands just like any other object; you can, for example, [apply forces](../physx/forces.md) to individual sub-objects. Sub-objects likewise appear as separate objects in the output data.
 
 In this example, we'll add the microwave to the scene and make it kinematic (as explained above, the door will remain non-kinematic). Then, we'll apply a torque to the door:
 
@@ -378,7 +380,7 @@ Microwave door is open on frame 16 at angle 30.119487762451172.
 
 ***
 
-**Next: [Skip physics frames](step_physics.md)**
+**Next: [Grasped objects](grasped.md)**
 
 [Return to the README](../../../README.md)
 
@@ -386,9 +388,9 @@ Microwave door is open on frame 16 at angle 30.119487762451172.
 
 Example controllers:
 
-- [composite_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/composite_object.py) Demonstration of how to use composite sub-objects with a test model.
-- [composite_object_torque.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/composite_object_torque.py) Apply a torque to the door of a microwave.
-- [composite_object_open.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/composite_object_open.py) Determine when a composite object is "open".
+- [composite_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/semantic_states/composite_object.py) Demonstration of how to use composite sub-objects with a test model.
+- [composite_object_torque.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/semantic_states/composite_object_torque.py) Apply a torque to the door of a microwave.
+- [composite_object_open.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/semantic_states/composite_object_open.py) Determine when a composite object is "open".
 
 Python API:
 

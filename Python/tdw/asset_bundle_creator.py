@@ -157,14 +157,6 @@ class AssetBundleCreator(AssetBundleCreatorBase):
 
         return resources_directory
 
-    @staticmethod
-    def get_editor_path() -> Path:
-        """
-        :return The path to the Unity Editor executable.
-        """
-
-        return super().get_editor_path()
-
     def get_base_unity_call(self) -> List[str]:
         """
         :return The call to launch Unity Editor silently in batchmode, execute something, and then quit.
@@ -188,7 +180,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         if not self._quiet:
             print(f"Creating: {unity_project_path.resolve()}")
 
-        call([str(AssetBundleCreatorBase.get_editor_path().resolve()),
+        call([str(self._unity_editor_path.resolve()),
               "-createProject",
               str(unity_project_path.resolve()),
               "-quit",
@@ -201,7 +193,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         filepath = pkg_resources.resource_filename(__name__, package_name)
         assert Path(filepath).exists(), filepath
         # Import the package.
-        call([str(AssetBundleCreatorBase.get_editor_path().resolve()),
+        call([str(self._unity_editor_path.resolve()),
               "-projectPath",
               str(unity_project_path.resolve()),
               "-importPackage",
@@ -210,6 +202,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
               "-batchmode"], env=self._env)
         if not self._quiet:
             print(f"Imported {package_name} into the new project.")
+        return unity_project_path
 
     @staticmethod
     def get_project_path() -> Path:
@@ -548,7 +541,8 @@ class AssetBundleCreator(AssetBundleCreatorBase):
                        "do_not_use_reason": record.do_not_use_reason,
                        "canonical_rotation": record.canonical_rotation,
                        "physics_quality": -1,
-                       "asset_bundle_sizes": record.asset_bundle_sizes}
+                       "asset_bundle_sizes": record.asset_bundle_sizes,
+                       "container_colliders": []}
 
         # Serialize the record.
         record_data = json.dumps(record_data)
@@ -614,6 +608,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         c = Controller()
         v = ModelVerifier()
         r: ModelRecord = ModelRecord(json.loads(Path(record_path).read_text(encoding="utf-8")))
+        original_url = r.urls[platform.system()]
         r.urls[platform.system()] = f"file:///{str(asset_bundle_path)}"
         v.set_tests(name=r.name, source=r, model_report=False, missing_materials=False, physics_quality=True)
         c.add_ons.append(v)
@@ -624,6 +619,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         c.socket.close()
         # Write the physics quality.
         r.physics_quality = float(v.reports[0])
+        r.urls[platform.system()] = original_url
         record_path.write_text(json.dumps(r.__dict__), encoding="utf-8")
 
     def validate(self, record_path: Path, asset_bundle_path: Path) -> Tuple[bool, str]:

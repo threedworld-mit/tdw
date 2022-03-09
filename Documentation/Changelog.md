@@ -4,6 +4,161 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.9
+
+### Command API
+
+#### Modified Commands
+
+| Command                 | Modification                            |
+| ----------------------- | --------------------------------------- |
+| `create_flex_container` | Added optional parameter `restitution`. |
+
+## v1.9.8
+
+### Command API
+
+#### New Commands
+
+| Command                 | Description                                                  |
+| ----------------------- | ------------------------------------------------------------ |
+| `scale_object_and_mass` | Scale the object by a factor from its current scale. Scale its mass proportionally. This command assumes that a canonical mass has already been set. |
+
+### Build
+
+- Removed warning in `scale_object` about Flex objects because `set_flex_scale` isn't a command.
+
+### `tdw` module
+
+- `Controller.get_add_physics_object()` will dynamically scale the "canonical" mass of the object if a value for the `scale_factor` parameter is provided.
+- Added optional parameter `device` to `AudioUtils.start()` to enable microphone capture.
+
+### Model Library
+
+- Added models `models_core.json` and `models_full.json`:  b03_cooking_pot_01_composite, fridge_large_composite (including container collider data)
+
+### Documentation
+
+#### Modified Documentation
+
+- **Fixed: Missing information in various Python API documents.**
+
+| Document                           | Modification                                                 |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `lessons/audio/record_audio.md`    | Added a section for how to record from a microphone.         |
+| `lessons/flex/fluid_and_source.md` | Clarified that a receptacle is not needed.                   |
+| `python/controller.md`             | Clarified how the wrapper functions that return commands work. |
+
+## v1.9.7
+
+### Command API
+
+#### Modified Commands
+
+| Command                | Modification                              |
+| ---------------------- | ----------------------------------------- |
+| `add_trigger_collider` | Added trigger collider shape `"cylinder"` |
+
+### Build
+
+- Fixed: DllNotFoundException in TDW.app (OS X) due to missing AudioPluginOculusSpatializer.bundle
+- Fixed: Potential memory leak with audio commands
+
+### `tdw` module
+
+- Fixed: `struct.error` in `CompositeObjectManager` when deserializing static spring data.
+- Added `TriggerCollisionManager` add-on. Manager per-frame trigger collision data.
+- Added the following trigger collider/collision data classes:
+  - `TriggerColliderShape` Enum describing the shape of the collider.
+  - `TriggerCollisionEvent` Wrapper for trigger collision data.
+- Added `ContainerManager` add-on. Manager per-frame containment data. This is a subclass of `TriggerCollisionManager`.
+- Added the following container trigger collider/collision data classes:
+  - `ContainerBoxTriggerCollider` Data for a box-shaped container trigger collider.
+  - `ContainerColliderTag` Enum of semantic tags for container trigger colliders.
+  - `ContainerCylinderTriggerCollider` Data for a cylinder-shaped container trigger collider.
+  - `ContainerNonUniformScaleTriggerCollider` Abstract class for container trigger colliders with non-uniform scales.
+  - `ContainerSphereTriggerCollider` Data for a sphere-shaped container trigger collider.
+  - `ContainerTriggerCollider` Abstract base class for container trigger collider data.
+  - `ContainmentEvent` Wrapper for containment trigger collision data.
+- Fixed: AssertionError `AssetBundleCreator` and `RobotCreator` if `unity_editor_path` is set in the constructor but `asset_bundle_creator/` project path doesn't yet exist.
+
+### Model Library
+
+- Added cached trigger collision data to model records. Not all records have container trigger colliders; see `model_record.trigger_colliders`.
+  - (Backend) Added: `tdw.librarian._Encoder` JSONEncoder extension that is used within `_Librarian` classes. For now, this just handles container collider data.
+- Added models `models_core.json` and `models_full.json`: cabinet_36_two_door_wood_oak_white_composite, cabinet_36_two_door_wood_beech_honey_composite, cabinet_24_wall_wood_beech_honey_composite, cabinet_24_wall_wood_oak_white_composite, cabinet_36_wall_wood_beech_honey_composite, cabinet_36_wall_wood_oak_white_composite, appliance-ge-profile-microwave3_composite, appliance-ge-profile-microwave_composite, microwave_composite
+
+### Example Controllers
+
+- Moved composite object controllers from `physx/` to `semantic_states/`
+- Moved overlap and raycast controllers from `objects_and_scenes/` to `semantic_states/`
+- Added: `semantic_states/containment.py`
+- Added: `semantic_states/trigger_collisions.py`
+- Fixed: `objects_and_scenes/floorplan.py` doesn't hide the roof.
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                                 |
+| ------------------------------------------------------------ | ----------------------------------------------------------- |
+| `lessons/semantic_states/containment.md`                     | Documentation for how to use the `ContainerManager`.        |
+| `lessons/semantic_state/grasped.md`                          | Overview of "grasped" semantic states with various agents.  |
+| `lessons/semantic_states/overview.md`                        | Overview of semantic states.                                |
+| `lessons/semantic_states/trigger_collisions.md`              | Documentation for how to use the `TriggerCollisionManager`. |
+| `python/add_ons/container_manager.md`                        | API documentation for `ContainerManager`.                   |
+| `python/add_ons/trigger_collision_manager.md`                | API documentation for `TriggerCollisionManager`.            |
+| `python/collision_data/trigger_collider_shape.md`<br>`python/collision_data/trigger_collision_event.md` | API documentation for trigger collision data classes.       |
+| `python/container_data/container_box_trigger_collider.md`<br>`python/container_data/container_collider_tag.md`<br>`python/container_data/container_cylinder_trigger_collider.md`<br>`python/container_data/container_non_uniform_scale_trigger_collider.md`<br>`python/container_data/container_sphere_trigger_collider.md`<br>`python/container_data/container_trigger_collider.md`<br>`python/container_data/containment_event.md` | API documentation for containment data classes.             |
+
+
+#### Modified Documentation
+
+| Document                                | Modification                                             |
+| --------------------------------------- | -------------------------------------------------------- |
+| `lessons/objects_and_scenes/raycast.md` | Moved to: `lessons/semantic_states/raycast.md`           |
+| `lessons/objects_and_scenes/overlap.md` | Moved to: `lessons/semantic_states/overlap.md`           |
+| `lessons/physx/composite_objects.md`    | Moved to: `lessons/semantic_states/composite_objects.md` |
+
+## v1.9.6
+
+### Command API
+
+#### Modified Commands
+
+| Command              | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `send_audio_sources` | Removed optional parameter `ids` because it was non-functional. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data       | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `AudioSourceDone` | Output data that announces that an audio source is done playing. |
+
+### `tdw` module
+
+- Fixed: Error when initializing `PyImpact` if there isn't a VR rig in the scene.
+- Fixed: `send_audio_sources` checks for object IDs instead of audio source IDs and therefore doesn't work.
+- Fixed: `PyImpact` doesn't play valid impact audio events. Now, it uses `AudioSourceDone` output data to check the time between impact events.
+  - Added optional parameter `min_time_between_audio_events` to the constructor.
+- Fixed: `PyImpact` doesn't calculate `size` values accurately. Added `PyImpact.get_size(model)`.
+
+### Example Controllers
+
+- Fixed: TypeError in `fluid.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                              | Modification                                               |
+| ------------------------------------- | ---------------------------------------------------------- |
+| `lessons/audio/py_impact.md`          | Added a section regarding `min_time_between_impact_events` |
+| `lessons/audio/py_impact_advanced.md` | Added better guidance for how to set `size` values.        |
+
 ## v1.9.5
 
 ### New Features
@@ -83,6 +238,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Fixed some bad-sound scrape materials in `PyImpact`: `sandpaper`, `vinyl`, and `poplar_wood`
 - Fixed: `InteriorSceneLighting` sets the random number generator incorrectly such that all other attempts to create a numpy RandomState fail.
 - Fixed: `TDWUtils.set_default_libraries()` raises an exception if `model_library` isn't set and one of the set paths is a string.
+- Fixed: `AssetBundleCreator.write_physics_quality()` resets remote URLs for Windows asset bundles.
+
+### Model library
+
+- Added models `models_core.json` and `models_full.json`: b03\_aluminum\_pan\_composite, b03\_ka90ivi20r\_2013\_\_vray\_composite, b04\_db\_apps\_tech\_08\_03\_composite, cabinet\_24\_single\_door\_wood\_beech\_honey\_composite, cabinet\_24\_single\_door\_wood\_oak\_white\_composite, cabinet\_24\_two\_door\_wood\_beech\_honey\_composite, cabinet\_24\_two\_door\_wood\_oak\_white\_composite, cabinet\_full\_height\_wood\_beech\_honey\_composite, cabinet\_full\_height\_wood\_oak\_white\_composite, db\_apps\_tech\_08\_10\_composite, dishwasher\_4\_composite, gas\_stove\_composite, kenmore\_refr\_74049\_composite, pot\_composite, sink\_cabinet\_unit\_wood\_beech\_honey\_chrome\_composite, sink\_cabinet\_unit\_wood\_beech\_honey\_porcelain\_composite, sink\_cabinet\_unit\_wood\_oak\_white\_chrome\_composite, sink\_cabinet\_unit\_wood\_oak\_white\_porcelain\_composite, vm\_v5\_070\_composite, vray\_062\_composite
 
 ### Build
 

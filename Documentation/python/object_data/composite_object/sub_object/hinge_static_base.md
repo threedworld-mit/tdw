@@ -16,6 +16,8 @@ Static data for a light sub-object of a composite object.
 
 - `axis` The axis of rotation.
 
+- `sub_object_id` The ID of this sub-object.
+
 ***
 
 ## Functions
@@ -29,4 +31,3 @@ Static data for a light sub-object of a composite object.
 | static_composite_objects |  StaticCompositeObjects |  | `StaticCompositeObjects` output data. |
 | object_index |  int |  | The object index. |
 | sub_object_index |  int |  | The index of this sub-object. |
-

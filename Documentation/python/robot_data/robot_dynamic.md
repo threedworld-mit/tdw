@@ -8,9 +8,9 @@ Dynamic data for a robot that can change per frame (such as the position of the 
 
 ## Class Variables
 
-| Variable | Type | Description |
-| --- | --- | --- |
-| `NON_MOVING` | float | If the joint moved by less than this angle or distance since the previous frame, it's considered to be non-moving. |
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `NON_MOVING` | float | If the joint moved by less than this angle or distance since the previous frame, it's considered to be non-moving. | `0.001` |
 
 ***
 

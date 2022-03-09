@@ -8,10 +8,6 @@ An `EmbodiedAvatar` is an avatar with a physical body. The body has a simple sha
 
 ## Fields
 
-- `avatar_id` The ID of the avatar that (this camera).
-
-- `position` The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-
 - `transform` [Transform data](../object_data/transform.md) for the avatar.
 
 - `rigidbody` [Rigidbody data](../object_data/rigidbody.md) for the avatar.
@@ -19,6 +15,14 @@ An `EmbodiedAvatar` is an avatar with a physical body. The body has a simple sha
 - `camera_rotation` The rotation of the camera as an [x, y, z, w] numpy array.
 
 - `is_moving` If True, the avatar is currently moving or turning.
+
+- `avatar_id` The ID of the avatar that (this camera).
+
+- `position` The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -44,6 +48,19 @@ An `EmbodiedAvatar` is an avatar with a physical body. The body has a simple sha
 | static_friction |  float  | 0.3 | The static friction coefficient of the avatar. |
 | bounciness |  float  | 0.7 | The bounciness of the avatar. |
 
+#### on_send
+
+**`self.on_send(resp)`**
+
+This is called after commands are sent to the build and a response is received.
+
+Use this function to send commands to the build on the next frame, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the next frame.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| resp |  List[bytes] |  | The response from the build. |
+
 #### get_initialization_commands
 
 **`self.get_initialization_commands()`**
@@ -51,6 +68,16 @@ An `EmbodiedAvatar` is an avatar with a physical body. The body has a simple sha
 This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
 
 _Returns:_  A list of commands that will initialize this add-on.
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
 #### apply_force
 
@@ -110,29 +137,3 @@ Look at a target object or position.
 **`self.reset_camera()`**
 
 Reset the rotation of the camera.
-
-#### on_send
-
-**`self.on_send(resp)`**
-
-This is called after commands are sent to the build and a response is received.
-
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build. |
-
-#### before_send
-
-**`self.before_send(commands)`**
-
-This is called before sending commands to the build. By default, this function doesn't do anything.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-
-

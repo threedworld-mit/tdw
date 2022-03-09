@@ -16,13 +16,13 @@ Each element in the occupancy map can be one of three values:
 
 ## Fields
 
-- `commands` These commands will be appended to the commands of the next `communicate()` call.
-
-- `initialized` If True, this module has been initialized.
-
 - `occupancy_map` A 2-dimensional numpy array of the occupancy map. Each row corresponds to a worldspace x value and each column corresponds to a worldspace z value (see `get_occupancy_position(idx, idy)` below).
 
 - `scene_bounds` The [bounds of the scene](../scene_data/scene_bounds.md).
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -48,9 +48,26 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
-**`self.on_send()`**
+**`self.on_send(resp)`**
 
-_Returns:_  A list of all islands, i.e. continuous zones of traversability on the occupancy map.
+This is called after commands are sent to the build and a response is received.
+
+Use this function to send commands to the build on the next frame, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the next frame.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| resp |  List[bytes] |  | The response from the build. |
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
 #### generate
 
@@ -115,29 +132,3 @@ Remove all positions markers (the blue squares created by `self.show()`).
 **`self.reset()`**
 
 Reset the occupancy map. Call this when resetting a scene.
-
-#### on_send
-
-**`self.on_send(resp)`**
-
-This is called after commands are sent to the build and a response is received.
-
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build. |
-
-#### before_send
-
-**`self.before_send(commands)`**
-
-This is called before sending commands to the build. By default, this function doesn't do anything.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-
-

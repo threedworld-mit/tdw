@@ -6,6 +6,8 @@ Check if any materials are missing.
 
 ***
 
+## Functions
+
 #### start
 
 **`self.start()`**

@@ -12,8 +12,6 @@ Test the "physics quality" i.e. the disparity between the colliders volume and t
 
 **`PhysicsQuality()`**
 
-_Returns:_  A list of commands to start the test.
-
 #### start
 
 **`self.start()`**

@@ -56,22 +56,22 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 ## Class Variables
 
-| Variable | Type | Description |
-| --- | --- | --- |
-| `SILENCE_100MS` | AudioSegment | 100ms of silence. Used for scrapes. |
-| `SCRAPE_MAX_VELOCITY` | float | The maximum velocity allowed for a scrape. |
-| `SCRAPE_M_PER_PIXEL` | float | Meters per pixel on the scrape surface. |
-| `DEFAULT_AMP` | float | The default amp value for objects. |
-| `DEFAULT_MATERIAL` | AudioMaterial | The default [material](../physics_audio/audio_material.md) for objects. |
-| `DEFAULT_RESONANCE` | float | The default resonance value for objects. |
-| `DEFAULT_SIZE` | int | The default audio size "bucket" for objects. |
-| `ROBOT_JOINT_BOUNCINESS` | float | The assumed bounciness value for robot joints. |
-| `ROBOT_JOINT_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for robot joints. |
-| `VR_HUMAN_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for human body parts in VR. |
-| `VR_HUMAN_BOUNCINESS` | float | The assumed bounciness value for human body parts such as in VR. |
-| `FLOOR_AMP` | float | The amp value for the floor. |
-| `FLOOR_SIZE` | int | The size "bucket" for the floor. |
-| `FLOOR_MASS` | int | The mass of the floor. |
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `SILENCE_100MS` | AudioSegment | 100ms of silence. Used for scrapes. | `AudioSegment.silent(duration=100, frame_rate=SAMPLE_RATE)` |
+| `SCRAPE_MAX_VELOCITY` | float | The maximum velocity allowed for a scrape. | `1` |
+| `SCRAPE_M_PER_PIXEL` | float | Meters per pixel on the scrape surface. | `1394.068 * 10 ** -9` |
+| `DEFAULT_AMP` | float | The default amp value for objects. | `0.2` |
+| `DEFAULT_MATERIAL` | AudioMaterial | The default [material](../physics_audio/audio_material.md) for objects. | `AudioMaterial.plastic_hard` |
+| `DEFAULT_RESONANCE` | float | The default resonance value for objects. | `0.45` |
+| `DEFAULT_SIZE` | int | The default audio size "bucket" for objects. | `1` |
+| `ROBOT_JOINT_BOUNCINESS` | float | The assumed bounciness value for robot joints. | `0.6` |
+| `ROBOT_JOINT_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for robot joints. | `AudioMaterial.metal` |
+| `VR_HUMAN_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for human body parts in VR. | `AudioMaterial.cardboard` |
+| `VR_HUMAN_BOUNCINESS` | float | The assumed bounciness value for human body parts such as in VR. | `0.3` |
+| `FLOOR_AMP` | float | The amp value for the floor. | `0.5` |
+| `FLOOR_SIZE` | int | The size "bucket" for the floor. | `4` |
+| `FLOOR_MASS` | int | The mass of the floor. | `100` |
 
 ***
 
@@ -111,7 +111,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 **`PyImpact()`**
 
-**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False, static_audio_data_overrides=None, resonance_audio=False, floor=AudioMaterial.wood_medium, rng=None, auto=True, scrape=True, scrape_objects=None)`**
+**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False, static_audio_data_overrides=None, resonance_audio=False, floor=AudioMaterial.wood_medium, rng=None, auto=True, scrape=True, scrape_objects=None, min_time_between_impact_events=0.25)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -122,21 +122,18 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 | resonance_audio |  bool  | False | If True, the simulation is using Resonance Audio. |
 | floor |  AudioMaterial  | AudioMaterial.wood_medium | The floor material. |
 | rng |  np.random.RandomState  | None | The random number generator. If None, a random number generator with a random seed is created. |
-| auto |  bool  | True | If True, PyImpact will evalulate the simulation state per `communicate()` call and automatically generate audio. |
+| auto |  bool  | True | If True, PyImpact will evaluate the simulation state per `communicate()` call and automatically generate audio. |
 | scrape |  bool  | True | If True, initialize certain objects as scrape surfaces: Change their visual material(s) and enable them for scrape audio. See: `tdw.physics_audio.scrape_model.DEFAULT_SCRAPE_MODELS` |
 | scrape_objects |  Dict[int, ScrapeModel] | None | If `scrape == True` and this is not None, this dictionary can be used to manually set scrape surfaces. Key = Object ID. Value = [`ScrapeModel`](../physics_audio/scrape_model.md). |
+| min_time_between_impact_events |  float  | 0.25 | The minimum time in seconds between two impact events that involve the same primary object. |
 
 #### get_initialization_commands
 
 **`self.get_initialization_commands()`**
 
-_Returns:_  The name of the floor material.
-
 #### on_send
 
 **`self.on_send()`**
-
-_Returns:_  The name of the floor material.
 
 #### get_impact_sound
 
@@ -239,6 +236,19 @@ Create a scrape sound, and return a valid command to play audio data in TDW.
 | scrape_material |  ScrapeMaterial |  | The [scrape material](../physics_audio/scrape_material.md). |
 
 _Returns:_  A [`Base64Sound`](../physics_audio/base64_sound.md) object or None if no sound.
+
+#### get_size
+
+**`PyImpact(CollisionManager).get_size(model)`**
+
+_(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| model |  Union[np.ndarray, ModelRecord] |  | Either the extents of an object or a model record. |
+
+_Returns:_  The `size` integer of the object.
 
 #### reset
 

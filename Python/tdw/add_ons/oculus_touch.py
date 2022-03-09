@@ -19,7 +19,7 @@ class OculusTouch(VR):
                  headset_resolution_scale: float = 1.0, non_graspable: List[int] = None):
         """
         :param human_hands: If True, visualize the hands as human hands. If False, visualize the hands as robot hands.
-        :param set_graspable: If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/physx/composite_objects.md) as graspable by the VR rig.
+        :param set_graspable: If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/semantic_states/composite_objects.md) as graspable by the VR rig.
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
         :param attach_avatar: If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`.
         :param avatar_camera_width: The width of the avatar's camera in pixels. *This is not the same as the VR headset's screen resolution!* This only affects the avatar that is created if `attach_avatar` is `True`. Generally, you will want this to lower than the headset's actual pixel width, otherwise the framerate will be too slow.

@@ -12,11 +12,13 @@ from tdw.tdw_utils import TDWUtils
 
 ***
 
+## Functions
+
 #### vector3_to_array
 
 **`TDWUtils.vector3_to_array(vector3)`**
 
-_This is a static function._
+_(Static)_
 
 Convert a Vector3 object to a numpy array.
 
@@ -31,7 +33,7 @@ _Returns:_  A numpy array.
 
 **`TDWUtils.array_to_vector3(arr)`**
 
-_This is a static function._
+_(Static)_
 
 Convert a numpy array to a Vector3.
 
@@ -46,7 +48,7 @@ _Returns:_  A Vector3, e.g. `{"x": 0, "y": 0, "z": 0}`
 
 **`TDWUtils.vector4_to_array(vector4)`**
 
-_This is a static function._
+_(Static)_
 
 Convert a Vector4 to a numpy array.
 
@@ -61,7 +63,7 @@ _Returns:_  A numpy array.
 
 **`TDWUtils.array_to_vector4(arr)`**
 
-_This is a static function._
+_(Static)_
 
 Convert a numpy array to a Vector4.
 
@@ -76,7 +78,7 @@ _Returns:_  A Vector4, e.g. `{"x": 0, "y": 0, "z": 0, "w": 0}`
 
 **`TDWUtils.color_to_array(color)`**
 
-_This is a static function._
+_(Static)_
 
 Convert a RGB Color to a numpy array.
 
@@ -91,7 +93,7 @@ _Returns:_  A numpy array.
 
 **`TDWUtils.array_to_color(arr)`**
 
-_This is a static function._
+_(Static)_
 
 Convert a numpy array to a RGBA Color. If no A value is supplied it will default to 1.
 
@@ -106,7 +108,7 @@ _Returns:_  A Color, e.g. `{"r": 0, "g": 0, "b": 0, "a": 1}`
 
 **`TDWUtils.get_random_point_in_circle(center, radius)`**
 
-_This is a static function._
+_(Static)_
 
 Get a random point in a circle, defined by a center and radius.
 
@@ -122,7 +124,7 @@ _Returns:_  A numpy array. The y value (`arr[1]`) is always 0.
 
 **`TDWUtils.get_magnitude(vector3)`**
 
-_This is a static function._
+_(Static)_
 
 Get the magnitude of a Vector3.
 
@@ -139,7 +141,7 @@ _Returns:_  The vector magnitude.
 
 **`TDWUtils.extend_line(p0, p1, d, clamp_y=True)`**
 
-_This is a static function._
+_(Static)_
 
 Extend the line defined by p0 to p1 by distance d. Clamps the y value to 0.
 
@@ -157,7 +159,7 @@ _Returns:_  The position at distance d.
 
 **`TDWUtils.get_distance(vector3_0, vector3_1)`**
 
-_This is a static function._
+_(Static)_
 
 Calculate the distance between two Vector3 (e.g. `{"x": 0, "y": 0, "z": 0}`) objects.
 
@@ -173,7 +175,7 @@ _Returns:_  The distance.
 
 **`TDWUtils.get_box(width, length)`**
 
-_This is a static function._
+_(Static)_
 
 Returns a list of x,y positions that can be used to create a box with the `create_exterior_walls` command.
 
@@ -188,7 +190,7 @@ _Returns:_  The box as represented by a list of `{"x": x, "y": y}` dictionaries.
 
 **`TDWUtils.get_vector3(x, y, z)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -203,7 +205,7 @@ _Returns:_  A Vector3: {"x": x, "y", y, "z": z}
 
 **`TDWUtils.create_empty_room(width, length)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -219,7 +221,7 @@ _Returns:_  A `create_exterior_walls` command that creates a box with dimensions
 
 **`TDWUtils.create_room_from_image(filepath, exterior_color=(255, interior_color=(0)`**
 
-_This is a static function._
+_(Static)_
 
 Load a .png file from the disk and use it to create a room. Each pixel on the image is a grid point.
 
@@ -238,7 +240,7 @@ _Returns:_  A list of commands: The first creates the exterior walls, and the se
 
 **`TDWUtils.save_images(images, output_directory="dist", filename, resize_to=None, append_pass=True)`**
 
-_This is a static function._
+_(Static)_
 
 Save each image in the Images object.
 The name of the image will be: pass_filename.extension, e.g.: `"0000"` -> `depth_0000.png`
@@ -256,7 +258,7 @@ The images object includes the pass and extension information.
 
 **`TDWUtils.get_shaped_depth_pass(images, index)`**
 
-_This is a static function._
+_(Static)_
 
 The `_depth` and `_depth_simple` passes are a 1D array of RGB values, as oppposed to a png or jpg like every other pass.
 This function reshapes the array into a 2D array of RGB values.
@@ -275,7 +277,7 @@ _Returns:_  A reshaped depth pass. Shape is: `(height, width, 3)`.
 
 **`TDWUtils.zero_padding(integer, width=4)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -289,7 +291,7 @@ _Returns:_  A string representation of an integer padded with zeroes, e.g. conve
 
 **`TDWUtils.get_pil_image(images, index)`**
 
-_This is a static function._
+_(Static)_
 
 Converts Images output data to a PIL Image object.
 Use this function to read and analyze an image in memory.
@@ -307,7 +309,7 @@ _Returns:_  A PIL image.
 
 **`TDWUtils.get_segmentation_colors(id_pass)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -322,7 +324,7 @@ _Returns:_  A list of unique colors in the ID pass.
 
 **`TDWUtils.get_random_position_on_nav_mesh(c, width, length, bake=True, rng=random.uniform, x_e=0, z_e=0)`**
 
-_This is a static function._
+_(Static)_
 
 Returns a random position on a NavMesh.
 
@@ -345,7 +347,7 @@ _Returns:_  The coordinates as a tuple `(x, y, z)`
 
 **`TDWUtils.set_visual_material(c, substructure, object_id, material, quality="med")`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -364,7 +366,7 @@ _Returns:_  A list of commands to set ALL visual materials on an object to a sin
 
 **`TDWUtils.get_depth_values(image, depth_pass="_depth", width=256, height=256, near_plane=0.1, far_plane=100)`**
 
-_This is a static function._
+_(Static)_
 
 Get the depth values of each pixel in a _depth image pass.
 The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
@@ -388,7 +390,7 @@ _Returns:_  An array of depth values.
 
 **`TDWUtils.get_point_cloud(depth, camera_matrix, vfov=54.43222, filename=None, near_plane=0.1, far_plane=100)`**
 
-_This is a static function._
+_(Static)_
 
 Create a point cloud from an numpy array of depth values.
 
@@ -410,7 +412,7 @@ _Returns:_  An point cloud as a numpy array of `[x, y, z]` coordinates.
 
 **`TDWUtils.create_avatar(avatar_type="A_Img_Caps_Kinematic", avatar_id="a", position=None, look_at=None)`**
 
-_This is a static function._
+_(Static)_
 
 This is a wrapper for `create_avatar` and, optionally, `teleport_avatar_to` and `look_at_position`.
 
@@ -428,7 +430,7 @@ _Returns:_  A list of commands to create theavatar.
 
 **`TDWUtils.get_unit_scale(record)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -441,7 +443,7 @@ _Returns:_  The scale factor required to scale a model to 1 meter "unit scale".
 
 **`TDWUtils.validate_amazon_s3()`**
 
-_This is a static function._
+_(Static)_
 
 Validate that your local Amazon S3 credentials are set up correctly.
 
@@ -451,7 +453,7 @@ _Returns:_  True if everything is OK.
 
 **`TDWUtils.get_base64_flex_particle_forces(forces)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -464,7 +466,7 @@ _Returns:_  An array of Flex particle forces encoded in base64.
 
 **`TDWUtils.color_to_hashable(color)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -477,7 +479,7 @@ _Returns:_  A hashable integer representation of the color array.
 
 **`TDWUtils.hashable_to_color(hashable)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -490,7 +492,7 @@ _Returns:_  A color as a numpy array of integers between 0 and 255: `[r, g, b]`
 
 **`TDWUtils.get_bounds_dict(bounds, index)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -506,7 +508,7 @@ _Returns:_  A dictionary of the bounds. Key = the name of the position. Value = 
 
 **`TDWUtils.get_bounds_extents(bounds, index=0)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -520,7 +522,7 @@ _Returns:_  The width (left to right), height (top to bottom), and length (front
 
 **`TDWUtils.get_closest_position_in_bounds(origin, bounds, index)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -535,7 +537,7 @@ _Returns:_  The position on the object bounds that is closest to `origin`.
 
 **`TDWUtils.get_angle(position, origin, forward)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -550,7 +552,7 @@ _Returns:_  The angle in degrees between `forward` and the direction vector from
 
 **`TDWUtils.get_angle_between(v1, v2)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -566,7 +568,7 @@ _Returns:_  The angle in degrees between two directional vectors.
 
 **`TDWUtils.rotate_position_around(origin=None, position, angle)`**
 
-_This is a static function._
+_(Static)_
 
 Rotate a position by a given angle around a given origin.
 
@@ -583,7 +585,7 @@ _Returns:_  The rotated position.
 
 **`TDWUtils.euler_angles_to_rpy(euler_angles)`**
 
-_This is a static function._
+_(Static)_
 
 Convert Euler angles to ROS RPY angles.
 
@@ -598,7 +600,7 @@ _Returns:_  A numpy array: `[r, p, y]` angles in radians.
 
 **`TDWUtils.bytes_to_megabytes(b)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -611,7 +613,7 @@ _Returns:_  A quantity of megabytes.
 
 **`TDWUtils.get_circle_mask(shape, row, column, radius)`**
 
-_This is a static function._
+_(Static)_
 
 Get elements in an array within a circle.
 
@@ -629,7 +631,7 @@ _Returns:_  A boolean array with shape `shape`. Elements that are True are withi
 
 **`TDWUtils.download_asset_bundles(path, models, scenes, materials, hdri_skyboxes, robots, humanoids, humanoid_animations)`**
 
-_This is a static function._
+_(Static)_
 
 Download asset bundles from TDW's remote S3 server. Create local librarian .json files for each type (models, scenes, etc.).
 This can be useful to speed up the process of scene creation; it is always faster to load local asset bundles though it still takes time to load them into memory.
@@ -657,7 +659,7 @@ Asset bundles will only be downloaded for your operating system. For example, if
 
 **`TDWUtils.set_default_libraries(model_library=None, scene_library=None, material_library=None, hdri_skybox_library=None, robot_library=None, humanoid_library=None, humanoid_animation_library=None)`**
 
-_This is a static function._
+_(Static)_
 
 Set the path to the default libraries.
 

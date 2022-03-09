@@ -13,19 +13,21 @@ Vectors are always numpy arrays in the following order: `[x, y, z]`.
 
 ## Class Variables
 
-| Variable | Type | Description |
-| --- | --- | --- |
-| `UP ` |  | The global up directional vector. |
-| `FORWARD` | np.array | The global forward directional vector. |
-| `IDENTITY ` |  | The quaternion identity rotation. |
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `UP ` |  | The global up directional vector. | `np.array([0, 1, 0])` |
+| `FORWARD` | np.array | The global forward directional vector. | `np.array([0, 0, 1])` |
+| `IDENTITY ` |  | The quaternion identity rotation. | `np.array([0, 0, 0, 1])` |
 
 ***
+
+## Functions
 
 #### get_inverse
 
 **`QuaternionUtils.get_inverse(q)`**
 
-_This is a static function._
+_(Static)_
 
 Source: https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Quaternion.cs
 
@@ -40,7 +42,7 @@ _Returns:_  The inverse of the quaternion.
 
 **`QuaternionUtils.multiply(q1, q2)`**
 
-_This is a static function._
+_(Static)_
 
 Multiply two quaternions.
 Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
@@ -56,7 +58,7 @@ _Returns:_  The multiplied quaternion: `q1 * q2`
 
 **`QuaternionUtils.get_conjugate(q)`**
 
-_This is a static function._
+_(Static)_
 
 Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
@@ -71,7 +73,7 @@ _Returns:_  The conjugate of the quaternion: `[-x, -y, -z, w]`
 
 **`QuaternionUtils.multiply_by_vector(q, v)`**
 
-_This is a static function._
+_(Static)_
 
 Multiply a quaternion by a vector.
 Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
@@ -88,7 +90,7 @@ _Returns:_  A directional vector calculated from: `q * v`
 
 **`QuaternionUtils.world_to_local_vector(position, origin, rotation)`**
 
-_This is a static function._
+_(Static)_
 
 Convert a vector position in absolute world coordinates to relative local coordinates.
 Source: https://answers.unity.com/questions/601062/what-inversetransformpoint-does-need-explanation-p.html
@@ -106,7 +108,7 @@ _Returns:_  `position` in local coordinates.
 
 **`QuaternionUtils.get_up_direction(q)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -119,7 +121,7 @@ _Returns:_  A directional vector corresponding to the "up" direction from the qu
 
 **`QuaternionUtils.euler_angles_to_quaternion(euler)`**
 
-_This is a static function._
+_(Static)_
 
 Convert Euler angles to a quaternion.
 
@@ -134,7 +136,7 @@ _Returns:_  The quaternion representation of the Euler angles.
 
 **`QuaternionUtils.quaternion_to_euler_angles(quaternion)`**
 
-_This is a static function._
+_(Static)_
 
 Convert a quaternion to Euler angles.
 
@@ -149,7 +151,7 @@ _Returns:_  The Euler angles representation of the quaternion.
 
 **`QuaternionUtils.get_y_angle(q1, q2)`**
 
-_This is a static function._
+_(Static)_
 
 Source: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 
@@ -165,7 +167,7 @@ _Returns:_  The angle between the two quaternions in degrees around the y axis.
 
 **`QuaternionUtils.is_left_of(origin, target, forward)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |

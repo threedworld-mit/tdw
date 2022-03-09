@@ -12,6 +12,10 @@ An abstract base class for third-person camera controller add-ons.
 
 - `position` The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
 
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
+
 ***
 
 ## Functions
@@ -29,9 +33,15 @@ An abstract base class for third-person camera controller add-ons.
 | rotation |  Dict[str, float] | None | The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | field_of_view |  int  | None | If not None, set the field of view. |
 
-#### on_send
+#### get_initialization_commands
 
-_(Abstract)_
+**`self.get_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
+#### on_send
 
 **`self.on_send(resp)`**
 
@@ -44,14 +54,6 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-#### get_initialization_commands
-
-**`self.get_initialization_commands()`**
-
-This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
-
-_Returns:_  A list of commands that will initialize this add-on.
-
 #### before_send
 
 **`self.before_send(commands)`**
@@ -61,4 +63,3 @@ This is called before sending commands to the build. By default, this function d
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
-

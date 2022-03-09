@@ -6,6 +6,8 @@ Send `send_model_report` and get a basic report on the model.
 
 ***
 
+## Functions
+
 #### start
 
 **`self.start()`**

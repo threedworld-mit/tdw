@@ -6,6 +6,8 @@ Connect to a remote binary_manager daemon and launch an instance of a TDW build.
 
 ***
 
+## Functions
+
 #### launch_build
 
 **`RemoteBuildLauncher.launch_build(listener_port, build_address, controller_address)`**

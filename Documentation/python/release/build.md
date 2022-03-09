@@ -6,6 +6,8 @@ Various helper functions for TDW builds.
 
 ***
 
+## Functions
+
 #### get_url
 
 **`Build.get_url()`**

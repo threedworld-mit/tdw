@@ -10,8 +10,8 @@ Download a .urdf or .xacro file and convert it into an asset bundle that is usab
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
-| `TEMP_ROOT` | Path | The root temporary directory. | `Path.home().joinpath("robot_creator/temp_robots")` |
 | `UNITY_VERSION` | str | Use this version of Unity Editor to launch the asset bundle creator. | `"2020.3"` |
+| `TEMP_ROOT` | Path | The root temporary directory. | `Path.home().joinpath("robot_creator/temp_robots")` |
 
 ***
 

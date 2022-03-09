@@ -12,6 +12,8 @@ from tdw.tdw_utils import TDWUtils
 
 ***
 
+## Functions
+
 #### vector3_to_array
 
 **`TDWUtils.vector3_to_array(vector3)`**

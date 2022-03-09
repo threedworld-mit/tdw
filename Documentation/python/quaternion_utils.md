@@ -21,6 +21,8 @@ Vectors are always numpy arrays in the following order: `[x, y, z]`.
 
 ***
 
+## Functions
+
 #### get_inverse
 
 **`QuaternionUtils.get_inverse(q)`**

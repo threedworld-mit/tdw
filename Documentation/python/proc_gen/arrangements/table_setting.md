@@ -1,19 +1,25 @@
-# Plate
+# TableSetting
 
-`from tdw.proc_gen.arrangements.plate import Plate`
+`from tdw.proc_gen.arrangements.table_setting import TableSetting`
 
-A kitchen plate.
+A table setting includes a plate, fork, knife, spoon, and sometimes a cup.
 
-- The plate model is chosen randomly; see `TableSetting.MODEL_CATEGORIES["plate"]`.
-- The plate might have food on it; see `food_probability` in the constructor.
-  - The possible food categories are `TableSetting.FOOD_CATEGORIES`.
-  - See `TableSetting.MODEL_CATEGORIES` for a list of models within those categories.
-  - The position of the food is perturbed randomly.
-  - The rotation of the food is random.
+- This is a subclass of [`Plate`](plate.md). The plate model is always the same; see `TableSetting.PLATE_MODEL_NAME`.
+- The fork, knife, and spoon models are random; see `TableSetting.MODEL_CATEGORIES["fork"]`, `TableSetting.MODEL_CATEGORIES["knife"]`, and `TableSetting.MODEL_CATEGORIES["spoon"]`.
+  - The rotations of the fork, knife, and spoon are perturbed randomly; see `TableSetting.CUTLERY_ROTATION_PERTURBATION`.
+  - The positions of the fork, knife, and spoon are perturbed randomly; see `TableSetting.CUTLERY_POSITION_PERTURBATION`.
+- Sometimes, there is a [`CupAndCoaster`](cup_and_coaster.md); see `TableSetting.PROBABILITY_CUP_AND_COASTER`.
+  - The position of the `CupAndCoaster` is perturbed randomly; see `TableSetting.CUP_AND_COASTER_POSITION_PERTURBATION`.
 
 ***
 
 ## Fields
+
+- `root_object_id` The ID of the root object.
+
+- `object_ids` A list of all of the object IDs in this arrangement.
+
+- `object_ids` A list of all of the object IDs in this arrangement.
 
 - `root_object_id` The ID of the root object.
 
@@ -29,9 +35,14 @@ A kitchen plate.
 | --- | --- | --- | --- |
 | `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
 | `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
+| `CUP_AND_COASTER_POSITION_PERTURBATION` | float | Randomly perturb the (x, z) positional coordinates of `CupAndCoaster` by up to +/- this distance. | `0.05` |
+| `CUTLERY_POSITION_PERTURBATION` | float | Randomly perturb the (x, z) positional coordinates of the fork, knife and spoon by up to +/- this distance. | `0.03` |
 | `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
+| `CUTLERY_ROTATION_PERTURBATION` | float | Randomly perturb the rotation of the fork, knife, and spoon by +/- this many degrees. | `3` |
 | `FOOD_CATEGORIES` | List[str] | The categories of possible food models. | `["apple", "banana", "chocolate", "orange", "sandwich"]` |
+| `PROBABILITY_CUP_AND_COASTER` | float | The probability (0 to 1) of adding a [`CupAndCoaster`](cup_and_coaster.md). | `0.66` |
 | `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
+| `PLATE_MODEL_NAME` | str | The model name of the plate. | `"plate06"` |
 | `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
 
 ***
@@ -40,14 +51,13 @@ A kitchen plate.
 
 #### \_\_init\_\_
 
-**`Plate(food_probability, position)`**
+**`TableSetting(food_probability, position)`**
 
-**`Plate(food_probability, model=None, position, rng=None)`**
+**`TableSetting(food_probability, position, rng=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | food_probability |  float |  | The probability of placing food on the plate. |
-| model |  Union[str, ModelRecord] | None | Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a random model is selected. |
 | position |  Dict[str, float] |  | The position of the root object. This might be adjusted. |
 | rng |  np.random.RandomState  | None | The random number generator. If None, a new random number generator is created. |
 

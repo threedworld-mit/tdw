@@ -1,6 +1,6 @@
 # CupAndCoaster
 
-`from proc_gen.arrangements.cup_and_coaster import CupAndCoaster`
+`from tdw.proc_gen.arrangements.cup_and_coaster import CupAndCoaster`
 
 A cup, which sometimes has a coaster underneath it.
 
@@ -13,23 +13,44 @@ A cup, which sometimes has a coaster underneath it.
 
 ***
 
-## Class Variables
-
-| Variable | Type | Description |
-| --- | --- | --- |
-| `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. |
-| `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. |
-| `ROTATION` | float | Coasters are randomly rotated up to +/- this many degrees. |
-
-***
-
 ## Fields
 
 - `object_ids` A list of all of the object IDs in this arrangement.
 
 ***
 
+## Class Variables
+
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
+| `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
+| `ROTATION` | float | Coasters are randomly rotated up to +/- this many degrees. | `25` |
+
+***
+
 ## Functions
+
+#### \_\_init\_\_
+
+\_\_init\_\_
+
+**`CupAndCoaster(position)`**
+
+**`CupAndCoaster(position, rng=None)`**
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| position |  Dict[str, float] |  | The position of the root object. This might be adjusted. |
+| rng |  np.random.RandomState  | None | The random number generator. If None, a new random number generator is created. |
+
+#### get_categories_and_wcategories
+
+**`Arrangement.get_categories_and_wcategories()`**
+
+_(Static)_
+
+_Returns:_  A dictionary of the categories of every model that can be used by `Arrangement` and their corresponding `wcategory` and `wnid`. Key = The model name. Value = A dictionary with the following keys: `"category"` (the `ProcGenObjects` category), `"wcategory"` (the value of `record.wcategory`), and `"wnid"` (the value of `record.wnid`).
 
 #### get_commands
 
@@ -37,24 +58,16 @@ A cup, which sometimes has a coaster underneath it.
 
 _Returns:_  A list of commands that will generate the arrangement.
 
-### \_\_init\_\_
-
-**`Arrangement(position)`**
-
-**`Arrangement(position, rng=None)`**
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| position |  Dict[str, float] |  | The position of the root object. This might be adjusted. |
-| rng |  np.random.RandomState  | None | The random number generator. If None, a new random number generator is created. |
-
-
-
 #### get_categories_and_wcategories
 
-**`Arrangement(ABC).get_categories_and_wcategories()`**
+**`Arrangement.get_categories_and_wcategories()`**
 
-_This is a static function._
+_(Static)_
 
 _Returns:_  A dictionary of the categories of every model that can be used by `Arrangement` and their corresponding `wcategory` and `wnid`. Key = The model name. Value = A dictionary with the following keys: `"category"` (the `ProcGenObjects` category), `"wcategory"` (the value of `record.wcategory`), and `"wnid"` (the value of `record.wnid`).
 
+#### get_commands
+
+**`self.get_commands()`**
+
+_Returns:_  A list of commands that will generate the arrangement.

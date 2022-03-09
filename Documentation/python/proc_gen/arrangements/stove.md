@@ -1,37 +1,60 @@
 # Stove
 
-`from proc_gen.arrangements.stove import Stove`
+`from tdw.proc_gen.arrangements.stove import Stove`
 
 A stove with oven doors.
 
 - For now, the stove model is always the same (`gas_stove_composite`).
 - The stove is placed next to a wall.
-  - The stove's position is automatically adjusted to set it flush to the way.
+  - The stove's position is automatically adjusted to set it flush to the wall plus an offset; see `Stove.DEPTH_OFFSET`.
   - The stove is automatically rotated so that it faces away from the wall.
 - The stove always has a rectangular arrangement of objects on top of it; see `Stove.ON_TOP_OF["stove"]`.
 - The stove has two doors that can open and two interior spaces.
-- 70% of the time, each of the interior spaces may have an object; see `Stove.ENCLOSED_BY["stove"]`.
+- Sometimes, each of the interior spaces may have one object; see `Stove.PROBABILITY_INSIDE` and `Stove.ENCLOSED_BY["stove"]`.
+  - The positions of the object(s) are perturbed randomly, see `Stove.INSIDE_POSITION_PERTURBATION`.
+  - The rotation of the object(s) is random (0 to 360 degrees).
 - The root object of the stove is non-kinematic and its door sub-objects are kinematic.
+
+***
+
+## Fields
+
+- `root_object_id` The ID of the root object.
+
+- `object_ids` A list of all of the object IDs in this arrangement.
+
+- `root_object_id` The ID of the root object.
+
+- `object_ids` A list of all of the object IDs in this arrangement.
+
+- `object_ids` A list of all of the object IDs in this arrangement.
+
+***
+
+## Class Variables
+
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
+| `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
+| `DEPTH_OFFSET` | float | Offset the stove from the wall by this distance. | `0.16595` |
+| `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
+| `PROBABILITY_INSIDE` | float | The probability (0 to 1) of adding objects inside each interior space of the stove. | `0.7` |
+| `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
+| `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
+| `INSIDE_POSITION_PERTURBATION` | float | The (x, z) positional coordinates of objects inside the stove will be randomly perturbed by up to +/- this value. | `0.04` |
 
 ***
 
 ## Functions
 
-#### get_commands
-
-**`self.get_commands()`**
-
-_Returns:_  A list of commands that will generate the arrangement.
-
-#### get_length
-
-**`self.get_length()`**
-
 #### \_\_init\_\_
 
-**`ArrangementAlongWall(wall, corner, distance, region)`**
+\_\_init\_\_
 
-**`ArrangementAlongWall(wall, corner, distance, region, model=None, wall_length=None, rng=None)`**
+**`Stove(wall, corner, distance, region)`**
+
+**`Stove(wall, corner, distance, region, model=None, wall_length=None, rng=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -43,7 +66,19 @@ _Returns:_  A list of commands that will generate the arrangement.
 | wall_length |  float  | None | The total length of the lateral arrangement. If None, defaults to the length of the wall. |
 | rng |  np.random.RandomState  | None | The random number generator. If None, a new random number generator is created. |
 
+#### get_categories_and_wcategories
 
+**`Arrangement.get_categories_and_wcategories()`**
+
+_(Static)_
+
+_Returns:_  A dictionary of the categories of every model that can be used by `Arrangement` and their corresponding `wcategory` and `wnid`. Key = The model name. Value = A dictionary with the following keys: `"category"` (the `ProcGenObjects` category), `"wcategory"` (the value of `record.wcategory`), and `"wnid"` (the value of `record.wnid`).
+
+#### get_commands
+
+**`self.get_commands()`**
+
+_Returns:_  A list of commands that will generate the arrangement.
 
 #### get_length
 
@@ -51,5 +86,22 @@ _Returns:_  A list of commands that will generate the arrangement.
 
 _Returns:_  The lateral extent of the object.
 
+#### get_categories_and_wcategories
 
+**`Arrangement.get_categories_and_wcategories()`**
 
+_(Static)_
+
+_Returns:_  A dictionary of the categories of every model that can be used by `Arrangement` and their corresponding `wcategory` and `wnid`. Key = The model name. Value = A dictionary with the following keys: `"category"` (the `ProcGenObjects` category), `"wcategory"` (the value of `record.wcategory`), and `"wnid"` (the value of `record.wnid`).
+
+#### get_commands
+
+**`self.get_commands()`**
+
+_Returns:_  A list of commands that will generate the arrangement.
+
+#### get_length
+
+**`self.get_length()`**
+
+_Returns:_  The lateral extent of the object.

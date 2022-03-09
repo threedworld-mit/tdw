@@ -1,20 +1,32 @@
-# Basket
+# WallCabinet
 
-`from tdw.proc_gen.arrangements.basket import Basket`
+`from tdw.proc_gen.arrangements.wall_cabinet import WallCabinet`
 
-A basket with random objects.
+A wall cabinet hangs on the wall above a kitchen counter. It can have objects inside it.
 
-- The basket model is chosen random; see `Basket.MODEL_CATEGORIES["basket"]`.
-- There are a random number of objects in the basket; see `BASKET.MIN_NUM_OBJECTS` and `BASKET.MAX_NUM_OBJECTS`.
-  - The objects are chosen randomly; see `Basket.INSIDE_OF["basket"]`.
-  - The rotations of the objects are random.
-  - The starting positions of the objects are random, but they are placed at (x, z) coordinates within the basket and at a y coordinate _above_ the basket. Each y coordinate is higher than the other to prevent interpenetration; see `Basket.DELTA_Y`.
-- The basket is placed next to a wall at a random distance offset: `extent * random.uniform(Basket.MIN_DEPTH_OFFSET, Basket.MAX_DEPTH_OFFSET)`.
-- The basket is rotated randomly; see `Basket.ROTATION`.
+- The wall cabinet model is chosen randomly; see `WallCabinet.MODEL_CATEGORIES["wall_cabinet"]`.
+- The wall cabinet is placed next to a wall.
+  - The wall cabinet's position is automatically adjusted to set it flush to the wall.
+  - The wall cabinet is automatically rotated so that it faces away from the wall.
+  - The wall cabinet is at a fixed height from the wall, see `WALL_CABINET.Y`.
+- The wall cabinet always has objects inside of it. The contents are random:
+  - Sometimes, there is a [`StackOfPlates`](stack_of_plates.md); see `WallCabinet.PROBABILITY_STACK_OF_PLATES`, `WallCabinet.MIN_NUM_PLATES`, and `WallCabinet.MAX_NUM_PLATES`.
+  - Sometimes, there is a rectangular arrangement of random objects; see `WallCabinet.PROBABILITY_CUPS`.
+- The root object of the wall cabinet is kinematic and the door sub-objects are non-kinematic.
 
 ***
 
 ## Fields
+
+- `root_object_id` The ID of the root object.
+
+- `object_ids` A list of all of the object IDs in this arrangement.
+
+- `root_object_id` The ID of the root object.
+
+- `object_ids` A list of all of the object IDs in this arrangement.
+
+- `object_ids` A list of all of the object IDs in this arrangement.
 
 - `root_object_id` The ID of the root object.
 
@@ -32,18 +44,16 @@ A basket with random objects.
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
+| `MIN_NUM_PLATES` | int | The minimum number of plates in a stack of plates. | `3` |
 | `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
+| `MAX_NUM_PLATES` | int | The maximum number of plates in a stack of plates. | `8` |
 | `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
-| `MIN_NUM_OBJECTS` | int | The minimum number of objects in a basket. | `2` |
-| `ROTATION` | float | Baskets are randomly rotated up to +/- this many degrees. | `10` |
 | `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
-| `MAX_NUM_OBJECTS` | int | The maximum number of objects in a basket. | `2` |
-| `MAX_DEPTH_OFFSET` | float | The maximum offset from the wall. | `1.25` |
 | `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
-| `MIN_DEPTH_OFFSET` | float | The minimum offset from the wall. | `1.15` |
-| `DELTA_Y` | float | Each subsequent object in the basket is placed this many meters above the previous. | `0.25` |
+| `Y` | float | The value of the y positional coordinate (the height) of the wall cabinet. | `1.289581` |
+| `PROBABILITY_STACK_OF_PLATES` | float | To decide what is within the cabinet, a random number between 0 and 1 is generated. If the number is below this value, a [`StackOfPlates`](stack_of_plates.md) is added. | `0.33` |
 | `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
-| `LENGTH_OFFSET` | float | Add this length to the basket's length when creating lateral arrangements. | `0.1` |
+| `PROBABILITY_CUPS` | float | To decide what is within the cabinet, a random number between 0 and 1 is generated. If the number is below this value, a rectangular arrangement of cups and glasses is added. If the number is above this value, random objects are added (see `WallCabinet.ENCLOSED_BY["wall_cabinet"]`). | `0.66` |
 
 ***
 
@@ -53,17 +63,18 @@ A basket with random objects.
 
 \_\_init\_\_
 
-**`Basket(wall, corner, distance, region)`**
+**`WallCabinet(cabinetry, wall, corner, distance, region)`**
 
-**`Basket(wall, corner, distance, region, model=None, wall_length=None, rng=None)`**
+**`WallCabinet(cabinetry, wall, corner, distance, region, model=None, wall_length=None, rng=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
+| cabinetry |  KitchenCabinetSet |  | The [`KitchenCabinetSet`](kitchen_cabinets/kitchen_cabinet_set.md). |
 | wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to. |
 | corner |  OrdinalDirection |  | The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction. |
 | distance |  float |  | The distance in meters from the corner along the derived direction. |
 | region |  InteriorRegion |  | The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in. |
-| model |  Union[str, ModelRecord] | None | Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected. If no model fits, the arrangement will not be added to the scene. |
+| model |  Union[str, ModelRecord] | None | Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected. |
 | wall_length |  float  | None | The total length of the lateral arrangement. If None, defaults to the length of the wall. |
 | rng |  np.random.RandomState  | None | The random number generator. If None, a new random number generator is created. |
 

@@ -1,8 +1,23 @@
-# TableAndChairs
+# KitchenCounterTop
 
-`from tdw.proc_gen.arrangements.table_and_chairs import TableAndChairs`
+`from tdw.proc_gen.arrangements.kitchen_counter_top import KitchenCounterTop`
 
-Abstract base class for a table with chairs around it.
+A floating kitchen counter top along a wall.
+
+- The kitchen counter top is placed next to a wall and at a height equal to the height of the kitchen counter models.
+  - The kitchen counter top's position is automatically adjusted to set it flush to the wall.
+- The kitchen counter top will have a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `KitchenCounterTop.ON_TOP_OF["kitchen_counter"]`.
+- The kitchen counter top is kinematic.
+
+## Class Variables
+
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
+| `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
+| `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
+| `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
+| `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
 
 ***
 
@@ -12,23 +27,11 @@ Abstract base class for a table with chairs around it.
 
 - `object_ids` A list of all of the object IDs in this arrangement.
 
+- `root_object_id` The ID of the root object.
+
 - `object_ids` A list of all of the object IDs in this arrangement.
 
-***
-
-## Class Variables
-
-| Variable | Type | Description | Value |
-| --- | --- | --- | --- |
-| `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
-| `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
-| `MAX_CHAIR_OFFSET` | float | The minimum random offset of a chair from the edge of the table. | `-0.01` |
-| `MIN_CHAIR_DISTANCE_FROM_USED_WALL` | float | The minimum distace from a "used wall" at which a chair can be placed. | `2` |
-| `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
-| `AREA_FOUR_CHAIRS` | float | The minimum surface area required for four chairs; below this, there are only two chairs. | `0.9` |
-| `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
-| `MIN_CHAIR_OFFSET` | float | The minimum random offset of a chair from the edge of the table. | `-0.02` |
-| `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
+- `object_ids` A list of all of the object IDs in this arrangement.
 
 ***
 
@@ -36,15 +39,18 @@ Abstract base class for a table with chairs around it.
 
 #### \_\_init\_\_
 
-**`TableAndChairs(used_walls, region, model, position, rng)`**
+**`KitchenCounterTop(cabinetry, wall, corner, distance)`**
+
+**`KitchenCounterTop(cabinetry, wall, corner, distance, wall_length=None, rng=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| used_walls |  int |  | Bitwise sum of walls with objects. |
-| region |  InteriorRegion |  | The [`InteriorRegion`](../../scene_data/interior_region.md) that the table is in. |
-| model |  Union[str, ModelRecord] |  | Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`. |
-| position |  Dict[str, float] |  | The position of the root object. This might be adjusted. |
-| rng |  np.random.RandomState |  | The random number generator. |
+| cabinetry |  KitchenCabinetSet |  | The [`KitchenCabinetSet`](kitchen_cabinets/kitchen_cabinet_set.md). |
+| wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to. |
+| corner |  OrdinalDirection |  | The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction. |
+| distance |  float |  | The distance in meters from the corner along the derived direction. |
+| wall_length |  float  | None | The total length of the lateral arrangement. If None, defaults to the length of the wall. |
+| rng |  np.random.RandomState  | None | The random number generator. If None, a new random number generator is created. |
 
 #### get_categories_and_wcategories
 
@@ -59,3 +65,9 @@ _Returns:_  A dictionary of the categories of every model that can be used by `A
 **`self.get_commands()`**
 
 _Returns:_  A list of commands that will generate the arrangement.
+
+#### get_length
+
+**`self.get_length()`**
+
+_Returns:_  The lateral extent of the object.

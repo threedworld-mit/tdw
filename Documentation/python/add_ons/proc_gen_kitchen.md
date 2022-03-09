@@ -10,8 +10,8 @@ TODO
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
-| `TALL_CATEGORIES` | List[str] | Categories of models that are tall and might obscure windows. | `["refrigerator", "shelf"]` |
 | `SECONDARY_CATEGORIES` | Dict[str, Dict[str, int]] | Categories of "secondary objects". | `loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/secondary_categories.json")).read_text())` |
+| `TALL_CATEGORIES` | List[str] | Categories of models that are tall and might obscure windows. | `["refrigerator", "shelf"]` |
 
 ***
 

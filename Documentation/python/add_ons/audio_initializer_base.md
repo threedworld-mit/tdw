@@ -10,6 +10,10 @@ Abstract base class for an audio initializer add-on.
 
 - `avatar_id` The ID of the listening avatar.
 
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
+
 ***
 
 ## Functions
@@ -46,6 +50,16 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
+
 #### play
 
 **`self.play(path, position)`**
@@ -61,4 +75,3 @@ The command will be sent on the next `Controller.communicate()` call.
 | position |  Union[np.array, Dict[str, float] |  | The position of audio source. Can be a numpy array or x, y, z dictionary. |
 | audio_id |  int  | None | The unique ID of the audio source. If None, a random ID is generated. |
 | object_id |  int  | None | If not None, parent the audio source to this object. |
-

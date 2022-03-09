@@ -29,7 +29,7 @@ AudioUtils.stop()
 
 **`AudioUtils.get_system_audio_device()`**
 
-_This is a static function._
+_(Static)_
 
 _Returns:_  The audio device that can be used to capture system audio.
 
@@ -39,7 +39,7 @@ _Returns:_  The audio device that can be used to capture system audio.
 
 **`AudioUtils.start(output_path, until, device=None)`**
 
-_This is a static function._
+_(Static)_
 
 Start recording audio.
 
@@ -53,7 +53,7 @@ Start recording audio.
 
 **`AudioUtils.stop()`**
 
-_This is a static function._
+_(Static)_
 
 Stop recording audio (if any fmedia process is running).
 
@@ -61,7 +61,7 @@ Stop recording audio (if any fmedia process is running).
 
 **`AudioUtils.is_recording()`**
 
-_This is a static function._
+_(Static)_
 
 _Returns:_  True if the fmedia recording process still exists.
 

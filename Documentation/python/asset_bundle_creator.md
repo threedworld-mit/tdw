@@ -18,13 +18,11 @@ asset_bundle_paths, record_path = a.create_asset_bundle("cube.fbx", cleanup=True
 
 For more information, see: `Documentation/misc_frontend/add_local_object.md`.
 
-***
-
 ## Class Variables
 
-| Variable | Type | Description |
-| --- | --- | --- |
-| `UNITY_VERSION` | str | Use this version of Unity Editor to launch the asset bundle creator. |
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `UNITY_VERSION` | str | Use this version of Unity Editor to launch the asset bundle creator. | `"2020.3"` |
 
 ***
 
@@ -41,6 +39,28 @@ For more information, see: `Documentation/misc_frontend/add_local_object.md`.
 | quiet |  bool  | False | If true, don't print any messages to console. |
 | display |  str  | "0" | The display to launch Unity Editor on. Ignored if this isn't Linux. |
 | unity_editor_path |  Union[Path, str] | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
+
+#### get_base_unity_call
+
+**`self.get_base_unity_call()`**
+
+_Returns:_  The call to launch Unity Editor silently in batchmode, execute something, and then quit.
+
+#### get_unity_project
+
+**`self.get_unity_project()`**
+
+Build the asset_bundle_creator Unity project.
+
+_Returns:_  The path to the asset_bundle_creator Unity project.
+
+#### get_project_path
+
+**`AssetBundleCreator.get_project_path()`**
+
+_(Static)_
+
+_Returns:_  The expected path of the Unity project.
 
 #### create_asset_bundle
 
@@ -64,9 +84,9 @@ _Returns:_  The paths to each asset bundle as Path objects (from pathlib) and th
 
 #### get_model_path
 
-**`AssetBundleCreator(AssetBundleCreatorBase).get_model_path(model_path)`**
+**`AssetBundleCreator.get_model_path(model_path)`**
 
-_This is a static function._
+_(Static)_
 
 Check if the model path is valid.
 
@@ -88,26 +108,6 @@ _Returns:_  The path to `<home>/asset_bundle_creator/Assets/`
 **`self.get_resources_directory()`**
 
 _Returns:_  The path to `<home>/asset_bundle_creator/Assets/Resources`
-
-#### get_base_unity_call
-
-**`self.get_base_unity_call()`**
-
-_Returns:_  The call to launch Unity Editor silently in batchmode, execute something, and then quit.
-
-#### get_unity_project
-
-**`self.get_unity_project()`**
-
-Build the asset_bundle_creator Unity project.
-
-_Returns:_  The path to the asset_bundle_creator Unity project.
-
-#### get_project_path
-
-**`self.get_project_path()`**
-
-_Returns:_  The expected path of the Unity project.
 
 #### fbx_to_obj
 
@@ -203,9 +203,9 @@ _Returns:_  The paths to the asset bundles.
 
 #### get_local_asset_bundle_path
 
-**`AssetBundleCreator(AssetBundleCreatorBase).get_local_asset_bundle_path(model_name)`**
+**`AssetBundleCreator.get_local_asset_bundle_path(model_name)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -237,9 +237,9 @@ _Returns:_  The path to the file with the metadata record.
 
 #### get_local_urls
 
-**`AssetBundleCreator(AssetBundleCreatorBase).get_local_urls(asset_bundle_paths)`**
+**`AssetBundleCreator.get_local_urls(asset_bundle_paths)`**
 
-_This is a static function._
+_(Static)_
 
 Generate a dictionary of local URLs from the asset bundle paths.
 
@@ -252,9 +252,9 @@ _Returns:_  A dictionary. Key = OS, Value = Path to the local file.
 
 #### write_physics_quality
 
-**`AssetBundleCreator(AssetBundleCreatorBase).write_physics_quality(record_path, asset_bundle_path)`**
+**`AssetBundleCreator.write_physics_quality(record_path, asset_bundle_path)`**
 
-_This is a static function._
+_(Static)_
 
 Append the physics quality data to the temporary record file.
 This is an optional record field that records the percentage of the model encapsualted by colliders.
@@ -299,12 +299,3 @@ This function will create collider .obj files if there aren't any already
 **`self.cleanup()`**
 
 Delete all files from `~/asset_bundle_creator` with these extensions: .obj, .fbx, .mtl, .mat, .jpg, .prefab
-
-#### get_unity_project
-
-**`self.get_unity_project()`**
-
-Build the asset_bundle_creator Unity project.
-
-_Returns:_  The path to the asset_bundle_creator Unity project.
-

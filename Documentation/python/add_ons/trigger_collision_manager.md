@@ -12,6 +12,10 @@ Listen for trigger collisions between objects.
 
 - `collisions` A list of [`TriggerCollisionEvent`](../collision_data/trigger_collision_event.md) from this frame.
 
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
+
 ***
 
 ## Functions
@@ -42,6 +46,16 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
 #### add_box_collider
 
@@ -104,4 +118,3 @@ _Returns:_  The ID of the trigger collider.
 **`self.reset()`**
 
 Reset this add-on. Call this before resetting a scene.
-

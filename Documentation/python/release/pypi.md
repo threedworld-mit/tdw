@@ -10,7 +10,7 @@ Compare the version of the installed tdw Python module to the PyPi version.
 
 **`PyPi.strip_post_release(v)`**
 
-_This is a static function._
+_(Static)_
 
 If the version number has a post-release suffix (a fourth number), strip it.
 
@@ -25,7 +25,7 @@ _Returns:_  The version, stripped of the post-release suffix.
 
 **`PyPi.get_major_release(v)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -40,7 +40,7 @@ _Returns:_  The major release number (example: in 1.7.0, the major release is 7)
 
 **`PyPi.get_pypi_version(truncate=False)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -55,7 +55,7 @@ _Returns:_  The newest available tdw release on PyPi.
 
 **`PyPi.get_installed_tdw_version(truncate=False)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -68,7 +68,7 @@ _Returns:_  The version of the tdw Python module installed on this machine.
 
 **`PyPi.get_latest_post_release(v)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -81,7 +81,7 @@ _Returns:_  The most up-to-date version or post-release of the tdw module on PyP
 
 **`PyPi.get_latest_minor_release(v)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -96,7 +96,7 @@ _Returns:_  The most up-to-date version in this major release. (Example: if v ==
 
 **`PyPi.required_tdw_version_is_installed(required_version, build_version, comparison="==")`**
 
-_This is a static function._
+_(Static)_
 
 Check whether the correct version of TDW is installed.
 This is useful for other modules such as the Magnebot API that rely on certain versions of TDW.

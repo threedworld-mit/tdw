@@ -23,4 +23,3 @@ Abstract class for static data for a sub-object of a composite object.
 | dynamic_composite_objects |  DynamicCompositeObjects |  | `DynamicCompositeObjects` output data. |
 | object_index |  int |  | The object index. |
 | sub_object_index |  int |  | The index of this sub-object. |
-

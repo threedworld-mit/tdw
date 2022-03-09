@@ -48,7 +48,7 @@ _Returns:_  The output data from the build.
 
 **`Controller.get_add_object(model_name, position=None, rotation=None, library="", object_id)`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_object command.
 
@@ -69,7 +69,7 @@ _Returns:_  An add_object command that the controller can then send via [`self.c
 
 **`Controller.get_add_physics_object(model_name, position=None, rotation=None, library="", object_id, scale_factor=None, kinematic=False, gravity=True, default_physics_values=True, mass=1, dynamic_friction=0.3, static_friction=0.3, bounciness=0.7)`**
 
-_This is a static function._
+_(Static)_
 
 Add an object to the scene with physics values (mass, friction coefficients, etc.).
 
@@ -98,7 +98,7 @@ _Returns:_  A **list** of commands to add the object and apply physics values th
 
 **`Controller.get_add_material(material_name, library="")`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_material command.
 
@@ -116,7 +116,7 @@ _Returns:_  An add_material command that the controller can then send via [`self
 
 **`Controller.get_add_scene(scene_name, library="")`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_scene command.
 
@@ -134,7 +134,7 @@ _Returns:_  An add_scene command that the controller can then send via [`self.co
 
 **`Controller.get_add_hdri_skybox(skybox_name, library="")`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_hdri_skybox command.
 
@@ -152,7 +152,7 @@ _Returns:_  An add_hdri_skybox command that the controller can then send via [`s
 
 **`Controller.get_add_humanoid(humanoid_name, position=None, rotation=None, library="", object_id)`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_humanoid command.
 
@@ -173,7 +173,7 @@ _Returns:_  An add_humanoid command that the controller can then send via [`self
 
 **`Controller.get_add_humanoid_animation(humanoid_animation_name, library="")`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_humanoid_animation command and the record (which you will need to play an animation).
 
@@ -191,7 +191,7 @@ _Returns:_  An add_humanoid_animation command that the controller can then send 
 
 **`Controller.get_add_robot(name, robot_id, position=None, rotation=None, library="")`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_robot command.
 
@@ -218,7 +218,7 @@ _Returns:_  The TDW version and the Unity Engine version.
 
 **`Controller.get_unique_id()`**
 
-_This is a static function._
+_(Static)_
 
 Generate a unique integer. Useful when creating objects.
 
@@ -228,7 +228,7 @@ _Returns:_  The new unique ID.
 
 **`Controller.get_frame(frame)`**
 
-_This is a static function._
+_(Static)_
 
 Converts the frame byte array to an integer.
 
@@ -245,7 +245,7 @@ _Returns:_  The frame as an integer.
 
 **`Controller.launch_build(port=1071)`**
 
-_This is a static function._
+_(Static)_
 
 Launch the build. If a build doesn't exist at the expected location, download one to that location.
 

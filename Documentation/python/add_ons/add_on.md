@@ -47,8 +47,6 @@ c.communicate({"$type": "terminate"})
 
 #### get_initialization_commands
 
-_(Abstract)_
-
 **`self.get_initialization_commands()`**
 
 This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
@@ -56,8 +54,6 @@ This function gets called exactly once per add-on. To re-initialize, set `self.i
 _Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
-
-_(Abstract)_
 
 **`self.on_send(resp)`**
 
@@ -79,4 +75,3 @@ This is called before sending commands to the build. By default, this function d
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
-

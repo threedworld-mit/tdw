@@ -8,15 +8,19 @@ Wrapper class for third-person camera controls in TDW. These controls are "cinem
 
 ## Fields
 
-- `avatar_id` The ID of the avatar that (this camera).
-
-- `position` The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-
 - `move_speed` The directional speed of the camera.
 
 - `rotate_speed` The angular speed of the camera.
 
 - `field_of_view_speed` Adjust the field of view by this value per frame.
+
+- `avatar_id` The ID of the avatar that (this camera).
+
+- `position` The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -39,14 +43,6 @@ Wrapper class for third-person camera controls in TDW. These controls are "cinem
 | look_at |  Union[int, Dict[str, float] |  | If not None, the cinematic camera will look at this object (if int) or position (if dictionary). |
 | field_of_view_speed |  float  | 0.1 | Adjust the field of view by this value per frame. |
 
-#### get_initialization_commands
-
-**`self.get_initialization_commands()`**
-
-This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
-
-_Returns:_  A list of commands that will initialize this add-on.
-
 #### on_send
 
 **`self.on_send(resp)`**
@@ -59,6 +55,24 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
+
+#### get_initialization_commands
+
+**`self.get_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
 #### move_to_position
 
@@ -145,16 +159,3 @@ Set the target field of view. This will also set the camera's target focal lengt
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | field_of_view |  float |  | The field of view. |
-
-#### before_send
-
-**`self.before_send(commands)`**
-
-This is called before sending commands to the build. By default, this function doesn't do anything.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-
-

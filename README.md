@@ -221,6 +221,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [AssetBundleCreator](Documentation/python/asset_bundle_creator.md)
 - [AssetBundleCreatorBase](Documentation/python/asset_bundle_creator_base.md)
+- [AudioConstants](Documentation/python/audio_constants.md)
 - [AudioUtils](Documentation/python/audio_utils.md)
 - [Controller](Documentation/python/controller.md)
 - [IntPair](Documentation/python/int_pair.md)

@@ -12,7 +12,7 @@ Various helper functions for TDW builds.
 
 **`Build.get_url(version=__version__, check_head=True)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -28,7 +28,7 @@ _Returns:_  The URL of the build release matching the version and the OS of this
 
 **`Build.download(version=__version__, v_prefix=True)`**
 
-_This is a static function._
+_(Static)_
 
 Download the release corresponding to this version. Move it to the build path and extract it.
 

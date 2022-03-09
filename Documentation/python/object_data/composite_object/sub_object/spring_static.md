@@ -8,6 +8,10 @@ Static data for a spring sub-object of a composite object.
 
 ## Fields
 
+- `force` The forcce value.
+
+- `damper` The spring damper value.
+
 - `has_limits` If True, the hinge has angular limits.
 
 - `min_limit` The minimum angle from the hinge's resting position in degrees.
@@ -16,9 +20,9 @@ Static data for a spring sub-object of a composite object.
 
 - `axis` The axis of rotation.
 
-- `force` The forcce value.
+- `sub_object_id` The ID of this sub-object.
 
-- `damper` The spring damper value.
+- `sub_object_id` The ID of this sub-object.
 
 ***
 
@@ -33,4 +37,3 @@ Static data for a spring sub-object of a composite object.
 | static_composite_objects |  StaticCompositeObjects |  | `StaticCompositeObjects` output data. |
 | object_index |  int |  | The object index. |
 | sub_object_index |  int |  | The index of this sub-object. |
-

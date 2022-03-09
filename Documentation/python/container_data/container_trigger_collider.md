@@ -28,4 +28,3 @@ Data for a container trigger collider.
 | --- | --- | --- | --- |
 | tag |  ContainerColliderTag |  | The collider's semantic [`ContainerColliderTag`](container_collider_tag.md). |
 | position |  Dict[str, float] |  | The local position of the collider. |
-

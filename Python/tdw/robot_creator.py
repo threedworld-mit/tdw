@@ -17,8 +17,10 @@ class RobotCreator(AssetBundleCreatorBase):
     Download a .urdf or .xacro file and convert it into an asset bundle that is usable by TDW.
     """
 
-    # The root temporary directory.
-    TEMP_ROOT = Path.home().joinpath("robot_creator/temp_robots")
+    """:class_var
+    The root temporary directory.
+    """
+    TEMP_ROOT: Path = Path.home().joinpath("robot_creator/temp_robots")
 
     def __init__(self, quiet: bool = False, display: str = ":0", unity_editor_path: Union[Path, str] = None):
         """

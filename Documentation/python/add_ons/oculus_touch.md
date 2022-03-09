@@ -8,13 +8,11 @@ Make all non-kinematic objects graspable by the rig.
 
 Per-frame, update the positions of the VR rig, its hands, and its head, as well as which objects it is grasping and the controller button presses.
 
-***
-
 ## Class Variables
 
-| Variable | Type | Description |
-| --- | --- | --- |
-| `AVATAR_ID` | str | If an avatar is attached to the VR rig, this is the ID of the VR rig's avatar. |
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `AVATAR_ID` | str | If an avatar is attached to the VR rig, this is the ID of the VR rig's avatar. | `"vr"` |
 
 ***
 
@@ -31,6 +29,10 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 - `held_left` A numpy of object IDs held by the left hand.
 
 - `held_right` A numpy of object IDs held by the right hand.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -60,36 +62,6 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
 
 _Returns:_  A list of commands that will initialize this add-on.
-
-#### on_send
-
-**`self.on_send(button, is_left, function)`**
-
-Listen for Oculus Touch controller button presses.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| button |  |  | The Oculus Touch controller button. |
-| is_left |  |  | If True, this is the left controller. If False, this is the right controller. |
-| function |  |  | The function to invoke when the button is pressed. This function must have no arguments and return None. |
-
-#### listen_to_button
-
-**`self.listen_to_button(button, is_left, function)`**
-
-Listen for Oculus Touch controller button presses.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| button |  OculusTouchButton |  | The Oculus Touch controller button. |
-| is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
-| function |  Callable[[] |  | The function to invoke when the button is pressed. This function must have no arguments and return None. |
-
-#### reset
-
-**`self.reset()`**
-
-Reset the VR rig. Call this whenever a scene is reset.
 
 #### on_send
 
@@ -124,3 +96,36 @@ Rotate the VR rig by an angle.
 | --- | --- | --- | --- |
 | angle |  float |  | The angle in degrees. |
 
+#### reset
+
+**`self.reset()`**
+
+**`self.reset(non_graspable=None)`**
+
+Reset the VR rig. Call this whenever a scene is reset.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| non_graspable |  List[int] | None | A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable. |
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
+
+#### listen_to_button
+
+**`self.listen_to_button(button, is_left, function)`**
+
+Listen for Oculus Touch controller button presses.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| button |  OculusTouchButton |  | The Oculus Touch controller button. |
+| is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
+| function |  Callable[[] |  | The function to invoke when the button is pressed. This function must have no arguments and return None. |

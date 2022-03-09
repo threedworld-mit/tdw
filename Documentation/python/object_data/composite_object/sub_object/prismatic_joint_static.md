@@ -8,11 +8,11 @@ Static data for a prismatic joint sub-object of a composite object.
 
 ## Fields
 
-- `sub_object_id` The ID of this sub-object.
-
 - `limit` The linear limit.
 
 - `axis` The axis of movement.
+
+- `sub_object_id` The ID of this sub-object.
 
 ***
 
@@ -27,4 +27,3 @@ Static data for a prismatic joint sub-object of a composite object.
 | static_composite_objects |  StaticCompositeObjects |  | `StaticCompositeObjects` output data. |
 | object_index |  int |  | The object index. |
 | sub_object_index |  int |  | The index of this sub-object. |
-

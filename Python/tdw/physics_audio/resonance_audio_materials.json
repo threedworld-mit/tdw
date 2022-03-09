@@ -1,0 +1,14 @@
+{
+  "acousticTile": "cardboard",
+  "brick": "ceramic",
+  "concrete": "ceramic",
+  "glass": "glass",
+  "grass": "fabric",
+  "marble": "stone",
+  "metal": "metal",
+  "parquet": "wood_medium",
+  "roughPlaster": "wood_soft",
+  "smoothPlaster": "wood_soft",
+  "tile": "ceramic",
+  "wood": "wood_soft"
+}

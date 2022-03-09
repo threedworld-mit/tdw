@@ -21,13 +21,13 @@ c.communicate({"$type": "terminate"})
 
 ## Fields
 
-- `commands` These commands will be appended to the commands of the next `communicate()` call.
-
-- `initialized` If True, this module has been initialized.
-
 - `record` If True, record each command. If False, play back an existing record.
 
 - `playback` A record of each list of commands sent to the build.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -45,6 +45,14 @@ c.communicate({"$type": "terminate"})
 | path |  Union[str, Path] |  | The path to either save the record to or load the record from. |
 | log_commands_in_build |  bool  | False | If True, the build will log every message received and every command executed in the [Player log](https://docs.unity3d.com/Manual/LogFiles.html). |
 
+#### get_initialization_commands
+
+**`self.get_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
 #### on_send
 
 **`self.on_send(resp)`**
@@ -58,26 +66,6 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-#### get_initialization_commands
-
-**`self.get_initialization_commands()`**
-
-This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
-
-_Returns:_  A list of commands that will initialize this add-on.
-
-#### before_send
-
-**`self.before_send()`**
-
-Write the record of commands sent to the local disk.
-
-#### save
-
-**`self.save()`**
-
-Write the record of commands sent to the local disk.
-
 #### before_send
 
 **`self.before_send(commands)`**
@@ -88,5 +76,8 @@ This is called before sending commands to the build. By default, this function d
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
+#### save
 
+**`self.save()`**
 
+Write the record of commands sent to the local disk.

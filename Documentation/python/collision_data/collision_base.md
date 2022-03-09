@@ -25,4 +25,3 @@ Abstract base class for collision data.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | collision |  Union[Collision, EnvironmentCollision] |  | The collision output data. |
-

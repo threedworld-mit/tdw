@@ -10,13 +10,13 @@ Note that some useful information, such as the positions, rotations, names, of t
 
 ## Fields
 
-- `commands` These commands will be appended to the commands of the next `communicate()` call.
-
-- `initialized` If True, this module has been initialized.
-
 - `static` A dictionary of [`CompositeObjectStatic`](../object_data/composite_object/composite_object_static.md) data that is set when this add-on intializes. Key = The object ID.
 
 - `dynamic` A dictionary of [`CompositeObjectDynamic`](../object_data/composite_object/composite_object_dynamic.md) data that is set per-frame. Key = The object ID.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -35,40 +35,6 @@ Note that some useful information, such as the positions, rotations, names, of t
 This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
 
 _Returns:_  A list of commands that will initialize this add-on.
-
-#### on_send
-
-**`self.on_send(object_id, sub_object_id, open_at)`**
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  |  | The ID of the root object. |
-| sub_object_id |  |  | The ID of one of the root object's hinges, motors, or springs. |
-| open_at |  |  | A threshold of 'openness' in degrees. If the sub-object's angle is greater than or equal to this, it is considered 'open'. |
-
-_Returns:_  True if the hinge, motor, or spring is open.
-
-#### is_open
-
-**`self.is_open(object_id, sub_object_id)`**
-
-**`self.is_open(object_id, sub_object_id, open_at=30)`**
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the root object. |
-| sub_object_id |  int |  | The ID of one of the root object's hinges, motors, or springs. |
-| open_at |  float  | 30 | A threshold of 'openness' in degrees. If the sub-object's angle is greater than or equal to this, it is considered 'open'. |
-
-_Returns:_  True if the hinge, motor, or spring is open.
-
-#### reset
-
-**`self.reset()`**
-
-Reset this add-on. Call this when resetting the scene.
 
 #### on_send
 
@@ -93,5 +59,23 @@ This is called before sending commands to the build. By default, this function d
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
+#### is_open
+
+**`self.is_open(object_id, sub_object_id)`**
+
+**`self.is_open(object_id, sub_object_id, open_at=30)`**
 
 
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| object_id |  int |  | The ID of the root object. |
+| sub_object_id |  int |  | The ID of one of the root object's hinges, motors, or springs. |
+| open_at |  float  | 30 | A threshold of 'openness' in degrees. If the sub-object's angle is greater than or equal to this, it is considered 'open'. |
+
+_Returns:_  True if the hinge, motor, or spring is open.
+
+#### reset
+
+**`self.reset()`**
+
+Reset this add-on. Call this when resetting the scene.

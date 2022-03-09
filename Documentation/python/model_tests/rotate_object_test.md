@@ -8,13 +8,13 @@ These tests add an object and then rotate it.
 
 ## Class Variables
 
-| Variable | Type | Description |
-| --- | --- | --- |
-| `OBJECT_ID` | int | The ID of the object. |
-| `DELTA_THETA` | int | Rotate by this many degrees per frame. |
-| `PINK` | tuple | The Unity pink color. |
-| `LOOK_AT` | Dict[str, float] | Look at this position. |
-| `AVATAR_POSITION` | Dict[str, float] | The position of the avatar. |
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `OBJECT_ID` | int | The ID of the object. | `0` |
+| `DELTA_THETA` | int | Rotate by this many degrees per frame. | `15` |
+| `PINK` | tuple | The Unity pink color. | `(255, 0, 255)` |
+| `LOOK_AT` | Dict[str, float] | Look at this position. | `{"x": 0, "y": 0.5, "z": 0}` |
+| `AVATAR_POSITION` | Dict[str, float] | The position of the avatar. | `{"x": 1.75, "y": 0.5, "z": 0}` |
 
 ***
 

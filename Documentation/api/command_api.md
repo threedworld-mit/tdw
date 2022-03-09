@@ -3528,7 +3528,7 @@ Create a Flex Container. The ID of this container is the quantity of containers 
 ```
 
 ```python
-{"$type": "create_flex_container", "radius": 0.1875, "solid_rest": 0.125, "fluid_rest": 0.1125, "static_friction": 0.5, "dynamic_friction": 0.5, "particle_friction": 0.5, "collision_distance": 0.0625, "substep_count": 3, "iteration_count": 8, "damping": 1, "drag": 0.0, "shape_collision_margin": 0.0, "planes": [], "cohesion": 0.025, "surface_tension": 0.0, "viscocity": 0.001, "vorticity": 0.0, "buoyancy": 1.0, "adhesion": 0.0, "anisotropy_scale": 2.0, "max_particles": 10000, "max_neighbors": 100, "sleep_threshold": 0.0}
+{"$type": "create_flex_container", "radius": 0.1875, "solid_rest": 0.125, "fluid_rest": 0.1125, "static_friction": 0.5, "dynamic_friction": 0.5, "particle_friction": 0.5, "collision_distance": 0.0625, "substep_count": 3, "iteration_count": 8, "damping": 1, "drag": 0.0, "shape_collision_margin": 0.0, "planes": [], "cohesion": 0.025, "surface_tension": 0.0, "viscocity": 0.001, "vorticity": 0.0, "buoyancy": 1.0, "adhesion": 0.0, "anisotropy_scale": 2.0, "max_particles": 10000, "max_neighbors": 100, "sleep_threshold": 0.0, "restitution": 0}
 ```
 
 | Parameter | Type | Description | Default |
@@ -3556,6 +3556,7 @@ Create a Flex Container. The ID of this container is the quantity of containers 
 | `"max_particles"` | int | Maximum number of particles for the container. | 10000 |
 | `"max_neighbors"` | int | Maximum number of neighbors for the container. | 100 |
 | `"sleep_threshold"` | float | Particles with a velocity magnitude greater than this threshold will be considered fixed. | 0.0 |
+| `"restitution"` | float | Coefficient of restitution used when colliding against shapes. Particle collisions are always inelastic. | 0 |
 
 ***
 

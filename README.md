@@ -7,7 +7,7 @@
 - [Code of Conduct](https://github.com/threedworld-mit/tdw/blob/master/code_of_conduct.md)
 - [Changelog](https://github.com/threedworld-mit/tdw/blob/master/Documentation/Changelog.md)
 - [License](https://github.com/threedworld-mit/tdw/blob/master/LICENSE.txt)
-- [Website](http://threedworld.org/)
+- [Website](https://threedworld.org/)
 - [Example controllers](https://github.com/threedworld-mit/tdw/tree/master/Python/example_controllers)
 
 # 1. General guide to TDW

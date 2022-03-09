@@ -21,6 +21,23 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 ### `tdw` module
 
 - `Controller.get_add_physics_object()` will dynamically scale the "canonical" mass of the object if a value for the `scale_factor` parameter is provided.
+- Added optional parameter `device` to `AudioUtils.start()` to enable microphone capture.
+
+### Model Library
+
+- Added models `models_core.json` and `models_full.json`:  b03_cooking_pot_01_composite, fridge_large_composite (including container collider data)
+
+### Documentation
+
+#### Modified Documentation
+
+- **Fixed: Missing information in various Python API documents.**
+
+| Document                           | Modification                                                 |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `lessons/audio/record_audio.md`    | Added a section for how to record from a microphone.         |
+| `lessons/flex/fluid_and_source.md` | Clarified that a receptacle is not needed.                   |
+| `python/controller.md`             | Clarified how the wrapper functions that return commands work. |
 
 ## v1.9.7
 

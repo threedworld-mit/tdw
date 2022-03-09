@@ -48,7 +48,7 @@ _Returns:_  The output data from the build.
 
 **`Controller.get_add_object(model_name, position=None, rotation=None, library="", object_id)`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_object command.
 
@@ -61,7 +61,7 @@ Returns a valid add_object command.
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`. |
 | object_id |  int |  | The ID of the new object. |
 
-_Returns:_  An add_object command that the controller can then send.
+_Returns:_  An add_object command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_physics_object
 
@@ -69,7 +69,7 @@ _Returns:_  An add_object command that the controller can then send.
 
 **`Controller.get_add_physics_object(model_name, position=None, rotation=None, library="", object_id, scale_factor=None, kinematic=False, gravity=True, default_physics_values=True, mass=1, dynamic_friction=0.3, static_friction=0.3, bounciness=0.7)`**
 
-_This is a static function._
+_(Static)_
 
 Add an object to the scene with physics values (mass, friction coefficients, etc.).
 
@@ -90,7 +90,7 @@ Add an object to the scene with physics values (mass, friction coefficients, etc
 | static_friction |  float  | 0.3 | The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
 | bounciness |  float  | 0.7 | The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
 
-_Returns:_  A list of commands to add the object and apply physics values.
+_Returns:_  A **list** of commands to add the object and apply physics values that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_material
 
@@ -98,7 +98,7 @@ _Returns:_  A list of commands to add the object and apply physics values.
 
 **`Controller.get_add_material(material_name, library="")`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_material command.
 
@@ -108,7 +108,7 @@ Returns a valid add_material command.
 | material_name |  str |  | The name of the material. |
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `MaterialLibrarian.get_library_filenames()` and `MaterialLibrarian.get_default_library()`. |
 
-_Returns:_  An add_material command that the controller can then send.
+_Returns:_  An add_material command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_scene
 
@@ -116,7 +116,7 @@ _Returns:_  An add_material command that the controller can then send.
 
 **`Controller.get_add_scene(scene_name, library="")`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_scene command.
 
@@ -126,7 +126,7 @@ Returns a valid add_scene command.
 | scene_name |  str |  | The name of the scene. |
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `SceneLibrarian.get_library_filenames()` and `SceneLibrarian.get_default_library()`. |
 
-_Returns:_  An add_scene command that the controller can then send.
+_Returns:_  An add_scene command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_hdri_skybox
 
@@ -134,7 +134,7 @@ _Returns:_  An add_scene command that the controller can then send.
 
 **`Controller.get_add_hdri_skybox(skybox_name, library="")`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_hdri_skybox command.
 
@@ -144,7 +144,7 @@ Returns a valid add_hdri_skybox command.
 | skybox_name |  str |  | The name of the skybox. |
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `HDRISkyboxLibrarian.get_library_filenames()` and `HDRISkyboxLibrarian.get_default_library()`. |
 
-_Returns:_  An add_hdri_skybox command that the controller can then send.
+_Returns:_  An add_hdri_skybox command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_humanoid
 
@@ -152,7 +152,7 @@ _Returns:_  An add_hdri_skybox command that the controller can then send.
 
 **`Controller.get_add_humanoid(humanoid_name, position=None, rotation=None, library="", object_id)`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_humanoid command.
 
@@ -165,7 +165,7 @@ Returns a valid add_humanoid command.
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `HumanoidLibrarian.get_library_filenames()` and `HumanoidLibrarian.get_default_library()`. |
 | object_id |  int |  | The ID of the new object. |
 
-_Returns:_  An add_humanoid command that the controller can then send.
+_Returns:_  An add_humanoid command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_humanoid_animation
 
@@ -173,7 +173,7 @@ _Returns:_  An add_humanoid command that the controller can then send.
 
 **`Controller.get_add_humanoid_animation(humanoid_animation_name, library="")`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_humanoid_animation command and the record (which you will need to play an animation).
 
@@ -183,7 +183,7 @@ Returns a valid add_humanoid_animation command and the record (which you will ne
 | humanoid_animation_name |  str |  | The name of the animation. |
 | library |  | "" | The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`. |
 
-_Returns:_  An add_humanoid_animation command that the controller can then send.
+_Returns:_  An add_humanoid_animation command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_add_robot
 
@@ -191,7 +191,7 @@ _Returns:_  An add_humanoid_animation command that the controller can then send.
 
 **`Controller.get_add_robot(name, robot_id, position=None, rotation=None, library="")`**
 
-_This is a static function._
+_(Static)_
 
 Returns a valid add_robot command.
 
@@ -204,7 +204,7 @@ Returns a valid add_robot command.
 | rotation |  Dict[str, float] | None | The initial rotation of the robot in Euler angles. |
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `RobotLibrarian.get_library_filenames()` and `RobotLibrarian.get_default_library()`. |
 
-_Returns:_  An `add_robot` command that the controller can then send.
+_Returns:_  An `add_robot` command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_version
 
@@ -218,7 +218,7 @@ _Returns:_  The TDW version and the Unity Engine version.
 
 **`Controller.get_unique_id()`**
 
-_This is a static function._
+_(Static)_
 
 Generate a unique integer. Useful when creating objects.
 
@@ -228,7 +228,7 @@ _Returns:_  The new unique ID.
 
 **`Controller.get_frame(frame)`**
 
-_This is a static function._
+_(Static)_
 
 Converts the frame byte array to an integer.
 
@@ -245,7 +245,7 @@ _Returns:_  The frame as an integer.
 
 **`Controller.launch_build(port=1071)`**
 
-_This is a static function._
+_(Static)_
 
 Launch the build. If a build doesn't exist at the expected location, download one to that location.
 

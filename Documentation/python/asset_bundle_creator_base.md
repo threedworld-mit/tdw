@@ -8,13 +8,13 @@ Base class for creating asset bundles.
 
 ## Class Variables
 
-| Variable | Type | Description |
-| --- | --- | --- |
-| `UNITY_VERSION` | str | Use this version of Unity Editor to launch the asset bundle creator. |
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `UNITY_VERSION` | str | Use this version of Unity Editor to launch the asset bundle creator. | `"2020.3"` |
 
 ***
 
-## Functions
+## Fields
 
 #### \_\_init\_\_
 
@@ -36,8 +36,6 @@ _Returns:_  The call to launch Unity Editor silently in batchmode, execute somet
 
 #### get_unity_project
 
-_(Abstract)_
-
 **`self.get_unity_project()`**
 
 Build the asset_bundle_creator Unity project.
@@ -46,9 +44,6 @@ _Returns:_  The path to the asset_bundle_creator Unity project.
 
 #### get_project_path
 
-_(Abstract)_
-
 **`self.get_project_path()`**
 
 _Returns:_  The expected path of the Unity project.
-

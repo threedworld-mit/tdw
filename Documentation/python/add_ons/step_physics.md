@@ -8,11 +8,11 @@ Step n + 1 physics frames per communciate() call.
 
 ## Fields
 
+- `num_frames` Step this many physics frames + 1 per communicate() call.
+
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 
 - `initialized` If True, this module has been initialized.
-
-- `num_frames` Step this many physics frames + 1 per communicate() call.
 
 ***
 
@@ -36,10 +36,6 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
-**`self.on_send()`**
-
-#### on_send
-
 **`self.on_send(resp)`**
 
 This is called after commands are sent to the build and a response is received.
@@ -60,6 +56,3 @@ This is called before sending commands to the build. By default, this function d
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-
-

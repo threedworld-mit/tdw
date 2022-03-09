@@ -71,13 +71,17 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 ## Fields
 
+- `follow_object` The ID of the object the camera will try to follow. Can be None (the camera won't follow an object).
+
+- `follow_rotate` If `follow_object` is not None, this determines whether the camera will follow the object's rotation.
+
 - `avatar_id` The ID of the avatar that (this camera).
 
 - `position` The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
 
-- `follow_object` The ID of the object the camera will try to follow. Can be None (the camera won't follow an object).
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
 
-- `follow_rotate` If `follow_object` is not None, this determines whether the camera will follow the object's rotation.
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -99,14 +103,6 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 | follow_object |  int  | None | If not None, follow an object per frame. The `position` parameter will be treated as a relative value from the target object rather than worldspace coordinates. |
 | follow_rotate |  bool  | False | If True, match the rotation of the object. Ignored if `follow_object` is None. |
 
-#### get_initialization_commands
-
-**`self.get_initialization_commands()`**
-
-This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
-
-_Returns:_  A list of commands that will initialize this add-on.
-
 #### on_send
 
 **`self.on_send(resp)`**
@@ -119,6 +115,24 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
+
+#### get_initialization_commands
+
+**`self.get_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
 #### teleport
 
@@ -152,16 +166,3 @@ Look at a target position or object. The camera will continue to look at the tar
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | target |  Union[int, Dict[str, float] |  | The look at target. Can be an int (an object ID), an `(x, y, z)` dictionary (a position), or None (stop looking at a target). |
-
-#### before_send
-
-**`self.before_send(commands)`**
-
-This is called before sending commands to the build. By default, this function doesn't do anything.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-
-

@@ -12,9 +12,9 @@ Note that this is an abstract class. Different types of VR rigs use different su
 
 ## Class Variables
 
-| Variable | Type | Description |
-| --- | --- | --- |
-| `AVATAR_ID` | str | If an avatar is attached to the VR rig, this is the ID of the VR rig's avatar. |
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `AVATAR_ID` | str | If an avatar is attached to the VR rig, this is the ID of the VR rig's avatar. | `"vr"` |
 
 ***
 
@@ -31,6 +31,10 @@ Note that this is an abstract class. Different types of VR rigs use different su
 - `held_left` A numpy of object IDs held by the left hand.
 
 - `held_right` A numpy of object IDs held by the right hand.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -72,6 +76,16 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
+
 #### set_position
 
 **`self.set_position(position)`**
@@ -97,4 +111,3 @@ Rotate the VR rig by an angle.
 **`self.reset()`**
 
 Reset the VR rig. Call this whenever a scene is reset.
-

@@ -37,10 +37,6 @@ c.communicate({"$type": "terminate"})
 
 ## Fields
 
-- `commands` These commands will be appended to the commands of the next `communicate()` call.
-
-- `initialized` If True, this module has been initialized.
-
 - `frame` The current frame count. This is used to generate filenames.
 
 - `path` The path to the output directory.
@@ -48,6 +44,10 @@ c.communicate({"$type": "terminate"})
 - `avatar_ids` The IDs of the avatars that will capture and save images. If empty, all avatars will capture and save images.
 
 - `images` Raw [`Images` output data](../../api/output_data.md#Images) from the build. Key = The ID of the avatar. This is updated per frame. If an avatar didn't capture an image on this frame, it won't be in this dictionary.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -74,9 +74,6 @@ This function gets called exactly once per add-on. To re-initialize, set `self.i
 
 _Returns:_  A list of commands that will initialize this add-on.
 
-set_pass_masks). |
-| save |  |  | If True, automatically save images to disk per frame. If False, images won't be saved but the `self.images` dictionary will still be updated. |
-
 #### on_send
 
 **`self.on_send(resp)`**
@@ -90,8 +87,15 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-set_pass_masks). |
-| save |  |  | If True, automatically save images to disk per frame. If False, images won't be saved but the `self.images` dictionary will still be updated. |
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
 #### set
 
@@ -117,16 +121,3 @@ This function will override the previous image capture settings; in other words,
 Convert the latest image data from the build (`self.images`) to PIL images. Note that it is not necessary to call this function to save images; use this only to analyze an image at runtime.
 
 _Returns:_  A dictionary of PIL images from the latest image data from the build. Key = The avatar ID. Value = A dictionary; key = the pass mask, value = the PIL image.
-
-#### before_send
-
-**`self.before_send(commands)`**
-
-This is called before sending commands to the build. By default, this function doesn't do anything.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-
-

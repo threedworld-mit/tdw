@@ -48,7 +48,7 @@ _Returns:_  A synthesized sound.
 
 **`Modes.mode_add(a, b)`**
 
-_This is a static function._
+_(Static)_
 
 Add together numpy arrays of different lengths by zero-padding the shorter.
 

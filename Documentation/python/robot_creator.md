@@ -8,13 +8,14 @@ Download a .urdf or .xacro file and convert it into an asset bundle that is usab
 
 ## Class Variables
 
-| Variable | Type | Description |
-| --- | --- | --- |
-| `UNITY_VERSION` | str | Use this version of Unity Editor to launch the asset bundle creator. |
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `UNITY_VERSION` | str | Use this version of Unity Editor to launch the asset bundle creator. | `"2020.3"` |
+| `TEMP_ROOT` | Path | The root temporary directory. | `Path.home().joinpath("robot_creator/temp_robots")` |
 
 ***
 
-## Functions
+## Fields
 
 #### \_\_init\_\_
 
@@ -58,9 +59,9 @@ _Returns:_  A `RobotRecord` object. The `urls` field contains the paths to each 
 
 #### get_record
 
-**`RobotCreator(AssetBundleCreatorBase).get_record(name, urdf_url, immovable, asset_bundles)`**
+**`RobotCreator.get_record(name, urdf_url, immovable, asset_bundles)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -167,23 +168,8 @@ _Returns:_  The path to the asset_bundle_creator Unity project.
 
 #### get_project_path
 
-**`RobotCreator(AssetBundleCreatorBase).get_project_path()`**
+**`RobotCreator.get_project_path()`**
 
-_This is a static function._
-
-_Returns:_  The expected path of the Unity project.
-
-#### get_base_unity_call
-
-**`self.get_base_unity_call()`**
-
-_Returns:_  The call to launch Unity Editor silently in batchmode, execute something, and then quit.
-
-#### get_project_path
-
-**`self.get_project_path()`**
+_(Static)_
 
 _Returns:_  The expected path of the Unity project.
-
-
-

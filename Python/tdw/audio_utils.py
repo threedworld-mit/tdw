@@ -51,12 +51,13 @@ class AudioUtils:
         return dev_search.group(1)
 
     @staticmethod
-    def start(output_path: Union[str, Path], until: Optional[Tuple[int, int]] = None) -> None:
+    def start(output_path: Union[str, Path], until: Optional[Tuple[int, int]] = None, device: str = None) -> None:
         """
         Start recording audio.
 
         :param output_path: The path to the output file.
         :param until: If not None, fmedia will record until `minutes:seconds`. The value must be a tuple of 2 integers. If None, fmedia will record until you send `AudioUtils.stop()`.
+        :param device: The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X).
         """
 
         if isinstance(output_path, str):
@@ -69,11 +70,13 @@ class AudioUtils:
             p.parent.mkdir(parents=True)
 
         # Set the capture device.
-        if AudioUtils.DEVICE is None:
-            AudioUtils.DEVICE = AudioUtils.get_system_audio_device()
+        if device is None:
+            if AudioUtils.DEVICE is None:
+                AudioUtils.DEVICE = AudioUtils.get_system_audio_device()
+            device = AudioUtils.DEVICE
         fmedia_call = ["fmedia",
                        "--record",
-                       f"--dev-capture={AudioUtils.DEVICE}",
+                       f"--dev-capture={device}",
                        f"--out={str(p.resolve())}",
                        "--globcmd=listen"]
         # Automatically stop recording.

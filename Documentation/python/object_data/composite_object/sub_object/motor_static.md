@@ -8,6 +8,8 @@ Static data for a motor sub-object of a composite object.
 
 ## Fields
 
+- `force` The force limit.
+
 - `has_limits` If True, the hinge has angular limits.
 
 - `min_limit` The minimum angle from the hinge's resting position in degrees.
@@ -16,7 +18,9 @@ Static data for a motor sub-object of a composite object.
 
 - `axis` The axis of rotation.
 
-- `force` The force limit.
+- `sub_object_id` The ID of this sub-object.
+
+- `sub_object_id` The ID of this sub-object.
 
 ***
 
@@ -31,4 +35,3 @@ Static data for a motor sub-object of a composite object.
 | static_composite_objects |  StaticCompositeObjects |  | `StaticCompositeObjects` output data. |
 | object_index |  int |  | The object index. |
 | sub_object_index |  int |  | The index of this sub-object. |
-

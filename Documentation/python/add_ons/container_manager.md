@@ -15,11 +15,15 @@ An object is 'contained' by a 'container' if:
 
 ## Fields
 
+- `events` A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container ID *(not the trigger ID)*. Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
+
 - `trigger_ids` A dictionary of trigger colliders. Key = The trigger ID. Value = The object ID.
 
 - `collisions` A list of [`TriggerCollisionEvent`](../collision_data/trigger_collision_event.md) from this frame.
 
-- `events` A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container ID *(not the trigger ID)*. Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -117,3 +121,12 @@ _Returns:_  The ID of the trigger collider.
 
 Reset this add-on. Call this before resetting a scene.
 
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |

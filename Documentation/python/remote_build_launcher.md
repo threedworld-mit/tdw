@@ -12,7 +12,7 @@ Connect to a remote binary_manager daemon and launch an instance of a TDW build.
 
 **`RemoteBuildLauncher.launch_build(listener_port, build_address, controller_address)`**
 
-_This is a static function._
+_(Static)_
 
 Connect to a remote binary_manager daemon and launch an instance of a TDW build.
 
@@ -34,7 +34,7 @@ _Returns:_  The build_info dictionary containing build_port.
 
 **`RemoteBuildLauncher.get_unity_args(arg_dict)`**
 
-_This is a static function._
+_(Static)_
 
 
 | Parameter | Type | Default | Description |
@@ -47,7 +47,7 @@ _Returns:_  The formatted command line string that is accepted by unity arg pars
 
 **`RemoteBuildLauncher.find_free_port()`**
 
-_This is a static function._
+_(Static)_
 
 _Returns:_  A free socket port.
 

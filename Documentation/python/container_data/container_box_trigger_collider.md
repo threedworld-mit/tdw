@@ -8,6 +8,8 @@ Data for a container trigger box collider.
 
 ## Fields
 
+- `scale` The scale of the collider.
+
 - `tag` The collider's semantic [`ContainerColliderTag`](container_collider_tag.md).
 
 - `position` The collider's local position.
@@ -18,16 +20,17 @@ Data for a container trigger box collider.
 
 ***
 
+***
+
 ## Functions
 
 #### \_\_init\_\_
 
-**`ContainerTriggerCollider(tag, position)`**
+\_\_init\_\_
+
+**`ContainerBoxTriggerCollider(tag, position)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | tag |  ContainerColliderTag |  | The collider's semantic [`ContainerColliderTag`](container_collider_tag.md). |
 | position |  Dict[str, float] |  | The local position of the collider. |
-
-
-

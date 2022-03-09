@@ -14,7 +14,7 @@ Base class for creating asset bundles.
 
 ***
 
-## Fields
+## Functions
 
 #### \_\_init\_\_
 

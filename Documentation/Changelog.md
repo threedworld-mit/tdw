@@ -32,6 +32,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 - `Controller.get_add_physics_object()` will dynamically scale the "canonical" mass of the object if a value for the `scale_factor` parameter is provided.
 - Added optional parameter `device` to `AudioUtils.start()` to enable microphone capture.
+- Added: `Logger.reset(path)` Reset the Logger add-on.
+- Fixed: `Logger` add-on doesn't create directories for the log if the directories don't exist.
 
 ### Model Library
 

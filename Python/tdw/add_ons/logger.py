@@ -45,7 +45,7 @@ class Logger(AddOn):
             self._path: Path = Path(path)
         else:
             self._path: Path = path
-        if not self._path.parent.exists:
+        if not self._path.parent.exists():
             self._path.parent.mkdir(parents=True)
 
         # Start a new playback file.
@@ -93,3 +93,29 @@ class Logger(AddOn):
 
         with self._path.open("wt", encoding="utf-8") as f:
             dump(self.playback, f)
+
+    def reset(self, path: Union[str, Path]) -> None:
+        """
+        Reset the logger. If `self.record == True`, this starts a new log. If `self.record == False`, this loads a playback file.
+
+        :param path: The path to either save the record to or load the record from.
+        """
+
+        self.initialized = False
+        self.commands.clear()
+        self.playback.clear()
+        # Get or create the playback file path.
+        if isinstance(path, str):
+            self._path = Path(path)
+        else:
+            self._path = path
+        if not self._path.parent.exists():
+            self._path.parent.mkdir(parents=True)
+
+        # Start a new playback file.
+        if self.record:
+            self.playback = list()
+        # Load an existing .json file.
+        else:
+            with self._path.open("rt", encoding="utf-8") as f:
+                self.playback = load(f)

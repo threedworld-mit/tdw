@@ -82,6 +82,7 @@ class MultiRobot(Controller):
                                                     position={"x": 0.36, "y": 0, "z": 0.67},
                                                     scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
                                                     default_physics_values=False,
+                                                    scale_mass=False,
                                                     mass=5))
         self.communicate(commands)
         while robot_0.joints_are_moving() or robot_1.joints_are_moving():

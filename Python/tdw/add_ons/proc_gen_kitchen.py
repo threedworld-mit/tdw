@@ -253,15 +253,13 @@ class ProcGenKitchen(AddOn):
                     x += distance
                 else:
                     raise Exception(direction)
-                # Check if anything is nearby
+                # Check if anything is nearby.
                 p = np.array([x, z])
                 for command in current_commands:
                     if command["$type"] != "add_object" and command["$type"] != "load_primitive_from_resources":
                         continue
-                    # Ignore small objects above the ground.
                     if command["$type"] == "add_object" and command["position"]["y"] > 0:
                         continue
-                    # Get the position of the object.
                     if np.linalg.norm(p - np.array([command["position"]["x"], command["position"]["z"]])) < Arrangement.DEFAULT_CELL_SIZE:
                         occupied = True
                         break

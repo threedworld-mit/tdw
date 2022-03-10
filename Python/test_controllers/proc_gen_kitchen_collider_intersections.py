@@ -17,7 +17,7 @@ class ProcGenKitchenColliderIntersections(Controller):
     """
 
     DISTANCE: float = 0.01
-    SCENES = [r for r in SceneLibrarian().records if len(r.rooms) > 0]
+    SCENES = [r for r in SceneLibrarian().records if len(r.rooms) > 0 and len(r.rooms[0].alcoves) == 0]
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
@@ -51,9 +51,9 @@ class ProcGenKitchenColliderIntersections(Controller):
         """
 
         # Reset the kitchen.
-        rng = np.random.RandomState(random_seed)
-        scene = ProcGenKitchenColliderIntersections.SCENES[rng.randint(0, len(ProcGenKitchenColliderIntersections.SCENES))]
-        self.kitchen.reset(scene=scene, rng=rng, create_scene=True)
+        self.kitchen.reset(scene=ProcGenKitchenColliderIntersections.SCENES,
+                           rng=np.random.RandomState(random_seed),
+                           create_scene=True)
         # Reset the object manager.
         self.object_manager.reset()
         self.composite_object_manager.reset()

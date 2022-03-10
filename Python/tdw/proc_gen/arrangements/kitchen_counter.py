@@ -37,6 +37,9 @@ class KitchenCounter(KitchenCabinet):
     A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category.
     """
     COUNTERS_AND_CABINETS: Dict[str, str] = loads(Path(resource_filename(__name__, "data/counters_and_cabinets.json")).read_text())
+    _ENCLOSED_DENSITY: float = 0.1
+    _ENCLOSED_CELL_SIZE: float = 0.04
+    _ENCLOSE_SCALE: float = 0.7
 
     def __init__(self, cabinetry: KitchenCabinetSet, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
                  region: InteriorRegion, allow_microwave: bool = True, microwave_plate: float = 0.7, empty: float = 0.1,
@@ -72,7 +75,11 @@ class KitchenCounter(KitchenCabinet):
             commands = self._add_root_object()
             # Add objects in the cabinet.
             if self._rng.random() > self._empty:
-                commands.extend(self._add_enclosed_objects(rotate=False, density=0.1, cell_size=0.04))
+                commands.extend(self._add_enclosed_objects(rotate=False,
+                                                           density=KitchenCounter._ENCLOSED_DENSITY,
+                                                           cell_size=KitchenCounter._ENCLOSED_CELL_SIZE,
+                                                           x_scale=KitchenCounter._ENCLOSE_SCALE,
+                                                           z_scale=KitchenCounter._ENCLOSE_SCALE))
             # Rotate everything.
             commands.extend(self._get_rotation_commands())
             # Add the microwave.
@@ -94,7 +101,11 @@ class KitchenCounter(KitchenCabinet):
             commands = self._add_object_with_other_objects_on_top(rotate=False)
             # Add objects in the cabinet.
             if self._rng.random() > self._empty:
-                commands.extend(self._add_enclosed_objects(rotate=False, density=0.1, cell_size=0.04))
+                commands.extend(self._add_enclosed_objects(rotate=False,
+                                                           density=KitchenCounter._ENCLOSED_DENSITY,
+                                                           cell_size=KitchenCounter._ENCLOSED_CELL_SIZE,
+                                                           x_scale=KitchenCounter._ENCLOSE_SCALE,
+                                                           z_scale=KitchenCounter._ENCLOSE_SCALE))
             # Rotate everything.
             commands.extend(self._get_rotation_commands())
             # Add a wall cabinet.

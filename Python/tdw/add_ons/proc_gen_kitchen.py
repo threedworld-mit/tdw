@@ -1,7 +1,7 @@
 from json import loads
 from pathlib import Path
 from pkg_resources import resource_filename
-from typing import List, Dict, Union, Tuple, Callable
+from typing import List, Dict, Union, Tuple, Callable, Optional
 import numpy as np
 from tdw.add_ons.add_on import AddOn
 from tdw.controller import Controller
@@ -44,9 +44,9 @@ class ProcGenKitchen(AddOn):
     """
     SECONDARY_CATEGORIES: Dict[str, Dict[str, int]] = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/secondary_categories.json")).read_text())
 
-    def __init__(self, scene: Union[str, SceneRecord, Room], create_scene: bool = True, room_index: int = 0, rng: Union[int, np.random.RandomState] = None):
+    def __init__(self, scene: Union[str, SceneRecord, Room, List[Union[str, SceneRecord]]], create_scene: bool = True, room_index: int = 0, rng: Union[int, np.random.RandomState] = None):
         """
-        :param scene: The scene. Can be `str` (the name of the scene), [`SceneRecord`](../../python/librarian/scene_librarian.md), [`Room`](../scene_data/room.md). The scene must at least one room; see `SceneRecord.rooms`.
+        :param scene: The scene. Can be `str` (the name of the scene), [`SceneRecord`](../../python/librarian/scene_librarian.md), [`Room`](../scene_data/room.md), or `List[Union[str, SceneRecord]]` (a list of scene names or records, in which case a scene will be randomly selected). The scene must at least one room; see `SceneRecord.rooms`.
         :param create_scene: If True, create the scene as part of the scene setup (assuming that `scene` is `str` or `SceneRecord`).
         :param room_index: The index of the room in `SceneRecord.rooms`. If `scene` is type `Room`, this parameter is ignored.
         :param rng: Either a random seed, a random number generator, or None. If None, a new random number generator is created.
@@ -65,20 +65,12 @@ class ProcGenKitchen(AddOn):
             self.rng = rng
         else:
             raise Exception(rng)
-        # Set the room.
+        self._scene_record: Optional[SceneRecord] = None
+        self._create_scene: bool = create_scene
         """:field
         The kitchen [`Room`](../scene_data/room.md).
         """
         self.room: Room = self._get_room(scene=scene, room_index=room_index)
-        if isinstance(scene, str):
-            self._scene: SceneRecord = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(scene)
-            self._create_scene: bool = create_scene
-        elif isinstance(scene, SceneRecord):
-            self._scene = scene
-            self._create_scene = create_scene
-        else:
-            self._scene = None
-            self._create_scene = False
         # Set the cabinetry.
         cabinetry_type = [c for c in KitchenCabinetType]
         """:field
@@ -90,7 +82,7 @@ class ProcGenKitchen(AddOn):
 
     def get_initialization_commands(self) -> List[dict]:
         if self._create_scene:
-            commands = [Controller.get_add_scene(scene_name=self._scene.name)]
+            commands = [Controller.get_add_scene(scene_name=self._scene_record.name)]
         else:
             commands = []
         # Get a work triangle.
@@ -140,12 +132,12 @@ class ProcGenKitchen(AddOn):
     def on_send(self, resp: List[bytes]) -> None:
         pass
 
-    def reset(self, scene: Union[str, SceneRecord, Room], create_scene: bool = True, room_index: int = 0,
+    def reset(self, scene: Union[str, SceneRecord, Room, List[Union[str, SceneRecord]]], create_scene: bool = True, room_index: int = 0,
               rng: Union[int, np.random.RandomState] = None) -> None:
         """
         Reset the add-on. Call this when you reset a scene.
 
-        :param scene: The scene. Can be `str` (the name of the scene), [`SceneRecord`](../../python/librarian/scene_librarian.md), or [`Room`](../scene_data/room.md). The scene must at least one room; see `SceneRecord.rooms`.
+        :param scene: The scene. Can be `str` (the name of the scene), `SceneRecord`, `Room`, or `List[Union[str, SceneRecord]]` (a list of scene names or records, in which case a scene will be randomly selected). The scene must at least one room; see `SceneRecord.rooms`.
         :param create_scene: If True, create the scene as part of the scene setup (assuming that `scene` is `str` or `SceneRecord`).
         :param room_index: The index of the room in `SceneRecord.rooms`. If `scene` is type `Room`, this parameter is ignored.
         :param rng: Either a random seed, a random number generator, or None. If None, a new random number generator is created.
@@ -163,15 +155,6 @@ class ProcGenKitchen(AddOn):
             raise Exception(rng)
         # Set the room.
         self.room = self._get_room(scene=scene, room_index=room_index)
-        if isinstance(scene, str):
-            self._scene = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(scene)
-            self._create_scene = create_scene
-        elif isinstance(scene, SceneRecord):
-            self._scene = scene
-            self._create_scene = create_scene
-        else:
-            self._scene = None
-            self._create_scene = False
         # Set the cabinetry.
         cabinetry_type = [c for c in KitchenCabinetType]
         self.cabinetry = CABINETRY[cabinetry_type[self.rng.randint(0, len(cabinetry_type))]]
@@ -179,16 +162,39 @@ class ProcGenKitchen(AddOn):
         self._allow_microwave = True
         self._allow_radiator = True
 
-    def _get_room(self, scene: Union[str, SceneRecord, Room], room_index: int) -> Room:
-        # Set the room.
+    def _get_room(self, scene: Union[str, SceneRecord, Room, List[Union[str, SceneRecord]]], room_index: int) -> Room:
+        """
+        :param scene: The scene. Can be `str` (the name of the scene), `SceneRecord`, `Room`, or `List[Union[str, SceneRecord]]` (a list of scene names or records, in which case a scene will be randomly selected). The scene must at least one room; see `SceneRecord.rooms`.
+        :param room_index: The index of the room in `SceneRecord.rooms`. If `scene` is type `Room`, this parameter is ignored.
+
+        :return: The `Room` in the scene.
+        """
+
+        # Create the librarian if it doesn't already exist.
         if "scenes.json" not in Controller.SCENE_LIBRARIANS:
             Controller.SCENE_LIBRARIANS["scenes.json"] = SceneLibrarian()
+        # Get the record from the name.
         if isinstance(scene, str):
-            return Controller.SCENE_LIBRARIANS["scenes.json"].get_record(scene).rooms[room_index]
+            self._scene_record = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(scene)
+            return self._scene_record.rooms[room_index]
+        # This is a record.
         elif isinstance(scene, SceneRecord):
-            return scene.rooms[room_index]
+            self._scene_record = scene
+            return self._scene_record.rooms[room_index]
+        # This is a room. We can't create a scene if we didn't ask for one.
         elif isinstance(scene, Room):
+            self._create_scene = False
             return scene
+        # Choose a random scene.
+        elif isinstance(scene, list):
+            s = scene[self.rng.randint(0, len(scene))]
+            if isinstance(s, str):
+                self._scene_record = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(s)
+            elif isinstance(s, SceneRecord):
+                self._scene_record = s
+            else:
+                raise Exception(s)
+            return self._scene_record.rooms[room_index]
         else:
             raise Exception(self.room)
 
@@ -480,7 +486,7 @@ class ProcGenKitchen(AddOn):
                                                           corner=corners[self.rng.randint(0, len(corners))],
                                                           wall=wall,
                                                           length=region.get_length(wall) - Arrangement.DEFAULT_CELL_SIZE,
-                                                          distance=Arrangement.DEFAULT_CELL_SIZE,
+                                                          distance=Arrangement.DEFAULT_CELL_SIZE * 2,
                                                           region=region))
         return commands
 

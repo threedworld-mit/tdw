@@ -37,7 +37,7 @@ class TableSetting(Plate):
     """:class_var
     Randomly perturb the (x, z) positional coordinates of `CupAndCoaster` by up to +/- this distance.
     """
-    CUP_AND_COASTER_POSITION_PERTURBATION: float = 0.05
+    CUP_AND_COASTER_POSITION_PERTURBATION: float = 0.02
 
     def __init__(self, food_probability: float, position: Dict[str, float], rng: np.random.RandomState = None):
         """
@@ -76,7 +76,7 @@ class TableSetting(Plate):
                                                               library="models_core.json"))
         # Add a cup.
         if self._rng.random() < TableSetting.PROBABILITY_CUP_AND_COASTER:
-            cup_and_coaster = CupAndCoaster(position={"x": spoon_x + self._rng.uniform(
+            cup_and_coaster = CupAndCoaster(position={"x": spoon_x + extents[0] * 0.45 + self._rng.uniform(
                 -TableSetting.CUP_AND_COASTER_POSITION_PERTURBATION,
                 TableSetting.CUP_AND_COASTER_POSITION_PERTURBATION),
                                                       "y": self._position["y"],

@@ -1,3 +1,6 @@
+from pathlib import Path
+from pkg_resources import resource_filename
+from json import loads
 from typing import List
 from tdw.tdw_utils import TDWUtils
 from tdw.cardinal_direction import CardinalDirection
@@ -14,6 +17,8 @@ class Suitcase(ArrangementAlongWall):
       - The suitcase is automatically rotated so that it faces away from the wall.
     """
 
+    _DEPTHS = loads(Path(resource_filename(__name__, "data/suitcases.json")).read_text())
+
     def get_commands(self) -> List[dict]:
         commands = self._add_root_object(kinematic=False)
         commands.extend(self._get_rotation_commands())
@@ -23,7 +28,7 @@ class Suitcase(ArrangementAlongWall):
         return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + 0.1
 
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] + 0.1
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] + Suitcase._DEPTHS[self._record.name]["depth"]
 
     def _get_category(self) -> str:
         return "suitcase"

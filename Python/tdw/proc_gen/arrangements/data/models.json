@@ -58,12 +58,6 @@
     "chocolate_bar001"
   ],
   "coaster": [
-    "round_coaster_cherry",
-    "round_coaster_indent_rubber",
-    "round_coaster_indent_stone",
-    "round_coaster_indent_wood",
-    "round_coaster_stone",
-    "round_coaster_stone_dark",
     "square_coaster_001_cork",
     "square_coaster_001_marble",
     "square_coaster_001_wood",
@@ -99,18 +93,26 @@
     "tapered_cork_w_hole"
   ],
   "cup": [
-    "coffee_cup",
     "coffeecup004_fix",
     "coffeemug",
     "cup"
   ],
   "dishwasher": [
-    "b03_db_apps_tech_08_04_composite",
     "b03_db_apps_tech_08_07_composite",
-    "b03_db_apps_tech_08_08_composite",
     "b04_db_apps_tech_08_03_composite",
     "b05_db_apps_tech_08_09_composite",
     "dishwasher_4_composite"
+  ],
+  "faucet": [
+    "12_06_001",
+    "b03_12_06_027",
+    "b04_faucet1",
+    "b04_p22732_cc_cp_2013",
+    "b04_p25050_slc_ad_2013",
+    "b05_p24409_00_cp_2013",
+    "brizo_solna",
+    "kitchen_faucet",
+    "pixamoon_free_test_faucet_001_publish"
   ],
   "floor_lamp": [
     "alma_floor_lamp",
@@ -181,7 +183,6 @@
     "appliance-ge-profile-microwave3_composite",
     "b05_whirlpool_microwave_wmc30516as_v-ray",
     "cgaxis_models_10_11_vray",
-    "microwave_composite",
     "vm_v5_070_composite",
     "vray_062_composite"
   ],
@@ -291,8 +292,7 @@
     "vk0054_teaspoon",
     "vk0058_tablespoon",
     "vk0060_dessertspoon",
-    "vk0078_fruitspoon",
-    "vk0080_soupspoon"
+    "vk0078_fruitspoon"
   ],
   "stool": [
     "fredericia_spine_stool_1",

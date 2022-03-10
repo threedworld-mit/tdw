@@ -67,7 +67,7 @@ _Returns:_  An add_object command that the controller can then send via [`self.c
 
 **`Controller.get_add_physics_object(model_name, object_id)`**
 
-**`Controller.get_add_physics_object(model_name, position=None, rotation=None, library="", object_id, scale_factor=None, kinematic=False, gravity=True, default_physics_values=True, mass=1, dynamic_friction=0.3, static_friction=0.3, bounciness=0.7)`**
+**`Controller.get_add_physics_object(model_name, position=None, rotation=None, library="", object_id, scale_factor=None, kinematic=False, gravity=True, default_physics_values=True, mass=1, dynamic_friction=0.3, static_friction=0.3, bounciness=0.7, scale_mass=True)`**
 
 _(Static)_
 
@@ -89,6 +89,7 @@ Add an object to the scene with physics values (mass, friction coefficients, etc
 | dynamic_friction |  float  | 0.3 | The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
 | static_friction |  float  | 0.3 | The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
 | bounciness |  float  | 0.7 | The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
+| scale_mass |  bool  | True | If True, the mass of the object will be scaled proportionally to the spatial scale. |
 
 _Returns:_  A **list** of commands to add the object and apply physics values that the controller can then send via [`self.communicate(commands)`](#communicate).
 

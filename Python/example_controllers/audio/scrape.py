@@ -55,6 +55,7 @@ for scrape_surface_model_name in ["glass_table", "quatre_dining_table", "small_t
                                                                "z": surface_record.bounds["back"]["z"] + 0.1},
                                                      scale_factor={"x": 0.1, "y": 0.1, "z": 0.1},
                                                      default_physics_values=False,
+                                                     scale_mass=False,
                                                      mass=cube_mass,
                                                      dynamic_friction=0.2,
                                                      static_friction=0.2,

@@ -184,7 +184,7 @@ class Controller:
                 "id": object_id}
 
     @staticmethod
-    def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]:
+    def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7, scale_mass: bool = True) -> List[dict]:
         """
         Add an object to the scene with physics values (mass, friction coefficients, etc.).
 
@@ -201,6 +201,7 @@ class Controller:
         :param dynamic_friction: The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
         :param static_friction: The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
         :param bounciness: The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param scale_mass: If True, the mass of the object will be scaled proportionally to the spatial scale.
 
         :return: A **list** of commands to add the object and apply physics values that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
@@ -292,9 +293,14 @@ class Controller:
                               "bounciness": bounciness,
                               "id": object_id}])
         if scale_factor is not None:
-            commands.append({"$type": "scale_object_and_mass",
-                             "scale_factor": scale_factor,
-                             "id": object_id})
+            if scale_mass:
+                commands.append({"$type": "scale_object_and_mass",
+                                 "scale_factor": scale_factor,
+                                 "id": object_id})
+            else:
+                commands.append({"$type": "scale_object",
+                                 "scale_factor": scale_factor,
+                                 "id": object_id})
         return commands
 
     @staticmethod

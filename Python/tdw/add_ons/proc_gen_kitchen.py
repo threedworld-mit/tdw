@@ -117,13 +117,15 @@ class ProcGenKitchen(AddOn):
         commands.extend(self._get_secondary_lateral_arrangements(used_walls=used_walls,
                                                                  region=self.room.main_region,
                                                                  possible_categories=ProcGenKitchen.SECONDARY_CATEGORIES["main"],
-                                                                 tall_category_replacement="void"))
+                                                                 tall_category_replacement="void",
+                                                                 current_commands=commands))
         # Add secondary arrangements in any alcoves.
         for alcove in self.room.alcoves:
             commands.extend(self._get_secondary_lateral_arrangements(used_walls=[],
                                                                      region=alcove,
                                                                      possible_categories=ProcGenKitchen.SECONDARY_CATEGORIES["alcove"],
-                                                                     tall_category_replacement="basket"))
+                                                                     tall_category_replacement="basket",
+                                                                     current_commands=commands))
         # Allow objects to stop moving.
         commands.append({"$type": "step_physics",
                          "frames": 50})
@@ -199,9 +201,72 @@ class ProcGenKitchen(AddOn):
             raise Exception(self.room)
 
     def _get_lateral_arrangement(self, categories: List[str], corner: OrdinalDirection, wall: CardinalDirection,
-                                 region: InteriorRegion, length: float = None, distance: float = 0) -> List[dict]:
+                                 region: InteriorRegion, length: float = None, distance: float = 0,
+                                 check_object_position: bool = False, current_commands: List[dict] = None) -> List[dict]:
         commands = []
         for category in categories:
+            if check_object_position:
+                occupied = False
+                # Get the approximate position of the object.
+                if wall == CardinalDirection.north:
+                    z = region.z_max - Arrangement.DEFAULT_CELL_SIZE / 2
+                    if corner == OrdinalDirection.northeast:
+                        x = region.x_max
+                    elif corner == OrdinalDirection.northwest:
+                        x = region.x_min
+                    else:
+                        raise Exception(f"Invalid corner: {corner}")
+                elif wall == CardinalDirection.south:
+                    z = region.z_min + Arrangement.DEFAULT_CELL_SIZE / 2
+                    if corner == OrdinalDirection.southeast:
+                        x = region.x_max
+                    elif corner == OrdinalDirection.southwest:
+                        x = region.x_min
+                    else:
+                        raise Exception(f"Invalid corner: {corner}")
+                elif wall == CardinalDirection.west:
+                    x = region.x_min + Arrangement.DEFAULT_CELL_SIZE / 2
+                    if corner == OrdinalDirection.northwest:
+                        z = region.z_max
+                    elif corner == OrdinalDirection.southwest:
+                        z = region.z_min
+                    else:
+                        raise Exception(f"Invalid corner: {corner}")
+                elif wall == CardinalDirection.east:
+                    x = region.x_max - Arrangement.DEFAULT_CELL_SIZE / 2
+                    if corner == OrdinalDirection.northeast:
+                        z = region.z_max
+                    elif corner == OrdinalDirection.southeast:
+                        z = region.z_min
+                    else:
+                        raise Exception(f"Invalid corner: {corner}")
+                else:
+                    raise Exception(wall)
+                direction = TDWUtils.get_direction_from_corner(corner=corner, wall=wall)
+                if direction == CardinalDirection.north:
+                    z += distance
+                elif direction == CardinalDirection.south:
+                    z -= distance
+                elif direction == CardinalDirection.west:
+                    x -= distance
+                elif direction == CardinalDirection.east:
+                    x += distance
+                else:
+                    raise Exception(direction)
+                # Check if anything is nearby
+                p = np.array([x, z])
+                for command in current_commands:
+                    if command["$type"] != "add_object" and command["$type"] != "load_primitive_from_resources":
+                        continue
+                    # Ignore small objects above the ground.
+                    if command["$type"] == "add_object" and command["position"]["y"] > 0:
+                        continue
+                    # Get the position of the object.
+                    if np.linalg.norm(p - np.array([command["position"]["x"], command["position"]["z"]])) < Arrangement.DEFAULT_CELL_SIZE:
+                        occupied = True
+                        break
+                if occupied:
+                    category = "void"
             params = {"corner": corner,
                       "wall": wall,
                       "distance": distance,
@@ -459,12 +524,14 @@ class ProcGenKitchen(AddOn):
         return commands, walls
 
     def _get_secondary_lateral_arrangements(self, used_walls: List[CardinalDirection], region: InteriorRegion,
-                                            possible_categories: Dict[str, int], tall_category_replacement: str) -> List[dict]:
+                                            possible_categories: Dict[str, int], tall_category_replacement: str,
+                                            current_commands: List[dict]) -> List[dict]:
         """
         :param used_walls: A list of walls used in the primary arrangement (work triangle).
         :param region: The region.
         :param possible_categories: All possible categories for this arrangement.
         :param tall_category_replacement: If we need to replace tall objects, replace them with models from this category.
+        :param current_commands: The current list of commands. Used to check proximity.
 
         :return: A list of commands to add a secondary lateral arrangements on available walls.
         """
@@ -487,7 +554,9 @@ class ProcGenKitchen(AddOn):
                                                           wall=wall,
                                                           length=region.get_length(wall) - Arrangement.DEFAULT_CELL_SIZE,
                                                           distance=Arrangement.DEFAULT_CELL_SIZE * 2,
-                                                          region=region))
+                                                          region=region,
+                                                          check_object_position=True,
+                                                          current_commands=current_commands))
         return commands
 
     def _adjust_lateral_arrangement_categories(self, categories: List[str], wall: CardinalDirection,

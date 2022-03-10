@@ -46,7 +46,6 @@ class Sink(KitchenCabinet):
                                                                       "y": Sink._FAUCETS[faucet_model_name]["position"]["y"],
                                                                       "z": self._position["z"] + Sink._FAUCETS[faucet_model_name]["position"]["z"]},
                                                             rotation=Sink._FAUCETS[faucet_model_name]["rotation"],
-                                                            library="models_full.json",
                                                             kinematic=True)
         self.object_ids.append(faucet_id)
         commands.extend(faucet_commands)

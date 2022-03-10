@@ -65,7 +65,10 @@ class ProcGenKitchen(AddOn):
             self.rng = rng
         else:
             raise Exception(rng)
-        self._scene_record: Optional[SceneRecord] = None
+        """:field
+        The `SceneRecord` for this scene. If the `scene` parameter in the constructor is of type `Room`, `self.scene_record` is None.
+        """
+        self.scene_record: Optional[SceneRecord] = None
         self._create_scene: bool = create_scene
         """:field
         The kitchen [`Room`](../scene_data/room.md).
@@ -82,7 +85,7 @@ class ProcGenKitchen(AddOn):
 
     def get_initialization_commands(self) -> List[dict]:
         if self._create_scene:
-            commands = [Controller.get_add_scene(scene_name=self._scene_record.name)]
+            commands = [Controller.get_add_scene(scene_name=self.scene_record.name)]
         else:
             commands = []
         # Get a work triangle.
@@ -177,12 +180,12 @@ class ProcGenKitchen(AddOn):
             Controller.SCENE_LIBRARIANS["scenes.json"] = SceneLibrarian()
         # Get the record from the name.
         if isinstance(scene, str):
-            self._scene_record = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(scene)
-            return self._scene_record.rooms[room_index]
+            self.scene_record = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(scene)
+            return self.scene_record.rooms[room_index]
         # This is a record.
         elif isinstance(scene, SceneRecord):
-            self._scene_record = scene
-            return self._scene_record.rooms[room_index]
+            self.scene_record = scene
+            return self.scene_record.rooms[room_index]
         # This is a room. We can't create a scene if we didn't ask for one.
         elif isinstance(scene, Room):
             self._create_scene = False
@@ -191,12 +194,12 @@ class ProcGenKitchen(AddOn):
         elif isinstance(scene, list):
             s = scene[self.rng.randint(0, len(scene))]
             if isinstance(s, str):
-                self._scene_record = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(s)
+                self.scene_record = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(s)
             elif isinstance(s, SceneRecord):
-                self._scene_record = s
+                self.scene_record = s
             else:
                 raise Exception(s)
-            return self._scene_record.rooms[room_index]
+            return self.scene_record.rooms[room_index]
         else:
             raise Exception(self.room)
 

@@ -12,24 +12,28 @@ class SideTable(ArrangementAlongWall):
     - The side table is placed next to a wall.
       - The side table's position is automatically adjusted to set it flush to the wall.
       - The side table is automatically rotated so that it faces away from the wall.
-      - The side table's (x, z) positional coordinates are offset by a factor; see `SideTable.OFFSET_FACTOR`.
+      - The side table's (x, z) positional coordinates are offset by a factor; see `SideTable.DEPTH_FACTOR` and `SIDE_TABLE.LENGTH_FACTOR`.
     - The side table always has a rectangular arrangement of objects on top of it; see `SideTable.ON_TOP_OF["side_table"]`.
     - The side table is non-kinematic.
     """
 
     """:class_var
-    Offset the (x, z) positional coordinates by this factor.
+    Offset the distance from the wall by this factor.
     """
-    OFFSET_FACTOR: float = 1.05
+    DEPTH_FACTOR: float = 1.05
+    """:class_var
+    Offset the distance along the wall by this factor.
+    """
+    LENGTH_FACTOR: float = 1.15
 
     def get_commands(self) -> List[dict]:
         return self._add_object_with_other_objects_on_top(kinematic=False)
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * SideTable.OFFSET_FACTOR
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * SideTable.LENGTH_FACTOR
 
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] * SideTable.OFFSET_FACTOR
+        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] * SideTable.DEPTH_FACTOR
 
     def _get_rotation(self) -> float:
         if self._wall == CardinalDirection.north:

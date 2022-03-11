@@ -31,7 +31,14 @@ AudioUtils.stop()
 
 **`AudioUtils.get_system_audio_device()`**
 
+**`AudioUtils.get_system_audio_device(device_name=None)`**
+
 _(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| device_name |  str  | None | The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X). |
 
 _Returns:_  The audio device that can be used to capture system audio.
 
@@ -39,7 +46,7 @@ _Returns:_  The audio device that can be used to capture system audio.
 
 **`AudioUtils.start(output_path, until)`**
 
-**`AudioUtils.start(output_path, until, device=None)`**
+**`AudioUtils.start(output_path, until, device_name=None)`**
 
 _(Static)_
 
@@ -49,7 +56,7 @@ Start recording audio.
 | --- | --- | --- | --- |
 | output_path |  Union[str, Path] |  | The path to the output file. |
 | until |  Optional[Tuple[int, int] |  | If not None, fmedia will record until `minutes:seconds`. The value must be a tuple of 2 integers. If None, fmedia will record until you send `AudioUtils.stop()`. |
-| device |  str  | None | The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X). |
+| device_name |  str  | None | The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X). |
 
 #### stop
 

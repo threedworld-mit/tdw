@@ -55,6 +55,7 @@ class RubeGoldbergDemo(Controller):
                                                                              scale_factor=object_setup_data[o]["scale"],
                                                                              library=object_setup_data[o]["library"],
                                                                              default_physics_values=False,
+                                                                             scale_mass=False,
                                                                              kinematic=object_setup_data[o]["physics"]["kinematic"],
                                                                              mass=object_setup_data[o]["physics"]["mass"],
                                                                              dynamic_friction=object_setup_data[o]["physics"]["dynamic_friction"],

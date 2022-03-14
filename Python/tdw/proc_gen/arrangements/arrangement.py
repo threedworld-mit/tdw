@@ -86,7 +86,8 @@ class Arrangement(ABC):
 
     @final
     def _add_rectangular_arrangement(self, size: Tuple[float, float], position: Dict[str, float], categories: List[str],
-                                     density: float = 0.4, cell_size: float = 0.05) -> Tuple[List[dict], List[int]]:
+                                     density: float = 0.4, cell_size: float = 0.05,
+                                     perturbation_distance: float = 0.01) -> Tuple[List[dict], List[int]]:
         """
         Get a random arrangement of objects in a rectangular space.
 
@@ -95,6 +96,7 @@ class Arrangement(ABC):
         :param categories: A list of potential model categories.
         :param density: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
         :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
+        :param perturbation_distance: Perturb the position of the objects by up to this distance.
 
         :return: Tuple: A list of commands, the IDs of the objects.
         """
@@ -127,7 +129,7 @@ class Arrangement(ABC):
                     model_cell_sizes.append(int(model_semi_major_axis / cell_size) + 1)
                     models_and_categories[model_name] = category
         object_ids: List[int] = list()
-        # Get all of the sizes in occupancy map space.
+        # Get all sizes in occupancy map space.
         model_cell_sizes = list(set(model_cell_sizes))
         model_cell_sizes.reverse()
         for ix, iz in np.ndindex(occupancy_map.shape):
@@ -140,7 +142,7 @@ class Arrangement(ABC):
             # Get the minimum object semi-major axis.
             sma = model_cell_sizes[0]
             for mcs in model_cell_sizes:
-                # Stop if the the semi-major axis doesn't fit (it would fall off the edge).
+                # Stop if the semi-major axis doesn't fit (it would fall off the edge).
                 if ix - mcs < 0 or ix + mcs >= occupancy_map.shape[0] or iz - mcs < 0 or iz + mcs >= occupancy_map.shape[1]:
                     break
                 else:
@@ -159,8 +161,10 @@ class Arrangement(ABC):
             # Choose a random model.
             model_name: str = model_names[self._rng.randint(0, len(model_names))]
             # Get the position. Perturb it slightly.
-            x = (ix * cell_size) + self._rng.uniform(-cell_size * 0.025, cell_size * 0.025)
-            z = (iz * cell_size) + self._rng.uniform(-cell_size * 0.025, cell_size * 0.025)
+            x = (ix * cell_size) + self._rng.uniform(-cell_size * perturbation_distance,
+                                                     cell_size * perturbation_distance)
+            z = (iz * cell_size) + self._rng.uniform(-cell_size * perturbation_distance,
+                                                     cell_size * perturbation_distance)
             # Offset from the center.
             x += center_dict["x"] - size[0] / 2 + cell_size
             z += center_dict["z"] - size[1] / 2 + cell_size

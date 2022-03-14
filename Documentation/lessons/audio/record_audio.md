@@ -85,7 +85,7 @@ c.communicate({"$type": "terminate"})
 
 ## Record audio from a microphone
 
-To record audio from a non-default audio device such as a microphone, set the `device` parameter in `AudioUtils.start()`:
+To record audio from a non-default audio device such as a microphone, set the `device_name` parameter in `AudioUtils.start()`:
 
 ```python
 from tdw.audio_utils import AudioUtils
@@ -93,7 +93,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("audio_utils/audio.wav")
 print(f"Audio will be saved to: {path}")
-AudioUtils.start(output_path=path, device="Headset Microphone")
+AudioUtils.start(output_path=path, device_name="Headset Microphone")
 ```
 
 ## Record audio with `PhysicsAudioRecorder`

@@ -37,27 +37,32 @@ class AudioUtils:
     DEVICE: Optional[str] = None
 
     @staticmethod
-    def get_system_audio_device() -> str:
+    def get_system_audio_device(device_name: str = None) -> str:
         """
+        :param device_name: The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X).
+
         :return: The audio device that can be used to capture system audio.
         """
 
+        # Set a default device name.
+        if device_name is None:
+            if system() == "Darwin":
+                device_name = "iShowU Audio Capture"
+            else:
+                device_name = "Stereo Mix"
         devices = check_output(["fmedia", "--list-dev"]).decode("utf-8").split("Capture:")[1]
-        if system() == "Darwin":
-            dev_search = re.search("device #(.*): iShowU Audio Capture", devices, flags=re.MULTILINE)
-        else:
-            dev_search = re.search("device #(.*): Stereo Mix", devices, flags=re.MULTILINE)
+        dev_search = re.search(f"device #(.*): {device_name}", devices, flags=re.MULTILINE)
         assert dev_search is not None, "No suitable audio capture device found:\n" + devices
         return dev_search.group(1)
 
     @staticmethod
-    def start(output_path: Union[str, Path], until: Optional[Tuple[int, int]] = None, device: str = None) -> None:
+    def start(output_path: Union[str, Path], until: Optional[Tuple[int, int]] = None, device_name: str = None) -> None:
         """
         Start recording audio.
 
         :param output_path: The path to the output file.
         :param until: If not None, fmedia will record until `minutes:seconds`. The value must be a tuple of 2 integers. If None, fmedia will record until you send `AudioUtils.stop()`.
-        :param device: The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X).
+        :param device_name: The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X).
         """
 
         if isinstance(output_path, str):
@@ -70,13 +75,11 @@ class AudioUtils:
             p.parent.mkdir(parents=True)
 
         # Set the capture device.
-        if device is None:
-            if AudioUtils.DEVICE is None:
-                AudioUtils.DEVICE = AudioUtils.get_system_audio_device()
-            device = AudioUtils.DEVICE
+        if AudioUtils.DEVICE is None:
+            AudioUtils.DEVICE = AudioUtils.get_system_audio_device(device_name=device_name)
         fmedia_call = ["fmedia",
                        "--record",
-                       f"--dev-capture={device}",
+                       f"--dev-capture={AudioUtils.DEVICE}",
                        f"--out={str(p.resolve())}",
                        "--globcmd=listen"]
         # Automatically stop recording.

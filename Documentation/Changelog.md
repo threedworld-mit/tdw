@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.10
+
+### Build
+
+- Fixed: The OS X build doesn't use OpenGL rendering, causing _depth and _depth_simple passes to render as _img passes. (There were probably other OpenGL-related issues as well).
+
 ## v1.9.9
 
 ### Command API
@@ -13,6 +19,21 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | Command                 | Modification                            |
 | ----------------------- | --------------------------------------- |
 | `create_flex_container` | Added optional parameter `restitution`. |
+
+### `tdw` module
+
+- Added optional parameter `device_name` to `AudioUtils.start()` and `AudioUtils. get_system_audio_device()` to specify the capture device (such as a headset microphone).
+- Added: `Logger.reset(path)` Reset the Logger add-on.
+- Fixed: `Logger` add-on doesn't create directories for the log if the directories don't exist.
+- Added optional parameter `scale_mass` to `Controller.get_add_physics_object()`. If False, scale an object without adjusting its mass.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                           | Modification                                                 |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `lessons/audio/record_audio.md`    | Added a section for how to record from a microphone.         |
 
 ## v1.9.8
 
@@ -31,10 +52,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 ### `tdw` module
 
 - `Controller.get_add_physics_object()` will dynamically scale the "canonical" mass of the object if a value for the `scale_factor` parameter is provided.
-  - Added optional parameter `scale_mass`. If False, scale an object without adjusting its mass.
-- Added optional parameter `device` to `AudioUtils.start()` to enable microphone capture.
-- Added: `Logger.reset(path)` Reset the Logger add-on.
-- Fixed: `Logger` add-on doesn't create directories for the log if the directories don't exist.
 
 ### Model Library
 
@@ -48,7 +65,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 | Document                           | Modification                                                 |
 | ---------------------------------- | ------------------------------------------------------------ |
-| `lessons/audio/record_audio.md`    | Added a section for how to record from a microphone.         |
 | `lessons/flex/fluid_and_source.md` | Clarified that a receptacle is not needed.                   |
 | `python/controller.md`             | Clarified how the wrapper functions that return commands work. |
 

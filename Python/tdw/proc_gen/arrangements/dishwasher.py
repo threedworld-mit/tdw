@@ -34,13 +34,13 @@ class Dishwasher(KitchenCounterTopBase):
         pos = super()._get_position(position=position)
         # Offset the position to leave a little gap.
         if self._direction == CardinalDirection.north:
-            pos["z"] += Dishwasher.LENGTH_OFFSET
+            pos["z"] += Dishwasher.LENGTH_OFFSET / 4
         elif self._direction == CardinalDirection.south:
-            pos["z"] -= Dishwasher.LENGTH_OFFSET
+            pos["z"] -= Dishwasher.LENGTH_OFFSET / 4
         elif self._direction == CardinalDirection.east:
-            pos["x"] += Dishwasher.LENGTH_OFFSET
+            pos["x"] += Dishwasher.LENGTH_OFFSET / 4
         elif self._direction == CardinalDirection.west:
-            pos["x"] -= Dishwasher.LENGTH_OFFSET
+            pos["x"] -= Dishwasher.LENGTH_OFFSET / 4
         else:
             raise Exception(self._direction)
         return pos
@@ -63,7 +63,7 @@ class Dishwasher(KitchenCounterTopBase):
 
     def _get_size(self) -> Tuple[float, float]:
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
-        return extents[0] + Dishwasher.LENGTH_OFFSET * 2, extents[2]
+        return extents[0], extents[2] + Dishwasher.LENGTH_OFFSET * 2
 
     def _get_category(self) -> str:
         return "dishwasher"

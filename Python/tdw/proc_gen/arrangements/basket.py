@@ -1,13 +1,8 @@
-from typing import List, Union
+from typing import List
 import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import ModelRecord
 from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWall
-from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import KitchenCabinetSet
-from tdw.cardinal_direction import CardinalDirection
-from tdw.ordinal_direction import OrdinalDirection
-from tdw.scene_data.interior_region import InteriorRegion
 
 
 class Basket(ArrangementAlongWall):

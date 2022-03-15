@@ -263,7 +263,12 @@ class ProcGenKitchen(AddOn):
                         continue
                     if command["$type"] == "add_object" and command["position"]["y"] > 0:
                         continue
-                    if np.linalg.norm(p - np.array([command["position"]["x"], command["position"]["z"]])) < Arrangement.DEFAULT_CELL_SIZE:
+                    elif command["$type"] == "load_primitive_from_resources":
+                        extent = Arrangement.DEFAULT_CELL_SIZE
+                    else:
+                        extents = TDWUtils.get_bounds_extents(bounds=Controller.MODEL_LIBRARIANS["models_core.json"].get_record(command["name"]).bounds)
+                        extent = (extents[0] if extents[0] > extents[2] else extents[2]) * 1.25
+                    if np.linalg.norm(p - np.array([command["position"]["x"], command["position"]["z"]])) < extent:
                         occupied = True
                         break
                 if occupied:

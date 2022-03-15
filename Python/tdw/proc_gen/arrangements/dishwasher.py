@@ -63,7 +63,7 @@ class Dishwasher(KitchenCounterTopBase):
 
     def _get_size(self) -> Tuple[float, float]:
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
-        return extents[0], extents[2] + Dishwasher.LENGTH_OFFSET * 2
+        return extents[2], extents[0] + Dishwasher.LENGTH_OFFSET * 2
 
     def _get_category(self) -> str:
         return "dishwasher"

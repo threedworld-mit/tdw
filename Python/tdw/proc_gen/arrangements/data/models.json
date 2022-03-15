@@ -70,12 +70,10 @@
     "cafe_2010",
     "cgaxis_models_61_17_vray",
     "coffee_grinder",
-    "juicer",
-    "kitchen_aid_coffee_grinder"
+    "juicer"
   ],
   "coffee_maker": [
     "coffee_001",
-    "coffee_0023",
     "coffee_005_13"
   ],
   "coin": [
@@ -98,7 +96,6 @@
     "cup"
   ],
   "dishwasher": [
-    "b03_db_apps_tech_08_07_composite",
     "b04_db_apps_tech_08_03_composite",
     "b05_db_apps_tech_08_09_composite",
     "dishwasher_4_composite"

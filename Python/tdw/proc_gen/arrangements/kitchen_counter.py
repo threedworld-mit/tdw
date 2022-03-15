@@ -98,7 +98,8 @@ class KitchenCounter(KitchenCabinet):
             return commands
         else:
             # Add the kitchen counter and add objects on top of it.
-            commands = self._add_object_with_other_objects_on_top(rotate=False)
+            commands = self._add_object_with_other_objects_on_top(rotate=False,
+                                                                  x_scale=KitchenCounter._ENCLOSE_SCALE)
             # Add objects in the cabinet.
             if self._rng.random() > self._empty:
                 commands.extend(self._add_enclosed_objects(rotate=False,

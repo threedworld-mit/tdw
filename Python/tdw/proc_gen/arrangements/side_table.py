@@ -24,7 +24,7 @@ class SideTable(ArrangementAlongWall):
     """:class_var
     Offset the distance along the wall by this factor.
     """
-    LENGTH_FACTOR: float = 1.15
+    LENGTH_FACTOR: float = 1.25
 
     def get_commands(self) -> List[dict]:
         return self._add_object_with_other_objects_on_top(kinematic=False)

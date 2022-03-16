@@ -3128,6 +3128,90 @@
             "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
+        "b03_12_06_027_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 181656,
+                "Linux": 339798,
+                "Windows": 171629
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.490116e-08,
+                    "y": 0.1646794,
+                    "z": -0.1271611
+                },
+                "bottom": {
+                    "x": -1.490116e-08,
+                    "y": -2.980232e-08,
+                    "z": 0.0001188368
+                },
+                "center": {
+                    "x": -1.490116e-08,
+                    "y": 0.1646794,
+                    "z": 0.0001188368
+                },
+                "front": {
+                    "x": -1.490116e-08,
+                    "y": 0.1646794,
+                    "z": 0.1273988
+                },
+                "left": {
+                    "x": -0.1357611,
+                    "y": 0.1646794,
+                    "z": 0.0001188368
+                },
+                "right": {
+                    "x": 0.135761,
+                    "y": 0.1646794,
+                    "z": 0.0001188368
+                },
+                "top": {
+                    "x": -1.490116e-08,
+                    "y": 0.3293588,
+                    "z": 0.0001188368
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_12_06_027_composite",
+            "physics_quality": 0.6916174718493322,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b03_12_06_027_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b03_12_06_027_left_handle"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b03_12_06_027_right_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b03_12_06_027_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b03_12_06_027_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b03_12_06_027_composite"
+            },
+            "volume": 0.0007610418,
+            "wcategory": "water faucet",
+            "wnid": "n04559451"
+        },
         "b03_696615_object001": {
             "asset_bundle_sizes": {
                 "Darwin": 277883,
@@ -50877,6 +50961,87 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vray_077"
             },
             "volume": 0.0029373550787568092,
+            "wcategory": "toaster",
+            "wnid": "n04442312"
+        },
+        "vray_077_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1891039,
+                "Linux": 2306751,
+                "Windows": 1876850
+            },
+            "bounds": {
+                "back": {
+                    "x": -2.980232e-08,
+                    "y": 0.1000324,
+                    "z": -0.1682724
+                },
+                "bottom": {
+                    "x": -2.980232e-08,
+                    "y": -1.490116e-08,
+                    "z": -0.0003617704
+                },
+                "center": {
+                    "x": -2.980232e-08,
+                    "y": 0.1000324,
+                    "z": -0.0003617704
+                },
+                "front": {
+                    "x": -2.980232e-08,
+                    "y": 0.1000324,
+                    "z": 0.1675489
+                },
+                "left": {
+                    "x": -0.08799443,
+                    "y": 0.1000324,
+                    "z": -0.0003617704
+                },
+                "right": {
+                    "x": 0.08799437,
+                    "y": 0.1000324,
+                    "z": -0.0003617704
+                },
+                "top": {
+                    "x": -2.980232e-08,
+                    "y": 0.2000648,
+                    "z": -0.0003617704
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_077_composite",
+            "physics_quality": 0.9800953581862236,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome",
+                        "plastic_vinyl_glossy_light_gray",
+                        "antique_bronze_darkened_finer",
+                        "plastic_vinyl_glossy_black"
+                    ],
+                    "name": "vray_077_composite"
+                },
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_light_gray"
+                    ],
+                    "name": "vray_077_toaster_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_077_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_077_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_077_composite"
+            },
+            "volume": 0.002707649,
             "wcategory": "toaster",
             "wnid": "n04442312"
         },

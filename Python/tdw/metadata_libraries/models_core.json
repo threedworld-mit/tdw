@@ -51237,6 +51237,86 @@
             "wcategory": "toaster",
             "wnid": "n04442312"
         },
+        "vray_084_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 462606,
+                "Linux": 844232,
+                "Windows": 443728
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0008977056,
+                    "y": 0.1165324,
+                    "z": -0.08369298
+                },
+                "bottom": {
+                    "x": 0.0008977056,
+                    "y": -2.980232e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0.0008977056,
+                    "y": 0.1165324,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0.0008977056,
+                    "y": 0.1165324,
+                    "z": 0.08369298
+                },
+                "left": {
+                    "x": -0.1591859,
+                    "y": 0.1165324,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1609813,
+                    "y": 0.1165324,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0.0008977056,
+                    "y": 0.2330649,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_084_composite",
+            "physics_quality": 1.2229561250480188,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "plastic_vinyl_glossy_black",
+                        "chrome"
+                    ],
+                    "name": "vray_084_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "vray_084_toaster_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_084_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_084_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_084_composite"
+            },
+            "volume": 0.001210825,
+            "wcategory": "toaster",
+            "wnid": "n04442312"
+        },
         "vray_085": {
             "asset_bundle_sizes": {
                 "Darwin": 772795,

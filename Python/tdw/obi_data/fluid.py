@@ -86,7 +86,8 @@ class Fluid:
         :return: A JSON dictionary of this object.
         """
 
-        d = {k: v for k, v in self.__dict__.items()}
+        d = {"$type": "fluid"}
+        d.update({k: v for k, v in self.__dict__.items()})
         return d
 
 

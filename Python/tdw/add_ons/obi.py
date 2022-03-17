@@ -3,6 +3,7 @@ from tdw.add_ons.add_on import AddOn
 from tdw.output_data import OutputData, ImageSensors, StaticRigidbodies, StaticCompositeObjects, StaticRobot
 from tdw.obi_data.collision_material import CollisionMaterial, COLLISION_MATERIALS, DEFAULT_MATERIAL
 from tdw.obi_data.fluid import Fluid, FLUIDS
+from tdw.obi_data.granular_fluid import GranularFluid, GRANULAR_FLUIDS
 from tdw.obi_data.sampling_method import SamplingMethod
 from tdw.object_data.composite_object.composite_object_static import CompositeObjectStatic
 
@@ -90,7 +91,7 @@ class Obi(AddOn):
                     self.commands.append({"$type": "initialize_vr_rig_for_obi",
                                           "collision_material": DEFAULT_MATERIAL.to_dict()})
 
-    def create_fluid_cube_emitter(self, object_id: int, fluid: Union[str, Fluid], position: Dict[str, float] = None,
+    def create_fluid_cube_emitter(self, object_id: int, fluid: Union[str, Fluid, GranularFluid], position: Dict[str, float] = None,
                                   rotation: Dict[str, float] = None, speed: float = 1, lifespan: float = 4,
                                   minimum_pool_size: float = 0.5, solver_id: int = 0, particle_radius_scale: float = 1.7,
                                   random_velocity: float = 0, size: Dict[str, float] = None,
@@ -107,7 +108,7 @@ class Obi(AddOn):
         :param solver_id: The ID of the Obi solver.
         :param particle_radius_scale: This scales the size at which particles are drawn.
         :param random_velocity: Random velocity of emitted particles.
-        :param fluid: Either a [`Fluid`](../obi_data/fluid.md) or the name of a fluid (see `Fluid.FLUIDS`).
+        :param fluid: Either a [`Fluid`](../obi_data/fluid.md), a [`GranularFluid`](../obi_data/granular_fluid.md), the name of a fluid (see `Fluid.FLUIDS`), or the name of a granular fluid (see `GranularFluid.GRANULAR_FLUIDS`).
         :param size: The size of the cube in meters. If None, defaults to (1, 1, 1).
         :param sampling_method: The [`SamplingMethod`](../obi_data/sampling_method).
         """
@@ -122,11 +123,11 @@ class Obi(AddOn):
                                                            random_velocity=random_velocity, fluid=fluid))
         self.commands.append(command)
 
-    def create_fluid_edge_emitter(self, object_id: int, fluid: Union[str, Fluid], position: Dict[str, float] = None,
-                                  rotation: Dict[str, float] = None, speed: float = 1, lifespan: float = 4,
-                                  minimum_pool_size: float = 0.5, solver_id: int = 0, particle_radius_scale: float = 1.7,
-                                  random_velocity: float = 0, emitter_length: float = 0.25,
-                                  radial_velocity: float = 1) -> None:
+    def create_fluid_edge_emitter(self, object_id: int, fluid: Union[str, Fluid, GranularFluid],
+                                  position: Dict[str, float] = None, rotation: Dict[str, float] = None, speed: float = 1,
+                                  lifespan: float = 4, minimum_pool_size: float = 0.5, solver_id: int = 0,
+                                  particle_radius_scale: float = 1.7, random_velocity: float = 0,
+                                  emitter_length: float = 0.25, radial_velocity: float = 1) -> None:
         """
         Create a linear-shaped fluid emitter.
 
@@ -139,7 +140,7 @@ class Obi(AddOn):
         :param solver_id: The ID of the Obi solver.
         :param particle_radius_scale: This scales the size at which particles are drawn.
         :param random_velocity: Random velocity of emitted particles.
-        :param fluid: Either a [`Fluid`](../obi_data/fluid.md) or the name of a fluid (see `Fluid.FLUIDS`).
+        :param fluid: Either a [`Fluid`](../obi_data/fluid.md), a [`GranularFluid`](../obi_data/granular_fluid.md), the name of a fluid (see `Fluid.FLUIDS`), or the name of a granular fluid (see `GranularFluid.GRANULAR_FLUIDS`).
         :param emitter_length: The length of the edge in local units.
         :param radial_velocity: The velocity twisting along the length of the edge.
         """
@@ -154,11 +155,11 @@ class Obi(AddOn):
                                                            random_velocity=random_velocity, fluid=fluid))
         self.commands.append(command)
 
-    def create_fluid_disk_emitter(self, object_id: int, fluid: Union[str, Fluid], position: Dict[str, float] = None,
-                                  rotation: Dict[str, float] = None, speed: float = 1, lifespan: float = 4,
-                                  minimum_pool_size: float = 0.5, solver_id: int = 0, particle_radius_scale: float = 1.7,
-                                  random_velocity: float = 0, emitter_radius: float = 0.5,
-                                  edge_emission: bool = False) -> None:
+    def create_fluid_disk_emitter(self, object_id: int, fluid: Union[str, Fluid, GranularFluid],
+                                  position: Dict[str, float] = None, rotation: Dict[str, float] = None, speed: float = 1,
+                                  lifespan: float = 4, minimum_pool_size: float = 0.5, solver_id: int = 0,
+                                  particle_radius_scale: float = 1.7, random_velocity: float = 0,
+                                  emitter_radius: float = 0.5, edge_emission: bool = False) -> None:
         """
         Create a disk-shaped fluid emitter.
 
@@ -171,7 +172,7 @@ class Obi(AddOn):
         :param solver_id: The ID of the Obi solver.
         :param particle_radius_scale: This scales the size at which particles are drawn.
         :param random_velocity: Random velocity of emitted particles.
-        :param fluid: Either a [`Fluid`](../obi_data/fluid.md) or the name of a fluid (see `Fluid.FLUIDS`).
+        :param fluid: Either a [`Fluid`](../obi_data/fluid.md), a [`GranularFluid`](../obi_data/granular_fluid.md), the name of a fluid (see `Fluid.FLUIDS`), or the name of a granular fluid (see `GranularFluid.GRANULAR_FLUIDS`).
         :param emitter_radius: The radius of the circle.
         :param edge_emission: If enabled, particles will be emitted from the circle's edges, instead of its interior.
         """
@@ -187,10 +188,10 @@ class Obi(AddOn):
                                                            random_velocity=random_velocity, fluid=fluid))
         self.commands.append(command)
 
-    def create_fluid_sphere_emitter(self, object_id: int, fluid: Union[str, Fluid], position: Dict[str, float] = None,
-                                    rotation: Dict[str, float] = None, speed: float = 1, lifespan: float = 4,
-                                    minimum_pool_size: float = 0.5, solver_id: int = 0,
-                                    particle_radius_scale: float = 1.7, random_velocity: float = 0,
+    def create_fluid_sphere_emitter(self, object_id: int, fluid: Union[str, Fluid, GranularFluid],
+                                    position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+                                    speed: float = 1, lifespan: float = 4, minimum_pool_size: float = 0.5,
+                                    solver_id: int = 0, particle_radius_scale: float = 1.7, random_velocity: float = 0,
                                     radius: float = 0.5, sampling_method: SamplingMethod = SamplingMethod.volume) -> None:
         """
         Create a sphere-shaped fluid emitter.
@@ -204,7 +205,7 @@ class Obi(AddOn):
         :param solver_id: The ID of the Obi solver.
         :param particle_radius_scale: This scales the size at which particles are drawn.
         :param random_velocity: Random velocity of emitted particles.
-        :param fluid: Either a [`Fluid`](../obi_data/fluid.md) or the name of a fluid (see `Fluid.FLUIDS`).
+        :param fluid: Either a [`Fluid`](../obi_data/fluid.md), a [`GranularFluid`](../obi_data/granular_fluid.md), the name of a fluid (see `Fluid.FLUIDS`), or the name of a granular fluid (see `GranularFluid.GRANULAR_FLUIDS`).
         :param radius: The radius of the sphere.
         :param sampling_method: The [`SamplingMethod`](../obi_data/sampling_method).
         """
@@ -250,7 +251,7 @@ class Obi(AddOn):
                                        rotation: Optional[Dict[str, float]], speed: float,
                                        lifespan: float, minimum_pool_size: float, solver_id: int,
                                        particle_radius_scale: float, random_velocity: float,
-                                       fluid: Union[str, Fluid]) -> dict:
+                                       fluid: Union[str, Fluid, GranularFluid]) -> dict:
         """
         :param object_id: The unique ID of the emitter.
         :param position: The position of the emitter object.
@@ -271,7 +272,12 @@ class Obi(AddOn):
         if rotation is None:
             rotation = {"x": 0, "y": 0, "z": 0}
         if isinstance(fluid, str):
-            f = FLUIDS[fluid]
+            if fluid in FLUIDS:
+                f = FLUIDS[fluid]
+            elif fluid in GRANULAR_FLUIDS:
+                f = GRANULAR_FLUIDS[fluid]
+            else:
+                raise Exception(f"Fluid not found: {fluid}")
         else:
             f = fluid
         return {"id": object_id, "position": position, "rotation": rotation, "lifespan": lifespan,

@@ -51141,6 +51141,87 @@
             "wcategory": "toaster",
             "wnid": "n04442312"
         },
+        "vray_083_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 275992,
+                "Linux": 324528,
+                "Windows": 270687
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.1057382,
+                    "z": -0.1562819
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": -1.490116e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.1057382,
+                    "z": 0
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.1057382,
+                    "z": 0.1562819
+                },
+                "left": {
+                    "x": -0.1028242,
+                    "y": 0.1057382,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1028242,
+                    "y": 0.1057382,
+                    "z": 0
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.2114765,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_083_composite",
+            "physics_quality": 1.1675564484502878,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material #59",
+                        "Material #60",
+                        "Material #84",
+                        "Material #61"
+                    ],
+                    "name": "vray_083_composite"
+                },
+                {
+                    "materials": [
+                        "07 - Default"
+                    ],
+                    "name": "vray_083_toaster_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_083_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_083_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_083_composite"
+            },
+            "volume": 0.003042634,
+            "wcategory": "toaster",
+            "wnid": "n04442312"
+        },
         "vray_084": {
             "asset_bundle_sizes": {
                 "Darwin": 762789,

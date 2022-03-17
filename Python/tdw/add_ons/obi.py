@@ -1,14 +1,15 @@
-from typing import List, Dict, Union
-from tdw.controller import Controller
+from typing import List, Dict, Union, Optional
 from tdw.add_ons.add_on import AddOn
 from tdw.output_data import OutputData, ImageSensors, StaticRigidbodies, StaticCompositeObjects, StaticRobot
 from tdw.obi_data.collision_material import CollisionMaterial, COLLISION_MATERIALS, DEFAULT_MATERIAL
+from tdw.obi_data.fluid import Fluid, FLUIDS
+from tdw.obi_data.sampling_method import SamplingMethod
 from tdw.object_data.composite_object.composite_object_static import CompositeObjectStatic
 
 
 class Obi(AddOn):
     def __init__(self, floor_collision_material: CollisionMaterial = None,
-                 collision_material_overrides: Dict[int, CollisionMaterial] = None):
+                 collision_material_overrides: Dict[int, Union[str, CollisionMaterial]] = None):
         super().__init__()
         self._initialized_obi: bool = False
         if floor_collision_material is None:
@@ -51,7 +52,12 @@ class Obi(AddOn):
                         object_id = static_rigidbodies.get_id(j)
                         # Get an override material.
                         if object_id in self._collision_material_overrides:
-                            collision_material = self._collision_material_overrides[object_id].to_dict()
+                            if isinstance(self._collision_material_overrides[object_id], str):
+                                collision_material = COLLISION_MATERIALS[self._collision_material_overrides[object_id]].to_dict()
+                            elif isinstance(self._collision_material_overrides[object_id], CollisionMaterial):
+                                collision_material = self._collision_material_overrides[object_id].to_dict()
+                            else:
+                                raise Exception(self._collision_material_overrides[object_id])
                         else:
                             collision_material = CollisionMaterial(dynamic_friction=static_rigidbodies.get_dynamic_friction(j),
                                                                    static_friction=static_rigidbodies.get_static_friction(j),
@@ -83,3 +89,192 @@ class Obi(AddOn):
                 elif r_id == "soct":
                     self.commands.append({"$type": "initialize_vr_rig_for_obi",
                                           "collision_material": DEFAULT_MATERIAL.to_dict()})
+
+    def create_fluid_cube_emitter(self, object_id: int, fluid: Union[str, Fluid], position: Dict[str, float] = None,
+                                  rotation: Dict[str, float] = None, speed: float = 1, lifespan: float = 4,
+                                  minimum_pool_size: float = 0.5, solver_id: int = 0, particle_radius_scale: float = 1.7,
+                                  random_velocity: float = 0, size: Dict[str, float] = None,
+                                  sampling_method: SamplingMethod = SamplingMethod.volume) -> None:
+        """
+        Create a cube-shaped fluid emitter.
+
+        :param object_id: The unique ID of the emitter.
+        :param position: The position of the emitter object. If None, defaults to (0, 0, 0).
+        :param rotation: The rotation of the emitter object, in Euler angles.  If None, defaults to (0, 0, 0).
+        :param speed: The speed of emission in meters per second. If 0, there is no emission.
+        :param lifespan: The particle lifespan in seconds.
+        :param minimum_pool_size: The minimum amount of inactive particles available before the emitter is allowed to resume emission.
+        :param solver_id: The ID of the Obi solver.
+        :param particle_radius_scale: This scales the size at which particles are drawn.
+        :param random_velocity: Random velocity of emitted particles.
+        :param fluid: Either a [`Fluid`](../obi_data/fluid.md) or the name of a fluid (see `Fluid.FLUIDS`).
+        :param size: The size of the cube in meters. If None, defaults to (1, 1, 1).
+        :param sampling_method: The [`SamplingMethod`](../obi_data/sampling_method).
+        """
+
+        command = {"$type": "create_obi_fluid_cube_emitter",
+                   "sampling_method": sampling_method.name,
+                   "size": size if size is not None else {"x": 1, "y": 1, "z": 1}}
+        command.update(self._get_add_fluid_emitter_command(object_id=object_id, position=position, rotation=rotation,
+                                                           speed=speed, lifespan=lifespan,
+                                                           minimum_pool_size=minimum_pool_size,
+                                                           solver_id=solver_id, particle_radius_scale=particle_radius_scale,
+                                                           random_velocity=random_velocity, fluid=fluid))
+        self.commands.append(command)
+
+    def create_fluid_edge_emitter(self, object_id: int, fluid: Union[str, Fluid], position: Dict[str, float] = None,
+                                  rotation: Dict[str, float] = None, speed: float = 1, lifespan: float = 4,
+                                  minimum_pool_size: float = 0.5, solver_id: int = 0, particle_radius_scale: float = 1.7,
+                                  random_velocity: float = 0, emitter_length: float = 0.25,
+                                  radial_velocity: float = 1) -> None:
+        """
+        Create a linear-shaped fluid emitter.
+
+        :param object_id: The unique ID of the emitter.
+        :param position: The position of the emitter object. If None, defaults to (0, 0, 0).
+        :param rotation: The rotation of the emitter object, in Euler angles.  If None, defaults to (0, 0, 0).
+        :param speed: The speed of emission in meters per second. If 0, there is no emission.
+        :param lifespan: The particle lifespan in seconds.
+        :param minimum_pool_size: The minimum amount of inactive particles available before the emitter is allowed to resume emission.
+        :param solver_id: The ID of the Obi solver.
+        :param particle_radius_scale: This scales the size at which particles are drawn.
+        :param random_velocity: Random velocity of emitted particles.
+        :param fluid: Either a [`Fluid`](../obi_data/fluid.md) or the name of a fluid (see `Fluid.FLUIDS`).
+        :param emitter_length: The length of the edge in local units.
+        :param radial_velocity: The velocity twisting along the length of the edge.
+        """
+
+        command = {"$type": "create_obi_fluid_cube_emitter",
+                   "emitter_length": emitter_length,
+                   "radial_velocity": radial_velocity}
+        command.update(self._get_add_fluid_emitter_command(object_id=object_id, position=position, rotation=rotation,
+                                                           speed=speed, lifespan=lifespan,
+                                                           minimum_pool_size=minimum_pool_size, solver_id=solver_id,
+                                                           particle_radius_scale=particle_radius_scale,
+                                                           random_velocity=random_velocity, fluid=fluid))
+        self.commands.append(command)
+
+    def create_fluid_disk_emitter(self, object_id: int, fluid: Union[str, Fluid], position: Dict[str, float] = None,
+                                  rotation: Dict[str, float] = None, speed: float = 1, lifespan: float = 4,
+                                  minimum_pool_size: float = 0.5, solver_id: int = 0, particle_radius_scale: float = 1.7,
+                                  random_velocity: float = 0, emitter_radius: float = 0.5,
+                                  edge_emission: bool = False) -> None:
+        """
+        Create a disk-shaped fluid emitter.
+
+        :param object_id: The unique ID of the emitter.
+        :param position: The position of the emitter object. If None, defaults to (0, 0, 0).
+        :param rotation: The rotation of the emitter object, in Euler angles.  If None, defaults to (0, 0, 0).
+        :param speed: The speed of emission in meters per second. If 0, there is no emission.
+        :param lifespan: The particle lifespan in seconds.
+        :param minimum_pool_size: The minimum amount of inactive particles available before the emitter is allowed to resume emission.
+        :param solver_id: The ID of the Obi solver.
+        :param particle_radius_scale: This scales the size at which particles are drawn.
+        :param random_velocity: Random velocity of emitted particles.
+        :param fluid: Either a [`Fluid`](../obi_data/fluid.md) or the name of a fluid (see `Fluid.FLUIDS`).
+        :param emitter_radius: The radius of the circle.
+        :param edge_emission: If enabled, particles will be emitted from the circle's edges, instead of its interior.
+        """
+
+        command = {"$type": "create_obi_fluid_cube_emitter",
+                   "emitter_radius": emitter_radius,
+                   "edge_emission": edge_emission}
+        command.update(self._get_add_fluid_emitter_command(object_id=object_id, position=position, rotation=rotation,
+                                                           speed=speed, lifespan=lifespan,
+                                                           minimum_pool_size=minimum_pool_size,
+                                                           solver_id=solver_id,
+                                                           particle_radius_scale=particle_radius_scale,
+                                                           random_velocity=random_velocity, fluid=fluid))
+        self.commands.append(command)
+
+    def create_fluid_sphere_emitter(self, object_id: int, fluid: Union[str, Fluid], position: Dict[str, float] = None,
+                                    rotation: Dict[str, float] = None, speed: float = 1, lifespan: float = 4,
+                                    minimum_pool_size: float = 0.5, solver_id: int = 0,
+                                    particle_radius_scale: float = 1.7, random_velocity: float = 0,
+                                    radius: float = 0.5, sampling_method: SamplingMethod = SamplingMethod.volume) -> None:
+        """
+        Create a sphere-shaped fluid emitter.
+
+        :param object_id: The unique ID of the emitter.
+        :param position: The position of the emitter object. If None, defaults to (0, 0, 0).
+        :param rotation: The rotation of the emitter object, in Euler angles.  If None, defaults to (0, 0, 0).
+        :param speed: The speed of emission in meters per second. If 0, there is no emission.
+        :param lifespan: The particle lifespan in seconds.
+        :param minimum_pool_size: The minimum amount of inactive particles available before the emitter is allowed to resume emission.
+        :param solver_id: The ID of the Obi solver.
+        :param particle_radius_scale: This scales the size at which particles are drawn.
+        :param random_velocity: Random velocity of emitted particles.
+        :param fluid: Either a [`Fluid`](../obi_data/fluid.md) or the name of a fluid (see `Fluid.FLUIDS`).
+        :param radius: The radius of the sphere.
+        :param sampling_method: The [`SamplingMethod`](../obi_data/sampling_method).
+        """
+
+        command = {"$type": "create_obi_fluid_cube_emitter",
+                   "sampling_method": sampling_method,
+                   "radius": radius}
+        command.update(self._get_add_fluid_emitter_command(object_id=object_id, position=position, rotation=rotation,
+                                                           speed=speed, lifespan=lifespan,
+                                                           minimum_pool_size=minimum_pool_size, solver_id=solver_id,
+                                                           particle_radius_scale=particle_radius_scale,
+                                                           random_velocity=random_velocity, fluid=fluid))
+        self.commands.append(command)
+
+    def set_fluid_speed(self, object_id: int, speed: float) -> None:
+        """
+        Set the speed of a fluid emitter. By default, the speed of an emitter is 0.
+
+        :param object_id: The ID of the fluid emitter.
+        :param speed: The speed in meters per second. Set this to 0 to stop emission.
+        """
+
+        self.commands.append({"$type": "set_obi_fluid_emission_speed",
+                              "id": object_id,
+                              "speed": speed})
+
+    def reset(self, floor_collision_material: CollisionMaterial = None,
+              collision_material_overrides: Dict[int, Union[str, CollisionMaterial]] = None):
+        self.commands.clear()
+        self.initialized = False
+        self._initialized_obi = False
+        if floor_collision_material is None:
+            self._floor_collision_material = DEFAULT_MATERIAL
+        else:
+            self._floor_collision_material = floor_collision_material
+        if collision_material_overrides is None:
+            self._collision_material_overrides = dict()
+        else:
+            self._collision_material_overrides = collision_material_overrides
+
+    @staticmethod
+    def _get_add_fluid_emitter_command(object_id: int, position: Optional[Dict[str, float]],
+                                       rotation: Optional[Dict[str, float]], speed: float,
+                                       lifespan: float, minimum_pool_size: float, solver_id: int,
+                                       particle_radius_scale: float, random_velocity: float,
+                                       fluid: Union[str, Fluid]) -> dict:
+        """
+        :param object_id: The unique ID of the emitter.
+        :param position: The position of the emitter object.
+        :param rotation: The rotation of the emitter object, in Euler angles.
+        :param lifespan: The particle lifespan in seconds.
+        :param minimum_pool_size: The minimum amount of inactive particles available before the emitter is allowed to resume emission.
+        :param solver_id: The ID of the Obi solver.
+        :param particle_radius_scale: This scales the size at which particles are drawn.
+        :param random_velocity: Random velocity of emitted particles.
+        :param speed: The emission speed.
+        :param fluid: The fluid.
+
+        :return: A partial fluid emitter command.
+        """
+
+        if position is None:
+            position = {"x": 0, "y": 0, "z": 0}
+        if rotation is None:
+            rotation = {"x": 0, "y": 0, "z": 0}
+        if isinstance(fluid, str):
+            f = FLUIDS[fluid]
+        else:
+            f = fluid
+        return {"id": object_id, "position": position, "rotation": rotation, "lifespan": lifespan,
+                "minimum_pool_size": minimum_pool_size, "solver_id": solver_id,
+                "particle_radius_scale": particle_radius_scale, "random_velocity": random_velocity, "speed": speed,
+                "fluid": f.to_dict()}

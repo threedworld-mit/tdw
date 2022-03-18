@@ -1,16 +1,26 @@
 from typing import List, Dict, Union
 from tdw.add_ons.add_on import AddOn
-from tdw.output_data import OutputData, ImageSensors, StaticRigidbodies, StaticCompositeObjects, StaticRobot
+from tdw.output_data import OutputData, ImageSensors, StaticRigidbodies, StaticCompositeObjects, StaticRobot, ObiParticles
 from tdw.obi_data.fluid import Fluid, FLUIDS
 from tdw.obi_data.granular_fluid import GranularFluid, GRANULAR_FLUIDS
 from tdw.obi_data.emitter_shape.emitter_shape import EmitterShape
+from tdw.obi_data.obi_actor import ObiActor
 from tdw.object_data.composite_object.composite_object_static import CompositeObjectStatic
 
 
 class Obi(AddOn):
-    def __init__(self):
+    def __init__(self, output_data: bool = True):
+        """
+        :param output_data: If True, receive [`ObiParticles`](../../api/output_data.md#ObiParticles) per frame.
+        """
+
         super().__init__()
+        """:field
+        A dictionary of actor data. Key = Object ID. Value = [`ObiActor`](../obi_data/obi_actor.md). The particle data is updated if `output_data == True` (see above).
+        """
+        self.actors: Dict[int, ObiActor] = dict()
         self._initialized_obi: bool = False
+        self._output_data: bool = output_data
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "create_obi_solver"},
@@ -31,7 +41,7 @@ class Obi(AddOn):
                     images_sensors = ImageSensors(resp[i])
                     avatar_id = images_sensors.get_avatar_id()
                     for j in range(images_sensors.get_num_sensors()):
-                        self.commands.append({"$type": "initialize_avatar_for_obi_fluid_rendering",
+                        self.commands.append({"$type": "initialize_image_sensor_for_obi_fluid_rendering",
                                               "avatar_id": avatar_id,
                                               "sensor_name": images_sensors.get_sensor_name(j)})
                 # Add Obi colliders to each object. Convert each object's physic material to an Obi collision material.
@@ -56,6 +66,27 @@ class Obi(AddOn):
                 # Add colliders to an Oculus Touch rig.
                 elif r_id == "soct":
                     self.commands.append({"$type": "initialize_vr_rig_for_obi"})
+            if self._output_data:
+                # Request particle data.
+                self.commands.append({"$type": "send_obi_particles",
+                                      "frequency": "always"})
+        # Parse particle data.
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "obip":
+                obi_particles = ObiParticles(resp[i])
+                for j in range(obi_particles.get_num_objects()):
+                    object_id = obi_particles.get_object_id(j)
+                    # Add an actor.
+                    if object_id not in self.actors:
+                        self.actors[object_id] = ObiActor(object_id=object_id,
+                                                          object_index=j,
+                                                          solver_id=obi_particles.get_solver_id(j),
+                                                          start=obi_particles.get_start(j),
+                                                          count=obi_particles.get_count(j))
+                # Update the particles.
+                for object_id in self.actors:
+                    self.actors[object_id].on_communicate(obi_particles=obi_particles)
 
     def create_fluid(self, object_id: int, fluid: Union[str, Fluid, GranularFluid], shape: EmitterShape,
                      position: Dict[str, float] = None, rotation: Dict[str, float] = None, speed: float = 1,
@@ -121,3 +152,4 @@ class Obi(AddOn):
         self.commands.clear()
         self.initialized = False
         self._initialized_obi = False
+        self.actors.clear()

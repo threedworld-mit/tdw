@@ -52,6 +52,7 @@ from tdw.FBOutput import StaticOculusTouch as StatOc
 from tdw.FBOutput import StaticCompositeObjects as StatComp
 from tdw.FBOutput import DynamicCompositeObjects as DynComp
 from tdw.FBOutput import AudioSourceDone as AudDone
+from tdw.FBOutput import ObiParticles as ObiP
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 import numpy as np
 from typing import Tuple, Optional, List
@@ -1386,3 +1387,36 @@ class DynamicCompositeObjects(OutputData):
 
     def get_light_is_on(self, index: int, light_index: int) -> bool:
         return self.data.Objects(index).Lights(light_index).IsOn()
+
+
+class ObiParticles(OutputData):
+    def get_data(self) -> ObiP.ObiParticles:
+        return ObiP.ObiParticles.GetRootAsObiParticles(self.bytes, 0)
+
+    def get_num_solvers(self) -> int:
+        return self.data.SolversLength()
+
+    def get_positions(self, index: int) -> np.array:
+        # Reshape to Vector4 and then delete a column to make it Vector3.
+        return np.delete(self.data.Solvers(index).PositionsAsNumpy().reshape(-1, 4), 3, 1)
+        # return self.data.Solvers(index).PositionsAsNumpy()
+        # return self.data.Solvers(index).PositionsAsNumpy().reshape(-1, 4)
+
+    def get_velocities(self, index: int) -> np.array:
+        # Reshape to Vector4 and then delete a column to make it Vector3.
+        return np.delete(self.data.Solvers(index).VelocitiesAsNumpy().reshape(-1, 4), 3, 1)
+
+    def get_num_objects(self) -> int:
+        return self.data.ActorsLength()
+
+    def get_object_id(self, index: int) -> int:
+        return self.data.Actors(index).Id()
+
+    def get_solver_id(self, index: int) -> int:
+        return self.data.Actors(index).SolverId()
+
+    def get_start(self, index: int) -> int:
+        return self.data.Actors(index).Start()
+
+    def get_count(self, index: int) -> int:
+        return self.data.Actors(index).Count()

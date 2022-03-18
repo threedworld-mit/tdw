@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class SamplingMethod(Enum):
+class EmitterSamplingMethod(Enum):
     """
     The sampling type for the shape of an Obi fluid emitter.
     """

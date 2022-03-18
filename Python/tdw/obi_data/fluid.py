@@ -9,9 +9,10 @@ class Fluid:
     Data for an Obi fluid. For more information, [read this](http://obi.virtualmethodstudio.com/manual/6.3/emittermaterials.html).
     """
 
-    def __init__(self, atmospheric_drag: float, atmospheric_pressure: float, buoyancy: float, capacity: int,
-                 color: Dict[str, float], diffusion: float, diffusion_data: Dict[str, float], resolution: float,
-                 rest_density: float, smoothing: float, surface_tension: float, viscosity: float, vorticity: float):
+    def __init__(self, atmospheric_drag: float, atmospheric_pressure: float, capacity: int, color: Dict[str, float],
+                 resolution: float, rest_density: float, smoothing: float, surface_tension: float, viscosity: float,
+                 vorticity: float, buoyancy: float = -1, diffusion: float = 0,
+                 diffusion_data: Dict[str, float] = None):
         """
         :param atmospheric_drag: The amount of air resistance.
         :param atmospheric_pressure: The amount of inward pressure applied by air on the surface of the fluid.
@@ -52,10 +53,13 @@ class Fluid:
         A diffusion value that will modify `diffusion_data`. [Read this for more information.](http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html)
         """
         self.diffusion: float = diffusion
-        """:field
-        A dictionary of four floats that can be used arbitrarily, for example to colorize a fluid based on its physical state. [Read this for more information.](http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html)
-        """
-        self.diffusion_data: Dict[str, float] = diffusion_data
+        if diffusion_data is None:
+            """:field
+            A dictionary of four floats that can be used arbitrarily, for example to colorize a fluid based on its physical state. [Read this for more information.](http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html)
+            """
+            self.diffusion_data: Dict[str, float] = {"x": 0, "y": 0, "z": 0, "w": 0}
+        else:
+            self.diffusion_data = diffusion_data
         """:field
         The size and amount of particles in 1 cubic meter.
         """

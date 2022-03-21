@@ -20003,9 +20003,9 @@
         },
         "cabinet_full_height_wood_beech_honey_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 14618315,
-                "Linux": 14853262,
-                "Windows": 14606964
+                "Darwin": 14618437,
+                "Linux": 14853928,
+                "Windows": 14607132
             },
             "bounds": {
                 "back": {
@@ -20076,7 +20076,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_full_height_wood_beech_honey_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_full_height_wood_beech_honey_composite"
             },
-            "volume": 0.1073094,
+            "volume": 0.1073084,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },

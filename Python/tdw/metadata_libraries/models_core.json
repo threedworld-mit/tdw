@@ -20082,9 +20082,9 @@
         },
         "cabinet_full_height_wood_oak_white_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 737395,
-                "Linux": 973824,
-                "Windows": 728003
+                "Darwin": 737316,
+                "Linux": 973804,
+                "Windows": 728089
             },
             "bounds": {
                 "back": {
@@ -20155,7 +20155,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_full_height_wood_oak_white_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_full_height_wood_oak_white_composite"
             },
-            "volume": 0.1073094,
+            "volume": 0.1073084,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },

@@ -1,9 +1,9 @@
 from typing import List, Dict, Union
 from tdw.add_ons.add_on import AddOn
-from tdw.output_data import OutputData, ImageSensors, StaticRigidbodies, StaticCompositeObjects, StaticRobot, ObiParticles
-from tdw.obi_data.fluid import Fluid, FLUIDS
-from tdw.obi_data.granular_fluid import GranularFluid, GRANULAR_FLUIDS
-from tdw.obi_data.emitter_shape.emitter_shape import EmitterShape
+from tdw.output_data import OutputData, StaticRigidbodies, StaticCompositeObjects, StaticRobot, ObiParticles
+from tdw.obi_data.fluids.fluid import Fluid, FLUIDS
+from tdw.obi_data.fluids.granular_fluid import GranularFluid, GRANULAR_FLUIDS
+from tdw.obi_data.fluids.emitter_shape import EmitterShape
 from tdw.obi_data.obi_actor import ObiActor
 from tdw.object_data.composite_object.composite_object_static import CompositeObjectStatic
 
@@ -23,29 +23,22 @@ class Obi(AddOn):
         self._output_data: bool = output_data
 
     def get_initialization_commands(self) -> List[dict]:
+        # Create an Obi solver.
+        # Get output data for Rigidbodies, robots, and composite objects.
+        # Initialize the VR rig for Obi. If there is no rig, this will fail silently (no error).
         return [{"$type": "create_obi_solver"},
-                {"$type": "set_obi_fluid_rendering"},
-                {"$type": "send_image_sensors"},
                 {"$type": "send_static_rigidbodies"},
                 {"$type": "send_static_robots"},
                 {"$type": "send_static_composite_objects"},
-                {"$type": "send_static_oculus_touch"}]
+                {"$type": "initialize_vr_rig_for_obi"}]
 
     def on_send(self, resp: List[bytes]) -> None:
         if not self._initialized_obi:
             self._initialized_obi = True
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
-                # Enable image sensors for Obi rendering.
-                if r_id == "imse":
-                    images_sensors = ImageSensors(resp[i])
-                    avatar_id = images_sensors.get_avatar_id()
-                    for j in range(images_sensors.get_num_sensors()):
-                        self.commands.append({"$type": "initialize_image_sensor_for_obi_fluid_rendering",
-                                              "avatar_id": avatar_id,
-                                              "sensor_name": images_sensors.get_sensor_name(j)})
                 # Add Obi colliders to each object. Convert each object's physic material to an Obi collision material.
-                elif r_id == "srig":
+                if r_id == "srig":
                     static_rigidbodies = StaticRigidbodies(resp[i])
                     for j in range(static_rigidbodies.get_num()):
                         self.commands.append({"$type": "create_obi_colliders",
@@ -63,9 +56,6 @@ class Obi(AddOn):
                     static_robot = StaticRobot(resp[i])
                     self.commands.append({"$type": "create_obi_colliders",
                                           "id": static_robot.get_id()})
-                # Add colliders to an Oculus Touch rig.
-                elif r_id == "soct":
-                    self.commands.append({"$type": "initialize_vr_rig_for_obi"})
             if self._output_data:
                 # Request particle data.
                 self.commands.append({"$type": "send_obi_particles",

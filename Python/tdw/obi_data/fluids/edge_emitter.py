@@ -1,4 +1,4 @@
-from tdw.obi_data.emitter_shape.emitter_shape import EmitterShape
+from tdw.obi_data.fluids.emitter_shape import EmitterShape
 
 
 class EdgeEmitter(EmitterShape):

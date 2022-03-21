@@ -1,6 +1,6 @@
 from typing import Dict
-from tdw.obi_data.emitter_shape.emitter_shape import EmitterShape
-from tdw.obi_data.emitter_shape.emitter_sampling_method import EmitterSamplingMethod
+from tdw.obi_data.fluids.emitter_shape import EmitterShape
+from tdw.obi_data.fluids.emitter_sampling_method import EmitterSamplingMethod
 
 
 class CubeEmitter(EmitterShape):
@@ -8,7 +8,8 @@ class CubeEmitter(EmitterShape):
     A cube-shaped Obi fluid emitter.
     """
 
-    def __init__(self, size: Dict[str, float] = None, sampling_method: EmitterSamplingMethod = EmitterSamplingMethod.volume):
+    def __init__(self, size: Dict[str, float] = None,
+                 sampling_method: EmitterSamplingMethod = EmitterSamplingMethod.volume):
         """
         Create a cube-shaped fluid emitter.
 

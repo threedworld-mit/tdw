@@ -1,5 +1,5 @@
-from tdw.obi_data.emitter_shape.emitter_shape import EmitterShape
-from tdw.obi_data.emitter_shape.emitter_sampling_method import EmitterSamplingMethod
+from tdw.obi_data.fluids.emitter_shape import EmitterShape
+from tdw.obi_data.fluids.emitter_sampling_method import EmitterSamplingMethod
 
 
 class SphereEmitter(EmitterShape):

@@ -36165,9 +36165,9 @@
         },
         "microwave_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 264346,
-                "Linux": 553720,
-                "Windows": 252163
+                "Darwin": 214573,
+                "Linux": 313510,
+                "Windows": 208175
             },
             "bounds": {
                 "back": {
@@ -36223,7 +36223,7 @@
                     "materials": [
                         "chrome2",
                         "chrome",
-                        "plastic_vinyl_glossy_light_gray"
+                        "Glass"
                     ],
                     "name": "microwave_composite"
                 },
@@ -36241,7 +36241,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/microwave_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/microwave_composite"
             },
-            "volume": 0.02799893,
+            "volume": 0.02799752,
             "wcategory": "microwave",
             "wnid": "n03761084"
         },

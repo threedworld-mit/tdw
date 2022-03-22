@@ -1,11 +1,10 @@
 from typing import List, Dict, Union
 from tdw.add_ons.add_on import AddOn
-from tdw.output_data import OutputData, StaticRigidbodies, StaticCompositeObjects, StaticRobot, ObiParticles
+from tdw.output_data import OutputData, ObiParticles
 from tdw.obi_data.fluids.fluid import Fluid, FLUIDS
 from tdw.obi_data.fluids.granular_fluid import GranularFluid, GRANULAR_FLUIDS
 from tdw.obi_data.fluids.emitter_shape import EmitterShape
 from tdw.obi_data.obi_actor import ObiActor
-from tdw.object_data.composite_object.composite_object_static import CompositeObjectStatic
 
 
 class Obi(AddOn):
@@ -19,47 +18,16 @@ class Obi(AddOn):
         A dictionary of actor data. Key = Object ID. Value = [`ObiActor`](../obi_data/obi_actor.md). The particle data is updated if `output_data == True` (see above).
         """
         self.actors: Dict[int, ObiActor] = dict()
-        self._initialized_obi: bool = False
         self._output_data: bool = output_data
 
     def get_initialization_commands(self) -> List[dict]:
-        # Create an Obi solver.
-        # Get output data for Rigidbodies, robots, and composite objects.
-        # Initialize the VR rig for Obi. If there is no rig, this will fail silently (no error).
-        return [{"$type": "create_obi_solver"},
-                {"$type": "send_static_rigidbodies"},
-                {"$type": "send_static_robots"},
-                {"$type": "send_static_composite_objects"},
-                {"$type": "initialize_vr_rig_for_obi"}]
+        commands = [{"$type": "initialize_obi"}]
+        if self._output_data:
+            commands.append({"$type": "send_obi_particles",
+                             "frequency": "always"})
+        return commands
 
     def on_send(self, resp: List[bytes]) -> None:
-        if not self._initialized_obi:
-            self._initialized_obi = True
-            for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i])
-                # Add Obi colliders to each object. Convert each object's physic material to an Obi collision material.
-                if r_id == "srig":
-                    static_rigidbodies = StaticRigidbodies(resp[i])
-                    for j in range(static_rigidbodies.get_num()):
-                        self.commands.append({"$type": "create_obi_colliders",
-                                              "id": static_rigidbodies.get_id(j)})
-                # Apply the same collision material used in the root object of a composite object to the sub-objects.
-                elif r_id == "scom":
-                    static_composite_objects = StaticCompositeObjects(resp[i])
-                    for j in range(static_composite_objects.get_num()):
-                        s = CompositeObjectStatic(static_composite_objects=static_composite_objects, object_index=j)
-                        for sub_object_id in s.sub_object_ids:
-                            self.commands.append({"$type": "create_obi_colliders",
-                                                  "id": sub_object_id})
-                # Add colliders to robots.
-                elif r_id == "srob":
-                    static_robot = StaticRobot(resp[i])
-                    self.commands.append({"$type": "create_obi_colliders",
-                                          "id": static_robot.get_id()})
-            if self._output_data:
-                # Request particle data.
-                self.commands.append({"$type": "send_obi_particles",
-                                      "frequency": "always"})
         # Parse particle data.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -141,5 +109,4 @@ class Obi(AddOn):
     def reset(self):
         self.commands.clear()
         self.initialized = False
-        self._initialized_obi = False
         self.actors.clear()

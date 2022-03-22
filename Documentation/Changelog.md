@@ -10,6 +10,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 - Fixed: The OS X build doesn't use OpenGL rendering, causing _depth and _depth_simple passes to render as _img passes. (There were probably other OpenGL-related issues as well).
 
+### Model Library
+
+- Fixed: Removed cabinet_24_two_drawer_wood_beech_honey_composite record from the model librarian because the asset bundles don't exist.
+
 ## v1.9.9
 
 ### Command API

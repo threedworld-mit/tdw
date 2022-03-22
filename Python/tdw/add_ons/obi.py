@@ -47,9 +47,8 @@ class Obi(AddOn):
                     self.actors[object_id].on_communicate(obi_particles=obi_particles)
 
     def create_fluid(self, object_id: int, fluid: Union[str, Fluid, GranularFluid], shape: EmitterShape,
-                     position: Dict[str, float] = None, rotation: Dict[str, float] = None, speed: float = 1,
-                     lifespan: float = 4, minimum_pool_size: float = 0.5, solver_id: int = 0,
-                     particle_radius_scale: float = 1.7, random_velocity: float = 0) -> None:
+                     position: Dict[str, float] = None, rotation: Dict[str, float] = None, speed: float = 0,
+                     lifespan: float = 4, minimum_pool_size: float = 0.5, solver_id: int = 0) -> None:
         """
         Create a cube-shaped fluid emitter.
 
@@ -62,8 +61,6 @@ class Obi(AddOn):
         :param lifespan: The particle lifespan in seconds.
         :param minimum_pool_size: The minimum amount of inactive particles available before the emitter is allowed to resume emission.
         :param solver_id: The ID of the Obi solver.
-        :param particle_radius_scale: This scales the size at which particles are drawn.
-        :param random_velocity: Random velocity of emitted particles.
         """
 
         # Set a default position and rotation.
@@ -90,8 +87,6 @@ class Obi(AddOn):
                               "lifespan": lifespan,
                               "minimum_pool_size": minimum_pool_size,
                               "solver_id": solver_id,
-                              "particle_radius_scale": particle_radius_scale,
-                              "random_velocity": random_velocity,
                               "speed": speed})
 
     def set_fluid_speed(self, object_id: int, speed: float) -> None:

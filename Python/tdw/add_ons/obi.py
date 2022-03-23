@@ -21,7 +21,8 @@ class Obi(AddOn):
         self._output_data: bool = output_data
 
     def get_initialization_commands(self) -> List[dict]:
-        commands = [{"$type": "initialize_obi"}]
+        commands = [{"$type": "destroy_obi_solver"},
+                    {"$type": "initialize_obi"}]
         if self._output_data:
             commands.append({"$type": "send_obi_particles",
                              "frequency": "always"})
@@ -39,9 +40,7 @@ class Obi(AddOn):
                     if object_id not in self.actors:
                         self.actors[object_id] = ObiActor(object_id=object_id,
                                                           object_index=j,
-                                                          solver_id=obi_particles.get_solver_id(j),
-                                                          start=obi_particles.get_start(j),
-                                                          count=obi_particles.get_count(j))
+                                                          solver_id=obi_particles.get_solver_id(j))
                 # Update the particles.
                 for object_id in self.actors:
                     self.actors[object_id].on_communicate(obi_particles=obi_particles)

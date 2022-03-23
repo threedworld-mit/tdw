@@ -33,22 +33,30 @@ class ObiActorData(object):
         return 0
 
     # ObiActorData
-    def Start(self):
+    def SolverIndices(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
         return 0
 
     # ObiActorData
-    def Count(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+    def SolverIndicesAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
         return 0
 
-def ObiActorDataStart(builder): builder.StartObject(4)
+    # ObiActorData
+    def SolverIndicesLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def ObiActorDataStart(builder): builder.StartObject(3)
 def ObiActorDataAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
 def ObiActorDataAddSolverId(builder, solverId): builder.PrependInt32Slot(1, solverId, 0)
-def ObiActorDataAddStart(builder, start): builder.PrependInt32Slot(2, start, 0)
-def ObiActorDataAddCount(builder, count): builder.PrependInt32Slot(3, count, 0)
+def ObiActorDataAddSolverIndices(builder, solverIndices): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(solverIndices), 0)
+def ObiActorDataStartSolverIndicesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def ObiActorDataEnd(builder): return builder.EndObject()

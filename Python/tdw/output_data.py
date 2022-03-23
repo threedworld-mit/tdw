@@ -55,7 +55,7 @@ from tdw.FBOutput import AudioSourceDone as AudDone
 from tdw.FBOutput import ObiParticles as ObiP
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 import numpy as np
-from typing import Tuple, Optional, List
+from typing import Tuple, Optional, List, Dict
 
 
 class OutputDataUndefinedError(Exception):
@@ -1397,14 +1397,10 @@ class ObiParticles(OutputData):
         return self.data.SolversLength()
 
     def get_positions(self, index: int) -> np.array:
-        # Reshape to Vector4 and then delete a column to make it Vector3.
-        return np.delete(self.data.Solvers(index).PositionsAsNumpy().reshape(-1, 4), 3, 1)
-        # return self.data.Solvers(index).PositionsAsNumpy()
-        # return self.data.Solvers(index).PositionsAsNumpy().reshape(-1, 4)
+        return self.data.Solvers(index).PositionsAsNumpy()
 
     def get_velocities(self, index: int) -> np.array:
-        # Reshape to Vector4 and then delete a column to make it Vector3.
-        return np.delete(self.data.Solvers(index).VelocitiesAsNumpy().reshape(-1, 4), 3, 1)
+        return self.data.Solvers(index).VelocitiesAsNumpy()
 
     def get_num_objects(self) -> int:
         return self.data.ActorsLength()
@@ -1415,8 +1411,5 @@ class ObiParticles(OutputData):
     def get_solver_id(self, index: int) -> int:
         return self.data.Actors(index).SolverId()
 
-    def get_start(self, index: int) -> int:
-        return self.data.Actors(index).Start()
-
-    def get_count(self, index: int) -> int:
-        return self.data.Actors(index).Count()
+    def get_solver_indices(self, index: int) -> np.array:
+        return self.data.Actors(index).SolverIndicesAsNumpy()

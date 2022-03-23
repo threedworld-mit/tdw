@@ -1411,5 +1411,8 @@ class ObiParticles(OutputData):
     def get_solver_id(self, index: int) -> int:
         return self.data.Actors(index).SolverId()
 
+    def get_count(self, index: int) -> int:
+        return self.data.Actors(index).Count()
+
     def get_solver_indices(self, index: int) -> np.array:
         return self.data.Actors(index).SolverIndicesAsNumpy()

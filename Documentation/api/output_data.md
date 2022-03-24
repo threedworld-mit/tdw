@@ -65,6 +65,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [CompositeObjects](#CompositeObjects) | Data for all composite objects currently in the scene. | `comp` |
 | [DynamicCompositeObjects](#DynamicCompositeObjects) | Dynamic data for composite objects. | `dcom` |
 | [EmptyObjects](#EmptyObjects) | The position of each empty object in the scene. | `empt` |
+| [EnvironmentColliderIntersection](#EnvironmentColliderIntersection) | Data for an whose colliders are intersecting with an environment collider such as a wall. | `enci` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
 | [FlexParticles](#FlexParticles) | NVIDIA Flex data. | `flex` |
 | [IdPassGrayscale](#IdPassGrayscale) | The average grayscale value of the _id pass. | `idgs` |
@@ -80,6 +81,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [MagnebotWheels](#MagnebotWheels) | A message sent when a Magnebot arrives at a target. | `mwhe` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
+| [ObjectColliderIntersection](#ObjectColliderIntersection) | Data for two objects whose colliders are intersecting. | `obci` |
 | [Occlusion](#Occlusion) | To what extent parts of the scene environment (such as walls) are occluding objects. | `occl` |
 | [OculusTouchButtons](#OculusTouchButtons) | Which Oculus Touch controller buttons have been pressed. | `octb` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
@@ -382,6 +384,20 @@ The position of each empty object in the scene.
 | `get_id(index)` | The id. | `int` |
 | `get_position(index)` | The position. | `np.array` |
 
+## EnvironmentColliderIntersection
+
+`e = EnvironmentColliderIntersection(byte_array)`
+
+**Identifier:** `enci`
+
+Data for an whose colliders are intersecting with an environment collider such as a wall.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_object_id()` | The ID of the object. | `int` |
+| `get_distance()` | The distance along direction that is required to separate the colliders apart. | `float` |
+| `get_direction()` | The direction along which the translation required to separate the colliders apart is minimal. | `Tuple[float, float, float]` |
+
 ## EnvironmentCollision
 
 `e = EnvironmentCollision(byte_array)`
@@ -617,6 +633,21 @@ A path on the scene's NavMesh.
 | `get_state()` | The state of the path: "complete", "partial", or "invalid". | `str` |
 | `get_path()` | Waypoints on the path as a numpy array of (x, y, z) coordinates. | `np.array` |
 | `get_id()` | The ID of this path. Use this to differentiate between different NavMeshPaths. | `int` |
+
+## ObjectColliderIntersection
+
+`o = ObjectColliderIntersection(byte_array)`
+
+**Identifier:** `obci`
+
+Data for two objects whose colliders are intersecting.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_object_id_a()` | The ID of the first object. | `int` |
+| `get_object_id_b()` | The ID of the second object. | `int` |
+| `get_distance()` | The distance along direction that is required to separate the colliders apart. | `float` |
+| `get_direction()` | The direction along which the translation required to separate the colliders apart is minimal. | `Tuple[float, float, float]` |
 
 ## Occlusion
 

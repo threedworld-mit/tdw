@@ -17,6 +17,12 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `set_floor_texture_scale`   | Set the scale of the tiling of the floor material's main texture. |
 | `set_floor_physic_material` | Set the physic material of the floor.                        |
 
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `send_model_report` | Added a test for whether each MeshCollider has a mesh.<br>Added a test for whether each MeshCollider's mesh is readable. |
+
 #### Deprecated Commands
 
 | Command                            | Reason                                   |

@@ -4,6 +4,38 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.11
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `set_floor_color`         | Set the albedo color of the floor.                           |
+| `set_floor_material`      | Set the material of the floor.                               |
+| `set_floor_texture_scale` | Set the scale of the tiling of the floor material's main texture. |
+
+#### Deprecated Commands
+
+| Command                            | Reason                                   |
+| ---------------------------------- | ---------------------------------------- |
+| `set_proc_gen_floor_color`         | Replaced with `set_floor_color`.         |
+| `set_proc_gen_floor_material`      | Replaced with `set_floor_material`.      |
+| `set_proc_gen_floor_texture_scale` | Replaced with `set_floor_texture_scale`. |
+
+### Example Controllers
+
+- Updated `objects_and_scenes/proc_gen_room.py` to use the new floor commands.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                      | Modification                                         |
+| --------------------------------------------- | ---------------------------------------------------- |
+| `lessons/objects_and_scenes/proc_gen_room.md` | Replaced old floor commands with new floor commands. |
+
 ## v1.9.10
 
 ### Build

@@ -255,6 +255,14 @@
 | [`create_flex_container`](#create_flex_container) | Create a Flex Container. The ID of this container is the quantity of containers in the scene prior to adding it.  |
 | [`destroy_flex_container`](#destroy_flex_container) | Destroy an existing Flex container. Only send this command after destroying all Flex objects in the scene.  |
 
+**Floor Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_floor_color`](#set_floor_color) | Set the albedo color of the floor. |
+| [`set_floor_material`](#set_floor_material) | Set the material of the floor.  |
+| [`set_floor_texture_scale`](#set_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture. |
+
 **Global Boolean Command**
 
 | Command | Description |
@@ -448,7 +456,7 @@
 | Command | Description |
 | --- | --- |
 | [`set_proc_gen_floor_color`](#set_proc_gen_floor_color) | Set the albedo RGBA color of the floor.  |
-| [`set_proc_gen_floor_texture_scale`](#set_proc_gen_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture. |
+| [`set_proc_gen_floor_texture_scale`](#set_proc_gen_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture.  |
 
 **Proc Gen Material Command**
 
@@ -3578,6 +3586,60 @@ Destroy an existing Flex container. Only send this command after destroying all 
 | --- | --- | --- | --- |
 | `"id"` | int | The ID of the existing container. | 0 |
 
+# FloorCommand
+
+These commands adjust the floor in the scene. To do so, they look for an object that in the backend is tagged "floor". Most, but not all scenes that have a floor have a <emphasis>tagged</emphasis> floor. If there is no tagged floor, these commands fail silently and log a warning. These commands will always work with the ProcGen room.
+
+***
+
+## **`set_floor_color`**
+
+Set the albedo color of the floor.
+
+
+```python
+{"$type": "set_floor_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"color"` | Color | The new albedo RGBA color of the floor. | |
+
+***
+
+## **`set_floor_material`**
+
+Set the material of the floor. 
+
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+
+```python
+{"$type": "set_floor_material", "name": "string"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"name"` | string | The name of the material. The material must already be loaded in memory. | |
+
+***
+
+## **`set_floor_texture_scale`**
+
+Set the scale of the tiling of the floor material's main texture.
+
+
+```python
+{"$type": "set_floor_texture_scale"}
+```
+
+```python
+{"$type": "set_floor_texture_scale", "scale": {"x": 1, "y": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale"` | Vector2 | The tiling scale of the material. Generally (but by no means always), the default tiling scale of a texture is {"x": 1, "y": 1} | {"x": 1, "y": 1} |
+
 # GlobalBooleanCommand
 
 Command with a single toggle-able boolean that affects the build globally. These commands always have a default value, and are cached as singleton instances.
@@ -5720,7 +5782,7 @@ These commands modify the floor of a procedurally-generated room.
 
 Set the albedo RGBA color of the floor. 
 
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_proc_gen_floor_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
@@ -5734,8 +5796,9 @@ Set the albedo RGBA color of the floor.
 
 ## **`set_proc_gen_floor_texture_scale`**
 
-Set the scale of the tiling of the floor material's main texture.
+Set the scale of the tiling of the floor material's main texture. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_proc_gen_floor_texture_scale"}
@@ -5776,6 +5839,7 @@ Set the material of a procedurally-generated ceiling.
 Set the material of a procedurally-generated floor. 
 
 - <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_proc_gen_floor_material", "name": "string"}

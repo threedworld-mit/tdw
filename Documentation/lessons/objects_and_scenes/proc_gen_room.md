@@ -244,7 +244,7 @@ It is possible to set the [visual materials and colors](materials_textures_color
 
 |             | Set visual material                                          | Set texture scale                                            | Set color                                                    |
 | ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Floor**   | [`set_proc_gen_floor_material`](../../api/command_api.md#set_proc_gen_floor_material) | [`set_proc_gen_floor_texture_scale`](../../api/command_api.md#set_proc_gen_floor_texture_scale) | [`set_proc_gen_floor_color`](../../api/command_api.md#set_proc_gen_floor_color) |
+| **Floor**   | [`set_floor_material`](../../api/command_api.md#set_floor_material) | [`set_floor_texture_scale`](../../api/command_api.md#set_floor_texture_scale) | [`set_floor_color`](../../api/command_api.md#set_floor_color) |
 | **Walls**   | [`set_proc_gen_walls_material`](../../api/command_api.md#set_proc_gen_walls_material) | [`set_proc_gen_walls_texture_scale`](../../api/command_api.md#set_proc_gen_walls_texture_scale) | [`set_proc_gen_walls_color`](../../api/command_api.md#set_proc_gen_walls_color) |
 | **Ceiling** | [`set_proc_gen_ceiling_material`](../../api/command_api.md#set_proc_gen_ceiling_material) | [`set_proc_gen_ceiling_texture_scale`](../../api/command_api.md#set_proc_gen_ceiling_texture_scale) | [`set_proc_gen_ceiling_color`](../../api/command_api.md#set_proc_gen_ceiling_color) |
 
@@ -319,11 +319,11 @@ class ProcGenRoom(Controller):
         material_name = materials[self.rng.randint(0, len(materials))]
         texture_scale: float = float(self.rng.uniform(4, 4.5))
         return [self.get_add_material(material_name=material_name),
-                {"$type": "set_proc_gen_floor_material",
+                {"$type": "set_floor_material",
                  "name": material_name},
-                {"$type": "set_proc_gen_floor_texture_scale",
+                {"$type": "set_floor_texture_scale",
                  "scale": {"x": texture_scale, "y": texture_scale}},
-                {"$type": "set_proc_gen_floor_color",
+                {"$type": "set_floor_color",
                  "color": {"r": float(self.rng.uniform(0.7, 1)),
                            "g": float(self.rng.uniform(0.7, 1)),
                            "b": float(self.rng.uniform(0.7, 1)),
@@ -412,9 +412,9 @@ Command API:
   - [`create_exterior_walls`](../../api/command_api.md#create_exterior_walls)
   - [`create_interior_walls`](../../api/command_api.md#create_interior_walls)
 - Floor:
-  - [`set_proc_gen_floor_material`](../../api/command_api.md#set_proc_gen_floor_material)
-  - [`set_proc_gen_floor_texture_scale`](../../api/command_api.md#set_proc_gen_floor_texture_scale)
-  - [`set_proc_gen_floor_color`](../../api/command_api.md#set_proc_gen_floor_color)
+  - [`set_floor_material`](../../api/command_api.md#set_floor_material)
+  - [`set_floor_texture_scale`](../../api/command_api.md#set_floor_texture_scale)
+  - [`set_floor_color`](../../api/command_api.md#set_floor_color)
 - Walls:
   - [`set_proc_gen_walls_material`](../../api/command_api.md#set_proc_gen_walls_material)
   - [`set_proc_gen_walls_texture_scale`](../../api/command_api.md#set_proc_gen_walls_texture_scale)

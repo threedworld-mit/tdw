@@ -255,6 +255,15 @@
 | [`create_flex_container`](#create_flex_container) | Create a Flex Container. The ID of this container is the quantity of containers in the scene prior to adding it.  |
 | [`destroy_flex_container`](#destroy_flex_container) | Destroy an existing Flex container. Only send this command after destroying all Flex objects in the scene.  |
 
+**Floor Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_floor_color`](#set_floor_color) | Set the albedo color of the floor. |
+| [`set_floor_material`](#set_floor_material) | Set the material of the floor.  |
+| [`set_floor_physic_material`](#set_floor_physic_material) | Set the physic material of the floor. These settings can be overriden by sending the command again. When an object contacts the floor, the floor's physic material values are averaged with an object's values. |
+| [`set_floor_texture_scale`](#set_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture. |
+
 **Global Boolean Command**
 
 | Command | Description |
@@ -448,7 +457,7 @@
 | Command | Description |
 | --- | --- |
 | [`set_proc_gen_floor_color`](#set_proc_gen_floor_color) | Set the albedo RGBA color of the floor.  |
-| [`set_proc_gen_floor_texture_scale`](#set_proc_gen_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture. |
+| [`set_proc_gen_floor_texture_scale`](#set_proc_gen_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture.  |
 
 **Proc Gen Material Command**
 
@@ -546,6 +555,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_collider_intersections`](#send_collider_intersections) | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider.  |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
 | [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
 | [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations.  |
@@ -3578,6 +3588,77 @@ Destroy an existing Flex container. Only send this command after destroying all 
 | --- | --- | --- | --- |
 | `"id"` | int | The ID of the existing container. | 0 |
 
+# FloorCommand
+
+These commands adjust the floor in the scene. To do so, they look for an object that in the backend is tagged "floor". Most, but not all scenes that have a floor have a <emphasis>tagged</emphasis> floor. If there is no tagged floor, these commands fail silently and log a warning. These commands will always work with the ProcGen room.
+
+***
+
+## **`set_floor_color`**
+
+Set the albedo color of the floor.
+
+
+```python
+{"$type": "set_floor_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"color"` | Color | The new albedo RGBA color of the floor. | |
+
+***
+
+## **`set_floor_material`**
+
+Set the material of the floor. 
+
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+
+```python
+{"$type": "set_floor_material", "name": "string"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"name"` | string | The name of the material. The material must already be loaded in memory. | |
+
+***
+
+## **`set_floor_physic_material`**
+
+Set the physic material of the floor. These settings can be overriden by sending the command again. When an object contacts the floor, the floor's physic material values are averaged with an object's values.
+
+
+```python
+{"$type": "set_floor_physic_material", "dynamic_friction": 0.125, "static_friction": 0.125, "bounciness": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dynamic_friction"` | float | A higher value means that an object on the floor will come to rest very quickly. Must be between 0 and 1. | |
+| `"static_friction"` | float | A higher value means that a lot of force will be needed to make an object on the floor start moving. Must be between 0 and 1. | |
+| `"bounciness"` | float | A higher value means that an object on the floor will bounce without losing much energy. Must be between 0 and 1. | |
+
+***
+
+## **`set_floor_texture_scale`**
+
+Set the scale of the tiling of the floor material's main texture.
+
+
+```python
+{"$type": "set_floor_texture_scale"}
+```
+
+```python
+{"$type": "set_floor_texture_scale", "scale": {"x": 1, "y": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale"` | Vector2 | The tiling scale of the material. Generally (but by no means always), the default tiling scale of a texture is {"x": 1, "y": 1} | {"x": 1, "y": 1} |
+
 # GlobalBooleanCommand
 
 Command with a single toggle-able boolean that affects the build globally. These commands always have a default value, and are cached as singleton instances.
@@ -5720,7 +5801,7 @@ These commands modify the floor of a procedurally-generated room.
 
 Set the albedo RGBA color of the floor. 
 
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_proc_gen_floor_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
@@ -5734,8 +5815,9 @@ Set the albedo RGBA color of the floor.
 
 ## **`set_proc_gen_floor_texture_scale`**
 
-Set the scale of the tiling of the floor material's main texture.
+Set the scale of the tiling of the floor material's main texture. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_proc_gen_floor_texture_scale"}
@@ -5776,6 +5858,7 @@ Set the material of a procedurally-generated ceiling.
 Set the material of a procedurally-generated floor. 
 
 - <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_proc_gen_floor_material", "name": "string"}
@@ -6628,6 +6711,41 @@ Send log messages to the controller.
 # SendDataCommand
 
 These commands send data to the controller.
+
+***
+
+## **`send_collider_intersections`**
+
+Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`ObjectColliderIntersection`](output_data.md#ObjectColliderIntersection), [`EnvironmentColliderIntersection`](output_data.md#EnvironmentColliderIntersection)</font>
+
+```python
+{"$type": "send_collider_intersections"}
+```
+
+```python
+{"$type": "send_collider_intersections", "obj_intersection_ids": [], "env_intersection_ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"obj_intersection_ids"` | int [] | Pairs of object IDs, for example <computeroutput>[[0, 1], [0, 2]]</computeroutput>. Object IDs pairs in this array will be tested for collider intersections with each other. | [] |
+| `"env_intersection_ids"` | int [] | A one-dimensional list of object IDs, for example <computeroutput>[0, 1, 2]</computeroutput>. Object IDs in this list will be tested for collider intersections with the environment. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
 
 ***
 

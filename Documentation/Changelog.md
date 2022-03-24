@@ -4,6 +4,55 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.11
+
+### Command API
+
+#### New Commands
+
+| Command                       | Description                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| `set_floor_color`             | Set the albedo color of the floor.                           |
+| `set_floor_material`          | Set the material of the floor.                               |
+| `set_floor_texture_scale`     | Set the scale of the tiling of the floor material's main texture. |
+| `set_floor_physic_material`   | Set the physic material of the floor.                        |
+| `send_collider_intersections` | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider. |
+
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `send_model_report` | Added a test for whether each MeshCollider has a mesh.<br>Added a test for whether each MeshCollider's mesh is readable. |
+
+#### Deprecated Commands
+
+| Command                            | Reason                                   |
+| ---------------------------------- | ---------------------------------------- |
+| `set_proc_gen_floor_color`         | Replaced with `set_floor_color`.         |
+| `set_proc_gen_floor_material`      | Replaced with `set_floor_material`.      |
+| `set_proc_gen_floor_texture_scale` | Replaced with `set_floor_texture_scale`. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data                       | Description                                                  |
+| --------------------------------- | ------------------------------------------------------------ |
+| `EnvironmentColliderIntersection` | Data for an whose colliders are intersecting with an environment collider such as a wall. |
+| `ObjectColliderIntersection`      | Data for two objects whose colliders are intersecting.       |
+
+### Example Controllers
+
+- Updated `objects_and_scenes/proc_gen_room.py` to use the new floor commands.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                      | Modification                                         |
+| --------------------------------------------- | ---------------------------------------------------- |
+| `lessons/objects_and_scenes/proc_gen_room.md` | Replaced old floor commands with new floor commands. |
+
 ## v1.9.10
 
 ### Build

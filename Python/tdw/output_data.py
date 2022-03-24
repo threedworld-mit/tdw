@@ -54,6 +54,8 @@ from tdw.FBOutput import DynamicCompositeObjects as DynComp
 from tdw.FBOutput import AudioSourceDone as AudDone
 from tdw.FBOutput import ObiParticles as ObiP
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
+from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
+from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 import numpy as np
 from typing import Tuple, Optional, List, Dict
 
@@ -1257,6 +1259,37 @@ class EmptyObjects(OutputData):
 
     def get_position(self, index: int) -> np.array:
         return self._positions[index]
+
+
+class ObjectColliderIntersection(OutputData):
+    def get_data(self) -> ObjColInt.ObjectColliderIntersection:
+        return ObjColInt.ObjectColliderIntersection.GetRootAsObjectColliderIntersection(self.bytes, 0)
+
+    def get_object_id_a(self) -> int:
+        return self.data.ObjectIdA()
+
+    def get_object_id_b(self) -> int:
+        return self.data.ObjectIdB()
+
+    def get_distance(self) -> float:
+        return self.data.Distance()
+
+    def get_direction(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Direction())
+
+
+class EnvironmentColliderIntersection(OutputData):
+    def get_data(self) -> EnvColInt.EnvironmentColliderIntersection:
+        return EnvColInt.EnvironmentColliderIntersection.GetRootAsEnvironmentColliderIntersection(self.bytes, 0)
+
+    def get_object_id(self) -> int:
+        return self.data.ObjectId()
+
+    def get_distance(self) -> float:
+        return self.data.Distance()
+
+    def get_direction(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Direction())
 
 
 class StaticCompositeObjects(OutputData):

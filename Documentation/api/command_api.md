@@ -261,6 +261,7 @@
 | --- | --- |
 | [`set_floor_color`](#set_floor_color) | Set the albedo color of the floor. |
 | [`set_floor_material`](#set_floor_material) | Set the material of the floor.  |
+| [`set_floor_physic_material`](#set_floor_physic_material) | Set the physic material of the floor. These settings can be overriden by sending the command again. When an object contacts the floor, the floor's physic material values are averaged with an object's values. |
 | [`set_floor_texture_scale`](#set_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture. |
 
 **Global Boolean Command**
@@ -3620,6 +3621,23 @@ Set the material of the floor.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"name"` | string | The name of the material. The material must already be loaded in memory. | |
+
+***
+
+## **`set_floor_physic_material`**
+
+Set the physic material of the floor. These settings can be overriden by sending the command again. When an object contacts the floor, the floor's physic material values are averaged with an object's values.
+
+
+```python
+{"$type": "set_floor_physic_material", "dynamic_friction": 0.125, "static_friction": 0.125, "bounciness": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dynamic_friction"` | float | A higher value means that an object on the floor will come to rest very quickly. Must be between 0 and 1. | |
+| `"static_friction"` | float | A higher value means that a lot of force will be needed to make an object on the floor start moving. Must be between 0 and 1. | |
+| `"bounciness"` | float | A higher value means that an object on the floor will bounce without losing much energy. Must be between 0 and 1. | |
 
 ***
 

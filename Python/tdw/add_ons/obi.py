@@ -1,34 +1,102 @@
 from typing import List, Dict, Union
 from tdw.add_ons.add_on import AddOn
-from tdw.output_data import OutputData, ObiParticles
+from tdw.output_data import OutputData, ObiParticles, StaticRigidbodies, StaticRobot
 from tdw.obi_data.fluids.fluid import Fluid, FLUIDS
 from tdw.obi_data.fluids.granular_fluid import GranularFluid, GRANULAR_FLUIDS
 from tdw.obi_data.fluids.emitter_shape import EmitterShape
 from tdw.obi_data.obi_actor import ObiActor
+from tdw.obi_data.collision_materials.collision_material import CollisionMaterial
 
 
 class Obi(AddOn):
-    def __init__(self, output_data: bool = True):
+    def __init__(self, output_data: bool = True,
+                 floor_material: CollisionMaterial = None,
+                 object_collision_material_overrides: Dict[int, CollisionMaterial] = None,
+                 vr_rig_collision_material: CollisionMaterial = None):
         """
         :param output_data: If True, receive [`ObiParticles`](../../api/output_data.md#ObiParticles) per frame.
+        :param floor_material: The floor's [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values.
+        :param object_collision_material_overrides: Overrides for object and robot collision materials. Key = Object or Robot ID. Value = [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md).
+        :param vr_rig_collision_material: If there is a VR rig in the scene, its hands will have this [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values.
         """
 
         super().__init__()
         """:field
-        A dictionary of actor data. Key = Object ID. Value = [`ObiActor`](../obi_data/obi_actor.md). The particle data is updated if `output_data == True` (see above).
+        A dictionary of Obi actor data. Key = Object ID. Value = [`ObiActor`](../obi_data/obi_actor.md). The particle data is updated if `output_data == True` (see above).
         """
         self.actors: Dict[int, ObiActor] = dict()
         self._output_data: bool = output_data
+        self._need_to_initialize_obi: bool = True
+        if floor_material is None:
+            self._floor_material: CollisionMaterial = CollisionMaterial()
+        else:
+            self._floor_material = floor_material
+        if object_collision_material_overrides is None:
+            self._object_collision_material_overrides: Dict[int, CollisionMaterial] = dict()
+        else:
+            self._object_collision_material_overrides = object_collision_material_overrides
+        if vr_rig_collision_material is None:
+            self._vr_rig_collision_material: CollisionMaterial = CollisionMaterial()
+        else:
+            self._vr_rig_collision_material = vr_rig_collision_material
 
     def get_initialization_commands(self) -> List[dict]:
         commands = [{"$type": "destroy_obi_solver"},
-                    {"$type": "initialize_obi"}]
+                    {"$type": "create_obi_solver"},
+                    {"$type": "send_static_oculus_touch"},
+                    {"$type": "send_static_rigidbodies"},
+                    {"$type": "send_static_robots"},
+                    {"$type": "create_floor_obi_colliders"}]
+        # Set the floor material.
+        floor_material_command = {"$type": "set_floor_obi_collision_material"}
+        floor_material_command.update(self._floor_material.to_dict())
+        commands.append(floor_material_command)
         if self._output_data:
             commands.append({"$type": "send_obi_particles",
                              "frequency": "always"})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
+        if self._need_to_initialize_obi:
+            for i in range(len(resp) - 1):
+                r_id = OutputData.get_data_type_id(resp[i])
+                # Add Obi colliders to each object with a rigidbody.
+                if r_id == "srig":
+                    static_rigidbodies = StaticRigidbodies(resp[i])
+                    for j in range(static_rigidbodies.get_num()):
+                        object_id = static_rigidbodies.get_id(j)
+                        self.commands.append({"$type": "create_obi_colliders",
+                                              "id": object_id})
+                        material_command = {"$type": "set_obi_collision_material",
+                                            "id": object_id}
+                        # Use override values.
+                        if object_id in self._object_collision_material_overrides:
+                            material_command.update(self._object_collision_material_overrides[object_id].to_dict())
+                        # Use the Unity physic material values here and the default Obi values.
+                        else:
+                            material_command.update({"dynamic_friction": static_rigidbodies.get_dynamic_friction(j),
+                                                     "static_friction": static_rigidbodies.get_static_friction(j)})
+                        self.commands.append(material_command)
+                # Add Obi colliders to each robot and Magnebot.
+                elif r_id == "srob":
+                    static_robot = StaticRobot(resp[i])
+                    robot_id = static_robot.get_id()
+                    self.commands.append({"$type": "create_robot_obi_colliders",
+                                          "id": robot_id})
+                    material_command = {"$type": "set_robot_obi_collision_material",
+                                        "id": robot_id}
+                    if robot_id in self._object_collision_material_overrides:
+                        material_command.update(self._object_collision_material_overrides[robot_id].to_dict())
+                    else:
+                        material_command.update(CollisionMaterial().to_dict())
+                    self.commands.append(material_command)
+                # Add Obi colliders to the VR rig.
+                elif r_id == "soct":
+                    self.commands.append({"$type": "create_vr_obi_colliders"})
+                    material_command = {"$type": "set_vr_obi_collision_material"}
+                    material_command.update(self._vr_rig_collision_material.to_dict())
+                    self.commands.append(material_command)
+            self._need_to_initialize_obi = False
         # Parse particle data.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -100,7 +168,28 @@ class Obi(AddOn):
                               "id": object_id,
                               "speed": speed})
 
-    def reset(self):
+    def reset(self, floor_material: CollisionMaterial = None,
+              object_collision_material_overrides: Dict[int, CollisionMaterial] = None,
+              vr_rig_collision_material: CollisionMaterial = None):
+        """
+        :param floor_material: The floor's [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values.
+        :param object_collision_material_overrides: Overrides for object and robot collision materials. Key = Object or Robot ID. Value = [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md).
+        :param vr_rig_collision_material: If there is a VR rig in the scene, its hands will have this [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values.
+        """
+
         self.commands.clear()
         self.initialized = False
         self.actors.clear()
+        self._need_to_initialize_obi = True
+        if floor_material is None:
+            self._floor_material = CollisionMaterial()
+        else:
+            self._floor_material = floor_material
+        if object_collision_material_overrides is None:
+            self._object_collision_material_overrides.clear()
+        else:
+            self._object_collision_material_overrides = object_collision_material_overrides
+        if vr_rig_collision_material is None:
+            self._vr_rig_collision_material = CollisionMaterial()
+        else:
+            self._vr_rig_collision_material = vr_rig_collision_material

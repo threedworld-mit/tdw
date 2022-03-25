@@ -13,7 +13,7 @@ c = Controller(launch_build=False)
 camera = ThirdPersonCamera(position={"x": 1.2, "y": 1.5, "z": -1.5},
                            look_at={"x": 0, "y": 0, "z": 0})
 benchmark = Benchmark()
-obi = Obi()
+obi = Obi(output_data=False)
 c.add_ons.extend([camera, obi, benchmark])
 obi.create_fluid(fluid="honey",
                  shape=CubeEmitter(size={"x": 1, "y": 1, "z": 1}),

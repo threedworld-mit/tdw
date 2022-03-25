@@ -37,9 +37,11 @@ class ObiActor:
         """
 
         # Get the indices of the active particles.
-        solver_indices = obi_particles.get_solver_indices(self._object_index)[:obi_particles.get_count(self._object_index) * 4]
-        # Get the particle data at the solver index positions. Reshape the array to (n, 4). Delete the 4th column.
-        self.positions = np.delete(np.take(obi_particles.get_positions(self._solver_id),
-                                           solver_indices).reshape(-1, 4), 3, 1)
-        self.velocities = np.delete(np.take(obi_particles.get_velocities(self._solver_id),
-                                            solver_indices).reshape(-1, 4), 3, 1)
+        solver_indices = obi_particles.get_solver_indices(self._object_index)[:obi_particles.get_count(self._object_index) * 4].reshape(-1, 4)
+        # Get the particle data at the solver index positions.
+        # Reshape the array to (n, 4).
+        # Delete the 4th column.
+        self.positions = np.delete(np.take(obi_particles.get_positions(self._solver_id).reshape(-1, 4),
+                                           solver_indices, axis=0).reshape(-1, 4), 3, 1)
+        self.velocities = np.delete(np.take(obi_particles.get_velocities(self._solver_id).reshape(-1, 4),
+                                            solver_indices, axis=0).reshape(-1, 4), 3, 1)

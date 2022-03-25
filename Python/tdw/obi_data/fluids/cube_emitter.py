@@ -13,15 +13,15 @@ class CubeEmitter(EmitterShape):
         """
         Create a cube-shaped fluid emitter.
 
-        :param size: The size of the cube in meters. If None, defaults to (1, 1, 1).
+        :param size: The size of the cube in meters. If None, defaults to (0.1, 0.1, 0.1).
         :param sampling_method: The [`SamplingMethod`](sampling_method).
         """
 
         if size is None:
             """:field
-            The size of the cube in meters. If None, defaults to (1, 1, 1).
+            The size of the cube in meters. If None, defaults to (0.1, 0.1, 0.1).
             """
-            self.size: Dict[str, float] = {"x": 1, "y": 1, "z": 1}
+            self.size: Dict[str, float] = {"x": 0.1, "y": 0.1, "z": 0.1}
         else:
             self.size = size
         """:field

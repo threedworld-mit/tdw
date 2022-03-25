@@ -7,7 +7,7 @@ class SphereEmitter(EmitterShape):
     A sphere-shaped Obi fluid emitter.
     """
 
-    def __init__(self, radius: float = 0.5, sampling_method: EmitterSamplingMethod = EmitterSamplingMethod.volume):
+    def __init__(self, radius: float = 0.1, sampling_method: EmitterSamplingMethod = EmitterSamplingMethod.volume):
         """
         Create a cube-shaped fluid emitter.
 

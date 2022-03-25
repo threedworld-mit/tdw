@@ -6,7 +6,7 @@ class DiskEmitter(EmitterShape):
     A disk-shaped Obi fluid emitter.
     """
 
-    def __init__(self, radius: float = 0.5, edge_emission: bool = False):
+    def __init__(self, radius: float = 0.1, edge_emission: bool = False):
         """
         Create a cube-shaped fluid emitter.
 

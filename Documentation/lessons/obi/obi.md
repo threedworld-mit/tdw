@@ -1,0 +1,97 @@
+##### Physics (Obi)
+
+# Obi - Overview (the `Obi` add-on)
+
+[Obi](http://obi.virtualmethodstudio.com/) is a particle physics engine for Unity that is built on top of [PhysX](../physx/physx.md). Unlike PhysX, Obi has deformable objects such as soft bodies, cloth, and fluids.
+
+## The `Obi` add-on
+
+For almost all use-cases, we recommend using the [`Obi` add-on](../../python/add_ons/obi.md). The `Obi` add-on automates a fairly complex initialization process and encapsulates most of the Obi API.
+
+With the `Obi` add-on, initializing a scene is as simple as adding your objects to the scene and adding the add-on:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.obi import Obi
+
+c = Controller()
+# Create the Obi add-on.
+obi = Obi()
+c.add_ons.append(obi)
+# Create a scene and add the object.
+commands = [TDWUtils.create_empty_room(12, 12)]
+commands.extend(Controller.get_add_physics_object(model_name="rh10",
+                                                  object_id=Controller.get_unique_id()))
+# Send the commands and initialize Obi.
+c.communicate(commands)
+c.communicate([])
+```
+
+In this minimal example, notice that `c.communicate()` is called twice. This is because `Obi` requires 2 `communicate()` frames to initialize. On the first frame, it requests output data to determine which objects, robots, etc. are in the scene and on the second frame it obi-ifies everything that it found.
+
+This controller doesn't actually change behavior in the scene. It merely sets enables everything--in this case the `rh10` model and the scene floor--for interactions with Obi actors.
+
+## Core concepts of Obi
+
+In Unity, a **GameObject** is a spatial position and rotation that can optionally have additional functionality such as visual meshes or physics colliders. All [objects in TDW](../core_concepts/objects.md) are GameObjects but GameObjects are silently used for lots of other non-visual non-physical purposes in TDW, such as handling data manager classes.
+
+In Obi, a **solver** is a component script that can be attached to a GameObject. At least one solver must be present in the scene in order to use Obi.
+
+An Obi **actor** is the component script that makes an PhysX object behave as an Obi object. For example, a fluid emitter is a type of Obi actor. Every Obi actor must be assigned a solver.
+
+Objects in a scene that *aren't* Obi actors still require specialized Obi components. In the minimal example above, `rh10` is automatically initialized for Obi by the `Obi` add-on.
+
+The `Obi` add-on does a lot of automated initialization and setup. The other documents in this tutorial will cover what exactly it does and how to override parts of the initialization process.
+
+## Reset Obi
+
+Whenever you [reset a scene](../objects_and_scenes/reset_scene.md), call `obi.reset()`. This will reinitialize Obi and tell the add-on to search for new objects in the scene.
+
+## Limitations
+
+- Obi is slower than [PhysX](../physx/physx.md) and [Flex](../flex/flex.md) especially in complex scenes with many objects and actors.
+- At present, only Obi fluids have been implemented in TDW. Cloth will soon be added, followed by softbody objects.
+
+## Obi documentation
+
+If you want to learn more about how Obi works on the backend, we recommend reading [the Obi documentation](http://obi.virtualmethodstudio.com/manual/6.3/).
+
+***
+
+**Next: [Solvers](solvers.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [obi_minimal.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/obi_minimal.py) A minimal implementation of Obi.
+
+Python API:
+
+- [`Obi`](../../python/add_ons/obi.md)
+
+# TODO
+
+
+
+ `Obi` does this by sending [`send_static_rigidbodies`](../../api/command_api.md#send_static_rigidbodies)
+
+
+
+Each object in an Obi simulation has a **collision material**, which is similar to a [Unity physic material](../physx/physics_objects.md) in that it can set dynamic and static friction, but different in that it also has "stickiness" parameters. TDW includes a [`CollisionMaterial` data class](../../python/obi_data/collision_materials/collision_material.md) that can be used to generate JSON-able command instructions.
+
+By default, TDW will set object collision materials in the following manner:
+
+- Dynamic friction and static friction are set to the object's current dynamic friction and static friction.
+- `friction_combine` and `stickiness_combine` are set to `average`
+- `stickiness` and `stick_distance` are set to 0.
+
+You can override these values from the `Obi` constructor and `reset()` function:
+
+- `floor_material` sets the collision material of the floor.
+- `object_materials` sets the collision materials of objects and robots. This is a dictionary where the key is the ID.
+
+- In order to initialize Obi, there must be at  

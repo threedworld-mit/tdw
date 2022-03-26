@@ -115,7 +115,15 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
-### 2.6.2 Physics (Flex)
+### 2.6.2 Physics (Obi)
+
+1. [Obi](Documentation/lessons/obi/obi.md)
+2. [Solvers](Documentation/lessons/obi/solvers.md)
+3. Colliders and collision materials
+4. Fluids
+5. `ObiParticles` output data
+
+### 2.6.3 Physics (Flex)
 
 1. [Flex](Documentation/lessons/flex/flex.md)
 2. [Solid and soft actors](Documentation/lessons/flex/solid_and_soft.md)

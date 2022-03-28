@@ -11,8 +11,6 @@ class CubeEmitter(EmitterShape):
     def __init__(self, size: Dict[str, float] = None,
                  sampling_method: EmitterSamplingMethod = EmitterSamplingMethod.volume):
         """
-        Create a cube-shaped fluid emitter.
-
         :param size: The size of the cube in meters. If None, defaults to (0.1, 0.1, 0.1).
         :param sampling_method: The [`SamplingMethod`](sampling_method).
         """

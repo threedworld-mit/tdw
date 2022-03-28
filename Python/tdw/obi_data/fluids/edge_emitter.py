@@ -8,8 +8,6 @@ class EdgeEmitter(EmitterShape):
 
     def __init__(self, length: float = 0.1, radial_velocity: float = 1):
         """
-        Create a cube-shaped fluid emitter.
-
         :param length: The length of the edge.
         :param radial_velocity: The velocity twisting along the length of the edge.
         """

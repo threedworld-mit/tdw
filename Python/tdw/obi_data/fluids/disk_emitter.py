@@ -8,8 +8,6 @@ class DiskEmitter(EmitterShape):
 
     def __init__(self, radius: float = 0.1, edge_emission: bool = False):
         """
-        Create a cube-shaped fluid emitter.
-
         :param radius: The radius of the circle.
         :param edge_emission: If enabled, particles will be emitted from the circle's edges, instead of its interior.
         """

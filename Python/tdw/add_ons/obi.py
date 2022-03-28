@@ -9,10 +9,12 @@ from tdw.obi_data.collision_materials.collision_material import CollisionMateria
 
 
 class Obi(AddOn):
-    def __init__(self, output_data: bool = True,
-                 floor_material: CollisionMaterial = None,
-                 object_materials: Dict[int, CollisionMaterial] = None,
-                 vr_material: CollisionMaterial = None):
+    """
+    This add-on handles most aspects of an Obi physics simulation, including initialization, actor creation, and particle output data.
+    """
+
+    def __init__(self, output_data: bool = True, floor_material: CollisionMaterial = None,
+                 object_materials: Dict[int, CollisionMaterial] = None, vr_material: CollisionMaterial = None):
         """
         :param output_data: If True, receive [`ObiParticles`](../../api/output_data.md#ObiParticles) per frame.
         :param floor_material: The floor's [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values.
@@ -168,9 +170,8 @@ class Obi(AddOn):
                               "id": object_id,
                               "speed": speed})
 
-    def reset(self, floor_material: CollisionMaterial = None,
-              object_materials: Dict[int, CollisionMaterial] = None,
-              vr_material: CollisionMaterial = None):
+    def reset(self, floor_material: CollisionMaterial = None, object_materials: Dict[int, CollisionMaterial] = None,
+              vr_material: CollisionMaterial = None) -> None:
         """
         :param floor_material: The floor's [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values.
         :param object_materials: Overrides for object and robot collision materials. Key = Object or Robot ID. Value = [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md).

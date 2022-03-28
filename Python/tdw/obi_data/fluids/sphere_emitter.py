@@ -9,8 +9,6 @@ class SphereEmitter(EmitterShape):
 
     def __init__(self, radius: float = 0.1, sampling_method: EmitterSamplingMethod = EmitterSamplingMethod.volume):
         """
-        Create a cube-shaped fluid emitter.
-
         :param radius: The radius of the sphere.
         :param sampling_method: The [`SamplingMethod`](sampling_method).
         """

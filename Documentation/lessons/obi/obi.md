@@ -38,7 +38,7 @@ In Unity, a **GameObject** is a spatial position and rotation that can optionall
 
 In Obi, a **solver** is a component script that can be attached to a GameObject. At least one solver must be present in the scene in order to use Obi.
 
-An Obi **actor** is the component script that makes an PhysX object behave as an Obi object. For example, a fluid emitter is a type of Obi actor. Every Obi actor must be assigned a solver.
+An Obi **actor** is the component script that makes a GameObject behave as an Obi object. For example, a *fluid emitter* is a type of Obi actor. Every Obi actor must be assigned a solver.
 
 Objects in a scene that *aren't* Obi actors still require specialized Obi components. In the minimal example above, `rh10` is automatically initialized for Obi by the `Obi` add-on.
 
@@ -59,7 +59,7 @@ If you want to learn more about how Obi works on the backend, we recommend readi
 
 ***
 
-**Next: [Solvers](solvers.md)**
+**Next: [Fluids](fluids.md)**
 
 [Return to the README](../../../README.md)
 

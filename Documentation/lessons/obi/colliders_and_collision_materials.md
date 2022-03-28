@@ -30,6 +30,8 @@ Most, but not all, interior scenes in TDW have an explicitly-defined floor. In t
 
 ## How to override collision material values
 
+There are many reasons to override collision materials; most involve how non-actors will interact with actors. For example, when simulating a viscous [fluid](fluids.md), it may be important to increase the stickiness of everything else in the scene.
+
 In the `Obi` constructor and `reset()` function, there are three parameters that can be set to override collision material values:
 
 - `floor_material` to set the collision material of the floor.
@@ -38,7 +40,9 @@ In the `Obi` constructor and `reset()` function, there are three parameters that
 
 Each of these parameters uses the [`CollisionMaterial`](../../obi_data/collision_materials/collision_material.md) data class.
 
-In this example, we'll create a floorplan scene with the [`Floorplan`](../../python/add_ons/floorplan.md) add-on. We'll define a very sticky `CollisionMaterial`. Using an [`ObjectManager`](../../python/add_ons/object_manager.md) add-on, we'll get the object IDs of each object in the scene. Using an `Obi` add-on, we'll assign the `CollisionMaterial` to each object:
+In this example, we'll create a floorplan scene with the [`Floorplan`](../../python/add_ons/floorplan.md) add-on. We'll define a very sticky `CollisionMaterial`. Using an [`ObjectManager`](../../python/add_ons/object_manager.md) add-on, we'll get the object IDs of each object in the scene. Using an `Obi` add-on, we'll assign the `CollisionMaterial` to each object.
+
+Every time the scene is re-initialized, we'll call `obi.reset()` to override the collision materials.
 
 ```python
 from tdw.controller import Controller
@@ -48,32 +52,38 @@ from tdw.add_ons.obi import Obi
 from tdw.obi_data.collision_materials.collision_material import CollisionMaterial
 from tdw.obi_data.collision_materials.material_combine_mode import MaterialCombineMode
 
+"""
+Make a floorplan scene very sticky.
+"""
+
 c = Controller()
 floorplan = Floorplan()
 object_manager = ObjectManager()
 obi = Obi()
 c.add_ons.extend([floorplan, object_manager, obi])
-
-# Initialize the scene.
-floorplan.init_scene(scene="1a", layout=0)
-c.communicate([])
-
-# Define a sticky collision material.
-collision_material = CollisionMaterial(dynamic_friction=0.3,
-                                       static_friction=0.3,
-                                       stickiness=1,
-                                       stick_distance=0.1,
-                                       stickiness_combine=MaterialCombineMode.average,
-                                       friction_combine=MaterialCombineMode.average)
-# Get a dictionary of object IDs and collision material.
-object_materials = {object_id: collision_material for object_id in object_manager.objects_static}
-# Reset Obi and apply the collision material.
-obi.reset(floor_material=collision_material,
-          object_materials=object_materials)
-# Call `communicate()` to update the scene.
-c.communicate([])
+# Initialize scene-layout combinations.
+for scene in ["1a", "1b", "2a", "2b"]:
+    for layout in [0, 1, 2]:
+        # Initialize the scene.
+        floorplan.init_scene(scene="1a", layout=0)
+        c.communicate([])
+        # Define a sticky collision material.
+        collision_material = CollisionMaterial(dynamic_friction=0.3,
+                                               static_friction=0.3,
+                                               stickiness=1,
+                                               stick_distance=0.1,
+                                               stickiness_combine=MaterialCombineMode.average,
+                                               friction_combine=MaterialCombineMode.average)
+        # Get a dictionary of object IDs and collision material.
+        object_materials = {object_id: collision_material for object_id in object_manager.objects_static}
+        # Reset Obi and apply the collision material.
+        obi.reset(floor_material=collision_material,
+                  object_materials=object_materials)
+        # Call `communicate()` to update the scene.
+        c.communicate([])
 # End the simulation.
 c.communicate({"$type": "terminate"})
+
 ```
 
 ## How to manually add Obi colliders

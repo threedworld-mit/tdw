@@ -50,7 +50,6 @@ Whenever you [reset a scene](../objects_and_scenes/reset_scene.md), call `obi.re
 
 ## Limitations
 
-- Obi is slower than [PhysX](../physx/physx.md) and [Flex](../flex/flex.md) especially in complex scenes with many objects and actors.
 - At present, only Obi fluids have been implemented in TDW. Cloth will soon be added, followed by softbody objects.
 - Robots aren't fully supported in Obi and Magnebots won't work at all. For more information, [read this](robots.md).
 

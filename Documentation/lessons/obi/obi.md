@@ -30,7 +30,7 @@ c.communicate([])
 
 In this minimal example, notice that `c.communicate()` is called twice. This is because `Obi` requires 2 `communicate()` frames to initialize. On the first frame, it requests output data to determine which objects, robots, etc. are in the scene and on the second frame it obi-ifies everything that it found.
 
-This controller doesn't actually change behavior in the scene. It merely sets enables everything--in this case the `rh10` model and the scene floor--for interactions with Obi actors.
+This controller doesn't actually change behavior in the scene. It merely enables everything--in this case the `rh10` model and the scene floor--for interactions with Obi actors.
 
 ## Core concepts of Obi
 

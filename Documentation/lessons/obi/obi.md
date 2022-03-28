@@ -52,6 +52,7 @@ Whenever you [reset a scene](../objects_and_scenes/reset_scene.md), call `obi.re
 
 - Obi is slower than [PhysX](../physx/physx.md) and [Flex](../flex/flex.md) especially in complex scenes with many objects and actors.
 - At present, only Obi fluids have been implemented in TDW. Cloth will soon be added, followed by softbody objects.
+- Robots aren't fully supported in Obi and Magnebots won't work at all. For more information, [read this](robots.md).
 
 ## Obi documentation
 
@@ -72,26 +73,3 @@ Example controllers:
 Python API:
 
 - [`Obi`](../../python/add_ons/obi.md)
-
-# TODO
-
-
-
- `Obi` does this by sending [`send_static_rigidbodies`](../../api/command_api.md#send_static_rigidbodies)
-
-
-
-Each object in an Obi simulation has a **collision material**, which is similar to a [Unity physic material](../physx/physics_objects.md) in that it can set dynamic and static friction, but different in that it also has "stickiness" parameters. TDW includes a [`CollisionMaterial` data class](../../python/obi_data/collision_materials/collision_material.md) that can be used to generate JSON-able command instructions.
-
-By default, TDW will set object collision materials in the following manner:
-
-- Dynamic friction and static friction are set to the object's current dynamic friction and static friction.
-- `friction_combine` and `stickiness_combine` are set to `average`
-- `stickiness` and `stick_distance` are set to 0.
-
-You can override these values from the `Obi` constructor and `reset()` function:
-
-- `floor_material` sets the collision material of the floor.
-- `object_materials` sets the collision materials of objects and robots. This is a dictionary where the key is the ID.
-
-- In order to initialize Obi, there must be at  

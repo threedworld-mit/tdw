@@ -14,7 +14,7 @@ When resetting the scene for a new trial i.e. when `obi.reset()` is called, the 
 
 ***
 
-**Next: [Colliders and collision materials](colliders_and_collision_materials.md)**
+**Next: [Robots and Obi](robots.md)**
 
 [Return to the README](../../../README.md)
 

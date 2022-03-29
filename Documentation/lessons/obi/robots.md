@@ -54,7 +54,7 @@ Result:
 
 ***
 
-**This is the last document in the "Obi" tutorial.**
+**Next: [Obi and Flex](obi_and_flex.md)**
 
 [Return to the README](../../../README.md)
 

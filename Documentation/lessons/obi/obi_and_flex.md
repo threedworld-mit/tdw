@@ -2,9 +2,7 @@
 
 # Obi and Flex
 
-[Flex](../flex/flex.md) is a particle-based physics engine that is in many ways similar to Obi. Flex was added to TDW long before Obi. Obi is intended as a replacement to Flex.
-
-Flex has a few advantages over Obi, namely runtime speed. That said, **in nearly all use-cases, we recommend using Obi instead of Flex.** 
+[Flex](../flex/flex.md) is a particle-based physics engine that is in many ways similar to Obi. Flex was added to TDW long before Obi. Obi is intended as a replacement to Flex. **In nearly all use-cases, we recommend using Obi instead of Flex.** 
 
 There are two reasons to use Flex instead of Obi:
 

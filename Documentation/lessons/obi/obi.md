@@ -2,7 +2,7 @@
 
 # Obi - Overview (the `Obi` add-on)
 
-[Obi](http://obi.virtualmethodstudio.com/) is a particle physics engine for Unity that is built on top of [PhysX](../physx/physx.md). Unlike PhysX, Obi has deformable objects such as soft bodies, cloth, and fluids.
+[Obi](http://obi.virtualmethodstudio.com/tutorials/) is a particle physics engine for Unity that is built on top of [PhysX](../physx/physx.md). Unlike PhysX, Obi has deformable objects such as soft bodies, cloth, and fluids.
 
 ## The `Obi` add-on
 
@@ -55,7 +55,7 @@ Whenever you [reset a scene](../objects_and_scenes/reset_scene.md), call `obi.re
 
 ## Obi documentation
 
-If you want to learn more about how Obi works on the backend, we recommend reading [the Obi documentation](http://obi.virtualmethodstudio.com/manual/6.3/).
+If you want to learn more about how Obi works on the backend, we recommend reading [the Obi documentation](http://obi.virtualmethodstudio.com/tutorials/).
 
 ***
 

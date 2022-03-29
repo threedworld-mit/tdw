@@ -8,9 +8,9 @@ A cube-shaped Obi fluid emitter.
 
 ## Fields
 
-- `size` The size of the cube in meters. If None, defaults to (0.1, 0.1, 0.1).
+- `size` The size of the cube in meters. If None, defaults to `{"x": 0.1, "y": 0.1, "z": 0.1}`.
 
-- `sampling_method` The [`SamplingMethod`](sampling_method).
+- `sampling_method` The [`EmitterSamplingMethod`](emitter_sampling_method.d).
 
 ***
 
@@ -24,8 +24,8 @@ A cube-shaped Obi fluid emitter.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| size |  Dict[str, float] | None | The size of the cube in meters. If None, defaults to (0.1, 0.1, 0.1). |
-| sampling_method |  EmitterSamplingMethod  | EmitterSamplingMethod.volume | The [`SamplingMethod`](sampling_method). |
+| size |  Dict[str, float] | None | The size of the cube in meters. If None, defaults to `{"x": 0.1, "y": 0.1, "z": 0.1}`. |
+| sampling_method |  EmitterSamplingMethod  | EmitterSamplingMethod.volume | The [`EmitterSamplingMethod`](emitter_sampling_method.md). |
 
 #### to_dict
 

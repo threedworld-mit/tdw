@@ -2,7 +2,7 @@
 
 `from tdw.obi_data.fluids.granular_fluid import GranularFluid`
 
-Data for an Obi granular fluid. For more information, [read this](http://obi.virtualmethodstudio.com/manual/6.3/emittermaterials.html).
+Data for an Obi granular fluid. For more information, [read this](http://obi.virtualmethodstudio.com/tutorials/emittermaterials.html).
 
 ***
 

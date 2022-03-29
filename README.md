@@ -120,10 +120,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 1. [Obi](Documentation/lessons/obi/obi.md)
 2. [Fluids](Documentation/lessons/obi/fluids.md)
 3. [`ObiParticles` output data](Documentation/lessons/obi/obi_particles.md)
-4. [Colliders and collision materials](Documentation/lessons/obi/[Obi](Documentation/lessons/obi/obi.md).md)
+4. [Colliders and collision materials](Documentation/lessons/obi/colliders_and_collision_materials.md)
 5. [Solvers](Documentation/lessons/obi/solvers.md)
 6. [Obi and robots](Documentation/lessons/obi/robots.md)
-6. [Obi and Flex](Documentation/lessons/obi/flex.md)
+6. [Obi and Flex](Documentation/lessons/obi/obi_and_flex.md)
 
 ### 2.6.3 Physics (Flex)
 

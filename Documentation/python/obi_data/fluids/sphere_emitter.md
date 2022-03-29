@@ -10,7 +10,7 @@ A sphere-shaped Obi fluid emitter.
 
 - `radius` The radius of the sphere.
 
-- `sampling_method` The [`SamplingMethod`](sampling_method).
+- `sampling_method` The [`EmitterSamplingMethod`](emitter_sampling_method.md).
 
 ***
 
@@ -25,7 +25,7 @@ A sphere-shaped Obi fluid emitter.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | radius |  float  | 0.1 | The radius of the sphere. |
-| sampling_method |  EmitterSamplingMethod  | EmitterSamplingMethod.volume | The [`SamplingMethod`](sampling_method). |
+| sampling_method |  EmitterSamplingMethod  | EmitterSamplingMethod.volume | The [`EmitterSamplingMethod`](emitter_sampling_method.md). |
 
 #### to_dict
 

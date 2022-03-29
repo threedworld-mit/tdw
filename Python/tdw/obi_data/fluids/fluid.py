@@ -7,7 +7,7 @@ from tdw.obi_data.fluids.fluid_base import FluidBase
 
 class Fluid(FluidBase):
     """
-    Data for an Obi fluid. For more information, [read this](http://obi.virtualmethodstudio.com/manual/6.3/emittermaterials.html).
+    Data for an Obi fluid. For more information, [read this](http://obi.virtualmethodstudio.com/tutorials/emittermaterials.html).
     """
 
     def __init__(self, smoothing: float, surface_tension: float, viscosity: float, vorticity: float,
@@ -32,8 +32,8 @@ class Fluid(FluidBase):
         :param color: The visual color of the fluid.
         :param rest_density: The fluid density in kg/m3.
         :param buoyancy: Controls the relative density between the fluid and the surrounding air.
-        :param diffusion: A diffusion value that will modify `diffusion_data`. [Read this for more information.](http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html)
-        :param diffusion_data: A dictionary of four floats that can be used arbitrarily, for example to colorize a fluid based on its physical state. [Read this for more information.](http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html)
+        :param diffusion: A diffusion value that will modify `diffusion_data`. [Read this for more information.](http://obi.virtualmethodstudio.com/tutorials/particlediffusion.html)
+        :param diffusion_data: A dictionary of four floats that can be used arbitrarily, for example to colorize a fluid based on its physical state. [Read this for more information.](http://obi.virtualmethodstudio.com/tutorials/particlediffusion.html)
         :param atmospheric_drag: The amount of air resistance.
         :param atmospheric_pressure: The amount of inward pressure applied by air on the surface of the fluid.
         :param particle_z_write: A shader rendering flag. This should be false for semi-transparent objects and true for opaque objects.
@@ -87,12 +87,12 @@ class Fluid(FluidBase):
         """
         self.buoyancy: float = buoyancy
         """:field
-        A diffusion value that will modify `diffusion_data`. [Read this for more information.](http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html)
+        A diffusion value that will modify `diffusion_data`. [Read this for more information.](http://obi.virtualmethodstudio.com/tutorials/particlediffusion.html)
         """
         self.diffusion: float = diffusion
         if diffusion_data is None:
             """:field
-            A dictionary of four floats that can be used arbitrarily, for example to colorize a fluid based on its physical state. [Read this for more information.](http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html)
+            A dictionary of four floats that can be used arbitrarily, for example to colorize a fluid based on its physical state. [Read this for more information.](http://obi.virtualmethodstudio.com/tutorials/particlediffusion.html)
             """
             self.diffusion_data: Dict[str, float] = {"x": 0, "y": 0, "z": 0, "w": 0}
         else:

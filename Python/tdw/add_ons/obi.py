@@ -122,8 +122,8 @@ class Obi(AddOn):
         Create a cube-shaped fluid emitter.
 
         :param object_id: The unique ID of the emitter.
-        :param fluid: Either a [`Fluid`](../obi_data/fluid.md), a [`GranularFluid`](../obi_data/granular_fluid.md), the name of a fluid (see `Fluid.FLUIDS`), or the name of a granular fluid (see `GranularFluid.GRANULAR_FLUIDS`).
-        :param shape: Either a [`CubeEmitter`](emitter_shape/cube_emitter.md), [`DiskEmitter`](emitter_shape/disk_emitter.md), [`EdgeEmitter`](emitter_shape/edge_emitter.md), or [`SphereEmitter`](emitter_shape/sphere_emitter.md).
+        :param fluid: Either a [`Fluid`](../obi_data/fluids/fluid.md), a [`GranularFluid`](../obi_data/fluids/granular_fluid.md), the name of a fluid (see `Fluid.FLUIDS`), or the name of a granular fluid (see `GranularFluid.GRANULAR_FLUIDS`).
+        :param shape: Either a [`CubeEmitter`](../obi_data/fluids/cube_emitter.md), [`DiskEmitter`](../obi_data/fluids/disk_emitter.md), [`EdgeEmitter`](../obi_data/fluids/edge_emitter.md), or [`SphereEmitter`](../obi_data/fluids/sphere_emitter.md).
         :param position: The position of the emitter object. If None, defaults to (0, 0, 0).
         :param rotation: The rotation of the emitter object, in Euler angles.  If None, defaults to (0, 0, 0).
         :param speed: The speed of emission in meters per second. If 0, there is no emission.

@@ -4,7 +4,7 @@
 
 ## Overview
 
-Every Obi simulation requires at least one **solver**. In TDW, the [`Obi` add-on](../../python/add_ons/obi.md) will automatically send [`create_obi_solver`](../../api/command_api.md#create_obi_solver.md) when it initializes or resets (see below). In most cases, this automatically-created solver will be sufficient for your simulation.
+Every Obi simulation requires at least one **solver**. In TDW, the [`Obi` add-on](../../python/add_ons/obi.md) will automatically send [`create_obi_solver`](../../api/command_api.md#create_obi_solver) when it initializes or resets (see below). In most cases, this automatically-created solver will be sufficient for your simulation.
 
 Each solver has an integer ID corresponding to the order in which they were created:  The first solver is 0, the second is 1, and so on. 
 
@@ -37,6 +37,6 @@ Python API:
 
 Command API:
 
-- [`create_obi_solver`](../../api/command_api.md#create_obi_solver.md)
+- [`create_obi_solver`](../../api/command_api.md#create_obi_solver)
 - [`set_obi_solver_substeps`](../../api/command_api.md#set_obi_solver_substeps)
 - [`destroy_obi_solver`](../../api/command_api.md#destroy_obi_solver)

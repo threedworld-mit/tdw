@@ -7,7 +7,7 @@ from tdw.obi_data.fluids.fluid_base import FluidBase
 
 class GranularFluid(FluidBase):
     """
-    Data for an Obi granular fluid. For more information, [read this](http://obi.virtualmethodstudio.com/manual/6.3/emittermaterials.html).
+    Data for an Obi granular fluid. For more information, [read this](http://obi.virtualmethodstudio.com/tutorials/emittermaterials.html).
     """
 
     def __init__(self, randomness: float, capacity: int, resolution: float, color: Dict[str, float],

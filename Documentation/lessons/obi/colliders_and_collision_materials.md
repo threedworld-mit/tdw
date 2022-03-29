@@ -38,7 +38,7 @@ In the `Obi` constructor and `reset()` function, there are three parameters that
 - `object_materials` to set the collision materials of  [objects](../core_concepts/objects.md) and [robots](../robots/overview.md) (key = object or robot ID).
 - `vr_material` to set the collision material of a [VR rig](../vr/overview.md).
 
-Each of these parameters uses the [`CollisionMaterial`](../../obi_data/collision_materials/collision_material.md) data class.
+Each of these parameters uses the [`CollisionMaterial`](../../python/obi_data/collision_materials/collision_material.md) data class.
 
 In this example, we'll create a floorplan scene with the [`Floorplan`](../../python/add_ons/floorplan.md) add-on. We'll define a very sticky `CollisionMaterial`. Using an [`ObjectManager`](../../python/add_ons/object_manager.md) add-on, we'll get the object IDs of each object in the scene. Using an `Obi` add-on, we'll assign the `CollisionMaterial` to each object.
 

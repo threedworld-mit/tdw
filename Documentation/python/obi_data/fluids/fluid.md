@@ -2,7 +2,7 @@
 
 `from tdw.obi_data.fluids.fluid import Fluid`
 
-Data for an Obi fluid. For more information, [read this](http://obi.virtualmethodstudio.com/manual/6.3/emittermaterials.html).
+Data for an Obi fluid. For more information, [read this](http://obi.virtualmethodstudio.com/tutorials/emittermaterials.html).
 
 ***
 
@@ -24,9 +24,9 @@ Data for an Obi fluid. For more information, [read this](http://obi.virtualmetho
 
 - `buoyancy` Controls the relative density between the fluid and the surrounding air.
 
-- `diffusion` A diffusion value that will modify `diffusion_data`. [Read this for more information.](http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html)
+- `diffusion` A diffusion value that will modify `diffusion_data`. [Read this for more information.](http://obi.virtualmethodstudio.com/tutorials/particlediffusion.html)
 
-- `diffusion_data` A dictionary of four floats that can be used arbitrarily, for example to colorize a fluid based on its physical state. [Read this for more information.](http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html)
+- `diffusion_data` A dictionary of four floats that can be used arbitrarily, for example to colorize a fluid based on its physical state. [Read this for more information.](http://obi.virtualmethodstudio.com/tutorials/particlediffusion.html)
 
 - `atmospheric_drag` The amount of air resistance.
 
@@ -90,8 +90,8 @@ Data for an Obi fluid. For more information, [read this](http://obi.virtualmetho
 | color |  Dict[str, float] |  | The visual color of the fluid. |
 | rest_density |  float |  | The fluid density in kg/m3. |
 | buoyancy |  float  | -1 | Controls the relative density between the fluid and the surrounding air. |
-| diffusion |  float  | 0 | A diffusion value that will modify `diffusion_data`. [Read this for more information.](http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html) |
-| diffusion_data |  Dict[str, float] | None | A dictionary of four floats that can be used arbitrarily, for example to colorize a fluid based on its physical state. [Read this for more information.](http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html) |
+| diffusion |  float  | 0 | A diffusion value that will modify `diffusion_data`. [Read this for more information.](http://obi.virtualmethodstudio.com/tutorials/particlediffusion.html) |
+| diffusion_data |  Dict[str, float] | None | A dictionary of four floats that can be used arbitrarily, for example to colorize a fluid based on its physical state. [Read this for more information.](http://obi.virtualmethodstudio.com/tutorials/particlediffusion.html) |
 | atmospheric_drag |  float  | 0 | The amount of air resistance. |
 | atmospheric_pressure |  float  | 0 | The amount of inward pressure applied by air on the surface of the fluid. |
 | particle_z_write |  bool  | False | A shader rendering flag. This should be false for semi-transparent objects and true for opaque objects. |

@@ -11,19 +11,19 @@ class CubeEmitter(EmitterShape):
     def __init__(self, size: Dict[str, float] = None,
                  sampling_method: EmitterSamplingMethod = EmitterSamplingMethod.volume):
         """
-        :param size: The size of the cube in meters. If None, defaults to (0.1, 0.1, 0.1).
-        :param sampling_method: The [`SamplingMethod`](sampling_method).
+        :param size: The size of the cube in meters. If None, defaults to `{"x": 0.1, "y": 0.1, "z": 0.1}`.
+        :param sampling_method: The [`EmitterSamplingMethod`](emitter_sampling_method.md).
         """
 
         if size is None:
             """:field
-            The size of the cube in meters. If None, defaults to (0.1, 0.1, 0.1).
+            The size of the cube in meters. If None, defaults to `{"x": 0.1, "y": 0.1, "z": 0.1}`.
             """
             self.size: Dict[str, float] = {"x": 0.1, "y": 0.1, "z": 0.1}
         else:
             self.size = size
         """:field
-        The [`SamplingMethod`](sampling_method).
+        The [`EmitterSamplingMethod`](emitter_sampling_method.md).
         """
         self.sampling_method: EmitterSamplingMethod = sampling_method
 

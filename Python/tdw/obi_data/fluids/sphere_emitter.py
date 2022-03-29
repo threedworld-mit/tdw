@@ -10,7 +10,7 @@ class SphereEmitter(EmitterShape):
     def __init__(self, radius: float = 0.1, sampling_method: EmitterSamplingMethod = EmitterSamplingMethod.volume):
         """
         :param radius: The radius of the sphere.
-        :param sampling_method: The [`SamplingMethod`](sampling_method).
+        :param sampling_method: The [`EmitterSamplingMethod`](emitter_sampling_method.md).
         """
 
         """:field
@@ -18,7 +18,7 @@ class SphereEmitter(EmitterShape):
         """
         self.radius: float = radius
         """:field
-        The [`SamplingMethod`](sampling_method).
+        The [`EmitterSamplingMethod`](emitter_sampling_method.md).
         """
         self.sampling_method: EmitterSamplingMethod = sampling_method
 

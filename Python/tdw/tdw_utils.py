@@ -17,8 +17,6 @@ from tdw.librarian import ModelRecord, ModelLibrarian, SceneLibrarian, MaterialL
     RobotLibrarian, HumanoidLibrarian, HumanoidAnimationLibrarian
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
-from tdw.scene_data.interior_region import InteriorRegion
-from tdw.scene_data.room import Room
 from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
@@ -969,27 +967,3 @@ class TDWUtils:
             elif wall == CardinalDirection.east:
                 return CardinalDirection.north
         raise Exception(corner, wall)
-
-    @staticmethod
-    def get_proc_gen_box_room(width: int, length: int) -> Tuple[List[dict], Room]:
-        """
-        :param width: The width of the room. Must be between 4 and 12 (inclusive).
-        :param length: The length of the room. Must be between 4 and 12 (inclusive).
-
-        :return: Tuple: A list of commands to create the room, a [`Room`](scene_data/room.md).
-        """
-
-        proc_gen_box_rooms = loads(Path(resource_filename(__name__, "proc_gen/data/proc_gen_box_rooms.json")).read_text())
-        for box_scene in proc_gen_box_rooms:
-            if box_scene["size"][0] == width and box_scene["size"][1] == length:
-                box_room = box_scene["room"]
-                room = Room(main_region=InteriorRegion(region_id=box_room["main_region"]["region_id"],
-                                                       center=tuple(box_room["main_region"]["center"]),
-                                                       bounds=tuple(box_room["main_region"]["bounds"]),
-                                                       non_continuous_walls=box_room["main_region"]["non_continuous_walls"],
-                                                       walls_with_windows=box_room["main_region"]["walls_with_windows"]),
-                            alcoves=[])
-                return [{"$type": "load_scene",
-                         "scene_name": "ProcGenScene"},
-                        TDWUtils.create_empty_room(width, length)], room
-        raise Exception(f"Room size not found: {width}, {length}")

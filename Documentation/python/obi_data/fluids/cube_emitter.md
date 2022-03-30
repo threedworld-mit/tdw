@@ -10,7 +10,7 @@ A cube-shaped Obi fluid emitter.
 
 - `size` The size of the cube in meters. If None, defaults to `{"x": 0.1, "y": 0.1, "z": 0.1}`.
 
-- `sampling_method` The [`EmitterSamplingMethod`](emitter_sampling_method.d).
+- `sampling_method` The [`EmitterSamplingMethod`](emitter_sampling_method.md).
 
 ***
 

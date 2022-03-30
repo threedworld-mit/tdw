@@ -262,7 +262,7 @@
 | [`create_floor_obi_colliders`](#create_floor_obi_colliders) | Create Obi colliders for the floor if there aren't any.  |
 | [`set_floor_color`](#set_floor_color) | Set the albedo color of the floor. |
 | [`set_floor_material`](#set_floor_material) | Set the material of the floor.  |
-| [`set_floor_obi_collision_material`](#set_floor_obi_collision_material) | Set the Obi collision material of the floor. See: <computeroutput>add_floor_obi_colliders</computeroutput>.  |
+| [`set_floor_obi_collision_material`](#set_floor_obi_collision_material) | Set the Obi collision material of the floor.  |
 | [`set_floor_physic_material`](#set_floor_physic_material) | Set the physic material of the floor. These settings can be overriden by sending the command again. When an object contacts the floor, the floor's physic material values are averaged with an object's values. |
 | [`set_floor_texture_scale`](#set_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture. |
 
@@ -309,7 +309,7 @@
 | Command | Description |
 | --- | --- |
 | [`create_obi_fluid`](#create_obi_fluid) | Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, and the shape of the emitter.  |
-| [`create_obi_solver`](#create_obi_solver) | Create a new Obi Solver. The solver has a unique ID that is generated sequentially: The first solver's ID is 0, the second solver's ID is 1, and so on.  |
+| [`create_obi_solver`](#create_obi_solver) | Create an Obi Solver. The solver has a unique ID that is generated sequentially: The first solver's ID is 0, the second solver's ID is 1, and so on.  |
 | [`destroy_obi_solver`](#destroy_obi_solver) | Destroy an Obi solver. |
 | [`set_obi_solver_substeps`](#set_obi_solver_substeps) | Set an Obi solver's number of substeps. Performing more substeps will greatly improve the accuracy/convergence speed of the simulation at the cost of speed.  |
 
@@ -333,7 +333,7 @@
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
 | [`scale_object`](#scale_object) | Scale the object by a factor from its current scale. |
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
-| [`set_obi_collision_material`](#set_obi_collision_material) | Set the Obi collision material of an object. For more information, <ulink url="http://obi.virtualmethodstudio.com/manual/6.3/collisionmaterials.html">read this</ulink>.  |
+| [`set_obi_collision_material`](#set_obi_collision_material) | Set the Obi collision material of an object.  |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
 | [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
@@ -499,7 +499,7 @@
 | [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
 | [`remove_robot_nav_mesh_obstacle`](#remove_robot_nav_mesh_obstacle) | Remove a NavMesh obstacle from a robot (see make_robot_nav_mesh_obstacle).  |
 | [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
-| [`set_robot_obi_collision_material`](#set_robot_obi_collision_material) | Set the Obi collision material of a robot. For more information, <ulink url="http://obi.virtualmethodstudio.com/manual/6.3/collisionmaterials.html">read this</ulink>.  |
+| [`set_robot_obi_collision_material`](#set_robot_obi_collision_material) | Set the Obi collision material of a robot.  |
 | [`teleport_robot`](#teleport_robot) | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
 
 **Magnebot Command**
@@ -657,7 +657,7 @@
 | [`create_vr_obi_colliders`](#create_vr_obi_colliders) | Create Obi colliders for a VR rig if there aren't any.  |
 | [`destroy_vr_rig`](#destroy_vr_rig) | Destroy the current VR rig.  |
 | [`rotate_vr_rig_by`](#rotate_vr_rig_by) | Rotate the VR rig by an angle.  |
-| [`set_vr_obi_collision_material`](#set_vr_obi_collision_material) | Set the Obi collision material of the VR rig. For more information, <ulink url="http://obi.virtualmethodstudio.com/manual/6.3/collisionmaterials.html">read this</ulink>.  |
+| [`set_vr_obi_collision_material`](#set_vr_obi_collision_material) | Set the Obi collision material of the VR rig.  |
 | [`set_vr_resolution_scale`](#set_vr_resolution_scale) | Controls the actual size of eye textures as a multiplier of the device's default resolution.  |
 | [`teleport_vr_rig`](#teleport_vr_rig) | Teleport the VR rig to a new position.  |
 
@@ -3658,7 +3658,7 @@ Set the material of the floor.
 
 ## **`set_floor_obi_collision_material`**
 
-Set the Obi collision material of the floor. See: <computeroutput>add_floor_obi_colliders</computeroutput>. 
+Set the Obi collision material of the floor. 
 
 - <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
 
@@ -3937,6 +3937,7 @@ Load a GameObject from resources.
 Load a FlexFluidPrimitive from resources. 
 
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "load_flex_fluid_from_resources", "id": 1}
@@ -3959,6 +3960,7 @@ Load a FlexFluidPrimitive from resources.
 Load a FlexFluidSource mesh from resources. 
 
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "load_flex_fluid_source_from_resources", "id": 1}
@@ -4105,7 +4107,7 @@ Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, a
 
 ## **`create_obi_solver`**
 
-Create a new Obi Solver. The solver has a unique ID that is generated sequentially: The first solver's ID is 0, the second solver's ID is 1, and so on. 
+Create an Obi Solver. The solver has a unique ID that is generated sequentially: The first solver's ID is 0, the second solver's ID is 1, and so on. 
 
 - <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
 
@@ -4524,7 +4526,7 @@ Set the albedo RGBA color of an object.
 
 ## **`set_obi_collision_material`**
 
-Set the Obi collision material of an object. For more information, <ulink url="http://obi.virtualmethodstudio.com/manual/6.3/collisionmaterials.html">read this</ulink>. 
+Set the Obi collision material of an object. 
 
 - <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
 
@@ -5439,6 +5441,7 @@ Create or adjust a FlexArrayActor as a fluid object.
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_flex_fluid_actor", "id": 1}
@@ -5465,6 +5468,7 @@ Create or adjust a FlexSourceActor as a fluid "hose pipe" source.
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_flex_fluid_source_actor", "id": 1}
@@ -6316,7 +6320,7 @@ Set whether or not the root object of the robot is immovable. Its joints will st
 
 ## **`set_robot_obi_collision_material`**
 
-Set the Obi collision material of a robot. For more information, <ulink url="http://obi.virtualmethodstudio.com/manual/6.3/collisionmaterials.html">read this</ulink>. 
+Set the Obi collision material of a robot. 
 
 - <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
 
@@ -8548,7 +8552,7 @@ Rotate the VR rig by an angle.
 
 ## **`set_vr_obi_collision_material`**
 
-Set the Obi collision material of the VR rig. For more information, <ulink url="http://obi.virtualmethodstudio.com/manual/6.3/collisionmaterials.html">read this</ulink>. 
+Set the Obi collision material of the VR rig. 
 
 - <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
 - <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>

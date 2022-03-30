@@ -4,6 +4,92 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.12
+
+### New Features
+
+- **Added Obi fluids to TDW.** This is a particle-based fluid simulator that in most respects is superior to the existing Flex fluid simulator.
+
+### Command API
+
+#### New Commands
+
+| Command                            | Description                                             |
+| ---------------------------------- | ------------------------------------------------------- |
+| `create_floor_obi_colliders`       | Create Obi colliders for the floor if there aren't any. |
+| `set_floor_obi_collision_material` | Set the Obi collision material of the floor.            |
+| `create_obi_fluid`                 | Create an Obi fluid.                                    |
+| `create_obi_solver`                | Create an Obi solver.                                   |
+| `destroy_obi_solver`               | Destroy an Obi solver.                                  |
+| `set_obi_solver_substeps`          | Set an Obi solver's number of substeps.                 |
+| `create_obi_colliders`             | Create Obi colliders for an object if there aren't any. |
+| `set_obi_collision_material`       | Set the Obi collision material of an object.            |
+| `set_obi_fluid_emission_speed`     | Set the emission speed of a fluid emitter.              |
+| `create_robot_obi_colliders`       | Create Obi colliders for a robot if there aren't any.   |
+| `set_robot_obi_collision_material` | Set the Obi collision material of a robot.              |
+| `send_obi_particles`               | Send particle data for all Obi actors in the scene.     |
+| `create_vr_obi_colliders`          | Create Obi colliders for a VR rig if there aren't any.  |
+| `set_vr_obi_collision_material`    | Set the Obi collision material of the VR rig.           |
+
+#### Deprecated Commands
+
+| Command                                                      | Reason                                                   |
+| ------------------------------------------------------------ | -------------------------------------------------------- |
+| `set_flex_fluid_actor`<br>`set_flex_fluid_source_actor`<br>`load_flex_fluid_from_resources`<br>`load_flex_fluid_source_from_resources` | Flex fluids have been deprecated in favor of Obi fluids. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data    | Description        |
+| -------------- | ------------------ |
+| `ObiParticles` | Obi particle data. |
+
+### `tdw` module
+
+- Added `Obi` add-on. This add-on handles most aspects of an Obi physics simulation, including initialization, actor creation, and particle output data.
+- Added Obi data classes for usage within the `Obi` add-on:
+  - `ObiActor` Handles particle data per Obi actor.
+  - Fluids:
+    - `FluidBase` Abstract base class for fluids.
+    - `Fluid` Includes a dictionary of presets: `from tdw.obi_data.fluids.fluid import FLUIDS`
+    - `GranularFluid` Includes a dictionary of presets: `from tdw.obi_data.fluids.granular_fluid import GRANULAR_FLUIDS`
+  - Emitter shapes:
+    - `EmitterShape` Abstract base class for emitter shapes.
+    - `CubeEmitter`
+    - `DiskEmitter`
+    - `EdgeEmitter`
+    - `SphereEmitter`
+    - `EmitterSamplingMethod` Enum values for the emitter sampling method.
+  - Collision materials:
+    - `CollisionMaterial`
+    - `MaterialCombineMode`
+
+### Example Controllers
+
+- Added: `obi/custom_fluid.py`, `obi/milk.py` `obi/obi_minimal.py`, `obi/obi_robot.py`, `obi/strawberry_jam.py`, `obi/water.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/obi/overview.md`<br>`lessons/obi/fluids.md`<br>`lessons/obi/obi_particles.md`<br>`lessons/obi/colliders_and_collision_materials.md`<br>`lessons/obi/solvers.md`<br>`lessons/obi/robots.md`<br>`lessons/obi/obi_and_flex.md` | Tutorial documentation for Obi in TDW.                       |
+| `python/add_ons/obi.md`<br>`python/obi_data/collision_materials/collision_material.md`<br>`python/obi_data/collision_materials/material_combine_mode.md`<br>`python/obi_data/fluids/cube_emitter.md`<br>`python/obi_data/fluids/disk_emitter.md`<br>`python/obi_data/fluids/edge_emitter.md`<br>`python/obi_data/fluids/emitter_sampling_method.md`<br>`python/obi_data/fluids/emitter_shape.md`<br>`python/obi_data/fluids/fluid.md`<br>`python/obi_data/fluids/fluid_base.md`<br>`python/obi_data/fluids/granular_fluid.md`<br>`python/obi_data/fluids/sphere_emitter.md`<br>`python/obi_data/obi_actor.md` | API documentation for the `Obi` add-on and associated data classes. |
+
+#### Modified Documentation
+
+| Document                           | Modification                               |
+| ---------------------------------- | ------------------------------------------ |
+| `lessons/flex/fluid_and_source.md` | Added deprecation notice.                  |
+| `lessons/physx/overview.md`        | Updated comparison section to include Obi. |
+
+### Benchmarking
+
+- Added: `flex_fluid.py`, `obi.py`, and `obi_fluid.py`
+- Added Obi benchmark to `performance_benchmark_controller.py
+
 ## v1.9.11
 
 ### Command API

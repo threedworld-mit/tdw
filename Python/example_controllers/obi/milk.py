@@ -39,7 +39,6 @@ c.communicate(Controller.get_add_physics_object(model_name="sphere",
                                                 kinematic=True,
                                                 gravity=False,
                                                 scale_factor={"x": 0.5, "y": 0.5, "z": 0.5}))
-
 for i in range(300):
     c.communicate([])
 c.communicate({"$type": "terminate"})

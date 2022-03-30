@@ -8,36 +8,38 @@ To add an Obi fluid to the scene, call `obi.create_fluid()`:
 from tdw.controller import Controller
 from tdw.add_ons.obi import Obi
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.obi_data.fluids.cube_emitter import CubeEmitter
-
+from tdw.obi_data.fluids.disk_emitter import DiskEmitter
 
 """
-Minimal example of adding honey to a scene.
+Pour water into a receptacle.
 """
 
 c = Controller()
 c.communicate(Controller.get_add_scene(scene_name="tdw_room"))
-fluid_id = Controller.get_unique_id()
-camera = ThirdPersonCamera(position={"x": 1.2, "y": 1.5, "z": -1.5},
+camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
                            look_at={"x": 0, "y": 0, "z": 0})
 obi = Obi()
 c.add_ons.extend([camera, obi])
-obi.create_fluid(fluid="honey",
-                 shape=CubeEmitter(),
-                 object_id=fluid_id,
-                 position={"x": 0, "y": 2.35, "z": 0},
-                 rotation={"x": 90, "y": 0, "z": 0},
-                 speed=1)
-c.communicate(Controller.get_add_physics_object(model_name="rh10",
-                                                object_id=Controller.get_unique_id()))
-for i in range(200):
+obi.create_fluid(fluid="water",
+                 shape=DiskEmitter(),
+                 object_id=Controller.get_unique_id(),
+                 position={"x": 0, "y": 2.35, "z": -1.5},
+                 rotation={"x": 45, "y": 0, "z": 0},
+                 speed=5)
+c.communicate(Controller.get_add_physics_object(model_name="fluid_receptacle1x1",
+                                                object_id=Controller.get_unique_id(),
+                                                library="models_special.json",
+                                                kinematic=True,
+                                                gravity=False,
+                                                scale_factor={"x": 2, "y": 2, "z": 2}))
+for i in range(500):
     c.communicate([])
 c.communicate({"$type": "terminate"})
 ```
 
 Result:
 
-![](images/fluids/honey.gif)
+![](images/fluids/water.gif)
 
 Note that in this example, we've loaded a [streamed scene](../core_concepts/scenes.md) instead of the usual example empty room. This is because fluids render much more realistically in streamed scenes due to their superior [lighting setups](../photorealism/lighting.md).
 
@@ -315,7 +317,7 @@ Granular fluids don't use render settings and don't have the same limitation. Ho
 
 Example controllers:
 
-- [honey.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/honey.py) Minimal example of adding honey to a scene.
+- [water.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/water.py) Pour water into a receptacle.
 - [custom_fluid.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/honey.py) Add a custom fluid to the scene.
 
 Python API:

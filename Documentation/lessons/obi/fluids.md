@@ -39,7 +39,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/fluids/water.gif)
+![](images/water.gif)
 
 Note that in this example, we've loaded a [streamed scene](../core_concepts/scenes.md) instead of the usual example empty room. This is because fluids render much more realistically in streamed scenes due to their superior [lighting setups](../photorealism/lighting.md).
 
@@ -248,7 +248,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/fluids/custom.gif)
+![](images/custom_fluid.gif)
 
 ## The `shape` parameter
 

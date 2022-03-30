@@ -8,7 +8,7 @@ from tdw.controller import Controller
 from tdw.proc_gen.arrangements.kitchen_cabinet import KitchenCabinet
 from tdw.proc_gen.arrangements.wall_cabinet import WallCabinet
 from tdw.proc_gen.arrangements.microwave import Microwave
-from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import KitchenCabinetSet
+from tdw.proc_gen.arrangements.cabinetry.cabinetry import Cabinetry
 from tdw.scene_data.interior_region import InteriorRegion
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
@@ -41,11 +41,11 @@ class KitchenCounter(KitchenCabinet):
     _ENCLOSED_CELL_SIZE: float = 0.04
     _ENCLOSE_SCALE: float = 0.7
 
-    def __init__(self, cabinetry: KitchenCabinetSet, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
+    def __init__(self, cabinetry: Cabinetry, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
                  region: InteriorRegion, allow_microwave: bool = True, microwave_plate: float = 0.7, empty: float = 0.1,
                  model: Union[str, ModelRecord] = None, wall_length: float = None, rng: np.random.RandomState = None):
         """
-        :param cabinetry: The [`KitchenCabinetSet`](kitchen_cabinets/kitchen_cabinet_set.md).
+        :param cabinetry: The [`Cabinetry`](cabinetry/cabinetry.md) set.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
         :param distance: The distance in meters from the corner along the derived direction.

@@ -4,7 +4,7 @@ import numpy as np
 from overrides import final
 from tdw.tdw_utils import TDWUtils
 from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWall
-from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import KitchenCabinetSet
+from tdw.proc_gen.arrangements.cabinetry.cabinetry import Cabinetry
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
 from tdw.librarian import ModelRecord
@@ -16,11 +16,11 @@ class KitchenCabinet(ArrangementAlongWall, ABC):
     Abstract class for kitchen counters, wall cabinets, and sinks. These all shared the same canonical rotation and height.
     """
 
-    def __init__(self, cabinetry: KitchenCabinetSet, corner: OrdinalDirection, wall: CardinalDirection,
+    def __init__(self, cabinetry: Cabinetry, corner: OrdinalDirection, wall: CardinalDirection,
                  distance: float, region: InteriorRegion, model: Union[str, ModelRecord] = None,
                  wall_length: float = None, rng: np.random.RandomState = None):
         """
-        :param cabinetry: The [`KitchenCabinetSet`](kitchen_cabinets/kitchen_cabinet_set.md).
+        :param cabinetry: The [`Cabinetry`](cabinetry/cabinetry.md) set.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
         :param distance: The distance in meters from the corner along the derived direction.
@@ -30,7 +30,7 @@ class KitchenCabinet(ArrangementAlongWall, ABC):
         :param rng: The random number generator. If None, a new random number generator is created.
         """
 
-        self._cabinetry: KitchenCabinetSet = cabinetry
+        self._cabinetry: Cabinetry = cabinetry
         super().__init__(wall=wall, corner=corner, distance=distance, region=region, model=model,
                          wall_length=wall_length, rng=rng)
 

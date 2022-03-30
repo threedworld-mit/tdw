@@ -2,7 +2,7 @@ import json
 from pkg_resources import resource_filename
 from typing import Dict, List, Union
 from pathlib import Path
-from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_type import KitchenCabinetType
+from tdw.proc_gen.arrangements.cabinetry.cabinetry_type import CabinetryType
 
 
 class _Decoder(json.JSONDecoder):
@@ -12,17 +12,17 @@ class _Decoder(json.JSONDecoder):
     @staticmethod
     def object_hook(dct):
         if "name" in dct:
-            return KitchenCabinetSet(**dct)
+            return Cabinetry(**dct)
         else:
-            return {KitchenCabinetType[k]: v for k, v in dct.items()}
+            return {CabinetryType[k]: v for k, v in dct.items()}
 
 
-class KitchenCabinetSet:
+class Cabinetry:
     """
     A set of cabinetry models and materials.
     """
 
-    def __init__(self, name: Union[str, KitchenCabinetType], kitchen_counters: List[str], wall_cabinets: List[str],
+    def __init__(self, name: Union[str, CabinetryType], kitchen_counters: List[str], wall_cabinets: List[str],
                  sinks: List[str], counter_top_material: str):
         """
         :param name: The name of the cabinetry set.
@@ -32,13 +32,13 @@ class KitchenCabinetSet:
         :param counter_top_material: The name of the kitchen countertop material.
         """
 
-        if isinstance(name, KitchenCabinetType):
+        if isinstance(name, CabinetryType):
             """:field
             The name of the cabinetry set.
             """
-            self.name: KitchenCabinetType = name
+            self.name: CabinetryType = name
         elif isinstance(name, str):
-            self.name = KitchenCabinetType[name]
+            self.name = CabinetryType[name]
         else:
             raise Exception(name)
         """:field
@@ -59,4 +59,4 @@ class KitchenCabinetSet:
         self.counter_top_material: str = counter_top_material
 
 
-CABINETRY: Dict[KitchenCabinetType, KitchenCabinetSet] = json.loads(Path(resource_filename(__name__, "kitchen_cabinets.json")).read_text(), cls=_Decoder)
+CABINETRY: Dict[CabinetryType, Cabinetry] = json.loads(Path(resource_filename(__name__, "cabinetry.json")).read_text(), cls=_Decoder)

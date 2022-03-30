@@ -8,7 +8,7 @@ from tdw.scene_data.interior_region import InteriorRegion
 from tdw.librarian import ModelRecord
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
-from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import KitchenCabinetSet
+from tdw.proc_gen.arrangements.cabinetry.cabinetry import Cabinetry
 
 
 class KitchenCounterTopBase(ArrangementAlongWall, ABC):
@@ -16,11 +16,11 @@ class KitchenCounterTopBase(ArrangementAlongWall, ABC):
     Abstract base class for arrangements that including a floating kitchen counter top.
     """
 
-    def __init__(self, cabinetry: KitchenCabinetSet, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
+    def __init__(self, cabinetry: Cabinetry, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
                  region: InteriorRegion, model: Union[str, ModelRecord] = None, wall_length: float = None,
                  rng: np.random.RandomState = None):
         """
-        :param cabinetry: The [`KitchenCabinetSet`](kitchen_cabinets/kitchen_cabinet_set.md).
+        :param cabinetry: The [`Cabinetry`](cabinetry/cabinetry.md) set.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
         :param distance: The distance in meters from the corner along the derived direction.

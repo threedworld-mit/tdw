@@ -1,7 +1,7 @@
 from typing import Tuple, List
 import numpy as np
 from tdw.proc_gen.arrangements.kitchen_counter_top_base import KitchenCounterTopBase
-from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import KitchenCabinetSet
+from tdw.proc_gen.arrangements.cabinetry.cabinetry import Cabinetry
 from tdw.scene_data.interior_region import InteriorRegion
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
@@ -17,10 +17,10 @@ class KitchenCounterTop(KitchenCounterTopBase):
     - The kitchen counter top is kinematic.
     """
 
-    def __init__(self, cabinetry: KitchenCabinetSet, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
+    def __init__(self, cabinetry: Cabinetry, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
                  region: InteriorRegion, wall_length: float = None, rng: np.random.RandomState = None):
         """
-        :param cabinetry: The [`KitchenCabinetSet`](kitchen_cabinets/kitchen_cabinet_set.md).
+        :param cabinetry: The [`Cabinetry`](cabinetry/cabinetry.md) set.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
         :param distance: The distance in meters from the corner along the derived direction.

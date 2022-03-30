@@ -26,8 +26,8 @@ from tdw.proc_gen.arrangements.stove import Stove
 from tdw.proc_gen.arrangements.suitcase import Suitcase
 from tdw.proc_gen.arrangements.void import Void
 from tdw.proc_gen.arrangements.kitchen_counter_top import KitchenCounterTop
-from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_type import KitchenCabinetType
-from tdw.proc_gen.arrangements.kitchen_cabinets.kitchen_cabinet_set import KitchenCabinetSet, CABINETRY
+from tdw.proc_gen.arrangements.cabinetry.cabinetry_type import CabinetryType
+from tdw.proc_gen.arrangements.cabinetry.cabinetry import Cabinetry, CABINETRY
 from tdw.proc_gen.arrangements.kitchen_table import KitchenTable
 
 
@@ -75,11 +75,11 @@ class ProcGenKitchen(AddOn):
         """
         self.room: Room = self._get_room(scene=scene, room_index=room_index)
         # Set the cabinetry.
-        cabinetry_type = [c for c in KitchenCabinetType]
+        cabinetry_type = [c for c in CabinetryType]
         """:field
         The [`KitchenCabinetSet`](../proc_gen/kitchen_cabinets/kitchen_cabinet_set.md). This is set randomly.
         """
-        self.cabinetry: KitchenCabinetSet = CABINETRY[cabinetry_type[self.rng.randint(0, len(cabinetry_type))]]
+        self.cabinetry: Cabinetry = CABINETRY[cabinetry_type[self.rng.randint(0, len(cabinetry_type))]]
         self._allow_microwave: bool = True
         self._allow_radiator: bool = True
 
@@ -161,7 +161,7 @@ class ProcGenKitchen(AddOn):
         # Set the room.
         self.room = self._get_room(scene=scene, room_index=room_index)
         # Set the cabinetry.
-        cabinetry_type = [c for c in KitchenCabinetType]
+        cabinetry_type = [c for c in CabinetryType]
         self.cabinetry = CABINETRY[cabinetry_type[self.rng.randint(0, len(cabinetry_type))]]
         # Allow appliances.
         self._allow_microwave = True

@@ -40,51 +40,64 @@ In the `Obi` constructor and `reset()` function, there are three parameters that
 
 Each of these parameters uses the [`CollisionMaterial`](../../python/obi_data/collision_materials/collision_material.md) data class.
 
-In this example, we'll create a floorplan scene with the [`Floorplan`](../../python/add_ons/floorplan.md) add-on. We'll define a very sticky `CollisionMaterial`. Using an [`ObjectManager`](../../python/add_ons/object_manager.md) add-on, we'll get the object IDs of each object in the scene. Using an `Obi` add-on, we'll assign the `CollisionMaterial` to each object.
+## Obi actors and Obi collision materials
 
-Every time the scene is re-initialized, we'll call `obi.reset()` to override the collision materials.
+In an Obi simulation, it is often insufficient to define realistic parameters for an actor;  you must define corresponding parameters for the objects in the scene.
+
+For example, in a fluid simulation, fluids don't have a "stickiness" property but collision materials do. In order to simulate a "sticky" fluid, you must add the fluid to the scene and then make the *non*-actors sticky.
+
+In this example, we'll add milk to the scene and increase the stickiness of the floor and a reference object:
 
 ```python
 from tdw.controller import Controller
-from tdw.add_ons.floorplan import Floorplan
-from tdw.add_ons.object_manager import ObjectManager
 from tdw.add_ons.obi import Obi
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.obi_data.fluids.disk_emitter import DiskEmitter
 from tdw.obi_data.collision_materials.collision_material import CollisionMaterial
 from tdw.obi_data.collision_materials.material_combine_mode import MaterialCombineMode
 
 """
-Make a floorplan scene very sticky.
+Create a custom collision material to simulate a sticky fluid.
 """
 
 c = Controller()
-floorplan = Floorplan()
-object_manager = ObjectManager()
-obi = Obi()
-c.add_ons.extend([floorplan, object_manager, obi])
-# Initialize scene-layout combinations.
-for scene in ["1a", "1b", "2a", "2b"]:
-    for layout in [0, 1, 2]:
-        # Initialize the scene.
-        floorplan.init_scene(scene="1a", layout=0)
-        c.communicate([])
-        # Define a sticky collision material.
-        collision_material = CollisionMaterial(dynamic_friction=0.3,
-                                               static_friction=0.3,
-                                               stickiness=1,
-                                               stick_distance=0.1,
-                                               stickiness_combine=MaterialCombineMode.average,
-                                               friction_combine=MaterialCombineMode.average)
-        # Get a dictionary of object IDs and collision material.
-        object_materials = {object_id: collision_material for object_id in object_manager.objects_static}
-        # Reset Obi and apply the collision material.
-        obi.reset(floor_material=collision_material,
-                  object_materials=object_materials)
-        # Call `communicate()` to update the scene.
-        c.communicate([])
-# End the simulation.
-c.communicate({"$type": "terminate"})
+c.communicate(Controller.get_add_scene(scene_name="tdw_room"))
+fluid_id = Controller.get_unique_id()
+object_id = Controller.get_unique_id()
+camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
+                           look_at={"x": 0, "y": 0, "z": 0})
+# Define a somewhat sticky collision material.
+slick_material = CollisionMaterial(dynamic_friction=0.05,
+                                   static_friction=0.05,
+                                   stickiness=0,
+                                   stick_distance=0,
+                                   stickiness_combine=MaterialCombineMode.average,
+                                   friction_combine=MaterialCombineMode.average)
+obi = Obi(floor_material=slick_material, object_materials={object_id: slick_material})
+c.add_ons.extend([camera, obi])
+obi.create_fluid(fluid="milk",
+                 shape=DiskEmitter(radius=0.25),
+                 object_id=fluid_id,
+                 position={"x": -0.1, "y": 2.0, "z": 0},
+                 rotation={"x": 90, "y": 0, "z": 0},
+                 lifespan=12,
+                 speed=3)
+# Add an object for the fluid to interact with.
+c.communicate(Controller.get_add_physics_object(model_name="sphere",
+                                                object_id=object_id,
+                                                library="models_flex.json",
+                                                kinematic=True,
+                                                gravity=False,
+                                                scale_factor={"x": 0.5, "y": 0.5, "z": 0.5}))
 
+for i in range(300):
+    c.communicate([])
+c.communicate({"$type": "terminate"})
 ```
+
+Result:
+
+![](images/milk.gif)
 
 ## How to manually add Obi colliders
 
@@ -109,7 +122,7 @@ The `Obi` add-on automatically sends all of these commands; in most cases, it sh
 
 Example controllers:
 
-- [sticky_floorplan.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/sticky_floorplan.py) Make a floorplan scene very sticky.
+- [milk.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/sticky_floorplan.py) Create a custom collision material to simulate a sticky fluid.
 
 Python API:
 
@@ -117,8 +130,6 @@ Python API:
 - Collision materials:
   - [`CollisionMaterial`](../../python/obi_data/collision_materials/collision_material.md)
   - [`MaterialCombineMode`](../../python/obi_data/collision_materials/material_combine_mode.md)
-- [`ObjectManager`](../../python/add_ons/object_manager.md)
-- [`Floorplan`](../../python/add_ons/floorplan.md)
 
 Command API:
 

@@ -318,7 +318,7 @@ Granular fluids don't use render settings and don't have the same limitation. Ho
 Example controllers:
 
 - [water.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/water.py) Pour water into a receptacle.
-- [custom_fluid.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/honey.py) Add a custom fluid to the scene.
+- [custom_fluid.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/custom_fluid.py) Add a custom fluid to the scene.
 
 Python API:
 

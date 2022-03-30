@@ -19,7 +19,7 @@ You can send `create_obi_solver` more than once to create additional solvers. Th
 
 ## Create strawberry jam
 
-In this example, we'll define a highly viscous fluid that looks and behaves like strawberry jam. In an Obi fluid simulation, it is often insufficient to merely define a fluid correctly: You may need to set object parameters and global settings. In this case, we'll increase the number of solver substeps from 1 to 4 in order to allow the viscous jam to behave correctly, and we'll make the floor and reference object sticky.
+In this example, we'll define a highly viscous fluid that looks and behaves like strawberry jam. We'll increase the number of solver substeps from 1 to 4 in order to allow the viscous jam to behave correctly, and we'll make the floor and reference object sticky.
 
 ```python
 from tdw.controller import Controller
@@ -110,7 +110,7 @@ Send additional `destroy_obi_solver` commands to clean up any other solvers that
 
 Example controllers:
 
-- [strawberry_jam.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/honey.py) Create a custom "strawberry jam" fluid, and a custom collision material.
+- [strawberry_jam.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/strawberry_jam.py) Create a custom "strawberry jam" fluid, and a custom collision material.
 
 Python API:
 

@@ -16,7 +16,7 @@ fluid_id = Controller.get_unique_id()
 object_id = Controller.get_unique_id()
 camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
                            look_at={"x": 0, "y": 0, "z": 0})
-# Define a somewhat sticky collision material.
+# Define a slick collision material.
 slick_material = CollisionMaterial(dynamic_friction=0.05,
                                    static_friction=0.05,
                                    stickiness=0,

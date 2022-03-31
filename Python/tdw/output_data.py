@@ -57,7 +57,7 @@ from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 import numpy as np
-from typing import Tuple, Optional, List, Dict
+from typing import Tuple, Optional, List
 
 
 class OutputDataUndefinedError(Exception):

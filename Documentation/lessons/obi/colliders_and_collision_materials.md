@@ -119,7 +119,7 @@ The `Obi` add-on automatically sends all of these commands; in most cases, it sh
 
 Example controllers:
 
-- [milk.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/sticky_floorplan.py) Create a custom collision material to simulate a slick fluid.
+- [milk.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/milk.py) Create a custom collision material to simulate a slick fluid.
 
 Python API:
 

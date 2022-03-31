@@ -704,17 +704,3 @@ Given an corner an a wall, get the direction that a lateral arrangement will run
 
 _Returns:_  Tuple: direction, wall
 
-#### get_proc_gen_box_room
-
-**`TDWUtils.get_proc_gen_box_room(width, length)`**
-
-_(Static)_
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| width |  int |  | The width of the room. Must be between 4 and 12 (inclusive). |
-| length |  int |  | The length of the room. Must be between 4 and 12 (inclusive). |
-
-_Returns:_  Tuple: A list of commands to create the room, a [`Room`](scene_data/room.md).
-

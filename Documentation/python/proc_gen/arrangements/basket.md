@@ -32,18 +32,18 @@ A basket with random objects.
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
-| `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
-| `MAX_NUM_OBJECTS` | int | The maximum number of objects in a basket. | `2` |
-| `MIN_DEPTH_OFFSET` | float | The minimum offset from the wall. | `1.15` |
-| `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
-| `MIN_NUM_OBJECTS` | int | The minimum number of objects in a basket. | `2` |
 | `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
-| `ROTATION` | float | Baskets are randomly rotated up to +/- this many degrees. | `10` |
-| `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
+| `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
 | `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
-| `MAX_DEPTH_OFFSET` | float | The maximum offset from the wall. | `1.25` |
-| `LENGTH_OFFSET` | float | Add this length to the basket's length when creating lateral arrangements. | `0.1` |
 | `DELTA_Y` | float | Each subsequent object in the basket is placed this many meters above the previous. | `0.25` |
+| `ROTATION` | float | Baskets are randomly rotated up to +/- this many degrees. | `10` |
+| `MIN_NUM_OBJECTS` | int | The minimum number of objects in a basket. | `2` |
+| `MAX_NUM_OBJECTS` | int | The maximum number of objects in a basket. | `2` |
+| `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
+| `MIN_DEPTH_OFFSET` | float | The minimum offset from the wall. | `1.15` |
+| `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
+| `LENGTH_OFFSET` | float | Add this length to the basket's length when creating lateral arrangements. | `0.1` |
+| `MAX_DEPTH_OFFSET` | float | The maximum offset from the wall. | `1.25` |
 
 ***
 

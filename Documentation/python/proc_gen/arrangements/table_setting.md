@@ -33,17 +33,17 @@ A table setting includes a plate, fork, knife, spoon, and sometimes a cup.
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
-| `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
-| `CUTLERY_POSITION_PERTURBATION` | float | Randomly perturb the (x, z) positional coordinates of the fork, knife and spoon by up to +/- this distance. | `0.03` |
-| `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
 | `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
-| `CUP_AND_COASTER_POSITION_PERTURBATION` | float | Randomly perturb the (x, z) positional coordinates of `CupAndCoaster` by up to +/- this distance. | `0.05` |
-| `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
-| `FOOD_CATEGORIES` | List[str] | The categories of possible food models. | `["apple", "banana", "chocolate", "orange", "sandwich"]` |
-| `PROBABILITY_CUP_AND_COASTER` | float | The probability (0 to 1) of adding a [`CupAndCoaster`](cup_and_coaster.md). | `0.66` |
+| `CUTLERY_POSITION_PERTURBATION` | float | Randomly perturb the (x, z) positional coordinates of the fork, knife and spoon by up to +/- this distance. | `0.03` |
+| `CUP_AND_COASTER_POSITION_PERTURBATION` | float | Randomly perturb the (x, z) positional coordinates of `CupAndCoaster` by up to +/- this distance. | `0.02` |
+| `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
 | `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
-| `PLATE_MODEL_NAME` | str | The model name of the plate. | `"plate06"` |
 | `CUTLERY_ROTATION_PERTURBATION` | float | Randomly perturb the rotation of the fork, knife, and spoon by +/- this many degrees. | `3` |
+| `FOOD_CATEGORIES` | List[str] | The categories of possible food models. | `["apple", "banana", "chocolate", "orange", "sandwich"]` |
+| `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
+| `PROBABILITY_CUP_AND_COASTER` | float | The probability (0 to 1) of adding a [`CupAndCoaster`](cup_and_coaster.md). | `0.66` |
+| `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
+| `PLATE_MODEL_NAME` | str | The model name of the plate. | `"plate06"` |
 
 ***
 

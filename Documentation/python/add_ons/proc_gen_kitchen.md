@@ -10,14 +10,16 @@ TODO
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
-| `SECONDARY_CATEGORIES` | Dict[str, Dict[str, int]] | Categories of "secondary objects". | `loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/secondary_categories.json")).read_text())` |
 | `TALL_CATEGORIES` | List[str] | Categories of models that are tall and might obscure windows. | `["refrigerator", "shelf"]` |
+| `SECONDARY_CATEGORIES` | Dict[str, Dict[str, int]] | Categories of "secondary objects". | `loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/secondary_categories.json")).read_text())` |
 
 ***
 
 ## Fields
 
 - `rng` The random number generator
+
+- `scene_record` The `SceneRecord` for this scene. If the `scene` parameter in the constructor is of type `Room`, `self.scene_record` is None.
 
 - `room` The kitchen [`Room`](../scene_data/room.md).
 
@@ -39,7 +41,7 @@ TODO
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| scene |  Union[str, SceneRecord, Room] |  | The scene. Can be `str` (the name of the scene), [`SceneRecord`](../../python/librarian/scene_librarian.md), [`Room`](../scene_data/room.md). The scene must at least one room; see `SceneRecord.rooms`. |
+| scene |  Union[str, SceneRecord, Room, List[Union[str, SceneRecord] |  | The scene. Can be `str` (the name of the scene), [`SceneRecord`](../../python/librarian/scene_librarian.md), [`Room`](../scene_data/room.md), or `List[Union[str, SceneRecord]]` (a list of scene names or records, in which case a scene will be randomly selected). The scene must at least one room; see `SceneRecord.rooms`. |
 | create_scene |  bool  | True | If True, create the scene as part of the scene setup (assuming that `scene` is `str` or `SceneRecord`). |
 | room_index |  int  | 0 | The index of the room in `SceneRecord.rooms`. If `scene` is type `Room`, this parameter is ignored. |
 | rng |  Union[int, np.random.RandomState] | None | Either a random seed, a random number generator, or None. If None, a new random number generator is created. |
@@ -85,7 +87,7 @@ Reset the add-on. Call this when you reset a scene.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| scene |  Union[str, SceneRecord, Room] |  | The scene. Can be `str` (the name of the scene), [`SceneRecord`](../../python/librarian/scene_librarian.md), or [`Room`](../scene_data/room.md). The scene must at least one room; see `SceneRecord.rooms`. |
+| scene |  Union[str, SceneRecord, Room, List[Union[str, SceneRecord] |  | The scene. Can be `str` (the name of the scene), `SceneRecord`, `Room`, or `List[Union[str, SceneRecord]]` (a list of scene names or records, in which case a scene will be randomly selected). The scene must at least one room; see `SceneRecord.rooms`. |
 | create_scene |  bool  | True | If True, create the scene as part of the scene setup (assuming that `scene` is `str` or `SceneRecord`). |
 | room_index |  int  | 0 | The index of the room in `SceneRecord.rooms`. If `scene` is type `Room`, this parameter is ignored. |
 | rng |  Union[int, np.random.RandomState] | None | Either a random seed, a random number generator, or None. If None, a new random number generator is created. |

@@ -7,7 +7,7 @@ from tdw.obi_data.collision_materials.material_combine_mode import MaterialCombi
 
 
 """
-Create a custom collision material to simulate a sticky fluid.
+Create a custom collision material to simulate a slick fluid.
 """
 
 c = Controller()

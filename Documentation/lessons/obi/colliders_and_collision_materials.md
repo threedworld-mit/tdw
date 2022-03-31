@@ -42,11 +42,9 @@ Each of these parameters uses the [`CollisionMaterial`](../../python/obi_data/co
 
 ## Obi actors and Obi collision materials
 
-In an Obi simulation, it is often insufficient to define realistic parameters for an actor;  you must define corresponding parameters for the objects in the scene.
+In an Obi simulation, it is often insufficient to define realistic parameters for an actor;  you must define corresponding parameters for the objects in the scene. For example, in a fluid simulation, fluids don't have a friction or stickiness properties but collision materials do, so all of the *non*-actors need to have correct collision material materials in order for a fluid to behave correctly.
 
-For example, in a fluid simulation, fluids don't have a "stickiness" property but collision materials do. In order to simulate a "sticky" fluid, you must add the fluid to the scene and then make the *non*-actors sticky.
-
-In this example, we'll add milk to the scene and increase the stickiness of the floor and a reference object:
+In this example, we'll add milk to the scene and decrease the friction of the floor and a reference object:
 
 ```python
 from tdw.controller import Controller
@@ -57,7 +55,7 @@ from tdw.obi_data.collision_materials.collision_material import CollisionMateria
 from tdw.obi_data.collision_materials.material_combine_mode import MaterialCombineMode
 
 """
-Create a custom collision material to simulate a sticky fluid.
+Create a custom collision material to simulate a slick fluid.
 """
 
 c = Controller()
@@ -121,7 +119,7 @@ The `Obi` add-on automatically sends all of these commands; in most cases, it sh
 
 Example controllers:
 
-- [milk.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/sticky_floorplan.py) Create a custom collision material to simulate a sticky fluid.
+- [milk.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/sticky_floorplan.py) Create a custom collision material to simulate a slick fluid.
 
 Python API:
 

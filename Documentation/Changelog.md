@@ -65,6 +65,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
     - `CollisionMaterial`
     - `MaterialCombineMode`
 
+### Model Library
+
+- Marked models as do_not_use: 03_106, 07_01_001, 11_02_003, 11_02_046, 2012-2, adirondack_chair, animal_dog_rtstand_1281, apple04(8_vray), apple07(8_vray), b03_bosch_cbg675bs1b_2013__vray_composite, b03_calligraphybrush_circle, b03_fire_hydrant_los_angeles(1), b05_025_vray, b05_clochild4, banana, bananas(8_vray), billiardtable, brush_circle, cgaxis_models_88_21_vray, coca-cola_can_001, db_apps_tech_08_10, de_dietrich_dop7350w, elva_camod_5691_141x51xh87, fire_hydrant, giraffe_mesh, golf_cart, hair_comb_2010, holo3d-mesh-snake, honey_jar_max_2011, prim_cone, ramp_with_platform, snek_new, whirlpool_akzm7630ix
+
 ### Example Controllers
 
 - Added: `obi/custom_fluid.py`, `obi/milk.py` `obi/obi_minimal.py`, `obi/obi_robot.py`, `obi/strawberry_jam.py`, `obi/water.py`

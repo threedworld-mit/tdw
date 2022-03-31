@@ -62,7 +62,7 @@ Result:
 
 Example controllers:
 
-- [robot.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/robot.py) Add a robot and an Obi fluid to the scene.
+- [obi_robot.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/obi_robot.py) Add a robot and an Obi fluid to the scene.
 
 Python API:
 

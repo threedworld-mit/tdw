@@ -4095,6 +4095,11 @@
             "composite_object": true,
             "container_colliders": [
                 {
+                    "bottom_center_position": {
+                        "x": 0.00116101,
+                        "y": 0.41857812,
+                        "z": -0.02216686
+                    },
                     "position": {
                         "x": 0.00116101,
                         "y": 0.42357812,
@@ -4109,6 +4114,11 @@
                     "tag": "on"
                 },
                 {
+                    "bottom_center_position": {
+                        "x": 0.0016625,
+                        "y": 0.19658697499999997,
+                        "z": 0.00102668
+                    },
                     "position": {
                         "x": 0.0016625,
                         "y": 0.25890747,
@@ -4123,8 +4133,8 @@
                     "tag": "enclosed"
                 }
             ],
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Some MeshColliders are missing meshes.",
             "flex": false,
             "name": "b03_bosch_cbg675bs1b_2013__vray_composite",
             "physics_quality": 0.9928793448521963,
@@ -33488,8 +33498,8 @@
             },
             "composite_object": false,
             "container_colliders": [],
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Some MeshColliders have non-readable meshes.",
             "flex": false,
             "name": "hair_comb_2010",
             "physics_quality": 0.9153459170399812,

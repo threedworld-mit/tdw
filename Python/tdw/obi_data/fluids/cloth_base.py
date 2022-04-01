@@ -31,18 +31,18 @@ class ClothBase(ABC):
         :param tether_constraints_enabled: Are tether constraints enabled?
 
 
-        :param stretching_scale: The size and amount of particles in 1 cubic meter.
-        :param stretch_compliance: The visual color of the fluid.
-        :param max_compression: The fluid density in kg/m3.
+        :param stretching_scale: The scale factor for the rest length of each constraint.
+        :param stretch_compliance: Controls how much constraints will resist a change in length.
+        :param max_compression: The percentage of compression allowed by the constraints before kicking in. 
 
-        :param max_bending: This scales the size at which particles are drawn.
-        :param bend_compliance: Random velocity of emitted particles.
+        :param max_bending: The amount of bending allowed before the constraints kick in, expressed in world units.
+        :param bend_compliance: Controls how much constraints will resist a change in curvature, once they are past the maximum bending threshold
 
-        :param drag: This scales the size at which particles are drawn.
-        :param lift: Random velocity of emitted particles.
+        :param drag: How much drag affects the cloth. The value is multiplied by the air density value.
+        :param lift: How much lift affects the cloth. The value is multiplied by the air density value.
 
-        :param tether_compliance: This scales the size at which particles are drawn.
-        :param tether_scale: Random velocity of emitted particles.
+        :param tether_compliance: Controls how much constraints will resist stretching
+        :param tether_scale: Scales the initial length of tethers.
         """
 
         """:field

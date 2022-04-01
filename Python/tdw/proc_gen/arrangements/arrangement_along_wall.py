@@ -1,5 +1,6 @@
 from typing import List, Dict, Union, Optional
 from abc import ABC, abstractmethod
+from overrides import final
 import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
@@ -38,6 +39,9 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
             self._wall_length: float = self._region.get_length(side=self._wall)
         else:
             self._wall_length = wall_length
+        """:field
+        If True, send commands when `self.get_commands()` is called. If False, `self.get_commands()` will return an empty list.
+        """
         self.send_commands: bool = distance < self._wall_length
         if model is None:
             if rng is None:
@@ -47,6 +51,7 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
             model = self._get_random_record_that_fits_along_wall(distance=distance)
         super().__init__(model=model, position={"x": 0, "y": 0, "z": 0}, rng=rng)
 
+    @final
     def _get_random_record_that_fits_along_wall(self, distance: float) -> Optional[ModelRecord]:
         """
         :param distance: The distance from the starting position.
@@ -105,6 +110,7 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
 
         raise Exception()
 
+    @final
     def _get_position_along_wall(self) -> Dict[str, float]:
         """
         :return: The position along the `wall` in the `region` at `distance` meters from the `corner`.

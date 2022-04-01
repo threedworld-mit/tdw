@@ -14,10 +14,19 @@ class Sink(KitchenCabinet):
     - The sink is placed next to a wall.
       - The sink's position is automatically adjusted to set it flush to the wall.
       - The sink is automatically rotated so that it faces away from the wall.
-    - The sink will have a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `Sink.ON_TOP_OF["sink"]`.
+    - The sink will have a rectangular arrangement of objects on the counter top.
+      - The objects are chosen randomly; see `Sink.ON_TOP_OF["sink"]`.
+      - The objects are positioned in a rectangular grid on the sink counter top with random positional perturbations.
+      - The objects have random rotations (0 to 360 degrees).
     - The interior of the sink may be empty; see `empty` in the constructor.
-      - If the interior is _not_ empty, the sink will have a rectangular arrangement of objects inside of it. The objects are chosen randomly; see `Sink.ENCLOSED_BY["sink"]`.
-    - There may be objects in the sink basin; see `Sink.IN_BASIN_PROBABILITY`. The objects are chosen randomly; see `Sink.INSIDE_OF["sink"]`.
+      - If the interior is _not_ empty, the sink will have a rectangular arrangement of objects inside its cabinet.
+        - The objects are chosen randomly; see `Sink.ENCLOSED_BY["sink"]`.
+        - The objects are positioned in a rectangular grid in the sink cabinet with random positional perturbations.
+        - The objects have random rotations (0 to 360 degrees).
+    - There may be objects in the sink basin; see `Sink.IN_BASIN_PROBABILITY`.
+      - The objects are chosen randomly; see `Sink.INSIDE_OF["sink"]`.
+      - The objects are positioned in a rectangular grid in the sink basin with random positional perturbations.
+      - The objects have random rotations (0 to 360 degrees).
     - All sinks have doors that can open.
     - The root object of the sink is kinematic and the door sub-objects are non-kinematic.
     """

@@ -13,7 +13,10 @@ class KitchenCounterTop(KitchenCounterTopBase):
 
     - The kitchen counter top is placed next to a wall and at a height equal to the height of the kitchen counter models.
       - The kitchen counter top's position is automatically adjusted to set it flush to the wall.
-    - The kitchen counter top will have a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `KitchenCounterTop.ON_TOP_OF["kitchen_counter"]`.
+    - The kitchen counter top will have a rectangular arrangement of objects on top of it.
+      - The objects are chosen randomly; see `KitchenCounterTop.ON_TOP_OF["kitchen_counter"]`.
+      - The objects are positioned in a rectangular grid on the counter top with random positional perturbations.
+      - The objects have random rotations (0 to 360 degrees).
     - The kitchen counter top is kinematic.
     """
 

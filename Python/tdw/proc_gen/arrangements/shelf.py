@@ -12,7 +12,10 @@ class Shelf(ArrangementAlongWall):
     - The shelf is placed next to a wall.
       - The shelf's position is automatically adjusted to set it flush to the wall.
       - The shelf is automatically rotated so that it faces away from the wall.
-    - Each shelf of the object has a rectangular arrangement of objects. The objects are chosen randomly; see `Shelf.ON_TOP_OF["shelf"]`.
+    - Each shelf of the object has a rectangular arrangement of objects.
+      - The objects are chosen randomly; see `Shelf.ON_TOP_OF["shelf"]`.
+      - The objects are positioned in a rectangular grid on each shelf with random positional perturbations.
+      - The objects have random rotations (0 to 360 degrees).
     - The shelf object is kinematic.
     """
 

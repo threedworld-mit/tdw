@@ -9,7 +9,7 @@ from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWal
 
 class Suitcase(ArrangementAlongWall):
     """
-    A suitcase.
+    A suitcase placed along a wall.
 
     - The suitcase model is chosen randomly; see `Suitcase.MODEL_CATEGORIES["suitcase"]`.
     - The suitcase is placed next to a wall.

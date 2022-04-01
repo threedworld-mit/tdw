@@ -13,7 +13,10 @@ class SideTable(ArrangementAlongWall):
       - The side table's position is automatically adjusted to set it flush to the wall.
       - The side table is automatically rotated so that it faces away from the wall.
       - The side table's (x, z) positional coordinates are offset by a factor; see `SideTable.DEPTH_FACTOR` and `SIDE_TABLE.LENGTH_FACTOR`.
-    - The side table always has a rectangular arrangement of objects on top of it; see `SideTable.ON_TOP_OF["side_table"]`.
+    - The side table will have a rectangular arrangement of objects on top of it.
+      - The objects are chosen randomly; see `SideTable.ON_TOP_OF["side_table"]`.
+      - The objects are positioned in a rectangular grid on the table with random positional perturbations.
+      - The objects have random rotations (0 to 360 degrees).
     - The side table is non-kinematic.
     """
 

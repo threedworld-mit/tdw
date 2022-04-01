@@ -13,7 +13,10 @@ class Microwave(ArrangementWithRootObject):
     A microwave can have objects on top of it and inside of it.
 
     - The microwave model is chosen randomly; see `Microwave.MODEL_CATEGORIES["microwave"]`
-    - A microwave always has a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `Microwave.ON_TOP_OF["microwave"]`.
+    - A microwave always has a rectangular arrangement of objects on top of it.
+      - The objects are chosen randomly; see `Microwave.ON_TOP_OF["microwave"]`.
+      - The objects are positioned in a rectangular grid on the microwave with random positional perturbations.
+      - The objects have random rotations (0 to 360 degrees).
     - A microwave may have a [`Plate`](plate.md) inside it; see `plate_probability` in the constructor. The plate will always have food on it.
     - All microwaves have a door that can be opened.
     - The root object of the microwave is kinematic and the door sub-object is non-kinematic.

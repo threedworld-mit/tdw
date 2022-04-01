@@ -5,7 +5,7 @@ from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWal
 
 class Stool(ArrangementAlongWall):
     """
-    A stool.
+    A stool placed along a wall.
 
     - The stool model is chosen randomly; see `Stool.MODEL_CATEGORIES["stool"]`.
     - The stool is placed next to a wall.

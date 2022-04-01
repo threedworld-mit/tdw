@@ -12,6 +12,7 @@ from tdw.ordinal_direction import OrdinalDirection
 from tdw.scene_data.room import Room
 from tdw.scene_data.interior_region import InteriorRegion
 from tdw.proc_gen.arrangements.arrangement import Arrangement
+from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWall
 from tdw.proc_gen.arrangements.basket import Basket
 from tdw.proc_gen.arrangements.dishwasher import Dishwasher
 from tdw.proc_gen.arrangements.kitchen_counter import KitchenCounter
@@ -35,6 +36,7 @@ class ProcGenKitchen(AddOn):
     """
     TODO
     """
+
     """:class_var
     Categories of models that are tall and might obscure windows.
     """
@@ -206,6 +208,21 @@ class ProcGenKitchen(AddOn):
     def _get_lateral_arrangement(self, categories: List[str], corner: OrdinalDirection, wall: CardinalDirection,
                                  region: InteriorRegion, length: float = None, distance: float = 0,
                                  check_object_position: bool = False, current_commands: List[dict] = None) -> List[dict]:
+        """
+        Generate a lateral arrangement of Arrangements along a wall.
+
+        :param categories: A sequential list of categories. This will be used to select Arrangement subclasses. This list might be adjusted, for example to remove categories of "tall" objects along a wall with windows.
+        :param corner: The starting corner of the arrangement.
+        :param wall: The wall that the arrangement will run along.
+        :param region: The region that the arrangement is in.
+        :param length: The length of the arrangement. If None, this is the length of the wall.
+        :param distance: The starting distance from the corner.
+        :param check_object_position: If True, check for objects added on this frame and avoid placing objects too close.
+        :param current_commands: A list of commands added so far for this frame.
+
+        :return: A list of commands to generate a lateral arrangement.
+        """
+
         commands = []
         for category in categories:
             if check_object_position:
@@ -258,19 +275,20 @@ class ProcGenKitchen(AddOn):
                     raise Exception(direction)
                 # Check if anything is nearby.
                 p = np.array([x, z])
-                for command in current_commands:
-                    if command["$type"] != "add_object" and command["$type"] != "load_primitive_from_resources":
-                        continue
-                    if command["$type"] == "add_object" and command["position"]["y"] > 0:
-                        continue
-                    elif command["$type"] == "load_primitive_from_resources":
-                        extent = Arrangement.DEFAULT_CELL_SIZE
-                    else:
-                        extents = TDWUtils.get_bounds_extents(bounds=Controller.MODEL_LIBRARIANS["models_core.json"].get_record(command["name"]).bounds)
-                        extent = (extents[0] if extents[0] > extents[2] else extents[2]) * 1.25
-                    if np.linalg.norm(p - np.array([command["position"]["x"], command["position"]["z"]])) < extent:
-                        occupied = True
-                        break
+                if current_commands is not None:
+                    for command in current_commands:
+                        if command["$type"] != "add_object" and command["$type"] != "load_primitive_from_resources":
+                            continue
+                        if command["$type"] == "add_object" and command["position"]["y"] > 0:
+                            continue
+                        elif command["$type"] == "load_primitive_from_resources":
+                            extent = Arrangement.DEFAULT_CELL_SIZE
+                        else:
+                            extents = TDWUtils.get_bounds_extents(bounds=Controller.MODEL_LIBRARIANS["models_core.json"].get_record(command["name"]).bounds)
+                            extent = (extents[0] if extents[0] > extents[2] else extents[2]) * 1.25
+                        if np.linalg.norm(p - np.array([command["position"]["x"], command["position"]["z"]])) < extent:
+                            occupied = True
+                            break
                 if occupied:
                     category = "void"
             params = {"corner": corner,
@@ -320,7 +338,7 @@ class ProcGenKitchen(AddOn):
                 raise Exception(category)
             # Add the commands.
             arrangement_commands = arrangement.get_commands()
-            if arrangement.send_commands:
+            if (not isinstance(arrangement, ArrangementAlongWall)) or arrangement.send_commands:
                 commands.extend(arrangement_commands)
                 # Add the length.
                 distance += arrangement.get_length()

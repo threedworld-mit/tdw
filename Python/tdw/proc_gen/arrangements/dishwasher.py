@@ -14,7 +14,10 @@ class Dishwasher(KitchenCounterTopBase):
       - The dishwasher is automatically rotated so that it faces away from the wall.
       - The dishwasher's position along the wall is slightly offset; see `Dishwasher.LENGTH_OFFSET`.
     - The dishwasher has a floating kitchen counter top above it.
-    - The floating kitchen counter top always has a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `Dishwasher.ON_TOP_OF["kitchen_counter"]`.
+    - The floating kitchen counter top always has a rectangular arrangement of objects on top of it.
+      - The objects are chosen randomly; see `Dishwasher.ON_TOP_OF["kitchen_counter"]`.
+      - The objects are positioned in a rectangular grid on the dishwasher with random positional perturbations.
+      - The objects have random rotations (0 to 360 degrees).
     - All dishwashers have a door that can be opened.
     - The root object of the dishwasher is kinematic and the door sub-object is non-kinematic.
     """

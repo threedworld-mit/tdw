@@ -14,9 +14,12 @@ class WallCabinet(KitchenCabinet):
       - The wall cabinet's position is automatically adjusted to set it flush to the wall.
       - The wall cabinet is automatically rotated so that it faces away from the wall.
       - The wall cabinet is at a fixed height from the wall, see `WALL_CABINET.Y`.
-    - The wall cabinet always has objects inside of it. The contents are random:
+    - The wall cabinet always has objects inside it. The contents are random:
       - Sometimes, there is a [`StackOfPlates`](stack_of_plates.md); see `WallCabinet.PROBABILITY_STACK_OF_PLATES`, `WallCabinet.MIN_NUM_PLATES`, and `WallCabinet.MAX_NUM_PLATES`.
       - Sometimes, there is a rectangular arrangement of random objects; see `WallCabinet.PROBABILITY_CUPS`.
+        - The objects are chosen randomly; see `WallCabinet.ENCLOSED_BY["wall_cabinet"]`.
+        - The objects are positioned in a rectangular grid inside the wall cabinet with random positional perturbations.
+        - The objects have random rotations (0 to 360 degrees).
     - The root object of the wall cabinet is kinematic and the door sub-objects are non-kinematic.
     """
 

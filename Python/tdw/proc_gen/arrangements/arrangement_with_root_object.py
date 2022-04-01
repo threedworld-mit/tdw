@@ -43,19 +43,20 @@ class ArrangementWithRootObject(Arrangement, ABC):
         if "models_core.json" not in Controller.MODEL_LIBRARIANS:
             Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian()
         # Choose a random record.
+        self._record: Optional[ModelRecord]
         if model is None:
             if rng is None:
                 rng = np.random.RandomState()
             category = self._get_category()
             if category not in Arrangement.MODEL_CATEGORIES:
-                self._record: Optional[ModelRecord] = None
+                self._record = None
             else:
                 model_names = Arrangement.MODEL_CATEGORIES[category]
                 model_name = model_names[rng.randint(0, len(model_names))]
                 self._record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
         # Get the record.
         elif isinstance(model, str):
-            self._record: Optional[ModelRecord] = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model)
+            self._record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model)
         # This is a record.
         elif isinstance(model, ModelRecord):
             self._record = model
@@ -102,7 +103,7 @@ class ArrangementWithRootObject(Arrangement, ABC):
         categories: List[str] = ArrangementWithRootObject.ON_TOP_OF[self._get_category()]
         commands = self._add_root_object(kinematic=kinematic)
         for collider in self._record.container_colliders:
-            # Use all of the "on" colliders.
+            # Use all "on" colliders.
             if collider.tag == ContainerColliderTag.on:
                 if isinstance(collider, ContainerBoxTriggerCollider):
                     scale = collider.scale
@@ -140,7 +141,7 @@ class ArrangementWithRootObject(Arrangement, ABC):
         categories: List[str] = ArrangementWithRootObject.ENCLOSED_BY[self._get_category()]
         commands = []
         for collider in self._record.container_colliders:
-            # Use all of the "enclosed" colliders.
+            # Use all "enclosed" colliders.
             if collider.tag == ContainerColliderTag.enclosed:
                 if isinstance(collider, ContainerBoxTriggerCollider):
                     scale = collider.scale
@@ -176,7 +177,7 @@ class ArrangementWithRootObject(Arrangement, ABC):
         categories: List[str] = ArrangementWithRootObject.INSIDE_OF[self._get_category()]
         commands = []
         for collider in self._record.container_colliders:
-            # Use all of the "enclosed" colliders.
+            # Use all "enclosed" colliders.
             if collider.tag == ContainerColliderTag.inside:
                 if isinstance(collider, ContainerBoxTriggerCollider):
                     scale = collider.scale

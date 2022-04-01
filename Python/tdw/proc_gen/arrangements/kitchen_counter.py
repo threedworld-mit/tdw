@@ -26,9 +26,15 @@ class KitchenCounter(KitchenCabinet):
     - A kitchen counter longer than 0.7 meters may have a [`Microwave`](microwave.md); see `allow_microwave` in the constructor.
       - If the kitchen counter does _not_ have a microwave:
         - If the kitchen counter is alongside a wall without windows and has a corresponding wall cabinet model, a [`WallCabinet`](wall_cabinet.md) will be added above it; see `KitchenCounter.COUNTERS_AND_CABINETS`.
-        - The kitchen counter will have a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `KitchenCounter.ON_TOP_OF["kitchen_counter"]`.
+        - The kitchen counter will have a rectangular arrangement of objects on top of it.
+          - The objects are chosen randomly; see `KitchenCounter.ON_TOP_OF["kitchen_counter"]`.
+          - The objects are positioned in a rectangular grid on the counter top with random positional perturbations.
+          - The objects have random rotations (0 to 360 degrees).
     - The interior of the kitchen counter may be empty; see `empty` in the constructor.
-      - If the interior is _not_ empty, the kitchen counter will have a rectangular arrangement of objects inside of it. The objects are chosen randomly; see `KitchenCounter.ENCLOSED_BY["kitchen_counter"]`.
+      - If the interior is _not_ empty, the kitchen counter will have a rectangular arrangement of objects inside its cabinet.
+        - The objects are chosen randomly; see `KitchenCounter.ENCLOSED_BY["kitchen_counter"]`.
+        - The objects are positioned in a rectangular grid inside the cabinet with random positional perturbations.
+        - The objects have random rotations (0 to 360 degrees).
     - All kitchen counters have doors that can open.
     - The root object of the kitchen counter is kinematic and the door sub-objects are non-kinematic.
     """

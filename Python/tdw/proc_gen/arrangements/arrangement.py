@@ -132,7 +132,7 @@ class Arrangement(ABC):
         # Get all sizes in occupancy map space.
         model_cell_sizes = list(set(model_cell_sizes))
         model_cell_sizes.reverse()
-        for ix, iz in np.ndindex(occupancy_map.shape):
+        for ix, iz in np.ndindex(occupancy_map.shape[0], occupancy_map.shape[1]):
             # Exclude edges.
             if ix == 0 or ix == occupancy_map.shape[0] - 1 or iz == 0 or iz == occupancy_map.shape[1] - 1:
                 continue

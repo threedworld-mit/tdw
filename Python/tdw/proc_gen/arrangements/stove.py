@@ -16,6 +16,9 @@ class Stove(ArrangementAlongWall):
       - The stove's position is automatically adjusted to set it flush to the wall plus an offset; see `Stove.DEPTH_OFFSET`.
       - The stove is automatically rotated so that it faces away from the wall.
     - The stove always has a rectangular arrangement of objects on top of it; see `Stove.ON_TOP_OF["stove"]`.
+      - The objects are chosen randomly; see `Stove.ON_TOP_OF["stove"]`.
+      - The objects are positioned in a rectangular grid on the stove with random positional perturbations.
+      - The objects have random rotations (0 to 360 degrees).
     - The stove has two doors that can open and two interior spaces.
     - Sometimes, each of the interior spaces may have one object; see `Stove.PROBABILITY_INSIDE` and `Stove.ENCLOSED_BY["stove"]`.
       - The positions of the object(s) are perturbed randomly, see `Stove.INSIDE_POSITION_PERTURBATION`.

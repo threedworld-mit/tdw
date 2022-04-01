@@ -58,7 +58,7 @@ class ProcGenKitchen(AddOn):
         # Get the random number generator.
         if rng is None:
             """:field
-            The random number generator
+            The random number generator.
             """
             self.rng: np.random.RandomState = np.random.RandomState()
         elif isinstance(rng, int):

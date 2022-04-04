@@ -68,6 +68,8 @@ In the `scene` parameter, the number (1, 2, 4, or 5) defines the geometry of the
 
 **Next: [Visual materials, textures, and colors](materials_textures_colors.md)**
 
+**Next: [Scenes, regions, and rooms](scenes_regions_rooms.md)**
+
 [Return to the README](../../../README.md)
 
 ***

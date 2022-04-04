@@ -3,17 +3,17 @@ from overrides import final
 from typing import Dict
 
 
-class ClothBase(ABC):
+class ClothMaterialBase(ABC):
     """
     Abstract base class for Obi cloth materials.
     """
 
     def __init__(self, 
                  distance_constraints_enabled: bool, bend_constraints_enabled: bool,  
-                 aerodynamics_constraints_enabled: bool, tether_constraints_enabled: float = bool, 
+                 aerodynamics_constraints_enabled: bool, tether_constraints_enabled: bool, 
                  stretching_scale: float = 1.0, stretch_compliance: float = 0, max_compression: float = 0,
                  max_bending: float = 0.05, bend_compliance: float = 0, drag: float = 0.05, lift: float = 0.05,
-                 tether_compliance: float = 0, tether_scale: float = 1.0,
+                 tether_compliance: float = 0, tether_scale: float = 1.0
                 ):
         """
         :param distance_constraints_enabled: Are distance constraints enabled?

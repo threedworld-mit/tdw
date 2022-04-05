@@ -1,13 +1,9 @@
-from pkg_resources import resource_filename
-from pathlib import Path
-from json import loads
 from typing import Dict
-from tdw.obi_data.cloth.cloth_material_base import ClothMaterialBase
 
 
-class ClothMaterial(ClothMaterialBase):
+class ClothMaterial():
     """
-    Data for an Obi cloth material. For more information, [read this](http://obi.virtualmethodstudio.com/tutorials/emittermaterials.html).
+    Abstract base class for Obi cloth materials.
     """
 
     def __init__(self, 
@@ -33,15 +29,72 @@ class ClothMaterial(ClothMaterialBase):
         :param tether_scale: Scales the initial length of tethers.
         """
 
-        super().__init__(distance_constraints_enabled=distance_constraints_enabled, bend_constraints_enabled=bend_constraints_enabled, 
-                         aerodynamics_constraints_enabled=aerodynamics_constraints_enabled, tether_constraints_enabled=tether_constraints_enabled,
-                         stretching_scale=stretching_scale, stretch_compliance=stretch_compliance, max_compression=max_compression, 
-                         max_bending=max_bending, bend_compliance=bend_compliance, drag=drag, lift=lift,
-                         tether_compliance=tether_compliance, tether_scale=tether_scale)
+        """:field
+        Are distance constraints enabled?
+        """
+        self.distance_constraints_enabled: bool = distance_constraints_enabled
+        """:field
+        Are bend constraints enabled?
+        """
+        self.bend_constraints_enabled: bool = bend_constraints_enabled
+        """:field
+        Are aerodynamics constraints enabled?
+        """
+        self.aerodynamics_constraints_enabled: bool = aerodynamics_constraints_enabled
+        """:field
+        Are tether constraints enabled?
+        """
+        self.tether_constraints_enabled: bool = tether_constraints_enabled       
+        """:field
+        The scale factor for the rest length of each constraint.
+        """
+        self.stretching_scale: float = stretching_scale    
+        """:field
+        Controls how much constraints will resist a change in length.
+        """
+        self.stretch_compliance: float = stretch_compliance
+        """:field
+        The percentage of compression allowed by the constraints before kicking in.
+        """
+        self.max_compression: float = max_compression
+        """:field
+        The amount of bending allowed before the constraints kick in, expressed in world units.
+        """
+        self.max_bending: float = max_bending
+        """:field
+        Controls how much constraints will resist a change in curvature, once they are past the maximum bending threshold.
+        """
+        self.bend_compliance: float = bend_compliance
+        """:field
+        How much drag affects the cloth. The value is multiplied by the air density value.
+        """
+        self.drag: float = drag
+        """:field
+        How much lift affects the cloth. The value is multiplied by the air density value.
+        """
+        self.lift: float = lift
+        """:field
+        Controls how much constraints will resist stretching
+        """
+        self.tether_compliance: float = tether_compliance
+        """:field
+        Scales the initial length of tethers.
+        """
+        self.tether_scale: float = tether_scale
 
 
     def _get_type(self) -> str:
-        return "fluid"
+        return "cloth_material"
+
+
+    def to_dict(self) -> dict:
+        """
+        :return: A JSON dictionary of this object.
+        """
+
+        d = {"$type": self._get_type()}
+        d.update({k: v for k, v in self.__dict__.items()})
+        return d
 
 
 def __get() -> Dict[str, ClothMaterial]:

@@ -6,6 +6,8 @@ from tdw.obi_data.fluids.granular_fluid import GranularFluid, GRANULAR_FLUIDS
 from tdw.obi_data.fluids.emitter_shape import EmitterShape
 from tdw.obi_data.obi_actor import ObiActor
 from tdw.obi_data.collision_materials.collision_material import CollisionMaterial
+from tdw.obi_data.cloth.cloth_sheet_type import ClothSheetType
+from tdw.obi_data.cloth.cloth_volume_type import ClothVolumeType
 
 
 class Obi(AddOn):
@@ -157,6 +159,78 @@ class Obi(AddOn):
                               "minimum_pool_size": minimum_pool_size,
                               "solver_id": solver_id,
                               "speed": speed})
+
+def create_cloth_sheet(self, object_id: int, cloth_material: Union[str, ClothMaterial],
+                     position: Dict[str, float] = None, rotation: Dict[str, float] = None, 
+                     sheet_type: ClothSheetType, solver_id: int = 0) -> None:
+        """
+        Create a cloth sheet.
+
+        :param object_id: The unique ID of the cloth sheet.
+        :param cloth_material: Either a [`ClothMaterial`](../obi_data/cloth/fluid.md),or the name of a cloth material (see `Cloth.FLUIDS`)).
+        :param position: The position of the emitter object. If None, defaults to (0, 0, 0).
+        :param rotation: The rotation of the emitter object, in Euler angles.  If None, defaults to (0, 0, 0).
+        :param sheet_type: The enum value for sheet type
+        :param solver_id: The ID of the Obi solver.
+        """
+
+        # Set a default position and rotation.
+        if position is None:
+            position = {"x": 0, "y": 0, "z": 0}
+        if rotation is None:
+            rotation = {"x": 0, "y": 0, "z": 0}
+        # Get the cloth material. If it's a string, it's a preset.
+        if isinstance(cloth_material, str):
+            if cloth_material in CLOTHMATERIALS:
+                f = CLOTHMATERIALS[cloth_material]
+            else:
+                raise Exception(f"Cloth material not found: {cloth_material}")
+        else:
+            f = cloth_material
+        self.commands.append({"$type": "create_obi_cloth_sheet",
+                              "id": object_id,
+                              "cloth_material": f.to_dict(),
+                              "position": position,
+                              "rotation": rotation,
+                              "sheet_type": sheet_type.name,
+                              "solver_id": solver_id})
+
+def create_cloth_volume(self, object_id: int, cloth_material: Union[str, ClothMaterial],
+                     position: Dict[str, float] = None, rotation: Dict[str, float] = None, 
+                     volume_type: ClothVolumeType, pressure: float = 0.5, solver_id: int = 0) -> None:
+        """
+        Create a cloth volume.
+
+        :param object_id: The unique ID of the cloth sheet.
+        :param cloth_material: Either a [`ClothMaterial`](../obi_data/cloth/fluid.md),or the name of a cloth material (see `Cloth.CLOTHMATERIALS`)).
+        :param position: The position of the emitter object. If None, defaults to (0, 0, 0).
+        :param rotation: The rotation of the emitter object, in Euler angles.  If None, defaults to (0, 0, 0).
+        :param pressure: The inlfation amount of this cloth volume.
+        :param volume_type: The enum value for volume type
+        :param solver_id: The ID of the Obi solver.
+        """
+
+        # Set a default position and rotation.
+        if position is None:
+            position = {"x": 0, "y": 0, "z": 0}
+        if rotation is None:
+            rotation = {"x": 0, "y": 0, "z": 0}
+        # Get the cloth material. If it's a string, it's a preset.
+        if isinstance(cloth_material, str):
+            if cloth_material in CLOTHMATERIALS:
+                f = CLOTHMATERIALS[cloth_material]
+            else:
+                raise Exception(f"Cloth material not found: {cloth_material}")
+        else:
+            f = cloth_material
+        self.commands.append({"$type": "create_obi_cloth_sheet",
+                              "id": object_id,
+                              "cloth_material": f.to_dict(),
+                              "position": position,
+                              "rotation": rotation,
+                              "volume_type": volume_type.name,
+                              "pressure": pressure,
+                              "solver_id": solver_id})
 
     def set_fluid_speed(self, object_id: int, speed: float) -> None:
         """

@@ -106,7 +106,7 @@ However, in TDW, textured quads are treated very differently than standard [obje
 
 ***
 
-**Next: [Compass rose](compass_rose.md)**
+**Next: [User Interface (the `UI` add-on)](ui.md)**
 
 [Return to the README](../../../README.md)
 

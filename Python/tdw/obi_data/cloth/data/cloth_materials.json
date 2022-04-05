@@ -1,9 +1,9 @@
 {
   "silk": {
-    "distance_constraints_enabled": True, 
-    "bend_constraints_enabled": True,  
-    "aerodynamics_constraints_enabled": True, 
-    "tether_constraints_enabled": True, 
+    "distance_constraints_enabled": true, 
+    "bend_constraints_enabled": true,  
+    "aerodynamics_constraints_enabled": true, 
+    "tether_constraints_enabled": true, 
     "stretching_scale": 1.0, 
     "stretch_compliance": 0, 
     "max_compression": 0,
@@ -15,10 +15,10 @@
     "tether_scale": 1.0
   },
   "cotton": {
-    "distance_constraints_enabled": True, 
-    "bend_constraints_enabled": True,  
-    "aerodynamics_constraints_enabled": True, 
-    "tether_constraints_enabled": True, 
+    "distance_constraints_enabled": true, 
+    "bend_constraints_enabled": true,  
+    "aerodynamics_constraints_enabled": true, 
+    "tether_constraints_enabled": true, 
     "stretching_scale": 1.0, 
     "stretch_compliance": 0, 
     "max_compression": 0,
@@ -30,10 +30,10 @@
     "tether_scale": 1.0
   },
   "canvas": {
-    "distance_constraints_enabled": True, 
-    "bend_constraints_enabled": True,  
-    "aerodynamics_constraints_enabled": True, 
-    "tether_constraints_enabled": True, 
+    "distance_constraints_enabled": true, 
+    "bend_constraints_enabled": true,  
+    "aerodynamics_constraints_enabled": true, 
+    "tether_constraints_enabled": true, 
     "stretching_scale": 1.0, 
     "stretch_compliance": 0, 
     "max_compression": 0,
@@ -45,10 +45,10 @@
     "tether_scale": 1.0
   },
   "rubber": {
-    "distance_constraints_enabled": True, 
-    "bend_constraints_enabled": True,  
-    "aerodynamics_constraints_enabled": True, 
-    "tether_constraints_enabled": True, 
+    "distance_constraints_enabled": true, 
+    "bend_constraints_enabled": true,  
+    "aerodynamics_constraints_enabled": true, 
+    "tether_constraints_enabled": true, 
     "stretching_scale": 1.0, 
     "stretch_compliance": 0, 
     "max_compression": 0,
@@ -60,10 +60,10 @@
     "tether_scale": 1.0
   },
   "plastic": {
-    "distance_constraints_enabled": True, 
-    "bend_constraints_enabled": True,  
-    "aerodynamics_constraints_enabled": True, 
-    "tether_constraints_enabled": True, 
+    "distance_constraints_enabled": true, 
+    "bend_constraints_enabled": true,  
+    "aerodynamics_constraints_enabled": true, 
+    "tether_constraints_enabled": true, 
     "stretching_scale": 1.0, 
     "stretch_compliance": 0, 
     "max_compression": 0,

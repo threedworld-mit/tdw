@@ -8,6 +8,7 @@ from tdw.obi_data.obi_actor import ObiActor
 from tdw.obi_data.collision_materials.collision_material import CollisionMaterial
 from tdw.obi_data.cloth.cloth_sheet_type import ClothSheetType
 from tdw.obi_data.cloth.cloth_volume_type import ClothVolumeType
+from tdw.obi_data.cloth.cloth_material import ClothMaterial, CLOTHMATERIALS
 
 
 class Obi(AddOn):
@@ -160,9 +161,8 @@ class Obi(AddOn):
                               "solver_id": solver_id,
                               "speed": speed})
 
-def create_cloth_sheet(self, object_id: int, cloth_material: Union[str, ClothMaterial],
-                     position: Dict[str, float] = None, rotation: Dict[str, float] = None, 
-                     sheet_type: ClothSheetType, solver_id: int = 0) -> None:
+    def create_cloth_sheet(self, object_id: int, cloth_material: Union[str, ClothMaterial], sheet_type: ClothSheetType,
+                           position: Dict[str, float] = None, rotation: Dict[str, float] = None, solver_id: int = 0) -> None:
         """
         Create a cloth sheet.
 
@@ -192,12 +192,12 @@ def create_cloth_sheet(self, object_id: int, cloth_material: Union[str, ClothMat
                               "cloth_material": f.to_dict(),
                               "position": position,
                               "rotation": rotation,
-                              "sheet_type": sheet_type.name,
+                              "sheet_type": sheet_type,
                               "solver_id": solver_id})
 
-def create_cloth_volume(self, object_id: int, cloth_material: Union[str, ClothMaterial],
-                     position: Dict[str, float] = None, rotation: Dict[str, float] = None, 
-                     volume_type: ClothVolumeType, pressure: float = 0.5, solver_id: int = 0) -> None:
+    def create_cloth_volume(self, object_id: int, cloth_material: Union[str, ClothMaterial], volume_type: ClothVolumeType,
+                            position: Dict[str, float] = None, rotation: Dict[str, float] = None, 
+                            pressure: float = 0.5, solver_id: int = 0) -> None:
         """
         Create a cloth volume.
 
@@ -228,7 +228,7 @@ def create_cloth_volume(self, object_id: int, cloth_material: Union[str, ClothMa
                               "cloth_material": f.to_dict(),
                               "position": position,
                               "rotation": rotation,
-                              "volume_type": volume_type.name,
+                              "volume_type": volume_type,
                               "pressure": pressure,
                               "solver_id": solver_id})
 

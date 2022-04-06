@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.13
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                          |
+| ------------------------- | ------------------------------------ |
+| `rotate_textured_quad_to` | Set the rotation of a textured quad. |
+
 ## v1.9.12
 
 ### New Features

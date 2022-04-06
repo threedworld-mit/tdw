@@ -85,10 +85,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### Modified Documentation
 
-| Document                           | Modification                               |
-| ---------------------------------- | ------------------------------------------ |
-| `lessons/flex/fluid_and_source.md` | Added deprecation notice.                  |
-| `lessons/physx/overview.md`        | Updated comparison section to include Obi. |
+| Document                           | Modification                                                 |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `lessons/flex/fluid_and_source.md` | Added deprecation notice.                                    |
+| `lessons/physx/overview.md`        | Updated comparison section to include Obi.                   |
+| `lessons/misc/c_sharp_sources.md`  | Replaced the document with a single paragraph explaining the reasons the C# code is closed-source. |
 
 ### Benchmarking
 

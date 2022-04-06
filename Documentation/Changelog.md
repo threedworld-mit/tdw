@@ -64,6 +64,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - Collision materials:
     - `CollisionMaterial`
     - `MaterialCombineMode`
+- Fixed: `AssetBundleCreator` fails because the `asset_bundle_creator/` Unity project doesn't include Newtonsoft.JSON
 
 ### Model Library
 

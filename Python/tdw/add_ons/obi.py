@@ -223,7 +223,7 @@ class Obi(AddOn):
                 raise Exception(f"Cloth material not found: {cloth_material}")
         else:
             f = cloth_material
-        self.commands.append({"$type": "create_obi_cloth_sheet",
+        self.commands.append({"$type": "create_obi_cloth_volume",
                               "id": object_id,
                               "cloth_material": f.to_dict(),
                               "position": position,

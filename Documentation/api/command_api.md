@@ -644,6 +644,7 @@
 | Command | Description |
 | --- | --- |
 | [`rotate_textured_quad_by`](#rotate_textured_quad_by) | Rotate a textured quad by a given angle around a given axis. |
+| [`rotate_textured_quad_to`](#rotate_textured_quad_to) | Set the rotation of a textured quad. |
 | [`scale_textured_quad`](#scale_textured_quad) | Scale a textured quad by a factor. |
 | [`set_textured_quad`](#set_textured_quad) | Apply a texture to a pre-existing quad.  |
 | [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
@@ -8438,6 +8439,22 @@ An axis of rotation.
 | `"pitch"` | Nod your head "yes". |
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`rotate_textured_quad_to`**
+
+Set the rotation of a textured quad.
+
+
+```python
+{"$type": "rotate_textured_quad_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rotation"` | Quaternion | The rotation quaternion. | |
+| `"id"` | int | The unique ID of this textured quad. | |
 
 ***
 

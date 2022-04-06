@@ -21,6 +21,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `destroy_ui_element`         | Destroy a UI element in the scene.                           |
 | `set_ui_element_size`        | Set the size of a UI element.                                |
 | `set_ui_text`                | Set the text of a Text object that is already on the screen. |
+| `rotate_textured_quad_to` | Set the rotation of a textured quad. |
 
 ### `tdw` module
 

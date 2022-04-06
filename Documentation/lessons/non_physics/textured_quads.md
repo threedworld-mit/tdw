@@ -97,6 +97,7 @@ Result:
 | [`scale_textured_quad`](../../api/command_api.md#scale_textured_quad) | Scale a textured quad by a factor.                           |
 | [`show_textured_quad`](../../api/command_api.md#show_textured_quad) | Show or hide a textured quad.                                |
 | [`teleport_textured_quad`](../../api/command_api.md#teleport_textured_quad) | Set the position of a textured quad.                         |
+| [`rotate_textured_quad_to`](../../api/command_api.md#rotate_textured_quad_to) | Set the rotation of a textured quad.                         |
 
 ## Command API and output data
 
@@ -125,3 +126,4 @@ Command API:
 - [`scale_textured_quad`](../../api/command_api.md#scale_textured_quad)
 - [`show_textured_quad`](../../api/command_api.md#show_textured_quad)
 - [`teleport_textured_quad`](../../api/command_api.md#teleport_textured_quad)
+- [`rotate_textured_quad_to`](../../api/command_api.md#rotate_textured_quad_to)

@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
-## v1.9.13
+## v1.9.14
 
 ### Command API
 
@@ -21,7 +21,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `destroy_ui_element`         | Destroy a UI element in the scene.                           |
 | `set_ui_element_size`        | Set the size of a UI element.                                |
 | `set_ui_text`                | Set the text of a Text object that is already on the screen. |
-| `rotate_textured_quad_to` | Set the rotation of a textured quad. |
 
 ### `tdw` module
 
@@ -35,6 +34,16 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | --------------------------- | -------------------------------------- |
 | `lessons/non_physics/ui.md` | User documentation to the `UI` add-on. |
 | `python/add_ons/ui.md`      | API documentation for the `UI` add-on. |
+
+## v1.9.13
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                          |
+| ------------------------- | ------------------------------------ |
+| `rotate_textured_quad_to` | Set the rotation of a textured quad. |
 
 ## v1.9.12
 

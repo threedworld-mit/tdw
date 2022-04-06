@@ -77,8 +77,11 @@ class OculusTouch(VR):
                         object_id = static_rigidbodies.get_id(j)
                         if object_id not in vr_node_ids and not static_rigidbodies.get_kinematic(j) and \
                                 object_id not in self._non_graspable:
-                            self.commands.append({"$type": "set_vr_graspable",
-                                                  "id": object_id})
+                            self.commands.extend([{"$type": "set_object_collision_detection_mode",
+                                                   "id": object_id,
+                                                   "mode": "discrete"},
+                                                  {"$type": "set_vr_graspable",
+                                                   "id": object_id}])
                     break
         super().on_send(resp=resp)
         # Get the button presses.

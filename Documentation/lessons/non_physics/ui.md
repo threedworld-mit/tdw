@@ -2,7 +2,7 @@
 
 # User Interface (the `UI` add-on)
 
-TDW includes an API for setting up a basic user interface (UI). Unlike [textured quads](../textured_quads.md), UI elements will appear on the screen, look at the camera, and move when the camera moves. UI elements are positioned using screen-space parameters rather than worldspace coordinates.
+TDW includes an API for setting up a basic user interface (UI). Unlike [textured quads](textured_quads.md), UI elements will appear on the screen, look at the camera, and move when the camera moves. UI elements are positioned using screen-space parameters rather than worldspace coordinates.
 
 The easiest way to set UI in TDW is via the [`UI`](../../python/add_ons/ui.md) add-on:
 
@@ -40,11 +40,11 @@ Result:
 
 TDW's UI API is deliberately limited. Unity has a powerful UI API, but it is notoriously difficult to use. TDW's implementation of the Unity UI API has only as subset of the full functionality; it is not designed for a good-looking video game-like interface, and more for displaying rudimentary metrics or messages. There is also no user input such as button presses, although this may be implemented in the future.
 
-## Canvases and avatars
+## Canvases, avatars, and VR rigs
 
 In Unity, UI elements ("RectTransforms") must be attached to a **canvas**. There can be more than one canvas in the scene.
 
-In TDW, the `UI` add on has an optional `canvas_id` in its constructor (default value is 0). When the add-on initializes, it automatically sends [`add_ui_canvas`](../../api/command_api,md#add_ui_canvas). The `UI` add-on will then automatically append its canvas ID to all subsequent commands.
+In TDW, the `UI` add on has an optional `canvas_id` in its constructor (default value is 0). When the add-on initializes, it automatically sends [`add_ui_canvas`](../../api/command_api.md#add_ui_canvas). The `UI` add-on will then automatically append its canvas ID to all subsequent commands.
 
 To add multiple canvases to the scene, simply add multiple `UI` add-ons:
 
@@ -63,6 +63,8 @@ In practice, the only reason to add multiple UI canvases is if there are multipl
 By default, a canvas is in "overlay" mode. It is rendered separately from TDW's camera passes. In order for the canvas to actually appear in [image output data](../core_concepts/images.md) it must be "attached" to an avatar. To do this, create an avatar (i.e. `ThirdPersonCamera`) and then call `ui.attach_canvas_to_avatar(avatar_id)`. This function automatically sends [`attach_ui_canvas_to_avatar`](../../api/command_api.md#attach_ui_canvas_to_avatar).
 
 `ui.attach_canvas_to_avatar()` also has an additional optional parameter `focus_distance`. This should be set to the default (2.5) or higher, otherwise the UI will look blurry.
+
+For [VR rigs](../vr/overview.md), call `ui.attach_canvas_to_vr_rig()` instead of `ui.attach_canvas_to_avatar()`.
 
 ## Anchors, pivots, and positions
 
@@ -313,7 +315,7 @@ Python API:
 
 Command API:
 
-- [`add_ui_canvas`](../../api/command_api,md#add_ui_canvas)
+- [`add_ui_canvas`](../../api/command_api.md#add_ui_canvas)
 - [`attach_ui_canvas_to_avatar`](../../api/command_api.md#attach_ui_canvas_to_avatar)
 - [`add_ui_text`](../../api/command_api.md#add_ui_text)
 - [`add_ui_image`](../../api/command_api.md#add_ui_image)

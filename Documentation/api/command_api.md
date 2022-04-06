@@ -649,6 +649,32 @@
 | [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
 | [`teleport_textured_quad`](#teleport_textured_quad) | Teleport a textured quad to a new position. |
 
+**Ui Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_ui_canvas`](#add_ui_canvas) | Add a UI canvas to the scene. By default, the canvas will be an "overlay" and won't appear in image output data. |
+| [`attach_ui_canvas_to_avatar`](#attach_ui_canvas_to_avatar) | Attach a UI canvas to an avatar. This allows the UI to appear in image output data. |
+| [`attach_ui_canvas_to_vr_rig`](#attach_ui_canvas_to_vr_rig) | Attach a UI canvas to the head camera of a VR rig.  |
+| [`destroy_ui_canvas`](#destroy_ui_canvas) | Destroy a UI canvas and all of its UI elements. |
+
+**Ui Element Command**
+
+**Add Ui Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_ui_image`](#add_ui_image) | Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image. |
+| [`add_ui_text`](#add_ui_text) | Add UI text to the scene. |
+
+**Set Ui Element Command**
+
+| Command | Description |
+| --- | --- |
+| [`destroy_ui_element`](#destroy_ui_element) | Destroy a UI element in the scene. |
+| [`set_ui_element_size`](#set_ui_element_size) | Set the size of a UI element. |
+| [`set_ui_text`](#set_ui_text) | Set the text of a Text object that is already on the screen. |
+
 **Vr Command**
 
 | Command | Description |
@@ -8486,6 +8512,218 @@ Teleport a textured quad to a new position.
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | New position of the quad. | |
 | `"id"` | int | The unique ID of this textured quad. | |
+
+# UiCommand
+
+These commands adjust the UI.
+
+***
+
+## **`add_ui_canvas`**
+
+Add a UI canvas to the scene. By default, the canvas will be an "overlay" and won't appear in image output data.
+
+
+```python
+{"$type": "add_ui_canvas"}
+```
+
+```python
+{"$type": "add_ui_canvas", "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`attach_ui_canvas_to_avatar`**
+
+Attach a UI canvas to an avatar. This allows the UI to appear in image output data.
+
+
+```python
+{"$type": "attach_ui_canvas_to_avatar"}
+```
+
+```python
+{"$type": "attach_ui_canvas_to_avatar", "avatar_id": "a", "plane_distance": 0.101, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+| `"plane_distance"` | float | The distance from the camera to the UI canvas. This should be slightly further than the near clipping plane. | 0.101 |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`attach_ui_canvas_to_vr_rig`**
+
+Attach a UI canvas to the head camera of a VR rig. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "attach_ui_canvas_to_vr_rig"}
+```
+
+```python
+{"$type": "attach_ui_canvas_to_vr_rig", "plane_distance": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"plane_distance"` | float | The distance from the camera to the UI canvas. | 1 |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`destroy_ui_canvas`**
+
+Destroy a UI canvas and all of its UI elements.
+
+
+```python
+{"$type": "destroy_ui_canvas"}
+```
+
+```python
+{"$type": "destroy_ui_canvas", "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+# UiElementCommand
+
+These commands add or adjust UI elements such as text or images.
+
+# AddUiCommand
+
+These commands add UI elements to the scene.
+
+***
+
+## **`add_ui_image`**
+
+Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image.
+
+
+```python
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1}
+```
+
+```python
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"size"` | Vector2Int | The actual pixel size of the image. | |
+| `"rgba"` | bool | If True, this is an RGBA image. If False, this is an RGB image. | True |
+| `"scale_factor"` | Vector2 | Scale the image by this factor. | {"x": 1, "y": 1} |
+| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
+| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`add_ui_text`**
+
+Add UI text to the scene.
+
+
+```python
+{"$type": "add_ui_text", "text": "string", "id": 1}
+```
+
+```python
+{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"text"` | string | The text. | |
+| `"font_size"` | int | The font size. | 14 |
+| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
+| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+# SetUiElementCommand
+
+These commands set parameters of a UI element in the scene.
+
+***
+
+## **`destroy_ui_element`**
+
+Destroy a UI element in the scene.
+
+
+```python
+{"$type": "destroy_ui_element", "id": 1}
+```
+
+```python
+{"$type": "destroy_ui_element", "id": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`set_ui_element_size`**
+
+Set the size of a UI element.
+
+
+```python
+{"$type": "set_ui_element_size", "size": {"x": 1, "y": 2}, "id": 1}
+```
+
+```python
+{"$type": "set_ui_element_size", "size": {"x": 1, "y": 2}, "id": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"size"` | Vector2Int | The pixel size of the UI element. | |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`set_ui_text`**
+
+Set the text of a Text object that is already on the screen.
+
+
+```python
+{"$type": "set_ui_text", "text": "string", "id": 1}
+```
+
+```python
+{"$type": "set_ui_text", "text": "string", "id": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"text"` | string | The new text. | |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
 # VrCommand
 

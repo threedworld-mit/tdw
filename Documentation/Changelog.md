@@ -96,6 +96,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
     - `CollisionMaterial`
     - `MaterialCombineMode`
 - Fixed: `AssetBundleCreator` fails because the `asset_bundle_creator/` Unity project doesn't include Newtonsoft.JSON
+- By default, the `OculusTouch` add-on will set the rig's hands and all graspable objects to the "discrete" collision detection mode.
 
 ### Model Library
 
@@ -116,10 +117,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### Modified Documentation
 
-| Document                           | Modification                               |
-| ---------------------------------- | ------------------------------------------ |
-| `lessons/flex/fluid_and_source.md` | Added deprecation notice.                  |
-| `lessons/physx/overview.md`        | Updated comparison section to include Obi. |
+| Document                           | Modification                                   |
+| ---------------------------------- | ---------------------------------------------- |
+| `lessons/flex/fluid_and_source.md` | Added deprecation notice.                      |
+| `lessons/physx/overview.md`        | Updated comparison section to include Obi.     |
+| `lessons/vr/oculus_touch.md`       | Added a section regarding physics glitchiness. |
 
 ### Benchmarking
 

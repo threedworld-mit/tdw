@@ -16,7 +16,8 @@ class OculusTouch(VR):
 
     def __init__(self, human_hands: bool = True, set_graspable: bool = True, output_data: bool = True,
                  attach_avatar: bool = False, avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
-                 headset_resolution_scale: float = 1.0, non_graspable: List[int] = None):
+                 headset_resolution_scale: float = 1.0, non_graspable: List[int] = None,
+                 discrete_collision_detection_mode: bool = True):
         """
         :param human_hands: If True, visualize the hands as human hands. If False, visualize the hands as robot hands.
         :param set_graspable: If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/semantic_states/composite_objects.md) as graspable by the VR rig.
@@ -26,6 +27,7 @@ class OculusTouch(VR):
         :param headset_aspect_ratio: The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices.
         :param headset_resolution_scale: The headset resolution scale controls the actual size of eye textures as a multiplier of the device's default resolution. A value greater than 1 improves image quality but at a slight performance cost. Range: 0.5 to 1.75
         :param non_graspable: A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
+        :param discrete_collision_detection_mode: If True, the VR rig's hands and all graspable objects in the scene will be set to the `"discrete"` collision detection mode, which seems to reduce physics glitches in VR. If False, the VR rig's hands and all graspable objects will be set to the `"continuous_dynamic"` collision detection mode (the default in TDW).
         """
 
         if human_hands:
@@ -44,6 +46,7 @@ class OculusTouch(VR):
             self._non_graspable: List[int] = list()
         else:
             self._non_graspable: List[int] = non_graspable
+        self._discrete_collision_detection_mode: bool = discrete_collision_detection_mode
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -68,6 +71,14 @@ class OculusTouch(VR):
                     vr_node_ids = [static_oculus_touch.get_body_id(),
                                    static_oculus_touch.get_left_hand_id(),
                                    static_oculus_touch.get_right_hand_id()]
+                    # Set the collision detection modes of the rig's hands.
+                    if self._discrete_collision_detection_mode:
+                        self.commands.extend([{"$type": "set_object_collision_detection_mode",
+                                               "id": vr_node_ids[1],
+                                               "mode": "discrete"},
+                                              {"$type": "set_object_collision_detection_mode",
+                                               "id": vr_node_ids[2],
+                                               "mode": "discrete"}])
                     break
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
@@ -75,13 +86,16 @@ class OculusTouch(VR):
                     static_rigidbodies = StaticRigidbodies(resp[i])
                     for j in range(static_rigidbodies.get_num()):
                         object_id = static_rigidbodies.get_id(j)
+                        # Make all non-kinematic objects graspable unless they are in `self._non_graspable`.
                         if object_id not in vr_node_ids and not static_rigidbodies.get_kinematic(j) and \
                                 object_id not in self._non_graspable:
-                            self.commands.extend([{"$type": "set_object_collision_detection_mode",
-                                                   "id": object_id,
-                                                   "mode": "discrete"},
-                                                  {"$type": "set_vr_graspable",
-                                                   "id": object_id}])
+                            self.commands.append({"$type": "set_vr_graspable",
+                                                  "id": object_id})
+                            # Set "discrete" collision detection mode for each graspable object.
+                            if self._discrete_collision_detection_mode:
+                                self.commands.append({"$type": "set_object_collision_detection_mode",
+                                                      "id": object_id,
+                                                      "mode": "discrete"})
                     break
         super().on_send(resp=resp)
         # Get the button presses.

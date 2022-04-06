@@ -38,7 +38,7 @@ Result:
 
 ## Limitations
 
-TDW's UI API is deliberately limited. Unity has a powerful UI API, but it is notoriously difficult to use. TDW's implementation of the Unity UI API has only as subset of the full functionality; it is not designed for a good-looking video game-like interface, and more for displaying rudimentary metrics or messages. There is also no user input such as button presses, although this may be implemented in the future.
+TDW's UI API is deliberately limited. Unity has a powerful UI API, but it was designed assuming that the developer would have access to Unity Editor. Without visual aids, it is extremely difficult to use, or even to explain. TDW's implementation of the Unity UI API has only as subset of the full functionality; it is not designed for a good-looking video game-like interface, and more for displaying rudimentary metrics or messages. There is also no user input such as button presses, although this may be implemented in the future.
 
 ## Canvases, avatars, and VR rigs
 

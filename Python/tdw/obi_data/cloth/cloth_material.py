@@ -9,18 +9,11 @@ class ClothMaterial():
     Abstract base class for Obi cloth materials.
     """
 
-    def __init__(self, 
-                 distance_constraints_enabled: bool, bend_constraints_enabled: bool,  
-                 aerodynamics_constraints_enabled: bool, tether_constraints_enabled: bool, 
-                 stretching_scale: float = 1.0, stretch_compliance: float = 0, max_compression: float = 0,
+    def __init__(self, stretching_scale: float = 1.0, stretch_compliance: float = 0, max_compression: float = 0,
                  max_bending: float = 0.05, bend_compliance: float = 0, drag: float = 0.05, lift: float = 0.05,
                  tether_compliance: float = 0, tether_scale: float = 1.0
                 ):
         """
-        :param distance_constraints_enabled: Are distance constraints enabled?
-        :param bend_constraints_enabled: Are bend constraints enabled?
-        :param aerodynamics_constraints_enabled: Are aerodynamics constraints enabled?
-        :param tether_constraints_enabled: Are tether constraints enabled?
         :param stretching_scale: The scale factor for the rest length of each constraint.
         :param stretch_compliance: Controls how much constraints will resist a change in length.
         :param max_compression: The percentage of compression allowed by the constraints before kicking in. 
@@ -31,23 +24,7 @@ class ClothMaterial():
         :param tether_compliance: Controls how much constraints will resist stretching
         :param tether_scale: Scales the initial length of tethers.
         """
-
-        """:field
-        Are distance constraints enabled?
-        """
-        self.distance_constraints_enabled: bool = distance_constraints_enabled
-        """:field
-        Are bend constraints enabled?
-        """
-        self.bend_constraints_enabled: bool = bend_constraints_enabled
-        """:field
-        Are aerodynamics constraints enabled?
-        """
-        self.aerodynamics_constraints_enabled: bool = aerodynamics_constraints_enabled
-        """:field
-        Are tether constraints enabled?
-        """
-        self.tether_constraints_enabled: bool = tether_constraints_enabled       
+      
         """:field
         The scale factor for the rest length of each constraint.
         """

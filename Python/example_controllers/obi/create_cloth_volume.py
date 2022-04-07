@@ -15,7 +15,7 @@ c.communicate(Controller.get_add_scene(scene_name="tdw_room"))
 cloth_id = Controller.get_unique_id()
 receptacle_id = Controller.get_unique_id()
 camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
-                           look_at={"x": 0, "y": 0, "z": 0})
+                           look_at={"x": 0, "y": 0.5, "z": 0})
 # Define a  collision material.
 coll_material = CollisionMaterial(dynamic_friction=0.5,
                                        static_friction=0.5,
@@ -30,10 +30,10 @@ c.add_ons.extend([camera, obi])
 # Create a disk-shaped emitter, pointing straight down.
 obi.create_cloth_volume(cloth_material="silk",
                         object_id=cloth_id,
-                        position={"x": 0, "y": 3.0, "z": 0},
+                        position={"x": 0, "y": 2.0, "z": 0},
                         rotation={"x": 0, "y": 0, "z": 0},
                         volume_type="ball",
-                        pressure=0.5,
+                        pressure=3.0,
                         solver_id=0)
 c.communicate([{"$type": "set_screen_size",
                            "width": 1920,

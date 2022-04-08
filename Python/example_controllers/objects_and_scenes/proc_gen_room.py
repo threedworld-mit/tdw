@@ -67,11 +67,11 @@ class ProcGenRoom(Controller):
         material_name = materials[self.rng.randint(0, len(materials))]
         texture_scale: float = float(self.rng.uniform(4, 4.5))
         return [self.get_add_material(material_name=material_name),
-                {"$type": "set_proc_gen_floor_material",
+                {"$type": "set_floor_material",
                  "name": material_name},
-                {"$type": "set_proc_gen_floor_texture_scale",
+                {"$type": "set_floor_texture_scale",
                  "scale": {"x": texture_scale, "y": texture_scale}},
-                {"$type": "set_proc_gen_floor_color",
+                {"$type": "set_floor_color",
                  "color": {"r": float(self.rng.uniform(0.7, 1)),
                            "g": float(self.rng.uniform(0.7, 1)),
                            "b": float(self.rng.uniform(0.7, 1)),

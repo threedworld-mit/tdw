@@ -42,7 +42,7 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 
 **`OculusTouch()`**
 
-**`OculusTouch(human_hands=True, set_graspable=True, output_data=True, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None)`**
+**`OculusTouch(human_hands=True, set_graspable=True, output_data=True, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, discrete_collision_detection_mode=True)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -54,6 +54,7 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 | headset_aspect_ratio |  float  | 0.9 | The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices. |
 | headset_resolution_scale |  float  | 1.0 | The headset resolution scale controls the actual size of eye textures as a multiplier of the device's default resolution. A value greater than 1 improves image quality but at a slight performance cost. Range: 0.5 to 1.75 |
 | non_graspable |  List[int] | None | A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable. |
+| discrete_collision_detection_mode |  bool  | True | If True, the VR rig's hands and all graspable objects in the scene will be set to the `"discrete"` collision detection mode, which seems to reduce physics glitches in VR. If False, the VR rig's hands and all graspable objects will be set to the `"continuous_dynamic"` collision detection mode (the default in TDW). |
 
 #### get_initialization_commands
 

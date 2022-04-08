@@ -1,0 +1,16 @@
+{
+  "gravel": {
+    "capacity": 1000.0,
+    "color": {"r": 0.5, "g": 0.5, "b": 0.5, "a": 1},
+    "randomness": 30.0,
+    "resolution": 2.0,
+    "rest_density": 200.0
+  },
+  "rocks": {
+    "capacity": 500.0,
+    "color": {"r": 0.5, "g": 0.5, "b": 0.5, "a": 1},
+    "randomness": 10.0,
+    "resolution": 1.5,
+    "rest_density": 200.0
+  }
+}

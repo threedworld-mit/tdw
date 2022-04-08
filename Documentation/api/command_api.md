@@ -255,6 +255,17 @@
 | [`create_flex_container`](#create_flex_container) | Create a Flex Container. The ID of this container is the quantity of containers in the scene prior to adding it.  |
 | [`destroy_flex_container`](#destroy_flex_container) | Destroy an existing Flex container. Only send this command after destroying all Flex objects in the scene.  |
 
+**Floor Command**
+
+| Command | Description |
+| --- | --- |
+| [`create_floor_obi_colliders`](#create_floor_obi_colliders) | Create Obi colliders for the floor if there aren't any.  |
+| [`set_floor_color`](#set_floor_color) | Set the albedo color of the floor. |
+| [`set_floor_material`](#set_floor_material) | Set the material of the floor.  |
+| [`set_floor_obi_collision_material`](#set_floor_obi_collision_material) | Set the Obi collision material of the floor.  |
+| [`set_floor_physic_material`](#set_floor_physic_material) | Set the physic material of the floor. These settings can be overriden by sending the command again. When an object contacts the floor, the floor's physic material values are averaged with an object's values. |
+| [`set_floor_texture_scale`](#set_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture. |
+
 **Global Boolean Command**
 
 | Command | Description |
@@ -293,12 +304,22 @@
 | [`bake_nav_mesh`](#bake_nav_mesh) | Bake the NavMesh, enabling Unity pathfinding. This must be sent before any other Nav Mesh Commands, and after creating the scene environment (e.g. the procedurally generated room).  |
 | [`send_is_on_nav_mesh`](#send_is_on_nav_mesh) | Given a position, try to get the nearest position on the NavMesh.  |
 
+**Obi Command**
+
+| Command | Description |
+| --- | --- |
+| [`create_obi_fluid`](#create_obi_fluid) | Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, and the shape of the emitter.  |
+| [`create_obi_solver`](#create_obi_solver) | Create an Obi Solver. The solver has a unique ID that is generated sequentially: The first solver's ID is 0, the second solver's ID is 1, and so on.  |
+| [`destroy_obi_solver`](#destroy_obi_solver) | Destroy an Obi solver. |
+| [`set_obi_solver_substeps`](#set_obi_solver_substeps) | Set an Obi solver's number of substeps. Performing more substeps will greatly improve the accuracy/convergence speed of the simulation at the cost of speed.  |
+
 **Object Command**
 
 | Command | Description |
 | --- | --- |
 | [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
 | [`attach_empty_object`](#attach_empty_object) | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects |
+| [`create_obi_colliders`](#create_obi_colliders) | Create Obi colliders for an object if there aren't any.  |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
@@ -312,6 +333,7 @@
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
 | [`scale_object`](#scale_object) | Scale the object by a factor from its current scale. |
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
+| [`set_obi_collision_material`](#set_obi_collision_material) | Set the Obi collision material of an object.  |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
 | [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
@@ -344,6 +366,7 @@
 | [`set_composite_object_kinematic_state`](#set_composite_object_kinematic_state) | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
 | [`set_mass`](#set_mass) | Set the mass of an object. |
+| [`set_obi_fluid_emission_speed`](#set_obi_fluid_emission_speed) | Set the emission speed of a fluid emitter. Larger values will cause more particles to be emitted.  |
 | [`set_object_collision_detection_mode`](#set_object_collision_detection_mode) | Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object.  |
 | [`set_object_drag`](#set_object_drag) | Set the drag of an object's RigidBody. Both drag and angular_drag can be safely changed on-the-fly. |
 | [`set_object_physics_solver_iterations`](#set_object_physics_solver_iterations) | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: [set_physics_solver_iterations](#set_physics_solver_iterations) which sets the global default number of solver iterations. |
@@ -448,7 +471,7 @@
 | Command | Description |
 | --- | --- |
 | [`set_proc_gen_floor_color`](#set_proc_gen_floor_color) | Set the albedo RGBA color of the floor.  |
-| [`set_proc_gen_floor_texture_scale`](#set_proc_gen_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture. |
+| [`set_proc_gen_floor_texture_scale`](#set_proc_gen_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture.  |
 
 **Proc Gen Material Command**
 
@@ -470,11 +493,13 @@
 
 | Command | Description |
 | --- | --- |
+| [`create_robot_obi_colliders`](#create_robot_obi_colliders) | Create Obi colliders for a robot if there aren't any.  |
 | [`destroy_robot`](#destroy_robot) | Destroy a robot in the scene. |
 | [`make_robot_nav_mesh_obstacle`](#make_robot_nav_mesh_obstacle) | Make a specific robot a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties.  |
 | [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
 | [`remove_robot_nav_mesh_obstacle`](#remove_robot_nav_mesh_obstacle) | Remove a NavMesh obstacle from a robot (see make_robot_nav_mesh_obstacle).  |
 | [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
+| [`set_robot_obi_collision_material`](#set_robot_obi_collision_material) | Set the Obi collision material of a robot.  |
 | [`teleport_robot`](#teleport_robot) | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
 
 **Magnebot Command**
@@ -546,6 +571,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_collider_intersections`](#send_collider_intersections) | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider.  |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
 | [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
 | [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations.  |
@@ -580,6 +606,7 @@
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
+| [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
@@ -617,18 +644,47 @@
 | Command | Description |
 | --- | --- |
 | [`rotate_textured_quad_by`](#rotate_textured_quad_by) | Rotate a textured quad by a given angle around a given axis. |
+| [`rotate_textured_quad_to`](#rotate_textured_quad_to) | Set the rotation of a textured quad. |
 | [`scale_textured_quad`](#scale_textured_quad) | Scale a textured quad by a factor. |
 | [`set_textured_quad`](#set_textured_quad) | Apply a texture to a pre-existing quad.  |
 | [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
 | [`teleport_textured_quad`](#teleport_textured_quad) | Teleport a textured quad to a new position. |
+
+**Ui Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_ui_canvas`](#add_ui_canvas) | Add a UI canvas to the scene. By default, the canvas will be an "overlay" and won't appear in image output data. |
+| [`attach_ui_canvas_to_avatar`](#attach_ui_canvas_to_avatar) | Attach a UI canvas to an avatar. This allows the UI to appear in image output data. |
+| [`attach_ui_canvas_to_vr_rig`](#attach_ui_canvas_to_vr_rig) | Attach a UI canvas to the head camera of a VR rig.  |
+| [`destroy_ui_canvas`](#destroy_ui_canvas) | Destroy a UI canvas and all of its UI elements. |
+
+**Ui Element Command**
+
+**Add Ui Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_ui_image`](#add_ui_image) | Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image. |
+| [`add_ui_text`](#add_ui_text) | Add UI text to the scene. |
+
+**Set Ui Element Command**
+
+| Command | Description |
+| --- | --- |
+| [`destroy_ui_element`](#destroy_ui_element) | Destroy a UI element in the scene. |
+| [`set_ui_element_size`](#set_ui_element_size) | Set the size of a UI element. |
+| [`set_ui_text`](#set_ui_text) | Set the text of a Text object that is already on the screen. |
 
 **Vr Command**
 
 | Command | Description |
 | --- | --- |
 | [`attach_avatar_to_vr_rig`](#attach_avatar_to_vr_rig) | Attach an avatar (A_Img_Caps_Kinematic) to the VR rig in the scene. This avatar will work like all others, i.e it can send images and other data. The avatar will match the position and rotation of the VR rig's head. By default, this feature is disabled because it slows down the simulation's FPS.  |
+| [`create_vr_obi_colliders`](#create_vr_obi_colliders) | Create Obi colliders for a VR rig if there aren't any.  |
 | [`destroy_vr_rig`](#destroy_vr_rig) | Destroy the current VR rig.  |
 | [`rotate_vr_rig_by`](#rotate_vr_rig_by) | Rotate the VR rig by an angle.  |
+| [`set_vr_obi_collision_material`](#set_vr_obi_collision_material) | Set the Obi collision material of the VR rig.  |
 | [`set_vr_resolution_scale`](#set_vr_resolution_scale) | Controls the actual size of eye textures as a multiplier of the device's default resolution.  |
 | [`teleport_vr_rig`](#teleport_vr_rig) | Teleport the VR rig to a new position.  |
 
@@ -3578,6 +3634,125 @@ Destroy an existing Flex container. Only send this command after destroying all 
 | --- | --- | --- | --- |
 | `"id"` | int | The ID of the existing container. | 0 |
 
+# FloorCommand
+
+These commands adjust the floor in the scene. To do so, they look for an object that in the backend is tagged "floor". Most, but not all scenes that have a floor have a <emphasis>tagged</emphasis> floor. If there is no tagged floor, these commands fail silently and log a warning. These commands will always work with the ProcGen room.
+
+***
+
+## **`create_floor_obi_colliders`**
+
+Create Obi colliders for the floor if there aren't any. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "create_floor_obi_colliders"}
+```
+
+***
+
+## **`set_floor_color`**
+
+Set the albedo color of the floor.
+
+
+```python
+{"$type": "set_floor_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"color"` | Color | The new albedo RGBA color of the floor. | |
+
+***
+
+## **`set_floor_material`**
+
+Set the material of the floor. 
+
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+
+```python
+{"$type": "set_floor_material", "name": "string"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"name"` | string | The name of the material. The material must already be loaded in memory. | |
+
+***
+
+## **`set_floor_obi_collision_material`**
+
+Set the Obi collision material of the floor. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_floor_obi_collision_material"}
+```
+
+```python
+{"$type": "set_floor_obi_collision_material", "dynamic_friction": 0.3, "static_friction": 0.3, "stickiness": 0, "stick_distance": 0, "friction_combine": "average", "stickiness_combine": "average"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dynamic_friction"` | float | Percentage of relative tangential velocity removed in a collision, once the static friction threshold has been surpassed and the particle is moving relative to the surface. 0 means things will slide as if made of ice, 1 will result in total loss of tangential velocity. | 0.3 |
+| `"static_friction"` | float | Percentage of relative tangential velocity removed in a collision. 0 means things will slide as if made of ice, 1 will result in total loss of tangential velocity. | 0.3 |
+| `"stickiness"` | float | Amount of inward normal force applied between objects in a collision. 0 means no force will be applied, 1 will keep objects from separating once they collide. | 0 |
+| `"stick_distance"` | float | Maximum distance between objects at which sticky forces are applied. Since contacts will be generated between bodies within the stick distance, it should be kept as small as possible to reduce the amount of contacts generated. | 0 |
+| `"friction_combine"` | MaterialCombineMode | How is the friction coefficient calculated when two objects involved in a collision have different coefficients. If both objects have different friction combine modes, the mode with the lowest enum index is used. | "average" |
+| `"stickiness_combine"` | MaterialCombineMode | How is the stickiness coefficient calculated when two objects involved in a collision have different coefficients. If both objects have different stickiness combine modes, the mode with the lowest enum index is used. | "average" |
+
+#### MaterialCombineMode
+
+Obi collision maerial combine modes.
+
+| Value | Description |
+| --- | --- |
+| `"average"` |  |
+| `"minimum"` |  |
+| `"multiply"` |  |
+| `"maximum"` |  |
+
+***
+
+## **`set_floor_physic_material`**
+
+Set the physic material of the floor. These settings can be overriden by sending the command again. When an object contacts the floor, the floor's physic material values are averaged with an object's values.
+
+
+```python
+{"$type": "set_floor_physic_material", "dynamic_friction": 0.125, "static_friction": 0.125, "bounciness": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dynamic_friction"` | float | A higher value means that an object on the floor will come to rest very quickly. Must be between 0 and 1. | |
+| `"static_friction"` | float | A higher value means that a lot of force will be needed to make an object on the floor start moving. Must be between 0 and 1. | |
+| `"bounciness"` | float | A higher value means that an object on the floor will bounce without losing much energy. Must be between 0 and 1. | |
+
+***
+
+## **`set_floor_texture_scale`**
+
+Set the scale of the tiling of the floor material's main texture.
+
+
+```python
+{"$type": "set_floor_texture_scale"}
+```
+
+```python
+{"$type": "set_floor_texture_scale", "scale": {"x": 1, "y": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale"` | Vector2 | The tiling scale of the material. Generally (but by no means always), the default tiling scale of a texture is {"x": 1, "y": 1} | {"x": 1, "y": 1} |
+
 # GlobalBooleanCommand
 
 Command with a single toggle-able boolean that affects the build globally. These commands always have a default value, and are cached as singleton instances.
@@ -3789,6 +3964,7 @@ Load a GameObject from resources.
 Load a FlexFluidPrimitive from resources. 
 
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "load_flex_fluid_from_resources", "id": 1}
@@ -3811,6 +3987,7 @@ Load a FlexFluidPrimitive from resources.
 Load a FlexFluidSource mesh from resources. 
 
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "load_flex_fluid_source_from_resources", "id": 1}
@@ -3921,6 +4098,90 @@ Given a position, try to get the nearest position on the NavMesh.
 | `"position"` | Vector3 | The position being tested. Its y value will be normalized to the y value of the NavMesh at the (x, z) coordinate. | |
 | `"max_distance"` | float | Radius of the search for a valid point. A large value will result in an expensive calculation; try to keep the value below 5. | 1.0 |
 
+# ObiCommand
+
+These commands are used for aspects of an Obi simulation. There are other Obi-related commands as well; search for "obi" in this document.
+
+***
+
+## **`create_obi_fluid`**
+
+Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, and the shape of the emitter. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "create_obi_fluid", "fluid": {'$type': 'fluid', 'capacity': 1500, 'resolution': 1.0, 'color': {'a': 0.5, 'b': 0.15, 'g': 0.986, 'r': 1.0}, 'rest_density': 1000.0, 'radius_scale': 2.0, 'random_velocity': 0.15, 'smoothing': 3.0, 'surface_tension': 1.0, 'viscosity': 1.5, 'vorticity': 0.7, 'reflection': 0.2, 'transparency': 0.875, 'refraction': 0.0, 'buoyancy': -1, 'diffusion': 0, 'diffusion_data': {'w': 0, 'x': 0, 'y': 0, 'z': 0}, 'atmospheric_drag': 0, 'atmospheric_pressure': 0, 'particle_z_write': False, 'thickness_cutoff': 1.2, 'thickness_downsample': 2, 'blur_radius': 0.02, 'surface_downsample': 1, 'render_smoothness': 0.8, 'metalness': 0, 'ambient_multiplier': 1, 'absorption': 5, 'refraction_downsample': 1, 'foam_downsample': 1}, "shape": {'$type': 'cube_emitter', 'size': {'x': 0.1, 'y': 0.1, 'z': 0.1}, 'sampling_method': 'volume'}}
+```
+
+```python
+{"$type": "create_obi_fluid", "fluid": {'$type': 'fluid', 'capacity': 1500, 'resolution': 1.0, 'color': {'a': 0.5, 'b': 0.15, 'g': 0.986, 'r': 1.0}, 'rest_density': 1000.0, 'radius_scale': 2.0, 'random_velocity': 0.15, 'smoothing': 3.0, 'surface_tension': 1.0, 'viscosity': 1.5, 'vorticity': 0.7, 'reflection': 0.2, 'transparency': 0.875, 'refraction': 0.0, 'buoyancy': -1, 'diffusion': 0, 'diffusion_data': {'w': 0, 'x': 0, 'y': 0, 'z': 0}, 'atmospheric_drag': 0, 'atmospheric_pressure': 0, 'particle_z_write': False, 'thickness_cutoff': 1.2, 'thickness_downsample': 2, 'blur_radius': 0.02, 'surface_downsample': 1, 'render_smoothness': 0.8, 'metalness': 0, 'ambient_multiplier': 1, 'absorption': 5, 'refraction_downsample': 1, 'foam_downsample': 1}, "shape": {'$type': 'cube_emitter', 'size': {'x': 0.1, 'y': 0.1, 'z': 0.1}, 'sampling_method': 'volume'}, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "lifespan": 4, "minimum_pool_size": 0.5, "id": 0, "solver_id": 0, "speed": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the emitter object. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the emitter object, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"fluid"` | FluidBase | A ../python/obi_data/fluid.md "`Fluid`" or ../python/obi_data/granular_fluid.md "`GranularFluid`" | |
+| `"shape"` | EmitterShapeBase | A ../python/obi_data/emitter_shape/cube_emitter.md "`CubeEmitter`", ../python/obi_data/emitter_shape/disk_emitter.md "`DiskEmitter`", ../python/obi_data/emitter_shape/edge_emitter.md "`EdgeEmitter`", or ../python/obi_data/emitter_shape/sphere_emitter.md "`SphereEmitter`". | |
+| `"lifespan"` | float | The particle lifespan in seconds. | 4 |
+| `"minimum_pool_size"` | float | The minimum amount of inactive particles available before the emitter is allowed to resume emission. | 0.5 |
+| `"id"` | int | The unique ID of the emitter. | 0 |
+| `"solver_id"` | int | The ID of the Obi solver. | 0 |
+| `"speed"` | float | The speed of the fluid emission. If 0, there is no emission. | 0 |
+
+***
+
+## **`create_obi_solver`**
+
+Create an Obi Solver. The solver has a unique ID that is generated sequentially: The first solver's ID is 0, the second solver's ID is 1, and so on. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "create_obi_solver"}
+```
+
+***
+
+## **`destroy_obi_solver`**
+
+Destroy an Obi solver.
+
+
+```python
+{"$type": "destroy_obi_solver"}
+```
+
+```python
+{"$type": "destroy_obi_solver", "solver_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"solver_id"` | int | The solver ID. | 0 |
+
+***
+
+## **`set_obi_solver_substeps`**
+
+Set an Obi solver's number of substeps. Performing more substeps will greatly improve the accuracy/convergence speed of the simulation at the cost of speed. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_solver_substeps"}
+```
+
+```python
+{"$type": "set_obi_solver_substeps", "solver_id": 0, "substeps": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"solver_id"` | int | The solver ID. | 0 |
+| `"substeps"` | int | The number of substeps. | 1 |
+
 # ObjectCommand
 
 Manipulate an object that is already in the scene.
@@ -3980,6 +4241,22 @@ Attach an empty object to an object in the scene. This is useful for tracking lo
 | --- | --- | --- | --- |
 | `"empty_object_id"` | int | The ID of the empty object. This doesn't have to be the same as the object ID. | |
 | `"position"` | Vector3 | The position of the empty object relative to the parent object, in the parent object's local coordinate space. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`create_obi_colliders`**
+
+Create Obi colliders for an object if there aren't any. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "create_obi_colliders", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -4271,6 +4548,43 @@ Set the albedo RGBA color of an object.
 | --- | --- | --- | --- |
 | `"color"` | Color | The new albedo RGBA color of the object. | |
 | `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_obi_collision_material`**
+
+Set the Obi collision material of an object. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_collision_material", "id": 1}
+```
+
+```python
+{"$type": "set_obi_collision_material", "id": 1, "dynamic_friction": 0.3, "static_friction": 0.3, "stickiness": 0, "stick_distance": 0, "friction_combine": "average", "stickiness_combine": "average"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dynamic_friction"` | float | Percentage of relative tangential velocity removed in a collision, once the static friction threshold has been surpassed and the particle is moving relative to the surface. 0 means things will slide as if made of ice, 1 will result in total loss of tangential velocity. | 0.3 |
+| `"static_friction"` | float | Percentage of relative tangential velocity removed in a collision. 0 means things will slide as if made of ice, 1 will result in total loss of tangential velocity. | 0.3 |
+| `"stickiness"` | float | Amount of inward normal force applied between objects in a collision. 0 means no force will be applied, 1 will keep objects from separating once they collide. | 0 |
+| `"stick_distance"` | float | Maximum distance between objects at which sticky forces are applied. Since contacts will be generated between bodies within the stick distance, it should be kept as small as possible to reduce the amount of contacts generated. | 0 |
+| `"friction_combine"` | MaterialCombineMode | How is the friction coefficient calculated when two objects involved in a collision have different coefficients. If both objects have different friction combine modes, the mode with the lowest enum index is used. | "average" |
+| `"stickiness_combine"` | MaterialCombineMode | How is the stickiness coefficient calculated when two objects involved in a collision have different coefficients. If both objects have different stickiness combine modes, the mode with the lowest enum index is used. | "average" |
+| `"id"` | int | The unique object ID. | |
+
+#### MaterialCombineMode
+
+Obi collision maerial combine modes.
+
+| Value | Description |
+| --- | --- |
+| `"average"` |  |
+| `"minimum"` |  |
+| `"multiply"` |  |
+| `"maximum"` |  |
 
 ***
 
@@ -4708,6 +5022,27 @@ Set the mass of an object.
 
 ***
 
+## **`set_obi_fluid_emission_speed`**
+
+Set the emission speed of a fluid emitter. Larger values will cause more particles to be emitted. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_emission_speed", "id": 1}
+```
+
+```python
+{"$type": "set_obi_fluid_emission_speed", "id": 1, "speed": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"speed"` | float | The speed of emitted particles in meters per second. Set this to 0 to stop emission. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`set_object_collision_detection_mode`**
 
 Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object. 
@@ -5133,6 +5468,7 @@ Create or adjust a FlexArrayActor as a fluid object.
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_flex_fluid_actor", "id": 1}
@@ -5159,6 +5495,7 @@ Create or adjust a FlexSourceActor as a fluid "hose pipe" source.
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_flex_fluid_source_actor", "id": 1}
@@ -5720,7 +6057,7 @@ These commands modify the floor of a procedurally-generated room.
 
 Set the albedo RGBA color of the floor. 
 
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_proc_gen_floor_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
@@ -5734,8 +6071,9 @@ Set the albedo RGBA color of the floor.
 
 ## **`set_proc_gen_floor_texture_scale`**
 
-Set the scale of the tiling of the floor material's main texture.
+Set the scale of the tiling of the floor material's main texture. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_proc_gen_floor_texture_scale"}
@@ -5776,6 +6114,7 @@ Set the material of a procedurally-generated ceiling.
 Set the material of a procedurally-generated floor. 
 
 - <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_proc_gen_floor_material", "name": "string"}
@@ -5860,6 +6199,26 @@ Set the scale of proc-gen wall sections.
 # RobotCommand
 
 These commands affect robots currently in the scene. To add a robot, send the add_robot command. For further documentation, see: Documentation/misc_frontend/robots.md
+
+***
+
+## **`create_robot_obi_colliders`**
+
+Create Obi colliders for a robot if there aren't any. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "create_robot_obi_colliders"}
+```
+
+```python
+{"$type": "create_robot_obi_colliders", "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
 
 ***
 
@@ -5983,6 +6342,43 @@ Set whether or not the root object of the robot is immovable. Its joints will st
 | --- | --- | --- | --- |
 | `"immovable"` | bool | If true, the root object of the robot is immovable. | True |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_robot_obi_collision_material`**
+
+Set the Obi collision material of a robot. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_robot_obi_collision_material"}
+```
+
+```python
+{"$type": "set_robot_obi_collision_material", "dynamic_friction": 0.3, "static_friction": 0.3, "stickiness": 0, "stick_distance": 0, "friction_combine": "average", "stickiness_combine": "average", "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dynamic_friction"` | float | Percentage of relative tangential velocity removed in a collision, once the static friction threshold has been surpassed and the particle is moving relative to the surface. 0 means things will slide as if made of ice, 1 will result in total loss of tangential velocity. | 0.3 |
+| `"static_friction"` | float | Percentage of relative tangential velocity removed in a collision. 0 means things will slide as if made of ice, 1 will result in total loss of tangential velocity. | 0.3 |
+| `"stickiness"` | float | Amount of inward normal force applied between objects in a collision. 0 means no force will be applied, 1 will keep objects from separating once they collide. | 0 |
+| `"stick_distance"` | float | Maximum distance between objects at which sticky forces are applied. Since contacts will be generated between bodies within the stick distance, it should be kept as small as possible to reduce the amount of contacts generated. | 0 |
+| `"friction_combine"` | MaterialCombineMode | How is the friction coefficient calculated when two objects involved in a collision have different coefficients. If both objects have different friction combine modes, the mode with the lowest enum index is used. | "average" |
+| `"stickiness_combine"` | MaterialCombineMode | How is the stickiness coefficient calculated when two objects involved in a collision have different coefficients. If both objects have different stickiness combine modes, the mode with the lowest enum index is used. | "average" |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+#### MaterialCombineMode
+
+Obi collision maerial combine modes.
+
+| Value | Description |
+| --- | --- |
+| `"average"` |  |
+| `"minimum"` |  |
+| `"multiply"` |  |
+| `"maximum"` |  |
 
 ***
 
@@ -6628,6 +7024,41 @@ Send log messages to the controller.
 # SendDataCommand
 
 These commands send data to the controller.
+
+***
+
+## **`send_collider_intersections`**
+
+Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`ObjectColliderIntersection`](output_data.md#ObjectColliderIntersection), [`EnvironmentColliderIntersection`](output_data.md#EnvironmentColliderIntersection)</font>
+
+```python
+{"$type": "send_collider_intersections"}
+```
+
+```python
+{"$type": "send_collider_intersections", "obj_intersection_ids": [], "env_intersection_ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"obj_intersection_ids"` | int [] | Pairs of object IDs, for example <computeroutput>[[0, 1], [0, 2]]</computeroutput>. Object IDs pairs in this array will be tested for collider intersections with each other. | [] |
+| `"env_intersection_ids"` | int [] | A one-dimensional list of object IDs, for example <computeroutput>[0, 1, 2]</computeroutput>. Object IDs in this list will be tested for collider intersections with the environment. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
 
 ***
 
@@ -7431,6 +7862,39 @@ Options for when to send data.
 
 ***
 
+## **`send_obi_particles`**
+
+Send particle data for all Obi actors in the scene. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`ObiParticles`](output_data.md#ObiParticles)</font>
+
+```python
+{"$type": "send_obi_particles"}
+```
+
+```python
+{"$type": "send_obi_particles", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_oculus_touch_buttons`**
 
 Send data for buttons pressed on Oculus Touch controllers. 
@@ -7978,6 +8442,22 @@ An axis of rotation.
 
 ***
 
+## **`rotate_textured_quad_to`**
+
+Set the rotation of a textured quad.
+
+
+```python
+{"$type": "rotate_textured_quad_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rotation"` | Quaternion | The rotation quaternion. | |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
 ## **`scale_textured_quad`**
 
 Scale a textured quad by a factor.
@@ -8050,6 +8530,218 @@ Teleport a textured quad to a new position.
 | `"position"` | Vector3 | New position of the quad. | |
 | `"id"` | int | The unique ID of this textured quad. | |
 
+# UiCommand
+
+These commands adjust the UI.
+
+***
+
+## **`add_ui_canvas`**
+
+Add a UI canvas to the scene. By default, the canvas will be an "overlay" and won't appear in image output data.
+
+
+```python
+{"$type": "add_ui_canvas"}
+```
+
+```python
+{"$type": "add_ui_canvas", "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`attach_ui_canvas_to_avatar`**
+
+Attach a UI canvas to an avatar. This allows the UI to appear in image output data.
+
+
+```python
+{"$type": "attach_ui_canvas_to_avatar"}
+```
+
+```python
+{"$type": "attach_ui_canvas_to_avatar", "avatar_id": "a", "plane_distance": 0.101, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+| `"plane_distance"` | float | The distance from the camera to the UI canvas. This should be slightly further than the near clipping plane. | 0.101 |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`attach_ui_canvas_to_vr_rig`**
+
+Attach a UI canvas to the head camera of a VR rig. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "attach_ui_canvas_to_vr_rig"}
+```
+
+```python
+{"$type": "attach_ui_canvas_to_vr_rig", "plane_distance": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"plane_distance"` | float | The distance from the camera to the UI canvas. | 1 |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`destroy_ui_canvas`**
+
+Destroy a UI canvas and all of its UI elements.
+
+
+```python
+{"$type": "destroy_ui_canvas"}
+```
+
+```python
+{"$type": "destroy_ui_canvas", "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+# UiElementCommand
+
+These commands add or adjust UI elements such as text or images.
+
+# AddUiCommand
+
+These commands add UI elements to the scene.
+
+***
+
+## **`add_ui_image`**
+
+Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image.
+
+
+```python
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1}
+```
+
+```python
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"size"` | Vector2Int | The actual pixel size of the image. | |
+| `"rgba"` | bool | If True, this is an RGBA image. If False, this is an RGB image. | True |
+| `"scale_factor"` | Vector2 | Scale the image by this factor. | {"x": 1, "y": 1} |
+| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
+| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`add_ui_text`**
+
+Add UI text to the scene.
+
+
+```python
+{"$type": "add_ui_text", "text": "string", "id": 1}
+```
+
+```python
+{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"text"` | string | The text. | |
+| `"font_size"` | int | The font size. | 14 |
+| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
+| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+# SetUiElementCommand
+
+These commands set parameters of a UI element in the scene.
+
+***
+
+## **`destroy_ui_element`**
+
+Destroy a UI element in the scene.
+
+
+```python
+{"$type": "destroy_ui_element", "id": 1}
+```
+
+```python
+{"$type": "destroy_ui_element", "id": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`set_ui_element_size`**
+
+Set the size of a UI element.
+
+
+```python
+{"$type": "set_ui_element_size", "size": {"x": 1, "y": 2}, "id": 1}
+```
+
+```python
+{"$type": "set_ui_element_size", "size": {"x": 1, "y": 2}, "id": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"size"` | Vector2Int | The pixel size of the UI element. | |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`set_ui_text`**
+
+Set the text of a Text object that is already on the screen.
+
+
+```python
+{"$type": "set_ui_text", "text": "string", "id": 1}
+```
+
+```python
+{"$type": "set_ui_text", "text": "string", "id": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"text"` | string | The new text. | |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
 # VrCommand
 
 These commands utilize VR in TDW.
@@ -8069,6 +8761,19 @@ Attach an avatar (A_Img_Caps_Kinematic) to the VR rig in the scene. This avatar 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | string | ID of this avatar. Must be unique. | |
+
+***
+
+## **`create_vr_obi_colliders`**
+
+Create Obi colliders for a VR rig if there aren't any. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "create_vr_obi_colliders"}
+```
 
 ***
 
@@ -8097,6 +8802,43 @@ Rotate the VR rig by an angle.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The angle of rotation in degrees. | |
+
+***
+
+## **`set_vr_obi_collision_material`**
+
+Set the Obi collision material of the VR rig. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "set_vr_obi_collision_material"}
+```
+
+```python
+{"$type": "set_vr_obi_collision_material", "dynamic_friction": 0.3, "static_friction": 0.3, "stickiness": 0, "stick_distance": 0, "friction_combine": "average", "stickiness_combine": "average"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dynamic_friction"` | float | Percentage of relative tangential velocity removed in a collision, once the static friction threshold has been surpassed and the particle is moving relative to the surface. 0 means things will slide as if made of ice, 1 will result in total loss of tangential velocity. | 0.3 |
+| `"static_friction"` | float | Percentage of relative tangential velocity removed in a collision. 0 means things will slide as if made of ice, 1 will result in total loss of tangential velocity. | 0.3 |
+| `"stickiness"` | float | Amount of inward normal force applied between objects in a collision. 0 means no force will be applied, 1 will keep objects from separating once they collide. | 0 |
+| `"stick_distance"` | float | Maximum distance between objects at which sticky forces are applied. Since contacts will be generated between bodies within the stick distance, it should be kept as small as possible to reduce the amount of contacts generated. | 0 |
+| `"friction_combine"` | MaterialCombineMode | How is the friction coefficient calculated when two objects involved in a collision have different coefficients. If both objects have different friction combine modes, the mode with the lowest enum index is used. | "average" |
+| `"stickiness_combine"` | MaterialCombineMode | How is the stickiness coefficient calculated when two objects involved in a collision have different coefficients. If both objects have different stickiness combine modes, the mode with the lowest enum index is used. | "average" |
+
+#### MaterialCombineMode
+
+Obi collision maerial combine modes.
+
+| Value | Description |
+| --- | --- |
+| `"average"` |  |
+| `"minimum"` |  |
+| `"multiply"` |  |
+| `"maximum"` |  |
 
 ***
 

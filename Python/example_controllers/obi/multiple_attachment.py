@@ -20,10 +20,10 @@ c.add_ons.extend([camera, obi])
 # Create a sheet that looks and behaves like canvas, that we will attach to a bar-shaped object.
 # Note the offset in Z, required to line up the "north" edge of the sheet with the object.
 obi.create_cloth_sheet(name="canvas_sheet",
-                       cloth_material="canvas",
+                       cloth_material="plastic",
                        object_id=cloth_id,
-                       position={"x": 0, "y": 2.5, "z": 0},
-                       rotation={"x": 90, "y": 0, "z": 0},
+                       position={"x": 1, "y": 1.0, "z": -1},
+                       rotation={"x": 20, "y": 10, "z": 10},
                        sheet_type="cloth_hd",
                        solver_id=0)
 c.communicate([{"$type": "set_screen_size",
@@ -36,15 +36,14 @@ c.communicate([{"$type": "set_screen_size",
 c.communicate(Controller.get_add_physics_object(model_name="sphere",
                                                 object_id=receptacle_id,
                                                 library="models_flex.json",
-                                                position={"x": 0, "y": 2.5, "z": 0},
+                                                position={"x": 1, "y": 3, "z": -1},
                                                 default_physics_values=False,
-                                                mass=0.25,
+                                                mass=0.5,
                                                 kinematic=True,
                                                 gravity=False,
                                                 scale_factor={"x":0.35, "y": 0.35, "z":0.35}))
 c.communicate([])
-c.communicate([{"$type": "set_obi_solver_substeps",  "solver_id": 0, "substeps": 2},
-               {"$type": "set_obi_solver_scale",  "solver_id": 0, "scale_factor": 0.75},
+c.communicate([{"$type": "set_obi_solver_substeps",  "solver_id": 0, "substeps": 4},
                c.get_add_material(material_name="cotton_jean_light_blue", library="materials_med.json"),
                {"$type": "set_obi_cloth_visual_material",  "id": cloth_id, "material_name": "cotton_jean_light_blue", "scale": {"x":3, "y": 3}},
                {"$type": "set_obi_cloth_attachment",  "id": cloth_id, "group": "north_edge"},

@@ -1,7 +1,7 @@
 from tdw.controller import Controller
 from tdw.add_ons.obi import Obi
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from random import uniform
+
 
 
 """
@@ -17,42 +17,49 @@ camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
 obi = Obi(output_data=False)
 c.add_ons.extend([camera, obi])
 
-# Create a sheet that looks and behaves like wool.
-obi.create_cloth_sheet(name="silk_sheet",
+# Create a sheet that looks and behaves like canvas, that we will attach to a bar-shaped object.
+# Note the offset in Z, required to line up the "north" edge of the sheet with the object.
+obi.create_cloth_sheet(name="canvas_sheet",
                        cloth_material="canvas",
                        object_id=cloth_id,
-                       position={"x": 0, "y": 4, "z": 0},
-                       rotation={"x": 0, "y": -15, "z": 0},
-                       sheet_type="cloth_vhd",
+                       position={"x": 0, "y": 2.5, "z": 0},
+                       rotation={"x": 90, "y": 0, "z": 0},
+                       sheet_type="cloth_hd",
                        solver_id=0)
 c.communicate([{"$type": "set_screen_size",
                 "width": 1920,
                 "height": 1080},
                {"$type": "set_render_quality",
                 "render_quality": 5}])
+
+#  Create the long bar-shaped attachment object.
 c.communicate(Controller.get_add_physics_object(model_name="sphere",
                                                 object_id=receptacle_id,
                                                 library="models_flex.json",
-                                                position={"x": -0.5, "y": 2.5, "z": 0.5},
+                                                position={"x": 0, "y": 2.5, "z": 0},
                                                 default_physics_values=False,
-                                                mass=0.75,
+                                                mass=0.25,
                                                 kinematic=True,
                                                 gravity=False,
-                                                scale_factor={"x":0.5, "y": 0.5, "z":0.5}))
+                                                scale_factor={"x":0.35, "y": 0.35, "z":0.35}))
 c.communicate([])
 c.communicate([{"$type": "set_obi_solver_substeps",  "solver_id": 0, "substeps": 2},
-               {"$type": "set_obi_solver_scale",  "solver_id": 0, "scale_factor": 0.5},
-               c.get_add_material(material_name="linen_burlap_irregular", library="materials_med.json"),
-               {"$type": "set_obi_cloth_visual_material",  "id": cloth_id, "material_name": "linen_burlap_irregular", "scale": {"x":4, "y": 4}},
-               {"$type": "set_obi_cloth_attachment",  "id": cloth_id, "group": "four_corners"}])
+               {"$type": "set_obi_solver_scale",  "solver_id": 0, "scale_factor": 0.75},
+               c.get_add_material(material_name="cotton_jean_light_blue", library="materials_med.json"),
+               {"$type": "set_obi_cloth_visual_material",  "id": cloth_id, "material_name": "cotton_jean_light_blue", "scale": {"x":3, "y": 3}},
+               {"$type": "set_obi_cloth_attachment",  "id": cloth_id, "group": "north_edge"},
+               {"$type": "set_obi_cloth_attachment",  "id": cloth_id, "group": "south_edge"},
+               {"$type": "set_obi_cloth_attachment",  "id": cloth_id, "group": "east_edge"},
+               {"$type": "set_obi_cloth_attachment",  "id": cloth_id, "group": "west_edge"}])
 
-for i in range(500):
+# Let the cloth object settle.
+for i in range(150):
     c.communicate([])
 
 c.communicate([{"$type": "set_kinematic_state", "id": receptacle_id, "is_kinematic": False, "use_gravity": True},
                {"$type": "create_obi_colliders", "id": receptacle_id}])
-    
-for i in range(1000):
+
+for i in range(150):
     c.communicate([])
 
 c.communicate({"$type": "terminate"})

@@ -161,15 +161,16 @@ class Obi(AddOn):
                               "solver_id": solver_id,
                               "speed": speed})
 
-    def create_cloth_sheet(self, object_id: int, cloth_material: Union[str, ClothMaterial], sheet_type: ClothSheetType,
+    def create_cloth_sheet(self, object_id: int, name: str, cloth_material: Union[str, ClothMaterial], sheet_type: ClothSheetType,
                            position: Dict[str, float] = None, rotation: Dict[str, float] = None, solver_id: int = 0) -> None:
         """
         Create a cloth sheet.
 
         :param object_id: The unique ID of the cloth sheet.
+        :param name: The name for the cloth sheet.
         :param cloth_material: Either a [`ClothMaterial`](../obi_data/cloth/fluid.md),or the name of a cloth material (see `Cloth.FLUIDS`)).
-        :param position: The position of the emitter object. If None, defaults to (0, 0, 0).
-        :param rotation: The rotation of the emitter object, in Euler angles.  If None, defaults to (0, 0, 0).
+        :param position: The position of the cloth sheet. If None, defaults to (0, 0, 0).
+        :param rotation: The rotation of the cloth sheet, in Euler angles.  If None, defaults to (0, 0, 0).
         :param sheet_type: The enum value for sheet type
         :param solver_id: The ID of the Obi solver.
         """
@@ -189,23 +190,25 @@ class Obi(AddOn):
             f = cloth_material
         self.commands.append({"$type": "create_obi_cloth_sheet",
                               "id": object_id,
+                              "name": name,
                               "cloth_material": f.to_dict(),
                               "position": position,
                               "rotation": rotation,
                               "sheet_type": sheet_type,
                               "solver_id": solver_id})
 
-    def create_cloth_volume(self, object_id: int, cloth_material: Union[str, ClothMaterial], volume_type: ClothVolumeType,
+    def create_cloth_volume(self, object_id: int, name: str, cloth_material: Union[str, ClothMaterial], volume_type: ClothVolumeType,
                             position: Dict[str, float] = None, rotation: Dict[str, float] = None, 
                             pressure: float = 0.5, solver_id: int = 0) -> None:
         """
         Create a cloth volume.
 
         :param object_id: The unique ID of the cloth sheet.
+        :param name: The name for the cloth volume.
         :param cloth_material: Either a [`ClothMaterial`](../obi_data/cloth/fluid.md),or the name of a cloth material (see `Cloth.CLOTHMATERIALS`)).
-        :param position: The position of the emitter object. If None, defaults to (0, 0, 0).
-        :param rotation: The rotation of the emitter object, in Euler angles.  If None, defaults to (0, 0, 0).
-        :param pressure: The inlfation amount of this cloth volume.
+        :param position: The position of the cloth volume. If None, defaults to (0, 0, 0).
+        :param rotation: The rotation of the cloth volume, in Euler angles.  If None, defaults to (0, 0, 0).
+        :param pressure: The inflation amount of this cloth volume.
         :param volume_type: The enum value for volume type
         :param solver_id: The ID of the Obi solver.
         """
@@ -225,6 +228,7 @@ class Obi(AddOn):
             f = cloth_material
         self.commands.append({"$type": "create_obi_cloth_volume",
                               "id": object_id,
+                              "name": name,
                               "cloth_material": f.to_dict(),
                               "position": position,
                               "rotation": rotation,

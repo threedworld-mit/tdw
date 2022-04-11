@@ -28,7 +28,8 @@ obi = Obi(output_data=False, floor_material=coll_material, object_materials={clo
 c.add_ons.extend([camera, obi])
 
 # Create a disk-shaped emitter, pointing straight down.
-obi.create_cloth_volume(cloth_material="silk",
+obi.create_cloth_volume(name="cloth_ball",
+                        cloth_material="silk",
                         object_id=cloth_id,
                         position={"x": 0, "y": 2.0, "z": 0},
                         rotation={"x": 0, "y": 0, "z": 0},
@@ -40,7 +41,9 @@ c.communicate([{"$type": "set_screen_size",
                            "height": 1080},
                           {"$type": "set_render_quality",
                            "render_quality": 5}])
-c.communicate({"$type": "set_obi_solver_substeps",  "solver_id": 0, "substeps": 2});
+c.communicate([{"$type": "set_obi_solver_substeps",  "solver_id": 0, "substeps": 2},
+                c.get_add_material(material_name="silk_smooth_red", library="materials_med.json"),
+               {"$type": "set_obi_cloth_visual_material",  "id": cloth_id, "material_name": "silk_smooth_red", "scale": {"x":1, "y": 1}}])
 
 for i in range(600):
     c.communicate([])

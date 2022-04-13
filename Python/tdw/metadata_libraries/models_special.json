@@ -1114,6 +1114,78 @@
             "volume": 11.11837,
             "wcategory": "ramp",
             "wnid": "n04051549"
+        },
+        "stairs_two": {
+            "asset_bundle_sizes": {
+                "Darwin": 1582548,
+                "Linux": 1798799,
+                "Windows": 1552938
+            },
+            "bounds": {
+                "back": {
+                    "x": -1,
+                    "y": 1.65,
+                    "z": -3.5
+                },
+                "bottom": {
+                    "x": -1,
+                    "y": 0,
+                    "z": -1.75
+                },
+                "center": {
+                    "x": -1,
+                    "y": 1.65,
+                    "z": -1.75
+                },
+                "front": {
+                    "x": -1,
+                    "y": 1.65,
+                    "z": 0
+                },
+                "left": {
+                    "x": -2,
+                    "y": 1.65,
+                    "z": -1.75
+                },
+                "right": {
+                    "x": 0,
+                    "y": 1.65,
+                    "z": -1.75
+                },
+                "top": {
+                    "x": -1,
+                    "y": 3.3,
+                    "z": -1.75
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "stairs_two",
+            "physics_quality": 0.8871752788630848,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_white"
+                    ],
+                    "name": "stairs_two"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/stairs_two",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/stairs_two",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/stairs_two"
+            },
+            "volume": 12.85068,
+            "wcategory": "ramp",
+            "wnid": "n04051549"
         }
     }
 }

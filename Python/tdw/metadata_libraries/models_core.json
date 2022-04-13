@@ -8905,6 +8905,90 @@
             "wcategory": "screwdriver",
             "wnid": "n04154565"
         },
+        "b04_wallmounted_soap_dispenser_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 650738,
+                "Linux": 792688,
+                "Windows": 640913
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.09432241,
+                    "z": -0.08608261
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": 0,
+                    "z": -0.01938547
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.09432241,
+                    "z": -0.01938547
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.09432241,
+                    "z": 0.04731166
+                },
+                "left": {
+                    "x": -0.0345816,
+                    "y": 0.09432241,
+                    "z": -0.01938547
+                },
+                "right": {
+                    "x": 0.03458163,
+                    "y": 0.09432241,
+                    "z": -0.01938547
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.1886448,
+                    "z": -0.01938547
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_wallmounted_soap_dispenser_composite",
+            "physics_quality": 0.906727628580838,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b04_wallmounted_soap_dispenser_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "soap-dispenser-top"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "soap-dispenser-wall-mount"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b04_wallmounted_soap_dispenser_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b04_wallmounted_soap_dispenser_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b04_wallmounted_soap_dispenser_composite"
+            },
+            "volume": 0.0002524004,
+            "wcategory": "soap dispenser",
+            "wnid": "n04254120"
+        },
         "b04_whiskeybottle": {
             "asset_bundle_sizes": {
                 "Darwin": 613891,
@@ -18808,45 +18892,45 @@
         },
         "cabinet_24_two_drawer_wood_beech_honey_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 14991149,
-                "Linux": 15228117,
-                "Windows": 14979084
+                "Darwin": 14984190,
+                "Linux": 15218690,
+                "Windows": 14972964
             },
             "bounds": {
                 "back": {
-                    "x": 0.01675829,
-                    "y": 0.4603098,
-                    "z": -0.6358607
+                    "x": 5.081891,
+                    "y": 0.4603096,
+                    "z": 3.089039
                 },
                 "bottom": {
-                    "x": 0.01675829,
+                    "x": 5.081891,
                     "y": 0,
-                    "z": -0.3179303
+                    "z": 3.40697
                 },
                 "center": {
-                    "x": 0.01675829,
-                    "y": 0.4603098,
-                    "z": -0.3179303
+                    "x": 5.081891,
+                    "y": 0.4603096,
+                    "z": 3.40697
                 },
                 "front": {
-                    "x": 0.01675829,
-                    "y": 0.4603098,
-                    "z": 0
+                    "x": 5.081891,
+                    "y": 0.4603096,
+                    "z": 3.7249
                 },
                 "left": {
-                    "x": -0.2870419,
-                    "y": 0.4603098,
-                    "z": -0.3179303
+                    "x": 4.77809,
+                    "y": 0.4603096,
+                    "z": 3.40697
                 },
                 "right": {
-                    "x": 0.3205585,
-                    "y": 0.4603098,
-                    "z": -0.3179303
+                    "x": 5.385691,
+                    "y": 0.4603096,
+                    "z": 3.40697
                 },
                 "top": {
-                    "x": 0.01675829,
-                    "y": 0.9206197,
-                    "z": -0.3179303
+                    "x": 5.081891,
+                    "y": 0.9206192,
+                    "z": 3.40697
                 }
             },
             "canonical_rotation": {
@@ -18859,7 +18943,7 @@
             "do_not_use_reason": "",
             "flex": false,
             "name": "cabinet_24_two_drawer_wood_beech_honey_composite",
-            "physics_quality": 0.808638709376449,
+            "physics_quality": 0.7750551099774697,
             "scale_factor": 1,
             "substructure": [
                 {
@@ -18867,7 +18951,7 @@
                         "wood_beech_honey",
                         "granite_grey_dark"
                     ],
-                    "name": "24_in_cabinet003"
+                    "name": "cabinet_24_two_drawer_wood_beech_honey_composite"
                 },
                 {
                     "materials": [
@@ -18889,7 +18973,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_24_two_drawer_wood_beech_honey_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_24_two_drawer_wood_beech_honey_composite"
             },
-            "volume": 0.1168195,
+            "volume": 0.108467,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },

@@ -1042,6 +1042,78 @@
             "volume": 3.503831148147583,
             "wcategory": "incline",
             "wnid": "n09999999"
+        },
+        "stairs_one": {
+            "asset_bundle_sizes": {
+                "Darwin": 1582800,
+                "Linux": 1797521,
+                "Windows": 1553239
+            },
+            "bounds": {
+                "back": {
+                    "x": -1,
+                    "y": 1.1,
+                    "z": -4.590001
+                },
+                "bottom": {
+                    "x": -1,
+                    "y": 0,
+                    "z": -2.295
+                },
+                "center": {
+                    "x": -1,
+                    "y": 1.1,
+                    "z": -2.295
+                },
+                "front": {
+                    "x": -1,
+                    "y": 1.1,
+                    "z": 0
+                },
+                "left": {
+                    "x": -2,
+                    "y": 1.1,
+                    "z": -2.295
+                },
+                "right": {
+                    "x": 0,
+                    "y": 1.1,
+                    "z": -2.295
+                },
+                "top": {
+                    "x": -1,
+                    "y": 2.2,
+                    "z": -2.295
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "stairs_one",
+            "physics_quality": 0.9363156063435834,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_white"
+                    ],
+                    "name": "stairs_one"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/stairs_one",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/stairs_one",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/stairs_one"
+            },
+            "volume": 11.11837,
+            "wcategory": "ramp",
+            "wnid": "n04051549"
         }
     }
 }

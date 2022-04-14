@@ -11,7 +11,7 @@ class ClothMaterial():
 
     def __init__(self, stretching_scale: float = 1.0, stretch_compliance: float = 0, max_compression: float = 0,
                  max_bending: float = 0.05, bend_compliance: float = 0, drag: float = 0.05, lift: float = 0.05,
-                 tether_compliance: float = 0, tether_scale: float = 1.0
+                 tether_compliance: float = 0, tether_scale: float = 1.0, visual_material: str = "", uv_tiling: float = 4
                 ):
         """
         :param stretching_scale: The scale factor for the rest length of each constraint.
@@ -23,6 +23,8 @@ class ClothMaterial():
         :param lift: How much lift affects the cloth. The value is multiplied by the air density value.
         :param tether_compliance: Controls how much constraints will resist stretching
         :param tether_scale: Scales the initial length of tethers.
+        :param visual_material: The default visual material of the cloth.
+        :param tether_scale: The tiling factor for the visual material.
         """
       
         """:field
@@ -61,6 +63,14 @@ class ClothMaterial():
         Scales the initial length of tethers.
         """
         self.tether_scale: float = tether_scale
+        """:field
+        The default visual material of the cloth.
+        """
+        self.visual_material: str = visual_material
+        """:field
+        The tiling factor for the visual material.
+        """
+        self.uv_tiling: float = uv_tiling
 
 
     def _get_type(self) -> str:

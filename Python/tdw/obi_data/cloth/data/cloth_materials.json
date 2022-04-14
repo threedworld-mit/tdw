@@ -8,7 +8,9 @@
     "drag": 0.05, 
     "lift": 0.05,
     "tether_compliance": 0, 
-    "tether_scale": 1.0
+    "tether_scale": 1.0,
+    "visual_material": "silk_smooth_red",
+    "visual_material_texture_scale": {"x": 3, "y": 3}
   },
   "cotton": {
     "stretching_scale": 1.0, 
@@ -19,7 +21,9 @@
     "drag": 0.0, 
     "lift": 0.0,
     "tether_compliance": 0, 
-    "tether_scale": 1.0
+    "tether_scale": 1.0,
+    "visual_material": "cotton_jean_light_blue",
+    "visual_material_texture_scale": {"x": 3, "y": 3}
   },
   "wool": {
     "stretching_scale": 1.0, 
@@ -30,7 +34,9 @@
     "drag": 0.0, 
     "lift": 0.0,
     "tether_compliance": 0, 
-    "tether_scale": 1.0
+    "tether_scale": 1.0,
+    "visual_material": "wool_tartan_multicolored",
+    "visual_material_texture_scale": {"x": 3, "y": 3}
   },
   "canvas": {
     "stretching_scale": 1.0, 
@@ -41,7 +47,9 @@
     "drag": 0.05, 
     "lift": 0.05,
     "tether_compliance": 0, 
-    "tether_scale": 1.0
+    "tether_scale": 1.0,
+    "visual_material": "canvas_beige",
+    "visual_material_texture_scale": {"x": 3, "y": 3}
   },
   "rubber": {
     "stretching_scale": 1.25, 
@@ -52,7 +60,9 @@
     "drag": 0.05, 
     "lift": 0.05,
     "tether_compliance": 0, 
-    "tether_scale": 1.0
+    "tether_scale": 1.0,
+    "visual_material": "rubber_black",
+    "visual_material_texture_scale": {"x": 3, "y": 3}
   },
   "plastic": {
     "stretching_scale": 0.75, 
@@ -63,6 +73,8 @@
     "drag": 0.05, 
     "lift": 0.05,
     "tether_compliance": 0, 
-    "tether_scale": 1.0
+    "tether_scale": 1.0,
+    "visual_material": "plastic_base",
+    "visual_material_texture_scale": {"x": 3, "y": 3}
   }
 }

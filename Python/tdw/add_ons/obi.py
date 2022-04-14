@@ -6,9 +6,11 @@ from tdw.obi_data.fluids.granular_fluid import GranularFluid, GRANULAR_FLUIDS
 from tdw.obi_data.fluids.emitter_shape import EmitterShape
 from tdw.obi_data.obi_actor import ObiActor
 from tdw.obi_data.collision_materials.collision_material import CollisionMaterial
-from tdw.obi_data.cloth.cloth_sheet_type import ClothSheetType
-from tdw.obi_data.cloth.cloth_volume_type import ClothVolumeType
-from tdw.obi_data.cloth.cloth_material import ClothMaterial, CLOTHMATERIALS
+from tdw.obi_data.cloth.sheet_type import SheetType
+from tdw.obi_data.cloth.volume_type import ClothVolumeType
+from tdw.obi_data.cloth.cloth_material import ClothMaterial, CLOTH_MATERIALS
+from tdw.obi_data.cloth.tether_position import TetherPosition
+from tdw.controller import Controller
 
 
 class Obi(AddOn):
@@ -161,80 +163,68 @@ class Obi(AddOn):
                               "solver_id": solver_id,
                               "speed": speed})
 
-    def create_cloth_sheet(self, object_id: int, name: str, cloth_material: Union[str, ClothMaterial], sheet_type: ClothSheetType,
-                           position: Dict[str, float] = None, rotation: Dict[str, float] = None, solver_id: int = 0) -> None:
+    def create_cloth_sheet(self, object_id: int, cloth_material: Union[str, ClothMaterial],
+                           sheet_type: SheetType = SheetType.cloth_vhd, position: Dict[str, float] = None,
+                           rotation: Dict[str, float] = None, solver_id: int = 0,
+                           tether_positions: List[TetherPosition] = None, tether_compliance: float = 0.01,
+                           tether_scale: float = 1.5) -> None:
         """
         Create a cloth sheet.
 
         :param object_id: The unique ID of the cloth sheet.
-        :param name: The name for the cloth sheet.
-        :param cloth_material: Either a [`ClothMaterial`](../obi_data/cloth/fluid.md),or the name of a cloth material (see `Cloth.FLUIDS`)).
+        :param cloth_material: Either a [`ClothMaterial`](../obi_data/cloth/cloth_material.md) or the name of a cloth material (see `Cloth.CLOTH_MATERIALS`)).
+        :param sheet_type: The [`SheetType`](../obi_data/cloth/sheet_type.md).
         :param position: The position of the cloth sheet. If None, defaults to (0, 0, 0).
         :param rotation: The rotation of the cloth sheet, in Euler angles.  If None, defaults to (0, 0, 0).
-        :param sheet_type: The enum value for sheet type
         :param solver_id: The ID of the Obi solver.
+        :param tether_positions: A list of [`TetherPosition`](../obi_data/cloth/tether_position.md). Can be None.
+        :param tether_compliance: The compliance of the cloth's tether constraint.
+        :param tether_scale: The scale of the cloth's tether constraint.
         """
 
-        # Set a default position and rotation.
-        if position is None:
-            position = {"x": 0, "y": 0, "z": 0}
-        if rotation is None:
-            rotation = {"x": 0, "y": 0, "z": 0}
-        # Get the cloth material. If it's a string, it's a preset.
-        if isinstance(cloth_material, str):
-            if cloth_material in CLOTHMATERIALS:
-                f = CLOTHMATERIALS[cloth_material]
-            else:
-                raise Exception(f"Cloth material not found: {cloth_material}")
-        else:
-            f = cloth_material
-        self.commands.append({"$type": "create_obi_cloth_sheet",
-                              "id": object_id,
-                              "name": name,
-                              "cloth_material": f.to_dict(),
-                              "position": position,
-                              "rotation": rotation,
-                              "sheet_type": sheet_type,
-                              "solver_id": solver_id})
+        commands = self._get_cloth_commands(object_id=object_id,
+                                            cloth_material=cloth_material,
+                                            position=position,
+                                            rotation=rotation,
+                                            solver_id=solver_id,
+                                            tether_positions=tether_positions,
+                                            tether_compliance=tether_compliance,
+                                            tether_scale=tether_scale,
+                                            command_name="create_obi_cloth_sheet")
+        commands[-1]["sheet_type"] = sheet_type.name
+        self.commands.extend(commands)
 
-    def create_cloth_volume(self, object_id: int, name: str, cloth_material: Union[str, ClothMaterial], volume_type: ClothVolumeType,
-                            position: Dict[str, float] = None, rotation: Dict[str, float] = None, 
-                            pressure: float = 0.5, solver_id: int = 0) -> None:
+    def create_cloth_volume(self, object_id: int, cloth_material: Union[str, ClothMaterial], volume_type: ClothVolumeType,
+                            position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+                            pressure: float = 0.5, solver_id: int = 0, tether_positions: List[TetherPosition] = None,
+                            tether_compliance: float = 0.01, tether_scale: float = 1.5) -> None:
         """
         Create a cloth volume.
 
         :param object_id: The unique ID of the cloth sheet.
-        :param name: The name for the cloth volume.
-        :param cloth_material: Either a [`ClothMaterial`](../obi_data/cloth/fluid.md),or the name of a cloth material (see `Cloth.CLOTHMATERIALS`)).
+        :param cloth_material: Either a [`ClothMaterial`](../obi_data/cloth/cloth_material.md) or the name of a cloth material (see `Cloth.CLOTH_MATERIALS`)).
         :param position: The position of the cloth volume. If None, defaults to (0, 0, 0).
         :param rotation: The rotation of the cloth volume, in Euler angles.  If None, defaults to (0, 0, 0).
         :param pressure: The inflation amount of this cloth volume.
-        :param volume_type: The enum value for volume type
+        :param volume_type: The [`VolumeType`](../obi_data/cloth/volume_type.md).
         :param solver_id: The ID of the Obi solver.
+        :param tether_positions: A list of [`TetherPosition`](../obi_data/cloth/tether_position.md). Can be None.
+        :param tether_compliance: The compliance of the cloth's tether constraint.
+        :param tether_scale: The scale of the cloth's tether constraint.
         """
 
-        # Set a default position and rotation.
-        if position is None:
-            position = {"x": 0, "y": 0, "z": 0}
-        if rotation is None:
-            rotation = {"x": 0, "y": 0, "z": 0}
-        # Get the cloth material. If it's a string, it's a preset.
-        if isinstance(cloth_material, str):
-            if cloth_material in CLOTHMATERIALS:
-                f = CLOTHMATERIALS[cloth_material]
-            else:
-                raise Exception(f"Cloth material not found: {cloth_material}")
-        else:
-            f = cloth_material
-        self.commands.append({"$type": "create_obi_cloth_volume",
-                              "id": object_id,
-                              "name": name,
-                              "cloth_material": f.to_dict(),
-                              "position": position,
-                              "rotation": rotation,
-                              "volume_type": volume_type,
-                              "pressure": pressure,
-                              "solver_id": solver_id})
+        commands = self._get_cloth_commands(object_id=object_id,
+                                            cloth_material=cloth_material,
+                                            position=position,
+                                            rotation=rotation,
+                                            solver_id=solver_id,
+                                            tether_positions=tether_positions,
+                                            tether_compliance=tether_compliance,
+                                            tether_scale=tether_scale,
+                                            command_name="create_obi_cloth_volume",)
+        commands[-1]["pressure"] = pressure
+        commands[-1]["volume_type"] = volume_type.name
+        self.commands.extend(commands)
 
     def set_fluid_speed(self, object_id: int, speed: float) -> None:
         """
@@ -272,3 +262,45 @@ class Obi(AddOn):
             self._vr_material = CollisionMaterial()
         else:
             self._vr_material = vr_material
+
+    def _get_cloth_commands(self, object_id: int, command_name: str, cloth_material: Union[str, ClothMaterial],
+                            position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+                            solver_id: int = 0, tether_positions: List[TetherPosition] = None,
+                            tether_compliance: float = 0.01, tether_scale: float = 1.5) -> List[dict]:
+        """
+        :param object_id: The unique ID of the cloth sheet.
+        :param command_name: The name of the command.
+        :param cloth_material: Either a [`ClothMaterial`](../obi_data/cloth/cloth_material.md) or the name of a cloth material (see `Cloth.CLOTH_MATERIALS`)).
+        :param position: The position of the cloth volume. If None, defaults to (0, 0, 0).
+        :param rotation: The rotation of the cloth volume, in Euler angles.  If None, defaults to (0, 0, 0).
+        :param solver_id: The ID of the Obi solver.
+        :param tether_positions: A list of [`TetherPosition`](../obi_data/cloth/tether_position.md). Can be None.
+        :param tether_compliance: The compliance of the cloth's tether constraint.
+        :param tether_scale: The scale of the cloth's tether constraint.
+
+        :return: A list of commands to add a cloth object. The last command actually adds the cloth, and is incomplete and needs more parameters; see `create_cloth_sheet()` and `create_cloth_volume()`.
+        """
+
+        # Set a default position and rotation.
+        if position is None:
+            position = {"x": 0, "y": 0, "z": 0}
+        if rotation is None:
+            rotation = {"x": 0, "y": 0, "z": 0}
+        # Get the cloth material. If it's a string, it's a preset.
+        if isinstance(cloth_material, str):
+            if cloth_material in CLOTH_MATERIALS:
+                f = CLOTH_MATERIALS[cloth_material]
+            else:
+                raise Exception(f"Cloth material not found: {cloth_material}")
+        else:
+            f = cloth_material
+        return [Controller.get_add_material(material_name=f.visual_material, library="materials_med.json"),
+                {"$type": command_name,
+                 "id": object_id,
+                 "cloth_material": f.to_dict(),
+                 "position": position,
+                 "rotation": rotation,
+                 "solver_id": solver_id,
+                 "tether_positions": [tp.to_dict() for tp in tether_positions] if tether_positions is not None else [],
+                 "tether_compliance": tether_compliance,
+                 "tether_scale": tether_scale}]

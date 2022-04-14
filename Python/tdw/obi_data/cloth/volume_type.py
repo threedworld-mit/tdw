@@ -8,5 +8,4 @@ class ClothVolumeType(Enum):
 
     ball = 1  # Spherical cloth volume.
     cube = 2  # Cubic cloth volume.
-    block = 3 # Rectangular cubic cloth volume.
-
+    block = 3  # Rectangular cubic cloth volume.

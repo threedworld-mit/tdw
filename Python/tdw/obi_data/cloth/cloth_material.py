@@ -4,16 +4,17 @@ from json import loads
 from pathlib import Path
 
 
-class ClothMaterial():
+class ClothMaterial:
     """
-    Abstract base class for Obi cloth materials.
+    An Obi cloth material.
     """
 
-    def __init__(self, stretching_scale: float = 1.0, stretch_compliance: float = 0, max_compression: float = 0,
-                 max_bending: float = 0.05, bend_compliance: float = 0, drag: float = 0.05, lift: float = 0.05,
-                 tether_compliance: float = 0, tether_scale: float = 1.0
-                ):
+    def __init__(self, visual_material: str, visual_material_texture_scale: Dict[str, float],
+                 stretching_scale: float = 1.0, stretch_compliance: float = 0,
+                 max_compression: float = 0, max_bending: float = 0.05, bend_compliance: float = 0, drag: float = 0.05,
+                 lift: float = 0.05, tether_compliance: float = 0, tether_scale: float = 1.0):
         """
+        :param visual_material: The name of the visual material associated with this cloth material.
         :param stretching_scale: The scale factor for the rest length of each constraint.
         :param stretch_compliance: Controls how much constraints will resist a change in length.
         :param max_compression: The percentage of compression allowed by the constraints before kicking in. 
@@ -24,7 +25,15 @@ class ClothMaterial():
         :param tether_compliance: Controls how much constraints will resist stretching
         :param tether_scale: Scales the initial length of tethers.
         """
-      
+
+        """:field
+        The name of the visual material associated with this cloth material.
+        """
+        self.visual_material: str = visual_material
+        """:field
+        The texture scale of the visual material.
+        """
+        self.visual_material_texture_scale: Dict[str, float] = visual_material_texture_scale
         """:field
         The scale factor for the rest length of each constraint.
         """
@@ -62,18 +71,13 @@ class ClothMaterial():
         """
         self.tether_scale: float = tether_scale
 
-
-    def _get_type(self) -> str:
-        return "cloth_material"
-
-
     def to_dict(self) -> dict:
         """
         :return: A JSON dictionary of this object.
         """
 
-        d = {"$type": self._get_type()}
-        d.update({k: v for k, v in self.__dict__.items()})
+        d = {"$type": "cloth_material"}
+        d.update(self.__dict__)
         return d
 
 
@@ -85,4 +89,4 @@ def __get() -> Dict[str, ClothMaterial]:
     return materials
 
 
-CLOTHMATERIALS: Dict[str, ClothMaterial] = __get()
+CLOTH_MATERIALS: Dict[str, ClothMaterial] = __get()

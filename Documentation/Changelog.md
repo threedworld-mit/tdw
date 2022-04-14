@@ -4,6 +4,53 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.14
+
+### Command API
+
+#### New Commands
+
+| Command                      | Description                                                  |
+| ---------------------------- | ------------------------------------------------------------ |
+| `add_ui_canvas`              | Add a UI canvas to the scene. By default, the canvas will be an "overlay" and won't appear in image output data. |
+| `attach_ui_canvas_to_avatar` | Attach a UI canvas to an avatar. This allows the UI to appear in image output data. |
+| `attach_ui_canvas_to_vr_rig` | Attach a UI canvas to the head camera of a VR rig.           |
+| `destroy_ui_canvas`          | Destroy a UI canvas and all of its UI elements.              |
+| `add_ui_image`               | Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image. |
+| `add_ui_text`                | Add UI text to the scene.                                    |
+| `destroy_ui_element`         | Destroy a UI element in the scene.                           |
+| `set_ui_element_size`        | Set the size of a UI element.                                |
+| `set_ui_text`                | Set the text of a Text object that is already on the screen. |
+
+### `tdw` module
+
+- Added `UI` add-on.
+
+### Documentation
+
+#### New Documentation
+
+| Document                    | Description                            |
+| --------------------------- | -------------------------------------- |
+| `lessons/non_physics/ui.md` | User documentation to the `UI` add-on. |
+| `python/add_ons/ui.md`      | API documentation for the `UI` add-on. |
+
+#### Modified Documentation
+
+| Document                          | Modification                                                 |
+| --------------------------------- | ------------------------------------------------------------ |
+| `lessons/misc/c_sharp_sources.md` | Replaced the document with a single paragraph explaining the reasons the C# code is closed-source. |
+
+## v1.9.13
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                          |
+| ------------------------- | ------------------------------------ |
+| `rotate_textured_quad_to` | Set the rotation of a textured quad. |
+
 ## v1.9.12
 
 ### New Features
@@ -64,6 +111,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - Collision materials:
     - `CollisionMaterial`
     - `MaterialCombineMode`
+- Fixed: `AssetBundleCreator` fails because the `asset_bundle_creator/` Unity project doesn't include Newtonsoft.JSON
+- By default, the `OculusTouch` add-on will set the rig's hands and all graspable objects to the "discrete" collision detection mode.
 
 ### Model Library
 
@@ -84,10 +133,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### Modified Documentation
 
-| Document                           | Modification                               |
-| ---------------------------------- | ------------------------------------------ |
-| `lessons/flex/fluid_and_source.md` | Added deprecation notice.                  |
-| `lessons/physx/overview.md`        | Updated comparison section to include Obi. |
+| Document                           | Modification                                   |
+| ---------------------------------- | ---------------------------------------------- |
+| `lessons/flex/fluid_and_source.md` | Added deprecation notice.                      |
+| `lessons/physx/overview.md`        | Updated comparison section to include Obi.     |
+| `lessons/vr/oculus_touch.md`       | Added a section regarding physics glitchiness. |
 
 ### Benchmarking
 

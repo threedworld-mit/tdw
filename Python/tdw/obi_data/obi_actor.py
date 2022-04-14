@@ -37,7 +37,7 @@ class ObiActor:
         """
 
         # Get the indices of the active particles.
-        solver_indices = obi_particles.get_solver_indices(self._object_index)[:obi_particles.get_count(self._object_index) * 4].reshape(-1, 4)
+        solver_indices = obi_particles.get_solver_indices(self._object_index)[:obi_particles.get_count(self._object_index)]
         # Get the particle data at the solver index positions.
         # Reshape the array to (n, 4).
         # Delete the 4th column.

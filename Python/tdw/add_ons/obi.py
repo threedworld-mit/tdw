@@ -164,7 +164,7 @@ class Obi(AddOn):
                               "speed": speed})
 
     def create_cloth_sheet(self, object_id: int, cloth_material: Union[str, ClothMaterial],
-                           sheet_type: SheetType = SheetType.cloth_vhd, position: Dict[str, float] = None,
+                           sheet_type: SheetType = SheetType.cloth_hd, position: Dict[str, float] = None,
                            rotation: Dict[str, float] = None, solver_id: int = 0,
                            tether_positions: List[TetherPosition] = None, tether_compliance: float = 0.01,
                            tether_scale: float = 1.5) -> None:
@@ -187,17 +187,16 @@ class Obi(AddOn):
                                             position=position,
                                             rotation=rotation,
                                             solver_id=solver_id,
-                                            tether_positions=tether_positions,
-                                            tether_compliance=tether_compliance,
-                                            tether_scale=tether_scale,
                                             command_name="create_obi_cloth_sheet")
         commands[-1]["sheet_type"] = sheet_type.name
+        commands[-1]["tether_positions"] = [tp.to_dict() for tp in tether_positions] if tether_positions is not None else []
+        commands[-1]["tether_compliance"] = tether_compliance
+        commands[-1]["tether_scale"] = tether_scale
         self.commands.extend(commands)
 
     def create_cloth_volume(self, object_id: int, cloth_material: Union[str, ClothMaterial], volume_type: ClothVolumeType,
                             position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                            pressure: float = 0.5, solver_id: int = 0, tether_positions: List[TetherPosition] = None,
-                            tether_compliance: float = 0.01, tether_scale: float = 1.5) -> None:
+                            pressure: float = 0.5, solver_id: int = 0) -> None:
         """
         Create a cloth volume.
 
@@ -208,9 +207,6 @@ class Obi(AddOn):
         :param pressure: The inflation amount of this cloth volume.
         :param volume_type: The [`VolumeType`](../obi_data/cloth/volume_type.md).
         :param solver_id: The ID of the Obi solver.
-        :param tether_positions: A list of [`TetherPosition`](../obi_data/cloth/tether_position.md). Can be None.
-        :param tether_compliance: The compliance of the cloth's tether constraint.
-        :param tether_scale: The scale of the cloth's tether constraint.
         """
 
         commands = self._get_cloth_commands(object_id=object_id,
@@ -218,10 +214,7 @@ class Obi(AddOn):
                                             position=position,
                                             rotation=rotation,
                                             solver_id=solver_id,
-                                            tether_positions=tether_positions,
-                                            tether_compliance=tether_compliance,
-                                            tether_scale=tether_scale,
-                                            command_name="create_obi_cloth_volume",)
+                                            command_name="create_obi_cloth_volume")
         commands[-1]["pressure"] = pressure
         commands[-1]["volume_type"] = volume_type.name
         self.commands.extend(commands)
@@ -237,6 +230,23 @@ class Obi(AddOn):
         self.commands.append({"$type": "set_obi_fluid_emission_speed",
                               "id": object_id,
                               "speed": speed})
+
+    def set_solver(self, solver_id: int = 0, substeps: int = 1, scale_factor: float = 1) -> None:
+        """
+        Set the parameters of a solver.
+
+        :param solver_id: The solver ID.
+        :param substeps: The number of substeps. More substeps can increase accuracy at the cost of performance.
+        :param scale_factor: The scale of the solver. This will uniformly scale all objects assigned to the solver.
+        """
+
+        self.commands.extend([{"$type": "set_obi_solver_substeps",
+                               "solver_id": solver_id,
+                               "substeps": substeps},
+                              {"$type": "set_obi_solver_scale",
+                               "solver_id": solver_id,
+                               "scale_factor": scale_factor}])
+
 
     def reset(self, floor_material: CollisionMaterial = None, object_materials: Dict[int, CollisionMaterial] = None,
               vr_material: CollisionMaterial = None) -> None:
@@ -263,10 +273,10 @@ class Obi(AddOn):
         else:
             self._vr_material = vr_material
 
-    def _get_cloth_commands(self, object_id: int, command_name: str, cloth_material: Union[str, ClothMaterial],
+    @staticmethod
+    def _get_cloth_commands(object_id: int, command_name: str, cloth_material: Union[str, ClothMaterial],
                             position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                            solver_id: int = 0, tether_positions: List[TetherPosition] = None,
-                            tether_compliance: float = 0.01, tether_scale: float = 1.5) -> List[dict]:
+                            solver_id: int = 0) -> List[dict]:
         """
         :param object_id: The unique ID of the cloth sheet.
         :param command_name: The name of the command.
@@ -274,11 +284,8 @@ class Obi(AddOn):
         :param position: The position of the cloth volume. If None, defaults to (0, 0, 0).
         :param rotation: The rotation of the cloth volume, in Euler angles.  If None, defaults to (0, 0, 0).
         :param solver_id: The ID of the Obi solver.
-        :param tether_positions: A list of [`TetherPosition`](../obi_data/cloth/tether_position.md). Can be None.
-        :param tether_compliance: The compliance of the cloth's tether constraint.
-        :param tether_scale: The scale of the cloth's tether constraint.
 
-        :return: A list of commands to add a cloth object. The last command actually adds the cloth, and is incomplete and needs more parameters; see `create_cloth_sheet()` and `create_cloth_volume()`.
+        :return: A list of commands to add a cloth object. The last command actually adds the cloth, but is incomplete and needs more parameters; see `create_cloth_sheet()` and `create_cloth_volume()`.
         """
 
         # Set a default position and rotation.
@@ -300,7 +307,4 @@ class Obi(AddOn):
                  "cloth_material": f.to_dict(),
                  "position": position,
                  "rotation": rotation,
-                 "solver_id": solver_id,
-                 "tether_positions": [tp.to_dict() for tp in tether_positions] if tether_positions is not None else [],
-                 "tether_compliance": tether_compliance,
-                 "tether_scale": tether_scale}]
+                 "solver_id": solver_id}]

@@ -6,7 +6,7 @@ from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
 
 
 """
-Minimal example of dropping a cloth sheet onto an object.
+Tether a cloth sheet in mid-air.
 """
 
 c = Controller()

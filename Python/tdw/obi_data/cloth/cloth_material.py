@@ -9,12 +9,13 @@ class ClothMaterial:
     An Obi cloth material.
     """
 
-    def __init__(self, visual_material: str, visual_material_texture_scale: Dict[str, float],
-                 stretching_scale: float = 1.0, stretch_compliance: float = 0,
-                 max_compression: float = 0, max_bending: float = 0.05, bend_compliance: float = 0, drag: float = 0.05,
-                 lift: float = 0.05, tether_compliance: float = 0, tether_scale: float = 1.0):
+    def __init__(self, visual_material: str, texture_scale: Dict[str, float], stretching_scale: float = 1.0,
+                 stretch_compliance: float = 0, max_compression: float = 0, max_bending: float = 0.05,
+                 bend_compliance: float = 0, drag: float = 0.05, lift: float = 0.05, tether_compliance: float = 0,
+                 tether_scale: float = 1.0):
         """
         :param visual_material: The name of the visual material associated with this cloth material.
+        :param texture_scale: The texture scale of the visual material.
         :param stretching_scale: The scale factor for the rest length of each constraint.
         :param stretch_compliance: Controls how much constraints will resist a change in length.
         :param max_compression: The percentage of compression allowed by the constraints before kicking in. 
@@ -33,7 +34,7 @@ class ClothMaterial:
         """:field
         The texture scale of the visual material.
         """
-        self.visual_material_texture_scale: Dict[str, float] = visual_material_texture_scale
+        self.texture_scale: Dict[str, float] = texture_scale
         """:field
         The scale factor for the rest length of each constraint.
         """

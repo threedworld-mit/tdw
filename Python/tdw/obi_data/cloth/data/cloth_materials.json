@@ -9,8 +9,8 @@
     "lift": 0.05,
     "tether_compliance": 0, 
     "tether_scale": 1.0,
-    "visual_material": "silk_smooth_red",
-    "visual_material_texture_scale": {"x": 3, "y": 3}
+	"visual_material": "cotton_jean_light_blue",
+	"texture_scale": {"x": 4, "y": 4}
   },
   "cotton": {
     "stretching_scale": 1.0, 
@@ -22,8 +22,8 @@
     "lift": 0.0,
     "tether_compliance": 0, 
     "tether_scale": 1.0,
-    "visual_material": "cotton_jean_light_blue",
-    "visual_material_texture_scale": {"x": 3, "y": 3}
+	"visual_material": "cotton_canvas_washed_out",
+	"texture_scale": {"x": 4, "y": 4}
   },
   "wool": {
     "stretching_scale": 1.0, 
@@ -36,7 +36,7 @@
     "tether_compliance": 0, 
     "tether_scale": 1.0,
     "visual_material": "wool_tartan_multicolored",
-    "visual_material_texture_scale": {"x": 3, "y": 3}
+	"texture_scale": {"x": 2, "y": 2}
   },
   "canvas": {
     "stretching_scale": 1.0, 
@@ -48,8 +48,21 @@
     "lift": 0.05,
     "tether_compliance": 0, 
     "tether_scale": 1.0,
-    "visual_material": "canvas_beige",
-    "visual_material_texture_scale": {"x": 3, "y": 3}
+	"visual_material": "canvas_beige",
+	"texture_scale": {"x": 3, "y": 3}
+  },
+  "burlap": {
+    "stretching_scale": 1.0, 
+    "stretch_compliance": 0, 
+    "max_compression": 0,
+    "max_bending": 0.02, 
+    "bend_compliance": 0, 
+    "drag": 0.05, 
+    "lift": 0.05,
+    "tether_compliance": 0, 
+    "tether_scale": 1.0,
+	"visual_material": "linen_burlap_irregular",
+	"texture_scale": {"x": 4, "y": 4}
   },
   "rubber": {
     "stretching_scale": 1.25, 
@@ -61,8 +74,8 @@
     "lift": 0.05,
     "tether_compliance": 0, 
     "tether_scale": 1.0,
-    "visual_material": "rubber_black",
-    "visual_material_texture_scale": {"x": 3, "y": 3}
+	"visual_material": "rubber_black",
+	"texture_scale": {"x": 4, "y": 4}
   },
   "plastic": {
     "stretching_scale": 0.75, 
@@ -74,7 +87,7 @@
     "lift": 0.05,
     "tether_compliance": 0, 
     "tether_scale": 1.0,
-    "visual_material": "plastic_base",
-    "visual_material_texture_scale": {"x": 3, "y": 3}
+	"visual_material": "plastic_vinyl_glossy_white",
+	"texture_scale": {"x": 1, "y": 1}
   }
 }

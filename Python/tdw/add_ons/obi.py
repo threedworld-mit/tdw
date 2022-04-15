@@ -9,7 +9,7 @@ from tdw.obi_data.collision_materials.collision_material import CollisionMateria
 from tdw.obi_data.cloth.sheet_type import SheetType
 from tdw.obi_data.cloth.volume_type import ClothVolumeType
 from tdw.obi_data.cloth.cloth_material import ClothMaterial, CLOTH_MATERIALS
-from tdw.obi_data.cloth.tether_position import TetherPosition
+from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
 from tdw.controller import Controller
 
 
@@ -166,7 +166,7 @@ class Obi(AddOn):
     def create_cloth_sheet(self, object_id: int, cloth_material: Union[str, ClothMaterial],
                            sheet_type: SheetType = SheetType.cloth_hd, position: Dict[str, float] = None,
                            rotation: Dict[str, float] = None, solver_id: int = 0,
-                           tether_positions: List[TetherPosition] = None, tether_compliance: float = 0.01,
+                           tether_positions: Dict[TetherParticleGroup, int] = None, tether_compliance: float = 0.01,
                            tether_scale: float = 1.5) -> None:
         """
         Create a cloth sheet.
@@ -177,7 +177,7 @@ class Obi(AddOn):
         :param position: The position of the cloth sheet. If None, defaults to (0, 0, 0).
         :param rotation: The rotation of the cloth sheet, in Euler angles.  If None, defaults to (0, 0, 0).
         :param solver_id: The ID of the Obi solver.
-        :param tether_positions: A list of [`TetherPosition`](../obi_data/cloth/tether_position.md). Can be None.
+        :param tether_positions: An dictionary of tether positions. Key = [`TetherParticleGroup`](tether_particle_group). Value = The ID of the other object (or the ID of this object, in which case the cloth will be suspended in mid-air). Can be None.
         :param tether_compliance: The compliance of the cloth's tether constraint.
         :param tether_scale: The scale of the cloth's tether constraint.
         """
@@ -189,7 +189,7 @@ class Obi(AddOn):
                                             solver_id=solver_id,
                                             command_name="create_obi_cloth_sheet")
         commands[-1]["sheet_type"] = sheet_type.name
-        commands[-1]["tether_positions"] = [tp.to_dict() for tp in tether_positions] if tether_positions is not None else []
+        commands[-1]["tether_positions"] = {k.name: v for k, v in tether_positions.items()}
         commands[-1]["tether_compliance"] = tether_compliance
         commands[-1]["tether_scale"] = tether_scale
         self.commands.extend(commands)
@@ -246,7 +246,6 @@ class Obi(AddOn):
                               {"$type": "set_obi_solver_scale",
                                "solver_id": solver_id,
                                "scale_factor": scale_factor}])
-
 
     def reset(self, floor_material: CollisionMaterial = None, object_materials: Dict[int, CollisionMaterial] = None,
               vr_material: CollisionMaterial = None) -> None:

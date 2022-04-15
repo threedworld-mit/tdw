@@ -1,7 +1,6 @@
 from tdw.controller import Controller
 from tdw.add_ons.obi import Obi
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.obi_data.cloth.tether_position import TetherPosition
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
 from tdw.obi_data.cloth.sheet_type import SheetType
 
@@ -10,7 +9,7 @@ from tdw.obi_data.cloth.sheet_type import SheetType
 Tether a cloth sheet to another object.
 """
 
-c = Controller(launch_build=False)
+c = Controller()
 c.communicate(Controller.get_add_scene(scene_name="tdw_room"))
 camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
                            look_at={"x": 0, "y": 1.25, "z": 0})
@@ -28,8 +27,7 @@ obi.create_cloth_sheet(cloth_material="cotton",
                        position={"x": 0, "y": 2.0, "z": -3.0},
                        rotation={"x": 0, "y": 0, "z": 0},
                        sheet_type=SheetType.cloth_vhd,
-                       tether_positions=[TetherPosition(other_id=cube_id,
-                                                        particle_group=TetherParticleGroup.north_edge)])
+                       tether_positions={TetherParticleGroup.north_edge: cube_id})
 # Create the long bar-shaped attachment object.
 c.communicate(Controller.get_add_physics_object(model_name="cube",
                                                 object_id=cube_id,

@@ -308,10 +308,23 @@
 
 | Command | Description |
 | --- | --- |
-| [`create_obi_fluid`](#create_obi_fluid) | Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, and the shape of the emitter.  |
 | [`create_obi_solver`](#create_obi_solver) | Create an Obi Solver. The solver has a unique ID that is generated sequentially: The first solver's ID is 0, the second solver's ID is 1, and so on.  |
 | [`destroy_obi_solver`](#destroy_obi_solver) | Destroy an Obi solver. |
+| [`set_obi_solver_scale`](#set_obi_solver_scale) | Set an Obi solver's scale. This will uniformly scale the physical size of the simulation, without affecting its behavior.  |
 | [`set_obi_solver_substeps`](#set_obi_solver_substeps) | Set an Obi solver's number of substeps. Performing more substeps will greatly improve the accuracy/convergence speed of the simulation at the cost of speed.  |
+
+**Create Obi Actor Command**
+
+| Command | Description |
+| --- | --- |
+| [`create_obi_fluid`](#create_obi_fluid) | Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, and the shape of the emitter.  |
+
+**Create Obi Cloth Command**
+
+| Command | Description |
+| --- | --- |
+| [`create_obi_cloth_sheet`](#create_obi_cloth_sheet) | Create an Obi cloth sheet object.  |
+| [`create_obi_cloth_volume`](#create_obi_cloth_volume) | Create an Obi cloth volume object.  |
 
 **Object Command**
 
@@ -4104,34 +4117,6 @@ These commands are used for aspects of an Obi simulation. There are other Obi-re
 
 ***
 
-## **`create_obi_fluid`**
-
-Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, and the shape of the emitter. 
-
-- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
-
-```python
-{"$type": "create_obi_fluid", "fluid": {'$type': 'fluid', 'capacity': 1500, 'resolution': 1.0, 'color': {'a': 0.5, 'b': 0.15, 'g': 0.986, 'r': 1.0}, 'rest_density': 1000.0, 'radius_scale': 2.0, 'random_velocity': 0.15, 'smoothing': 3.0, 'surface_tension': 1.0, 'viscosity': 1.5, 'vorticity': 0.7, 'reflection': 0.2, 'transparency': 0.875, 'refraction': 0.0, 'buoyancy': -1, 'diffusion': 0, 'diffusion_data': {'w': 0, 'x': 0, 'y': 0, 'z': 0}, 'atmospheric_drag': 0, 'atmospheric_pressure': 0, 'particle_z_write': False, 'thickness_cutoff': 1.2, 'thickness_downsample': 2, 'blur_radius': 0.02, 'surface_downsample': 1, 'render_smoothness': 0.8, 'metalness': 0, 'ambient_multiplier': 1, 'absorption': 5, 'refraction_downsample': 1, 'foam_downsample': 1}, "shape": {'$type': 'cube_emitter', 'size': {'x': 0.1, 'y': 0.1, 'z': 0.1}, 'sampling_method': 'volume'}}
-```
-
-```python
-{"$type": "create_obi_fluid", "fluid": {'$type': 'fluid', 'capacity': 1500, 'resolution': 1.0, 'color': {'a': 0.5, 'b': 0.15, 'g': 0.986, 'r': 1.0}, 'rest_density': 1000.0, 'radius_scale': 2.0, 'random_velocity': 0.15, 'smoothing': 3.0, 'surface_tension': 1.0, 'viscosity': 1.5, 'vorticity': 0.7, 'reflection': 0.2, 'transparency': 0.875, 'refraction': 0.0, 'buoyancy': -1, 'diffusion': 0, 'diffusion_data': {'w': 0, 'x': 0, 'y': 0, 'z': 0}, 'atmospheric_drag': 0, 'atmospheric_pressure': 0, 'particle_z_write': False, 'thickness_cutoff': 1.2, 'thickness_downsample': 2, 'blur_radius': 0.02, 'surface_downsample': 1, 'render_smoothness': 0.8, 'metalness': 0, 'ambient_multiplier': 1, 'absorption': 5, 'refraction_downsample': 1, 'foam_downsample': 1}, "shape": {'$type': 'cube_emitter', 'size': {'x': 0.1, 'y': 0.1, 'z': 0.1}, 'sampling_method': 'volume'}, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "lifespan": 4, "minimum_pool_size": 0.5, "id": 0, "solver_id": 0, "speed": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The position of the emitter object. | {"x": 0, "y": 0, "z": 0} |
-| `"rotation"` | Vector3 | The rotation of the emitter object, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
-| `"fluid"` | FluidBase | A ../python/obi_data/fluid.md "`Fluid`" or ../python/obi_data/granular_fluid.md "`GranularFluid`" | |
-| `"shape"` | EmitterShapeBase | A ../python/obi_data/emitter_shape/cube_emitter.md "`CubeEmitter`", ../python/obi_data/emitter_shape/disk_emitter.md "`DiskEmitter`", ../python/obi_data/emitter_shape/edge_emitter.md "`EdgeEmitter`", or ../python/obi_data/emitter_shape/sphere_emitter.md "`SphereEmitter`". | |
-| `"lifespan"` | float | The particle lifespan in seconds. | 4 |
-| `"minimum_pool_size"` | float | The minimum amount of inactive particles available before the emitter is allowed to resume emission. | 0.5 |
-| `"id"` | int | The unique ID of the emitter. | 0 |
-| `"solver_id"` | int | The ID of the Obi solver. | 0 |
-| `"speed"` | float | The speed of the fluid emission. If 0, there is no emission. | 0 |
-
-***
-
 ## **`create_obi_solver`**
 
 Create an Obi Solver. The solver has a unique ID that is generated sequentially: The first solver's ID is 0, the second solver's ID is 1, and so on. 
@@ -4163,6 +4148,27 @@ Destroy an Obi solver.
 
 ***
 
+## **`set_obi_solver_scale`**
+
+Set an Obi solver's scale. This will uniformly scale the physical size of the simulation, without affecting its behavior. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_solver_scale"}
+```
+
+```python
+{"$type": "set_obi_solver_scale", "solver_id": 0, "scale_factor": 1.0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"solver_id"` | int | The solver ID. | 0 |
+| `"scale_factor"` | float | The factor to scale XYZ by. | 1.0 |
+
+***
+
 ## **`set_obi_solver_substeps`**
 
 Set an Obi solver's number of substeps. Performing more substeps will greatly improve the accuracy/convergence speed of the simulation at the cost of speed. 
@@ -4181,6 +4187,116 @@ Set an Obi solver's number of substeps. Performing more substeps will greatly im
 | --- | --- | --- | --- |
 | `"solver_id"` | int | The solver ID. | 0 |
 | `"substeps"` | int | The number of substeps. | 1 |
+
+# CreateObiActorCommand
+
+These commands add Obi actor objects to the scene.
+
+***
+
+## **`create_obi_fluid`**
+
+Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, and the shape of the emitter. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "create_obi_fluid", "fluid": {'$type': 'fluid', 'capacity': 1500, 'resolution': 1.0, 'color': {'a': 0.5, 'b': 0.15, 'g': 0.986, 'r': 1.0}, 'rest_density': 1000.0, 'radius_scale': 2.0, 'random_velocity': 0.15, 'smoothing': 3.0, 'surface_tension': 1.0, 'viscosity': 1.5, 'vorticity': 0.7, 'reflection': 0.2, 'transparency': 0.875, 'refraction': 0.0, 'buoyancy': -1, 'diffusion': 0, 'diffusion_data': {'w': 0, 'x': 0, 'y': 0, 'z': 0}, 'atmospheric_drag': 0, 'atmospheric_pressure': 0, 'particle_z_write': False, 'thickness_cutoff': 1.2, 'thickness_downsample': 2, 'blur_radius': 0.02, 'surface_downsample': 1, 'render_smoothness': 0.8, 'metalness': 0, 'ambient_multiplier': 1, 'absorption': 5, 'refraction_downsample': 1, 'foam_downsample': 1}, "shape": {'$type': 'cube_emitter', 'size': {'x': 0.1, 'y': 0.1, 'z': 0.1}, 'sampling_method': 'volume'}}
+```
+
+```python
+{"$type": "create_obi_fluid", "fluid": {'$type': 'fluid', 'capacity': 1500, 'resolution': 1.0, 'color': {'a': 0.5, 'b': 0.15, 'g': 0.986, 'r': 1.0}, 'rest_density': 1000.0, 'radius_scale': 2.0, 'random_velocity': 0.15, 'smoothing': 3.0, 'surface_tension': 1.0, 'viscosity': 1.5, 'vorticity': 0.7, 'reflection': 0.2, 'transparency': 0.875, 'refraction': 0.0, 'buoyancy': -1, 'diffusion': 0, 'diffusion_data': {'w': 0, 'x': 0, 'y': 0, 'z': 0}, 'atmospheric_drag': 0, 'atmospheric_pressure': 0, 'particle_z_write': False, 'thickness_cutoff': 1.2, 'thickness_downsample': 2, 'blur_radius': 0.02, 'surface_downsample': 1, 'render_smoothness': 0.8, 'metalness': 0, 'ambient_multiplier': 1, 'absorption': 5, 'refraction_downsample': 1, 'foam_downsample': 1}, "shape": {'$type': 'cube_emitter', 'size': {'x': 0.1, 'y': 0.1, 'z': 0.1}, 'sampling_method': 'volume'}, "lifespan": 4, "minimum_pool_size": 0.5, "speed": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "id": 0, "solver_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"fluid"` | FluidBase | A ../python/obi_data/fluid.md "`Fluid`" or ../python/obi_data/granular_fluid.md "`GranularFluid`" | |
+| `"shape"` | EmitterShapeBase | A ../python/obi_data/emitter_shape/cube_emitter.md "`CubeEmitter`", ../python/obi_data/emitter_shape/disk_emitter.md "`DiskEmitter`", ../python/obi_data/emitter_shape/edge_emitter.md "`EdgeEmitter`", or ../python/obi_data/emitter_shape/sphere_emitter.md "`SphereEmitter`". | |
+| `"lifespan"` | float | The particle lifespan in seconds. | 4 |
+| `"minimum_pool_size"` | float | The minimum amount of inactive particles available before the emitter is allowed to resume emission. | 0.5 |
+| `"speed"` | float | The speed of the fluid emission. If 0, there is no emission. | 0 |
+| `"position"` | Vector3 | The position of the Obi actor. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the Obi actor in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique ID of the emitter. | 0 |
+| `"solver_id"` | int | The ID of the Obi solver. | 0 |
+
+# CreateObiClothCommand
+
+These commands add cloth objects to the scene.
+
+***
+
+## **`create_obi_cloth_sheet`**
+
+Create an Obi cloth sheet object. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+
+```python
+{"$type": "create_obi_cloth_sheet", "sheet_type": "cloth", "cloth_material": {'$type': 'cloth_material', 'visual_material': 'cotton_canvas_washed_out', 'texture_scale': {'x': 4, 'y': 4}, 'visual_smoothness': 0, 'stretching_scale': 1.0, 'stretch_compliance': 0, 'max_compression': 0, 'max_bending': 0.04, 'bend_compliance': 0, 'drag': 0.0, 'lift': 0.0, 'tether_compliance': 0, 'tether_scale': 1.0}}
+```
+
+```python
+{"$type": "create_obi_cloth_sheet", "sheet_type": "cloth", "cloth_material": {'$type': 'cloth_material', 'visual_material': 'cotton_canvas_washed_out', 'texture_scale': {'x': 4, 'y': 4}, 'visual_smoothness': 0, 'stretching_scale': 1.0, 'stretch_compliance': 0, 'max_compression': 0, 'max_bending': 0.04, 'bend_compliance': 0, 'drag': 0.0, 'lift': 0.0, 'tether_compliance': 0, 'tether_scale': 1.0}, "tether_positions": {TetherParticleGroup.four_corners: 0}, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "id": 0, "solver_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"sheet_type"` | ObiClothSheetType | The type of cloth sheet to create. | |
+| `"tether_positions"` | Dictionary< TetherParticleGroup, int > | An dictionary of tether positions. Key = The particle group. Value = The ID of the other object (or the ID of this object, in which case the cloth will be suspended in mid-air). /// | {TetherParticleGroup.four_corners: 0} |
+| `"cloth_material"` | ClothMaterial | The type of cloth "material", as defined by constraint settings. | |
+| `"position"` | Vector3 | The position of the Obi actor. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the Obi actor in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique ID of the emitter. | 0 |
+| `"solver_id"` | int | The ID of the Obi solver. | 0 |
+
+#### ObiClothSheetType
+
+The type of Obi cloth sheet to add to the scene.
+
+| Value | Description |
+| --- | --- |
+| `"cloth"` | A low-resolution cloth sheet. |
+| `"cloth_hd"` | A medium-resolution cloth sheet. |
+| `"cloth_vhd"` | A high-resolution cloth sheet. |
+
+***
+
+## **`create_obi_cloth_volume`**
+
+Create an Obi cloth volume object. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+
+```python
+{"$type": "create_obi_cloth_volume", "volume_type": "sphere", "cloth_material": {'$type': 'cloth_material', 'visual_material': 'cotton_canvas_washed_out', 'texture_scale': {'x': 4, 'y': 4}, 'visual_smoothness': 0, 'stretching_scale': 1.0, 'stretch_compliance': 0, 'max_compression': 0, 'max_bending': 0.04, 'bend_compliance': 0, 'drag': 0.0, 'lift': 0.0, 'tether_compliance': 0, 'tether_scale': 1.0}}
+```
+
+```python
+{"$type": "create_obi_cloth_volume", "volume_type": "sphere", "cloth_material": {'$type': 'cloth_material', 'visual_material': 'cotton_canvas_washed_out', 'texture_scale': {'x': 4, 'y': 4}, 'visual_smoothness': 0, 'stretching_scale': 1.0, 'stretch_compliance': 0, 'max_compression': 0, 'max_bending': 0.04, 'bend_compliance': 0, 'drag': 0.0, 'lift': 0.0, 'tether_compliance': 0, 'tether_scale': 1.0}, "scale_factor": {"x": 0, "y": 0, "z": 0}, "pressure": 0.5, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "id": 0, "solver_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale_factor"` | Vector3 | The scale factor of the cloth object. | {"x": 0, "y": 0, "z": 0} |
+| `"volume_type"` | ObiClothVolumeType | The type of cloth sheet to create. | |
+| `"pressure"` | float | The amount of "inflation" of this cloth volume. | 0.5 |
+| `"cloth_material"` | ClothMaterial | The type of cloth "material", as defined by constraint settings. | |
+| `"position"` | Vector3 | The position of the Obi actor. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the Obi actor in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique ID of the emitter. | 0 |
+| `"solver_id"` | int | The ID of the Obi solver. | 0 |
+
+#### ObiClothVolumeType
+
+The type of Obi cloth volume to add to the scene.
+
+| Value | Description |
+| --- | --- |
+| `"sphere"` |  |
+| `"cube"` |  |
 
 # ObjectCommand
 

@@ -10,7 +10,8 @@
     "tether_compliance": 0, 
     "tether_scale": 1.0,
 	"visual_material": "cotton_jean_light_blue",
-	"texture_scale": {"x": 4, "y": 4}
+	"texture_scale": {"x": 4, "y": 4},
+    "visual_smoothness": 0
   },
   "cotton": {
     "stretching_scale": 1.0, 
@@ -23,7 +24,8 @@
     "tether_compliance": 0, 
     "tether_scale": 1.0,
 	"visual_material": "cotton_canvas_washed_out",
-	"texture_scale": {"x": 4, "y": 4}
+	"texture_scale": {"x": 4, "y": 4},
+    "visual_smoothness": 0
   },
   "wool": {
     "stretching_scale": 1.0, 
@@ -36,7 +38,8 @@
     "tether_compliance": 0, 
     "tether_scale": 1.0,
     "visual_material": "wool_tartan_multicolored",
-	"texture_scale": {"x": 2, "y": 2}
+	"texture_scale": {"x": 2, "y": 2},
+    "visual_smoothness": 0
   },
   "canvas": {
     "stretching_scale": 1.0, 
@@ -49,7 +52,8 @@
     "tether_compliance": 0, 
     "tether_scale": 1.0,
 	"visual_material": "canvas_beige",
-	"texture_scale": {"x": 3, "y": 3}
+	"texture_scale": {"x": 3, "y": 3},
+    "visual_smoothness": 0
   },
   "burlap": {
     "stretching_scale": 1.0, 
@@ -62,7 +66,8 @@
     "tether_compliance": 0, 
     "tether_scale": 1.0,
 	"visual_material": "linen_burlap_irregular",
-	"texture_scale": {"x": 4, "y": 4}
+	"texture_scale": {"x": 4, "y": 4},
+    "visual_smoothness": 0
   },
   "rubber": {
     "stretching_scale": 1.25, 
@@ -75,7 +80,8 @@
     "tether_compliance": 0, 
     "tether_scale": 1.0,
 	"visual_material": "rubber_black",
-	"texture_scale": {"x": 4, "y": 4}
+	"texture_scale": {"x": 4, "y": 4},
+    "visual_smoothness": 0
   },
   "plastic": {
     "stretching_scale": 0.75, 
@@ -88,6 +94,7 @@
     "tether_compliance": 0, 
     "tether_scale": 1.0,
 	"visual_material": "plastic_vinyl_glossy_white",
-	"texture_scale": {"x": 1, "y": 1}
+	"texture_scale": {"x": 1, "y": 1},
+    "visual_smoothness": 0
   }
 }

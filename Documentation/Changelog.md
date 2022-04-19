@@ -4,6 +4,50 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.15
+
+### New Features
+
+- Added Obi Cloth.
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `set_obi_solver_scale`    | Set an Obi solver's scale. This will uniformly scale the physical size of the simulation, without affecting its behavior. |
+| `create_obi_cloth_sheet`  | Create an Obi cloth sheet object.                            |
+| `create_obi_cloth_volume` | Create an Obi cloth volume object.                           |
+
+### `tdw` module
+
+- Fixed: Crash in `ObiActor` in certain cases if particle output data is enabled.
+- Added functions to `Obi` add-on:
+  - `create_cloth_sheet()`  Create a cloth sheet object.
+  - `create_cloth_volume()` Create a cloth volume object.
+  - `set_solver()` Set solver parameters.
+- Added data classes for Obi cloth in `tdw.obi_data.cloth`:
+  - `ClothMaterial` 
+  - `SheetType`
+  - `TetherParticleGroup`
+  - `VolumeType`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Modification                                  |
+| ------------------------------------------------------------ | --------------------------------------------- |
+| `lessons/obi/cloth.md`                                       | Documentation for Obi cloth.                  |
+| `python/obi_data/cloth/cloth_material.md`<br>`python/obi_data/cloth/sheet_type.md`<br>`python/obi_data/cloth/tether_particle_group.md`<br>`python/obi_data/cloth/volume_type.md` | API documentation for Obi cloth data classes. |
+
+#### Modified Documentation
+
+| Document                 | Modification                                    |
+| ------------------------ | ----------------------------------------------- |
+| `lessons/obi/solvers.md` | Added an example of how to scale a cloth sheet. |
+
 ## v1.9.14
 
 ### Command API

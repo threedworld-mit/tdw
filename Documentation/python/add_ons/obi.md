@@ -75,11 +75,48 @@ Create a cube-shaped fluid emitter.
 | object_id |  int |  | The unique ID of the emitter. |
 | fluid |  Union[str, Fluid, GranularFluid] |  | Either a [`Fluid`](../obi_data/fluids/fluid.md), a [`GranularFluid`](../obi_data/fluids/granular_fluid.md), the name of a fluid (see `Fluid.FLUIDS`), or the name of a granular fluid (see `GranularFluid.GRANULAR_FLUIDS`). |
 | shape |  EmitterShape |  | Either a [`CubeEmitter`](../obi_data/fluids/cube_emitter.md), [`DiskEmitter`](../obi_data/fluids/disk_emitter.md), [`EdgeEmitter`](../obi_data/fluids/edge_emitter.md), or [`SphereEmitter`](../obi_data/fluids/sphere_emitter.md). |
-| position |  Dict[str, float] | None | The position of the emitter object. If None, defaults to (0, 0, 0). |
-| rotation |  Dict[str, float] | None | The rotation of the emitter object, in Euler angles.  If None, defaults to (0, 0, 0). |
+| position |  Dict[str, float] | None | The position of the emitter object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Dict[str, float] | None | The rotation of the emitter object, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | speed |  float  | 0 | The speed of emission in meters per second. If 0, there is no emission. |
 | lifespan |  float  | 4 | The particle lifespan in seconds. |
 | minimum_pool_size |  float  | 0.5 | The minimum amount of inactive particles available before the emitter is allowed to resume emission. |
+| solver_id |  int  | 0 | The ID of the Obi solver. |
+
+#### create_cloth_sheet
+
+**`self.create_cloth_sheet(object_id, cloth_material)`**
+
+**`self.create_cloth_sheet(object_id, cloth_material, sheet_type=SheetType.cloth_hd, position=None, rotation=None, solver_id=0, tether_positions=None)`**
+
+Create a cloth sheet.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| object_id |  int |  | The unique ID of the cloth sheet. |
+| cloth_material |  Union[str, ClothMaterial] |  | Either a [`ClothMaterial`](../obi_data/cloth/cloth_material.md) or the name of a cloth material (see `Cloth.CLOTH_MATERIALS`)). |
+| sheet_type |  SheetType  | SheetType.cloth_hd | The [`SheetType`](../obi_data/cloth/sheet_type.md). |
+| position |  Dict[str, float] | None | The position of the cloth sheet. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Dict[str, float] | None | The rotation of the cloth sheet, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| solver_id |  int  | 0 | The ID of the Obi solver. |
+| tether_positions |  Dict[TetherParticleGroup, int] | None | An dictionary of tether positions. Key = [`TetherParticleGroup`](tether_particle_group). Value = The ID of the other object (or the ID of this object, in which case the cloth will be suspended in mid-air). Can be None. |
+
+#### create_cloth_volume
+
+**`self.create_cloth_volume(object_id, cloth_material, volume_type)`**
+
+**`self.create_cloth_volume(object_id, cloth_material, position=None, rotation=None, scale_factor=None, pressure=0.5, volume_type, solver_id=0)`**
+
+Create a cloth volume.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| object_id |  int |  | The unique ID of the cloth sheet. |
+| cloth_material |  Union[str, ClothMaterial] |  | Either a [`ClothMaterial`](../obi_data/cloth/cloth_material.md) or the name of a cloth material (see `Cloth.CLOTH_MATERIALS`)). |
+| position |  Dict[str, float] | None | The position of the cloth volume. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Dict[str, float] | None | The rotation of the cloth volume, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| scale_factor |  Dict[str, float] | None | The scale factor of the mesh. If None, defaults to `{"x": 1, "y": 1, "z": 1}`. |
+| pressure |  float  | 0.5 | The inflation amount of this cloth volume. |
+| volume_type |  ClothVolumeType |  | The [`VolumeType`](../obi_data/cloth/volume_type.md). |
 | solver_id |  int  | 0 | The ID of the Obi solver. |
 
 #### set_fluid_speed
@@ -92,6 +129,20 @@ Set the speed of a fluid emitter. By default, the speed of an emitter is 0 (no f
 | --- | --- | --- | --- |
 | object_id |  int |  | The ID of the fluid emitter. |
 | speed |  float |  | The speed in meters per second. Set this to 0 to stop emission. |
+
+#### set_solver
+
+**`self.set_solver()`**
+
+**`self.set_solver(solver_id=0, substeps=1, scale_factor=1)`**
+
+Set the parameters of a solver.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| solver_id |  int  | 0 | The solver ID. |
+| substeps |  int  | 1 | The number of substeps. More substeps can increase accuracy at the cost of performance. |
+| scale_factor |  float  | 1 | The scale of the solver. This will uniformly scale all objects assigned to the solver. |
 
 #### reset
 

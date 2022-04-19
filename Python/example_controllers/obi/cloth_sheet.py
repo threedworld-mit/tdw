@@ -12,6 +12,7 @@ camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
                            look_at={"x": 0, "y": 1.25, "z": 0})
 obi = Obi()
 c.add_ons.extend([camera, obi])
+# Create a cloth sheet.
 obi.create_cloth_sheet(cloth_material="cotton",
                        object_id=Controller.get_unique_id(),
                        position={"x": 0, "y": 2, "z": 0},

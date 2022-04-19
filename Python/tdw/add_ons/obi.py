@@ -165,7 +165,7 @@ class Obi(AddOn):
 
     def create_cloth_sheet(self, object_id: int, cloth_material: Union[str, ClothMaterial],
                            sheet_type: SheetType = SheetType.cloth_hd, position: Dict[str, float] = None,
-                           rotation: Dict[str, float] = None, scale_factor: Dict[str, float] = None, solver_id: int = 0,
+                           rotation: Dict[str, float] = None, solver_id: int = 0,
                            tether_positions: Dict[TetherParticleGroup, int] = None) -> None:
         """
         Create a cloth sheet.
@@ -175,7 +175,6 @@ class Obi(AddOn):
         :param sheet_type: The [`SheetType`](../obi_data/cloth/sheet_type.md).
         :param position: The position of the cloth sheet. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the cloth sheet, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param scale_factor: The scale factor of the mesh. If None, defaults to `{"x": 1, "y": 1, "z": 1}`.
         :param solver_id: The ID of the Obi solver.
         :param tether_positions: An dictionary of tether positions. Key = [`TetherParticleGroup`](tether_particle_group). Value = The ID of the other object (or the ID of this object, in which case the cloth will be suspended in mid-air). Can be None.
         """
@@ -186,7 +185,6 @@ class Obi(AddOn):
                                             cloth_material=cloth_material,
                                             position=position,
                                             rotation=rotation,
-                                            scale_factor=scale_factor,
                                             solver_id=solver_id,
                                             command_name="create_obi_cloth_sheet")
         commands[-1]["sheet_type"] = sheet_type.name
@@ -209,13 +207,15 @@ class Obi(AddOn):
         :param solver_id: The ID of the Obi solver.
         """
 
+        if scale_factor is None:
+            scale_factor = {"x": 1, "y": 1, "z": 1}
         commands = self._get_cloth_commands(object_id=object_id,
                                             cloth_material=cloth_material,
                                             position=position,
                                             rotation=rotation,
-                                            scale_factor=scale_factor,
                                             solver_id=solver_id,
                                             command_name="create_obi_cloth_volume")
+        commands[-1]["scale_factor"] = scale_factor
         commands[-1]["pressure"] = pressure
         commands[-1]["volume_type"] = volume_type.name
         self.commands.extend(commands)
@@ -276,14 +276,13 @@ class Obi(AddOn):
     @staticmethod
     def _get_cloth_commands(object_id: int, command_name: str, cloth_material: Union[str, ClothMaterial],
                             position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                            scale_factor: Dict[str, float] = None, solver_id: int = 0) -> List[dict]:
+                            solver_id: int = 0) -> List[dict]:
         """
         :param object_id: The unique ID of the cloth sheet.
         :param command_name: The name of the command.
         :param cloth_material: Either a [`ClothMaterial`](../obi_data/cloth/cloth_material.md) or the name of a cloth material (see `Cloth.CLOTH_MATERIALS`)).
         :param position: The position of the cloth volume. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the cloth volume, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param scale_factor: The scale factor of the mesh. If None, defaults to `{"x": 1, "y": 1, "z": 1}`.
         :param solver_id: The ID of the Obi solver.
 
         :return: A list of commands to add a cloth object. The last command actually adds the cloth, but is incomplete and needs more parameters; see `create_cloth_sheet()` and `create_cloth_volume()`.
@@ -294,8 +293,6 @@ class Obi(AddOn):
             position = {"x": 0, "y": 0, "z": 0}
         if rotation is None:
             rotation = {"x": 0, "y": 0, "z": 0}
-        if scale_factor is None:
-            scale_factor = {"x": 1, "y": 1, "z": 1}
         # Get the cloth material. If it's a string, it's a preset.
         if isinstance(cloth_material, str):
             if cloth_material in CLOTH_MATERIALS:
@@ -310,5 +307,4 @@ class Obi(AddOn):
                  "cloth_material": f.to_dict(),
                  "position": position,
                  "rotation": rotation,
-                 "solver_id": solver_id,
-                 "scale_factor": scale_factor}]
+                 "solver_id": solver_id}]

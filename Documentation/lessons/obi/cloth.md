@@ -9,7 +9,7 @@ In TDW's implementation of Obi, there are two types of cloth:
 
 ## Sheets
 
-To add an Obi cloth sheet to the scene, call `obi.create_cloth_sheet()`, which sends two commands: [`add_material`](../../api/command_api.md#add_material) (downloads and loads into memory the cloth sheet's [visual material](.../objects_and_scenes/materials_textures_colors.md)) and [`create_obi_cloth_sheet`](../../api/command_api.md#create_obi_cloth_sheet).
+To add an Obi cloth sheet to the scene, call `obi.create_cloth_sheet()`, which sends two commands: [`add_material`](../../api/command_api.md#add_material) (downloads and loads into memory the cloth sheet's [visual material](../objects_and_scenes/materials_textures_colors.md)) and [`create_obi_cloth_sheet`](../../api/command_api.md#create_obi_cloth_sheet).
 
 This is a minimal example of how to create a cloth sheet:
 
@@ -24,6 +24,7 @@ camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
                            look_at={"x": 0, "y": 1.25, "z": 0})
 obi = Obi()
 c.add_ons.extend([camera, obi])
+# Create a cloth sheet.
 obi.create_cloth_sheet(cloth_material="cotton",
                        object_id=Controller.get_unique_id(),
                        position={"x": 0, "y": 2, "z": 0},
@@ -40,11 +41,13 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-**TODO**
+![](images/sheet.gif)
 
 ### Sheet types
 
-There are three [`SheetType`](../../python/obi_data/cloth/sheet_type.md) values, which can be set via the optional `sheet_type` parameter:
+There are three [`SheetType`](../../python/obi_data/cloth/sheet_type.md) values, each with different sizes and particle densities, which can be set via the optional `sheet_type` parameter.
+
+This example controller adds three cloth sheets, each with a different `SheetType`. 
 
 ```python
 from tdw.controller import Controller
@@ -54,20 +57,27 @@ from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.obi_data.cloth.sheet_type import SheetType
 
 c = Controller()
-camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
+camera = ThirdPersonCamera(position={"x": 0, "y": 8, "z": 5},
                            look_at={"x": 0, "y": 1.25, "z": 0})
 obi = Obi()
 c.add_ons.extend([camera, obi])
+# Create cloth sheets, each with a different type.
 obi.create_cloth_sheet(cloth_material="cotton",
                        object_id=Controller.get_unique_id(),
-                       position={"x": 0, "y": 2, "z": 0},
-                       rotation={"x": 0, "y": 0, "z": 0},
+                       position={"x": -4, "y": 2, "z": 0},
+                       rotation={"x": 30, "y": 0, "z": 0},
+                       sheet_type=SheetType.cloth)
+obi.create_cloth_sheet(cloth_material="cotton",
+                       object_id=Controller.get_unique_id(),
+                       position={"x": -2, "y": 2, "z": 0},
+                       rotation={"x": 30, "y": 0, "z": 0},
+                       sheet_type=SheetType.cloth_hd)
+obi.create_cloth_sheet(cloth_material="cotton",
+                       object_id=Controller.get_unique_id(),
+                       position={"x": 2, "y": 2, "z": 0},
+                       rotation={"x": 30, "y": 0, "z": 0},
                        sheet_type=SheetType.cloth_vhd)
-commands = [TDWUtils.create_empty_room(12, 12)]
-commands.extend(Controller.get_add_physics_object(model_name="iron_box",
-                                                  object_id=Controller.get_unique_id()))
-c.communicate(commands)
-# Let the cloth fall.
+c.communicate(TDWUtils.create_empty_room(12, 12))
 for i in range(150):
     c.communicate([])
 c.communicate({"$type": "terminate"})
@@ -75,9 +85,11 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-**TODO**
+![](images/sheet_types.gif)
 
-Each `SheetType` has a different density of particles. Sheets with less particles will be more performant but will yield a coarser simulation. `SheetType.cloth` looks more like crumpled paper, in comparison to `SheetType.cloth_vhd`.
+Note that the differences in size (`cloth_vhd` is the largest) and deformation fidelity (`cloth` mostly stays flat).
+
+It is possible to scale any of the cloth sheet types. [Read this for more information.](solvers.md)
 
 ### Tethering
 
@@ -116,13 +128,11 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-**TODO**
-
-**TODO other tether parameters**
+![](images/tether_self.gif)
 
 ## Cloth volumes
 
-To add a cloth volume to the scene, call `obi.create_cloth_volume()`, which sends two commands: [`add_material`](../../api/command_api.md#add_material) (downloads and loads into memory the cloth volume's [visual material](.../objects_and_scenes/materials_textures_colors.md)) and [`create_obi_cloth_volume`](../../api/command_api.md#create_obi_cloth_volume).
+To add a cloth volume to the scene, call `obi.create_cloth_volume()`, which sends two commands: [`add_material`](../../api/command_api.md#add_material) (downloads and loads into memory the cloth volume's [visual material](../objects_and_scenes/materials_textures_colors.md)) and [`create_obi_cloth_volume`](../../api/command_api.md#create_obi_cloth_volume).
 
 This is a minimal example of how to create a cloth volume:
 
@@ -145,6 +155,7 @@ obi.create_cloth_volume(cloth_material="canvas",
                         position={"x": 0, "y": 1.0, "z": 0},
                         rotation={"x": 0, "y": 0, "z": 0},
                         volume_type=ClothVolumeType.sphere,
+                        scale_factor={"x": 0.5, "y": 0.5, "z": 0.5},
                         pressure=3.0,
                         solver_id=0)
 c.communicate(TDWUtils.create_empty_room(12, 12))
@@ -155,10 +166,11 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-**TODO**
+![](images/volume.gif)
 
 - The `volume_type` parameter accepts a [`VolumeType`](../..python/obi_data/cloth/volume_type.md) value.
 - The `pressure` parameter determines how pressurized the volume is; in this example, the sphere behaves like a somewhat deflated ball.
+- The `scale_factor` parameter non-uniformly scales the cloth volume object.
 
 ## Cloth materials
 
@@ -195,6 +207,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.obi import Obi
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.obi_data.cloth.cloth_material import ClothMaterial
+from tdw.obi_data.cloth.sheet_type import SheetType
 
 c = Controller()
 camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
@@ -210,15 +223,18 @@ cloth_material = ClothMaterial(visual_material="cotton_natural_rough",
                                drag=0,
                                lift=0,
                                tether_compliance=0,
-                               tether_scale=1)
+                               tether_scale=1,
+                               visual_smoothness=0)
 obi.create_cloth_sheet(cloth_material=cloth_material,
                        object_id=Controller.get_unique_id(),
                        position={"x": 0, "y": 2, "z": 0},
-                       rotation={"x": 0, "y": 0, "z": 0})
+                       rotation={"x": 0, "y": 0, "z": 0},
+                       sheet_type=SheetType.cloth_hd)
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend(Controller.get_add_physics_object(model_name="iron_box",
                                                   object_id=Controller.get_unique_id()))
 c.communicate(commands)
+# Let the cloth fall.
 for i in range(150):
     c.communicate([])
 c.communicate({"$type": "terminate"})
@@ -226,7 +242,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-**TODO**
+![](images/custom_cloth.gif)
 
 This example creates a custom cloth material by copying most of the values from `CLOTH_MATERIALS["silk"]`:
 
@@ -242,65 +258,33 @@ custom_material.visual_material = "silk_smooth_red"
 custom_material.texture_scale = {"x": 1, "y": 1}
 ```
 
-## Solver parameters
+***
 
-Call `obi.set_solver()` to set the number of substeps and the scale of the solver. Scaling the solver will scale all Obi actors uniformly. This is the best way to scale a cloth actor.
+**Next: [`ObiParticles` output data](obi_particles.md)**
 
-This example tethers a cloth sheet to a bar-shaped object, which is then rotated. Note that we set the scale of the solver to resize the cloth:
+[Return to the README](../../../README.md)
 
-```python
-from tdw.controller import Controller
-from tdw.add_ons.obi import Obi
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
-from tdw.obi_data.cloth.sheet_type import SheetType
+***
 
-c = Controller()
-c.communicate(Controller.get_add_scene(scene_name="tdw_room"))
-camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
-                           look_at={"x": 0, "y": 1.25, "z": 0})
-obi = Obi()
-c.add_ons.extend([camera, obi])
-cloth_id = Controller.get_unique_id()
-cube_id = Controller.get_unique_id()
-obi.set_solver(solver_id=0,
-               substeps=2,
-               scale_factor=0.5)
-# Create a sheet that looks and behaves like canvas, that we will attach to a bar-shaped object.
-# Note the offset in Z, required to line up the "north" edge of the sheet with the object.
-obi.create_cloth_sheet(cloth_material="cotton",
-                       object_id=cloth_id,
-                       position={"x": 0, "y": 2.0, "z": -3.0},
-                       rotation={"x": 0, "y": 0, "z": 0},
-                       sheet_type=SheetType.cloth_vhd,
-                       tether_positions={TetherParticleGroup.north_edge: cube_id})
-# Create the long bar-shaped attachment object.
-c.communicate(Controller.get_add_physics_object(model_name="cube",
-                                                object_id=cube_id,
-                                                library="models_flex.json",
-                                                position={"x": 0, "y": 2.0, "z": 0},
-                                                kinematic=True,
-                                                gravity=False,
-                                                scale_factor={"x": 3.0, "y": 0.1, "z": 0.1}))
-# Let the cloth object settle.
-for i in range(150):
-    c.communicate([])
-# Rotate the bar back and forth, moving the cloth with it.
-for i in range(480):
-    c.communicate({"$type": "rotate_object_by",
-                   "id": cube_id,
-                   "axis": "yaw",
-                   "is_world": False,
-                   "angle": 1})
-for i in range(540):
-    c.communicate({"$type": "rotate_object_by",
-                   "id": cube_id,
-                   "axis": "yaw",
-                   "is_world": False,
-                   "angle": -1})
-c.communicate({"$type": "terminate"})
-```
+Example controllers:
 
-Result:
+- [cloth_sheet.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/cloth_sheet.py) Minimal example of dropping a cloth sheet onto an object.
+- [cloth_volume.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/cloth_volume.py) Minimal example of adding a cloth volume to a scene.
+- [custom_cloth.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/custom_cloth.py) Add a cloth sheet with a custom material to the scene.
+- [sheet_types.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/sheet_types.py) Example of different sheet types.
+- [tether_self.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/tether_self.py) Apply multiple tether positions to a single cloth sheet.
 
-**TODO**
+Python API:
+
+- [`Obi`](../../python/add_ons/obi.md)
+- Cloth data classes:
+  - [`ClothMaterial`](../../python/obi_data/cloth/cloth_material.md)
+  - [`SheetType`](../../python/obi_data/cloth/sheet_type.md)
+  - [`TetherParticleGroup`](../../python/obi_data/cloth/tether_particle_group.md)
+  - [`VolumeType`](../../python/obi_data/cloth/volume_type.md)
+
+Command API:
+
+- [`add_material`](../../api/command_api.md#add_material)
+- [`create_obi_cloth_sheet`](../../api/command_api.md#create_obi_cloth_sheet)
+- [`create_obi_cloth_volume`](../../api/command_api.md#create_obi_cloth_volume)

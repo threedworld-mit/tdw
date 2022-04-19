@@ -6,5 +6,5 @@ class ClothVolumeType(Enum):
     Enum values for cloth volumes.
     """
 
-    sphere = 1  # Spherical cloth volume.
-
+    sphere = 1
+    cube = 2

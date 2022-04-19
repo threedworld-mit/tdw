@@ -23,7 +23,7 @@ class ClothMaterial:
         :param bend_compliance: Controls how much constraints will resist a change in curvature, once they are past the maximum bending threshold.
         :param drag: How much drag affects the cloth. The value is multiplied by the air density value.
         :param lift: How much lift affects the cloth. The value is multiplied by the air density value.
-        :param tether_compliance: Controls how much constraints will resist stretching
+        :param tether_compliance: Controls how much constraints will resist stretching.
         :param tether_scale: Scales the initial length of tethers.
         """
 

@@ -130,6 +130,44 @@ Result:
 
 ![](images/tether_self.gif)
 
+### Un-tethering
+
+To un-tether a cloth sheet, call `obi.untether_cloth_sheet()`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.obi import Obi
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.obi_data.cloth.sheet_type import SheetType
+from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
+
+c = Controller()
+cloth_id = Controller.get_unique_id()
+camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
+                           look_at={"x": 0, "y": 1.25, "z": 0})
+obi = Obi()
+c.add_ons.extend([camera, obi])
+# Create the cloth sheet and tether it.
+obi.create_cloth_sheet(cloth_material="canvas",
+                       object_id=cloth_id,
+                       position={"x": 0, "y": 3.0, "z": 0},
+                       sheet_type=SheetType.cloth_hd,
+                       tether_positions={TetherParticleGroup.center: cloth_id})
+c.communicate(TDWUtils.create_empty_room(12, 12))
+for i in range(100):
+    c.communicate([])
+# Un-tether the cloth sheet.
+obi.untether_cloth_sheet(object_id=cloth_id, tether_position=TetherParticleGroup.center)
+for i in range(100):
+    c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/untether.gif)
+
 ## Cloth volumes
 
 To add a cloth volume to the scene, call `obi.create_cloth_volume()`, which sends two commands: [`add_material`](../../api/command_api.md#add_material) (downloads and loads into memory the cloth volume's [visual material](../objects_and_scenes/materials_textures_colors.md)) and [`create_obi_cloth_volume`](../../api/command_api.md#create_obi_cloth_volume).
@@ -273,6 +311,7 @@ Example controllers:
 - [custom_cloth.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/custom_cloth.py) Add a cloth sheet with a custom material to the scene.
 - [sheet_types.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/sheet_types.py) Example of different sheet types.
 - [tether_self.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/tether_self.py) Apply multiple tether positions to a single cloth sheet.
+- [untether.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/untether.py) Tether and then un-tether a cloth sheet.
 
 Python API:
 

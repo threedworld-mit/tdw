@@ -386,6 +386,7 @@
 | [`set_primitive_visual_material`](#set_primitive_visual_material) | Set the material of an object created via load_primitive_from_resources  |
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
 | [`show_collider_hulls`](#show_collider_hulls) | Show the collider hulls of the object.  |
+| [`untether_obi_cloth_sheet`](#untether_obi_cloth_sheet) | Untether a cloth sheet at a specified position.  |
 
 **Humanoid Command**
 
@@ -5299,6 +5300,40 @@ Show the collider hulls of the object.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
+
+***
+
+## **`untether_obi_cloth_sheet`**
+
+Untether a cloth sheet at a specified position. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "untether_obi_cloth_sheet", "tether_position": "four_corners", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"tether_position"` | TetherParticleGroup | The position that will be un-tethered. | |
+| `"id"` | int | The unique object ID. | |
+
+#### TetherParticleGroup
+
+A group of particles from which an Obi cloth sheet can be tethered to another object. All directions are from the vantage point of looking down at a sheet spread out on the floor.
+
+| Value | Description |
+| --- | --- |
+| `"four_corners"` |  |
+| `"north_corners"` |  |
+| `"south_corners"` |  |
+| `"east_corners"` |  |
+| `"west_corners"` |  |
+| `"north_edge"` |  |
+| `"south_edge"` |  |
+| `"east_edge"` |  |
+| `"west_edge"` |  |
+| `"center"` |  |
 
 # HumanoidCommand
 

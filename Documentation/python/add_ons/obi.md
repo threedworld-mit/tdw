@@ -130,6 +130,17 @@ Set the speed of a fluid emitter. By default, the speed of an emitter is 0 (no f
 | object_id |  int |  | The ID of the fluid emitter. |
 | speed |  float |  | The speed in meters per second. Set this to 0 to stop emission. |
 
+#### untether_cloth_sheet
+
+**`self.untether_cloth_sheet(object_id, tether_position)`**
+
+Untether a cloth sheet.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| object_id |  int |  | The ID of the cloth sheet. |
+| tether_position |  TetherParticleGroup |  | The [`TetherParticleGroup`](../obi_data/cloth/tether_particle_group.md) describing the position. |
+
 #### set_solver
 
 **`self.set_solver()`**

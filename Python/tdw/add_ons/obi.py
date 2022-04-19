@@ -232,6 +232,18 @@ class Obi(AddOn):
                               "id": object_id,
                               "speed": speed})
 
+    def untether_cloth_sheet(self, object_id: int, tether_position: TetherParticleGroup) -> None:
+        """
+        Untether a cloth sheet.
+
+        :param object_id: The ID of the cloth sheet.
+        :param tether_position: The [`TetherParticleGroup`](../obi_data/cloth/tether_particle_group.md) describing the position.
+        """
+
+        self.commands.append({"$type": "untether_obi_cloth_sheet",
+                              "id": object_id,
+                              "tether_position": tether_position.name})
+
     def set_solver(self, solver_id: int = 0, substeps: int = 1, scale_factor: float = 1) -> None:
         """
         Set the parameters of a solver.

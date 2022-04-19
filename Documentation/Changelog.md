@@ -27,11 +27,23 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `create_cloth_sheet()`  Create a cloth sheet object.
   - `create_cloth_volume()` Create a cloth volume object.
   - `set_solver()` Set solver parameters.
+  - `untether_cloth_sheet()` Untether a cloth sheet.
 - Added data classes for Obi cloth in `tdw.obi_data.cloth`:
   - `ClothMaterial` 
   - `SheetType`
   - `TetherParticleGroup`
   - `VolumeType`
+
+### Example Controllers
+
+- Added Obi cloth example controllers in `obi/`:
+  - `cloth_sheet.py`
+  - `cloth_volume.py`
+  - `custom_cloth.py`
+  - `sheet_types.py`
+  - `tether_self.py`
+  - `untether.py`
+  - `tether_object.py`
 
 ### Documentation
 

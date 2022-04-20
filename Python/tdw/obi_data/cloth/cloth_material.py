@@ -11,8 +11,7 @@ class ClothMaterial:
 
     def __init__(self, visual_material: str, texture_scale: Dict[str, float], visual_smoothness: float = 0,
                  stretching_scale: float = 1.0, stretch_compliance: float = 0, max_compression: float = 0,
-                 max_bending: float = 0.05, bend_compliance: float = 0, drag: float = 0.05, lift: float = 0.05,
-                 tether_compliance: float = 0, tether_scale: float = 1.0):
+                 max_bending: float = 0.05, bend_compliance: float = 0, drag: float = 0.05, lift: float = 0.05):
         """
         :param visual_material: The name of the visual material associated with this cloth material.
         :param texture_scale: The texture scale of the visual material.
@@ -24,8 +23,6 @@ class ClothMaterial:
         :param bend_compliance: Controls how much constraints will resist a change in curvature, once they are past the maximum bending threshold.
         :param drag: How much drag affects the cloth. The value is multiplied by the air density value.
         :param lift: How much lift affects the cloth. The value is multiplied by the air density value.
-        :param tether_compliance: Controls how much constraints will resist stretching.
-        :param tether_scale: Scales the initial length of tethers.
         """
 
         """:field
@@ -68,14 +65,6 @@ class ClothMaterial:
         How much lift affects the cloth. The value is multiplied by the air density value.
         """
         self.lift: float = lift
-        """:field
-        Controls how much constraints will resist stretching
-        """
-        self.tether_compliance: float = tether_compliance
-        """:field
-        Scales the initial length of tethers.
-        """
-        self.tether_scale: float = tether_scale
 
     def to_dict(self) -> dict:
         """

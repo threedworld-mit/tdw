@@ -28,10 +28,6 @@ An Obi cloth material. For more information, [read this](http://obi.virtualmetho
 
 - `lift` How much lift affects the cloth. The value is multiplied by the air density value.
 
-- `tether_compliance` Controls how much constraints will resist stretching
-
-- `tether_scale` Scales the initial length of tethers.
-
 ***
 
 ## Functions
@@ -40,7 +36,7 @@ An Obi cloth material. For more information, [read this](http://obi.virtualmetho
 
 **`ClothMaterial(visual_material, texture_scale)`**
 
-**`ClothMaterial(visual_material, texture_scale, visual_smoothness=0, stretching_scale=1.0, stretch_compliance=0, max_compression=0, max_bending=0.05, bend_compliance=0, drag=0.05, lift=0.05, tether_compliance=0, tether_scale=1.0)`**
+**`ClothMaterial(visual_material, texture_scale, visual_smoothness=0, stretching_scale=1.0, stretch_compliance=0, max_compression=0, max_bending=0.05, bend_compliance=0, drag=0.05, lift=0.05)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -54,8 +50,6 @@ An Obi cloth material. For more information, [read this](http://obi.virtualmetho
 | bend_compliance |  float  | 0 | Controls how much constraints will resist a change in curvature, once they are past the maximum bending threshold. |
 | drag |  float  | 0.05 | How much drag affects the cloth. The value is multiplied by the air density value. |
 | lift |  float  | 0.05 | How much lift affects the cloth. The value is multiplied by the air density value. |
-| tether_compliance |  float  | 0 | Controls how much constraints will resist stretching. |
-| tether_scale |  float  | 1.0 | Scales the initial length of tethers. |
 
 #### to_dict
 

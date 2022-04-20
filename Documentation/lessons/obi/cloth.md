@@ -111,7 +111,10 @@ It is possible to scale any of the cloth sheet types. [Read this for more inform
 
 A portion of a cloth sheet can be **tethered** in-place. Cloth sheets by default aren't tethered. Cloth sheets may have more than one tether.
 
-To add tethered positions,  set the `tether_positions` parameter in `obi.create_cloth_sheet()`. This is a dictionary where the key is a [`TetherParticleGroup`](../../python/obi_data/cloth/tether_particle_group.md) (describes the position of the tether) and the value is a [`TetherType`](../../python/obi_data/cloth/tether_type.md) (describes the nature of the tether: the object ID and whether the tether is static or dynamic). If `tether_type.object_id` is the same as the ID of the cloth object then the cloth will be suspended in mid-air.
+To add tethered positions,  set the `tether_positions` parameter in `obi.create_cloth_sheet()`. This is a dictionary where the key is a [`TetherParticleGroup`](../../python/obi_data/cloth/tether_particle_group.md) (describes the position of the tether) and the value is a [`TetherType`](../../python/obi_data/cloth/tether_type.md).
+
+- If `tether_type.object_id` is the same as the ID of the cloth object then the cloth will be suspended in mid-air.
+- `tether_type.is_static` defines whether the tether is a static or dynamic attachment. This is pertitent only when a cloth object is tethered to another object. Static tethers use one-way coupling so the attached object is not affected by the cloth movement. However tethers can also be "dynamic", i.e. have two-way coupling so cloth movement affects the object's movement. An example of a dynamic attachment would be a sail on a boat: wind filling the sail will move the whole boat forward.
 
 This example tethers a cloth sheet at multiple positions in mid-air:
 

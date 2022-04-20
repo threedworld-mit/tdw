@@ -177,7 +177,7 @@ class Obi(AddOn):
         :param position: The position of the cloth sheet. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the cloth sheet, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param solver_id: The ID of the Obi solver.
-        :param tether_positions: An dictionary of tether positions. Key = [`TetherParticleGroup`](../obi_data/cloth/tether_particle_group). Value = [`TetherType`](../obi_data/cloth/tether_type.md). Can be None.
+        :param tether_positions: An dictionary of tether positions. Key = [`TetherParticleGroup`](../obi_data/cloth/tether_particle_group.md). Value = [`TetherType`](../obi_data/cloth/tether_type.md). Can be None.
         """
 
         if tether_positions is None:

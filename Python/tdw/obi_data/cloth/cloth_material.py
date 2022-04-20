@@ -11,7 +11,8 @@ class ClothMaterial:
 
     def __init__(self, visual_material: str, texture_scale: Dict[str, float], visual_smoothness: float = 0,
                  stretching_scale: float = 1.0, stretch_compliance: float = 0, max_compression: float = 0,
-                 max_bending: float = 0.05, bend_compliance: float = 0, drag: float = 0.05, lift: float = 0.05):
+                 max_bending: float = 0.05, bend_compliance: float = 0, drag: float = 0.05, lift: float = 0.05,
+                 mass_per_square_meter: float = 1):
         """
         :param visual_material: The name of the visual material associated with this cloth material.
         :param texture_scale: The texture scale of the visual material.
@@ -23,6 +24,7 @@ class ClothMaterial:
         :param bend_compliance: Controls how much constraints will resist a change in curvature, once they are past the maximum bending threshold.
         :param drag: How much drag affects the cloth. The value is multiplied by the air density value.
         :param lift: How much lift affects the cloth. The value is multiplied by the air density value.
+        :param mass_per_square_meter: The mass in kg per square meter of cloth surface area.
         """
 
         """:field
@@ -65,6 +67,10 @@ class ClothMaterial:
         How much lift affects the cloth. The value is multiplied by the air density value.
         """
         self.lift: float = lift
+        """:field
+        The mass in kg per square meter of cloth surface area.
+        """
+        self.mass_per_square_meter: float = mass_per_square_meter
 
     def to_dict(self) -> dict:
         """

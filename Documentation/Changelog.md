@@ -6,7 +6,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ## v1.9.15
 
-
 ### Command API
 
 #### New Commands

@@ -57,9 +57,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 #### Modified Documentation
 
-| Document                 | Modification                                    |
-| ------------------------ | ----------------------------------------------- |
-| `lessons/obi/solvers.md` | Added an example of how to scale a cloth sheet. |
+| Document                     | Modification                                    |
+| ---------------------------- | ----------------------------------------------- |
+| `lessons/obi/solvers.md`     | Added an example of how to scale a cloth sheet. |
+| `lessons/obi/obi_vs_flex.md` | Added cloth benchmarks.                         |
 
 ## v1.9.14
 

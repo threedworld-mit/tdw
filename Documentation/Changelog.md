@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.15
+
+### Build
+
+- Fixed: `add_ui_image` often creates images with badly-stretched borders.
+
 ## v1.9.14
 
 ### Command API

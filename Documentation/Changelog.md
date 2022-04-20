@@ -35,6 +35,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `VolumeType`
   - `TetherType`
 
+### Build
+
+- Fixed: Freeze when sending `set_vr_obi_collision_material` or `create_vr_obi_colliders`
+
 ### Example Controllers
 
 - Added Obi cloth example controllers in `obi/`:

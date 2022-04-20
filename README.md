@@ -204,6 +204,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 2. [Position markers](Documentation/lessons/non_physics/position_markers.md)
 2. [Line renderers](Documentation/lessons/non_physics/line_renderers.md)
 3. [Textured quads](Documentation/lessons/non_physics/textured_quads.md)
+3. [User Interface (the `UI` add-on)](Documentation/lessons/non_physics/ui.md)
 3. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
 4. [Non-physics humanoids](Documentation/lessons/non_physics/humanoids.md)
 
@@ -275,6 +276,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ThirdPersonCamera](Documentation/python/add_ons/third_person_camera.md)
 - [ThirdPersonCameraBase](Documentation/python/add_ons/third_person_camera_base.md)
 - [TriggerCollisionManager](Documentation/python/add_ons/trigger_collision_manager.md)
+- [UI](Documentation/python/add_ons/ui.md)
 - [VR](Documentation/python/add_ons/vr.md)
 
 **tdw.add_ons.proc_gen_objects.data**

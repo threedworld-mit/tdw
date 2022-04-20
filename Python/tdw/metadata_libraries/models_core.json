@@ -3759,6 +3759,90 @@
             "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
+        "b03_12_06_027_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 181656,
+                "Linux": 339798,
+                "Windows": 171629
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.490116e-08,
+                    "y": 0.1646794,
+                    "z": -0.1271611
+                },
+                "bottom": {
+                    "x": -1.490116e-08,
+                    "y": -2.980232e-08,
+                    "z": 0.0001188368
+                },
+                "center": {
+                    "x": -1.490116e-08,
+                    "y": 0.1646794,
+                    "z": 0.0001188368
+                },
+                "front": {
+                    "x": -1.490116e-08,
+                    "y": 0.1646794,
+                    "z": 0.1273988
+                },
+                "left": {
+                    "x": -0.1357611,
+                    "y": 0.1646794,
+                    "z": 0.0001188368
+                },
+                "right": {
+                    "x": 0.135761,
+                    "y": 0.1646794,
+                    "z": 0.0001188368
+                },
+                "top": {
+                    "x": -1.490116e-08,
+                    "y": 0.3293588,
+                    "z": 0.0001188368
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_12_06_027_composite",
+            "physics_quality": 0.6916174718493322,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b03_12_06_027_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b03_12_06_027_left_handle"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b03_12_06_027_right_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b03_12_06_027_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b03_12_06_027_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b03_12_06_027_composite"
+            },
+            "volume": 0.0007610418,
+            "wcategory": "water faucet",
+            "wnid": "n04559451"
+        },
         "b03_12_06_027": {
             "asset_bundle_sizes": {
                 "Darwin": 302002,
@@ -10356,6 +10440,90 @@
             "volume": 1.6391355529776774e-05,
             "wcategory": "screwdriver",
             "wnid": "n04154565"
+        },
+        "b04_wallmounted_soap_dispenser_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 650738,
+                "Linux": 792688,
+                "Windows": 640913
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.09432241,
+                    "z": -0.08608261
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": 0,
+                    "z": -0.01938547
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.09432241,
+                    "z": -0.01938547
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.09432241,
+                    "z": 0.04731166
+                },
+                "left": {
+                    "x": -0.0345816,
+                    "y": 0.09432241,
+                    "z": -0.01938547
+                },
+                "right": {
+                    "x": 0.03458163,
+                    "y": 0.09432241,
+                    "z": -0.01938547
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.1886448,
+                    "z": -0.01938547
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_wallmounted_soap_dispenser_composite",
+            "physics_quality": 0.906727628580838,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b04_wallmounted_soap_dispenser_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "soap-dispenser-top"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "soap-dispenser-wall-mount"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b04_wallmounted_soap_dispenser_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b04_wallmounted_soap_dispenser_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b04_wallmounted_soap_dispenser_composite"
+            },
+            "volume": 0.0002524004,
+            "wcategory": "soap dispenser",
+            "wnid": "n04254120"
         },
         "b04_whiskeybottle": {
             "asset_bundle_sizes": {
@@ -22706,9 +22874,9 @@
         },
         "cabinet_full_height_wood_beech_honey_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 14618315,
-                "Linux": 14853262,
-                "Windows": 14606964
+                "Darwin": 14618437,
+                "Linux": 14853928,
+                "Windows": 14607132
             },
             "bounds": {
                 "back": {
@@ -22809,15 +22977,15 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_full_height_wood_beech_honey_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_full_height_wood_beech_honey_composite"
             },
-            "volume": 0.1073094,
+            "volume": 0.1073084,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
         "cabinet_full_height_wood_oak_white_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 737395,
-                "Linux": 973824,
-                "Windows": 728003
+                "Darwin": 737316,
+                "Linux": 973804,
+                "Windows": 728089
             },
             "bounds": {
                 "back": {
@@ -22918,7 +23086,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_full_height_wood_oak_white_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_full_height_wood_oak_white_composite"
             },
-            "volume": 0.1073094,
+            "volume": 0.1073084,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -39823,9 +39991,9 @@
         },
         "microwave_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 264346,
-                "Linux": 553720,
-                "Windows": 252163
+                "Darwin": 214573,
+                "Linux": 313510,
+                "Windows": 208175
             },
             "bounds": {
                 "back": {
@@ -39921,7 +40089,7 @@
                     "materials": [
                         "chrome2",
                         "chrome",
-                        "plastic_vinyl_glossy_light_gray"
+                        "Glass"
                     ],
                     "name": "microwave_composite"
                 },
@@ -39939,7 +40107,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/microwave_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/microwave_composite"
             },
-            "volume": 0.02799893,
+            "volume": 0.02799752,
             "wcategory": "microwave",
             "wnid": "n03761084"
         },
@@ -55726,6 +55894,87 @@
             "wcategory": "toaster",
             "wnid": "n04442312"
         },
+        "vray_077_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1891039,
+                "Linux": 2306751,
+                "Windows": 1876850
+            },
+            "bounds": {
+                "back": {
+                    "x": -2.980232e-08,
+                    "y": 0.1000324,
+                    "z": -0.1682724
+                },
+                "bottom": {
+                    "x": -2.980232e-08,
+                    "y": -1.490116e-08,
+                    "z": -0.0003617704
+                },
+                "center": {
+                    "x": -2.980232e-08,
+                    "y": 0.1000324,
+                    "z": -0.0003617704
+                },
+                "front": {
+                    "x": -2.980232e-08,
+                    "y": 0.1000324,
+                    "z": 0.1675489
+                },
+                "left": {
+                    "x": -0.08799443,
+                    "y": 0.1000324,
+                    "z": -0.0003617704
+                },
+                "right": {
+                    "x": 0.08799437,
+                    "y": 0.1000324,
+                    "z": -0.0003617704
+                },
+                "top": {
+                    "x": -2.980232e-08,
+                    "y": 0.2000648,
+                    "z": -0.0003617704
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_077_composite",
+            "physics_quality": 0.9800953581862236,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome",
+                        "plastic_vinyl_glossy_light_gray",
+                        "antique_bronze_darkened_finer",
+                        "plastic_vinyl_glossy_black"
+                    ],
+                    "name": "vray_077_composite"
+                },
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_light_gray"
+                    ],
+                    "name": "vray_077_toaster_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_077_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_077_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_077_composite"
+            },
+            "volume": 0.002707649,
+            "wcategory": "toaster",
+            "wnid": "n04442312"
+        },
         "vray_083": {
             "asset_bundle_sizes": {
                 "Darwin": 587325,
@@ -55820,6 +56069,87 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vray_083"
             },
             "volume": 0.003116327803581953,
+            "wcategory": "toaster",
+            "wnid": "n04442312"
+        },
+        "vray_083_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 275992,
+                "Linux": 324528,
+                "Windows": 270687
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.1057382,
+                    "z": -0.1562819
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": -1.490116e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.1057382,
+                    "z": 0
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.1057382,
+                    "z": 0.1562819
+                },
+                "left": {
+                    "x": -0.1028242,
+                    "y": 0.1057382,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1028242,
+                    "y": 0.1057382,
+                    "z": 0
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.2114765,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_083_composite",
+            "physics_quality": 1.1675564484502878,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material #59",
+                        "Material #60",
+                        "Material #84",
+                        "Material #61"
+                    ],
+                    "name": "vray_083_composite"
+                },
+                {
+                    "materials": [
+                        "07 - Default"
+                    ],
+                    "name": "vray_083_toaster_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_083_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_083_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_083_composite"
+            },
+            "volume": 0.003042634,
             "wcategory": "toaster",
             "wnid": "n04442312"
         },
@@ -55920,6 +56250,86 @@
             "wcategory": "toaster",
             "wnid": "n04442312"
         },
+        "vray_084_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 462606,
+                "Linux": 844232,
+                "Windows": 443728
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0008977056,
+                    "y": 0.1165324,
+                    "z": -0.08369298
+                },
+                "bottom": {
+                    "x": 0.0008977056,
+                    "y": -2.980232e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0.0008977056,
+                    "y": 0.1165324,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0.0008977056,
+                    "y": 0.1165324,
+                    "z": 0.08369298
+                },
+                "left": {
+                    "x": -0.1591859,
+                    "y": 0.1165324,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1609813,
+                    "y": 0.1165324,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0.0008977056,
+                    "y": 0.2330649,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_084_composite",
+            "physics_quality": 1.2229561250480188,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "plastic_vinyl_glossy_black",
+                        "chrome"
+                    ],
+                    "name": "vray_084_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "vray_084_toaster_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_084_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_084_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_084_composite"
+            },
+            "volume": 0.001210825,
+            "wcategory": "toaster",
+            "wnid": "n04442312"
+        },
         "vray_085": {
             "asset_bundle_sizes": {
                 "Darwin": 772795,
@@ -56008,6 +56418,85 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vray_085"
             },
             "volume": 0.002085263142362237,
+            "wcategory": "toaster",
+            "wnid": "n04442312"
+        },
+        "vray_085_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 248359,
+                "Linux": 430490,
+                "Windows": 240188
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.09145682,
+                    "z": -0.127772
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.490116e-08,
+                    "z": 0.006744653
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.09145682,
+                    "z": 0.006744653
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.09145682,
+                    "z": 0.1412613
+                },
+                "left": {
+                    "x": -0.09757703,
+                    "y": 0.09145682,
+                    "z": 0.006744653
+                },
+                "right": {
+                    "x": 0.09757703,
+                    "y": 0.09145682,
+                    "z": 0.006744653
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.1829136,
+                    "z": 0.006744653
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_085_composite",
+            "physics_quality": 1.2555309160884582,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_light_gray",
+                        "plastic_vinyl_glossy_black"
+                    ],
+                    "name": "vray_085_composite"
+                },
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_black"
+                    ],
+                    "name": "toaster_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_085_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_085_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_085_composite"
+            },
+            "volume": 0.002347484,
             "wcategory": "toaster",
             "wnid": "n04442312"
         },

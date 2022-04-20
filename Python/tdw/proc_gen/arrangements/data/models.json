@@ -102,7 +102,7 @@
   ],
   "faucet": [
     "12_06_001",
-    "b03_12_06_027",
+    "b03_12_06_027_composite",
     "b04_faucet1",
     "b04_p22732_cc_cp_2013",
     "b04_p25050_slc_ad_2013",
@@ -338,10 +338,10 @@
     "russell_hobbs_2013__vray",
     "toaster_002",
     "toaster_b",
-    "vray_077",
-    "vray_083",
-    "vray_084",
-    "vray_085"
+    "vray_077_composite",
+    "vray_083_composite",
+    "vray_084_composite",
+    "vray_085_composite"
   ],
   "vase": [
     "amphora_jar_vase",

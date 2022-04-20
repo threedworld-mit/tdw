@@ -4,6 +4,7 @@ from tdw.add_ons.obi import Obi
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.obi_data.cloth.sheet_type import SheetType
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
+from tdw.obi_data.cloth.tether_type import TetherType
 
 """
 Tether and then un-tether a cloth sheet.
@@ -20,7 +21,7 @@ obi.create_cloth_sheet(cloth_material="canvas",
                        object_id=cloth_id,
                        position={"x": 0, "y": 3.0, "z": 0},
                        sheet_type=SheetType.cloth_hd,
-                       tether_positions={TetherParticleGroup.center: cloth_id})
+                       tether_positions={TetherParticleGroup.center: TetherType(cloth_id)})
 c.communicate(TDWUtils.create_empty_room(12, 12))
 for i in range(100):
     c.communicate([])

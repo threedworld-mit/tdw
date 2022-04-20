@@ -37,11 +37,6 @@ from tdw.obi_data.fluids.fluid import Fluid
 from tdw.obi_data.collision_materials.collision_material import CollisionMaterial
 from tdw.obi_data.collision_materials.material_combine_mode import MaterialCombineMode
 
-"""
-Create a custom "strawberry jam" fluid, and a custom collision material.
-Adjust solver substeps for high viscosity fluid simulation.
-"""
-
 c = Controller()
 c.communicate(Controller.get_add_scene(scene_name="tdw_room"))
 fluid_id = Controller.get_unique_id()
@@ -109,6 +104,7 @@ from tdw.controller import Controller
 from tdw.add_ons.obi import Obi
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
+from tdw.obi_data.cloth.tether_type import TetherType
 from tdw.obi_data.cloth.sheet_type import SheetType
 
 c = Controller()
@@ -129,7 +125,7 @@ obi.create_cloth_sheet(cloth_material="canvas",
                        position={"x": 0, "y": 2.0, "z": -1.0},
                        rotation={"x": 0, "y": 0, "z": 0},
                        sheet_type=SheetType.cloth_hd,
-                       tether_positions={TetherParticleGroup.north_edge: cube_id})
+                       tether_positions={TetherParticleGroup.north_edge: TetherType(cube_id)})
 # Create the long bar-shaped attachment object.
 c.communicate(Controller.get_add_physics_object(model_name="cube",
                                                 object_id=cube_id,

@@ -326,6 +326,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ClothMaterial](Documentation/python/obi_data/cloth/cloth_material.md)
 - [SheetType](Documentation/python/obi_data/cloth/sheet_type.md)
 - [TetherParticleGroup](Documentation/python/obi_data/cloth/tether_particle_group.md)
+- [TetherType](Documentation/python/obi_data/cloth/tether_type.md)
 - [VolumeType](Documentation/python/obi_data/cloth/volume_type.md)
 
 **tdw.obi_data.collision_materials**

@@ -111,7 +111,7 @@ It is possible to scale any of the cloth sheet types. [Read this for more inform
 
 A portion of a cloth sheet can be **tethered** in-place. Cloth sheets by default aren't tethered. Cloth sheets may have more than one tether.
 
-To add tethered positions,  set the `tether_positions` parameter in `obi.create_cloth_sheet()`. This is a dictionary where the key is a [`TetherParticleGroup`](../../python/obi_data/cloth/tether_particle_group.md) and the value is an object ID. If it's the ID of another object, the cloth will be tethered to that object. If it's the same ID as the sheet's ID, then the cloth will be suspended in mid-air.
+To add tethered positions,  set the `tether_positions` parameter in `obi.create_cloth_sheet()`. This is a dictionary where the key is a [`TetherParticleGroup`](../../python/obi_data/cloth/tether_particle_group.md) (describes the position of the tether) and the value is a [`TetherType`](../../python/obi_data/cloth/tether_type.md) (describes the nature of the tether: the object ID and whether the tether is static or dynamic). If `tether_type.object_id` is the same as the ID of the cloth object then the cloth will be suspended in mid-air.
 
 This example tethers a cloth sheet at multiple positions in mid-air:
 
@@ -122,6 +122,7 @@ from tdw.add_ons.obi import Obi
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.obi_data.cloth.sheet_type import SheetType
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
+from tdw.obi_data.cloth.tether_type import TetherType
 
 c = Controller()
 cloth_id = Controller.get_unique_id()
@@ -134,8 +135,8 @@ obi.create_cloth_sheet(cloth_material="plastic",
                        position={"x": 1, "y": 1.0, "z": -1},
                        rotation={"x": 20, "y": 10, "z": 10},
                        sheet_type=SheetType.cloth_hd,
-                       tether_positions={TetherParticleGroup.north_edge: cloth_id,
-                                         TetherParticleGroup.east_edge: cloth_id})
+                       tether_positions={TetherParticleGroup.north_edge: TetherType(object_id=cloth_id, is_static=True),
+                                         TetherParticleGroup.east_edge: TetherType(object_id=cloth_id)})
 c.communicate(TDWUtils.create_empty_room(12, 12))
 for i in range(150):
     c.communicate([])
@@ -157,6 +158,7 @@ from tdw.add_ons.obi import Obi
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.obi_data.cloth.sheet_type import SheetType
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
+from tdw.obi_data.cloth.tether_type import TetherType
 
 c = Controller()
 cloth_id = Controller.get_unique_id()
@@ -169,7 +171,7 @@ obi.create_cloth_sheet(cloth_material="canvas",
                        object_id=cloth_id,
                        position={"x": 0, "y": 3.0, "z": 0},
                        sheet_type=SheetType.cloth_hd,
-                       tether_positions={TetherParticleGroup.center: cloth_id})
+                       tether_positions={TetherParticleGroup.center: TetherType(cloth_id)})
 c.communicate(TDWUtils.create_empty_room(12, 12))
 for i in range(100):
     c.communicate([])
@@ -336,6 +338,7 @@ Python API:
   - [`ClothMaterial`](../../python/obi_data/cloth/cloth_material.md)
   - [`SheetType`](../../python/obi_data/cloth/sheet_type.md)
   - [`TetherParticleGroup`](../../python/obi_data/cloth/tether_particle_group.md)
+  - [`TetherType`](../../python/obi_data/cloth/tether_type.md)
   - [`VolumeType`](../../python/obi_data/cloth/volume_type.md)
 
 Command API:

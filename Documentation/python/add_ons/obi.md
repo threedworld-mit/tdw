@@ -98,7 +98,7 @@ Create a cloth sheet.
 | position |  Dict[str, float] | None | The position of the cloth sheet. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | rotation |  Dict[str, float] | None | The rotation of the cloth sheet, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | solver_id |  int  | 0 | The ID of the Obi solver. |
-| tether_positions |  Dict[TetherParticleGroup, int] | None | An dictionary of tether positions. Key = [`TetherParticleGroup`](tether_particle_group). Value = The ID of the other object (or the ID of this object, in which case the cloth will be suspended in mid-air). Can be None. |
+| tether_positions |  Dict[TetherParticleGroup, TetherType] | None | An dictionary of tether positions. Key = [`TetherParticleGroup`](../obi_data/cloth/tether_particle_group). Value = [`TetherType`](../obi_data/cloth/tether_type.md). Can be None. |
 
 #### create_cloth_volume
 

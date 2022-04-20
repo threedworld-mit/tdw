@@ -4,6 +4,7 @@ from tdw.add_ons.obi import Obi
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.obi_data.cloth.sheet_type import SheetType
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
+from tdw.obi_data.cloth.tether_type import TetherType
 
 """
 Apply multiple tether positions to a single cloth sheet.
@@ -20,8 +21,8 @@ obi.create_cloth_sheet(cloth_material="plastic",
                        position={"x": 1, "y": 1.0, "z": -1},
                        rotation={"x": 20, "y": 10, "z": 10},
                        sheet_type=SheetType.cloth_hd,
-                       tether_positions={TetherParticleGroup.north_edge: cloth_id,
-                                         TetherParticleGroup.east_edge: cloth_id})
+                       tether_positions={TetherParticleGroup.north_edge: TetherType(object_id=cloth_id, is_static=True),
+                                         TetherParticleGroup.east_edge: TetherType(object_id=cloth_id)})
 c.communicate(TDWUtils.create_empty_room(12, 12))
 for i in range(150):
     c.communicate([])

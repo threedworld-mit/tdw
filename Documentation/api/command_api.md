@@ -4239,13 +4239,13 @@ Create an Obi cloth sheet object.
 ```
 
 ```python
-{"$type": "create_obi_cloth_sheet", "sheet_type": "cloth", "cloth_material": {'$type': 'cloth_material', 'visual_material': 'cotton_canvas_washed_out', 'texture_scale': {'x': 4, 'y': 4}, 'visual_smoothness': 0, 'stretching_scale': 1.0, 'stretch_compliance': 0, 'max_compression': 0, 'max_bending': 0.04, 'bend_compliance': 0, 'drag': 0.0, 'lift': 0.0, 'tether_compliance': 0, 'tether_scale': 1.0}, "tether_positions": {TetherParticleGroup.four_corners: 0}, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "id": 0, "solver_id": 0}
+{"$type": "create_obi_cloth_sheet", "sheet_type": "cloth", "cloth_material": {'$type': 'cloth_material', 'visual_material': 'cotton_canvas_washed_out', 'texture_scale': {'x': 4, 'y': 4}, 'visual_smoothness': 0, 'stretching_scale': 1.0, 'stretch_compliance': 0, 'max_compression': 0, 'max_bending': 0.04, 'bend_compliance': 0, 'drag': 0.0, 'lift': 0.0, 'tether_compliance': 0, 'tether_scale': 1.0}, "tether_positions": {TetherParticleGroup.four_corners: {"object_id": 0, "is_static": True}}, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "id": 0, "solver_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"sheet_type"` | ObiClothSheetType | The type of cloth sheet to create. | |
-| `"tether_positions"` | Dictionary< TetherParticleGroup, int > | An dictionary of tether positions. Key = The particle group. Value = The ID of the other object (or the ID of this object, in which case the cloth will be suspended in mid-air). /// | {TetherParticleGroup.four_corners: 0} |
+| `"tether_positions"` | Dictionary< TetherParticleGroup, TetherType > | An dictionary of tether positions. Key = The particle group. Value = The tether position. | {TetherParticleGroup.four_corners: {"object_id": 0, "is_static": True}} |
 | `"cloth_material"` | ClothMaterial | The type of cloth "material", as defined by constraint settings. | |
 | `"position"` | Vector3 | The position of the Obi actor. | {"x": 0, "y": 0, "z": 0} |
 | `"rotation"` | Vector3 | The rotation of the Obi actor in Euler angles. | {"x": 0, "y": 0, "z": 0} |

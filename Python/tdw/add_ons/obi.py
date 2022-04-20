@@ -10,6 +10,7 @@ from tdw.obi_data.cloth.sheet_type import SheetType
 from tdw.obi_data.cloth.volume_type import ClothVolumeType
 from tdw.obi_data.cloth.cloth_material import ClothMaterial, CLOTH_MATERIALS
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
+from tdw.obi_data.cloth.tether_type import TetherType
 from tdw.controller import Controller
 
 
@@ -166,7 +167,7 @@ class Obi(AddOn):
     def create_cloth_sheet(self, object_id: int, cloth_material: Union[str, ClothMaterial],
                            sheet_type: SheetType = SheetType.cloth_hd, position: Dict[str, float] = None,
                            rotation: Dict[str, float] = None, solver_id: int = 0,
-                           tether_positions: Dict[TetherParticleGroup, int] = None) -> None:
+                           tether_positions: Dict[TetherParticleGroup, TetherType] = None) -> None:
         """
         Create a cloth sheet.
 
@@ -176,7 +177,7 @@ class Obi(AddOn):
         :param position: The position of the cloth sheet. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the cloth sheet, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param solver_id: The ID of the Obi solver.
-        :param tether_positions: An dictionary of tether positions. Key = [`TetherParticleGroup`](tether_particle_group). Value = The ID of the other object (or the ID of this object, in which case the cloth will be suspended in mid-air). Can be None.
+        :param tether_positions: An dictionary of tether positions. Key = [`TetherParticleGroup`](../obi_data/cloth/tether_particle_group). Value = [`TetherType`](../obi_data/cloth/tether_type.md). Can be None.
         """
 
         if tether_positions is None:
@@ -188,7 +189,7 @@ class Obi(AddOn):
                                             solver_id=solver_id,
                                             command_name="create_obi_cloth_sheet")
         commands[-1]["sheet_type"] = sheet_type.name
-        commands[-1]["tether_positions"] = {k.name: v for k, v in tether_positions.items()}
+        commands[-1]["tether_positions"] = {k.name: v.__dict__ for k, v in tether_positions.items()}
         self.commands.extend(commands)
 
     def create_cloth_volume(self, object_id: int, cloth_material: Union[str, ClothMaterial], volume_type: ClothVolumeType,

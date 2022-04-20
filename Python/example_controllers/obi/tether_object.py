@@ -2,6 +2,7 @@ from tdw.controller import Controller
 from tdw.add_ons.obi import Obi
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
+from tdw.obi_data.cloth.tether_type import TetherType
 from tdw.obi_data.cloth.sheet_type import SheetType
 
 """
@@ -26,7 +27,7 @@ obi.create_cloth_sheet(cloth_material="canvas",
                        position={"x": 0, "y": 2.0, "z": -1.0},
                        rotation={"x": 0, "y": 0, "z": 0},
                        sheet_type=SheetType.cloth_hd,
-                       tether_positions={TetherParticleGroup.north_edge: cube_id})
+                       tether_positions={TetherParticleGroup.north_edge: TetherType(cube_id)})
 # Create the long bar-shaped attachment object.
 c.communicate(Controller.get_add_physics_object(model_name="cube",
                                                 object_id=cube_id,

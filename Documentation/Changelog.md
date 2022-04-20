@@ -6,9 +6,29 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ## v1.9.15
 
+### Output Data
+
+#### Modified Output Data
+
+| Output Data          | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `OculusTouchButtons` | Added: `get_left_axis()` and `get_right_axis()` to listen for control stick input. |
+
 ### Build
 
 - Fixed: `add_ui_image` often creates images with badly-stretched borders.
+
+### Example Controllers
+
+- Added: `vr/oculus_touch_axis_listener.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                             |
+| ---------------------------- | ---------------------------------------- |
+| `lessons/vr/oculus_touch.md` | Added a section for control stick input. |
 
 ## v1.9.14
 

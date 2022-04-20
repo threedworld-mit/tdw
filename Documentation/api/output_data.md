@@ -695,6 +695,8 @@ Which Oculus Touch controller buttons have been pressed.
 | --- | --- | --- |
 | `get_left()` | Bitwise sum of buttons pressed on the left controller. | `List[OculusTouchButton]` |
 | `get_right()` | Bitwise sum of buttons pressed on the right controller. | `List[OculusTouchButton]` |
+| `get_left_axis()` | Left control stick direction as an `[x, y]` vector (values range from -1 to 1). | `np.array` |
+| `get_right_axis()` | Right control stick direction as an `[x, y]` vector (values range from -1 to 1). | `np.array` |
 
 ## Overlap
 

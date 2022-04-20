@@ -12,11 +12,11 @@ class OculusTouchAxisListener(Controller):
     """
 
     # This controls how fast the joints will rotate.
-    SPEED: float = 0.5
+    SPEED: float = 10
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.robot: Robot = Robot(name="ur5", position={"x": 0, "y": 0, "z": 2})
+        self.robot: Robot = Robot(name="ur5", position={"x": 0, "y": 0.5, "z": 2})
         self.vr: OculusTouch = OculusTouch()
         # Move the robot joints with the control sticks.
         self.vr.listen_to_axis(is_left=True, function=self.left_axis)
@@ -33,24 +33,26 @@ class OculusTouchAxisListener(Controller):
         self.communicate({"$type": "terminate"})
 
     def left_axis(self, delta: np.array) -> None:
-        # Get the IDs and current angles of the joints.
-        shoulder_link_id = self.robot.static.joint_ids_by_name["shoulder_link"]
-        shoulder_link_angle = self.robot.dynamic.joints[shoulder_link_id].angles[0]
-        upper_arm_link_id = self.robot.static.joint_ids_by_name["upper_arm_link"]
-        upper_arm_link_angle = self.robot.dynamic.joints[upper_arm_link_id].angles[0]
-        # Set the joint targets by adding or subtracting from the axis delta.
-        self.robot.set_joint_targets({shoulder_link_id: shoulder_link_angle + delta[0] * OculusTouchAxisListener.SPEED,
-                                      upper_arm_link_id: upper_arm_link_angle + delta[1] * OculusTouchAxisListener.SPEED})
+        if self.robot.joints_are_moving():
+            return
+        targets = dict()
+        # Rotate the shoulder link.
+        if abs(delta[0]) > 0:
+            shoulder_link_id = self.robot.static.joint_ids_by_name["shoulder_link"]
+            shoulder_link_angle = self.robot.dynamic.joints[shoulder_link_id].angles[0]
+            targets[shoulder_link_id] = shoulder_link_angle + delta[0] * OculusTouchAxisListener.SPEED
+        self.robot.set_joint_targets(targets=targets)
 
     def right_axis(self, delta: np.array) -> None:
-        # Get the IDs and current angles of the joints.
-        forearm_link_id = self.robot.static.joint_ids_by_name["forearm_link"]
-        forearm_link_angle = self.robot.dynamic.joints[forearm_link_id].angles[0]
-        wrist_1_link_id = self.robot.static.joint_ids_by_name["wrist_1_link"]
-        wrist_1_link_angle = self.robot.dynamic.joints[wrist_1_link_id].angles[0]
-        # Set the joint targets by adding or subtracting from the axis delta.
-        self.robot.set_joint_targets({forearm_link_id: forearm_link_angle + delta[0] * OculusTouchAxisListener.SPEED,
-                                      wrist_1_link_id: wrist_1_link_angle + delta[1] * OculusTouchAxisListener.SPEED})
+        if self.robot.joints_are_moving():
+            return
+        targets = dict()
+        # Rotate the upper arm link.
+        if abs(delta[0]) > 0:
+            upper_arm_link_id = self.robot.static.joint_ids_by_name["upper_arm_link"]
+            upper_arm_link_angle = self.robot.dynamic.joints[upper_arm_link_id].angles[0]
+            targets[upper_arm_link_id] = upper_arm_link_angle + delta[1] * OculusTouchAxisListener.SPEED
+        self.robot.set_joint_targets(targets=targets)
 
     def quit(self):
         self.done = True

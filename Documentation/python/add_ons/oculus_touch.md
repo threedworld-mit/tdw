@@ -130,3 +130,14 @@ Listen for Oculus Touch controller button presses.
 | button |  OculusTouchButton |  | The Oculus Touch controller button. |
 | is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
 | function |  Callable[[] |  | The function to invoke when the button is pressed. This function must have no arguments and return None. |
+
+#### listen_to_axis
+
+**`self.listen_to_axis(is_left, function)`**
+
+Listen for Oculus Touch controller axis events.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
+| function |  Callable[[np.array] |  | The function to invoke when the button is pressed. This function must a single argument (a numpy array of shape `(2)`, representing (x, y) coordinates) and return None. |

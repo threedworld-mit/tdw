@@ -255,7 +255,7 @@ rubber
 plastic
 ```
 
-This example controller uses a custom cloth material:
+This example controller uses a custom cloth material. It sets the `drag`, `lift`, `max_bending`, and `mass_per_square_inch` parameters to create a flimsy, slippery material. The `visual_smoothness` parameter is very high to make the material shiny.
 
 ```python
 from tdw.controller import Controller
@@ -276,14 +276,14 @@ cloth_material = ClothMaterial(visual_material="3d_printed_mesh_round",
                                stretching_scale=1,
                                stretch_compliance=0,
                                max_compression=0,
-                               max_bending=0.01,
-                               drag=0,
-                               lift=0,
-                               visual_smoothness=0,
-                               mass_per_square_meter=0.5)
+                               max_bending=0.1,
+                               drag=0.17,
+                               lift=0.17,
+                               visual_smoothness=0.9,
+                               mass_per_square_meter=0.1)
 obi.create_cloth_sheet(cloth_material=cloth_material,
                        object_id=Controller.get_unique_id(),
-                       position={"x": 0, "y": 2, "z": 0},
+                       position={"x": 0, "y": 3.5, "z": 0},
                        rotation={"x": 0, "y": 0, "z": 0},
                        sheet_type=SheetType.cloth_hd)
 commands = [TDWUtils.create_empty_room(12, 12)]
@@ -298,6 +298,7 @@ c.communicate(commands)
 for i in range(350):
     c.communicate([])
 c.communicate({"$type": "terminate"})
+
 ```
 
 Result:

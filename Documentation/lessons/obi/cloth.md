@@ -30,13 +30,18 @@ obi.create_cloth_sheet(cloth_material="cotton",
                        position={"x": 0, "y": 2, "z": 0},
                        rotation={"x": 0, "y": 0, "z": 0})
 commands = [TDWUtils.create_empty_room(12, 12)]
-commands.extend(Controller.get_add_physics_object(model_name="iron_box",
-                                                  object_id=Controller.get_unique_id()))
+commands.extend(Controller.get_add_physics_object(model_name="sphere",
+                                                  object_id=Controller.get_unique_id(),
+                                                  library="models_flex.json",
+                                                  kinematic=True,
+                                                  gravity=False,
+                                                  scale_factor={"x": 0.5, "y": 0.5, "z": 0.5}))
 c.communicate(commands)
 # Let the cloth fall.
 for i in range(150):
     c.communicate([])
 c.communicate({"$type": "terminate"})
+
 ```
 
 Result:

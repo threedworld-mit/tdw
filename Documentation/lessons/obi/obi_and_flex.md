@@ -47,10 +47,7 @@ Obi tends to work much better than Flex when using default values for parameters
 
 ## Output data
 
-[Flex particle data](../flex/output_data.md) is very similar to [Obi particle data](obi_particles.md) but there are two key differences that make Obi particle data easier to use overall:
-
-1. [It isn't possible to receive Flex particle data in a fluid simulation.](../flex/fluid_and_source.md) Obi supports particle output data for *all* types of actors, including fluids.
-2. The build is capable of marshalling, serializing, and sending Obi particle data at a much faster rate than Flex particle data.
+[Flex particle data](../flex/output_data.md) is very similar to [Obi particle data](obi_particles.md). The main difference is that [it isn't possible to receive Flex particle data in a fluid simulation.](../flex/fluid_and_source.md) Obi supports particle output data for *all* types of actors, including fluids.
 
 ## Speed
 

@@ -6,6 +6,15 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ## v1.9.15
 
+### Command API
+
+#### New Commands
+
+| Command                          | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `parent_textured_quad_to_object` | Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object. |
+| `unparent_textured_quad`         | Unparent a textured quad from an object.                     |
+
 ### Build
 
 - Fixed: `add_ui_image` often creates images with badly-stretched borders.
@@ -14,6 +23,14 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 - Added models to `models_core.json` and `models_full.json`: b03_12_06_027_composite, b04_wallmounted_soap_dispenser_composite, vray_077_composite, vray_083_composite, vray_084_composite, vray_085_composite
 - Added models to `models_special.json`: stairs_one, stairs_two
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                | Modification                                                 |
+| --------------------------------------- | ------------------------------------------------------------ |
+| `lessons/non_physics/textured_quads.md` | Clarified  that only textured quad commands work with textured quads. |
 
 ## v1.9.14
 

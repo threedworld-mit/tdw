@@ -337,7 +337,7 @@
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
 | [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
-| [`unparent_object`](#unparent_object) | Unparent an object from its current parent (an avatar, an avatar's camera, etc.). If the object doesn't have a parent, this command doesn't do anything. |
+| [`unparent_object`](#unparent_object) | Unparent an object from an object. If the textured quad doesn't have a parent, this command doesn't do anything. |
 
 **Flex Object Command**
 
@@ -643,12 +643,14 @@
 
 | Command | Description |
 | --- | --- |
+| [`parent_textured_quad_to_object`](#parent_textured_quad_to_object) | Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object. |
 | [`rotate_textured_quad_by`](#rotate_textured_quad_by) | Rotate a textured quad by a given angle around a given axis. |
 | [`rotate_textured_quad_to`](#rotate_textured_quad_to) | Set the rotation of a textured quad. |
 | [`scale_textured_quad`](#scale_textured_quad) | Scale a textured quad by a factor. |
 | [`set_textured_quad`](#set_textured_quad) | Apply a texture to a pre-existing quad.  |
 | [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
 | [`teleport_textured_quad`](#teleport_textured_quad) | Teleport a textured quad to a new position. |
+| [`unparent_textured_quad`](#unparent_textured_quad) | Unparent a textured quad from a parent object. If the textured quad doesn't have a parent object, this command doesn't do anything. |
 
 **Ui Command**
 
@@ -4650,7 +4652,7 @@ Teleport an object to a new position.
 
 ## **`unparent_object`**
 
-Unparent an object from its current parent (an avatar, an avatar's camera, etc.). If the object doesn't have a parent, this command doesn't do anything.
+Unparent an object from an object. If the textured quad doesn't have a parent, this command doesn't do anything.
 
 
 ```python
@@ -8410,6 +8412,22 @@ These commands adjust an existing textured quad.
 
 ***
 
+## **`parent_textured_quad_to_object`**
+
+Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object.
+
+
+```python
+{"$type": "parent_textured_quad_to_object", "object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the parent object in the scene. | |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
 ## **`rotate_textured_quad_by`**
 
 Rotate a textured quad by a given angle around a given axis.
@@ -8528,6 +8546,21 @@ Teleport a textured quad to a new position.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | New position of the quad. | |
+| `"id"` | int | The unique ID of this textured quad. | |
+
+***
+
+## **`unparent_textured_quad`**
+
+Unparent a textured quad from a parent object. If the textured quad doesn't have a parent object, this command doesn't do anything.
+
+
+```python
+{"$type": "unparent_textured_quad", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique ID of this textured quad. | |
 
 # UiCommand

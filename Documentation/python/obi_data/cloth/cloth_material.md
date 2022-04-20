@@ -2,7 +2,7 @@
 
 `from tdw.obi_data.cloth.cloth_material import ClothMaterial`
 
-An Obi cloth material.
+An Obi cloth material. For more information, [read this](http://obi.virtualmethodstudio.com/tutorials/clothsetup.html).
 
 ***
 

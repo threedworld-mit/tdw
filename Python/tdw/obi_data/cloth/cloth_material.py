@@ -6,7 +6,7 @@ from pathlib import Path
 
 class ClothMaterial:
     """
-    An Obi cloth material.
+    An Obi cloth material. For more information, [read this](http://obi.virtualmethodstudio.com/tutorials/clothsetup.html).
     """
 
     def __init__(self, visual_material: str, texture_scale: Dict[str, float], visual_smoothness: float = 0,

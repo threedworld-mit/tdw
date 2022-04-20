@@ -21,7 +21,7 @@ You can send [`create_obi_solver`](../../api/command_api.md#create_obi_solver) m
 
 Set solver parameters by calling `obi.set_solver()` which will send [`set_obi_solver_substeps`](../../api/command_api.md#set_obi_solver_substeps) and [`set_obi_solver_scale`](../../api/command_api.md#set_obi_solver_scale).
 
-- Substeps are sub-frames between `communicate()` calls. More substeps can greatly increase the accuracy of the simulation at the cost of speed.
+- Substeps are sub-frames between `communicate()` calls. More substeps can greatly increase the accuracy of the simulation at the cost of speed. They can also prevent tearing glitches with cloth.
 - The scale of a solver will uniformly scale all of its actors.
 
 ## Example: Create strawberry jam

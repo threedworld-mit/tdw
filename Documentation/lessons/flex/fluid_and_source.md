@@ -2,6 +2,8 @@
 
 # Fluid and source actors
 
+**Flex fluids have been deprecated in TDW. Please use [Obi fluids](../obi/fluids.md) instead.**
+
 In Flex simulations *fluids* are bodies of fluids while *sources* are fluids emitted from a source.
 
 ## Limitations

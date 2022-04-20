@@ -81,3 +81,13 @@ This is called before sending commands to the build. By default, this function d
 **`self.save()`**
 
 Write the record of commands sent to the local disk.
+
+#### reset
+
+**`self.reset(path)`**
+
+Reset the logger. If `self.record == True`, this starts a new log. If `self.record == False`, this loads a playback file.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| path |  Union[str, Path] |  | The path to either save the record to or load the record from. |

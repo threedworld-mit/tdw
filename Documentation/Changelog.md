@@ -4,6 +4,211 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.15
+
+### Build
+
+- Fixed: `add_ui_image` often creates images with badly-stretched borders.
+
+## v1.9.14
+
+### Command API
+
+#### New Commands
+
+| Command                      | Description                                                  |
+| ---------------------------- | ------------------------------------------------------------ |
+| `add_ui_canvas`              | Add a UI canvas to the scene. By default, the canvas will be an "overlay" and won't appear in image output data. |
+| `attach_ui_canvas_to_avatar` | Attach a UI canvas to an avatar. This allows the UI to appear in image output data. |
+| `attach_ui_canvas_to_vr_rig` | Attach a UI canvas to the head camera of a VR rig.           |
+| `destroy_ui_canvas`          | Destroy a UI canvas and all of its UI elements.              |
+| `add_ui_image`               | Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image. |
+| `add_ui_text`                | Add UI text to the scene.                                    |
+| `destroy_ui_element`         | Destroy a UI element in the scene.                           |
+| `set_ui_element_size`        | Set the size of a UI element.                                |
+| `set_ui_text`                | Set the text of a Text object that is already on the screen. |
+
+### `tdw` module
+
+- Added `UI` add-on.
+
+### Documentation
+
+#### New Documentation
+
+| Document                    | Description                            |
+| --------------------------- | -------------------------------------- |
+| `lessons/non_physics/ui.md` | User documentation to the `UI` add-on. |
+| `python/add_ons/ui.md`      | API documentation for the `UI` add-on. |
+
+#### Modified Documentation
+
+| Document                          | Modification                                                 |
+| --------------------------------- | ------------------------------------------------------------ |
+| `lessons/misc/c_sharp_sources.md` | Replaced the document with a single paragraph explaining the reasons the C# code is closed-source. |
+
+## v1.9.13
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                          |
+| ------------------------- | ------------------------------------ |
+| `rotate_textured_quad_to` | Set the rotation of a textured quad. |
+
+## v1.9.12
+
+### New Features
+
+- **Added Obi fluids to TDW.** This is a particle-based fluid simulator that in most respects is superior to the existing Flex fluid simulator.
+
+### Command API
+
+#### New Commands
+
+| Command                            | Description                                             |
+| ---------------------------------- | ------------------------------------------------------- |
+| `create_floor_obi_colliders`       | Create Obi colliders for the floor if there aren't any. |
+| `set_floor_obi_collision_material` | Set the Obi collision material of the floor.            |
+| `create_obi_fluid`                 | Create an Obi fluid.                                    |
+| `create_obi_solver`                | Create an Obi solver.                                   |
+| `destroy_obi_solver`               | Destroy an Obi solver.                                  |
+| `set_obi_solver_substeps`          | Set an Obi solver's number of substeps.                 |
+| `create_obi_colliders`             | Create Obi colliders for an object if there aren't any. |
+| `set_obi_collision_material`       | Set the Obi collision material of an object.            |
+| `set_obi_fluid_emission_speed`     | Set the emission speed of a fluid emitter.              |
+| `create_robot_obi_colliders`       | Create Obi colliders for a robot if there aren't any.   |
+| `set_robot_obi_collision_material` | Set the Obi collision material of a robot.              |
+| `send_obi_particles`               | Send particle data for all Obi actors in the scene.     |
+| `create_vr_obi_colliders`          | Create Obi colliders for a VR rig if there aren't any.  |
+| `set_vr_obi_collision_material`    | Set the Obi collision material of the VR rig.           |
+
+#### Deprecated Commands
+
+| Command                                                      | Reason                                                   |
+| ------------------------------------------------------------ | -------------------------------------------------------- |
+| `set_flex_fluid_actor`<br>`set_flex_fluid_source_actor`<br>`load_flex_fluid_from_resources`<br>`load_flex_fluid_source_from_resources` | Flex fluids have been deprecated in favor of Obi fluids. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data    | Description        |
+| -------------- | ------------------ |
+| `ObiParticles` | Obi particle data. |
+
+### `tdw` module
+
+- Added `Obi` add-on. This add-on handles most aspects of an Obi physics simulation, including initialization, actor creation, and particle output data.
+- Added Obi data classes for usage within the `Obi` add-on:
+  - `ObiActor` Handles particle data per Obi actor.
+  - Fluids:
+    - `FluidBase` Abstract base class for fluids.
+    - `Fluid` Includes a dictionary of presets: `from tdw.obi_data.fluids.fluid import FLUIDS`
+    - `GranularFluid` Includes a dictionary of presets: `from tdw.obi_data.fluids.granular_fluid import GRANULAR_FLUIDS`
+  - Emitter shapes:
+    - `EmitterShape` Abstract base class for emitter shapes.
+    - `CubeEmitter`
+    - `DiskEmitter`
+    - `EdgeEmitter`
+    - `SphereEmitter`
+    - `EmitterSamplingMethod` Enum values for the emitter sampling method.
+  - Collision materials:
+    - `CollisionMaterial`
+    - `MaterialCombineMode`
+- Fixed: `AssetBundleCreator` fails because the `asset_bundle_creator/` Unity project doesn't include Newtonsoft.JSON
+- By default, the `OculusTouch` add-on will set the rig's hands and all graspable objects to the "discrete" collision detection mode.
+
+### Model Library
+
+- Marked models as do_not_use: 03_106, 07_01_001, 11_02_003, 11_02_046, 2012-2, adirondack_chair, animal_dog_rtstand_1281, apple04(8_vray), apple07(8_vray), b03_bosch_cbg675bs1b_2013__vray_composite, b03_calligraphybrush_circle, b03_fire_hydrant_los_angeles(1), b05_025_vray, b05_clochild4, banana, bananas(8_vray), billiardtable, brush_circle, cgaxis_models_88_21_vray, coca-cola_can_001, db_apps_tech_08_10, de_dietrich_dop7350w, elva_camod_5691_141x51xh87, fire_hydrant, giraffe_mesh, golf_cart, hair_comb_2010, holo3d-mesh-snake, honey_jar_max_2011, prim_cone, ramp_with_platform, snek_new, whirlpool_akzm7630ix
+
+### Example Controllers
+
+- Added: `obi/custom_fluid.py`, `obi/milk.py` `obi/obi_minimal.py`, `obi/obi_robot.py`, `obi/strawberry_jam.py`, `obi/water.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/obi/overview.md`<br>`lessons/obi/fluids.md`<br>`lessons/obi/obi_particles.md`<br>`lessons/obi/colliders_and_collision_materials.md`<br>`lessons/obi/solvers.md`<br>`lessons/obi/robots.md`<br>`lessons/obi/obi_and_flex.md` | Tutorial documentation for Obi in TDW.                       |
+| `python/add_ons/obi.md`<br>`python/obi_data/collision_materials/collision_material.md`<br>`python/obi_data/collision_materials/material_combine_mode.md`<br>`python/obi_data/fluids/cube_emitter.md`<br>`python/obi_data/fluids/disk_emitter.md`<br>`python/obi_data/fluids/edge_emitter.md`<br>`python/obi_data/fluids/emitter_sampling_method.md`<br>`python/obi_data/fluids/emitter_shape.md`<br>`python/obi_data/fluids/fluid.md`<br>`python/obi_data/fluids/fluid_base.md`<br>`python/obi_data/fluids/granular_fluid.md`<br>`python/obi_data/fluids/sphere_emitter.md`<br>`python/obi_data/obi_actor.md` | API documentation for the `Obi` add-on and associated data classes. |
+
+#### Modified Documentation
+
+| Document                           | Modification                                   |
+| ---------------------------------- | ---------------------------------------------- |
+| `lessons/flex/fluid_and_source.md` | Added deprecation notice.                      |
+| `lessons/physx/overview.md`        | Updated comparison section to include Obi.     |
+| `lessons/vr/oculus_touch.md`       | Added a section regarding physics glitchiness. |
+
+### Benchmarking
+
+- Added: `flex_fluid.py`, `obi.py`, and `obi_fluid.py`
+- Added Obi benchmark to `performance_benchmark_controller.py
+
+## v1.9.11
+
+### Command API
+
+#### New Commands
+
+| Command                       | Description                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| `set_floor_color`             | Set the albedo color of the floor.                           |
+| `set_floor_material`          | Set the material of the floor.                               |
+| `set_floor_texture_scale`     | Set the scale of the tiling of the floor material's main texture. |
+| `set_floor_physic_material`   | Set the physic material of the floor.                        |
+| `send_collider_intersections` | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider. |
+
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `send_model_report` | Added a test for whether each MeshCollider has a mesh.<br>Added a test for whether each MeshCollider's mesh is readable. |
+
+#### Deprecated Commands
+
+| Command                            | Reason                                   |
+| ---------------------------------- | ---------------------------------------- |
+| `set_proc_gen_floor_color`         | Replaced with `set_floor_color`.         |
+| `set_proc_gen_floor_material`      | Replaced with `set_floor_material`.      |
+| `set_proc_gen_floor_texture_scale` | Replaced with `set_floor_texture_scale`. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data                       | Description                                                  |
+| --------------------------------- | ------------------------------------------------------------ |
+| `EnvironmentColliderIntersection` | Data for an whose colliders are intersecting with an environment collider such as a wall. |
+| `ObjectColliderIntersection`      | Data for two objects whose colliders are intersecting.       |
+
+### Example Controllers
+
+- Updated `objects_and_scenes/proc_gen_room.py` to use the new floor commands.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                      | Modification                                         |
+| --------------------------------------------- | ---------------------------------------------------- |
+| `lessons/objects_and_scenes/proc_gen_room.md` | Replaced old floor commands with new floor commands. |
+
+## v1.9.10
+
+### Build
+
+- Fixed: The OS X build doesn't use OpenGL rendering, causing _depth and _depth_simple passes to render as _img passes. (There were probably other OpenGL-related issues as well).
+
+### Model Library
+
+- Fixed: Removed cabinet_24_two_drawer_wood_beech_honey_composite record from the model librarian because the asset bundles don't exist.
+
 ## v1.9.9
 
 ### Command API
@@ -13,6 +218,21 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | Command                 | Modification                            |
 | ----------------------- | --------------------------------------- |
 | `create_flex_container` | Added optional parameter `restitution`. |
+
+### `tdw` module
+
+- Added optional parameter `device_name` to `AudioUtils.start()` and `AudioUtils. get_system_audio_device()` to specify the capture device (such as a headset microphone).
+- Added: `Logger.reset(path)` Reset the Logger add-on.
+- Fixed: `Logger` add-on doesn't create directories for the log if the directories don't exist.
+- Added optional parameter `scale_mass` to `Controller.get_add_physics_object()`. If False, scale an object without adjusting its mass.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                           | Modification                                                 |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `lessons/audio/record_audio.md`    | Added a section for how to record from a microphone.         |
 
 ## v1.9.8
 
@@ -31,7 +251,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 ### `tdw` module
 
 - `Controller.get_add_physics_object()` will dynamically scale the "canonical" mass of the object if a value for the `scale_factor` parameter is provided.
-- Added optional parameter `device` to `AudioUtils.start()` to enable microphone capture.
 
 ### Model Library
 
@@ -45,7 +264,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 | Document                           | Modification                                                 |
 | ---------------------------------- | ------------------------------------------------------------ |
-| `lessons/audio/record_audio.md`    | Added a section for how to record from a microphone.         |
 | `lessons/flex/fluid_and_source.md` | Clarified that a receptacle is not needed.                   |
 | `python/controller.md`             | Clarified how the wrapper functions that return commands work. |
 

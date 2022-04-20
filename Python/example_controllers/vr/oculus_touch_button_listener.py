@@ -25,6 +25,7 @@ class OculusTouchButtonListener(Controller):
         self.communicate(TDWUtils.create_empty_room(12, 12))
 
     def trial(self) -> None:
+        self.vr.reset()
         # Start a new trial.
         self.trial_done = False
         # Choose a random model.

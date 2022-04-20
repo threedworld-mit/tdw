@@ -19,13 +19,15 @@ for model_name in categories:
 
 ## Class Variables
 
-| Variable | Type | Description |
-| --- | --- | --- |
-| `KINEMATIC_CATEGORIES` | List[str] | Objects in these categories will be kinematic. |
-| `RECTANGULAR_ARRANGEMENTS` | Dict[str, dict] | Parameters for rectangular arrangements. Key = Category. Value = Dictionary (`"cell_size"`, `"density"`). |
-| `MODEL_NAMES_NINETY_DEGREES` | List[str] | The names of the models that are rotated 90 degrees. |
-| `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. |
-| `BOUNDS_OFFSETS` | dict | Offset values for the bounds extents of specific models. |
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `BOUNDS_OFFSETS` | dict | Offset values for the bounds extents of specific models. | `loads(Path(resource_filename(__name__, "proc_gen_objects_data/bounds_offsets.json")).read_text())` |
+| `KINEMATIC_CATEGORIES` | List[str] | Objects in these categories will be kinematic. | `Path(resource_filename(__name__, "proc_gen_objects_data/kinematic_categories.txt")).read_text().split("
+")` |
+| `MODEL_NAMES_NINETY_DEGREES` | List[str] | The names of the models that are rotated 90 degrees. | `Path(resource_filename(__name__, "proc_gen_objects_data/model_names_ninety_degrees.txt")).read_text().split("
+")` |
+| `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "proc_gen_objects_data/on_top_of.json")).read_text())` |
+| `RECTANGULAR_ARRANGEMENTS` | Dict[str, dict] | Parameters for rectangular arrangements. Key = Category. Value = Dictionary (`"cell_size"`, `"density"`). | `loads(Path(resource_filename(__name__, "proc_gen_objects_data/rectangular_arrangements.json")).read_text())` |
 
 ***
 
@@ -38,6 +40,10 @@ for model_name in categories:
 - `scene_bounds` The [`SceneBounds`](../scene_data/scene_bounds.md). This is set after initializing or resetting `ProcGenObjects` and then calling `c.communicate()`.
 
 - `cell_size` The cell size in meters. This is also used to position certain objects in subclasses of `ProcGenObjects`.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -75,6 +81,16 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
 #### add_rectangular_arrangement
 
@@ -145,4 +161,3 @@ The objects can have other objects on top of them.
 | length |  float |  | The maximum length of the lateral arrangement. |
 | region |  RegionWalls |  | [The `RegionWalls` data.](../scene_data/region_walls.md) |
 | check_object_positions |  bool  | False | If True, try to avoid placing objects near existing objects. |
-

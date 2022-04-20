@@ -3,6 +3,7 @@ import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.benchmark import Benchmark
+from tdw.obi_data.collision_materials.collision_material import CollisionMaterial
 
 
 class PerformanceBenchmarkController(Controller):
@@ -21,8 +22,8 @@ class PerformanceBenchmarkController(Controller):
             pass_masks: List[str] = None, png: bool = False, transforms: bool = False, rigidbodies: bool = False,
             collisions: bool = False, bounds: bool = False, screen_size: int = 256, junk: int = None,
             images: bool = False, id_colors: bool = False, collision_enter: bool = True, collision_exit: bool = True,
-            collision_stay: bool = True, env_collisions: bool = True, occlusion: bool = False,
-            num_frames: int = 5000) -> float:
+            collision_stay: bool = True, env_collisions: bool = True, occlusion: bool = False, obi: bool = False,
+            obi_particle_data: bool = False, num_frames: int = 5000) -> float:
         """
         Run a performance benchmark test.
 
@@ -44,6 +45,8 @@ class PerformanceBenchmarkController(Controller):
         :param collision_stay: If `collisions` is `True`, listen for collision stay events.
         :param env_collisions: If `collisions` is `True`, listen for environment collision events.
         :param occlusion: If True, add an avatar and send `Occlusion` data per frame.
+        :param obi: If True, add Obi colliders and collision materials to each object.
+        :param obi_particle_data: If True, send `ObiParticles` per frame. Ignored if `obi` is `False`.
         :param num_frames: Iterate for this many frames.
 
         :return: The frames per second (FPS).
@@ -73,6 +76,25 @@ class PerformanceBenchmarkController(Controller):
                                  "orientation": {"x": 0, "y": 0, "z": 0}})
                 object_ids.append(i)
                 y += 1.5
+            # Initialize for Obi.
+            if obi:
+                obi_collision_material = CollisionMaterial()
+                commands.extend([{"$type": "destroy_obi_solver"},
+                                 {"$type": "create_obi_solver"},
+                                 {"$type": "create_floor_obi_colliders"}])
+                floor_material_command = {"$type": "set_floor_obi_collision_material"}
+                floor_material_command.update(obi_collision_material.to_dict())
+                commands.append(floor_material_command)
+                for object_id in object_ids:
+                    commands.append({"$type": "create_obi_colliders",
+                                     "id": object_id})
+                    object_material_command = {"$type": "set_obi_collision_material",
+                                               "id": object_id}
+                    object_material_command.update(obi_collision_material.to_dict())
+                    commands.append(object_material_command)
+                if obi_particle_data:
+                    commands.append({"$type": "send_obi_particles",
+                                     "frequency": "always"})
         transforms = "always" if transforms else "never"
         rigidbodies = "always" if rigidbodies else "never"
         bounds = "always" if bounds else "never"

@@ -37,6 +37,7 @@ class TriggerCollisions(Controller):
                                                           scale_factor={"x": 0.3, "y": 0.3, "z": 0.3},
                                                           library="models_flex.json",
                                                           default_physics_values=False,
+                                                          scale_mass=False,
                                                           mass=0.3))
         # Apply forces to the objects.
         commands.extend([{"$type": "apply_force_to_object",

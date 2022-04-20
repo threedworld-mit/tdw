@@ -81,6 +81,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [MagnebotWheels](#MagnebotWheels) | A message sent when a Magnebot arrives at a target. | `mwhe` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
+| [ObiParticles](#ObiParticles) | Obi particle data. | `obip` |
 | [ObjectColliderIntersection](#ObjectColliderIntersection) | Data for two objects whose colliders are intersecting. | `obci` |
 | [Occlusion](#Occlusion) | To what extent parts of the scene environment (such as walls) are occluding objects. | `occl` |
 | [OculusTouchButtons](#OculusTouchButtons) | Which Oculus Touch controller buttons have been pressed. | `octb` |
@@ -633,6 +634,25 @@ A path on the scene's NavMesh.
 | `get_state()` | The state of the path: "complete", "partial", or "invalid". | `str` |
 | `get_path()` | Waypoints on the path as a numpy array of (x, y, z) coordinates. | `np.array` |
 | `get_id()` | The ID of this path. Use this to differentiate between different NavMeshPaths. | `int` |
+
+## ObiParticles
+
+`o = ObiParticles(byte_array)`
+
+**Identifier:** `obip`
+
+Obi particle data.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num_solvers()` | The number of solvers. | `int` |
+| `get_positions(index)` | The positions of the particles. | `np.array` |
+| `get_velocities(index)` | The velocities of the particles. | `np.array` |
+| `get_num_objects()` | The number of objects. | `int` |
+| `get_object_id(index)` | The ID of the object. | `int` |
+| `get_solver_id(index)` | The ID of the actor's solver. | `int` |
+| `get_count(index)` | The number of active particles. | `int` |
+| `get_solver_indices(index)` | Indices of the particles in the solver. | `np.array` |
 
 ## ObjectColliderIntersection
 

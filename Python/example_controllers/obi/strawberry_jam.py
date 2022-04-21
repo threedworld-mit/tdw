@@ -41,6 +41,8 @@ fluid = Fluid(capacity=1500,
 # Initialize Obi.
 obi = Obi(floor_material=sticky_material, object_materials={object_id: sticky_material})
 c.add_ons.extend([camera, obi])
+# Increase the solver substeps to accommodate the high viscosity and smoothing and make the fluid behave more like jam.
+obi.set_solver(substeps=4)
 # Create a disk-shaped emitter, pointing straight down.
 obi.create_fluid(fluid=fluid,
                  shape=DiskEmitter(radius=0.2),
@@ -55,12 +57,7 @@ c.communicate(Controller.get_add_physics_object(model_name="sphere",
                                                 library="models_flex.json",
                                                 kinematic=True,
                                                 gravity=False,
-                                                scale_factor={"x":0.5, "y": 0.5, "z":0.5}))
-
-# Increase the solver substeps to accommodate the high viscosity and smoothing and make the fluid behave more like jam.
-c.communicate({"$type": "set_obi_solver_substeps",
-               "solver_id": 0,
-               "substeps": 4})
+                                                scale_factor={"x": 0.5, "y": 0.5, "z": 0.5}))
 for i in range(500):
     c.communicate([])
 c.communicate({"$type": "terminate"})

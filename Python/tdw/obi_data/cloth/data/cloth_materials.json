@@ -1,0 +1,93 @@
+{
+  "silk": {
+    "stretching_scale": 1.0, 
+    "stretch_compliance": 0, 
+    "max_compression": 0,
+    "max_bending": 0.05, 
+    "bend_compliance": 0, 
+    "drag": 0.05, 
+    "lift": 0.05,
+	"visual_material": "cotton_jean_light_blue",
+	"texture_scale": {"x": 4, "y": 4},
+    "visual_smoothness": 0,
+    "mass_per_square_meter": 0.136
+  },
+  "cotton": {
+    "stretching_scale": 1.0, 
+    "stretch_compliance": 0, 
+    "max_compression": 0,
+    "max_bending": 0.04, 
+    "bend_compliance": 0, 
+    "drag": 0.0, 
+    "lift": 0.0,
+	"visual_material": "cotton_canvas_washed_out",
+	"texture_scale": {"x": 4, "y": 4},
+    "visual_smoothness": 0,
+    "mass_per_square_meter": 0.203
+  },
+  "wool": {
+    "stretching_scale": 1.0, 
+    "stretch_compliance": 0, 
+    "max_compression": 0,
+    "max_bending": 0.03, 
+    "bend_compliance": 0, 
+    "drag": 0.0, 
+    "lift": 0.0,
+    "visual_material": "wool_tartan_multicolored",
+	"texture_scale": {"x": 2, "y": 2},
+    "visual_smoothness": 0,
+    "mass_per_square_meter": 0.373
+  },
+  "canvas": {
+    "stretching_scale": 1.0, 
+    "stretch_compliance": 0, 
+    "max_compression": 0,
+    "max_bending": 0.025, 
+    "bend_compliance": 0, 
+    "drag": 0.05, 
+    "lift": 0.05,
+	"visual_material": "canvas_beige",
+	"texture_scale": {"x": 3, "y": 3},
+    "visual_smoothness": 0,
+    "mass_per_square_meter": 0.237
+  },
+  "burlap": {
+    "stretching_scale": 1.0, 
+    "stretch_compliance": 0, 
+    "max_compression": 0,
+    "max_bending": 0.02, 
+    "bend_compliance": 0, 
+    "drag": 0.05, 
+    "lift": 0.05,
+	"visual_material": "linen_burlap_irregular",
+	"texture_scale": {"x": 4, "y": 4},
+    "visual_smoothness": 0,
+    "mass_per_square_meter": 0.305
+  },
+  "rubber": {
+    "stretching_scale": 1.25, 
+    "stretch_compliance": 0, 
+    "max_compression": 0,
+    "max_bending": 0.01, 
+    "bend_compliance": 0, 
+    "drag": 0.05, 
+    "lift": 0.05,
+	"visual_material": "rubber_black",
+	"texture_scale": {"x": 4, "y": 4},
+    "visual_smoothness": 0,
+    "mass_per_square_meter": 0.9
+  },
+  "plastic": {
+    "stretching_scale": 0.75, 
+    "stretch_compliance": 0, 
+    "max_compression": 0,
+    "max_bending": 0.0, 
+    "bend_compliance": 0, 
+    "drag": 0.05, 
+    "lift": 0.05,
+	"visual_material": "plastic_vinyl_glossy_white",
+	"texture_scale": {"x": 1, "y": 1},
+    "visual_smoothness": 0,
+    "mass_per_square_meter": 0.15
+  }
+}

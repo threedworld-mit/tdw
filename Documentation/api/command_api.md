@@ -5591,6 +5591,7 @@ Create or adjust a FlexClothActor for the object.
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_flex_cloth_actor", "id": 1}

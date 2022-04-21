@@ -680,6 +680,12 @@ class OculusTouchButtons(OutputData):
     def get_right(self) -> List[OculusTouchButton]:
         return self._get_buttons(v=self.data.Right())
 
+    def get_left_axis(self) -> np.array:
+        return self.data.LeftAxisAsNumpy()
+
+    def get_right_axis(self) -> np.array:
+        return self.data.RightAxisAsNumpy()
+
     @staticmethod
     def _get_buttons(v: int) -> List[OculusTouchButton]:
         return [OculusTouchButtons.BUTTONS[i] for (i, b) in enumerate(OculusTouchButtons.BUTTONS) if v & (1 << i) != 0]

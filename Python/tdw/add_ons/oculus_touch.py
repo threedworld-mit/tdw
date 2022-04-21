@@ -1,4 +1,5 @@
 from typing import List, Callable, Dict
+import numpy as np
 from tdw.add_ons.vr import VR
 from tdw.vr_data.rig_type import RigType
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
@@ -41,6 +42,9 @@ class OculusTouch(VR):
         # Button press events.
         self._button_press_events_left: Dict[OculusTouchButton, Callable[[], None]] = dict()
         self._button_press_events_right: Dict[OculusTouchButton, Callable[[], None]] = dict()
+        # Axis events.
+        self._axis_events_left: List[Callable[[np.array], None]] = list()
+        self._axis_events_right: List[Callable[[np.array], None]] = list()
         # Non-graspable objects.
         if non_graspable is None:
             self._non_graspable: List[int] = list()
@@ -110,6 +114,11 @@ class OculusTouch(VR):
                         # Invoke the button press event.
                         if button in events:
                             events[button]()
+                # Invoke axis events.
+                for delta, axis in zip([oculus_touch_buttons.get_left_axis(), oculus_touch_buttons.get_right_axis()],
+                                       [self._axis_events_left, self._axis_events_right]):
+                    for event in axis:
+                        event(delta)
 
     def listen_to_button(self, button: OculusTouchButton, is_left: bool, function: Callable[[], None]) -> None:
         """
@@ -124,6 +133,19 @@ class OculusTouch(VR):
             self._button_press_events_left[button] = function
         else:
             self._button_press_events_right[button] = function
+
+    def listen_to_axis(self, is_left: bool, function: Callable[[np.array], None]) -> None:
+        """
+        Listen for Oculus Touch controller axis events.
+
+        :param is_left: If True, this is the left controller. If False, this is the right controller.
+        :param function: The function to invoke when the button is pressed. This function must a single argument (a numpy array of shape `(2)`, representing (x, y) coordinates) and return None.
+        """
+
+        if is_left:
+            self._axis_events_left.append(function)
+        else:
+            self._axis_events_right.append(function)
 
     def reset(self, non_graspable: List[int] = None) -> None:
         """

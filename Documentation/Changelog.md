@@ -8,7 +8,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ### New Features
 
-- Added Obi Cloth.
+- **Added Obi Cloth.**
 
 ### Command API
 
@@ -19,6 +19,21 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `set_obi_solver_scale`    | Set an Obi solver's scale. This will uniformly scale the physical size of the simulation, without affecting its behavior. |
 | `create_obi_cloth_sheet`  | Create an Obi cloth sheet object.                            |
 | `create_obi_cloth_volume` | Create an Obi cloth volume object.                           |
+| `parent_textured_quad_to_object` | Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object. |
+| `unparent_textured_quad`         | Unparent a textured quad from an object.                     |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data          | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `OculusTouchButtons` | Added: `get_left_axis()` and `get_right_axis()` to listen for control stick input. |
+
+### Build
+
+- Fixed: Freeze when sending `set_vr_obi_collision_material` or `create_vr_obi_colliders`
+- Fixed: `add_ui_image` often creates images with badly-stretched borders.
 
 ### `tdw` module
 
@@ -34,13 +49,16 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `TetherParticleGroup`
   - `VolumeType`
   - `TetherType`
+- Added to `OculusTouch` add on: `self.listen_to_axis(is_left, delta)` Listen to control stick movement. 
 
-### Build
+### Model Library
 
-- Fixed: Freeze when sending `set_vr_obi_collision_material` or `create_vr_obi_colliders`
+- Added models to `models_core.json` and `models_full.json`: b03_12_06_027_composite, b04_wallmounted_soap_dispenser_composite, vray_077_composite, vray_083_composite, vray_084_composite, vray_085_composite
+- Added models to `models_special.json`: stairs_one, stairs_two
 
 ### Example Controllers
 
+- Added: `vr/oculus_touch_axis_listener.py`
 - Added Obi cloth example controllers in `obi/`:
   - `cloth_sheet.py`
   - `cloth_volume.py`
@@ -65,6 +83,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | ----------------------------- | ----------------------------------------------- |
 | `lessons/obi/solvers.md`      | Added an example of how to scale a cloth sheet. |
 | `lessons/obi/obi_and_flex.md` | Added cloth benchmarks.                         |
+| `lessons/vr/oculus_touch.md` | Added a section for control stick input. |
+| `lessons/non_physics/textured_quads.md` | Clarified  that only textured quad commands work with textured quads. |
 
 ## v1.9.14
 

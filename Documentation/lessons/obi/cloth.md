@@ -322,6 +322,47 @@ custom_material.visual_material = "silk_smooth_red"
 custom_material.texture_scale = {"x": 1, "y": 1}
 ```
 
+## Forces and torques
+
+Apply a uniform force or torque to a cloth sheet or volume by calling `obi.apply_force_to_cloth(object_id, force, torque, force_mode)`
+
+- `force` and `torque` are both optional. If `force` is not None, the `Obi` add-on will send [`apply_force_to_obi_cloth`](../../api/command_api.md#apply_force_to_obi_cloth). If `torque` is not None the `Obi` add-on will send [`apply_torque_to_obi_cloth`](../../api/command_api.md#apply_torque_to_obi_cloth).
+- `force_mode` is optional and sets the [`ForceMode`](../../python/obi_data/force_mode.md). This should usually be `ForceMode.impulse` (the default value).
+
+This example applies a force (but not a torque) to a tethered cloth sheet:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.obi import Obi
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
+from tdw.obi_data.cloth.tether_type import TetherType
+
+c = Controller()
+cloth_id = Controller.get_unique_id()
+camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
+                           look_at={"x": 0, "y": 1.25, "z": 0})
+obi = Obi()
+c.add_ons.extend([camera, obi])
+# Add a cloth sheet.
+obi.create_cloth_sheet(cloth_material="canvas",
+                       object_id=cloth_id,
+                       position={"x": 1, "y": 2.0, "z": -1},
+                       tether_positions={TetherParticleGroup.center: TetherType(object_id=cloth_id)})
+# Apply a force to the cloth.
+obi.apply_force_to_cloth(object_id=cloth_id,
+                         force={"x": 0.5, "y": 0, "z": 15})
+c.communicate(TDWUtils.create_empty_room(12, 12))
+for i in range(150):
+    c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/cloth_force.gif)
+
 ***
 
 **Next: [`ObiParticles` output data](obi_particles.md)**
@@ -338,6 +379,7 @@ Example controllers:
 - [sheet_types.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/sheet_types.py) Example of different sheet types.
 - [tether_self.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/tether_self.py) Apply multiple tether positions to a single cloth sheet.
 - [untether.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/untether.py) Tether and then un-tether a cloth sheet.
+- [cloth_force.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/obi/cloth_force.py) Apply a force to a cloth sheet.
 
 Python API:
 
@@ -354,3 +396,5 @@ Command API:
 - [`add_material`](../../api/command_api.md#add_material)
 - [`create_obi_cloth_sheet`](../../api/command_api.md#create_obi_cloth_sheet)
 - [`create_obi_cloth_volume`](../../api/command_api.md#create_obi_cloth_volume)
+- [`apply_force_to_obi_cloth`](../../api/command_api.md#apply_force_to_obi_cloth)
+- [`apply_torque_to_obi_cloth`](../../api/command_api.md#apply_torque_to_obi_cloth)

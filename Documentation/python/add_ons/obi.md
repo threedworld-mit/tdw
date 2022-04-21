@@ -130,6 +130,21 @@ Set the speed of a fluid emitter. By default, the speed of an emitter is 0 (no f
 | object_id |  int |  | The ID of the fluid emitter. |
 | speed |  float |  | The speed in meters per second. Set this to 0 to stop emission. |
 
+#### apply_force_to_cloth
+
+**`self.apply_force_to_cloth(object_id)`**
+
+**`self.apply_force_to_cloth(object_id, force=None, torque=None, force_mode=ForceMode.impulse)`**
+
+Apply a uniform force and/or torque to a cloth actor.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| object_id |  int |  | The ID of the cloth actor. |
+| force |  Dict[str, float] | None | The force. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| torque |  Dict[str, float] | None | The torque. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| force_mode |  ForceMode  | ForceMode.impulse | The [`ForceMode`](../obi_data/force_mode.md) for the `force` and/or `torque`. |
+
 #### untether_cloth_sheet
 
 **`self.untether_cloth_sheet(object_id, tether_position)`**

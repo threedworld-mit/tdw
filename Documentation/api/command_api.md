@@ -372,7 +372,9 @@
 | [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint. |
 | [`apply_force_at_position`](#apply_force_at_position) | Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large. |
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
+| [`apply_force_to_obi_cloth`](#apply_force_to_obi_cloth) | Apply a uniform force to an Obi cloth actor.  |
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
+| [`apply_torque_to_obi_cloth`](#apply_torque_to_obi_cloth) | Apply a uniform torque to an Obi cloth actor.  |
 | [`apply_torque_to_object`](#apply_torque_to_object) | Apply a torque to the object's rigidbody. |
 | [`scale_object_and_mass`](#scale_object_and_mass) | Scale the object by a factor from its current scale. Scale its mass proportionally. This command assumes that a canonical mass has already been set. |
 | [`set_color_in_substructure`](#set_color_in_substructure) | Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API. |
@@ -5005,6 +5007,39 @@ Apply a force of a given magnitude along the forward directional vector of the o
 
 ***
 
+## **`apply_force_to_obi_cloth`**
+
+Apply a uniform force to an Obi cloth actor. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "apply_force_to_obi_cloth", "id": 1}
+```
+
+```python
+{"$type": "apply_force_to_obi_cloth", "id": 1, "force": {"x": 0, "y": 0, "z": 0}, "force_mode": "impulse"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | Vector3 | The force. | {"x": 0, "y": 0, "z": 0} |
+| `"force_mode"` | ForceMode | The force mode. | "impulse" |
+| `"id"` | int | The unique object ID. | |
+
+#### ForceMode
+
+Force modes for Obi actors.
+
+| Value | Description |
+| --- | --- |
+| `"force"` | Add a continuous force to the object, using its mass. |
+| `"impulse"` | Add an instant force impulse to the object, using its mass. |
+| `"velocity"` | Add an instant velocity change to the object, ignoring its mass. |
+| `"acceleration"` | Add a continuous acceleration to the object, ignoring its mass. |
+
+***
+
 ## **`apply_force_to_object`**
 
 Applies a directional force to the object's rigidbody.
@@ -5022,6 +5057,39 @@ Applies a directional force to the object's rigidbody.
 | --- | --- | --- | --- |
 | `"force"` | Vector3 | The directional force. | {"x": 0, "y": 0, "z": 1} |
 | `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_torque_to_obi_cloth`**
+
+Apply a uniform torque to an Obi cloth actor. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "apply_torque_to_obi_cloth", "id": 1}
+```
+
+```python
+{"$type": "apply_torque_to_obi_cloth", "id": 1, "torque": {"x": 0, "y": 0, "z": 0}, "force_mode": "impulse"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"torque"` | Vector3 | The torque. | {"x": 0, "y": 0, "z": 0} |
+| `"force_mode"` | ForceMode | The force mode. | "impulse" |
+| `"id"` | int | The unique object ID. | |
+
+#### ForceMode
+
+Force modes for Obi actors.
+
+| Value | Description |
+| --- | --- |
+| `"force"` | Add a continuous force to the object, using its mass. |
+| `"impulse"` | Add an instant force impulse to the object, using its mass. |
+| `"velocity"` | Add an instant velocity change to the object, ignoring its mass. |
+| `"acceleration"` | Add a continuous acceleration to the object, ignoring its mass. |
 
 ***
 

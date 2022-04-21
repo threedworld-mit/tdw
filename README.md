@@ -319,6 +319,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 **tdw.obi_data**
 
+- [ForceMode](Documentation/python/obi_data/force_mode.md)
 - [ObiActor](Documentation/python/obi_data/obi_actor.md)
 
 **tdw.obi_data.cloth**

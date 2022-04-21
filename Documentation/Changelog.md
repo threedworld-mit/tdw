@@ -19,6 +19,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `set_obi_solver_scale`    | Set an Obi solver's scale. This will uniformly scale the physical size of the simulation, without affecting its behavior. |
 | `create_obi_cloth_sheet`  | Create an Obi cloth sheet object.                            |
 | `create_obi_cloth_volume` | Create an Obi cloth volume object.                           |
+| `apply_force_to_obi_cloth` | Apply a uniform force to an Obi cloth actor. |
+| `apply_torque_to_obi_cloth` | Apply a uniform torque to an Obi cloth actor. |
 | `parent_textured_quad_to_object` | Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object. |
 | `unparent_textured_quad`         | Unparent a textured quad from an object.                     |
 
@@ -49,12 +51,14 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `create_cloth_volume()` Create a cloth volume object.
   - `set_solver()` Set solver parameters.
   - `untether_cloth_sheet()` Untether a cloth sheet.
+  - `apply_force_to_cloth()` Apply a force and/or torque to a cloth actor.
 - Added data classes for Obi cloth in `tdw.obi_data.cloth`:
   - `ClothMaterial` 
   - `SheetType`
   - `TetherParticleGroup`
   - `VolumeType`
   - `TetherType`
+  - `ForceMode`
 - Added to `OculusTouch` add on: `self.listen_to_axis(is_left, delta)` Listen to control stick movement. 
 
 ### Model Library

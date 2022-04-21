@@ -5,6 +5,7 @@ from tdw.obi_data.fluids.fluid import Fluid, FLUIDS
 from tdw.obi_data.fluids.granular_fluid import GranularFluid, GRANULAR_FLUIDS
 from tdw.obi_data.fluids.emitter_shape import EmitterShape
 from tdw.obi_data.obi_actor import ObiActor
+from tdw.obi_data.force_mode import ForceMode
 from tdw.obi_data.collision_materials.collision_material import CollisionMaterial
 from tdw.obi_data.cloth.sheet_type import SheetType
 from tdw.obi_data.cloth.volume_type import ClothVolumeType
@@ -232,6 +233,28 @@ class Obi(AddOn):
         self.commands.append({"$type": "set_obi_fluid_emission_speed",
                               "id": object_id,
                               "speed": speed})
+
+    def apply_force_to_cloth(self, object_id: int, force: Dict[str, float] = None, torque: Dict[str, float] = None,
+                             force_mode: ForceMode = ForceMode.impulse) -> None:
+        """
+        Apply a uniform force and/or torque to a cloth actor.
+
+        :param object_id: The ID of the cloth actor.
+        :param force: The force. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param torque: The torque. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param force_mode: The [`ForceMode`](../obi_data/force_mode.md) for the `force` and/or `torque`.
+        """
+
+        if force is not None:
+            self.commands.append({"$type": "apply_force_to_obi_cloth",
+                                  "id": object_id,
+                                  "force": force,
+                                  "force_mode": force_mode.name})
+        if torque is not None:
+            self.commands.append({"$type": "apply_torque_to_obi_cloth",
+                                  "id": object_id,
+                                  "force": force,
+                                  "force_mode": force_mode.name})
 
     def untether_cloth_sheet(self, object_id: int, tether_position: TetherParticleGroup) -> None:
         """

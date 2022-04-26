@@ -6,9 +6,21 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ## v1.9.16
 
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Collision` | Added: `get_impulse()` The total impulse applied to the pair of objects to resolve the collision. |
+
 ### Build
 
 - Fixed: `teleport_vr_rig` doesn't teleport all sub-objects of the rig correctly.
+
+### `tdw` module
+
+- Added field `impulse` to `CollisionObjObj`
 
 ## v1.9.15
 

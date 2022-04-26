@@ -498,6 +498,9 @@ class Collision(OutputData):
     def get_relative_velocity(self) -> Tuple[float, float, float]:
         return OutputData._get_xyz(self.data.RelativeVelocity())
 
+    def get_impulse(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Impulse())
+
     def get_state(self) -> str:
         state = self.data.State()
         if state == 1:

@@ -8,3 +8,4 @@ class RigType(Enum):
 
     oculus_touch_robot_hands = 1  # Oculus Touch controller. Hands are rendered as robot hands.
     oculus_touch_human_hands = 2  # Oculus Touch controller. Hands are rendered as human hands.
+    quest_hand_tracking = 3  # Oculus Touch controller. Hands are rendered as human hands.

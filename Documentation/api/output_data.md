@@ -330,6 +330,7 @@ Data for a collision between objects occurring on this frame.
 | `get_collider_id()` | The ID of the object that registered the collision. | `int` |
 | `get_collidee_id()` | The ID of the object that collided with the collider. | `int` |
 | `get_relative_velocity()` | The relative linear velocity of the collision. | `Tuple[float, float, float]` |
+| `get_impulse()` | The total impulse applied to the pair of objects to resolve the collision. | `Tuple[float, float, float]` |
 | `get_state()` | The state of the collision. | `str` |
 | `get_num_contacts()` | The number of contacts. | `int` |
 | `get_contact_normal(index)` | The normal of the contact. | `Tuple[float, float, float]` |

@@ -23,6 +23,14 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - `self.held_right_this_frame` A numpy array of object IDs that were first held on this frame by the right hand.
   - `self.dropped_right_this_frame` A numpy array of objects IDs that were dropped on this frame by the right hand.
 
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                            |
+| ---------------------------- | --------------------------------------- |
+| `lessons/vr/oculus_touch.md` | Expanded the "Physics glitches" section |
+
 ## v1.9.16
 
 ### Output Data

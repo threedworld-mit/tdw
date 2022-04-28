@@ -559,9 +559,21 @@ if __name__ == "__main__":
 
 ## Physics glitches
 
-There are known physics glitches associated with the Oculus Touch rig, particularly when grasping objects, the most common being that objects will interpenetrate. There are several overlapping causes for this:
+There are known physics glitches associated with the Oculus Touch rig, particularly when grasping objects, the most common being that objects will interpenetrate. There are several overlapping causes for glitches and several ways the `OculusTouch` add-on will try to mitigate glitches:
+
+### Collision detection and the `discrete_collision_detection` parameter
 
  By default, all objects in TDW use [the `continuous_dynamic` collision detection mode](../../api/command_api.md#set_object_collision_detection_mode). VR simulations seem to work better when non-kinematic objects use the `discrete` collision detection mode (emphasis on "seem" because there isn't an automated means of testing this behavior). By default, the `OculusTouch` add-on will set the hands of the rig and all graspable objects to `discrete`. There are cases where this won't be desirable because the physics behavior will be different in a VR scene than in a non-VR scene. You can optionally set `discrete_collision_detection=False` in the `OculusTouch` constructor.
+
+### Collider meshes and the `held_collider_mesh_scale` parameter
+
+Objects with thin [colliders](../physx/physx.md) tend to interpenetrate more often. The `OculusTouch` add-on will dynamically scale a held object's collider meshes by sending [`scale_colliders`](../../api/command_api.md#scale_colliders).
+
+There will be a small spatial gap between the visual mesh of the held object and other objects due to the resized colliders. This can reduce physics glitching but in certain scenarios might be too visually strange to be useful.
+
+Set the `held_collider_mesh_scale` parameter in the `OculusTouch` constructor to set the scale of held object collider meshes. If set to 1, the collider meshes won't be scaled.
+
+### Other problems
 
 Some of the glitchiness is possibly due to how the rig's hands work (they use third-party code), but we haven't yet fully explored to what extent this is true or what can be done to fix it.
 
@@ -630,6 +642,7 @@ Command API:
 - [`teleport_vr_rig`](../../api/command_api.md#teleport_vr_rig)
 - [`rotate_vr_rig_by`](../../api/command_api.md#rotate_vr_rig_by)
 - [`send_static_oculus_touch`](../../api/command_api.md#send_static_oculus_touch)
+- [`scale_colliders`](../../api/command_api.md#scale_colliders)
 
 Output Data:
 

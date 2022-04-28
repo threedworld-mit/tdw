@@ -57,13 +57,29 @@ class VR(AddOn, ABC):
         """
         self.head: Transform = VR._get_empty_transform()
         """:field
-        A numpy of object IDs held by the left hand.
+        A numpy array of object IDs held by the left hand.
         """
         self.held_left: np.array = np.array([], dtype=int)
         """:field
-        A numpy of object IDs held by the right hand.
+        A numpy array of object IDs that were first held on this frame by the left hand.
+        """
+        self.held_left_this_frame: np.array = np.array([], dtype=int)
+        """:field
+        A numpy array of objects IDs that were dropped on this frame by the left hand.
+        """
+        self.dropped_left_this_frame: np.array = np.array([], dtype=int)
+        """:field
+        A numpy array of object IDs held by the right hand.
         """
         self.held_right: np.array = np.array([], dtype=int)
+        """:field
+       A numpy array of object IDs that were first held on this frame by the right hand.
+        """
+        self.held_right_this_frame: np.array = np.array([], dtype=int)
+        """:field
+        A numpy array of objects IDs that were dropped on this frame by the right hand.
+        """
+        self.dropped_right_this_frame: np.array = np.array([], dtype=int)
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -120,6 +136,28 @@ class VR(AddOn, ABC):
                 self.head.position = np.array(vr_rig.get_head_position())
                 self.head.rotation = np.array(vr_rig.get_head_rotation())
                 self.head.forward = np.array(vr_rig.get_head_forward())
+                held_left = vr_rig.get_held_left()
+                held_left_this_frame: List[int] = list()
+                dropped_left_this_frame: List[int] = list()
+                for o in held_left:
+                    if o not in self.held_left:
+                        held_left_this_frame.append(o)
+                for o in self.held_left:
+                    if o not in held_left:
+                        dropped_left_this_frame.append(o)
+                self.held_left_this_frame = np.array(held_left_this_frame, dtype=int)
+                self.dropped_left_this_frame = np.array(dropped_left_this_frame, dtype=int)
+                held_right = vr_rig.get_held_right()
+                held_right_this_frame: List[int] = list()
+                dropped_right_this_frame: List[int] = list()
+                for o in held_right:
+                    if o not in self.held_right:
+                        held_right_this_frame.append(o)
+                for o in self.held_right:
+                    if o not in held_right:
+                        dropped_right_this_frame.append(o)
+                self.dropped_right_this_frame = np.array(dropped_right_this_frame, dtype=int)
+                self.held_right_this_frame = np.array(held_right_this_frame, dtype=int)
                 self.held_left = vr_rig.get_held_left()
                 self.held_right = vr_rig.get_held_right()
                 break

@@ -18,7 +18,7 @@ class OculusTouch(VR):
     def __init__(self, human_hands: bool = True, set_graspable: bool = True, output_data: bool = True,
                  attach_avatar: bool = False, avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
                  headset_resolution_scale: float = 1.0, non_graspable: List[int] = None,
-                 discrete_collision_detection_mode: bool = True, time_step: Optional[float] = 1.0 / 90):
+                 discrete_collision_detection_mode: bool = True, held_collider_mesh_scale: float = 1.1):
         """
         :param human_hands: If True, visualize the hands as human hands. If False, visualize the hands as robot hands.
         :param set_graspable: If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/semantic_states/composite_objects.md) as graspable by the VR rig.
@@ -29,7 +29,7 @@ class OculusTouch(VR):
         :param headset_resolution_scale: The headset resolution scale controls the actual size of eye textures as a multiplier of the device's default resolution. A value greater than 1 improves image quality but at a slight performance cost. Range: 0.5 to 1.75
         :param non_graspable: A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
         :param discrete_collision_detection_mode: If True, the VR rig's hands and all graspable objects in the scene will be set to the `"discrete"` collision detection mode, which seems to reduce physics glitches in VR. If False, the VR rig's hands and all graspable objects will be set to the `"continuous_dynamic"` collision detection mode (the default in TDW).
-        :param time_step: Set the time step. A lower time step will make physics less glitchy at the cost of performance. Can be None, in which case the time step is automatically calculated, opting for smooth performance.
+        :param held_collider_mesh_scale: The collider meshes of held objects will be scaled by this factor. This will create a visual gap between a held object and any other object but will also reduce physics glitching.
         """
 
         if human_hands:
@@ -52,7 +52,7 @@ class OculusTouch(VR):
         else:
             self._non_graspable: List[int] = non_graspable
         self._discrete_collision_detection_mode: bool = discrete_collision_detection_mode
-        self._time_step: Optional[float] = time_step
+        self._held_collider_mesh_scale: Optional[float] = held_collider_mesh_scale
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -62,9 +62,6 @@ class OculusTouch(VR):
                              "frequency": "once"}])
         commands.append({"$type": "send_oculus_touch_buttons",
                          "frequency": "always"})
-        if self._time_step is not None:
-            commands.append({"$type": "set_time_step",
-                             "time_step": self._time_step})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -124,6 +121,28 @@ class OculusTouch(VR):
                                        [self._axis_events_left, self._axis_events_right]):
                     for event in axis:
                         event(delta)
+        # Inflate the collider meshes of objects that were grasped on this frame.
+        for object_id in self.held_left_this_frame:
+            self.commands.append({"$type": "scale_colliders",
+                                  "id": int(object_id),
+                                  "scale_factor": {"x": self._held_collider_mesh_scale,
+                                                   "y": self._held_collider_mesh_scale,
+                                                   "z": self._held_collider_mesh_scale}})
+        for object_id in self.held_right_this_frame:
+            self.commands.append({"$type": "scale_colliders",
+                                  "id": int(object_id),
+                                  "scale_factor": {"x": self._held_collider_mesh_scale,
+                                                   "y": self._held_collider_mesh_scale,
+                                                   "z": self._held_collider_mesh_scale}})
+        # Reset the collider mesh scales of dropped objects.
+        for object_id in self.dropped_left_this_frame:
+            self.commands.append({"$type": "scale_colliders",
+                                  "id": int(object_id),
+                                  "scale_factor": {"x": 1, "y": 1, "z": 1}})
+        for object_id in self.dropped_right_this_frame:
+            self.commands.append({"$type": "scale_colliders",
+                                  "id": int(object_id),
+                                  "scale_factor": {"x": 1, "y": 1, "z": 1}})
 
     def listen_to_button(self, button: OculusTouchButton, is_left: bool, function: Callable[[], None]) -> None:
         """

@@ -16,7 +16,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ### `tdw` module
 
-- Added optional parameter `held_collider_mesh_scale` to `OculusTouch` add-on constructor.
+- Added optional parameter `held_collider_mesh_scale` to `OculusTouch` add-on constructor. This will scale a held object's colliders, creating small gaps between it and other objects while also reducing physics glitches.
 - Added fields to `VR` add-on:
   - `self.held_left_this_frame` A numpy array of object IDs that were first held on this frame by the left hand.
   - `self.dropped_left_this_frame` A numpy array of objects IDs that were dropped on this frame by the left hand.

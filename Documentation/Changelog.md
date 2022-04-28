@@ -4,6 +4,25 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.17
+
+### Command API
+
+#### New Commands
+
+| Command           | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `scale_colliders` | Scale the collider meshes of an object. This will create visual gaps between the object and other objects but can also reduce physics glitching due to thin colliders. |
+
+### `tdw` module
+
+- Added optional parameter `held_collider_mesh_scale` to `OculusTouch` add-on constructor.
+- Added fields to `VR` add-on:
+  - `self.held_left_this_frame` A numpy array of object IDs that were first held on this frame by the left hand.
+  - `self.dropped_left_this_frame` A numpy array of objects IDs that were dropped on this frame by the left hand.
+  - `self.held_right_this_frame` A numpy array of object IDs that were first held on this frame by the right hand.
+  - `self.dropped_right_this_frame` A numpy array of objects IDs that were dropped on this frame by the right hand.
+
 ## v1.9.16
 
 ### Output Data

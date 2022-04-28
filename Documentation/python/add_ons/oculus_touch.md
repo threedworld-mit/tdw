@@ -26,9 +26,17 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 
 - `head` The [`Transform`](../object_data/transform.md) data of the head. If `output_data == False`, this is never updated.
 
-- `held_left` A numpy of object IDs held by the left hand.
+- `held_left` A numpy array of object IDs held by the left hand.
 
-- `held_right` A numpy of object IDs held by the right hand.
+- `held_left_this_frame` A numpy array of object IDs that were first held on this frame by the left hand.
+
+- `dropped_left_this_frame` A numpy array of objects IDs that were dropped on this frame by the left hand.
+
+- `held_right` A numpy array of object IDs held by the right hand.
+
+- `held_right_this_frame` A numpy array of object IDs that were first held on this frame by the right hand.
+
+- `dropped_right_this_frame` A numpy array of objects IDs that were dropped on this frame by the right hand.
 
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 
@@ -42,7 +50,7 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 
 **`OculusTouch()`**
 
-**`OculusTouch(human_hands=True, set_graspable=True, output_data=True, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, discrete_collision_detection_mode=True)`**
+**`OculusTouch(human_hands=True, set_graspable=True, output_data=True, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, discrete_collision_detection_mode=True, held_collider_mesh_scale=1.1)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -55,6 +63,7 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 | headset_resolution_scale |  float  | 1.0 | The headset resolution scale controls the actual size of eye textures as a multiplier of the device's default resolution. A value greater than 1 improves image quality but at a slight performance cost. Range: 0.5 to 1.75 |
 | non_graspable |  List[int] | None | A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable. |
 | discrete_collision_detection_mode |  bool  | True | If True, the VR rig's hands and all graspable objects in the scene will be set to the `"discrete"` collision detection mode, which seems to reduce physics glitches in VR. If False, the VR rig's hands and all graspable objects will be set to the `"continuous_dynamic"` collision detection mode (the default in TDW). |
+| held_collider_mesh_scale |  float  | 1.1 | The collider meshes of held objects will be scaled by this factor. This will create a visual gap between a held object and any other object but will also reduce physics glitching. |
 
 #### get_initialization_commands
 

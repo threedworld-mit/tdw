@@ -28,9 +28,17 @@ Note that this is an abstract class. Different types of VR rigs use different su
 
 - `head` The [`Transform`](../object_data/transform.md) data of the head. If `output_data == False`, this is never updated.
 
-- `held_left` A numpy of object IDs held by the left hand.
+- `held_left` A numpy array of object IDs held by the left hand.
 
-- `held_right` A numpy of object IDs held by the right hand.
+- `held_left_this_frame` A numpy array of object IDs that were first held on this frame by the left hand.
+
+- `dropped_left_this_frame` A numpy array of objects IDs that were dropped on this frame by the left hand.
+
+- `held_right` A numpy array of object IDs held by the right hand.
+
+- `held_right_this_frame` A numpy array of object IDs that were first held on this frame by the right hand.
+
+- `dropped_right_this_frame` A numpy array of objects IDs that were dropped on this frame by the right hand.
 
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 

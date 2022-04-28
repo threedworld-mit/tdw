@@ -344,6 +344,7 @@
 | [`rotate_object_by`](#rotate_object_by) | Rotate an object by a given angle around a given axis. |
 | [`rotate_object_to`](#rotate_object_to) | Set the rotation quaternion of the object. |
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
+| [`scale_colliders`](#scale_colliders) | Scale the collider meshes of an object. This will create visual gaps between the object and other objects but can also reduce physics glitching due to thin colliders. |
 | [`scale_object`](#scale_object) | Scale the object by a factor from its current scale. |
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
 | [`set_obi_collision_material`](#set_obi_collision_material) | Set the Obi collision material of an object.  |
@@ -4631,6 +4632,26 @@ Set the rotation of the object with Euler angles.
 | --- | --- | --- | --- |
 | `"euler_angles"` | Vector3 | The new Euler angles of the object. | |
 | `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`scale_colliders`**
+
+Scale the collider meshes of an object. This will create visual gaps between the object and other objects but can also reduce physics glitching due to thin colliders.
+
+
+```python
+{"$type": "scale_colliders", "id": 1}
+```
+
+```python
+{"$type": "scale_colliders", "id": 1, "scale_factor": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale_factor"` | Vector3 | The scale factor. By default, all collider meshes in TDW have a scale of (1, 1, 1). | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The unique object ID. | |
 
 ***

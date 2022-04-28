@@ -73,7 +73,7 @@ class VR(AddOn, ABC):
         """
         self.held_right: np.array = np.array([], dtype=int)
         """:field
-       A numpy array of object IDs that were first held on this frame by the right hand.
+        A numpy array of object IDs that were first held on this frame by the right hand.
         """
         self.held_right_this_frame: np.array = np.array([], dtype=int)
         """:field

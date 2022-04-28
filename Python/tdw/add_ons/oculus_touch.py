@@ -1,4 +1,4 @@
-from typing import List, Callable, Dict
+from typing import List, Callable, Dict, Optional
 import numpy as np
 from tdw.add_ons.vr import VR
 from tdw.vr_data.rig_type import RigType
@@ -18,7 +18,7 @@ class OculusTouch(VR):
     def __init__(self, human_hands: bool = True, set_graspable: bool = True, output_data: bool = True,
                  attach_avatar: bool = False, avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
                  headset_resolution_scale: float = 1.0, non_graspable: List[int] = None,
-                 discrete_collision_detection_mode: bool = True):
+                 discrete_collision_detection_mode: bool = True, time_step: Optional[float] = 1.0 / 90):
         """
         :param human_hands: If True, visualize the hands as human hands. If False, visualize the hands as robot hands.
         :param set_graspable: If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/semantic_states/composite_objects.md) as graspable by the VR rig.
@@ -29,6 +29,7 @@ class OculusTouch(VR):
         :param headset_resolution_scale: The headset resolution scale controls the actual size of eye textures as a multiplier of the device's default resolution. A value greater than 1 improves image quality but at a slight performance cost. Range: 0.5 to 1.75
         :param non_graspable: A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
         :param discrete_collision_detection_mode: If True, the VR rig's hands and all graspable objects in the scene will be set to the `"discrete"` collision detection mode, which seems to reduce physics glitches in VR. If False, the VR rig's hands and all graspable objects will be set to the `"continuous_dynamic"` collision detection mode (the default in TDW).
+        :param time_step: Set the time step. A lower time step will make physics less glitchy at the cost of performance. Can be None, in which case the time step is automatically calculated, opting for smooth performance.
         """
 
         if human_hands:
@@ -51,6 +52,7 @@ class OculusTouch(VR):
         else:
             self._non_graspable: List[int] = non_graspable
         self._discrete_collision_detection_mode: bool = discrete_collision_detection_mode
+        self._time_step: Optional[float] = time_step
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -60,6 +62,9 @@ class OculusTouch(VR):
                              "frequency": "once"}])
         commands.append({"$type": "send_oculus_touch_buttons",
                          "frequency": "always"})
+        if self._time_step is not None:
+            commands.append({"$type": "set_time_step",
+                             "time_step": self._time_step})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:

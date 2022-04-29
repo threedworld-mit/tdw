@@ -498,6 +498,9 @@ class Collision(OutputData):
     def get_relative_velocity(self) -> Tuple[float, float, float]:
         return OutputData._get_xyz(self.data.RelativeVelocity())
 
+    def get_impulse(self) -> Tuple[float, float, float]:
+        return OutputData._get_xyz(self.data.Impulse())
+
     def get_state(self) -> str:
         state = self.data.State()
         if state == 1:
@@ -679,6 +682,12 @@ class OculusTouchButtons(OutputData):
 
     def get_right(self) -> List[OculusTouchButton]:
         return self._get_buttons(v=self.data.Right())
+
+    def get_left_axis(self) -> np.array:
+        return self.data.LeftAxisAsNumpy()
+
+    def get_right_axis(self) -> np.array:
+        return self.data.RightAxisAsNumpy()
 
     @staticmethod
     def _get_buttons(v: int) -> List[OculusTouchButton]:

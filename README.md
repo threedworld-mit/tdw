@@ -119,6 +119,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Obi](Documentation/lessons/obi/obi.md)
 2. [Fluids](Documentation/lessons/obi/fluids.md)
+2. [Cloth](Documentation/lessons/obi/cloth.md)
 3. [`ObiParticles` output data](Documentation/lessons/obi/obi_particles.md)
 4. [Colliders and collision materials](Documentation/lessons/obi/colliders_and_collision_materials.md)
 5. [Solvers](Documentation/lessons/obi/solvers.md)
@@ -325,7 +326,16 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 **tdw.obi_data**
 
+- [ForceMode](Documentation/python/obi_data/force_mode.md)
 - [ObiActor](Documentation/python/obi_data/obi_actor.md)
+
+**tdw.obi_data.cloth**
+
+- [ClothMaterial](Documentation/python/obi_data/cloth/cloth_material.md)
+- [SheetType](Documentation/python/obi_data/cloth/sheet_type.md)
+- [TetherParticleGroup](Documentation/python/obi_data/cloth/tether_particle_group.md)
+- [TetherType](Documentation/python/obi_data/cloth/tether_type.md)
+- [VolumeType](Documentation/python/obi_data/cloth/volume_type.md)
 
 **tdw.obi_data.collision_materials**
 

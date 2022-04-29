@@ -2,6 +2,8 @@
 
 # Cloth actors
 
+**Flex fluids have been deprecated in TDW. Please use [Obi cloth](../obi/cloth.md) instead.**
+
 Enable an object as a cloth-body actor via [`set_flex_cloth_actor`](../../api/command_api.md#set_flex_cloth_actor):
 
 ```python

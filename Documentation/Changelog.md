@@ -4,16 +4,116 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
-## v1.9.15
+## v1.9.16
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Collision` | Added: `get_impulse()` The total impulse applied to the pair of objects to resolve the collision. |
 
 ### Build
 
+- Fixed: `teleport_vr_rig` doesn't teleport all sub-objects of the rig correctly.
+
+### `tdw` module
+
+- Added field `impulse` to `CollisionObjObj`
+
+## v1.9.15
+
+### New Features
+
+- **Added Obi Cloth.**
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `set_obi_solver_scale`    | Set an Obi solver's scale. This will uniformly scale the physical size of the simulation, without affecting its behavior. |
+| `create_obi_cloth_sheet`  | Create an Obi cloth sheet object.                            |
+| `create_obi_cloth_volume` | Create an Obi cloth volume object.                           |
+| `apply_force_to_obi_cloth` | Apply a uniform force to an Obi cloth actor. |
+| `apply_torque_to_obi_cloth` | Apply a uniform torque to an Obi cloth actor. |
+| `parent_textured_quad_to_object` | Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object. |
+| `unparent_textured_quad`         | Unparent a textured quad from an object.                     |
+
+#### Deprecated Commands
+
+| Command                | Reason                 |
+| ---------------------- | ---------------------- |
+| `set_flex_cloth_actor` | Use Obi cloth instead. |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data          | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `OculusTouchButtons` | Added: `get_left_axis()` and `get_right_axis()` to listen for control stick input. |
+
+### Build
+
+- Fixed: Freeze when sending `set_vr_obi_collision_material` or `create_vr_obi_colliders`
 - Fixed: `add_ui_image` often creates images with badly-stretched borders.
+
+### `tdw` module
+
+- Fixed: Crash in `ObiActor` in certain cases if particle output data is enabled.
+- Added functions to `Obi` add-on:
+  - `create_cloth_sheet()`  Create a cloth sheet object.
+  - `create_cloth_volume()` Create a cloth volume object.
+  - `set_solver()` Set solver parameters.
+  - `untether_cloth_sheet()` Untether a cloth sheet.
+  - `apply_force_to_cloth()` Apply a force and/or torque to a cloth actor.
+- Added data classes for Obi cloth in `tdw.obi_data.cloth`:
+  - `ClothMaterial` 
+  - `SheetType`
+  - `TetherParticleGroup`
+  - `VolumeType`
+  - `TetherType`
+  - `ForceMode`
+- Added to `OculusTouch` add on: `self.listen_to_axis(is_left, delta)` Listen to control stick movement. 
+- Fixed: `OculusTouch` doesn't set non-kinematic non-graspable objects to `discrete` collision detection mode.
 
 ### Model Library
 
 - Added models to `models_core.json` and `models_full.json`: b03_12_06_027_composite, b04_wallmounted_soap_dispenser_composite, vray_077_composite, vray_083_composite, vray_084_composite, vray_085_composite
-- - Added models to `models_special.json`: stairs_one, stairs_two
+- Added models to `models_special.json`: stairs_one, stairs_two
+
+### Example Controllers
+
+- Added: `vr/oculus_touch_axis_listener.py`
+- Added Obi cloth example controllers in `obi/`:
+  - `cloth_sheet.py`
+  - `cloth_volume.py`
+  - `custom_cloth.py`
+  - `sheet_types.py`
+  - `tether_self.py`
+  - `untether.py`
+  - `tether_object.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Modification                                  |
+| ------------------------------------------------------------ | --------------------------------------------- |
+| `lessons/obi/cloth.md`                                       | Documentation for Obi cloth.                  |
+| `python/obi_data/cloth/cloth_material.md`<br>`python/obi_data/cloth/sheet_type.md`<br>`python/obi_data/cloth/tether_particle_group.md`<br>`python/obi_data/cloth/volume_type.md` | API documentation for Obi cloth data classes. |
+
+#### Modified Documentation
+
+| Document                      | Modification                                    |
+| ----------------------------- | ----------------------------------------------- |
+| `lessons/obi/solvers.md`      | Added an example of how to scale a cloth sheet. |
+| `lessons/obi/obi_and_flex.md` | Added cloth benchmarks.                         |
+| `lessons/vr/oculus_touch.md` | Added a section for control stick input. |
+| `lessons/non_physics/textured_quads.md` | Clarified  that only textured quad commands work with textured quads. |
 
 ## v1.9.14
 

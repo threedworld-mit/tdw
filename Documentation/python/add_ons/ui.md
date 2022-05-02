@@ -133,7 +133,7 @@ Set the size of a UI element that is already in the scene.
 
 **`self.attach_canvas_to_avatar()`**
 
-**`self.attach_canvas_to_avatar(avatar_id="a", focus_distance=2.5)`**
+**`self.attach_canvas_to_avatar(avatar_id="a", focus_distance=2.5, plane_distance=0.101)`**
 
 Attach the UI canvas to an avatar. This allows the UI to appear in image output data.
 
@@ -141,12 +141,19 @@ Attach the UI canvas to an avatar. This allows the UI to appear in image output 
 | --- | --- | --- | --- |
 | avatar_id |  str  | "a" | The avatar ID. |
 | focus_distance |  float  | 2.5 | The focus distance. If the focus distance is less than the default value (2.5), the UI will appear blurry unless post-processing is disabled. |
+| plane_distance |  float  | 0.101 | The distance from the camera to the UI canvas. This should be slightly further than the near clipping plane. |
 
 #### attach_canvas_to_vr_rig
 
 **`self.attach_canvas_to_vr_rig()`**
 
+**`self.attach_canvas_to_vr_rig(plane_distance=0.25)`**
+
 Attach the UI canvas to a VR rig.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| plane_distance |  float  | 0.25 | The distance from the camera to the UI canvas. |
 
 #### destroy
 

@@ -24,7 +24,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ### Model Library
 
-- Added to `models_core.json`: b01_trumpet, b03_trumpet_vray, b03_piccolo_trumpet_vray, b04_b200003_01, b04_baterijska_busilica, dewalt_compact_drill_vray, b03_hair_comb_2010, b04_baseball_bat, b05_racket, dumb-bell_2010
+- Added to `models_core.json` and `models_full.json`: b01_trumpet, b03_trumpet_vray, b03_piccolo_trumpet_vray, b04_b200003_01, b04_baterijska_busilica, dewalt_compact_drill_vray, b03_hair_comb_2010, b04_baseball_bat, b05_racket, dumb-bell_2010
+- Removed from `models_core.json` and `models_full.json`: b03_12_06_027_composite (asset bundle doesn't exist)
 
 ## v1.9.15
 

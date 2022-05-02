@@ -244,7 +244,7 @@ class ProcGenKitchen(AddOn):
         both_longer_walls_ok = True
         continuous_longer_wall = False
         for w in longer_walls:
-            if self.room.main_region.non_continuous_walls & w == 0:
+            if self.room.main_region.non_continuous_walls & w != 0:
                 both_longer_walls_ok = False
             else:
                 continuous_longer_wall = True
@@ -252,7 +252,7 @@ class ProcGenKitchen(AddOn):
         both_shorter_walls_ok = True
         continuous_shorter_wall = False
         for w in shorter_walls:
-            if self.room.main_region.non_continuous_walls & w == 0:
+            if self.room.main_region.non_continuous_walls & w != 0:
                 both_shorter_walls_ok = False
             else:
                 continuous_shorter_wall = True
@@ -529,8 +529,8 @@ class ProcGenKitchen(AddOn):
         lateral_1 = ["refrigerator", "dishwasher", "sink", "kitchen_counter", "kitchen_counter"]
         longer_walls, longer_length = self.room.main_region.get_longer_sides()
         # Prefer to place the sink at a wall with windows.
-        walls_with_windows = [w for w in ws if self.room.main_region.walls_with_windows & w != 0]
-        walls_without_windows = [w for w in ws if self.room.main_region.walls_with_windows & w == 0]
+        walls_with_windows = [w for w in longer_walls if self.room.main_region.walls_with_windows & w != 0]
+        walls_without_windows = [w for w in longer_walls if self.room.main_region.walls_with_windows & w == 0]
         commands = []
         if len(walls_with_windows) >= 1:
             window_wall = walls_with_windows[self.rng.randint(0, len(walls_with_windows))]

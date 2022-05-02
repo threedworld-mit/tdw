@@ -119,27 +119,31 @@ class UI(AddOn):
                               "canvas_id": self._canvas_id,
                               "size": size})
 
-    def attach_canvas_to_avatar(self, avatar_id: str = "a", focus_distance: float = 2.5) -> None:
+    def attach_canvas_to_avatar(self, avatar_id: str = "a", focus_distance: float = 2.5, plane_distance: float = 0.101) -> None:
         """
         Attach the UI canvas to an avatar. This allows the UI to appear in image output data.
 
         :param avatar_id: The avatar ID.
         :param focus_distance: The focus distance. If the focus distance is less than the default value (2.5), the UI will appear blurry unless post-processing is disabled.
+        :param plane_distance: The distance from the camera to the UI canvas. This should be slightly further than the near clipping plane.
         """
 
         self.commands.extend([{"$type": "set_focus_distance",
                                "focus_distance": focus_distance},
                               {"$type": "attach_ui_canvas_to_avatar",
                                "avatar_id": avatar_id,
-                               "canvas_id": self._canvas_id}])
+                               "canvas_id": self._canvas_id,
+                               "plane_distance": plane_distance}])
 
-    def attach_canvas_to_vr_rig(self) -> None:
+    def attach_canvas_to_vr_rig(self, plane_distance: float = 0.25) -> None:
         """
         Attach the UI canvas to a VR rig.
+
+        :param plane_distance: The distance from the camera to the UI canvas.
         """
 
         self.commands.append({"$type": "attach_ui_canvas_to_vr_rig",
-                              "plane_distance": 1})
+                              "plane_distance": plane_distance})
 
     def destroy(self, ui_id: int) -> None:
         """

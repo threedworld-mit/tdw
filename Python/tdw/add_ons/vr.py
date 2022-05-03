@@ -21,12 +21,14 @@ class VR(AddOn, ABC):
     """
     AVATAR_ID: str = "vr"
 
-    def __init__(self, rig_type: RigType, output_data: bool = True, attach_avatar: bool = False,
-                 avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
-                 headset_resolution_scale: float = 1.0):
+    def __init__(self, rig_type: RigType, output_data: bool = True, position: Dict[str, float] = None,
+                 rotation: float = 0, attach_avatar: bool = False, avatar_camera_width: int = 512,
+                 headset_aspect_ratio: float = 0.9, headset_resolution_scale: float = 1.0):
         """
         :param rig_type: The [`RigType`](../vr_data/rig_type.md).
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
+        :param position: The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}`
+        :param rotation: The initial rotation of the VR rig in degrees.
         :param attach_avatar: If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`.
         :param avatar_camera_width: The width of the avatar's camera in pixels. *This is not the same as the VR headset's screen resolution!* This only affects the avatar that is created if `attach_avatar` is `True`. Generally, you will want this to lower than the headset's actual pixel width, otherwise the framerate will be too slow.
         :param headset_aspect_ratio: The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices.
@@ -36,6 +38,11 @@ class VR(AddOn, ABC):
         super().__init__()
         self._rig_type: RigType = rig_type
         self._output_data: bool = output_data
+        if position is None:
+            self._initial_position: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
+        else:
+            self._initial_position = position
+        self._initial_rotation: float = rotation
         self._attach_avatar: bool = attach_avatar
         self._avatar_camera_width: int = avatar_camera_width
         self._avatar_camera_height: int = int((1 / headset_aspect_ratio) * self._avatar_camera_width)
@@ -79,7 +86,11 @@ class VR(AddOn, ABC):
                     {"$type": "set_vr_resolution_scale",
                      "resolution_scale_factor": self._headset_resolution_scale},
                     {"$type": "set_post_process",
-                     "value": False}]
+                     "value": False},
+                    {"$type": "teleport_vr_rig",
+                     "position": self._initial_position},
+                    {"$type": "rotate_vr_rig_by",
+                     "angle": self._initial_rotation}]
         # Send VR data per frame.
         if self._output_data:
             commands.append({"$type": "send_vr_rig",
@@ -144,13 +155,21 @@ class VR(AddOn, ABC):
         self.commands.append({"$type": "rotate_vr_rig_by",
                               "angle": angle})
 
-    def reset(self) -> None:
+    def reset(self, position: Dict[str, float] = None, rotation: float = 0) -> None:
         """
         Reset the VR rig. Call this whenever a scene is reset.
+
+        :param position: The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}`
+        :param rotation: The initial rotation of the VR rig in degrees.
         """
 
         self.initialized = False
         self.commands.clear()
+        if position is None:
+            self._initial_position = {"x": 0, "y": 0, "z": 0}
+        else:
+            self._initial_position = position
+        self._initial_rotation: float = rotation
         self.rig = VR._get_empty_transform()
         self.left_hand = VR._get_empty_transform()
         self.right_hand = VR._get_empty_transform()

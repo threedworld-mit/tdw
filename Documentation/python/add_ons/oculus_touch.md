@@ -42,13 +42,15 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 
 **`OculusTouch()`**
 
-**`OculusTouch(human_hands=True, set_graspable=True, output_data=True, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, discrete_collision_detection_mode=True)`**
+**`OculusTouch(human_hands=True, set_graspable=True, output_data=True, position=None, rotation=0, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, discrete_collision_detection_mode=True)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | human_hands |  bool  | True | If True, visualize the hands as human hands. If False, visualize the hands as robot hands. |
 | set_graspable |  bool  | True | If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/semantic_states/composite_objects.md) as graspable by the VR rig. |
 | output_data |  bool  | True | If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame. |
+| position |  Dict[str, float] | None | The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}` |
+| rotation |  float  | 0 | The initial rotation of the VR rig in degrees. |
 | attach_avatar |  bool  | False | If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`. |
 | avatar_camera_width |  int  | 512 | The width of the avatar's camera in pixels. *This is not the same as the VR headset's screen resolution!* This only affects the avatar that is created if `attach_avatar` is `True`. Generally, you will want this to lower than the headset's actual pixel width, otherwise the framerate will be too slow. |
 | headset_aspect_ratio |  float  | 0.9 | The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices. |
@@ -101,13 +103,15 @@ Rotate the VR rig by an angle.
 
 **`self.reset()`**
 
-**`self.reset(non_graspable=None)`**
+**`self.reset(non_graspable=None, position=None, rotation=0)`**
 
 Reset the VR rig. Call this whenever a scene is reset.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | non_graspable |  List[int] | None | A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable. |
+| position |  Dict[str, float] | None | The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}` |
+| rotation |  float  | 0 | The initial rotation of the VR rig in degrees. |
 
 #### before_send
 

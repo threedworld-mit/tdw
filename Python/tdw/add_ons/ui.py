@@ -1,6 +1,8 @@
+from io import BytesIO
 from base64 import b64encode
 from typing import Tuple, List, Dict, Union
 from pathlib import Path
+from PIL import Image
 from tdw.controller import Controller
 from tdw.add_ons.add_on import AddOn
 
@@ -172,6 +174,31 @@ class UI(AddOn):
                                       "id": ui_id,
                                       "canvas_id": self._canvas_id})
         self._ui_ids.clear()
+
+    def add_loading_screen(self, text: str = "Loading...", text_size: int = 64) -> Tuple[int, int]:
+        """
+        A macro for adding a simple load screen. Combines `self.add_image()` (adds a black background) and `self.add_text()` (adds a loading message).
+
+        :param text: The loading message text.
+        :param text_size: The font size of the loading message text.
+
+        :return: Tuple: The ID of the background image, the ID of the text.
+        """
+
+        # Add an empty black image. Source: https://stackoverflow.com/a/38626806
+        with BytesIO() as output:
+            Image.new(mode="RGB", size=(16, 16)).save(output, "PNG")
+            image = output.getvalue()
+        background_id = self.add_image(image,
+                                       position={"x": 0, "y": 0},
+                                       size={"x": 16, "y": 16},
+                                       rgba=False,
+                                       scale_factor={"x": 2000, "y": 2000})
+        # Add text.
+        text_id = self.add_text(text=text,
+                                font_size=text_size,
+                                position={"x": 0, "y": 0})
+        return background_id, text_id
 
     def _get_add_element(self, command_type: str, position: Dict[str, int], anchor: Tuple[float, float] = None,
                          pivot: Dict[str, float] = None, color: Dict[str, float] = None) -> Tuple[dict, int]:

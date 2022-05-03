@@ -57,6 +57,32 @@ Result:
 
 ![](images/oculus_touch/minimal.gif)
 
+### Set the initial position and rotation
+
+Set the initial position and rotation of the VR rig by setting `position` and `rotation` in the constructor or in `vr.reset()`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_touch import OculusTouch
+
+c = Controller()
+vr = OculusTouch(position={"x": 1, "y": 0, "z": 0}, rotation=30)
+c.add_ons.append(vr)
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="rh10",
+                                object_id=Controller.get_unique_id(),
+                                position={"x": 0, "y": 0, "z": 0.5})])
+while True:
+    c.communicate([])
+```
+
+### Teleport and rotate the VR rig
+
+You can "teleport" around your scene by clicking down the left control stick; release to teleport to the location at the end of the rendered arc. This can be useful when your virtual scene space is larger than your real-world (Guardian) space, and you cannot simply walk to certain areas within your virtual space. You can programatically set the rig's position in the scene with `vr.set_position(position)`. This can be useful for initially placing yourself at a particular location within your scene.
+
+You can rotate the rig by physically turning your body. You can programatically rotate the rig with `vr.rotate_by(angle)`. This can be useful for setting the initial rotation of the rig, in order to start off facing a particular direction in your scene. 
+
 ### Button presses
 
 It can be useful to listen to button presses in order to trigger global events. In this example, we'll use `vr.listen_to_button()` to listen for a button press to trigger the end of the simulation. Note that the `button` parameter accepts an [`OculusTouchButton`](../../python/vr_data/oculus_touch_button.md) value.
@@ -411,12 +437,6 @@ The Oculus Touch rig has two hand models:
 
 Set the hand model with the optional constructor parameter `human_hands` (default is True).
 
-### Teleport and rotate the VR rig
-
-You can "teleport" around your scene by clicking down the left control stick; release to teleport to the location at the end of the rendered arc. This can be useful when your virtual scene space is larger than your real-world (Guardian) space, and you cannot simply walk to certain areas within your virtual space. You can programatically set the rig's position in the scene with `vr.set_position(position)`. This can be useful for initially placing yourself at a particular location within your scene.
-
-You can rotate the rig by physically turning your body. You can programatically rotate the rig with `vr.rotate_by(angle)`. This can be useful for setting the initial rotation of the rig, in order to start off facing a particular direction in your scene. 
-
 ### Reset
 
 Whenever you reset a scene, you must call `vr.reset()` to re-initialize the VR add-on:
@@ -463,6 +483,27 @@ c.communicate([{"$type": "load_scene",
                c.get_add_object(model_name="rh10",
                                 object_id=object_id,
                                 position={"x": 0, "y": 0, "z": 0.5})])
+c.communicate({"$type" : "terminate"})
+```
+
+You can set an initial position and rotation with the optional `position` and `rotation` parameters:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_touch import OculusTouch
+
+c = Controller()
+vr = OculusTouch()
+c.add_ons.append(vr)
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="rh10",
+                                object_id=Controller.get_unique_id(),
+                                position={"x": 0, "y": 0, "z": 0.5})])
+vr.reset(position={"x": 1, "y": 0, "z": 0}, rotation=30)
+c.communicate([{"$type": "load_scene",
+                "scene_name": "ProcGenScene"},
+               TDWUtils.create_empty_room(12, 12)])
 c.communicate({"$type" : "terminate"})
 ```
 

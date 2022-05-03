@@ -16,13 +16,16 @@ class OculusTouch(VR):
     """
 
     def __init__(self, human_hands: bool = True, set_graspable: bool = True, output_data: bool = True,
-                 attach_avatar: bool = False, avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
+                 position: Dict[str, float] = None, rotation: float = 0, attach_avatar: bool = False,
+                 avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
                  headset_resolution_scale: float = 1.0, non_graspable: List[int] = None,
                  discrete_collision_detection_mode: bool = True):
         """
         :param human_hands: If True, visualize the hands as human hands. If False, visualize the hands as robot hands.
         :param set_graspable: If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/semantic_states/composite_objects.md) as graspable by the VR rig.
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
+        :param position: The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}`
+        :param rotation: The initial rotation of the VR rig in degrees.
         :param attach_avatar: If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`.
         :param avatar_camera_width: The width of the avatar's camera in pixels. *This is not the same as the VR headset's screen resolution!* This only affects the avatar that is created if `attach_avatar` is `True`. Generally, you will want this to lower than the headset's actual pixel width, otherwise the framerate will be too slow.
         :param headset_aspect_ratio: The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices.
@@ -35,9 +38,9 @@ class OculusTouch(VR):
             rig_type = RigType.oculus_touch_human_hands
         else:
             rig_type = RigType.oculus_touch_robot_hands
-        super().__init__(rig_type=rig_type, output_data=output_data, attach_avatar=attach_avatar,
-                         avatar_camera_width=avatar_camera_width, headset_aspect_ratio=headset_aspect_ratio,
-                         headset_resolution_scale=headset_resolution_scale)
+        super().__init__(rig_type=rig_type, output_data=output_data, position=position, rotation=rotation,
+                         attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
+                         headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
         self._set_graspable: bool = set_graspable
         # Button press events.
         self._button_press_events_left: Dict[OculusTouchButton, Callable[[], None]] = dict()
@@ -147,11 +150,13 @@ class OculusTouch(VR):
         else:
             self._axis_events_right.append(function)
 
-    def reset(self, non_graspable: List[int] = None) -> None:
+    def reset(self, non_graspable: List[int] = None, position: Dict[str, float] = None, rotation: float = 0) -> None:
         """
         Reset the VR rig. Call this whenever a scene is reset.
 
         :param non_graspable: A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
+        :param position: The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}`
+        :param rotation: The initial rotation of the VR rig in degrees.
         """
 
         self._set_graspable = True
@@ -159,4 +164,4 @@ class OculusTouch(VR):
             self._non_graspable = list()
         else:
             self._non_graspable = non_graspable
-        super().reset()
+        super().reset(position=position, rotation=rotation)

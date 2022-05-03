@@ -23,7 +23,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - Added field `impulse` to `CollisionObjObj`
 - Added optional field `plane_distance` to `ui.attach_canvas_to_avatar()` and `ui.attach_canvas_to_vr_rig()`. 
 - The default `plane_distance` value for `ui.attach_canvas_to_vr_rig(plane_distance)` is 0.25 (was 1)
-- Added optional parameters `position` (an x, y, z dictionary) and `rotation` to the constructor of `VRRig`, `VRRig.reset()`, the constructor of `OculusTouch`, and `OculusTouch.reset()`. This fixes a "bug" in which it wasn't possible to set the position of a VR rig on the same frame as when it is spawned.
+- Added `ui.add_loading_screen(text, text_size)` A macro function for loading screens.
+- Added optional parameters `position` (an x, y, z dictionary) and `rotation` to the constructor of `VRRig`, `vr.reset()`, the constructor of `OculusTouch`, and `oculus_touch.reset()`. This fixes a "bug" in which it wasn't possible to set the position of a VR rig on the same frame as when it is spawned.
 
 ### Model Library
 

@@ -18,6 +18,8 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 
 ## Fields
 
+- `vr_node_ids` Object IDs of the VR nodes (the body and hands).
+
 - `rig` The [`Transform`](../object_data/transform.md) data of the root rig object. If `output_data == False`, this is never updated.
 
 - `left_hand` The [`Transform`](../object_data/transform.md) data of the left hand. If `output_data == False`, this is never updated.

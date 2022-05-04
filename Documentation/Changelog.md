@@ -28,8 +28,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ### Model Library
 
-- Added to `models_core.json` and `models_full.json`: b01_trumpet, b03_trumpet_vray, b03_piccolo_trumpet_vray, b04_b200003_01, b04_baterijska_busilica, dewalt_compact_drill_vray, b03_hair_comb_2010, b04_baseball_bat, b05_racket, dumb-bell_2010
-- Removed from `models_core.json` and `models_full.json`: b03_12_06_027_composite (asset bundle doesn't exist).
+- Added to `models_core.json`: b01_trumpet, b03_trumpet_vray, b03_piccolo_trumpet_vray, b04_b200003_01, b04_baterijska_busilica, dewalt_compact_drill_vray, b03_hair_comb_2010, b04_baseball_bat, b05_racket, dumb-bell_2010, 12_06_001, b04_faucet1, b04_p22732_cc_cp_2013, b04_p25050_slc_ad_2013, b05_p24409_00_cp_2013, brizo_solna, kitchen_faucet, pixamoon_free_test_faucet_001_publish
+- , Removed from `models_core.json` and `models_full.json`: b03_12_06_027_composite (asset bundle doesn't exist).
 - Flagged b03_headphone__max2014 in `models_full.json` as do_not_use (bad mesh geometry causes the model to bounce rapidly).
 
 ### Documentation

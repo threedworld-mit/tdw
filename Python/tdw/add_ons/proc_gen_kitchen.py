@@ -178,6 +178,7 @@ class ProcGenKitchen(AddOn):
         self.cabinetry: Cabinetry = CABINETRY[CabinetryType.oak_white]
         self._allow_microwave: bool = True
         self._allow_radiator: bool = True
+        self.initialized = True
 
     def create(self, scene: Union[str, SceneRecord, Room, List[Union[str, SceneRecord]]], room_index: int = 0,
                rng: Union[int, np.random.RandomState] = None) -> None:
@@ -304,7 +305,6 @@ class ProcGenKitchen(AddOn):
         Reset the add-on. Call this when you reset a scene.
         """
 
-        self.initialized = False
         self.commands.clear()
 
     def _get_room(self, scene: Union[str, SceneRecord, Room, List[Union[str, SceneRecord]]], room_index: int) -> Room:

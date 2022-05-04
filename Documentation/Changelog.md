@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.17
+
+### Build
+
+- Replaced the head following logic of the Oculus Touch rigs. Previously, the head was a Rigidbody object that responded to physics. This could result in crashes to desktop due to invalid velocities, especially if the framerate was slow. Now, the head is a non-physics object.
+
 ## v1.9.16
 
 ### Output Data

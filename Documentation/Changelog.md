@@ -6,6 +6,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 ## v1.9.17
 
+### `tdw` module
+
+- Added: `OculusTouch.vr_node_ids` Objects IDs of the VR nodes (body and hands).
+
 ### Build
 
 - Replaced the head following logic of the Oculus Touch rigs. Previously, the head was a Rigidbody object that responded to physics. This could result in crashes to desktop due to invalid velocities, especially if the framerate was slow. Now, the head is a non-physics object.

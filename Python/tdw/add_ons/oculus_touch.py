@@ -54,6 +54,10 @@ class OculusTouch(VR):
         else:
             self._non_graspable: List[int] = non_graspable
         self._discrete_collision_detection_mode: bool = discrete_collision_detection_mode
+        """:field
+        Object IDs of the VR nodes (the body and hands).
+        """
+        self.vr_node_ids: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -70,21 +74,20 @@ class OculusTouch(VR):
         if self._set_graspable:
             self._set_graspable = False
             # Get static Oculus Touch rig data.
-            vr_node_ids: List[int] = list()
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
                 if r_id == "soct":
                     static_oculus_touch = StaticOculusTouch(resp[i])
-                    vr_node_ids = [static_oculus_touch.get_body_id(),
-                                   static_oculus_touch.get_left_hand_id(),
-                                   static_oculus_touch.get_right_hand_id()]
+                    self.vr_node_ids = [static_oculus_touch.get_body_id(),
+                                        static_oculus_touch.get_left_hand_id(),
+                                        static_oculus_touch.get_right_hand_id()]
                     # Set the collision detection modes of the rig's hands.
                     if self._discrete_collision_detection_mode:
                         self.commands.extend([{"$type": "set_object_collision_detection_mode",
-                                               "id": vr_node_ids[1],
+                                               "id": self.vr_node_ids[1],
                                                "mode": "discrete"},
                                               {"$type": "set_object_collision_detection_mode",
-                                               "id": vr_node_ids[2],
+                                               "id": self.vr_node_ids[2],
                                                "mode": "discrete"}])
                     break
             for i in range(len(resp) - 1):
@@ -93,7 +96,7 @@ class OculusTouch(VR):
                     static_rigidbodies = StaticRigidbodies(resp[i])
                     for j in range(static_rigidbodies.get_num()):
                         object_id = static_rigidbodies.get_id(j)
-                        if object_id not in vr_node_ids and not static_rigidbodies.get_kinematic(j):
+                        if object_id not in self.vr_node_ids and not static_rigidbodies.get_kinematic(j):
                             # Make all non-kinematic objects graspable unless they are in `self._non_graspable`.
                             if object_id not in self._non_graspable:
                                 self.commands.append({"$type": "set_vr_graspable",
@@ -164,4 +167,5 @@ class OculusTouch(VR):
             self._non_graspable = list()
         else:
             self._non_graspable = non_graspable
+        self.vr_node_ids.clear()
         super().reset(position=position, rotation=rotation)

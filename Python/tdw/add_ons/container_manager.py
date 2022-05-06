@@ -92,7 +92,6 @@ class ContainerManager(AddOn):
                     for j in range(static_composite_objects.get_num()):
                         s = CompositeObjectStatic(static_composite_objects, j)
                         self._excluded_objects.extend(s.sub_object_ids)
-        super().on_send(resp=resp)
         # Get containment.
         self.events.clear()
         for i in range(len(resp) - 1):

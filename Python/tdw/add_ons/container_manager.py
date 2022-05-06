@@ -1,6 +1,7 @@
 from typing import List, Dict
-from tdw.output_data import OutputData, SegmentationColors, StaticCompositeObjects
-from tdw.add_ons.trigger_collision_manager import TriggerCollisionManager
+import numpy as np
+from tdw.output_data import OutputData, SegmentationColors, StaticCompositeObjects, Overlap
+from tdw.add_ons.add_on import AddOn
 from tdw.container_data.container_collider_tag import ContainerColliderTag
 from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
 from tdw.container_data.container_sphere_trigger_collider import ContainerSphereTriggerCollider
@@ -10,17 +11,16 @@ from tdw.object_data.composite_object.composite_object_static import CompositeOb
 from tdw.controller import Controller
 
 
-class ContainerManager(TriggerCollisionManager):
+class ContainerManager(AddOn):
     """
-    Manage trigger collisions for 'container' objects.
+    Manage containment events for 'container' objects.
 
     'Containers' can be concave objects such as baskets but they don't have to be. For example, a table surface can be a 'container' and if another object is on that surface, the table is currently 'containing' that object.
 
-    An object is 'contained' by a 'container' if:
-
-    1. There is a trigger "enter" or "stay" event.
-    2. The trigger event is between the object and one of the trigger colliders added via this add-on.
+    An object is 'contained' by a 'container' if it overlaps with a "containment" space, for example the interior of a pot.
     """
+
+    _NEXT_CONTAINER_ID: int = 0
 
     def __init__(self):
         """
@@ -30,33 +30,24 @@ class ContainerManager(TriggerCollisionManager):
         super().__init__()
         self._getting_model_names: bool = True
         """:field
-        A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container ID *(not the trigger ID)*. Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
+        A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The object ID (not the container ID). Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
         """
         self.events: Dict[int, List[ContainmentEvent]] = dict()
-        # Tags describing each collider. Key = The trigger ID. Value = `ContainerColliderTag`.
-        self._tags: Dict[int, ContainerColliderTag] = dict()
+        """:field
+        A dictionary of container shape IDs. Key = The container shape ID. Value = The object ID.
+        """
+        self.container_shapes: Dict[int, int] = dict()
+        """:field
+        Tags describing each collider. Key = The container ID. Value = [`ContainerColliderTag`](../container_data/container_collider_tag.md).
+        """
+        self.tags: Dict[int, ContainerColliderTag] = dict()
         self._excluded_objects: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
-        """
-        This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
-
-        :return: A list of commands that will initialize this add-on.
-        """
-
         return [{"$type": "send_segmentation_colors"},
                 {"$type": "send_static_composite_objects"}]
 
     def on_send(self, resp: List[bytes]) -> None:
-        """
-        This is called after commands are sent to the build and a response is received.
-
-        Use this function to send commands to the build on the next frame, given the `resp` response.
-        Any commands in the `self.commands` list will be sent on the next frame.
-
-        :param resp: The response from the build.
-        """
-
         # Get model names.
         if self._getting_model_names:
             self._getting_model_names = False
@@ -72,24 +63,29 @@ class ContainerManager(TriggerCollisionManager):
                         for library_path in Controller.MODEL_LIBRARIANS:
                             record = Controller.MODEL_LIBRARIANS[library_path].get_record(model_name)
                             if record is not None:
-                                for trigger_collider_data in record.container_colliders:
-                                    if isinstance(trigger_collider_data, ContainerBoxTriggerCollider):
-                                        self.add_box_collider(object_id=object_id,
-                                                              position=trigger_collider_data.position,
-                                                              scale=trigger_collider_data.scale,
-                                                              tag=trigger_collider_data.tag)
-                                    elif isinstance(trigger_collider_data, ContainerCylinderTriggerCollider):
-                                        self.add_cylinder_collider(object_id=object_id,
-                                                                   position=trigger_collider_data.position,
-                                                                   scale=trigger_collider_data.scale,
-                                                                   tag=trigger_collider_data.tag)
-                                    elif isinstance(trigger_collider_data, ContainerSphereTriggerCollider):
-                                        self.add_sphere_collider(object_id=object_id,
-                                                                 position=trigger_collider_data.position,
-                                                                 diameter=trigger_collider_data.diameter,
-                                                                 tag=trigger_collider_data.tag)
+                                for container_collider in record.container_colliders:
+                                    if isinstance(container_collider, ContainerBoxTriggerCollider):
+                                        self.add_box(object_id=object_id,
+                                                     position=container_collider.position,
+                                                     tag=container_collider.tag,
+                                                     half_extents={"x": container_collider.scale["x"] / 2,
+                                                                   "y": container_collider.scale["y"] / 2,
+                                                                   "z": container_collider.scale["z"] / 2},
+                                                     rotation={"x": 0, "y": 0, "z": 0})
+                                    elif isinstance(container_collider, ContainerCylinderTriggerCollider):
+                                        self.add_cylinder(object_id=object_id,
+                                                          position=container_collider.position,
+                                                          tag=container_collider.tag,
+                                                          radius=container_collider.scale["x"] / 2,
+                                                          height=container_collider.scale["y"],
+                                                          rotation={"x": 0, "y": 0, "z": 0})
+                                    elif isinstance(container_collider, ContainerSphereTriggerCollider):
+                                        self.add_sphere(object_id=object_id,
+                                                        position=container_collider.position,
+                                                        tag=container_collider.tag,
+                                                        radius=container_collider.diameter / 2)
                                     else:
-                                        raise Exception(trigger_collider_data)
+                                        raise Exception(container_collider)
                                 break
                 elif r_id == "scom":
                     static_composite_objects = StaticCompositeObjects(resp[i])
@@ -99,91 +95,124 @@ class ContainerManager(TriggerCollisionManager):
         super().on_send(resp=resp)
         # Get containment.
         self.events.clear()
-        # Get objects that are in containers.
-        for trigger_collision in self.collisions:
-            if trigger_collision.trigger_id in self.trigger_ids and \
-                    (trigger_collision.state == "enter" or trigger_collision.state == "stay") and \
-                    trigger_collision.collider_id not in self._excluded_objects:
-                if trigger_collision.collidee_id not in self.events:
-                    self.events[trigger_collision.collidee_id] = list()
-                # Record the event.
-                self.events[trigger_collision.collidee_id].append(ContainmentEvent(container_id=trigger_collision.collidee_id,
-                                                                                   object_id=trigger_collision.collider_id,
-                                                                                   tag=self._tags[trigger_collision.trigger_id]))
-        # Remove duplicate events.
-        self.events = {k: list(set(v)) for k, v in self.events.items()}
+        for i in range(len(resp) - 1):
+            if OutputData.get_data_type_id(resp[i]) == "over":
+                overlap = Overlap(resp[i])
+                overlap_id = overlap.get_id()
+                # This overlap is from a container.
+                if overlap_id in self.container_shapes:
+                    # Get the object ID.
+                    object_id = self.container_shapes[overlap_id]
+                    # Get the IDs of the contained objects.
+                    contained_ids = np.array([o_id for o_id in overlap.get_object_ids() if int(o_id) not in self._excluded_objects], dtype=int)
+                    if len(contained_ids) > 0:
+                        if object_id not in self.events:
+                            self.events[object_id] = list()
+                        # Record the containment event.
+                        self.events[object_id].append(ContainmentEvent(container_id=object_id,
+                                                                       object_ids=contained_ids,
+                                                                       tag=self.tags[overlap_id]))
 
-    def add_box_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
-                         rotation: Dict[str, float] = None, trigger_id: int = None,
-                         tag: ContainerColliderTag = ContainerColliderTag.on) -> int:
+    def add_box(self, object_id: int, position: Dict[str, float], tag: ContainerColliderTag, half_extents: Dict[str, float],
+                rotation: Dict[str, float]) -> int:
         """
-        Add a box-shaped trigger collider to an object. Optionally, set the trigger collider's containment semantic tag.
+        Add a box container shape to an object.
 
         :param object_id: The ID of the object.
-        :param position: The position of the trigger collider relative to the parent object.
-        :param scale: The scale of the trigger collider.
-        :param rotation: The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param trigger_id: The unique ID of the trigger collider. If None, an ID will be automatically assigned.
+        :param position: The position of the shape relative to the parent object.
         :param tag: The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md).
+        :param half_extents: The half-extents (half the scale) of the box.
+        :param rotation: The rotation of the box in Euler angles relative to the parent object.
 
-        :return: The ID of the trigger collider.
+        :return: The ID of the container shape.
         """
 
-        trigger_id = super().add_box_collider(object_id=object_id, position=position, scale=scale, rotation=rotation,
-                                              trigger_id=trigger_id)
-        # Remember the tag.
-        self._tags[trigger_id] = tag
-        return trigger_id
+        command = self._get_container_shape_command(command_name="add_cube_container",
+                                                    object_id=object_id,
+                                                    position=position,
+                                                    tag=tag)
+        command["half_extents"] = half_extents
+        command["rotation"] = rotation
+        return command["id"]
 
-    def add_cylinder_collider(self, object_id: int, position: Dict[str, float], scale: Dict[str, float],
-                              rotation: Dict[str, float] = None, trigger_id: int = None,
-                              tag: ContainerColliderTag = ContainerColliderTag.on) -> int:
+    def add_cylinder(self, object_id: int, position: Dict[str, float], tag: ContainerColliderTag, radius: float,
+                     height: float, rotation: Dict[str, float]) -> int:
         """
-        Add a cylinder-shaped trigger collider to an object. Optionally, set the trigger collider's containment semantic tag.
+        Add a cylinder container shape to an object.
 
         :param object_id: The ID of the object.
-        :param position: The position of the trigger collider relative to the parent object.
-        :param scale: The scale of the trigger collider.
-        :param rotation: The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param trigger_id: The unique ID of the trigger collider. If None, an ID will be automatically assigned.
+        :param position: The position of the shape relative to the parent object.
         :param tag: The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md).
+        :param radius: The radius of the cylinder.
+        :param height: The height of the cylinder.
+        :param rotation: The rotation of the cylinder in Euler angles relative to the parent object.
 
-        :return: The ID of the trigger collider.
+        :return: The ID of the container shape.
         """
 
-        trigger_id = super().add_cylinder_collider(object_id=object_id, position=position, scale=scale, rotation=rotation,
-                                                   trigger_id=trigger_id)
-        # Remember the tag.
-        self._tags[trigger_id] = tag
-        return trigger_id
+        command = self._get_container_shape_command(command_name="add_cylinder_container",
+                                                    object_id=object_id,
+                                                    position=position,
+                                                    tag=tag)
+        command["radius"] = radius
+        command["height"] = height
+        command["rotation"] = rotation
+        return command["id"]
 
-    def add_sphere_collider(self, object_id: int, position: Dict[str, float], diameter: float, trigger_id: int = None,
-                            tag: ContainerColliderTag = ContainerColliderTag.on) -> int:
+    def add_sphere(self, object_id: int, position: Dict[str, float], tag: ContainerColliderTag, radius: float) -> int:
         """
-        Add a sphere-shaped trigger collider to an object. Optionally, set the trigger collider's containment semantic tag.
+        Add a sphere container shape to an object.
 
         :param object_id: The ID of the object.
-        :param position: The position of the trigger collider relative to the parent object.
-        :param diameter: The diameter of the trigger collider.
-        :param trigger_id: The unique ID of the trigger collider. If None, an ID will be automatically assigned.
+        :param position: The position of the shape relative to the parent object.
         :param tag: The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md).
+        :param radius: The radius of the sphere.
 
-        :return: The ID of the trigger collider.
+        :return: The ID of the container shape.
         """
 
-        trigger_id = super().add_sphere_collider(object_id=object_id, position=position, diameter=diameter,
-                                                 trigger_id=trigger_id)
-        # Remember the tag.
-        self._tags[trigger_id] = tag
-        return trigger_id
+        command = self._get_container_shape_command(command_name="add_sphere_container",
+                                                    object_id=object_id,
+                                                    position=position,
+                                                    tag=tag)
+        command["radius"] = radius
+        return command["id"]
 
     def reset(self) -> None:
         """
         Reset this add-on. Call this before resetting a scene.
         """
 
-        super().reset()
+        self.initialized = False
+        self.commands.clear()
         self._getting_model_names = True
         self.events.clear()
-        self._tags.clear()
+        self.tags.clear()
         self._excluded_objects.clear()
+        self.container_shapes.clear()
+        ContainerManager._NEXT_CONTAINER_ID = 0
+
+    def _get_container_shape_command(self, command_name: str, object_id: int, position: Dict[str, float],
+                                     tag: ContainerColliderTag) -> dict:
+        """
+        :param command_name: The name of the command.
+        :param object_id: The object ID.
+        :param tag: The semantic tag.
+        :param position: The local position of the container shape.
+
+        :return: A partial command to add a container shape to an object.
+        """
+
+        # Get the container ID.
+        container_id = ContainerManager._NEXT_CONTAINER_ID
+        ContainerManager._NEXT_CONTAINER_ID += 1
+        assert container_id not in self.tags, f"Tried adding {container_id} but it already exists."
+        # Record the tag.
+        self.tags[container_id] = tag
+        # Record the object-shape association.
+        self.container_shapes[container_id] = object_id
+        # Return a partial command.
+        return {"$type": command_name,
+                "id": object_id,
+                "container_id": container_id,
+                "position": position}

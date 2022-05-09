@@ -38,7 +38,7 @@ class ContainerManager(AddOn):
         """
         self.container_shapes: Dict[int, int] = dict()
         """:field
-        Tags describing each container shape. Key = The container ID. Value = [`ContainerTag`](../container_data/container_tag.md).
+        Tags describing each container shape. Key = The container shape ID. Value = [`ContainerTag`](../container_data/container_tag.md).
         """
         self.tags: Dict[int, ContainerTag] = dict()
         self._excluded_objects: List[int] = list()

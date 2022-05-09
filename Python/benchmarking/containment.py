@@ -22,7 +22,7 @@ for x in range(-d, d):
                                                           library="models_core.json"))
         commands.extend(Controller.get_add_physics_object(model_name="octahedron",
                                                           object_id=Controller.get_unique_id(),
-                                                          position={"x": x, "y": 1, "z": z},
+                                                          position={"x": x, "y": 2, "z": z},
                                                           rotation={"x": 1, "y": 0, "z": 0},
                                                           library="models_flex.json",
                                                           default_physics_values=False,

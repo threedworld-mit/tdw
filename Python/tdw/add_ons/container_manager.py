@@ -2,10 +2,10 @@ from typing import List, Dict
 import numpy as np
 from tdw.output_data import OutputData, SegmentationColors, StaticCompositeObjects, Overlap
 from tdw.add_ons.add_on import AddOn
-from tdw.container_data.container_collider_tag import ContainerColliderTag
-from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
-from tdw.container_data.container_sphere_trigger_collider import ContainerSphereTriggerCollider
-from tdw.container_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
+from tdw.container_data.container_tag import ContainerTag
+from tdw.container_data.box_container import BoxContainer
+from tdw.container_data.sphere_container import SphereContainer
+from tdw.container_data.cylinder_container import CylinderContainer
 from tdw.container_data.containment_event import ContainmentEvent
 from tdw.object_data.composite_object.composite_object_static import CompositeObjectStatic
 from tdw.controller import Controller
@@ -38,9 +38,9 @@ class ContainerManager(AddOn):
         """
         self.container_shapes: Dict[int, int] = dict()
         """:field
-        Tags describing each collider. Key = The container ID. Value = [`ContainerColliderTag`](../container_data/container_collider_tag.md).
+        Tags describing each container shape. Key = The container ID. Value = [`ContainerTag`](../container_data/container_tag.md).
         """
-        self.tags: Dict[int, ContainerColliderTag] = dict()
+        self.tags: Dict[int, ContainerTag] = dict()
         self._excluded_objects: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
@@ -63,29 +63,27 @@ class ContainerManager(AddOn):
                         for library_path in Controller.MODEL_LIBRARIANS:
                             record = Controller.MODEL_LIBRARIANS[library_path].get_record(model_name)
                             if record is not None:
-                                for container_collider in record.container_colliders:
-                                    if isinstance(container_collider, ContainerBoxTriggerCollider):
+                                for container_shape in record.container_shapes:
+                                    if isinstance(container_shape, BoxContainer):
                                         self.add_box(object_id=object_id,
-                                                     position=container_collider.position,
-                                                     tag=container_collider.tag,
-                                                     half_extents={"x": container_collider.scale["x"] / 2,
-                                                                   "y": container_collider.scale["y"] / 2,
-                                                                   "z": container_collider.scale["z"] / 2},
-                                                     rotation={"x": 0, "y": 0, "z": 0})
-                                    elif isinstance(container_collider, ContainerCylinderTriggerCollider):
+                                                     position=container_shape.position,
+                                                     tag=container_shape.tag,
+                                                     half_extents=container_shape.half_extents,
+                                                     rotation=container_shape.rotation)
+                                    elif isinstance(container_shape, CylinderContainer):
                                         self.add_cylinder(object_id=object_id,
-                                                          position=container_collider.position,
-                                                          tag=container_collider.tag,
-                                                          radius=container_collider.scale["x"] / 2,
-                                                          height=container_collider.scale["y"],
-                                                          rotation={"x": 0, "y": 0, "z": 0})
-                                    elif isinstance(container_collider, ContainerSphereTriggerCollider):
+                                                          position=container_shape.position,
+                                                          tag=container_shape.tag,
+                                                          radius=container_shape.radius,
+                                                          height=container_shape.height,
+                                                          rotation=container_shape.rotation)
+                                    elif isinstance(container_shape, SphereContainer):
                                         self.add_sphere(object_id=object_id,
-                                                        position=container_collider.position,
-                                                        tag=container_collider.tag,
-                                                        radius=container_collider.diameter / 2)
+                                                        position=container_shape.position,
+                                                        tag=container_shape.tag,
+                                                        radius=container_shape.radius)
                                     else:
-                                        raise Exception(container_collider)
+                                        raise Exception(container_shape)
                                 break
                 elif r_id == "scom":
                     static_composite_objects = StaticCompositeObjects(resp[i])
@@ -112,21 +110,21 @@ class ContainerManager(AddOn):
                                                                        object_ids=contained_ids,
                                                                        tag=self.tags[overlap_id]))
 
-    def add_box(self, object_id: int, position: Dict[str, float], tag: ContainerColliderTag, half_extents: Dict[str, float],
+    def add_box(self, object_id: int, position: Dict[str, float], tag: ContainerTag, half_extents: Dict[str, float],
                 rotation: Dict[str, float]) -> int:
         """
         Add a box container shape to an object.
 
         :param object_id: The ID of the object.
-        :param position: The position of the shape relative to the parent object.
-        :param tag: The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md).
+        :param position: The position of the box relative to the parent object.
+        :param tag: The box's semantic [`ContainerTag`](container_tag.md).
         :param half_extents: The half-extents (half the scale) of the box.
         :param rotation: The rotation of the box in Euler angles relative to the parent object.
 
         :return: The ID of the container shape.
         """
 
-        command = self._get_container_shape_command(command_name="add_cube_container",
+        command = self._get_container_shape_command(command_name="add_box_container",
                                                     object_id=object_id,
                                                     position=position,
                                                     tag=tag)
@@ -134,14 +132,14 @@ class ContainerManager(AddOn):
         command["rotation"] = rotation
         return command["id"]
 
-    def add_cylinder(self, object_id: int, position: Dict[str, float], tag: ContainerColliderTag, radius: float,
+    def add_cylinder(self, object_id: int, position: Dict[str, float], tag: ContainerTag, radius: float,
                      height: float, rotation: Dict[str, float]) -> int:
         """
         Add a cylinder container shape to an object.
 
         :param object_id: The ID of the object.
-        :param position: The position of the shape relative to the parent object.
-        :param tag: The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md).
+        :param position: The position of the cylinder relative to the parent object.
+        :param tag: The cylinder's semantic [`ContainerTag`](container_tag.md).
         :param radius: The radius of the cylinder.
         :param height: The height of the cylinder.
         :param rotation: The rotation of the cylinder in Euler angles relative to the parent object.
@@ -158,13 +156,13 @@ class ContainerManager(AddOn):
         command["rotation"] = rotation
         return command["id"]
 
-    def add_sphere(self, object_id: int, position: Dict[str, float], tag: ContainerColliderTag, radius: float) -> int:
+    def add_sphere(self, object_id: int, position: Dict[str, float], tag: ContainerTag, radius: float) -> int:
         """
         Add a sphere container shape to an object.
 
         :param object_id: The ID of the object.
-        :param position: The position of the shape relative to the parent object.
-        :param tag: The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md).
+        :param position: The position of the sphere relative to the parent object.
+        :param tag: The sphere's semantic [`ContainerTag`](container_tag.md).
         :param radius: The radius of the sphere.
 
         :return: The ID of the container shape.
@@ -192,7 +190,7 @@ class ContainerManager(AddOn):
         ContainerManager._NEXT_CONTAINER_ID = 0
 
     def _get_container_shape_command(self, command_name: str, object_id: int, position: Dict[str, float],
-                                     tag: ContainerColliderTag) -> dict:
+                                     tag: ContainerTag) -> dict:
         """
         :param command_name: The name of the command.
         :param object_id: The object ID.

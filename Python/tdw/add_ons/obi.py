@@ -10,6 +10,7 @@ from tdw.obi_data.collision_materials.collision_material import CollisionMateria
 from tdw.obi_data.cloth.sheet_type import SheetType
 from tdw.obi_data.cloth.volume_type import ClothVolumeType
 from tdw.obi_data.cloth.cloth_material import ClothMaterial, CLOTH_MATERIALS
+from tdw.obi_data.softbody.softbody_material import SoftBodyMaterial, SOFTBODY_MATERIALS
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
 from tdw.obi_data.cloth.tether_type import TetherType
 from tdw.controller import Controller
@@ -221,6 +222,31 @@ class Obi(AddOn):
         commands[-1]["pressure"] = pressure
         commands[-1]["volume_type"] = volume_type.name
         self.commands.extend(commands)
+
+        def create_softbody(self, object_id: int, softbody_material: Union[str, SoftBodyMaterial],
+                                position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+                                scale_factor: Dict[str, float] = None, solver_id: int = 0) -> None:
+            """
+            Create a softbody object.
+
+            :param object_id: The unique ID of the cloth sheet.
+            :param sotbody_material: Either a [SoftBodyMaterial`](../obi_data/cloth/cloth_material.md) or the name of a softbody material (see `Softbody.SOFTBODY_MATERIALS`)).
+            :param position: The position of the cloth volume. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+            :param rotation: The rotation of the cloth volume, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+            :param scale_factor: The scale factor of the mesh. If None, defaults to `{"x": 1, "y": 1, "z": 1}`.
+            :param solver_id: The ID of the Obi solver.
+            """
+
+            if scale_factor is None:
+                scale_factor = {"x": 1, "y": 1, "z": 1}
+            commands = self._get_softbody_commands(object_id=object_id,
+                                                   softbody_material=softbody_material,
+                                                   position=position,
+                                                   rotation=rotation,
+                                                   solver_id=solver_id,
+                                                   command_name="create_obi_softbody")
+            commands[-1]["scale_factor"] = scale_factor
+            self.commands.extend(commands)
 
     def set_fluid_speed(self, object_id: int, speed: float) -> None:
         """

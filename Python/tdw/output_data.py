@@ -213,32 +213,35 @@ class Rigidbodies(OutputData):
 
 
 class StaticRigidbodies(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._physics_values = self.data.PhysicsValuesAsNumpy().reshape(-1, 4)
+        self._kinematic = self.data.KinematicAsNumpy()
+
     def get_data(self) -> StatRig.StaticRigidbodies:
         return StatRig.StaticRigidbodies.GetRootAsStaticRigidbodies(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
     def get_mass(self, index: int) -> float:
-        return self.data.Objects(index).Mass()
-
-    def get_sleeping(self, index: int) -> bool:
-        return self.data.Objects(index).Sleeping()
+        return self._physics_values[index][0]
 
     def get_kinematic(self, index: int) -> bool:
-        return self.data.Objects(index).Kinematic()
+        return self._kinematic[index]
 
     def get_dynamic_friction(self, index: int) -> float:
-        return self.data.Objects(index).DynamicFriction()
+        return self._physics_values[index][1]
 
     def get_static_friction(self, index: int) -> float:
-        return self.data.Objects(index).StaticFriction()
+        return self._physics_values[index][2]
 
     def get_bounciness(self, index: int) -> float:
-        return self.data.Objects(index).Bounciness()
+        return self._physics_values[index][3]
 
 
 class Bounds(OutputData):

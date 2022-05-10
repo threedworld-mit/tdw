@@ -432,23 +432,28 @@ class AvatarStickyMitten(AvatarNonKinematic):
 
 
 class SegmentationColors(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._colors = self.data.ColorsAsNumpy().reshape(-1, 3)
+
     def get_data(self) -> Segs.SegmentationColors:
         return Segs.SegmentationColors.GetRootAsSegmentationColors(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_object_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
-    def get_object_color(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_rgb(self.data.Objects(index).SegmentationColor())
+    def get_object_color(self, index: int) -> np.array:
+        return self._colors[index]
 
     def get_object_name(self, index: int) -> str:
-        return self.data.Objects(index).Name().decode('utf-8')
+        return self.data.Names(index).decode('utf-8')
 
     def get_object_category(self, index: int) -> str:
-        return self.data.Objects(index).Category().decode('utf-8')
+        return self.data.Categories(index).decode('utf-8')
 
 
 class AvatarSegmentationColor(OutputData):

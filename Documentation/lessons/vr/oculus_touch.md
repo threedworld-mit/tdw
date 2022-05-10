@@ -57,6 +57,32 @@ Result:
 
 ![](images/oculus_touch/minimal.gif)
 
+### Set the initial position and rotation
+
+Set the initial position and rotation of the VR rig by setting `position` and `rotation` in the constructor or in `vr.reset()`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_touch import OculusTouch
+
+c = Controller()
+vr = OculusTouch(position={"x": 1, "y": 0, "z": 0}, rotation=30)
+c.add_ons.append(vr)
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="rh10",
+                                object_id=Controller.get_unique_id(),
+                                position={"x": 0, "y": 0, "z": 0.5})])
+while True:
+    c.communicate([])
+```
+
+### Teleport and rotate the VR rig
+
+You can "teleport" around your scene by clicking down the left control stick; release to teleport to the location at the end of the rendered arc. This can be useful when your virtual scene space is larger than your real-world (Guardian) space, and you cannot simply walk to certain areas within your virtual space. You can programatically set the rig's position in the scene with `vr.set_position(position)`. This can be useful for initially placing yourself at a particular location within your scene.
+
+You can rotate the rig by physically turning your body. You can programatically rotate the rig with `vr.rotate_by(angle)`. This can be useful for setting the initial rotation of the rig, in order to start off facing a particular direction in your scene. 
+
 ### Button presses
 
 It can be useful to listen to button presses in order to trigger global events. In this example, we'll use `vr.listen_to_button()` to listen for a button press to trigger the end of the simulation. Note that the `button` parameter accepts an [`OculusTouchButton`](../../python/vr_data/oculus_touch_button.md) value.
@@ -169,6 +195,82 @@ if __name__ == "__main__":
 Result:
 
 ![](images/oculus_touch/button_listener.gif)
+
+### Controller sticks
+
+Call `vr.listen_to_axis()` to listen to axis movement from the left and right control sticks. These functions must have a single parameter: a numpy array of expected shape (`2`) (the x, y coordinates of the control stick movement delta, ranging from -1 to 1).
+
+This example listens to control stick input to move two joints of a [robot arm](../robots/overview.md). The functions `left_axis(delta)` and `right_axis(delta)` are every frame. They then evaluate `delta` to determine a) if there was movement along a particular axis and if so b) which commands to send.
+
+```python
+import numpy as np
+from tdw.controller import Controller
+from tdw.add_ons.oculus_touch import OculusTouch
+from tdw.add_ons.robot import Robot
+from tdw.tdw_utils import TDWUtils
+from tdw.vr_data.oculus_touch_button import OculusTouchButton
+
+
+class OculusTouchAxisListener(Controller):
+    """
+    Control a robot arm with the Oculus Touch control sticks.
+    """
+
+    # This controls how fast the joints will rotate.
+    SPEED: float = 10
+
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        self.robot: Robot = Robot(name="ur5", position={"x": 0, "y": 0.5, "z": 2})
+        self.vr: OculusTouch = OculusTouch()
+        # Move the robot joints with the control sticks.
+        self.vr.listen_to_axis(is_left=True, function=self.left_axis)
+        self.vr.listen_to_axis(is_left=False, function=self.right_axis)
+        # Quit when the left trigger button is pressed.
+        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        self.add_ons.extend([self.robot, self.vr])
+        self.done: bool = False
+
+    def run(self) -> None:
+        self.communicate(TDWUtils.create_empty_room(12, 12))
+        while not self.done:
+            self.communicate([])
+        self.communicate({"$type": "terminate"})
+
+    def left_axis(self, delta: np.array) -> None:
+        if self.robot.joints_are_moving():
+            return
+        targets = dict()
+        # Rotate the shoulder link.
+        if abs(delta[0]) > 0:
+            shoulder_link_id = self.robot.static.joint_ids_by_name["shoulder_link"]
+            shoulder_link_angle = self.robot.dynamic.joints[shoulder_link_id].angles[0]
+            targets[shoulder_link_id] = shoulder_link_angle + delta[0] * OculusTouchAxisListener.SPEED
+        self.robot.set_joint_targets(targets=targets)
+
+    def right_axis(self, delta: np.array) -> None:
+        if self.robot.joints_are_moving():
+            return
+        targets = dict()
+        # Rotate the upper arm link.
+        if abs(delta[0]) > 0:
+            upper_arm_link_id = self.robot.static.joint_ids_by_name["upper_arm_link"]
+            upper_arm_link_angle = self.robot.dynamic.joints[upper_arm_link_id].angles[0]
+            targets[upper_arm_link_id] = upper_arm_link_angle + delta[1] * OculusTouchAxisListener.SPEED
+        self.robot.set_joint_targets(targets=targets)
+
+    def quit(self):
+        self.done = True
+
+
+if __name__ == "__main__":
+    c = OculusTouchAxisListener()
+    c.run()
+```
+
+Result:
+
+![](images/oculus_touch/control_sticks.gif)
 
 ### Graspable objects
 
@@ -335,12 +437,6 @@ The Oculus Touch rig has two hand models:
 
 Set the hand model with the optional constructor parameter `human_hands` (default is True).
 
-### Teleport and rotate the VR rig
-
-You can "teleport" around your scene by clicking down the left control stick; release to teleport to the location at the end of the rendered arc. This can be useful when your virtual scene space is larger than your real-world (Guardian) space, and you cannot simply walk to certain areas within your virtual space. You can programatically set the rig's position in the scene with `vr.set_position(position)`. This can be useful for initially placing yourself at a particular location within your scene.
-
-You can rotate the rig by physically turning your body. You can programatically rotate the rig with `vr.rotate_by(angle)`. This can be useful for setting the initial rotation of the rig, in order to start off facing a particular direction in your scene. 
-
 ### Reset
 
 Whenever you reset a scene, you must call `vr.reset()` to re-initialize the VR add-on:
@@ -387,6 +483,27 @@ c.communicate([{"$type": "load_scene",
                c.get_add_object(model_name="rh10",
                                 object_id=object_id,
                                 position={"x": 0, "y": 0, "z": 0.5})])
+c.communicate({"$type" : "terminate"})
+```
+
+You can set an initial position and rotation with the optional `position` and `rotation` parameters:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_touch import OculusTouch
+
+c = Controller()
+vr = OculusTouch()
+c.add_ons.append(vr)
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="rh10",
+                                object_id=Controller.get_unique_id(),
+                                position={"x": 0, "y": 0, "z": 0.5})])
+vr.reset(position={"x": 1, "y": 0, "z": 0}, rotation=30)
+c.communicate([{"$type": "load_scene",
+                "scene_name": "ProcGenScene"},
+               TDWUtils.create_empty_room(12, 12)])
 c.communicate({"$type" : "terminate"})
 ```
 
@@ -485,7 +602,7 @@ if __name__ == "__main__":
 
 There are known physics glitches associated with the Oculus Touch rig, particularly when grasping objects, the most common being that objects will interpenetrate. There are several overlapping causes for this:
 
- By default, all objects in TDW use [the `continuous_dynamic` collision detection mode](../../command_api.md#set_object_collision_detection_mode). VR simulations seem to work better when non-kinematic objects use the `discrete` collision detection mode (emphasis on "seem" because there isn't an automated means of testing this behavior). By default, the `OculusTouch` add-on will set the hands of the rig and all graspable objects to `discrete`. There are cases where this won't be desirable because the physics behavior will be different in a VR scene than in a non-VR scene. You can optionally set `discrete_collision_detection=False` in the `OculusTouch` constructor.
+ By default, all objects in TDW use [the `continuous_dynamic` collision detection mode](../../api/command_api.md#set_object_collision_detection_mode). VR simulations seem to work better when non-kinematic objects use the `discrete` collision detection mode (emphasis on "seem" because there isn't an automated means of testing this behavior). By default, the `OculusTouch` add-on will set the hands of the rig and all graspable objects to `discrete`. There are cases where this won't be desirable because the physics behavior will be different in a VR scene than in a non-VR scene. You can optionally set `discrete_collision_detection=False` in the `OculusTouch` constructor.
 
 Some of the glitchiness is possibly due to how the rig's hands work (they use third-party code), but we haven't yet fully explored to what extent this is true or what can be done to fix it.
 
@@ -538,6 +655,7 @@ Example controllers:
 - [oculus_touch_output_data.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/vr/oculus_touch_output_data.py) Add several objects to the scene and parse VR output data.
 - [oculus_touch_image_capture.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/vr/oculus_touch_image_capture.py) Add several objects to the scene. Record which objects are visible to the VR agent.
 - [oculus_touch_py_impact.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/vr/oculus_touch_py_impact.py) Listen to audio generated by PyImpact.
+- [oculus_touch_axis_listener.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/vr/oculus_touch_axis_listener.py) Control a robot arm with the Oculus Touch control sticks.
 
 Command API:
 

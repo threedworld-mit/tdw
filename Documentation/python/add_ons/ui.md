@@ -133,7 +133,7 @@ Set the size of a UI element that is already in the scene.
 
 **`self.attach_canvas_to_avatar()`**
 
-**`self.attach_canvas_to_avatar(avatar_id="a", focus_distance=2.5)`**
+**`self.attach_canvas_to_avatar(avatar_id="a", focus_distance=2.5, plane_distance=0.101)`**
 
 Attach the UI canvas to an avatar. This allows the UI to appear in image output data.
 
@@ -141,12 +141,19 @@ Attach the UI canvas to an avatar. This allows the UI to appear in image output 
 | --- | --- | --- | --- |
 | avatar_id |  str  | "a" | The avatar ID. |
 | focus_distance |  float  | 2.5 | The focus distance. If the focus distance is less than the default value (2.5), the UI will appear blurry unless post-processing is disabled. |
+| plane_distance |  float  | 0.101 | The distance from the camera to the UI canvas. This should be slightly further than the near clipping plane. |
 
 #### attach_canvas_to_vr_rig
 
 **`self.attach_canvas_to_vr_rig()`**
 
+**`self.attach_canvas_to_vr_rig(plane_distance=0.25)`**
+
 Attach the UI canvas to a VR rig.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| plane_distance |  float  | 0.25 | The distance from the camera to the UI canvas. |
 
 #### destroy
 
@@ -169,3 +176,19 @@ Destroy all UI elements.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | destroy_canvas |  bool  | False | If True, destroy the UI canvas and all of its UI elements. If False, destroy the canvas' UI elements but not the canvas itself. |
+
+#### add_loading_screen
+
+**`self.add_loading_screen()`**
+
+**`self.add_loading_screen(text="Loading...", text_size=64)`**
+
+A macro for adding a simple load screen. Combines `self.add_image()` (adds a black background) and `self.add_text()` (adds a loading message).
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| text |  str  | "Loading..." | The loading message text. |
+| text_size |  int  | 64 | The font size of the loading message text. |
+
+_Returns:_  Tuple: The ID of the background image, the ID of the text.

@@ -47,30 +47,37 @@ Obi tends to work much better than Flex when using default values for parameters
 
 ## Output data
 
-[Flex particle data](../flex/output_data.md) is very similar to [Obi particle data](obi_particles.md) but there are two key differences that make Obi particle data easier to use overall:
-
-1. [It isn't possible to receive Flex particle data in a fluid simulation.](../flex/fluid_and_source.md) Obi supports particle output data for *all* types of actors, including fluids.
-2. The build is capable of marshalling, serializing, and sending Obi particle data at a much faster rate than Flex particle data.
+[Flex particle data](../flex/output_data.md) is very similar to [Obi particle data](obi_particles.md). The main difference is that [it isn't possible to receive Flex particle data in a fluid simulation.](../flex/fluid_and_source.md) Obi supports particle output data for *all* types of actors, including fluids.
 
 ## Speed
 
-Obi's main disadvantage compared to Flex is its speed; Flex is much faster.
+Obi's main disadvantage compared to Flex is its speed. Flex cloth is somewhat more performant than Obi cloth. Flex fluids are much more performant than Obi fluids.
 
-[This controller](https://github.com/threedworld-mit/tdw/blob/master/Python/benchmarking/obi_fluid.py) benchmarks Obi when a single [fluid emitter](fluids.md) is added to the scene. There are two trials, one with output data and one without.
+### Cloth
 
-[This controller](https://github.com/threedworld-mit/tdw/blob/master/Python/benchmarking/flex_fluid.py) benchmarks Flex when a single [fluid source](../flex/fluid_and_source.md) is added to the scene.
+[This controller](https://github.com/threedworld-mit/tdw/blob/master/Python/benchmarking/obi_vs_flex/obi_cloth.py) benchmarks Obi cloth. There are two trials, one with output data and one without.
+
+[This controller](https://github.com/threedworld-mit/tdw/blob/master/Python/benchmarking/obi_vs_flex/flex_cloth.py) benchmarks Flex cloth. There are two trials, one with output data and one without.
+
+|                    | Obi  | Flex |
+| ------------------ | ---- | ---- |
+| **Particle count** | 3721 | 4225 |
+
+| Obi (without output data) | Obi (with output data) | Flex (without output data) | Flex (with output data) |
+| ------------------------- | ---------------------- | -------------------------- | ----------------------- |
+| 47                        | 45                     | 68                         | 61                      |
+
+### Fluids 
+
+[This controller](https://github.com/threedworld-mit/tdw/blob/master/Python/benchmarking/obi_vs_flex/obi_fluid.py) benchmarks Obi when a single [fluid emitter](fluids.md) is added to the scene. There are two trials, one with output data and one without.
+
+[This controller](https://github.com/threedworld-mit/tdw/blob/master/Python/benchmarking/obi_vs_flex/flex_fluid.py) benchmarks Flex when a single [fluid source](../flex/fluid_and_source.md) is added to the scene. It isn't possible to benchmark Flex fluids with particle output data.
 
 In both of these trials, the volume of fluid is the same (1 cubic meter).
 
 | Obi (without output data) | Obi (with output data) | Flex |
 | ------------------------- | ---------------------- | ---- |
 | 60                        | 54                     | 109  |
-
-A few things worth noting about these benchmarks:
-
-- Obi particle data barely impacts overall simulation speed.
-- It isn't possible to benchmark Flex fluids with particle output data.
-- Right now, only Obi fluids have been implemented in TDW and this benchmark is therefore to some extent inconclusive. As we add more Obi features to TDW, we will add more benchmark data.
 
 ***
 

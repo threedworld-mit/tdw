@@ -235,7 +235,7 @@ rectangle_wood_block,0.3,0.1,wood_hard,models_core.json,0.5,0.3,1
 square_coaster_001_wood,0.3,0.3,wood_hard,models_core.json,0.5,0.45,1
 square_coaster_wood,0.3,0.3,wood_hard,models_core.json,0.5,0.45,1
 square_wood_block,0.3,0.1,wood_hard,models_core.json,0.5,0.3,1
-b04_baseball_bat,0.4,1.25,wood_hard,models_full.json,0.3,0.65,3
+b04_baseball_bat,0.4,1.25,wood_hard,models_core.json,0.3,0.65,3
 jigsaw_puzzle_composite,0.05,0.2,wood_hard,models_core.json,0.2,0.65,3
 peppermill,0.4,0.4,wood_hard,models_full.json,0.5,0.65,3
 puzzle_box_composite,0.05,0.2,wood_hard,models_core.json,0.2,0.65,3

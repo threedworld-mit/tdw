@@ -207,6 +207,79 @@
             "wcategory": "soda can",
             "wnid": "n04255586"
         },
+        "12_06_001": {
+            "asset_bundle_sizes": {
+                "Darwin": 296925,
+                "Linux": 453269,
+                "Windows": 150912
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.03258744,
+                    "z": -0.06554866
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -7.450581e-09,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.03258744,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.03258744,
+                    "z": 0.06554866
+                },
+                "left": {
+                    "x": -0.059,
+                    "y": 0.03258744,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.059,
+                    "y": 0.03258744,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.06517489,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "12_06_001",
+            "physics_quality": 0.9601636610397327,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "12_06_001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/12_06_001",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/12_06_001",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/12_06_001"
+            },
+            "volume": 0.00028723059222102165,
+            "wcategory": "water faucet",
+            "wnid": "n04559451"
+        },
         "24_in_wall_cabinet_white_wood": {
             "asset_bundle_sizes": {
                 "Darwin": 3735318,
@@ -3686,6 +3759,81 @@
             "wcategory": "kitchen utensil",
             "wnid": "n03621049"
         },
+        "b01_trumpet": {
+            "asset_bundle_sizes": {
+                "Darwin": 9552678,
+                "Linux": 9718530,
+                "Windows": 9421120
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.490116e-08,
+                    "y": 0.06379183,
+                    "z": -0.04596199
+                },
+                "bottom": {
+                    "x": -1.490116e-08,
+                    "y": -7.450581e-09,
+                    "z": -3.72529e-09
+                },
+                "center": {
+                    "x": -1.490116e-08,
+                    "y": 0.06379183,
+                    "z": -3.72529e-09
+                },
+                "front": {
+                    "x": -1.490116e-08,
+                    "y": 0.06379183,
+                    "z": 0.04596198
+                },
+                "left": {
+                    "x": -0.1665988,
+                    "y": 0.06379183,
+                    "z": -3.72529e-09
+                },
+                "right": {
+                    "x": 0.1665988,
+                    "y": 0.06379183,
+                    "z": -3.72529e-09
+                },
+                "top": {
+                    "x": -1.490116e-08,
+                    "y": 0.1275837,
+                    "z": -3.72529e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b01_trumpet",
+            "physics_quality": -1,
+            "scale_factor": 0.345,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_0",
+                        "Material_1",
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b01_trumpet"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b01_trumpet",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b01_trumpet",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b01_trumpet"
+            },
+            "volume": 0.00038821532507427037,
+            "wcategory": "trumpet",
+            "wnid": "n03110669"
+        },
         "b03_696615_object001": {
             "asset_bundle_sizes": {
                 "Darwin": 277883,
@@ -5014,6 +5162,91 @@
             "volume": 0.16208922863006592,
             "wcategory": "dishwasher",
             "wnid": "n03207941"
+        },
+        "b03_hair_comb_2010": {
+            "asset_bundle_sizes": {
+                "Darwin": 2155444,
+                "Linux": 2264231,
+                "Windows": 2035567
+            },
+            "bounds": {
+                "back": {
+                    "x": 3.72529e-09,
+                    "y": 0.02221179,
+                    "z": -0.1228169
+                },
+                "bottom": {
+                    "x": 3.72529e-09,
+                    "y": -3.72529e-09,
+                    "z": 0
+                },
+                "center": {
+                    "x": 3.72529e-09,
+                    "y": 0.02221179,
+                    "z": 0
+                },
+                "front": {
+                    "x": 3.72529e-09,
+                    "y": 0.02221179,
+                    "z": 0.1228169
+                },
+                "left": {
+                    "x": -0.03850413,
+                    "y": 0.02221179,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.03850413,
+                    "y": 0.02221179,
+                    "z": 0
+                },
+                "top": {
+                    "x": 3.72529e-09,
+                    "y": 0.04442359,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_hair_comb_2010",
+            "physics_quality": 0.7181310428280163,
+            "scale_factor": 0.7289999,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Object001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Plane001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_hair_comb_2010",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_hair_comb_2010",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_hair_comb_2010"
+            },
+            "volume": 0.00035379338078200817,
+            "wcategory": "hairbrush",
+            "wnid": "n03475581"
         },
         "b03_iron_candle_vray": {
             "asset_bundle_sizes": {
@@ -6404,6 +6637,217 @@
             "wcategory": "pen",
             "wnid": "n03906997"
         },
+        "b03_piccolo_trumpet_vray": {
+            "asset_bundle_sizes": {
+                "Darwin": 2562593,
+                "Linux": 2721433,
+                "Windows": 2429809
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.05060518,
+                    "z": -0.08092875
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -7.450581e-09
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.05060518,
+                    "z": -7.450581e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.05060518,
+                    "z": 0.08092874
+                },
+                "left": {
+                    "x": -0.1791288,
+                    "y": 0.05060518,
+                    "z": -7.450581e-09
+                },
+                "right": {
+                    "x": 0.1791288,
+                    "y": 0.05060518,
+                    "z": -7.450581e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.1012104,
+                    "z": -7.450581e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_piccolo_trumpet_vray",
+            "physics_quality": -1,
+            "scale_factor": 0.3486784,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "1st Valve"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "1st Valve Bottom"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "1st Valve Button"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "1st Valve Slide"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "2nd Valve"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "2nd Valve Bottom"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "2nd Valve Button"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "2nd Valve Slide"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Slide Water key"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Slide Water key parts"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Valve"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Valve Bottom"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Valve Button"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Valve Slide"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "4th Valve"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "4th Valve Bottom"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "4th Valve Button"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "4th Valve Slide"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Bell"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Leadpipe"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Mouthpiece"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rubber Pads"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Valve Pipes"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Valve Supports"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_piccolo_trumpet_vray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_piccolo_trumpet_vray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_piccolo_trumpet_vray"
+            },
+            "volume": 0.0007756137056276202,
+            "wcategory": "trumpet",
+            "wnid": "n03110669"
+        },
         "b03_pot": {
             "asset_bundle_sizes": {
                 "Darwin": 301178,
@@ -7009,6 +7453,217 @@
             "wcategory": "toothbrush",
             "wnid": "n04453156"
         },
+        "b03_trumpet_vray": {
+            "asset_bundle_sizes": {
+                "Darwin": 2606092,
+                "Linux": 2769182,
+                "Windows": 2470874
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.05449557,
+                    "z": -0.1735344
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -3.72529e-09,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.05449557,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.05449557,
+                    "z": 0.1735344
+                },
+                "left": {
+                    "x": -0.03733281,
+                    "y": 0.05449557,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.03733281,
+                    "y": 0.05449557,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.1089911,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_trumpet_vray",
+            "physics_quality": -1,
+            "scale_factor": 0.1337343,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "1st Valve"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "1st Valve Button"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "1st Valve Slide"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "2nd Valve"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "2nd Valve Button"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "2nd Valve Slid"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Slide Water Key"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Slide Water Key Parts"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Valve"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Valve Button"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Valve Ring"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Valve Slide"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "3rd Valve Slide Supports"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Lead Pipe"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Lead Pipe Bell Supports"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Lead Pipe Water Key"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Leadpipe Water Key Parts"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Mouthpiece"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rubber Pad"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Trumpet Bell"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Valve Bottoms"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Valve Lead Pipe Support"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Valve Pipes"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Valve Supports"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_trumpet_vray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_trumpet_vray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_trumpet_vray"
+            },
+            "volume": 0.0002983928716275841,
+            "wcategory": "trumpet",
+            "wnid": "n03110669"
+        },
         "b04_03_077": {
             "asset_bundle_sizes": {
                 "Darwin": 559150,
@@ -7249,6 +7904,103 @@
             "wcategory": "jar",
             "wnid": "n03593526"
         },
+        "b04_b200003_01": {
+            "asset_bundle_sizes": {
+                "Darwin": 426851,
+                "Linux": 558321,
+                "Windows": 340227
+            },
+            "bounds": {
+                "back": {
+                    "x": 2.235174e-08,
+                    "y": 0.09118554,
+                    "z": -0.2790859
+                },
+                "bottom": {
+                    "x": 2.235174e-08,
+                    "y": -7.450581e-09,
+                    "z": 0
+                },
+                "center": {
+                    "x": 2.235174e-08,
+                    "y": 0.09118554,
+                    "z": 0
+                },
+                "front": {
+                    "x": 2.235174e-08,
+                    "y": 0.09118554,
+                    "z": 0.2790859
+                },
+                "left": {
+                    "x": -0.06649153,
+                    "y": 0.09118554,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.06649157,
+                    "y": 0.09118554,
+                    "z": 0
+                },
+                "top": {
+                    "x": 2.235174e-08,
+                    "y": 0.1823711,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_b200003_01",
+            "physics_quality": -1,
+            "scale_factor": 0.07289999,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "TRUARG"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "TRUBLAC"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "TRUBLAC2"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "TRUBRAS"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "TRUPEL"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_b200003_01",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_b200003_01",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_b200003_01"
+            },
+            "volume": 0.0017328057438135147,
+            "wcategory": "trumpet",
+            "wnid": "n03110669"
+        },
         "b04_backpack": {
             "asset_bundle_sizes": {
                 "Darwin": 12023025,
@@ -7394,6 +8146,764 @@
             "volume": 0.0007139198714867234,
             "wcategory": "banana",
             "wnid": "n07753592"
+        },
+        "b04_baseball_bat": {
+            "asset_bundle_sizes": {
+                "Darwin": 3144347,
+                "Linux": 3238390,
+                "Windows": 3082665
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.04568517,
+                    "z": -0.03377837
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -3.72529e-09
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.04568517,
+                    "z": -3.72529e-09
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.04568517,
+                    "z": 0.03377836
+                },
+                "left": {
+                    "x": -0.3948641,
+                    "y": 0.04568517,
+                    "z": -3.72529e-09
+                },
+                "right": {
+                    "x": 0.3948641,
+                    "y": 0.04568517,
+                    "z": -3.72529e-09
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.09137034,
+                    "z": -3.72529e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_baseball_bat",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_1060009199"
+                    ],
+                    "name": "B04_Baseball_Bat"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_baseball_bat",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_baseball_bat",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_baseball_bat"
+            },
+            "volume": 0.0026094273198395967,
+            "wcategory": "baseball bat",
+            "wnid": "n02799175"
+        },
+        "b04_baterijska_busilica": {
+            "asset_bundle_sizes": {
+                "Darwin": 1860600,
+                "Linux": 2222531,
+                "Windows": 1603736
+            },
+            "bounds": {
+                "back": {
+                    "x": 2.235174e-08,
+                    "y": 0.1268765,
+                    "z": -0.03339652
+                },
+                "bottom": {
+                    "x": 2.235174e-08,
+                    "y": 0,
+                    "z": -1.117587e-08
+                },
+                "center": {
+                    "x": 2.235174e-08,
+                    "y": 0.1268765,
+                    "z": -1.117587e-08
+                },
+                "front": {
+                    "x": 2.235174e-08,
+                    "y": 0.1268765,
+                    "z": 0.03339649
+                },
+                "left": {
+                    "x": -0.1162897,
+                    "y": 0.1268765,
+                    "z": -1.117587e-08
+                },
+                "right": {
+                    "x": 0.1162898,
+                    "y": 0.1268765,
+                    "z": -1.117587e-08
+                },
+                "top": {
+                    "x": 2.235174e-08,
+                    "y": 0.253753,
+                    "z": -1.117587e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_baterijska_busilica",
+            "physics_quality": -1,
+            "scale_factor": 0.1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cut-Extrude19[1]-DC_Shell"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Fillet37-DC_Shell"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Fillet41-DC_Shell"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Fillet71-DC_Shell"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Fillet125-DC_Shell"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Fillet128-DC_Shell"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Mirror6-DC_Shell"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Mirror7-DC_Shell"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Mirror9-DC_Shell"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Mirror11-DC_Shell"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "NONE-DC_Shell"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "NONE-DC_Shell 1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 3"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 4"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 5"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 6"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 7"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 8"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 9"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 10"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 11"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 12"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 13"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 14"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 15"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 16"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 17"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 18"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 19"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 20"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 21"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 22"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 23"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 24"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 25"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 26"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 27"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 28"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 29"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 30"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 31"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 32"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 33"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 34"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 35"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 36"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 37"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 38"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 39"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 40"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 41"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 42"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 43"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 44"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 45"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 46"
+                },
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_blue"
+                    ],
+                    "name": "NONE-DC_Shell 47"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 48"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 49"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 50"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 51"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 52"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 53"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 54"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 55"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 56"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 57"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 58"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 59"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 60"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 61"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 62"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 63"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 64"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 65"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 66"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 67"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 68"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 69"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 70"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "NONE-DC_Shell 71"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 72"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 73"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 74"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 75"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 76"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 77"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 78"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 79"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 80"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 81"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 82"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "NONE-DC_Shell 83"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 84"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 85"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "NONE-DC_Shell 86"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 87"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 88"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 89"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 90"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 91"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "NONE-DC_Shell 92"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_baterijska_busilica",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_baterijska_busilica",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_baterijska_busilica"
+            },
+            "volume": 0.0010275596287101507,
+            "wcategory": "drill",
+            "wnid": "n03239726"
         },
         "b04_bottle-2014-2018": {
             "asset_bundle_sizes": {
@@ -8510,6 +10020,145 @@
             "wcategory": "calculator",
             "wnid": "n02938886"
         },
+        "b04_faucet1": {
+            "asset_bundle_sizes": {
+                "Darwin": 877615,
+                "Linux": 1007710,
+                "Windows": 771436
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.08791485,
+                    "z": -0.1237807
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.08791485,
+                    "z": 0
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.08791485,
+                    "z": 0.1237807
+                },
+                "left": {
+                    "x": -0.02681843,
+                    "y": 0.08791485,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.02681846,
+                    "y": 0.08791485,
+                    "z": 0
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.1758297,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_faucet1",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "base"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "buttons"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "faucet"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ring"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ring2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Sphere001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Sphere002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "sprayer2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "sprayer003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "tube"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ventil"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ventil_"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_faucet1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_faucet1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_faucet1"
+            },
+            "volume": 0.0010836838046088815,
+            "wcategory": "water faucet",
+            "wnid": "n04559451"
+        },
         "b04_geosphere001": {
             "asset_bundle_sizes": {
                 "Darwin": 1020276,
@@ -9387,6 +11036,212 @@
             "wcategory": "orange",
             "wnid": "n07747607"
         },
+        "b04_p22732_cc_cp_2013": {
+            "asset_bundle_sizes": {
+                "Darwin": 272022,
+                "Linux": 328379,
+                "Windows": 230108
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.115834,
+                    "z": -0.09260584
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": -2.235174e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.115834,
+                    "z": 0
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.115834,
+                    "z": 0.09260584
+                },
+                "left": {
+                    "x": -0.139365,
+                    "y": 0.115834,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1393651,
+                    "y": 0.115834,
+                    "z": 0
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.231668,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_p22732_cc_cp_2013",
+            "physics_quality": 0.7570727671138137,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "P22732_CC_CP_001"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "P22732_CC_CP_002"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "P22732_CC_CP_003"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "P22732_CC_CP_004"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "P22732_CC_CP_005"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "P22732_CC_CP_006"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "P22732_CC_CP_007"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_p22732_cc_cp_2013",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_p22732_cc_cp_2013",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_p22732_cc_cp_2013"
+            },
+            "volume": 0.0007398884044960141,
+            "wcategory": "water faucet",
+            "wnid": "n04559451"
+        },
+        "b04_p25050_slc_ad_2013": {
+            "asset_bundle_sizes": {
+                "Darwin": 849434,
+                "Linux": 1119290,
+                "Windows": 621242
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.04170986,
+                    "z": -0.1042316
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": -1.862645e-08,
+                    "z": -7.450581e-09
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.04170986,
+                    "z": -7.450581e-09
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.04170986,
+                    "z": 0.1042316
+                },
+                "left": {
+                    "x": -0.1308884,
+                    "y": 0.04170986,
+                    "z": -7.450581e-09
+                },
+                "right": {
+                    "x": 0.1308885,
+                    "y": 0.04170986,
+                    "z": -7.450581e-09
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.08341974,
+                    "z": -7.450581e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_p25050_slc_ad_2013",
+            "physics_quality": 0.7090338131674235,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "P25050_SLC_AD_001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "P25050_SLC_AD_002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "P25050_SLC_AD_003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "P25050_SLC_AD_004"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "P25050_SLC_AD_005"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_p25050_slc_ad_2013",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_p25050_slc_ad_2013",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_p25050_slc_ad_2013"
+            },
+            "volume": 0.00046567386016249657,
+            "wcategory": "water faucet",
+            "wnid": "n04559451"
+        },
         "b04_ramlosa_bottle_2015_vray": {
             "asset_bundle_sizes": {
                 "Darwin": 11229960,
@@ -9865,6 +11720,90 @@
             "volume": 1.6391355529776774e-05,
             "wcategory": "screwdriver",
             "wnid": "n04154565"
+        },
+        "b04_wallmounted_soap_dispenser_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 650738,
+                "Linux": 792688,
+                "Windows": 640913
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.09432241,
+                    "z": -0.08608261
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": 0,
+                    "z": -0.01938547
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.09432241,
+                    "z": -0.01938547
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.09432241,
+                    "z": 0.04731166
+                },
+                "left": {
+                    "x": -0.0345816,
+                    "y": 0.09432241,
+                    "z": -0.01938547
+                },
+                "right": {
+                    "x": 0.03458163,
+                    "y": 0.09432241,
+                    "z": -0.01938547
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.1886448,
+                    "z": -0.01938547
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_wallmounted_soap_dispenser_composite",
+            "physics_quality": 0.906727628580838,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b04_wallmounted_soap_dispenser_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "soap-dispenser-top"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "soap-dispenser-wall-mount"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b04_wallmounted_soap_dispenser_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b04_wallmounted_soap_dispenser_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b04_wallmounted_soap_dispenser_composite"
+            },
+            "volume": 0.0002524004,
+            "wcategory": "soap dispenser",
+            "wnid": "n04254120"
         },
         "b04_whiskeybottle": {
             "asset_bundle_sizes": {
@@ -12964,6 +14903,764 @@
             "volume": 0.20284323394298553,
             "wcategory": "gas cooker",
             "wnid": "n03425595"
+        },
+        "b05_p24409_00_cp_2013": {
+            "asset_bundle_sizes": {
+                "Darwin": 405266,
+                "Linux": 565203,
+                "Windows": 267913
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.1326839,
+                    "z": -0.1022037
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": -1.490116e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.1326839,
+                    "z": 0
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.1326839,
+                    "z": 0.1022037
+                },
+                "left": {
+                    "x": -0.0477764,
+                    "y": 0.1326839,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.04777643,
+                    "y": 0.1326839,
+                    "z": 0
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.2653679,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b05_p24409_00_cp_2013",
+            "physics_quality": 0.7241312768585381,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "P24409_00_CP_001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "P24409_00_CP_002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "P24409_00_CP_003"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b05_p24409_00_cp_2013",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_p24409_00_cp_2013",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_p24409_00_cp_2013"
+            },
+            "volume": 0.0004523527168203145,
+            "wcategory": "water faucet",
+            "wnid": "n04559451"
+        },
+        "b05_racket": {
+            "asset_bundle_sizes": {
+                "Darwin": 11420594,
+                "Linux": 11584285,
+                "Windows": 11269738
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.01923851,
+                    "z": -0.3383389
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": 0,
+                    "z": -5.960464e-08
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.01923851,
+                    "z": -5.960464e-08
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.01923851,
+                    "z": 0.3383388
+                },
+                "left": {
+                    "x": -0.1310964,
+                    "y": 0.01923851,
+                    "z": -5.960464e-08
+                },
+                "right": {
+                    "x": 0.1310965,
+                    "y": 0.01923851,
+                    "z": -5.960464e-08
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.03847701,
+                    "z": -5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b05_racket",
+            "physics_quality": 0.9543818450499811,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "handle"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line05"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line06"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line07"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line08"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line09"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line10"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line11"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line12"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line13"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line14"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line15"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line16"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line17"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line18"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line19"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line20"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line21"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line22"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line23"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line24"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line25"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line26"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line27"
+                },
+                {
+                    "materials": [
+                        "Material_44"
+                    ],
+                    "name": "racket_body"
+                },
+                {
+                    "materials": [
+                        "racketbodypart"
+                    ],
+                    "name": "racketbodypart"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "racketbodypart2"
+                },
+                {
+                    "materials": [
+                        "web"
+                    ],
+                    "name": "Shape01"
+                },
+                {
+                    "materials": [
+                        "web"
+                    ],
+                    "name": "Shape03"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube02"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube03"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube04"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube05"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube06"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube07"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube08"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube09"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube10"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube11"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube12"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube13"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube14"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube15"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube16"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube17"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube18"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube19"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube20"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube21"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube22"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube23"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube24"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube25"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube26"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube27"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube28"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube29"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube30"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube31"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube32"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube33"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube34"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube35"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube36"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube37"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube38"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube39"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube40"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube41"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube42"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube43"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube44"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube45"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube46"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube47"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube48"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube49"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube50"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube51"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube52"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube53"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube54"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube55"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube56"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube57"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube58"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube59"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube60"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube61"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube62"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube63"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube64"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube65"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube66"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube67"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube68"
+                },
+                {
+                    "materials": [
+                        "Tube45"
+                    ],
+                    "name": "Tube69"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b05_racket",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_racket",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_racket"
+            },
+            "volume": 0.0015139856841415167,
+            "wcategory": "racquet",
+            "wnid": "n04039381"
         },
         "b05_snickers": {
             "asset_bundle_sizes": {
@@ -18443,6 +21140,289 @@
             "wcategory": "bread",
             "wnid": "n07679356"
         },
+        "brizo_solna": {
+            "asset_bundle_sizes": {
+                "Darwin": 842682,
+                "Linux": 1233216,
+                "Windows": 543450
+            },
+            "bounds": {
+                "back": {
+                    "x": 3.352761e-08,
+                    "y": 0.2468378,
+                    "z": -0.1235566
+                },
+                "bottom": {
+                    "x": 3.352761e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 3.352761e-08,
+                    "y": 0.2468378,
+                    "z": 0
+                },
+                "front": {
+                    "x": 3.352761e-08,
+                    "y": 0.2468378,
+                    "z": 0.1235566
+                },
+                "left": {
+                    "x": -0.05563543,
+                    "y": 0.2468378,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.0556355,
+                    "y": 0.2468378,
+                    "z": 0
+                },
+                "top": {
+                    "x": 3.352761e-08,
+                    "y": 0.4936756,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "brizo_solna",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "brizo_solna01"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "brizo_solna02"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "brizo_solna03"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "brizo_solna04"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "brizo_solna05"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna06"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "brizo_solna07"
+                },
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_black"
+                    ],
+                    "name": "brizo_solna08"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "brizo_solna09"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "brizo_solna10"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "brizo_solna11"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna12"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna13"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna14"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna15"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna16"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna17"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna18"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna19"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna20"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna21"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna22"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna23"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna24"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna25"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna26"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna27"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna28"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna29"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna30"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna31"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna32"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna33"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna34"
+                },
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "brizo_solna35"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "brizo_solna36"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/brizo_solna",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/brizo_solna",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/brizo_solna"
+            },
+            "volume": 0.001104602706618607,
+            "wcategory": "water faucet",
+            "wnid": "n04559451"
+        },
         "bronze_purse": {
             "asset_bundle_sizes": {
                 "Darwin": 6584353,
@@ -21847,9 +24827,9 @@
         },
         "cabinet_full_height_wood_beech_honey_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 14618315,
-                "Linux": 14853262,
-                "Windows": 14606964
+                "Darwin": 14618437,
+                "Linux": 14853928,
+                "Windows": 14607132
             },
             "bounds": {
                 "back": {
@@ -21950,15 +24930,15 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_full_height_wood_beech_honey_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_full_height_wood_beech_honey_composite"
             },
-            "volume": 0.1073094,
+            "volume": 0.1073084,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
         "cabinet_full_height_wood_oak_white_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 737395,
-                "Linux": 973824,
-                "Windows": 728003
+                "Darwin": 737316,
+                "Linux": 973804,
+                "Windows": 728089
             },
             "bounds": {
                 "back": {
@@ -22059,7 +25039,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_full_height_wood_oak_white_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_full_height_wood_oak_white_composite"
             },
-            "volume": 0.1073094,
+            "volume": 0.1073084,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
@@ -26572,6 +29552,379 @@
             "wcategory": "table lamp",
             "wnid": "n04380533"
         },
+        "dewalt_compact_drill_vray": {
+            "asset_bundle_sizes": {
+                "Darwin": 5540138,
+                "Linux": 5671027,
+                "Windows": 5393380
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.111841,
+                    "z": -0.1234342
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": -7.450581e-09,
+                    "z": 7.450581e-09
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.111841,
+                    "z": 7.450581e-09
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.111841,
+                    "z": 0.1234342
+                },
+                "left": {
+                    "x": -0.03474206,
+                    "y": 0.111841,
+                    "z": 7.450581e-09
+                },
+                "right": {
+                    "x": 0.03474209,
+                    "y": 0.111841,
+                    "z": 7.450581e-09
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.2236821,
+                    "z": 7.450581e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "dewalt_compact_drill_vray",
+            "physics_quality": -1,
+            "scale_factor": 0.6560999,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Box01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_02"
+                },
+                {
+                    "materials": [
+                        "mat_black_bump"
+                    ],
+                    "name": "drill_part_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_05"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_06"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_07"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_08"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_09"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_10"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_11"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_12"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_13"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_14"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_15"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_16"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_17"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_18"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_19"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_20"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_21"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_22"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_23"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_24"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_25"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_26"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_27"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_28"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_29"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_30"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_31"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_32"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_33"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_34"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_35"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_36"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_37"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_38"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_39"
+                },
+                {
+                    "materials": [
+                        "mat_black_bump"
+                    ],
+                    "name": "drill_part_40"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_41"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_42"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_43"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_44"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_45"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_46"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_47"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_48"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_49"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "drill_part_50"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/dewalt_compact_drill_vray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/dewalt_compact_drill_vray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/dewalt_compact_drill_vray"
+            },
+            "volume": 0.0007972983294166625,
+            "wcategory": "drill",
+            "wnid": "n03239726"
+        },
         "dining_room_table": {
             "asset_bundle_sizes": {
                 "Darwin": 6048931,
@@ -27171,6 +30524,164 @@
             "volume": 0.003993435762822628,
             "wcategory": "gas cooker",
             "wnid": "n03425595"
+        },
+        "dumb-bell_2010": {
+            "asset_bundle_sizes": {
+                "Darwin": 5218583,
+                "Linux": 5319993,
+                "Windows": 5006211
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.06479991,
+                    "z": -0.06502572
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": -1.490116e-08,
+                    "z": 7.450581e-09
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.0647999,
+                    "z": 7.450581e-09
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.06479992,
+                    "z": 0.06502574
+                },
+                "left": {
+                    "x": -0.2003638,
+                    "y": 0.06479991,
+                    "z": 7.450581e-09
+                },
+                "right": {
+                    "x": 0.2003638,
+                    "y": 0.06479991,
+                    "z": 7.450581e-09
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.1295998,
+                    "z": 7.450581e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "dumb-bell_2010",
+            "physics_quality": 0.8195117241107409,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "krom_baklava"
+                    ],
+                    "name": "Cylinder001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line004"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text004"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text005"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text006"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text007"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text008"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/dumb-bell_2010",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/dumb-bell_2010",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/dumb-bell_2010"
+            },
+            "volume": 0.001396900275722146,
+            "wcategory": "dumbbell",
+            "wnid": "n03255030"
         },
         "duncan_floor_lamp_crate_and_barrel": {
             "asset_bundle_sizes": {
@@ -35976,6 +39487,97 @@
             "wcategory": "coffee grinder",
             "wnid": "n03063485"
         },
+        "kitchen_faucet": {
+            "asset_bundle_sizes": {
+                "Darwin": 267106,
+                "Linux": 425024,
+                "Windows": 124956
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.1193154,
+                    "y": 0.2173403,
+                    "z": -0.06182093
+                },
+                "bottom": {
+                    "x": -0.1193154,
+                    "y": 0,
+                    "z": -0.01640168
+                },
+                "center": {
+                    "x": -0.1193154,
+                    "y": 0.2173403,
+                    "z": -0.01640168
+                },
+                "front": {
+                    "x": -0.1193154,
+                    "y": 0.2173403,
+                    "z": 0.02901757
+                },
+                "left": {
+                    "x": -0.2622895,
+                    "y": 0.2173403,
+                    "z": -0.01640168
+                },
+                "right": {
+                    "x": 0.02365863,
+                    "y": 0.2173403,
+                    "z": -0.01640168
+                },
+                "top": {
+                    "x": -0.1193154,
+                    "y": 0.4346806,
+                    "z": -0.01640168
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "kitchen_faucet",
+            "physics_quality": 0.8546493158945693,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SieMatic_Classic_Hrom"
+                    ],
+                    "name": "SieMatic_Classic_108"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Hrom"
+                    ],
+                    "name": "SieMatic_Classic_109"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Hrom"
+                    ],
+                    "name": "SieMatic_Classic_118"
+                },
+                {
+                    "materials": [
+                        "SieMatic_Classic_Hrom"
+                    ],
+                    "name": "SieMatic_Classic_119"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/kitchen_faucet",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/kitchen_faucet",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/kitchen_faucet"
+            },
+            "volume": 0.0008086024899967015,
+            "wcategory": "water faucet",
+            "wnid": "n04559451"
+        },
         "kitchen_sieve": {
             "asset_bundle_sizes": {
                 "Darwin": 1780067,
@@ -38873,9 +42475,9 @@
         },
         "microwave_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 264346,
-                "Linux": 553720,
-                "Windows": 252163
+                "Darwin": 214573,
+                "Linux": 313510,
+                "Windows": 208175
             },
             "bounds": {
                 "back": {
@@ -38971,7 +42573,7 @@
                     "materials": [
                         "chrome2",
                         "chrome",
-                        "plastic_vinyl_glossy_light_gray"
+                        "Glass"
                     ],
                     "name": "microwave_composite"
                 },
@@ -38989,7 +42591,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/microwave_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/microwave_composite"
             },
-            "volume": 0.02799893,
+            "volume": 0.02799752,
             "wcategory": "microwave",
             "wnid": "n03761084"
         },
@@ -41767,6 +45369,127 @@
             "volume": 0.016814112663269043,
             "wcategory": "throw pillow",
             "wnid": "n04430364"
+        },
+        "pixamoon_free_test_faucet_001_publish": {
+            "asset_bundle_sizes": {
+                "Darwin": 849045,
+                "Linux": 1046681,
+                "Windows": 647771
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.03940558,
+                    "z": -0.07620914
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": -1.117587e-08,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.03940558,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.03940558,
+                    "z": 0.07620911
+                },
+                "left": {
+                    "x": -0.08194088,
+                    "y": 0.03940558,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.08194091,
+                    "y": 0.03940558,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.07881118,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_colliders": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "pixamoon_free_test_faucet_001_publish",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome"
+                    ],
+                    "name": "pm_test_faucet_001_03"
+                },
+                {
+                    "materials": [
+                        "chrome"
+                    ],
+                    "name": "pm_test_faucet_001_04"
+                },
+                {
+                    "materials": [
+                        "chrome"
+                    ],
+                    "name": "pm_test_faucet_001_05"
+                },
+                {
+                    "materials": [
+                        "chrome"
+                    ],
+                    "name": "pm_test_faucet_001_08"
+                },
+                {
+                    "materials": [
+                        "chrome"
+                    ],
+                    "name": "pm_test_faucet_001_09"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "pm_test_faucet_001_ceramic_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "pm_test_faucet_001_ceramic_02"
+                },
+                {
+                    "materials": [
+                        "pm_ceramic_bath_hot-cold"
+                    ],
+                    "name": "pm_test_faucet_001_ceramic_C"
+                },
+                {
+                    "materials": [
+                        "pm_ceramic_bath_hot-cold"
+                    ],
+                    "name": "pm_test_faucet_001_ceramic_H"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/pixamoon_free_test_faucet_001_publish",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pixamoon_free_test_faucet_001_publish",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pixamoon_free_test_faucet_001_publish"
+            },
+            "volume": 0.000325122382491827,
+            "wcategory": "water faucet",
+            "wnid": "n04559451"
         },
         "plate05": {
             "asset_bundle_sizes": {
@@ -54655,6 +58378,87 @@
             "wcategory": "toaster",
             "wnid": "n04442312"
         },
+        "vray_077_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 1891039,
+                "Linux": 2306751,
+                "Windows": 1876850
+            },
+            "bounds": {
+                "back": {
+                    "x": -2.980232e-08,
+                    "y": 0.1000324,
+                    "z": -0.1682724
+                },
+                "bottom": {
+                    "x": -2.980232e-08,
+                    "y": -1.490116e-08,
+                    "z": -0.0003617704
+                },
+                "center": {
+                    "x": -2.980232e-08,
+                    "y": 0.1000324,
+                    "z": -0.0003617704
+                },
+                "front": {
+                    "x": -2.980232e-08,
+                    "y": 0.1000324,
+                    "z": 0.1675489
+                },
+                "left": {
+                    "x": -0.08799443,
+                    "y": 0.1000324,
+                    "z": -0.0003617704
+                },
+                "right": {
+                    "x": 0.08799437,
+                    "y": 0.1000324,
+                    "z": -0.0003617704
+                },
+                "top": {
+                    "x": -2.980232e-08,
+                    "y": 0.2000648,
+                    "z": -0.0003617704
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_077_composite",
+            "physics_quality": 0.9800953581862236,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome",
+                        "plastic_vinyl_glossy_light_gray",
+                        "antique_bronze_darkened_finer",
+                        "plastic_vinyl_glossy_black"
+                    ],
+                    "name": "vray_077_composite"
+                },
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_light_gray"
+                    ],
+                    "name": "vray_077_toaster_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_077_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_077_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_077_composite"
+            },
+            "volume": 0.002707649,
+            "wcategory": "toaster",
+            "wnid": "n04442312"
+        },
         "vray_083": {
             "asset_bundle_sizes": {
                 "Darwin": 587325,
@@ -54749,6 +58553,87 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vray_083"
             },
             "volume": 0.003116327803581953,
+            "wcategory": "toaster",
+            "wnid": "n04442312"
+        },
+        "vray_083_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 275992,
+                "Linux": 324528,
+                "Windows": 270687
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.1057382,
+                    "z": -0.1562819
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": -1.490116e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.1057382,
+                    "z": 0
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.1057382,
+                    "z": 0.1562819
+                },
+                "left": {
+                    "x": -0.1028242,
+                    "y": 0.1057382,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1028242,
+                    "y": 0.1057382,
+                    "z": 0
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.2114765,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_083_composite",
+            "physics_quality": 1.1675564484502878,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material #59",
+                        "Material #60",
+                        "Material #84",
+                        "Material #61"
+                    ],
+                    "name": "vray_083_composite"
+                },
+                {
+                    "materials": [
+                        "07 - Default"
+                    ],
+                    "name": "vray_083_toaster_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_083_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_083_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_083_composite"
+            },
+            "volume": 0.003042634,
             "wcategory": "toaster",
             "wnid": "n04442312"
         },
@@ -54849,6 +58734,86 @@
             "wcategory": "toaster",
             "wnid": "n04442312"
         },
+        "vray_084_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 462606,
+                "Linux": 844232,
+                "Windows": 443728
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0008977056,
+                    "y": 0.1165324,
+                    "z": -0.08369298
+                },
+                "bottom": {
+                    "x": 0.0008977056,
+                    "y": -2.980232e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0.0008977056,
+                    "y": 0.1165324,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0.0008977056,
+                    "y": 0.1165324,
+                    "z": 0.08369298
+                },
+                "left": {
+                    "x": -0.1591859,
+                    "y": 0.1165324,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1609813,
+                    "y": 0.1165324,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0.0008977056,
+                    "y": 0.2330649,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_084_composite",
+            "physics_quality": 1.2229561250480188,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "plastic_vinyl_glossy_black",
+                        "chrome"
+                    ],
+                    "name": "vray_084_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "vray_084_toaster_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_084_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_084_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_084_composite"
+            },
+            "volume": 0.001210825,
+            "wcategory": "toaster",
+            "wnid": "n04442312"
+        },
         "vray_085": {
             "asset_bundle_sizes": {
                 "Darwin": 772795,
@@ -54937,6 +58902,85 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/vray_085"
             },
             "volume": 0.002085263142362237,
+            "wcategory": "toaster",
+            "wnid": "n04442312"
+        },
+        "vray_085_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 248359,
+                "Linux": 430490,
+                "Windows": 240188
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.09145682,
+                    "z": -0.127772
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -1.490116e-08,
+                    "z": 0.006744653
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.09145682,
+                    "z": 0.006744653
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.09145682,
+                    "z": 0.1412613
+                },
+                "left": {
+                    "x": -0.09757703,
+                    "y": 0.09145682,
+                    "z": 0.006744653
+                },
+                "right": {
+                    "x": 0.09757703,
+                    "y": 0.09145682,
+                    "z": 0.006744653
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.1829136,
+                    "z": 0.006744653
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "vray_085_composite",
+            "physics_quality": 1.2555309160884582,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_light_gray",
+                        "plastic_vinyl_glossy_black"
+                    ],
+                    "name": "vray_085_composite"
+                },
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_black"
+                    ],
+                    "name": "toaster_handle"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/vray_085_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/vray_085_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/vray_085_composite"
+            },
+            "volume": 0.002347484,
             "wcategory": "toaster",
             "wnid": "n04442312"
         },

@@ -192,7 +192,7 @@ class Rigidbodies(OutputData):
         self._velocities = self.data.VelocitiesAsNumpy().reshape(-1, 3)
         self._angular_velocities = self.data.AngularVelocitiesAsNumpy().reshape(-1, 3)
         self._sleeping = self.data.SleepingAsNumpy()
-        
+
     def get_data(self) -> Rigis.Rigidbodies:
         return Rigis.Rigidbodies.GetRootAsRigidbodies(self.bytes, 0)
 
@@ -242,35 +242,40 @@ class StaticRigidbodies(OutputData):
 
 
 class Bounds(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._bounds_positions = self.data.BoundsPositionsAsNumpy().reshape(len(self._ids), 7, 3)
+
     def get_data(self) -> Bouns.Bounds:
         return Bouns.Bounds.GetRootAsBounds(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
-    def get_front(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Front)
+    def get_front(self, index: int) -> np.array:
+        return self._bounds_positions[index][0]
 
-    def get_back(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Back)
+    def get_back(self, index: int) -> np.array:
+        return self._bounds_positions[index][1]
 
-    def get_left(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Left)
+    def get_left(self, index: int) -> np.array:
+        return self._bounds_positions[index][3]
 
-    def get_right(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Right)
+    def get_right(self, index: int) -> np.array:
+        return self._bounds_positions[index][2]
 
-    def get_top(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Top)
+    def get_top(self, index: int) -> np.array:
+        return self._bounds_positions[index][4]
 
-    def get_bottom(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Bottom)
+    def get_bottom(self, index: int) -> np.array:
+        return self._bounds_positions[index][5]
 
-    def get_center(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Center)
+    def get_center(self, index: int) -> np.array:
+        return self._bounds_positions[index][6]
 
 
 class Images(OutputData):

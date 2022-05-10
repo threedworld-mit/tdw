@@ -1169,26 +1169,35 @@ class TriggerCollision(OutputData):
 
 
 class LocalTransforms(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._positions = self.data.PositionsAsNumpy().reshape(-1, 3)
+        self._rotations = self.data.RotationsAsNumpy().reshape(-1, 4)
+        self._forwards = self.data.ForwardsAsNumpy().reshape(-1, 3)
+        self._euler_angles = self.data.EulerAnglesAsNumpy().reshape(-1, 3)
+
     def get_data(self) -> LocalTran.LocalTransforms:
         return LocalTran.LocalTransforms.GetRootAsLocalTransforms(self.bytes, 0)
 
+
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
-    def get_position(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Position)
+    def get_position(self, index: int) -> np.array:
+        return self._positions[index]
 
-    def get_forward(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Forward)
+    def get_forward(self, index: int) -> np.array:
+        return self._forwards[index]
 
-    def get_eulers(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Eulers)
+    def get_rotation(self, index: int) -> np.array:
+        return self._rotations[index]
 
-    def get_rotation(self, index: int) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.Objects(index).Rotation)
+    def get_euler_angles(self, index: int) -> np.array:
+        return self._euler_angles[index]
 
 
 class QuitSignal(OutputData):

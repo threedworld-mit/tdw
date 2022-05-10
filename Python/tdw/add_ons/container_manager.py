@@ -45,7 +45,9 @@ class ContainerManager(AddOn):
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_segmentation_colors"},
-                {"$type": "send_static_composite_objects"}]
+                {"$type": "send_static_composite_objects"},
+                {"$type": "send_containment",
+                 "frequency": "always"}]
 
     def on_send(self, resp: List[bytes]) -> None:
         # Get model names.

@@ -213,13 +213,13 @@ class ObjectManager(AddOn):
             elif r_id == "boun":
                 boun = Bounds(resp[i])
                 for j in range(boun.get_num()):
-                    self.bounds[boun.get_id(j)] = Bound(front=np.array(boun.get_front(j)),
-                                                        back=np.array(boun.get_back(j)),
-                                                        left=np.array(boun.get_left(j)),
-                                                        right=np.array(boun.get_right(j)),
-                                                        top=np.array(boun.get_top(j)),
-                                                        bottom=np.array(boun.get_bottom(j)),
-                                                        center=np.array(boun.get_center(j)))
+                    self.bounds[boun.get_id(j)] = Bound(front=boun.get_front(j),
+                                                        back=boun.get_back(j),
+                                                        left=boun.get_left(j),
+                                                        right=boun.get_right(j),
+                                                        top=boun.get_top(j),
+                                                        bottom=boun.get_bottom(j),
+                                                        center=boun.get_center(j))
 
     def reset(self) -> None:
         """

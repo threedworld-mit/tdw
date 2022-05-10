@@ -191,7 +191,7 @@ class Rigidbodies(OutputData):
         self._ids = self.data.IdsAsNumpy()
         self._velocities = self.data.VelocitiesAsNumpy().reshape(-1, 3)
         self._angular_velocities = self.data.AngularVelocitiesAsNumpy().reshape(-1, 3)
-        self._sleeping = self.data.SleepingAsNumpy()
+        self._sleeping = self.data.SleepingsAsNumpy()
 
     def get_data(self) -> Rigis.Rigidbodies:
         return Rigis.Rigidbodies.GetRootAsRigidbodies(self.bytes, 0)
@@ -248,7 +248,7 @@ class Bounds(OutputData):
     def __init__(self, b):
         super().__init__(b)
         self._ids = self.data.IdsAsNumpy()
-        self._bounds_positions = self.data.BoundsPositionsAsNumpy().reshape(len(self._ids), 7, 3)
+        self._bounds_positions = self.data.BoundPositionsAsNumpy().reshape(len(self._ids), 7, 3)
 
     def get_data(self) -> Bouns.Bounds:
         return Bouns.Bounds.GetRootAsBounds(self.bytes, 0)

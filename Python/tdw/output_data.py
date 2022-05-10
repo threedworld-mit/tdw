@@ -855,17 +855,22 @@ class EnvironmentCollision(OutputData):
 
 
 class Volumes(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._volumes = self.data.VolumesAsNumpy()
+
     def get_data(self) -> Vol.Volumes:
         return Vol.Volumes.GetRootAsVolumes(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_object_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
     def get_volume(self, index: int) -> float:
-        return self.data.Objects(index).Volume()
+        return self._volumes[index]
 
 
 class AudioSources(OutputData):

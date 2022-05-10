@@ -159,43 +159,57 @@ class SceneRegions(OutputData):
 
 
 class Transforms(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._positions = self.data.PositionsAsNumpy().reshape(-1, 3)
+        self._rotations = self.data.RotationsAsNumpy().reshape(-1, 4)
+        self._forwards = self.data.ForwardsAsNumpy().reshape(-1, 3)
+
     def get_data(self) -> Trans.Transforms:
         return Trans.Transforms.GetRootAsTransforms(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
-    def get_position(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Position)
+    def get_position(self, index: int) -> np.array:
+        return self._positions[index]
 
-    def get_forward(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Forward)
+    def get_forward(self, index: int) -> np.array:
+        return self._forwards[index]
 
-    def get_rotation(self, index: int) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.Objects(index).Rotation)
+    def get_rotation(self, index: int) -> np.array:
+        return self._rotations[index]
 
 
 class Rigidbodies(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._velocities = self.data.VelocitiesAsNumpy().reshape(-1, 3)
+        self._angular_velocities = self.data.AngularVelocitiesAsNumpy().reshape(-1, 3)
+        self._sleeping = self.data.SleepingAsNumpy()
+        
     def get_data(self) -> Rigis.Rigidbodies:
         return Rigis.Rigidbodies.GetRootAsRigidbodies(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
-    def get_velocity(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Velocity)
+    def get_velocity(self, index: int) -> np.array:
+        return self._velocities[index]
 
-    def get_angular_velocity(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).AngularVelocity)
+    def get_angular_velocity(self, index: int) -> np.array:
+        return self._angular_velocities[index]
 
     def get_sleeping(self, index: int) -> bool:
-        return self.data.Objects(index).Sleeping()
+        return self._sleeping[index]
 
 
 class StaticRigidbodies(OutputData):

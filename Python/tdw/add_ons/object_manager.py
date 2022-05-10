@@ -201,9 +201,9 @@ class ObjectManager(AddOn):
             if r_id == "tran":
                 tran = Transforms(resp[i])
                 for j in range(tran.get_num()):
-                    self.transforms[tran.get_id(j)] = Transform(position=np.array(tran.get_position(j)),
-                                                                rotation=np.array(tran.get_rotation(j)),
-                                                                forward=np.array(tran.get_forward(j)))
+                    self.transforms[tran.get_id(j)] = Transform(position=tran.get_position(j),
+                                                                rotation=tran.get_rotation(j),
+                                                                forward=tran.get_forward(j))
             elif r_id == "rigi":
                 rigi = Rigidbodies(resp[i])
                 for j in range(rigi.get_num()):

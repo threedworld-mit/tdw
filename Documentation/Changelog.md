@@ -4,6 +4,38 @@
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
+## v1.9.18
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                            |
+| ------------------------ | ------------------------------------------------------ |
+| `add_box_container`      | Add a box container shape to an object.                |
+| `add_cylinder_container` | Add a cylindrical container shape to an object.        |
+| `add_sphere_container`   | Add a spherical container shape to an object.          |
+| `send_containment`       | Send `Overlap` output data from every container shape. |
+
+### `tdw` module
+
+- `ContainerManager` now uses "container shapes" instead of trigger colliders. Trigger colliders are a built-in feature of Unity that detect non-physics collisions. They generate lots of event data, causing `ContainerManager` to be very slow in complex scenes. Now, `ContainerManager` sends "container shape" commands such as `add_box_container`, which define a 3D space without a trigger collider. Per-frame, container shapes will send `Overlap` data instead of `TriggerCollision` data. The result is that `ContainerManager` is much faster now.
+  - `ContainerManager` sends container shape commands (see above) per object and then sends `send_containment` to request `Overlap` data per frame.
+  - `ContainerManager` is no longer a subclass of `TriggerCollisionManager`, meaning that it no longer has the following fields: `trigger_ids` and `collisions`.
+  - Added: `ContainerManager.container_shapes` A dictionary of container IDs to container shape data objects.
+  - Added: `ContainerManager.container_shape_ids` A dictionary mapping container IDs to parent object IDs.
+  - Renamed `ContainerManager._tags` to `ContainerManager.tags`
+  - Replaced `ContainerManager.add_box_collider(object_id, position, scale, rotation, trigger_id, tag)` with `ContainerManager.add_box(object_id, position, tag, half_extents, rotation)`
+  - Replaced `ContainerManager.add_cylinder_collider(object_id, position, scale, rotation, trigger_id, tag)` with `ContainerManager.add_cylinder(object_id, position, tag, radius, height, rotation)`
+  - Replaced `ContainerManager.add_sphere_collider(object_id, position, diameter, trigger_id, tag)` with `ContainerManager.add_sphere(object_id, position, tag, radius)`
+- Refactored the following containment data classes:
+  - Replaced `ContainerBoxTriggerCollider` with `BoxContainer`
+  - Replaced `ContainerCylinderTriggerCollider` with `CylinderContainer`
+  - Replaced `ContainerSphereTriggerCollider` with `SphereContainer`
+  - Renamed `ContainerColliderTag` to `ContainerTag`
+  - Replaced `ModelRecord.container_colliders` with `ModelRecord.container_shapes`
+  - Replaced `ContainmentEvent.object_id` (the ID of the contained object) with `ContainmentEvent.object_ids` (a numpy array of all contained objects)
+
 ## v1.9.17
 
 ### `tdw` module

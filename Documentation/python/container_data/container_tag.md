@@ -1,8 +1,8 @@
-# ContainerColliderTag
+# ContainerTag
 
-`from tdw.container_data.container_collider_tag import ContainerColliderTag`
+`from tdw.container_data.container_tag import ContainerTag`
 
-A tag for a container collider.
+A tag for a container shape.
 
 | Value | Description |
 | --- | --- |

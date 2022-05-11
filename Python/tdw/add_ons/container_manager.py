@@ -55,7 +55,7 @@ class ContainerManager(AddOn):
             self._getting_model_names = False
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
-                # Use the model names from SegmentationColors output data to add trigger colliders.
+                # Use the model names from SegmentationColors output data to add container shapes.
                 if r_id == "segm":
                     segmentation_colors = SegmentationColors(resp[i])
                     for j in range(segmentation_colors.get_num()):

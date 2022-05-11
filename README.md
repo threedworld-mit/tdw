@@ -43,17 +43,29 @@
 ## 2.1 Objects and Scenes
 
 1. [Overview](Documentation/lessons/objects_and_scenes/overview.md)
-2. [Scripted object placement (floorplan layouts)](Documentation/lessons/objects_and_scenes/floorplans.md)
-3. [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
-4. [Procedural generation (scenes)](Documentation/lessons/objects_and_scenes/proc_gen_room.md)
-5. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
-6. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
-7. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)
-10. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
+
+### 2.1.1 Scene Setup Strategies
+
+1. Overview
+2. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
+3. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
+4. [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
+5. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
+
+### 2.1.2
+
+
+
+1. [Scripted object placement (floorplan layouts)](Documentation/lessons/objects_and_scenes/floorplans.md)
+2. [Procedural generation (scenes)](Documentation/lessons/objects_and_scenes/proc_gen_room.md)
+4. 
+5. 
+6. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)
+7. 
 
 High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 
-### 2.2.2 3D Model Libraries
+## 2.3  3D Model Libraries
 
 1. [Overview](Documentation/lessons/3d_models/overview.md)
 2. [Free models](Documentation/lessons/3d_models/free_models.md)
@@ -61,7 +73,7 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 4. [Add your own models to TDW](Documentation/lessons/3d_models/custom_models.md)
 5. [Add ShapeNet models to TDW](Documentation/lessons/3d_models/shapenet.md)
 
-### 2.2.3 Semantic States
+## 2.4 Semantic States
 
 1. [Overview](Documentation/lessons/semantic_states/overview.md)
 2. [Line of sight (`Raycast` output data)](Documentation/lessons/semantic_states/raycast.md)

@@ -59,11 +59,11 @@ class Containment(Controller):
             for container_shape_id in self.container_manager.events:
                 object_id = self.container_manager.container_shapes[container_shape_id]
                 if object_id == container_id:
-                    for event in self.container_manager.events[container_shape_id]:
-                        if falling_object_id in event.object_ids:
-                            containment = True
-                            tag = event.tag
-                            break
+                    event = self.container_manager.events[container_shape_id]
+                    if falling_object_id in event.object_ids:
+                        containment = True
+                        tag = event.tag
+                        break
             frames.append((containment, tag))
             self.communicate([])
         # Create a timeline diagram of the containment states.

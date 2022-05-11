@@ -32,7 +32,7 @@ class ContainerManager(AddOn):
         """:field
         A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container shape ID (not the object ID). Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
         """
-        self.events: Dict[int, List[ContainmentEvent]] = dict()
+        self.events: Dict[int, ContainmentEvent] = dict()
         """:field
         A dictionary of container shape IDs. Key = The container shape ID. Value = The object ID.
         """
@@ -105,12 +105,10 @@ class ContainerManager(AddOn):
                     # Get the IDs of the contained objects.
                     contained_ids = np.array([o_id for o_id in overlap.get_object_ids() if int(o_id) not in self._excluded_objects], dtype=int)
                     if len(contained_ids) > 0:
-                        if overlap_id not in self.events:
-                            self.events[overlap_id] = list()
                         # Record the containment event.
-                        self.events[overlap_id].append(ContainmentEvent(container_id=object_id,
-                                                                        object_ids=contained_ids,
-                                                                        tag=self.tags[overlap_id]))
+                        self.events[overlap_id] = ContainmentEvent(container_id=object_id,
+                                                                   object_ids=contained_ids,
+                                                                   tag=self.tags[overlap_id])
 
     def add_box(self, object_id: int, position: Dict[str, float], tag: ContainerTag, half_extents: Dict[str, float],
                 rotation: Dict[str, float]) -> int:

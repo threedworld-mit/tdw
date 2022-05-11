@@ -12,7 +12,7 @@ An object is 'contained' by a 'container' if it overlaps with a "containment" sp
 
 ## Fields
 
-- `events` A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The object ID (not the container ID). Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
+- `events` A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container shape ID (not the object ID). Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
 
 - `container_shapes` A dictionary of container shape IDs. Key = The container shape ID. Value = The object ID.
 
@@ -74,7 +74,7 @@ Add a box container shape to an object.
 | --- | --- | --- | --- |
 | object_id |  int |  | The ID of the object. |
 | position |  Dict[str, float] |  | The position of the box relative to the parent object. |
-| tag |  ContainerTag |  | The box's semantic [`ContainerTag`](container_tag.md). |
+| tag |  ContainerTag |  | The box's semantic [`ContainerTag`](../container_data/container_tag.md). |
 | half_extents |  Dict[str, float] |  | The half-extents (half the scale) of the box. |
 | rotation |  Dict[str, float] |  | The rotation of the box in Euler angles relative to the parent object. |
 
@@ -91,7 +91,7 @@ Add a cylinder container shape to an object.
 | --- | --- | --- | --- |
 | object_id |  int |  | The ID of the object. |
 | position |  Dict[str, float] |  | The position of the cylinder relative to the parent object. |
-| tag |  ContainerTag |  | The cylinder's semantic [`ContainerTag`](container_tag.md). |
+| tag |  ContainerTag |  | The cylinder's semantic [`ContainerTag`](../container_data/container_tag.md). |
 | radius |  float |  | The radius of the cylinder. |
 | height |  float |  | The height of the cylinder. |
 | rotation |  Dict[str, float] |  | The rotation of the cylinder in Euler angles relative to the parent object. |
@@ -109,7 +109,7 @@ Add a sphere container shape to an object.
 | --- | --- | --- | --- |
 | object_id |  int |  | The ID of the object. |
 | position |  Dict[str, float] |  | The position of the sphere relative to the parent object. |
-| tag |  ContainerTag |  | The sphere's semantic [`ContainerTag`](container_tag.md). |
+| tag |  ContainerTag |  | The sphere's semantic [`ContainerTag`](../container_data/container_tag.md). |
 | radius |  float |  | The radius of the sphere. |
 
 _Returns:_  The ID of the container shape.

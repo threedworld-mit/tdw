@@ -356,7 +356,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`add_box_container`](#add_box_container) | Add a box-shaped container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
+| [`add_box_container`](#add_box_container) | Add a box container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
 | [`add_cylinder_container`](#add_cylinder_container) | Add a cylindrical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
 | [`add_sphere_container`](#add_sphere_container) | Add a spherical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
 
@@ -4799,7 +4799,7 @@ These commands add container shapes to an object. Container shapes will check ea
 
 ## **`add_box_container`**
 
-Add a box-shaped container shape to an object. The object will send output data whenever other objects overlap with this volume. 
+Add a box container shape to an object. The object will send output data whenever other objects overlap with this volume. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 

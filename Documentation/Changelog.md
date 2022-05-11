@@ -22,8 +22,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 - `ContainerManager` now uses "container shapes" instead of trigger colliders. Trigger colliders are a built-in feature of Unity that detect non-physics collisions. They generate lots of event data, causing `ContainerManager` to be very slow in complex scenes. Now, `ContainerManager` sends "container shape" commands such as `add_box_container`, which define a 3D space without a trigger collider. Per-frame, container shapes will send `Overlap` data instead of `TriggerCollision` data. The result is that `ContainerManager` is much faster now.
   - `ContainerManager` sends container shape commands (see above) per object and then sends `send_containment` to request `Overlap` data per frame.
   - `ContainerManager` is no longer a subclass of `TriggerCollisionManager`, meaning that it no longer has the following fields: `trigger_ids` and `collisions`.
-  - Added: `ContainerManager.container_shapes` A dictionary of container IDs to container shape data objects.
-  - Added: `ContainerManager.container_shape_ids` A dictionary mapping container IDs to parent object IDs.
+  - Added: `ContainerManager.container_shapes` A dictionary of container IDs to parent object IDs.
   - Renamed `ContainerManager._tags` to `ContainerManager.tags`
   - Replaced `ContainerManager.add_box_collider(object_id, position, scale, rotation, trigger_id, tag)` with `ContainerManager.add_box(object_id, position, tag, half_extents, rotation)`
   - Replaced `ContainerManager.add_cylinder_collider(object_id, position, scale, rotation, trigger_id, tag)` with `ContainerManager.add_cylinder(object_id, position, tag, radius, height, rotation)`
@@ -35,6 +34,17 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - Renamed `ContainerColliderTag` to `ContainerTag`
   - Replaced `ModelRecord.container_colliders` with `ModelRecord.container_shapes`
   - Replaced `ContainmentEvent.object_id` (the ID of the contained object) with `ContainmentEvent.object_ids` (a numpy array of all contained objects)
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                 | Modification                                                 |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| `lessons/semantic_states/containment.md` | Rewrote most of the document and replaced some images in order to describe container shapes. |
+| `python/container_data/`                 | Removed old API documents (e.g. `container_collider_tag.md`) and added new API documents (e.g. `container_tag.md`). |
+
+
 
 ## v1.9.17
 

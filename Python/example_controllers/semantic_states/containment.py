@@ -56,9 +56,10 @@ class Containment(Controller):
             sleeping = self.object_manager.rigidbodies[falling_object_id].sleeping
             containment = False
             tag = ContainerTag.inside
-            for object_id in self.container_manager.events:
+            for container_shape_id in self.container_manager.events:
+                object_id = self.container_manager.container_shapes[container_shape_id]
                 if object_id == container_id:
-                    for event in self.container_manager.events[object_id]:
+                    for event in self.container_manager.events[container_shape_id]:
                         if falling_object_id in event.object_ids:
                             containment = True
                             tag = event.tag

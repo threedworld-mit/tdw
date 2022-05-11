@@ -28,4 +28,3 @@ for i in range(2000):
 benchmark.stop()
 print(benchmark.fps)
 c.communicate({"$type": "terminate"})
-

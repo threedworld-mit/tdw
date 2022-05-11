@@ -288,7 +288,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 **tdw.container_data**
 
 - [BoxContainer](Documentation/python/container_data/box_container.md)
-- [ContainerColliderTag](Documentation/python/container_data/container_collider_tag.md)
 - [ContainerShape](Documentation/python/container_data/container_shape.md)
 - [ContainerTag](Documentation/python/container_data/container_tag.md)
 - [ContainmentEvent](Documentation/python/container_data/containment_event.md)

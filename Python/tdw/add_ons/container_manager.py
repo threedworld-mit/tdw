@@ -30,7 +30,7 @@ class ContainerManager(AddOn):
         super().__init__()
         self._getting_model_names: bool = True
         """:field
-        A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The object ID (not the container ID). Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
+        A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container shape ID (not the object ID). Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
         """
         self.events: Dict[int, List[ContainmentEvent]] = dict()
         """:field
@@ -105,12 +105,12 @@ class ContainerManager(AddOn):
                     # Get the IDs of the contained objects.
                     contained_ids = np.array([o_id for o_id in overlap.get_object_ids() if int(o_id) not in self._excluded_objects], dtype=int)
                     if len(contained_ids) > 0:
-                        if object_id not in self.events:
-                            self.events[object_id] = list()
+                        if overlap_id not in self.events:
+                            self.events[overlap_id] = list()
                         # Record the containment event.
-                        self.events[object_id].append(ContainmentEvent(container_id=object_id,
-                                                                       object_ids=contained_ids,
-                                                                       tag=self.tags[overlap_id]))
+                        self.events[overlap_id].append(ContainmentEvent(container_id=object_id,
+                                                                        object_ids=contained_ids,
+                                                                        tag=self.tags[overlap_id]))
 
     def add_box(self, object_id: int, position: Dict[str, float], tag: ContainerTag, half_extents: Dict[str, float],
                 rotation: Dict[str, float]) -> int:
@@ -119,7 +119,7 @@ class ContainerManager(AddOn):
 
         :param object_id: The ID of the object.
         :param position: The position of the box relative to the parent object.
-        :param tag: The box's semantic [`ContainerTag`](container_tag.md).
+        :param tag: The box's semantic [`ContainerTag`](../container_data/container_tag.md).
         :param half_extents: The half-extents (half the scale) of the box.
         :param rotation: The rotation of the box in Euler angles relative to the parent object.
 
@@ -142,7 +142,7 @@ class ContainerManager(AddOn):
 
         :param object_id: The ID of the object.
         :param position: The position of the cylinder relative to the parent object.
-        :param tag: The cylinder's semantic [`ContainerTag`](container_tag.md).
+        :param tag: The cylinder's semantic [`ContainerTag`](../container_data/container_tag.md).
         :param radius: The radius of the cylinder.
         :param height: The height of the cylinder.
         :param rotation: The rotation of the cylinder in Euler angles relative to the parent object.
@@ -166,7 +166,7 @@ class ContainerManager(AddOn):
 
         :param object_id: The ID of the object.
         :param position: The position of the sphere relative to the parent object.
-        :param tag: The sphere's semantic [`ContainerTag`](container_tag.md).
+        :param tag: The sphere's semantic [`ContainerTag`](../container_data/container_tag.md).
         :param radius: The radius of the sphere.
 
         :return: The ID of the container shape.

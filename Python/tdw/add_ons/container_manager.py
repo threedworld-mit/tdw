@@ -132,6 +132,7 @@ class ContainerManager(AddOn):
                                                     tag=tag)
         command["half_extents"] = half_extents
         command["rotation"] = rotation
+        self.commands.append(command)
         return command["id"]
 
     def add_cylinder(self, object_id: int, position: Dict[str, float], tag: ContainerTag, radius: float,
@@ -156,6 +157,7 @@ class ContainerManager(AddOn):
         command["radius"] = radius
         command["height"] = height
         command["rotation"] = rotation
+        self.commands.append(command)
         return command["id"]
 
     def add_sphere(self, object_id: int, position: Dict[str, float], tag: ContainerTag, radius: float) -> int:
@@ -175,6 +177,7 @@ class ContainerManager(AddOn):
                                                     position=position,
                                                     tag=tag)
         command["radius"] = radius
+        self.commands.append(command)
         return command["id"]
 
     def reset(self) -> None:

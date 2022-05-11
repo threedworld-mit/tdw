@@ -44,8 +44,6 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `lessons/semantic_states/containment.md` | Rewrote most of the document and replaced some images in order to describe container shapes. |
 | `python/container_data/`                 | Removed old API documents (e.g. `container_collider_tag.md`) and added new API documents (e.g. `container_tag.md`). |
 
-
-
 ## v1.9.17
 
 ### `tdw` module

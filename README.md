@@ -40,32 +40,30 @@
 
 # 2. Tutorials
 
-## 2.1 Objects and Scenes
+## 2.1 Scene Setup
 
-1. [Overview](Documentation/lessons/objects_and_scenes/overview.md)
+**[Overview](Documentation/lessons/objects_and_scenes/overview.md)**
 
-### 2.1.1 Scene Setup Strategies
+### 2.1.1 Scene Setup (High-Level API)
+
+1. Overview
+2. [Procedural generation (the `ProcGenKitchen` add-on)](Documentation/lessons/objects_and_scenes/proc_gen_kitchen.md)
+2. Regions, interior regions, and rooms
+3. [Procedural object arrangements](Documentation/lessons/objects_and_scenes/arrangements.md)
+4. [Scripted object placement (floorplan layouts)](Documentation/lessons/objects_and_scenes/floorplans.md)
+5. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
+
+High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [ProcGenKitchen](Documentation/python/add_ons/proc_gen_kitchen.md)
+
+### 2.1.2 Scene Setup (Low-Level APIs)
 
 1. Overview
 2. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
 3. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
 4. [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
-5. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
+5. [ProcGenRoom](Documentation/lessons/objects_and_scenes/proc_gen_room.md)
 
-### 2.1.2
-
-
-
-1. [Scripted object placement (floorplan layouts)](Documentation/lessons/objects_and_scenes/floorplans.md)
-2. [Procedural generation (scenes)](Documentation/lessons/objects_and_scenes/proc_gen_room.md)
-4. 
-5. 
-6. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)
-7. 
-
-High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
-
-## 2.3  3D Model Libraries
+## 2.2  3D Model Libraries
 
 1. [Overview](Documentation/lessons/3d_models/overview.md)
 2. [Free models](Documentation/lessons/3d_models/free_models.md)
@@ -73,7 +71,7 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 4. [Add your own models to TDW](Documentation/lessons/3d_models/custom_models.md)
 5. [Add ShapeNet models to TDW](Documentation/lessons/3d_models/shapenet.md)
 
-## 2.4 Semantic States
+## 2.3 Semantic States
 
 1. [Overview](Documentation/lessons/semantic_states/overview.md)
 2. [Line of sight (`Raycast` output data)](Documentation/lessons/semantic_states/raycast.md)
@@ -83,7 +81,7 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 4. [Composite objects (objects with affordances)](Documentation/lessons/semantic_states/composite_objects.md)
 4. [Grasped objects](Documentation/lessons/semantic_states/grasped.md)
 
-## 2.3 Visual Perception
+## 2.4 Visual Perception
 
 1. [Overview](Documentation/lessons/visual_perception/overview.md)
 2. [Instance ID segmentation colors (`_id` pass)](Documentation/lessons/visual_perception/id.md)
@@ -93,7 +91,7 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 6. [Other image passes (`_mask`, `_normals`, and `_albedo` passes)](Documentation/lessons/visual_perception/other_passes.md)
 7. [`Occlusion` output data](Documentation/lessons/visual_perception/occlusion.md)
 
-## 2.4 Camera Controls
+## 2.5 Camera Controls
 
 1. [Overview](Documentation/lessons/camera/overview.md)
 2. [Move a camera](Documentation/lessons/camera/position.md)
@@ -101,7 +99,7 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 4. [Follow an object](Documentation/lessons/camera/follow.md)
 4. [The `CinematicCamera` add-on](Documentation/lessons/camera/cinematic_camera.md)
 
-## 2.5 Photorealism
+## 2.6 Photorealism
 
 1. [Overview](Documentation/lessons/photorealism/overview.md)
 2. [Lighting (HDRI skyboxes)](Documentation/lessons/photorealism/lighting.md)
@@ -111,7 +109,7 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
-## 2.6 Physics
+## 2.7 Physics
 
 **[Overview](Documentation/lessons/physx/overview.md)**
 

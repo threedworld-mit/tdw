@@ -1,20 +1,18 @@
-##### Objects and Scenes
+##### Scene Setup (High-Level APIs)
 
 # Overview
 
-These lessons will cover the basics of how to populate a [scene](../core_concepts/scenes.md) with [objects](../core_concepts/objects.md). Broadly speaking, there are three ways to do this:
+This sub-section of the "scene setup" guide covers TDW's high-level scene setup APIs.
+
+Broadly speaking, all scene setup processes can be described as being in one of three categories:
 
 1. **Procedural generation**
 2. **Scripted object placement** 
-2. **Hybrid** 
-
-TDW includes built-in solutions for both scripted object placement and procedural object placement, as well as low-level API calls to allow the user to define either type of process.
+3. **Hybrid**
 
 ## Procedural Generation
 
-Procedural generation ("proc-gen") is a common technique in video game design to generate highly variable environments.
-
-In video games and other digital media, proc-gen can be used for virtually anything. It's possible to procedurally generate 3D scenes, poetry, audio, and so on.
+Procedural generation ("proc-gen") is a common technique in video game and digital art design to algorithmically generate content. Proc-gen is used not just for scene generation but also for poetry, music, and so on.
 
 In TDW, proc-gen usually refers to an algorithm for populating a scene with objects. It sometimes can refer to generating the scene itself. Proc-gen can also refer to more abstract randomness in the scene; for example, setting a random [HDRI skybox](../photorealism/lighting.md) could be considered procedural generation. There is no single canonical way to do proc-gen, although TDW includes some code to do common proc-gen tasks for you.
 
@@ -41,12 +39,12 @@ Scripted object placement is a technique wherein objects are preselected and add
 
 ## Hybrid
 
-You can, of course, mix scripted object placement with procedural generation. For example, you could procedurally generate a group of objects and explicitly place that group of objects somewhere in the scene. The main difficult in this approach is that your scripted object placement system needs to be spatially aware of what your proc-gen system is doing, and vice versa. In other words, if you procedurally generate a group of objects, you'll need *either* a way to determine the group's width and length so that it can be placed at a good location, *or* you need to design the algorithm such that this doesn't matter. A good example of this is the [`KitchenTable`](../../python/proc_gen/arrangements/kitchen_table.md), which is procedurally generated, in part based on what is already in the scene (see the `used_walls` parameter).
+You can, of course, mix scripted object placement with procedural generation. For example, you could procedurally generate a group of objects and explicitly place that group of objects somewhere in the scene.
 
 To some extent, the difference between scripted object placement and conceptual object placement is merely semantic. For example, if you use the 3D bounds of Object A to place Object B on top of it, this could be considered both scripted and procedural object placement. Both strategies ultimately use most of the same tools and API calls.
 
 ***
 
-**Next: [Scripted object placement (floorplan layouts)](floorplans.md)**
+**[Next: Procedural Generation (the `ProcGenKitchen` add-on)](proc_gen_kitchen.md)**
 
 [Return to the README](../../../README.md)

@@ -153,6 +153,10 @@ class ProcGenKitchen(AddOn):
     A dictionary of "secondary arrangements". Keys: `"append"` (can be appended to a work triangle lateral arrangement), `"main"` (can be added to a lateral arrangement along an unused wall in the main [region](../scene_data/interior_region.md) of [`self.room`](../scene_data/room.md)), and `"alcove"` (can be added to a lateral arrangement along an unused wall of an alcove region). Value: A dictionary of probabilities and names of arrangements; a higher value means that it is more likely for this arrangement to be randomly selected.
     """
     SECONDARY_ARRANGEMENTS: Dict[str, Dict[str, int]] = loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/secondary_categories.json")).read_text())
+    """:class_var
+    The names of the default scenes. If the `scene` parameter in `self.create()` isn't set, or is set to None, a random scene from this list will be selected.
+    """
+    SCENE_NAMES: List[str] = ['mm_craftroom_2a', 'mm_craftroom_2b', 'mm_craftroom_3a', 'mm_craftroom_3b', 'mm_kitchen_2a', 'mm_kitchen_2b', 'mm_kitchen_3a', 'mm_kitchen_3b']
 
     def __init__(self):
         """
@@ -180,12 +184,12 @@ class ProcGenKitchen(AddOn):
         self._allow_radiator: bool = True
         self.initialized = True
 
-    def create(self, scene: Union[str, SceneRecord, Room, List[Union[str, SceneRecord]]], room_index: int = 0,
+    def create(self, scene: Union[str, SceneRecord, Room, List[Union[str, SceneRecord]]] = None, room_index: int = 0,
                rng: Union[int, np.random.RandomState] = None) -> None:
         """
         Procedurally generate a kitchen. The kitchen will be created on the next `controller.communicate()` call.
 
-        :param scene: Can be a string (the name of a scene), a [`SceneRecord`](../librarian/scene_librarian.md), a list of scene names and/or `SceneRecord` (one will chosen randomly), or a [`Room`](../scene_data/room.md). If this is a `Room`, then `ProcGenKitchen` will assume that the scene has already been loaded, and `self.scene_record` will be set to `None`.
+        :param scene: Can be a string (the name of a scene), a [`SceneRecord`](../librarian/scene_librarian.md), a list of scene names and/or `SceneRecord` (one will chosen randomly), a [`Room`](../scene_data/room.md), or None. If this is a `Room`, then `ProcGenKitchen` will assume that the scene has already been loaded, and `self.scene_record` will be set to `None`. If `scene=None`, a random scene from `ProcGenKitchen.SCENE_NAMES` will be selected.
         :param room_index: The index of the room in `self.scene_record.rooms` (assuming `self.scene_record is not None`; see above).
         :param rng: The random number generator. Can be `int` (a random seed), `np.random.RandomState`, or None (a new random seed will be selected randomly).
         """
@@ -203,7 +207,12 @@ class ProcGenKitchen(AddOn):
         # Create the librarian if it doesn't already exist.
         if "scenes.json" not in Controller.SCENE_LIBRARIANS:
             Controller.SCENE_LIBRARIANS["scenes.json"] = SceneLibrarian()
-        # Get the record from the name.
+        # Get a random scene.
+        if scene is None:
+            scene = ProcGenKitchen.SCENE_NAMES[self.rng.randint(0, len(ProcGenKitchen.SCENE_NAMES))]
+            self.scene_record = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(scene)
+            self.room = self.scene_record.rooms[room_index]
+        # This is the name of a scene.
         if isinstance(scene, str):
             self.scene_record = Controller.SCENE_LIBRARIANS["scenes.json"].get_record(scene)
             self.room = self.scene_record.rooms[room_index]
@@ -299,13 +308,6 @@ class ProcGenKitchen(AddOn):
 
     def on_send(self, resp: List[bytes]) -> None:
         pass
-
-    def reset(self) -> None:
-        """
-        Reset the add-on. Call this when you reset a scene.
-        """
-
-        self.commands.clear()
 
     def _get_room(self, scene: Union[str, SceneRecord, Room, List[Union[str, SceneRecord]]], room_index: int) -> Room:
         """

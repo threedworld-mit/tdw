@@ -9,6 +9,7 @@ from tdw.container_data.cylinder_container import CylinderContainer
 from tdw.container_data.containment_event import ContainmentEvent
 from tdw.object_data.composite_object.composite_object_static import CompositeObjectStatic
 from tdw.controller import Controller
+from tdw.librarian import ModelLibrarian
 
 
 class ContainerManager(AddOn):
@@ -61,6 +62,10 @@ class ContainerManager(AddOn):
                     for j in range(segmentation_colors.get_num()):
                         object_id = segmentation_colors.get_object_id(j)
                         model_name = segmentation_colors.get_object_name(j).lower()
+                        # Add the model librarians.
+                        for library_path in ModelLibrarian.get_library_filenames():
+                            if library_path not in Controller.MODEL_LIBRARIANS:
+                                Controller.MODEL_LIBRARIANS[library_path] = ModelLibrarian(library_path)
                         # Fine the model record.
                         for library_path in Controller.MODEL_LIBRARIANS:
                             record = Controller.MODEL_LIBRARIANS[library_path].get_record(model_name)

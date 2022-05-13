@@ -8431,6 +8431,90 @@
             "wcategory": "orange",
             "wnid": "n07747607"
         },
+        "b04_p22732_cc_cp_2013_composite": {
+            "asset_bundle_sizes": {
+                "Darwin": 355652,
+                "Linux": 510349,
+                "Windows": 345852
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.490116e-08,
+                    "y": 0.115834,
+                    "z": -0.09260581
+                },
+                "bottom": {
+                    "x": -1.490116e-08,
+                    "y": -1.490116e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": -1.490116e-08,
+                    "y": 0.115834,
+                    "z": 0
+                },
+                "front": {
+                    "x": -1.490116e-08,
+                    "y": 0.115834,
+                    "z": 0.09260581
+                },
+                "left": {
+                    "x": -0.1394651,
+                    "y": 0.115834,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.139465,
+                    "y": 0.115834,
+                    "z": 0
+                },
+                "top": {
+                    "x": -1.490116e-08,
+                    "y": 0.231668,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": true,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_p22732_cc_cp_2013_composite",
+            "physics_quality": 0.8880208422792515,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b04_p22732_cc_cp_2013_composite"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b04_p22732_cc_cp_2013-handle1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "b04_p22732_cc_cp_2013-handle2"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b04_p22732_cc_cp_2013_composite",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b04_p22732_cc_cp_2013_composite",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b04_p22732_cc_cp_2013_composite"
+            },
+            "volume": 0.0007683485,
+            "wcategory": "water faucet",
+            "wnid": "n04559451"
+        },
         "b04_ramlosa_bottle_2015_vray": {
             "asset_bundle_sizes": {
                 "Darwin": 11229960,
@@ -8907,9 +8991,9 @@
         },
         "b04_wallmounted_soap_dispenser_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 650738,
-                "Linux": 792688,
-                "Windows": 640913
+                "Darwin": 651120,
+                "Linux": 793685,
+                "Windows": 640522
             },
             "bounds": {
                 "back": {
@@ -18892,9 +18976,9 @@
         },
         "cabinet_24_two_drawer_wood_beech_honey_composite": {
             "asset_bundle_sizes": {
-                "Darwin": 14984190,
-                "Linux": 15218690,
-                "Windows": 14972964
+                "Darwin": 14980550,
+                "Linux": 15218982,
+                "Windows": 14972216
             },
             "bounds": {
                 "back": {
@@ -18943,7 +19027,7 @@
             "do_not_use_reason": "",
             "flex": false,
             "name": "cabinet_24_two_drawer_wood_beech_honey_composite",
-            "physics_quality": 0.7750551099774697,
+            "physics_quality": 0.6199985012825505,
             "scale_factor": 1,
             "substructure": [
                 {
@@ -18973,7 +19057,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/cabinet_24_two_drawer_wood_beech_honey_composite",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/cabinet_24_two_drawer_wood_beech_honey_composite"
             },
-            "volume": 0.108467,
+            "volume": 0.1093994,
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },

@@ -2,7 +2,112 @@
 
 `from tdw.add_ons.proc_gen_kitchen import ProcGenKitchen`
 
-TODO
+Procedurally generate a kitchen in a new scene or an existing scene.
+
+## Procedural generation algorithm
+
+This is an explanation of how `proc_gen_kitchen.create()` works.
+
+### 1. Set the random number generator
+
+It is possible to explicitly set the random number generator via the `rng` parameter. Doing so will allow you to recreate the exact same scene later.
+
+### 2. Set `self.room`
+
+If the `scene` parameter is of type [`Room`](../scene_data/room.md) this is straightforward. Otherwise, select a scene from the `scene` parameter (which will be loaded into TDW) and get the `Room` from the `room_index` parameter.
+
+### 3. Select a set of cabinetry
+
+[`Cabinetry`](../proc_gen/arrangements/cabinetry/cabinetry.py) always visually match each other. A `Cabinetry` data object is selected randomly.
+
+### 4. Create a work triangle
+
+A [work triangle](https://kbcrate.com/kitchen-design-kitchen-work-triangle-improve-workspace/) defines the overall design of the kitchen space.
+
+A work triangle is comprised of 1 or more _lateral arrangements_ of [`Arrangement`](../proc_gen/arrangements/arrangement.md) data objects along a wall, starting at a given distance from a corner.
+
+In all lateral arrangements in `ProcGenKitchen`, the following rules are always followed:
+
+- In the wall has windows, tall `Arrangements` will be replaced with shorter `Arrangements`; see `ProcGenKitchen.TALL_ARRANGEMENTS`. For work triangles, tall `Arrangements` will be replaced with [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md).
+- Non-continuous walls (e.g. a wall with a doorway) will never have a lateral arrangement.
+- Each wall has two corresponding corners. For example, a `north` wall has corners `north_west` and `north_east`. One of these corners is selected for the start of the lateral arrangement. Unless otherwise noted, the corner is chosen randomly.
+- A lateral arrangement has a list of `Arrangements`. They may not all fit along the wall, in which case as many `Arrangements` are added as possible.
+
+Work triangle lateral arrangements have the following additional shared rules:
+
+- Each work triangle lateral arrangement has *secondary arrangements* appended to its list to spatially lengthen it. Possibilities are: [[`Basket`](../proc_gen/basket.md), [`Painting`](../proc_gen/painting.md), [`Void`](../proc_gen/void.md), [`Radiator`](../proc_gen/radiator.md), [`Stool`](../proc_gen/stool.md), [`Suitcase`](../proc_gen/suitcase.md)]. The selection is random with weighted probability; see `ProcGenKitchen.SECONDARY_ARRANGEMENTS["append"]`.
+
+In TDW there are four possible work triangles:
+
+#### 4a. Straight
+
+A single lateral arrangement along one of the longer walls.
+
+**Requirements:** At least one continuous longer wall.
+
+1. If one of the longer walls has windows, it will be used for the lateral arrangement. Otherwise, the wall is chosen randomly.
+2. There are two possible lateral arrangements, chosen randomly:
+  - [[`Refrigerator`](../proc_gen/refrigerator.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Sink`](../proc_gen/sink.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Shelf`](../proc_gen/shelf.md)]
+  - [[`Shelf`](../proc_gen/shelf.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Sink`](../proc_gen/sink.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Refrigerator`](../proc_gen/refrigerator.md)]
+
+#### 4b. Parallel
+
+Two lateral arrangements along both longer walls.
+
+**Requirements:** Two continuous longer walls.
+
+1. If one of the longer walls has windows, it will be used for the lateral arrangement with the sink. Otherwise, each lateral arrangement uses a random longer wall.
+2. For the first lateral arrangement, there are two possibilities, chosen randomly:
+  - [[`Refrigerator`](../proc_gen/refrigerator.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Sink`](../proc_gen/sink.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
+  - [[`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Sink`](../proc_gen/sink.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Refrigerator`](../proc_gen/refrigerator.md)]
+3. For the second lateral arrangement, there are two possibilities, chosen randomly:
+  - [[`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
+  - [[`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
+
+#### 4c. L-Shape
+
+One lateral arrangement along a longer wall and one lateral arrangement along a shorter wall. The two arrangements share a common corner.
+
+**Requirements:** At least one continuous longer wall and one continuous shorter wall.
+
+1. If one of the longer walls has windows, it will be used for the longer lateral arrangement. Otherwise, the wall is chosen randomly.
+2. There are two possible longer lateral arrangements, each with a `KitchenCounterTop` at the end. If both shorter walls are continuous, the selected lateral arrangement is random. Otherwise, `ProcGenKitchen` finds a corner shared by the longer wall and a contiuous corner wall and selects the arrangement in which the `KitchenCounterTop` is placed at the common corner; for example if the longer wall is `north` and the only continuous wall is `west` then the longer arrangemnent is the first of the following two options because it `KitchenCounterTop` will be placed at the northwest corner:
+  - [[`KitchenCounterTop`](../proc_gen/kitchen_counter_top.md), [`Sink`](../proc_gen/sink.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Shelf`](../proc_gen/shelf.md)]
+  - [[`Shelf`](../proc_gen/shelf.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Sink`](../proc_gen/sink.md), [`KitchenCounterTop`](../proc_gen/kitchen_counter_top.md)]
+3. The shorter lateral arrangement is placed at the corresponding valid wall (see above). There are two possibilities, chosen randomly:
+  - [[`Void`](../proc_gen/void.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Refrigerator`](../proc_gen/refrigerator.md), [`Shelf`](../proc_gen/shelf.md)]
+  - [[`Void`](../proc_gen/void.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Refrigerator`](../proc_gen/refrigerator.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Shelf`](../proc_gen/shelf.md)]
+
+#### 4d. U-Shape
+
+One lateral arrangement along a longer wall and two lateral arrangements along both shorter walls.
+
+**Requirements:** At least one continuous longer wall and two continuous shorter walls.
+
+1. If one of the longer walls has windows, it will be used for the longer lateral arrangement. Otherwise, the wall is chosen randomly.
+2. There are two possible longer lateral arrangements, chosen randomly:
+  - [[`KitchenCounterTop`](../proc_gen/kitchen_counter_top.md), [`Sink`](../proc_gen/sink.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
+  - [[`KitchenCounterTop`](../proc_gen/kitchen_counter_top.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Sink`](../proc_gen/sink.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
+3. Each of the longer lateral arrangements will have additional 20 `KitchenCounters` appended. It is unlikely that there will ever actually be this many counters. Just before running out of space along the wall, the lateral arrangement will add a `KitchenCounterTop` instead (to anchor the corner).
+4. There are two possible shorter lateral arrangements. The wall on which they appear is chosen randomly:
+  - [[`Void`](../proc_gen/void.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Refrigerator`](../proc_gen/refrigerator.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Shelf`](../proc_gen/shelf.md)]
+  - [[`Void`](../proc_gen/void.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
+
+***
+
+### 5. Add a table
+
+Add a [`KitchenTable`](../proc_gen/arrangements/kitchen_table.md).
+
+The work triangles generate a list of commands and a list of used walls. This list of used walls is used as a parameter in `KitchenTable` to prevent chairs from intersecting with work triangle objects.
+
+### 6. Add secondary arrangements
+
+Add secondary lateral arrangements to unused walls in the main region of the room and the walls of the alcove regions. See: `ProcGenKitchen.SECONDARY_ARRANGEMENTS["main"]` and  `ProcGenKitchen.SECONDARY_ARRANGEMENTS["alcove"]`.
+
+### 7. Step 50 physics frames
+
+This allows objects to stop moving.
 
 ***
 
@@ -10,20 +115,21 @@ TODO
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
-| `TALL_CATEGORIES` | List[str] | Categories of models that are tall and might obscure windows. | `["refrigerator", "shelf"]` |
-| `SECONDARY_CATEGORIES` | Dict[str, Dict[str, int]] | Categories of "secondary objects". | `loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/secondary_categories.json")).read_text())` |
+| `SCENE_NAMES` | List[str] | The names of the default scenes. If the `scene` parameter in `self.create()` isn't set, or is set to None, a random scene from this list will be selected. | `['mm_craftroom_2a', 'mm_craftroom_2b', 'mm_craftroom_3a', 'mm_craftroom_3b', 'mm_kitchen_2a', 'mm_kitchen_2b', 'mm_kitchen_3a', 'mm_kitchen_3b']` |
+| `SECONDARY_ARRANGEMENTS` | Dict[str, Dict[str, int]] | A dictionary of "secondary arrangements". Keys: `"append"` (can be appended to a work triangle lateral arrangement), `"main"` (can be added to a lateral arrangement along an unused wall in the main [region](../scene_data/interior_region.md) of [`self.room`](../scene_data/room.md)), and `"alcove"` (can be added to a lateral arrangement along an unused wall of an alcove region). Value: A dictionary of probabilities and names of arrangements; a higher value means that it is more likely for this arrangement to be randomly selected. | `loads(Path(resource_filename(__name__, "proc_gen_kitchen_data/secondary_categories.json")).read_text())` |
+| `TALL_ARRANGEMENTS` | List[str] | [`Arrangements`](../proc_gen/arrangements/arrangement.md) that are tall and might obscure windows. | `["refrigerator", "shelf"]` |
 
 ***
 
 ## Fields
 
-- `rng` The random number generator
+- `rng` The random number generator.
 
-- `scene_record` The `SceneRecord` for this scene. If the `scene` parameter in the constructor is of type `Room`, `self.scene_record` is None.
+- `scene_record` The `SceneRecord` for this scene. This gets set by `self.create()` and can be None if the `scene` parameter is a [`Room`](../scene_data/room.md).
 
-- `room` The kitchen [`Room`](../scene_data/room.md).
+- `room` The kitchen [`Room`](../scene_data/room.md). This gets set by `self.create()`.
 
-- `cabinetry` The [`KitchenCabinetSet`](../proc_gen/kitchen_cabinets/kitchen_cabinet_set.md). This is set randomly.
+- `cabinetry` The [`KitchenCabinetSet`](../proc_gen/kitchen_cabinets/kitchen_cabinet_set.md). This is set randomly by `self.create()`.
 
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 
@@ -35,16 +141,9 @@ TODO
 
 #### \_\_init\_\_
 
-**`ProcGenKitchen(scene)`**
+**`ProcGenKitchen()`**
 
-**`ProcGenKitchen(scene, create_scene=True, room_index=0, rng=None)`**
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| scene |  Union[str, SceneRecord, Room, List[Union[str, SceneRecord] |  | The scene. Can be `str` (the name of the scene), [`SceneRecord`](../../python/librarian/scene_librarian.md), [`Room`](../scene_data/room.md), or `List[Union[str, SceneRecord]]` (a list of scene names or records, in which case a scene will be randomly selected). The scene must at least one room; see `SceneRecord.rooms`. |
-| create_scene |  bool  | True | If True, create the scene as part of the scene setup (assuming that `scene` is `str` or `SceneRecord`). |
-| room_index |  int  | 0 | The index of the room in `SceneRecord.rooms`. If `scene` is type `Room`, this parameter is ignored. |
-| rng |  Union[int, np.random.RandomState] | None | Either a random seed, a random number generator, or None. If None, a new random number generator is created. |
+(no parameters)
 
 #### get_initialization_commands
 
@@ -77,17 +176,16 @@ This is called before sending commands to the build. By default, this function d
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
-#### reset
+#### create
 
-**`self.reset(scene)`**
+**`self.create(scene)`**
 
-**`self.reset(scene, create_scene=True, room_index=0, rng=None)`**
+**`self.create(scene, room_index=0, rng=None)`**
 
-Reset the add-on. Call this when you reset a scene.
+Procedurally generate a kitchen. The kitchen will be created on the next `controller.communicate()` call.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| scene |  Union[str, SceneRecord, Room, List[Union[str, SceneRecord] |  | The scene. Can be `str` (the name of the scene), `SceneRecord`, `Room`, or `List[Union[str, SceneRecord]]` (a list of scene names or records, in which case a scene will be randomly selected). The scene must at least one room; see `SceneRecord.rooms`. |
-| create_scene |  bool  | True | If True, create the scene as part of the scene setup (assuming that `scene` is `str` or `SceneRecord`). |
-| room_index |  int  | 0 | The index of the room in `SceneRecord.rooms`. If `scene` is type `Room`, this parameter is ignored. |
-| rng |  Union[int, np.random.RandomState] | None | Either a random seed, a random number generator, or None. If None, a new random number generator is created. |
+| scene |  Union[str, SceneRecord, Room, List[Union[str, SceneRecord] |  | Can be a string (the name of a scene), a [`SceneRecord`](../librarian/scene_librarian.md), a list of scene names and/or `SceneRecord` (one will chosen randomly), a [`Room`](../scene_data/room.md), or None. If this is a `Room`, then `ProcGenKitchen` will assume that the scene has already been loaded, and `self.scene_record` will be set to `None`. If `scene=None`, a random scene from `ProcGenKitchen.SCENE_NAMES` will be selected. |
+| room_index |  int  | 0 | The index of the room in `self.scene_record.rooms` (assuming `self.scene_record is not None`; see above). |
+| rng |  Union[int, np.random.RandomState] | None | The random number generator. Can be `int` (a random seed), `np.random.RandomState`, or None (a new random seed will be selected randomly). |

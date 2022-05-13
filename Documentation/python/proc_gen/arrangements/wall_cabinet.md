@@ -9,24 +9,31 @@ A wall cabinet hangs on the wall above a kitchen counter. It can have objects in
   - The wall cabinet's position is automatically adjusted to set it flush to the wall.
   - The wall cabinet is automatically rotated so that it faces away from the wall.
   - The wall cabinet is at a fixed height from the wall, see `WALL_CABINET.Y`.
-- The wall cabinet always has objects inside of it. The contents are random:
+- The wall cabinet always has objects inside it. The contents are random:
   - Sometimes, there is a [`StackOfPlates`](stack_of_plates.md); see `WallCabinet.PROBABILITY_STACK_OF_PLATES`, `WallCabinet.MIN_NUM_PLATES`, and `WallCabinet.MAX_NUM_PLATES`.
   - Sometimes, there is a rectangular arrangement of random objects; see `WallCabinet.PROBABILITY_CUPS`.
+    - The objects are chosen randomly; see `WallCabinet.ENCLOSED_BY["wall_cabinet"]`.
+    - The objects are positioned in a rectangular grid inside the wall cabinet with random positional perturbations.
+    - The objects have random rotations (0 to 360 degrees).
 - The root object of the wall cabinet is kinematic and the door sub-objects are non-kinematic.
 
 ***
 
 ## Fields
 
-- `root_object_id` The ID of the root object.
-
-- `object_ids` A list of all of the object IDs in this arrangement.
+- `send_commands` If True, send commands when `self.get_commands()` is called. If False, `self.get_commands()` will return an empty list.
 
 - `root_object_id` The ID of the root object.
 
 - `object_ids` A list of all of the object IDs in this arrangement.
 
+- `root_object_id` The ID of the root object.
+
 - `object_ids` A list of all of the object IDs in this arrangement.
+
+- `object_ids` A list of all of the object IDs in this arrangement.
+
+- `send_commands` If True, send commands when `self.get_commands()` is called. If False, `self.get_commands()` will return an empty list.
 
 - `root_object_id` The ID of the root object.
 
@@ -44,15 +51,15 @@ A wall cabinet hangs on the wall above a kitchen counter. It can have objects in
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
+| `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
+| `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
 | `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
+| `MAX_NUM_PLATES` | int | The maximum number of plates in a stack of plates. | `8` |
+| `MIN_NUM_PLATES` | int | The minimum number of plates in a stack of plates. | `3` |
 | `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
 | `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
-| `PROBABILITY_STACK_OF_PLATES` | float | To decide what is within the cabinet, a random number between 0 and 1 is generated. If the number is below this value, a [`StackOfPlates`](stack_of_plates.md) is added. | `0.33` |
-| `MIN_NUM_PLATES` | int | The minimum number of plates in a stack of plates. | `3` |
 | `PROBABILITY_CUPS` | float | To decide what is within the cabinet, a random number between 0 and 1 is generated. If the number is below this value, a rectangular arrangement of cups and glasses is added. If the number is above this value, random objects are added (see `WallCabinet.ENCLOSED_BY["wall_cabinet"]`). | `0.66` |
-| `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
-| `MAX_NUM_PLATES` | int | The maximum number of plates in a stack of plates. | `8` |
-| `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
+| `PROBABILITY_STACK_OF_PLATES` | float | To decide what is within the cabinet, a random number between 0 and 1 is generated. If the number is below this value, a [`StackOfPlates`](stack_of_plates.md) is added. | `0.33` |
 | `Y` | float | The value of the y positional coordinate (the height) of the wall cabinet. | `1.289581` |
 
 ***

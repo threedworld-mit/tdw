@@ -433,6 +433,11 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [Void](Documentation/python/proc_gen/arrangements/void.md)
 - [WallCabinet](Documentation/python/proc_gen/arrangements/wall_cabinet.md)
 
+**tdw.proc_gen.arrangements.cabinetry**
+
+- [Cabinetry](Documentation/python/proc_gen/arrangements/cabinetry/cabinetry.md)
+- [CabinetryType](Documentation/python/proc_gen/arrangements/cabinetry/cabinetry_type.md)
+
 **tdw.release**
 
 - [Build](Documentation/python/release/build.md)

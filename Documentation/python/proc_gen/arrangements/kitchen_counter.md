@@ -11,9 +11,15 @@ A kitchen counter can have objects on it and inside it.
 - A kitchen counter longer than 0.7 meters may have a [`Microwave`](microwave.md); see `allow_microwave` in the constructor.
   - If the kitchen counter does _not_ have a microwave:
     - If the kitchen counter is alongside a wall without windows and has a corresponding wall cabinet model, a [`WallCabinet`](wall_cabinet.md) will be added above it; see `KitchenCounter.COUNTERS_AND_CABINETS`.
-    - The kitchen counter will have a rectangular arrangement of objects on top of it. The objects are chosen randomly; see `KitchenCounter.ON_TOP_OF["kitchen_counter"]`.
+    - The kitchen counter will have a rectangular arrangement of objects on top of it.
+      - The objects are chosen randomly; see `KitchenCounter.ON_TOP_OF["kitchen_counter"]`.
+      - The objects are positioned in a rectangular grid on the counter top with random positional perturbations.
+      - The objects have random rotations (0 to 360 degrees).
 - The interior of the kitchen counter may be empty; see `empty` in the constructor.
-  - If the interior is _not_ empty, the kitchen counter will have a rectangular arrangement of objects inside of it. The objects are chosen randomly; see `KitchenCounter.ENCLOSED_BY["kitchen_counter"]`.
+  - If the interior is _not_ empty, the kitchen counter will have a rectangular arrangement of objects inside its cabinet.
+    - The objects are chosen randomly; see `KitchenCounter.ENCLOSED_BY["kitchen_counter"]`.
+    - The objects are positioned in a rectangular grid inside the cabinet with random positional perturbations.
+    - The objects have random rotations (0 to 360 degrees).
 - All kitchen counters have doors that can open.
 - The root object of the kitchen counter is kinematic and the door sub-objects are non-kinematic.
 
@@ -23,12 +29,12 @@ A kitchen counter can have objects on it and inside it.
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
-| `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
-| `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
-| `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
 | `COUNTERS_AND_CABINETS` | Dict[str, str] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/counters_and_cabinets.json")).read_text())` |
 | `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
 | `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
+| `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
+| `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
+| `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
 
 ***
 
@@ -36,15 +42,19 @@ A kitchen counter can have objects on it and inside it.
 
 - `has_microwave` If True, this kitchen counter has a microwave.
 
-- `root_object_id` The ID of the root object.
-
-- `object_ids` A list of all of the object IDs in this arrangement.
+- `send_commands` If True, send commands when `self.get_commands()` is called. If False, `self.get_commands()` will return an empty list.
 
 - `root_object_id` The ID of the root object.
 
 - `object_ids` A list of all of the object IDs in this arrangement.
 
+- `root_object_id` The ID of the root object.
+
 - `object_ids` A list of all of the object IDs in this arrangement.
+
+- `object_ids` A list of all of the object IDs in this arrangement.
+
+- `send_commands` If True, send commands when `self.get_commands()` is called. If False, `self.get_commands()` will return an empty list.
 
 - `root_object_id` The ID of the root object.
 

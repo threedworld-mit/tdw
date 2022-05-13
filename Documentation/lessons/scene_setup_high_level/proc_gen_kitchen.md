@@ -134,43 +134,6 @@ Result:
 
 The `room_index` parameter is mostly for future-proofing `ProcGenKitchen` for a time when it can be used in a multi-room scene; this parameter should almost always be set to 0 (the default value).
 
-## `ProcGenKitchen` models
-
-The models used in `ProcGenKitchen` are stored [`Arrangement.MODEL_CATEGORIES`](../../python/proc_gen/arrangement.md). This is dictionary that has been curated from the overall list of models. The key of `Arrangement.MODEL_CATEGORIES` is a "proc-gen category", which overlaps with [`model_record.wcategory`](../../python/librarian/model_librarian.md) but is often not the same. For example, in TDW kitchen counters and wall cabinets have the same `wcategory` but not the same proc-gen category:
-
-```python
-from tdw.proc_gen.arrangements.arrangement import Arrangement
-from tdw.librarian import ModelLibrarian
-
-lib = ModelLibrarian()
-model_names = ["cabinet_24_wall_wood_beech_honey_composite",
-               "cabinet_24_single_door_wood_beech_honey_composite"]
-for model_name in model_names:
-    # Get the proc-gen category.
-    for category in Arrangement.MODEL_CATEGORIES:
-        if model_name in Arrangement.MODEL_CATEGORIES[category]:
-            # Get the record.
-            record = lib.get_record(model_name)
-            print(category, record.wcategory)
-```
-
-Output:
-
-```
-wall_cabinet cabinet
-kitchen_counter cabinet
-```
-
-To add a model to `MODEL_CATEGORIES`, simply add the model name to the dictionary in your controller:
-
-```python
-from tdw.proc_gen.arrangements.arrangement import Arrangement
-
-Arrangement.MODEL_CATEGORIES["knife"].append("knife1")
-```
-
-Note that `knife1` is a pre-existing model in `models_core.json` but not included in `Arrangment.MODEL_CATEGORIES`.
-
 ## `ProcGenKitchen` and other add-ons
 
 `ProcGenKitchen` is meant to be as modular as possible and it can be combined with other add-ons and commands. You've already seen that it's possible use `ProcGenKitchen` along with [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md) and [`ImageCapture`](../../python/add_ons/image_capture.md).

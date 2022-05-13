@@ -86,24 +86,24 @@ record = ModelRecord(data=data) # Creates a record from JSON data.
 
 ### Fields
 
-| Field                 | Type                           | Description                                                  |
-| --------------------- | ------------------------------ | ------------------------------------------------------------ |
-| `name`                | str                            | The name of the model.                                       |
-| `urls`                | Dict[str, str]                 | A dictionary of URLs or local filepaths of asset bundles per platform. See: `ModelRecord.get_url()` |
-| `wnid`                | str                            | The WordNet/ImageNet semantic category ID of the model.      |
-| `wcategory`           | str                            | The category description associated with the wnid. Required for the `_category` image pass to work correctly. |
-| `scale_factor`        | float                          | When the model is first loaded into the build, it will be scaled from its default size by this factor. |
-| `flex`                | bool                           | If true, this model is Flex-compatible.                      |
-| `do_not_use`          | bool                           | If true, there is something wrong with this model (we're working on it!). The build will still load the model if prompted; this is just a warning for you. |
-| `do_not_use_reason`   | str                            | If `do_not_use == True`, this is a brief reason why.         |
-| `substructure`        | List[dict]                     | A list of all sub-objects in the model and their visual materials. Use this with the `set_visual_material` command.<br> Each element is a dictionary structured as: `{"name": "sub-object", "materials": ["material", "material", "etc."]}` |
-| `bounds`              | Dict[str, Dict[str, float]]    | A list of points around the object defining its bounds after being scaled by the `scale_factor`. |
-| `canonical_rotation`  | Dict[str, float]               | The Vector3 Euler angles that the object should face if an avatar is loaded into the scene (and the avatar isn't rotated). |
-| `physics_quality`     | float                          | The percentage of the object's mesh covered by colliders.    |
-| `asset_bundle_sizes`  | Dict[str, int]                 | A dictionary of asset bundle sizes. Key=Platform. Value=The size of the binary in bytes. |
-| `composite_object`    | bool                           | If true, this model is a composite object.                   |
-| `volume`              | float                          | The volume of the object in cubic meters.                    |
-| `container_colliders` | List[ContainerTriggerCollider] | A list of [`ContainerTriggerCollider`](../container_data/container_trigger_collider.md) data. This data is used by several add-ons, notably [`ContainerManager`](../add_ons/container_manager.md). |
+| Field                | Type                        | Description                                                  |
+| -------------------- | --------------------------- | ------------------------------------------------------------ |
+| `name`               | str                         | The name of the model.                                       |
+| `urls`               | Dict[str, str]              | A dictionary of URLs or local filepaths of asset bundles per platform. See: `ModelRecord.get_url()` |
+| `wnid`               | str                         | The WordNet/ImageNet semantic category ID of the model.      |
+| `wcategory`          | str                         | The category description associated with the wnid. Required for the `_category` image pass to work correctly. |
+| `scale_factor`       | float                       | When the model is first loaded into the build, it will be scaled from its default size by this factor. |
+| `flex`               | bool                        | If true, this model is Flex-compatible.                      |
+| `do_not_use`         | bool                        | If true, there is something wrong with this model (we're working on it!). The build will still load the model if prompted; this is just a warning for you. |
+| `do_not_use_reason`  | str                         | If `do_not_use == True`, this is a brief reason why.         |
+| `substructure`       | List[dict]                  | A list of all sub-objects in the model and their visual materials. Use this with the `set_visual_material` command.<br> Each element is a dictionary structured as: `{"name": "sub-object", "materials": ["material", "material", "etc."]}` |
+| `bounds`             | Dict[str, Dict[str, float]] | A list of points around the object defining its bounds after being scaled by the `scale_factor`. |
+| `canonical_rotation` | Dict[str, float]            | The Vector3 Euler angles that the object should face if an avatar is loaded into the scene (and the avatar isn't rotated). |
+| `physics_quality`    | float                       | The percentage of the object's mesh covered by colliders.    |
+| `asset_bundle_sizes` | Dict[str, int]              | A dictionary of asset bundle sizes. Key=Platform. Value=The size of the binary in bytes. |
+| `composite_object`   | bool                        | If true, this model is a composite object.                   |
+| `volume`             | float                       | The volume of the object in cubic meters.                    |
+| `container_shapes`   | List[ContainerShape]        | A list of [`ContainerShape`](../container_data/container_shape.md) data. This data is used by the [`ContainerManager`](../add_ons/container_manager.md) add-on. |
 
 ### Functions
 

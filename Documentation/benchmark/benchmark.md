@@ -69,6 +69,16 @@
 
 **FPS: 201**
 
+### 5. Kitchen benchmark
+
+- There is a pre-defined procedurally-generated kitchen (the commands are loaded from a .json file)
+- Requested output data per-frame:
+  - `Transforms`
+  - `DynamicCompositeObjects`
+  - `Overlap` (for containment)
+
+**FPS: 56 TODO update this and add to main.py**
+
 ## How to run TDW's main performance benchmark
 
 1. If you haven't done so already, [clone the TDW repo](https://github.com/threedworld-mit/tdw)

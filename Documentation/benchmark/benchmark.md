@@ -77,7 +77,7 @@
   - `DynamicCompositeObjects`
   - `Overlap` (for containment)
 
-**FPS: 56 TODO update this and add to main.py**
+**FPS: 65**
 
 ## How to run TDW's main performance benchmark
 

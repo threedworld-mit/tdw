@@ -1,10 +1,10 @@
 # CHANGELOG
 
-# v1.9.x
+# v1.10.x
 
-To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
+To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
-## v1.9.18
+## v1.10.0
 
 ### Command API
 
@@ -35,6 +35,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - Replaced `ModelRecord.container_colliders` with `ModelRecord.container_shapes`
   - Replaced `ContainmentEvent.object_id` (the ID of the contained object) with `ContainmentEvent.object_ids` (a numpy array of all contained objects)
 
+### Benchmark
+
+- Added kitchen benchmark to `PerformanceBenchmarkController` and `main.py`
+
 ### Documentation
 
 #### Modified Documentation
@@ -43,6 +47,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | ---------------------------------------- | ------------------------------------------------------------ |
 | `lessons/semantic_states/containment.md` | Rewrote most of the document and replaced some images in order to describe container shapes. |
 | `python/container_data/`                 | Removed old API documents (e.g. `container_collider_tag.md`) and added new API documents (e.g. `container_tag.md`). |
+| `benchmark/benchmark.md`                 | Added explanation and FPS of kitchen benchmark.              |
+
+# v1.9.x
+
+To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
 ## v1.9.17
 

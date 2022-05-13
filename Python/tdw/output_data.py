@@ -1441,35 +1441,42 @@ class StaticCompositeObjects(OutputData):
 
 
 class DynamicCompositeObjects(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._hinge_ids = self.data.HingeIdsAsNumpy().reshape(-1, 2)
+        self._hinges = self.data.HingesAsNumpy().reshape(-1, 2)
+        self._light_ids = self.data.LightIdsAsNumpy().reshape(-1, 2)
+        self._lights = self.data.LightsAsNumpy()
+
     def get_data(self) -> DynComp.DynamicCompositeObjects:
         return DynComp.DynamicCompositeObjects.GetRootAsDynamicCompositeObjects(self.bytes, 0)
 
-    def get_num(self) -> int:
-        return self.data.ObjectsLength()
+    def get_num_hinges(self) -> int:
+        return self._hinge_ids.shape[0]
 
-    def get_object_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+    def get_hinge_parent_id(self, index: int) -> int:
+        return self._hinge_ids[index][0]
 
-    def get_num_hinges(self, index: int) -> int:
-        return self.data.Objects(index).HingesLength()
+    def get_hinge_id(self, index: int) -> int:
+        return self._hinge_ids[index][1]
 
-    def get_hinge_id(self, index: int, hinge_index: int) -> int:
-        return self.data.Objects(index).Hinges(hinge_index).Id()
+    def get_hinge_angle(self, index: int) -> float:
+        return self._hinges[index][0]
 
-    def get_hinge_angle(self, index: int, hinge_index: int) -> float:
-        return self.data.Objects(index).Hinges(hinge_index).Angle()
+    def get_hinge_velocity(self, index: int) -> float:
+        return self._hinges[index][1]
 
-    def get_hinge_velocity(self, index: int, hinge_index: int) -> float:
-        return self.data.Objects(index).Hinges(hinge_index).Velocity()
+    def get_num_lights(self) -> int:
+        return self._light_ids.shape[0]
 
-    def get_num_lights(self, index: int) -> int:
-        return self.data.Objects(index).LightsLength()
+    def get_light_parent_id(self, index: int) -> int:
+        return self._light_ids[index][0]
 
-    def get_light_id(self, index: int, light_index: int) -> int:
-        return self.data.Objects(index).Lights(light_index).Id()
+    def get_light_id(self, index: int) -> int:
+        return self._light_ids[index][1]
 
-    def get_light_is_on(self, index: int, light_index: int) -> bool:
-        return self.data.Objects(index).Lights(light_index).IsOn()
+    def get_light_is_on(self, index: int) -> bool:
+        return self._lights[index]
 
 
 class ObiParticles(OutputData):

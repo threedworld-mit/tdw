@@ -352,6 +352,14 @@
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
 | [`unparent_object`](#unparent_object) | Unparent an object from an object. If the textured quad doesn't have a parent, this command doesn't do anything. |
 
+**Add Container Shape Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_box_container`](#add_box_container) | Add a box container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
+| [`add_cylinder_container`](#add_cylinder_container) | Add a cylindrical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
+| [`add_sphere_container`](#add_sphere_container) | Add a spherical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
+
 **Flex Object Command**
 
 | Command | Description |
@@ -588,6 +596,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_collider_intersections`](#send_collider_intersections) | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider.  |
+| [`send_containment`](#send_containment) | Send containment data using container shapes. See: <computeroutput>add_box_container</computeroutput>, <computeroutput>add_cylinder_container</computeroutput>, and <computeroutput>add_sphere_container</computeroutput>. Container shapes will check for overlaps with other objects.  |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
 | [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
 | [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations.  |
@@ -4782,6 +4791,88 @@ Unparent an object from an object. If the textured quad doesn't have a parent, t
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
+# AddContainerShapeCommand
+
+These commands add container shapes to an object. Container shapes will check each frame for whether their container shapes overlap with other objects and send output data accordingly.
+
+***
+
+## **`add_box_container`**
+
+Add a box container shape to an object. The object will send output data whenever other objects overlap with this volume. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "add_box_container", "id": 1}
+```
+
+```python
+{"$type": "add_box_container", "id": 1, "half_extents": {"x": 1, "y": 1, "z": 1}, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"half_extents"` | Vector3 | The half extents of the box. | {"x": 1, "y": 1, "z": 1} |
+| `"rotation"` | Vector3 | The rotation of the box in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
+| `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`add_cylinder_container`**
+
+Add a cylindrical container shape to an object. The object will send output data whenever other objects overlap with this volume. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "add_cylinder_container", "id": 1}
+```
+
+```python
+{"$type": "add_cylinder_container", "id": 1, "radius": 0.5, "height": 1, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"radius"` | float | The radius of the cylinder. | 0.5 |
+| `"height"` | float | The height of the cylinder. | 1 |
+| `"rotation"` | Vector3 | The rotation of the cylinder in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
+| `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`add_sphere_container`**
+
+Add a spherical container shape to an object. The object will send output data whenever other objects overlap with this volume. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "add_sphere_container", "id": 1}
+```
+
+```python
+{"$type": "add_sphere_container", "id": 1, "radius": 0.5, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"radius"` | float | The radius of the sphere. | 0.5 |
+| `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
+| `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
 # FlexObjectCommand
 
 These commands apply only to objects that already have FlexActor components.
@@ -7270,6 +7361,38 @@ Send data for collider intersections between pairs of objects and between single
 | --- | --- | --- | --- |
 | `"obj_intersection_ids"` | int [] | Pairs of object IDs, for example <computeroutput>[[0, 1], [0, 2]]</computeroutput>. Object IDs pairs in this array will be tested for collider intersections with each other. | [] |
 | `"env_intersection_ids"` | int [] | A one-dimensional list of object IDs, for example <computeroutput>[0, 1, 2]</computeroutput>. Object IDs in this list will be tested for collider intersections with the environment. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_containment`**
+
+Send containment data using container shapes. See: <computeroutput>add_box_container</computeroutput>, <computeroutput>add_cylinder_container</computeroutput>, and <computeroutput>add_sphere_container</computeroutput>. Container shapes will check for overlaps with other objects. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "send_containment"}
+```
+
+```python
+{"$type": "send_containment", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

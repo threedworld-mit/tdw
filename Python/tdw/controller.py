@@ -36,7 +36,7 @@ class Controller:
     HUMANOID_ANIMATION_LIBRARIANS: Dict[str, HumanoidAnimationLibrarian] = dict()
     ROBOT_LIBRARIANS: Dict[str, RobotLibrarian] = dict()
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+    def __init__(self, port: int = 1072, check_version: bool = True, launch_build: bool = True):
         """
         Create the network socket and bind the socket to the port.
 

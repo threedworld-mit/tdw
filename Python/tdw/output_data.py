@@ -1193,7 +1193,6 @@ class LocalTransforms(OutputData):
     def get_data(self) -> LocalTran.LocalTransforms:
         return LocalTran.LocalTransforms.GetRootAsLocalTransforms(self.bytes, 0)
 
-
     def get_num(self) -> int:
         return len(self._ids)
 

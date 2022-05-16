@@ -223,30 +223,30 @@ class Obi(AddOn):
         commands[-1]["volume_type"] = volume_type.name
         self.commands.extend(commands)
 
-        def create_softbody(self, object_id: int, softbody_material: Union[str, SoftBodyMaterial],
+    def create_softbody(self, object_id: int, softbody_material: Union[str, SoftBodyMaterial],
                                 position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                                 scale_factor: Dict[str, float] = None, solver_id: int = 0) -> None:
-            """
-            Create a softbody object.
+        """
+        Create a softbody object.
 
-            :param object_id: The unique ID of the cloth sheet.
-            :param sotbody_material: Either a [SoftBodyMaterial`](../obi_data/cloth/cloth_material.md) or the name of a softbody material (see `Softbody.SOFTBODY_MATERIALS`)).
-            :param position: The position of the cloth volume. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-            :param rotation: The rotation of the cloth volume, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-            :param scale_factor: The scale factor of the mesh. If None, defaults to `{"x": 1, "y": 1, "z": 1}`.
-            :param solver_id: The ID of the Obi solver.
-            """
+        :param object_id: The unique ID of the cloth sheet.
+        :param sotbody_material: Either a [SoftBodyMaterial`](../obi_data/cloth/cloth_material.md) or the name of a softbody material (see `Softbody.SOFTBODY_MATERIALS`)).
+        :param position: The position of the cloth volume. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The rotation of the cloth volume, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param scale_factor: The scale factor of the mesh. If None, defaults to `{"x": 1, "y": 1, "z": 1}`.
+        :param solver_id: The ID of the Obi solver.
+        """
 
-            if scale_factor is None:
-                scale_factor = {"x": 1, "y": 1, "z": 1}
-            commands = self._get_softbody_commands(object_id=object_id,
-                                                   softbody_material=softbody_material,
-                                                   position=position,
-                                                   rotation=rotation,
-                                                   solver_id=solver_id,
-                                                   command_name="create_obi_softbody")
-            commands[-1]["scale_factor"] = scale_factor
-            self.commands.extend(commands)
+        if scale_factor is None:
+            scale_factor = {"x": 1, "y": 1, "z": 1}
+        commands = self._get_softbody_commands(object_id=object_id,
+                                               softbody_material=softbody_material,
+                                               position=position,
+                                               rotation=rotation,
+                                               solver_id=solver_id,
+                                               command_name="create_obi_softbody")
+        commands[-1]["scale_factor"] = scale_factor
+        self.commands.extend(commands)
 
     def set_fluid_speed(self, object_id: int, speed: float) -> None:
         """
@@ -370,3 +370,40 @@ class Obi(AddOn):
                  "position": position,
                  "rotation": rotation,
                  "solver_id": solver_id}]
+
+    @staticmethod
+    def _get_softbody_commands(object_id: int, command_name: str, softbody_material: Union[str, SoftBodyMaterial],
+                               position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+                               solver_id: int = 0) -> List[dict]:
+        """
+        :param object_id: The unique ID of the softbody object.
+        :param command_name: The name of the command.
+        :param sotbody_material: Either a [SoftBodyMaterial`](../obi_data/cloth/cloth_material.md) or the name of a softbody material (see `Softbody.SOFTBODY_MATERIALS`)).
+        :param position: The position of the softbody object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The rotation of the softbody object, in Euler angles.  If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param solver_id: The ID of the Obi solver.
+
+        :return: A list of commands to add a cloth object. The last command actually adds the cloth, but is incomplete and needs more parameters; see `create_cloth_sheet()` and `create_cloth_volume()`.		
+        """
+
+        # Set a default position and rotation.
+        if position is None:
+            position = {"x": 0, "y": 0, "z": 0}
+        if rotation is None:
+            rotation = {"x": 0, "y": 0, "z": 0}
+        # Get the softbody material. If it's a string, it's a preset.
+        if isinstance(softbody_material, str):
+            if softbody_material in SOFTBODY_MATERIALS:
+                f = SOFTBODY_MATERIALS[softbody_material]
+            else:
+                raise Exception(f"softbody_material not found: {softbody_material}")
+        else:
+            f = softbody_material
+        return [Controller.get_add_material(material_name=f.visual_material, library="materials_med.json"),
+                {"$type": command_name,
+                 "id": object_id,
+                 "softbody_material": f.to_dict(),
+                 "position": position,
+                 "rotation": rotation,
+                 "solver_id": solver_id}]
+

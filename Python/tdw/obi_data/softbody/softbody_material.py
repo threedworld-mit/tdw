@@ -84,7 +84,7 @@ class SoftBodyMaterial:
 
 
 def __get() -> Dict[str, SoftBodyMaterial]:
-    data = loads(Path(resource_filename(__name__, "data/cloth_materials.json")).read_text())
+    data = loads(Path(resource_filename(__name__, "data/softbody_materials.json")).read_text())
     materials = dict()
     for k in data:
         materials[k] = SoftBodyMaterial(**data[k])

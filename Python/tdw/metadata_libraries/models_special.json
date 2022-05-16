@@ -359,6 +359,78 @@
             "wcategory": "cabinet",
             "wnid": "n02933112"
         },
+        "floating_counter_top_counter_top": {
+            "asset_bundle_sizes": {
+                "Darwin": 438191,
+                "Linux": 674693,
+                "Windows": 429126
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 1241.66,
+                    "z": -53.46681
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -3.466808
+                },
+                "center": {
+                    "x": 0,
+                    "y": 1241.66,
+                    "z": -3.466808
+                },
+                "front": {
+                    "x": 0,
+                    "y": 1241.66,
+                    "z": 46.53319
+                },
+                "left": {
+                    "x": -50,
+                    "y": 1241.66,
+                    "z": -3.466808
+                },
+                "right": {
+                    "x": 50,
+                    "y": 1241.66,
+                    "z": -3.466808
+                },
+                "top": {
+                    "x": 0,
+                    "y": 2483.32,
+                    "z": -3.466808
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "floating_counter_top_counter_top",
+            "physics_quality": 0.3686707952364967,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_grey_dark"
+                    ],
+                    "name": "floating_counter_top_counter_top"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/floating_counter_top_counter_top",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/floating_counter_top_counter_top",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/floating_counter_top_counter_top"
+            },
+            "volume": 0.01441159,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "fluid_receptacle1m_round": {
             "asset_bundle_sizes": {
                 "Darwin": 741113,

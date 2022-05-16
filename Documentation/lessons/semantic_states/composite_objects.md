@@ -144,7 +144,7 @@ c.communicate({"$type": "terminate"})
 
 `composite_object_manager.dynamic` is a dictionary of dynamic data that is updated per-frame. The dictionary key is the root object ID and the value is a [`CompositeObjectDynamic`](../../python/object_data/composite_object/composite_object_dynamic.md).
 
-In this example, we'll add the microwave to the scene but set its initial position high above the floor and its initial pitch angle facing downwards; this will cause the door to open. The controller will then print the angle of the door at the start and end of the simulation:
+In this example, we'll add a microwave to the scene but set its initial position high above the floor and its initial pitch angle facing downwards; this will cause the door to open. The controller will then print the angle of the door at the start and end of the simulation:
 
 ```python
 from tdw.controller import Controller

@@ -57,6 +57,12 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 ### Documentation
 
+#### New Documentation
+
+| Document                          | Description    |
+| --------------------------------- | -------------- |
+| `upgrade_guides/v1.9_to_v1.10.md` | Upgrade guide. |
+
 #### Modified Documentation
 
 | Document                                 | Modification                                                 |

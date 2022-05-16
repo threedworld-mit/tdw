@@ -17,6 +17,21 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `add_sphere_container`   | Add a spherical container shape to an object.          |
 | `send_containment`       | Send `Overlap` output data from every container shape. |
 
+### Output Data
+
+#### Modified Output Data
+
+| Output Data               | Modification                                                 |
+| ------------------------- | ------------------------------------------------------------ |
+| `Transforms`              | Significant speed improvement.<br>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
+| `Rigidbodies`             | Significant speed improvement.<br/>`get_velocity(index)` and `get_angular_velocity(index)` return a numpy arrays instead of tuples. |
+| `StaticRigidbodies`       | Significant speed improvement.                               |
+| `Bounds`                  | Significant speed improvement.<br>`get_front(index)`, `get_back(index)`, etc. return numpy arrays instead of tuples. |
+| `SegmentationColors`      | `get_object_color(index)` returns a numpy array instead of a tuple. |
+| `Volumes`                 | Significant speed improvement.                               |
+| `LocalTransforms`         | Significant speed improvement.<br/>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
+| `DynamicCompositeObjects` | Significant speed improvement.<br>Restructured how hinge and light data is stored and returned. |
+
 ### `tdw` module
 
 - `ContainerManager` now uses "container shapes" instead of trigger colliders. Trigger colliders are a built-in feature of Unity that detect non-physics collisions. They generate lots of event data, causing `ContainerManager` to be very slow in complex scenes. Now, `ContainerManager` sends "container shape" commands such as `add_box_container`, which define a 3D space without a trigger collider. Per-frame, container shapes will send `Overlap` data instead of `TriggerCollision` data. The result is that `ContainerManager` is much faster now.
@@ -34,6 +49,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
   - Renamed `ContainerColliderTag` to `ContainerTag`
   - Replaced `ModelRecord.container_colliders` with `ModelRecord.container_shapes`
   - Replaced `ContainmentEvent.object_id` (the ID of the contained object) with `ContainmentEvent.object_ids` (a numpy array of all contained objects)
+- The data classes used in `DynamicCompositeObjects` (`CompositeObjectDynamic`, `HingeDynamic`, `LightDynamic`, and `SubObjectDynamic`) all take different constructor parameters. They are otherwise unchanged. The API for `CompositeObjectManager` is the same as before.
 
 ### Benchmark
 

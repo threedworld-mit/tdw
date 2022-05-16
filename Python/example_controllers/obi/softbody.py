@@ -12,6 +12,8 @@ camera = ThirdPersonCamera(position={"x": -3.75, "y": 1.5, "z": -0.5},
                            look_at={"x": 0, "y": 1.25, "z": 0})
 obi = Obi()
 c.add_ons.extend([camera, obi])
+# Increase the solver substeps to accommodate the high viscosity and smoothing and make the fluid behave more like jam.
+obi.set_solver(substeps=2)
 # Create a softbody object.
 obi.create_softbody(softbody_material="hard_rubber",
                     object_id=Controller.get_unique_id(),
@@ -20,6 +22,6 @@ obi.create_softbody(softbody_material="hard_rubber",
 commands = [TDWUtils.create_empty_room(12, 12)]
 c.communicate(commands)
 # Let the cloth fall.
-for i in range(150):
+while True:
     c.communicate([])
 #c.communicate({"$type": "terminate"})

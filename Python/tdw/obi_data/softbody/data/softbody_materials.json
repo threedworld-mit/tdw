@@ -1,12 +1,12 @@
 {
   "hard_rubber": {
     "deformation_resistance": 1.0,
-    "max_deformation": 0,
-    "plastic_yield": 0,
-    "plastic_creep": 0,
+    "max_deformation": 1.0,
+    "plastic_yield": 0.5,
+    "plastic_creep": 0.8,
     "plastic_recovery": 0,
     "surface_sampling_resolution": 16,
-    "shape_analysis_resolution": 24,
+    "shape_analysis_resolution": 48,
     "shape_analysis_smoothing": 0.25,
 	"visual_material": "cotton_jean_light_blue",
 	"texture_scale": {"x": 4, "y": 4},

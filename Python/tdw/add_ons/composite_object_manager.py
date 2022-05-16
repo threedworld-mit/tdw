@@ -57,7 +57,7 @@ class CompositeObjectManager(AddOn):
                                                           angle=dynamic_composite_objects.get_hinge_angle(j),
                                                           velocity=dynamic_composite_objects.get_hinge_velocity(j)))
                 for j in range(dynamic_composite_objects.get_num_lights()):
-                    object_id = dynamic_composite_objects.get_light_id(j)
+                    object_id = dynamic_composite_objects.get_light_parent_id(j)
                     if object_id not in lights:
                         lights[object_id] = list()
                     lights[object_id].append(LightDynamic(sub_object_id=dynamic_composite_objects.get_light_id(j),
@@ -67,8 +67,8 @@ class CompositeObjectManager(AddOn):
                 object_ids = list(sorted(set(object_ids)))
                 for object_id in object_ids:
                     o = CompositeObjectDynamic(object_id=object_id,
-                                               hinges=hinges[object_id] if object_id in hinges else [],
-                                               lights=lights[object_id] if object_id in lights else [])
+                                               hinges={hinge.sub_object_id: hinge for hinge in hinges[object_id]} if object_id in hinges else {},
+                                               lights={light.sub_object_id: light for light in lights[object_id]} if object_id in lights else {})
                     self.dynamic[o.object_id] = o
 
     def is_open(self, object_id: int, sub_object_id: int, open_at: float = 30) -> bool:

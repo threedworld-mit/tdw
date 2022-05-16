@@ -14,4 +14,4 @@ class SubObjectDynamic(ABC):
         """:field
         The ID of this sub-object.
         """
-        self.sub_object_id: int = sub_object_id
+        self.sub_object_id: int = int(sub_object_id)

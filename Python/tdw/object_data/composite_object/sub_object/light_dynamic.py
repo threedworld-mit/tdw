@@ -16,4 +16,4 @@ class LightDynamic(SubObjectDynamic):
         """:field
         If True, the light is on.
         """
-        self.is_on: bool = is_on
+        self.is_on: bool = bool(is_on)

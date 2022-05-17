@@ -23,13 +23,12 @@ class Cabinetry:
     """
 
     def __init__(self, name: Union[str, CabinetryType], kitchen_counters: List[str], wall_cabinets: List[str],
-                 sinks: List[str], counter_top_material: str):
+                 sinks: List[str]):
         """
         :param name: The name of the cabinetry set.
         :param kitchen_counters: A list of names of kitchen counter models.
         :param wall_cabinets: A list of names of wall cabinet models.
         :param sinks: A list of names of kitchen sink models.
-        :param counter_top_material: The name of the kitchen countertop material.
         """
 
         if isinstance(name, CabinetryType):
@@ -53,10 +52,6 @@ class Cabinetry:
         A list of names of kitchen sink models.
         """
         self.sinks: List[str] = sinks
-        """:field
-        The name of the kitchen countertop material.
-        """
-        self.counter_top_material: str = counter_top_material
 
 
 CABINETRY: Dict[CabinetryType, Cabinetry] = json.loads(Path(resource_filename(__name__, "cabinetry.json")).read_text(), cls=_Decoder)

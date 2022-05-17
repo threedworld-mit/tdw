@@ -80,7 +80,7 @@ class ArrangementWithRootObject(Arrangement, ABC):
         return Controller.get_add_physics_object(model_name=self._record.name,
                                                  object_id=self.root_object_id,
                                                  position=self._position,
-                                                 library="models_core.json",
+                                                 library=self._get_model_library(),
                                                  kinematic=kinematic)
 
     @final
@@ -105,6 +105,13 @@ class ArrangementWithRootObject(Arrangement, ABC):
                                                           x_scale=x_scale, z_scale=z_scale, rotate=rotate,
                                                           categories=ArrangementWithRootObject.ON_TOP_OF[self._get_category()]))
         return commands
+
+    def _get_model_library(self) -> str:
+        """
+        :return: The model library of the root object.
+        """
+
+        return "models_core.json"
 
     def _add_enclosed_objects(self, density: float = 0.4, cell_size: float = 0.05, rotate: bool = True,
                               x_scale: float = 0.8, z_scale: float = 0.8) -> List[dict]:

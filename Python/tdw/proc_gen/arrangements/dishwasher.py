@@ -1,10 +1,12 @@
 from typing import List, Dict, Tuple
 from tdw.tdw_utils import TDWUtils
 from tdw.cardinal_direction import CardinalDirection
-from tdw.proc_gen.arrangements.kitchen_counter_top_base import KitchenCounterTopBase
+from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWall
+from tdw.controller import Controller
+from tdw.librarian import ModelLibrarian
 
 
-class Dishwasher(KitchenCounterTopBase):
+class Dishwasher(ArrangementAlongWall):
     """
     A dishwasher with a kitchen counter top with objects on it.
 
@@ -29,8 +31,29 @@ class Dishwasher(KitchenCounterTopBase):
 
     def get_commands(self) -> List[dict]:
         commands = self._add_root_object()
-        commands.extend(super()._add_kitchen_counter_top())
-        commands.extend(self._get_rotation_commands())
+        # Try to add a counter top.
+        if "models_special.json" not in Controller.MODEL_LIBRARIANS["models_special.json"]:
+            Controller.MODEL_LIBRARIANS["models_special.json"] = ModelLibrarian("models_special.json")
+        counter_top_record = Controller.MODEL_LIBRARIANS["models_special.json"].get_record(self._record.name + "_counter_top")
+        counter_top_bounds = TDWUtils.get_bounds_extents(bounds=counter_top_record.bounds)
+        if counter_top_record is not None:
+            counter_top_id = Controller.get_unique_id()
+            commands.extend(Controller.get_add_physics_object(model_name=counter_top_record.name,
+                                                              position=self._position,
+                                                              rotation={"x": 0, "y": self._get_rotation(), "z": 0},
+                                                              library="models_special.json",
+                                                              object_id=counter_top_id,
+                                                              kinematic=True))
+            self.object_ids.append(counter_top_id)
+            on_top_commands, object_ids = self._add_rectangular_arrangement(size=((counter_top_bounds[0] / 2) * 0.8,
+                                                                                  (counter_top_bounds[1] / 2) * 0.8),
+                                                                            categories=Dishwasher.ON_TOP_OF[
+                                                                                "kitchen_counter"],
+                                                                            position={"x": self._position["x"],
+                                                                                      "y": float(counter_top_bounds[1]),
+                                                                                      "z": self._position["z"]})
+            commands.extend(on_top_commands)
+            commands.extend(self._get_rotation_commands())
         return commands
 
     def _get_position(self, position: Dict[str, float]) -> Dict[str, float]:

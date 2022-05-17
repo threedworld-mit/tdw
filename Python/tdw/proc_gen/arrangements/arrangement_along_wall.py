@@ -62,11 +62,12 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         if not self.send_commands:
             return None
         possible_records = []
+        model_library = self._get_model_library()
         for model_name in self._get_model_names():
             # Set the record.
-            if "models_core.json" not in Controller.MODEL_LIBRARIANS:
-                Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian()
-            self._record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
+            if model_library not in Controller.MODEL_LIBRARIANS:
+                Controller.MODEL_LIBRARIANS[model_library] = ModelLibrarian()
+            self._record = Controller.MODEL_LIBRARIANS[model_library].get_record(model_name)
             # This record fits.
             if distance + self.get_length() < self._wall_length:
                 possible_records.append(self._record)

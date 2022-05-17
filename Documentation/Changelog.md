@@ -51,6 +51,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
   - Replaced `ContainmentEvent.object_id` (the ID of the contained object) with `ContainmentEvent.object_ids` (a numpy array of all contained objects)
 - The data classes used in `DynamicCompositeObjects` (`CompositeObjectDynamic`, `HingeDynamic`, `LightDynamic`, and `SubObjectDynamic`) all take different constructor parameters. They are otherwise unchanged. The API for `CompositeObjectManager` is the same as before.
 
+### Build
+
+- Fixed: `add_line_renderer` doesn't correctly add line points.
+
 ### Benchmark
 
 - Added kitchen benchmark to `PerformanceBenchmarkController` and `main.py`

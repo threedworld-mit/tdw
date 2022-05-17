@@ -56,6 +56,7 @@ from tdw.FBOutput import ObiParticles as ObiP
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
+from tdw.FBOutput import Mouse as Mous
 import numpy as np
 from typing import Tuple, Optional, List
 
@@ -1458,3 +1459,27 @@ class ObiParticles(OutputData):
 
     def get_solver_indices(self, index: int) -> np.array:
         return self.data.Actors(index).SolverIndicesAsNumpy()
+
+
+class Mouse(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._buttons: np.array = self.data.ButtonsAsNumpy()
+
+    def get_data(self) -> Mous.Mouse:
+        return Mous.Mouse.GetRootAsMouse(self.bytes, 0)
+
+    def get_position(self) -> np.array:
+        return self.data.PositionAsNumpy()
+
+    def get_scroll_delta(self) -> np.array:
+        return self.data.ScrollDeltaAsNumpy()
+
+    def get_button_pressed(self, index: int) -> bool:
+        return self._buttons[index][0]
+
+    def get_button_held(self, index: int) -> bool:
+        return self._buttons[index][1]
+
+    def get_button_released(self, index: int) -> bool:
+        return self._buttons[index][2]

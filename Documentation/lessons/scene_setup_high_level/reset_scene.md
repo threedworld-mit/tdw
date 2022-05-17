@@ -1,4 +1,4 @@
-##### Objects and Scenes
+##### Scene Setup (High-Level APIs)
 
 # Reset a scene
 
@@ -103,6 +103,8 @@ if __name__ == "__main__":
     c.do_trials(num_trials=10000)
 ```
 
+3. **Reset your add-ons.** Some add-ons have a `reset()` function that should be called per scene reset. All add-ons have an `initialized` boolean; set this to False to re-initialize (though you should always opt for the `reset()` function if available because it will have useful parameters). [`Floorplan`](floorplans.md) and [`ProcGenKitchen`](proc_gen_kitchen.md) do *not* need to be reset; they are exceptions to the rule.
+
 ## Unloading asset bundles from memory
 
 Model asset bundles can require a lot of memory. You can check the size of an asset bundle via `record.asset_bundle_sizes`:
@@ -127,7 +129,7 @@ Unfortunately, it isn't possible to reset to an arbitrary frame in the middle of
 
 ***
 
-**This is the last document in the "Objects and Scenes" tutorial.**
+**This is the last document in the "Scene Setup (High-Level APIs)" tutorial.**
 
 [Return to the README](../../../README.md)
 
@@ -135,7 +137,7 @@ Unfortunately, it isn't possible to reset to an arbitrary frame in the middle of
 
 Example controllers:
 
-- [reset_scene.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/reset_scene.py) Create multiple trials of an object falling and reset the scene between trials.
+- [reset_scene.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_high_level/reset_scene.py) Create multiple trials of an object falling and reset the scene between trials.
 
 Python API:
 

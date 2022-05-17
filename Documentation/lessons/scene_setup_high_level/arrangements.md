@@ -8,6 +8,8 @@ In [`ProcGenKitchen`](proc_gen_kitchen.md), objects are grouped into pseudo-atom
 
 Arrangement data classes are similar to add-ons in that they accept parameters and generate commands, but they are meant to be used *within* an add-on in groups. In `ProcGenKitchen`, multiple kitchen counters, wall cabinets, etc. are placed alongside each other in the room.
 
+Arrangements are procedurally generated. The models used are randomly selected from pre-categorized lists. Object positions, rotations, etc. are also randomized within various constraints.
+
 ## `Arrangement` class hierarchy
 
 Arrangements are all data objects. Every type of arrangement is a subclass of [`Arrangement`](../../python/proc_gen/arrangements/arrangement.md). Some arrangement types may have intermediary abstract subclasses such as [`ArrangementWithRootObject`](../../python/proc_gen/arrangements/arrangement_with_root_object.md).
@@ -183,3 +185,55 @@ from tdw.proc_gen.arrangements.arrangement import Arrangement
 Arrangement.MODEL_CATEGORIES["wall_cabinet"] = ["cabinet_24_wall_wood_beech_honey_composite"]
 ```
 
+***
+
+**Next: [Scripted object placement (floorplan layouts)](floorplans.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example Controllers:
+
+- [cup_and_coaster.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_high_level/cup_and_coaster.py) Create a cup and coaster.
+- [kitchen_counter.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_high_level/kitchen_counter.py) Create a kitchen counter arrangement.
+
+Python API:
+
+- Add-ons:
+  - [`ProcGenKitchen`](../../python/add_ons/proc_gen_kitchen.md)
+- Arrangements:
+  - [`Arrangement`](../../python/proc_gen/arrangements/arrangement.md)
+  - [`ArrangementAlongWall`](../../python/proc_gen/arrangements/arrangement_along_wall.md)
+  - [`ArrangementWithRootObject`](../../python/proc_gen/arrangements/arrangement_with_root_object.md)
+  - [`Basket`](../../python/proc_gen/arrangements/basket.md)
+  - [`CupAndCoaster`](../../python/proc_gen/arrangements/cup_and_coaster.md)
+  - [`Dishwasher`](../../python/proc_gen/arrangements/dishwasher.md)
+  - [`KitchenCabinet`](../../python/proc_gen/arrangements/kitchen_cabinet.md)
+  - [`KitchenCounter`](../../python/proc_gen/arrangements/kitchen_counter.md)
+  - [`KitchenCounterTop`](../../python/proc_gen/arrangements/kitchen_counter_top.md)
+  - [`KitchenTable`](../../python/proc_gen/arrangements/kitchen_table.md)
+  - [`Microwave`](../../python/proc_gen/arrangements/microwave.md)
+  - [`Painting`](../../python/proc_gen/arrangements/painting.md)
+  - [`Plate`](../../python/proc_gen/arrangements/plate.md)
+  - [`Radiator`](../../python/proc_gen/arrangements/radiator.md)
+  - [`Refrigerator`](../../python/proc_gen/arrangements/refrigerator.md)
+  - [`Shelf`](../../python/proc_gen/arrangements/shelf.md)
+  - [`SideTable`](../../python/proc_gen/arrangements/side_table.md)
+  - [`Sink`](../../python/proc_gen/arrangements/sink.md)
+  - [`StackOfPlates`](../../python/proc_gen/arrangements/stack_of_plates.md)
+  - [`Stool`](../../python/proc_gen/arrangements/stool.md)
+  - [`Stove`](../../python/proc_gen/arrangements/stove.md)
+  - [`Suitcase`](../../python/proc_gen/arrangements/suitcase.md)
+  - [`TableAndChairs`](../../python/proc_gen/arrangements/table_and_chairs.md)
+  - [`TableSetting`](../../python/proc_gen/arrangements/table_setting.md)
+  - [`Void`](../../python/proc_gen/arrangements/void.md)
+  - [`WallCabinet`](../../python/proc_gen/arrangements/wall_cabinet.md)
+- Cabinetry:
+  - [`Cabinetry`](../../python/proc_gen/arrangements/cabinetrycabinetry.md)
+  - [`CabinetryType`](../../python/proc_gen/arrangements/cabinetrycabinetry_type.md)
+- Directions:
+  - [`CardinalDirection`](../../python/cardinal_direction.md)
+  - [`OrdinalDirection`](../../python/ordinal_direction.md)
+- Scene Data:
+  - [`InteriorRegion`](../../python/scene_data/interior_region.md)

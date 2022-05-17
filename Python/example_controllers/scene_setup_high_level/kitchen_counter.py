@@ -10,7 +10,7 @@ from tdw.cardinal_direction import CardinalDirection
 from tdw.librarian import SceneLibrarian
 
 """
-Add a kitchen counter to the scene.
+Create a kitchen counter arrangement.
 """
 
 # Get the scene name, record, and the region where the kitchen counter will be added.

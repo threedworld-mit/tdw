@@ -50,8 +50,8 @@
 2. [Procedural generation (the `ProcGenKitchen` add-on)](Documentation/lessons/scene_setup_high_level/proc_gen_kitchen.md)
 2. [Regions, interior regions, and rooms](Documentation/lessons/scene_setup_high_level/rooms.md)
 3. [Procedural object arrangements](Documentation/lessons/scene_setup_high_level/arrangements.md)
-4. [Scripted object placement (floorplan layouts)](Documentation/lessons/objects_and_scenes/floorplans.md)
-5. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
+4. [Scripted object placement (floorplan layouts)](Documentation/lessons/scene_setup_high_level/floorplans.md)
+5. [Reset a scene](Documentation/lessons/scene_setup_high_level/reset_scene.md)
 
 High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [ProcGenKitchen](Documentation/python/add_ons/proc_gen_kitchen.md)
 

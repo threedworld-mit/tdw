@@ -1,4 +1,4 @@
-##### Objects and Scenes
+##### Scene Setup (High-Level APIs)
 
 # Scripted object placement (floorplan layouts)
 
@@ -66,9 +66,7 @@ In the `scene` parameter, the number (1, 2, 4, or 5) defines the geometry of the
 
 ***
 
-**Next: [Visual materials, textures, and colors](materials_textures_colors.md)**
-
-**Next: [Scenes, regions, and rooms](scenes_regions_rooms.md)**
+**Next: [Reset a scene](reset_scene.md)**
 
 [Return to the README](../../../README.md)
 
@@ -76,7 +74,7 @@ In the `scene` parameter, the number (1, 2, 4, or 5) defines the geometry of the
 
 Example controllers:
 
-- [floorplan.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/floorplan.py) Initialize a floorplan scene and populate it with objects.
+- [floorplan.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_high_level/floorplan.py) Initialize a floorplan scene and populate it with objects.
 
 Python API:
 

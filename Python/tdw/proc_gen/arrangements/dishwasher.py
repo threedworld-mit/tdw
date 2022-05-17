@@ -1,3 +1,6 @@
+from pathlib import Path
+from json import loads
+from pkg_resources import resource_filename
 from typing import List, Dict, Tuple
 from tdw.tdw_utils import TDWUtils
 from tdw.cardinal_direction import CardinalDirection
@@ -28,15 +31,19 @@ class Dishwasher(ArrangementAlongWall):
     Offset the position and length of the dishwasher by this distance.
     """
     LENGTH_OFFSET: float = 0.025
+    """:class_var
+    A dictionary of counter top models per dishwasher model.
+    """
+    COUNTER_TOPS: Dict[str, str] = loads(Path(resource_filename(__name__, "data/dishwasher_counter_tops.json")).read_text())
 
     def get_commands(self) -> List[dict]:
         commands = self._add_root_object()
-        # Try to add a counter top.
-        if "models_special.json" not in Controller.MODEL_LIBRARIANS["models_special.json"]:
-            Controller.MODEL_LIBRARIANS["models_special.json"] = ModelLibrarian("models_special.json")
-        counter_top_record = Controller.MODEL_LIBRARIANS["models_special.json"].get_record(self._record.name + "_counter_top")
-        counter_top_bounds = TDWUtils.get_bounds_extents(bounds=counter_top_record.bounds)
-        if counter_top_record is not None:
+        # Add a counter top.
+        if self._record.name in Dishwasher.COUNTER_TOPS:
+            if "models_special.json" not in Controller.MODEL_LIBRARIANS:
+                Controller.MODEL_LIBRARIANS["models_special.json"] = ModelLibrarian("models_special.json")
+            counter_top_record = Controller.MODEL_LIBRARIANS["models_special.json"].get_record(Dishwasher.COUNTER_TOPS[self._record.name])
+            counter_top_bounds = TDWUtils.get_bounds_extents(bounds=counter_top_record.bounds)
             counter_top_id = Controller.get_unique_id()
             commands.extend(Controller.get_add_physics_object(model_name=counter_top_record.name,
                                                               position=self._position,
@@ -47,8 +54,7 @@ class Dishwasher(ArrangementAlongWall):
             self.object_ids.append(counter_top_id)
             on_top_commands, object_ids = self._add_rectangular_arrangement(size=((counter_top_bounds[0] / 2) * 0.8,
                                                                                   (counter_top_bounds[1] / 2) * 0.8),
-                                                                            categories=Dishwasher.ON_TOP_OF[
-                                                                                "kitchen_counter"],
+                                                                            categories=Dishwasher.ON_TOP_OF["kitchen_counter"],
                                                                             position={"x": self._position["x"],
                                                                                       "y": float(counter_top_bounds[1]),
                                                                                       "z": self._position["z"]})

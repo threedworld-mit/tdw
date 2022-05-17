@@ -29,4 +29,7 @@ class KitchenCounterTop(KitchenCabinet):
             return []
 
     def _get_category(self) -> str:
-        return "counter_top"
+        return "kitchen_counter"
+
+    def _get_rotation(self) -> float:
+        return super()._get_rotation() + 90

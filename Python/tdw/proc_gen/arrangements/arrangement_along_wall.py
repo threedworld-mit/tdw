@@ -66,7 +66,7 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         for model_name in self._get_model_names():
             # Set the record.
             if model_library not in Controller.MODEL_LIBRARIANS:
-                Controller.MODEL_LIBRARIANS[model_library] = ModelLibrarian()
+                Controller.MODEL_LIBRARIANS[model_library] = ModelLibrarian(model_library)
             self._record = Controller.MODEL_LIBRARIANS[model_library].get_record(model_name)
             # This record fits.
             if distance + self.get_length() < self._wall_length:

@@ -38,7 +38,6 @@ class KitchenCabinet(ArrangementAlongWall, ABC):
     def get_length(self) -> float:
         return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0]
 
-    @final
     def _get_rotation(self) -> float:
         if self._wall == CardinalDirection.north:
             return 180

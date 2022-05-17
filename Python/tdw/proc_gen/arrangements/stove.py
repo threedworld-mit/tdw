@@ -3,8 +3,8 @@ from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 from tdw.cardinal_direction import CardinalDirection
 from tdw.proc_gen.arrangements.arrangement_along_wall import ArrangementAlongWall
-from tdw.container_data.container_collider_tag import ContainerColliderTag
-from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
+from tdw.container_data.container_tag import ContainerTag
+from tdw.container_data.box_container import BoxContainer
 
 
 class Stove(ArrangementAlongWall):
@@ -51,17 +51,17 @@ class Stove(ArrangementAlongWall):
                 if model_semi_major_axis < 0.3:
                     enclose_by_model_names.append(model_name)
         # Try to add a model in each shelf.
-        for collider in self._record.container_colliders:
-            # Use all of the "enclosed" colliders.
-            if collider.tag == ContainerColliderTag.enclosed and isinstance(collider, ContainerBoxTriggerCollider):
+        for shape in self._record.container_shapes:
+            # Use all of the "enclosed" shapes.
+            if shape.tag == ContainerTag.enclosed and isinstance(shape, BoxContainer):
                 if self._rng.random() < Stove.PROBABILITY_INSIDE:
-                    pos = self._get_collider_position(collider=collider)
-                    pos["x"] += self._rng.uniform(-Stove.INSIDE_POSITION_PERTURBATION, Stove.INSIDE_POSITION_PERTURBATION)
-                    pos["z"] += self._rng.uniform(-Stove.INSIDE_POSITION_PERTURBATION, Stove.INSIDE_POSITION_PERTURBATION)
+                    position, size = self._get_container_shape_position_and_size(shape=shape)
+                    position["x"] += self._rng.uniform(-Stove.INSIDE_POSITION_PERTURBATION, Stove.INSIDE_POSITION_PERTURBATION)
+                    position["z"] += self._rng.uniform(-Stove.INSIDE_POSITION_PERTURBATION, Stove.INSIDE_POSITION_PERTURBATION)
                     object_id = Controller.get_unique_id()
                     commands.extend(Controller.get_add_physics_object(model_name=enclose_by_model_names[self._rng.randint(0, len(enclose_by_model_names))],
                                                                       object_id=object_id,
-                                                                      position=pos,
+                                                                      position=position,
                                                                       rotation={"x": 0, "y": self._rng.uniform(0, 360), "z": 0},
                                                                       library="models_core.json"))
                     self.object_ids.append(object_id)

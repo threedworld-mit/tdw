@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional
-from tdw.container_data.container_collider_tag import ContainerColliderTag
-from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
+from tdw.container_data.container_tag import ContainerTag
+from tdw.container_data.box_container import BoxContainer
 from tdw.proc_gen.arrangements.kitchen_cabinet import KitchenCabinet
 from tdw.proc_gen.arrangements.stack_of_plates import StackOfPlates
 
@@ -47,12 +47,12 @@ class WallCabinet(KitchenCabinet):
     def get_commands(self) -> List[dict]:
         commands = self._add_root_object()
         # Get the bottom-center position of the inner cavity.
-        cabinet_collider: Optional[ContainerBoxTriggerCollider] = None
-        for collider in self._record.container_colliders:
-            if collider.tag == ContainerColliderTag.enclosed and isinstance(collider, ContainerBoxTriggerCollider):
-                cabinet_collider = collider
+        cabinet_shape: Optional[BoxContainer] = None
+        for shape in self._record.container_shapes:
+            if shape.tag == ContainerTag.enclosed and isinstance(shape, BoxContainer):
+                cabinet_shape = shape
                 break
-        position = self._get_collider_position(collider=cabinet_collider)
+        position, size = self._get_container_shape_position_and_size(shape=cabinet_shape)
         roll = self._rng.random()
         # Add a stack of plates.
         if roll < WallCabinet.PROBABILITY_STACK_OF_PLATES:
@@ -68,8 +68,7 @@ class WallCabinet(KitchenCabinet):
                 categories = ["cup", "wineglass"]
             else:
                 categories = WallCabinet.ENCLOSED_BY["wall_cabinet"]
-            cmds, ids = self._add_rectangular_arrangement(size=(cabinet_collider.scale["x"] * 0.8,
-                                                                cabinet_collider.scale["z"] * 0.8),
+            cmds, ids = self._add_rectangular_arrangement(size=(size["x"] * 0.8, size["z"] * 0.8),
                                                           position=position,
                                                           categories=categories)
             commands.extend(cmds)

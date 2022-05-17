@@ -1,4 +1,4 @@
-from typing import Dict, List, Union, Optional
+from typing import Dict, List, Union, Optional, Tuple
 from abc import ABC, abstractmethod
 from json import loads
 from pathlib import Path
@@ -8,11 +8,11 @@ import numpy as np
 from tdw.librarian import ModelRecord, ModelLibrarian
 from tdw.controller import Controller
 from tdw.proc_gen.arrangements.arrangement import Arrangement
-from tdw.container_data.container_trigger_collider import ContainerTriggerCollider
-from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
-from tdw.container_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
-from tdw.container_data.container_sphere_trigger_collider import ContainerSphereTriggerCollider
-from tdw.container_data.container_collider_tag import ContainerColliderTag
+from tdw.container_data.container_shape import ContainerShape
+from tdw.container_data.box_container import BoxContainer
+from tdw.container_data.cylinder_container import CylinderContainer
+from tdw.container_data.sphere_container import SphereContainer
+from tdw.container_data.container_tag import ContainerTag
 
 
 class ArrangementWithRootObject(Arrangement, ABC):
@@ -100,28 +100,10 @@ class ArrangementWithRootObject(Arrangement, ABC):
         :return: A list of commands.
         """
 
-        categories: List[str] = ArrangementWithRootObject.ON_TOP_OF[self._get_category()]
         commands = self._add_root_object(kinematic=kinematic)
-        for collider in self._record.container_colliders:
-            # Use all "on" colliders.
-            if collider.tag == ContainerColliderTag.on:
-                if isinstance(collider, ContainerBoxTriggerCollider):
-                    scale = collider.scale
-                elif isinstance(collider, ContainerCylinderTriggerCollider):
-                    scale = collider.scale
-                else:
-                    raise Exception(collider)
-                # Add objects on top of the root object.
-                on_top_commands, object_ids = self._add_rectangular_arrangement(size=(scale["x"] * x_scale,
-                                                                                      scale["z"] * z_scale),
-                                                                                categories=categories,
-                                                                                position=self._get_collider_position(collider=collider),
-                                                                                cell_size=cell_size,
-                                                                                density=density)
-                commands.extend(on_top_commands)
-        # Rotate everything.
-        if rotate:
-            commands.extend(self._get_rotation_commands())
+        commands.extend(self._get_rectangular_arrangement(tag=ContainerTag.on, cell_size=cell_size, density=density,
+                                                          x_scale=x_scale, z_scale=z_scale, rotate=rotate,
+                                                          categories=ArrangementWithRootObject.ON_TOP_OF[self._get_category()]))
         return commands
 
     def _add_enclosed_objects(self, density: float = 0.4, cell_size: float = 0.05, rotate: bool = True,
@@ -138,27 +120,9 @@ class ArrangementWithRootObject(Arrangement, ABC):
         :return: A list of commands.
         """
 
-        categories: List[str] = ArrangementWithRootObject.ENCLOSED_BY[self._get_category()]
-        commands = []
-        for collider in self._record.container_colliders:
-            # Use all "enclosed" colliders.
-            if collider.tag == ContainerColliderTag.enclosed:
-                if isinstance(collider, ContainerBoxTriggerCollider):
-                    scale = collider.scale
-                else:
-                    raise Exception(collider)
-                # Add objects on top of the root object.
-                on_top_commands, object_ids = self._add_rectangular_arrangement(size=(scale["x"] * x_scale,
-                                                                                      scale["z"] * z_scale),
-                                                                                categories=categories,
-                                                                                position=self._get_collider_position(collider=collider),
-                                                                                cell_size=cell_size,
-                                                                                density=density)
-                commands.extend(on_top_commands)
-        # Rotate everything.
-        if rotate:
-            commands.extend(self._get_rotation_commands())
-        return commands
+        return self._get_rectangular_arrangement(tag=ContainerTag.enclosed, cell_size=cell_size, density=density,
+                                                 x_scale=x_scale, z_scale=z_scale, rotate=rotate,
+                                                 categories=ArrangementWithRootObject.ENCLOSED_BY[self._get_category()])
 
     def _add_inside_objects(self, density: float = 0.4, cell_size: float = 0.05, rotate: bool = True,
                             x_scale: float = 0.8, z_scale: float = 0.8) -> List[dict]:
@@ -174,43 +138,78 @@ class ArrangementWithRootObject(Arrangement, ABC):
         :return: A list of commands.
         """
 
-        categories: List[str] = ArrangementWithRootObject.INSIDE_OF[self._get_category()]
+        return self._get_rectangular_arrangement(tag=ContainerTag.inside, cell_size=cell_size, density=density,
+                                                 x_scale=x_scale, z_scale=z_scale, rotate=rotate,
+                                                 categories=ArrangementWithRootObject.INSIDE_OF[self._get_category()])
+
+    @final
+    def _get_rectangular_arrangement(self, tag: ContainerTag, cell_size: float, density: float,
+                                     x_scale: float, z_scale: float, rotate: bool, categories: List[str]) -> List[dict]:
+        """
+        :param tag: The semantic tag.
+        :param categories: A list of potential model categories.
+        :param density: The probability of a "cell" in the arrangement being empty. Lower value = a higher density of small objects.
+        :param cell_size: The size of each cell in the rectangle. This controls the minimum size of objects and the density of the arrangement.
+        :param x_scale: Scale the rectangular space along the x axis by this factor.
+        :param z_scale: Scale the rectangular space along the z axis by this factor.
+        :param rotate: If True, append rotation commands.
+
+        :return: A list of commands to create a rectangular arrangement.
+        """
+
         commands = []
-        for collider in self._record.container_colliders:
-            # Use all "enclosed" colliders.
-            if collider.tag == ContainerColliderTag.inside:
-                if isinstance(collider, ContainerBoxTriggerCollider):
-                    scale = collider.scale
-                elif isinstance(collider, ContainerCylinderTriggerCollider):
-                    scale = collider.scale
-                elif isinstance(collider, ContainerSphereTriggerCollider):
-                    scale = {"x": collider.diameter, "y": collider.diameter, "z": collider.diameter}
-                else:
-                    raise Exception(collider)
+        for shape in self._record.container_shapes:
+            # Use all tagged shapes.
+            if shape.tag == tag:
+                position, size = self._get_container_shape_position_and_size(shape)
                 # Add objects on top of the root object.
-                on_top_commands, object_ids = self._add_rectangular_arrangement(size=(scale["x"] * x_scale,
-                                                                                      scale["z"] * z_scale),
-                                                                                categories=categories,
-                                                                                position=self._get_collider_position(collider=collider),
-                                                                                cell_size=cell_size,
-                                                                                density=density)
-                commands.extend(on_top_commands)
+                shape_commands, object_ids = self._add_rectangular_arrangement(size=(size["x"] * x_scale,
+                                                                                     size["z"] * z_scale),
+                                                                               categories=categories,
+                                                                               position=position,
+                                                                               cell_size=cell_size,
+                                                                               density=density)
+                commands.extend(shape_commands)
         # Rotate everything.
         if rotate:
             commands.extend(self._get_rotation_commands())
         return commands
 
     @final
-    def _get_collider_position(self, collider: ContainerTriggerCollider) -> Dict[str, float]:
+    def _get_container_shape_position_and_size(self, shape: ContainerShape) -> Tuple[Dict[str, float], Dict[str, float]]:
         """
-        :param collider: The collider.
+        :param shape: A `ContainerShape`.
 
-        :return: The worldspace position of the collider.
+        :return: Tuple: The bottom-center position of the shape, the size of the shape.
         """
 
-        return {"x": self._position["x"] + collider.bottom_center_position["x"],
-                "y": self._position["y"] + collider.bottom_center_position["y"],
-                "z": self._position["z"] + collider.bottom_center_position["z"]}
+        if isinstance(shape, BoxContainer):
+            position = {"x": shape.position["x"],
+                        "y": shape.position["y"] - shape.half_extents["y"],
+                        "z": shape.position["z"]}
+            size = {"x": shape.half_extents["x"] * 2,
+                    "y": shape.half_extents["y"] * 2,
+                    "z": shape.half_extents["z"] * 2}
+        elif isinstance(shape, CylinderContainer):
+            position = {"x": shape.position["x"],
+                        "y": shape.position["y"] - shape.height,
+                        "z": shape.position["z"]}
+            size = {"x": shape.radius * 2,
+                    "y": shape.height,
+                    "z": shape.radius * 2}
+        elif isinstance(shape, SphereContainer):
+            position = {"x": shape.position["x"],
+                        "y": shape.position["y"] - shape.radius,
+                        "z": shape.position["z"]}
+            size = {"x": shape.radius * 2,
+                    "y": shape.radius * 2,
+                    "z": shape.radius * 2}
+        else:
+            raise Exception(shape)
+        position = {"x": position["x"] + self._position["x"],
+                    "y": position["y"] + self._position["y"],
+                    "z": position["z"] + self._position["z"]}
+        return position, size
 
     @final
     def _get_rotation_commands(self) -> List[dict]:

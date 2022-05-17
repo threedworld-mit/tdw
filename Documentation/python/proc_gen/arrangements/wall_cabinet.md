@@ -83,7 +83,7 @@ A wall cabinet hangs on the wall above a kitchen counter. It can have objects in
 | region |  InteriorRegion |  | The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in. |
 | model |  Union[str, ModelRecord] | None | Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected. |
 | wall_length |  float  | None | The total length of the lateral arrangement. If None, defaults to the length of the wall. |
-| rng |  np.random.RandomState  | None | The random number generator. If None, a new random number generator is created. |
+| rng |  Union[int, np.random.RandomState] | None | Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created. |
 
 #### get_categories_and_wcategories
 

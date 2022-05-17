@@ -88,7 +88,7 @@ A kitchen counter can have objects on it and inside it.
 | empty |  float  | 0.1 | The probability (between 0 and 1) of the of the kitchen counter being empty. |
 | model |  Union[str, ModelRecord] | None | Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected. |
 | wall_length |  float  | None | The total length of the lateral arrangement. If None, defaults to the length of the wall. |
-| rng |  np.random.RandomState  | None | The random number generator. If None, a new random number generator is created. |
+| rng |  Union[int, np.random.RandomState] | None | Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created. |
 
 #### get_categories_and_wcategories
 

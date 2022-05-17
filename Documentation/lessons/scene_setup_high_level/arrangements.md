@@ -134,17 +134,15 @@ Result:
 
 ![](images/arrangements/kitchen_counter.jpg)
 
-## How to adjust `Arrangement` parameters
+## `Arrangement` parameters and `ProcGenKitchen`
 
-Arrangement parameters can be adjusted in the constructor. Constructor parameters vary by arrangement type; refer to the API documentation (listed at the bottom of this document).
+By design, `ProcGenKitchen` hides and automates most of the parameters of its constituent `Arrangements`. `ProcGenKitchen` positions arrangements such that they appear kitchen-like; as such, only a fairly narrow range of preset parameter values will be valid.
 
-In higher-level APIs such as `ProcGenKitchen`, the arrangement constructors are automatically called, meaning that you can't (and shouldn't) adjust constructor parameters.
+## Class variables and `MODEL_CATEGORIES`
 
-In all cases, including `ProcGenKitchen`, you can adjust class variables.
+It is possible to adjust the class variables of any of the `Arrangement` classes; refer to the API documentation for a list.
 
-### Example A : `Arrrangement.MODEL_CATEGORIES`
-
-`Arrangement.MODEL_CATEGORIES`, a dictionary that has been curated from the overall list of models. The key of `Arrangement.MODEL_CATEGORIES` is a "proc-gen category", which overlaps with [`model_record.wcategory`](../../python/librarian/model_librarian.md) but is often not the same. For example, in TDW kitchen counters and wall cabinets have the same `wcategory` but not the same proc-gen category:
+One class variable that is likely to be adjusted more than most is `Arrangement.MODEL_CATEGORIES`, a dictionary that has been curated from the overall list of models. The key of `Arrangement.MODEL_CATEGORIES` is a "proc-gen category", which overlaps with [`model_record.wcategory`](../../python/librarian/model_librarian.md) but is often not the same. For example, in TDW kitchen counters and wall cabinets have the same `wcategory` but not the same proc-gen category:
 
 ```python
 from tdw.proc_gen.arrangements.arrangement import Arrangement
@@ -185,4 +183,3 @@ from tdw.proc_gen.arrangements.arrangement import Arrangement
 Arrangement.MODEL_CATEGORIES["wall_cabinet"] = ["cabinet_24_wall_wood_beech_honey_composite"]
 ```
 
-### Example B: 

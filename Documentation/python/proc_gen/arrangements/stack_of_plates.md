@@ -26,14 +26,16 @@ A stack of plates.
 
 #### \_\_init\_\_
 
-**`StackOfPlates(min_num, max_num, position, rng)`**
+**`StackOfPlates(min_num, max_num, position)`**
+
+**`StackOfPlates(min_num, max_num, position, rng=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | min_num |  int |  | The minimum number of plates. |
 | max_num |  int |  | The maximum number of plates. |
 | position |  Dict[str, float] |  | The position of the root object. This might be adjusted. |
-| rng |  np.random.RandomState |  | The random number generator. |
+| rng |  Union[int, np.random.RandomState] | None | Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created. |
 
 #### get_categories_and_wcategories
 

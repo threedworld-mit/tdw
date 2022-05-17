@@ -36,7 +36,9 @@ Abstract base class for a table with chairs around it.
 
 #### \_\_init\_\_
 
-**`TableAndChairs(used_walls, region, model, position, rng)`**
+**`TableAndChairs(used_walls, region, model, position)`**
+
+**`TableAndChairs(used_walls, region, model, position, rng=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -44,7 +46,7 @@ Abstract base class for a table with chairs around it.
 | region |  InteriorRegion |  | The [`InteriorRegion`](../../scene_data/interior_region.md) that the table is in. |
 | model |  Union[str, ModelRecord] |  | Either the name of the model (in which case the model must be in `models_core.json` or a `ModelRecord`. |
 | position |  Dict[str, float] |  | The position of the root object. This might be adjusted. |
-| rng |  np.random.RandomState |  | The random number generator. |
+| rng |  Union[int, np.random.RandomState] | None | Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created. |
 
 #### get_categories_and_wcategories
 

@@ -42,7 +42,7 @@ A cup, which sometimes has a coaster underneath it.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | position |  Dict[str, float] |  | The position of the root object. This might be adjusted. |
-| rng |  np.random.RandomState  | None | The random number generator. If None, a new random number generator is created. |
+| rng |  Union[int, np.random.RandomState] | None | Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created. |
 
 #### get_categories_and_wcategories
 

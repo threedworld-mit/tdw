@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Union
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.proc_gen.arrangements.arrangement import Arrangement
@@ -13,12 +13,12 @@ class StackOfPlates(Arrangement):
     - The number of plates in the stack is random; see `min_num` and `max_num` in the constructor.
     """
 
-    def __init__(self, min_num: int, max_num: int, position: Dict[str, float], rng: np.random.RandomState):
+    def __init__(self, min_num: int, max_num: int, position: Dict[str, float], rng: Union[int, np.random.RandomState] = None):
         """
         :param min_num: The minimum number of plates.
         :param max_num: The maximum number of plates.
         :param position: The position of the root object. This might be adjusted.
-        :param rng: The random number generator.
+        :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         """
 
         super().__init__(position=position, rng=rng)

@@ -2,7 +2,7 @@
 
 # Regions, interior regions, and rooms
 
-[`ProcGenKitchen`](proc_gen_kitchen.md) relies on cached *scene room data* in order to populate the scene with objects.
+[`ProcGenKitchen`](proc_gen_kitchen.md) relies on cached *scene room data* in order to populate the scene with objects. Only certain scenes in the [scene library](../../python/librarian/scene_librarian.md) have this data; [see the previous document for a list](proc_gen_kitchen.md). This document explains what exactly room data is and how it's generated. In many cases, you can use `ProcGenKitchen` without needing to read this document.
 
 ## Runtime data
 

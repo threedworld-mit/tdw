@@ -1,4 +1,3 @@
-import numpy as np
 from tdw.controller import Controller
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
@@ -24,7 +23,7 @@ kitchen_counter = KitchenCounter(cabinetry=CABINETRY[CabinetryType.beech_honey],
                                  wall=CardinalDirection.north,
                                  distance=0,
                                  region=region,
-                                 rng=np.random.RandomState(3))
+                                 rng=3)
 # Add a camera and enable image capture.
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("kitchen_counter")
 print(f"Images will be saved to: {path}")

@@ -84,12 +84,12 @@ class KitchenTable(TableAndChairs):
     CHAIR_ROTATION: float = 10
 
     def __init__(self, room: Room, used_walls: int, model: Union[str, ModelRecord] = None,
-                 offset_distance: float = 0.1, food_probability: float = 0.7, rng: np.random.RandomState = None):
+                 offset_distance: float = 0.1, food_probability: float = 0.7, rng: Union[int, np.random.RandomState] = None):
         """
         :param room: The [`Room`] that the table is in.
         :param used_walls: Bitwise sum of walls with objects.
         :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a random model in the category is selected.
-        :param rng: The random number generator.
+        :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         :param offset_distance: Offset the position from the used walls by this distance.
         :param food_probability: The probability that each plate will have food (0 to 1).
         """

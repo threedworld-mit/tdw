@@ -1,7 +1,7 @@
 from json import loads
 from pathlib import Path
 from pkg_resources import resource_filename
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 from abc import ABC, abstractmethod
 from overrides import final
 import numpy as np
@@ -24,16 +24,20 @@ class Arrangement(ABC):
     """
     DEFAULT_CELL_SIZE: float = 0.6096
 
-    def __init__(self, position: Dict[str, float], rng: np.random.RandomState = None):
+    def __init__(self, position: Dict[str, float], rng: Union[int, np.random.RandomState] = None):
         """
         :param position: The position of the root object. This might be adjusted.
-        :param rng: The random number generator. If None, a new random number generator is created.
+        :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         """
 
         if rng is None:
             self._rng: np.random.RandomState = np.random.RandomState()
+        elif isinstance(rng, int):
+            self._rng = np.random.RandomState(rng)
+        elif isinstance(rng, np.random.RandomState):
+            self._rng = rng
         else:
-            self._rng: np.random.RandomState = rng
+            raise Exception(rng)
         self._position: Dict[str, float] = self._get_position(position={k: v for k, v in position.items()})
         self._rotation: float = self._get_rotation()
         """:field

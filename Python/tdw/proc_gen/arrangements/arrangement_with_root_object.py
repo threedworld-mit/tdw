@@ -33,11 +33,11 @@ class ArrangementWithRootObject(Arrangement, ABC):
     """
     INSIDE_OF: Dict[str, List[str]] = loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())
 
-    def __init__(self, position: Dict[str, float], model: Union[str, ModelRecord] = None, rng: np.random.RandomState = None):
+    def __init__(self, position: Dict[str, float], model: Union[str, ModelRecord] = None, rng: Union[int, np.random.RandomState] = None):
         """
         :param position: The position of the root object. This might be adjusted.
         :param model: Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a random model is selected.
-        :param rng: The random number generator. If None, a new random number generator is created.
+        :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         """
 
         if "models_core.json" not in Controller.MODEL_LIBRARIANS:

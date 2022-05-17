@@ -49,7 +49,7 @@ class KitchenCounter(KitchenCabinet):
 
     def __init__(self, cabinetry: Cabinetry, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
                  region: InteriorRegion, allow_microwave: bool = True, microwave_plate: float = 0.7, empty: float = 0.1,
-                 model: Union[str, ModelRecord] = None, wall_length: float = None, rng: np.random.RandomState = None):
+                 model: Union[str, ModelRecord] = None, wall_length: float = None, rng: Union[int, np.random.RandomState] = None):
         """
         :param cabinetry: The [`Cabinetry`](cabinetry/cabinetry.md) set.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
@@ -61,7 +61,7 @@ class KitchenCounter(KitchenCabinet):
         :param empty: The probability (between 0 and 1) of the of the kitchen counter being empty.
         :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected.
         :param wall_length: The total length of the lateral arrangement. If None, defaults to the length of the wall.
-        :param rng: The random number generator. If None, a new random number generator is created.
+        :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         """
 
         self._allow_microwave: bool = allow_microwave

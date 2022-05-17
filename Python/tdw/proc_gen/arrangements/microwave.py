@@ -23,13 +23,13 @@ class Microwave(ArrangementWithRootObject):
     """
 
     def __init__(self, plate_probability: float, wall: CardinalDirection, position: Dict[str, float],
-                 model: Union[str, ModelRecord] = None, rng: np.random.RandomState = None):
+                 model: Union[str, ModelRecord] = None, rng: Union[int, np.random.RandomState] = None):
         """
         :param plate_probability: The probability of placing a plate with food inside the microwave.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param position: The position of the root object. This might be adjusted.
         :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a random model in the category is selected.
-        :param rng: The random number generator. If None, a new random number generator is created.
+        :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         """
 
         self._plate_probability: float = plate_probability

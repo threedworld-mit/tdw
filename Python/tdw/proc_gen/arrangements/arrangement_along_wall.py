@@ -19,7 +19,7 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
     """
 
     def __init__(self, corner: OrdinalDirection, wall: CardinalDirection, distance: float, region: InteriorRegion,
-                 model: Union[str, ModelRecord] = None, wall_length: float = None, rng: np.random.RandomState = None):
+                 model: Union[str, ModelRecord] = None, wall_length: float = None, rng: Union[int, np.random.RandomState] = None):
         """
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
@@ -27,7 +27,7 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
         :param model: Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected. If no model fits, the arrangement will not be added to the scene.
         :param wall_length: The total length of the lateral arrangement. If None, defaults to the length of the wall.
-        :param rng: The random number generator. If None, a new random number generator is created.
+        :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         """
 
         self._corner: OrdinalDirection = corner

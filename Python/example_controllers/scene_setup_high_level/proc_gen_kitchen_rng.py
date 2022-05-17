@@ -8,7 +8,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 Use a random seed to procedurally generate a kitchen.
 """
 
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("proc_gen_kitchen_minimal")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("proc_gen_kitchen_rng")
 print(f"Images will be saved to: {path}")
 proc_gen_kitchen = ProcGenKitchen()
 proc_gen_kitchen.create(rng=0)

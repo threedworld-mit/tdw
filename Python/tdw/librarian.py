@@ -5,13 +5,13 @@ from pathlib import Path
 import platform
 from secrets import token_hex
 from tdw.collision_data.trigger_collider_shape import TriggerColliderShape
-from tdw.container_data.container_collider_tag import ContainerColliderTag
-from tdw.container_data.container_trigger_collider import ContainerTriggerCollider
-from tdw.container_data.container_box_trigger_collider import ContainerBoxTriggerCollider
-from tdw.container_data.container_sphere_trigger_collider import ContainerSphereTriggerCollider
-from tdw.container_data.container_cylinder_trigger_collider import ContainerCylinderTriggerCollider
 from tdw.scene_data.room import Room
 from tdw.scene_data.interior_region import InteriorRegion
+from tdw.container_data.container_tag import ContainerTag
+from tdw.container_data.container_shape import ContainerShape
+from tdw.container_data.box_container import BoxContainer
+from tdw.container_data.sphere_container import SphereContainer
+from tdw.container_data.cylinder_container import CylinderContainer
 
 
 class _Encoder(json.JSONEncoder):
@@ -20,15 +20,11 @@ class _Encoder(json.JSONEncoder):
     """
 
     def default(self, obj):
-        if isinstance(obj, ContainerColliderTag):
+        if isinstance(obj, ContainerTag):
             return obj.name
         elif isinstance(obj, TriggerColliderShape):
             return obj.name
-        elif isinstance(obj, ContainerBoxTriggerCollider):
-            return obj.__dict__
-        elif isinstance(obj, ContainerSphereTriggerCollider):
-            return obj.__dict__
-        elif isinstance(obj, ContainerCylinderTriggerCollider):
+        elif isinstance(obj, BoxContainer) or isinstance(obj, SphereContainer) or isinstance(obj, CylinderContainer):
             return obj.__dict__
         elif isinstance(obj, Room):
             return obj.__dict__
@@ -100,7 +96,7 @@ class ModelRecord(_Record):
             self.physics_quality: float = -1
             self.asset_bundle_sizes: Dict[str, int] = {"Windows": -1, "Darwin": -1, "Linux": -1}
             self.composite_object = False
-            self.container_colliders: List[ContainerTriggerCollider] = list()
+            self.container_shapes: List[ContainerShape] = list()
         else:
             self.wnid: str = data["wnid"]
             self.wcategory: str = data["wcategory"]
@@ -118,26 +114,28 @@ class ModelRecord(_Record):
                 self.volume: float = 0
             else:
                 self.volume: float = data["volume"]
-            self.container_colliders: List[ContainerTriggerCollider] = list()
-            if "container_colliders" in data:
-                for container in data["container_colliders"]:
-                    shape = TriggerColliderShape[container["shape"]]
-                    tag = ContainerColliderTag[container["tag"]]
-                    if shape == TriggerColliderShape.box:
-                        obj = ContainerBoxTriggerCollider(tag=tag,
-                                                          position=container["position"],
-                                                          scale=container["scale"])
-                    elif shape == TriggerColliderShape.cylinder:
-                        obj = ContainerCylinderTriggerCollider(tag=tag,
-                                                               position=container["position"],
-                                                               scale=container["scale"])
-                    elif shape == TriggerColliderShape.sphere:
-                        obj = ContainerSphereTriggerCollider(tag=tag,
-                                                             position=container["position"],
-                                                             diameter=container["diameter"])
-                    else:
-                        raise Exception(shape)
-                    self.container_colliders.append(obj)
+            self.container_shapes: List[ContainerShape] = list()
+            for container in data["container_shapes"]:
+                shape = TriggerColliderShape[container["shape"]]
+                tag = ContainerTag[container["tag"]]
+                if shape == TriggerColliderShape.box:
+                    obj = BoxContainer(tag=tag,
+                                       position=container["position"],
+                                       half_extents=container["half_extents"],
+                                       rotation=container["rotation"])
+                elif shape == TriggerColliderShape.cylinder:
+                    obj = CylinderContainer(tag=tag,
+                                            position=container["position"],
+                                            radius=container["radius"],
+                                            height=container["height"],
+                                            rotation=container["rotation"])
+                elif shape == TriggerColliderShape.sphere:
+                    obj = SphereContainer(tag=tag,
+                                          position=container["position"],
+                                          radius=container["radius"])
+                else:
+                    raise Exception(shape)
+                self.container_shapes.append(obj)
 
 
 class MaterialRecord(_Record):

@@ -304,13 +304,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 **tdw.container_data**
 
-- [ContainerBoxTriggerCollider](Documentation/python/container_data/container_box_trigger_collider.md)
-- [ContainerColliderTag](Documentation/python/container_data/container_collider_tag.md)
-- [ContainerCylinderTriggerCollider](Documentation/python/container_data/container_cylinder_trigger_collider.md)
-- [ContainerNonUniformScaleTriggerCollider](Documentation/python/container_data/container_non_uniform_scale_trigger_collider.md)
-- [ContainerSphereTriggerCollider](Documentation/python/container_data/container_sphere_trigger_collider.md)
-- [ContainerTriggerCollider](Documentation/python/container_data/container_trigger_collider.md)
+- [BoxContainer](Documentation/python/container_data/box_container.md)
+- [ContainerShape](Documentation/python/container_data/container_shape.md)
+- [ContainerTag](Documentation/python/container_data/container_tag.md)
 - [ContainmentEvent](Documentation/python/container_data/containment_event.md)
+- [CylinderContainer](Documentation/python/container_data/cylinder_container.md)
+- [SphereContainer](Documentation/python/container_data/sphere_container.md)
 
 **tdw.flex_data**
 

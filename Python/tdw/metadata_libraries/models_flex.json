@@ -50,7 +50,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -123,7 +123,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -196,7 +196,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -269,7 +269,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -342,7 +342,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -415,7 +415,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -488,7 +488,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -561,7 +561,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -634,7 +634,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -707,7 +707,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -780,7 +780,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -853,7 +853,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,
@@ -926,7 +926,7 @@
         "z": 0
       },
       "composite_object": false,
-      "container_colliders": [],
+      "container_shapes": [],
       "do_not_use": false,
       "do_not_use_reason": "",
       "flex": true,

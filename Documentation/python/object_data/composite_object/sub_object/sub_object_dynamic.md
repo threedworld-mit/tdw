@@ -16,10 +16,8 @@ Abstract class for static data for a sub-object of a composite object.
 
 #### \_\_init\_\_
 
-**`SubObjectDynamic(dynamic_composite_objects, object_index, sub_object_index)`**
+**`SubObjectDynamic(sub_object_id)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| dynamic_composite_objects |  DynamicCompositeObjects |  | `DynamicCompositeObjects` output data. |
-| object_index |  int |  | The object index. |
-| sub_object_index |  int |  | The index of this sub-object. |
+| sub_object_id |  int |  | The ID of this sub-object. |

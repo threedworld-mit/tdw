@@ -18,10 +18,9 @@ Dynamic data for a light sub-object of a composite object.
 
 #### \_\_init\_\_
 
-**`LightDynamic(dynamic_composite_objects, object_index, sub_object_index)`**
+**`LightDynamic(is_on, sub_object_id)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| dynamic_composite_objects |  DynamicCompositeObjects |  | `DynamicCompositeObjects` output data. |
-| object_index |  int |  | The object index. |
-| sub_object_index |  int |  | The index of this sub-object. |
+| is_on |  bool |  | If True, the light is on. |
+| sub_object_id |  int |  | The ID of this sub-object. |

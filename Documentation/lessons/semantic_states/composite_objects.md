@@ -74,14 +74,14 @@ composite_object_manager = CompositeObjectManager()
 c.add_ons.append(composite_object_manager)
 # Create the scene and add the object.
 c.communicate([TDWUtils.create_empty_room(12, 12),
-               c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+               c.get_add_object(model_name="dishwasher_4_composite",
                                 object_id=c.get_unique_id())])
 for object_id in composite_object_manager.static:
     print(object_id)
     composite_object = composite_object_manager.static[object_id]
-    for hinge_id in composite_object.hinges:
+    for hinge_id in composite_object.springs:
         print("Hinge ID:", hinge_id)
-        hinge = composite_object_manager.static[object_id].hinges[hinge_id]
+        hinge = composite_object_manager.static[object_id].springs[hinge_id]
         if hinge.has_limits:
             print("Hinge limits:", hinge.min_limit, hinge.max_limit)
 c.communicate({"$type": "terminate"})
@@ -90,8 +90,9 @@ c.communicate({"$type": "terminate"})
 Output:
 
 ```
-4489108
-Hinge ID: 743332436
+9662614
+Hinge ID: 561661381
+Hinge limits: 0.0 90.0
 ```
 
 ### Static data
@@ -109,7 +110,7 @@ Static data (data that isn't expected to change per-frame) is cached in `composi
 | `prismatic_joints` | [`PrismaticJointStatic`](../../python/object_data/composite_object/sub_object/prismatic_joint_static.md) |
 | `non_machines`     | [`NonMachineStatic`](../../python/object_data/composite_object/sub_object/non_machine_static.md) |
 
-This example prints the sub-object ID of each sub-object; in this case it will just print the ID of the microwave door:
+This example prints the sub-object ID of each sub-object; in this case it will just print the ID of the dishwasher door:
 
 ```python
 from tdw.controller import Controller
@@ -120,7 +121,7 @@ c = Controller()
 composite_object_manager = CompositeObjectManager()
 c.add_ons.append(composite_object_manager)
 c.communicate([TDWUtils.create_empty_room(12, 12),
-               c.get_add_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
+               c.get_add_object(model_name="dishwasher_4_composite",
                                 object_id=c.get_unique_id())])
 for object_id in composite_object_manager.static:
     composite_object_static = composite_object_manager.static[object_id]
@@ -143,7 +144,7 @@ c.communicate({"$type": "terminate"})
 
 `composite_object_manager.dynamic` is a dictionary of dynamic data that is updated per-frame. The dictionary key is the root object ID and the value is a [`CompositeObjectDynamic`](../../python/object_data/composite_object/composite_object_dynamic.md).
 
-In this example, we'll add the microwave to the scene but set its initial position high above the floor and its initial pitch angle facing downwards; this will cause the door to open. The controller will then print the angle of the door at the start and end of the simulation:
+In this example, we'll add a microwave to the scene but set its initial position high above the floor and its initial pitch angle facing downwards; this will cause the door to open. The controller will then print the angle of the door at the start and end of the simulation:
 
 ```python
 from tdw.controller import Controller

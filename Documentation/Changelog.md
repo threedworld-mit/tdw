@@ -1,10 +1,10 @@
 # CHANGELOG
 
-# v1.9.x
+# v1.10.x
 
-To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
+To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
-## v1.9.18
+## v1.10.0
 
 ### Command API
 
@@ -16,6 +16,21 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | `add_cylinder_container` | Add a cylindrical container shape to an object.        |
 | `add_sphere_container`   | Add a spherical container shape to an object.          |
 | `send_containment`       | Send `Overlap` output data from every container shape. |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data               | Modification                                                 |
+| ------------------------- | ------------------------------------------------------------ |
+| `Transforms`              | Significant speed improvement.<br>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
+| `Rigidbodies`             | Significant speed improvement.<br/>`get_velocity(index)` and `get_angular_velocity(index)` return a numpy arrays instead of tuples. |
+| `StaticRigidbodies`       | Significant speed improvement.                               |
+| `Bounds`                  | Significant speed improvement.<br>`get_front(index)`, `get_back(index)`, etc. return numpy arrays instead of tuples. |
+| `SegmentationColors`      | `get_object_color(index)` returns a numpy array instead of a tuple. |
+| `Volumes`                 | Significant speed improvement.                               |
+| `LocalTransforms`         | Significant speed improvement.<br/>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
+| `DynamicCompositeObjects` | Significant speed improvement.<br>Restructured how hinge and light data is stored and returned. |
 
 ### `tdw` module
 
@@ -34,8 +49,23 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
   - Renamed `ContainerColliderTag` to `ContainerTag`
   - Replaced `ModelRecord.container_colliders` with `ModelRecord.container_shapes`
   - Replaced `ContainmentEvent.object_id` (the ID of the contained object) with `ContainmentEvent.object_ids` (a numpy array of all contained objects)
+- The data classes used in `DynamicCompositeObjects` (`CompositeObjectDynamic`, `HingeDynamic`, `LightDynamic`, and `SubObjectDynamic`) all take different constructor parameters. They are otherwise unchanged. The API for `CompositeObjectManager` is the same as before.
+
+### Build
+
+- Fixed: `add_line_renderer` doesn't correctly add line points.
+
+### Benchmark
+
+- Added kitchen benchmark to `PerformanceBenchmarkController` and `main.py`
 
 ### Documentation
+
+#### New Documentation
+
+| Document                          | Description    |
+| --------------------------------- | -------------- |
+| `upgrade_guides/v1.9_to_v1.10.md` | Upgrade guide. |
 
 #### Modified Documentation
 
@@ -43,6 +73,11 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 | ---------------------------------------- | ------------------------------------------------------------ |
 | `lessons/semantic_states/containment.md` | Rewrote most of the document and replaced some images in order to describe container shapes. |
 | `python/container_data/`                 | Removed old API documents (e.g. `container_collider_tag.md`) and added new API documents (e.g. `container_tag.md`). |
+| `benchmark/benchmark.md`                 | Added explanation and FPS of kitchen benchmark.              |
+
+# v1.9.x
+
+To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
 
 ## v1.9.17
 

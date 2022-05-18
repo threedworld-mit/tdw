@@ -279,14 +279,14 @@ Rotated bounds data.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The unique ID of the object. | `int` |
-| `get_front(index)` | Point defining the front face (the one oriented towards the forward direction). | `Tuple[float, float, float]` |
-| `get_back(index)` | Point defining the back face. | `Tuple[float, float, float]` |
-| `get_left(index)` | Point defining the left face. | `Tuple[float, float, float]` |
-| `get_right(index)` | Point defining the right face. | `Tuple[float, float, float]` |
-| `get_top(index)` | Point defining the top face. | `Tuple[float, float, float]` |
-| `get_bottom(index)` | Point defining the bottom face. | `Tuple[float, float, float]` |
-| `get_center(index)` | Centerpoint of the bounds. | `Tuple[float, float, float]` |
+| `get_id(index)` | The id. | `int` |
+| `get_front(index)` | The front. | `np.array` |
+| `get_back(index)` | The back. | `np.array` |
+| `get_left(index)` | The left. | `np.array` |
+| `get_right(index)` | The right. | `np.array` |
+| `get_top(index)` | The top. | `np.array` |
+| `get_bottom(index)` | The bottom. | `np.array` |
+| `get_center(index)` | The center. | `np.array` |
 
 ## CameraMatrices
 
@@ -362,15 +362,15 @@ Dynamic data for composite objects.
 
 | Function | Description | Return type |
 | --- | --- | --- |
-| `get_num()` | The number of objects. | `int` |
-| `get_object_id(index)` | The ID of the object. | `int` |
-| `get_num_hinges(index)` | The number of hinges. | `int` |
-| `get_hinge_id(index, hinge_index)` | The ID of the hinge. | `int` |
-| `get_hinge_angle(index, hinge_index)` | The angle of the hinge. | `float` |
-| `get_hinge_velocity(index, hinge_index)` | The velocity of the hinge. | `float` |
-| `get_num_lights(index)` | The number of lights. | `int` |
-| `get_light_id(index, light_index)` | The ID of the light. | `int` |
-| `get_light_is_on(index, light_index)` | The on of the light is. | `bool` |
+| `get_num_hinges()` | The number of hinges. | `int` |
+| `get_hinge_parent_id(index)` | The ID of the hinge parent. | `int` |
+| `get_hinge_id(index)` | The ID of the hinge. | `int` |
+| `get_hinge_angle(index)` | The angle of the hinge. | `float` |
+| `get_hinge_velocity(index)` | The velocity of the hinge. | `float` |
+| `get_num_lights()` | The number of lights. | `int` |
+| `get_light_parent_id(index)` | The ID of the light parent. | `int` |
+| `get_light_id(index)` | The ID of the light. | `int` |
+| `get_light_is_on(index)` | The on of the light is. | `bool` |
 
 ## EmptyObjects
 
@@ -559,11 +559,11 @@ Data about the Transform component of objects (position and rotation) relative t
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The unique ID of this object. | `int` |
-| `get_position(index)` | The local bottom-center position of the object. | `Tuple[float, float, float]` |
-| `get_forward(index)` | The forward directional vector of the object. | `Tuple[float, float, float]` |
-| `get_eulers(index)` | The local rotation of the object expressed in Euler angles. | `Tuple[float, float, float]` |
-| `get_rotation(index)` | The local rotation of the object. | `Tuple[float, float, float, float]` |
+| `get_id(index)` | The id. | `int` |
+| `get_position(index)` | The position. | `np.array` |
+| `get_forward(index)` | The forward. | `np.array` |
+| `get_rotation(index)` | The rotation. | `np.array` |
+| `get_euler_angles(index)` | The `[x, y, z]` Euler angles of each object. | `np.array` |
 
 ## LogMessage
 
@@ -754,10 +754,10 @@ Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scen
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The unique ID of this object. | `int` |
-| `get_velocity(index)` | The directional velocity. | `Tuple[float, float, float]` |
-| `get_angular_velocity(index)` | The angular velocity. | `Tuple[float, float, float]` |
-| `get_sleeping(index)` | True if the rigidbody is sleeping. | `bool` |
+| `get_id(index)` | The id. | `int` |
+| `get_velocity(index)` | The velocity. | `np.array` |
+| `get_angular_velocity(index)` | The angular velocity. | `np.array` |
+| `get_sleeping(index)` | The sleeping. | `bool` |
 
 ## Robot
 
@@ -839,7 +839,7 @@ Color segmentation data for objects in the scene.
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_object_id(index)` | The ID of the object. | `int` |
-| `get_object_color(index)` | The color of the object. | `Tuple[float, float, float]` |
+| `get_object_color(index)` | The color of the object. | `np.array` |
 | `get_object_name(index)` | The name of the object. | `str` |
 | `get_object_category(index)` | The category of the object. | `str` |
 
@@ -911,13 +911,12 @@ Static rigibody data (mass, kinematic state, etc.) for objects in the scene.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The unique ID of this object. | `int` |
+| `get_id(index)` | The id. | `int` |
 | `get_mass(index)` | The mass. | `float` |
-| `get_sleeping(index)` | The sleeping. | `bool` |
-| `get_kinematic(index)` | True if the rigidbody is kinematic. | `bool` |
-| `get_dynamic_friction(index)` | The dynamic friction of the physic material. | `float` |
-| `get_static_friction(index)` | The static friction of the physic material. | `float` |
-| `get_bounciness(index)` | The bounciness of the physic material. | `float` |
+| `get_kinematic(index)` | The kinematic states of each object's Rigidbody. | `bool` |
+| `get_dynamic_friction(index)` | The friction of the dynamic. | `float` |
+| `get_static_friction(index)` | The friction of the static. | `float` |
+| `get_bounciness(index)` | The bounciness. | `float` |
 
 ## StaticRobot
 
@@ -978,10 +977,10 @@ Data about the Transform component of objects (position and rotation).
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The unique ID of this object. | `int` |
-| `get_position(index)` | The local bottom-center position of the object. | `Tuple[float, float, float]` |
-| `get_forward(index)` | The forward directional vector of the object. | `Tuple[float, float, float]` |
-| `get_rotation(index)` | The current rotation of the object. | `Tuple[float, float, float, float]` |
+| `get_id(index)` | The id. | `int` |
+| `get_position(index)` | The position. | `np.array` |
+| `get_forward(index)` | The forward. | `np.array` |
+| `get_rotation(index)` | The rotation. | `np.array` |
 
 ## TriggerCollision
 
@@ -1024,7 +1023,7 @@ Spatial volume data for objects in the scene.
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_object_id(index)` | The ID of the object. | `int` |
-| `get_volume(index)` | The approximate volume in cubic meters. | `float` |
+| `get_volume(index)` | The approximate volume in cubic meters of each object. | `float` |
 
 ## VRRig
 

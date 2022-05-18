@@ -201,9 +201,9 @@ class ObjectManager(AddOn):
             if r_id == "tran":
                 tran = Transforms(resp[i])
                 for j in range(tran.get_num()):
-                    self.transforms[tran.get_id(j)] = Transform(position=np.array(tran.get_position(j)),
-                                                                rotation=np.array(tran.get_rotation(j)),
-                                                                forward=np.array(tran.get_forward(j)))
+                    self.transforms[tran.get_id(j)] = Transform(position=tran.get_position(j),
+                                                                rotation=tran.get_rotation(j),
+                                                                forward=tran.get_forward(j))
             elif r_id == "rigi":
                 rigi = Rigidbodies(resp[i])
                 for j in range(rigi.get_num()):
@@ -213,13 +213,13 @@ class ObjectManager(AddOn):
             elif r_id == "boun":
                 boun = Bounds(resp[i])
                 for j in range(boun.get_num()):
-                    self.bounds[boun.get_id(j)] = Bound(front=np.array(boun.get_front(j)),
-                                                        back=np.array(boun.get_back(j)),
-                                                        left=np.array(boun.get_left(j)),
-                                                        right=np.array(boun.get_right(j)),
-                                                        top=np.array(boun.get_top(j)),
-                                                        bottom=np.array(boun.get_bottom(j)),
-                                                        center=np.array(boun.get_center(j)))
+                    self.bounds[boun.get_id(j)] = Bound(front=boun.get_front(j),
+                                                        back=boun.get_back(j),
+                                                        left=boun.get_left(j),
+                                                        right=boun.get_right(j),
+                                                        top=boun.get_top(j),
+                                                        bottom=boun.get_bottom(j),
+                                                        center=boun.get_center(j))
 
     def reset(self) -> None:
         """

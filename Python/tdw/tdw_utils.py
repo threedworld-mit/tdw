@@ -921,9 +921,9 @@ class TDWUtils:
     @staticmethod
     def get_corners_from_wall(wall: CardinalDirection) -> List[OrdinalDirection]:
         """
-        :param wall: The wall as a [`CardinalDirection`](../cardinal_direction.md).
+        :param wall: The wall as a [`CardinalDirection`](cardinal_direction.md).
 
-        :return: The corners of the wall as a 2-element list of [`OrdinalDirection`](../ordinal_direction.md).
+        :return: The corners of the wall as a 2-element list of [`OrdinalDirection`](ordinal_direction.md).
         """
 
         if wall == CardinalDirection.north:
@@ -940,8 +940,8 @@ class TDWUtils:
         """
         Given an corner an a wall, get the direction that a lateral arrangement will run along.
 
-        :param corner: The corner as an [`OrdinalDirection`](../ordinal_direction.md).
-        :param wall: The wall as a [`CardinalDirection`](../cardinal_direction.md).
+        :param corner: The corner as an [`OrdinalDirection`](ordinal_direction.md).
+        :param wall: The wall as a [`CardinalDirection`](cardinal_direction.md).
 
         :return: Tuple: direction, wall
         """

@@ -47,7 +47,7 @@ Output:
 1
 ```
 
-To convert this into a human-readable direction, you can use the enum values of the [`CardinalDirection`](../python/cardinal_direction.md) class:
+To convert this into a human-readable direction, you can use the enum values of the [`CardinalDirection`](../../python/cardinal_direction.md) class:
 
 ```python
 from tdw.librarian import SceneLibrarian
@@ -120,7 +120,7 @@ Python API:
 - [`SceneRecord`](../../python/librarian/scene_librarian.md) 
 - [`Room`](../../python/scene_data/room.md)
 - [`InteriorRegion`](../../python/scene_data/interior_region.md)
-- [`CardinalDirection`](../python/cardinal_direction.md)
+- [`CardinalDirection`](../../python/cardinal_direction.md)
 
 Command API:
 

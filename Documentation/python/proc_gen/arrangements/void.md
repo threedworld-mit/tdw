@@ -42,7 +42,7 @@ An empty space along a wall.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| corner |  OrdinalDirection |  | The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction. |
+| corner |  OrdinalDirection |  | The origin [`OrdinalDirection`](../../ordinal_direction.md) of this wall. This is used to derive the direction. |
 | wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to. |
 | distance |  float |  | The distance in meters from the corner along the derived direction. |
 | region |  InteriorRegion |  | The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in. |

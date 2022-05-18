@@ -684,9 +684,9 @@ _(Static)_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](../cardinal_direction.md). |
+| wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](cardinal_direction.md). |
 
-_Returns:_  The corners of the wall as a 2-element list of [`OrdinalDirection`](../ordinal_direction.md).
+_Returns:_  The corners of the wall as a 2-element list of [`OrdinalDirection`](ordinal_direction.md).
 
 #### get_direction_from_corner
 
@@ -699,8 +699,8 @@ Given an corner an a wall, get the direction that a lateral arrangement will run
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| corner |  OrdinalDirection |  | The corner as an [`OrdinalDirection`](../ordinal_direction.md). |
-| wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](../cardinal_direction.md). |
+| corner |  OrdinalDirection |  | The corner as an [`OrdinalDirection`](ordinal_direction.md). |
+| wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](cardinal_direction.md). |
 
 _Returns:_  Tuple: direction, wall
 

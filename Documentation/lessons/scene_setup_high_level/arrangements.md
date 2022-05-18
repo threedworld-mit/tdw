@@ -1,5 +1,3 @@
-
-
 ##### Scene Setup (High-Level APIs)
 
 # Procedural object arrangements
@@ -444,8 +442,8 @@ Python API:
   - [`Void`](../../python/proc_gen/arrangements/void.md)
   - [`WallCabinet`](../../python/proc_gen/arrangements/wall_cabinet.md)
 - Cabinetry:
-  - [`Cabinetry`](../../python/proc_gen/arrangements/cabinetrycabinetry.md)
-  - [`CabinetryType`](../../python/proc_gen/arrangements/cabinetrycabinetry_type.md)
+  - [`Cabinetry`](../../python/proc_gen/arrangements/cabinetry/cabinetry.md)
+  - [`CabinetryType`](../../python/proc_gen/arrangements/cabinetry/cabinetry_type.md)
 - Directions:
   - [`CardinalDirection`](../../python/cardinal_direction.md)
   - [`OrdinalDirection`](../../python/ordinal_direction.md)

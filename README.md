@@ -57,7 +57,7 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 
 ### 1.2 Scene Setup (Low-Level APIs)
 
-1. [Overview](Documentation/scene_setup_low_level/overview.md)
+1. [Overview](Documentation/lessons/scene_setup_low_level/overview.md)
 2. [Units and data formats](Documentation/lessons/scene_setup_low_level/units.md)
 3. [`Bounds` output data](Documentation/lessons/scene_setup_low_level/bounds.md)
 4. [Visual materials, textures, and colors](Documentation/lessons/scene_setup_low_level/materials_textures_colors.md)

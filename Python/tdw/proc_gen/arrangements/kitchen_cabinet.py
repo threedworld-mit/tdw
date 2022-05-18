@@ -22,10 +22,10 @@ class KitchenCabinet(ArrangementAlongWall, ABC):
         """
         :param cabinetry: The [`Cabinetry`](cabinetry/cabinetry.md) set.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
-        :param corner: The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction.
+        :param corner: The origin [`OrdinalDirection`](../../ordinal_direction.md) of this wall. This is used to derive the direction.
         :param distance: The distance in meters from the corner along the derived direction.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
-        :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected.
+        :param model: Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected.
         :param wall_length: The total length of the lateral arrangement. If None, defaults to the length of the wall.
         :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         """

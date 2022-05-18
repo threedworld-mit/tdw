@@ -35,7 +35,7 @@ Result:
 
 [A detailed explanation of how `ProcGenKitchen` works can be found in the API documentation.](../../python/add_ons/proc_gen_kitchen.md) Broadly speaking, `ProcGenKitchen` has a notion of [arrangements of objects](arrangements.md), such as a shelf with objects on it. It then uses places quasi-atomic arrangements in the scene, for example creating a lateral span of kitchen counters.
 
-When reading the API documentation, be sure to click through to the documentation for each `Arrangement`. `ProcGenKitchen` has a few parameters (such as `SCENE_NAMES`) but *most* of the parameters affecting kitchen generation are actually in [`Arrangement`](../../python/proc_gen/arrangement.md) and its subclasses.
+When reading the API documentation, be sure to click through to the documentation for each `Arrangement`. `ProcGenKitchen` has a few parameters (such as `SCENE_NAMES`) but *most* of the parameters affecting kitchen generation are actually in [`Arrangement`](../../python/proc_gen/arrangements/arrangement.md) and its subclasses.
 
 ## The `rng` parameter
 
@@ -218,7 +218,7 @@ Example controllers:
 Python API:
 
 - [`ProcGenKitchen`](../../python/add_ons/proc_gen_kitchen.md)
-- [`Arrangement`](../../python/proc_gen/arrangement.md)
+- [`Arrangement`](../../python/proc_gen/arrangements/arrangement.md)
 - [`SceneRecord`](../../python/librarian/scene_librarian.md)
 - [`ModelRecord`](../../python/librarian/model_librarian.md)
 - [`Room`](../../python/scene_data/room.md)

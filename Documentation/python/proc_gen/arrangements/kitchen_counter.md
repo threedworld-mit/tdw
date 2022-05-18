@@ -80,16 +80,16 @@ A kitchen counter can have objects on it and inside it.
 | --- | --- | --- | --- |
 | cabinetry |  Cabinetry |  | The [`Cabinetry`](cabinetry/cabinetry.md) set. |
 | wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to. |
-| corner |  OrdinalDirection |  | The origin [`Corner`](../../corner.md) of this wall. This is used to derive the direction. |
+| corner |  OrdinalDirection |  | The origin [`OrdinalDirection`](../../ordinal_direction.md) of this wall. This is used to derive the direction. |
 | distance |  float |  | The distance in meters from the corner along the derived direction. |
 | region |  InteriorRegion |  | The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in. |
 | allow_microwave |  bool  | True | If True, and if this kitchen counter is longer than 0.7 meters, there will be a [`Microwave`](microwave.md) instead of an arrangement of objects on the counter top. |
 | microwave_plate_probability |  float  | 0.7 | The probability (between 0 and 1) of adding a [`Plate`](plate.md) to the inside of the microwave. |
 | microwave_plate_food_probability |  float  | 1 | The probability (between 0 and 1) of adding food on top of a plate model inside the microwave (assuming there is a plate model). |
 | cabinet_is_empty_probability |  float  | 0.1 | The probability (between 0 and 1) of the of the kitchen counter cabinet and wall cabinet being empty. |
-| microwave_model |  Union[str, ModelRecord] | None | Either the name of the microwave model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a random model in the category is selected. |
-| plate_model |  Union[str, ModelRecord] | "plate06" | Either the name of the plate model used by the `Microwave` (in which case the model must be in `models_core.json`, or a `ModelRecord`. |
-| model |  Union[str, ModelRecord] | None | Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected. |
+| microwave_model |  Union[str, ModelRecord] | None | Either the name of the microwave model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a random model in the category is selected. |
+| plate_model |  Union[str, ModelRecord] | "plate06" | Either the name of the plate model used by the `Microwave` (in which case the model must be in `models_core.json`), or a `ModelRecord`. |
+| model |  Union[str, ModelRecord] | None | Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected. |
 | wall_length |  float  | None | The total length of the lateral arrangement. If None, defaults to the length of the wall. |
 | rng |  Union[int, np.random.RandomState] | None | Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created. |
 

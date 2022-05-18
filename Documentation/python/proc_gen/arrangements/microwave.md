@@ -50,7 +50,7 @@ A microwave can have objects on top of it and inside of it.
 | wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to. |
 | position |  Dict[str, float] |  | The position of the root object. This might be adjusted. |
 | plate_model |  Union[str, ModelRecord] | "plate06" | The name of the plate model. |
-| model |  Union[str, ModelRecord] | "plate06" | Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a random model in the category is selected. |
+| model |  Union[str, ModelRecord] | "plate06" | Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a random model in the category is selected. |
 | rng |  Union[int, np.random.RandomState] | None | Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created. |
 
 #### get_categories_and_wcategories

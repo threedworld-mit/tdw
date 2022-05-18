@@ -42,7 +42,7 @@ for record in lib.records:
         print(record.name)
 ```
 
-All model records have a `substructure` field; this is *not* indicative of a composite object's structure and describes a totally separate concept in TDW. The "substructure" data reflects the underlying mesh data and is used [when setting the visual materials of an object](../objects_and_scenes/materials_textures_colors.md); the data otherwise doesn't imply anything about an object's behavior or affordances. A model can have a complex substructure hierarchy while still being a single non-composite object. In TDW, a distinction is made between *sub-meshes* which are included in the substructure data and *sub-objects* which are components of composite objects.
+All model records have a `substructure` field; this is *not* indicative of a composite object's structure and describes a totally separate concept in TDW. The "substructure" data reflects the underlying mesh data and is used [when setting the visual materials of an object](../scene_setup_low_level/materials_textures_colors.md); the data otherwise doesn't imply anything about an object's behavior or affordances. A model can have a complex substructure hierarchy while still being a single non-composite object. In TDW, a distinction is made between *sub-meshes* which are included in the substructure data and *sub-objects* which are components of composite objects.
 
 ## Machine types
 
@@ -191,7 +191,7 @@ Output:
 
 ### Reset
 
-Call `composite_object_manager.reset()` whenever [resetting a scene](../objects_and_scenes/reset_scene.md).
+Call `composite_object_manager.reset()` whenever [resetting a scene](../scene_setup_high_level/reset_scene.md).
 
 You can destroy composite objects with [`destroy_object`](../../api/command_api.md#destroy_object); this will destroy the root object and all of its sub-objects.
 

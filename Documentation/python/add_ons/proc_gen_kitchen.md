@@ -18,7 +18,7 @@ If the `scene` parameter is of type [`Room`](../scene_data/room.md) this is stra
 
 ### 3. Select a set of cabinetry
 
-[`Cabinetry`](../proc_gen/arrangements/cabinetry/cabinetry.py) always visually match each other. A `Cabinetry` data object is selected randomly.
+[`Cabinetry`](../proc_gen/arrangements/cabinetry/cabinetry.md) always visually match each other. A `Cabinetry` data object is selected randomly.
 
 ### 4. Create a work triangle
 
@@ -35,7 +35,7 @@ In all lateral arrangements in `ProcGenKitchen`, the following rules are always 
 
 Work triangle lateral arrangements have the following additional shared rules:
 
-- Each work triangle lateral arrangement has *secondary arrangements* appended to its list to spatially lengthen it. Possibilities are: [[`Basket`](../proc_gen/basket.md), [`Painting`](../proc_gen/painting.md), [`Void`](../proc_gen/void.md), [`Radiator`](../proc_gen/radiator.md), [`Stool`](../proc_gen/stool.md), [`Suitcase`](../proc_gen/suitcase.md)]. The selection is random with weighted probability; see `ProcGenKitchen.SECONDARY_ARRANGEMENTS["append"]`.
+- Each work triangle lateral arrangement has *secondary arrangements* appended to its list to spatially lengthen it. Possibilities are: [[`Basket`](../proc_gen/arrangements/basket.md), [`Painting`](../proc_gen/arrangements/painting.md), [`Void`](../proc_gen/arrangements/void.md), [`Radiator`](../proc_gen/arrangements/radiator.md), [`Stool`](../proc_gen/arrangements/stool.md), [`Suitcase`](../proc_gen/arrangements/suitcase.md)]. The selection is random with weighted probability; see `ProcGenKitchen.SECONDARY_ARRANGEMENTS["append"]`.
 
 In TDW there are four possible work triangles:
 
@@ -47,8 +47,8 @@ A single lateral arrangement along one of the longer walls.
 
 1. If one of the longer walls has windows, it will be used for the lateral arrangement. Otherwise, the wall is chosen randomly.
 2. There are two possible lateral arrangements, chosen randomly:
-  - [[`Refrigerator`](../proc_gen/refrigerator.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Sink`](../proc_gen/sink.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Shelf`](../proc_gen/shelf.md)]
-  - [[`Shelf`](../proc_gen/shelf.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Sink`](../proc_gen/sink.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Refrigerator`](../proc_gen/refrigerator.md)]
+  - [[`Refrigerator`](../proc_gen/arrangements/refrigerator.md), [`Dishwasher`](../proc_gen/arrangements/dishwasher.md), [`Sink`](../proc_gen/arrangements/sink.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Stove`](../proc_gen/arrangements/stove.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Shelf`](../proc_gen/arrangements/shelf.md)]
+  - [[`Shelf`](../proc_gen/arrangements/shelf.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Stove`](../proc_gen/arrangements/stove.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Sink`](../proc_gen/arrangements/sink.md), [`Dishwasher`](../proc_gen/arrangements/dishwasher.md), [`Refrigerator`](../proc_gen/arrangements/refrigerator.md)]
 
 #### 4b. Parallel
 
@@ -58,11 +58,11 @@ Two lateral arrangements along both longer walls.
 
 1. If one of the longer walls has windows, it will be used for the lateral arrangement with the sink. Otherwise, each lateral arrangement uses a random longer wall.
 2. For the first lateral arrangement, there are two possibilities, chosen randomly:
-  - [[`Refrigerator`](../proc_gen/refrigerator.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Sink`](../proc_gen/sink.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
-  - [[`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Sink`](../proc_gen/sink.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Refrigerator`](../proc_gen/refrigerator.md)]
+  - [[`Refrigerator`](../proc_gen/arrangements/refrigerator.md), [`Dishwasher`](../proc_gen/arrangements/dishwasher.md), [`Sink`](../proc_gen/arrangements/sink.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md)]
+  - [[`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Sink`](../proc_gen/arrangements/sink.md), [`Dishwasher`](../proc_gen/arrangements/dishwasher.md), [`Refrigerator`](../proc_gen/arrangements/refrigerator.md)]
 3. For the second lateral arrangement, there are two possibilities, chosen randomly:
-  - [[`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
-  - [[`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
+  - [[`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Stove`](../proc_gen/arrangements/stove.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md)]
+  - [[`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Stove`](../proc_gen/arrangements/stove.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md)]
 
 #### 4c. L-Shape
 
@@ -72,11 +72,11 @@ One lateral arrangement along a longer wall and one lateral arrangement along a 
 
 1. If one of the longer walls has windows, it will be used for the longer lateral arrangement. Otherwise, the wall is chosen randomly.
 2. There are two possible longer lateral arrangements, each with a `KitchenCounterTop` at the end. If both shorter walls are continuous, the selected lateral arrangement is random. Otherwise, `ProcGenKitchen` finds a corner shared by the longer wall and a contiuous corner wall and selects the arrangement in which the `KitchenCounterTop` is placed at the common corner; for example if the longer wall is `north` and the only continuous wall is `west` then the longer arrangemnent is the first of the following two options because it `KitchenCounterTop` will be placed at the northwest corner:
-  - [[`KitchenCounterTop`](../proc_gen/kitchen_counter_top.md), [`Sink`](../proc_gen/sink.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Shelf`](../proc_gen/shelf.md)]
-  - [[`Shelf`](../proc_gen/shelf.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`Sink`](../proc_gen/sink.md), [`KitchenCounterTop`](../proc_gen/kitchen_counter_top.md)]
+  - [[`KitchenCounterTop`](../proc_gen/arrangements/kitchen_counter_top.md), [`Sink`](../proc_gen/arrangements/sink.md), [`Dishwasher`](../proc_gen/arrangements/dishwasher.md), [`Stove`](../proc_gen/arrangements/stove.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Shelf`](../proc_gen/arrangements/shelf.md)]
+  - [[`Shelf`](../proc_gen/arrangements/shelf.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Stove`](../proc_gen/arrangements/stove.md), [`Dishwasher`](../proc_gen/arrangements/dishwasher.md), [`Sink`](../proc_gen/arrangements/sink.md), [`KitchenCounterTop`](../proc_gen/arrangements/kitchen_counter_top.md)]
 3. The shorter lateral arrangement is placed at the corresponding valid wall (see above). There are two possibilities, chosen randomly:
-  - [[`Void`](../proc_gen/void.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Refrigerator`](../proc_gen/refrigerator.md), [`Shelf`](../proc_gen/shelf.md)]
-  - [[`Void`](../proc_gen/void.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Refrigerator`](../proc_gen/refrigerator.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Shelf`](../proc_gen/shelf.md)]
+  - [[`Void`](../proc_gen/arrangements/void.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Refrigerator`](../proc_gen/arrangements/refrigerator.md), [`Shelf`](../proc_gen/arrangements/shelf.md)]
+  - [[`Void`](../proc_gen/arrangements/void.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Refrigerator`](../proc_gen/arrangements/refrigerator.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Shelf`](../proc_gen/arrangements/shelf.md)]
 
 #### 4d. U-Shape
 
@@ -86,12 +86,12 @@ One lateral arrangement along a longer wall and two lateral arrangements along b
 
 1. If one of the longer walls has windows, it will be used for the longer lateral arrangement. Otherwise, the wall is chosen randomly.
 2. There are two possible longer lateral arrangements, chosen randomly:
-  - [[`KitchenCounterTop`](../proc_gen/kitchen_counter_top.md), [`Sink`](../proc_gen/sink.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
-  - [[`KitchenCounterTop`](../proc_gen/kitchen_counter_top.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Stove`](../proc_gen/stove.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Sink`](../proc_gen/sink.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
+  - [[`KitchenCounterTop`](../proc_gen/arrangements/kitchen_counter_top.md), [`Sink`](../proc_gen/arrangements/sink.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Stove`](../proc_gen/arrangements/stove.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md)]
+  - [[`KitchenCounterTop`](../proc_gen/arrangements/kitchen_counter_top.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Stove`](../proc_gen/arrangements/stove.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Sink`](../proc_gen/arrangements/sink.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md)]
 3. Each of the longer lateral arrangements will have additional 20 `KitchenCounters` appended. It is unlikely that there will ever actually be this many counters. Just before running out of space along the wall, the lateral arrangement will add a `KitchenCounterTop` instead (to anchor the corner).
 4. There are two possible shorter lateral arrangements. The wall on which they appear is chosen randomly:
-  - [[`Void`](../proc_gen/void.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Refrigerator`](../proc_gen/refrigerator.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Shelf`](../proc_gen/shelf.md)]
-  - [[`Void`](../proc_gen/void.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`Dishwasher`](../proc_gen/dishwasher.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md), [`KitchenCounter`](../proc_gen/kitchen_counter.md)]
+  - [[`Void`](../proc_gen/arrangements/void.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Refrigerator`](../proc_gen/arrangements/refrigerator.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Shelf`](../proc_gen/arrangements/shelf.md)]
+  - [[`Void`](../proc_gen/arrangements/void.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`Dishwasher`](../proc_gen/arrangements/dishwasher.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md), [`KitchenCounter`](../proc_gen/arrangements/kitchen_counter.md)]
 
 ***
 
@@ -129,7 +129,7 @@ This allows objects to stop moving.
 
 - `room` The kitchen [`Room`](../scene_data/room.md). This gets set by `self.create()`.
 
-- `cabinetry` The [`KitchenCabinetSet`](../proc_gen/kitchen_cabinets/kitchen_cabinet_set.md). This is set randomly by `self.create()`.
+- `cabinetry` The [`Cabinetry`](../proc_gen/arrangements/cabinetry/cabinetry.md). This is set randomly by `self.create()`.
 
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 

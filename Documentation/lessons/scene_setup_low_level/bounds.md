@@ -1,4 +1,4 @@
-##### Objects and Scenes
+##### Scene Setup (Low-Level APIs)
 
 # `Bounds` output data
 
@@ -133,7 +133,7 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-**Next: [Procedural generation (objects)](proc_gen_objects.md)**
+**Next: [Materials, textures, and colors](materials_textures_colors.md)**
 
 [Return to the README](../../../README.md)
 
@@ -141,7 +141,7 @@ c.communicate({"$type": "terminate"})
 
 Example controllers:
 
-- [object_on_table.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/object_on_table.py) Put an object on a table using `Bounds` output data.
+- [object_on_table.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_low_level/object_on_table.py) Put an object on a table using `Bounds` output data.
 
 Python API:
 

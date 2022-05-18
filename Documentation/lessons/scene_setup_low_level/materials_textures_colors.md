@@ -1,4 +1,4 @@
-##### Objects and Scenes
+##### Scene Setup (Low-Level APIs)
 
 # Visual materials, textures, and colors
 
@@ -287,7 +287,7 @@ Switching visual materials is most effective for use cases the primary goal is t
 
 ***
 
-**Next: [Procedural generation (scenes)](proc_gen_room.md)**
+**Next: [ProcGenRoom](proc_gen_room.md)**
 
 [Return to the README](../../../README.md)
 
@@ -295,7 +295,7 @@ Switching visual materials is most effective for use cases the primary goal is t
 
 Example controllers:
 
-- [set_visual_material.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/set_visual_material.py) Set an object's visual material.
+- [set_visual_material.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_low_level/set_visual_material.py) Set an object's visual material.
 
 Command API:
 

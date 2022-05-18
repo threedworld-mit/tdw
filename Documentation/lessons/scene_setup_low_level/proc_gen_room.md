@@ -1,8 +1,6 @@
-##### Objects and Scenes
+##### Scene Setup (Low-Level APIs)
 
-# Procedural generation (scenes)
-
-Having reviewed [TDW's built-in system for scripted object placement](floorplans.md), the rest of this tutorial will cover how to procedurally generate environments.
+# ProcGenRoom
 
 TDW includes a "ProcGen Room" scene for procedurally generating interior environments. We've been utilizing this every time we call `TDWUtils.create_empty_room(12, 12)`. However, TDW is capable of generating arbitrary indoor environments, with the caveat that each "section" of wall is always 1 meter long and walls must always be at 90 degree angles.
 
@@ -390,7 +388,7 @@ Result:
 
 ***
 
-**Next: [Units and data formats](units.md)**
+**This is the last document in the "Scene Setup (Low-Level APIs)" tutorial.**
 
 [Return to the README](../../../README.md)
 
@@ -398,8 +396,8 @@ Result:
 
 Example controllers:
 
-- [proc_gen_room.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/proc_gen_room.py) Procedurally create an interior scene.
-- [proc_gen_room_from_image.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/objects_and_scenes/proc_gen_room_from_image.py) Generate a room from a .png file.
+- [proc_gen_room.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_low_level/proc_gen_room.py) Procedurally create an interior scene.
+- [proc_gen_room_from_image.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_low_level/proc_gen_room_from_image.py) Generate a room from a .png file.
 
 Python API:
 

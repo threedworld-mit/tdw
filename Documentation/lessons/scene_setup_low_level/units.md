@@ -1,4 +1,4 @@
-##### Objects and Scenes
+##### Scene Setup (Low-Level APIs)
 
 # Units and data formats
 

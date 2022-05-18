@@ -9,7 +9,7 @@ A microwave can have objects on top of it and inside of it.
   - The objects are chosen randomly; see `Microwave.ON_TOP_OF["microwave"]`.
   - The objects are positioned in a rectangular grid on the microwave with random positional perturbations.
   - The objects have random rotations (0 to 360 degrees).
-- A microwave may have a [`Plate`](plate.md) inside it; see `plate_probability` in the constructor. The plate will always have food on it.
+- A microwave may have a [`Plate`](plate.md) inside it; see `plate_probability` and `food_probability` in the constructor.
 - All microwaves have a door that can be opened.
 - The root object of the microwave is kinematic and the door sub-object is non-kinematic.
 
@@ -39,16 +39,18 @@ A microwave can have objects on top of it and inside of it.
 
 #### \_\_init\_\_
 
-**`Microwave(plate_probability, wall, position)`**
+**`Microwave(plate_probability, food_probability, wall, position)`**
 
-**`Microwave(plate_probability, wall, position, model=None, rng=None)`**
+**`Microwave(plate_probability, food_probability, wall, position, plate_model="plate06", model="plate06", rng=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| plate_probability |  float |  | The probability of placing a plate with food inside the microwave. |
+| plate_probability |  float |  | The probability of placing a `Plate` arrangement inside the microwave. |
+| food_probability |  float |  | The probability of placing food on the plate. |
 | wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to. |
 | position |  Dict[str, float] |  | The position of the root object. This might be adjusted. |
-| model |  Union[str, ModelRecord] | None | Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a random model in the category is selected. |
+| plate_model |  Union[str, ModelRecord] | "plate06" | The name of the plate model. |
+| model |  Union[str, ModelRecord] | "plate06" | Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a random model in the category is selected. |
 | rng |  Union[int, np.random.RandomState] | None | Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created. |
 
 #### get_categories_and_wcategories

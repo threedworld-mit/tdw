@@ -77,7 +77,7 @@
   - `DynamicCompositeObjects`
   - `Overlap` (for containment)
 
-**FPS: 65**
+**FPS: 125**
 
 ## How to run TDW's main performance benchmark
 

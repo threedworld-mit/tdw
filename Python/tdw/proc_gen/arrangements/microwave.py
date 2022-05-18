@@ -17,22 +17,27 @@ class Microwave(ArrangementWithRootObject):
       - The objects are chosen randomly; see `Microwave.ON_TOP_OF["microwave"]`.
       - The objects are positioned in a rectangular grid on the microwave with random positional perturbations.
       - The objects have random rotations (0 to 360 degrees).
-    - A microwave may have a [`Plate`](plate.md) inside it; see `plate_probability` in the constructor. The plate will always have food on it.
+    - A microwave may have a [`Plate`](plate.md) inside it; see `plate_probability` and `food_probability` in the constructor.
     - All microwaves have a door that can be opened.
     - The root object of the microwave is kinematic and the door sub-object is non-kinematic.
     """
 
-    def __init__(self, plate_probability: float, wall: CardinalDirection, position: Dict[str, float],
+    def __init__(self, plate_probability: float, food_probability: float, wall: CardinalDirection,
+                 position: Dict[str, float], plate_model: Union[str, ModelRecord] = "plate06",
                  model: Union[str, ModelRecord] = None, rng: Union[int, np.random.RandomState] = None):
         """
-        :param plate_probability: The probability of placing a plate with food inside the microwave.
+        :param plate_probability: The probability of placing a `Plate` arrangement inside the microwave.
+        :param food_probability: The probability of placing food on the plate.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param position: The position of the root object. This might be adjusted.
+        :param plate_model: The name of the plate model.
         :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a random model in the category is selected.
         :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         """
 
         self._plate_probability: float = plate_probability
+        self._food_probability: float = food_probability
+        self._plate_model: str = plate_model
         self._wall: CardinalDirection = wall
         super().__init__(model=model, position=position, rng=rng)
 
@@ -44,8 +49,8 @@ class Microwave(ArrangementWithRootObject):
             for shape in self._record.container_shapes:
                 if shape.tag == ContainerTag.enclosed and isinstance(shape, BoxContainer):
                     position, size = self._get_container_shape_position_and_size(shape=shape)
-                    plate = Plate(food_probability=1,
-                                  model="plate06",
+                    plate = Plate(food_probability=self._food_probability,
+                                  model=self._plate_model,
                                   position=position,
                                   rng=self._rng)
                     commands.extend(plate.get_commands())

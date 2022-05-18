@@ -1,7 +1,7 @@
 from json import loads
 from pathlib import Path
 from pkg_resources import resource_filename
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Optional
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
@@ -23,14 +23,14 @@ class KitchenCounter(KitchenCabinet):
     - The kitchen counter is placed next to a wall.
       - The kitchen counter's position is automatically adjusted to set it flush to the wall.
       - The kitchen counter is automatically rotated so that it faces away from the wall.
-    - A kitchen counter longer than 0.7 meters may have a [`Microwave`](microwave.md); see `allow_microwave` in the constructor.
+    - A kitchen counter longer than 0.7 meters may have a [`Microwave`](microwave.md); see `allow_microwave`, `microwave_plate_probability`, `microwave_plate_food_probability`, `microwave_model`, and `plate_model` in the constructor.
       - If the kitchen counter does _not_ have a microwave:
         - If the kitchen counter is alongside a wall without windows and has a corresponding wall cabinet model, a [`WallCabinet`](wall_cabinet.md) will be added above it; see `KitchenCounter.COUNTERS_AND_CABINETS`.
         - The kitchen counter will have a rectangular arrangement of objects on top of it.
           - The objects are chosen randomly; see `KitchenCounter.ON_TOP_OF["kitchen_counter"]`.
           - The objects are positioned in a rectangular grid on the counter top with random positional perturbations.
           - The objects have random rotations (0 to 360 degrees).
-    - The interior of the kitchen counter may be empty; see `empty` in the constructor.
+    - The interior of the kitchen counter may be empty; see `cabinet_is_empty_probability` in the constructor.
       - If the interior is _not_ empty, the kitchen counter will have a rectangular arrangement of objects inside its cabinet.
         - The objects are chosen randomly; see `KitchenCounter.ENCLOSED_BY["kitchen_counter"]`.
         - The objects are positioned in a rectangular grid inside the cabinet with random positional perturbations.
@@ -48,8 +48,11 @@ class KitchenCounter(KitchenCabinet):
     _ENCLOSE_SCALE: float = 0.7
 
     def __init__(self, cabinetry: Cabinetry, corner: OrdinalDirection, wall: CardinalDirection, distance: float,
-                 region: InteriorRegion, allow_microwave: bool = True, microwave_plate: float = 0.7, empty: float = 0.1,
-                 model: Union[str, ModelRecord] = None, wall_length: float = None, rng: Union[int, np.random.RandomState] = None):
+                 region: InteriorRegion, allow_microwave: bool = True, microwave_plate_probability: float = 0.7,
+                 microwave_plate_food_probability: float = 1, cabinet_is_empty_probability: float = 0.1,
+                 microwave_model: Union[str, ModelRecord] = None, plate_model: Union[str, ModelRecord] = "plate06",
+                 model: Union[str, ModelRecord] = None, wall_length: float = None,
+                 rng: Union[int, np.random.RandomState] = None):
         """
         :param cabinetry: The [`Cabinetry`](cabinetry/cabinetry.md) set.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
@@ -57,8 +60,11 @@ class KitchenCounter(KitchenCabinet):
         :param distance: The distance in meters from the corner along the derived direction.
         :param region: The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in.
         :param allow_microwave: If True, and if this kitchen counter is longer than 0.7 meters, there will be a [`Microwave`](microwave.md) instead of an arrangement of objects on the counter top.
-        :param microwave_plate: The probability (between 0 and 1) of adding a [`Plate`](plate.md) to the inside of the microwave.
-        :param empty: The probability (between 0 and 1) of the of the kitchen counter being empty.
+        :param microwave_plate_probability: The probability (between 0 and 1) of adding a [`Plate`](plate.md) to the inside of the microwave.
+        :param microwave_plate_food_probability: The probability (between 0 and 1) of adding food on top of a plate model inside the microwave (assuming there is a plate model).
+        :param cabinet_is_empty_probability: The probability (between 0 and 1) of the of the kitchen counter cabinet and wall cabinet being empty.
+        :param microwave_model: Either the name of the microwave model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a random model in the category is selected.
+        :param plate_model: Either the name of the plate model used by the `Microwave` (in which case the model must be in `models_core.json`, or a `ModelRecord`.
         :param model: Either the name of the model (in which case the model must be in `models_core.json`, or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected.
         :param wall_length: The total length of the lateral arrangement. If None, defaults to the length of the wall.
         :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
@@ -69,8 +75,11 @@ class KitchenCounter(KitchenCabinet):
         If True, this kitchen counter has a microwave.
         """
         self.has_microwave: bool = False
-        self._microwave_plate: float = microwave_plate
-        self._empty: float = empty
+        self._microwave_plate_probability: float = microwave_plate_probability
+        self._microwave_plate_food_probability: float = microwave_plate_food_probability
+        self._cabinet_is_empty_probability: float = cabinet_is_empty_probability
+        self._microwave_model: Optional[Union[str, ModelRecord]] = microwave_model
+        self._plate_model: Union[str, ModelRecord] = plate_model
         super().__init__(cabinetry=cabinetry, corner=corner, wall=wall, distance=distance, region=region, model=model,
                          rng=rng, wall_length=wall_length)
 
@@ -80,7 +89,7 @@ class KitchenCounter(KitchenCabinet):
         if extents[0] > 0.7 and self._allow_microwave:
             commands = self._add_root_object()
             # Add objects in the cabinet.
-            if self._rng.random() > self._empty:
+            if self._rng.random() > self._cabinet_is_empty_probability:
                 commands.extend(self._add_enclosed_objects(rotate=False,
                                                            density=KitchenCounter._ENCLOSED_DENSITY,
                                                            cell_size=KitchenCounter._ENCLOSED_CELL_SIZE,
@@ -89,11 +98,16 @@ class KitchenCounter(KitchenCabinet):
             # Rotate everything.
             commands.extend(self._get_rotation_commands())
             # Add the microwave.
-            microwave_model_names = self.MODEL_CATEGORIES["microwave"]
-            microwave_model_name = microwave_model_names[self._rng.randint(0, len(microwave_model_names))]
-            microwave = Microwave(plate_probability=self._microwave_plate,
+            if self._microwave_model is None:
+                microwave_model_names = self.MODEL_CATEGORIES["microwave"]
+                microwave_model_name = microwave_model_names[self._rng.randint(0, len(microwave_model_names))]
+            else:
+                microwave_model_name = self._microwave_model
+            microwave = Microwave(plate_probability=self._microwave_plate_probability,
+                                  food_probability=self._microwave_plate_food_probability,
                                   wall=self._wall,
                                   model=microwave_model_name,
+                                  plate_model=self._plate_model,
                                   position={"x": self._position["x"],
                                             "y": self._record.bounds["top"]["y"] + self._position["y"],
                                             "z": self._position["z"]},
@@ -107,7 +121,7 @@ class KitchenCounter(KitchenCabinet):
             commands = self._add_object_with_other_objects_on_top(rotate=False,
                                                                   x_scale=KitchenCounter._ENCLOSE_SCALE)
             # Add objects in the cabinet.
-            if self._rng.random() > self._empty:
+            if self._rng.random() > self._cabinet_is_empty_probability:
                 commands.extend(self._add_enclosed_objects(rotate=False,
                                                            density=KitchenCounter._ENCLOSED_DENSITY,
                                                            cell_size=KitchenCounter._ENCLOSED_CELL_SIZE,

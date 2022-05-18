@@ -19,6 +19,10 @@ class CupAndCoaster(Arrangement):
     Coasters are randomly rotated up to +/- this many degrees.
     """
     ROTATION: float = 25
+    """:class_var
+    A list of cup model categories.
+    """
+    CUP_CATEGORIES: List[str] = ["cup", "wineglass"]
 
     def get_commands(self) -> List[dict]:
         commands = []
@@ -42,9 +46,8 @@ class CupAndCoaster(Arrangement):
         else:
             y = self._position["y"]
         # Add a cup or wine glass.
-        cup_category = "cup" if self._rng.random() < 0.5 else "wineglass"
-        cup_model_name = CupAndCoaster.MODEL_CATEGORIES[cup_category][
-            self._rng.randint(0, len(CupAndCoaster.MODEL_CATEGORIES[cup_category]))]
+        cup_category = CupAndCoaster.CUP_CATEGORIES[self._rng.randint(0, len(CupAndCoaster.CUP_CATEGORIES))]
+        cup_model_name = CupAndCoaster.MODEL_CATEGORIES[cup_category][self._rng.randint(0, len(CupAndCoaster.MODEL_CATEGORIES[cup_category]))]
         # Add the cup.
         cup_id = Controller.get_unique_id()
         self.object_ids.append(cup_id)

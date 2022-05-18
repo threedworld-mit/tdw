@@ -18,14 +18,14 @@ There are many `Arrangement` sub-classes; see the bottom of this document for a 
 
 ### Example A: `CupAndCoaster`
 
-A [`CupAndCoaster`](../../python/proc_gen/arrangements/cup_and_coaster.md) is a relatively simple arrangement. It creates either a cup or a wine glass. 50% of the time, there is a coaster under the cup or glass.
+A [`CupAndCoaster`](../../python/proc_gen/arrangements/cup_and_coaster.md) is a subclass of [`Arrangement`](../../python/proc_gen/arrangements/arrangement.md). It creates either a cup or a wine glass. 50% of the time, there is a coaster under the cup or glass.
 
 `CupAndCoaster` has the following constructor parameters:
 
 - `position` sets the position of the arrangement (either the coaster or, if there is no coaster, the cup or wineglass).
 - `rng` is optional and defaults to None. It is either a random seed (and integer) or a `numpy.random.RandomState` object. If None, a new `numpy.random.RandomState` object is created.
 
-To add a `CupAndCoaster` to the scene:
+This example controller adds a `CupAndCoaster` to the scene:
 
 ```python
 from tdw.controller import Controller
@@ -34,10 +34,6 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.proc_gen.arrangements.cup_and_coaster import CupAndCoaster
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-
-"""
-Create a cup and coaster.
-"""
 
 # Add a camera and enable image capture.
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("cup_and_coaster")
@@ -65,20 +61,284 @@ Result:
 
 ![](images/arrangements/cup_and_coaster.jpg)
 
-### Example B: `KitchenCounter`
+### Example B: `CupAndCoaster` and `MODEL_CATEGORIES`
 
-[`KitchenCounter`](../../python/proc_gen/arrangements/kitchen_counter.md) is in some key ways structured very differently than `CupAndCoaster`. The constructor doesn't accept an explicit position. Instead, a `KitchenCounter` is positioned in relationship to the room: a `distance` from a `corner` along a `wall`. It is a subclass of [`ArrangementAlongWall`](../../python/proc_gen/arrangements/arrangement_along_wall.md) and relies on [room data](rooms.md) and other data classes.
+`Arrangement.MODEL_CATEGORIES` is a dictionary of "proc-gen categories" and lists of model names. The categories and model names as a curated subset of models from `models_core.json`. Proc-gen categories overlap with, but are not the same as, `model_record.wcategory`.
 
-`KitchenCounter` has the following constructor parameters (note that `position` is *not* a parameter):
+This will print a list of all cups:
+
+```python
+from tdw.proc_gen.arrangements.arrangement import Arrangement
+
+for model_name in Arrangement.MODEL_CATEGORIES["cup"]:
+    print(model_name)
+```
+
+Output:
+
+```
+coffeecup004_fix
+coffeemug
+cup
+```
+
+An additional class variable, `CupAndCoaster.CUP_CATEGORIES`, controls which categories are considered "cups" for the purposes of this particular arrangement:
+
+```python
+from tdw.proc_gen.arrangements.cup_and_coaster import CupAndCoaster
+
+for category in CupAndCoaster.CUP_CATEGORIES:
+    print(category)
+```
+
+Output:
+
+```
+cup
+wineglass
+```
+
+To force `CupAndCoaster` to use a specific cup or wineglass, we can set both `MODEL_CATEGORIES` and `CUP_CATEGORIES`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.proc_gen.arrangements.cup_and_coaster import CupAndCoaster
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+# Add a camera and enable image capture.
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("cup_and_coaster")
+print(f"Images will be saved to: {path}")
+camera = ThirdPersonCamera(position={"x": -1.5, "y": 0.8, "z": 0},
+                           look_at={"x": 0, "y": 0, "z": 0},
+                           avatar_id="a")
+capture = ImageCapture(avatar_ids=["a"], path=path, pass_masks=["_img"])
+# Start the controller.
+c = Controller()
+c.add_ons.extend([camera, capture])
+# Use only models from the category "cup".
+CupAndCoaster.CUP_CATEGORIES = ["cup"]
+# Use only the coffee mug model.
+CupAndCoaster.MODEL_CATEGORIES["cup"] = ["coffeemug"]
+# Add a `CupAndCoaster` arrangement.
+cup_and_coaster = CupAndCoaster(position={"x": 0, "y": 0, "z": 0},
+                                rng=0)
+# Create the scene.
+commands = [TDWUtils.create_empty_room(12, 12)]
+# Add commands to create the cup and coaster.
+commands.extend(cup_and_coaster.get_commands())
+# Send the commands.
+c.communicate(commands)
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/arrangements/coffee_mug.jpg)
+
+### Example C: `Plate`
+
+[`Plate`](../../python/proc_gen/arrangements/plate.md) is a subclass of [`ArrangementWithRootObject`](../../python/proc_gen/arrangements/arrangement_with_root_object.md). A plate may have food on top of it.
+
+`Plate` has the following constructor parameters:
+
+- `food_probability` is a float between 0 and 1 and defines the probability of adding food on top of the plate.
+- `position` sets the position of the root object (the plate).
+- `model` is optional and not shown in this example; set this to set the plate model. This can be either a string (a model name) or a `ModelRecord`.
+- `rng` is optional and defaults to None. It is either a random seed (and integer) or a `numpy.random.RandomState` object. If None, a new `numpy.random.RandomState` object is created.
+
+Additionally, `Plate` has a field, `root_object_id`, not found in `Arrangement` (and, by extension, not found in `CupAndCoaster`). `ArrangementWithRootObject` subclasses all have a "root object" and any number of "child objects". `root_object_id` is set after calling `get_commands()`.
+
+This example controller adds a `Plate` to the scene. Note that in the `CupAndCoaster` example, we added the add-ons, then the `CupAndCoaster`, then called `cup_and_coaster.get_commands()`. In *this* example, the order is flipped. This is because we want the camera to look at the plate; to do this, we need to set `plate.root_object_id` which means that we need to call `plate.get_commands()` before creating the `ThirdPersonCamera`.
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.proc_gen.arrangements.plate import Plate
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+# Add a `Plate` arrangement.
+plate = Plate(position={"x": 0, "y": 0, "z": 0},
+              rng=0,
+              food_probability=1)
+plate_commands = plate.get_commands()
+# The object ID of the plate is the root ID of the arrangement.
+plate_id = plate.root_object_id
+# Add a camera and enable image capture. Look at the plate.
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("plate")
+print(f"Images will be saved to: {path}")
+camera = ThirdPersonCamera(position={"x": 0.5, "y": 0.2, "z": 0},
+                           look_at=plate_id,
+                           avatar_id="a")
+capture = ImageCapture(avatar_ids=["a"], path=path, pass_masks=["_img"])
+# Start the controller.
+c = Controller()
+c.add_ons.extend([camera, capture])
+# Create the scene.
+commands = [TDWUtils.create_empty_room(12, 12)]
+# Add commands to create the arrangement.
+commands.extend(plate_commands)
+# Send the commands.
+c.communicate(commands)
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/arrangements/plate.jpg)
+
+### Example D: `Microwave`
+
+Like the previous `Plate` example, [`Microwave`](../../python/proc_gen/arrangements/microwave.md) is a subclass of [`ArrangementWithRootObject`](../../python/proc_gen/arrangements/arrangement_with_root_object.md). Unlike `Plate`, `Microwave` can actually create a sub-`Arrangement`: in this case, it might add a `Plate` arrangement inside the microwave. A `Microwave` also has objects on top of it.
+
+`Microwave` has the following constructor parameters:
+
+- `plate_probability` is a float between 0 and 1 and defines the probability of adding a `Plate` arrangement.
+- `food_probability` is a float between 0 and 1 and defines the probability of adding food on top of the plate.
+- `wall` is a [`CardinalDirection`](../../python/cardinal_direction.md). This controls the rotation of the microwave and the rest of the arrangment.
+- `position` sets the position of the root object (the microwave).
+- `plate_model` is optional and can set the plate model; it can be either a string (the model name) or a `ModelRecord`.
+- `model` is optional and can set the microwave model; it can be either a string (the model name) or a `ModelRecord`.
+- `rng` is optional and defaults to None. It is either a random seed (and integer) or a `numpy.random.RandomState` object. If None, a new `numpy.random.RandomState` object is created.
+
+All microwave models used by the `Microwave` arrangement are [composite objects](../semantic_states/composite_objects.md) with articulated doors.
+
+This example controller adds a `Microwave` to the scene. We'll add a [`CompositeObjectManager`](../../python/add_ons/composite_object_manager.md) and use it to open the microwave door so that we can see the `Plate` arrangement. To open the door, we use some low-level API commands. In most controllers that use articulated objects, an [agent](../agents/overview.md) would open the door instead.
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.composite_object_manager import CompositeObjectManager
+from tdw.proc_gen.arrangements.microwave import Microwave
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.cardinal_direction import CardinalDirection
+
+# Add a `Microwave` arrangement.
+microwave = Microwave(position={"x": 0, "y": 0, "z": 0},
+                      rng=2,
+                      food_probability=0.6,
+                      plate_probability=1,
+                      wall=CardinalDirection.west)
+microwave_commands = microwave.get_commands()
+# The object ID of the microwave is the root ID of the arrangement.
+microwave_id = microwave.root_object_id
+# Add a camera and enable image capture. Look at the microwave.
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("microwave")
+print(f"Images will be saved to: {path}")
+camera = ThirdPersonCamera(position={"x": 1, "y": 0.8, "z": 0},
+                           look_at=microwave_id,
+                           avatar_id="a")
+capture = ImageCapture(avatar_ids=["a"], path=path, pass_masks=["_img"])
+# Add a composite object manager, which we'll use to open the microwave door.
+composite_object_manager = CompositeObjectManager()
+# Start the controller.
+c = Controller()
+c.add_ons.extend([camera, capture, composite_object_manager])
+# Create the scene.
+commands = [TDWUtils.create_empty_room(12, 12)]
+# Add commands to create the arrangement.
+commands.extend(microwave_commands)
+# Send the commands.
+c.communicate(commands)
+# Start to open the door.
+commands.clear()
+for object_id in composite_object_manager.static:
+    if object_id == microwave_id:
+        for spring_id in composite_object_manager.static[object_id].springs:
+            commands.extend([{"$type": "set_spring_force",
+                              "spring_force": 50,
+                              "id": spring_id},
+                             {"$type": "set_spring_target_position",
+                              "target_position": 90,
+                              "id": spring_id}])
+        break
+c.communicate(commands)
+# Open the door.
+for i in range(50):
+    c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/arrangements/microwave.gif)
+
+### Example E: Set the objects `ON_TOP_OF` the `Microwave`
+
+`ArrangementWithRootObject` (and, by extension, `Microwave` as well as `Plate`) has three dictionaries defining which single (non-arrangement) *categories* (not models) can be placed with respect to the root object. In this case, `ON_TOP_OF["microwave"]` defines the categories of models that can be placed on the microwave. You can modify this list as needed, provided that the model is also listed somewhere in `MODEL_CATEGORIES` (see above).
+
+This example forces the `Microwave` to add only bananas on top of it:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.proc_gen.arrangements.microwave import Microwave
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.cardinal_direction import CardinalDirection
+
+# Add a `Microwave` arrangement.
+microwave = Microwave(position={"x": 0, "y": 0, "z": 0},
+                      rng=2,
+                      food_probability=0.6,
+                      plate_probability=1,
+                      wall=CardinalDirection.west)
+# Only bananas can be on top of the microwave.
+Microwave.ON_TOP_OF["microwave"] = ["banana"]
+microwave_commands = microwave.get_commands()
+# The object ID of the microwave is the root ID of the arrangement.
+microwave_id = microwave.root_object_id
+# Add a camera and enable image capture. Look at the microwave.
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("microwave")
+print(f"Images will be saved to: {path}")
+camera = ThirdPersonCamera(position={"x": 1, "y": 0.8, "z": 0},
+                           look_at=microwave_id,
+                           avatar_id="a")
+capture = ImageCapture(avatar_ids=["a"], path=path, pass_masks=["_img"])
+# Start the controller.
+c = Controller()
+c.add_ons.extend([camera, capture])
+# Create the scene.
+commands = [TDWUtils.create_empty_room(12, 12)]
+# Add commands to create the arrangement.
+commands.extend(microwave_commands)
+# Send the commands.
+c.communicate(commands)
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/arrangements/banana.jpg)
+
+### Example F: `KitchenCounter`
+
+[`KitchenCounter`](../../python/proc_gen/arrangements/kitchen_counter.md) is a subclass of [`KitchenCabinet`](../../python/proc_gen/arrangements/kitchen_cabinet.md), which is a subclass of [`ArrangementAlongWall`](../../python/proc_gen/arrangements/arrangement_along_wall.md), which is a subclass of  [`ArrangementWithRootObject`](../../python/proc_gen/arrangements/arrangement_with_root_object.md), which is a subclass of  [`Arrangement`](../../python/proc_gen/arrangements/arrangement.md). 
+
+A `KitchenCounter` is positioned very differently than arrangements in previous examples in that it doesn't have an explicit `position` constructor parameter. Instead, a `KitchenCounter` is positioned in relationship to the room: a `distance` from a `corner` along a `wall`. 
+
+A `KitchenCounter` may have objects inside its cabinet (which has an articulated door). On the counter top, there will either be random single objects or a `Microwave` arrangement (which in turn may have a `Plate` and objects on top of it). A kitchen counter may also create a [`WallCabinet`](../../python/proc_gen/arrangements/wall_cabinet.md) above it, which in turn may have its own objects or sub-arrangements.
+
+`KitchenCounter` has the following constructor parameters:
 
 - `cabinetry` defines the cabinetry set; this is used to make all kitchen cabinets, sinks, etc. in the scene look like they're part of the same set. `cabinetry` is of type [`Cabinetry`](../../python/proc_gen/arrangements/cabinetry/cabinetry.md). There are two pre-defined `Cabinetry` sets; see `tdw.proc_gen.arrangements.cabinetry.cabinetry.CABINETRY`, a dictionary where the key is a  [`CabinetryType`](../../python/proc_gen/arrangements/cabinetry/cabinetry_type.md) and the value is a pre-set [`Cabinetry`](../../python/proc_gen/arrangements/cabinetry/cabinetry.md).
-- `wall` is a [`CardinalDirection`](../../python/cardinal_direction.md) value describing the location of the wall that the `KitchenCounter` abuts.
 - `corner` is an [`OrdinalDirection`](../../python/ordinal_direction.md) value describing the "starting corner" (this conceptually assumes that there are multiple kitchen counters, sinks, etc. along the wall, starting from `corner`). The value of `corner` must correspond to the value of `wall`;  for example, if `wall == CardinalDirection.north`, then the two valid values for `corner` are `OrdinalDirection.northwest` and `OrdinalDirection.northeast`.
+- `wall` is a [`CardinalDirection`](../../python/cardinal_direction.md) value describing the location of the wall that the `KitchenCounter` abuts.
 - `distance` is a float describing the kitchen counter's distance from the `corner` along the `wall`.
 - `region` is the [`InteriorRegion`](../../python/scene_data/interior_region.md) that the wall, corner, and kitchen counter are located in. [Read this for more information.](rooms.md) In most cases, you can set this to `scene_record.rooms[0].main_region` (assuming that you've already defined `scene_record`).
-- `allow_microwave` is a boolean. If True, the kitchen counter may have a microwave. This can be useful for controlling the total number of microwaves in a scene. It is optional and defaults to True.
-- `microwave_plate` is a float defining the probability of there being a [`Plate`](../../python/proc_gen/arrangements/plate.md) inside the microwave (if there is a microwave). It is optional and defaults to 0.7.
-- `empty` is a float defining the probability of the kitchen cabinet being empty. It is optional and defaults to 0.1
+- `allow_microwave` is an optional boolean. If True, the kitchen counter may have a microwave. This can be useful for controlling the total number of microwaves in a scene. It is optional and defaults to True.
+- `microwave_plate_probability` is an optional float defining the probability of there being a [`Plate`](../../python/proc_gen/arrangements/plate.md) inside the microwave (if there is a microwave).
+- `microwave_plate_food_probability`  is an optional float defining the probability of there being food on the plate (assuming there is both a microwave and a plate inside of it).
+- `cabinet_is_empty_probability` is an optional float defining the probability of the kitchen cabinet being empty.
+- `microwave_model` is an optional parameter. It can either a string (the name of a model), a `ModelRecord`, or None (in which case the microwave, if any, is chosen randomly).
+- `plate_model` is an optional parameter that sets the model of the plate (if any) inside the microwave (if any). It can either a string (the name of a model) or a `ModelRecord`.
 - `model` is either a string (the name of a model) or a `ModelRecord`. This is the root kitchen counter model.
 - `wall_length` is the length of the wall. If None, it defaults to the actual length of the wall. This can be useful if you want to start calculating the `distance` at an offset.
 - `rng` is optional and defaults to None. It is either a random seed (and integer) or a `numpy.random.RandomState` object. If None, a new `numpy.random.RandomState` object is created.
@@ -96,10 +356,6 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.ordinal_direction import OrdinalDirection
 from tdw.cardinal_direction import CardinalDirection
 from tdw.librarian import SceneLibrarian
-
-"""
-Add a kitchen counter to the scene.
-"""
 
 # Get the scene name, record, and the region where the kitchen counter will be added.
 scene_name = "mm_craftroom_2a"
@@ -138,52 +394,7 @@ Result:
 
 ## `Arrangement` parameters and `ProcGenKitchen`
 
-By design, `ProcGenKitchen` hides and automates most of the parameters of its constituent `Arrangements`. `ProcGenKitchen` positions arrangements such that they appear kitchen-like; as such, only a fairly narrow range of preset parameter values will be valid.
-
-## Class variables and `MODEL_CATEGORIES`
-
-It is possible to adjust the class variables of any of the `Arrangement` classes; refer to the API documentation for a list.
-
-One class variable that is likely to be adjusted more than most is `Arrangement.MODEL_CATEGORIES`, a dictionary that has been curated from the overall list of models. The key of `Arrangement.MODEL_CATEGORIES` is a "proc-gen category", which overlaps with [`model_record.wcategory`](../../python/librarian/model_librarian.md) but is often not the same. For example, in TDW kitchen counters and wall cabinets have the same `wcategory` but not the same proc-gen category:
-
-```python
-from tdw.proc_gen.arrangements.arrangement import Arrangement
-from tdw.librarian import ModelLibrarian
-
-lib = ModelLibrarian()
-model_names = ["cabinet_24_wall_wood_beech_honey_composite",
-               "cabinet_24_single_door_wood_beech_honey_composite"]
-for model_name in model_names:
-    # Get the proc-gen category.
-    for category in Arrangement.MODEL_CATEGORIES:
-        if model_name in Arrangement.MODEL_CATEGORIES[category]:
-            # Get the record.
-            record = lib.get_record(model_name)
-            print(category, record.wcategory)
-```
-
-Output:
-
-```
-wall_cabinet cabinet
-kitchen_counter cabinet
-```
-
-To add a model from models_core.json, simply add it to the dictionary:
-
-```python
-from tdw.proc_gen.arrangements.arrangement import Arrangement
-
-Arrangement.MODEL_CATEGORIES["knife"].append("knife1")
-```
-
-To force arrangements to only use one model in a given category, set the list accordingly:
-
-```python
-from tdw.proc_gen.arrangements.arrangement import Arrangement
-
-Arrangement.MODEL_CATEGORIES["wall_cabinet"] = ["cabinet_24_wall_wood_beech_honey_composite"]
-```
+By design, `ProcGenKitchen` hides and automates most of the parameters of its constituent `Arrangements`. `ProcGenKitchen` positions arrangements such that they appear kitchen-like; as such, only a fairly narrow range of preset parameter values will be valid. That said, you can still adjust most of the class variables, such as `Arrangement.MODEL_CATEGORIES`.
 
 ***
 
@@ -196,12 +407,15 @@ Arrangement.MODEL_CATEGORIES["wall_cabinet"] = ["cabinet_24_wall_wood_beech_hone
 Example Controllers:
 
 - [cup_and_coaster.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_high_level/cup_and_coaster.py) Create a cup and coaster.
+- [plate.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_high_level/plate.py) Create a plate arrangement.
+- [microwave.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_high_level/microwave.py) Create a microwave arrangement.
 - [kitchen_counter.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/scene_setup_high_level/kitchen_counter.py) Create a kitchen counter arrangement.
 
 Python API:
 
 - Add-ons:
   - [`ProcGenKitchen`](../../python/add_ons/proc_gen_kitchen.md)
+  - [`CompositeObjectManager`](../../python/add_ons/composite_object_manager.md)
 - Arrangements:
   - [`Arrangement`](../../python/proc_gen/arrangements/arrangement.md)
   - [`ArrangementAlongWall`](../../python/proc_gen/arrangements/arrangement_along_wall.md)

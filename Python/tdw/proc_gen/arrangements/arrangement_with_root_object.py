@@ -46,7 +46,9 @@ class ArrangementWithRootObject(Arrangement, ABC):
         self._record: Optional[ModelRecord]
         if model is None:
             if rng is None:
-                rng = np.random.RandomState()
+                rng: np.random.RandomState = np.random.RandomState()
+            elif isinstance(rng, int):
+                rng = np.random.RandomState(rng)
             category = self._get_category()
             if category not in Arrangement.MODEL_CATEGORIES:
                 self._record = None

@@ -45,9 +45,13 @@ class ArrangementAlongWall(ArrangementWithRootObject, ABC):
         self.send_commands: bool = distance < self._wall_length
         if model is None:
             if rng is None:
-                self._rng = np.random.RandomState()
-            else:
+                self._rng: np.random.RandomState = np.random.RandomState()
+            elif isinstance(rng, int):
+                self._rng = np.random.RandomState(rng)
+            elif isinstance(rng, np.random.RandomState):
                 self._rng = rng
+            else:
+                raise Exception(rng)
             model = self._get_random_record_that_fits_along_wall(distance=distance)
         super().__init__(model=model, position={"x": 0, "y": 0, "z": 0}, rng=rng)
 

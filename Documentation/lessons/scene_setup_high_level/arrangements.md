@@ -392,7 +392,32 @@ Result:
 
 ## `Arrangement` parameters and `ProcGenKitchen`
 
-By design, `ProcGenKitchen` hides and automates most of the parameters of its constituent `Arrangements`. `ProcGenKitchen` positions arrangements such that they appear kitchen-like; as such, only a fairly narrow range of preset parameter values will be valid. That said, you can still adjust most of the class variables, such as `Arrangement.MODEL_CATEGORIES`.
+`ProcGenKitchen` hides and automates most of the parameters of its constituent `Arrangements`. This is is because with a few exceptions, such as the kitchen table, it's impossible to know how many arrangements will be in the scene before they are generated. For example, it's not possible to set parameters for each basket in the scene, because the total number of baskets varies per scene (and there might not be any baskets at all).
+
+ That said, you can still adjust most of the class variables, such as `Arrangement.MODEL_CATEGORIES`. For example, this controller sets `Basket.ROTATION`, which controls the maximum random rotation of all baskets in the scene:
+
+```python
+from tdw.controller import Controller
+from tdw.add_ons.proc_gen_kitchen import ProcGenKitchen
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.proc_gen.arrangements.basket import Basket
+
+Basket.ROTATION = 5
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("proc_gen_kitchen_minimal")
+print(f"Images will be saved to: {path}")
+proc_gen_kitchen = ProcGenKitchen()
+proc_gen_kitchen.create(rng=0)
+camera = ThirdPersonCamera(position={"x": 2, "y": 1.8, "z": -0.5},
+                           look_at={"x": 0, "y": 0.6, "z": 0},
+                           avatar_id="a")
+capture = ImageCapture(avatar_ids=["a"], path=path, pass_masks=["_img"])
+c = Controller()
+c.add_ons.extend([proc_gen_kitchen, camera, capture])
+c.communicate([])
+c.communicate({"$type": "terminate"})
+```
 
 ***
 

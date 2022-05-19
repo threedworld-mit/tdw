@@ -33,11 +33,15 @@ Result:
 
 ## How `ProcGenKitchen` works
 
-[A detailed explanation of how `ProcGenKitchen` works can be found in the API documentation.](../../python/add_ons/proc_gen_kitchen.md) Broadly speaking, `ProcGenKitchen` has a notion of [arrangements of objects](arrangements.md), such as a shelf with objects on it. It then uses places quasi-atomic arrangements in the scene, for example creating a lateral span of kitchen counters.
+Broadly speaking, `ProcGenKitchen` adds [arrangements of objects](arrangements.md) to the scene. These arrangements are tried as quasi-atomic groups of objects, meaning that `ProcGenKitchen` will position and rotate all objects belonging to an arrangement as if they were a single object. Object arrangements are thus positioned in the room to create the kitchen. For example, `ProcGenKitchen` will create *lateral arrangements* of arrangements of kitchen counters, sinks, refrigerators, and stoves.
 
-When reading the API documentation, be sure to click through to the documentation for each `Arrangement`. `ProcGenKitchen` has a few parameters (such as `SCENE_NAMES`) but *most* of the parameters affecting kitchen generation are actually in [`Arrangement`](../../python/proc_gen/arrangements/arrangement.md) and its subclasses.
+**[A detailed explanation of how `ProcGenKitchen` works can be found in the API documentation.](../../python/add_ons/proc_gen_kitchen.md)**  When reading the API documentation, be sure to click through to the documentation for each `Arrangement` because most of the parameters controlling scene generation will be found in `Arrangement` and its subclasses, not `ProcGenKitchen`. [For an overview of how  `Arrangements` work, read this.](arrangements.md)
 
-## The `rng` parameter
+That said, you can set some optional parameters in `create()` and by adjusting `ProcGenKitchen` class variables, as described below:
+
+##  `create()` optional parameters
+
+### `rng`
 
 If you try to run the previous example, you'll get a different image because every kitchen scene is randomly generated. `proc_gen_kitchen` includes an optional `rng` parameter that can be either an integer or a numpy RandomState object (for example: `rng=numpy.random.RandomState(0)`).
 
@@ -68,7 +72,7 @@ Result:
 
 ![](images/proc_gen_kitchen/random_seed.jpg)
 
-## The `scene` parameter
+### `scene`
 
 Set the `scene` parameter to specify the [scene](../core_concepts/scenes.md). If None, a random *valid* scene will be selected.
 
@@ -130,9 +134,127 @@ Result:
 
 ![](images/proc_gen_kitchen/scene.jpg)
 
-## The `room_index` parameter
+### `room_index`
 
 The `room_index` parameter is mostly for future-proofing `ProcGenKitchen` for a time when it can be used in a multi-room scene; this parameter should almost always be set to 0 (the default value).
+
+### `cabinetry_type`
+
+`cabinetry_type` is a [`CabinetryType`](../../python/proc_gen/arrangements/cabinetry/cabinetry_type.md) enum value that will determine which set of kitchen counters, sinks, and wall cabinets to add to the scene. By default, this value is None, meaning that the cabinetry set is chosen randomly.
+
+## `ProcGenKitchen` class variables
+
+### `TALL_ARRANGEMENTS`
+
+`ProcGenKitchen.TALL_ARRANGEMENTS` A list of lowercase names of "tall" [Arrangements](arrangements):
+
+```python
+from tdw.add_ons.proc_gen_kitchen import ProcGenKitchen
+
+for arrangement in ProcGenKitchen.TALL_ARRANGEMENTS:
+    print(arrangement)
+```
+
+Output:
+
+```
+refrigerator
+shelf
+```
+
+When adding arrangements along a wall with windows, `ProcGenKitchen` will swap tall arrangements for shorter arrangements (*which* shorter arrangement varies and is hardcoded; [read the API documentation](../../python/add_ons/proc_gen_kitchen.md)).
+
+This example controller generates a kitchen that allows refrigerators and shelves to be placed along walls with windows:
+
+```python
+from tdw.controller import Controller
+from tdw.add_ons.proc_gen_kitchen import ProcGenKitchen
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+ProcGenKitchen.TALL_ARRANGEMENTS = []
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("proc_gen_kitchen_tall")
+print(f"Images will be saved to: {path}")
+proc_gen_kitchen = ProcGenKitchen()
+proc_gen_kitchen.create()
+camera = ThirdPersonCamera(position={"x": 2, "y": 1.8, "z": -0.5},
+                           look_at={"x": 0, "y": 0.6, "z": 0},
+                           avatar_id="a")
+capture = ImageCapture(avatar_ids=["a"], path=path, pass_masks=["_img"])
+c = Controller()
+c.add_ons.extend([proc_gen_kitchen, camera, capture])
+c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+### `SECONDARY_ARRANGEMENTS`
+
+"Secondary arrangements" are [arrangements](arrangements.md) that can be "appended" to a "main lateral arrangement" (for example, at the end of a span of kitchen counters), or added elsewhere in the room (such as an [alcove](rooms.md)). 
+
+Secondary arrangements are stored in `ProcGenKitchen.SECONDARY_ARRANGEMENTS` as a dictionary. The dictionary has three keys that should never be adjusted. The values of the dictionary are dictionaries, where the key is a string representation of an arrangement and the value is an integer describing the probability of adding that arrangement.
+
+This will print the likelihood of adding different arrangements to the end of a "main lateral arrangement":
+
+```python
+from tdw.add_ons.proc_gen_kitchen import ProcGenKitchen
+
+print(ProcGenKitchen.SECONDARY_ARRANGEMENTS["main"])
+```
+
+Output:
+
+```
+{'side_table': 1, 'basket': 2, 'shelf': 2, 'painting': 4, 'void': 3, 'radiator': 1, 'stool': 2, 'suitcase': 1}
+```
+
+### `SCENE_NAMES`
+
+`ProcGenKitchen.SCENE_NAMES` is a list of scene names. If the `scene` parameter in `create()` is None (the default value), the scene will be randomly selected from `ProcGenKitchen.SCENE_NAMES`.
+
+This list contains only a subset of valid scenes. `ProcGenKitchen` tends to create more plausible kitchens in scenes with [only one room and one region](rooms.md); scenes with rooms that have alcoves have been excluded.
+
+This example adds all [scenes with room data](rooms.md) to the list of possible scenes:
+
+```python
+from tdw.controller import Controller
+from tdw.add_ons.proc_gen_kitchen import ProcGenKitchen
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.librarian import SceneLibrarian
+
+scene_librarian = SceneLibrarian()
+for record in scene_librarian.records:
+    if len(record.rooms) > 0 and record.name not in ProcGenKitchen.SCENE_NAMES:
+        print(record.name)
+        ProcGenKitchen.SCENE_NAMES.append(record.name)
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("proc_gen_kitchen_tall")
+print(f"Images will be saved to: {path}")
+proc_gen_kitchen = ProcGenKitchen()
+proc_gen_kitchen.create()
+camera = ThirdPersonCamera(position={"x": 2, "y": 1.8, "z": -0.5},
+                           look_at={"x": 0, "y": 0.6, "z": 0},
+                           avatar_id="a")
+capture = ImageCapture(avatar_ids=["a"], path=path, pass_masks=["_img"])
+c = Controller()
+c.add_ons.extend([proc_gen_kitchen, camera, capture])
+c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Output:
+
+```
+mm_craftroom_1a
+mm_craftroom_1b
+mm_craftroom_4a
+mm_craftroom_4b
+mm_kitchen_1a
+mm_kitchen_1b
+mm_kitchen_4a
+mm_kitchen_4b
+```
 
 ## `ProcGenKitchen` and other add-ons
 

@@ -1,8 +1,14 @@
+from pathlib import Path
+from json import loads
 from typing import List, Tuple
+from pkg_resources import resource_filename
 import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.benchmark import Benchmark
+from tdw.add_ons.object_manager import ObjectManager
+from tdw.add_ons.container_manager import ContainerManager
+from tdw.add_ons.composite_object_manager import CompositeObjectManager
 from tdw.obi_data.collision_materials.collision_material import CollisionMaterial
 
 
@@ -382,4 +388,26 @@ class PerformanceBenchmarkController(Controller):
         for i in range(2000):
             self.communicate([])
         self.benchmark.stop()
+        return self.benchmark.fps
+
+    def kitchen_benchmark(self) -> float:
+        """
+        Load a pre-generated proc-gen kitchen, request object output data, and return the speed.
+
+        :return: The frames per second (FPS).
+        """
+
+        # Initialize the add-ons.
+        self.add_ons = [ObjectManager(transforms=True, rigidbodies=False, bounds=False),
+                        ContainerManager(),
+                        CompositeObjectManager(),
+                        self.benchmark]
+        # Create the scene.
+        self.communicate(loads(Path(resource_filename(__name__, "kitchen_commands.json")).read_text()))
+        self.benchmark.start()
+        for i in range(2000):
+            self.communicate([])
+        self.benchmark.stop()
+        # Clear the add-ons.
+        self.add_ons = [self.benchmark]
         return self.benchmark.fps

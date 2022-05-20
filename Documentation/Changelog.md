@@ -17,6 +17,15 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `add_sphere_container`   | Add a spherical container shape to an object.          |
 | `send_containment`       | Send `Overlap` output data from every container shape. |
 
+#### Removed Commands
+
+| Command                            | Reason                                                       |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `set_proc_gen_floor_color`         | Deprecated in v1.9; use `set_floor_color` instead.           |
+| `set_proc_gen_floor_texture_scale` | Deprecated in v1.9; use `set_floor_texture_scale` instead.   |
+| `set_proc_gen_floor_material`      | Deprecated in v1.9; use `set_floor_material` instead.        |
+| `send_composite_objects`           | Deprecated in v1.9; use `send_static_composite_objects` and `send_dynamic_composite_objects` instead. |
+
 ### Output Data
 
 #### Modified Output Data
@@ -31,6 +40,12 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `Volumes`                 | Significant speed improvement.                               |
 | `LocalTransforms`         | Significant speed improvement.<br/>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
 | `DynamicCompositeObjects` | Significant speed improvement.<br>Restructured how hinge and light data is stored and returned. |
+
+#### Removed Output Data
+
+| Output Data        | Reason                                                       |
+| ------------------ | ------------------------------------------------------------ |
+| `CompositeObjects` | Deprecated in v1.9; use `StaticCompositeObjects` and `DynamicCompositeObjects` instead. |
 
 ### `tdw` module
 

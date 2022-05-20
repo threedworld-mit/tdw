@@ -1,4 +1,4 @@
-from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState
+from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, SimpleTransform, PathState
 from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
@@ -21,7 +21,6 @@ from tdw.FBOutput import ArrivedAtNavMeshDestination as Arri
 from tdw.FBOutput import FlexParticles as Flex
 from tdw.FBOutput import VRRig as VR
 from tdw.FBOutput import LogMessage as Log
-from tdw.FBOutput import CompositeObjects as Comp
 from tdw.FBOutput import Meshes as Me
 from tdw.FBOutput import Substructure as Sub
 from tdw.FBOutput import Version as Ver
@@ -755,34 +754,6 @@ class LogMessage(OutputData):
 
     def get_object_type(self) -> str:
         return self.data.ObjectType().decode('utf-8')
-
-
-class CompositeObjects(OutputData):
-    MACHINE_TYPES = {MachineType.MachineType.light: "light",
-                     MachineType.MachineType.motor: "motor",
-                     MachineType.MachineType.hinge: "hinge",
-                     MachineType.MachineType.spring: "spring",
-                     MachineType.MachineType.prismatic_joint: "prismatic_joint",
-                     MachineType.MachineType.none: "none"}
-
-    def get_data(self) -> Comp.CompositeObjects:
-        print("CompositeObjects has been deprecated. Use StaticCompositeObjects and/or DynamicCompositeObjects instead.")
-        return Comp.CompositeObjects.GetRootAsCompositeObjects(self.bytes, 0)
-
-    def get_num(self) -> int:
-        return self.data.ObjectsLength()
-
-    def get_object_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
-
-    def get_num_sub_objects(self, index: int) -> int:
-        return self.data.Objects(index).SubObjectsLength()
-
-    def get_sub_object_id(self, index: int, sub_object_index: int) -> int:
-        return self.data.Objects(index).SubObjects(sub_object_index).Id()
-
-    def get_sub_object_machine_type(self, index: int, sub_object_index: int) -> str:
-        return CompositeObjects.MACHINE_TYPES[self.data.Objects(index).SubObjects(sub_object_index).MachineType()]
 
 
 class Meshes(OutputData):

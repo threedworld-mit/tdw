@@ -62,7 +62,6 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
-| [CompositeObjects](#CompositeObjects) | Data for all composite objects currently in the scene. | `comp` |
 | [DynamicCompositeObjects](#DynamicCompositeObjects) | Dynamic data for composite objects. | `dcom` |
 | [EmptyObjects](#EmptyObjects) | The position of each empty object in the scene. | `empt` |
 | [EnvironmentColliderIntersection](#EnvironmentColliderIntersection) | Data for an whose colliders are intersecting with an environment collider such as a wall. | `enci` |
@@ -335,22 +334,6 @@ Data for a collision between objects occurring on this frame.
 | `get_num_contacts()` | The number of contacts. | `int` |
 | `get_contact_normal(index)` | The normal of the contact. | `Tuple[float, float, float]` |
 | `get_contact_point(index)` | The point of the contact. | `Tuple[float, float, float]` |
-
-## CompositeObjects
-
-`c = CompositeObjects(byte_array)`
-
-**Identifier:** `comp`
-
-Data for all composite objects currently in the scene.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_num()` | The number of objects. | `int` |
-| `get_object_id(index)` | The ID of the object. | `int` |
-| `get_num_sub_objects(index)` | The number of sub objects. | `int` |
-| `get_sub_object_id(index, sub_object_index)` | The ID of the sub object. | `int` |
-| `get_sub_object_machine_type(index, sub_object_index)` | The type of the sub object machine. | `str` |
 
 ## DynamicCompositeObjects
 

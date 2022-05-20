@@ -492,17 +492,11 @@
 
 **Proc Gen Floor Command**
 
-| Command | Description |
-| --- | --- |
-| [`set_proc_gen_floor_color`](#set_proc_gen_floor_color) | Set the albedo RGBA color of the floor.  |
-| [`set_proc_gen_floor_texture_scale`](#set_proc_gen_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture.  |
-
 **Proc Gen Material Command**
 
 | Command | Description |
 | --- | --- |
 | [`set_proc_gen_ceiling_material`](#set_proc_gen_ceiling_material) | Set the material of a procedurally-generated ceiling.  |
-| [`set_proc_gen_floor_material`](#set_proc_gen_floor_material) | Set the material of a procedurally-generated floor.  |
 | [`set_proc_gen_walls_material`](#set_proc_gen_walls_material) | Set the material of all procedurally-generated walls.  |
 
 **Proc Gen Walls Command**
@@ -624,7 +618,6 @@
 | --- | --- |
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
-| [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
 | [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
@@ -6364,42 +6357,6 @@ Destroy ceiling tiles from a procedurally-created ceiling.
 
 These commands modify the floor of a procedurally-generated room.
 
-***
-
-## **`set_proc_gen_floor_color`**
-
-Set the albedo RGBA color of the floor. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"color"` | Color | The new albedo RGBA color of the floor. | |
-
-***
-
-## **`set_proc_gen_floor_texture_scale`**
-
-Set the scale of the tiling of the floor material's main texture. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_texture_scale"}
-```
-
-```python
-{"$type": "set_proc_gen_floor_texture_scale", "scale": {"x": 1, "y": 1}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale"` | Vector2 | The tiling scale of the material. Generally (but by no means always), the default tiling scale of a texture is {"x": 1, "y": 1} | {"x": 1, "y": 1} |
-
 # ProcGenMaterialCommand
 
 These commands add a material to part of the proc-gen room.
@@ -6414,23 +6371,6 @@ Set the material of a procedurally-generated ceiling.
 
 ```python
 {"$type": "set_proc_gen_ceiling_material", "name": "string"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"name"` | string | The name of the material. The material must already be loaded in memory. | |
-
-***
-
-## **`set_proc_gen_floor_material`**
-
-Set the material of a procedurally-generated floor. 
-
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_material", "name": "string"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7961,39 +7901,6 @@ Send data for the category names and colors of each object in the scene.
 
 ```python
 {"$type": "send_categories", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_composite_objects`**
-
-Send data for every composite object in the scene. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`CompositeObjects`](output_data.md#CompositeObjects)</font>
-
-```python
-{"$type": "send_composite_objects"}
-```
-
-```python
-{"$type": "send_composite_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

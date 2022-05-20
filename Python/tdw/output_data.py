@@ -17,7 +17,6 @@ from tdw.FBOutput import Collision as Col
 from tdw.FBOutput import ImageSensors as ImSe
 from tdw.FBOutput import CameraMatrices as CaMa
 from tdw.FBOutput import IdPassSegmentationColors as IdSC
-from tdw.FBOutput import ArrivedAtNavMeshDestination as Arri
 from tdw.FBOutput import FlexParticles as Flex
 from tdw.FBOutput import VRRig as VR
 from tdw.FBOutput import LogMessage as Log
@@ -604,14 +603,6 @@ class IdPassSegmentationColors(OutputData):
 
     def get_segmentation_color(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_rgb(self.data.SegmentationColors(index))
-
-
-class ArrivedAtNavMeshDestination(OutputData):
-    def get_data(self) -> Arri.ArrivedAtNavMeshDestination:
-        return Arri.ArrivedAtNavMeshDestination.GetRootAsArrivedAtNavMeshDestination(self.bytes, 0)
-
-    def get_avatar_id(self) -> str:
-        return self.data.AvatarId().decode('utf-8')
 
 
 class FlexParticles(OutputData):

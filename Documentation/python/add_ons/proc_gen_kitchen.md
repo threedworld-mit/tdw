@@ -180,7 +180,7 @@ This is called before sending commands to the build. By default, this function d
 
 **`self.create(scene)`**
 
-**`self.create(scene, room_index=0, rng=None)`**
+**`self.create(scene, room_index=0, cabinetry_type=None, rng=None)`**
 
 Procedurally generate a kitchen. The kitchen will be created on the next `controller.communicate()` call.
 
@@ -188,4 +188,5 @@ Procedurally generate a kitchen. The kitchen will be created on the next `contro
 | --- | --- | --- | --- |
 | scene |  Union[str, SceneRecord, Room, List[Union[str, SceneRecord] |  | Can be a string (the name of a scene), a [`SceneRecord`](../librarian/scene_librarian.md), a list of scene names and/or `SceneRecord` (one will chosen randomly), a [`Room`](../scene_data/room.md), or None. If this is a `Room`, then `ProcGenKitchen` will assume that the scene has already been loaded, and `self.scene_record` will be set to `None`. If `scene=None`, a random scene from `ProcGenKitchen.SCENE_NAMES` will be selected. |
 | room_index |  int  | 0 | The index of the room in `self.scene_record.rooms` (assuming `self.scene_record is not None`; see above). |
+| cabinetry_type |  CabinetryType  | None | A [`CabinetryType`](../proc_gen/arrangements/cabinetry/cabinetry_type.md) value that sets which kitchen cabinets, wall cabinets, and sinks to add to the scene. If None, a `CabinetryType` is chosen randomly. |
 | rng |  Union[int, np.random.RandomState] | None | The random number generator. Can be `int` (a random seed), `np.random.RandomState`, or None (a new random seed will be selected randomly). |

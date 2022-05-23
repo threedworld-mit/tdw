@@ -76,23 +76,3 @@ _Returns:_  A list of commands that will generate the arrangement.
 **`self.get_length()`**
 
 _Returns:_  The lateral extent of the object.
-
-#### get_categories_and_wcategories
-
-**`Arrangement.get_categories_and_wcategories()`**
-
-_(Static)_
-
-_Returns:_  A dictionary of the categories of every model that can be used by `Arrangement` and their corresponding `wcategory` and `wnid`. Key = The model name. Value = A dictionary with the following keys: `"category"` (the `ProcGenObjects` category), `"wcategory"` (the value of `record.wcategory`), and `"wnid"` (the value of `record.wnid`).
-
-#### get_commands
-
-**`self.get_commands()`**
-
-_Returns:_  A list of commands that will generate the arrangement.
-
-#### get_length
-
-**`self.get_length()`**
-
-_Returns:_  The lateral extent of the object.

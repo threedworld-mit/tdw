@@ -115,27 +115,28 @@ class ModelRecord(_Record):
             else:
                 self.volume: float = data["volume"]
             self.container_shapes: List[ContainerShape] = list()
-            for container in data["container_shapes"]:
-                shape = TriggerColliderShape[container["shape"]]
-                tag = ContainerTag[container["tag"]]
-                if shape == TriggerColliderShape.box:
-                    obj = BoxContainer(tag=tag,
-                                       position=container["position"],
-                                       half_extents=container["half_extents"],
-                                       rotation=container["rotation"])
-                elif shape == TriggerColliderShape.cylinder:
-                    obj = CylinderContainer(tag=tag,
-                                            position=container["position"],
-                                            radius=container["radius"],
-                                            height=container["height"],
-                                            rotation=container["rotation"])
-                elif shape == TriggerColliderShape.sphere:
-                    obj = SphereContainer(tag=tag,
-                                          position=container["position"],
-                                          radius=container["radius"])
-                else:
-                    raise Exception(shape)
-                self.container_shapes.append(obj)
+            if "container_shapes" in data:
+                for container in data["container_shapes"]:
+                    shape = TriggerColliderShape[container["shape"]]
+                    tag = ContainerTag[container["tag"]]
+                    if shape == TriggerColliderShape.box:
+                        obj = BoxContainer(tag=tag,
+                                           position=container["position"],
+                                           half_extents=container["half_extents"],
+                                           rotation=container["rotation"])
+                    elif shape == TriggerColliderShape.cylinder:
+                        obj = CylinderContainer(tag=tag,
+                                                position=container["position"],
+                                                radius=container["radius"],
+                                                height=container["height"],
+                                                rotation=container["rotation"])
+                    elif shape == TriggerColliderShape.sphere:
+                        obj = SphereContainer(tag=tag,
+                                              position=container["position"],
+                                              radius=container["radius"])
+                    else:
+                        raise Exception(shape)
+                    self.container_shapes.append(obj)
 
 
 class MaterialRecord(_Record):

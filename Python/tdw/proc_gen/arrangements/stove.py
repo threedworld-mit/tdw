@@ -15,10 +15,9 @@ class Stove(ArrangementAlongWall):
     - The stove is placed next to a wall.
       - The stove's position is automatically adjusted to set it flush to the wall plus an offset; see `Stove.DEPTH_OFFSET`.
       - The stove is automatically rotated so that it faces away from the wall.
-    - The stove always has a rectangular arrangement of objects on top of it; see `Stove.ON_TOP_OF["stove"]`.
+    - The stove always has a rectangular arrangement of objects on top of it; see `Stove.ON_TOP_OF["stove"]`
       - The objects are chosen randomly; see `Stove.ON_TOP_OF["stove"]`.
-      - The objects are positioned in a rectangular grid on the stove with random positional perturbations.
-      - The objects have random rotations (0 to 360 degrees).
+      - The objects are positioned in a rectangular grid on the stove with random rotations and positional perturbations; see: `Stove.CELL_SIZE`, `Stove.CELL_DENSITY`, `Stove.WIDTH_SCALE`, and `Stove.DEPTH_SCALE`.
     - The stove has two doors that can open and two interior spaces.
     - Sometimes, each of the interior spaces may have one object; see `Stove.PROBABILITY_INSIDE` and `Stove.ENCLOSED_BY["stove"]`.
       - The positions of the object(s) are perturbed randomly, see `Stove.INSIDE_POSITION_PERTURBATION`.
@@ -38,9 +37,29 @@ class Stove(ArrangementAlongWall):
     The (x, z) positional coordinates of objects inside the stove will be randomly perturbed by up to +/- this value.
     """
     INSIDE_POSITION_PERTURBATION: float = 0.04
+    """:class_var
+    The size of each cell in the stove top rectangular arrangement. This controls the minimum size of objects and the density of the arrangement.
+    """
+    CELL_SIZE: float = 0.05
+    """:class_var
+    The probability from 0 to 1 of a "cell" in the stove top rectangular arrangement being empty. Lower value = a higher density of small objects.
+    """
+    CELL_DENSITY: float = 0.4
+    """:class
+    When adding objects, the width of the stove top is assumed to be `actual_width * WIDTH_SCALE`. This prevents objects from being too close to the edges of the stove top.
+    """
+    WIDTH_SCALE: float = 0.8
+    """:class
+    When adding objects, the depth of the stove top is assumed to be `actual_depth * DEPTH_SCALE`. This prevents objects from being too close to the edges of the stove top.
+    """
+    DEPTH_SCALE: float = 0.8
 
     def get_commands(self) -> List[dict]:
-        commands = self._add_object_with_other_objects_on_top(rotate=False)
+        commands = self._add_object_with_other_objects_on_top(rotate=False,
+                                                              cell_size=Stove.CELL_SIZE,
+                                                              density=Stove.CELL_DENSITY,
+                                                              x_scale=Stove.WIDTH_SCALE,
+                                                              z_scale=Stove.DEPTH_SCALE)
         # Get all possible models that can be enclosed by the stove.
         enclose_by_model_names = []
         for category in Stove.ENCLOSED_BY["stove"]:

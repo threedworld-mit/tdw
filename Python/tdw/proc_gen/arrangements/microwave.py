@@ -15,42 +15,62 @@ class Microwave(ArrangementWithRootObject):
     - The microwave model is chosen randomly; see `Microwave.MODEL_CATEGORIES["microwave"]`
     - A microwave always has a rectangular arrangement of objects on top of it.
       - The objects are chosen randomly; see `Microwave.ON_TOP_OF["microwave"]`.
-      - The objects are positioned in a rectangular grid on the microwave with random positional perturbations.
-      - The objects have random rotations (0 to 360 degrees).
-    - A microwave may have a [`Plate`](plate.md) inside it; see `plate_probability` and `food_probability` in the constructor.
+      - The objects are positioned in a rectangular grid on the microwave with random rotations and positional perturbations; see `Microwave.CELL_SIZE`, `Microwave.CELL_DENSITY`, `Microwave.WIDTH_SCALE`, and `Microwave.DEPTH_SCALE`.
+    - A microwave may have a [`Plate`](plate.md) inside it; see `Microwave.PLATE_PROBABILITY`.
     - All microwaves have a door that can be opened.
     - The root object of the microwave is kinematic and the door sub-object is non-kinematic.
     """
 
-    def __init__(self, plate_probability: float, food_probability: float, wall: CardinalDirection,
-                 position: Dict[str, float], plate_model: Union[str, ModelRecord] = "plate06",
-                 model: Union[str, ModelRecord] = None, rng: Union[int, np.random.RandomState] = None):
+    """:class_var
+    The probability from 0 to 1 of placing a [`Plate`](plate.md) arrangement inside the microwave.
+    """
+    PLATE_PROBABILITY: float = 0.7
+    """:class_var
+    The model name of the plate that will be placed in the microwave (if any).
+    """
+    PLATE_MODEL: str = "plate06"
+    """:class_var
+    The size of each cell in the rectangular arrangement on top of the microwave. This controls the minimum size of objects and the density of the arrangement.
+    """
+    CELL_SIZE: float = 0.05
+    """:class_var
+    The probability from 0 to 1 of a "cell" in the rectangular arrangement  on top of the microwave being empty. Lower value = a higher density of small objects.
+    """
+    CELL_DENSITY: float = 0.4
+    """:class
+    When adding objects, the width of the top of the microwave is assumed to be `actual_width * WIDTH_SCALE`. This prevents objects from being too close to the edges of the microwave.
+    """
+    WIDTH_SCALE: float = 0.8
+    """:class
+    When adding objects, the depth of the top of the microwave is assumed to be `actual_depth * DEPTH_SCALE`. This prevents objects from being too close to the edges of the microwave.
+    """
+    DEPTH_SCALE: float = 0.8
+
+    def __init__(self, wall: CardinalDirection, position: Dict[str, float], model: Union[str, ModelRecord] = None,
+                 rng: Union[int, np.random.RandomState] = None):
         """
-        :param plate_probability: The probability of placing a `Plate` arrangement inside the microwave.
-        :param food_probability: The probability of placing food on the plate.
         :param wall: The wall as a [`CardinalDirection`](../../cardinal_direction.md) that the root object is next to.
         :param position: The position of the root object. This might be adjusted.
-        :param plate_model: The name of the plate model.
         :param model: Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a random model in the category is selected.
         :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         """
 
-        self._plate_probability: float = plate_probability
-        self._food_probability: float = food_probability
-        self._plate_model: str = plate_model
         self._wall: CardinalDirection = wall
         super().__init__(model=model, position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
-        commands = self._add_object_with_other_objects_on_top(cell_size=0.05, density=0.4, rotate=False)
+        commands = self._add_object_with_other_objects_on_top(cell_size=Microwave.CELL_SIZE,
+                                                              density=Microwave.CELL_DENSITY,
+                                                              x_scale=Microwave.WIDTH_SCALE,
+                                                              z_scale=Microwave.DEPTH_SCALE,
+                                                              rotate=False)
         # Add a plate with food.
-        if self._rng.random() < self._plate_probability:
+        if self._rng.random() < Microwave.PLATE_PROBABILITY:
             # Get the inside container shape.
             for shape in self._record.container_shapes:
                 if shape.tag == ContainerTag.enclosed and isinstance(shape, BoxContainer):
                     position, size = self._get_container_shape_position_and_size(shape=shape)
-                    plate = Plate(food_probability=self._food_probability,
-                                  model=self._plate_model,
+                    plate = Plate(model=Microwave.PLATE_MODEL,
                                   position=position,
                                   rng=self._rng)
                     commands.extend(plate.get_commands())

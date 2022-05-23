@@ -69,7 +69,7 @@ A kitchen table has chairs and table settings.
 
 **`KitchenTable(room, used_walls)`**
 
-**`KitchenTable(room, used_walls, model=None, rng=None, offset_distance=0.1, food_probability=0.7)`**
+**`KitchenTable(room, used_walls, model=None, rng=None, offset_distance=0.1)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -78,7 +78,6 @@ A kitchen table has chairs and table settings.
 | model |  Union[str, ModelRecord] | None | Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a random model in the category is selected. |
 | rng |  Union[int, np.random.RandomState] | None | Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created. |
 | offset_distance |  float  | 0.1 | Offset the position from the used walls by this distance. |
-| food_probability |  float  | 0.7 | The probability that each plate will have food (0 to 1). |
 
 #### get_categories_and_wcategories
 

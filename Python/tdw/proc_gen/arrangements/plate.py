@@ -1,8 +1,6 @@
-from typing import Dict, List, Union
-import numpy as np
+from typing import Dict, List
 from tdw.tdw_utils import TDWUtils
 from tdw.proc_gen.arrangements.arrangement_with_root_object import ArrangementWithRootObject
-from tdw.librarian import ModelRecord
 from tdw.controller import Controller
 
 
@@ -11,9 +9,9 @@ class Plate(ArrangementWithRootObject):
     A kitchen plate.
 
     - The plate model is chosen randomly; see `TableSetting.MODEL_CATEGORIES["plate"]`.
-    - The plate might have food on it; see `food_probability` in the constructor.
-      - The possible food categories are `TableSetting.FOOD_CATEGORIES`.
-      - See `TableSetting.MODEL_CATEGORIES` for a list of models within those categories.
+    - The plate might have food on it; see `Plate.FOOD_PROBABILITY`.
+      - The possible food categories are `Plate.FOOD_CATEGORIES`.
+      - See `Plate.MODEL_CATEGORIES` for a list of models within those categories.
       - The position of the food is perturbed randomly.
       - The rotation of the food is random.
     """
@@ -22,18 +20,10 @@ class Plate(ArrangementWithRootObject):
     The categories of possible food models.
     """
     FOOD_CATEGORIES: List[str] = ["apple", "banana", "chocolate", "orange", "sandwich"]
-
-    def __init__(self, food_probability: float, position: Dict[str, float],
-                 model: Union[str, ModelRecord] = None, rng: Union[int, np.random.RandomState] = None):
-        """
-        :param food_probability: The probability of placing food on the plate.
-        :param model: Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a random model is selected.
-        :param position: The position of the root object. This might be adjusted.
-        :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
-        """
-
-        self._food_probability: float = food_probability
-        super().__init__(model=model, position=position, rng=rng)
+    """:class_var
+    The probability from 0 to 1 of adding a food model on top of the plate.
+    """
+    FOOD_PROBABILITY: float = 0.8
 
     def get_commands(self) -> List[dict]:
         """
@@ -41,7 +31,7 @@ class Plate(ArrangementWithRootObject):
         """
 
         commands = self._add_root_object()
-        if self._rng.random() < self._food_probability:
+        if self._rng.random() < Plate.FOOD_PROBABILITY:
             extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
             food_category: str = Plate.FOOD_CATEGORIES[self._rng.randint(0, len(Plate.FOOD_CATEGORIES))]
             food = Plate.MODEL_CATEGORIES[food_category]

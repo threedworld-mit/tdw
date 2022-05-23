@@ -10,11 +10,10 @@ A wall cabinet hangs on the wall above a kitchen counter. It can have objects in
   - The wall cabinet is automatically rotated so that it faces away from the wall.
   - The wall cabinet is at a fixed height from the wall, see `WALL_CABINET.Y`.
 - The wall cabinet always has objects inside it. The contents are random:
-  - Sometimes, there is a [`StackOfPlates`](stack_of_plates.md); see `WallCabinet.PROBABILITY_STACK_OF_PLATES`, `WallCabinet.MIN_NUM_PLATES`, and `WallCabinet.MAX_NUM_PLATES`.
+  - Sometimes, there is a [`StackOfPlates`](stack_of_plates.md); see `WallCabinet.PROBABILITY_STACK_OF_PLATES`.
   - Sometimes, there is a rectangular arrangement of random objects; see `WallCabinet.PROBABILITY_CUPS`.
     - The objects are chosen randomly; see `WallCabinet.ENCLOSED_BY["wall_cabinet"]`.
-    - The objects are positioned in a rectangular grid inside the wall cabinet with random positional perturbations.
-    - The objects have random rotations (0 to 360 degrees).
+    - The objects are positioned in a rectangular grid inside the wall cabinet with random rotations and positional perturbations; see `WallCabinet.CELL_SIZE`, `WallCabinet.CELL_DENSITY`, `WallCabinet.WIDTH_SCALE`, and `WallCabinet.DEPTH_SCALE`.
 - The root object of the wall cabinet is kinematic and the door sub-objects are non-kinematic.
 
 ***
@@ -51,15 +50,17 @@ A wall cabinet hangs on the wall above a kitchen counter. It can have objects in
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
+| `CELL_DENSITY` | float | The probability from 0 to 1 of a "cell" in the cabinet rectangular arrangement being empty. Lower value = a higher density of small objects. | `0.1` |
+| `CELL_SIZE` | float | The size of each cell in the cabinet rectangular arrangement. This controls the minimum size of objects and the density of the arrangement. | `0.04` |
 | `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
+| `DEPTH_SCALE` | float | When adding objects, the depth of the cabinet is assumed to be `actual_width * CABINET_DEPTH_SCALE`. This prevents objects from being too close to the edges of the cabinet. | `0.8` |
 | `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
 | `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
-| `MAX_NUM_PLATES` | int | The maximum number of plates in a stack of plates. | `8` |
-| `MIN_NUM_PLATES` | int | The minimum number of plates in a stack of plates. | `3` |
 | `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
 | `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
-| `PROBABILITY_CUPS` | float | To decide what is within the cabinet, a random number between 0 and 1 is generated. If the number is below this value, a rectangular arrangement of cups and glasses is added. If the number is above this value, random objects are added (see `WallCabinet.ENCLOSED_BY["wall_cabinet"]`). | `0.66` |
-| `PROBABILITY_STACK_OF_PLATES` | float | To decide what is within the cabinet, a random number between 0 and 1 is generated. If the number is below this value, a [`StackOfPlates`](stack_of_plates.md) is added. | `0.33` |
+| `PROBABILITY_CUPS` | float | The probability between 0 and 1 of adding a rectangular arrangment of cups and glasses. | `0.66` |
+| `PROBABILITY_STACK_OF_PLATES` | float | The probability between 0 and 1 of adding a [`StackOfPlates`](stack_of_plates.md). | `0.33` |
+| `WIDTH_SCALE` | float | When adding objects, the width of the cabinet is assumed to be `actual_width * CABINET_WIDTH_SCALE`. This prevents objects from being too close to the edges of the cabinet. | `0.8` |
 | `Y` | float | The value of the y positional coordinate (the height) of the wall cabinet. | `1.289581` |
 
 ***

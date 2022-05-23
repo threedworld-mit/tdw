@@ -8,10 +8,9 @@ A stove with oven doors.
 - The stove is placed next to a wall.
   - The stove's position is automatically adjusted to set it flush to the wall plus an offset; see `Stove.DEPTH_OFFSET`.
   - The stove is automatically rotated so that it faces away from the wall.
-- The stove always has a rectangular arrangement of objects on top of it; see `Stove.ON_TOP_OF["stove"]`.
+- The stove always has a rectangular arrangement of objects on top of it; see `Stove.ON_TOP_OF["stove"]`
   - The objects are chosen randomly; see `Stove.ON_TOP_OF["stove"]`.
-  - The objects are positioned in a rectangular grid on the stove with random positional perturbations.
-  - The objects have random rotations (0 to 360 degrees).
+  - The objects are positioned in a rectangular grid on the stove with random rotations and positional perturbations; see: `Stove.CELL_SIZE`, `Stove.CELL_DENSITY`, `Stove.WIDTH_SCALE`, and `Stove.DEPTH_SCALE`.
 - The stove has two doors that can open and two interior spaces.
 - Sometimes, each of the interior spaces may have one object; see `Stove.PROBABILITY_INSIDE` and `Stove.ENCLOSED_BY["stove"]`.
   - The positions of the object(s) are perturbed randomly, see `Stove.INSIDE_POSITION_PERTURBATION`.
@@ -40,6 +39,8 @@ A stove with oven doors.
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
+| `CELL_DENSITY` | float | The probability from 0 to 1 of a "cell" in the stove top rectangular arrangement being empty. Lower value = a higher density of small objects. | `0.4` |
+| `CELL_SIZE` | float | The size of each cell in the stove top rectangular arrangement. This controls the minimum size of objects and the density of the arrangement. | `0.05` |
 | `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
 | `DEPTH_OFFSET` | float | Offset the stove from the wall by this distance. | `0.16595` |
 | `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |

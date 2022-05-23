@@ -15,11 +15,10 @@ class WallCabinet(KitchenCabinet):
       - The wall cabinet is automatically rotated so that it faces away from the wall.
       - The wall cabinet is at a fixed height from the wall, see `WALL_CABINET.Y`.
     - The wall cabinet always has objects inside it. The contents are random:
-      - Sometimes, there is a [`StackOfPlates`](stack_of_plates.md); see `WallCabinet.PROBABILITY_STACK_OF_PLATES`, `WallCabinet.MIN_NUM_PLATES`, and `WallCabinet.MAX_NUM_PLATES`.
+      - Sometimes, there is a [`StackOfPlates`](stack_of_plates.md); see `WallCabinet.PROBABILITY_STACK_OF_PLATES`.
       - Sometimes, there is a rectangular arrangement of random objects; see `WallCabinet.PROBABILITY_CUPS`.
         - The objects are chosen randomly; see `WallCabinet.ENCLOSED_BY["wall_cabinet"]`.
-        - The objects are positioned in a rectangular grid inside the wall cabinet with random positional perturbations.
-        - The objects have random rotations (0 to 360 degrees).
+        - The objects are positioned in a rectangular grid inside the wall cabinet with random rotations and positional perturbations; see `WallCabinet.CELL_SIZE`, `WallCabinet.CELL_DENSITY`, `WallCabinet.WIDTH_SCALE`, and `WallCabinet.DEPTH_SCALE`.
     - The root object of the wall cabinet is kinematic and the door sub-objects are non-kinematic.
     """
 
@@ -28,21 +27,29 @@ class WallCabinet(KitchenCabinet):
     """
     Y: float = 1.289581
     """:class_var
-    To decide what is within the cabinet, a random number between 0 and 1 is generated. If the number is below this value, a [`StackOfPlates`](stack_of_plates.md) is added.
+    The probability between 0 and 1 of adding a [`StackOfPlates`](stack_of_plates.md).
     """
     PROBABILITY_STACK_OF_PLATES: float = 0.33
     """:class_var
-    To decide what is within the cabinet, a random number between 0 and 1 is generated. If the number is below this value, a rectangular arrangement of cups and glasses is added. If the number is above this value, random objects are added (see `WallCabinet.ENCLOSED_BY["wall_cabinet"]`).
+    The probability between 0 and 1 of adding a rectangular arrangment of cups and glasses.
     """
     PROBABILITY_CUPS: float = 0.66
     """:class_var
-    The minimum number of plates in a stack of plates.
+    The probability from 0 to 1 of a "cell" in the cabinet rectangular arrangement being empty. Lower value = a higher density of small objects.
     """
-    MIN_NUM_PLATES: int = 3
+    CELL_DENSITY: float = 0.1
     """:class_var
-    The maximum number of plates in a stack of plates.
+    The size of each cell in the cabinet rectangular arrangement. This controls the minimum size of objects and the density of the arrangement.
     """
-    MAX_NUM_PLATES: int = 8
+    CELL_SIZE: float = 0.04
+    """:class_var
+    When adding objects, the width of the cabinet is assumed to be `actual_width * CABINET_WIDTH_SCALE`. This prevents objects from being too close to the edges of the cabinet.
+    """
+    WIDTH_SCALE: float = 0.8
+    """:class_var
+    When adding objects, the depth of the cabinet is assumed to be `actual_width * CABINET_DEPTH_SCALE`. This prevents objects from being too close to the edges of the cabinet.
+    """
+    DEPTH_SCALE: float = 0.8
 
     def get_commands(self) -> List[dict]:
         commands = self._add_root_object()
@@ -56,9 +63,7 @@ class WallCabinet(KitchenCabinet):
         roll = self._rng.random()
         # Add a stack of plates.
         if roll < WallCabinet.PROBABILITY_STACK_OF_PLATES:
-            stack_of_plates = StackOfPlates(min_num=WallCabinet.MIN_NUM_PLATES,
-                                            max_num=WallCabinet.MAX_NUM_PLATES,
-                                            position=position,
+            stack_of_plates = StackOfPlates(position=position,
                                             rng=self._rng)
             commands.extend(stack_of_plates.get_commands())
             self.object_ids.extend(stack_of_plates.object_ids)
@@ -68,7 +73,10 @@ class WallCabinet(KitchenCabinet):
                 categories = ["cup", "wineglass"]
             else:
                 categories = WallCabinet.ENCLOSED_BY["wall_cabinet"]
-            cmds, ids = self._add_rectangular_arrangement(size=(size["x"] * 0.8, size["z"] * 0.8),
+            cmds, ids = self._add_rectangular_arrangement(size=(size["x"] * WallCabinet.WIDTH_SCALE,
+                                                                size["z"] * WallCabinet.DEPTH_SCALE),
+                                                          density=WallCabinet.CELL_DENSITY,
+                                                          cell_size=WallCabinet.CELL_SIZE,
                                                           position=position,
                                                           categories=categories)
             commands.extend(cmds)

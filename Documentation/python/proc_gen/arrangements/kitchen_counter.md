@@ -8,18 +8,15 @@ A kitchen counter can have objects on it and inside it.
 - The kitchen counter is placed next to a wall.
   - The kitchen counter's position is automatically adjusted to set it flush to the wall.
   - The kitchen counter is automatically rotated so that it faces away from the wall.
-- A kitchen counter longer than 0.7 meters may have a [`Microwave`](microwave.md); see `allow_microwave`, `microwave_plate_probability`, `microwave_plate_food_probability`, `microwave_model`, and `plate_model` in the constructor.
-  - If the kitchen counter does _not_ have a microwave:
+- A kitchen counter longer than 0.7 meters may have a [`Microwave`](microwave.md); see `allow_microwave` in the constructor.
     - If the kitchen counter is alongside a wall without windows and has a corresponding wall cabinet model, a [`WallCabinet`](wall_cabinet.md) will be added above it; see `KitchenCounter.COUNTERS_AND_CABINETS`.
     - The kitchen counter will have a rectangular arrangement of objects on top of it.
       - The objects are chosen randomly; see `KitchenCounter.ON_TOP_OF["kitchen_counter"]`.
-      - The objects are positioned in a rectangular grid on the counter top with random positional perturbations.
-      - The objects have random rotations (0 to 360 degrees).
+      - The objects are positioned in a rectangular grid on the counter top with random rotations and positional perturbations; see `KitchenCounter.COUNTER_TOP_CELL_SIZE`, `KitchenCounter.COUNTER_TOP_CELL_DENSITY`, `KitchenCounter.COUNTER_TOP_WIDTH_SCALE`, and `KitchenCounter.COUNTER_TOP_DEPTH_SCALE`.
 - The interior of the kitchen counter may be empty; see `cabinet_is_empty_probability` in the constructor.
   - If the interior is _not_ empty, the kitchen counter will have a rectangular arrangement of objects inside its cabinet.
     - The objects are chosen randomly; see `KitchenCounter.ENCLOSED_BY["kitchen_counter"]`.
-    - The objects are positioned in a rectangular grid inside the cabinet with random positional perturbations.
-    - The objects have random rotations (0 to 360 degrees).
+    - The objects are positioned in a rectangular grid inside the cabinet with random rotations and positional perturbations; see `KitchenCounter.CABINET_CELL_SIZE`, `KitchenCounter.CABINET_CELL_DENSITY`, `KitchenCounter.CABINET_WIDTH_SCALE`, and `KitchenCounter.CABINET_DEPTH_SCALE`.
 - All kitchen counters have doors that can open.
 - The root object of the kitchen counter is kinematic and the door sub-objects are non-kinematic.
 
@@ -29,7 +26,15 @@ A kitchen counter can have objects on it and inside it.
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
+| `CABINET_CELL_DENSITY` | float | The probability from 0 to 1 of a "cell" in the cabinet rectangular arrangement being empty. Lower value = a higher density of small objects. | `0.1` |
+| `CABINET_CELL_SIZE` | float | The size of each cell in the cabinet rectangular arrangement. This controls the minimum size of objects and the density of the arrangement. | `0.04` |
+| `CABINET_DEPTH_SCALE` | float | When adding objects, the depth of the cabinet is assumed to be `actual_width * CABINET_DEPTH_SCALE`. This prevents objects from being too close to the edges of the cabinet. | `0.7` |
+| `CABINET_WIDTH_SCALE` | float | When adding objects, the width of the cabinet is assumed to be `actual_width * CABINET_WIDTH_SCALE`. This prevents objects from being too close to the edges of the cabinet. | `0.7` |
 | `COUNTERS_AND_CABINETS` | Dict[str, str] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/counters_and_cabinets.json")).read_text())` |
+| `COUNTER_TOP_CELL_DENSITY` | float | The probability from 0 to 1 of a "cell" in the counter top rectangular arrangement being empty. Lower value = a higher density of small objects. | `0.4` |
+| `COUNTER_TOP_CELL_SIZE` | float | The size of each cell in the counter top rectangular arrangement. This controls the minimum size of objects and the density of the arrangement. | `0.05` |
+| `COUNTER_TOP_DEPTH_SCALE` | float | When adding objects, the depth of the counter top is assumed to be `actual_depth * DEPTH_SCALE`. This prevents objects from being too close to the edges of the counter top. | `0.8` |
+| `COUNTER_TOP_WIDTH_SCALE` | float | When adding objects, the width of the counter top is assumed to be `actual_width * WIDTH_SCALE`. This prevents objects from being too close to the edges of the counter top. | `0.8` |
 | `DEFAULT_CELL_SIZE` | float | The default span used for arranging objects next to each other. | `0.6096` |
 | `ENCLOSED_BY` | Dict[str, List[str]] | A dictionary of categories that can be enclosed by other categories. Key = A category. Value = A list of categories of models that can enclosed by the key category. | `loads(Path(resource_filename(__name__, "data/enclosed_by.json")).read_text())` |
 | `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
@@ -74,7 +79,7 @@ A kitchen counter can have objects on it and inside it.
 
 **`KitchenCounter(cabinetry, wall, corner, distance, region)`**
 
-**`KitchenCounter(cabinetry, wall, corner, distance, region, allow_microwave=True, microwave_plate_probability=0.7, microwave_plate_food_probability=1, cabinet_is_empty_probability=0.1, microwave_model=None, plate_model="plate06", model=None, wall_length=None, rng=None)`**
+**`KitchenCounter(cabinetry, wall, corner, distance, region, allow_microwave=True, cabinet_is_empty_probability=0.1, model=None, wall_length=None, rng=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -84,11 +89,7 @@ A kitchen counter can have objects on it and inside it.
 | distance |  float |  | The distance in meters from the corner along the derived direction. |
 | region |  InteriorRegion |  | The [`InteriorRegion`](../../scene_data/interior_region.md) that the object is in. |
 | allow_microwave |  bool  | True | If True, and if this kitchen counter is longer than 0.7 meters, there will be a [`Microwave`](microwave.md) instead of an arrangement of objects on the counter top. |
-| microwave_plate_probability |  float  | 0.7 | The probability (between 0 and 1) of adding a [`Plate`](plate.md) to the inside of the microwave. |
-| microwave_plate_food_probability |  float  | 1 | The probability (between 0 and 1) of adding food on top of a plate model inside the microwave (assuming there is a plate model). |
 | cabinet_is_empty_probability |  float  | 0.1 | The probability (between 0 and 1) of the of the kitchen counter cabinet and wall cabinet being empty. |
-| microwave_model |  Union[str, ModelRecord] | None | Either the name of the microwave model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a random model in the category is selected. |
-| plate_model |  Union[str, ModelRecord] | "plate06" | Either the name of the plate model used by the `Microwave` (in which case the model must be in `models_core.json`), or a `ModelRecord`. |
 | model |  Union[str, ModelRecord] | None | Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a model that fits along the wall at `distance` is randomly selected. |
 | wall_length |  float  | None | The total length of the lateral arrangement. If None, defaults to the length of the wall. |
 | rng |  Union[int, np.random.RandomState] | None | Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created. |

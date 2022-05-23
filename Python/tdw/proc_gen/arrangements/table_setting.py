@@ -23,7 +23,7 @@ class TableSetting(Plate):
     """
     PLATE_MODEL_NAME: str = "plate06"
     """:class_var
-    The probability (0 to 1) of adding a [`CupAndCoaster`](cup_and_coaster.md).
+    The probability from 0 to 1 of adding a [`CupAndCoaster`](cup_and_coaster.md).
     """
     PROBABILITY_CUP_AND_COASTER: float = 0.66
     """:class_var
@@ -39,15 +39,13 @@ class TableSetting(Plate):
     """
     CUP_AND_COASTER_POSITION_PERTURBATION: float = 0.02
 
-    def __init__(self, food_probability: float, position: Dict[str, float], rng: Union[int, np.random.RandomState] = None):
+    def __init__(self, position: Dict[str, float], rng: Union[int, np.random.RandomState] = None):
         """
-        :param food_probability: The probability of placing food on the plate.
         :param position: The position of the root object. This might be adjusted.
         :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         """
 
-        super().__init__(food_probability=food_probability, model=TableSetting.PLATE_MODEL_NAME, position=position,
-                         rng=rng)
+        super().__init__(model=TableSetting.PLATE_MODEL_NAME, position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
         commands = super().get_commands()

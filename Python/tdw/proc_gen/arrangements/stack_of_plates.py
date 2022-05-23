@@ -1,5 +1,4 @@
-from typing import Dict, List, Union
-import numpy as np
+from typing import Dict, List
 from tdw.tdw_utils import TDWUtils
 from tdw.proc_gen.arrangements.arrangement import Arrangement
 from tdw.controller import Controller
@@ -10,19 +9,17 @@ class StackOfPlates(Arrangement):
     A stack of plates.
 
     - The plate model is chosen randomly and is the same for each plate; see `StackOfPlates.MODEL_CATEGORIES["plate"]`.
-    - The number of plates in the stack is random; see `min_num` and `max_num` in the constructor.
+    - The number of plates in the stack is random; see `StackOfPlates.MIN_NUM` and `StackOfPlates.MAX_NUM`.
     """
 
-    def __init__(self, min_num: int, max_num: int, position: Dict[str, float], rng: Union[int, np.random.RandomState] = None):
-        """
-        :param min_num: The minimum number of plates.
-        :param max_num: The maximum number of plates.
-        :param position: The position of the root object. This might be adjusted.
-        :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
-        """
-
-        super().__init__(position=position, rng=rng)
-        self._num_plates: int = self._rng.randint(min_num, max_num + 1)
+    """:class_var
+    The minimum number of plates in a stack of plates.
+    """
+    MIN_NUM: int = 3
+    """:class_var
+    The maximum number of plates in a stack of plates.
+    """
+    MAX_NUM: int = 8
 
     def get_commands(self) -> List[dict]:
         model_name = Arrangement.MODEL_CATEGORIES["plate"][self._rng.randint(0, len(Arrangement.MODEL_CATEGORIES["plate"]))]
@@ -30,7 +27,8 @@ class StackOfPlates(Arrangement):
         extents = TDWUtils.get_bounds_extents(bounds=record.bounds)
         y = self._position["y"]
         commands = []
-        for i in range(self._num_plates):
+        num_plates = self._rng.randint(StackOfPlates.MIN_NUM, StackOfPlates.MAX_NUM + 1)
+        for i in range(num_plates):
             object_id = Controller.get_unique_id()
             self.object_ids.append(object_id)
             commands.extend(Controller.get_add_physics_object(model_name=model_name,

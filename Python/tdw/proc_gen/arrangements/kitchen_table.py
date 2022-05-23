@@ -84,14 +84,13 @@ class KitchenTable(TableAndChairs):
     CHAIR_ROTATION: float = 10
 
     def __init__(self, room: Room, used_walls: int, model: Union[str, ModelRecord] = None,
-                 offset_distance: float = 0.1, food_probability: float = 0.7, rng: Union[int, np.random.RandomState] = None):
+                 offset_distance: float = 0.1, rng: Union[int, np.random.RandomState] = None):
         """
         :param room: The [`Room`] that the table is in.
         :param used_walls: Bitwise sum of walls with objects.
         :param model: Either the name of the model (in which case the model must be in `models_core.json`), or a `ModelRecord`, or None. If None, a random model in the category is selected.
         :param rng: Either a random seed or an `numpy.random.RandomState` object. If None, a new random number generator is created.
         :param offset_distance: Offset the position from the used walls by this distance.
-        :param food_probability: The probability that each plate will have food (0 to 1).
         """
 
         if "models_core.json" not in Controller.MODEL_LIBRARIANS:
@@ -109,7 +108,6 @@ class KitchenTable(TableAndChairs):
                 self._record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
         self._room: Room = room
         self._offset_distance: float = offset_distance
-        self._food_probability = food_probability
         super().__init__(used_walls=used_walls, region=room.main_region, model=model,
                          position={"x": 0, "y": 0, "z": 0}, rng=rng)
 
@@ -124,8 +122,7 @@ class KitchenTable(TableAndChairs):
             v = np.array([bound_point[0], bound_point[2]]) * self._rng.uniform(KitchenTable.MIN_PLATE_OFFSET_FACTOR,
                                                                                KitchenTable.MAX_PLATE_OFFSET_FACTOR)
             # Get a slightly perturbed position for the plate.
-            table_setting = TableSetting(food_probability=self._food_probability,
-                                         position={"x": top["x"] + v[0] + self._rng.uniform(
+            table_setting = TableSetting(position={"x": top["x"] + v[0] + self._rng.uniform(
                                              -KitchenTable.PLATE_POSITION_PERTURBATION,
                                              KitchenTable.PLATE_POSITION_PERTURBATION),
                                                    "y": top["y"],

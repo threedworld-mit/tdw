@@ -11,8 +11,7 @@ Create a `Plate` arrangement.
 
 # Add a `Plate` arrangement.
 plate = Plate(position={"x": 0, "y": 0, "z": 0},
-              rng=0,
-              food_probability=1)
+              rng=0)
 plate_commands = plate.get_commands()
 # The object ID of the plate is the root ID of the arrangement.
 plate_id = plate.root_object_id

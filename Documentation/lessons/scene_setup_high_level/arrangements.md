@@ -142,7 +142,6 @@ Result:
 
 `Plate` has the following constructor parameters:
 
-- `food_probability` is a float between 0 and 1 and defines the probability of adding food on top of the plate.
 - `position` sets the position of the root object (the plate).
 - `model` is optional and not shown in this example; set this to set the plate model. This can be either a string (a model name) or a `ModelRecord`.
 - `rng` is optional and defaults to None. It is either a random seed (and integer) or a `numpy.random.RandomState` object. If None, a new `numpy.random.RandomState` object is created.
@@ -161,8 +160,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 # Add a `Plate` arrangement.
 plate = Plate(position={"x": 0, "y": 0, "z": 0},
-              rng=0,
-              food_probability=1)
+              rng=0)
 plate_commands = plate.get_commands()
 # The object ID of the plate is the root ID of the arrangement.
 plate_id = plate.root_object_id
@@ -195,11 +193,8 @@ Like the previous `Plate` example, [`Microwave`](../../python/proc_gen/arrangeme
 
 `Microwave` has the following constructor parameters:
 
-- `plate_probability` is a float between 0 and 1 and defines the probability of adding a `Plate` arrangement.
-- `food_probability` is a float between 0 and 1 and defines the probability of adding food on top of the plate.
 - `wall` is a [`CardinalDirection`](../../python/cardinal_direction.md). This controls the rotation of the microwave and the rest of the arrangment.
 - `position` sets the position of the root object (the microwave).
-- `plate_model` is optional and can set the plate model; it can be either a string (the model name) or a `ModelRecord`.
 - `model` is optional and can set the microwave model; it can be either a string (the model name) or a `ModelRecord`.
 - `rng` is optional and defaults to None. It is either a random seed (and integer) or a `numpy.random.RandomState` object. If None, a new `numpy.random.RandomState` object is created.
 
@@ -220,8 +215,6 @@ from tdw.cardinal_direction import CardinalDirection
 # Add a `Microwave` arrangement.
 microwave = Microwave(position={"x": 0, "y": 0, "z": 0},
                       rng=2,
-                      food_probability=0.6,
-                      plate_probability=1,
                       wall=CardinalDirection.west)
 microwave_commands = microwave.get_commands()
 # The object ID of the microwave is the root ID of the arrangement.
@@ -285,8 +278,6 @@ from tdw.cardinal_direction import CardinalDirection
 # Add a `Microwave` arrangement.
 microwave = Microwave(position={"x": 0, "y": 0, "z": 0},
                       rng=2,
-                      food_probability=0.6,
-                      plate_probability=1,
                       wall=CardinalDirection.west)
 # Only bananas can be on top of the microwave.
 Microwave.ON_TOP_OF["microwave"] = ["banana"]
@@ -332,11 +323,7 @@ A `KitchenCounter` may have objects inside its cabinet (which has an articulated
 - `distance` is a float describing the kitchen counter's distance from the `corner` along the `wall`.
 - `region` is the [`InteriorRegion`](../../python/scene_data/interior_region.md) that the wall, corner, and kitchen counter are located in. [Read this for more information.](rooms.md) In most cases, you can set this to `scene_record.rooms[0].main_region` (assuming that you've already defined `scene_record`).
 - `allow_microwave` is an optional boolean. If True, the kitchen counter may have a microwave. This can be useful for controlling the total number of microwaves in a scene. It is optional and defaults to True.
-- `microwave_plate_probability` is an optional float defining the probability of there being a [`Plate`](../../python/proc_gen/arrangements/plate.md) inside the microwave (if there is a microwave).
-- `microwave_plate_food_probability`  is an optional float defining the probability of there being food on the plate (assuming there is both a microwave and a plate inside of it).
 - `cabinet_is_empty_probability` is an optional float defining the probability of the kitchen cabinet being empty.
-- `microwave_model` is an optional parameter. It can either a string (the name of a model), a `ModelRecord`, or None (in which case the microwave, if any, is chosen randomly).
-- `plate_model` is an optional parameter that sets the model of the plate (if any) inside the microwave (if any). It can either a string (the name of a model) or a `ModelRecord`.
 - `model` is either a string (the name of a model) or a `ModelRecord`. This is the root kitchen counter model.
 - `wall_length` is the length of the wall. If None, it defaults to the actual length of the wall. This can be useful if you want to start calculating the `distance` at an offset.
 - `rng` is optional and defaults to None. It is either a random seed (and integer) or a `numpy.random.RandomState` object. If None, a new `numpy.random.RandomState` object is created.
@@ -390,11 +377,13 @@ Result:
 
 ![](images/arrangements/kitchen_counter.jpg)
 
-## `Arrangement` parameters and `ProcGenKitchen`
+## `Arrangement` parameters
 
-`ProcGenKitchen` hides and automates most of the parameters of its constituent `Arrangements`. This is is because with a few exceptions, such as the kitchen table, it's impossible to know how many arrangements will be in the scene before they are generated. For example, it's not possible to set parameters for each basket in the scene, because the total number of baskets varies per scene (and there might not be any baskets at all).
+Unlike nearly all data classes on TDW, `Arrangement` subclasses are structured such that most of their parameters are in class variables rather than constructor parameters. This can be awkward to code when adding arrangements directly to a scene but it's very useful when using an add-on such as `ProcGenKitchen`. In `ProcGenKitchen`, it's impossible to know beforehand which objects will be placed where (unless you're using a known random seed), and so it's impossible to set constructor parameter values per-object. You can, however, set class variable values, which will affect all arrangements of a given type.
 
- That said, you can still adjust most of the class variables, such as `Arrangement.MODEL_CATEGORIES`. For example, this controller sets `Basket.ROTATION`, which controls the maximum random rotation of all baskets in the scene:
+To learn more about the class variables, read the relevant Arrangement API document.
+
+In this example, this controller sets `Basket.ROTATION`, which controls the maximum random rotation of all baskets in the scene:
 
 ```python
 from tdw.controller import Controller
@@ -418,6 +407,20 @@ c.add_ons.extend([proc_gen_kitchen, camera, capture])
 c.communicate([])
 c.communicate({"$type": "terminate"})
 ```
+
+## Rectangular arrangements
+
+Many arrangements add secondary objects using a "rectangular arrangement" algorithm. In this algorithm, a rectangular area with a given (x, y, z) center position is defined and then divided into "cells". Each cell may have an object on it and objects may span multiple cells. The position of the objects are perturbed slightly and the rotations of the objects are typically random. Each cell may also be empty.
+
+[`KitchenCounter`](../../python/proc_gen/arrangements/kitchen_counter.md), for example, has two rectangular arrangements: one on the counter top, and one enclosed by the cabinet door(s). 
+
+- `KitchenCounter.COUNTER_TOP_CELL_SIZE` and `KitchenCounter.CABINET_CELL_SIZE` control the cell size of the rectangular arrangement. A lower value allows for smaller objects.
+- `KitchenCounter.COUNTER_TOP_CELL_DENSITY` and `KitchenCounter.CABINET_CELL_DENSITY` control how often cells are empty. A lower value means more objects.
+- `KitchenCounter.COUNTER_TOP_DEPTH_SCALE`, `KitchenCounter.COUNTER_TOP_WIDTH_SCALE`, `KitchenCounter.CABINET_DEPTH_SCALE`, and `KitchenCounter.CABINET_WIDTH_SCALE` control the spatial padding of the rectangular arrangement to prevent objects from being added too close to the edges.
+- `KitchenCounter.ON_TOP_OF["kitchen_counter"]` sets the categories of objects that can be placed on the counter top.
+- `KitchenCounter.ENCLOSED_BY["kitchen_counter"]` sets the categories of objects that can be placed inside the cabinet.
+
+You can adjust parameters like this to increase or decrease the number of objects, types of objects, etc. on root object surfaces. For a more "cluttered" look, try decreasing the cell size, increasing the cell density, and adding more categories to `ON_TOP_OF` or `ENCLOSED_BY`.
 
 ***
 

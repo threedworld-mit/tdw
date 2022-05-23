@@ -14,8 +14,6 @@ Create a `Microwave` arrangement.
 # Add a `Microwave` arrangement.
 microwave = Microwave(position={"x": 0, "y": 0, "z": 0},
                       rng=2,
-                      food_probability=0.6,
-                      plate_probability=1,
                       wall=CardinalDirection.west)
 microwave_commands = microwave.get_commands()
 # The object ID of the microwave is the root ID of the arrangement.

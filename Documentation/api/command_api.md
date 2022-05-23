@@ -395,6 +395,7 @@
 | [`set_object_physics_solver_iterations`](#set_object_physics_solver_iterations) | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: [set_physics_solver_iterations](#set_physics_solver_iterations) which sets the global default number of solver iterations. |
 | [`set_primitive_visual_material`](#set_primitive_visual_material) | Set the material of an object created via load_primitive_from_resources  |
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
+| [`set_sub_object_id`](#set_sub_object_id) | Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique. |
 | [`show_collider_hulls`](#show_collider_hulls) | Show the collider hulls of the object.  |
 | [`untether_obi_cloth_sheet`](#untether_obi_cloth_sheet) | Untether a cloth sheet at a specified position.  |
 
@@ -5438,6 +5439,23 @@ An enum value representation of a semantic material category.
 | `"Organic"` |  |
 | `"Glass"` |  |
 | `"undefined"` | Never assign a semantic material to this type! |
+
+***
+
+## **`set_sub_object_id`**
+
+Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique.
+
+
+```python
+{"$type": "set_sub_object_id", "sub_object_name": "string", "sub_object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"sub_object_name"` | string | The expected name of the sub-object. | |
+| `"sub_object_id"` | int | The new ID of the sub-object. | |
+| `"id"` | int | The unique object ID. | |
 
 ***
 

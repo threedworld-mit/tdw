@@ -16,6 +16,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `add_cylinder_container` | Add a cylindrical container shape to an object.        |
 | `add_sphere_container`   | Add a spherical container shape to an object.          |
 | `send_containment`       | Send `Overlap` output data from every container shape. |
+| `set_sub_object_id`      | Set the ID of a composite sub-object.                  |
 
 #### Removed Commands
 

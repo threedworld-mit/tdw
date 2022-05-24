@@ -395,6 +395,7 @@
 | [`set_object_physics_solver_iterations`](#set_object_physics_solver_iterations) | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: [set_physics_solver_iterations](#set_physics_solver_iterations) which sets the global default number of solver iterations. |
 | [`set_primitive_visual_material`](#set_primitive_visual_material) | Set the material of an object created via load_primitive_from_resources  |
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
+| [`set_sub_object_id`](#set_sub_object_id) | Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique. |
 | [`show_collider_hulls`](#show_collider_hulls) | Show the collider hulls of the object.  |
 | [`untether_obi_cloth_sheet`](#untether_obi_cloth_sheet) | Untether a cloth sheet at a specified position.  |
 
@@ -492,17 +493,11 @@
 
 **Proc Gen Floor Command**
 
-| Command | Description |
-| --- | --- |
-| [`set_proc_gen_floor_color`](#set_proc_gen_floor_color) | Set the albedo RGBA color of the floor.  |
-| [`set_proc_gen_floor_texture_scale`](#set_proc_gen_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture.  |
-
 **Proc Gen Material Command**
 
 | Command | Description |
 | --- | --- |
 | [`set_proc_gen_ceiling_material`](#set_proc_gen_ceiling_material) | Set the material of a procedurally-generated ceiling.  |
-| [`set_proc_gen_floor_material`](#set_proc_gen_floor_material) | Set the material of a procedurally-generated floor.  |
 | [`set_proc_gen_walls_material`](#set_proc_gen_walls_material) | Set the material of all procedurally-generated walls.  |
 
 **Proc Gen Walls Command**
@@ -624,7 +619,6 @@
 | --- | --- |
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
-| [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
 | [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
@@ -5448,6 +5442,23 @@ An enum value representation of a semantic material category.
 
 ***
 
+## **`set_sub_object_id`**
+
+Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique.
+
+
+```python
+{"$type": "set_sub_object_id", "sub_object_name": "string", "sub_object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"sub_object_name"` | string | The expected name of the sub-object. | |
+| `"sub_object_id"` | int | The new ID of the sub-object. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`show_collider_hulls`**
 
 Show the collider hulls of the object. 
@@ -6364,42 +6375,6 @@ Destroy ceiling tiles from a procedurally-created ceiling.
 
 These commands modify the floor of a procedurally-generated room.
 
-***
-
-## **`set_proc_gen_floor_color`**
-
-Set the albedo RGBA color of the floor. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"color"` | Color | The new albedo RGBA color of the floor. | |
-
-***
-
-## **`set_proc_gen_floor_texture_scale`**
-
-Set the scale of the tiling of the floor material's main texture. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_texture_scale"}
-```
-
-```python
-{"$type": "set_proc_gen_floor_texture_scale", "scale": {"x": 1, "y": 1}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale"` | Vector2 | The tiling scale of the material. Generally (but by no means always), the default tiling scale of a texture is {"x": 1, "y": 1} | {"x": 1, "y": 1} |
-
 # ProcGenMaterialCommand
 
 These commands add a material to part of the proc-gen room.
@@ -6414,23 +6389,6 @@ Set the material of a procedurally-generated ceiling.
 
 ```python
 {"$type": "set_proc_gen_ceiling_material", "name": "string"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"name"` | string | The name of the material. The material must already be loaded in memory. | |
-
-***
-
-## **`set_proc_gen_floor_material`**
-
-Set the material of a procedurally-generated floor. 
-
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_material", "name": "string"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7979,39 +7937,6 @@ Options for when to send data.
 
 ***
 
-## **`send_composite_objects`**
-
-Send data for every composite object in the scene. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`CompositeObjects`](output_data.md#CompositeObjects)</font>
-
-```python
-{"$type": "send_composite_objects"}
-```
-
-```python
-{"$type": "send_composite_objects", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_dynamic_composite_objects`**
 
 Send dynamic data for every composite object in the scene. 
@@ -8085,16 +8010,16 @@ Send transform (position, rotation, etc.) data for humanoids in the scene.
     - <font style="color:green">**Type:** [`Transforms`](output_data.md#Transforms)</font>
 
 ```python
-{"$type": "send_humanoids", "ids": [1, 2, 3]}
+{"$type": "send_humanoids", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_humanoids", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_humanoids", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the humanoids. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the humanoids. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8487,16 +8412,16 @@ Send rotated bounds data of objects in the scene.
     - <font style="color:green">**Type:** [`Bounds`](output_data.md#Bounds)</font>
 
 ```python
-{"$type": "send_bounds", "ids": [1, 2, 3]}
+{"$type": "send_bounds", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_bounds", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_bounds", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8523,16 +8448,16 @@ Send Transform (position and rotation) data of objects in the scene relative to 
     - <font style="color:red">**Use this command instead:** `send_transforms`</font>
 
 ```python
-{"$type": "send_local_transforms", "ids": [1, 2, 3]}
+{"$type": "send_local_transforms", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_local_transforms", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_local_transforms", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8556,16 +8481,16 @@ Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.
     - <font style="color:green">**Type:** [`Rigidbodies`](output_data.md#Rigidbodies)</font>
 
 ```python
-{"$type": "send_rigidbodies", "ids": [1, 2, 3]}
+{"$type": "send_rigidbodies", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_rigidbodies", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_rigidbodies", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8587,18 +8512,19 @@ Send segmentation color data for objects in the scene.
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`SegmentationColors`](output_data.md#SegmentationColors)</font>
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 
 ```python
-{"$type": "send_segmentation_colors", "ids": [1, 2, 3]}
+{"$type": "send_segmentation_colors", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_segmentation_colors", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_segmentation_colors", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8622,16 +8548,16 @@ Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene
     - <font style="color:green">**Type:** [`StaticRigidbodies`](output_data.md#StaticRigidbodies)</font>
 
 ```python
-{"$type": "send_static_rigidbodies", "ids": [1, 2, 3]}
+{"$type": "send_static_rigidbodies", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_static_rigidbodies", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_static_rigidbodies", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8655,16 +8581,16 @@ Send Transform (position and rotation) data of objects in the scene.
     - <font style="color:green">**Type:** [`Transforms`](output_data.md#Transforms)</font>
 
 ```python
-{"$type": "send_transforms", "ids": [1, 2, 3]}
+{"$type": "send_transforms", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_transforms", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_transforms", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8690,16 +8616,16 @@ Send spatial volume data of objects in the scene. Volume is calculated from the 
 - <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
 
 ```python
-{"$type": "send_volumes", "ids": [1, 2, 3]}
+{"$type": "send_volumes", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_volumes", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_volumes", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

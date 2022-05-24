@@ -218,6 +218,6 @@ class ContainerManager(AddOn):
         self.container_shapes[container_id] = object_id
         # Return a partial command.
         return {"$type": command_name,
-                "id": object_id,
-                "container_id": container_id,
+                "id": int(object_id),
+                "container_id": int(container_id),
                 "position": position}

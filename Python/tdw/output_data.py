@@ -1,4 +1,4 @@
-from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, MachineType, SimpleTransform, PathState
+from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, SimpleTransform, PathState
 from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
@@ -21,7 +21,6 @@ from tdw.FBOutput import ArrivedAtNavMeshDestination as Arri
 from tdw.FBOutput import FlexParticles as Flex
 from tdw.FBOutput import VRRig as VR
 from tdw.FBOutput import LogMessage as Log
-from tdw.FBOutput import CompositeObjects as Comp
 from tdw.FBOutput import Meshes as Me
 from tdw.FBOutput import Substructure as Sub
 from tdw.FBOutput import Version as Ver
@@ -160,104 +159,126 @@ class SceneRegions(OutputData):
 
 
 class Transforms(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._positions = self.data.PositionsAsNumpy().reshape(-1, 3)
+        self._rotations = self.data.RotationsAsNumpy().reshape(-1, 4)
+        self._forwards = self.data.ForwardsAsNumpy().reshape(-1, 3)
+
     def get_data(self) -> Trans.Transforms:
         return Trans.Transforms.GetRootAsTransforms(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
-    def get_position(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Position)
+    def get_position(self, index: int) -> np.array:
+        return self._positions[index]
 
-    def get_forward(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Forward)
+    def get_forward(self, index: int) -> np.array:
+        return self._forwards[index]
 
-    def get_rotation(self, index: int) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.Objects(index).Rotation)
+    def get_rotation(self, index: int) -> np.array:
+        return self._rotations[index]
 
 
 class Rigidbodies(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._velocities = self.data.VelocitiesAsNumpy().reshape(-1, 3)
+        self._angular_velocities = self.data.AngularVelocitiesAsNumpy().reshape(-1, 3)
+        self._sleeping = self.data.SleepingsAsNumpy()
+
     def get_data(self) -> Rigis.Rigidbodies:
         return Rigis.Rigidbodies.GetRootAsRigidbodies(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
-    def get_velocity(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Velocity)
+    def get_velocity(self, index: int) -> np.array:
+        return self._velocities[index]
 
-    def get_angular_velocity(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).AngularVelocity)
+    def get_angular_velocity(self, index: int) -> np.array:
+        return self._angular_velocities[index]
 
     def get_sleeping(self, index: int) -> bool:
-        return self.data.Objects(index).Sleeping()
+        return self._sleeping[index]
 
 
 class StaticRigidbodies(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._physics_values = self.data.PhysicsValuesAsNumpy().reshape(-1, 4)
+        self._kinematic = self.data.KinematicAsNumpy()
+
     def get_data(self) -> StatRig.StaticRigidbodies:
         return StatRig.StaticRigidbodies.GetRootAsStaticRigidbodies(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
     def get_mass(self, index: int) -> float:
-        return self.data.Objects(index).Mass()
-
-    def get_sleeping(self, index: int) -> bool:
-        return self.data.Objects(index).Sleeping()
+        return self._physics_values[index][0]
 
     def get_kinematic(self, index: int) -> bool:
-        return self.data.Objects(index).Kinematic()
+        return self._kinematic[index]
 
     def get_dynamic_friction(self, index: int) -> float:
-        return self.data.Objects(index).DynamicFriction()
+        return self._physics_values[index][1]
 
     def get_static_friction(self, index: int) -> float:
-        return self.data.Objects(index).StaticFriction()
+        return self._physics_values[index][2]
 
     def get_bounciness(self, index: int) -> float:
-        return self.data.Objects(index).Bounciness()
+        return self._physics_values[index][3]
 
 
 class Bounds(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._bounds_positions = self.data.BoundPositionsAsNumpy().reshape(len(self._ids), 7, 3)
+
     def get_data(self) -> Bouns.Bounds:
         return Bouns.Bounds.GetRootAsBounds(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
-    def get_front(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Front)
+    def get_front(self, index: int) -> np.array:
+        return self._bounds_positions[index][0]
 
-    def get_back(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Back)
+    def get_back(self, index: int) -> np.array:
+        return self._bounds_positions[index][1]
 
-    def get_left(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Left)
+    def get_left(self, index: int) -> np.array:
+        return self._bounds_positions[index][3]
 
-    def get_right(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Right)
+    def get_right(self, index: int) -> np.array:
+        return self._bounds_positions[index][2]
 
-    def get_top(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Top)
+    def get_top(self, index: int) -> np.array:
+        return self._bounds_positions[index][4]
 
-    def get_bottom(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Bottom)
+    def get_bottom(self, index: int) -> np.array:
+        return self._bounds_positions[index][5]
 
-    def get_center(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Center)
+    def get_center(self, index: int) -> np.array:
+        return self._bounds_positions[index][6]
 
 
 class Images(OutputData):
@@ -411,23 +432,28 @@ class AvatarStickyMitten(AvatarNonKinematic):
 
 
 class SegmentationColors(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._colors = self.data.ColorsAsNumpy().reshape(-1, 3)
+
     def get_data(self) -> Segs.SegmentationColors:
         return Segs.SegmentationColors.GetRootAsSegmentationColors(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_object_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
-    def get_object_color(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_rgb(self.data.Objects(index).SegmentationColor())
+    def get_object_color(self, index: int) -> np.array:
+        return self._colors[index]
 
     def get_object_name(self, index: int) -> str:
-        return self.data.Objects(index).Name().decode('utf-8')
+        return self.data.Names(index).decode('utf-8')
 
     def get_object_category(self, index: int) -> str:
-        return self.data.Objects(index).Category().decode('utf-8')
+        return self.data.Categories(index).decode('utf-8')
 
 
 class AvatarSegmentationColor(OutputData):
@@ -731,34 +757,6 @@ class LogMessage(OutputData):
         return self.data.ObjectType().decode('utf-8')
 
 
-class CompositeObjects(OutputData):
-    MACHINE_TYPES = {MachineType.MachineType.light: "light",
-                     MachineType.MachineType.motor: "motor",
-                     MachineType.MachineType.hinge: "hinge",
-                     MachineType.MachineType.spring: "spring",
-                     MachineType.MachineType.prismatic_joint: "prismatic_joint",
-                     MachineType.MachineType.none: "none"}
-
-    def get_data(self) -> Comp.CompositeObjects:
-        print("CompositeObjects has been deprecated. Use StaticCompositeObjects and/or DynamicCompositeObjects instead.")
-        return Comp.CompositeObjects.GetRootAsCompositeObjects(self.bytes, 0)
-
-    def get_num(self) -> int:
-        return self.data.ObjectsLength()
-
-    def get_object_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
-
-    def get_num_sub_objects(self, index: int) -> int:
-        return self.data.Objects(index).SubObjectsLength()
-
-    def get_sub_object_id(self, index: int, sub_object_index: int) -> int:
-        return self.data.Objects(index).SubObjects(sub_object_index).Id()
-
-    def get_sub_object_machine_type(self, index: int, sub_object_index: int) -> str:
-        return CompositeObjects.MACHINE_TYPES[self.data.Objects(index).SubObjects(sub_object_index).MachineType()]
-
-
 class Meshes(OutputData):
     def get_data(self) -> Me.Meshes:
         return Me.Meshes.GetRootAsMeshes(self.bytes, 0)
@@ -837,17 +835,22 @@ class EnvironmentCollision(OutputData):
 
 
 class Volumes(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._volumes = self.data.VolumesAsNumpy()
+
     def get_data(self) -> Vol.Volumes:
         return Vol.Volumes.GetRootAsVolumes(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_object_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
     def get_volume(self, index: int) -> float:
-        return self.data.Objects(index).Volume()
+        return self._volumes[index]
 
 
 class AudioSources(OutputData):
@@ -1151,26 +1154,34 @@ class TriggerCollision(OutputData):
 
 
 class LocalTransforms(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._positions = self.data.PositionsAsNumpy().reshape(-1, 3)
+        self._rotations = self.data.RotationsAsNumpy().reshape(-1, 4)
+        self._forwards = self.data.ForwardsAsNumpy().reshape(-1, 3)
+        self._euler_angles = self.data.EulerAnglesAsNumpy().reshape(-1, 3)
+
     def get_data(self) -> LocalTran.LocalTransforms:
         return LocalTran.LocalTransforms.GetRootAsLocalTransforms(self.bytes, 0)
 
     def get_num(self) -> int:
-        return self.data.ObjectsLength()
+        return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+        return self._ids[index]
 
-    def get_position(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Position)
+    def get_position(self, index: int) -> np.array:
+        return self._positions[index]
 
-    def get_forward(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Forward)
+    def get_forward(self, index: int) -> np.array:
+        return self._forwards[index]
 
-    def get_eulers(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Objects(index).Eulers)
+    def get_rotation(self, index: int) -> np.array:
+        return self._rotations[index]
 
-    def get_rotation(self, index: int) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.Objects(index).Rotation)
+    def get_euler_angles(self, index: int) -> np.array:
+        return self._euler_angles[index]
 
 
 class QuitSignal(OutputData):
@@ -1401,35 +1412,42 @@ class StaticCompositeObjects(OutputData):
 
 
 class DynamicCompositeObjects(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._hinge_ids = self.data.HingeIdsAsNumpy().reshape(-1, 2)
+        self._hinges = self.data.HingesAsNumpy().reshape(-1, 2)
+        self._light_ids = self.data.LightIdsAsNumpy().reshape(-1, 2)
+        self._lights = self.data.LightsAsNumpy()
+
     def get_data(self) -> DynComp.DynamicCompositeObjects:
         return DynComp.DynamicCompositeObjects.GetRootAsDynamicCompositeObjects(self.bytes, 0)
 
-    def get_num(self) -> int:
-        return self.data.ObjectsLength()
+    def get_num_hinges(self) -> int:
+        return self._hinge_ids.shape[0]
 
-    def get_object_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
+    def get_hinge_parent_id(self, index: int) -> int:
+        return self._hinge_ids[index][0]
 
-    def get_num_hinges(self, index: int) -> int:
-        return self.data.Objects(index).HingesLength()
+    def get_hinge_id(self, index: int) -> int:
+        return self._hinge_ids[index][1]
 
-    def get_hinge_id(self, index: int, hinge_index: int) -> int:
-        return self.data.Objects(index).Hinges(hinge_index).Id()
+    def get_hinge_angle(self, index: int) -> float:
+        return self._hinges[index][0]
 
-    def get_hinge_angle(self, index: int, hinge_index: int) -> float:
-        return self.data.Objects(index).Hinges(hinge_index).Angle()
+    def get_hinge_velocity(self, index: int) -> float:
+        return self._hinges[index][1]
 
-    def get_hinge_velocity(self, index: int, hinge_index: int) -> float:
-        return self.data.Objects(index).Hinges(hinge_index).Velocity()
+    def get_num_lights(self) -> int:
+        return self._light_ids.shape[0]
 
-    def get_num_lights(self, index: int) -> int:
-        return self.data.Objects(index).LightsLength()
+    def get_light_parent_id(self, index: int) -> int:
+        return self._light_ids[index][0]
 
-    def get_light_id(self, index: int, light_index: int) -> int:
-        return self.data.Objects(index).Lights(light_index).Id()
+    def get_light_id(self, index: int) -> int:
+        return self._light_ids[index][1]
 
-    def get_light_is_on(self, index: int, light_index: int) -> bool:
-        return self.data.Objects(index).Lights(light_index).IsOn()
+    def get_light_is_on(self, index: int) -> bool:
+        return self._lights[index]
 
 
 class ObiParticles(OutputData):

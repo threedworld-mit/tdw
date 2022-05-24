@@ -293,6 +293,10 @@ Result:
 
 ![](images/proc_gen_kitchen/lighting.jpg)
 
+## How to reset the scene
+
+Unlike most add-ons, it is not necessary to reset `ProcGenKitchen` when a scene resets. Do *not* do this: `proc_gen_kitchen.initialized = False`. Instead, simply call `proc_gen_kitchen.create(scene)` to create a new scene.
+
 ## Saving scene setup commands
 
 Whenever `ProcGenKitchen` is updated, it is possible that a random seed used in a previous version will generate a different scene in a newer version. In fact, it's likely that subsequent changes to `ProcGenKitchen` since this document has written have adjusted the procedural generator such that if you run the example controllers, you'll capture different images.

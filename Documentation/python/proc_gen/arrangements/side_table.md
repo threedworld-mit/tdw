@@ -2,7 +2,7 @@
 
 `from tdw.proc_gen.arrangements.side_table import SideTable`
 
-A small side table.
+A small side table with objects on it.
 
 - The side table model is chosen randomly; see `SideTable.MODEL_CATEGORIES["side_table"]`.
 - The side table is placed next to a wall.

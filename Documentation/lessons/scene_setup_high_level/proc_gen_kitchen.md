@@ -258,7 +258,7 @@ mm_kitchen_4b
 
 ## `ProcGenKitchen` and other add-ons
 
-`ProcGenKitchen` is meant to be as modular as possible and it can be combined with other add-ons and commands. You've already seen that it's possible use `ProcGenKitchen` along with [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md) and [`ImageCapture`](../../python/add_ons/image_capture.md).
+`ProcGenKitchen` is meant to be as modular as possible and it can be combined with other add-ons and commands. You've already seen that it's possible to use `ProcGenKitchen` along with [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md) and [`ImageCapture`](../../python/add_ons/image_capture.md).
 
 This example combines `ProcGenKitchen` with [`InteriorSceneLighting`](../photorealism/interior_lighting.md). Note that we can use the same random seed for both add-ons to ensure that the scene is recreated exactly the same every time:
 
@@ -299,7 +299,7 @@ Unlike most add-ons, it is not necessary to reset `ProcGenKitchen` when a scene 
 
 ## Saving scene setup commands
 
-Whenever `ProcGenKitchen` is updated, it is possible that a random seed used in a previous version will generate a different scene in a newer version. In fact, it's likely that subsequent changes to `ProcGenKitchen` since this document has written have adjusted the procedural generator such that if you run the example controllers, you'll capture different images.
+Whenever `ProcGenKitchen` is updated, it is possible that a random seed used in a previous version will generate a different scene in a newer version. In fact, it's likely that subsequent changes to `ProcGenKitchen` since this document was written have adjusted the procedural generator such that if you run the example controllers, you'll capture different images.
 
 In order to guarantee that you can recreate a kitchen scene,  you can save the list of commands in addition to the random seed.
 

@@ -1394,11 +1394,29 @@ class Mouse(OutputData):
     def get_scroll_delta(self) -> np.array:
         return self.data.ScrollDeltaAsNumpy()
 
-    def get_button_pressed(self, index: int) -> bool:
-        return self._buttons[index][0]
+    def get_is_left_button_pressed(self) -> bool:
+        return self._buttons[0][0]
 
-    def get_button_held(self, index: int) -> bool:
-        return self._buttons[index][1]
+    def get_is_left_button_held(self) -> bool:
+        return self._buttons[0][1]
 
-    def get_button_released(self, index: int) -> bool:
-        return self._buttons[index][2]
+    def get_is_left_button_released(self) -> bool:
+        return self._buttons[0][2]
+
+    def get_is_middle_button_pressed(self) -> bool:
+        return self._buttons[1][0]
+
+    def get_is_middle_button_held(self) -> bool:
+        return self._buttons[1][1]
+
+    def get_is_middle_button_released(self) -> bool:
+        return self._buttons[1][2]
+
+    def get_is_right_button_pressed(self) -> bool:
+        return self._buttons[2][0]
+
+    def get_is_right_button_held(self) -> bool:
+        return self._buttons[2][1]
+
+    def get_is_right_button_released(self) -> bool:
+        return self._buttons[2][2]

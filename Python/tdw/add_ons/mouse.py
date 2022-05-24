@@ -1,91 +1,114 @@
-from typing import Union, List, Callable, Optional, Dict
+from typing import List
+import numpy as np
 from tdw.add_ons.add_on import AddOn
-from tdw.mouse_data.mouse_button import MouseButton
-from tdw.mouse_data.mouse_button_event import MouseButtonEvent
-from tdw.output_data import OutputData
+from tdw.output_data import OutputData, Raycast
 from tdw.output_data import Mouse as Mous
+from tdw.controller import Controller
 
 
 class Mouse(AddOn):
-    def __init__(self):
+    """
+    Listen to mouse movement, button events, and whether the mouse is over an object.
+    """
+
+    def __init__(self, avatar_id: str = "a"):
+        """
+        :param avatar_id: The ID of the avatar. This is used to convert the mouse screen position to a world position.
+        """
+
         super().__init__()
-        self._press: Dict[MouseButton, Optional[Union[Callable, List[dict]]]] = dict()
-        self._hold: Dict[MouseButton, Optional[Union[Callable, List[dict]]]] = dict()
-        self._release: Dict[MouseButton, Optional[Union[Callable, List[dict]]]] = dict()
+        """:field
+        The ID of the avatar.
+        """
+        self.avatar_id: str = avatar_id
+        """:field
+        If True, the left button was pressed on this frame.
+        """
+        self.left_button_pressed: bool = False
+        """:field
+        If True, the left button was held on this frame (and pressed on a previous frame).
+        """
+        self.left_button_held: bool = False
+        """:field
+        If True, the left button was released on this frame.
+        """
+        self.left_button_released: bool = False
+        """:field
+        If True, the middle button was pressed on this frame.
+        """
+        self.middle_button_pressed: bool = False
+        """:field
+        If True, the middle button was held on this frame (and pressed on a previous frame).
+        """
+        self.middle_button_held: bool = False
+        """:field
+        If True, the middle button was released on this frame.
+        """
+        self.middle_button_released: bool = False
+        """:field
+        If True, the right button was pressed on this frame.
+        """
+        self.right_button_pressed: bool = False
+        """:field
+        If True, the right button was held on this frame (and pressed on a previous frame).
+        """
+        self.right_button_held: bool = False
+        """:field
+        If True, the right button was released on this frame.
+        """
+        self.right_button_released: bool = False
+        """:field
+        The (x, y) pixel position of the mouse on the screen.
+        """
+        self.mouse_screen_position: np.array = np.array([0, 0])
+        """:field
+        The (x, y) scroll wheel delta.
+        """
+        self.scroll_wheel_delta: np.array = np.array([0, 0])
+        """:field
+        The (x, y, z) world position of the mouse. The z depth coordinate is derived via a raycast.
+        """
+        self.mouse_world_position: np.array = np.array([0, 0, 0])
+        """:field
+        If True, the mouse is currently over an object.
+        """
+        self.mouse_is_over_object: bool = False
+        """:field
+        If `self.mouse_is_over_object == True`, this is the ID of the object.
+        """
+        self.mouse_over_object_id: int = -1
+        self._raycast_id: int = Controller.get_unique_id()
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_mouse",
                  "frequency": "always"}]
 
     def on_send(self, resp: List[bytes]) -> None:
+        self.commands.append({"$type": "send_mouse_raycast",
+                              "id": self._raycast_id,
+                              "avatar_id": self.avatar_id})
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "mous":
                 mouse = Mous(resp[i])
-                buttons = [b for b in MouseButton]
-                for happened, button in zip([mouse.get_is_left_button_pressed(), mouse.get_is_middle_button_pressed(), mouse.get_is_right_button_pressed()],
-                                            buttons):
-                    self._do_event(happened, button, self._press)
-                for happened, button in zip([mouse.get_is_left_button_held(), mouse.get_is_middle_button_held(), mouse.get_is_right_button_held()],
-                                            buttons):
-                    self._do_event(happened, button, self._hold)
-                for happened, button in zip([mouse.get_is_left_button_released(), mouse.get_is_middle_button_released(), mouse.get_is_right_button_released()],
-                                            buttons):
-                    self._do_event(happened, button, self._release)
-
-    def listen(self, button: Union[MouseButton, str] = MouseButton.left,
-               event: Union[MouseButtonEvent, str] = MouseButtonEvent.press,
-               commands: Union[dict, List[dict]] = None,
-               function: Callable = None) -> None:
-        """
-        Listen for when a mouse button is pressed and send commands.
-
-        :param button: The mouse button as a string or [`MouseButton`](../mouse_data/mouse_button.md).
-        :param commands: Commands to be sent when the button is pressed.
-        :param function: Function to invoke when the button is pressed.
-        :param event: The event as a string or [`MouseButtonEvent`](../mouse_data/mouse_button_event.md).
-        """
-
-        response: Optional[Union[Callable, List[dict]]] = None
-        if commands is not None:
-            if isinstance(commands, dict):
-                commands = [commands]
-            response = commands
-        elif function is not None:
-            response = function
-        if response is None:
-            return
-        if isinstance(event, MouseButtonEvent):
-            e = event
-        else:
-            e = MouseButtonEvent[event]
-        if isinstance(button, MouseButton):
-            b = button
-        else:
-            b = MouseButton[button]
-        # Subscribe to events.
-        if e == MouseButtonEvent.press:
-            self._press[b] = response
-        elif e == MouseButtonEvent.hold:
-            self._hold[b] = response
-        elif e == MouseButtonEvent.release:
-            self._release[b] = response
-        else:
-            raise Exception(e)
-
-    def _do_event(self, happened: bool, button: MouseButton, events: Dict[MouseButton, Optional[Union[Callable, List[dict]]]]) -> None:
-        """
-        Invoke an event if the button is in the events dictionary.
-
-        :param happened: True if the mouse event happened.
-        :param button: The mouse button.
-        :param events: The events dictionary.
-        """
-
-        if happened and button in events:
-            # Append commands to the next `communicate()` call.
-            if isinstance(events[button], list):
-                self.commands.extend(events[button])
-            # Invoke a function.
-            else:
-                events[button]()
+                # Get the screen position.
+                self.mouse_screen_position = mouse.get_position()
+                # Get the scroll wheel delta.
+                self.scroll_wheel_delta = mouse.get_scroll_delta()
+                # Get mouse button events.
+                self.left_button_pressed = mouse.get_is_left_button_pressed()
+                self.left_button_held = mouse.get_is_left_button_held()
+                self.left_button_released = mouse.get_is_left_button_released()
+                self.middle_button_pressed = mouse.get_is_middle_button_pressed()
+                self.middle_button_held = mouse.get_is_middle_button_held()
+                self.middle_button_released = mouse.get_is_middle_button_released()
+                self.right_button_pressed = mouse.get_is_right_button_pressed()
+                self.right_button_held = mouse.get_is_right_button_held()
+                self.right_button_released = mouse.get_is_right_button_released()
+            # Get the mouse world position raycast.
+            elif r_id == "rayc":
+                raycast = Raycast(resp[i])
+                if raycast.get_raycast_id() == self._raycast_id:
+                    self.mouse_world_position = np.array(raycast.get_point())
+                    self.mouse_is_over_object = raycast.get_hit() and raycast.get_hit_object()
+                    self.mouse_over_object_id = int(raycast.get_object_id())

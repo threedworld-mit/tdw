@@ -1383,7 +1383,7 @@ class ObiParticles(OutputData):
 class Mouse(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._buttons: np.array = self.data.ButtonsAsNumpy()
+        self._buttons: np.array = self.data.ButtonsAsNumpy().reshape(3, 3)
 
     def get_data(self) -> Mous.Mouse:
         return Mous.Mouse.GetRootAsMouse(self.bytes, 0)

@@ -6,7 +6,7 @@ from tdw.controller import Controller
 
 class Plate(ArrangementWithRootObject):
     """
-    A kitchen plate.
+    A kitchen plate that may have food on it.
 
     - The plate model is chosen randomly; see `TableSetting.MODEL_CATEGORIES["plate"]`.
     - The plate might have food on it; see `Plate.FOOD_PROBABILITY`.

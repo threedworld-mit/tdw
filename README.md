@@ -290,10 +290,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [UI](Documentation/python/add_ons/ui.md)
 - [VR](Documentation/python/add_ons/vr.md)
 
-**tdw.add_ons.proc_gen_objects.data**
-
-- [LateralSubArrangement](Documentation/python/add_ons/proc_gen_objects/data/lateral_sub_arrangement.md)
-
 **tdw.collision_data**
 
 - [CollisionBase](Documentation/python/collision_data/collision_base.md)

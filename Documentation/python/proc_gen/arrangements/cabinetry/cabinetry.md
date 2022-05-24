@@ -2,7 +2,7 @@
 
 `from tdw.proc_gen.arrangements.cabinetry.cabinetry import Cabinetry`
 
-A set of cabinetry models and materials.
+A set of cabinetry models.
 
 ***
 

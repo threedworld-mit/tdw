@@ -19,7 +19,7 @@ class _Decoder(json.JSONDecoder):
 
 class Cabinetry:
     """
-    A set of cabinetry models and materials.
+    A set of cabinetry models.
     """
 
     def __init__(self, name: Union[str, CabinetryType], kitchen_counters: List[str], wall_cabinets: List[str],

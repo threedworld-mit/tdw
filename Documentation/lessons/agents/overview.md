@@ -6,7 +6,7 @@
 
 Unlike most simulation platforms, TDW has a very loose definition for "agent". Some examples of what *might* be, but doesn't *have* to be, an agent:
 
-- [Avatars](../core_concepts/avatars.md) have image sensors but typically are not embodied.
+- [Avatars](../core_concepts/avatars.md) have image sensors but are often not embodied.
 - [Objects](../core_concepts/objects.md) don't have image sensors but [it is possible to directly apply forces to objects](../physx/forces.md) and thereby make them act as if they are embodied agents.
 - [Robots](../robots/overview.md) can act as agents but don't have image sensors by default.
 
@@ -48,11 +48,11 @@ A human agent can directly control an embodied virtual reality agent.
 
 **Trade-offs:** You must have VR hardware in order to use VR in TDW. There are fairly high system requirements. Only one human agent may use VR in any given simulation.
 
-### [Keyboard controls](../keyboard/keyboard.md)
+### [Keyboard and mouse input](../keyboard_and_mouse/overview.md)
 
-A human can move an agent using keyboard input.
+A human can move an agent using keyboard and mouse input, including standard video game first-person controls.
 
-**Trade-offs:** There is no built-in "keyboard agent" in TDW. Rather, TDW accepts arbitrary keyboard input, which can be defined as input for an agent.
+**Trade-offs:** In order to use keyboard and mouse controls, the TDW build window must be focused (i.e. be the selected window). This means that keyboard controls will only work on personal computers. There is also no built-in way to "pick up" or "put down" objects.
 
 ### [Embodied avatar](../embodied_avatars/embodied_avatar.md)
 

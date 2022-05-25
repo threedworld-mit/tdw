@@ -83,5 +83,40 @@ Call `first_person_avatar.reset(position, rotation, field_of_view)` to reset the
 
 `FirstPersonAvatar` sends [`send_avatars`](../../api/command_api.md#send_avatars), [`send_mouse`](../../api/command_api.md#send_mouse), and [`send_mouse_raycast`](../../api/command_api.md#send_mouse_raycast) to receive [`AvatarKinematic`](../../api/output_data.md#AvatarKinematic), [`Mouse`](../../api/output_data.md#Mouse), and [`Raycast`](../../api/output_data.md#Raycast) output data. `AvatarKinematic` sets `self.transform`. `Mouse` and `Raycast` set [mouse-related fields](mouse.md).
 
- 
+***
 
+**Next: [Keyboard input](keyboard.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [first_person_controls.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/keyboard_and_mouse/first_person_controls.py) Minimal `FirstPersonAvatar` example.
+
+Python API:
+
+- [`FirstPersonAvatar`](../../python/add_ons/first_person_avatar.md)
+- [`Mouse`](../../python/add_ons/mouse.md)
+- [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md)
+- [`ImageCapture`](../../python/add_ons/image_capture.md)
+- [`Transform`](../../python/object_data/transform.md) 
+
+Command API:
+
+- [`create_avatar`](../../api/command_api.md#create_avatar)
+- [`set_first_person_avatar`](../../api/command_api.md#set_first_person_avatar)
+- [`teleport_avatar_to`](../../api/command_api.md#teleport_avatar_to)
+- [`rotate_avatar_to_euler_angles`](../../api/command_api.md#rotate_avatar_to_euler_angles)
+- [`set_field_of_view`](../../api/command_api.md#set_field_of_view)
+- [`set_render_order`](../../api/command_api.md#set_render_order)
+- [`send_avatars`](../../api/command_api.md#send_avatars)
+- [`send_mouse`](../../api/command_api.md#send_mouse)
+- [`send_mouse_raycast`](../../api/command_api.md#send_mouse_raycast)
+
+Output Data:
+
+- [`AvatarKinematic`](../../api/output_data.md#AvatarKinematic)
+- [`Mouse`](../../api/output_data.md#Mouse)
+- [`Raycast`](../../api/output_data.md#Raycast)

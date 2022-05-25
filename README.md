@@ -194,8 +194,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
 2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
-3. The `FirstPersonAvatar`
-4. Keyboard input
+3. [The `FirstPersonAvatar`](Documentation/lessons/keyboard_and_mouse/first_person_avatar.md)
+4. [Keyboard input](Documentation/lessons/keyboard_and_mouse/keyboard.md)
 
 ### 10.5 Embodied avatars
 

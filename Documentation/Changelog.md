@@ -22,14 +22,22 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `send_containment`       | Send `Overlap` output data from every container shape. |
 | `set_sub_object_id`      | Set the ID of a composite sub-object.                  |
 
+### Modified Commands
+
+| Command         | Modification                                                 |
+| --------------- | ------------------------------------------------------------ |
+| `create_avatar` | Removed: `A_Img_Caps`, `A_StickyMitten_Baby`, `A_StickyMitten_Adult`, `A_Nav_Mesh` |
+
 #### Removed Commands
 
-| Command                            | Reason                                                       |
-| ---------------------------------- | ------------------------------------------------------------ |
-| `set_proc_gen_floor_color`         | Deprecated in v1.9; use `set_floor_color` instead.           |
-| `set_proc_gen_floor_texture_scale` | Deprecated in v1.9; use `set_floor_texture_scale` instead.   |
-| `set_proc_gen_floor_material`      | Deprecated in v1.9; use `set_floor_material` instead.        |
-| `send_composite_objects`           | Deprecated in v1.9; use `send_static_composite_objects` and `send_dynamic_composite_objects` instead. |
+| Command                                                      | Reason                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `set_proc_gen_floor_color`                                   | Deprecated in v1.9; use `set_floor_color` instead.           |
+| `set_proc_gen_floor_texture_scale`                           | Deprecated in v1.9; use `set_floor_texture_scale` instead.   |
+| `set_proc_gen_floor_material`                                | Deprecated in v1.9; use `set_floor_material` instead.        |
+| `send_composite_objects`                                     | Deprecated in v1.9; use `send_static_composite_objects` and `send_dynamic_composite_objects` instead. |
+| `set_nav_mesh_avatar`<br>`set_nav_mesh_avatar_destination`   | Removed `A_Nav_Mesh`                                         |
+| `set_avatar_rigidbody_constraints`<br>`rotate_head_by`<br>`rotate_waist`<br>`set_sticky_mitten_profile`<br>`stop_arm_joint`<br>`bend_arm_joint_by`<br>`bend_arm_joint_to`<br>`adjust_joint_angular_drag_by`<br>`set_joint_angular_drag`<br>`adjust_joint_damper_by`<br>`adjust_joint_force_by`<br>`set_joint_damper`<br>`set_joint_force`<br>`put_down`<br>`set_stickiness`<br>`pick_up`<br>`pick_up_proximity` | Removed `A_StickyMitten_Baby` and `A_StickyMitten_Adult`     |
 
 ### Output Data
 
@@ -48,9 +56,11 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 #### Removed Output Data
 
-| Output Data        | Reason                                                       |
-| ------------------ | ------------------------------------------------------------ |
-| `CompositeObjects` | Deprecated in v1.9; use `StaticCompositeObjects` and `DynamicCompositeObjects` instead. |
+| Output Data                                                  | Reason                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `CompositeObjects`                                           | Deprecated in v1.9; use `StaticCompositeObjects` and `DynamicCompositeObjects` instead. |
+| `ArrivedAtNavMeshDestination`                                | Removed `A_Nav_Mesh`                                         |
+| `AvatarStickyMitten`<br>`AvatarStickyMittenSegmentationColors` | Removed `A_StickyMitten_Baby` and `A_StickyMitten_Adult`     |
 
 ### `tdw` module
 

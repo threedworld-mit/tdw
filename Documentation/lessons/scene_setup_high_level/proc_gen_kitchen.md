@@ -33,7 +33,7 @@ Result:
 
 ## How `ProcGenKitchen` works
 
-Broadly speaking, `ProcGenKitchen` adds [arrangements of objects](arrangements.md) to the scene. These arrangements are tried as quasi-atomic groups of objects, meaning that `ProcGenKitchen` will position and rotate all objects belonging to an arrangement as if they were a single object. Object arrangements are thus positioned in the room to create the kitchen. For example, `ProcGenKitchen` will create *lateral arrangements* of arrangements of kitchen counters, sinks, refrigerators, and stoves.
+Broadly speaking, `ProcGenKitchen` adds [arrangements of objects](arrangements.md) to the scene. These arrangements are quasi-atomic groups of objects, meaning that `ProcGenKitchen` will position and rotate all objects belonging to an arrangement as if they were a single object. Object arrangements are thus positioned in the room to create the kitchen. For example, `ProcGenKitchen` will create *lateral arrangements* of `Arrangement` groups, e.g. kitchen counters, sinks, stoves, etc.
 
 **[A detailed explanation of how `ProcGenKitchen` works can be found in the API documentation.](../../python/add_ons/proc_gen_kitchen.md)**  When reading the API documentation, be sure to click through to the documentation for each `Arrangement` because most of the parameters controlling scene generation will be found in `Arrangement` and its subclasses, not `ProcGenKitchen`. [For an overview of how  `Arrangements` work, read this.](arrangements.md)
 

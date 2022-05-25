@@ -15,14 +15,14 @@ class FirstPersonAvatar(Mouse):
     You can combine a `FirstPersonAvatar` with [`ImageCapture`](image_capture.md) to receive image data.
     """
 
-    def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+    def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: float = 0,
                  field_of_view: int = None, height: float = 1.6, camera_height: float = 1.6, radius: float = 0.5,
                  slope_limit: float = 15, detect_collisions: bool = True, move_speed: float = 1.5, look_speed: float = 50,
                  look_x_limit: float = 45, framerate: int = 60):
         """
         :param avatar_id: The ID of the avatar. If None, a random ID is generated.
         :param position: The initial position of the avatar. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param rotation: The initial rotation of the avatar as Euler angles.
+        :param rotation: The initial rotation of the avatar in degrees.
         :param field_of_view: If not None, set the field of view.
         :param height: The height of the avatar.
         :param camera_height: The height of the avatar's camera.
@@ -44,7 +44,7 @@ class FirstPersonAvatar(Mouse):
         # The initial position.
         self._initial_position: Optional[Dict[str, float]] = position
         # The initial rotation.
-        self._initial_rotation: Optional[Dict[str, float]] = rotation
+        self._initial_rotation: float = rotation
         # The field of view.
         self._field_of_view: Optional[float] = field_of_view
         self._height: float = height
@@ -78,9 +78,6 @@ class FirstPersonAvatar(Mouse):
                      "look_x_limit": self._look_x_limit},
                     {"$type": "set_target_framerate",
                      "framerate": self._framerate},
-                    {"$type": "set_pass_masks",
-                     "pass_masks": ["_img"],
-                     "avatar_id": self.avatar_id},
                     {"$type": "set_render_order",
                      "render_order": self._render_order,
                      "avatar_id": self.avatar_id},
@@ -94,7 +91,7 @@ class FirstPersonAvatar(Mouse):
         # Set the initial rotation.
         if self._initial_rotation is not None:
             commands.append({"$type": "rotate_avatar_to_euler_angles",
-                             "euler_angles": self._initial_rotation,
+                             "euler_angles": {"x": 0, "y": self._initial_rotation, "z": 0},
                              "avatar_id": self.avatar_id})
         # Set the field of view.
         if self._field_of_view is not None:
@@ -115,3 +112,18 @@ class FirstPersonAvatar(Mouse):
                     self.transform = Transform(position=np.array(avatar_kinematic.get_position()),
                                                rotation=np.array(avatar_kinematic.get_rotation()),
                                                forward=np.array(avatar_kinematic.get_forward()))
+
+    def reset(self, position: Dict[str, float] = None, rotation: float = 0, field_of_view: int = None) -> None:
+        """
+        Reset the avatar. Call this whenever the scene resets.
+
+        :param position: The initial position of the avatar. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The initial rotation of the avatar in degrees.
+        :param field_of_view: If not None, set the field of view.
+        """
+
+        self.commands.clear()
+        self.initialized = False
+        self._initial_position = position
+        self._initial_rotation = rotation
+        self._field_of_view = field_of_view

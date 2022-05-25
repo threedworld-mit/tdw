@@ -190,9 +190,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
 
-### 10.4 Keyboard controls
+### 10.4 Keyboard and Mouse
 
-1. [Keyboard controls](Documentation/lessons/keyboard/keyboard.md)
+1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
+2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
+3. The `FirstPersonAvatar`
+4. Keyboard input
 
 ### 10.5 Embodied avatars
 

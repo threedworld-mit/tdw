@@ -60,7 +60,7 @@ class Mouse(AddOn):
         """:field
         The (x, y) pixel position of the mouse on the screen.
         """
-        self.mouse_screen_position: np.array = np.array([0, 0])
+        self.screen_position: np.array = np.array([0, 0])
         """:field
         The (x, y) scroll wheel delta.
         """
@@ -68,7 +68,7 @@ class Mouse(AddOn):
         """:field
         The (x, y, z) world position of the mouse. The z depth coordinate is derived via a raycast.
         """
-        self.mouse_world_position: np.array = np.array([0, 0, 0])
+        self.world_position: np.array = np.array([0, 0, 0])
         """:field
         If True, the mouse is currently over an object.
         """
@@ -92,7 +92,7 @@ class Mouse(AddOn):
             if r_id == "mous":
                 mouse = Mous(resp[i])
                 # Get the screen position.
-                self.mouse_screen_position = mouse.get_position()
+                self.screen_position = mouse.get_position()
                 # Get the scroll wheel delta.
                 self.scroll_wheel_delta = mouse.get_scroll_delta()
                 # Get mouse button events.
@@ -109,6 +109,6 @@ class Mouse(AddOn):
             elif r_id == "rayc":
                 raycast = Raycast(resp[i])
                 if raycast.get_raycast_id() == self._raycast_id:
-                    self.mouse_world_position = np.array(raycast.get_point())
+                    self.world_position = np.array(raycast.get_point())
                     self.mouse_is_over_object = raycast.get_hit() and raycast.get_hit_object()
                     self.mouse_over_object_id = int(raycast.get_object_id())

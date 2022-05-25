@@ -12,7 +12,7 @@ A NavMesh is a static data object in a Unity scene. It must be *baked* in order 
 
 If you are using a [streamed scene](../core_concepts/scenes.md), there is already a baked NavMesh. 
 
-If you are using a [proc-gen room](../objects_and_scenes/proc_gen_room.md), you must bake the NavMesh by sending [`bake_nav_mesh`](../../api/command_api.md#bake_nav_mesh):
+If you are using a [proc-gen room](../scene_setup_low_level/proc_gen_room.md), you must bake the NavMesh by sending [`bake_nav_mesh`](../../api/command_api.md#bake_nav_mesh):
 
 ```python
 from tdw.tdw_utils import TDWUtils

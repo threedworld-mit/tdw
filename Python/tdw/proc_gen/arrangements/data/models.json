@@ -1,0 +1,371 @@
+{
+  "apple": [
+    "apple"
+  ],
+  "baking_sheet": [
+    "baking_sheet01",
+    "baking_sheet07"
+  ],
+  "banana": [
+    "b03_banana_01_high",
+    "b04_banana",
+    "banana_fix2"
+  ],
+  "basket": [
+    "basket_18inx18inx12iin_bamboo",
+    "basket_18inx18inx12iin_plastic_lattice",
+    "basket_18inx18inx12iin_wicker",
+    "basket_18inx18inx12iin_wood_mesh"
+  ],
+  "book": [
+    "cgaxis_models_65_06_vray",
+    "cgaxis_models_65_14_vray"
+  ],
+  "bottle": [
+    "b04_bottle-2014-2018",
+    "b04_bottle_2_max",
+    "b04_whiskeybottle"
+  ],
+  "bowl": [
+    "b04_bowl_smooth",
+    "int_kitchen_accessories_le_creuset_bowl_30cm",
+    "serving_bowl"
+  ],
+  "bread": [
+    "b03_loafbread",
+    "bread"
+  ],
+  "candle": [
+    "b04_candle_holder_metal",
+    "b05_candlestick_with_candles002_max2017_vray",
+    "candle",
+    "candlestick1"
+  ],
+  "carving_fork": [
+    "servingfork"
+  ],
+  "kitchen_chair": [
+    "chair_annabelle",
+    "chair_billiani_doll",
+    "chair_thonet_marshall",
+    "chair_willisau_riale",
+    "emeco_navy_chair",
+    "wood_chair",
+    "yellow_side_chair"
+  ],
+  "chocolate": [
+    "b05_snickers",
+    "chocolate_bar001"
+  ],
+  "coaster": [
+    "square_coaster_001_cork",
+    "square_coaster_001_marble",
+    "square_coaster_001_wood",
+    "square_coaster_rubber",
+    "square_coaster_stone",
+    "square_coaster_wood"
+  ],
+  "coffee_grinder": [
+    "b05_coffee_grinder",
+    "cafe_2010",
+    "cgaxis_models_61_17_vray",
+    "coffee_grinder",
+    "juicer"
+  ],
+  "coffee_maker": [
+    "coffee_001",
+    "coffee_005_13"
+  ],
+  "coin": [
+    "b06_circle",
+    "ripple"
+  ],
+  "cork": [
+    "basic_cork",
+    "basic_cork_2",
+    "bung",
+    "champagne_cork",
+    "cork_plastic",
+    "cork_plastic_black",
+    "tapered_cork",
+    "tapered_cork_w_hole"
+  ],
+  "cup": [
+    "coffeecup004_fix",
+    "coffeemug",
+    "cup"
+  ],
+  "dishwasher": [
+    "b04_db_apps_tech_08_03_composite",
+    "b05_db_apps_tech_08_09_composite",
+    "dishwasher_4_composite"
+  ],
+  "faucet": [
+    "12_06_001",
+    "b04_faucet1",
+    "b04_p22732_cc_cp_2013",
+    "b04_p25050_slc_ad_2013",
+    "b05_p24409_00_cp_2013",
+    "brizo_solna",
+    "kitchen_faucet",
+    "pixamoon_free_test_faucet_001_publish"
+  ],
+  "floor_lamp": [
+    "alma_floor_lamp",
+    "b04_11_02_041",
+    "b04_kevin_reilly_pattern_floor_lamp",
+    "bakerparisfloorlamp03",
+    "bastone_floor_lamp",
+    "duncan_floor_lamp_crate_and_barrel"
+  ],
+  "fork": [
+    "pcylinder222",
+    "vk0010_dinner_fork_subd0",
+    "vk0011_dessert_fork_subd0",
+    "vk0056_tablefork",
+    "vk0067_fishfork"
+  ],
+  "house_plant": [
+    "cgaxis_models_50_24_vray"
+  ],
+  "jar": [
+    "b04_3d_jar_180_gr_01",
+    "b04_honey_jar",
+    "b04_honey_jar_max_2014",
+    "b05_sugerjar_a001_2015"
+  ],
+  "jug": [
+    "b04_low",
+    "jug01",
+    "jug02",
+    "jug03",
+    "jug04",
+    "jug05",
+    "stelton_emma_tea_vacuum_jug"
+  ],
+  "kitchen_counter": [
+    "cabinet_24_single_door_wood_beech_honey_composite",
+    "cabinet_24_single_door_wood_oak_white_composite",
+    "cabinet_24_two_door_wood_beech_honey_composite",
+    "cabinet_24_two_door_wood_oak_white_composite",
+    "cabinet_36_two_door_wood_oak_white_composite",
+    "cabinet_36_two_door_wood_beech_honey_composite"
+  ],
+  "kitchen_table": [
+    "dining_room_table",
+    "enzo_industrial_loft_pine_metal_round_dining_table",
+    "sm_table_white",
+    "small_table_green_marble",
+    "b03_restoration_hardware_pedestal_salvaged_round_tables",
+    "b05_table_new"
+  ],
+  "knife": [
+    "vk0007_steak_knife",
+    "vk0014_dinner_knife_subd2",
+    "vk0055_tableknife"
+  ],
+  "ladle": [
+    "soup_ladle_black_02"
+  ],
+  "large_kitchen_table": [
+    "dining_room_table",
+    "enzo_industrial_loft_pine_metal_round_dining_table",
+    "b03_restoration_hardware_pedestal_salvaged_round_tables",
+    "b05_table_new"
+  ],
+  "microwave": [
+    "appliance-ge-profile-microwave_composite",
+    "appliance-ge-profile-microwave3_composite",
+    "b05_whirlpool_microwave_wmc30516as_v-ray",
+    "cgaxis_models_10_11_vray",
+    "vm_v5_070_composite",
+    "vray_062_composite"
+  ],
+  "orange": [
+    "b04_orange_00",
+    "orange"
+  ],
+  "painting": [
+    "elf_painting",
+    "its_about_time_painting",
+    "silver_frame_painting",
+    "framed_painting"
+  ],
+  "pan": [
+    "b03_696615_object001",
+    "measuring_pan",
+    "pan01",
+    "pan02",
+    "pan03",
+    "pan04",
+    "pan05",
+    "skillet_closed",
+    "skillet_open_no_lid"
+  ],
+  "pen": [
+    "b03_pen",
+    "b03_pen_01_001",
+    "b05_ball-point_pen-obj",
+    "b05_executive_pen"
+  ],
+  "pepper": [
+    "cylinder01",
+    "pepper",
+    "wooden_pepper_mill"
+  ],
+  "plate": [
+    "plate05",
+    "plate06",
+    "plate07"
+  ],
+  "pot": [
+    "b03_aluminum_pan",
+    "b03_cooking_pot_01_composite",
+    "pan1",
+    "pan3",
+    "pot",
+    "b03_aluminum_pan_composite",
+    "pot_composite"
+  ],
+  "radiator": [
+    "b03_radiator_alum_12",
+    "b05_castironradiator",
+    "radiator_pub_2015"
+  ],
+  "refrigerator": [
+    "b03_ka90ivi20r_2013__vray_composite",
+    "kenmore_refr_74049_composite",
+    "fridge_large_composite"
+  ],
+  "salt": [
+    "b05_cylinder001"
+  ],
+  "sandwich": [
+    "b03_burger"
+  ],
+  "scissors": [
+    "b04_scissors_2013",
+    "scissors"
+  ],
+  "shelf": [
+    "4ft_shelf_metal",
+    "4ft_wood_shelving",
+    "5ft_shelf_metal",
+    "5ft_wood_shelving",
+    "6ft_shelf_metal",
+    "6ft_wood_shelving"
+  ],
+  "side_table": [
+    "lg_table_marble_green",
+    "lg_table_white",
+    "side_table_wood"
+  ],
+  "sink": [
+    "sink_cabinet_unit_wood_beech_honey_chrome_composite",
+    "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
+    "sink_cabinet_unit_wood_oak_white_chrome_composite",
+    "sink_cabinet_unit_wood_oak_white_porcelain_composite"
+  ],
+  "soap_dispenser": [
+    "b05_bathroom_dispenser",
+    "b05_gold_glass_soap_dispenser(max)",
+    "blue_edition_liquid_soap02",
+    "filler_2010",
+    "kosmos_black_soap_dispenser",
+    "soap_dispenser_01"
+  ],
+  "spaghetti_server": [
+    "spagetti-server"
+  ],
+  "spatula": [
+    "b01_spatula",
+    "spatula",
+    "spatula2"
+  ],
+  "spoon": [
+    "vk0002_teaspoon",
+    "vk0054_teaspoon",
+    "vk0058_tablespoon",
+    "vk0060_dessertspoon",
+    "vk0078_fruitspoon"
+  ],
+  "stool": [
+    "fredericia_spine_stool_1",
+    "mater_high_stool_al_69",
+    "tolix_bar_stool"
+  ],
+  "stove": [
+    "gas_stove_composite"
+  ],
+  "suitcase": [
+    "duffle_bag",
+    "green_bag",
+    "kids_luggage_1",
+    "kids_luggage_2",
+    "white_shopping_bag",
+    "b04_backpack",
+    "backpack",
+    "hiker_backpack"
+  ],
+  "table": [
+    "dining_room_table",
+    "enzo_industrial_loft_pine_metal_round_dining_table",
+    "quatre_dining_table"
+  ],
+  "table_lamp": [
+    "kevin_reilly_pattern_table_lamp",
+    "lamp_02",
+    "spunlight_designermesh_lamp"
+  ],
+  "tea_tray": [
+    "teatray"
+  ],
+  "teakettle": [
+    "b03_morphy_2013__vray",
+    "kettle",
+    "kettle_2",
+    "tea_kettle_model",
+    "teakettle_01",
+    "v3_tf_04_01",
+    "vray_041",
+    "vray_043",
+    "vray_044"
+  ],
+  "toaster": [
+    "b05_delonghi_icona_toaster",
+    "b06_21_dualit_original_toaster_4x",
+    "russell_hobbs_2013__vray",
+    "toaster_002",
+    "toaster_b",
+    "vray_077_composite",
+    "vray_083_composite",
+    "vray_084_composite",
+    "vray_085_composite"
+  ],
+  "vase": [
+    "amphora_jar_vase",
+    "b04_new",
+    "vase_01",
+    "vase_02",
+    "vase_03",
+    "vase_05",
+    "vase_06",
+    "vase_laura_deko_vase_set"
+  ],
+  "wall_cabinet": [
+    "cabinet_24_wall_wood_beech_honey_composite",
+    "cabinet_24_wall_wood_oak_white_composite",
+    "cabinet_36_wall_wood_beech_honey_composite",
+    "cabinet_36_wall_wood_oak_white_composite"
+  ],
+  "whisk": [
+    "whisk"
+  ],
+  "wineglass": [
+    "b04_cantate_crystal_wine_glass",
+    "b04_wineglass",
+    "glass1",
+    "glass2",
+    "glass3"
+  ]
+}

@@ -225,7 +225,7 @@ c.communicate({"$type": "terminate"})
 
 ## Resetting a scene
 
-When you want to [reset a scene](../objects_and_scenes/reset_scene.md), be aware that you'll need to re-send `send_collisions` again.
+When you want to [reset a scene](../scene_setup_high_level/reset_scene.md), be aware that you'll need to re-send `send_collisions` again.
 
 If you're using a `CollisionManager`, set `collision_mananger.initialized = False` , which will make the manager re-initialize on the next frame.
 

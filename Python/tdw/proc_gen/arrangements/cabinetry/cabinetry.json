@@ -1,0 +1,36 @@
+{
+  "beech_honey":
+  {
+    "kitchen_counters": [
+      "cabinet_24_single_door_wood_beech_honey_composite",
+      "cabinet_24_two_door_wood_beech_honey_composite",
+      "cabinet_36_two_door_wood_beech_honey_composite"
+    ],
+    "name": "beech_honey",
+    "sinks": [
+      "sink_cabinet_unit_wood_beech_honey_chrome_composite",
+      "sink_cabinet_unit_wood_beech_honey_porcelain_composite"
+    ],
+    "wall_cabinets": [
+      "cabinet_24_wall_wood_beech_honey_composite",
+      "cabinet_36_wall_wood_beech_honey_composite"
+    ]
+  },
+  "oak_white":
+  {
+    "kitchen_counters": [
+      "cabinet_24_single_door_wood_oak_white_composite",
+      "cabinet_24_two_door_wood_oak_white_composite",
+      "cabinet_36_two_door_wood_oak_white_composite"
+    ],
+    "name": "oak_white",
+    "sinks": [
+      "sink_cabinet_unit_wood_oak_white_chrome_composite",
+      "sink_cabinet_unit_wood_oak_white_porcelain_composite"
+    ],
+    "wall_cabinets": [
+      "cabinet_24_wall_wood_oak_white_composite",
+      "cabinet_36_wall_wood_oak_white_composite"
+    ]
+  }
+}

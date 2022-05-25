@@ -2,7 +2,7 @@
 
 # Procedural Generation (the `ProcGenKitchen` add-on)
 
-The [`ProcGenKitchen`](../../python/add_ons/proc_gen_kitchen.md) add-on is currently TDW's only high-level proc-gen scene setup implement. In the near future, we intend to add proc-gen add-ons for other types of rooms e.g. a `ProcGenBedroom`.
+The [`ProcGenKitchen`](../../python/add_ons/proc_gen_kitchen.md) add-on is currently TDW's only high-level proc-gen scene setup implementation. In the near future, we intend to add proc-gen add-ons for other types of rooms e.g. a `ProcGenBedroom`.
 
 Create procedurally-generated kitchens by creating a `ProcGenKitchen`, adding it to `c.add_ons`, and then calling `proc_gen_kitchen.create()`:
 

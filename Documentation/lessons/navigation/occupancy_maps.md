@@ -12,7 +12,7 @@ An **occupancy map** is a two-dimensional numpy array representation of a scene 
 
 You can use an occupancy map for several purposes:
 
--  In [scene generation](../objects_and_scenes/overview.md), occupancy maps can be used to find free areas to place objects.
+-  In [scene generation](../scene_setup/overview.md), occupancy maps can be used to find free areas to place objects.
 - Occupancy maps can be used for pathfinding navigation.
 
 ## The `OccupancyMap` add-on
@@ -132,7 +132,7 @@ Output:
 
 ## Scene reset
 
-When [resetting a scene](../objects_and_scenes/reset_scene.md), call `occupancy_map.reset()`:
+When [resetting a scene](../scene_setup_high_level/reset_scene.md), call `occupancy_map.reset()`:
 
 ```python
 from tdw.controller import Controller

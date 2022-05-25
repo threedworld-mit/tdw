@@ -323,7 +323,7 @@ Roll sounds have not yet been implemented in PyImpact.
 
 ## Random number generator
 
-Impact sounds are varied using a random number generator. [For the sake of being able to recreate scenes](../objects_and_scenes/proc_gen_objects.md), it might be useful to use a shared random number generate by setting the `rng` parameter in the constructor:
+Impact sounds are varied using a random number generator. [For the sake of being able to recreate scenes](../scene_setup_high_level/reset_scene.md), it might be useful to use a shared random number generate by setting the `rng` parameter in the constructor:
 
 ```python
 import numpy as np

@@ -6,6 +6,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 ## v1.10.0
 
+### New Features
+
+- **Added `ProcGenKitchen`.** This add-on procedurally generates kitchen environments.
+
 ### Command API
 
 #### New Commands
@@ -50,6 +54,47 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 ### `tdw` module
 
+- **Added `ProcGenKitchen`.** Procedurally generate a kitchen in a new scene or an existing scene.
+- Added procedural generation "arrangement" data classes:
+  - `Arrangement` Abstract base class for procedurally-generated spatial arrangements of objects.
+  - `ArrangementAlongWall` Abstract class procedurally-generated spatial arrangements of objects that are positioned alongside a wall as part of a lateral arrangement.
+  - `ArrangementWithRootObject` Abstract class for procedurally-generated spatial arrangements of objects with a single root object.
+  - `Basket` A basket with random objects.
+  - `CupAndCoaster` A cup, which sometimes has a coaster underneath it.
+  - `Dishwasher` A dishwasher with a kitchen counter top with objects on it.
+  - `KitchenCabinet` Abstract class for kitchen counters, wall cabinets, and sinks. These all shared the same canonical rotation and height.
+  - `KitchenCounter` A kitchen counter can have objects on it and inside it.
+  - `KitchenCounterTop` A floating kitchen counter top along a wall.
+  - `KitchenTable` A kitchen table has chairs and table settings.
+  - `Microwave` A microwave can have objects on top of it and inside of it.
+  - `Painting` A painting hanging on the wall.
+  - `Plate` A kitchen plate that may have food on it.
+  - `Radiator` A radiator.
+  - `Refrigerator` A refrigerator.
+  - `Shelf` Shelving with objects on the shelves.
+  - `SideTable` A small side table with objects on it.
+  - `Sink` A sink can have objects on it and inside it.
+  - `StackOfPlates` A stack of plates.
+  - `Stool` A stool placed along a wall.
+  - `Stove` A stove with oven doors.
+  - `Suitcase` A suitcase placed along a wall.
+  - `TableAndChairs` Abstract base class for a table with chairs around it.
+  - `TableSetting` A table setting includes a plate, fork, knife, spoon, and sometimes a cup.
+  - `Void` An empty space along a wall.
+  - `WallCabinet` A wall cabinet hangs on the wall above a kitchen counter. It can have objects inside it.
+- Added procedural generation cabinetry data classes:
+  - `Cabinetry` A set of cabinetry models.
+  - `CabinetryType` Enum values describing a set of cabinetry.
+- Added scene data classes:
+  - `InteriorRegion` An interior region has bounds data and cached data regarding continuous walls and walls with windows.
+  - `Room` A room in an interior environment.
+- Adjusted existing scene data classes:
+  - New constructor parameters for `RegionBounds`
+  - Renamed `scene_bounds.rooms` to `scene_bounds.regions`
+- Added: `CardinalDirection` Enum for cardinal directions.
+- Added: `OrdinalDirection` Enum for ordinal directions.
+- Added: `TDWUtils.get_corners_from_wall(wall)` Returns the corners of the wall as a 2-element list of `OrdinalDirection`.
+- Added: `TDWUtils.get_direction_from_corner(corner, wall)` Given an corner an a wall, get the direction that a lateral arrangement will run along. 
 - `ContainerManager` now uses "container shapes" instead of trigger colliders. Trigger colliders are a built-in feature of Unity that detect non-physics collisions. They generate lots of event data, causing `ContainerManager` to be very slow in complex scenes. Now, `ContainerManager` sends "container shape" commands such as `add_box_container`, which define a 3D space without a trigger collider. Per-frame, container shapes will send `Overlap` data instead of `TriggerCollision` data. The result is that `ContainerManager` is much faster now.
   - `ContainerManager` sends container shape commands (see above) per object and then sends `send_containment` to request `Overlap` data per frame.
   - `ContainerManager` is no longer a subclass of `TriggerCollisionManager`, meaning that it no longer has the following fields: `trigger_ids` and `collisions`.
@@ -71,25 +116,66 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 - Fixed: `add_line_renderer` doesn't correctly add line points.
 
+### Example Controllers
+
+- Split `objects_and_scenes/` controllers into `scene_setup_high_level/` and `scene_setup_low_level/`
+- Removed `objects_and_scenes/proc_gen_objects.py` (obsolete)
+- Added: `scene_setup_high_level/cup_and_coaster.py`
+- Added: `scene_setup_high_level/kitchen_counter.py`
+- Added: `scene_setup_high_level/microwave.py`
+- Added: `scene_setup_high_level/plate.py`
+- Added: `scene_setup_high_level/proc_gen_kitchen_lighting.py`
+- Added: `scene_setup_high_level/proc_gen_kitchen_minimal.py`
+- Added: `scene_setup_high_level/proc_gen_kitchen_rng.py`
+
+### Model Library
+
+- Added to `models_special.json`: b04_db_apps_tech_08_03_counter_top, b05_db_apps_tech_08_09_counter_top, dishwasher_4_counter_top, floating_counter_top_counter_top
+
+### Scene Library
+
+- Added: `SceneRecord.rooms` Cached `Room` data per scene.
+
 ### Benchmark
 
 - Added kitchen benchmark to `PerformanceBenchmarkController` and `main.py`
 
 ### Documentation
 
+- The "Objects and Scenes" lesson has been split into two sections: "Scene Setup (High-Level APIs)" and "Scene Setup (Low-Level APIs)"
+
 #### New Documentation
 
-| Document                          | Description    |
-| --------------------------------- | -------------- |
-| `upgrade_guides/v1.9_to_v1.10.md` | Upgrade guide. |
+| Document                                                     | Description                                               |
+| ------------------------------------------------------------ | --------------------------------------------------------- |
+| `upgrade_guides/v1.9_to_v1.10.md`                            | Upgrade guide.                                            |
+| `scene_setup/overview.md`                                    | Overview of scene setups.                                 |
+| `scene_setup_high_level/overview.md`                         | Overview of TDW's high-level scene setup APIs.            |
+| `scene_setup_high_level/arrangements.md`                     | How `Arrangement` and its sub-classes work.               |
+| `scene_setup_high_level/proc_gen_kitchen.md`                 | Lesson document for the `ProcGenKitchen` add-on.          |
+| `scene_setup_high_level/rooms.md`                            | How room data works.                                      |
+| `scene_setup_low_level/overview.md`                          | Overview of TDW's lower-level scene setup APIs.           |
+| `python/add_ons/proc_gen_kitchen.md`                         | API documentation for `ProcGenKitchen`                    |
+| `python/proc_gen/arrangements/cabinetry/cabinetry.md`<br>`python/proc_gen/arrangements/cabinetry/cabinetry_type.md` | API documentation for cabinetry.                          |
+| `python/proc_gen/arrangements/arrangement.md`<br/>`python/proc_gen/arrangements/arrangement_along_wall.md`<br/>`python/proc_gen/arrangements/arrangement_with_root_object.md`<br/>`python/proc_gen/arrangements/basket.md`<br/>`python/proc_gen/arrangements/cup_and_coaster.md`<br/>`python/proc_gen/arrangements/dishwasher.md`<br/>`python/proc_gen/arrangements/kitchen_cabinet.md`<br/>`python/proc_gen/arrangements/kitchen_counter.md`<br/>`python/proc_gen/arrangements/kitchen_counter_top.md`<br/>`python/proc_gen/arrangements/kitchen_table.md`<br/>`python/proc_gen/arrangements/microwave.md`<br/>`python/proc_gen/arrangements/painting.md`<br/>`python/proc_gen/arrangements/plate.md`<br/>`python/proc_gen/arrangements/radiator.md`<br/>`python/proc_gen/arrangements/refrigerator.md`<br/>`python/proc_gen/arrangements/shelf.md`<br/>`python/proc_gen/arrangements/side_table.md`<br/>`python/proc_gen/arrangements/sink.md`<br/>`python/proc_gen/arrangements/stack_of_plates.md`<br/>`python/proc_gen/arrangements/stool.md`<br/>`python/proc_gen/arrangements/stove.md`<br/>`python/proc_gen/arrangements/suitcase.md`<br/>`python/proc_gen/arrangements/table_and_chairs.md`<br/>`python/proc_gen/arrangements/table_setting.md`<br/>`python/proc_gen/arrangements/void.md`<br/>`python/proc_gen/arrangements/wall_cabinet.md` | API documentation for `Arrangement` and its data classes. |
+| `python/cardinal_direction.md`                               | API documentation for `CardinalDirection`.                |
+| `python/ordinal_direction.md`                                | API documentation for `OrdinalDirection`.                 |
 
 #### Modified Documentation
 
-| Document                                 | Modification                                                 |
-| ---------------------------------------- | ------------------------------------------------------------ |
-| `lessons/semantic_states/containment.md` | Rewrote most of the document and replaced some images in order to describe container shapes. |
-| `python/container_data/`                 | Removed old API documents (e.g. `container_collider_tag.md`) and added new API documents (e.g. `container_tag.md`). |
-| `benchmark/benchmark.md`                 | Added explanation and FPS of kitchen benchmark.              |
+| Document                                                     | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/semantic_states/containment.md`                     | Rewrote most of the document and replaced some images in order to describe container shapes. |
+| `python/container_data/`                                     | Removed old API documents (e.g. `container_collider_tag.md`) and added new API documents (e.g. `container_tag.md`). |
+| `benchmark/benchmark.md`                                     | Added explanation and FPS of kitchen benchmark.              |
+| `objects_and_scenes/floorplans.md`<br>`objects_and_scenes/reset_scene.md` | Moved to `scene_setup_high_level/`                           |
+| `objects_and_scenes/bounds.md`<br>`objects_and_scenes/materials_textures_colors.md`<br>`objects_and_scenes/proc_gen_room.md`<br>`objects_and_scenes/units.md` | Moved to `scene_setup_low_level/`                            |
+
+### Removed Documentation
+
+| Document                                 | Reason    |
+| ---------------------------------------- | --------- |
+| `objects_and_scenes/proc_gen_objects.md` | Obsolete. |
 
 # v1.9.x
 

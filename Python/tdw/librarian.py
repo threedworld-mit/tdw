@@ -5,6 +5,8 @@ from pathlib import Path
 import platform
 from secrets import token_hex
 from tdw.collision_data.trigger_collider_shape import TriggerColliderShape
+from tdw.scene_data.room import Room
+from tdw.scene_data.interior_region import InteriorRegion
 from tdw.container_data.container_tag import ContainerTag
 from tdw.container_data.container_shape import ContainerShape
 from tdw.container_data.box_container import BoxContainer
@@ -24,6 +26,11 @@ class _Encoder(json.JSONEncoder):
             return obj.name
         elif isinstance(obj, BoxContainer) or isinstance(obj, SphereContainer) or isinstance(obj, CylinderContainer):
             return obj.__dict__
+        elif isinstance(obj, Room):
+            return obj.__dict__
+        elif isinstance(obj, InteriorRegion):
+            return {"region_id": obj.region_id, "center": list(obj.center), "bounds": list(obj.bounds),
+                    "non_continuous_walls": obj.non_continuous_walls, "walls_with_windows": obj.walls_with_windows}
         else:
             return super(_Encoder, self).default(obj)
 
@@ -108,27 +115,28 @@ class ModelRecord(_Record):
             else:
                 self.volume: float = data["volume"]
             self.container_shapes: List[ContainerShape] = list()
-            for container in data["container_shapes"]:
-                shape = TriggerColliderShape[container["shape"]]
-                tag = ContainerTag[container["tag"]]
-                if shape == TriggerColliderShape.box:
-                    obj = BoxContainer(tag=tag,
-                                       position=container["position"],
-                                       half_extents=container["half_extents"],
-                                       rotation=container["rotation"])
-                elif shape == TriggerColliderShape.cylinder:
-                    obj = CylinderContainer(tag=tag,
-                                            position=container["position"],
-                                            radius=container["radius"],
-                                            height=container["height"],
-                                            rotation=container["rotation"])
-                elif shape == TriggerColliderShape.sphere:
-                    obj = SphereContainer(tag=tag,
-                                          position=container["position"],
-                                          radius=container["radius"])
-                else:
-                    raise Exception(shape)
-                self.container_shapes.append(obj)
+            if "container_shapes" in data:
+                for container in data["container_shapes"]:
+                    shape = TriggerColliderShape[container["shape"]]
+                    tag = ContainerTag[container["tag"]]
+                    if shape == TriggerColliderShape.box:
+                        obj = BoxContainer(tag=tag,
+                                           position=container["position"],
+                                           half_extents=container["half_extents"],
+                                           rotation=container["rotation"])
+                    elif shape == TriggerColliderShape.cylinder:
+                        obj = CylinderContainer(tag=tag,
+                                                position=container["position"],
+                                                radius=container["radius"],
+                                                height=container["height"],
+                                                rotation=container["rotation"])
+                    elif shape == TriggerColliderShape.sphere:
+                        obj = SphereContainer(tag=tag,
+                                              position=container["position"],
+                                              radius=container["radius"])
+                    else:
+                        raise Exception(shape)
+                    self.container_shapes.append(obj)
 
 
 class MaterialRecord(_Record):
@@ -153,6 +161,7 @@ class SceneRecord(_Record):
     def __init__(self, data: Optional[dict] = None):
         super().__init__(data)
 
+        self.rooms: List[Room] = list()
         if data is None:
             self.description: str = ""
             self.hdri: bool = False
@@ -161,6 +170,20 @@ class SceneRecord(_Record):
             self.description: str = data["description"]
             self.hdri: bool = data["hdri"]
             self.location: str = data["location"]
+            for room_data in data["rooms"]:
+                main_region = InteriorRegion(region_id=room_data["main_region"]["region_id"],
+                                             center=tuple(room_data["main_region"]["center"]),
+                                             bounds=tuple(room_data["main_region"]["bounds"]),
+                                             non_continuous_walls=room_data["main_region"]["non_continuous_walls"],
+                                             walls_with_windows=room_data["main_region"]["walls_with_windows"])
+                alcoves = []
+                for alcove_data in room_data["alcoves"]:
+                    alcoves.append(InteriorRegion(region_id=alcove_data["region_id"],
+                                                  center=tuple(alcove_data["center"]),
+                                                  bounds=tuple(alcove_data["bounds"]),
+                                                  non_continuous_walls=alcove_data["non_continuous_walls"],
+                                                  walls_with_windows=alcove_data["walls_with_windows"]))
+                self.rooms.append(Room(main_region=main_region, alcoves=alcoves))
 
 
 class HDRISkyboxRecord(_Record):

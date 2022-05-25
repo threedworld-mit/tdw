@@ -46,7 +46,7 @@ The `Obi` add-on does a lot of automated initialization and setup. The other doc
 
 ## Reset Obi
 
-Whenever you [reset a scene](../objects_and_scenes/reset_scene.md), call `obi.reset()`. This will reinitialize Obi and tell the add-on to search for new objects in the scene.
+Whenever you [reset a scene](../scene_setup_high_level/reset_scene.md), call `obi.reset()`. This will reinitialize Obi and tell the add-on to search for new objects in the scene.
 
 ## Limitations
 

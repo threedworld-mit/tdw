@@ -1,0 +1,32 @@
+{
+  "kitchen_counter": [
+    "bowl",
+    "bottle",
+    "coffee_grinder",
+    "coffee_maker",
+    "jar",
+    "pot",
+    "tea_tray",
+    "teakettle"
+  ],
+  "sink": [
+    "bottle",
+    "jar",
+    "scissors",
+    "soap_dispenser"
+  ],
+  "stove": [
+    "baking_sheet",
+    "pan",
+    "pot"
+  ],
+  "wall_cabinet": [
+    "bowl",
+    "bottle",
+    "cup",
+    "jar",
+    "jug",
+    "vase",
+    "wineglass"
+  ]
+}

@@ -1,489 +1,965 @@
 {
-    "description": "Streamed scenes.",
-    "records": {
-        "abandoned_factory": {
-            "description": "\"An abandoned shell of a factory \"\"mini-scene\"\".\"",
-            "hdri": true,
-            "location": "exterior",
-            "name": "abandoned_factory",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/abandoned_factory",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/abandoned_factory",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/abandoned_factory"
+  "description": "Streamed scenes.",
+  "records": {
+    "abandoned_factory": {
+      "description": "\"An abandoned shell of a factory \"\"mini-scene\"\".\"",
+      "hdri": true,
+      "location": "exterior",
+      "name": "abandoned_factory",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/abandoned_factory",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/abandoned_factory",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/abandoned_factory"
+      }
+    },
+    "archviz_house": {
+      "description": "A very fancy room.",
+      "hdri": true,
+      "location": "interior",
+      "name": "archviz_house",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/archviz_house",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/archviz_house",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/archviz_house"
+      }
+    },
+    "box_room_2018": {
+      "description": "A very simple room with skylights.",
+      "hdri": true,
+      "location": "interior",
+      "name": "box_room_2018",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/box_room_2018",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/box_room_2018",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/box_room_2018"
+      }
+    },
+    "building_site": {
+      "description": "\"An derelict building site \"\"mini-scene\"\".\"",
+      "hdri": true,
+      "location": "exterior",
+      "name": "building_site",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/building_site",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/building_site",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/building_site"
+      }
+    },
+    "dead_grotto": {
+      "description": "An barren exterior space; rocky with tree stumps, logs, water puddles and some ruins.",
+      "hdri": true,
+      "location": "exterior",
+      "name": "dead_grotto",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/dead_grotto",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/dead_grotto",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/dead_grotto"
+      }
+    },
+    "downtown_alleys": {
+      "description": "An urban downtown environment with alleys.",
+      "hdri": false,
+      "location": "exterior",
+      "name": "downtown_alleys",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/downtown_alleys",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/downtown_alleys",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/downtown_alleys"
+      }
+    },
+    "empty_scene": {
+      "description": "\"ModelScreenShotter scene \"\"mini-scene\"\".\"",
+      "hdri": false,
+      "location": "interior",
+      "name": "empty_scene",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/empty_scene",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/empty_scene",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/empty_scene"
+      }
+    },
+    "floorplan_1a": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_1a",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_1a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_1a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_1a"
+      }
+    },
+    "floorplan_1b": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_1b",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_1b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_1b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_1b"
+      }
+    },
+    "floorplan_1c": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_1c",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_1c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_1c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_1c"
+      }
+    },
+    "floorplan_2a": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_2a",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_2a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_2a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_2a"
+      }
+    },
+    "floorplan_2b": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_2b",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_2b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_2b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_2b"
+      }
+    },
+    "floorplan_2c": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_2c",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_2c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_2c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_2c"
+      }
+    },
+    "floorplan_3a": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_3a",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_3a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_3a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_3a"
+      }
+    },
+    "floorplan_3b": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_3b",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_3b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_3b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_3b"
+      }
+    },
+    "floorplan_3c": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_3c",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_3c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_3c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_3c"
+      }
+    },
+    "floorplan_4a": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_4a",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_4a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_4a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_4a"
+      }
+    },
+    "floorplan_4b": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_4b",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_4b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_4b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_4b"
+      }
+    },
+    "floorplan_4c": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_4c",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_4c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_4c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_4c"
+      }
+    },
+    "floorplan_5a": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_5a",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_5a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_5a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_5a"
+      }
+    },
+    "floorplan_5b": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_5b",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_5b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_5b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_5b"
+      }
+    },
+    "floorplan_5c": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_5c",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_5c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_5c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_5c"
+      }
+    },
+    "iceland_beach": {
+      "description": "\"A rocky beach surrounded by rocks\"\"mini-scene\"\".\"",
+      "hdri": true,
+      "location": "exterior",
+      "name": "iceland_beach",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/iceland_beach",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/iceland_beach",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/iceland_beach"
+      }
+    },
+    "lava_field": {
+      "description": "\"A barren volcanic landscape \"\"mini-scene\"\".\"",
+      "hdri": true,
+      "location": "exterior",
+      "name": "lava_field",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/lava_field",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/lava_field",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/lava_field"
+      }
+    },
+    "mm_craftroom_1a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_1a",
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4903459548950195,
+                2.892470359802246,
+                3.3942010402679443
+              ],
+              "center": [
+                2.938474178314209,
+                0,
+                -0.029111266136169434
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 0,
+              "walls_with_windows": 2
             }
-        },
-        "archviz_house": {
-            "description": "A very fancy room.",
-            "hdri": true,
-            "location": "interior",
-            "name": "archviz_house",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/archviz_house",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/archviz_house",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/archviz_house"
-            }
-        },
-        "box_room_2018": {
-            "description": "A very simple room with skylights.",
-            "hdri": true,
-            "location": "interior",
-            "name": "box_room_2018",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/box_room_2018",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/box_room_2018",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/box_room_2018"
-            }
-        },
-        "building_site": {
-            "description": "\"An derelict building site \"\"mini-scene\"\".\"",
-            "hdri": true,
-            "location": "exterior",
-            "name": "building_site",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/building_site",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/building_site",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/building_site"
-            }
-        },
-        "dead_grotto": {
-            "description": "An barren exterior space; rocky with tree stumps, logs, water puddles and some ruins.",
-            "hdri": true,
-            "location": "exterior",
-            "name": "dead_grotto",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/dead_grotto",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/dead_grotto",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/dead_grotto"
-            }
-        },
-        "downtown_alleys": {
-            "description": "An urban downtown environment with alleys.",
-            "hdri": false,
-            "location": "exterior",
-            "name": "downtown_alleys",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/downtown_alleys",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/downtown_alleys",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/downtown_alleys"
-            }
-        },
-        "empty_scene": {
-            "description": "\"ModelScreenShotter scene \"\"mini-scene\"\".\"",
-            "hdri": false,
-            "location": "interior",
-            "name": "empty_scene",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/empty_scene",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/empty_scene",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/empty_scene"
-            }
-        },
-        "floorplan_1a": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_1a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_1a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_1a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_1a"
-            }
-        },
-        "floorplan_1b": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_1b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_1b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_1b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_1b"
-            }
-        },
-        "floorplan_1c": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_1c",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_1c",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_1c",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_1c"
-            }
-        },
-        "floorplan_2a": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_2a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_2a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_2a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_2a"
-            }
-        },
-        "floorplan_2b": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_2b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_2b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_2b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_2b"
-            }
-        },
-        "floorplan_2c": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_2c",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_2c",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_2c",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_2c"
-            }
-        },
-        "floorplan_3a": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_3a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_3a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_3a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_3a"
-            }
-        },
-        "floorplan_3b": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_3b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_3b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_3b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_3b"
-            }
-        },
-        "floorplan_3c": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_3c",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_3c",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_3c",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_3c"
-            }
-        },
-        "floorplan_4a": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_4a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_4a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_4a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_4a"
-            }
-        },
-        "floorplan_4b": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_4b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_4b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_4b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_4b"
-            }
-        },
-        "floorplan_4c": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_4c",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_4c",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_4c",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_4c"
-            }
-        },
-        "floorplan_5a": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_5a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_5a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_5a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_5a"
-            }
-        },
-        "floorplan_5b": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_5b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_5b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_5b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_5b"
-            }
-        },
-        "floorplan_5c": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_5c",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_5c",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_5c",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_5c"
-            }
-        },
-        "iceland_beach": {
-            "description": "\"A rocky beach surrounded by rocks\"\"mini-scene\"\".\"",
-            "hdri": true,
-            "location": "exterior",
-            "name": "iceland_beach",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/iceland_beach",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/iceland_beach",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/iceland_beach"
-            }
-        },
-        "lava_field": {
-            "description": "\"A barren volcanic landscape \"\"mini-scene\"\".\"",
-            "hdri": true,
-            "location": "exterior",
-            "name": "lava_field",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/lava_field",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/lava_field",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/lava_field"
-            }
-        },
-        "mm_craftroom_1a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_1a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_1a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_1a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_1a"
-            }
-        },
-        "mm_craftroom_1b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_1b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_1b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_1b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_1b"
-            }
-        },
-        "mm_craftroom_2a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_2a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_2a"
-            }
-        },
-        "mm_craftroom_2b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_2b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_2b"
-            }
-        },
-        "mm_craftroom_3a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_3a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_3a"
-            }
-        },
-        "mm_craftroom_3b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_3b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_3b"
-            }
-        },
-        "mm_craftroom_4a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_4a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_4a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_4a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_4a"
-            }
-        },
-        "mm_craftroom_4b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_4b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_4b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_4b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_4b"
-            }
-        },
-        "mm_kitchen_1a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_1a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1a"
-            }
-        },
-        "mm_kitchen_1b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_1b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1b"
-            }
-        },
-        "mm_kitchen_2a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_2a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2a"
-            }
-        },
-        "mm_kitchen_2b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_2b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2b"
-            }
-        },
-        "mm_kitchen_3a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_3a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3a"
-            }
-        },
-        "mm_kitchen_3b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_3b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3b"
-            }
-        },
-        "mm_kitchen_4a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_4a",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4a"
-            }
-        },
-        "mm_kitchen_4b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_4b",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4b"
-            }
-        },
-        "monkey_physics_room": {
-            "description": "A custom lab-style room for the Monkey Physics project.",
-            "hdri": false,
-            "location": "interior",
-            "name": "monkey_physics_room",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/monkey_physics_room",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/monkey_physics_room",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/monkey_physics_room"
-            }
-        },
-        "ruin": {
-            "description": "\"A castle ruin \"\"mini-scene\"\".\"",
-            "hdri": true,
-            "location": "exterior",
-            "name": "ruin",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/ruin",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/ruin",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/ruin"
-            }
-        },
-        "suburb_scene_2018": {
-            "description": "A suburban scene using real-time lighting.",
-            "hdri": false,
-            "location": "exterior",
-            "name": "suburb_scene_2018",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/suburb_scene_2018",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/suburb_scene_2018",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/suburb_scene_2018"
-            }
-        },
-        "tdw_room": {
-            "description": "An interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "tdw_room",
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/tdw_room",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/tdw_room",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/tdw_room"
-            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.191462516784668,
+              2.892470359802246,
+              6.891343355178833
+            ],
+            "center": [
+              -0.4206228256225586,
+              0,
+              -0.002591252326965332
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 1,
+            "walls_with_windows": 4
+          }
         }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_1a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_1a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_1a"
+      }
+    },
+    "mm_craftroom_1b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_1b",
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4903459548950195,
+                2.892470359802246,
+                3.3942010402679443
+              ],
+              "center": [
+                2.938474178314209,
+                0,
+                -0.029111266136169434
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 0,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.191462516784668,
+              2.892470359802246,
+              6.891343355178833
+            ],
+            "center": [
+              -0.4206228256225586,
+              0,
+              -0.002591252326965332
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 1,
+            "walls_with_windows": 4
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_1b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_1b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_1b"
+      }
+    },
+    "mm_craftroom_2a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_2a",
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.7169129848480225,
+              2.892470359802246,
+              5.927810192108154
+            ],
+            "center": [
+              -1.1920928955078125e-07,
+              0,
+              -0.008186578750610352
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_2a"
+      }
+    },
+    "mm_craftroom_2b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_2b",
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.7169129848480225,
+              2.892470359802246,
+              5.927810192108154
+            ],
+            "center": [
+              -1.1920928955078125e-07,
+              0,
+              -0.008186578750610352
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_2b"
+      }
+    },
+    "mm_craftroom_3a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_3a",
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.307473659515381,
+              2.892470359802246,
+              6.903393745422363
+            ],
+            "center": [
+              -0.0024938583374023438,
+              0,
+              -0.005679130554199219
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_3a"
+      }
+    },
+    "mm_craftroom_3b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_3b",
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.307473659515381,
+              2.892470359802246,
+              6.903393745422363
+            ],
+            "center": [
+              -0.0024938583374023438,
+              0,
+              -0.005679130554199219
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_3b"
+      }
+    },
+    "mm_craftroom_4a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_4a",
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                6.699999570846558,
+                2.892470359802246,
+                2.153679847717285
+              ],
+              "center": [
+                1.1920928955078125e-07,
+                0,
+                2.3008899688720703
+              ],
+              "non_continuous_walls": 5,
+              "region_id": 0,
+              "walls_with_windows": 0
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              3.6999998092651367,
+              2.892470359802246,
+              4.576668739318848
+            ],
+            "center": [
+              1.1920928955078125e-07,
+              0,
+              -1.0616655349731445
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 1,
+            "walls_with_windows": 14
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_4a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_4a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_4a"
+      }
+    },
+    "mm_craftroom_4b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_4b",
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                6.699999570846558,
+                2.892470359802246,
+                2.153679847717285
+              ],
+              "center": [
+                1.1920928955078125e-07,
+                0,
+                2.3008899688720703
+              ],
+              "non_continuous_walls": 5,
+              "region_id": 0,
+              "walls_with_windows": 0
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              3.6999998092651367,
+              2.892470359802246,
+              4.576668739318848
+            ],
+            "center": [
+              1.1920928955078125e-07,
+              0,
+              -1.0616655349731445
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 1,
+            "walls_with_windows": 14
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_4b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_4b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_4b"
+      }
+    },
+    "mm_kitchen_1a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_1a",
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4903459548950195,
+                2.892470359802246,
+                3.3942010402679443
+              ],
+              "center": [
+                2.938474178314209,
+                0,
+                -0.029111266136169434
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 0,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.191462516784668,
+              2.892470359802246,
+              6.891343355178833
+            ],
+            "center": [
+              -0.4206228256225586,
+              0,
+              -0.002591252326965332
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 1,
+            "walls_with_windows": 4
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1a"
+      }
+    },
+    "mm_kitchen_1b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_1b",
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4903459548950195,
+                2.892470359802246,
+                3.3942010402679443
+              ],
+              "center": [
+                2.938474178314209,
+                0,
+                -0.029111266136169434
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 0,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.191462516784668,
+              2.892470359802246,
+              6.891343355178833
+            ],
+            "center": [
+              -0.4206228256225586,
+              0,
+              -0.002591252326965332
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 1,
+            "walls_with_windows": 4
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1b"
+      }
+    },
+    "mm_kitchen_2a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_2a",
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.7169129848480225,
+              2.892470359802246,
+              5.927810192108154
+            ],
+            "center": [
+              -1.1920928955078125e-07,
+              0,
+              -0.008186578750610352
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2a"
+      }
+    },
+    "mm_kitchen_2b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_2b",
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.7169129848480225,
+              2.892470359802246,
+              5.927810192108154
+            ],
+            "center": [
+              -1.1920928955078125e-07,
+              0,
+              -0.008186578750610352
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2b"
+      }
+    },
+    "mm_kitchen_3a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_3a",
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.307473659515381,
+              2.892470359802246,
+              6.903393745422363
+            ],
+            "center": [
+              -0.0024938583374023438,
+              0,
+              -0.005679130554199219
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3a"
+      }
+    },
+    "mm_kitchen_3b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_3b",
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.307473659515381,
+              2.892470359802246,
+              6.903393745422363
+            ],
+            "center": [
+              -0.0024938583374023438,
+              0,
+              -0.005679130554199219
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3b"
+      }
+    },
+    "mm_kitchen_4a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_4a",
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                6.699999570846558,
+                2.892470359802246,
+                2.153679847717285
+              ],
+              "center": [
+                1.1920928955078125e-07,
+                0,
+                2.3008899688720703
+              ],
+              "non_continuous_walls": 5,
+              "region_id": 0,
+              "walls_with_windows": 0
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              3.6999998092651367,
+              2.892470359802246,
+              4.576668739318848
+            ],
+            "center": [
+              1.1920928955078125e-07,
+              0,
+              -1.0616655349731445
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 1,
+            "walls_with_windows": 14
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4a"
+      }
+    },
+    "mm_kitchen_4b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_4b",
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                6.699999570846558,
+                2.892470359802246,
+                2.153679847717285
+              ],
+              "center": [
+                1.1920928955078125e-07,
+                0,
+                2.3008899688720703
+              ],
+              "non_continuous_walls": 5,
+              "region_id": 0,
+              "walls_with_windows": 0
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              3.6999998092651367,
+              2.892470359802246,
+              4.576668739318848
+            ],
+            "center": [
+              1.1920928955078125e-07,
+              0,
+              -1.0616655349731445
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 1,
+            "walls_with_windows": 14
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4b"
+      }
+    },
+    "monkey_physics_room": {
+      "description": "A custom lab-style room for the Monkey Physics project.",
+      "hdri": false,
+      "location": "interior",
+      "name": "monkey_physics_room",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/monkey_physics_room",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/monkey_physics_room",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/monkey_physics_room"
+      }
+    },
+    "ruin": {
+      "description": "\"A castle ruin \"\"mini-scene\"\".\"",
+      "hdri": true,
+      "location": "exterior",
+      "name": "ruin",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/ruin",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/ruin",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/ruin"
+      }
+    },
+    "suburb_scene_2018": {
+      "description": "A suburban scene using real-time lighting.",
+      "hdri": false,
+      "location": "exterior",
+      "name": "suburb_scene_2018",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/suburb_scene_2018",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/suburb_scene_2018",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/suburb_scene_2018"
+      }
+    },
+    "tdw_room": {
+      "description": "An interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "tdw_room",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/tdw_room",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/tdw_room",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/tdw_room"
+      }
     }
+  }
 }

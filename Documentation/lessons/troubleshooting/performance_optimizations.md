@@ -44,7 +44,7 @@ If you don't need image data at all, consider not adding an [avatar](../core_con
 
 - [`IdPassSegmentationColors` can be can be faster than the `_id` image pass.](../visual_perception/id.md) 
 - [`Occlusion` can be faster than two `_mask` passes](../visual_perception/occlusion.md)
-- You can use other output data such as [`Bounds`](../objects_and_scenes/bounds.md) to infer much of the same information you'd get from image capture.
+- You can use other output data such as [`Bounds`](../scene_setup_low_level/bounds.md) to infer much of the same information you'd get from image capture.
 
 ## 4. Reduce other output data
 

@@ -84,10 +84,10 @@ class OculusTouch(VR):
                     # Set the collision detection modes of the rig's hands.
                     if self._discrete_collision_detection_mode:
                         self.commands.extend([{"$type": "set_object_collision_detection_mode",
-                                               "id": self.vr_node_ids[1],
+                                               "id": int(self.vr_node_ids[1]),
                                                "mode": "discrete"},
                                               {"$type": "set_object_collision_detection_mode",
-                                               "id": self.vr_node_ids[2],
+                                               "id": int(self.vr_node_ids[2]),
                                                "mode": "discrete"}])
                     break
             for i in range(len(resp) - 1):
@@ -100,11 +100,11 @@ class OculusTouch(VR):
                             # Make all non-kinematic objects graspable unless they are in `self._non_graspable`.
                             if object_id not in self._non_graspable:
                                 self.commands.append({"$type": "set_vr_graspable",
-                                                      "id": object_id})
+                                                      "id": int(object_id)})
                             # Set "discrete" collision detection mode for all non-kinematic objects.
                             if self._discrete_collision_detection_mode:
                                 self.commands.append({"$type": "set_object_collision_detection_mode",
-                                                      "id": object_id,
+                                                      "id": int(object_id),
                                                       "mode": "discrete"})
                     break
         super().on_send(resp=resp)

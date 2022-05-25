@@ -675,3 +675,32 @@ If any of the parameters of this function are left as `None`, the default remote
 | humanoid_library |  Union[str, Path] | None | The absolute path to a local humanoid library file. |
 | humanoid_animation_library |  Union[str, Path] | None | The absolute path to a local humanoid animation library file. |
 
+#### get_corners_from_wall
+
+**`TDWUtils.get_corners_from_wall(wall)`**
+
+_(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](cardinal_direction.md). |
+
+_Returns:_  The corners of the wall as a 2-element list of [`OrdinalDirection`](ordinal_direction.md).
+
+#### get_direction_from_corner
+
+**`TDWUtils.get_direction_from_corner(corner, wall)`**
+
+_(Static)_
+
+Given an corner an a wall, get the direction that a lateral arrangement will run along.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| corner |  OrdinalDirection |  | The corner as an [`OrdinalDirection`](ordinal_direction.md). |
+| wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](cardinal_direction.md). |
+
+_Returns:_  Tuple: direction, wall
+

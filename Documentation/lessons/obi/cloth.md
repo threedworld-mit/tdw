@@ -9,7 +9,7 @@ In TDW's implementation of Obi, there are two types of cloth:
 
 ## Sheets
 
-To add an Obi cloth sheet to the scene, call `obi.create_cloth_sheet()`, which sends two commands: [`add_material`](../../api/command_api.md#add_material) (downloads and loads into memory the cloth sheet's [visual material](../objects_and_scenes/materials_textures_colors.md)) and [`create_obi_cloth_sheet`](../../api/command_api.md#create_obi_cloth_sheet).
+To add an Obi cloth sheet to the scene, call `obi.create_cloth_sheet()`, which sends two commands: [`add_material`](../../api/command_api.md#add_material) (downloads and loads into memory the cloth sheet's [visual material](../scene_setup_low_level/materials_textures_colors.md)) and [`create_obi_cloth_sheet`](../../api/command_api.md#create_obi_cloth_sheet).
 
 This is a minimal example of how to create a cloth sheet:
 
@@ -191,7 +191,7 @@ Result:
 
 ## Cloth volumes
 
-To add a cloth volume to the scene, call `obi.create_cloth_volume()`, which sends two commands: [`add_material`](../../api/command_api.md#add_material) (downloads and loads into memory the cloth volume's [visual material](../objects_and_scenes/materials_textures_colors.md)) and [`create_obi_cloth_volume`](../../api/command_api.md#create_obi_cloth_volume).
+To add a cloth volume to the scene, call `obi.create_cloth_volume()`, which sends two commands: [`add_material`](../../api/command_api.md#add_material) (downloads and loads into memory the cloth volume's [visual material](../scene_setup_low_level/materials_textures_colors.md)) and [`create_obi_cloth_volume`](../../api/command_api.md#create_obi_cloth_volume).
 
 This is a minimal example of how to create a cloth volume:
 

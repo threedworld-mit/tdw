@@ -43,16 +43,17 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 #### Modified Output Data
 
-| Output Data               | Modification                                                 |
-| ------------------------- | ------------------------------------------------------------ |
-| `Transforms`              | Significant speed improvement.<br>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
-| `Rigidbodies`             | Significant speed improvement.<br/>`get_velocity(index)` and `get_angular_velocity(index)` return a numpy arrays instead of tuples. |
-| `StaticRigidbodies`       | Significant speed improvement.                               |
-| `Bounds`                  | Significant speed improvement.<br>`get_front(index)`, `get_back(index)`, etc. return numpy arrays instead of tuples. |
-| `SegmentationColors`      | `get_object_color(index)` returns a numpy array instead of a tuple. |
-| `Volumes`                 | Significant speed improvement.                               |
-| `LocalTransforms`         | Significant speed improvement.<br/>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
-| `DynamicCompositeObjects` | Significant speed improvement.<br>Restructured how hinge and light data is stored and returned. |
+| Output Data                | Modification                                                 |
+| -------------------------- | ------------------------------------------------------------ |
+| `Transforms`               | Significant speed improvement.<br>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
+| `Rigidbodies`              | Significant speed improvement.<br/>`get_velocity(index)` and `get_angular_velocity(index)` return a numpy arrays instead of tuples. |
+| `StaticRigidbodies`        | Significant speed improvement.                               |
+| `Bounds`                   | Significant speed improvement.<br>`get_front(index)`, `get_back(index)`, etc. return numpy arrays instead of tuples. |
+| `SegmentationColors`       | `get_object_color(index)` returns a numpy array instead of a tuple. |
+| `Volumes`                  | Significant speed improvement.                               |
+| `LocalTransforms`          | Significant speed improvement.<br/>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
+| `DynamicCompositeObjects`  | Significant speed improvement.<br>Restructured how hinge and light data is stored and returned. |
+| `IdPassSegmentationColors` | Significant speed improvement.<br>Removed `get_sensor_name()`. |
 
 #### Removed Output Data
 

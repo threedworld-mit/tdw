@@ -53,7 +53,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `Volumes`                  | Significant speed improvement.                               |
 | `LocalTransforms`          | Significant speed improvement.<br/>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
 | `DynamicCompositeObjects`  | Significant speed improvement.<br>Restructured how hinge and light data is stored and returned. |
-| `IdPassSegmentationColors` | Significant speed improvement.<br>Removed `get_sensor_name()`. |
+| `IdPassSegmentationColors` | Moderate (approximately 25%) speed improvement.<br>Removed `get_sensor_name()`. |
 
 #### Removed Output Data
 

@@ -151,6 +151,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 - Added kitchen benchmark to `PerformanceBenchmarkController` and `main.py`
 - Removed agent and flex benchmarks from `PerformanceBenchmarkController` and `main.py` because they are obsolete.
+- Updated Object Data benchmarks.
 
 ### Documentation
 

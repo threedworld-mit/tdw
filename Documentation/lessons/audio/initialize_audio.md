@@ -146,7 +146,6 @@ c.communicate([c.get_add_scene("tdw_room"),
                                 rotation={"x": 0.0, "y": 90, "z": 0.0})])
 # Start playing audio on both objects once they are created.
 audio_initializer.play(path="HWL_1b.wav", position=object_position_0)
-audio_initializer.play(path="HWL_3c.wav", position=object_position_1)
 c.communicate({"$type": "set_field_of_view",
                "avatar_id": "a",
                "field_of_view": 75.0})

@@ -122,7 +122,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`set_first_person_avatar`](#set_first_person_avatar) | Set the parameters of an <computeroutput>A_First_Person</computeroutput> avatar. |
+| [`set_first_person_avatar`](#set_first_person_avatar) | Set the parameters of an A_First_Person avatar. |
 
 **Simple Body Command**
 
@@ -568,7 +568,7 @@
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
-| [`send_mouse`](#send_mouse) | Send data regarding the mouse.  |
+| [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
@@ -2166,7 +2166,7 @@ These commands work only for the specified avatar subclass.
 
 ## **`set_first_person_avatar`**
 
-Set the parameters of an <computeroutput>A_First_Person</computeroutput> avatar.
+Set the parameters of an A_First_Person avatar.
 
 
 ```python
@@ -7441,7 +7441,7 @@ Options for when to send data.
 
 ## **`send_mouse`**
 
-Send data regarding the mouse. 
+Send mouse output data. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 

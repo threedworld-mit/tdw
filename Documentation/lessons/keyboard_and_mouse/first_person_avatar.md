@@ -66,11 +66,12 @@ Move forward and backward with the W/S keys or up/down arrow keys. Move laterall
 
 ## Optional parameters
 
-`FirstPersonAvatar` has many optional parameters in the constructor. [Read the API document for a complete description](../../python/add_ons/first_person_avatar.md)
+`FirstPersonAvatar` has many optional parameters in the constructor. [Read the API document for a complete description.](../../python/add_ons/first_person_avatar.md)
 
 - `position` and `rotation` set the initial position and rotation of the avatar.
 - `field_of_view` sets the camera field of view.
 - `framerate` should almost always be set to 60; this affects the overall speed of the avatar.
+- `reticule_size` sets the pixel size of the reticule at the center of the screen.
 - All other parameters affect the size and speed of the avatar.
 
 ## Reset

@@ -31,6 +31,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | ----------------------------------------------------- | ------------------------------------------------------------ |
 | `create_avatar`                                       | Removed: `A_Img_Caps`, `A_StickyMitten_Baby`, `A_StickyMitten_Adult`, `A_Nav_Mesh`<br>Added: `A_First_Person` |
 | `send_boxcast`<br>`send_raycast`<br>`send_spherecast` | `origin` and `destination` parameters now default to `{"x": 0, "y": 0, "z": 0}`. |
+| `add_ui_image`<br>`add_ui_text`                       | Added optional parameter `raycast_target`.                   |
 
 #### Removed Commands
 

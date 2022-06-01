@@ -55,7 +55,7 @@ You can combine a `FirstPersonAvatar` with [`ImageCapture`](image_capture.md) to
 
 **`FirstPersonAvatar()`**
 
-**`FirstPersonAvatar(avatar_id=None, position=None, rotation=0, field_of_view=None, height=1.6, camera_height=1.6, radius=0.5, slope_limit=15, detect_collisions=True, move_speed=1.5, look_speed=50, look_x_limit=45, framerate=60)`**
+**`FirstPersonAvatar(avatar_id=None, position=None, rotation=0, field_of_view=None, height=1.6, camera_height=1.6, radius=0.5, slope_limit=15, detect_collisions=True, move_speed=1.5, look_speed=50, look_x_limit=45, framerate=60, reticule_size=9)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -72,6 +72,7 @@ You can combine a `FirstPersonAvatar` with [`ImageCapture`](image_capture.md) to
 | look_speed |  float  | 50 | The camera rotation speed in degrees per second. |
 | look_x_limit |  float  | 45 | The camera rotation limit around the x axis in degrees. |
 | framerate |  int  | 60 | The target framerate. |
+| reticule_size |  int  | 9 | The size of the camera reticule in pixels. If None, no reticule will be shown. |
 
 #### get_initialization_commands
 

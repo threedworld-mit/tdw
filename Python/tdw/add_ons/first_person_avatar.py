@@ -1,6 +1,9 @@
+from base64 import b64encode
+from io import BytesIO
 from secrets import token_urlsafe
 from typing import Dict, Optional, List
 import numpy as np
+from PIL import Image
 from tdw.add_ons.mouse import Mouse
 from tdw.add_ons.third_person_camera_base import ThirdPersonCameraBase
 from tdw.output_data import OutputData, AvatarKinematic
@@ -18,7 +21,7 @@ class FirstPersonAvatar(Mouse):
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: float = 0,
                  field_of_view: int = None, height: float = 1.6, camera_height: float = 1.6, radius: float = 0.5,
                  slope_limit: float = 15, detect_collisions: bool = True, move_speed: float = 1.5, look_speed: float = 50,
-                 look_x_limit: float = 45, framerate: int = 60):
+                 look_x_limit: float = 45, framerate: int = 60, reticule_size: int = 9):
         """
         :param avatar_id: The ID of the avatar. If None, a random ID is generated.
         :param position: The initial position of the avatar. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
@@ -33,6 +36,7 @@ class FirstPersonAvatar(Mouse):
         :param look_speed: The camera rotation speed in degrees per second.
         :param look_x_limit: The camera rotation limit around the x axis in degrees.
         :param framerate: The target framerate.
+        :param reticule_size: The size of the camera reticule in pixels. If None, no reticule will be shown.
         """
 
         # Set a random avatar ID.
@@ -56,6 +60,7 @@ class FirstPersonAvatar(Mouse):
         self._look_speed: float = look_speed
         self._look_x_limit: float = look_x_limit
         self._framerate: int = framerate
+        self._reticule_size: int = reticule_size
         """:field
         The [`Transform`](../object_data/transform.md) of the avatar.
         """
@@ -99,6 +104,36 @@ class FirstPersonAvatar(Mouse):
                              "field_of_view": self._field_of_view,
                              "avatar_id": self.avatar_id})
         commands.extend(super().get_initialization_commands())
+        # Add a reticule.
+        if self._reticule_size > 0:
+            # Create a reticule.
+            arr = np.zeros(shape=(self._reticule_size, self._reticule_size), dtype=np.uint8)
+            x = np.arange(0, arr.shape[0])
+            y = np.arange(0, arr.shape[1])
+            # Define a circle on the array.
+            r = self._reticule_size // 2
+            mask = ((x[np.newaxis, :] - r) ** 2 + (y[:, np.newaxis] - r) ** 2 < r ** 2)
+            # Set the color of the reticule.
+            arr[mask] = 200
+            arr = np.stack((arr,) * 4, axis=-1)
+            # Convert to a .png byte array. Source: https://stackoverflow.com/a/38626806
+            with BytesIO() as output:
+                Image.fromarray(arr).save(output, "PNG")
+                image = output.getvalue()
+            canvas_id = self._raycast_id
+            # Add a reticule UI element.
+            commands.extend([{"$type": "add_ui_canvas",
+                              "canvas_id": canvas_id},
+                             {"$type": "attach_ui_canvas_to_avatar",
+                              "avatar_id": self.avatar_id,
+                              "canvas_id": canvas_id},
+                             {"$type": "add_ui_image",
+                              "image": b64encode(image).decode("utf-8"),
+                              "size": {"x": self._reticule_size, "y": self._reticule_size},
+                              "rgba": True,
+                              "id": 0,
+                              "raycast_target": False,
+                              "canvas_id": canvas_id}])
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:

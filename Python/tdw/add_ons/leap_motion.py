@@ -2,8 +2,7 @@ from typing import List, Callable, Dict
 import numpy as np
 from tdw.add_ons.vr import VR
 from tdw.vr_data.rig_type import RigType
-from tdw.vr_data.oculus_touch_button import OculusTouchButton
-from tdw.output_data import OutputData, StaticRigidbodies, OculusTouchButtons, StaticOculusTouch
+from tdw.output_data import OutputData, StaticRigidbodies
 
 
 class LeapMotion(VR):
@@ -42,12 +41,6 @@ class LeapMotion(VR):
                          attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
         self._set_graspable: bool = set_graspable
-        # Button press events.
-        self._button_press_events_left: Dict[OculusTouchButton, Callable[[], None]] = dict()
-        self._button_press_events_right: Dict[OculusTouchButton, Callable[[], None]] = dict()
-        # Axis events.
-        self._axis_events_left: List[Callable[[np.array], None]] = list()
-        self._axis_events_right: List[Callable[[np.array], None]] = list()
         # Non-graspable objects.
         if non_graspable is None:
             self._non_graspable: List[int] = list()
@@ -61,35 +54,14 @@ class LeapMotion(VR):
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
-        if self._set_graspable:
-            commands.extend([{"$type": "send_static_oculus_touch"},
-                             {"$type": "send_static_rigidbodies",
-                             "frequency": "once"}])
-        commands.append({"$type": "send_oculus_touch_buttons",
-                         "frequency": "always"})
+        commands.append({"$type": "send_static_rigidbodies",
+                             "frequency": "once"})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
         # Make non-kinematic objects graspable.
         if self._set_graspable:
             self._set_graspable = False
-            # Get static Oculus Touch rig data.
-            for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i])
-                if r_id == "soct":
-                    static_oculus_touch = StaticOculusTouch(resp[i])
-                    self.vr_node_ids = [static_oculus_touch.get_body_id(),
-                                        static_oculus_touch.get_left_hand_id(),
-                                        static_oculus_touch.get_right_hand_id()]
-                    # Set the collision detection modes of the rig's hands.
-                    if self._discrete_collision_detection_mode:
-                        self.commands.extend([{"$type": "set_object_collision_detection_mode",
-                                               "id": self.vr_node_ids[1],
-                                               "mode": "discrete"},
-                                              {"$type": "set_object_collision_detection_mode",
-                                               "id": self.vr_node_ids[2],
-                                               "mode": "discrete"}])
-                    break
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
                 if r_id == "srig":
@@ -108,50 +80,7 @@ class LeapMotion(VR):
                                                       "mode": "discrete"})
                     break
         super().on_send(resp=resp)
-        # Get the button presses.
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "octb":
-                oculus_touch_buttons = OculusTouchButtons(resp[i])
-                # Check if any of these buttons should trigger events.
-                for buttons, events in zip([oculus_touch_buttons.get_left(), oculus_touch_buttons.get_right()],
-                                           [self._button_press_events_left, self._button_press_events_right]):
-                    for button in buttons:
-                        # Invoke the button press event.
-                        if button in events:
-                            events[button]()
-                # Invoke axis events.
-                for delta, axis in zip([oculus_touch_buttons.get_left_axis(), oculus_touch_buttons.get_right_axis()],
-                                       [self._axis_events_left, self._axis_events_right]):
-                    for event in axis:
-                        event(delta)
-
-    def listen_to_button(self, button: OculusTouchButton, is_left: bool, function: Callable[[], None]) -> None:
-        """
-        Listen for Oculus Touch controller button presses.
-
-        :param button: The Oculus Touch controller button.
-        :param is_left: If True, this is the left controller. If False, this is the right controller.
-        :param function: The function to invoke when the button is pressed. This function must have no arguments and return None.
-        """
-
-        if is_left:
-            self._button_press_events_left[button] = function
-        else:
-            self._button_press_events_right[button] = function
-
-    def listen_to_axis(self, is_left: bool, function: Callable[[np.array], None]) -> None:
-        """
-        Listen for Oculus Touch controller axis events.
-
-        :param is_left: If True, this is the left controller. If False, this is the right controller.
-        :param function: The function to invoke when the button is pressed. This function must a single argument (a numpy array of shape `(2)`, representing (x, y) coordinates) and return None.
-        """
-
-        if is_left:
-            self._axis_events_left.append(function)
-        else:
-            self._axis_events_right.append(function)
+       
 
     def reset(self, non_graspable: List[int] = None, position: Dict[str, float] = None, rotation: float = 0) -> None:
         """

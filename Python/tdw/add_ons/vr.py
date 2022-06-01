@@ -87,8 +87,8 @@ class VR(AddOn, ABC):
                      "resolution_scale_factor": self._headset_resolution_scale},
                     {"$type": "set_post_process",
                      "value": False},
-                    {"$type": "teleport_vr_rig",
-                     "position": self._initial_position},
+                    #{"$type": "teleport_vr_rig",
+                    # "position": self._initial_position},
                     {"$type": "rotate_vr_rig_by",
                      "angle": self._initial_rotation}]
         # Send VR data per frame.

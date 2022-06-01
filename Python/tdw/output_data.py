@@ -500,20 +500,21 @@ class CameraMatrices(OutputData):
 
 
 class IdPassSegmentationColors(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._colors: np.array = self.data.SegmentationColorsAsNumpy().reshape(-1, 3)
+
     def get_data(self) -> IdSC.IdPassSegmentationColors:
         return IdSC.IdPassSegmentationColors.GetRootAsIdPassSegmentationColors(self.bytes, 0)
 
     def get_avatar_id(self) -> str:
         return self.data.AvatarId().decode('utf-8')
 
-    def get_sensor_name(self) -> str:
-        return self.data.SensorName().decode('utf-8')
-
     def get_num_segmentation_colors(self) -> int:
-        return self.data.SegmentationColorsLength()
+        return self._colors.shape[0]
 
-    def get_segmentation_color(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_rgb(self.data.SegmentationColors(index))
+    def get_segmentation_color(self, index: int) -> np.array:
+        return self._colors[index]
 
 
 class FlexParticles(OutputData):

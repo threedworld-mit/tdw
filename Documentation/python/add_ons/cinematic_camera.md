@@ -4,6 +4,12 @@
 
 Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. *towards* a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but *not* for most actual experiments.
 
+## Class Variables
+
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `RENDER_ORDER` | int | The render order. Third person cameras will always render "on top" of any other cameras. | `100` |
+
 ***
 
 ## Fields

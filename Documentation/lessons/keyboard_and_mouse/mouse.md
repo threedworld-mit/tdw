@@ -121,7 +121,7 @@ c.communicate({"$type": "terminate"})
 The `Mouse` add-on requires an avatar because it needs a camera in order to convert the mouse screen position to a world position.
 
 - `mouse.world_position` is the position of the end of ray cast from the camera through the screen position. It is a 3-element (x, y, z) numpy array.
-- `mouse.mouse_is_over_object` is a boolean. If True, the mouse cursor is currently over an [object](../core_concepts/object.md).
+- `mouse.mouse_is_over_object` is a boolean. If True, the mouse cursor is currently over an [object](../core_concepts/objects.md).
 - `mouse.mouse_over_object_id` is an integer. If `mouse.mouse_is_over_object == True`, then this is the ID of the object.
 
 ## Low-level description

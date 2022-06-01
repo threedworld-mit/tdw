@@ -76,6 +76,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Magnebot](#Magnebot) | Data for a Magnebot. | `magn` |
 | [MagnebotWheels](#MagnebotWheels) | A message sent when a Magnebot arrives at a target. | `mwhe` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
+| [Mouse](#Mouse) | Data for mouse input and movement. | `mous` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
 | [ObiParticles](#ObiParticles) | Obi particle data. | `obip` |
 | [ObjectColliderIntersection](#ObjectColliderIntersection) | Data for two objects whose colliders are intersecting. | `obci` |
@@ -369,9 +370,8 @@ All segmentation colors in an _id pass.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_avatar_id()` | The ID of the avatar that captured the image. | `str` |
-| `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
 | `get_num_segmentation_colors()` | The number of segmentation colors. | `int` |
-| `get_segmentation_color(index)` | The color of the segmentation. | `Tuple[float, float, float]` |
+| `get_segmentation_color(index)` | The color of the segmentation. | `np.array` |
 
 ## Images
 
@@ -533,6 +533,28 @@ Mesh data from readable objects.
 | `get_num()` | The number of objects. | `int` |
 | `get_vertices(index)` | The (x, y, z) coordinates of each vertex. | `np.array` |
 | `get_triangles(index)` | Each triangle of the mesh. | `np.array` |
+
+## Mouse
+
+`m = Mouse(byte_array)`
+
+**Identifier:** `mous`
+
+Data for mouse input and movement.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_position()` | The (x, y) screen position of the mouse. | `np.array` |
+| `get_scroll_delta()` | The (x, y) delta of the scroll wheel. | `np.array` |
+| `get_is_left_button_pressed()` | The pressed of the is left button. | `bool` |
+| `get_is_left_button_held()` | The held of the is left button. | `bool` |
+| `get_is_left_button_released()` | The released of the is left button. | `bool` |
+| `get_is_middle_button_pressed()` | The pressed of the is middle button. | `bool` |
+| `get_is_middle_button_held()` | The held of the is middle button. | `bool` |
+| `get_is_middle_button_released()` | The released of the is middle button. | `bool` |
+| `get_is_right_button_pressed()` | The pressed of the is right button. | `bool` |
+| `get_is_right_button_held()` | The held of the is right button. | `bool` |
+| `get_is_right_button_released()` | The released of the is right button. | `bool` |
 
 ## NavMeshPath
 

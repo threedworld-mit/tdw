@@ -80,9 +80,11 @@ Call `first_person_avatar.reset(position, rotation, field_of_view)` to reset the
 
 ## Low-level description
 
-`FirstPersonAvatar` calls [`create_avatar`](../../api/command_api.md#create_avatar) to create an `A_First_Person` avatar. It sets the parameters of the first-person avatar via [`set_first_person_avatar`](../../api/command_api.md#set_first_person_avatar). It sets the position of the avatar via [`teleport_avatar_to`](../../api/command_api.md#teleport_avatar_to), the rotation via [`rotate_avatar_to_euler_angles`](../../api/command_api.md#rotate_avatar_to_euler_angles), and the field of view via [`set_field_of_view`](../../api/command_api.md#set_field_of_view). To ensure that this is the camera rendered on the screen, it sends [`set_render_order`](../../api/command_api.md#set_render_order). 
+`FirstPersonAvatar` calls [`create_avatar`](../../api/command_api.md#create_avatar) to create an `A_First_Person` avatar. It sets the parameters of the first-person avatar via [`set_first_person_avatar`](../../api/command_api.md#set_first_person_avatar). It sets the position of the avatar via [`teleport_avatar_to`](../../api/command_api.md#teleport_avatar_to), the rotation via [`rotate_avatar_to_euler_angles`](../../api/command_api.md#rotate_avatar_to_euler_angles), and the field of view via [`set_field_of_view`](../../api/command_api.md#set_field_of_view). To ensure that this is the camera rendered on the screen, it sends [`set_render_order`](../../api/command_api.md#set_render_order).  The cursor is hidden and locked to the center of the window via [`set_cursor`](../../api/command_api.md#set_cursor).
 
 `FirstPersonAvatar` sends [`send_avatars`](../../api/command_api.md#send_avatars), [`send_mouse`](../../api/command_api.md#send_mouse), and [`send_mouse_raycast`](../../api/command_api.md#send_mouse_raycast) to receive [`AvatarKinematic`](../../api/output_data.md#AvatarKinematic), [`Mouse`](../../api/output_data.md#Mouse), and [`Raycast`](../../api/output_data.md#Raycast) output data. `AvatarKinematic` sets `self.transform`. `Mouse` and `Raycast` set [mouse-related fields](mouse.md).
+
+The reticule at the center of the screen is generated at runtime using numpy and PIL. It is added as a [UI element](../non_physics/ui.md) via the commands [`add_ui_canvas`](../../api/command_api.md#add_ui_canvas), [`attach_ui_canvas_to_avatar`](../../api/command_api.md#attach_ui_canvas_to_avatar), and [`add_ui_image`](../../api/command_api.md#add_ui_image).
 
 ***
 
@@ -115,6 +117,10 @@ Command API:
 - [`send_avatars`](../../api/command_api.md#send_avatars)
 - [`send_mouse`](../../api/command_api.md#send_mouse)
 - [`send_mouse_raycast`](../../api/command_api.md#send_mouse_raycast)
+- [`set_cursor`](../../api/command_api.md#set_cursor)
+- [`add_ui_canvas`](../../api/command_api.md#add_ui_canvas)
+- [`attach_ui_canvas_to_avatar`](../../api/command_api.md#attach_ui_canvas_to_avatar)
+- [`add_ui_image`](../../api/command_api.md#add_ui_image)
 
 Output Data:
 

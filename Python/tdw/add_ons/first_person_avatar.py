@@ -86,6 +86,9 @@ class FirstPersonAvatar(Mouse):
                     {"$type": "set_render_order",
                      "render_order": self._render_order,
                      "avatar_id": self.avatar_id},
+                    {"$type": "set_cursor",
+                     "locked": True,
+                     "visible": False},
                     {"$type": "send_avatars",
                      "frequency": "always"}]
         # Set the initial position.

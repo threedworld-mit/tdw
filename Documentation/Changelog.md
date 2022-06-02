@@ -24,6 +24,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `set_first_person_avatar` | Set the parameters of an A_First_Person avatar.          |
 | `send_mouse_raycast`      | Raycast from a camera through the mouse screen position. |
 | `send_mouse`              | Send mouse output data.                                  |
+| `set_cursor`              | Set cursor parameters                                    |
 
 ### Modified Commands
 

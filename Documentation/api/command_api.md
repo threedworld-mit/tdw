@@ -24,6 +24,7 @@
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
+| [`set_cursor`](#set_cursor) | Set cursor parameters. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
 | [`set_error_handling`](#set_error_handling) | Set whether TDW will quit when it logs different types of messages.  |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
@@ -978,6 +979,26 @@ Set how much the ambient light fom the source affects the scene. Low values will
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"intensity"` | float | The intensity of the ambient lighting in the scene. | 1.0 |
+
+***
+
+## **`set_cursor`**
+
+Set cursor parameters.
+
+
+```python
+{"$type": "set_cursor"}
+```
+
+```python
+{"$type": "set_cursor", "visible": True, "locked": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"visible"` | bool | If True, the cursor is visible. | True |
+| `"locked"` | bool | If True, the cursor is locked to the center of the screen. | False |
 
 ***
 

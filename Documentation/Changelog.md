@@ -14,17 +14,18 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 #### New Commands
 
-| Command                   | Description                                              |
-| ------------------------- | -------------------------------------------------------- |
-| `add_box_container`       | Add a box container shape to an object.                  |
-| `add_cylinder_container`  | Add a cylindrical container shape to an object.          |
-| `add_sphere_container`    | Add a spherical container shape to an object.            |
-| `send_containment`        | Send `Overlap` output data from every container shape.   |
-| `set_sub_object_id`       | Set the ID of a composite sub-object.                    |
-| `set_first_person_avatar` | Set the parameters of an A_First_Person avatar.          |
-| `send_mouse_raycast`      | Raycast from a camera through the mouse screen position. |
-| `send_mouse`              | Send mouse output data.                                  |
-| `set_cursor`              | Set cursor parameters                                    |
+| Command                          | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `add_box_container`              | Add a box container shape to an object.                      |
+| `add_cylinder_container`         | Add a cylindrical container shape to an object.              |
+| `add_sphere_container`           | Add a spherical container shape to an object.                |
+| `send_containment`               | Send `Overlap` output data from every container shape.       |
+| `set_sub_object_id`              | Set the ID of a composite sub-object.                        |
+| `set_first_person_avatar`        | Set the parameters of an A_First_Person avatar.              |
+| `send_mouse_raycast`             | Raycast from a camera through the mouse screen position.     |
+| `send_mouse`                     | Send mouse output data.                                      |
+| `set_cursor`                     | Set cursor parameters                                        |
+| `set_visual_material_smoothness` | Set the smoothness (glossiness) of an object's visual material. |
 
 ### Modified Commands
 

@@ -368,6 +368,7 @@
 | --- | --- |
 | [`set_texture_scale`](#set_texture_scale) | Set the scale of the tiling of the material's main texture. |
 | [`set_visual_material`](#set_visual_material) | Set a visual material of an object or one of its sub-objects.  |
+| [`set_visual_material_smoothness`](#set_visual_material_smoothness) | Set the smoothness (glossiness) of an object's visual material.  |
 
 **Set Flex Actor**
 
@@ -5047,6 +5048,29 @@ Set a visual material of an object or one of its sub-objects.
 | --- | --- | --- | --- |
 | `"material_index"` | int | The index of the material in the sub-object's list of materials. | |
 | `"material_name"` | string | The name of the material. | |
+| `"object_name"` | string | The name of the sub-object. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_visual_material_smoothness`**
+
+Set the smoothness (glossiness) of an object's visual material. 
+
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+
+```python
+{"$type": "set_visual_material_smoothness", "object_name": "string", "id": 1}
+```
+
+```python
+{"$type": "set_visual_material_smoothness", "object_name": "string", "id": 1, "smoothness": 0, "material_index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"smoothness"` | float | The material smoothness. Must be between 0 and 1. | 0 |
+| `"material_index"` | int | The index of the material in the sub-object's list of materials. | 0 |
 | `"object_name"` | string | The name of the sub-object. | |
 | `"id"` | int | The unique object ID. | |
 

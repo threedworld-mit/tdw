@@ -190,9 +190,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
 
-### 10.4 Keyboard controls
+### 10.4 Keyboard and Mouse
 
-1. [Keyboard controls](Documentation/lessons/keyboard/keyboard.md)
+1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
+2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
+3. [The `FirstPersonAvatar`](Documentation/lessons/keyboard_and_mouse/first_person_avatar.md)
+4. [Keyboard input](Documentation/lessons/keyboard_and_mouse/keyboard.md)
 
 ### 10.5 Embodied avatars
 
@@ -266,12 +269,14 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CompositeObjectManager](Documentation/python/add_ons/composite_object_manager.md)
 - [ContainerManager](Documentation/python/add_ons/container_manager.md)
 - [EmbodiedAvatar](Documentation/python/add_ons/embodied_avatar.md)
+- [FirstPersonAvatar](Documentation/python/add_ons/first_person_avatar.md)
 - [Floorplan](Documentation/python/add_ons/floorplan.md)
 - [ImageCapture](Documentation/python/add_ons/image_capture.md)
 - [InteriorSceneLighting](Documentation/python/add_ons/interior_scene_lighting.md)
 - [Keyboard](Documentation/python/add_ons/keyboard.md)
 - [Logger](Documentation/python/add_ons/logger.md)
 - [ModelVerifier](Documentation/python/add_ons/model_verifier.md)
+- [Mouse](Documentation/python/add_ons/mouse.md)
 - [Obi](Documentation/python/add_ons/obi.md)
 - [ObjectManager](Documentation/python/add_ons/object_manager.md)
 - [OccupancyMap](Documentation/python/add_ons/occupancy_map.md)

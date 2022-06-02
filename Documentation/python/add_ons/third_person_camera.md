@@ -67,6 +67,12 @@ c.add_ons.extend([cam_0, cam_1, cap])
 c.communicate(TDWUtils.create_empty_room(12, 12))
 ```
 
+## Class Variables
+
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `RENDER_ORDER` | int | The render order. Third person cameras will always render "on top" of any other cameras. | `100` |
+
 ***
 
 ## Fields

@@ -52,6 +52,7 @@ from tdw.FBOutput import ObiParticles as ObiP
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
+from tdw.FBOutput import Mouse as Mous
 import numpy as np
 from typing import Tuple, Optional, List
 
@@ -1378,3 +1379,45 @@ class ObiParticles(OutputData):
 
     def get_solver_indices(self, index: int) -> np.array:
         return self.data.Actors(index).SolverIndicesAsNumpy()
+
+
+class Mouse(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._buttons: np.array = self.data.ButtonsAsNumpy().reshape(3, 3)
+
+    def get_data(self) -> Mous.Mouse:
+        return Mous.Mouse.GetRootAsMouse(self.bytes, 0)
+
+    def get_position(self) -> np.array:
+        return self.data.PositionAsNumpy()
+
+    def get_scroll_delta(self) -> np.array:
+        return self.data.ScrollDeltaAsNumpy()
+
+    def get_is_left_button_pressed(self) -> bool:
+        return self._buttons[0][0]
+
+    def get_is_left_button_held(self) -> bool:
+        return self._buttons[0][1]
+
+    def get_is_left_button_released(self) -> bool:
+        return self._buttons[0][2]
+
+    def get_is_middle_button_pressed(self) -> bool:
+        return self._buttons[1][0]
+
+    def get_is_middle_button_held(self) -> bool:
+        return self._buttons[1][1]
+
+    def get_is_middle_button_released(self) -> bool:
+        return self._buttons[1][2]
+
+    def get_is_right_button_pressed(self) -> bool:
+        return self._buttons[2][0]
+
+    def get_is_right_button_held(self) -> bool:
+        return self._buttons[2][1]
+
+    def get_is_right_button_released(self) -> bool:
+        return self._buttons[2][2]

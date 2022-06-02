@@ -4,6 +4,12 @@
 
 An `EmbodiedAvatar` is an avatar with a physical body. The body has a simple shape and responds to physics (just like objects and robots).
 
+## Class Variables
+
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `RENDER_ORDER` | int | The render order. Third person cameras will always render "on top" of any other cameras. | `100` |
+
 ***
 
 ## Fields

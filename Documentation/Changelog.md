@@ -14,19 +14,25 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 #### New Commands
 
-| Command                  | Description                                            |
-| ------------------------ | ------------------------------------------------------ |
-| `add_box_container`      | Add a box container shape to an object.                |
-| `add_cylinder_container` | Add a cylindrical container shape to an object.        |
-| `add_sphere_container`   | Add a spherical container shape to an object.          |
-| `send_containment`       | Send `Overlap` output data from every container shape. |
-| `set_sub_object_id`      | Set the ID of a composite sub-object.                  |
+| Command                   | Description                                              |
+| ------------------------- | -------------------------------------------------------- |
+| `add_box_container`       | Add a box container shape to an object.                  |
+| `add_cylinder_container`  | Add a cylindrical container shape to an object.          |
+| `add_sphere_container`    | Add a spherical container shape to an object.            |
+| `send_containment`        | Send `Overlap` output data from every container shape.   |
+| `set_sub_object_id`       | Set the ID of a composite sub-object.                    |
+| `set_first_person_avatar` | Set the parameters of an A_First_Person avatar.          |
+| `send_mouse_raycast`      | Raycast from a camera through the mouse screen position. |
+| `send_mouse`              | Send mouse output data.                                  |
+| `set_cursor`              | Set cursor parameters                                    |
 
 ### Modified Commands
 
-| Command         | Modification                                                 |
-| --------------- | ------------------------------------------------------------ |
-| `create_avatar` | Removed: `A_Img_Caps`, `A_StickyMitten_Baby`, `A_StickyMitten_Adult`, `A_Nav_Mesh` |
+| Command                                               | Modification                                                 |
+| ----------------------------------------------------- | ------------------------------------------------------------ |
+| `create_avatar`                                       | Removed: `A_Img_Caps`, `A_StickyMitten_Baby`, `A_StickyMitten_Adult`, `A_Nav_Mesh`<br>Added: `A_First_Person` |
+| `send_boxcast`<br>`send_raycast`<br>`send_spherecast` | `origin` and `destination` parameters now default to `{"x": 0, "y": 0, "z": 0}`. |
+| `add_ui_image`<br>`add_ui_text`                       | Added optional parameter `raycast_target`.                   |
 
 #### Removed Commands
 
@@ -40,6 +46,12 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `set_avatar_rigidbody_constraints`<br>`rotate_head_by`<br>`rotate_waist`<br>`set_sticky_mitten_profile`<br>`stop_arm_joint`<br>`bend_arm_joint_by`<br>`bend_arm_joint_to`<br>`adjust_joint_angular_drag_by`<br>`set_joint_angular_drag`<br>`adjust_joint_damper_by`<br>`adjust_joint_force_by`<br>`set_joint_damper`<br>`set_joint_force`<br>`put_down`<br>`set_stickiness`<br>`pick_up`<br>`pick_up_proximity` | Removed `A_StickyMitten_Baby` and `A_StickyMitten_Adult`     |
 
 ### Output Data
+
+#### New Output Data
+
+| Output Data | Description                        |
+| ----------- | ---------------------------------- |
+| `Mouse`     | Data for mouse input and movement. |
 
 #### Modified Output Data
 
@@ -122,6 +134,9 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
   - Replaced `ModelRecord.container_colliders` with `ModelRecord.container_shapes`
   - Replaced `ContainmentEvent.object_id` (the ID of the contained object) with `ContainmentEvent.object_ids` (a numpy array of all contained objects)
 - The data classes used in `DynamicCompositeObjects` (`CompositeObjectDynamic`, `HingeDynamic`, `LightDynamic`, and `SubObjectDynamic`) all take different constructor parameters. They are otherwise unchanged. The API for `CompositeObjectManager` is the same as before.
+- **Added: `FirstPersonAvatar` add-on.** This avatar can be controlled using standard video game first-person keyboard and mouse controls.
+- Added: `Mouse` add-on. Listen for mouse input and movement.
+- Renamed `ThirdPersonCameraBase._RENDER_ORDER` to `ThirdPersonCameraBase.RENDER_ORDER`
 
 ### Build
 
@@ -130,7 +145,8 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 ### Example Controllers
 
 - Split `objects_and_scenes/` controllers into `scene_setup_high_level/` and `scene_setup_low_level/`
-- Removed `objects_and_scenes/proc_gen_objects.py` (obsolete)
+- Removed: `objects_and_scenes/proc_gen_objects.py` (obsolete)
+- Removed: `keyboard/keyboard_controls.py` (obsolete)
 - Added: `scene_setup_high_level/cup_and_coaster.py`
 - Added: `scene_setup_high_level/kitchen_counter.py`
 - Added: `scene_setup_high_level/microwave.py`
@@ -138,6 +154,8 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 - Added: `scene_setup_high_level/proc_gen_kitchen_lighting.py`
 - Added: `scene_setup_high_level/proc_gen_kitchen_minimal.py`
 - Added: `scene_setup_high_level/proc_gen_kitchen_rng.py`
+- Added: `keyboard_and_mouse/first_person_controls.py`
+- Added: `keyboard_and_mouse/mouse_controls.py`
 
 ### Model Library
 
@@ -156,6 +174,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 ### Documentation
 
 - The "Objects and Scenes" lesson has been split into two sections: "Scene Setup (High-Level APIs)" and "Scene Setup (Low-Level APIs)"
+- The "Keyboard" lesson has been renamed to "Keyboard and Mouse"
 
 #### New Documentation
 
@@ -168,11 +187,16 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `scene_setup_high_level/proc_gen_kitchen.md`                 | Lesson document for the `ProcGenKitchen` add-on.          |
 | `scene_setup_high_level/rooms.md`                            | How room data works.                                      |
 | `scene_setup_low_level/overview.md`                          | Overview of TDW's lower-level scene setup APIs.           |
+| `keyboard_and_mouse/first_person_avatar.md`                  | Lesson document for the `FirstPersonAvatar` add-on.       |
+| `keyboard_and_mouse/mouse.md`                                | Lesson document for the `Mouse` add-on.                   |
+| `keyboard_and_mouse/overview.md`                             | Overview of keyboard and mouse input.                     |
 | `python/add_ons/proc_gen_kitchen.md`                         | API documentation for `ProcGenKitchen`                    |
 | `python/proc_gen/arrangements/cabinetry/cabinetry.md`<br>`python/proc_gen/arrangements/cabinetry/cabinetry_type.md` | API documentation for cabinetry.                          |
 | `python/proc_gen/arrangements/arrangement.md`<br/>`python/proc_gen/arrangements/arrangement_along_wall.md`<br/>`python/proc_gen/arrangements/arrangement_with_root_object.md`<br/>`python/proc_gen/arrangements/basket.md`<br/>`python/proc_gen/arrangements/cup_and_coaster.md`<br/>`python/proc_gen/arrangements/dishwasher.md`<br/>`python/proc_gen/arrangements/kitchen_cabinet.md`<br/>`python/proc_gen/arrangements/kitchen_counter.md`<br/>`python/proc_gen/arrangements/kitchen_counter_top.md`<br/>`python/proc_gen/arrangements/kitchen_table.md`<br/>`python/proc_gen/arrangements/microwave.md`<br/>`python/proc_gen/arrangements/painting.md`<br/>`python/proc_gen/arrangements/plate.md`<br/>`python/proc_gen/arrangements/radiator.md`<br/>`python/proc_gen/arrangements/refrigerator.md`<br/>`python/proc_gen/arrangements/shelf.md`<br/>`python/proc_gen/arrangements/side_table.md`<br/>`python/proc_gen/arrangements/sink.md`<br/>`python/proc_gen/arrangements/stack_of_plates.md`<br/>`python/proc_gen/arrangements/stool.md`<br/>`python/proc_gen/arrangements/stove.md`<br/>`python/proc_gen/arrangements/suitcase.md`<br/>`python/proc_gen/arrangements/table_and_chairs.md`<br/>`python/proc_gen/arrangements/table_setting.md`<br/>`python/proc_gen/arrangements/void.md`<br/>`python/proc_gen/arrangements/wall_cabinet.md` | API documentation for `Arrangement` and its data classes. |
 | `python/cardinal_direction.md`                               | API documentation for `CardinalDirection`.                |
 | `python/ordinal_direction.md`                                | API documentation for `OrdinalDirection`.                 |
+| `python/add_ons/mouse.md`                                    | API documentation for `Mouse`.                            |
+| `python/add_ons/first_person_avatar.md`                      | API documentation for `FirstPersonAvatar`.                |
 
 #### Modified Documentation
 

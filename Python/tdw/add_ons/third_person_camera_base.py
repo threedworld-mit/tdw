@@ -10,8 +10,10 @@ class ThirdPersonCameraBase(AddOn, ABC):
     An abstract base class for third-person camera controller add-ons.
     """
 
-    # The render order. Third person cameras will always render "on top" of any other cameras.
-    __RENDER_ORDER: int = 100
+    """:class_var
+    The render order. Third person cameras will always render "on top" of any other cameras.
+    """
+    RENDER_ORDER: int = 100
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                  field_of_view: int = None):
@@ -31,8 +33,8 @@ class ThirdPersonCameraBase(AddOn, ABC):
             self.avatar_id: str = token_urlsafe(4)
         else:
             self.avatar_id: str = avatar_id
-        self._render_order = ThirdPersonCameraBase.__RENDER_ORDER
-        ThirdPersonCameraBase.__RENDER_ORDER += 1
+        self._render_order = ThirdPersonCameraBase.RENDER_ORDER
+        ThirdPersonCameraBase.RENDER_ORDER += 1
         """:field
         The position of the camera. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         """

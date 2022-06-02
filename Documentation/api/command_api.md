@@ -24,6 +24,7 @@
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
+| [`set_cursor`](#set_cursor) | Set cursor parameters. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
 | [`set_error_handling`](#set_error_handling) | Set whether TDW will quit when it logs different types of messages.  |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
@@ -119,6 +120,10 @@
 | [`turn_avatar_by`](#turn_avatar_by) | Apply a relative torque to the avatar.  |
 
 **Avatar Type Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_first_person_avatar`](#set_first_person_avatar) | Set the parameters of an A_First_Person avatar. |
 
 **Simple Body Command**
 
@@ -514,6 +519,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_boxcast`](#send_boxcast) | Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
+| [`send_mouse_raycast`](#send_mouse_raycast) | Raycast from a camera through the mouse screen position.  |
 | [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
 | [`send_spherecast`](#send_spherecast) | Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
 
@@ -563,6 +569,7 @@
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
+| [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
@@ -732,6 +739,7 @@ A type of avatar that can be created in TDW.
 | --- | --- |
 | `"A_Simple_Body"` | An avatar that can toggle between multiple simply body types. See: change_avatar_body in the Command API. |
 | `"A_Img_Caps_Kinematic"` | An avatar without a body; a "floating camera". |
+| `"A_First_Person"` | An avatar with first-person keyboard and mouse controls. |
 
 ***
 
@@ -971,6 +979,26 @@ Set how much the ambient light fom the source affects the scene. Low values will
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"intensity"` | float | The intensity of the ambient lighting in the scene. | 1.0 |
+
+***
+
+## **`set_cursor`**
+
+Set cursor parameters.
+
+
+```python
+{"$type": "set_cursor"}
+```
+
+```python
+{"$type": "set_cursor", "visible": True, "locked": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"visible"` | bool | If True, the cursor is visible. | True |
+| `"locked"` | bool | If True, the cursor is locked to the center of the screen. | False |
 
 ***
 
@@ -2154,6 +2182,33 @@ Apply a relative torque to the avatar.
 # AvatarTypeCommand
 
 These commands work only for the specified avatar subclass.
+
+***
+
+## **`set_first_person_avatar`**
+
+Set the parameters of an A_First_Person avatar.
+
+
+```python
+{"$type": "set_first_person_avatar"}
+```
+
+```python
+{"$type": "set_first_person_avatar", "height": 1.6, "camera_height": 1.4, "radius": 0.5, "slope_limit": 15, "detect_collisions": True, "move_speed": 1.5, "look_speed": 50, "look_x_limit": 45, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"height"` | float | The height of the avatar. | 1.6 |
+| `"camera_height"` | float | The height of the camera. | 1.4 |
+| `"radius"` | float | The radius of the avatar. | 0.5 |
+| `"slope_limit"` | float | The avatar can only climb slopes up to this many degrees. | 15 |
+| `"detect_collisions"` | bool | If True, the avatar will collide with other objects. | True |
+| `"move_speed"` | float | The move speed in meters per second. | 1.5 |
+| `"look_speed"` | float | The camera rotation speed in degrees per second. | 50 |
+| `"look_x_limit"` | float | The camera rotation limit around the x axis in degrees. | 45 |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 # SimpleBodyCommand
 
@@ -6428,18 +6483,45 @@ Cast a box along a direction and return the results. The can be multiple hits, e
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
 ```python
-{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}}
 ```
 
 ```python
-{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"half_extents"` | Vector3 | The half-extents of the box. | |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
+
+***
+
+## **`send_mouse_raycast`**
+
+Raycast from a camera through the mouse screen position. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_mouse_raycast"}
+```
+
+```python
+{"$type": "send_mouse_raycast", "avatar_id": "a", "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar of the rendering camera. | "a" |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 ***
@@ -6455,17 +6537,17 @@ Cast a ray from the origin to the destination.
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
 ```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "send_raycast"}
 ```
 
 ```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+{"$type": "send_raycast", "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 ***
@@ -6481,18 +6563,18 @@ Cast a sphere along a direction and return the results. The can be multiple hits
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
 ```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "send_spherecast", "radius": 0.125}
 ```
 
 ```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"radius"` | float | The radius of the sphere. | |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 # SingletonSubscriberCommand
@@ -6821,7 +6903,7 @@ Send data for avatars in the scene.
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`AvatarKinematic`](output_data.md#AvatarKinematic), [`AvatarNonKinematic`](output_data.md#AvatarNonKinematic), [`AvatarSimpleBody`](output_data.md#AvatarSimpleBody), [`AvatarStickyMitten`](output_data.md#AvatarStickyMitten)</font>
+    - <font style="color:green">**Type:** [`AvatarKinematic`](output_data.md#AvatarKinematic), [`AvatarSimpleBody`](output_data.md#AvatarSimpleBody)</font>
 
 ```python
 {"$type": "send_avatars"}
@@ -7360,6 +7442,38 @@ Send data for each directional light and point light in the scene.
 
 ```python
 {"$type": "send_lights", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_mouse`**
+
+Send mouse output data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Mouse`](output_data.md#Mouse)</font>
+
+```python
+{"$type": "send_mouse"}
+```
+
+```python
+{"$type": "send_mouse", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8182,7 +8296,7 @@ Add a UI image to the scene. Note that the size parameter must match the actual 
 ```
 
 ```python
-{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "canvas_id": 0}
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8195,6 +8309,7 @@ Add a UI image to the scene. Note that the size parameter must match the actual 
 | `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
 | `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
 | `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
@@ -8210,7 +8325,7 @@ Add UI text to the scene.
 ```
 
 ```python
-{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "canvas_id": 0}
+{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8221,6 +8336,7 @@ Add UI text to the scene.
 | `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
 | `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
 | `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 

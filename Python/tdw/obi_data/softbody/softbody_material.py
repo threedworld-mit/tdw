@@ -11,8 +11,8 @@ class SoftBodyMaterial:
 
     def __init__(self, visual_material: str, texture_scale: Dict[str, float], visual_smoothness: float = 0,
                  deformation_resistance: float = 1.0, max_deformation: float = 0, plastic_yield: float = 0,
-                 plastic_creep: float = 0, plastic_recovery: float = 0, surface_sampling_resolution: int = 16, shape_analysis_resolution: int = 48,
-                 shape_analysis_smoothing: float = 0.25):
+                 plastic_creep: float = 0, plastic_recovery: float = 0, surface_sampling_resolution: int = 16, 
+                 volume_sampling_resolution: int = 16, shape_analysis_resolution: int = 48, shape_analysis_smoothing: float = 0.25):
         """
         :param visual_material: The name of the visual material associated with this cloth material.
         :param texture_scale: The texture scale of the visual material.
@@ -23,6 +23,7 @@ class SoftBodyMaterial:
         :param plastic_creep: Determines what percentage of the deformation is permanently absorbed by the cluster.
         :param plastic_recovery: Speed at which clusters recover from plastic deformation, in % per second.
         :param surface_sampling_resolution: How fine grained particle sampling will be, across the surface of the mesh.
+        :param volume_sampling_resolution: How fine grained particle sampling will be, witin the volume of the mesh.
         :param shape_analysis_resolution:  How fine voxelization will be, in the shape analysis stage.
         :param shape_analysis_smoothing: Amount of laplacian smoothing applied to particles.
         """
@@ -63,6 +64,10 @@ class SoftBodyMaterial:
         How fine grained particle sampling will be, across the surface of the mesh.
         """
         self.surface_sampling_resolution: float = surface_sampling_resolution
+        """:field
+        How fine grained particle sampling will be, within the volume of the mesh.
+        """
+        self.volume_sampling_resolution: float = volume_sampling_resolution
         """:field
         How fine voxelization will be, in the shape analysis stage.
         """

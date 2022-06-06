@@ -9,6 +9,8 @@
     "volume_sampling_resolution": 16,
     "shape_analysis_resolution": 48,
     "shape_analysis_smoothing": 0.25,
+	"shape_matching_iterations": 10,
+	"shape_matching_mode": "Sequential",
 	"visual_material": "rubber_black",
 	"texture_scale": {"x": 4, "y": 4},
     "visual_smoothness": 0
@@ -23,6 +25,8 @@
 	"volume_sampling_resolution": 16,
     "shape_analysis_resolution": 48,
     "shape_analysis_smoothing": 0.25,
+	"shape_matching_iterations": 4,
+	"shape_matching_mode": "Parallel",
 	"visual_material": "cotton_jean_light_blue",
 	"texture_scale": {"x": 4, "y": 4},
     "visual_smoothness": 0
@@ -37,6 +41,8 @@
 	"volume_sampling_resolution": 16,
     "shape_analysis_resolution": 48,
     "shape_analysis_smoothing": 0.25,
+	"shape_matching_iterations": 6,
+	"shape_matching_mode": "Parallel",
 	"visual_material": "cotton_jean_light_blue",
 	"texture_scale": {"x": 4, "y": 4},
     "visual_smoothness": 0
@@ -51,6 +57,8 @@
 	"volume_sampling_resolution": 16,
     "shape_analysis_resolution": 48,
     "shape_analysis_smoothing": 0.25,
+	"shape_matching_iterations": 6,
+	"shape_matching_mode": "Parallel",
 	"visual_material": "cotton_jean_light_blue",
 	"texture_scale": {"x": 4, "y": 4},
     "visual_smoothness": 0
@@ -65,6 +73,8 @@
 	"volume_sampling_resolution": 16,
     "shape_analysis_resolution": 48,
     "shape_analysis_smoothing": 0.25,
+	"shape_matching_iterations": 6,
+	"shape_matching_mode": "Parallel",
 	"visual_material": "cotton_jean_light_blue",
 	"texture_scale": {"x": 4, "y": 4},
     "visual_smoothness": 0
@@ -79,6 +89,8 @@
 	"volume_sampling_resolution": 16,
     "shape_analysis_resolution": 48,
     "shape_analysis_smoothing": 0.25,
+	"shape_matching_iterations": 6,
+	"shape_matching_mode": "Parallel",
 	"visual_material": "cotton_jean_light_blue",
 	"texture_scale": {"x": 4, "y": 4},
     "visual_smoothness": 0
@@ -93,6 +105,8 @@
     "volume_sampling_resolution": 16,
     "shape_analysis_resolution": 48,
     "shape_analysis_smoothing": 0.25,
+	"shape_matching_iterations": 6,
+	"shape_matching_mode": "Parallel",
 	"visual_material": "cotton_jean_light_blue",
 	"texture_scale": {"x": 4, "y": 4},
     "visual_smoothness": 0
@@ -107,6 +121,8 @@
     "volume_sampling_resolution": 16,
     "shape_analysis_resolution": 48,
     "shape_analysis_smoothing": 0.25,
+	"shape_matching_iterations": 6,
+	"shape_matching_mode": "Parallel",
 	"visual_material": "cotton_jean_light_blue",
 	"texture_scale": {"x": 4, "y": 4},
     "visual_smoothness": 0
@@ -121,6 +137,8 @@
     "volume_sampling_resolution": 16,
     "shape_analysis_resolution": 48,
     "shape_analysis_smoothing": 0.25,
+	"shape_matching_iterations": 6,
+	"shape_matching_mode": "Parallel",
 	"visual_material": "cotton_jean_light_blue",
 	"texture_scale": {"x": 4, "y": 4},
     "visual_smoothness": 0
@@ -135,6 +153,8 @@
     "volume_sampling_resolution": 16,
     "shape_analysis_resolution": 48,
     "shape_analysis_smoothing": 0.25,
+	"shape_matching_iterations": 6,
+	"shape_matching_mode": "Parallel",
 	"visual_material": "cotton_jean_light_blue",
 	"texture_scale": {"x": 4, "y": 4},
     "visual_smoothness": 0

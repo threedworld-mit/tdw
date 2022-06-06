@@ -12,7 +12,8 @@ class SoftBodyMaterial:
     def __init__(self, visual_material: str, texture_scale: Dict[str, float], visual_smoothness: float = 0,
                  deformation_resistance: float = 1.0, max_deformation: float = 0, plastic_yield: float = 0,
                  plastic_creep: float = 0, plastic_recovery: float = 0, surface_sampling_resolution: int = 16, 
-                 volume_sampling_resolution: int = 16, shape_analysis_resolution: int = 48, shape_analysis_smoothing: float = 0.25):
+                 volume_sampling_resolution: int = 16, shape_analysis_resolution: int = 48, shape_analysis_smoothing: float = 0.25, 
+                 shape_matching_iterations: int = 6, shape_matching_mode: str = "Parallel"):
         """
         :param visual_material: The name of the visual material associated with this cloth material.
         :param texture_scale: The texture scale of the visual material.
@@ -26,6 +27,8 @@ class SoftBodyMaterial:
         :param volume_sampling_resolution: How fine grained particle sampling will be, witin the volume of the mesh.
         :param shape_analysis_resolution:  How fine voxelization will be, in the shape analysis stage.
         :param shape_analysis_smoothing: Amount of laplacian smoothing applied to particles.
+        :param shape_matching_iterations: Amount of shape matching iterations in the solver.
+        :param shape_matching_mode: Shape-matching mode, for solver.
         """
 
         """:field
@@ -76,6 +79,14 @@ class SoftBodyMaterial:
         Amount of laplacian smoothing applied to particles.
         """
         self.shape_analysis_smoothing: float = shape_analysis_smoothing
+        """:field
+        Amount of laplacian smoothing applied to particles.
+        """
+        self.shape_matching_iterations: int = shape_matching_iterations
+        """:field
+        Shape-matching mode, for solver.
+        """
+        self.shape_matching_mode: string = shape_matching_mode
 
 
     def to_dict(self) -> dict:

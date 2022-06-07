@@ -30,16 +30,16 @@ class PhysicsAudioRecorder(AddOn):
         """
         self.path: Path = Path.home()
         """:field
-        If True, there is an ongoing recording.
+        If False, there is an ongoing audio.
         """
-        self.recording: bool = False
+        self.done: bool = True
         self._record_audio: bool = record_audio
 
     def get_initialization_commands(self) -> List[dict]:
         return []
 
     def on_send(self, resp: List[bytes]) -> None:
-        if not self.recording:
+        if self.done:
             return
         # Stop recording at the maximum number of frames.
         self._frame += 1
@@ -87,9 +87,9 @@ class PhysicsAudioRecorder(AddOn):
         """
 
         # Don't start a new recording if one is ongoing.
-        if self.recording:
+        if not self.done:
             return
-        self.recording = True
+        self.done = False
         if isinstance(path, str):
             self.path = Path(path)
         else:
@@ -117,4 +117,4 @@ class PhysicsAudioRecorder(AddOn):
 
         if self._record_audio:
             AudioUtils.stop()
-        self.recording = False
+        self.done = True

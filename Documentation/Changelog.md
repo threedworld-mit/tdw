@@ -138,6 +138,8 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 - **Added: `FirstPersonAvatar` add-on.** This avatar can be controlled using standard video game first-person keyboard and mouse controls.
 - Added: `Mouse` add-on. Listen for mouse input and movement.
 - Renamed `ThirdPersonCameraBase._RENDER_ORDER` to `ThirdPersonCameraBase.RENDER_ORDER`
+- Renamed `PhysicsAudioRecorder.recording` to `PhysicsAudioRecorder.done`
+- Added optional parameter `record_audio` to the `PhysicsAudioRecorder` constructor.
 
 ### Build
 

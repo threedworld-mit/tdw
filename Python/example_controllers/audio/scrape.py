@@ -83,7 +83,7 @@ for scrape_surface_model_name in ["glass_table", "quatre_dining_table", "small_t
             c.communicate({"$type": "apply_force_magnitude_to_object",
                            "magnitude": force,
                            "id": cube_id})
-            while recorder.recording:
+            while recorder.done:
                 c.communicate([])
             # Destroy the objects to reset the scene.
             c.communicate([{"$type": "destroy_object",

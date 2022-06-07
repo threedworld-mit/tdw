@@ -7,17 +7,14 @@ from tdw.FBOutput import Images as Imags
 from tdw.FBOutput import AvatarKinematic as AvKi
 from tdw.FBOutput import AvatarNonKinematic as AvNoKi
 from tdw.FBOutput import AvatarSimpleBody as AvSi
-from tdw.FBOutput import AvatarStickyMitten as AvSM
 from tdw.FBOutput import SegmentationColors as Segs
 from tdw.FBOutput import AvatarSegmentationColor as AvSC
-from tdw.FBOutput import AvatarStickyMittenSegmentationColors as AvSMSC
 from tdw.FBOutput import IsOnNavMesh as IsNM
 from tdw.FBOutput import IdPassGrayscale as IdGS
 from tdw.FBOutput import Collision as Col
 from tdw.FBOutput import ImageSensors as ImSe
 from tdw.FBOutput import CameraMatrices as CaMa
 from tdw.FBOutput import IdPassSegmentationColors as IdSC
-from tdw.FBOutput import ArrivedAtNavMeshDestination as Arri
 from tdw.FBOutput import FlexParticles as Flex
 from tdw.FBOutput import VRRig as VR
 from tdw.FBOutput import LogMessage as Log
@@ -55,6 +52,7 @@ from tdw.FBOutput import ObiParticles as ObiP
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
+from tdw.FBOutput import Mouse as Mous
 import numpy as np
 from typing import Tuple, Optional, List
 
@@ -362,74 +360,6 @@ class AvatarSimpleBody(AvatarNonKinematic):
         return self.data.VisibleBody().decode('utf-8')
 
 
-class AvatarStickyMitten(AvatarNonKinematic):
-    def get_data(self) -> AvSM.AvatarStickyMitten:
-        return AvSM.AvatarStickyMitten.GetRootAsAvatarStickyMitten(self.bytes, 0)
-
-    def get_num_body_parts(self) -> int:
-        return self.data.BodyPartsLength()
-
-    def get_num_rigidbody_parts(self) -> int:
-        return self.data.RigidbodyPartsLength()
-
-    def get_body_part_position(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.BodyParts(index).Position)
-
-    def get_body_part_rotation(self, index: int) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.BodyParts(index).Rotation)
-
-    def get_body_part_forward(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.BodyParts(index).Forward)
-
-    def get_body_part_id(self, index: int) -> int:
-        return self.data.BodyParts(index).Id()
-
-    def get_rigidbody_part_velocity(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.RigidbodyParts(index).Velocity)
-
-    def get_rigidbody_part_angular_velocity(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.RigidbodyParts(index).AngularVelocity)
-
-    def get_rigidbody_part_mass(self, index: int) -> float:
-        return self.data.RigidbodyParts(index).Mass()
-
-    def get_rigidbody_part_sleeping(self, index: int) -> bool:
-        return self.data.RigidbodyParts(index).Sleeping()
-
-    def get_rigidbody_part_id(self, index: int) -> int:
-        return self.data.RigidbodyParts(index).Id()
-
-    def get_held_left(self) -> np.array:
-        return self.data.HeldLeftAsNumpy()
-
-    def get_held_right(self) -> np.array:
-        return self.data.HeldRightAsNumpy()
-
-    def get_angles_left(self) -> np.array:
-        return self.data.AnglesLeftAsNumpy()
-
-    def get_angles_right(self) -> np.array:
-        return self.data.AnglesRightAsNumpy()
-
-    def get_mitten_center_left_position(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.MittenCenterLeft().Position)
-
-    def get_mitten_center_left_forward(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.MittenCenterLeft().Forward)
-
-    def get_mitten_center_left_rotation(self) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.MittenCenterLeft().Rotation)
-
-    def get_mitten_center_right_position(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.MittenCenterRight().Position)
-
-    def get_mitten_center_right_forward(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.MittenCenterRight().Forward)
-
-    def get_mitten_center_right_rotation(self, index: int) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.MittenCenterRight(index).Rotation)
-
-
 class SegmentationColors(OutputData):
     def __init__(self, b):
         super().__init__(b)
@@ -464,26 +394,6 @@ class AvatarSegmentationColor(OutputData):
 
     def get_segmentation_color(self) -> Tuple[float, float, float]:
         return OutputData._get_rgb(self.data.SegmentationColor())
-
-
-class AvatarStickyMittenSegmentationColors(OutputData):
-    def get_data(self) -> AvSMSC.AvatarStickyMittenSegmentationColors:
-        return AvSMSC.AvatarStickyMittenSegmentationColors.GetRootAsAvatarStickyMittenSegmentationColors(self.bytes, 0)
-
-    def get_id(self) -> str:
-        return self.data.Id().decode('utf-8')
-
-    def get_num_body_parts(self) -> int:
-        return self.data.BodyPartsLength()
-
-    def get_body_part_id(self, index: int) -> int:
-        return self.data.BodyParts(index).Id()
-
-    def get_body_part_segmentation_color(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_rgb(self.data.BodyParts(index).SegmentationColor())
-
-    def get_body_part_name(self, index: int) -> str:
-        return self.data.BodyParts(index).Name().decode('utf-8')
 
 
 class IsOnNavMesh(OutputData):
@@ -590,28 +500,21 @@ class CameraMatrices(OutputData):
 
 
 class IdPassSegmentationColors(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._colors: np.array = self.data.SegmentationColorsAsNumpy().reshape(-1, 3)
+
     def get_data(self) -> IdSC.IdPassSegmentationColors:
         return IdSC.IdPassSegmentationColors.GetRootAsIdPassSegmentationColors(self.bytes, 0)
 
     def get_avatar_id(self) -> str:
         return self.data.AvatarId().decode('utf-8')
 
-    def get_sensor_name(self) -> str:
-        return self.data.SensorName().decode('utf-8')
-
     def get_num_segmentation_colors(self) -> int:
-        return self.data.SegmentationColorsLength()
+        return self._colors.shape[0]
 
-    def get_segmentation_color(self, index: int) -> Tuple[float, float, float]:
-        return OutputData._get_rgb(self.data.SegmentationColors(index))
-
-
-class ArrivedAtNavMeshDestination(OutputData):
-    def get_data(self) -> Arri.ArrivedAtNavMeshDestination:
-        return Arri.ArrivedAtNavMeshDestination.GetRootAsArrivedAtNavMeshDestination(self.bytes, 0)
-
-    def get_avatar_id(self) -> str:
-        return self.data.AvatarId().decode('utf-8')
+    def get_segmentation_color(self, index: int) -> np.array:
+        return self._colors[index]
 
 
 class FlexParticles(OutputData):
@@ -1476,3 +1379,45 @@ class ObiParticles(OutputData):
 
     def get_solver_indices(self, index: int) -> np.array:
         return self.data.Actors(index).SolverIndicesAsNumpy()
+
+
+class Mouse(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._buttons: np.array = self.data.ButtonsAsNumpy().reshape(3, 3)
+
+    def get_data(self) -> Mous.Mouse:
+        return Mous.Mouse.GetRootAsMouse(self.bytes, 0)
+
+    def get_position(self) -> np.array:
+        return self.data.PositionAsNumpy()
+
+    def get_scroll_delta(self) -> np.array:
+        return self.data.ScrollDeltaAsNumpy()
+
+    def get_is_left_button_pressed(self) -> bool:
+        return self._buttons[0][0]
+
+    def get_is_left_button_held(self) -> bool:
+        return self._buttons[0][1]
+
+    def get_is_left_button_released(self) -> bool:
+        return self._buttons[0][2]
+
+    def get_is_middle_button_pressed(self) -> bool:
+        return self._buttons[1][0]
+
+    def get_is_middle_button_held(self) -> bool:
+        return self._buttons[1][1]
+
+    def get_is_middle_button_released(self) -> bool:
+        return self._buttons[1][2]
+
+    def get_is_right_button_pressed(self) -> bool:
+        return self._buttons[2][0]
+
+    def get_is_right_button_held(self) -> bool:
+        return self._buttons[2][1]
+
+    def get_is_right_button_released(self) -> bool:
+        return self._buttons[2][2]

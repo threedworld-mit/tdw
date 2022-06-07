@@ -203,8 +203,10 @@ for i in range(len(resp) - 1):
             segmentation_colors_in_image.append(ipsc.get_segmentation_color(j))
 # Print the ID of each object in the image.
 for object_id in segmentation_colors_per_object:
-    if segmentation_colors_per_object[object_id] in segmentation_colors_in_image:
-        print(object_id)
+    for i in range(len(segmentation_colors_in_image)):
+        if any((segmentation_colors_in_image[i] == j).all() for j in segmentation_colors_per_object.values()):
+            print(object_id)
+            break
 c.communicate({"$type": "terminate"})
 ```
 

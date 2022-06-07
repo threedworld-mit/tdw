@@ -49,15 +49,12 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 # Table of Contents
 | Data Type | Description | Identifier |
 | --- | --- | --- |
-| [ArrivedAtNavMeshDestination](#ArrivedAtNavMeshDestination) | Sent when a NavMeshAvatar arrives at its destination. | `anmd` |
 | [AudioSourceDone](#AudioSourceDone) | Output data that announces that an audio source is done playing. | `ausd` |
 | [AudioSources](#AudioSources) | Audio data for each object in a scene. Note that this will only tell you if any audio is playing; it won't return the audio itself (use an external program to record audio). | `audi` |
 | [AvatarKinematic](#AvatarKinematic) | Data of a kinematic (non-physics) avatar. | `avki` |
 | [AvatarNonKinematic](#AvatarNonKinematic) | Data of a non-kinematic (physics-enabled) avatar with a single body object. | `avnk` |
 | [AvatarSegmentationColor](#AvatarSegmentationColor) | Color segmentation data for an avatar. | `avsc` |
 | [AvatarSimpleBody](#AvatarSimpleBody) | Data of a SimpleBodyAvatar. | `avsb` |
-| [AvatarStickyMitten](#AvatarStickyMitten) | Data of a Sticky Mitten Avatar. | `avsm` |
-| [AvatarStickyMittenSegmentationColors](#AvatarStickyMittenSegmentationColors) | Color segmentation data for a Sticky Mitten Avatar. | `smsc` |
 | [Bounds](#Bounds) | Rotated bounds data. | `boun` |
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
@@ -79,6 +76,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Magnebot](#Magnebot) | Data for a Magnebot. | `magn` |
 | [MagnebotWheels](#MagnebotWheels) | A message sent when a Magnebot arrives at a target. | `mwhe` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
+| [Mouse](#Mouse) | Data for mouse input and movement. | `mous` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
 | [ObiParticles](#ObiParticles) | Obi particle data. | `obip` |
 | [ObjectColliderIntersection](#ObjectColliderIntersection) | Data for two objects whose colliders are intersecting. | `obci` |
@@ -105,18 +103,6 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [VRRig](#VRRig) | Data about the VR rig currently in the scene. | `vrri` |
 
 # API
-## ArrivedAtNavMeshDestination
-
-`a = ArrivedAtNavMeshDestination(byte_array)`
-
-**Identifier:** `anmd`
-
-Sent when a NavMeshAvatar arrives at its destination.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_avatar_id()` | The ID of the avatar in each environment. | `str` |
-
 ## AudioSourceDone
 
 `a = AudioSourceDone(byte_array)`
@@ -210,62 +196,6 @@ Data of a SimpleBodyAvatar.
 | `get_mass()` | The mass. | `float` |
 | `get_sleeping()` | True if the rigidbody is sleeping. | `bool` |
 | `get_visible_body()` | The name of the current visible body. | `str` |
-
-## AvatarStickyMitten
-
-`a = AvatarStickyMitten(byte_array)`
-
-**Identifier:** `avsm`
-
-Data of a Sticky Mitten Avatar.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_avatar_id()` | The ID of the avatar. | `str` |
-| `get_position()` | The local bottom-center position of the avatar. | `Tuple[float, float, float]` |
-| `get_rotation()` | The current rotation of the avatar. | `Tuple[float, float, float, float]` |
-| `get_forward()` | The forward directional vector of the avatar. | `Tuple[float, float, float]` |
-| `get_velocity()` | The directional velocity. | `Tuple[float, float, float]` |
-| `get_angular_velocity()` | The angular velocity. | `Tuple[float, float, float]` |
-| `get_mass()` | The mass. | `float` |
-| `get_sleeping()` | True if the rigidbody is sleeping. | `bool` |
-| `get_num_body_parts()` | The number of body parts. | `int` |
-| `get_num_rigidbody_parts()` | The number of rigidbody parts. | `int` |
-| `get_body_part_position(index)` | The position of the body part. | `Tuple[float, float, float]` |
-| `get_body_part_rotation(index)` | The rotation of the body part. | `Tuple[float, float, float, float]` |
-| `get_body_part_forward(index)` | The forward of the body part. | `Tuple[float, float, float]` |
-| `get_body_part_id(index)` | The ID of the body part. | `int` |
-| `get_rigidbody_part_velocity(index)` | The velocity of the rigidbody part. | `Tuple[float, float, float]` |
-| `get_rigidbody_part_angular_velocity(index)` | The angular velocity of the rigidbody part. | `Tuple[float, float, float]` |
-| `get_rigidbody_part_mass(index)` | The mass of the rigidbody part. | `float` |
-| `get_rigidbody_part_sleeping(index)` | The sleeping of the rigidbody part. | `bool` |
-| `get_rigidbody_part_id(index)` | The ID of the rigidbody part. | `int` |
-| `get_held_left()` | Objects held by the left mitten. | `np.array` |
-| `get_held_right()` | Objects held by the right mitten. | `np.array` |
-| `get_angles_left()` | The angles of each joint in the left arm. Order is: shoulder_left_pitch, shoulder_left_yaw, shoulder_left_roll, elbow_left_pitch, wrist_left_roll, wrist_left_pitch | `np.array` |
-| `get_angles_right()` | The angles of each joint in the right arm. Order is: shoulder_right_pitch, shoulder_right_yaw, shoulder_right_roll, elbow_right_pitch, wrist_right_roll, wrist_right_pitch | `np.array` |
-| `get_mitten_center_left_position()` | The position of the mitten center left. | `Tuple[float, float, float]` |
-| `get_mitten_center_left_forward()` | The forward of the mitten center left. | `Tuple[float, float, float]` |
-| `get_mitten_center_left_rotation()` | The rotation of the mitten center left. | `Tuple[float, float, float, float]` |
-| `get_mitten_center_right_position()` | The position of the mitten center right. | `Tuple[float, float, float]` |
-| `get_mitten_center_right_forward()` | The forward of the mitten center right. | `Tuple[float, float, float]` |
-| `get_mitten_center_right_rotation(index)` | The rotation of the mitten center right. | `Tuple[float, float, float, float]` |
-
-## AvatarStickyMittenSegmentationColors
-
-`a = AvatarStickyMittenSegmentationColors(byte_array)`
-
-**Identifier:** `smsc`
-
-Color segmentation data for a Sticky Mitten Avatar.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_id()` | The ID of the avatar. | `str` |
-| `get_num_body_parts()` | The number of body parts. | `int` |
-| `get_body_part_id(index)` | The ID of the body part. | `int` |
-| `get_body_part_segmentation_color(index)` | The color of the body part segmentation. | `Tuple[float, float, float]` |
-| `get_body_part_name(index)` | The name of the body part. | `str` |
 
 ## Bounds
 
@@ -440,9 +370,8 @@ All segmentation colors in an _id pass.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_avatar_id()` | The ID of the avatar that captured the image. | `str` |
-| `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
 | `get_num_segmentation_colors()` | The number of segmentation colors. | `int` |
-| `get_segmentation_color(index)` | The color of the segmentation. | `Tuple[float, float, float]` |
+| `get_segmentation_color(index)` | The color of the segmentation. | `np.array` |
 
 ## Images
 
@@ -604,6 +533,28 @@ Mesh data from readable objects.
 | `get_num()` | The number of objects. | `int` |
 | `get_vertices(index)` | The (x, y, z) coordinates of each vertex. | `np.array` |
 | `get_triangles(index)` | Each triangle of the mesh. | `np.array` |
+
+## Mouse
+
+`m = Mouse(byte_array)`
+
+**Identifier:** `mous`
+
+Data for mouse input and movement.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_position()` | The (x, y) screen position of the mouse. | `np.array` |
+| `get_scroll_delta()` | The (x, y) delta of the scroll wheel. | `np.array` |
+| `get_is_left_button_pressed()` | The pressed of the is left button. | `bool` |
+| `get_is_left_button_held()` | The held of the is left button. | `bool` |
+| `get_is_left_button_released()` | The released of the is left button. | `bool` |
+| `get_is_middle_button_pressed()` | The pressed of the is middle button. | `bool` |
+| `get_is_middle_button_held()` | The held of the is middle button. | `bool` |
+| `get_is_middle_button_released()` | The released of the is middle button. | `bool` |
+| `get_is_right_button_pressed()` | The pressed of the is right button. | `bool` |
+| `get_is_right_button_held()` | The held of the is right button. | `bool` |
+| `get_is_right_button_released()` | The released of the is right button. | `bool` |
 
 ## NavMeshPath
 

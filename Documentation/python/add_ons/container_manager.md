@@ -2,24 +2,21 @@
 
 `from tdw.add_ons.container_manager import ContainerManager`
 
-Manage trigger collisions for 'container' objects.
+Manage containment events for 'container' objects.
 
 'Containers' can be concave objects such as baskets but they don't have to be. For example, a table surface can be a 'container' and if another object is on that surface, the table is currently 'containing' that object.
 
-An object is 'contained' by a 'container' if:
-
-1. There is a trigger "enter" or "stay" event.
-2. The trigger event is between the object and one of the trigger colliders added via this add-on.
+An object is 'contained' by a 'container' if it overlaps with a "containment" space, for example the interior of a pot.
 
 ***
 
 ## Fields
 
-- `events` A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container ID *(not the trigger ID)*. Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
+- `events` A dictionary describing which objects contain other objects on this frame. This is updated per-frame. Key = The container shape ID (not the object ID). Value = A list of [`ContainmentEvent`](../container_data/containment_event.md) data.
 
-- `trigger_ids` A dictionary of trigger colliders. Key = The trigger ID. Value = The object ID.
+- `container_shapes` A dictionary of container shape IDs. Key = The container shape ID. Value = The object ID.
 
-- `collisions` A list of [`TriggerCollisionEvent`](../collision_data/trigger_collision_event.md) from this frame.
+- `tags` Tags describing each container shape. Key = The container shape ID. Value = [`ContainerTag`](../container_data/container_tag.md).
 
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 
@@ -56,71 +53,6 @@ Any commands in the `self.commands` list will be sent on the next frame.
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
 
-#### add_box_collider
-
-**`self.add_box_collider(object_id, position, scale)`**
-
-**`self.add_box_collider(object_id, position, scale, rotation=None, trigger_id=None, tag=ContainerColliderTag.on)`**
-
-Add a box-shaped trigger collider to an object. Optionally, set the trigger collider's containment semantic tag.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the object. |
-| position |  Dict[str, float] |  | The position of the trigger collider relative to the parent object. |
-| scale |  Dict[str, float] |  | The scale of the trigger collider. |
-| rotation |  Dict[str, float] | None | The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| trigger_id |  int  | None | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
-| tag |  ContainerColliderTag  | ContainerColliderTag.on | The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md). |
-
-_Returns:_  The ID of the trigger collider.
-
-#### add_cylinder_collider
-
-**`self.add_cylinder_collider(object_id, position, scale)`**
-
-**`self.add_cylinder_collider(object_id, position, scale, rotation=None, trigger_id=None, tag=ContainerColliderTag.on)`**
-
-Add a cylinder-shaped trigger collider to an object. Optionally, set the trigger collider's containment semantic tag.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the object. |
-| position |  Dict[str, float] |  | The position of the trigger collider relative to the parent object. |
-| scale |  Dict[str, float] |  | The scale of the trigger collider. |
-| rotation |  Dict[str, float] | None | The rotation of the trigger collider in Euler angles relative to the parent object. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| trigger_id |  int  | None | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
-| tag |  ContainerColliderTag  | ContainerColliderTag.on | The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md). |
-
-_Returns:_  The ID of the trigger collider.
-
-#### add_sphere_collider
-
-**`self.add_sphere_collider(object_id, position, diameter)`**
-
-**`self.add_sphere_collider(object_id, position, diameter, trigger_id=None, tag=ContainerColliderTag.on)`**
-
-Add a sphere-shaped trigger collider to an object. Optionally, set the trigger collider's containment semantic tag.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the object. |
-| position |  Dict[str, float] |  | The position of the trigger collider relative to the parent object. |
-| diameter |  float |  | The diameter of the trigger collider. |
-| trigger_id |  int  | None | The unique ID of the trigger collider. If None, an ID will be automatically assigned. |
-| tag |  ContainerColliderTag  | ContainerColliderTag.on | The semantic [`ContainerColliderTag`](../container_data/container_collider_tag.md). |
-
-_Returns:_  The ID of the trigger collider.
-
-#### reset
-
-**`self.reset()`**
-
-Reset this add-on. Call this before resetting a scene.
-
 #### before_send
 
 **`self.before_send(commands)`**
@@ -130,3 +62,60 @@ This is called before sending commands to the build. By default, this function d
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
+
+#### add_box
+
+**`self.add_box(object_id, position, tag, half_extents, rotation)`**
+
+Add a box container shape to an object.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| object_id |  int |  | The ID of the object. |
+| position |  Dict[str, float] |  | The position of the box relative to the parent object. |
+| tag |  ContainerTag |  | The box's semantic [`ContainerTag`](../container_data/container_tag.md). |
+| half_extents |  Dict[str, float] |  | The half-extents (half the scale) of the box. |
+| rotation |  Dict[str, float] |  | The rotation of the box in Euler angles relative to the parent object. |
+
+_Returns:_  The ID of the container shape.
+
+#### add_cylinder
+
+**`self.add_cylinder(object_id, position, tag, radius, height, rotation)`**
+
+Add a cylinder container shape to an object.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| object_id |  int |  | The ID of the object. |
+| position |  Dict[str, float] |  | The position of the cylinder relative to the parent object. |
+| tag |  ContainerTag |  | The cylinder's semantic [`ContainerTag`](../container_data/container_tag.md). |
+| radius |  float |  | The radius of the cylinder. |
+| height |  float |  | The height of the cylinder. |
+| rotation |  Dict[str, float] |  | The rotation of the cylinder in Euler angles relative to the parent object. |
+
+_Returns:_  The ID of the container shape.
+
+#### add_sphere
+
+**`self.add_sphere(object_id, position, tag, radius)`**
+
+Add a sphere container shape to an object.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| object_id |  int |  | The ID of the object. |
+| position |  Dict[str, float] |  | The position of the sphere relative to the parent object. |
+| tag |  ContainerTag |  | The sphere's semantic [`ContainerTag`](../container_data/container_tag.md). |
+| radius |  float |  | The radius of the sphere. |
+
+_Returns:_  The ID of the container shape.
+
+#### reset
+
+**`self.reset()`**
+
+Reset this add-on. Call this before resetting a scene.

@@ -19,25 +19,100 @@ class Transforms(object):
         self._tab = tdw.flatbuffers.table.Table(buf, pos)
 
     # Transforms
-    def Objects(self, j):
+    def Ids(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
-            x = self._tab.Vector(o)
-            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 44
-            from .TransformData import TransformData
-            obj = TransformData()
-            obj.Init(self._tab.Bytes, x)
-            return obj
-        return None
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
 
     # Transforms
-    def ObjectsLength(self):
+    def IdsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
+        return 0
+
+    # Transforms
+    def IdsLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def TransformsStart(builder): builder.StartObject(1)
-def TransformsAddObjects(builder, objects): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(objects), 0)
-def TransformsStartObjectsVector(builder, numElems): return builder.StartVector(44, numElems, 4)
+    # Transforms
+    def Positions(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # Transforms
+    def PositionsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
+        return 0
+
+    # Transforms
+    def PositionsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Transforms
+    def Rotations(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # Transforms
+    def RotationsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
+        return 0
+
+    # Transforms
+    def RotationsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Transforms
+    def Forwards(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # Transforms
+    def ForwardsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
+        return 0
+
+    # Transforms
+    def ForwardsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def TransformsStart(builder): builder.StartObject(4)
+def TransformsAddIds(builder, ids): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(ids), 0)
+def TransformsStartIdsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TransformsAddPositions(builder, positions): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(positions), 0)
+def TransformsStartPositionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TransformsAddRotations(builder, rotations): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(rotations), 0)
+def TransformsStartRotationsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TransformsAddForwards(builder, forwards): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(forwards), 0)
+def TransformsStartForwardsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def TransformsEnd(builder): return builder.EndObject()

@@ -24,6 +24,7 @@
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
+| [`set_cursor`](#set_cursor) | Set cursor parameters. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
 | [`set_error_handling`](#set_error_handling) | Set whether TDW will quit when it logs different types of messages.  |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
@@ -122,71 +123,13 @@
 
 | Command | Description |
 | --- | --- |
-| [`set_avatar_rigidbody_constraints`](#set_avatar_rigidbody_constraints) | Set the rigidbody constraints of a Sticky Mitten Avatar.  |
-
-**Nav Mesh Avatar Command**
-
-| Command | Description |
-| --- | --- |
-| [`set_nav_mesh_avatar`](#set_nav_mesh_avatar) | Set the pathfinding parameters of a NavMeshAvatar. You should send this command before beginning navigation, but it can also be adjusted on-the-fly. |
-| [`set_nav_mesh_avatar_destination`](#set_nav_mesh_avatar_destination) | Set the target destination of a NavMeshAvatar. |
+| [`set_first_person_avatar`](#set_first_person_avatar) | Set the parameters of an A_First_Person avatar. |
 
 **Simple Body Command**
 
 | Command | Description |
 | --- | --- |
 | [`change_avatar_body`](#change_avatar_body) | Change the body of a SimpleBodyAvatar. |
-
-**Sticky Mitten Avatar Command**
-
-| Command | Description |
-| --- | --- |
-| [`rotate_head_by`](#rotate_head_by) | Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85.  |
-| [`rotate_waist`](#rotate_waist) | Rotate the waist of a StickyMittenAvatar.  |
-| [`set_sticky_mitten_profile`](#set_sticky_mitten_profile) | Set the parameters of the avatar, arms, and mittens.  |
-
-**Arm Joint Command**
-
-| Command | Description |
-| --- | --- |
-| [`stop_arm_joint`](#stop_arm_joint) | Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself.  |
-
-**Bend Arm Joint Command**
-
-| Command | Description |
-| --- | --- |
-| [`bend_arm_joint_by`](#bend_arm_joint_by) | Bend the arm joint by an angle. The angle is added to the current joint angle.  |
-| [`bend_arm_joint_to`](#bend_arm_joint_to) | Bend the arm joint to the target angle.  |
-
-**Joint Angular Drag Command**
-
-| Command | Description |
-| --- | --- |
-| [`adjust_joint_angular_drag_by`](#adjust_joint_angular_drag_by) | Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower.  |
-| [`set_joint_angular_drag`](#set_joint_angular_drag) | Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower.  |
-
-**Joint Spring Command**
-
-| Command | Description |
-| --- | --- |
-| [`adjust_joint_damper_by`](#adjust_joint_damper_by) | Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster.  |
-| [`adjust_joint_force_by`](#adjust_joint_force_by) | Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta.  |
-| [`set_joint_damper`](#set_joint_damper) | Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster.  |
-| [`set_joint_force`](#set_joint_force) | Set the force of a joint of a Sticky Mitten Avatar.  |
-
-**Use Mitten Command**
-
-| Command | Description |
-| --- | --- |
-| [`put_down`](#put_down) | Put down all objects held by the mitten.  |
-| [`set_stickiness`](#set_stickiness) | Set the stickiness of one sub-mitten of the mitten.  |
-
-**Pick Up Command**
-
-| Command | Description |
-| --- | --- |
-| [`pick_up`](#pick_up) | Pick up all objects that any sticky side of the mitten is touching.  |
-| [`pick_up_proximity`](#pick_up_proximity) | Pick up all objects within an emitted volume defined by a radius and a distance. See Sticky Mitten Avatar documentation for more information.  |
 
 **Move Avatar Towards**
 
@@ -352,6 +295,14 @@
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
 | [`unparent_object`](#unparent_object) | Unparent an object from an object. If the textured quad doesn't have a parent, this command doesn't do anything. |
 
+**Add Container Shape Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_box_container`](#add_box_container) | Add a box container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
+| [`add_cylinder_container`](#add_cylinder_container) | Add a cylindrical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
+| [`add_sphere_container`](#add_sphere_container) | Add a spherical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
+
 **Flex Object Command**
 
 | Command | Description |
@@ -387,6 +338,7 @@
 | [`set_object_physics_solver_iterations`](#set_object_physics_solver_iterations) | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: [set_physics_solver_iterations](#set_physics_solver_iterations) which sets the global default number of solver iterations. |
 | [`set_primitive_visual_material`](#set_primitive_visual_material) | Set the material of an object created via load_primitive_from_resources  |
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
+| [`set_sub_object_id`](#set_sub_object_id) | Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique. |
 | [`show_collider_hulls`](#show_collider_hulls) | Show the collider hulls of the object.  |
 | [`untether_obi_cloth_sheet`](#untether_obi_cloth_sheet) | Untether a cloth sheet at a specified position.  |
 
@@ -416,6 +368,7 @@
 | --- | --- |
 | [`set_texture_scale`](#set_texture_scale) | Set the scale of the tiling of the material's main texture. |
 | [`set_visual_material`](#set_visual_material) | Set a visual material of an object or one of its sub-objects.  |
+| [`set_visual_material_smoothness`](#set_visual_material_smoothness) | Set the smoothness (glossiness) of an object's visual material. |
 
 **Set Flex Actor**
 
@@ -484,17 +437,11 @@
 
 **Proc Gen Floor Command**
 
-| Command | Description |
-| --- | --- |
-| [`set_proc_gen_floor_color`](#set_proc_gen_floor_color) | Set the albedo RGBA color of the floor.  |
-| [`set_proc_gen_floor_texture_scale`](#set_proc_gen_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture.  |
-
 **Proc Gen Material Command**
 
 | Command | Description |
 | --- | --- |
 | [`set_proc_gen_ceiling_material`](#set_proc_gen_ceiling_material) | Set the material of a procedurally-generated ceiling.  |
-| [`set_proc_gen_floor_material`](#set_proc_gen_floor_material) | Set the material of a procedurally-generated floor.  |
 | [`set_proc_gen_walls_material`](#set_proc_gen_walls_material) | Set the material of all procedurally-generated walls.  |
 
 **Proc Gen Walls Command**
@@ -573,6 +520,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_boxcast`](#send_boxcast) | Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
+| [`send_mouse_raycast`](#send_mouse_raycast) | Raycast from a camera through the mouse screen position.  |
 | [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
 | [`send_spherecast`](#send_spherecast) | Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
 
@@ -588,6 +536,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_collider_intersections`](#send_collider_intersections) | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider.  |
+| [`send_containment`](#send_containment) | Send containment data using container shapes. See: <computeroutput>add_box_container</computeroutput>, <computeroutput>add_cylinder_container</computeroutput>, and <computeroutput>add_sphere_container</computeroutput>. Container shapes will check for overlaps with other objects.  |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
 | [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
 | [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations.  |
@@ -615,13 +564,13 @@
 | --- | --- |
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
-| [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
 | [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
+| [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
@@ -771,11 +720,11 @@ Create an avatar (agent).
 
 
 ```python
-{"$type": "create_avatar", "type": "A_Img_Caps"}
+{"$type": "create_avatar", "type": "A_Simple_Body"}
 ```
 
 ```python
-{"$type": "create_avatar", "type": "A_Img_Caps", "id": "a"}
+{"$type": "create_avatar", "type": "A_Simple_Body", "id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -789,12 +738,9 @@ A type of avatar that can be created in TDW.
 
 | Value | Description |
 | --- | --- |
-| `"A_Img_Caps"` | An avatar with a capsule body. |
-| `"A_StickyMitten_Baby"` | Baby avatar with arms and sticky mittens. See: Documentation/misc_frontend/sticky_mitten_avatar.md |
-| `"A_StickyMitten_Adult"` | Adult avatar with arms and sticky mittens. See: Documentation/misc_frontend/sticky_mitten_avatar.md |
 | `"A_Simple_Body"` | An avatar that can toggle between multiple simply body types. See: change_avatar_body in the Command API. |
 | `"A_Img_Caps_Kinematic"` | An avatar without a body; a "floating camera". |
-| `"A_Nav_Mesh"` | A NavMeshAvatar, which can respond to Unity's built in pathfinding system. See "Nav Mesh Commands" in the Command API. |
+| `"A_First_Person"` | An avatar with first-person keyboard and mouse controls. |
 
 ***
 
@@ -1034,6 +980,26 @@ Set how much the ambient light fom the source affects the scene. Low values will
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"intensity"` | float | The intensity of the ambient lighting in the scene. | 1.0 |
+
+***
+
+## **`set_cursor`**
+
+Set cursor parameters.
+
+
+```python
+{"$type": "set_cursor"}
+```
+
+```python
+{"$type": "set_cursor", "visible": True, "locked": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"visible"` | bool | If True, the cursor is visible. | True |
+| `"locked"` | bool | If True, the cursor is locked to the center of the screen. | False |
 
 ***
 
@@ -2220,71 +2186,29 @@ These commands work only for the specified avatar subclass.
 
 ***
 
-## **`set_avatar_rigidbody_constraints`**
+## **`set_first_person_avatar`**
 
-Set the rigidbody constraints of a Sticky Mitten Avatar. 
+Set the parameters of an A_First_Person avatar.
 
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
-{"$type": "set_avatar_rigidbody_constraints"}
+{"$type": "set_first_person_avatar"}
 ```
 
 ```python
-{"$type": "set_avatar_rigidbody_constraints", "rotate": True, "translate": True, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rotate"` | bool | If true, let the avatar rotate. | True |
-| `"translate"` | bool | If true, let the avatar translate. | True |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-# NavMeshAvatarCommand
-
-These commands allow a NavMeshAvatar to utilize Unity's built-in pathfinding system (see "Nav Mesh Command").
-
-***
-
-## **`set_nav_mesh_avatar`**
-
-Set the pathfinding parameters of a NavMeshAvatar. You should send this command before beginning navigation, but it can also be adjusted on-the-fly.
-
-
-```python
-{"$type": "set_nav_mesh_avatar"}
-```
-
-```python
-{"$type": "set_nav_mesh_avatar", "speed": 3.5, "angular_speed": 120, "acceleration": 8, "stopping_distance": 0.1, "avatar_id": "a"}
+{"$type": "set_first_person_avatar", "height": 1.6, "camera_height": 1.4, "radius": 0.5, "slope_limit": 15, "detect_collisions": True, "move_speed": 1.5, "look_speed": 50, "look_x_limit": 45, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"speed"` | float | The maximum speed of the avatar. | 3.5 |
-| `"angular_speed"` | float | The maximum angular speed of the avatar. | 120 |
-| `"acceleration"` | float | The maximum acceleration of the avatar. | 8 |
-| `"stopping_distance"` | float | At this distance or less from the destination, the avatar has "arrived". | 0.1 |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
-## **`set_nav_mesh_avatar_destination`**
-
-Set the target destination of a NavMeshAvatar.
-
-
-```python
-{"$type": "set_nav_mesh_avatar_destination", "destination": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "set_nav_mesh_avatar_destination", "destination": {"x": 1.1, "y": 0.0, "z": 0}, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"destination"` | Vector3 | The destination position. Must be within the NavMesh. | |
+| `"height"` | float | The height of the avatar. | 1.6 |
+| `"camera_height"` | float | The height of the camera. | 1.4 |
+| `"radius"` | float | The radius of the avatar. | 0.5 |
+| `"slope_limit"` | float | The avatar can only climb slopes up to this many degrees. | 15 |
+| `"detect_collisions"` | bool | If True, the avatar will collide with other objects. | True |
+| `"move_speed"` | float | The move speed in meters per second. | 1.5 |
+| `"look_speed"` | float | The camera rotation speed in degrees per second. | 50 |
+| `"look_x_limit"` | float | The camera rotation limit around the x axis in degrees. | 45 |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 # SimpleBodyCommand
@@ -2321,625 +2245,6 @@ Enum of body types for a SimpleBodyAvatar.
 | `"Capsule"` |  |
 | `"Cylinder"` |  |
 | `"Sphere"` |  |
-
-# StickyMittenAvatarCommand
-
-These commands are only valid for a StickyMittenAvatar.
-
-***
-
-## **`rotate_head_by`**
-
-Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "rotate_head_by", "axis": "pitch", "angle": 0.125}
-```
-
-```python
-{"$type": "rotate_head_by", "axis": "pitch", "angle": 0.125, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"axis"` | Axis | The axis of rotation. | |
-| `"angle"` | float | The angle of rotation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-***
-
-## **`rotate_waist`**
-
-Rotate the waist of a StickyMittenAvatar. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "rotate_waist", "rotation": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "rotate_waist", "rotation": {"x": 1.1, "y": 0.0, "z": 0}, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rotation"` | Vector3 | The rotation in Euler angles. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
-## **`set_sticky_mitten_profile`**
-
-Set the parameters of the avatar, arms, and mittens. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_sticky_mitten_profile", "profile": {"mass": 80.0, "arm_left": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}, "arm_right": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}}}
-```
-
-```python
-{"$type": "set_sticky_mitten_profile", "profile": {"mass": 80.0, "arm_left": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}, "arm_right": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}}, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"profile"` | StickyMittenProfile | The profile. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-# ArmJointCommand
-
-These commands affect a single joint, around a single rotational axis, of a Sticky Mitten Avatar.
-
-***
-
-## **`stop_arm_joint`**
-
-Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "stop_arm_joint", "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "stop_arm_joint", "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-# BendArmJointCommand
-
-These commands bend arm joints of a Sticky Mitten Avatar.
-
-***
-
-## **`bend_arm_joint_by`**
-
-Bend the arm joint by an angle. The angle is added to the current joint angle. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "bend_arm_joint_by", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "bend_arm_joint_by", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"angle"` | float | The target angle. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-***
-
-## **`bend_arm_joint_to`**
-
-Bend the arm joint to the target angle. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "bend_arm_joint_to", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "bend_arm_joint_to", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"angle"` | float | The target angle. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-# JointAngularDragCommand
-
-Set the angular drag of a joint of a Sticky Mitten Avatar.
-
-***
-
-## **`adjust_joint_angular_drag_by`**
-
-Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "adjust_joint_angular_drag_by", "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "adjust_joint_angular_drag_by", "joint": "shoulder_left", "axis": "pitch", "delta": 0, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"delta"` | float | Adjust the current angular drag of the joint by this delta. By default, the angular joints of all joints is 0. | 0 |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-***
-
-## **`set_joint_angular_drag`**
-
-Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_joint_angular_drag", "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "set_joint_angular_drag", "joint": "shoulder_left", "axis": "pitch", "angular_drag": 0, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"angular_drag"` | float | The angular drag for the joint. | 0 |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-# JointSpringCommand
-
-These commands adjust the values of the joint spring (force and damper).
-
-***
-
-## **`adjust_joint_damper_by`**
-
-Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "adjust_joint_damper_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "adjust_joint_damper_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"delta"` | float | Adjust the current damper of the joint by this delta. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-***
-
-## **`adjust_joint_force_by`**
-
-Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "adjust_joint_force_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "adjust_joint_force_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"delta"` | float | Adjust the current force of the joint by this delta. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-***
-
-## **`set_joint_damper`**
-
-Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_joint_damper", "damper": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "set_joint_damper", "damper": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"damper"` | float | The new damper value. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-***
-
-## **`set_joint_force`**
-
-Set the force of a joint of a Sticky Mitten Avatar. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_joint_force", "force": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "set_joint_force", "force": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"force"` | float | The new force. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-# UseMittenCommand
-
-These commands utilize a StickyMitten.
-
-***
-
-## **`put_down`**
-
-Put down all objects held by the mitten. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "put_down", "is_left": True}
-```
-
-```python
-{"$type": "put_down", "is_left": True, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
-## **`set_stickiness`**
-
-Set the stickiness of one sub-mitten of the mitten. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_stickiness", "sub_mitten": "palm", "sticky": True, "is_left": True}
-```
-
-```python
-{"$type": "set_stickiness", "sub_mitten": "palm", "sticky": True, "is_left": True, "show": True, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"sub_mitten"` | StickySubMittenType | The sub-mitten of the mitten. | |
-| `"sticky"` | bool | If true, the sub-mitten will be sticky. | |
-| `"show"` | bool | If true, colorize the sides of the mitten that are sticky. | True |
-| `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### StickySubMittenType
-
-Types of sub-mittens.
-
-| Value | Description |
-| --- | --- |
-| `"palm"` | The palm of the mitten. Default sticky = true |
-| `"back"` | The backhand of the mitten. Default sticky = false |
-| `"side"` | The sides of the mitten. Default sticky = false |
-
-# PickUpCommand
-
-These commands involve picking something up with a StickyMitten. Any objects that are part of an arm, or that are already being picked up, are ignored.
-
-***
-
-## **`pick_up`**
-
-Pick up all objects that any sticky side of the mitten is touching. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "pick_up", "grip": 0.125, "is_left": True}
-```
-
-```python
-{"$type": "pick_up", "grip": 0.125, "is_left": True, "object_ids": [], "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"grip"` | float | Define the mitten's "grip" on an object. The greater the grip, the more force is needed to break the connection between the mitten and the object(s). | |
-| `"object_ids"` | int[] | The ID of the target object(s). If this an empty list, all objects in range will be picked up. Otherwise, only these objects will be picked up (if in range). | [] |
-| `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
-## **`pick_up_proximity`**
-
-Pick up all objects within an emitted volume defined by a radius and a distance. See Sticky Mitten Avatar documentation for more information. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "pick_up_proximity", "distance": 0.125, "grip": 0.125, "is_left": True}
-```
-
-```python
-{"$type": "pick_up_proximity", "distance": 0.125, "grip": 0.125, "is_left": True, "radius": 0.125, "object_ids": [], "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"radius"` | float | The radius of the zone of detection. | 0.125 |
-| `"distance"` | float | The desired object must be within this distance of the mitten. | |
-| `"grip"` | float | Define the mitten's "grip" on an object. The greater the grip, the more force is needed to break the connection between the mitten and the object(s). | |
-| `"object_ids"` | int[] | The ID of the target object(s). If this an empty list, all objects in range will be picked up. Otherwise, only these objects will be picked up (if in range). | [] |
-| `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 # MoveAvatarTowards
 
@@ -4782,6 +4087,88 @@ Unparent an object from an object. If the textured quad doesn't have a parent, t
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
+# AddContainerShapeCommand
+
+These commands add container shapes to an object. Container shapes will check each frame for whether their container shapes overlap with other objects and send output data accordingly.
+
+***
+
+## **`add_box_container`**
+
+Add a box container shape to an object. The object will send output data whenever other objects overlap with this volume. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "add_box_container", "id": 1}
+```
+
+```python
+{"$type": "add_box_container", "id": 1, "half_extents": {"x": 1, "y": 1, "z": 1}, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"half_extents"` | Vector3 | The half extents of the box. | {"x": 1, "y": 1, "z": 1} |
+| `"rotation"` | Vector3 | The rotation of the box in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
+| `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`add_cylinder_container`**
+
+Add a cylindrical container shape to an object. The object will send output data whenever other objects overlap with this volume. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "add_cylinder_container", "id": 1}
+```
+
+```python
+{"$type": "add_cylinder_container", "id": 1, "radius": 0.5, "height": 1, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"radius"` | float | The radius of the cylinder. | 0.5 |
+| `"height"` | float | The height of the cylinder. | 1 |
+| `"rotation"` | Vector3 | The rotation of the cylinder in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
+| `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`add_sphere_container`**
+
+Add a spherical container shape to an object. The object will send output data whenever other objects overlap with this volume. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "add_sphere_container", "id": 1}
+```
+
+```python
+{"$type": "add_sphere_container", "id": 1, "radius": 0.5, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"radius"` | float | The radius of the sphere. | 0.5 |
+| `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
+| `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
 # FlexObjectCommand
 
 These commands apply only to objects that already have FlexActor components.
@@ -5357,6 +4744,23 @@ An enum value representation of a semantic material category.
 
 ***
 
+## **`set_sub_object_id`**
+
+Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique.
+
+
+```python
+{"$type": "set_sub_object_id", "sub_object_name": "string", "sub_object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"sub_object_name"` | string | The expected name of the sub-object. | |
+| `"sub_object_id"` | int | The new ID of the sub-object. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`show_collider_hulls`**
 
 Show the collider hulls of the object. 
@@ -5644,6 +5048,28 @@ Set a visual material of an object or one of its sub-objects.
 | --- | --- | --- | --- |
 | `"material_index"` | int | The index of the material in the sub-object's list of materials. | |
 | `"material_name"` | string | The name of the material. | |
+| `"object_name"` | string | The name of the sub-object. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_visual_material_smoothness`**
+
+Set the smoothness (glossiness) of an object's visual material.
+
+
+```python
+{"$type": "set_visual_material_smoothness", "object_name": "string", "id": 1}
+```
+
+```python
+{"$type": "set_visual_material_smoothness", "object_name": "string", "id": 1, "smoothness": 0, "material_index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"smoothness"` | float | The material smoothness. Must be between 0 and 1. | 0 |
+| `"material_index"` | int | The index of the material in the sub-object's list of materials. | 0 |
 | `"object_name"` | string | The name of the sub-object. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -6273,42 +5699,6 @@ Destroy ceiling tiles from a procedurally-created ceiling.
 
 These commands modify the floor of a procedurally-generated room.
 
-***
-
-## **`set_proc_gen_floor_color`**
-
-Set the albedo RGBA color of the floor. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"color"` | Color | The new albedo RGBA color of the floor. | |
-
-***
-
-## **`set_proc_gen_floor_texture_scale`**
-
-Set the scale of the tiling of the floor material's main texture. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_texture_scale"}
-```
-
-```python
-{"$type": "set_proc_gen_floor_texture_scale", "scale": {"x": 1, "y": 1}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale"` | Vector2 | The tiling scale of the material. Generally (but by no means always), the default tiling scale of a texture is {"x": 1, "y": 1} | {"x": 1, "y": 1} |
-
 # ProcGenMaterialCommand
 
 These commands add a material to part of the proc-gen room.
@@ -6323,23 +5713,6 @@ Set the material of a procedurally-generated ceiling.
 
 ```python
 {"$type": "set_proc_gen_ceiling_material", "name": "string"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"name"` | string | The name of the material. The material must already be loaded in memory. | |
-
-***
-
-## **`set_proc_gen_floor_material`**
-
-Set the material of a procedurally-generated floor. 
-
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_material", "name": "string"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7133,18 +6506,45 @@ Cast a box along a direction and return the results. The can be multiple hits, e
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
 ```python
-{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}}
 ```
 
 ```python
-{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"half_extents"` | Vector3 | The half-extents of the box. | |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
+
+***
+
+## **`send_mouse_raycast`**
+
+Raycast from a camera through the mouse screen position. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_mouse_raycast"}
+```
+
+```python
+{"$type": "send_mouse_raycast", "avatar_id": "a", "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar of the rendering camera. | "a" |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 ***
@@ -7160,17 +6560,17 @@ Cast a ray from the origin to the destination.
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
 ```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "send_raycast"}
 ```
 
 ```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+{"$type": "send_raycast", "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 ***
@@ -7186,18 +6586,18 @@ Cast a sphere along a direction and return the results. The can be multiple hits
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
 ```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "send_spherecast", "radius": 0.125}
 ```
 
 ```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"radius"` | float | The radius of the sphere. | |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 # SingletonSubscriberCommand
@@ -7270,6 +6670,38 @@ Send data for collider intersections between pairs of objects and between single
 | --- | --- | --- | --- |
 | `"obj_intersection_ids"` | int [] | Pairs of object IDs, for example <computeroutput>[[0, 1], [0, 2]]</computeroutput>. Object IDs pairs in this array will be tested for collider intersections with each other. | [] |
 | `"env_intersection_ids"` | int [] | A one-dimensional list of object IDs, for example <computeroutput>[0, 1, 2]</computeroutput>. Object IDs in this list will be tested for collider intersections with the environment. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_containment`**
+
+Send containment data using container shapes. See: <computeroutput>add_box_container</computeroutput>, <computeroutput>add_cylinder_container</computeroutput>, and <computeroutput>add_sphere_container</computeroutput>. Container shapes will check for overlaps with other objects. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "send_containment"}
+```
+
+```python
+{"$type": "send_containment", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -7494,7 +6926,7 @@ Send data for avatars in the scene.
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`AvatarKinematic`](output_data.md#AvatarKinematic), [`AvatarNonKinematic`](output_data.md#AvatarNonKinematic), [`AvatarSimpleBody`](output_data.md#AvatarSimpleBody), [`AvatarStickyMitten`](output_data.md#AvatarStickyMitten)</font>
+    - <font style="color:green">**Type:** [`AvatarKinematic`](output_data.md#AvatarKinematic), [`AvatarSimpleBody`](output_data.md#AvatarSimpleBody)</font>
 
 ```python
 {"$type": "send_avatars"}
@@ -7856,39 +7288,6 @@ Options for when to send data.
 
 ***
 
-## **`send_composite_objects`**
-
-Send data for every composite object in the scene. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`CompositeObjects`](output_data.md#CompositeObjects)</font>
-
-```python
-{"$type": "send_composite_objects"}
-```
-
-```python
-{"$type": "send_composite_objects", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_dynamic_composite_objects`**
 
 Send dynamic data for every composite object in the scene. 
@@ -7962,16 +7361,16 @@ Send transform (position, rotation, etc.) data for humanoids in the scene.
     - <font style="color:green">**Type:** [`Transforms`](output_data.md#Transforms)</font>
 
 ```python
-{"$type": "send_humanoids", "ids": [1, 2, 3]}
+{"$type": "send_humanoids", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_humanoids", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_humanoids", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the humanoids. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the humanoids. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8066,6 +7465,38 @@ Send data for each directional light and point light in the scene.
 
 ```python
 {"$type": "send_lights", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_mouse`**
+
+Send mouse output data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Mouse`](output_data.md#Mouse)</font>
+
+```python
+{"$type": "send_mouse"}
+```
+
+```python
+{"$type": "send_mouse", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8364,16 +7795,16 @@ Send rotated bounds data of objects in the scene.
     - <font style="color:green">**Type:** [`Bounds`](output_data.md#Bounds)</font>
 
 ```python
-{"$type": "send_bounds", "ids": [1, 2, 3]}
+{"$type": "send_bounds", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_bounds", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_bounds", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8400,16 +7831,16 @@ Send Transform (position and rotation) data of objects in the scene relative to 
     - <font style="color:red">**Use this command instead:** `send_transforms`</font>
 
 ```python
-{"$type": "send_local_transforms", "ids": [1, 2, 3]}
+{"$type": "send_local_transforms", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_local_transforms", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_local_transforms", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8433,16 +7864,16 @@ Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.
     - <font style="color:green">**Type:** [`Rigidbodies`](output_data.md#Rigidbodies)</font>
 
 ```python
-{"$type": "send_rigidbodies", "ids": [1, 2, 3]}
+{"$type": "send_rigidbodies", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_rigidbodies", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_rigidbodies", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8464,18 +7895,19 @@ Send segmentation color data for objects in the scene.
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`SegmentationColors`](output_data.md#SegmentationColors)</font>
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 
 ```python
-{"$type": "send_segmentation_colors", "ids": [1, 2, 3]}
+{"$type": "send_segmentation_colors", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_segmentation_colors", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_segmentation_colors", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8499,16 +7931,16 @@ Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene
     - <font style="color:green">**Type:** [`StaticRigidbodies`](output_data.md#StaticRigidbodies)</font>
 
 ```python
-{"$type": "send_static_rigidbodies", "ids": [1, 2, 3]}
+{"$type": "send_static_rigidbodies", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_static_rigidbodies", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_static_rigidbodies", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8532,16 +7964,16 @@ Send Transform (position and rotation) data of objects in the scene.
     - <font style="color:green">**Type:** [`Transforms`](output_data.md#Transforms)</font>
 
 ```python
-{"$type": "send_transforms", "ids": [1, 2, 3]}
+{"$type": "send_transforms", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_transforms", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_transforms", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8567,16 +7999,16 @@ Send spatial volume data of objects in the scene. Volume is calculated from the 
 - <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
 
 ```python
-{"$type": "send_volumes", "ids": [1, 2, 3]}
+{"$type": "send_volumes", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_volumes", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_volumes", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8887,7 +8319,7 @@ Add a UI image to the scene. Note that the size parameter must match the actual 
 ```
 
 ```python
-{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "canvas_id": 0}
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8900,6 +8332,7 @@ Add a UI image to the scene. Note that the size parameter must match the actual 
 | `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
 | `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
 | `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
@@ -8915,7 +8348,7 @@ Add UI text to the scene.
 ```
 
 ```python
-{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "canvas_id": 0}
+{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8926,6 +8359,7 @@ Add UI text to the scene.
 | `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
 | `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
 | `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 

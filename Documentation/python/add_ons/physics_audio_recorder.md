@@ -66,13 +66,15 @@ This is called before sending commands to the build. By default, this function d
 
 #### start
 
-**`self.start(path)`**
+**`self.start()`**
+
+**`self.start(path=None)`**
 
 Start recording.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | The path to the output .wav file. |
+| path |  Union[str, Path] | None | The path to the output .wav file. If None, defaults to the current working directory. |
 
 #### stop
 

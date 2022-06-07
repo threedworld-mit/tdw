@@ -79,26 +79,28 @@ class PhysicsAudioRecorder(AddOn):
         if sleeping and not playing_audio:
             self.stop()
 
-    def start(self, path: Union[str, Path]) -> None:
+    def start(self, path: Union[str, Path] = None) -> None:
         """
         Start recording.
 
-        :param path: The path to the output .wav file.
+        :param path: The path to the output .wav file. If None, defaults to the current working directory.
         """
 
         # Don't start a new recording if one is ongoing.
         if not self.done:
             return
         self.done = False
-        if isinstance(path, str):
-            self.path = Path(path)
-        else:
-            self.path = path
-        if not self.path.parent.exists:
-            self.path.parent.mkdir(parents=True)
-        if self.path.exists():
-            self.path.unlink()
-
+        if self._record_audio:
+            if path is None:
+                self.path = Path("")
+            elif isinstance(path, str):
+                self.path = Path(path)
+            else:
+                self.path = path
+            if not self.path.parent.exists:
+                self.path.parent.mkdir(parents=True)
+            if self.path.exists():
+                self.path.unlink()
         self._frame = 0
         # Start listening.
         if self._record_audio:

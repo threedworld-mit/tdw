@@ -50,7 +50,7 @@ Whenever you [reset a scene](../scene_setup_high_level/reset_scene.md), call `ob
 
 ## Limitations
 
-- At present, only Obi fluids have been implemented in TDW. Cloth will soon be added, followed by softbody objects.
+- At present, only Obi fluids and cloth have been implemented in TDW. Softbody objects will be added soon.
 - Robots aren't fully supported in Obi and Magnebots won't work at all. For more information, [read this](robots.md).
 
 ## Obi documentation

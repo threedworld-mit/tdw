@@ -146,7 +146,7 @@ The `room_index` parameter is mostly for future-proofing `ProcGenKitchen` for a 
 
 ### `TALL_ARRANGEMENTS`
 
-`ProcGenKitchen.TALL_ARRANGEMENTS` A list of lowercase names of "tall" [Arrangements](arrangements):
+`ProcGenKitchen.TALL_ARRANGEMENTS` A list of lowercase names of "tall" [Arrangements](arrangements.md):
 
 ```python
 from tdw.add_ons.proc_gen_kitchen import ProcGenKitchen

@@ -62,7 +62,7 @@ In the `scene` parameter, the number (1, 2, 4, or 5) defines the geometry of the
 
 ## Images of every scene+layout combination
 
-[**Images of every scene+layout combination can be found here.**](https://github.com/threedworld-mit/tdw/blob/master/Documentation/lessons/objects_and_scenes/images/floorplans) 
+[**Images of every scene+layout combination can be found here.**](https://github.com/threedworld-mit/tdw/blob/master/Documentation/lessons/scene_setup_high_level/images/floorplans) 
 
 ***
 

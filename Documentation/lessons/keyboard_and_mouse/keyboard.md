@@ -87,7 +87,7 @@ The `Keyboard` add-on sends [`send_keyboard`](../../api/command_api.md#send_keyb
 
 Example controllers:
 
-- [keyboard_minimal.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/keyboard/keyboard_minimal.py) Minimal keyboard example. Press Escape to quit.
+- [keyboard_minimal.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/keyboard_and_mouse/keyboard_minimal.py) Minimal keyboard example. Press Escape to quit.
 
 Python API:
 

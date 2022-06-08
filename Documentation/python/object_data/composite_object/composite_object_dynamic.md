@@ -13,9 +13,9 @@ For example, non-machines have dynamic positions, velocities, etc. but these can
 
 - `object_id` The ID of the root object.
 
-- `lights` [`LightDynamic`](sub_object/light_dynamic.md) sub-objects such as lamp lightbulbs. Key = The sub-object ID.
+- `hinges` A dictionary of [`HingeDynamic`](sub_object/hinge_dynamic.md) sub-objects, which includes all hinges, springs, and motors.
 
-- `hinges` [`HingeDynamic`](sub_object/hinge_dynamic.md) sub-objects. *This includes the root object's hinges, springs, and motors.* Key = The sub-object ID.
+- `lights` A dictionary of [`LightDynamic`](sub_object/light_dynamic.md) sub-objects such as lamp lightbulbs.
 
 ***
 
@@ -23,10 +23,11 @@ For example, non-machines have dynamic positions, velocities, etc. but these can
 
 #### \_\_init\_\_
 
-**`CompositeObjectDynamic(dynamic_composite_objects, object_index)`**
+**`CompositeObjectDynamic(object_id, hinges, lights)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| dynamic_composite_objects |  DynamicCompositeObjects |  | The `DynamicCompositeObjects` output data. |
-| object_index |  int |  | The index in `dynamic_composite_objects.get_object_id()`. |
+| object_id |  int |  | The ID of the root object. |
+| hinges |  Dict[int, HingeDynamic] |  | A dictionary of [`HingeDynamic`](sub_object/hinge_dynamic.md) sub-objects, which includes all hinges, springs, and motors. |
+| lights |  Dict[int, LightDynamic] |  | A dictionary of [`LightDynamic`](sub_object/light_dynamic.md) sub-objects such as lamp lightbulbs. |
 

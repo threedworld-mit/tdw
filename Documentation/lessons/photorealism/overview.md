@@ -6,7 +6,7 @@ TDW offers users the ability to generate near-photorealistic images at runtime. 
 
 This tutorial will explain some of the best practices for rendering high-quality images in TDW.
 
-Photorealism is best achieved via a combination of reasonable camera positions and angles, and plausible object selection and positions. If you haven't done so already, we strongly recommend you read the [camera controls tutorial](../camera/overview.md) and [objects and scenes tutorial](../objects_and_scenes/overview.md).
+Photorealism is best achieved via a combination of reasonable camera positions and angles, and plausible object selection and positions. If you haven't done so already, we strongly recommend you read the [camera controls tutorial](../camera/overview.md) and [Scene Setup tutorials](../scene_setup/overview.md).
 
 ## The `photoreal.py` example controller
 

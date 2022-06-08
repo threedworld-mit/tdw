@@ -1,5 +1,5 @@
-import numpy as np
 from typing import List
+import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Transforms, Rigidbodies
@@ -48,7 +48,7 @@ while not sleeping:
             for j in range(transforms.get_num()):
                 if transforms.get_id(j) == object_id:
                     # Log the position.
-                    positions.append(np.array(transforms.get_position(j)))
+                    positions.append(transforms.get_position(j))
         elif r_id == "rigi":
             rigidbodies = Rigidbodies(resp[i])
             for j in range(rigidbodies.get_num()):

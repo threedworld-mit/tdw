@@ -2,7 +2,7 @@
 
 # Compass rose
 
-Add a visual (non-physical) **compass rose** to the scene by sending [`add_compass_rose`](../../api/command_api.md#add_compass_rose). Remove the compass rose by sending [`destroy_compass_rose`](../../api/command_api.md#destroy_compass_rose) or by [loading a new scene](../objects_and_scenes/reset_scene.md).
+Add a visual (non-physical) **compass rose** to the scene by sending [`add_compass_rose`](../../api/command_api.md#add_compass_rose). Remove the compass rose by sending [`destroy_compass_rose`](../../api/command_api.md#destroy_compass_rose) or by [loading a new scene](../scene_setup_high_level/reset_scene.md).
 
 A compass rose can be useful for positioning objects in the scene; the compass rose includes cardinal directions (north, south, etc.) as well as Unity coordinate directions (Z+, Z-, etc.)
 

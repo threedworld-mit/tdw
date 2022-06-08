@@ -56,8 +56,7 @@ for i in range(300):
                          "name": animation_name,
                          "id": humanoid_id})
     if frame % 16 == 0:
-        humanoid_position = Transforms(resp[0]).get_position(0)
-        foot_position = np.array(humanoid_position)
+        foot_position = Transforms(resp[0]).get_position(0)
         foot_position[1] = -3
         # This is approximately how far the foot is from the root body.
         foot_position[2] += 0.3
@@ -84,6 +83,7 @@ for i in range(300):
                                                            secondary_material="stone_4",
                                                            secondary_amp=0.5,
                                                            secondary_mass=100,
-                                                           resonance=0.1))
+                                                           primary_resonance=0.1,
+                                                           secondary_resonance=0.01))
     resp = c.communicate(commands)
 c.communicate({"$type": "terminate"})

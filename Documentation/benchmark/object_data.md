@@ -8,11 +8,11 @@ In each test, there are 100 objects in the scene. There is no camera or image da
 
 | Transforms | Rigidbodies | Bounds | Collisions | FPS  |
 | ---------- | ----------- | ------ | ---------- | ---- |
-| True       | False       | False  | False      | 579  |
-| False      | True        | False  | False      | 627  |
+| True       | False       | False  | False      | 644  |
+| False      | True        | False  | False      | 613  |
 | False      | False       | True   | False      | 392  |
-| False      | False       | False  | True       | 465  |
-| True       | True        | True   | True       | 273  |
+| False      | False       | False  | True       | 525  |
+| True       | True        | True   | True       | 311  |
 
 ## How to run TDW's image capture performance benchmarks
 

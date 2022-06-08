@@ -1,6 +1,6 @@
 from typing import List, Optional
 from tdw.output_data import OutputData, SceneRegions
-from tdw.scene_data.region_bounds import RegionBounds
+from tdw.scene_data.region_bounds import RegionBounds, get_from_scene_regions
 
 
 class SceneBounds:
@@ -60,11 +60,11 @@ class SceneBounds:
         """
         self.z_max: float = 0
         """:field
-        All of the rooms in the scene.
+        All of the regions in the scene.
         """
-        self.rooms: List[RegionBounds] = list()
+        self.regions: List[RegionBounds] = list()
         for i in range(scene.get_num()):
-            e = RegionBounds(scene_regions=scene, i=i)
+            e = get_from_scene_regions(scene_regions=scene, i=i)
             if e.x_min < self.x_min:
                 self.x_min = e.x_min
             if e.y_min < self.y_min:
@@ -77,4 +77,4 @@ class SceneBounds:
                 self.y_max = e.y_max
             if e.z_max > self.z_max:
                 self.z_max = e.z_max
-            self.rooms.append(e)
+            self.regions.append(e)

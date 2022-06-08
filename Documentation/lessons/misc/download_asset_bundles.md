@@ -3,7 +3,7 @@
 *If you haven't done so already, please read the documentation for the types asset bundles used in your project:*
 - *[Models](../core_concepts/objects.md)* 
 - *[Scenes](../core_concepts/scenes.md)*
-- *[Materials](../objects_and_scenes/materials_textures_colors.md)*
+- *[Materials](../scene_setup_low_level/materials_textures_colors.md)*
 - *[HDRI skyboxes](../photorealism/lighting.md)*
 - *[Robots](../robots/overview.md)*
 - *[Non-physics humanoids](../non_physics/humanoids.md)*

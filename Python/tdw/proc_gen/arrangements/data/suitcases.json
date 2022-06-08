@@ -1,0 +1,26 @@
+{
+  "b04_backpack": {
+    "depth": 0.1
+  },
+  "backpack": {
+    "depth": 0.1
+  },
+  "duffle_bag": {
+    "depth": 0.1
+  },
+  "green_bag": {
+    "depth": 0.1
+  },
+  "hiker_backpack": {
+    "depth": 0.1
+  },
+  "kids_luggage_1": {
+    "depth": 0.2
+  },
+  "kids_luggage_2": {
+    "depth": 0.2
+  },
+  "white_shopping_bag": {
+    "depth": 0.1
+  }
+}

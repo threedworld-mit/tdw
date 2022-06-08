@@ -49,20 +49,16 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 # Table of Contents
 | Data Type | Description | Identifier |
 | --- | --- | --- |
-| [ArrivedAtNavMeshDestination](#ArrivedAtNavMeshDestination) | Sent when a NavMeshAvatar arrives at its destination. | `anmd` |
 | [AudioSourceDone](#AudioSourceDone) | Output data that announces that an audio source is done playing. | `ausd` |
 | [AudioSources](#AudioSources) | Audio data for each object in a scene. Note that this will only tell you if any audio is playing; it won't return the audio itself (use an external program to record audio). | `audi` |
 | [AvatarKinematic](#AvatarKinematic) | Data of a kinematic (non-physics) avatar. | `avki` |
 | [AvatarNonKinematic](#AvatarNonKinematic) | Data of a non-kinematic (physics-enabled) avatar with a single body object. | `avnk` |
 | [AvatarSegmentationColor](#AvatarSegmentationColor) | Color segmentation data for an avatar. | `avsc` |
 | [AvatarSimpleBody](#AvatarSimpleBody) | Data of a SimpleBodyAvatar. | `avsb` |
-| [AvatarStickyMitten](#AvatarStickyMitten) | Data of a Sticky Mitten Avatar. | `avsm` |
-| [AvatarStickyMittenSegmentationColors](#AvatarStickyMittenSegmentationColors) | Color segmentation data for a Sticky Mitten Avatar. | `smsc` |
 | [Bounds](#Bounds) | Rotated bounds data. | `boun` |
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
-| [CompositeObjects](#CompositeObjects) | Data for all composite objects currently in the scene. | `comp` |
 | [DynamicCompositeObjects](#DynamicCompositeObjects) | Dynamic data for composite objects. | `dcom` |
 | [EmptyObjects](#EmptyObjects) | The position of each empty object in the scene. | `empt` |
 | [EnvironmentColliderIntersection](#EnvironmentColliderIntersection) | Data for an whose colliders are intersecting with an environment collider such as a wall. | `enci` |
@@ -80,6 +76,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Magnebot](#Magnebot) | Data for a Magnebot. | `magn` |
 | [MagnebotWheels](#MagnebotWheels) | A message sent when a Magnebot arrives at a target. | `mwhe` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
+| [Mouse](#Mouse) | Data for mouse input and movement. | `mous` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
 | [ObiParticles](#ObiParticles) | Obi particle data. | `obip` |
 | [ObjectColliderIntersection](#ObjectColliderIntersection) | Data for two objects whose colliders are intersecting. | `obci` |
@@ -106,18 +103,6 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [VRRig](#VRRig) | Data about the VR rig currently in the scene. | `vrri` |
 
 # API
-## ArrivedAtNavMeshDestination
-
-`a = ArrivedAtNavMeshDestination(byte_array)`
-
-**Identifier:** `anmd`
-
-Sent when a NavMeshAvatar arrives at its destination.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_avatar_id()` | The ID of the avatar in each environment. | `str` |
-
 ## AudioSourceDone
 
 `a = AudioSourceDone(byte_array)`
@@ -212,62 +197,6 @@ Data of a SimpleBodyAvatar.
 | `get_sleeping()` | True if the rigidbody is sleeping. | `bool` |
 | `get_visible_body()` | The name of the current visible body. | `str` |
 
-## AvatarStickyMitten
-
-`a = AvatarStickyMitten(byte_array)`
-
-**Identifier:** `avsm`
-
-Data of a Sticky Mitten Avatar.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_avatar_id()` | The ID of the avatar. | `str` |
-| `get_position()` | The local bottom-center position of the avatar. | `Tuple[float, float, float]` |
-| `get_rotation()` | The current rotation of the avatar. | `Tuple[float, float, float, float]` |
-| `get_forward()` | The forward directional vector of the avatar. | `Tuple[float, float, float]` |
-| `get_velocity()` | The directional velocity. | `Tuple[float, float, float]` |
-| `get_angular_velocity()` | The angular velocity. | `Tuple[float, float, float]` |
-| `get_mass()` | The mass. | `float` |
-| `get_sleeping()` | True if the rigidbody is sleeping. | `bool` |
-| `get_num_body_parts()` | The number of body parts. | `int` |
-| `get_num_rigidbody_parts()` | The number of rigidbody parts. | `int` |
-| `get_body_part_position(index)` | The position of the body part. | `Tuple[float, float, float]` |
-| `get_body_part_rotation(index)` | The rotation of the body part. | `Tuple[float, float, float, float]` |
-| `get_body_part_forward(index)` | The forward of the body part. | `Tuple[float, float, float]` |
-| `get_body_part_id(index)` | The ID of the body part. | `int` |
-| `get_rigidbody_part_velocity(index)` | The velocity of the rigidbody part. | `Tuple[float, float, float]` |
-| `get_rigidbody_part_angular_velocity(index)` | The angular velocity of the rigidbody part. | `Tuple[float, float, float]` |
-| `get_rigidbody_part_mass(index)` | The mass of the rigidbody part. | `float` |
-| `get_rigidbody_part_sleeping(index)` | The sleeping of the rigidbody part. | `bool` |
-| `get_rigidbody_part_id(index)` | The ID of the rigidbody part. | `int` |
-| `get_held_left()` | Objects held by the left mitten. | `np.array` |
-| `get_held_right()` | Objects held by the right mitten. | `np.array` |
-| `get_angles_left()` | The angles of each joint in the left arm. Order is: shoulder_left_pitch, shoulder_left_yaw, shoulder_left_roll, elbow_left_pitch, wrist_left_roll, wrist_left_pitch | `np.array` |
-| `get_angles_right()` | The angles of each joint in the right arm. Order is: shoulder_right_pitch, shoulder_right_yaw, shoulder_right_roll, elbow_right_pitch, wrist_right_roll, wrist_right_pitch | `np.array` |
-| `get_mitten_center_left_position()` | The position of the mitten center left. | `Tuple[float, float, float]` |
-| `get_mitten_center_left_forward()` | The forward of the mitten center left. | `Tuple[float, float, float]` |
-| `get_mitten_center_left_rotation()` | The rotation of the mitten center left. | `Tuple[float, float, float, float]` |
-| `get_mitten_center_right_position()` | The position of the mitten center right. | `Tuple[float, float, float]` |
-| `get_mitten_center_right_forward()` | The forward of the mitten center right. | `Tuple[float, float, float]` |
-| `get_mitten_center_right_rotation(index)` | The rotation of the mitten center right. | `Tuple[float, float, float, float]` |
-
-## AvatarStickyMittenSegmentationColors
-
-`a = AvatarStickyMittenSegmentationColors(byte_array)`
-
-**Identifier:** `smsc`
-
-Color segmentation data for a Sticky Mitten Avatar.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_id()` | The ID of the avatar. | `str` |
-| `get_num_body_parts()` | The number of body parts. | `int` |
-| `get_body_part_id(index)` | The ID of the body part. | `int` |
-| `get_body_part_segmentation_color(index)` | The color of the body part segmentation. | `Tuple[float, float, float]` |
-| `get_body_part_name(index)` | The name of the body part. | `str` |
-
 ## Bounds
 
 `b = Bounds(byte_array)`
@@ -279,14 +208,14 @@ Rotated bounds data.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The unique ID of the object. | `int` |
-| `get_front(index)` | Point defining the front face (the one oriented towards the forward direction). | `Tuple[float, float, float]` |
-| `get_back(index)` | Point defining the back face. | `Tuple[float, float, float]` |
-| `get_left(index)` | Point defining the left face. | `Tuple[float, float, float]` |
-| `get_right(index)` | Point defining the right face. | `Tuple[float, float, float]` |
-| `get_top(index)` | Point defining the top face. | `Tuple[float, float, float]` |
-| `get_bottom(index)` | Point defining the bottom face. | `Tuple[float, float, float]` |
-| `get_center(index)` | Centerpoint of the bounds. | `Tuple[float, float, float]` |
+| `get_id(index)` | The id. | `int` |
+| `get_front(index)` | The front. | `np.array` |
+| `get_back(index)` | The back. | `np.array` |
+| `get_left(index)` | The left. | `np.array` |
+| `get_right(index)` | The right. | `np.array` |
+| `get_top(index)` | The top. | `np.array` |
+| `get_bottom(index)` | The bottom. | `np.array` |
+| `get_center(index)` | The center. | `np.array` |
 
 ## CameraMatrices
 
@@ -336,22 +265,6 @@ Data for a collision between objects occurring on this frame.
 | `get_contact_normal(index)` | The normal of the contact. | `Tuple[float, float, float]` |
 | `get_contact_point(index)` | The point of the contact. | `Tuple[float, float, float]` |
 
-## CompositeObjects
-
-`c = CompositeObjects(byte_array)`
-
-**Identifier:** `comp`
-
-Data for all composite objects currently in the scene.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_num()` | The number of objects. | `int` |
-| `get_object_id(index)` | The ID of the object. | `int` |
-| `get_num_sub_objects(index)` | The number of sub objects. | `int` |
-| `get_sub_object_id(index, sub_object_index)` | The ID of the sub object. | `int` |
-| `get_sub_object_machine_type(index, sub_object_index)` | The type of the sub object machine. | `str` |
-
 ## DynamicCompositeObjects
 
 `d = DynamicCompositeObjects(byte_array)`
@@ -362,15 +275,15 @@ Dynamic data for composite objects.
 
 | Function | Description | Return type |
 | --- | --- | --- |
-| `get_num()` | The number of objects. | `int` |
-| `get_object_id(index)` | The ID of the object. | `int` |
-| `get_num_hinges(index)` | The number of hinges. | `int` |
-| `get_hinge_id(index, hinge_index)` | The ID of the hinge. | `int` |
-| `get_hinge_angle(index, hinge_index)` | The angle of the hinge. | `float` |
-| `get_hinge_velocity(index, hinge_index)` | The velocity of the hinge. | `float` |
-| `get_num_lights(index)` | The number of lights. | `int` |
-| `get_light_id(index, light_index)` | The ID of the light. | `int` |
-| `get_light_is_on(index, light_index)` | The on of the light is. | `bool` |
+| `get_num_hinges()` | The number of hinges. | `int` |
+| `get_hinge_parent_id(index)` | The ID of the hinge parent. | `int` |
+| `get_hinge_id(index)` | The ID of the hinge. | `int` |
+| `get_hinge_angle(index)` | The angle of the hinge. | `float` |
+| `get_hinge_velocity(index)` | The velocity of the hinge. | `float` |
+| `get_num_lights()` | The number of lights. | `int` |
+| `get_light_parent_id(index)` | The ID of the light parent. | `int` |
+| `get_light_id(index)` | The ID of the light. | `int` |
+| `get_light_is_on(index)` | The on of the light is. | `bool` |
 
 ## EmptyObjects
 
@@ -457,9 +370,8 @@ All segmentation colors in an _id pass.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_avatar_id()` | The ID of the avatar that captured the image. | `str` |
-| `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
 | `get_num_segmentation_colors()` | The number of segmentation colors. | `int` |
-| `get_segmentation_color(index)` | The color of the segmentation. | `Tuple[float, float, float]` |
+| `get_segmentation_color(index)` | The color of the segmentation. | `np.array` |
 
 ## Images
 
@@ -559,11 +471,11 @@ Data about the Transform component of objects (position and rotation) relative t
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The unique ID of this object. | `int` |
-| `get_position(index)` | The local bottom-center position of the object. | `Tuple[float, float, float]` |
-| `get_forward(index)` | The forward directional vector of the object. | `Tuple[float, float, float]` |
-| `get_eulers(index)` | The local rotation of the object expressed in Euler angles. | `Tuple[float, float, float]` |
-| `get_rotation(index)` | The local rotation of the object. | `Tuple[float, float, float, float]` |
+| `get_id(index)` | The id. | `int` |
+| `get_position(index)` | The position. | `np.array` |
+| `get_forward(index)` | The forward. | `np.array` |
+| `get_rotation(index)` | The rotation. | `np.array` |
+| `get_euler_angles(index)` | The `[x, y, z]` Euler angles of each object. | `np.array` |
 
 ## LogMessage
 
@@ -621,6 +533,28 @@ Mesh data from readable objects.
 | `get_num()` | The number of objects. | `int` |
 | `get_vertices(index)` | The (x, y, z) coordinates of each vertex. | `np.array` |
 | `get_triangles(index)` | Each triangle of the mesh. | `np.array` |
+
+## Mouse
+
+`m = Mouse(byte_array)`
+
+**Identifier:** `mous`
+
+Data for mouse input and movement.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_position()` | The (x, y) screen position of the mouse. | `np.array` |
+| `get_scroll_delta()` | The (x, y) delta of the scroll wheel. | `np.array` |
+| `get_is_left_button_pressed()` | The pressed of the is left button. | `bool` |
+| `get_is_left_button_held()` | The held of the is left button. | `bool` |
+| `get_is_left_button_released()` | The released of the is left button. | `bool` |
+| `get_is_middle_button_pressed()` | The pressed of the is middle button. | `bool` |
+| `get_is_middle_button_held()` | The held of the is middle button. | `bool` |
+| `get_is_middle_button_released()` | The released of the is middle button. | `bool` |
+| `get_is_right_button_pressed()` | The pressed of the is right button. | `bool` |
+| `get_is_right_button_held()` | The held of the is right button. | `bool` |
+| `get_is_right_button_released()` | The released of the is right button. | `bool` |
 
 ## NavMeshPath
 
@@ -754,10 +688,10 @@ Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scen
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The unique ID of this object. | `int` |
-| `get_velocity(index)` | The directional velocity. | `Tuple[float, float, float]` |
-| `get_angular_velocity(index)` | The angular velocity. | `Tuple[float, float, float]` |
-| `get_sleeping(index)` | True if the rigidbody is sleeping. | `bool` |
+| `get_id(index)` | The id. | `int` |
+| `get_velocity(index)` | The velocity. | `np.array` |
+| `get_angular_velocity(index)` | The angular velocity. | `np.array` |
+| `get_sleeping(index)` | The sleeping. | `bool` |
 
 ## Robot
 
@@ -839,7 +773,7 @@ Color segmentation data for objects in the scene.
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_object_id(index)` | The ID of the object. | `int` |
-| `get_object_color(index)` | The color of the object. | `Tuple[float, float, float]` |
+| `get_object_color(index)` | The color of the object. | `np.array` |
 | `get_object_name(index)` | The name of the object. | `str` |
 | `get_object_category(index)` | The category of the object. | `str` |
 
@@ -911,13 +845,12 @@ Static rigibody data (mass, kinematic state, etc.) for objects in the scene.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The unique ID of this object. | `int` |
+| `get_id(index)` | The id. | `int` |
 | `get_mass(index)` | The mass. | `float` |
-| `get_sleeping(index)` | The sleeping. | `bool` |
-| `get_kinematic(index)` | True if the rigidbody is kinematic. | `bool` |
-| `get_dynamic_friction(index)` | The dynamic friction of the physic material. | `float` |
-| `get_static_friction(index)` | The static friction of the physic material. | `float` |
-| `get_bounciness(index)` | The bounciness of the physic material. | `float` |
+| `get_kinematic(index)` | The kinematic states of each object's Rigidbody. | `bool` |
+| `get_dynamic_friction(index)` | The friction of the dynamic. | `float` |
+| `get_static_friction(index)` | The friction of the static. | `float` |
+| `get_bounciness(index)` | The bounciness. | `float` |
 
 ## StaticRobot
 
@@ -978,10 +911,10 @@ Data about the Transform component of objects (position and rotation).
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The unique ID of this object. | `int` |
-| `get_position(index)` | The local bottom-center position of the object. | `Tuple[float, float, float]` |
-| `get_forward(index)` | The forward directional vector of the object. | `Tuple[float, float, float]` |
-| `get_rotation(index)` | The current rotation of the object. | `Tuple[float, float, float, float]` |
+| `get_id(index)` | The id. | `int` |
+| `get_position(index)` | The position. | `np.array` |
+| `get_forward(index)` | The forward. | `np.array` |
+| `get_rotation(index)` | The rotation. | `np.array` |
 
 ## TriggerCollision
 
@@ -1024,7 +957,7 @@ Spatial volume data for objects in the scene.
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_object_id(index)` | The ID of the object. | `int` |
-| `get_volume(index)` | The approximate volume in cubic meters. | `float` |
+| `get_volume(index)` | The approximate volume in cubic meters of each object. | `float` |
 
 ## VRRig
 

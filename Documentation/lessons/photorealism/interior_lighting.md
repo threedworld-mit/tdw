@@ -30,7 +30,7 @@ c.communicate({"$type": "terminate"})
 
 ## Reset the scene
 
-Call `interior_scene_lighting.reset()` whenever you [reset the scene](../objects_and_scenes/reset_scene.md):
+Call `interior_scene_lighting.reset()` whenever you [reset the scene](../scene_setup_high_level/reset_scene.md):
 
 ```python
 from tdw.controller import Controller
@@ -90,7 +90,7 @@ for hdri_skybox in InteriorSceneLighting.SKYBOX_NAMES_AND_POST_EXPOSURE_VALUES:
 
 ## Set the random number generator
 
-By default, `InteriorSceneLighting` creates a new [numpy random number generator](https://numpy.org/doc/1.16/reference/generated/numpy.random.RandomState.html) in the constructor and per `reset()` call. You pass a random number generator as an `rng` parameter in the constructor and in `reset()`. You might want to do this if you want to use the same generator and random seed for [procedural generation throughout the rest of the scene](../objects_and_scenes/proc_gen_objects.md).
+By default, `InteriorSceneLighting` creates a new [numpy random number generator](https://numpy.org/doc/1.16/reference/generated/numpy.random.RandomState.html) in the constructor and per `reset()` call. You pass a random number generator as an `rng` parameter in the constructor and in `reset()`. You might want to do this if you want to use the same generator and random seed for procedural generation throughout the rest of the scene.
 
 ```python
 import numpy as np

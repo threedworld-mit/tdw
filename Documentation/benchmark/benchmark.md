@@ -18,7 +18,7 @@
 - The render quality is set to the highest possible setting (but no images are sent).
 - There are 100 cube primitives in the scene.
 
-**FPS: 660**
+**FPS: 681**
 
 ### 1. Image capture (low quality)
 
@@ -28,7 +28,7 @@
 - The images are 256x256.
 - There are no objects in the scene.
 
-**FPS: 284**
+**FPS: 355**
 
 ### 2. Image capture (high quality)
 
@@ -40,34 +40,15 @@
 
 **FPS: 42**
 
-### 3. Agent benchmark
+### 3. Kitchen benchmark
 
-- There are objects and an agent in the scene.
-- Every frame, the agent moves and rotates.
-- The render quality is set to the lowest possible setting.
-- The images are compressed .jpg
-- The images are 256x256
+- There is a pre-defined procedurally-generated kitchen (the commands are loaded from a .json file)
 - Requested output data per-frame:
-	- `Transforms`
-	- `Rigidbodies`
-	- `Collisions`
-	- `IdPassSegmentationColors`
-	- `Images`  (`_img` pass only).
+  - `Transforms`
+  - `DynamicCompositeObjects`
+  - `Overlap` (for containment)
 
 **FPS: 125**
-
-### 4. Flex benchmark
-
-- There are several Flex objects in the scene.
-- The images are compressed .jpg
-- The images are 256x256
-- Requested output data per-frame:
-  - `CameraMatrices`
-  - `FlexParticles`
-  - `Collisions`
-  - `Transforms`
-
-**FPS: 201**
 
 ## How to run TDW's main performance benchmark
 

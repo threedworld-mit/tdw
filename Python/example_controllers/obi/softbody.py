@@ -12,8 +12,9 @@ camera = ThirdPersonCamera(position={"x": -5.0, "y": 0.8, "z": -0.5},
                            look_at={"x": 0, "y": 1.25, "z": 0})
 obi = Obi()
 c.add_ons.extend([camera, obi])
-# Create a second solver.
-c.communicate({"$type": "create_obi_solver"})
+# Create a scene and a second solver.
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               {"$type": "create_obi_solver"}])
 # Increase the solver substeps.
 obi.set_solver(solver_id=0, substeps=2)
 obi.set_solver(solver_id=1, substeps=2)
@@ -29,8 +30,6 @@ obi.create_softbody(softbody_material="soft_rubber",
                     position={"x": 0, "y": 2, "z": -1},
                     rotation={"x": 0, "y": 0, "z": 0},
                     solver_id=1)
-commands = [TDWUtils.create_empty_room(12, 12)]
-c.communicate(commands)
 # Let the object fall.
 while True:
     c.communicate([])

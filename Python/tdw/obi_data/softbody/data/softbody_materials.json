@@ -27,7 +27,7 @@
     "shape_analysis_smoothing": 0.25,
 	"shape_matching_iterations": 4,
 	"shape_matching_mode": "Parallel",
-	"visual_material": "cotton_jean_light_blue",
+	"visual_material": "rubber_black",
 	"texture_scale": {"x": 4, "y": 4},
     "visual_smoothness": 0
   },

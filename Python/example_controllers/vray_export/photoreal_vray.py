@@ -3,6 +3,7 @@ from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.tdw_utils import TDWUtils
+from tdw.vray_utils import VrayUtils
 from tdw.add_ons.object_manager import ObjectManager
 from requests import get
 import os
@@ -99,9 +100,9 @@ class Photoreal(Controller):
 
     
     def download_zip(self, model_name):
-    """
-    Download a model file and unzip into main "resources" folder
-    """
+        """
+        Download a model file and unzip into main "resources" folder
+        """
         path = os.path.join(self.PATH_ROOT, model_name) + ".zip"
         url = os.path.join(self.S3_ROOT, model_name) + ".zip"
         with open(path, "wb") as f:
@@ -114,9 +115,9 @@ class Photoreal(Controller):
 
 
     def launch_vantage(self, scene_file):
-     """
-    Launch Vantage in headless mode and render scene file.
-    """
+        """
+        Launch Vantage in headless mode and render scene file.
+        """
         subprocess.run(["D:\Isadora 3\vantage_console.exe", "-sceneFile=", scenefile, "outputFile=", scenefile, "outputWidth=1280", "outputHeight=720"])
 
 if __name__ == "__main__":

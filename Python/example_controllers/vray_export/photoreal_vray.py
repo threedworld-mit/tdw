@@ -3,7 +3,6 @@ from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.tdw_utils import TDWUtils
-from tdw.vray_utils import VrayUtils
 from tdw.add_ons.object_manager import ObjectManager
 from requests import get
 import os
@@ -57,7 +56,7 @@ class Photoreal(Controller):
                           self.get_add_object(model_name="glass_table",
                                               object_id=glass_table_id,
                                               position={"x":0.125, "y": 0, "z": 0.37},
-                                              rotation={"x": 0, "y": 45, "z": 0}),
+                                              rotation={"x": 0, "y": 90, "z": 0}),
                           self.get_add_object(model_name="live_edge_coffee_table",
                                               object_id=live_table_id,
                                               position={"x": 1.81, "y": 0, "z": -0.47},

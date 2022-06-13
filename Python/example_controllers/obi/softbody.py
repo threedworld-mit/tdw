@@ -23,7 +23,7 @@ obi.create_softbody(softbody_material="hard_rubber",
                     rotation={"x": 0, "y": 0, "z": 0},
                     solver_id=0)
 # Create a second softbody object with a different material, using the second solver.
-obi.create_softbody(softbody_material="clay",
+obi.create_softbody(softbody_material="firm_foam",
                     object_id=Controller.get_unique_id(),
                     position={"x": 0, "y": 2, "z": -1},
                     rotation={"x": 0, "y": 0, "z": 0},

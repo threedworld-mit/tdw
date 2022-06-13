@@ -110,12 +110,11 @@ class VRayExport(AddOn):
 
     def write_static_camera_view_data(self):
         """
-        For each model in a list, export the position and orientation data to the model's .vrscene file as Node data.
-        This model list could come from the ObjectManager add-on, for example.
+        Export the position and orientation of the camera to its .vrscene file as Node data.
         """	
         #TBD
 
-    def assemble_render_file(self:
+    def assemble_render_file(self):
         scene_path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
         with open(scene_path, "a") as f:  
             f.writeln("#include models.vrscene")

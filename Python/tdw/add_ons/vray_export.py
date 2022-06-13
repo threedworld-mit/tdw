@@ -81,7 +81,7 @@ class VRayExport(AddOn):
         NOTE: This could be called once, for a static scene, or every frame if capturing physics motion.
         :param model_name: The name of the model.
         """
-        # Fetch node ID from metadat file.
+        # Fetch node ID from metadata file.
         node_id = fetch_node_id(model_name) 
         # Open model .vrscene file to append node data
         path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name)  + ".vrscene"

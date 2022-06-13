@@ -53,6 +53,7 @@ from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
+from tdw.FBOutput import TransformMatrices as TranMat
 import numpy as np
 from typing import Tuple, Optional, List
 
@@ -1421,3 +1422,22 @@ class Mouse(OutputData):
 
     def get_is_right_button_released(self) -> bool:
         return self._buttons[2][2]
+
+
+class TransformMatrices(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._matrices = self.data.MatricesAsNumpy().reshape(-1, 4, 4)
+
+    def get_data(self) -> TranMat.TransformMatrices:
+        return TranMat.TransformMatrices.GetRootAsTransformMatrices(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return self._ids[index]
+
+    def get_matrix(self, index: int) -> np.array:
+        return self._matrices[index]

@@ -32,7 +32,7 @@ class VRayExport(AddOn):
         self.image_width: int = image_width
         self.image_height: int = image_height
         self.scene_name = scene_name
-        # Convert matrix from left-hand to right-hand.
+        # Conversion matrix from left-hand to right-hand.
         self.handedness = np.array([[1, 0, 0, 0],
                                     [0, 0, 1, 0],
                                     [0, 1, 0, 0],
@@ -55,6 +55,7 @@ class VRayExport(AddOn):
             if r_id == "segm":
                 segm = SegmentationColors(resp[i])
                 for j in range(segm.get_num()):
+                    # Cache the object names and ID
                     object_id = segm.get_object_id(j)
                     object_name = segm.get_object_name(j)
                     self.object_names[object_id] = object_name
@@ -172,6 +173,7 @@ class VRayExport(AddOn):
                         "-sceneFile=" + scene_path, 
                         "-outputFile=" + self.output_path,  
                         "-outputWidth=" + self.image_width, 
-                        "-outputHeight=" + self.image_height, "-quiet"])
+                        "-outputHeight=" + self.image_height,
+                        "-quiet"])
 
 	

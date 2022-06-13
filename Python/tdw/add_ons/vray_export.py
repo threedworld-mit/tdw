@@ -1,7 +1,8 @@
-from typing import List, NamedTuple
+from typing import List, Dict, NamedTuple
 from tdw.add_ons.add_on import AddOn
 from pathlib import Path
 from tdw.backend.paths import VRAY_EXPORT_RESOURCES_PATH
+from tdw.output_data import OutputData, TransformMatrices
 import os
 import subprocess
 
@@ -31,12 +32,32 @@ class VRayExport(AddOn):
         self.image_width: int = image_width
         self.image_height: int = image_height
         self.scene_name = scene_name
+        # Convert matrix from left-hand to right-hand.
+        self.handedness = np.array([[1, 0, 0, 0],
+                                    [0, 0, 1, 0],
+                                    [0, 1, 0, 0],
+                                    [0, 0, 0, 1]])
+        # Dictionary of model names by ID
+        self.object_names: Dict[int, str] = dict()
+
 
     def get_initialization_commands(self) -> List[dict]:
-        return
+        commands = [{"$type": "send_transform_matrices",
+                       "frequency": "always"},
+                    {"$type": "send_segmentation_colors",
+                       "frequency": "once"}]
+        return commands
 
     def on_send(self, resp: List[bytes]) -> None:
-        return
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            # Get segmentation color output data.
+            if r_id == "segm":
+                segm = SegmentationColors(resp[i])
+                for j in range(segm.get_num()):
+                    object_id = segm.get_object_id(j)
+                    object_name = segm.get_object_name(j)
+                    self.object_names[object_id] = object_name
 
     def download_model(self, model_name: str):
         """
@@ -68,45 +89,62 @@ class VRayExport(AddOn):
         # Delete the zip file.
         os.remove(path)
 
-    def fetch_node_ID(self, model_name: str):
+    def fetch_node_id_string(self, model_name: str) -> str:
         """
         For a given model (name), fetch the Node ID associated with that model.
         :param model_name: The name of the model.
         """
-        # TBD
+        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name)  + ".vrscene"
+        with open(path, "r") as filename:  
+            # Look for Node structure and output node ID.
+            src_str = filename.replace(".vrscene", "") + "@node_"
+            pattern = re.compile(src_str, re.IGNORECASE)
+            for line in in_file:
+                if pattern.search(line):
+                    return line
 
-    def write_node_data(self, model_name: str, mat: matrix_data):
+
+    def write_node_data(self, model_name: str, mat: matrix_data_struct):
         """
         Append the scene position and orientation of a model to its .vrscene file, as Node data.
         NOTE: This could be called once, for a static scene, or every frame if capturing physics motion.
         :param model_name: The name of the model.
         """
         # Fetch node ID from metadata file.
-        node_id = fetch_node_id(model_name) 
+        node_id_string = fetch_node_id_string(model_name) 
         # Open model .vrscene file to append node data
         path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name)  + ".vrscene"
-        node_string = "Node " + model_name + "@node_" + node_id + 
+        node_string = "Node " + node_id_string + 
                       "{\n" + "transform=Transform(Matrix" + 
-                      "(Vector(" + str(matrix_data.column_one) + ")," +
-                      "(Vector(" + str(matrix_data.column_two) + ")," +
-                      "(Vector(" + str(matrix_data.column_three) + "))," +
-                      "(Vector(" + str(matrix_data.column_four) + "));\n}"
+                      "(Vector(" + str(mat.column_one) + ")," +
+                      "(Vector(" + str(mat.column_two) + ")," +
+                      "(Vector(" + str(mat.column_three) + "))," +
+                      "(Vector(" + str(mat.column_four) + "));\n}"
         with open(path, "a") as f:  
             f.write(node_string)
 
-    def export_static_node_data(self, model_name_list: List[str]):
+    def export_static_node_data(self):
         """
-        For each model in a list, export the position and orientation data to the model's .vrscene file as Node data.
-        This model list could come from the ObjectManager add-on, for example.
-        :param model_name_list: The list of model names to write out Node data for.
+        For each model in the scene, export the position and orientation data to the model's .vrscene file as Node data.
         """
-        for model_name in model_name_list:
-            matrix_data = get_matrix_data_from_build(model_name)
-            mat_struct = matrix_data_struct(column_one = matrix_data.column_one) #etc
-            write_node_data(model_name, mat_struct)
-            path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, "models.vrscene")
-            with open(path, "w") as f:  
-                f.writeln("#include " + model_name + ".vrscene")
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "trma":
+                transform_matrices = TransformMatrices(resp[i])
+                # Iterate through the objects.
+                for j in range(transform_matrices.get_num()):
+                    # Get the object ID.
+                    object_id = transform_matrices.get_id(j)
+                    # Get the matrix and convert it.
+                    # Equivalent to: handedness * object_matrix * handedness.
+                    matrix = np.matmul(handedness, np.matmul(handedness, transform_matrices.get_matrix(j)))
+                    mat_struct = matrix_data_struct(column_one = matrix[0], column_two = matrix[0], column_three = matrix[0], column_four = matrix[0]) 
+                    # Get the model name for this ID
+                    model_name = self.object_names[object_id]
+                    write_node_data(model_name, mat_struct)
+                    path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, "models.vrscene")
+                    with open(path, "w") as f:  
+                        f.writeln("#include " + model_name + ".vrscene")
 
     def write_static_camera_view_data(self):
         """

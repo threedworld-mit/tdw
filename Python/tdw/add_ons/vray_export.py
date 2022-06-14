@@ -1,22 +1,25 @@
-from typing import List, Dict, NamedTuple
+from typing import List, Dict, NamedTuple, Union
 from tdw.add_ons.add_on import AddOn
 from pathlib import Path
-from tdw.backend.paths import VRAY_EXPORT_RESOURCES_PATH
-from tdw.output_data import OutputData, TransformMatrices
+from tdw.output_data import OutputData, TransformMatrices, SegmentationColors
+from requests import get
 import os
+import re
+import zipfile
 import subprocess
+import numpy as np
 
 
 class matrix_data_struct(NamedTuple):
-    column_one: list
-    column_two: list
-    column_three: list
-    column_four: list
+    column_one: str
+    column_two: str
+    column_three: str
+    column_four: str
 
 
 class VRayExport(AddOn):
 
-    def __init__(self, image_width: int, image_height: int, scene_name: str, , output_path: Union[str, Path]):
+    def __init__(self, image_width: int, image_height: int, scene_name: str, output_path: Union[str, Path]):
         super().__init__()
         if isinstance(output_path, str):
             """:field
@@ -29,6 +32,8 @@ class VRayExport(AddOn):
             self.output_path.mkdir(parents=True)
         self.S3_ROOT = "https://tdw-public.s3.amazonaws.com/"
         self.VRAY_EXPORT_RESOURCES_PATH = Path.home().joinpath("vray_export_resources")
+        if not self.VRAY_EXPORT_RESOURCES_PATH.exists():
+            self.VRAY_EXPORT_RESOURCES_PATH.mkdir(parents=True)
         self.image_width: int = image_width
         self.image_height: int = image_height
         self.scene_name = scene_name
@@ -65,8 +70,8 @@ class VRayExport(AddOn):
         Download the zip file of a model from Amazon S3, and unpack the contents into the general "resources" folder.
         :param model_name: The name of the model.
         """
-        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name) + ".zip"
-        url = os.path.join(self.S3_ROOT + "vray_models/", model_name) + ".zip"
+        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name.lower()) + ".zip"
+        url = os.path.join(self.S3_ROOT + "vray_models/", model_name.lower()) + ".zip"
         with open(path, "wb") as f:
             f.write(get(url).content)
         # Unzip in place.
@@ -98,9 +103,9 @@ class VRayExport(AddOn):
         path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name)  + ".vrscene"
         with open(path, "r") as filename:  
             # Look for Node structure and output node ID.
-            src_str = filename.replace(".vrscene", "") + "@node_"
+            src_str = model_name + "@node_"
             pattern = re.compile(src_str, re.IGNORECASE)
-            for line in in_file:
+            for line in filename:
                 if pattern.search(line):
                     return line
 
@@ -112,19 +117,19 @@ class VRayExport(AddOn):
         :param model_name: The name of the model.
         """
         # Fetch node ID from metadata file.
-        node_id_string = fetch_node_id_string(model_name) 
+        node_id_string = self.fetch_node_id_string(model_name) 
         # Open model .vrscene file to append node data
         path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name)  + ".vrscene"
-        node_string = "Node " + node_id_string + 
-                      "{\n" + "transform=Transform(Matrix" + 
-                      "(Vector(" + str(mat.column_one) + ")," +
-                      "(Vector(" + str(mat.column_two) + ")," +
-                      "(Vector(" + str(mat.column_three) + "))," +
-                      "(Vector(" + str(mat.column_four) + "));\n}"
+        node_string = (node_id_string + 
+                      "\n" + "transform=Transform(Matrix" + 
+                      "(Vector(" + mat.column_one + "), " +
+                      "Vector(" + mat.column_two + "), " +
+                      "Vector(" + mat.column_three + ")), " +
+                      "Vector(" + mat.column_four + "));\n}")
         with open(path, "a") as f:  
             f.write(node_string)
 
-    def export_static_node_data(self):
+    def export_static_node_data(self, resp: List[bytes]):
         """
         For each model in the scene, export the position and orientation data to the model's .vrscene file as Node data.
         """
@@ -138,14 +143,17 @@ class VRayExport(AddOn):
                     object_id = transform_matrices.get_id(j)
                     # Get the matrix and convert it.
                     # Equivalent to: handedness * object_matrix * handedness.
-                    matrix = np.matmul(handedness, np.matmul(handedness, transform_matrices.get_matrix(j)))
-                    mat_struct = matrix_data_struct(column_one = matrix[0], column_two = matrix[0], column_three = matrix[0], column_four = matrix[0]) 
+                    matrix = np.matmul(self.handedness, np.matmul(self.handedness, transform_matrices.get_matrix(j)))
+                    mat_struct = matrix_data_struct(column_one = str(matrix[0][0]) + "," + str(matrix[0][1]) + "," + str(matrix[0][2]) + "," + str(matrix[0][3]), 
+                                                    column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(matrix[1][2]) + "," + str(matrix[1][3]), 
+                                                    column_three = str(matrix[2][0]) + "," + str(matrix[2][1]) + "," + str(matrix[2][2]) + "," + str(matrix[2][3]),  
+                                                    column_four = str(matrix[3][0]) + "," + str(matrix[3][1]) + "," + str(matrix[3][2]) + "," + str(matrix[3][3]))
                     # Get the model name for this ID
                     model_name = self.object_names[object_id]
-                    write_node_data(model_name, mat_struct)
+                    self.write_node_data(model_name, mat_struct)
                     path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, "models.vrscene")
                     with open(path, "w") as f:  
-                        f.writeln("#include " + model_name + ".vrscene")
+                        f.write("#include " + model_name + ".vrscene\n")
 
     def write_static_camera_view_data(self):
         """

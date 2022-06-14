@@ -4,10 +4,8 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.object_manager import ObjectManager
-from requests import get
-import os
-import zipfile
-import subprocess
+from tdw.add_ons.vray_export import VRayExport
+
 
 
 class Photoreal(Controller):
@@ -17,8 +15,6 @@ class Photoreal(Controller):
     """
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.S3_ROOT = "https://tdw-public.s3.amazonaws.com/vray_models/"
-        self.PATH_ROOT = "D://VE2022_sandbox//"
 
     def run(self):
         # Add a camera and enable image capture.
@@ -32,6 +28,8 @@ class Photoreal(Controller):
         self.add_ons.extend([camera, capture])
         om = ObjectManager(transforms=True, rigidbodies=False, bounds=False)
         self.add_ons.append(om)
+        export = VRayExport(image_width=1280, image_height=720, scene_name="tdw_room", output_path="D://VE2020_output/")
+        self.add_ons.append(export)
 
         glass_table_id = self.get_unique_id()
         live_table_id = self.get_unique_id()
@@ -56,7 +54,7 @@ class Photoreal(Controller):
                           self.get_add_object(model_name="glass_table",
                                               object_id=glass_table_id,
                                               position={"x":0.125, "y": 0, "z": 0.37},
-                                              rotation={"x": 0, "y": 90, "z": 0}),
+                                              rotation={"x": 0, "y": 45, "z": 0}),
                           self.get_add_object(model_name="live_edge_coffee_table",
                                               object_id=live_table_id,
                                               position={"x": 1.81, "y": 0, "z": -0.47},
@@ -86,39 +84,18 @@ class Photoreal(Controller):
                           {"$type": "set_shadow_strength",
                            "strength": 1.0}])
                           #{"$type": "terminate"}])
-        
-        self.communicate([{"$type": "send_object_matrix", "id": glass_table_id},
-                          {"$type": "send_object_matrix", "id": live_table_id},
-                          {"$type": "send_object_matrix", "id": lamp_id},
-                          {"$type": "send_object_matrix", "id": chair_id},
-                          {"$type": "send_object_matrix", "id": zen_id}])
-        
+        """
         for object_id in om.objects_static:
             #print(object_id, om.objects_static[object_id].name)
             self.download_zip(om.objects_static[object_id].name)
             print(om.objects_static[object_id].name + ", pos: " + str(om.transforms[object_id].position) + ", ori: " + str(om.transforms[object_id].rotation))
+        """
         
-    
-    def download_zip(self, model_name):
-        """
-        Download a model file and unzip into main "resources" folder
-        """
-        path = os.path.join(self.PATH_ROOT, model_name) + ".zip"
-        url = os.path.join(self.S3_ROOT, model_name) + ".zip"
-        with open(path, "wb") as f:
-            f.write(get(url).content)
-        # Unzip in place.
-        with zipfile.ZipFile(path, 'r') as zip_ref:
-            zip_ref.extractall(self.PATH_ROOT)
-        # Delete the zip file.
-        os.remove(path)
+        for model_name in export.object_names.values():
+            export.download_model(model_name)
+        resp = self.communicate([])
+        export.export_static_node_data(resp=resp)
 
-
-    def launch_vantage(self, scene_file, outfile):
-        """
-        Launch Vantage in headless mode and render scene file.
-        """
-        subprocess.run(["C://Program Files//Chaos Group//Vantage//vantage_console.exe", "-sceneFile=D://VE2022_sandbox//resources//" + scene_file, "-outputFile=D://VE2022_sandbox//" + outfile,  "-outputWidth=1280", "-outputHeight=720", "-quiet"])
 
 if __name__ == "__main__":
     Photoreal(launch_build=False).run()

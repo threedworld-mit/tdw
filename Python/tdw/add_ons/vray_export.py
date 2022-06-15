@@ -50,7 +50,9 @@ class VRayExport(AddOn):
         commands = [{"$type": "send_transform_matrices",
                        "frequency": "always"},
                     {"$type": "send_segmentation_colors",
-                       "frequency": "once"}]
+                       "frequency": "once"},
+                    {"$type": "send_camera_matrices",
+                       "frequency": "always"}]
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -121,7 +123,7 @@ class VRayExport(AddOn):
         # Open model .vrscene file to append node data
         path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name)  + ".vrscene"
         node_string = (node_id_string + 
-                      "\n" + "transform=Transform(Matrix" + 
+                      "transform=Transform(Matrix" + 
                       "(Vector(" + mat.column_one + "), " +
                       "Vector(" + mat.column_two + "), " +
                       "Vector(" + mat.column_three + ")), " +
@@ -132,45 +134,77 @@ class VRayExport(AddOn):
     def export_static_node_data(self, resp: List[bytes]):
         """
         For each model in the scene, export the position and orientation data to the model's .vrscene file as Node data.
+        Then append an #include reference to the model file at the end of the main scene file.
         """
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "trma":
-                transform_matrices = TransformMatrices(resp[i])
-                # Iterate through the objects.
-                for j in range(transform_matrices.get_num()):
-                    # Get the object ID.
-                    object_id = transform_matrices.get_id(j)
-                    # Get the matrix and convert it.
-                    # Equivalent to: handedness * object_matrix * handedness.
-                    matrix = np.matmul(self.handedness, np.matmul(self.handedness, transform_matrices.get_matrix(j)))
-                    mat_struct = matrix_data_struct(column_one = str(matrix[0][0]) + "," + str(matrix[0][1]) + "," + str(matrix[0][2]) + "," + str(matrix[0][3]), 
-                                                    column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(matrix[1][2]) + "," + str(matrix[1][3]), 
-                                                    column_three = str(matrix[2][0]) + "," + str(matrix[2][1]) + "," + str(matrix[2][2]) + "," + str(matrix[2][3]),  
-                                                    column_four = str(matrix[3][0]) + "," + str(matrix[3][1]) + "," + str(matrix[3][2]) + "," + str(matrix[3][3]))
-                    # Get the model name for this ID
-                    model_name = self.object_names[object_id]
-                    self.write_node_data(model_name, mat_struct)
-                    path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, "models.vrscene")
-                    with open(path, "w") as f:  
-                        f.write("#include " + model_name + ".vrscene\n")
+        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
+        with open(path, "a") as f: 
+            for i in range(len(resp) - 1):
+                r_id = OutputData.get_data_type_id(resp[i])
+                if r_id == "trma":
+                    transform_matrices = TransformMatrices(resp[i])
+                    # Iterate through the objects.
+                    for j in range(transform_matrices.get_num()):
+                        # Get the object ID.
+                        object_id = transform_matrices.get_id(j)
+                        # Get the matrix and convert it.
+                        # Equivalent to: handedness * object_matrix * handedness.
+                        matrix = np.matmul(self.handedness, np.matmul(transform_matrices.get_matrix(j), self.handedness))
+                        # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
+                        # We also need to negate the X and Y value, to complete the handedness conversion.
+                        pos_x = -(matrix[3][0] * 100)
+                        pos_y = -(matrix[3][1] * 100)
+                        pos_z = matrix[3][2] * 100
+                        mat_struct = matrix_data_struct(column_one = str(matrix[0][0]) + "," + str(matrix[0][1]) + "," + str(matrix[0][2]), 
+                                                        column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(matrix[1][2]), 
+                                                        column_three = str(matrix[2][0]) + "," + str(matrix[2][1]) + "," + str(matrix[2][2]),  
+                                                        column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
+                        # Get the model name for this ID
+                        model_name = self.object_names[object_id]
+                        self.write_node_data(model_name, mat_struct)
+                        f.write("#include \"" + model_name + ".vrscene\"\n")
 
     def write_static_camera_view_data(self):
         """
         Export the position and orientation of the camera to its .vrscene file as Node data.
         """	
-        #TBD
+        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
+        with open(path, "a") as f: 
+            for i in range(len(resp) - 1):
+                r_id = OutputData.get_data_type_id(resp[i])
+                if r_id == "cama":
+                    camera_matrices = CameraMatrices(resp[i])
+                    # Iterate through the cameras.
+                    for j in range(camera_matrices.get_num()):
+                        # Get the avatar ID.
+                        avatar_id = camera_matrices.get_avatar_id(j)
+                        # Get the matrix and convert it.
+                        # Equivalent to: handedness * object_matrix * handedness.
+                        matrix = np.matmul(self.handedness, np.matmul(camera_matrices.get_camera_matrix(j), self.handedness))
+                        # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
+                        # We also need to negate the X and Y value, to complete the handedness conversion.
+                        pos_x = -(matrix[3][0] * 100)
+                        pos_y = -(matrix[3][1] * 100)
+                        pos_z = matrix[3][2] * 100
+                        mat_struct = matrix_data_struct(column_one = str(matrix[0][0]) + "," + str(matrix[0][1]) + "," + str(matrix[0][2]), 
+                                                        column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(matrix[1][2]), 
+                                                        column_three = str(matrix[2][0]) + "," + str(matrix[2][1]) + "," + str(matrix[2][2]),  
+                                                        column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
+                        print(str(matrix_data_struct.column_one + "\n"), 
+                              str(matrix_data_struct.column_two + "\n"), 
+                              str(matrix_data_struct.column_three + "\n"), 
+                              str(matrix_data_struct.column_four + "\n"))
+        #self.write_renderview_data(mat_struct)
 
     def assemble_render_file(self):
         scene_path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
         with open(scene_path, "a") as f:  
-            f.writeln("#include models.vrscene")
-            f.writeln("#include views.vrscene")
+            #f.write("#include models.vrscene\n")
+            #f.write("#include views.vrscene\n")
             # Append nodes and lights files also, if either one exists
             if os.path.exists("nodes.vrscene"):
-                f.writeln("#include views.vrscene")
+                f.write("#include nodes.vrscene\n")
             if os.path.exists("lights.vrscene"):
-                f.writeln("#include lights.vrscene")
+                f.write("#include lights.vrscene\n")
 
     def launch_vantage_render(self):
         """

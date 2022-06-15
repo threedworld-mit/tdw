@@ -90,11 +90,17 @@ class Photoreal(Controller):
             self.download_zip(om.objects_static[object_id].name)
             print(om.objects_static[object_id].name + ", pos: " + str(om.transforms[object_id].position) + ", ori: " + str(om.transforms[object_id].rotation))
         """
-        
+        # Download and unzip scene file -- this will be the "master" file, that all model etc. .vrscene fiels will be appended to.
+        export.download_scene()
+        # Download and unzip all object models in the scene.
         for model_name in export.object_names.values():
             export.download_model(model_name)
         resp = self.communicate([])
         export.export_static_node_data(resp=resp)
+        resp = self.communicate([])
+        write_static_camera_view_data(resp=resp)
+        # Everything is prepared, now assemble the components by adding the models and view files to the scene file.
+        export.assemble_render_file()
 
 
 if __name__ == "__main__":

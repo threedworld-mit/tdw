@@ -54,6 +54,7 @@ from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import TransformMatrices as TranMat
+from tdw.FBOutput import AvatarTransformMatrices as AvTranMat
 import numpy as np
 from typing import Tuple, Optional, List
 
@@ -1441,3 +1442,25 @@ class TransformMatrices(OutputData):
 
     def get_matrix(self, index: int) -> np.array:
         return self._matrices[index]
+
+
+class AvatarTransformMatrices(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._avatar_matrices = self.data.AvatarMatricesAsNumpy().reshape(-1, 4, 4)
+        self._sensor_container_matrices = self.data.SensorContainerMatricesAsNumpy().reshape(-1, 4, 4)
+
+    def get_data(self) -> AvTranMat.AvatarTransformMatrices:
+        return AvTranMat.AvatarTransformMatrices.GetRootAsAvatarTransformMatrices(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.AvatarIdsLength()
+
+    def get_id(self, index: int) -> str:
+        return self.data.AvatarIds(index).decode('utf-8')
+
+    def get_avatar_matrix(self, index: int) -> np.array:
+        return self._avatar_matrices[index]
+
+    def get_sensor_matrix(self, index: int) -> np.array:
+        return self._sensor_container_matrices[index]

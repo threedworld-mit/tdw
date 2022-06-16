@@ -1,7 +1,7 @@
 from typing import List, Dict, NamedTuple, Union
 from tdw.add_ons.add_on import AddOn
 from pathlib import Path
-from tdw.output_data import OutputData, TransformMatrices, SegmentationColors
+from tdw.output_data import OutputData, TransformMatrices, SegmentationColors, CameraMatrices
 from requests import get
 import os
 import re
@@ -163,7 +163,7 @@ class VRayExport(AddOn):
                         self.write_node_data(model_name, mat_struct)
                         f.write("#include \"" + model_name + ".vrscene\"\n")
 
-    def write_static_camera_view_data(self):
+    def export_static_camera_view_data(self, resp: List[bytes]):
         """
         Export the position and orientation of the camera to its .vrscene file as Node data.
         """	
@@ -172,27 +172,25 @@ class VRayExport(AddOn):
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
                 if r_id == "cama":
-                    camera_matrices = CameraMatrices(resp[i])
-                    # Iterate through the cameras.
-                    for j in range(camera_matrices.get_num()):
-                        # Get the avatar ID.
-                        avatar_id = camera_matrices.get_avatar_id(j)
-                        # Get the matrix and convert it.
-                        # Equivalent to: handedness * object_matrix * handedness.
-                        matrix = np.matmul(self.handedness, np.matmul(camera_matrices.get_camera_matrix(j), self.handedness))
-                        # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
-                        # We also need to negate the X and Y value, to complete the handedness conversion.
-                        pos_x = -(matrix[3][0] * 100)
-                        pos_y = -(matrix[3][1] * 100)
-                        pos_z = matrix[3][2] * 100
-                        mat_struct = matrix_data_struct(column_one = str(matrix[0][0]) + "," + str(matrix[0][1]) + "," + str(matrix[0][2]), 
-                                                        column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(matrix[1][2]), 
-                                                        column_three = str(matrix[2][0]) + "," + str(matrix[2][1]) + "," + str(matrix[2][2]),  
-                                                        column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
-                        print(str(matrix_data_struct.column_one + "\n"), 
-                              str(matrix_data_struct.column_two + "\n"), 
-                              str(matrix_data_struct.column_three + "\n"), 
-                              str(matrix_data_struct.column_four + "\n"))
+                    camera_matrices = CameraMatrices(resp[i])                 
+                    # Get the avatar ID.
+                    avatar_id = camera_matrices.get_avatar_id()
+                    # Get the matrix and convert it.
+                    # Equivalent to: handedness * object_matrix * handedness.
+                    matrix = np.matmul(self.handedness, np.matmul(camera_matrices.get_camera_matrix(), self.handedness))
+                    # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
+                    # We also need to negate the X and Y value, to complete the handedness conversion.
+                    pos_x = -(matrix[3][0] * 100)
+                    pos_y = -(matrix[3][1] * 100)
+                    pos_z = matrix[3][2] * 100
+                    mat_struct = matrix_data_struct(column_one = str(matrix[0][0]) + "," + str(matrix[0][1]) + "," + str(matrix[0][2]), 
+                                                    column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(matrix[1][2]), 
+                                                    column_three = str(matrix[2][0]) + "," + str(matrix[2][1]) + "," + str(matrix[2][2]),  
+                                                    column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
+                    print(str(matrix_data_struct.column_one + "\n"), 
+                          str(matrix_data_struct.column_two + "\n"), 
+                          str(matrix_data_struct.column_three + "\n"), 
+                          str(matrix_data_struct.column_four + "\n"))
         #self.write_renderview_data(mat_struct)
 
     def assemble_render_file(self):

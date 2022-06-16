@@ -98,7 +98,7 @@ class Photoreal(Controller):
         resp = self.communicate([])
         export.export_static_node_data(resp=resp)
         resp = self.communicate([])
-        write_static_camera_view_data(resp=resp)
+        export.export_static_camera_view_data(resp=resp)
         # Everything is prepared, now assemble the components by adding the models and view files to the scene file.
         export.assemble_render_file()
 

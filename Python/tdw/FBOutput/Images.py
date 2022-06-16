@@ -26,51 +26,245 @@ class Images(object):
         return None
 
     # Images
-    def SensorName(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
-        if o != 0:
-            return self._tab.String(o + self._tab.Pos)
-        return None
-
-    # Images
     def Width(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
     # Images
     def Height(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
     # Images
-    def Passes(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+    def Img(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
-            x = self._tab.Vector(o)
-            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 4
-            x = self._tab.Indirect(x)
-            from .ImagePass import ImagePass
-            obj = ImagePass()
-            obj.Init(self._tab.Bytes, x)
-            return obj
-        return None
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
 
     # Images
-    def PassesLength(self):
+    def ImgAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Uint8Flags, o)
+        return 0
+
+    # Images
+    def ImgLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Images
+    def Id(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
+
+    # Images
+    def IdAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Uint8Flags, o)
+        return 0
+
+    # Images
+    def IdLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def ImagesStart(builder): builder.StartObject(5)
+    # Images
+    def Category(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
+
+    # Images
+    def CategoryAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Uint8Flags, o)
+        return 0
+
+    # Images
+    def CategoryLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Images
+    def Mask(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
+
+    # Images
+    def MaskAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Uint8Flags, o)
+        return 0
+
+    # Images
+    def MaskLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Images
+    def Depth(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
+
+    # Images
+    def DepthAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Uint8Flags, o)
+        return 0
+
+    # Images
+    def DepthLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Images
+    def Normals(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
+
+    # Images
+    def NormalsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Uint8Flags, o)
+        return 0
+
+    # Images
+    def NormalsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Images
+    def Flow(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(22))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
+
+    # Images
+    def FlowAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(22))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Uint8Flags, o)
+        return 0
+
+    # Images
+    def FlowLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(22))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Images
+    def DepthSimple(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(24))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
+
+    # Images
+    def DepthSimpleAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(24))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Uint8Flags, o)
+        return 0
+
+    # Images
+    def DepthSimpleLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(24))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Images
+    def Albedo(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
+
+    # Images
+    def AlbedoAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Uint8Flags, o)
+        return 0
+
+    # Images
+    def AlbedoLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Images
+    def ImgPassIsPng(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(28))
+        if o != 0:
+            return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
+
+def ImagesStart(builder): builder.StartObject(13)
 def ImagesAddAvatarId(builder, avatarId): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(avatarId), 0)
-def ImagesAddSensorName(builder, sensorName): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(sensorName), 0)
-def ImagesAddWidth(builder, width): builder.PrependInt32Slot(2, width, 0)
-def ImagesAddHeight(builder, height): builder.PrependInt32Slot(3, height, 0)
-def ImagesAddPasses(builder, passes): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(passes), 0)
-def ImagesStartPassesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ImagesAddWidth(builder, width): builder.PrependInt32Slot(1, width, 0)
+def ImagesAddHeight(builder, height): builder.PrependInt32Slot(2, height, 0)
+def ImagesAddImg(builder, img): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(img), 0)
+def ImagesStartImgVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ImagesAddId(builder, id): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(id), 0)
+def ImagesStartIdVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ImagesAddCategory(builder, category): builder.PrependUOffsetTRelativeSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(category), 0)
+def ImagesStartCategoryVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ImagesAddMask(builder, mask): builder.PrependUOffsetTRelativeSlot(6, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(mask), 0)
+def ImagesStartMaskVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ImagesAddDepth(builder, depth): builder.PrependUOffsetTRelativeSlot(7, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(depth), 0)
+def ImagesStartDepthVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ImagesAddNormals(builder, normals): builder.PrependUOffsetTRelativeSlot(8, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(normals), 0)
+def ImagesStartNormalsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ImagesAddFlow(builder, flow): builder.PrependUOffsetTRelativeSlot(9, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(flow), 0)
+def ImagesStartFlowVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ImagesAddDepthSimple(builder, depthSimple): builder.PrependUOffsetTRelativeSlot(10, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(depthSimple), 0)
+def ImagesStartDepthSimpleVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ImagesAddAlbedo(builder, albedo): builder.PrependUOffsetTRelativeSlot(11, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(albedo), 0)
+def ImagesStartAlbedoVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ImagesAddImgPassIsPng(builder, imgPassIsPng): builder.PrependBoolSlot(12, imgPassIsPng, 0)
 def ImagesEnd(builder): return builder.EndObject()

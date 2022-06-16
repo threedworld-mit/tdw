@@ -1,4 +1,4 @@
-from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, SimpleTransform, PathState
+from tdw.FBOutput import Vector3, Quaternion, Color, MessageType, SimpleTransform, PathState
 from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
@@ -10,7 +10,6 @@ from tdw.FBOutput import AvatarSimpleBody as AvSi
 from tdw.FBOutput import SegmentationColors as Segs
 from tdw.FBOutput import AvatarSegmentationColor as AvSC
 from tdw.FBOutput import IsOnNavMesh as IsNM
-from tdw.FBOutput import IdPassGrayscale as IdGS
 from tdw.FBOutput import Collision as Col
 from tdw.FBOutput import ImageSensors as ImSe
 from tdw.FBOutput import CameraMatrices as CaMa
@@ -54,7 +53,7 @@ from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
 import numpy as np
-from typing import Tuple, Optional, List
+from typing import Tuple, Optional, List, Dict
 
 
 class OutputDataUndefinedError(Exception):
@@ -279,16 +278,23 @@ class Bounds(OutputData):
 
 
 class Images(OutputData):
-    PASS_MASKS = {PassMask.PassMask._img: "_img",
-                  PassMask.PassMask._id: "_id",
-                  PassMask.PassMask._category: "_category",
-                  PassMask.PassMask._mask: "_mask",
-                  PassMask.PassMask._depth: "_depth",
-                  PassMask.PassMask._normals: "_normals",
-                  PassMask.PassMask._flow: "_flow",
-                  PassMask.PassMask._depth_simple: "_depth_simple",
-                  PassMask.PassMask._albedo: "_albedo"
-                  }
+    PASS_MASKS: List[str] = ['_img', '_id', '_category', '_mask', '_depth', '_normals', '_flow', '_depth_simple', '_albedo']
+
+    def __init__(self, b):
+        super().__init__(b)
+        self._pass_masks = dict()
+        # Fill the pass masks dictionary with only passes that have data.
+        pass_mask: str
+        for pass_mask, length, fn in zip([Images.PASS_MASKS],
+                                         [self.data.ImgLength(), self.data.IdLength(), self.data.CategoryLength(),
+                                          self.data.MaskLength(), self.data.DepthLength(), self.data.NormalsLength(),
+                                          self.data.FlowLength(), self.data.DepthSimpleLength(), self.data.AlbedoLength()],
+                                         [self.data.ImgAsNumpy, self.data.IdAsNumpy, self.data.CategoryAsNumpy,
+                                          self.data.MaskAsNumpy, self.data.DepthAsNumpy, self.data.NormalsAsNumpy,
+                                          self.data.FlowAsNumpy, self.data.DepthSimpleAsNumpy, self.data.AlbedoAsNumpy]):
+            if length > 0:
+                self._pass_masks[pass_mask] = fn()
+        self._pass_masks_list: List[str] = list(self._pass_masks.keys())
 
     def get_data(self) -> Imags.Images:
         return Imags.Images.GetRootAsImages(self.bytes, 0)
@@ -296,20 +302,17 @@ class Images(OutputData):
     def get_avatar_id(self) -> str:
         return self.data.AvatarId().decode('utf-8')
 
-    def get_sensor_name(self) -> str:
-        return self.data.SensorName().decode('utf-8')
-
     def get_num_passes(self) -> int:
-        return self.data.PassesLength()
+        return len(self._pass_masks)
 
     def get_pass_mask(self, index: int) -> str:
-        return Images.PASS_MASKS[self.data.Passes(index).PassMask()]
+        return self._pass_masks_list[index]
 
     def get_image(self, index: int) -> np.array:
-        return self.data.Passes(index).ImageAsNumpy()
+        return self._pass_masks[self._pass_masks_list[index]]
 
-    def get_extension(self, index: int) -> str:
-        return "png" if self.data.Passes(index).Extension() == 1 else "jpg"
+    def get_img_pass_extension(self) -> str:
+        return "png" if self.data.ImgPassIsPng() else "jpg"
 
     def get_width(self) -> int:
         return self.data.Width()
@@ -405,20 +408,6 @@ class IsOnNavMesh(OutputData):
 
     def get_is_on(self) -> bool:
         return self.data.IsOn()
-
-
-class IdPassGrayscale(OutputData):
-    def get_data(self) -> IdGS.IdPassGrayscale:
-        return IdGS.IdPassGrayscale.GetRootAsIdPassGrayscale(self.bytes, 0)
-
-    def get_avatar_id(self) -> str:
-        return self.data.AvatarId().decode('utf-8')
-
-    def get_sensor_name(self) -> str:
-        return self.data.SensorName().decode('utf-8')
-
-    def get_grayscale(self) -> float:
-        return self.data.Grayscale()
 
 
 class Collision(OutputData):

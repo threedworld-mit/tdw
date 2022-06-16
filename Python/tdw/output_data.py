@@ -282,10 +282,9 @@ class Images(OutputData):
 
     def __init__(self, b):
         super().__init__(b)
-        self._pass_masks = dict()
+        self._pass_masks: Dict[str, np.array] = dict()
         # Fill the pass masks dictionary with only passes that have data.
-        pass_mask: str
-        for pass_mask, length, fn in zip([Images.PASS_MASKS],
+        for pass_mask, length, fn in zip(Images.PASS_MASKS,
                                          [self.data.ImgLength(), self.data.IdLength(), self.data.CategoryLength(),
                                           self.data.MaskLength(), self.data.DepthLength(), self.data.NormalsLength(),
                                           self.data.FlowLength(), self.data.DepthSimpleLength(), self.data.AlbedoLength()],

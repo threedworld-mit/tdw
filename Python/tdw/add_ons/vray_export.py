@@ -19,17 +19,11 @@ class matrix_data_struct(NamedTuple):
 
 class VRayExport(AddOn):
 
-    def __init__(self, image_width: int, image_height: int, scene_name: str, output_path: Union[str, Path]):
+    def __init__(self, image_width: int, image_height: int, scene_name: str, output_path: str):
         super().__init__()
-        if isinstance(output_path, str):
-            """:field
-            The path to the output directory.
-            """
-            self.output_path: Path = Path(output_path)
-        else:
-            self.output_path: Path = output_path
-        if not self.output_path.exists():
-            self.output_path.mkdir(parents=True)
+        self.output_path = output_path
+        if not os.path.exists(self.output_path):
+            os.mkdir(self.output_path)
         self.S3_ROOT = "https://tdw-public.s3.amazonaws.com/"
         self.VRAY_EXPORT_RESOURCES_PATH = Path.home().joinpath("vray_export_resources")
         if not self.VRAY_EXPORT_RESOURCES_PATH.exists():
@@ -79,15 +73,18 @@ class VRayExport(AddOn):
         Download the zip file of a model from Amazon S3, and unpack the contents into the general "resources" folder.
         :param model_name: The name of the model.
         """
-        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name.lower()) + ".zip"
-        url = os.path.join(self.S3_ROOT + "vray_models/", model_name.lower()) + ".zip"
-        with open(path, "wb") as f:
-            f.write(get(url).content)
-        # Unzip in place.
-        with zipfile.ZipFile(path, 'r') as zip_ref:
-            zip_ref.extractall(self.VRAY_EXPORT_RESOURCES_PATH)
-        # Delete the zip file.
-        os.remove(path)
+        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name.lower())
+        # Check if we have already downloaded this model.
+        if not os.path.exists(path + ".vrscene"):
+            path = path + ".zip"
+            url = os.path.join(self.S3_ROOT + "vray_models/", model_name.lower()) + ".zip"
+            with open(path, "wb") as f:
+                f.write(get(url).content)
+            # Unzip in place.
+            with zipfile.ZipFile(path, 'r') as zip_ref:
+                zip_ref.extractall(self.VRAY_EXPORT_RESOURCES_PATH)
+            # Delete the zip file.
+            os.remove(path)
 
     def download_scene(self):
         """
@@ -138,6 +135,43 @@ class VRayExport(AddOn):
         with open(path, "a") as f:  
             f.write(node_string)
 
+    def get_renderview_line_number(self) -> int:
+        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name)  + ".vrscene"
+        line_number = 0
+        num = 0
+        with open(path, "r", encoding="utf-8") as in_file:
+            pattern = re.compile("RenderView")
+            for line in in_file:
+                if pattern.search(line):
+                    # We will want to replace the line following the "RenderView" line, with the transform data
+                    line_number = num + 1
+                    return line_number
+                else:
+                    num = num + 1
+
+    def write_renderview_data(self, mat: matrix_data_struct):
+        """
+        Append the scene position and orientation of a model to its .vrscene file, as Node data.
+        NOTE: This could be called once, for a static scene, or every frame if capturing physics motion.
+        :param model_name: The name of the model.
+        """
+        # Open model .vrscene file to append node data
+        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name)  + ".vrscene"
+        node_string = ("transform=Transform(Matrix" + 
+                       "(Vector(" + mat.column_one + "), " +
+                       "Vector(" + mat.column_two + "), " +
+                       "Vector(" + mat.column_three + ")), " +
+                       "Vector(" + mat.column_four + "));\n")
+        line_number = self.get_renderview_line_number()
+        with open(path, 'r', encoding="utf-8") as in_file:
+            # Read a list of lines into data
+            data = in_file.readlines()
+            # Now change the Renderview line
+            data[line_number] = node_string
+        # Write everything back
+        with open(path, 'w', encoding="utf-8") as out_file:
+           out_file.writelines(data)
+
     def export_static_node_data(self, resp: List[bytes]):
         """
         For each model in the scene, export the position and orientation data to the model's .vrscene file as Node data.
@@ -174,35 +208,29 @@ class VRayExport(AddOn):
         """
         Export the position and orientation of the camera to the scene .vrscene file as Node data.
         """	
-        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
-        with open(path, "a") as f: 
-            for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i])
-                if r_id == "atrm":
-                    avatar_transform_matrices = AvatarTransformMatrices(resp[i])
-                    for j in range(avatar_transform_matrices.get_num()):
-                        avatar_id = avatar_transform_matrices.get_id(j)
-                        avatar_matrix = avatar_transform_matrices.get_avatar_matrix(j)
-                        sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
-                        # Get the matrix and convert it.
-                        # Equivalent to: handedness * object_matrix * handedness.
-                        pos_matrix = np.matmul(self.handedness, np.matmul(avatar_matrix, self.handedness))
-                        #rot_matrix = np.matmul(self.camera_handedness, np.matmul(sensor_matrix, self.camera_handedness))
-                        rot_matrix = np.matmul(sensor_matrix, self.camera_handedness)
-                        # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
-                        # We also need to negate the X and Y value, to complete the handedness conversion.
-                        pos_x = -(pos_matrix[3][0] * 100)
-                        pos_y = -(pos_matrix[3][1] * 100)
-                        pos_z = pos_matrix[3][2] * 100
-                        mat_struct = matrix_data_struct(column_one = str(rot_matrix[0][0]) + "," + str(rot_matrix[0][1]) + "," + str(rot_matrix[0][2]), 
-                                                        column_two = str(rot_matrix[1][0]) + "," + str(rot_matrix[1][1]) + "," + str(rot_matrix[1][2]), 
-                                                        column_three = str(rot_matrix[2][0]) + "," + str(rot_matrix[2][1]) + "," + str(rot_matrix[2][2]),  
-                                                        column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
-                        print(str(mat_struct.column_one) + "\n", 
-                              str(mat_struct.column_two) + "\n", 
-                              str(mat_struct.column_three) + "\n", 
-                              str(mat_struct.column_four) + "\n")
-        #self.write_renderview_data(mat_struct)
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "atrm":
+                avatar_transform_matrices = AvatarTransformMatrices(resp[i])
+                for j in range(avatar_transform_matrices.get_num()):
+                    avatar_id = avatar_transform_matrices.get_id(j)
+                    avatar_matrix = avatar_transform_matrices.get_avatar_matrix(j)
+                    sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
+                    # Get the matrix and convert it.
+                    # Equivalent to: handedness * object_matrix * handedness.
+                    pos_matrix = np.matmul(self.handedness, np.matmul(avatar_matrix, self.handedness))
+                    #rot_matrix = np.matmul(self.camera_handedness, np.matmul(sensor_matrix, self.camera_handedness))
+                    rot_matrix = np.matmul(sensor_matrix, self.camera_handedness)
+                    # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
+                    # We also need to negate the X and Y value, to complete the handedness conversion.
+                    pos_x = -(pos_matrix[3][0] * 100)
+                    pos_y = -(pos_matrix[3][1] * 100)
+                    pos_z = pos_matrix[3][2] * 100
+                    mat_struct = matrix_data_struct(column_one = str(rot_matrix[0][0]) + "," + str(rot_matrix[0][1]) + "," + str(rot_matrix[0][2]), 
+                                                    column_two = str(rot_matrix[1][0]) + "," + str(rot_matrix[1][1]) + "," + str(rot_matrix[1][2]), 
+                                                    column_three = str(rot_matrix[2][0]) + "," + str(rot_matrix[2][1]) + "," + str(rot_matrix[2][2]),  
+                                                    column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
+        self.write_renderview_data(mat_struct)
 
     def assemble_render_file(self):
         scene_path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
@@ -220,11 +248,15 @@ class VRayExport(AddOn):
         Launch Vantage in headless mode and render scene file.
         """
         scene_path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
-        subprocess.run(["C://Program Files//Chaos Group//Vantage//vantage_console.exe", 
+        output_path = str(self.output_path) + self.scene_name + ".png"
+        print(output_path)
+        os.chmod("C://Program Files//Chaos Group//Vantage//vantage_console.exe", 0o777)
+        subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage.exe", 
                         "-sceneFile=" + scene_path, 
-                        "-outputFile=" + self.output_path,  
-                        "-outputWidth=" + self.image_width, 
-                        "-outputHeight=" + self.image_height,
-                        "-quiet"])
+                        "-outputFile=" + output_path,  
+                        "-outputWidth=" + str(self.image_width), 
+                        "-outputHeight=" + str(self.image_height),
+                        "-quiet",
+                        "-autoClose=true"])
 
 	

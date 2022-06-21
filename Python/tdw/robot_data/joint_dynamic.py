@@ -6,11 +6,14 @@ class JointDynamic:
     Dynamic info for a joint that can change per-frame, such as its current position.
     """
 
-    def __init__(self, joint_id: int, position: np.array, angles: np.array, moving: bool):
+    def __init__(self, joint_id: int, position: np.array, angles: np.array, velocity: np.array,
+                 angular_velocity: np.array, moving: bool):
         """
         :param joint_id: The ID of this joint.
         :param position: The worldspace position of this joint as an `[x, y, z]` numpy array.
-        :param angles: The angles of each axis of the joint in degrees. For prismatic joints, you need to convert this from degrees to radians in order to get the correct distance in meters.
+        :param angles: The angles of each axis of the joint in degrees as a numpy array. For prismatic joints, you need to convert this from degrees to radians in order to get the correct distance in meters.
+        :param velocity: The directional velocity of the joint as an `[x, y, z]` numpy array.
+        :param angular_velocity: The angular velocity of the joint as an `[x, y, z]` numpy array.
         :param moving: If True, this joint is currently moving.
         """
 
@@ -26,6 +29,14 @@ class JointDynamic:
         The angles of each axis of the joint in degrees. For prismatic joints, you need to convert this from degrees to radians in order to get the correct distance in meters.
         """
         self.angles: np.array = angles
+        """:field
+        The directional velocity of the joint as an `[x, y, z]` numpy array.
+        """
+        self.velocity: np.array = velocity
+        """:field
+        The angular velocity of the joint as an `[x, y, z]` numpy array.
+        """
+        self.angular_velocity: np.array = angular_velocity
         """:field
         If True, this joint is currently moving.
         """

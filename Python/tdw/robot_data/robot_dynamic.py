@@ -1,7 +1,8 @@
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Tuple
 import numpy as np
-from tdw.output_data import OutputData, Robot, Collision, EnvironmentCollision
+from tdw.output_data import OutputData, Collision, EnvironmentCollision, DynamicRobots
 from tdw.object_data.transform import Transform
+from tdw.robot_data.robot_static import RobotStatic
 from tdw.robot_data.joint_dynamic import JointDynamic
 from tdw.collision_data.collision_obj_obj import CollisionObjObj
 from tdw.collision_data.collision_obj_env import CollisionObjEnv
@@ -17,20 +18,20 @@ class RobotDynamic:
     """
     NON_MOVING: float = 0.001
 
-    def __init__(self, robot_id: int, resp: List[bytes], body_parts: List[int], previous=None):
+    def __init__(self, static: RobotStatic, resp: List[bytes]):
         """
-        :param resp: The response from the build, which we assume contains `Robot` output data.
-        :param robot_id: The ID of this robot.
-        :param body_parts: The IDs of all body parts belonging to this robot.
-        :param previous: If not None, the previous RobotDynamic data. Use this to determine if the joints are moving.
+        :param static: [`RobotStatic`](robot_static.md) data for this robot.
+        :param resp: The response from the build.
         """
 
         """:field
-        The Transform data for this robot.
+        The [`Transform`](../object_data/transform.md) data for this robot.
         """
-        self.transform: Optional[Transform] = None
+        self.transform: Transform = Transform(position=np.array([0, 0, 0]),
+                                              rotation=np.array([0, 0, 0, 0]),
+                                              forward=np.array([0, 0, 0]))
         """:field
-        A dictionary of [dynamic joint data](joint_dynamic.md). Key = The ID of the joint.
+        A dictionary of [`JointDynamic`](joint_dynamic.md). Key = The ID of the joint.
         """
         self.joints: Dict[int, JointDynamic] = dict()
         """:field
@@ -57,32 +58,25 @@ class RobotDynamic:
         self.collisions_with_environment: Dict[int, List[CollisionObjEnv]] = dict()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "robo":
-                robot: Robot = Robot(resp[i])
-                if robot.get_id() == robot_id:
-                    self.transform = Transform(position=np.array(robot.get_position()),
-                                               rotation=np.array(robot.get_rotation()),
-                                               forward=np.array(robot.get_forward()))
-                    self.immovable = robot.get_immovable()
-                    # Get dynamic data for each joint.
-                    for j in range(robot.get_num_joints()):
-                        joint = JointDynamic(robot=robot, joint_index=j)
-                        # Determine if the joint is currently moving.
-                        if previous is not None:
-                            previous: RobotDynamic
-                            previous_joint: JointDynamic = previous.joints[joint.joint_id]
-                            for k in range(len(previous_joint.angles)):
-                                if np.linalg.norm(previous_joint.angles[k] - joint.angles[k]) > RobotDynamic.NON_MOVING:
-                                    joint.moving = True
-                                    break
-                        self.joints[joint.joint_id] = joint
             # Record collisions between myself and my joints or with another object.
+            if r_id == "drob":
+                dynamic_robots = DynamicRobots(resp[i])
+                self.immovable = dynamic_robots.get_immovable(static.robot_index)
+                self.transform = Transform(position=dynamic_robots.get_robot_position(static.robot_index),
+                                           rotation=dynamic_robots.get_robot_rotation(static.robot_index),
+                                           forward=dynamic_robots.get_robot_forward(static.robot_index))
+                for joint_id in static.joint_indices:
+                    joint_index = static.joint_indices[joint_id]
+                    self.joints[joint_id] = JointDynamic(joint_id=joint_id,
+                                                         position=dynamic_robots.get_joint_position(index=joint_index),
+                                                         angles=dynamic_robots.get_joint_angles(index=joint_index)[:len(static.joints[joint_id].drives)],
+                                                         moving=False)
             elif r_id == "coll":
                 collision = Collision(resp[i])
                 collider_id: int = collision.get_collider_id()
                 collidee_id: int = collision.get_collidee_id()
                 # Record collisions between one of my body parts and another of my body parts.
-                if collider_id in body_parts and collidee_id in body_parts:
+                if collider_id in static.body_parts and collidee_id in static.body_parts:
                     key: Tuple[int, int] = (collider_id, collidee_id)
                     c = CollisionObjObj(collision)
                     # Record this collision.
@@ -91,9 +85,9 @@ class RobotDynamic:
                     else:
                         self.collisions_with_self[key].append(c)
                 # Record collisions between one of my body parts and another object.
-                elif collider_id in body_parts or collidee_id in body_parts:
+                elif collider_id in static.body_parts or collidee_id in static.body_parts:
                     # The body part is the first element in the tuple.
-                    if collider_id in body_parts:
+                    if collider_id in static.body_parts:
                         key: Tuple[int, int] = (collider_id, collidee_id)
                     else:
                         key: Tuple[int, int] = (collidee_id, collider_id)
@@ -106,7 +100,7 @@ class RobotDynamic:
             elif r_id == "enco":
                 collision = EnvironmentCollision(resp[i])
                 object_id = collision.get_object_id()
-                if object_id in body_parts:
+                if object_id in static.body_parts:
                     c = CollisionObjEnv(collision)
                     if object_id not in self.collisions_with_environment:
                         self.collisions_with_environment[object_id] = [c]

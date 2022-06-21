@@ -75,11 +75,9 @@ class PerformanceBenchmarkController(Controller):
             # Create 100 boxes.
             object_ids = []
             for i in range(100):
-                commands.append({"$type": "load_primitive_from_resources",
-                                 "primitive_type": "Cube",
-                                 "id": i,
-                                 "position": {"x": 0, "y": y, "z": 0},
-                                 "orientation": {"x": 0, "y": 0, "z": 0}})
+                commands.append(Controller.get_add_object(model_name="rh10",
+                                                          position={"x": 0, "y": y, "z": 0},
+                                                          object_id=i))
                 object_ids.append(i)
                 y += 1.5
             # Initialize for Obi.

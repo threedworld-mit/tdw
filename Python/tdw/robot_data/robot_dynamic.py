@@ -69,9 +69,7 @@ class RobotDynamic:
                     joint_index = static.joints[joint_id].dynamic_index
                     self.joints[joint_id] = JointDynamic(joint_id=joint_id,
                                                          position=dynamic_robots.get_joint_position(index=joint_index),
-                                                         angles=dynamic_robots.get_joint_angles(index=joint_index)[:len(static.joints[joint_id].drives)],
-                                                         velocity=dynamic_robots.get_joint_velocity(index=joint_index),
-                                                         angular_velocity=dynamic_robots.get_joint_angular_velocity(index=joint_index),
+                                                         angles=dynamic_robots.get_joint_angles(index=joint_index)[:static.joints[joint_id].num_dof],
                                                          moving=False)
             elif r_id == "coll":
                 collision = Collision(resp[i])

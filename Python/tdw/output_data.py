@@ -984,7 +984,7 @@ class DynamicRobots(OutputData):
         super().__init__(b)
         self._immovable = self.data.ImmovableAsNumpy()
         self._transforms = self.data.TransformsAsNumpy().reshape(-1, 10)
-        self._joints = self.data.JointsAsNumpy().reshape(-1, 4, 3)
+        self._joints = self.data.JointsAsNumpy().reshape(-1, 2, 3)
         self._sleeping = self.data.SleepingAsNumpy()
 
     def get_data(self) -> DynRob.DynamicRobots:
@@ -1007,12 +1007,6 @@ class DynamicRobots(OutputData):
 
     def get_joint_angles(self, index: int) -> np.array:
         return np.degrees(self._joints[index][1])
-
-    def get_joint_velocity(self, index: int) -> np.array:
-        return self._joints[index][2]
-
-    def get_joint_angular_velocity(self, index: int) -> np.array:
-        return self._joints[index][3]
 
     def get_joint_sleeping(self, index: int) -> bool:
         return bool(self._sleeping[index])

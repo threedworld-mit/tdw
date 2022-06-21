@@ -39,15 +39,21 @@ class RobotStatic:
         If True, the robot is immovable.
         """
         self.immovable: bool = False
-        self.joint_indices: Dict[int, int] = dict()
         self.robot_index: int = -1
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "srob":
                 static_robot: StaticRobot = StaticRobot(resp[i])
+                joint_indices_dict: Dict[int, int] = dict()
+                joint_indices_arr = static_robot.get_joint_indices()
+                for q in range(joint_indices_arr.shape[0]):
+                    j_id = int(joint_indices_arr[q][0])
+                    joint_indices_dict[j_id] = int(joint_indices_arr[q][1])
                 if static_robot.get_id() == robot_id:
                     for j in range(static_robot.get_num_joints()):
-                        joint = JointStatic(static_robot=static_robot, joint_index=j)
+                        joint = JointStatic(static_robot=static_robot,
+                                            static_index=j,
+                                            dynamic_index=joint_indices_dict[static_robot.get_joint_id(j)])
                         self.joints[joint.joint_id] = joint
                         self.joint_ids_by_name[joint.name] = joint.joint_id
                         if joint.root:
@@ -55,9 +61,7 @@ class RobotStatic:
                     for j in range(static_robot.get_num_non_moving()):
                         non_moving = NonMoving(static_robot=static_robot, index=j)
                         self.non_moving[non_moving.object_id] = non_moving
-                    joint_indices_arr = static_robot.get_joint_indices()
-                    for q in range(joint_indices_arr.shape[0]):
-                        self.joint_indices[int(joint_indices_arr[q][0])] = int(joint_indices_arr[q][1])
                     self.robot_index = static_robot.get_robot_index()
+                    break
         self.body_parts: List[int] = list(self.joints.keys())
         self.body_parts.extend(self.non_moving.keys())

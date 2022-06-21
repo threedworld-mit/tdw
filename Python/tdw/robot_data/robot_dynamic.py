@@ -65,8 +65,8 @@ class RobotDynamic:
                 self.transform = Transform(position=dynamic_robots.get_robot_position(static.robot_index),
                                            rotation=dynamic_robots.get_robot_rotation(static.robot_index),
                                            forward=dynamic_robots.get_robot_forward(static.robot_index))
-                for joint_id in static.joint_indices:
-                    joint_index = static.joint_indices[joint_id]
+                for joint_id in static.joints:
+                    joint_index = static.joints[joint_id].dynamic_index
                     self.joints[joint_id] = JointDynamic(joint_id=joint_id,
                                                          position=dynamic_robots.get_joint_position(index=joint_index),
                                                          angles=dynamic_robots.get_joint_angles(index=joint_index)[:len(static.joints[joint_id].drives)],

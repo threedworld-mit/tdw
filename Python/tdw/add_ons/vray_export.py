@@ -151,9 +151,7 @@ class VRayExport(AddOn):
 
     def write_renderview_data(self, mat: matrix_data_struct):
         """
-        Append the scene position and orientation of a model to its .vrscene file, as Node data.
-        NOTE: This could be called once, for a static scene, or every frame if capturing physics motion.
-        :param model_name: The name of the model.
+        Replace the camera transform line in the scene file with the converted TDW camera pos/ori data.
         """
         # Open model .vrscene file to append node data
         path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name)  + ".vrscene"
@@ -206,7 +204,7 @@ class VRayExport(AddOn):
 
     def export_static_camera_view_data(self, resp: List[bytes]):
         """
-        Export the position and orientation of the camera to the scene .vrscene file as Node data.
+        Export the position and orientation of the camera to the scene .vrscene file as Transform data.
         """	
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])

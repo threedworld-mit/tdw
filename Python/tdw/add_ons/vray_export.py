@@ -231,6 +231,9 @@ class VRayExport(AddOn):
         self.write_renderview_data(mat_struct)
 
     def assemble_render_file(self):
+        """
+        If Node and/or Lights dynamic data was exported, append to the end of the master scene file.
+        """
         scene_path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
         with open(scene_path, "a") as f:  
             #f.write("#include models.vrscene\n")
@@ -247,7 +250,6 @@ class VRayExport(AddOn):
         """
         scene_path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
         output_path = str(self.output_path) + self.scene_name + ".png"
-        print(output_path)
         os.chmod("C://Program Files//Chaos Group//Vantage//vantage_console.exe", 0o777)
         subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage.exe", 
                         "-sceneFile=" + scene_path, 

@@ -39,6 +39,9 @@ class RobotStatic:
         If True, the robot is immovable.
         """
         self.immovable: bool = False
+        """:field
+        The index of the robot in `DynamicRobots` output data. This is used internally; you almost always want to refer to `self.robot_id` instead.
+        """
         self.robot_index: int = -1
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])

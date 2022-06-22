@@ -57,10 +57,10 @@ class JointStatic:
             drive = Drive(sr=static_robot, joint_index=static_index, drive_index=i)
             self.drives[drive.axis] = drive
         """:field
-        The number of degrees of freedom.
+        The number of degrees of freedom. This is equivalent to len(self.drives).
         """
         self.num_dof: int = len(self.drives)
         """:field
-        The index in the overall list of joints in `DynamicRobots` output data.
+        The index in the overall list of joints in `DynamicRobots` output data. This is used internally; you almost always want `self.joint_id`.
         """
         self.dynamic_index: int = dynamic_index

@@ -102,8 +102,6 @@ class VRayExport(AddOn):
         for model_name in self.object_names.values():
             self.download_model(model_name)
 
-            print(model_name + ", " + node_id)
-
     def download_scene(self):
         """
         Download the zip file of a streamed scene from Amazon S3, and unpack the contents into the general "resources" folder.
@@ -134,25 +132,46 @@ class VRayExport(AddOn):
                     return line
 
 
-    def write_node_data(self, model_name: str, mat: matrix_data_struct):
+    def write_static_node_data(self, model_name: str, mat: matrix_data_struct):
         """
         Append the scene position and orientation of a model to its .vrscene file, as Node data.
-        NOTE: This could be called once, for a static scene, or every frame if capturing physics motion.
-        :param model_name: The name of the model.
         """
         # Fetch node ID from cached dictionary.
         node_id_string = self.node_ids[model_name]
         # Open model .vrscene file to append node data
         path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name)  + ".vrscene"
+        
         node_string = (node_id_string + 
                       "transform=Transform(Matrix" + 
                       "(Vector(" + mat.column_one + "), " +
                       "Vector(" + mat.column_two + "), " +
                       "Vector(" + mat.column_three + ")), " +
                       "Vector(" + mat.column_four + "));\n}")
+        """
+        node_string = ("\n" + node_id_string + 
+                       "transform=interpolate(\n" +
+                       "(0, Transform(Matrix" + 
+                       "(Vector(" + mat.column_one + "), " +
+                       "Vector(" + mat.column_two + "), " +
+                       "Vector(" + mat.column_three + ")), " +
+                       "Vector(" + mat.column_four + "))),\n" +
+                       "(1, Transform(Matrix" + 
+                       "(Vector(" + mat.column_one + "), " +
+                       "Vector(" + mat.column_two + "), " +
+                       "Vector(" + mat.column_three + ")), " +
+                       "Vector(" + mat.column_four + ")))\n" +
+                       ");\n}\n")
+        """
         with open(path, "a") as f:  
             f.write(node_string)
 
+    def get_scene_file_path(self) -> str:
+        """
+        Return the path to the downloaded master scene file.
+        """
+        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
+        return path
+  
     def get_renderview_line_number(self) -> int:
         path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name)  + ".vrscene"
         line_number = 0
@@ -217,8 +236,70 @@ class VRayExport(AddOn):
                                                         column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
                         # Get the model name for this ID
                         model_name = self.object_names[object_id]
-                        self.write_node_data(model_name, mat_struct)
+                        self.write_static_node_data(model_name, mat_struct)
                         f.write("#include \"" + model_name + ".vrscene\"\n")
+
+    def get_dynamic_node_data(self, mat, object_id: int, frame_count: int) -> str:
+        """
+        For each model in the scene, compute the position and orientation data for one frame, as Node data.
+        Return a per-frame interpolated Node data string of the form:
+        Node Box102@node_9701 {
+          transform=interpolate(
+          (2, Transform(Matrix(Vector(1, 0, 0), Vector(0, 1, 0), Vector(0, 0, 1)), Vector(-152.2906646728516, -145.2715454101563, 0)))
+          );
+        }
+        For each frame in the object's motion, we will output one of these strings that interpolates from the previous frame
+        to the new frame's transform matrix values.
+        """
+        # Get the matrix and convert it.
+        # Equivalent to: handedness * object_matrix * handedness.
+        matrix = np.matmul(self.handedness, np.matmul(mat, self.handedness))
+        # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
+        # We also need to negate the X and Y value, to complete the handedness conversion.
+        pos_x = -(matrix[3][0] * 100)
+        pos_y = -(matrix[3][1] * 100)
+        pos_z = matrix[3][2] * 100
+        mat_struct = matrix_data_struct(column_one = str(matrix[0][0]) + "," + str(matrix[0][1]) + "," + str(matrix[0][2]), 
+                                        column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(matrix[1][2]), 
+                                        column_three = str(matrix[2][0]) + "," + str(matrix[2][1]) + "," + str(matrix[2][2]),  
+                                        column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
+        # Get the model name for this ID
+        model_name = self.object_names[object_id]
+        # Fetch node ID from cached dictionary.
+        node_id_string = self.node_ids[model_name]
+        # Form interpolation string.
+        node_string = ("\n" + node_id_string + 
+                      "transform=interpolate(\n" +
+                      "(" + str(frame_count) + ", " +
+                      "Transform(Matrix" + 
+                      "(Vector(" + mat_struct.column_one + "), " +
+                      "Vector(" + mat_struct.column_two + "), " +
+                      "Vector(" + mat_struct.column_three + ")), " +
+                      "Vector(" + mat_struct.column_four + ")))\n" +
+                      ");\n}\n")
+        return node_string
+
+    def export_animation_settings(self, end_frame: int):
+        """
+        Write out the output settings with the end frame of any animation in the scene.
+        """
+        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
+        with open(path, "a") as f:
+            out_string = ("SettingsOutput output_settings {\n" + 
+                         "img_width=" + str(self.image_width) + ";\n" + 
+                         "img_height=" + str(self.image_height) + ";\n" + 
+                         "img_pixelAspect=1;\n" + 
+                         "img_file_needFrameNumber=1;\n" + 
+                         "img_clearMode=0;\n" + 
+                         "anim_start=0;\n" + 
+                         "anim_end=" + str(end_frame) + ";\n" + 
+                         "frame_start=0;\n" +
+                         "frames_per_second=1;\n" +
+                         "frames=List(\n" + 
+                         "List(0, " + str(end_frame) + ")\n" + 
+                         ");\n" + 
+                         "}\n")
+            f.write(out_string)
 
     def export_static_camera_view_data(self, resp: List[bytes]):
         """

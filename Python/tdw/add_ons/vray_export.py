@@ -43,6 +43,8 @@ class VRayExport(AddOn):
                                            [0, 0, 0, 1]])
         # Dictionary of model names by ID
         self.object_names: Dict[int, str] = dict()
+        # Dictionary of node IDs by model name
+        self.node_ids: Dict[str, str] = dict()
 
 
     def get_initialization_commands(self) -> List[dict]:
@@ -63,7 +65,7 @@ class VRayExport(AddOn):
             if r_id == "segm":
                 segm = SegmentationColors(resp[i])
                 for j in range(segm.get_num()):
-                    # Cache the object names and ID
+                    # Cache the object names and IDs.
                     object_id = segm.get_object_id(j)
                     object_name = segm.get_object_name(j)
                     self.object_names[object_id] = object_name
@@ -74,8 +76,12 @@ class VRayExport(AddOn):
         :param model_name: The name of the model.
         """
         path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name.lower())
-        # Check if we have already downloaded this model.
-        if not os.path.exists(path + ".vrscene"):
+        # Check if we have already downloaded this model. If so, just cache the node ID string for later use.
+        # Otherwise download, unzip and cache the node ID string.
+        if os.path.exists(path + ".vrscene"):
+            node_id = self.fetch_node_id_string(model_name)
+            self.node_ids[model_name] = node_id
+        else:
             path = path + ".zip"
             url = os.path.join(self.S3_ROOT + "vray_models/", model_name.lower()) + ".zip"
             with open(path, "wb") as f:
@@ -85,6 +91,18 @@ class VRayExport(AddOn):
                 zip_ref.extractall(self.VRAY_EXPORT_RESOURCES_PATH)
             # Delete the zip file.
             os.remove(path)
+            # Cache the node ID string.
+            node_id = self.fetch_node_id_string(model_name)
+            self.node_ids[model_name] = node_id
+
+    def download_scene_models(self):
+        """
+        Download all models in the scene.
+        """
+        for model_name in self.object_names.values():
+            self.download_model(model_name)
+
+            print(model_name + ", " + node_id)
 
     def download_scene(self):
         """
@@ -122,8 +140,8 @@ class VRayExport(AddOn):
         NOTE: This could be called once, for a static scene, or every frame if capturing physics motion.
         :param model_name: The name of the model.
         """
-        # Fetch node ID from metadata file.
-        node_id_string = self.fetch_node_id_string(model_name) 
+        # Fetch node ID from cached dictionary.
+        node_id_string = self.node_ids[model_name]
         # Open model .vrscene file to append node data
         path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, model_name)  + ".vrscene"
         node_string = (node_id_string + 

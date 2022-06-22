@@ -85,8 +85,7 @@ class Photoreal(Controller):
         # Download and unzip scene file -- this will be the "master" file, that all model etc. .vrscene files will be appended to.
         export.download_scene()
         # Download and unzip all object models in the scene.
-        for model_name in export.object_names.values():
-            export.download_model(model_name)
+        export.download_scene_models()
         resp = self.communicate([])
         export.export_static_node_data(resp=resp)
         resp = self.communicate([])

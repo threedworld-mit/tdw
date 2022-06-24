@@ -99,11 +99,10 @@ class Photoreal(Controller):
             # Apply a force.
             self.communicate([{"$type": "apply_force_to_object",
                                "id": table_id,
-                               "force": {"x": 30, "y": 20, "z": 30}},
+                               "force": {"x": 30, "y": 5, "z": 30}},
                                {"$type": "apply_force_to_object",
                                "id": chair_id,
                                "force": {"x": 10, "y": 1, "z": 10}}])
-            # Note we start at frame 2, as frames 0 and 1 are defined in the actual model .vrscene file.
             frame_count = 0
             #while not om.rigidbodies[table_id].sleeping:
             for i in range(200):

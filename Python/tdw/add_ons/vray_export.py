@@ -173,7 +173,7 @@ class VRayExport(AddOn):
         return path
   
     def get_renderview_line_number(self) -> int:
-        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name)  + ".vrscene"
+        path = get_scene_file_path()
         line_number = 0
         num = 0
         with open(path, "r", encoding="utf-8") as in_file:
@@ -191,7 +191,7 @@ class VRayExport(AddOn):
         Replace the camera transform line in the scene file with the converted TDW camera pos/ori data.
         """
         # Open model .vrscene file to append node data
-        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name)  + ".vrscene"
+        path = get_scene_file_path()
         node_string = ("transform=Transform(Matrix" + 
                        "(Vector(" + mat.column_one + "), " +
                        "Vector(" + mat.column_two + "), " +
@@ -212,7 +212,7 @@ class VRayExport(AddOn):
         For each model in the scene, export the position and orientation data to the model's .vrscene file as Node data.
         Then append an #include reference to the model file at the end of the main scene file.
         """
-        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
+        path = get_scene_file_path()
         with open(path, "a") as f: 
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
@@ -283,7 +283,7 @@ class VRayExport(AddOn):
         """
         Write out the output settings with the end frame of any animation in the scene.
         """
-        path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
+        path = get_scene_file_path()
         with open(path, "a") as f:
             out_string = ("SettingsOutput output_settings {\n" + 
                          "img_width=" + str(self.image_width) + ";\n" + 
@@ -332,7 +332,7 @@ class VRayExport(AddOn):
         """
         If Node and/or Lights dynamic data was exported, append to the end of the master scene file.
         """
-        scene_path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
+        scene_path = get_scene_file_path()
         with open(scene_path, "a") as f:  
             #f.write("#include models.vrscene\n")
             #f.write("#include views.vrscene\n")
@@ -346,7 +346,7 @@ class VRayExport(AddOn):
         """
         Launch Vantage in headless mode and render scene file.
         """
-        scene_path = os.path.join(self.VRAY_EXPORT_RESOURCES_PATH, self.scene_name) + ".vrscene"
+        scene_path = get_scene_file_path()
         output_path = str(self.output_path) + self.scene_name + ".png"
         os.chmod("C://Program Files//Chaos Group//Vantage//vantage_console.exe", 0o777)
         subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage.exe", 

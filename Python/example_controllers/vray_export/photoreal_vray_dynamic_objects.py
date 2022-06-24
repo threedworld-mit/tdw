@@ -99,13 +99,13 @@ class Photoreal(Controller):
             # Apply a force.
             self.communicate([{"$type": "apply_force_to_object",
                                "id": table_id,
-                               "force": {"x": 30, "y": 5, "z": 30}},
+                               "force": {"x": 0, "y": 0, "z": 0}},
                                {"$type": "apply_force_to_object",
                                "id": chair_id,
-                               "force": {"x": 10, "y": 1, "z": 10}}])
+                               "force": {"x": 0, "y": 0, "z": -5}}])
             frame_count = 0
-            #while not om.rigidbodies[table_id].sleeping:
-            for i in range(200):
+            #while not om.rigidbodies[chair_id].sleeping:
+            for i in range(100):
                 resp = self.communicate([])
                 for i in range(len(resp) - 1):
                     r_id = OutputData.get_data_type_id(resp[i])

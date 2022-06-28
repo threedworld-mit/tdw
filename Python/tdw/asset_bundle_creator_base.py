@@ -138,3 +138,23 @@ class AssetBundleCreatorBase(ABC):
         """
 
         raise Exception()
+
+    @staticmethod
+    def _add_library_path(args: List[str], library_path: Union[str, Path] = None) -> List[str]:
+        """
+        Add a `-library_path=path` argument to a list of arguments.
+
+        :param args: The list of arguments.
+        :param library_path: The library path. Can be None.
+
+        :return: The modified list of arguments.
+        """
+
+        if library_path is not None:
+            if isinstance(library_path, Path):
+                args.append(f"-library_path={str(library_path.resolve())}")
+            elif isinstance(library_path, str):
+                args.append(f"-library_path={library_path}")
+            else:
+                raise Exception(library_path)
+        return args

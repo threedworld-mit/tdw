@@ -32,7 +32,7 @@ class VRayExport(AddOn):
         self.image_height: int = image_height
         self.scene_name = scene_name
         # Conversion matrix from left-hand to right-hand.
-        self.handedness = np.array([[1, 0, 0, 0],
+        self.handedness = np.array([[-1, 0, 0, 0],
                                     [0, 0, 1, 0],
                                     [0, 1, 0, 0],
                                     [0, 0, 0, 1]])
@@ -226,8 +226,8 @@ class VRayExport(AddOn):
                         matrix = np.matmul(self.handedness, np.matmul(transform_matrices.get_matrix(j), self.handedness))
                         # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
                         # We also need to negate the X and Y value, to complete the handedness conversion.
-                        pos_x = -(matrix[3][0] * 100)
-                        pos_y = -(matrix[3][1] * 100)
+                        pos_x = (matrix[3][0] * 100)
+                        pos_y = (matrix[3][1] * 100)
                         pos_z = matrix[3][2] * 100
                         mat_struct = matrix_data_struct(column_one = str(matrix[0][0]) + "," + str(matrix[0][1]) + "," + str(matrix[0][2]), 
                                                         column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(matrix[1][2]), 
@@ -314,7 +314,7 @@ class VRayExport(AddOn):
                     sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
                     # Get the matrix and convert it.
                     # Equivalent to: handedness * object_matrix * handedness.
-                    pos_matrix = np.matmul(self.handedness, np.matmul(avatar_matrix, self.handedness))
+                    pos_matrix = np.matmul(self.camera_handedness, np.matmul(avatar_matrix, self.camera_handedness))
                     rot_matrix = np.matmul(sensor_matrix, self.camera_handedness)
                     # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
                     # We also need to negate the X and Y value, to complete the handedness conversion.

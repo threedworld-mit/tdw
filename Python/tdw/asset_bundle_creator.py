@@ -367,8 +367,6 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param record_path: If not None, this is the path to the `ModelRecord` .json file, which will be updated.
         :param library_path: If not None, this is the path to an existing `ModelLibrarian` .json file, which will be updated.
         :param quiet: If True, don't print messages.
-
-        :return True if there aren't problems, and a string output report.
         """
 
         if not quiet:

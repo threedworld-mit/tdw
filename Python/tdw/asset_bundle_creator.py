@@ -338,10 +338,12 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         """
 
         # Get the record.
+        if not quiet:
+            print("Writing physics quality...")
         record: ModelRecord = AssetBundleCreator._get_record(name=name, record_path=record_path,
                                                              library_path=library_path)
         # Run the test.
-        c = Controller()
+        c = Controller(check_version=False)
         v = ModelVerifier()
         v.set_tests(name=record.name, source=record, model_report=False, missing_materials=False, physics_quality=True)
         c.add_ons.append(v)
@@ -373,7 +375,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
             print("Validating asset bundle...")
         record: ModelRecord = AssetBundleCreator._get_record(name=name, record_path=record_path,
                                                              library_path=library_path)
-        c = Controller()
+        c = Controller(check_version=False)
         v = ModelVerifier()
         v.set_tests(name=record.name, source=record, model_report=True, missing_materials=True, physics_quality=False)
         c.add_ons.append(v)

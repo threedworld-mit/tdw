@@ -89,6 +89,7 @@ class Photoreal(Controller):
         export.download_scene()
         # Download and unzip all object models in the scene.
         export.download_scene_models()
+        export.pre_rotate_models()
         resp = self.communicate([])
         export.export_static_node_data(resp=resp)
         resp = self.communicate([])
@@ -102,7 +103,7 @@ class Photoreal(Controller):
                                "force": {"x": 0, "y": 0, "z": 0}},
                                {"$type": "apply_force_to_object",
                                "id": chair_id,
-                               "force": {"x": 0, "y": 0, "z": -5}}])
+                               "force": {"x": 0, "y": -5, "z": 0}}])
             frame_count = 0
             #while not om.rigidbodies[chair_id].sleeping:
             for step in range(100):

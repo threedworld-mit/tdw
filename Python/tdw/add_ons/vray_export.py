@@ -32,10 +32,10 @@ class VRayExport(AddOn):
         self.image_height: int = image_height
         self.scene_name = scene_name
         # Conversion matrix from Y-up to Z-up, and left-hand to right-hand.
-        self.handedness = np.array([[1, 0, 0, 0],
+        self.handedness = np.array([[-1, 0, 0, 0],
                                     [0, 0, 1, 0],
-                                    [0, 1, 0, 0],
-                                    [0, 0, 0, -1]])
+                                    [0, -1, 0, 0],
+                                    [0, 0, 0, 1]])
         # Conversion matrix for camera.
         self.camera_handedness = np.array([[1, 0, 0, 0],
                                            [0, 0, 1, 0],

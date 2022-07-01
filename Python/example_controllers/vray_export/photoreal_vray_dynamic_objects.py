@@ -105,7 +105,7 @@ class Photoreal(Controller):
                                "force": {"x": 0, "y": 0, "z": -5}}])
             frame_count = 0
             #while not om.rigidbodies[chair_id].sleeping:
-            for i in range(100):
+            for step in range(100):
                 resp = self.communicate([])
                 for i in range(len(resp) - 1):
                     r_id = OutputData.get_data_type_id(resp[i])

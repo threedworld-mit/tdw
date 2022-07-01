@@ -19,7 +19,7 @@ class Photoreal(Controller):
     def run(self):
         # Add a camera and enable image capture.
         camera = ThirdPersonCamera(avatar_id="a",
-                                   position={"x": -3, "y": 1.35, "z": 1},
+                                   position={"x": -3, "y": 1, "z": 0},
                                    look_at={"x": 0, "y": 1, "z": 0},
                                    field_of_view=55)
         path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("photoreal")
@@ -49,9 +49,9 @@ class Photoreal(Controller):
                                               object_id=table_id,
                                               position={"x": 1.80, "y": 0, "z": 0},
                                               rotation={"x": 90, "y": 0, "z": 0}),
-                         self.get_add_object(model_name="bastone_floor_lamp",
+                         self.get_add_object(model_name="buddah",
                                               object_id=self.get_unique_id(),
-                                              position={"x": 2.35, "y": 0, "z": 1},
+                                              position={"x": 2.35, "y": 0, "z": 2},
                                               rotation={"x": 0, "y": 0, "z": 0}),
                           {"$type": "set_aperture",
                            "aperture": 4.0},
@@ -70,7 +70,7 @@ class Photoreal(Controller):
         export.download_scene()
         # Download and unzip all object models in the scene.
         export.download_scene_models()
-        #export.pre_rotate_models()
+        export.pre_rotate_models()
         resp = self.communicate([])
         export.export_static_node_data(resp=resp)
         resp = self.communicate([])

@@ -58,14 +58,9 @@ class Photoreal(Controller):
                                    position={"x": -3, "y": 1.35, "z": -0.8},
                                    look_at={"x": 1.2, "y": 0.85, "z": -0.5},
                                    field_of_view=55)
-        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("photoreal")
         table_id = self.get_unique_id()
         chair_id = self.get_unique_id()
-        print(f"Image will be saved to: {path}")
-        capture = ImageCapture(avatar_ids=["a"], path=path)
-        self.add_ons.extend([camera, capture])
-        om = ObjectManager(transforms=True, rigidbodies=True, bounds=False)
-        self.add_ons.append(om)
+        self.add_ons.append(camera)
         # Set the resolution to 1080p.
         # Set render quality to maximum.
         # Load the scene.
@@ -145,7 +140,6 @@ class Photoreal(Controller):
         export.download_scene()
         # Download and unzip all object models in the scene.
         export.download_scene_models()
-        export.pre_rotate_models()
         resp = self.communicate([])
         export.export_static_node_data(resp=resp)
         resp = self.communicate([])
@@ -154,12 +148,13 @@ class Photoreal(Controller):
         path = export.get_scene_file_path()      
         with open(path, "a") as f:        
             #while not om.rigidbodies[chair_id].sleeping:
-            for frame_count in range(self.frame_range):
+            frame_count = 0
+            for i in range(self.frame_range):
                 for obj_name in self.matrix_list:
-                    cached_mat = self.matrix_list[obj_name][frame_count]
-                    export.pre_rotate_models()
+                    cached_mat = self.matrix_list[obj_name][i]
                     node_data_string = export.get_dynamic_node_data(cached_mat, obj_name, frame_count)
                     f.write(node_data_string)
+                frame_count = frame_count + 1
             # Write out to the master scene file the final frame_count as the end of the animation sequence.
             export.export_animation_settings(frame_count)
         # Launch Vantage render with our assembled scene file.

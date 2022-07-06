@@ -74,7 +74,6 @@ class Photoreal(Controller):
         export.download_scene()
         # Download and unzip all object models in the scene.
         export.download_scene_models()
-        export.pre_rotate_models()
         resp = self.communicate([])
         export.export_static_node_data(resp=resp)
         resp = self.communicate([])

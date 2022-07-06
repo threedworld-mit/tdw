@@ -10,7 +10,7 @@ from tdw.output_data import OutputData, TransformMatrices, SegmentationColors
 
 
 
-class Photoreal(Controller):
+class PhotorealVRay(Controller):
     """
     Create a photorealistic scene, focusing on post-processing and other effects.
     The "archviz_house" environment is used due to its maximal photorealistic lighting.
@@ -158,8 +158,8 @@ class Photoreal(Controller):
             # Write out to the master scene file the final frame_count as the end of the animation sequence.
             export.export_animation_settings(frame_count)
         # Launch Vantage render with our assembled scene file.
-        #export.launch_vantage_render()
+        #export.launch_vantage_render(start_frame=0, end_frame=frame_count)
         
 
 if __name__ == "__main__":
-    Photoreal(launch_build=False).run()
+    PhotorealVRay(launch_build=False).run()

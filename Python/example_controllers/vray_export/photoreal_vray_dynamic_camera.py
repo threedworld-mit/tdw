@@ -81,6 +81,7 @@ class PhotorealVRayDynamicCamera(Controller):
         with open(path, "a") as f:        
             frame_count = 0
             for i in range(self.frame_range):
+                # Randomely reposition camera.
                 resp = self.communicate({"$type": "teleport_avatar_to", "position": {"x": uniform(-3, -2), "y": uniform(0.5, 1.5), "z": uniform(-2, 2)}, "avatar_id": "a"})
                 for i in range(len(resp) - 1):
                     r_id = OutputData.get_data_type_id(resp[i])
@@ -90,6 +91,7 @@ class PhotorealVRayDynamicCamera(Controller):
                             avatar_id = avatar_transform_matrices.get_id(j)
                             avatar_matrix = avatar_transform_matrices.get_avatar_matrix(j)
                             sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
+                            # Convert matrices to V-Ray format and output to master scene file as frame-by-frame interpolations.
                             node_data_string = export.get_dynamic_camera_data(avatar_matrix, sensor_matrix, frame_count)
                             f.write(node_data_string)
                 frame_count = frame_count + 1
@@ -97,7 +99,7 @@ class PhotorealVRayDynamicCamera(Controller):
             export.export_animation_settings(frame_count)
         # Everything is prepared, now assemble the components by adding the models and view files to the scene file.
         #export.assemble_render_file()
-        # Launch Vantage render with our assembled scene file.
+        # Launch Vantage render in animation mode, with our assembled scene file.
         export.launch_vantage_render(start_frame=0, end_frame=frame_count)
         self.communicate({"$type": "terminate"})
         

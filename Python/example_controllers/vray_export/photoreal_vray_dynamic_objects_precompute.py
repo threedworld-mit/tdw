@@ -106,7 +106,7 @@ class PhotorealVRay(Controller):
         # Apply a force and run simulation for 100 frames, storing transform matrix data.
         self.communicate({"$type": "apply_force_to_object",
                            "id": chair_id,
-                           "force": {"x": 0, "y": 0, "z": -5}})
+                           "force": {"x": 0, "y": 0.5, "z": -10}})
         for step in range(100):
             resp = self.communicate([])
             for i in range(len(resp) - 1):

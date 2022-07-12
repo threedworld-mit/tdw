@@ -4,6 +4,24 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.10.1
+
+### Command API
+
+#### New Commands
+
+| Command              | Description                                     |
+| -------------------- | ----------------------------------------------- |
+| `send_field_of_view` | Send the camera field of view and focal length. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data   | Description                                |
+| ------------- | ------------------------------------------ |
+| `FieldOfView` | The camera field of view and focal length. |
+
 ## v1.10.0
 
 ### New Features

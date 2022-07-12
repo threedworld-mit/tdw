@@ -53,6 +53,7 @@ from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
+from tdw.FBOutput import FieldOfView as Fov
 import numpy as np
 from typing import Tuple, Optional, List
 
@@ -1421,3 +1422,20 @@ class Mouse(OutputData):
 
     def get_is_right_button_released(self) -> bool:
         return self._buttons[2][2]
+
+
+class FieldOfView(OutputData):
+    def get_data(self) -> Fov.FieldOfView:
+        return Fov.FieldOfView.GetRootAsFieldOfView(self.bytes, 0)
+
+    def get_avatar_id(self) -> str:
+        return self.data.AvatarId().decode('utf-8')
+
+    def get_sensor_name(self) -> str:
+        return self.data.SensorName().decode('utf-8')
+
+    def get_fov(self) -> float:
+        return self.data.Fov()
+
+    def get_focal_length(self) -> float:
+        return self.data.FocalLength()

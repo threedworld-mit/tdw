@@ -55,6 +55,7 @@ from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import TransformMatrices as TranMat
 from tdw.FBOutput import AvatarTransformMatrices as AvTranMat
+from tdw.FBOutput import FieldOfView as Fov
 import numpy as np
 from typing import Tuple, Optional, List
 
@@ -172,7 +173,7 @@ class Transforms(OutputData):
         return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self._ids[index]
+        return int(self._ids[index])
 
     def get_position(self, index: int) -> np.array:
         return self._positions[index]
@@ -199,7 +200,7 @@ class Rigidbodies(OutputData):
         return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self._ids[index]
+        return int(self._ids[index])
 
     def get_velocity(self, index: int) -> np.array:
         return self._velocities[index]
@@ -208,7 +209,7 @@ class Rigidbodies(OutputData):
         return self._angular_velocities[index]
 
     def get_sleeping(self, index: int) -> bool:
-        return self._sleeping[index]
+        return bool(self._sleeping[index])
 
 
 class StaticRigidbodies(OutputData):
@@ -225,22 +226,22 @@ class StaticRigidbodies(OutputData):
         return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self._ids[index]
+        return int(self._ids[index])
 
     def get_mass(self, index: int) -> float:
-        return self._physics_values[index][0]
+        return float(self._physics_values[index][0])
 
     def get_kinematic(self, index: int) -> bool:
-        return self._kinematic[index]
+        return bool(self._kinematic[index])
 
     def get_dynamic_friction(self, index: int) -> float:
-        return self._physics_values[index][1]
+        return float(self._physics_values[index][1])
 
     def get_static_friction(self, index: int) -> float:
-        return self._physics_values[index][2]
+        return float(self._physics_values[index][2])
 
     def get_bounciness(self, index: int) -> float:
-        return self._physics_values[index][3]
+        return float(self._physics_values[index][3])
 
 
 class Bounds(OutputData):
@@ -256,7 +257,7 @@ class Bounds(OutputData):
         return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self._ids[index]
+        return int(self._ids[index])
 
     def get_front(self, index: int) -> np.array:
         return self._bounds_positions[index][0]
@@ -375,7 +376,7 @@ class SegmentationColors(OutputData):
         return len(self._ids)
 
     def get_object_id(self, index: int) -> int:
-        return self._ids[index]
+        return int(self._ids[index])
 
     def get_object_color(self, index: int) -> np.array:
         return self._colors[index]
@@ -751,10 +752,10 @@ class Volumes(OutputData):
         return len(self._ids)
 
     def get_object_id(self, index: int) -> int:
-        return self._ids[index]
+        return int(self._ids[index])
 
     def get_volume(self, index: int) -> float:
-        return self._volumes[index]
+        return float(self._volumes[index])
 
 
 class AudioSources(OutputData):
@@ -922,7 +923,7 @@ class StaticRobot(OutputData):
 class Robot(OutputData):
     def get_data(self) -> Robo.Robot:
         return Robo.Robot.GetRootAsRobot(self.bytes, 0)
-    
+
     def get_id(self) -> int:
         return self.data.Id()
 
@@ -1073,7 +1074,7 @@ class LocalTransforms(OutputData):
         return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self._ids[index]
+        return int(self._ids[index])
 
     def get_position(self, index: int) -> np.array:
         return self._positions[index]
@@ -1180,7 +1181,7 @@ class EmptyObjects(OutputData):
         return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return self._ids[index]
+        return int(self._ids[index])
 
     def get_position(self, index: int) -> np.array:
         return self._positions[index]
@@ -1330,28 +1331,28 @@ class DynamicCompositeObjects(OutputData):
         return self._hinge_ids.shape[0]
 
     def get_hinge_parent_id(self, index: int) -> int:
-        return self._hinge_ids[index][0]
+        return int(self._hinge_ids[index][0])
 
     def get_hinge_id(self, index: int) -> int:
-        return self._hinge_ids[index][1]
+        return int(self._hinge_ids[index][1])
 
     def get_hinge_angle(self, index: int) -> float:
-        return self._hinges[index][0]
+        return float(self._hinges[index][0])
 
     def get_hinge_velocity(self, index: int) -> float:
-        return self._hinges[index][1]
+        return float(self._hinges[index][1])
 
     def get_num_lights(self) -> int:
         return self._light_ids.shape[0]
 
     def get_light_parent_id(self, index: int) -> int:
-        return self._light_ids[index][0]
+        return int(self._light_ids[index][0])
 
     def get_light_id(self, index: int) -> int:
-        return self._light_ids[index][1]
+        return int(self._light_ids[index][1])
 
     def get_light_is_on(self, index: int) -> bool:
-        return self._lights[index]
+        return bool(self._lights[index])
 
 
 class ObiParticles(OutputData):
@@ -1464,3 +1465,19 @@ class AvatarTransformMatrices(OutputData):
 
     def get_sensor_matrix(self, index: int) -> np.array:
         return self._sensor_container_matrices[index]
+        
+class FieldOfView(OutputData):
+    def get_data(self) -> Fov.FieldOfView:
+        return Fov.FieldOfView.GetRootAsFieldOfView(self.bytes, 0)
+
+    def get_avatar_id(self) -> str:
+        return self.data.AvatarId().decode('utf-8')
+
+    def get_sensor_name(self) -> str:
+        return self.data.SensorName().decode('utf-8')
+
+    def get_fov(self) -> float:
+        return self.data.Fov()
+
+    def get_focal_length(self) -> float:
+        return self.data.FocalLength()

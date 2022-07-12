@@ -1,5 +1,5 @@
 
-VERSION=$(./tdw_version.sh)
+VERSION=$(python3 ./tdw_version.py)
 
 docker run -it \
   --rm \

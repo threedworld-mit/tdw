@@ -63,6 +63,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [EmptyObjects](#EmptyObjects) | The position of each empty object in the scene. | `empt` |
 | [EnvironmentColliderIntersection](#EnvironmentColliderIntersection) | Data for an whose colliders are intersecting with an environment collider such as a wall. | `enci` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
+| [FieldOfView](#FieldOfView) | An avatar's camera field of view and focal length. | `fofv` |
 | [FlexParticles](#FlexParticles) | NVIDIA Flex data. | `flex` |
 | [IdPassGrayscale](#IdPassGrayscale) | The average grayscale value of the _id pass. | `idgs` |
 | [IdPassSegmentationColors](#IdPassSegmentationColors) | All segmentation colors in an _id pass. | `ipsc` |
@@ -329,6 +330,21 @@ Data for a collision between and object and the scene environment on this frame.
 | `get_contact_normal(index)` | The normal of the contact. | `Tuple[float, float, float]` |
 | `get_contact_point(index)` | The point of the contact. | `Tuple[float, float, float]` |
 | `get_floor()` | If True, this is the floor. | `bool` |
+
+## FieldOfView
+
+`f = FieldOfView(byte_array)`
+
+**Identifier:** `fofv`
+
+An avatar's camera field of view and focal length.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_avatar_id()` | The ID of the avatar. | `str` |
+| `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
+| `get_fov()` | The field of view. | `float` |
+| `get_focal_length()` | The focal length. | `float` |
 
 ## FlexParticles
 

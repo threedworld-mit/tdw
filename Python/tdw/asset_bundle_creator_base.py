@@ -256,6 +256,8 @@ class AssetBundleCreatorBase(ABC):
             dst = str(destination.resolve())
         else:
             dst = destination
+        src = src.replace("\\", "/")
+        dst = dst.replace("\\", "/")
         return [f'-name="{name}"',
-                f'-source={src}"',
+                f'-source="{src}"',
                 f'-output_directory="{dst}"']

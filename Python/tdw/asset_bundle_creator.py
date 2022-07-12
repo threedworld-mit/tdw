@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Union
+from typing import Union
 from tdw.librarian import ModelRecord, ModelLibrarian
 import json
 from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
@@ -30,8 +30,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
                                      vhacd_resolution: int = 800000, internal_materials: bool = False,
                                      wnid: str = None, wcategory: str = None, scale_factor: float = 1,
                                      library_path: Union[str, Path] = None, cleanup: bool = True,
-                                     write_physics_quality: bool = False, validate: bool = False,
-                                     quiet: bool = False) -> None:
+                                     write_physics_quality: bool = False, validate: bool = False) -> None:
         """
         Convert a source .obj or .fbx file into 3 asset bundle files (Windows, OS X, and Linux).
 
@@ -82,21 +81,20 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param cleanup: If True, delete intermediary files such as the prefab in the `asset_bundle_creator` Unity Editor project.
         :param write_physics_quality: If True, launch a controller and build to calculate the hull collider accuracy. Write the result to `output_directory/record.json` and to `library_path` if `library_path` is not None.
         :param validate: If True, launch a controller and build to validate the model, checking it for any errors. Write the result to `output_directory/record.json` and to `library_path` if `library_path` is not None.
-        :param quiet: If True, don't print any messages.
         """
 
-        args = AssetBundleCreator._get_model_args(name=name, source=source_file, destination=output_directory)
+        args = AssetBundleCreator._get_source_destination_args(name=name, source=source_file, destination=output_directory)
         args.extend([f"-vhacd_resolution={vhacd_resolution}",
                      f"-scale_factor={scale_factor}"])
         for value, flag in zip([wnid, wcategory], ["wnid", "wcategory"]):
             if value is not None:
-                args.append(f"-{flag}={value}")
+                args.append(f'-{flag}="{value}"')
         args = AssetBundleCreatorBase._add_library_path(args=args, library_path=library_path)
         for value, flag in zip([internal_materials, cleanup], ["-internal_materials", "-cleanup"]):
             if value:
                 args.append(flag)
         self.call_unity(method="SourceFileToAssetBundles", args=args)
-        self._print_log(output_directory=output_directory, quiet=quiet)
+        self._print_log(output_directory=output_directory)
         # Write physics quality.
         if isinstance(output_directory, str):
             record_path = Path(output_directory).joinpath("record.json")
@@ -105,10 +103,9 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         else:
             raise Exception(output_directory)
         if write_physics_quality:
-            AssetBundleCreator.write_physics_quality(name=name, record_path=record_path, library_path=library_path,
-                                                     quiet=quiet)
+            self.write_physics_quality(name=name, record_path=record_path, library_path=library_path)
         if validate:
-            AssetBundleCreator.validate(name=name, record_path=record_path, library_path=library_path, quiet=quiet)
+            self.validate(name=name, record_path=record_path, library_path=library_path)
 
     def source_directory_to_asset_bundles(self, source_directory: Union[str, Path],
                                           output_directory: Union[str, Path], library_description: str = None,
@@ -177,19 +174,18 @@ class AssetBundleCreator(AssetBundleCreatorBase):
             dst = str(output_directory.resolve())
         else:
             dst = output_directory
-        args = [f"-source_directory={src}",
-                f"-output_directory={dst}",
-                f"-vhacd_resolution={vhacd_resolution}"]
+        args = [f'-source_directory="{src}"',
+                f'-output_directory="{dst}"',
+                f'-vhacd_resolution={vhacd_resolution}']
         if library_description is not None:
-            args.append(f"-library_description={library_description}")
+            args.append(f'-library_description="{library_description}"')
         if internal_materials:
             args.append("-internal_materials")
         # Execute the call.
         self.call_unity(method="SourceDirectoryToAssetBundles", args=args)
 
     def source_file_to_prefab(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
-                              vhacd_resolution: int = None, internal_materials: bool = False,
-                              quiet: bool = False) -> None:
+                              vhacd_resolution: int = None, internal_materials: bool = False) -> None:
         """
         Convert a source .obj or .fbx file into a .prefab file. Call this method when you intend to modify the .prefab file by hand before building asset bundles, e.g.:
 
@@ -223,68 +219,20 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
         :param vhacd_resolution: The default resolution of VHACD. A lower value will make VHACD run faster but will create simpler collider mesh shapes.
         :param internal_materials: If True, the visual materials of the model are located within the source file. If False, the materials are located in `Materials/` directory next to the source file.
-        :param quiet: If True, don't print any messages.
         """
 
-        args = AssetBundleCreator._get_model_args(name=name, source=source_file, destination=output_directory)
+        args = AssetBundleCreator._get_source_destination_args(name=name, source=source_file, destination=output_directory)
         if vhacd_resolution is not None:
             args.append(f"-vhacd_resolution={vhacd_resolution}")
         if internal_materials:
             args.append("-internal_materials")
         # Execute the call.
         self.call_unity(method="SourceFileToPrefab", args=args)
-        self._print_log(output_directory=output_directory, quiet=quiet)
-
-    def prefab_to_asset_bundles(self, name: str, output_directory: Union[str, Path], quiet: bool = False) -> None:
-        """
-        Build asset bundles from a .prefab file. This is useful when you want to edit the .prefab file by hand, e.g.:
-
-        1. `self.source_file_to_prefab()`
-        2. Edit .prefab file
-        3. `self.prefab_to_asset_bundles()`
-
-        Example source:
-
-        ```
-        ~/asset_bundle_creator/
-        ....Assets/
-        ........prefabs/
-        ............name.prefab
-        ........source_files/
-        ............name/
-        ................name.obj
-        ................Materials/
-        ```
-
-        Example output:
-
-        ```
-        output_directory/
-        ....Darwin/
-        ........name
-        ....Linux/
-        ........name
-        ....Windows/
-        ........name
-        ```
-
-        :param name: The name of the model (the name of the .prefab file, minus the extension).
-        :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
-        :param quiet: If True, don't print any messages.
-        """
-
-        if isinstance(output_directory, Path):
-            dst = str(output_directory.resolve())
-        else:
-            dst = output_directory
-        self.call_unity(method="PrefabToAssetBundles", args=[f"-name={name}",
-                                                             "-source=temp",
-                                                             f"-output_directory={dst}"])
-        self._print_log(output_directory=output_directory, quiet=quiet)
+        self._print_log(output_directory=output_directory)
 
     def create_record(self, name: str, output_directory: Union[str, Path],
                       wnid: str = None, wcategory: str = None, scale_factor: float = 1,
-                      library_path: Union[str, Path] = None, quiet: bool = False) -> None:
+                      library_path: Union[str, Path] = None) -> None:
         """
         Create a model record and save it to disk. This requires asset bundles of the model to already exist.
 
@@ -296,37 +244,25 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param wcategory: The WordNet category of the model. Can be None.
         :param scale_factor: The model will be scaled by this factor.
         :param library_path: If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `ModelLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`.
-        :param quiet: If True, don't print any messages.
         """
 
         if isinstance(output_directory, Path):
             dst = str(output_directory.resolve())
         else:
             dst = output_directory
-        args = [f"-name={name}",
+        args = [f'-name="{name}"',
                 f"-source=temp",
-                f"-output_directory={dst}"]
+                f'-output_directory="{dst}"']
         for value, flag in zip([wnid, wcategory, scale_factor], ["wnid", "wcategory", "scale_factor"]):
             if value is not None:
-                args.append(f"-{flag}={value}")
+                args.append(f'-{flag}="{value}"')
         args = AssetBundleCreatorBase._add_library_path(args=args, library_path=library_path)
         # Execute the call.
         self.call_unity(method="CreateRecord", args=args)
-        self._print_log(output_directory=output_directory, quiet=quiet)
+        self._print_log(output_directory=output_directory)
 
-    def cleanup(self) -> None:
-        """
-        Delete any intermediary files in the `asset_bundle_creator` Unity Editor project such as .prefab files.
-        """
-
-        self.call_unity(method="Cleanup", args=["-name=temp",
-                                                "-source=temp",
-                                                "-output_directory=temp",
-                                                "-cleanup"])
-
-    @staticmethod
-    def write_physics_quality(name: str, record_path: Union[str, Path] = None,
-                              library_path: Union[str, Path] = None, quiet: bool = False) -> None:
+    def write_physics_quality(self, name: str, record_path: Union[str, Path] = None,
+                              library_path: Union[str, Path] = None) -> None:
         """
         Append the physics quality data to the temporary record file.
         This is an optional record field that records the percentage of the model encapsulated by colliders.
@@ -334,11 +270,10 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param name: The model name.
         :param record_path: If not None, this is the path to the `ModelRecord` .json file, which will be updated.
         :param library_path: If not None, this is the path to an existing `ModelLibrarian` .json file, which will be updated.
-        :param quiet: If True, don't print messages.
         """
 
         # Get the record.
-        if not quiet:
+        if not self._quiet:
             print("Writing physics quality...")
         record: ModelRecord = AssetBundleCreator._get_record(name=name, record_path=record_path,
                                                              library_path=library_path)
@@ -354,22 +289,20 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         c.socket.close()
         # Write the physics quality.
         record.physics_quality = float(v.reports[0])
-        if not quiet:
+        if not self._quiet:
             print(f"Physics quality: {record.physics_quality}")
-        AssetBundleCreator._set_record(record=record, record_path=record_path, library_path=library_path)
+        self._set_record(record=record, record_path=record_path, library_path=library_path)
 
-    @staticmethod
-    def validate(name: str, record_path: Path, library_path: Path, quiet: bool = False) -> None:
+    def validate(self, name: str, record_path: Path, library_path: Path) -> None:
         """
         Validate the asset bundle.
 
         :param name: The model name.
         :param record_path: If not None, this is the path to the `ModelRecord` .json file, which will be updated.
         :param library_path: If not None, this is the path to an existing `ModelLibrarian` .json file, which will be updated.
-        :param quiet: If True, don't print messages.
         """
 
-        if not quiet:
+        if not self._quiet:
             print("Validating asset bundle...")
         record: ModelRecord = AssetBundleCreator._get_record(name=name, record_path=record_path,
                                                              library_path=library_path)
@@ -386,61 +319,17 @@ class AssetBundleCreator(AssetBundleCreatorBase):
             output = "There are problems with the asset bundle!"
             for problem in v.reports:
                 output += "\n\t" + problem
-            if not quiet:
+            if not self._quiet:
                 print(output)
             record.do_not_use = True
             record.do_not_use_reason = "\n".join(v.reports)
         else:
-            if not quiet:
+            if not self._quiet:
                 print("OK!")
-        AssetBundleCreator._set_record(record=record, record_path=record_path, library_path=library_path)
+        self._set_record(record=record, record_path=record_path, library_path=library_path)
 
     def get_creator_class_name(self) -> str:
         return "ModelCreatorLauncher"
-
-    @staticmethod
-    def _get_model_args(name: str, source: Union[str, Path], destination: Union[str, Path]) -> List[str]:
-        """
-        Parse a source path and a destination path into Unity command line arguments.
-
-        :param name: The model name.
-        :param source: The source path.
-        :param destination: The destination path.
-
-        :return: A list of arguments.
-        """
-
-        if isinstance(source, Path):
-            src = str(source.resolve())
-        else:
-            src = source
-        if isinstance(destination, Path):
-            dst = str(destination.resolve())
-        else:
-            dst = destination
-        return [f"-name={name}",
-                f"-source={src}",
-                f"-output_directory={dst}"]
-
-    @staticmethod
-    def _print_log(output_directory: Union[str, Path], quiet: bool) -> None:
-        """
-        Print the log file generated by the `asset_bundle_creator` Unity Editor project.
-
-        :param output_directory: The directory where we expect the log to be.
-        :param quiet: If True, don't print anything.
-        """
-
-        if quiet:
-            return
-        if isinstance(output_directory, Path):
-            f = output_directory.joinpath("log.txt")
-        else:
-            f = Path(output_directory).joinpath("log.txt")
-        if not f.exists():
-            print(f"Log file doesn't exist: {f}")
-            return
-        print(f.read_text(encoding="utf-8"))
 
     @staticmethod
     def _get_record(name: str, record_path: Union[str, Path] = None,
@@ -477,14 +366,12 @@ class AssetBundleCreator(AssetBundleCreatorBase):
             raise Exception("Failed to write physics quality because record_path and library_path are None. "
                             "At least one of these needs to have a value.")
 
-    @staticmethod
-    def _set_record(record: ModelRecord, record_path: Union[str, Path] = None,
-                    library_path: Union[str, Path] = None, quiet: bool = False) -> None:
+    def _set_record(self, record: ModelRecord, record_path: Union[str, Path] = None,
+                    library_path: Union[str, Path] = None) -> None:
         """
         :param record: The `ModelRecord`.
         :param record_path: The path to a `ModelRecord` .json file.
         :param library_path: The path to a `ModelLibrarian` .json file.
-        :param quiet: If True, don't print anything.
         """
 
         # Update the record.
@@ -493,7 +380,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
                 Path(record_path).write_text(json.dumps(record.__dict__, indent=2), encoding="utf-8")
             elif isinstance(record_path, Path):
                 record_path.write_text(json.dumps(record.__dict__, indent=2), encoding="utf-8")
-            if not quiet:
+            if not self._quiet:
                 print(f"Updated {record_path}")
         # Update the librarian.
         if library_path is not None:
@@ -505,5 +392,5 @@ class AssetBundleCreator(AssetBundleCreatorBase):
                 raise Exception(library_path)
             overwrite = model_librarian.get_record(record.name) is not None
             model_librarian.add_or_update_record(record=record, overwrite=overwrite, write=True)
-            if not quiet:
+            if not self._quiet:
                 print(f"Updated {library_path}")

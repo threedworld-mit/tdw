@@ -1,7 +1,7 @@
 from typing import List, Dict, NamedTuple, Union
 from tdw.add_ons.add_on import AddOn
 from pathlib import Path
-from tdw.output_data import OutputData, TransformMatrices, SegmentationColors, AvatarTransformMatrices
+from tdw.output_data import OutputData, TransformMatrices, SegmentationColors, AvatarTransformMatrices, FieldOfView
 from requests import get
 import os
 import re
@@ -163,7 +163,7 @@ class VRayExport(AddOn):
                 if pattern.search(line):
                     return line
 
-    def get_renderview_line_number(self) -> int:
+    def get_renderview_line_number(self) -> int,int:
         """
         Get the line number of the RenderView entry in the scene file.
         """
@@ -175,8 +175,9 @@ class VRayExport(AddOn):
             for line in in_file:
                 if pattern.search(line):
                     # We will want to replace the line following the "RenderView" line, with the transform data
-                    line_number = num + 1
-                    return line_number
+                    node_line_number = num + 1
+                    fov_line_number = num + 2
+                    return (node_line_number, fov_line_number)
                 else:
                     num = num + 1
 
@@ -228,10 +229,12 @@ class VRayExport(AddOn):
         with open(path, 'w', encoding="utf-8") as out_file:
            out_file.writelines(data)
 
-    def write_renderview_data(self, mat: matrix_data_struct):
+    def write_renderview_data(self, mat: matrix_data_struct, focal: float):
         """
         Replace the camera transform line in the scene file with the converted TDW camera pos/ori data.
         """
+        # Compute V-Ray fov from TDW focal length, using TDW sensor width of 36.
+        fov = 2.0 * np.arctan(36.0 / (focal * 2.0))
         # Open model .vrscene file to append node data
         path = self.get_scene_file_path()
         node_string = ("transform=Transform(Matrix" + 
@@ -239,12 +242,13 @@ class VRayExport(AddOn):
                        "Vector(" + mat.column_two + "), " +
                        "Vector(" + mat.column_three + ")), " +
                        "Vector(" + mat.column_four + "));\n")
-        line_number = self.get_renderview_line_number()
+        node_line_number, fov_line_number = self.get_renderview_line_number()
         with open(path, 'r', encoding="utf-8") as in_file:
             # Read a list of lines into data
             data = in_file.readlines()
-            # Now change the Renderview line
-            data[line_number] = node_string
+            # Now change the Renderview node line and fov line
+            data[node_line_number] = node_string
+            data[fov_line_number] = "fov=" + str(fov) + ";"
         # Write everything back
         with open(path, 'w', encoding="utf-8") as out_file:
            out_file.writelines(data)
@@ -330,8 +334,12 @@ class VRayExport(AddOn):
         """
         Export the position and orientation of the camera to the scene .vrscene file as Transform data.
         """	
+        focal = 0
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "fofv":
+                field_of_view = FieldOfView(resp[i])
+                focal = field_of_view.get_focal_length()
             if r_id == "atrm":
                 avatar_transform_matrices = AvatarTransformMatrices(resp[i])
                 for j in range(avatar_transform_matrices.get_num()):
@@ -353,7 +361,7 @@ class VRayExport(AddOn):
                                                     column_two = str(rot_matrix[1][0]) + "," + str(rot_matrix[1][1]) + "," + str(rot_matrix[1][2]), 
                                                     column_three = str(rot_matrix[2][0]) + "," + str(rot_matrix[2][1]) + "," + str(rot_matrix[2][2]),  
                                                     column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
-        self.write_renderview_data(mat_struct)
+        self.write_renderview_data(mat_struct, focal)
 
 
     def get_dynamic_camera_data(self, avatar_matrix, sensor_matrix, frame_count: int) -> str:

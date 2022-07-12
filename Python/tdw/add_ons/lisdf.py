@@ -4,7 +4,6 @@ from json import dumps
 from pathlib import Path
 import xml.etree.ElementTree
 from platform import system
-from subprocess import call
 from tdw.add_ons.add_on import AddOn
 from tdw.asset_bundle_creator import AssetBundleCreator
 from tdw.tdw_utils import TDWUtils
@@ -23,7 +22,7 @@ class LISDF(AddOn):
         super().__init__()
         self.initialized = True
 
-    def read(self, lisdf_path: Union[str, Path], asset_bundles_directory: Union[str, Path], overwrite: bool = False,
+    def read(self, lisdf_path: Union[str, Path], output_directory: Union[str, Path], overwrite: bool = False,
              cleanup: bool = True, send_commands: bool = True, quiet: bool = False) -> None:
         """
         Read an .lisdf file and send commands to the build to add the objects to the scene.
@@ -32,7 +31,7 @@ class LISDF(AddOn):
         The resulting list of commands will be saved to `asset_bundles_directory/commands.json`. Optionally, they will also be sent to the build the next time `c.communicate()` is called.
 
         :param lisdf_path: The path to the .lisdf file as either a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
-        :param asset_bundles_directory: The directory of the object asset bundles as either a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If it doesn't exist, it will be created while the .lisdf models are being converted.
+        :param output_directory: The directory of the object asset bundles as either a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If it doesn't exist, it will be created while the .lisdf models are being converted.
         :param overwrite: If True, overwrite any asset bundles in `asset_bundles_directory`. If False, skip converting models if the asset bundles already exist.
         :param cleanup: If True, delete intermediary files such as .prefab files generated while creating asset bundles.
         :param send_commands: If True, the commands generated from the .lisdf file will be sent the next time `c.communicate()` is called.
@@ -45,29 +44,27 @@ class LISDF(AddOn):
             src = lisdf_path
         else:
             raise Exception(lisdf_path)
-        if isinstance(asset_bundles_directory, Path):
-            dst = str(asset_bundles_directory.resolve())
-        elif isinstance(asset_bundles_directory, str):
-            dst = asset_bundles_directory
+        if isinstance(output_directory, Path):
+            dst = str(output_directory.resolve())
+        elif isinstance(output_directory, str):
+            dst = output_directory
         else:
-            raise Exception(asset_bundles_directory)
+            raise Exception(output_directory)
         tree = xml.etree.ElementTree.parse(src)
         root = tree.getroot().find('world')
-        a = AssetBundleCreator()
-        unity_call = a.get_base_unity_call()
-        unity_call.extend(["-executeMethod",
-                           "LISDFImporter.Read",
-                           f"-path={src}",
-                           f"-output_directory={dst}"])
+        args = [f'-path="{src}"',
+                f'-output_directory="{dst}"']
         if overwrite:
-            unity_call.append("overwrite")
+            args.append("-overwrite")
         if cleanup:
-            unity_call.append("cleanup")
-        # Convert the models to asset bundles.
-        call(unity_call)
+            args.append("-cleanup")
+        a = AssetBundleCreator()
+        a.call_unity(class_name="LISDFImporter",
+                     method="Read",
+                     args=args)
         # Print the log.
         if not quiet:
-            log_path = Path(dst).joinpath("logs").joinpath("log.txt")
+            log_path = Path(dst).joinpath("log.txt")
             if log_path.exists():
                 print(log_path.read_text(encoding="utf-8"))
         commands = []

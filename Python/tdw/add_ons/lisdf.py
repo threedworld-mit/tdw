@@ -15,6 +15,8 @@ class LISDF(AddOn):
 
     .lisdf models can't be directly added into TDW; they must first be converted into asset bundles. These asset bundles will be saved to the local disk, meaning that converting .lisdf data to asset bundles is a one-time process.
 
+    Note that this is only a partial implementation of an .lisdf parser. More functionality will be added over time.
+
     When `read()` is called, asset bundles are automatically generated if they don't already exist. Then this add-on appends commands to the controller to add the objects to the scene.
     """
 

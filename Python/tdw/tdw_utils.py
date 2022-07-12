@@ -967,3 +967,29 @@ class TDWUtils:
             elif wall == CardinalDirection.east:
                 return CardinalDirection.north
         raise Exception(corner, wall)
+
+    @staticmethod
+    def ros_position_to_vector3(arr: List[float]) -> Dict[str, float]:
+        """
+        Convert a ROS position to a TDW Vector3 dictionary position.
+        Source: https://github.com/Unity-Technologies/URDF-Importer/blob/main/com.unity.robotics.urdf-importer/Runtime/Extensions/BuiltInExtensions.cs
+
+        :param arr: The ROS position.
+
+        :return: A TDW Vector3 dictionary.
+        """
+
+        return {"x": -arr[1], "y": arr[2], "z": arr[0]}
+
+    @staticmethod
+    def ros_rpy_to_vector3(arr: List[float]) -> Dict[str, float]:
+        """
+        Convert ROS RPY angles to a TDW Vector3 dictionary of Euler angles.
+        Source: https://github.com/Unity-Technologies/URDF-Importer/blob/main/com.unity.robotics.urdf-importer/Runtime/Extensions/BuiltInExtensions.cs
+
+        :param arr: The ROS RPY angles.
+
+        :return: A TDW Vector3 dictionary.
+        """
+
+        return {"x": math.degrees(-arr[1]), "y": math.degrees(arr[2]), "z": math.degrees(-arr[0])}

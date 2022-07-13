@@ -4,12 +4,6 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
-## v1.10.2
-
-### Build
-
-- Fixed: `send_vr_rig` returns incorrect transform data for the VR rig's hands.
-
 ## v1.10.1
 
 ### Command API

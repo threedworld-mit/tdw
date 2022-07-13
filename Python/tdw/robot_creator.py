@@ -61,7 +61,7 @@ class RobotCreator(AssetBundleCreatorBase):
         # Create the prefab.
         self.urdf_to_prefab(urdf_path=urdf_path, output_directory=output_directory, immovable=immovable, up=up)
         # Create the asset bundles.
-        self.prefab_to_asset_bundles(name=RobotCreator._get_name(urdf_path), output_directory=output_directory)
+        self.prefab_to_asset_bundles(name=RobotCreator.get_name(urdf_path), output_directory=output_directory)
         if not self._quiet:
             print("DONE!")
 
@@ -274,7 +274,7 @@ class RobotCreator(AssetBundleCreatorBase):
         :return: The path to the .prefab file.
         """
 
-        args = self._get_source_destination_args(name=RobotCreator._get_name(urdf_path),
+        args = self._get_source_destination_args(name=RobotCreator.get_name(urdf_path),
                                                  source=urdf_path,
                                                  destination=output_directory)
         args.append(f'-up={up}')
@@ -286,11 +286,8 @@ class RobotCreator(AssetBundleCreatorBase):
                         args=args)
         self._print_log(output_directory=output_directory)
 
-    def get_creator_class_name(self) -> str:
-        return "RobotCreator"
-
     @staticmethod
-    def _get_name(urdf_path: Union[str, Path]) -> str:
+    def get_name(urdf_path: Union[str, Path]) -> str:
         """
         :param urdf_path: The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
 
@@ -305,6 +302,9 @@ class RobotCreator(AssetBundleCreatorBase):
             raise Exception(urdf_path)
         urdf = path.read_text(encoding="utf-8")
         return re.search(r'<robot name="(.*?)"', urdf, flags=re.MULTILINE).group(1).strip()
+
+    def get_creator_class_name(self) -> str:
+        return "RobotCreator"
 
     @staticmethod
     def _page_to_raw(url: str) -> str:

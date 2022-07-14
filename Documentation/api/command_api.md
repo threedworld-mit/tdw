@@ -566,7 +566,7 @@
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
-| [`send_dynamic_robots`](#send_dynamic_robots) | Send dynamic robot data for each robot in the send.  |
+| [`send_dynamic_robots`](#send_dynamic_robots) | Send dynamic robot data for each robot in the scene.  |
 | [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
@@ -7358,7 +7358,7 @@ Options for when to send data.
 
 ## **`send_dynamic_robots`**
 
-Send dynamic robot data for each robot in the send. 
+Send dynamic robot data for each robot in the scene. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 

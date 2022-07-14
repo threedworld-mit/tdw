@@ -22,6 +22,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | ------------- | ------------------------------------------ |
 | `FieldOfView` | The camera field of view and focal length. |
 
+### Model Library
+
+- Flagged b04_wallmounted_soap_dispenser_composite as do_not_use (missing asset bundles)
+
 ## v1.10.0
 
 ### New Features

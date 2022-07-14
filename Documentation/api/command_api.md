@@ -551,6 +551,7 @@
 | [`send_avatars`](#send_avatars) | Send data for avatars in the scene.  |
 | [`send_avatar_segmentation_colors`](#send_avatar_segmentation_colors) | Send avatar segmentation color data.  |
 | [`send_camera_matrices`](#send_camera_matrices) | Send camera matrix data for each camera.  |
+| [`send_field_of_view`](#send_field_of_view) | Send field of view for each camera.  |
 | [`send_id_pass_grayscale`](#send_id_pass_grayscale) | Send the average grayscale value of an _id pass.  |
 | [`send_id_pass_segmentation_colors`](#send_id_pass_segmentation_colors) | Send all unique colors in an _id pass.  |
 | [`send_images`](#send_images) | Send images and metadata.  |
@@ -7000,6 +7001,39 @@ Send camera matrix data for each camera.
 
 ```python
 {"$type": "send_camera_matrices", "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_field_of_view`**
+
+Send field of view for each camera. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`FieldOfView`](output_data.md#FieldOfView)</font>
+
+```python
+{"$type": "send_field_of_view"}
+```
+
+```python
+{"$type": "send_field_of_view", "ids": [], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

@@ -59,6 +59,14 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 - Updated `robots/robot_arm.py` to use new `DynamicRobots` output data.
 
+### Documentation
+
+#### Modified Documentation
+
+| Document                          | Modification                                                 |
+| --------------------------------- | ------------------------------------------------------------ |
+| `lessons/robots/low_level_api.md` | Updated descriptions and example code to use `DynamicRobots` instead of `Robot`. |
+
 ## v1.10.1
 
 ### Command API

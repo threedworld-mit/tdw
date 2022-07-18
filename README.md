@@ -165,6 +165,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 1. [Overview](Documentation/lessons/video/overview.md)
 2. [Image-only video](Documentation/lessons/video/images.md)
 3. [Video with audio](Documentation/lessons/video/audio.md)
+   1. [Video with audio (Linux)](Documentation/lessons/video/screen_record_linux.md)
+   2. [Video with audio (OS X)](Documentation/lessons/video/screen_record_osx.md)
+   3. [Video with audio (Windows)](Documentation/lessons/video/screen_record_windows.md)
+
 
 ## 10. Agents
 

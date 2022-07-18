@@ -4,6 +4,39 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.10.2
+
+### Command API
+
+#### New Commands
+
+| Command                       | Description                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| `start_video_capture_linux`   | Start video capture using ffmpeg. This command can only be used on Linux. |
+| `start_video_capture_osx`     | Start video capture using ffmpeg. This command can only be used on OS X. |
+| `start_video_capture_windows` | Start video capture using ffmpeg. This command can only be used on Windows. |
+| `stop_video_capture`          | Stop ongoing video capture.                                  |
+
+### Docker
+
+- Removed `record_audio_video.sh` and `start_container_audio_video.sh` (no longer needed)
+
+### Documentation
+
+### New Documentation
+
+| Document                                                     | Description                               |
+| ------------------------------------------------------------ | ----------------------------------------- |
+| `lessons/video/screen_record_linux.md`<br>`lessons/video/screen_record_osx.md`<br>`lessons/video/screen_record_windows.md` | How to record audio and video on each OS. |
+
+#### Modified Documentation
+
+| Document                    | Modification                                                 |
+| --------------------------- | ------------------------------------------------------------ |
+| `lessons/video/audio.md`    | Removed most text; this is now an overview document for recording using ffmpeg. Added a section about OBS. |
+| `lessons/video/images.md`   | Removed sections regarding ffmpeg and OBS.                   |
+| `lessons/video/overview.md` | Added a section about installing ffmpeg.                     |
+
 ## v1.10.1
 
 ### Command API

@@ -189,3 +189,26 @@ c.communicate({"$type": "terminate"})
 
 For more information regarding the other optional parameters, read the API documentation for [`start_video_capture_windows`](../../api/command_api.md#start_video_capture_windows).
 
+***
+
+**This is the last document in the "Video Recording" tutorial.**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [screen_record_windows.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/video/screen_record_windows.py) A minimal example of an audio-visual screen recorder for Windows.
+
+Python API:
+
+- [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md)
+- [`AudioInitializer`](../../python/add_ons/audio_initializer.md)
+- [`PyImpact`](../../python/add_ons/py_impact.md)
+
+Command API:
+
+- [`start_video_capture_windows`](../../api/command_api.md#start_video_capture_windows)
+- [`stop_video_capture`](../../api/command_api.md#stop_video_capture)
+- [`set_target_framerate`](../../api/command_api.md#set_target_framerate)

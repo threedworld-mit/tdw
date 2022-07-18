@@ -644,6 +644,20 @@
 | [`set_ui_element_size`](#set_ui_element_size) | Set the size of a UI element. |
 | [`set_ui_text`](#set_ui_text) | Set the text of a Text object that is already on the screen. |
 
+**Video Capture Command**
+
+| Command | Description |
+| --- | --- |
+| [`stop_video_capture`](#stop_video_capture) | Stop ongoing video capture. |
+
+**Start Video Capture Command**
+
+| Command | Description |
+| --- | --- |
+| [`start_video_capture_linux`](#start_video_capture_linux) | Start video capture using ffmpeg. This command can only be used on Linux. |
+| [`start_video_capture_osx`](#start_video_capture_osx) | Start video capture using ffmpeg. This command can only be used on OS X. |
+| [`start_video_capture_windows`](#start_video_capture_windows) | Start video capture using ffmpeg. This command can only be used on Windows. |
+
 **Vr Command**
 
 | Command | Description |
@@ -8462,6 +8476,124 @@ Set the text of a Text object that is already on the screen.
 | `"text"` | string | The new text. | |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+# VideoCaptureCommand
+
+These commands start and stop audio-visual capture using ffmpeg. These commands assume that you've already installed ffmpeg on your computer.
+
+***
+
+## **`stop_video_capture`**
+
+Stop ongoing video capture.
+
+
+```python
+{"$type": "stop_video_capture"}
+```
+
+# StartVideoCaptureCommand
+
+These commands start video capture using ffmpeg. Because ffmpeg arguments are platform-specific, you must use the platform-specific command, e.g. start_video_capture_windows
+
+***
+
+## **`start_video_capture_linux`**
+
+Start video capture using ffmpeg. This command can only be used on Linux.
+
+
+```python
+{"$type": "start_video_capture_linux", "output_path": "string"}
+```
+
+```python
+{"$type": "start_video_capture_linux", "output_path": "string", "display": 0, "screen": 0, "audio_device": 0, "ffmpeg": "", "overwrite": True, "framerate": 60, "audio": True, "audio_codec": "aac", "video_codec": "h264", "position": {"x": 0, "y": 0}, "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"display"` | int | The X11 display index. To review your X11 setup: cat /etc/X11/xorg.conf | 0 |
+| `"screen"` | int | The X11 screen index. To review your X11 setup: cat /etc/X11/xorg.conf | 0 |
+| `"audio_device"` | int | The ALSA audio device index. Ignored if audio == False. To get a list of ALSA devices: arecord -l | 0 |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
+| `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
+| `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
+| `"framerate"` | int | The framerate of the output video. | 60 |
+| `"audio"` | bool | If True, audio will be captured. | True |
+| `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
+| `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
+| `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
+
+***
+
+## **`start_video_capture_osx`**
+
+Start video capture using ffmpeg. This command can only be used on OS X.
+
+
+```python
+{"$type": "start_video_capture_osx", "output_path": "string"}
+```
+
+```python
+{"$type": "start_video_capture_osx", "output_path": "string", "screen_device": 0, "audio_device": 0, "ffmpeg": "", "overwrite": True, "framerate": 60, "audio": True, "audio_codec": "aac", "video_codec": "h264", "position": {"x": 0, "y": 0}, "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"screen_device"` | int | The screen device index. Ignored if audio == False. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 0 |
+| `"audio_device"` | int | The audio device index. Ignored if audio == False. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 0 |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
+| `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
+| `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
+| `"framerate"` | int | The framerate of the output video. | 60 |
+| `"audio"` | bool | If True, audio will be captured. | True |
+| `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
+| `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
+| `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
+
+***
+
+## **`start_video_capture_windows`**
+
+Start video capture using ffmpeg. This command can only be used on Windows.
+
+
+```python
+{"$type": "start_video_capture_windows", "output_path": "string"}
+```
+
+```python
+{"$type": "start_video_capture_windows", "output_path": "string", "window_capture": True, "window_title": "TDW", "audio_device_name": "", "audio_buffer_size": 50, "ffmpeg": "", "overwrite": True, "framerate": 60, "audio": True, "audio_codec": "aac", "video_codec": "h264", "position": {"x": 0, "y": 0}, "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"window_capture"` | bool | If True, capture a window rather than a screen region. | True |
+| `"window_title"` | string | If window_capture == True, this is the name of the window that will be recorded. | "TDW" |
+| `"audio_device_name"` | string | The name of the audio device. Ignored if audio == False. To get a list of devices: ffmpeg -list_devices true -f dshow -i dummy | "" |
+| `"audio_buffer_size"` | int | The audio buffer size in ms. Adjust this if the audio doesn't sync with the video. See: <ulink url="https://ffmpeg.org/ffmpeg-devices.html">https://ffmpeg.org/ffmpeg-devices.html</ulink> (search for audio_buffer_size). | 50 |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
+| `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
+| `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
+| `"framerate"` | int | The framerate of the output video. | 60 |
+| `"audio"` | bool | If True, audio will be captured. | True |
+| `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
+| `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
+| `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
 
 # VrCommand
 

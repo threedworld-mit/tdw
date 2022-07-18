@@ -18,6 +18,4 @@ It is possible, **but not recommended**, to record image data [as described in t
 
 ***
 
-**This is the last document in the "Video Recording" tutorial.**
-
 [Return to the README](../../../README.md)

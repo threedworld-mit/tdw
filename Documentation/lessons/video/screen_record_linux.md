@@ -1,3 +1,5 @@
+##### Video Recording
+
 # Video with audio (Linux)
 
 To start video capture, send  [`start_video_capture_linux`](../../api/command_api.md#start_video_capture_linux). 
@@ -214,6 +216,10 @@ c.communicate({"$type": "stop_video_capture"})
 c.communicate({"$type": "terminate"})
 ```
 
+## Other parameters
+
+For more information regarding the other optional parameters, read the API documentation for [`start_video_capture_linux`](../../api/command_api.md#start_video_capture_linux).
+
 ## Linux server
 
 1. See [install guide](../setup/install.md) for Docker requirements.
@@ -221,3 +227,27 @@ c.communicate({"$type": "terminate"})
 3. On the server, Make sure that xpra isn't running.
 4. In the `tdw` repo, `cd Docker` and `./start_container.sh`
 5. Run your controller
+
+***
+
+**This is the last document in the "Video Recording" tutorial.**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [screen_record_linux.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/video/screen_record_linux.py) A minimal example of an audio-visual screen recorder for Linux.
+
+Python API:
+
+- [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md)
+- [`AudioInitializer`](../../python/add_ons/audio_initializer.md)
+- [`PyImpact`](../../python/add_ons/py_impact.md)
+
+Command API:
+
+- [`start_video_capture_linux`](../../api/command_api.md#start_video_capture_linux)
+- [`stop_video_capture`](../../api/command_api.md#stop_video_capture)
+- [`set_target_framerate`](../../api/command_api.md#set_target_framerate)

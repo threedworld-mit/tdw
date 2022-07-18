@@ -1,3 +1,5 @@
+##### Video Recording
+
 # Video with audio (OS X)
 
 To start video capture, send  [`start_video_capture_osx`](../../api/command_api.md#start_video_capture_osx). 
@@ -31,7 +33,7 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 for i in range(200):
     c.communicate([])
 # Stop video capture.
-c.communicate({"$type": "stop_video_capture"})
+c.communica({"$type": "stop_video_capture"})
 # End the simulation.
 c.communicate({"$type": "terminate"})
 ```
@@ -177,3 +179,31 @@ c.communicate({"$type": "stop_video_capture"})
 # End the simulation.
 c.communicate({"$type": "terminate"})
 ```
+
+## Other parameters
+
+For more information regarding the other optional parameters, read the API documentation for [`start_video_capture_osx`](../../api/command_api.md#start_video_capture_osx).
+
+***
+
+**This is the last document in the "Video Recording" tutorial.**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [screen_record_osx.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/video/screen_record_osx.py) A minimal example of an audio-visual screen recorder for OS X.
+
+Python API:
+
+- [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md)
+- [`AudioInitializer`](../../python/add_ons/audio_initializer.md)
+- [`PyImpact`](../../python/add_ons/py_impact.md)
+
+Command API:
+
+- [`start_video_capture_osx`](../../api/command_api.md#start_video_capture_osx)
+- [`stop_video_capture`](../../api/command_api.md#stop_video_capture)
+- [`set_target_framerate`](../../api/command_api.md#set_target_framerate)

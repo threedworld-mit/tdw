@@ -131,7 +131,7 @@ c.communicate({"$type": "stop_video_capture"})
 c.communicate({"$type": "terminate"})
 ```
 
-If `audio` is True, you must set `audio_device_name`. To get a list of device names:
+If `audio` is True, you must set `audio_device`. To get a list of device names:
 
 ```bash
 ffmpeg -list_devices true -f dshow -i dummy
@@ -171,7 +171,7 @@ commands = [TDWUtils.create_empty_room(12, 12),
              "framerate": 60},
             {"$type": "start_video_capture_windows",
              "output_path": str(path.resolve()),
-             "audio_device_name": "Stereo Mix (Realtek(R) Audio)"}]
+             "audio_device": "Stereo Mix (Realtek(R) Audio)"}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   position={"x": 0, "y": 1.5, "z": 0},
                                                   object_id=Controller.get_unique_id()))

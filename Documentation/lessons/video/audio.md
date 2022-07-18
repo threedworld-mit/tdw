@@ -2,17 +2,15 @@
 
 # Video with audio
 
-*If you haven't done so already, please read the documentation for [audio in TDW](../audio/overview.md).*
+The best way to record video with audio is to call TDW's video capture commands, which launch [ffmpeg](https://www.ffmpeg.org/). ffmpeg's screen capture parameters vary by OS and so there are three different commands for starting video capture. Read the following to learn more:
 
-It is possible to record audio in TDW while capturing image data. **However, it is *extremely* difficult to synchronize them into a video.** This is classic problem in audio/visual recording; we don't recommend attempting it!
+- [Video with audio (Linux)](screen_record_linux.md)
+- [Video with audio (OS X)](screen_record_osx.md)
+- [Video with audio (Windows)](screen_record_windows.md)
 
-Instead, we *strongly* recommend capturing video with audio using an external application.
+## Separate image capture and audio capture
 
-In setting up your controller:
-
-- You must still [initialize audio](../audio/initialize_audio.md) in TDW like you normally would; you should *not* [record audio](../audio/record_audio.md)
-- You must still [render images, but you shouldn't save images to disk](../core_concepts/images.md).
-- You should set the target framerate to 30 or 60 frames per second.
+It is possible, **but not recommended**, to record image data [as described in the previous document](images.md), [record audio with `AudioUtils`](../audio/overview.md), and combine the images and the audio with [ffmpeg](https://www.ffmpeg.org/). **However, it is *extremely* difficult to synchronize them into a video.** This is classic problem in audio/visual recording; we don't recommend attempting it!
 
 ## Linux server
 

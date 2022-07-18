@@ -1,6 +1,6 @@
-# Video with audio (Linux)
+# Video with audio (OS X)
 
-To start video capture, send  [`start_video_capture_linux`](../../api/command_api.md#start_video_capture_linux). 
+To start video capture, send  [`start_video_capture_osx`](../../api/command_api.md#start_video_capture_osx). 
 
 To stop video capture, send [`stop_video_capture`](../../api/command_api.md#stop_video_capture) or kill the TDW build process by sending [`terminate`](../../api/command_api.md#terminate).
 
@@ -25,43 +25,7 @@ print(f"Video will be saved to: {path}")
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "set_target_framerate",
                 "framerate": 60},
-               {"$type": "start_video_capture_linux",
-                "output_path": str(path.resolve())}])
-# Wait 200 frames.
-for i in range(200):
-    c.communicate([])
-# Stop video capture.
-c.communicate({"$type": "stop_video_capture"})
-# End the simulation.
-c.communicate({"$type": "terminate"})
-```
-
-## Display and screen
-
-The optional parameters `display` and `screen` are X11 indices; they should match the display and screen that the TDW build is running on. [Read this for more information.](https://github.com/threedworld-mit/tdw/blob/master/Documentation/lessons/setup/install.md)
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-
-c = Controller()
-# Add a camera.
-camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
-                           look_at={"x": 0, "y": 0, "z": 0},
-                           avatar_id="a")
-c.add_ons.append(camera)
-# Set the output path.
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mkv")
-print(f"Video will be saved to: {path}")
-# Start video capture.
-c.communicate([TDWUtils.create_empty_room(12, 12),
-               {"$type": "set_target_framerate",
-                "framerate": 60},
-               {"$type": "start_video_capture_linux",
-                "display": 0,
-                "screen": 0,
+               {"$type": "start_video_capture_osx",
                 "output_path": str(path.resolve())}])
 # Wait 200 frames.
 for i in range(200):
@@ -74,12 +38,12 @@ c.communicate({"$type": "terminate"})
 
 ## Display region capture
 
-On Linux, ffmpeg captures a region of the screen, not a specific window. To define the region, set the `position` parameter.
+On OS X, ffmpeg captures a region of the screen, not a specific window. To define the region, set the `position` parameter.
 
 You may find it easier to set `position` by removing the window title bar from the TDW window application. To do this:
 
 1. [Set `launch_build==False` in your controller.](../core_concepts/launch_build.md)
-2. Launch the build with an extra command-line argument: `cd ~/tdw_build/TDW && ./TDW.x86_64 -popupwindow`
+2. Launch the build with an extra command-line argument: `cd ~/tdw_build/TDW && ./TDW/Contents/MacOS/TDW -popupwindow`
 3. Launch the controller.
 
 Usually, the TDW build will launch in the center of the monitor. Assuming that you're using a 1080p monitor, that TDW is 256x256, and that you've hidden the title bar, you can set the position like this:
@@ -113,7 +77,7 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "set_screen_size",
                 "width": screen_width,
                 "height": screen_height},
-               {"$type": "start_video_capture_linux",
+               {"$type": "start_video_capture_osx",
                 "output_path": str(path.resolve()),
                 "position": position}])
 # Wait 200 frames.
@@ -148,7 +112,7 @@ print(f"Video will be saved to: {path}")
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "set_target_framerate",
                 "framerate": 60},
-               {"$type": "start_video_capture_linux",
+               {"$type": "start_video_capture_osx",
                 "output_path": str(path.resolve()),
                 "audio": False}])
 # Wait 200 frames.
@@ -160,13 +124,13 @@ c.communicate({"$type": "stop_video_capture"})
 c.communicate({"$type": "terminate"})
 ```
 
-If `audio` is True, you must set `audio_device`. To get a list of device names:
+If `audio` is True, you must set `audio_device`, the *index* of the audio capture device. To get a list of device names and indices:
 
 ```bash
-pactl list sources | grep output
+ffmpeg -f avfoundation -list_devices true -i ""
 ```
 
-The exact name of the audio device may vary between computers.
+**You might not have a valid audio capture device initially.** [Read this for more information, under "OS X".](../audio/record_audio.md) 
 
 You must then [initialize audio in TDW](../audio/initialize_audio.md). You *don't* have to [record audio with fmedia](../audio/record_audio.md); the ffmpeg process launched by `start_video_capture_windows` will automatically record audio.
 
@@ -198,9 +162,9 @@ print(f"Video will be saved to: {path}")
 commands = [TDWUtils.create_empty_room(12, 12),
             {"$type": "set_target_framerate",
              "framerate": 60},
-            {"$type": "start_video_capture_linux",
+            {"$type": "start_video_capture_osx",
              "output_path": str(path.resolve()),
-             "audio_device": "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor"}]
+             "audio_device": 0}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   position={"x": 0, "y": 1.5, "z": 0},
                                                   object_id=Controller.get_unique_id()))
@@ -213,11 +177,3 @@ c.communicate({"$type": "stop_video_capture"})
 # End the simulation.
 c.communicate({"$type": "terminate"})
 ```
-
-## Linux server
-
-1. See [install guide](../setup/install.md) for Docker requirements.
-2. [Build this container.](https://github.com/threedworld-mit/tdw/blob/master/Docker/Dockerfile_audio)
-3. On the server, Make sure that xpra isn't running.
-4. In the `tdw` repo, `cd Docker` and `./start_container.sh`
-5. Run your controller

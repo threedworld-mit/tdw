@@ -49,7 +49,7 @@ You can optionally capture a region of the display rather than a specific window
 You may find it easier to set `position` by removing the window title bar from the TDW window application. To do this:
 
 1. [Set `launch_build==False` in your controller.](../core_concepts/launch_build.md)
-2. Launch the build with an extra command-line argument: `cd ~/tdw_build/TDW && ./TDW.x86_64 -popupwindow`
+2. Launch the build with an extra command-line argument: `cd ~/tdw_build/TDW && ./TDW.exe -popupwindow`
 3. Launch the controller.
 
 Usually, the TDW build will launch in the center of the monitor. Assuming that you're using a 1080p monitor, that TDW is 256x256, and that you've hidden the title bar, you can set the position like this:

@@ -60,7 +60,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
         :param urdf_url: The URL of a .urdf or a .xacro file.
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
-        :param root_meshes_folder: The name of the root folder used for the mesh paths in the .urdf file.
+        :param root_meshes_folder: The name of the folder used in the .urdf file for mesh file paths. For example, in the UR5 file, this is `ur_description`.
         :param required_repo_urls: A dictionary of description folder names and repo URLs outside of the robot's repo that are required to create the robot. This is only required for .xacro files that reference outside repos. For example, the Sawyer robot requires this to add the gripper: `{"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"}`
         :param xacro_args: Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file). For example, the Sawyer robot requires this to add the gripper: `{"electric_gripper": "true"}`
         :param immovable: If True, the base of the robot is immovable.
@@ -306,7 +306,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
         :param urdf_path: The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
-        :param root_meshes_folder: The name of the description infix within the .urdf URL, such as `fetch_description`.
+        :param root_meshes_folder: The name of the folder used in the .urdf file for mesh file paths. For example, in the UR5 file, this is `ur_description`.
         :param immovable: If True, the base of the robot will be immovable by default (see the `set_immovable` command).
         :param up: The up direction. Used for importing the .urdf into Unity. Options: "y" or "z".
         """

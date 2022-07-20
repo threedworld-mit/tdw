@@ -217,12 +217,13 @@ class AssetBundleCreatorBase(ABC):
         print(f.read_text(encoding="utf-8"))
 
     @staticmethod
-    def _add_library_path(args: List[str], library_path: Union[str, Path] = None) -> List[str]:
+    def _add_library_args(args: List[str], library_path: Union[str, Path] = None, library_description: str = None) -> List[str]:
         """
         Add a `-library_path=path` argument to a list of arguments.
 
         :param args: The list of arguments.
         :param library_path: The library path. Can be None.
+        :param library_description: A description of the library. Can be None.
 
         :return: The modified list of arguments.
         """
@@ -234,6 +235,8 @@ class AssetBundleCreatorBase(ABC):
                 args.append(f'-library_path="{library_path}"')
             else:
                 raise Exception(library_path)
+        if library_description is not None:
+            args.append(f'-library_description="{library_description}"')
         return args
 
     @staticmethod

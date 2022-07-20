@@ -29,8 +29,8 @@ class AssetBundleCreator(AssetBundleCreatorBase):
     def source_file_to_asset_bundles(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
                                      vhacd_resolution: int = 800000, internal_materials: bool = False,
                                      wnid: str = None, wcategory: str = None, scale_factor: float = 1,
-                                     library_path: Union[str, Path] = None, cleanup: bool = True,
-                                     write_physics_quality: bool = False, validate: bool = False) -> None:
+                                     library_path: Union[str, Path] = None, library_description: str = None,
+                                     cleanup: bool = True, write_physics_quality: bool = False, validate: bool = False) -> None:
         """
         Convert a source .obj or .fbx file into 3 asset bundle files (Windows, OS X, and Linux).
 
@@ -46,8 +46,8 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         Example source directory:
 
         ```
-        source_file.obj
-        source_file.mtl
+        model.obj
+        model.mtl
         Textures/
         ```
 
@@ -56,18 +56,20 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         ```
         output_directory/
         ....Darwin/
-        ........name
+        ........model
         ....Linux/
-        ........name
+        ........model
         ....Windows/
-        ........name
+        ........model
         ....record.json
         ....log.txt
+        library.json
         ```
 
-        - `Darwin/name`, `Linux/name` and `Windows/name` are the platform-specific asset bundles.
-        - `record.json` is a JSON dictionary of the `ModelRecord`.
+        - `Darwin/model`, `Linux/model` and `Windows/model` are the platform-specific asset bundles.
         - `log.txt` is a log from the `asset_bundle_creator` Unity Editor project.
+        - `record.json` is a serialized `ModelRecord`.
+        - `library.json` is a serialized `ModelLibrarian`. It will only be added/set if the optional `library_path` is set.
 
         :param name: The name of the model. This can be the same as the source file name minus the extension.
         :param source_file: The path to the source .fbx or .obj file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
@@ -78,6 +80,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param wcategory: The WordNet category of the model. Can be None.
         :param scale_factor: The model will be scaled by this factor.
         :param library_path: If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `ModelLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`.
+        :param library_description: A description of the library. Ignored if `library_path` is None.
         :param cleanup: If True, delete intermediary files such as the prefab in the `asset_bundle_creator` Unity Editor project.
         :param write_physics_quality: If True, launch a controller and build to calculate the hull collider accuracy. Write the result to `output_directory/record.json` and to `library_path` if `library_path` is not None.
         :param validate: If True, launch a controller and build to validate the model, checking it for any errors. Write the result to `output_directory/record.json` and to `library_path` if `library_path` is not None.
@@ -89,7 +92,9 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         for value, flag in zip([wnid, wcategory], ["wnid", "wcategory"]):
             if value is not None:
                 args.append(f'-{flag}="{value}"')
-        args = AssetBundleCreatorBase._add_library_path(args=args, library_path=library_path)
+        args = AssetBundleCreatorBase._add_library_args(args=args,
+                                                        library_path=library_path,
+                                                        library_description=library_description)
         for value, flag in zip([internal_materials, cleanup], ["-internal_materials", "-cleanup"]):
             if value:
                 args.append(flag)
@@ -232,11 +237,38 @@ class AssetBundleCreator(AssetBundleCreatorBase):
 
     def create_record(self, name: str, output_directory: Union[str, Path],
                       wnid: str = None, wcategory: str = None, scale_factor: float = 1,
-                      library_path: Union[str, Path] = None) -> None:
+                      library_path: Union[str, Path] = None, library_description: str = None) -> None:
         """
-        Create a model record and save it to disk. This requires asset bundles of the model to already exist.
+        Create a model record and save it to disk. This requires asset bundles of the model to already exist:
 
-        The record will be saved to `output_directory/record.json`.
+        ```
+        output_directory/
+        ....Darwin/
+        ........model
+        ....Linux/
+        ........model
+        ....Windows/
+        ........model
+        ....log.txt
+        ```
+
+        Result:
+
+        ```
+        output_directory/
+        ....Darwin/
+        ........model
+        ....Linux/
+        ........model
+        ....Windows/
+        ........model
+        ....record.json
+        ....log.txt
+        library.json
+        ```
+
+        - `record.json` is a serialized `ModelRecord`.
+        - `library.json` is a serialized `ModelLibrarian`. It will only be added/set if the optional `library_path` is set.
 
         :param name: The name of the model (matches the asset bundle file names).
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
@@ -244,6 +276,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param wcategory: The WordNet category of the model. Can be None.
         :param scale_factor: The model will be scaled by this factor.
         :param library_path: If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `ModelLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`.
+        :param library_description: A description of the library. Ignored if `library_path` is None.
         """
 
         if isinstance(output_directory, Path):
@@ -256,7 +289,8 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         for value, flag in zip([wnid, wcategory, scale_factor], ["wnid", "wcategory", "scale_factor"]):
             if value is not None:
                 args.append(f'-{flag}="{value}"')
-        args = AssetBundleCreatorBase._add_library_path(args=args, library_path=library_path)
+        args = AssetBundleCreatorBase._add_library_args(args=args, library_path=library_path,
+                                                        library_description=library_description)
         # Execute the call.
         self.call_unity(method="CreateRecord", args=args)
         self._print_log(output_directory=output_directory)

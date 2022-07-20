@@ -19,9 +19,12 @@ class RobotCreator(AssetBundleCreatorBase):
     """
     TEMP_ROOT: Path = AssetBundleCreatorBase.PROJECT_PATH.joinpath("temp_robots")
 
-    def create_asset_bundles(self, urdf_url: str, output_directory: Union[str, Path], required_repo_urls: Dict[str, str] = None,
-                             xacro_args: Dict[str, str] = None, immovable: bool = True, up: str = "y",
-                             description_infix: str = None, branch: str = None) -> None:
+    def source_url_to_asset_bundles(self, urdf_url: str, output_directory: Union[str, Path],
+                                    required_repo_urls: Dict[str, str] = None,
+                                    xacro_args: Dict[str, str] = None, immovable: bool = True, up: str = "y",
+                                    description_infix: str = None, branch: str = None,
+                                    library_path: Union[str, Path] = None, library_description: str = None,
+                                    source_description: str = None) -> None:
         """
         Given the URL of a .urdf file or a .xacro file, create asset bundles of the robot.
 
@@ -31,6 +34,29 @@ class RobotCreator(AssetBundleCreatorBase):
         2. `self.copy_files()`
         3. `self.urdf_to_prefab()`
         4. `self.prefab_to_asset_bundles()`
+        5. `self.create_record()`
+
+        Example source URL: `https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf`
+
+        Example `output_directory`:
+
+        ```
+        output_directory/
+        ....Darwin/
+        ........robot
+        ....Linux/
+        ........robot
+        ....Windows/
+        ........robot
+        ....record.json
+        ....log.txt
+        library.json
+        ```
+
+        - `Darwin/robot`, `Linux/robot` and `Windows/robot` are the platform-specific asset bundles.
+        - `log.txt` is a log from the `asset_bundle_creator` Unity Editor project.
+        - `record.json` is a serialized `RobotRecord`.
+        - `library.json` is a serialized `RobotLibrarian`. It will only be added/set if the optional `library_path` is set.
 
         :param urdf_url: The URL of a .urdf or a .xacro file.
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
@@ -40,6 +66,9 @@ class RobotCreator(AssetBundleCreatorBase):
         :param up: The up direction. Used when importing the robot into Unity. Options: `"y"` or `"z"`. Usually, this should be the default value (`"y"`).
         :param description_infix: The name of the description infix within the .urdf URL, such as `fetch_description`. Only set this if the urdf URL is non-standard; otherwise `RobotCreator` should be able to find this automatically.
         :param branch: The name of the branch of the repo. If None, defaults to `"master"`.
+        :param library_path: If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`.
+        :param library_description: A description of the library. Ignored if `library_path` is None.
+        :param source_description: A description of the source of the .urdf file, for example the repo URL.
         """
 
         if required_repo_urls is None:
@@ -58,10 +87,18 @@ class RobotCreator(AssetBundleCreatorBase):
         # Copy the files, create a .urdf file (if needed), and creator collider objects.
         urdf_path = self.copy_files(urdf_url=urdf_url, local_repo_path=local_repo_path, repo_paths=repo_paths,
                                     xacro_args=xacro_args, branch=branch)
-        # Create the prefab.
-        self.urdf_to_prefab(urdf_path=urdf_path, output_directory=output_directory, immovable=immovable, up=up)
-        # Create the asset bundles.
-        self.prefab_to_asset_bundles(name=RobotCreator.get_name(urdf_path), output_directory=output_directory)
+        args = self._get_source_destination_args(name=RobotCreator.get_name(urdf_path),
+                                                 source=urdf_path,
+                                                 destination=output_directory)
+        args.append(f'-up={up}')
+        if immovable:
+            args.append("-immovable")
+        if source_description is not None:
+            args.append(f'-source_description="{source_description}"')
+        args = AssetBundleCreatorBase._add_library_args(args=args, library_path=library_path,
+                                                        library_description=library_description)
+        self.call_unity(method="SourceFileToAssetBundles", args=args)
+        self._print_log(output_directory=output_directory)
         if not self._quiet:
             print("DONE!")
 
@@ -125,7 +162,7 @@ class RobotCreator(AssetBundleCreatorBase):
             branch = "master"
         repo_path = re.search(r"(.*)/blob/" + branch + r"/(.*)", page_url).group(2)
         urdf_path = local_repo_path.joinpath(repo_path)
-        dst_root = AssetBundleCreatorBase.PROJECT_PATH.joinpath("Assets").joinpath("source_files")
+        dst_root = AssetBundleCreatorBase.PROJECT_PATH.joinpath("Assets").joinpath("source_files").joinpath(RobotCreator.get_name(urdf_path))
         if not dst_root.exists():
             dst_root.mkdir(parents=True)
         # Convert the .xacro file to a .urdf file.
@@ -259,7 +296,7 @@ class RobotCreator(AssetBundleCreatorBase):
         return urdf_path.resolve()
 
     def urdf_to_prefab(self, urdf_path: Union[str, Path], output_directory: Union[str, Path], immovable: bool = True,
-                       up: str = "y", source_description: str = None) -> None:
+                       up: str = "y") -> None:
         """
         Convert a .urdf file to Unity prefab.
 
@@ -269,21 +306,70 @@ class RobotCreator(AssetBundleCreatorBase):
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
         :param immovable: If True, the base of the robot will be immovable by default (see the `set_immovable` command).
         :param up: The up direction. Used for importing the .urdf into Unity. Options: "y" or "z".
-        :param source_description: A description of the source of the .urdf file, for example the repo URL.
-
-        :return: The path to the .prefab file.
         """
 
         args = self._get_source_destination_args(name=RobotCreator.get_name(urdf_path),
                                                  source=urdf_path,
                                                  destination=output_directory)
         args.append(f'-up={up}')
-        if source_description is not None:
-            args.append(f'-source_description="{source_description}"')
         if immovable:
             args.append("-immovable")
         self.call_unity(method="SourceFileToPrefab",
                         args=args)
+        self._print_log(output_directory=output_directory)
+
+    def create_record(self, urdf_path: Union[str, Path], output_directory: Union[str, Path],
+                      library_path: Union[str, Path] = None, library_description: str = None,
+                      source_description: str = None, immovable: bool = True) -> None:
+        """
+        Create a model record and save it to disk. This requires asset bundles of the robot to already exist:
+
+        ```
+        output_directory/
+        ....Darwin/
+        ........robot
+        ....Linux/
+        ........robot
+        ....Windows/
+        ........robot
+        ....log.txt
+        ```
+
+        Result:
+
+        ```
+        output_directory/
+        ....Darwin/
+        ........robot
+        ....Linux/
+        ........robot
+        ....Windows/
+        ........robot
+        ....record.json
+        ....log.txt
+        library.json
+        ```
+
+        - `record.json` is a serialized `RobotRecord`.
+        - `library.json` is a serialized `RobotLibrarian`. It will only be added/set if the optional `library_path` is set.
+
+        :param urdf_path: The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
+        :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
+        :param library_path: If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`.
+        :param library_description: A description of the library. Ignored if `library_path` is None.
+        :param source_description: A description of the source of the .urdf file, for example the repo URL.
+        :param immovable: If True, the base of the robot is immovable.
+        """
+
+        args = self._get_source_destination_args(name=RobotCreator.get_name(urdf_path),
+                                                 source=urdf_path,
+                                                 destination=output_directory)
+        if source_description is not None:
+            args.append(f'-source_description="{source_description}"')
+        if immovable:
+            args.append('-immovable')
+        args = AssetBundleCreatorBase._add_library_args(args=args, library_path=library_path, library_description=library_description)
+        self.call_unity(method="CreateRecord", args=args)
         self._print_log(output_directory=output_directory)
 
     @staticmethod
@@ -304,7 +390,7 @@ class RobotCreator(AssetBundleCreatorBase):
         return re.search(r'<robot name="(.*?)"', urdf, flags=re.MULTILINE).group(1).strip()
 
     def get_creator_class_name(self) -> str:
-        return "RobotCreator"
+        return "RobotCreatorLauncher"
 
     @staticmethod
     def _page_to_raw(url: str) -> str:

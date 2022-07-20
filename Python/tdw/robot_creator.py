@@ -19,7 +19,7 @@ class RobotCreator(AssetBundleCreatorBase):
     """
     TEMP_ROOT: Path = AssetBundleCreatorBase.PROJECT_PATH.joinpath("temp_robots")
 
-    def source_url_to_asset_bundles(self, urdf_url: str, output_directory: Union[str, Path],
+    def source_url_to_asset_bundles(self, urdf_url: str, output_directory: Union[str, Path], root_meshes_folder: str,
                                     required_repo_urls: Dict[str, str] = None,
                                     xacro_args: Dict[str, str] = None, immovable: bool = True, up: str = "y",
                                     description_infix: str = None, branch: str = None,
@@ -60,6 +60,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
         :param urdf_url: The URL of a .urdf or a .xacro file.
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
+        :param root_meshes_folder: The name of the root folder used for the mesh paths in the .urdf file.
         :param required_repo_urls: A dictionary of description folder names and repo URLs outside of the robot's repo that are required to create the robot. This is only required for .xacro files that reference outside repos. For example, the Sawyer robot requires this to add the gripper: `{"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"}`
         :param xacro_args: Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file). For example, the Sawyer robot requires this to add the gripper: `{"electric_gripper": "true"}`
         :param immovable: If True, the base of the robot is immovable.
@@ -97,6 +98,7 @@ class RobotCreator(AssetBundleCreatorBase):
             args.append(f'-source_description="{source_description}"')
         args = AssetBundleCreatorBase._add_library_args(args=args, library_path=library_path,
                                                         library_description=library_description)
+        args.append(f'-root_meshes_folder="{root_meshes_folder}"')
         self.call_unity(method="SourceFileToAssetBundles", args=args)
         self._print_log(output_directory=output_directory)
         if not self._quiet:
@@ -295,8 +297,8 @@ class RobotCreator(AssetBundleCreatorBase):
         assert urdf_path.exists(), f"Not found: {urdf_path.resolve()}"
         return urdf_path.resolve()
 
-    def urdf_to_prefab(self, urdf_path: Union[str, Path], output_directory: Union[str, Path], immovable: bool = True,
-                       up: str = "y") -> None:
+    def urdf_to_prefab(self, urdf_path: Union[str, Path], output_directory: Union[str, Path], root_meshes_folder: str,
+                       immovable: bool = True, up: str = "y") -> None:
         """
         Convert a .urdf file to Unity prefab.
 
@@ -304,6 +306,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
         :param urdf_path: The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
+        :param root_meshes_folder: The name of the description infix within the .urdf URL, such as `fetch_description`.
         :param immovable: If True, the base of the robot will be immovable by default (see the `set_immovable` command).
         :param up: The up direction. Used for importing the .urdf into Unity. Options: "y" or "z".
         """
@@ -314,6 +317,7 @@ class RobotCreator(AssetBundleCreatorBase):
         args.append(f'-up={up}')
         if immovable:
             args.append("-immovable")
+        args.append(f'-root_meshes_folder="{root_meshes_folder}"')
         self.call_unity(method="SourceFileToPrefab",
                         args=args)
         self._print_log(output_directory=output_directory)
@@ -368,7 +372,8 @@ class RobotCreator(AssetBundleCreatorBase):
             args.append(f'-source_description="{source_description}"')
         if immovable:
             args.append('-immovable')
-        args = AssetBundleCreatorBase._add_library_args(args=args, library_path=library_path, library_description=library_description)
+        args = AssetBundleCreatorBase._add_library_args(args=args, library_path=library_path,
+                                                        library_description=library_description)
         self.call_unity(method="CreateRecord", args=args)
         self._print_log(output_directory=output_directory)
 

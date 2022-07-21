@@ -21,7 +21,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
     def source_url_to_asset_bundles(self, urdf_url: str, output_directory: Union[str, Path], root_meshes_folder: str,
                                     required_repo_urls: Dict[str, str] = None,
-                                    xacro_args: Dict[str, str] = None, immovable: bool = True, up: str = "y",
+                                    xacro_args: Dict[str, str] = None, immovable: bool = True,
                                     description_infix: str = None, branch: str = None,
                                     library_path: Union[str, Path] = None, library_description: str = None,
                                     source_description: str = None) -> None:
@@ -31,12 +31,16 @@ class RobotCreator(AssetBundleCreatorBase):
         This is a wrapper function for:
 
         1. `self.clone_repo()`
-        2. `self.copy_files()`
+        2. `self.xacro_to_urdf()` (if applicable)
         3. `self.urdf_to_prefab()`
         4. `self.prefab_to_asset_bundles()`
         5. `self.create_record()`
 
-        Example source URL: `https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf`
+        Example `urdf_url`:
+
+        ```
+        https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf
+        ```
 
         Example `output_directory`:
 
@@ -64,7 +68,6 @@ class RobotCreator(AssetBundleCreatorBase):
         :param required_repo_urls: A dictionary of description folder names and repo URLs outside of the robot's repo that are required to create the robot. This is only required for .xacro files that reference outside repos. For example, the Sawyer robot requires this to add the gripper: `{"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"}`
         :param xacro_args: Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file). For example, the Sawyer robot requires this to add the gripper: `{"electric_gripper": "true"}`
         :param immovable: If True, the base of the robot is immovable.
-        :param up: The up direction. Used when importing the robot into Unity. Options: `"y"` or `"z"`. Usually, this should be the default value (`"y"`).
         :param description_infix: The name of the description infix within the .urdf URL, such as `fetch_description`. Only set this if the urdf URL is non-standard; otherwise `RobotCreator` should be able to find this automatically.
         :param branch: The name of the branch of the repo. If None, defaults to `"master"`.
         :param library_path: If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`.
@@ -85,20 +88,96 @@ class RobotCreator(AssetBundleCreatorBase):
             required_repo_url = required_repo_urls[description]
             required_local_repo_path = self.clone_repo(url=required_repo_url)
             repo_paths[description] = required_local_repo_path
-        # Copy the files, create a .urdf file (if needed), and creator collider objects.
-        urdf_path = self.copy_files(urdf_url=urdf_url, local_repo_path=local_repo_path, repo_paths=repo_paths,
-                                    xacro_args=xacro_args, branch=branch)
-        args = self._get_source_destination_args(name=RobotCreator.get_name(urdf_path),
-                                                 source=urdf_path,
+        # Get the page URL.
+        page_url = self._raw_to_page(url=urdf_url)
+        if branch is None:
+            branch = "master"
+        # Get the repo path.
+        repo_path = re.search(r"(.*)/blob/" + branch + r"/(.*)", page_url).group(2)
+        urdf_path = local_repo_path.joinpath(repo_path)
+        # Convert the .xacro file to a .urdf file.
+        if Path(urdf_url).suffix == ".xacro":
+            urdf_path = self.xacro_to_urdf(xacro_path=urdf_path, repo_paths=repo_paths, args=xacro_args)
+            assert urdf_path.exists(), f"Not found: {urdf_path.resolve()}"
+        self.source_file_to_asset_bundles(source_file=urdf_path, output_directory=output_directory,
+                                          root_meshes_folder=root_meshes_folder, immovable=immovable,
+                                          library_path=library_path, library_description=library_description,
+                                          source_description=source_description)
+
+    def source_file_to_asset_bundles(self, source_file: Union[str, Path], output_directory: Union[str, Path],
+                                     root_meshes_folder: str, immovable: bool = True,
+                                     library_path: Union[str, Path] = None, library_description: str = None,
+                                     source_description: str = None) -> None:
+        """
+        Given a .urdf file plus its meshes, create asset bundles of the robot.
+
+        This is a wrapper function for:
+
+        1. `self.urdf_to_prefab()`
+        2. `self.prefab_to_asset_bundles()`
+        3. `self.create_record()`
+
+        Example source directory:
+
+        ```
+        ur_description/
+        ....urdf/
+        ........ur5_robot.urdf
+        ....meshes/
+        ........ur5/
+        ............visual/
+        ................Base.dae
+        ................Forearm.dae
+        ................Shoulder.dae
+        ................UpperArm.dae
+        ................Wrist1.dae
+        ................Wrist2.dae
+        ................Wrist3.dae
+        ```
+
+        - The directory structure must match that of the [source repo](https://github.com/ros-industrial/robot_movement_interface).
+        - The `root_meshes_folder` refers to the root directory used within the .urdf file to find the meshes. In this case, it is `ur_description`.
+        - Collision meshes are ignored; they will be generated when creating the prefab.
+
+        Example `output_directory`:
+
+        ```
+        output_directory/
+        ....Darwin/
+        ........robot
+        ....Linux/
+        ........robot
+        ....Windows/
+        ........robot
+        ....record.json
+        ....log.txt
+        library.json
+        ```
+
+        - `Darwin/robot`, `Linux/robot` and `Windows/robot` are the platform-specific asset bundles.
+        - `log.txt` is a log from the `asset_bundle_creator` Unity Editor project.
+        - `record.json` is a serialized `RobotRecord`.
+        - `library.json` is a serialized `RobotLibrarian`. It will only be added/set if the optional `library_path` is set.
+
+        :param source_file: The path to the source .fbx or .obj file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
+        :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
+        :param root_meshes_folder: The name of the folder used in the .urdf file for mesh file paths. For example, in the UR5 file, this is `ur_description`.
+        :param immovable: If True, the base of the robot is immovable.
+        :param library_path: If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`.
+        :param library_description: A description of the library. Ignored if `library_path` is None.
+        :param source_description: A description of the source of the .urdf file, for example the repo URL.
+        """
+
+        args = self._get_source_destination_args(name=RobotCreator.get_name(source_file),
+                                                 source=source_file,
                                                  destination=output_directory)
-        args.append(f'-up={up}')
         if immovable:
             args.append("-immovable")
         if source_description is not None:
             args.append(f'-source_description="{source_description}"')
+        args.append(f'-root_meshes_folder="{root_meshes_folder}"')
         args = AssetBundleCreatorBase._add_library_args(args=args, library_path=library_path,
                                                         library_description=library_description)
-        args.append(f'-root_meshes_folder="{root_meshes_folder}"')
         self.call_unity(method="SourceFileToAssetBundles", args=args)
         self._print_log(output_directory=output_directory)
         if not self._quiet:
@@ -140,76 +219,6 @@ class RobotCreator(AssetBundleCreatorBase):
         if not self._quiet:
             print("...Done!")
         return local_repo_path
-
-    def copy_files(self, urdf_url: str, local_repo_path: Path, repo_paths: Dict[str, Path],
-                   xacro_args: Dict[str, str] = None, branch: str = None) -> Path:
-        """
-        Copy and convert files required to create a prefab.
-
-        1. If this is a .xacro file, convert it to a .urdf file.
-        2. Copy the .urdf file to the Unity project.
-        3. Copy all associated meshes to the .urdf project.
-
-        :param urdf_url: The URL to the remote .urdf or .xacro file.
-        :param local_repo_path: The path to the local repo.
-        :param repo_paths: A dictionary of required repos (including the one that the .urdf or .xacro is in). Key = The description path infix, e.g. "sawyer_description". Value = The path to the local repo.
-        :param xacro_args: Names and values for the `arg` tags in the .xacro file. Can be None for a .urdf or .xacro file and always ignored for a .urdf file.
-        :param branch: The name of the branch of the repo. If None, defaults to `"master"`.
-
-        :return: The path to the .urdf file in the Unity project.
-        """
-
-        page_url = self._raw_to_page(url=urdf_url)
-        if branch is None:
-            branch = "master"
-        repo_path = re.search(r"(.*)/blob/" + branch + r"/(.*)", page_url).group(2)
-        urdf_path = local_repo_path.joinpath(repo_path)
-        dst_root = AssetBundleCreatorBase.PROJECT_PATH.joinpath("Assets").joinpath("source_files").joinpath(RobotCreator.get_name(urdf_path))
-        if not dst_root.exists():
-            dst_root.mkdir(parents=True)
-        # Convert the .xacro file to a .urdf file.
-        if Path(urdf_url).suffix == ".xacro":
-            urdf_dst = self.xacro_to_urdf(xacro_path=urdf_path, repo_paths=repo_paths, args=xacro_args)
-        # Move the existing .urdf file.
-        else:
-            assert urdf_path.exists(), f"Not found: {urdf_path.resolve()}"
-            # Copy the .urdf file.
-            urdf_dst = dst_root.joinpath(Path(urdf_url).name)
-            copy_file(src=str(urdf_path.resolve()), dst=str(urdf_dst.resolve()))
-
-        # Read the .urdf file.
-        urdf = urdf_dst.read_text(encoding="utf-8")
-        # Remove gazebo stuff.
-        urdf = re.sub(r"<gazebo reference(.*?)>((.|\n)*?)</gazebo>", "", urdf)
-        urdf = re.sub(r"<gazebo>((.|\n)*?)</gazebo>", "", urdf)
-        urdf = re.sub(r"<transmission((.|\n)*?)</transmission>", "", urdf)
-        urdf = re.sub(r'<xacro:include (.*)gazebo(.*)/>', "", urdf)
-        urdf_dst.write_text(urdf, encoding="utf-8")
-        # Copy the meshes.
-        for m in re.findall(r"filename=\"package://((.*)\.(DAE|dae|stl|STL))\"", urdf):
-            mesh_description = m[0].split("/")[0]
-            mesh_repo: Optional[Path] = None
-            mesh_desc = ""
-            for k_desc in repo_paths:
-                if mesh_description in k_desc:
-                    mesh_repo: Path = repo_paths[k_desc]
-                    mesh_desc = k_desc
-                    break
-            if mesh_repo is None:
-                raise Exception(f"Couldn't find local repo for: {m[0]}")
-            if "/" in mesh_desc:
-                mesh_src = mesh_repo.joinpath(mesh_desc.replace(mesh_desc.split("/")[-1], "")).joinpath(m[0])
-            else:
-                mesh_src = mesh_repo.joinpath(m[0])
-            assert mesh_src.exists(), f"Not found: {mesh_src}"
-            mesh_dst = dst_root.joinpath(m[0])
-            if not mesh_dst.parent.exists():
-                mesh_dst.parent.mkdir(parents=True)
-            # Copy the mesh file to the Unity project.
-            copy_file(src=str(mesh_src.resolve()), dst=str(mesh_dst.resolve()))
-        if not self._quiet:
-            print("Copied the .urdf and the meshes to the Unity project.")
-        return urdf_dst
 
     def xacro_to_urdf(self, xacro_path: Path, repo_paths: Dict[str, Path], args: Dict[str, str] = None) -> Path:
         """
@@ -284,7 +293,7 @@ class RobotCreator(AssetBundleCreatorBase):
         if system() == "Windows":
             xacro_call.insert(0, "wsl")
         call(xacro_call)
-        urdf_path = Path(f"../../Assets/robots/{urdf_name}")
+        urdf_path = xacro_path.parent.joinpath(urdf_name)
         if urdf_path.exists():
             urdf_path.unlink()
         move_file(src=str(x.parent.joinpath(urdf_name).resolve()), dst=str(urdf_path.resolve()))
@@ -298,7 +307,7 @@ class RobotCreator(AssetBundleCreatorBase):
         return urdf_path.resolve()
 
     def urdf_to_prefab(self, urdf_path: Union[str, Path], output_directory: Union[str, Path], root_meshes_folder: str,
-                       immovable: bool = True, up: str = "y") -> None:
+                       immovable: bool = True) -> None:
         """
         Convert a .urdf file to Unity prefab.
 
@@ -308,13 +317,11 @@ class RobotCreator(AssetBundleCreatorBase):
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
         :param root_meshes_folder: The name of the folder used in the .urdf file for mesh file paths. For example, in the UR5 file, this is `ur_description`.
         :param immovable: If True, the base of the robot will be immovable by default (see the `set_immovable` command).
-        :param up: The up direction. Used for importing the .urdf into Unity. Options: "y" or "z".
         """
 
         args = self._get_source_destination_args(name=RobotCreator.get_name(urdf_path),
                                                  source=urdf_path,
                                                  destination=output_directory)
-        args.append(f'-up={up}')
         if immovable:
             args.append("-immovable")
         args.append(f'-root_meshes_folder="{root_meshes_folder}"')

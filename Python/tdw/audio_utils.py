@@ -92,7 +92,6 @@ class AudioUtils:
         with open(os.devnull, "w+") as f:
             AudioUtils.RECORDER_PROCESS = Popen(fmedia_call,
                                                 stderr=f)
-            print(AudioUtils.RECORDER_PROCESS)
 
     @staticmethod
     def stop() -> None:
@@ -110,5 +109,4 @@ class AudioUtils:
         :return: True if the fmedia recording process still exists.
         """
 
-        print("here")
         return AudioUtils.RECORDER_PROCESS is not None

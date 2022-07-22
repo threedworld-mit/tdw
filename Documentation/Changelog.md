@@ -25,10 +25,18 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 ### `tdw` module
 
 - Added optional parameter `device_name` to `PhysicsAudioRecorder.start()`.
+- Fixed: `AudioUtils.stop()` doesn't work on OS X.
+  - Replaced `AudioUtils.RECORDER_PID` with `AudioUtils.RECORDER_PROCESS`.
+  - `AudioUtils.DEVICE` is now an integer (was a string).
+
 
 ### Model Library
 
 - Flagged b04_wallmounted_soap_dispenser_composite as do_not_use (missing asset bundles)
+
+### Example Controllers
+
+- Fixed audio example controllers that use `PhysicsAudioRecorder` and had `while record.done:` instead of `while not recorder.done:`
 
 ## v1.10.0
 

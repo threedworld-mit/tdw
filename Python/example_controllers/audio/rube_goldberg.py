@@ -179,7 +179,7 @@ class RubeGoldbergDemo(Controller):
         # Start recording audio.
         self.recorder.start(path=dest_dir.joinpath("audio.wav"))
         # Record audio.
-        while self.recorder.done:
+        while not self.recorder.done:
             self.communicate([])
         # Save the log.
         dest_dir.joinpath("mode_properties_log.json").write_text(json.dumps(self.py_impact.mode_properties_log, indent=2))

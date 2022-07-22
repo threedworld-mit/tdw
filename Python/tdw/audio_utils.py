@@ -2,9 +2,8 @@ from typing import Optional, Union, Tuple
 from pathlib import Path
 import os
 from platform import system
-from subprocess import check_output, Popen, PIPE
+from subprocess import check_output, Popen
 import re
-from psutil import pid_exists
 
 
 class AudioUtils:
@@ -36,16 +35,16 @@ class AudioUtils:
     """
     RECORDER_PROCESS: Optional[Popen] = None
     """:class_var
-    The name of the audio capture device.
+    The index of the audio capture device.
     """
-    DEVICE: Optional[str] = None
+    DEVICE: Optional[int] = None
 
     @staticmethod
-    def get_system_audio_device(device_name: str = None) -> str:
+    def get_system_audio_device(device_name: str = None) -> int:
         """
         :param device_name: The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X).
 
-        :return: The audio device that can be used to capture system audio.
+        :return: The index audio device that can be used to capture system audio as a string.
         """
 
         # Set a default device name.
@@ -57,7 +56,7 @@ class AudioUtils:
         devices = check_output(["fmedia", "--list-dev"]).decode("utf-8").split("Capture:")[1]
         dev_search = re.search(f"device #(.*): {device_name}", devices, flags=re.MULTILINE)
         assert dev_search is not None, "No suitable audio capture device found:\n" + devices
-        return dev_search.group(1)
+        return int(dev_search.group(1))
 
     @staticmethod
     def start(output_path: Union[str, Path], until: Optional[Tuple[int, int]] = None, device_name: str = None) -> None:

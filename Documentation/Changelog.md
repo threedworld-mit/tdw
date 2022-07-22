@@ -4,6 +4,18 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.10.2
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `set_revolute_angle`     | Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot. |
+| `set_prismatic_position` | Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot. |
+| `set_spherical_angles`   | Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot. |
+
 ## v1.10.1
 
 ### Command API

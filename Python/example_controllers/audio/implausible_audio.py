@@ -55,6 +55,6 @@ print(f"Audio will be saved to: {path}")
 if not path.parent.exists():
     path.parent.mkdir(parents=True)
 recorder.start(path=path)
-while recorder.done:
+while not recorder.done:
     c.communicate([])
 c.communicate({"$type": "terminate"})

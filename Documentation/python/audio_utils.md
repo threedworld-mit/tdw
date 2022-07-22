@@ -25,6 +25,15 @@ AudioUtils.stop()
 
 ***
 
+## Class Variables
+
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `RECORDER_PROCESS` | Optional[Popen] | The current fmedia process. | `None` |
+| `DEVICE` | Optional[int] | The index of the audio capture device. | `None` |
+
+***
+
 ## Functions
 
 #### get_system_audio_device
@@ -40,7 +49,7 @@ _(Static)_
 | --- | --- | --- | --- |
 | device_name |  str  | None | The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X). |
 
-_Returns:_  The audio device that can be used to capture system audio.
+_Returns:_  The index audio device that can be used to capture system audio as a string.
 
 #### start
 

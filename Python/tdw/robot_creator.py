@@ -5,7 +5,6 @@ from platform import system
 from pathlib import Path
 from subprocess import call
 from shutil import rmtree, copyfile, move
-from distutils.dir_util import remove_tree
 from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
 
 
@@ -176,7 +175,8 @@ class RobotCreator(AssetBundleCreatorBase):
         if source_description is not None:
             args.append(f'-source_description="{source_description}"')
         args.append(f'-root_meshes_folder="{root_meshes_folder}"')
-        args = AssetBundleCreatorBase._add_library_args(args=args, library_path=library_path,
+        args = AssetBundleCreatorBase._add_library_args(args=args,
+                                                        library_path=library_path,
                                                         library_description=library_description)
         self.call_unity(method="SourceFileToAssetBundles", args=args)
         self._print_log(output_directory=output_directory)
@@ -194,7 +194,6 @@ class RobotCreator(AssetBundleCreatorBase):
 
         if not RobotCreator.TEMP_ROOT.exists():
             RobotCreator.TEMP_ROOT.mkdir(parents=True)
-
         # This is a .urdf or .xacro file. Parse the repo URL accordingly.
         if url.endswith(".xacro") or url.endswith(".urdf"):
             local_repo_path = RobotCreator._get_local_repo_path(url=url)
@@ -205,7 +204,6 @@ class RobotCreator(AssetBundleCreatorBase):
             repo_url = url
         if local_repo_path.exists():
             return local_repo_path
-
         # Change directory.
         cwd = getcwd()
         chdir(str(RobotCreator.TEMP_ROOT.resolve()))
@@ -233,9 +231,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
         if not RobotCreator.TEMP_ROOT.exists():
             RobotCreator.TEMP_ROOT.mkdir(parents=True)
-
         xacro = xacro_path.read_text(encoding="utf-8")
-
         # Set the args.
         if args is None:
             args = {"gazebo": 'false'}
@@ -379,7 +375,8 @@ class RobotCreator(AssetBundleCreatorBase):
             args.append(f'-source_description="{source_description}"')
         if immovable:
             args.append('-immovable')
-        args = AssetBundleCreatorBase._add_library_args(args=args, library_path=library_path,
+        args = AssetBundleCreatorBase._add_library_args(args=args,
+                                                        library_path=library_path,
                                                         library_description=library_description)
         self.call_unity(method="CreateRecord", args=args)
         self._print_log(output_directory=output_directory)
@@ -392,17 +389,54 @@ class RobotCreator(AssetBundleCreatorBase):
         :return: The expected name of the robot.
         """
 
-        if isinstance(urdf_path, str):
-            path = Path(urdf_path)
-        elif isinstance(urdf_path, Path):
-            path = urdf_path
-        else:
-            raise Exception(urdf_path)
-        urdf = path.read_text(encoding="utf-8")
-        return re.search(r'<robot name="(.*?)"', urdf, flags=re.MULTILINE).group(1).strip()
+        return re.search(r'<robot name="(.*?)"',
+                         AssetBundleCreatorBase._get_path(urdf_path).read_text(encoding="utf-8"),
+                         flags=re.MULTILINE).group(1).strip()
 
     def get_creator_class_name(self) -> str:
         return "RobotCreatorLauncher"
+
+    @staticmethod
+    def fix_urdf(urdf_path: Union[str, Path], remove_gazebo: bool = True, simplify_namespaces: bool = True,
+                 link_name_excludes_regex: List[str] = None, link_exclude_types: List[str] = None) -> Path:
+        """
+        "Fix" a .urdf file by removing extraneous information. This function will:
+
+        - Make the file easier to parse, for example by removing gazebo elements and simplifying XML namespaces.
+        - Remove unneeded links, for example laser or camera links.
+
+        This function won't alter the original .urdf file and will create a new .urdf file.
+
+        :param urdf_path: The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
+        :param remove_gazebo: If True, remove all `<gazebo>` elements. This should usually be True.
+        :param simplify_namespaces: If True, simplify the XML namespaces. This should usually be True.
+        :param link_name_excludes_regex: A list of regular expressions to search for in links, for example `["_gazebo_"]`. Link names that match this will be removed.
+        :param link_exclude_types: Some links have a `type` attribute. Exclude links matching this types in this list, for example `["laser", "camera"]`.
+
+        :return: The path to the "fixed" .urdf file.
+        """
+
+        path = AssetBundleCreatorBase._get_path(urdf_path)
+        text = path.read_text(encoding="utf-8")
+        # Remove gazebo elements.
+        if remove_gazebo:
+            text = re.sub(r'(<gazebo((.|\n)*?)</gazebo>)', '', text, flags=re.MULTILINE)
+        # Simplify namespaces.
+        if simplify_namespaces:
+            text = re.sub(r'<robot(.*?)name="(.*?)"(.*)>', r'<robot xmlns:xacro="http://ros.org/wiki/xacro" name="\2">',
+                          text, flags=re.MULTILINE)
+        # Exclude these links and joints.
+        if link_name_excludes_regex is not None:
+            for link_name_exclude_regex in link_name_excludes_regex:
+                text = re.sub(r'<link name="(.*?)' + link_name_exclude_regex + r'(.*?)"(/>|((.|\n)*?)</link>)',
+                              '', text, flags=re.MULTILINE)
+        if link_exclude_types is not None:
+            for link_exclude_type in link_exclude_types:
+                text = re.sub(r'<link(.*?)type="' + link_exclude_type + r'"(/>|((.|\n)*?)</link>)',
+                              '', text, flags=re.MULTILINE)
+        dst: Path = path.parent.joinpath(f'{path.name[:-5]}_fixed.urdf')
+        dst.write_text(text)
+        return dst
 
     @staticmethod
     def _page_to_raw(url: str) -> str:
@@ -470,7 +504,6 @@ class RobotCreator(AssetBundleCreatorBase):
 
         if not RobotCreator.TEMP_ROOT.exists():
             RobotCreator.TEMP_ROOT.mkdir(parents=True)
-
         repo_url = RobotCreator._get_repo_url(url=url)
         repo_name = RobotCreator._get_repo_name(repo_url=repo_url)
         return RobotCreator.TEMP_ROOT.joinpath(repo_name)

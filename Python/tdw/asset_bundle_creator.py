@@ -171,16 +171,8 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param internal_materials: If True, the visual materials of the models are located within the source file. If False, the materials are located in `Materials/` directory next to each source file.
         """
 
-        if isinstance(source_directory, Path):
-            src = str(source_directory.resolve())
-        else:
-            src = source_directory
-        if isinstance(output_directory, Path):
-            dst = str(output_directory.resolve())
-        else:
-            dst = output_directory
-        args = [f'-source_directory="{src}"',
-                f'-output_directory="{dst}"',
+        args = [f'-source_directory="{AssetBundleCreatorBase._get_string_path(source_directory)}"',
+                f'-output_directory="{AssetBundleCreatorBase._get_string_path(output_directory)}"',
                 f'-vhacd_resolution={vhacd_resolution}']
         if library_description is not None:
             args.append(f'-library_description="{library_description}"')
@@ -279,13 +271,9 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param library_description: A description of the library. Ignored if `library_path` is None.
         """
 
-        if isinstance(output_directory, Path):
-            dst = str(output_directory.resolve())
-        else:
-            dst = output_directory
         args = [f'-name="{name}"',
                 f"-source=temp",
-                f'-output_directory="{dst}"']
+                f'-output_directory="{AssetBundleCreatorBase._get_string_path(output_directory)}"']
         for value, flag in zip([wnid, wcategory, scale_factor], ["wnid", "wcategory", "scale_factor"]):
             if value is not None:
                 args.append(f'-{flag}="{value}"')
@@ -377,20 +365,9 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         """
 
         if record_path is not None:
-            if isinstance(record_path, str):
-                path = Path(record_path)
-            elif isinstance(record_path, Path):
-                path = record_path
-            else:
-                raise Exception(record_path)
-            return ModelRecord(json.loads(path.read_text(encoding="utf-8")))
-        elif library_path is None:
-            if isinstance(library_path, str):
-                model_librarian = ModelLibrarian(library_path)
-            elif isinstance(library_path, Path):
-                model_librarian = ModelLibrarian(str(library_path.resolve()))
-            else:
-                raise Exception(library_path)
+            return ModelRecord(json.loads(AssetBundleCreatorBase._get_path(record_path).read_text(encoding="utf-8")))
+        elif library_path is not None:
+            model_librarian = ModelLibrarian(AssetBundleCreatorBase._get_string_path(library_path))
             record = model_librarian.get_record(name)
             if record is None:
                 raise Exception(f"Failed to get record named {name} from {library_path}")
@@ -410,20 +387,12 @@ class AssetBundleCreator(AssetBundleCreatorBase):
 
         # Update the record.
         if record_path is not None:
-            if isinstance(record_path, str):
-                Path(record_path).write_text(json.dumps(record.__dict__, indent=2), encoding="utf-8")
-            elif isinstance(record_path, Path):
-                record_path.write_text(json.dumps(record.__dict__, indent=2), encoding="utf-8")
+            AssetBundleCreatorBase._get_path(record_path).write_text(json.dumps(record.__dict__, indent=2), encoding="utf-8")
             if not self._quiet:
                 print(f"Updated {record_path}")
         # Update the librarian.
         if library_path is not None:
-            if isinstance(library_path, str):
-                model_librarian = ModelLibrarian(library_path)
-            elif isinstance(library_path, Path):
-                model_librarian = ModelLibrarian(str(library_path.resolve()))
-            else:
-                raise Exception(library_path)
+            model_librarian = ModelLibrarian(AssetBundleCreatorBase._get_string_path(library_path))
             overwrite = model_librarian.get_record(record.name) is not None
             model_librarian.add_or_update_record(record=record, overwrite=overwrite, write=True)
             if not self._quiet:

@@ -169,10 +169,7 @@ class AssetBundleCreatorBase(ABC):
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
         """
 
-        if isinstance(output_directory, Path):
-            dst = str(output_directory.resolve())
-        else:
-            dst = output_directory
+        dst = AssetBundleCreatorBase._get_string_path(output_directory)
         self.call_unity(method="PrefabToAssetBundles", args=[f'-name="{name}"',
                                                              "-source=temp",
                                                              f'-output_directory="{dst}"'])
@@ -207,10 +204,7 @@ class AssetBundleCreatorBase(ABC):
 
         if self._quiet:
             return
-        if isinstance(output_directory, Path):
-            f = output_directory.joinpath("log.txt")
-        else:
-            f = Path(output_directory).joinpath("log.txt")
+        f = AssetBundleCreatorBase._get_path(output_directory).joinpath("log.txt")
         if not f.exists():
             print(f"Log file doesn't exist: {f}")
             return
@@ -229,12 +223,7 @@ class AssetBundleCreatorBase(ABC):
         """
 
         if library_path is not None:
-            if isinstance(library_path, Path):
-                args.append(f'-library_path="{str(library_path.resolve())}"')
-            elif isinstance(library_path, str):
-                args.append(f'-library_path="{library_path}"')
-            else:
-                raise Exception(library_path)
+            args.append(f'-library_path="{AssetBundleCreatorBase._get_string_path(library_path)}"')
         if library_description is not None:
             args.append(f'-library_description="{library_description}"')
         return args
@@ -251,16 +240,37 @@ class AssetBundleCreatorBase(ABC):
         :return: A list of arguments.
         """
 
-        if isinstance(source, Path):
-            src = str(source.resolve())
-        else:
-            src = source
-        if isinstance(destination, Path):
-            dst = str(destination.resolve())
-        else:
-            dst = destination
-        src = src.replace("\\", "/")
-        dst = dst.replace("\\", "/")
         return [f'-name="{name}"',
-                f'-source="{src}"',
-                f'-output_directory="{dst}"']
+                f'-source="{AssetBundleCreatorBase._get_string_path(source)}"',
+                f'-output_directory="{AssetBundleCreatorBase._get_string_path(destination)}"']
+
+    @staticmethod
+    def _get_path(path: Union[str, Path]) -> Path:
+        """
+        :param path: A path as either a string or a `Path`.
+
+        :return: The path as a `Path`.
+        """
+
+        if isinstance(path, str):
+            return Path(path)
+        elif isinstance(path, Path):
+            return path
+        else:
+            raise Exception(path)
+
+    @staticmethod
+    def _get_string_path(path: Union[str, Path]) -> str:
+        """
+        :param path: A path as either a string or a `Path`.
+
+        :return: The path as a string.
+        """
+
+        if isinstance(path, str):
+            p = path
+        elif isinstance(path, Path):
+            p = str(path.resolve())
+        else:
+            raise Exception(path)
+        return p.replace("\\", "/")

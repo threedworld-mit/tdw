@@ -4,7 +4,7 @@ import re
 from platform import system
 from pathlib import Path
 from subprocess import call
-from distutils.file_util import copy_file, move_file
+from shutil import rmtree, copyfile, move
 from distutils.dir_util import remove_tree
 from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
 
@@ -273,7 +273,7 @@ class RobotCreator(AssetBundleCreatorBase):
                         if src.is_file() and src.suffix == ".xacro":
                             dst = xacro_dir.joinpath(src.name)
                             if not dst.exists():
-                                copy_file(src=str(src.resolve()), dst=str(dst.resolve()))
+                                copyfile(src=str(src.resolve()), dst=str(dst.resolve()))
                             if src not in xacros and src not in checked:
                                 xacros.append(src)
         if not self._quiet:
@@ -296,13 +296,13 @@ class RobotCreator(AssetBundleCreatorBase):
         urdf_path = xacro_path.parent.joinpath(urdf_name)
         if urdf_path.exists():
             urdf_path.unlink()
-        move_file(src=str(x.parent.joinpath(urdf_name).resolve()), dst=str(urdf_path.resolve()))
+        move(src=str(x.parent.joinpath(urdf_name).resolve()), dst=str(urdf_path.resolve()))
         if not self._quiet:
             print(f"Created {str(urdf_path.resolve())}")
         urdf_path = Path(str(urdf_path.resolve()))
         chdir(cwd)
         # Delete temp xacro files.
-        remove_tree(str(xacro_dir.resolve()))
+        rmtree(str(xacro_dir.resolve()))
         assert urdf_path.exists(), f"Not found: {urdf_path.resolve()}"
         return urdf_path.resolve()
 

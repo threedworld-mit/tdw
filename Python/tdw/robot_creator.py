@@ -389,7 +389,7 @@ class RobotCreator(AssetBundleCreatorBase):
         :return: The expected name of the robot.
         """
 
-        return re.search(r'<robot name="(.*?)"',
+        return re.search(r'<robot(.*?)name="(.*?)"',
                          AssetBundleCreatorBase._get_path(urdf_path).read_text(encoding="utf-8"),
                          flags=re.MULTILINE).group(1).strip()
 

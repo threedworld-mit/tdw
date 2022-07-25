@@ -250,7 +250,7 @@ class VRayExport(AddOn):
     def write_camera_param_data(self, mat: matrix_data_struct, focal: float):
         """
         Replace the camera transform line in the scene file with the converted TDW camera pos/ori data.
-        Replace the physical camera focal length line in the scene file with the TDW cfocal length.
+        Replace the physical camera focal length line in the scene file with the TDW focal length.
         """
         # Open model .vrscene file to append node data
         path = self.get_scene_file_path()

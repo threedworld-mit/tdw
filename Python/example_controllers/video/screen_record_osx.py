@@ -46,6 +46,7 @@ commands = [TDWUtils.create_empty_room(12, 12),
             {"$type": "start_video_capture_osx",
              "output_path": str(path.resolve()),
              "position": position,
+             "log_args": True,
              "audio_device": audio_device}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   position={"x": 0, "y": 1.5, "z": 0},

@@ -89,7 +89,7 @@ Usually, the build simulation window will appear in the center of the primary mo
 
 Note that this won't compensate for the title bar of the window. For ease of use, it is possible to remove the title bar when recording video:
 
-1. [Set `launch_build==False` in your controller.](../core_concepts/launch_build.md)
+1. [Set `launch_build=False` in your controller.](../core_concepts/launch_build.md)
 2. Launch the build with an extra command-line argument: `cd ~/tdw_build/TDW ; ./TDW.exe -popupwindow`
 3. Launch the controller.
 
@@ -135,3 +135,4 @@ Command API:
 
 - [`start_video_capture_windows`](../../api/command_api.md#start_video_capture_windows)
 - [`stop_video_capture`](../../api/command_api.md#stop_video_capture)
+- [`set_target_framerate`](../../api/command_api.md#set_target_framerate)

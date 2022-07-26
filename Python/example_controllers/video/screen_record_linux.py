@@ -9,6 +9,8 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 A minimal example of an audio-visual screen recorder for Linux.
 """
 
+# The target framerate.
+framerate = 60
 # Launch the build with -popupwindow
 c = Controller(launch_build=False)
 # Add a camera.
@@ -17,7 +19,7 @@ camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            avatar_id="a")
 # Initialize audio.
 audio_initializer = AudioInitializer(avatar_id="a",
-                                     framerate=60)
+                                     framerate=framerate)
 # Add PyImpact.
 py_impact = PyImpact()
 c.add_ons.extend([camera, audio_initializer, py_impact])
@@ -35,13 +37,14 @@ audio_device = "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor"
 
 # Initialize the scene.
 commands = [TDWUtils.create_empty_room(12, 12),
-            {"$type": "set_target_framerate",
-             "framerate": 60},
             {"$type": "set_screen_size",
              "width": screen_width,
              "height": screen_height},
             {"$type": "start_video_capture_linux",
              "output_path": str(path.resolve()),
+             "framerate": framerate,
+             "display": 0,
+             "screen": 0,
              "position": position,
              "audio_device": audio_device}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",

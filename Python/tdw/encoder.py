@@ -55,6 +55,11 @@ class Encoder(JSONEncoder):
     Note that TDW does not provide a means of automatically converting dictionaries back into objects.
     """
 
+    """:class_var
+    If True, include hidden fields i.e. fields that begin with the `_` prefix. For some classes, such as `PyImpact`, this will include a lot of extraneous information.
+    """
+    INCLUDE_HIDDEN_FIELDS: bool = True
+
     def default(self, obj):
         """
         This is called internally. Use `Encoder().encode(obj)` instead.
@@ -96,8 +101,12 @@ class Encoder(JSONEncoder):
         elif isinstance(obj, np.bool_):
             return bool(obj)
         else:
-            # Get a copy of the dictionary.
-            d = {k: v for k, v in obj.__dict__.items()}
+            # Include hidden fields.
+            if Encoder.INCLUDE_HIDDEN_FIELDS:
+                d = {k: v for k, v in obj.__dict__.items()}
+            # Ignore hidden fields.
+            else:
+                d = {k: v for k, v in obj.__dict__.items() if not k.startswith("_")}
             # Convert non-serializable keys to string.
             for k in d:
                 if isinstance(d[k], dict):

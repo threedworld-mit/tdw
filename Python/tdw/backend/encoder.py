@@ -8,52 +8,6 @@ import numpy as np
 class Encoder(JSONEncoder):
     """
     Encode TDW classes into dictionaries that can then be dumped as JSON data.
-
-    Minimal example:
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.robot import Robot
-    from tdw.encoder import Encoder
-
-
-    c = Controller()
-    robot = Robot(name="ur5")
-    c.add_ons.append(robot)
-    c.communicate(TDWUtils.create_empty_room(12, 12))
-    encoder = Encoder()
-    print(encoder.encode(robot))
-    c.communicate({"$type": "terminate"})
-    ```
-
-    To save this dictionary to disk, use `json.dumps` as you would with any other JSON dictionary:
-
-    ```python
-    import json
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.robot import Robot
-    from tdw.encoder import Encoder
-
-
-    c = Controller()
-    robot = Robot(name="ur5")
-    c.add_ons.append(robot)
-    c.communicate(TDWUtils.create_empty_room(12, 12))
-    encoder = Encoder()
-
-    # Encode the `Robot` to a dictionary.
-    robot_data = encoder.encode(robot)
-    # Dump the dictionary as a string.
-    robot_string = json.dumps(robot_data, indent=2)
-    # Write the string to disk.
-    with open("robot_data.txt", "wt") as f:
-        f.write(robot_string)
-    c.communicate({"$type": "terminate"})
-    ```
-
-    Note that TDW does not provide a means of automatically converting dictionaries back into objects.
     """
 
     """:class_var

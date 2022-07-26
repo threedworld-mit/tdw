@@ -6,6 +6,14 @@ from tdw.backend.encoder import Encoder
 
 
 class JsonWriter(Writer):
+    """
+    Dump JSON data of objects per-frame. *Objects* in this case refers not to TDW objects but to Python objects, such as a [`Robot`](robot.md) add-on or an arbitrary dictionary of data.
+
+    Per frame, these objects will be read, encoded into Python dictionaries, and written out as serialized JSON data files.
+
+    The JSON files can be read and reloaded like any other file with JSON information. However, TDW does not provide a means of automatically converting serialized JSON data back into objects.
+    """
+
     def __init__(self, objects: Dict[str, object], output_directory: Union[str, Path], indent: int = 2,
                  include_hidden_fields: bool = True, zero_padding: int = 8):
         """

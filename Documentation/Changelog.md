@@ -17,6 +17,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `start_video_capture_windows` | Start video capture using ffmpeg. This command can only be used on Windows. |
 | `stop_video_capture`          | Stop ongoing video capture.                                  |
 
+### `tdw` module
+
+- Added `screeninfo` as a required module. To install: `pip3 install screeninfo`.
+
 ### Docker
 
 - Removed `record_audio_video.sh` and `start_container_audio_video.sh` (no longer needed)

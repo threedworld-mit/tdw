@@ -21,6 +21,7 @@ from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
 import base64
+import screeninfo
 
 
 class TDWUtils:
@@ -967,3 +968,36 @@ class TDWUtils:
             elif wall == CardinalDirection.east:
                 return CardinalDirection.north
         raise Exception(corner, wall)
+
+    @staticmethod
+    def get_expected_window_position(window_width: int = 256, window_height: int = 256) -> Dict[str, float]:
+        """
+        When the TDW build launches, it usually appears at the center of the primary monitor. The expected position of the top-left corner of the build window is therefore:
+
+        ```
+        {"x": monitor.width // 2 - window_width // 2, "y": monitor.height // 2 - window_height // 2}
+        ```
+
+        Where `monitor` is the primary monitor.
+
+        :param window_width: The width of the TDW build's window.
+        :param window_height: The height of the TDW build's window.
+
+        :return: The expected position of the top-left corner of the build window.
+        """
+
+        monitors = screeninfo.get_monitors()
+        if len(monitors) == 0:
+            raise Exception("No monitors found!")
+        elif len(monitors) == 1:
+            monitor = monitors[0]
+        else:
+            primary_monitors = [m for m in monitors if m.is_primary is not None and m.is_primary]
+            # Get the primary monitor.
+            if len(primary_monitors) > 0:
+                monitor = primary_monitors[0]
+            # We couldn't find a primary monitor for some reason.
+            else:
+                monitor = monitors[0]
+        return {"x": monitor.width // 2 - window_width // 2,
+                "y": monitor.height // 2 - window_height // 2}

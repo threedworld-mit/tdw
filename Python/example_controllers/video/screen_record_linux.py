@@ -23,13 +23,26 @@ c.add_ons.extend([camera, audio_initializer, py_impact])
 # Set the output path.
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mp4")
 print(f"Video will be saved to: {path}")
+
+# Assume that the window will appear in the middle of the screen.
+screen_width = 256
+screen_height = 256
+position = TDWUtils.get_expected_window_position(window_width=screen_width, window_height=screen_height)
+
+# This audio device may be incorrect, or might not exist; see `Documentation/lessons/video/screen_record_linux.md`.
+audio_device = "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor"
+
 # Initialize the scene.
 commands = [TDWUtils.create_empty_room(12, 12),
             {"$type": "set_target_framerate",
              "framerate": 60},
+            {"$type": "set_screen_size",
+             "width": screen_width,
+             "height": screen_height},
             {"$type": "start_video_capture_linux",
              "output_path": str(path.resolve()),
-             "audio_device": "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor"}]
+             "position": position,
+             "audio_device": audio_device}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   position={"x": 0, "y": 1.5, "z": 0},
                                                   object_id=Controller.get_unique_id()))

@@ -26,12 +26,9 @@ path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.
 print(f"Video will be saved to: {path}")
 
 # Assume that the window will appear in the middle of the screen.
-monitor_width = 1920
-monitor_height = 1080
 screen_width = 256
 screen_height = 256
-position = {"x": monitor_width // 2 - screen_width // 2,
-            "y": monitor_height // 2 - screen_height // 2}
+position = TDWUtils.get_expected_window_position(window_width=screen_width, window_height=screen_height)
 
 # This audio device may be incorrect, or might not exist; see `Documentation/lessons/video/screen_record_osx.md`.
 audio_device = 0

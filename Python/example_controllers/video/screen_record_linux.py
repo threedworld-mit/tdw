@@ -9,7 +9,8 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 A minimal example of an audio-visual screen recorder for Linux.
 """
 
-c = Controller()
+# Launch the build with -popupwindow
+c = Controller(launch_build=False)
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            look_at={"x": 0, "y": 0, "z": 0},

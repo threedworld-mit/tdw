@@ -12,6 +12,16 @@ class JsonWriter(Writer):
     Per frame, these objects will be read, encoded into Python dictionaries, and written out as serialized JSON data files.
 
     The JSON files can be read and reloaded like any other file with JSON information. However, TDW does not provide a means of automatically converting serialized JSON data back into objects.
+
+    Data is converted to JSON-serializable format as follows:
+
+    - Numpy arrays are converted to Python lists.
+    - Numpy `RandomState` objects, which many TDW classes use, are not serialized and receive a null value.
+    - `bytes` and `bytearray` objects are converted into base64 strings.
+    - [`Path`](https://docs.python.org/3/library/pathlib.html) objects are converted into absolute filepath strings.
+    - Some classes, namely those in the `tdw.FBOutput` namespace, can't readily be serialized to a dictionary; their values are instead set to null.
+    - Enum values are converted to their string representation i.e. `value.name`.
+    - Dictionaries that have non-string keys have all of their keys converted into strings i.e. `str(key)`.
     """
 
     def __init__(self, objects: Dict[str, object], output_directory: Union[str, Path], indent: int = 2,

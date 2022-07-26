@@ -1,6 +1,7 @@
 from json import JSONEncoder
 from enum import Enum
 from base64 import b64encode
+from pathlib import Path
 import numpy as np
 
 
@@ -95,18 +96,25 @@ class Encoder(JSONEncoder):
         # Ignore `RandomState` objects.
         elif isinstance(obj, np.random.RandomState):
             return None
-        # Encode byte arrays to base64 strings.
-        elif isinstance(obj, bytes):
-            return b64encode(obj).decode("ascii")
         elif isinstance(obj, np.bool_):
             return bool(obj)
+        # Encode byte arrays to base64 strings.
+        elif isinstance(obj, bytes) or isinstance(obj, bytearray):
+            return b64encode(obj).decode("ascii")
+        # Convert Path objects to absolute file path strings.
+        elif isinstance(obj, Path):
+            return str(obj.resolve()).replace("\\", "/")
         else:
             # Include hidden fields.
-            if Encoder.INCLUDE_HIDDEN_FIELDS:
-                d = {k: v for k, v in obj.__dict__.items()}
-            # Ignore hidden fields.
-            else:
-                d = {k: v for k, v in obj.__dict__.items() if not k.startswith("_")}
+            try:
+                if Encoder.INCLUDE_HIDDEN_FIELDS:
+                    d = {k: v for k, v in obj.__dict__.items()}
+                # Ignore hidden fields.
+                else:
+                    d = {k: v for k, v in obj.__dict__.items() if not k.startswith("_")}
+            # Flatbuffer objects don't have dictionaries.
+            except AttributeError:
+                return None
             # Convert non-serializable keys to string.
             for k in d:
                 if isinstance(d[k], dict):

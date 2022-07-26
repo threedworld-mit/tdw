@@ -40,16 +40,24 @@ class OutputDataSaver(AddOn):
         self._get_path(self._frame_count).write_text(dumps([b64encode(r).decode("ascii") for r in resp]))
         self._frame_count += 1
 
-    def read(self, frame_number: int) -> List[bytes]:
+    def read(self, path: Union[str, Path, int]) -> List[bytes]:
         """
         Read saved ouput data.
 
-        :param frame_number: The frame number. This gets appended to `self.output_directory` with zero-padding to create the full file path, e.g. `output_directory/00000000.txt`.
+        :param path: The path to the frame file. This can be a string or [`Path`](https://docs.python.org/3/library/pathlib.html) file path or an integer. If this is an integer, it represents the frame number; the file is assumed to be in `self.output_directory`.
 
         :return: A list of bytes that was saved as base64 data, equivalent to the return value of a `c.communicate(commands)` call (i.e. `resp` as it usually appears in our example controllers).
         """
 
-        return [b64decode(r) for r in loads(self._get_path(frame_number).read_text())]
+        if isinstance(path, str):
+            text = Path(path).read_text()
+        elif isinstance(path, Path):
+            text = path.read_text()
+        elif isinstance(path, int):
+            text = self._get_path(path).read_text()
+        else:
+            raise Exception(path)
+        return [b64decode(r) for r in loads(text)]
 
     def reset(self) -> None:
         """

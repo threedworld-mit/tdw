@@ -66,9 +66,9 @@ class PhotorealVRayDynamicCamera(Controller):
                            "strength": 0.85}])
                           #{"$type": "terminate"}])
         # Download and unzip scene file -- this will be the "master" file, that all model .vrscene files will be appended to.
-        export.download_scene()
+        #export.download_scene()
         # Download and unzip all object models in the scene.
-        export.download_scene_models()
+        #export.download_scene_models()
         # Update model files to reflect scene object transforms.
         resp = self.communicate([])
         export.export_static_node_data(resp=resp)
@@ -96,11 +96,11 @@ class PhotorealVRayDynamicCamera(Controller):
                             f.write(node_data_string)
                 frame_count = frame_count + 1
             # Write out to the master scene file the final frame_count as the end of the animation sequence.
-            export.export_animation_settings(frame_count)
+            #export.export_animation_settings(frame_count)
         # Everything is prepared, now assemble the components by adding the models and view files to the scene file.
         #export.assemble_render_file()
         # Launch Vantage render in animation mode, with our assembled scene file.
-        export.launch_vantage_render(start_frame=0, end_frame=frame_count)
+        export.launch_render(start_frame=0, end_frame=frame_count)
         self.communicate({"$type": "terminate"})
         
 

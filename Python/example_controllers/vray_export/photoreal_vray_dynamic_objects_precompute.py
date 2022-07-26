@@ -55,8 +55,8 @@ class PhotorealVRay(Controller):
     def run(self):
         # Add a camera and enable image capture.
         camera = ThirdPersonCamera(avatar_id="a",
-                                   position={"x": -3, "y": 1.35, "z": -0.8},
-                                   look_at={"x": 1.2, "y": 0.85, "z": -0.5},
+                                   position={"x": -3, "y": 1, "z": 0},
+                                   look_at={"x": 0, "y": 1, "z": 0},
                                    field_of_view=55)
         table_id = self.get_unique_id()
         chair_id = self.get_unique_id()
@@ -136,6 +136,7 @@ class PhotorealVRay(Controller):
         export = VRayExport(image_width=1920, image_height=1080, scene_name="tdw_room", output_path="D:/VE2020_output/")
         self.add_ons.append(export)
         self.communicate([])
+        """
         # Download and unzip scene file -- this will be the "master" file, that all model etc. .vrscene files will be appended to.
         export.download_scene()
         # Download and unzip all object models in the scene.
@@ -144,6 +145,7 @@ class PhotorealVRay(Controller):
         export.export_static_node_data(resp=resp)
         resp = self.communicate([])
         export.export_static_camera_view_data(resp=resp)
+        """
         # Open the master scene file, so we can output the dynamic data for any moving objects, affected by applying the force.
         path = export.get_scene_file_path()      
         with open(path, "a") as f:        
@@ -155,10 +157,8 @@ class PhotorealVRay(Controller):
                     node_data_string = export.get_dynamic_node_data(cached_mat, obj_name, frame_count)
                     f.write(node_data_string)
                 frame_count = frame_count + 1
-            # Write out to the master scene file the final frame_count as the end of the animation sequence.
-            export.export_animation_settings(frame_count)
-        # Launch Vantage render with our assembled scene file.
-        #export.launch_vantage_render(start_frame=0, end_frame=frame_count)
+        # Launch Vantage render with our final scene file.
+        export.launch_render(start_frame=0, end_frame=frame_count)
         
 
 if __name__ == "__main__":

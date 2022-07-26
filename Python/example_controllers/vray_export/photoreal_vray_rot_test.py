@@ -70,16 +70,6 @@ class Photoreal(Controller):
                           {"$type": "set_shadow_strength",
                            "strength": 0.85}])
                           #{"$type": "terminate"}])
-        # Download and unzip scene file -- this will be the "master" file, that all model .vrscene files will be appended to.
-        export.download_scene()
-        # Download and unzip all object models in the scene.
-        export.download_scene_models()
-        # Update model files to reflect scene object transforms.
-        resp = self.communicate([])
-        export.export_static_node_data(resp=resp)
-        # Update V-Ray camera to reflect TDW camera position and orientation.
-        resp = self.communicate([])
-        export.export_static_camera_view_data(resp=resp)
         # Everything is prepared, now assemble the components by adding the models and view files to the scene file.
         #export.assemble_render_file()
         # Launch Vantage render with our assembled scene file.

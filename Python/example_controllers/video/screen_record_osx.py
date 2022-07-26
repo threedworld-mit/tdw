@@ -9,7 +9,8 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 A minimal example of an audio-visual screen recorder for OS X.
 """
 
-c = Controller()
+# Launch the build with -popupwindow
+c = Controller(launch_build=False)
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            look_at={"x": 0, "y": 0, "z": 0},
@@ -23,13 +24,29 @@ c.add_ons.extend([camera, audio_initializer, py_impact])
 # Set the output path.
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mp4")
 print(f"Video will be saved to: {path}")
+
+# Assume that the window will appear in the middle of the screen.
+monitor_width = 1920
+monitor_height = 1080
+screen_width = 256
+screen_height = 256
+position = {"x": monitor_width // 2 - screen_width // 2,
+            "y": monitor_height // 2 - screen_height // 2}
+
+# This audio device may be incorrect, or might not exist; see `Documentation/lessons/video/screen_record_osx.md`.
+audio_device = 0
+
 # Initialize the scene.
 commands = [TDWUtils.create_empty_room(12, 12),
             {"$type": "set_target_framerate",
              "framerate": 60},
+            {"$type": "set_screen_size",
+             "width": screen_width,
+             "height": screen_height},
             {"$type": "start_video_capture_osx",
              "output_path": str(path.resolve()),
-             "audio_device": 0}]
+             "position": position,
+             "audio_device": audio_device}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   position={"x": 0, "y": 1.5, "z": 0},
                                                   object_id=Controller.get_unique_id()))

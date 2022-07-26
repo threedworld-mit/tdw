@@ -21,7 +21,7 @@ camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            avatar_id="a")
 c.add_ons.append(camera)
 # Set the output path.
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mkv")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mp4")
 print(f"Video will be saved to: {path}")
 # Start video capture.
 c.communicate([TDWUtils.create_empty_room(12, 12),
@@ -55,7 +55,7 @@ camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            avatar_id="a")
 c.add_ons.append(camera)
 # Set the output path.
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mkv")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mp4")
 print(f"Video will be saved to: {path}")
 # Start video capture.
 c.communicate([TDWUtils.create_empty_room(12, 12),
@@ -100,7 +100,7 @@ camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            avatar_id="a")
 c.add_ons.append(camera)
 # Set the output path.
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mkv")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mp4")
 print(f"Video will be saved to: {path}")
 monitor_width = 1920
 monitor_height = 1080
@@ -163,7 +163,7 @@ audio_initializer = AudioInitializer(avatar_id="a",
 py_impact = PyImpact()
 c.add_ons.extend([camera, audio_initializer, py_impact])
 # Set the output path.
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mkv")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mp4")
 print(f"Video will be saved to: {path}")
 # Initialize the scene.
 commands = [TDWUtils.create_empty_room(12, 12),

@@ -21,7 +21,7 @@ audio_initializer = AudioInitializer(avatar_id="a",
 py_impact = PyImpact()
 c.add_ons.extend([camera, audio_initializer, py_impact])
 # Set the output path.
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mkv")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mp4")
 print(f"Video will be saved to: {path}")
 # Initialize the scene.
 commands = [TDWUtils.create_empty_room(12, 12),

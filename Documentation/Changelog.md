@@ -86,6 +86,8 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 #### Modified Documentation
 
+- Clarified in all of the API documents for `AddOn` subclasses how and when `on_send(resp)` gets called.
+
 | Document                            | Modification                                                 |
 | ----------------------------------- | ------------------------------------------------------------ |
 | `lessons/robots/low_level_api.md`   | Updated descriptions and example code to use `DynamicRobots` instead of `Robot`. |

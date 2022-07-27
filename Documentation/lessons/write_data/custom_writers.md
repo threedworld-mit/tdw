@@ -181,7 +181,7 @@ Output:
 
 ### 1. HDF5
 
-HDF5 is a very good way to serialize relatively large datasets. [See the tdw_physics repo for an example.](https://github.com/alters-mit/tdw_physics)
+HDF5 is a very good way to serialize relatively large datasets. [See the tdw_physics repo for an example.](https://github.com/alters-mit/tdw_physics/blob/master/tdw_physics/dataset.py)
 
 **Advantages:**
 
@@ -206,9 +206,25 @@ You can feasibly write TDW data to a SQL or SQLite database. At present, there a
 
 - This option is probably overkill in most cases. It requires a lot more effort than JSON or HDF5 to set up correctly.
 
-### 3. Threaded saves
+### 3. XML
 
-If you are writing lots of files, you can use threading to asynchronously save data. [See the tdw_image_dataset repo for an example.](https://github.com/alters-mit/tdw_image_dataset)
+XML's advantages and disadvantages as a save file format are similar to JSON's. We recommend JSON over XML because there is less ambiguity in how and where data is serialized.
+
+### 4. Pickle
+
+Pickle is a Python-specific save file format. **We don't recommend using it.**
+
+**Advantages:**
+
+- It's very easy to code.
+
+**Disadvantages:**
+
+- Pickled data can include executable code, a major security problem.
+
+### 5. Asynchronous threading
+
+If you are writing lots of files, you can use threading to asynchronously save data. [See the tdw_image_dataset repo for an example.](https://github.com/alters-mit/tdw_image_dataset/blob/main/tdw_image_dataset/image_dataset.py)
 
 **Advantages:**
 

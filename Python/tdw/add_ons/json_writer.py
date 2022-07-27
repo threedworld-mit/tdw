@@ -1,11 +1,11 @@
-from json import dumps
+from json import dumps, loads
 from typing import List, Union, Dict
 from pathlib import Path
 from tdw.add_ons.writer import Writer
 from tdw.backend.encoder import Encoder
 
 
-class JsonWriter(Writer):
+class JsonWriter(Writer[Union[dict, Dict[str, dict]]]):
     """
     Dump JSON data of objects per-frame. *Objects* in this case refers not to TDW objects but to Python objects, such as a [`Robot`](robot.md) add-on or an arbitrary dictionary of data.
 
@@ -35,13 +35,49 @@ class JsonWriter(Writer):
         """
 
         super().__init__(output_directory=output_directory, zero_padding=zero_padding)
+        # Set the hidden fields class variable.
         Encoder.INCLUDE_HIDDEN_FIELDS = include_hidden_fields
+        """:field
+        A dictionary of objects to serialize. Key = A name or identifier for the object, for example `"robot"`. Value = A data object, for example a [`Robot`](robot.md).
+        """
         self.objects: Dict[str, object] = objects
         self._encoder: Encoder = Encoder()
         self._indent: int = indent
 
     def on_send(self, resp: List[bytes]) -> None:
         for name in self.objects:
-            path = self.output_directory.joinpath(f"{name}_{str(self._frame_count).zfill(self._zero_padding)}.json")
-            path.write_text(dumps(self._encoder.encode(self.objects[name]), indent=self._indent), encoding="utf-8")
+            self._get_path(name=name, frame_number=self._frame_count).write_text(dumps(self._encoder.encode(self.objects[name]),
+                                                                                       indent=self._indent),
+                                                                                 encoding="utf-8")
         self._frame_count += 1
+
+    def read(self, path: Union[str, Path, int]) -> Union[dict, Dict[str, dict]]:
+        """
+        Read saved ouput data.
+
+        :param path: The path to the frame file. This can be a string or [`Path`](https://docs.python.org/3/library/pathlib.html) file path or an integer. If this is an integer, it represents the frame number; the file is assumed to be in `self.output_directory`.
+
+        :return: If `path` is a string or a `Path`, this will return a dictionary. If `path` is an integer, this will return a *dictionary of dictionaries* where the key is the object name (e.g. `"robot"`) and the value is the corresponding dictionary.
+        """
+
+        if isinstance(path, str):
+            return loads(Path(path).read_text(encoding="utf-8"))
+        elif isinstance(path, Path):
+            return loads(path.read_text(encoding="utf-8"))
+        elif isinstance(path, int):
+            data = dict()
+            for name in self.objects:
+                data[name] = loads(self._get_path(name=name, frame_number=path).read_text(encoding="utf-8"))
+            return data
+        else:
+            raise Exception(path)
+
+    def _get_path(self, name: str, frame_number: int) -> Path:
+        """
+        :param name: The object name.
+        :param frame_number: The frame number
+
+        :return: A file path from `self.output_directory`.
+        """
+
+        return self.output_directory.joinpath(f"{name}_{str(frame_number).zfill(self._zero_padding)}.json")

@@ -27,26 +27,7 @@ class Encoder(JSONEncoder):
         if isinstance(obj, Enum):
             return obj.name
         elif isinstance(obj, np.ndarray):
-            # This is a 0-d array.
-            if obj.shape == ():
-                if obj.dtype == np.float32 or obj.dtype == float:
-                    return float(obj)
-                elif obj.dtype == np.int32 or obj.dtype == int:
-                    return int(obj)
-                elif obj.dtype == bool:
-                    return bool(obj)
-                else:
-                    raise Exception(f"Not implemented: {obj.dtype}")
-            # This is an n-d array.
-            else:
-                if obj.dtype == np.float32 or obj.dtype == float:
-                    return [float(v) for v in obj]
-                elif obj.dtype == np.int32 or obj.dtype == int:
-                    return [int(v) for v in obj]
-                elif obj.dtype == bool:
-                    return [v for v in obj]
-                else:
-                    raise Exception(f"Not implemented: {obj.dtype}")
+            return obj.tolist()
         # Ignore `RandomState` objects.
         elif isinstance(obj, np.random.RandomState):
             return None

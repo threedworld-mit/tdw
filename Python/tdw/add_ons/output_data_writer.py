@@ -5,7 +5,7 @@ from pathlib import Path
 from tdw.add_ons.writer import Writer
 
 
-class OutputDataWriter(Writer):
+class OutputDataWriter(Writer[List[bytes]]):
     """
     Save raw output byte data to disk per frame. This data is encoded into base64 strings and saved as text files.
     """

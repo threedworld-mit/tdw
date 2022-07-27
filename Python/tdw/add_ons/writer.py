@@ -1,11 +1,14 @@
-from abc import ABC
-from typing import List, Union
+from abc import ABC, abstractmethod
+from typing import List, Union, TypeVar, Generic
 from pathlib import Path
 from overrides import final
 from tdw.add_ons.add_on import AddOn
 
 
-class Writer(AddOn, ABC):
+T = TypeVar("T")
+
+
+class Writer(AddOn, Generic[T], ABC):
     """
     Abstract base class for per-frame data writers.
     """
@@ -43,3 +46,15 @@ class Writer(AddOn, ABC):
         """
 
         self._frame_count = 0
+
+    @abstractmethod
+    def read(self, path: Union[str, Path, int]) -> T:
+        """
+        Read saved ouput data.
+
+        :param path: The path to the frame file. This can be a string or [`Path`](https://docs.python.org/3/library/pathlib.html) file path or an integer. If this is an integer, it represents the frame number; the file is assumed to be in `self.output_directory`.
+
+        :return: Deserialized data.
+        """
+
+        raise Exception()

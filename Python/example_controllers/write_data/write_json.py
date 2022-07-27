@@ -25,5 +25,5 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 c.communicate({"$type": "terminate"})
 # Print the JSON dictionary.
 path = output_directory.joinpath("robot_00000000.json")
-text = path.read_text(encoding="utf-8")
-print(json.loads(text))
+print(writer.read(path))
+

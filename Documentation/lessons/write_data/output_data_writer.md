@@ -58,7 +58,7 @@ Output:
 
 ## Read and deserialize saved data
 
-We can read deserialize this data using the `read(path)` function:
+Deserialize data by calling `read(path)` or `read(value)`:
 
 ```python
 from tdw.controller import Controller

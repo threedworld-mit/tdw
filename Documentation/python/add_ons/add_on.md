@@ -4,7 +4,7 @@
 
 Controller add-ons can be "attached" to any controller to add functionality into the `communicate()` function.
 
-Add-ons work by reading the response from the build and building a list of commands to be sent on the next frame.
+Add-ons work by reading the response from the build and building a list of commands to be sent on the next `Controller.communicate(commands)` call.
 Anything that add-ons do can be replicated elsewhere via the TDW Command API, which means that these add-ons don't provide _additional_ functionality to TDW; rather, they are utility objects for commonly required tasks such as image capture.
 
 We recommend that new TDW users use add-ons in their controllers, while more experienced users might prefer to have more fine-grained control. Add-ons are a new feature in TDW as of v1.9.0 and we're still in the process of updating our example controllers.
@@ -12,7 +12,7 @@ We recommend that new TDW users use add-ons in their controllers, while more exp
 ## Usage
 
 To attach an add-on, append it to the `add_ons` list.
-Every time `communicate()` is called, the add-on will evaluate the response from the build. The add-on can send additional commands to the build on the next frame or do something within its own state (such as update an ongoing log):
+Every time `Controller.communicate(commands)` is called, the add-on will evaluate the response from the build via `on_send(resp)`. The add-on can send additional commands to the build on the next frame or do something within its own state (such as update an ongoing log):
 
 ```python
 from tdw.controller import Controller
@@ -57,10 +57,10 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 **`self.on_send(resp)`**
 
-This is called after commands are sent to the build and a response is received.
+This is called within `Controller.communicate(commands)` after commands are sent to the build and a response is received.
 
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
+Use this function to send commands to the build on the next `Controller.communicate(commands)` call, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the `Controller.communicate(commands)` call.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -70,7 +70,7 @@ Any commands in the `self.commands` list will be sent on the next frame.
 
 **`self.before_send(commands)`**
 
-This is called before sending commands to the build. By default, this function doesn't do anything.
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |

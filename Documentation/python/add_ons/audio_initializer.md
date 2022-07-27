@@ -72,7 +72,7 @@ The command will be sent on the next `Controller.communicate()` call.
 
 **`self.before_send(commands)`**
 
-This is called before sending commands to the build. By default, this function doesn't do anything.
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |

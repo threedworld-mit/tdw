@@ -120,8 +120,8 @@ The order of execution is:
 
 To define your own add-on, extend the [`AddOn`](../../python/add_ons/add_on.md) class and define the following functions:
 
-- `get_initialization_commands()` Returns a list of commands to initialize the add-on.
-- `on_send(resp)` Defines what happens after commands are sent and a response is receive. `resp` is a list of bytes that can be turned into [output data](output_data.md).
+- `get_initialization_commands()` This gets called in `Controller.communicate(commands)` only if `initialized == False` in the add-on (`initialized` is always initially `False`). Returns a list of commands to initialize the add-on. After calling this, the controller will set `initialized=True`.
+- `on_send(resp)` This gets called in every `Controller.communicate(commands)` call. Defines what happens after commands are sent and a response is receive. `resp` is a list of bytes that can be turned into [output data](output_data.md).
 - Additionally, you might want to define a custom constructor and custom API calls. `self.commands` is a list of commands that will be sent on the next frame.
 
 This is an example of a very simple custom add-on. It can dynamically set the screen size.

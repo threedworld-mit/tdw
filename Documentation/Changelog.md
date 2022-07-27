@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.10.2
+
+### Command API
+
+#### New Commands
+
+| Command              | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `set_robot_joint_id` | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. |
+
 ## v1.10.1
 
 ### Command API

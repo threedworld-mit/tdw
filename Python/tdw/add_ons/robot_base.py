@@ -64,7 +64,7 @@ class RobotBase(AddOn, ABC):
         return [self._get_add_robot_command(),
                 {"$type": "send_static_robots",
                  "frequency": "once"},
-                {"$type": "send_robots",
+                {"$type": "send_dynamic_robots",
                  "frequency": "always"}]
 
     def joints_are_moving(self, joint_ids: List[int] = None) -> bool:

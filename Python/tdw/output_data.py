@@ -53,6 +53,7 @@ from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
+from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 import numpy as np
 from typing import Tuple, Optional, List
@@ -917,6 +918,12 @@ class StaticRobot(OutputData):
     def get_non_moving_segmentation_color(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_rgb(self.data.NonMoving(index).SegmentationColor())
 
+    def get_joint_indices(self) -> np.array:
+        return self.data.JointIndicesAsNumpy().reshape(-1, 2)
+
+    def get_robot_index(self) -> int:
+        return self.data.Index()
+
 
 class Robot(OutputData):
     def get_data(self) -> Robo.Robot:
@@ -971,6 +978,39 @@ class RobotJointVelocities(OutputData):
 
     def get_joint_sleeping(self, index: int) -> bool:
         return self.data.Joints(index).Sleeping()
+
+
+class DynamicRobots(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._immovable = self.data.ImmovableAsNumpy()
+        self._transforms = self.data.TransformsAsNumpy().reshape(-1, 10)
+        self._joints = self.data.JointsAsNumpy().reshape(-1, 2, 3)
+        self._sleeping = self.data.SleepingAsNumpy()
+
+    def get_data(self) -> DynRob.DynamicRobots:
+        return DynRob.DynamicRobots.GetRootAsDynamicRobots(self.bytes, 0)
+
+    def get_immovable(self, index: int) -> bool:
+        return bool(self._immovable[index])
+
+    def get_robot_position(self, index: int) -> np.array:
+        return self._transforms[index][:3]
+
+    def get_robot_rotation(self, index: int) -> np.array:
+        return self._transforms[index][3:7]
+
+    def get_robot_forward(self, index: int) -> np.array:
+        return self._transforms[index][7:]
+
+    def get_joint_position(self, index: int) -> np.array:
+        return self._joints[index][0]
+
+    def get_joint_angles(self, index: int) -> np.array:
+        return np.degrees(self._joints[index][1])
+
+    def get_joint_sleeping(self, index: int) -> bool:
+        return bool(self._sleeping[index])
 
 
 class Keyboard(OutputData):

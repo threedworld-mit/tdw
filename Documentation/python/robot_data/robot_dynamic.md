@@ -16,9 +16,9 @@ Dynamic data for a robot that can change per frame (such as the position of the 
 
 ## Fields
 
-- `transform` The Transform data for this robot.
+- `transform` The [`Transform`](../object_data/transform.md) data for this robot.
 
-- `joints` A dictionary of [dynamic joint data](joint_dynamic.md). Key = The ID of the joint.
+- `joints` A dictionary of [`JointDynamic`](joint_dynamic.md). Key = The ID of the joint.
 
 - `immovable` If True, this robot is immovable.
 
@@ -40,14 +40,10 @@ Value = A list of [environment collision data.](../collision_data/collision_obj_
 
 #### \_\_init\_\_
 
-**`RobotDynamic(resp, robot_id, body_parts)`**
-
-**`RobotDynamic(resp, robot_id, body_parts, previous=None)`**
+**`RobotDynamic(static, resp)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build, which we assume contains `Robot` output data. |
-| robot_id |  int |  | The ID of this robot. |
-| body_parts |  List[int] |  | The IDs of all body parts belonging to this robot. |
-| previous |  | None | If not None, the previous RobotDynamic data. Use this to determine if the joints are moving. |
+| static |  RobotStatic |  | [`RobotStatic`](robot_static.md) data for this robot. |
+| resp |  List[bytes] |  | The response from the build. |
 

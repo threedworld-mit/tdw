@@ -20,6 +20,8 @@ Static data for a robot that won't change due to physics (such as the joint IDs,
 
 - `immovable` If True, the robot is immovable.
 
+- `robot_index` The index of the robot in `DynamicRobots` output data. This is used internally; you almost always want to refer to `self.robot_id` instead.
+
 ***
 
 ## Functions

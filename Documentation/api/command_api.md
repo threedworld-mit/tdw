@@ -548,7 +548,7 @@
 | [`send_containment`](#send_containment) | Send containment data using container shapes. See: <computeroutput>add_box_container</computeroutput>, <computeroutput>add_cylinder_container</computeroutput>, and <computeroutput>add_sphere_container</computeroutput>. Container shapes will check for overlaps with other objects.  |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
 | [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
-| [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations.  |
+| [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from DynamicRobots output data for the sake of speed in certain simulations.  |
 | [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 | [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
@@ -575,6 +575,7 @@
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
+| [`send_dynamic_robots`](#send_dynamic_robots) | Send dynamic robot data for each robot in the scene.  |
 | [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
@@ -6863,6 +6864,7 @@ Send dynamic data of each robot and each robot's body parts in the scene. See al
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`Robot`](output_data.md#Robot)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "send_robots"}
@@ -6890,14 +6892,14 @@ Options for when to send data.
 
 ## **`send_robot_joint_velocities`**
 
-Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. 
+Send velocity data for each joint of each robot in the scene. This is separate from DynamicRobots output data for the sake of speed in certain simulations. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`RobotJointVelocities`](output_data.md#RobotJointVelocities)</font>
 - <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
 
-    - <font style="color:red">**Use this command instead:** `send_robots`</font>
+    - <font style="color:red">**Use this command instead:** `send_dynamic_robots`</font>
 
 ```python
 {"$type": "send_robot_joint_velocities"}
@@ -7442,6 +7444,38 @@ Send dynamic data for every composite object in the scene.
 
 ```python
 {"$type": "send_dynamic_composite_objects", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_dynamic_robots`**
+
+Send dynamic robot data for each robot in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`DynamicRobots`](output_data.md#DynamicRobots)</font>
+
+```python
+{"$type": "send_dynamic_robots"}
+```
+
+```python
+{"$type": "send_dynamic_robots", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

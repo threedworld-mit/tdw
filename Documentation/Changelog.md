@@ -16,6 +16,60 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `set_prismatic_position` | Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot. |
 | `set_spherical_angles`   | Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot. |
 | `set_robot_joint_id` | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. |
+| `send_dynamic_robots` | Send dynamic robot data. |
+
+#### Deprecated Commands
+
+| Command       | Reason                              |
+| ------------- | ----------------------------------- |
+| `send_robots` | Replaced with `send_dynamic_robots` |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data     | Description                |
+| --------------- | -------------------------- |
+| `DynamicRobots` | Dynamic robot output data. |
+
+#### Modified Output Data
+
+| Output Data   | Modification                                               |
+| ------------- | ---------------------------------------------------------- |
+| `StaticRobot` | Added: `get_joint_indices()`<br>Added: `get_robot_index()` |
+
+#### Deprecated Output Data
+
+| Output Data | Reason                        |
+| ----------- | ----------------------------- |
+| `Robot`     | Replaced with `DynamicRobots` |
+
+### `tdw` module
+
+- Modified `JointDynamic` constructor parameters:
+  - Removed constructor parameters: `robot` and `joint_index`.
+  - Added constructor parameters: `joint_id`, `position`, `angles`, and `moving`.
+- Modified `JointStatic` constructor parameters and fields:
+  - Removed constructor parameter: `joint_index`
+  - Added constructor parameters: `static_index` and `dynamic_index`
+  - Added fields: `num_dof` and `dynamic_index`
+- Modified `RobotDynamic` constructor parameters:
+  - Removed constructor parameters: `robot_id`, `body_parts`, and `previous`.
+  - Added constructor parameters: `static` (of type `RobotStatic`)
+- Modified `RobotStatic` fields:
+  - Added: `robot_index`
+
+### Example Controllers
+
+- Updated `robots/robot_arm.py` to use new `DynamicRobots` output data.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                          | Modification                                                 |
+| --------------------------------- | ------------------------------------------------------------ |
+| `lessons/robots/low_level_api.md` | Updated descriptions and example code to use `DynamicRobots` instead of `Robot`. |
 
 ## v1.10.1
 

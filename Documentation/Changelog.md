@@ -15,6 +15,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `set_revolute_angle`     | Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot. |
 | `set_prismatic_position` | Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot. |
 | `set_spherical_angles`   | Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot. |
+| `set_robot_joint_id` | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. |
 
 ## v1.10.1
 
@@ -37,10 +38,18 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 ### `tdw` module
 
 - Added optional parameter `device_name` to `PhysicsAudioRecorder.start()`.
+- Fixed: `AudioUtils.stop()` doesn't work on OS X.
+  - Replaced `AudioUtils.RECORDER_PID` with `AudioUtils.RECORDER_PROCESS`.
+  - `AudioUtils.DEVICE` is now an integer (was a string).
+
 
 ### Model Library
 
 - Flagged b04_wallmounted_soap_dispenser_composite as do_not_use (missing asset bundles)
+
+### Example Controllers
+
+- Fixed audio example controllers that use `PhysicsAudioRecorder` and had `while record.done:` instead of `while not recorder.done:`
 
 ## v1.10.0
 

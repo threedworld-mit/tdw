@@ -462,6 +462,7 @@
 | [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
 | [`remove_robot_nav_mesh_obstacle`](#remove_robot_nav_mesh_obstacle) | Remove a NavMesh obstacle from a robot (see make_robot_nav_mesh_obstacle).  |
 | [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
+| [`set_robot_joint_id`](#set_robot_joint_id) | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique. |
 | [`set_robot_obi_collision_material`](#set_robot_obi_collision_material) | Set the Obi collision material of a robot.  |
 | [`teleport_robot`](#teleport_robot) | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
 
@@ -504,6 +505,14 @@
 | [`set_prismatic_target`](#set_prismatic_target) | Set the target position of a prismatic robot joint. Per frame, the joint will move towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target position. |
 | [`set_revolute_target`](#set_revolute_target) | Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle. |
 | [`set_spherical_target`](#set_spherical_target) | Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles. |
+
+**Set Robot Joint Position Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_prismatic_position`](#set_prismatic_position) | Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot.  |
+| [`set_revolute_angle`](#set_revolute_angle) | Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot.  |
+| [`set_spherical_angles`](#set_spherical_angles) | Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot.  |
 
 **Send Multiple Data Once Command**
 
@@ -5942,6 +5951,27 @@ Set whether or not the root object of the robot is immovable. Its joints will st
 
 ***
 
+## **`set_robot_joint_id`**
+
+Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique.
+
+
+```python
+{"$type": "set_robot_joint_id", "joint_name": "string", "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_id", "joint_name": "string", "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"joint_name"` | string | The exected name of the joint. | |
+| `"joint_id"` | int | The new ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
 ## **`set_robot_obi_collision_material`**
 
 Set the Obi collision material of a robot. 
@@ -6400,6 +6430,82 @@ Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"target"` | Vector3 | The target angles in degrees for the (x, y, z) drives. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+# SetRobotJointPositionCommand
+
+These commands instantaneously set the robot joint angles and positions. These commands SHOULD NOT be used in place of physics-based motion. Unity will interpret these commands as a VERY fast motion. These commands should only be used when a robot is first created in order to set an initial pose.
+
+***
+
+## **`set_prismatic_position`**
+
+Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_prismatic_target`</font>
+
+```python
+{"$type": "set_prismatic_position", "position": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_prismatic_position", "position": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | float | The position in meters. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_revolute_angle`**
+
+Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_revolute_target`</font>
+
+```python
+{"$type": "set_revolute_angle", "angle": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_revolute_angle", "angle": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The angle in degrees. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_spherical_angles`**
+
+Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_spherical_target`</font>
+
+```python
+{"$type": "set_spherical_angles", "angles": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1}
+```
+
+```python
+{"$type": "set_spherical_angles", "angles": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angles"` | Vector3 | The angles in degrees. | |
 | `"joint_id"` | int | The ID of the joint. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 

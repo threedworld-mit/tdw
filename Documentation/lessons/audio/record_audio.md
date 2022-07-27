@@ -127,7 +127,7 @@ path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("physics_audio_recorder/audio.wav
 print(f"Audio will be saved to: {path}")
 recorder.start(path=path)
 c.communicate(commands)
-while recorder.done:
+while not recorder.done:
     c.communicate([])
 c.communicate({"$type": "terminate"})
 ```

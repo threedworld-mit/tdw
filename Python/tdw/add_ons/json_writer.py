@@ -25,7 +25,7 @@ class JsonWriter(Writer):
     """
 
     def __init__(self, objects: Dict[str, object], output_directory: Union[str, Path], indent: int = 2,
-                 include_hidden_fields: bool = True, zero_padding: int = 8):
+                 include_hidden_fields: bool = False, zero_padding: int = 8):
         """
         :param objects: A dictionary of objects to serialize. Key = A name or identifier for the object, for example `"robot"`. Value = A data object, for example a [`Robot`](robot.md).
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this doesn't exist, it will be created.

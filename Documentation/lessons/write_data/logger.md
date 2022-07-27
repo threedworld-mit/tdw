@@ -1,4 +1,4 @@
-##### Troubleshooting
+##### Write Data
 
 # The `Logger` add-on
 
@@ -86,9 +86,7 @@ Output:
 
 ***
 
-***
-
-**This is the last document in the "Troubleshooting" guide.**
+**Next: [The `JsonWriter` add-on](json.md)**
 
 [Return to the README](../../../README.md)
 

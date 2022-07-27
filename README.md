@@ -36,7 +36,6 @@
 2. [Common errors](Documentation/lessons/troubleshooting/common_errors.md)
 3. [Performance optimizations](Documentation/lessons/troubleshooting/performance_optimizations.md)
 4. [Good coding practices](Documentation/lessons/troubleshooting/good_coding_practices.md)
-5. [The `Logger` add-on](Documentation/lessons/troubleshooting/logger.md)
 
 # Tutorials
 
@@ -71,7 +70,18 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 4. [Add your own models to TDW](Documentation/lessons/3d_models/custom_models.md)
 5. [Add ShapeNet models to TDW](Documentation/lessons/3d_models/shapenet.md)
 
-## 3. Semantic States
+## 3. Write data to disk
+
+1. [Overview](Documentation/lessons/write_data/overview.md)
+2. [The `Logger` add-on](Documentation/lessons/write_data/logger.md)
+3. [The `JsonWriter` add-on](Documentation/lessons/write_data/json.md)
+4. [The `OutputDataWriter` add-on](Documentation/lessons/write_data/output_data_writer.md)
+5. [Create a custom data writer](Documentation/lessons/write_data/custom_writers.md)
+6. [Images](#Core Concepts)
+7. [Audio](#9. Audio)
+8. [Video](#10. Video Recording)
+
+## 4. Semantic States
 
 1. [Overview](Documentation/lessons/semantic_states/overview.md)
 2. [Line of sight (`Raycast` output data)](Documentation/lessons/semantic_states/raycast.md)
@@ -81,7 +91,7 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 4. [Composite objects (objects with affordances)](Documentation/lessons/semantic_states/composite_objects.md)
 4. [Grasped objects](Documentation/lessons/semantic_states/grasped.md)
 
-## 4. Visual Perception
+## 5. Visual Perception
 
 1. [Overview](Documentation/lessons/visual_perception/overview.md)
 2. [Instance ID segmentation colors (`_id` pass)](Documentation/lessons/visual_perception/id.md)
@@ -91,7 +101,7 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 6. [Other image passes (`_mask`, `_normals`, and `_albedo` passes)](Documentation/lessons/visual_perception/other_passes.md)
 7. [`Occlusion` output data](Documentation/lessons/visual_perception/occlusion.md)
 
-## 5. Camera Controls
+## 6. Camera Controls
 
 1. [Overview](Documentation/lessons/camera/overview.md)
 2. [Move a camera](Documentation/lessons/camera/position.md)
@@ -99,7 +109,7 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 4. [Follow an object](Documentation/lessons/camera/follow.md)
 4. [The `CinematicCamera` add-on](Documentation/lessons/camera/cinematic_camera.md)
 
-## 6. Photorealism
+## 7. Photorealism
 
 1. [Overview](Documentation/lessons/photorealism/overview.md)
 2. [Lighting (HDRI skyboxes)](Documentation/lessons/photorealism/lighting.md)
@@ -109,11 +119,11 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
-## 7. Physics
+## 8. Physics
 
 **[Overview](Documentation/lessons/physx/overview.md)**
 
-### 7.1 Physics (PhysX)
+### 8.1 Physics (PhysX)
 
 1. [PhysX](Documentation/lessons/physx/physx.md)
 2. [Object physics parameters](Documentation/lessons/physx/physics_objects.md)
@@ -125,7 +135,7 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
-### 7.2 Physics (Obi)
+### 8.2 Physics (Obi)
 
 1. [Obi](Documentation/lessons/obi/obi.md)
 2. [Fluids](Documentation/lessons/obi/fluids.md)
@@ -136,7 +146,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 6. [Obi and robots](Documentation/lessons/obi/robots.md)
 6. [Obi and Flex](Documentation/lessons/obi/obi_and_flex.md)
 
-### 7.3 Physics (Flex)
+### 8.3 Physics (Flex)
 
 1. [Flex](Documentation/lessons/flex/flex.md)
 2. [Solid and soft actors](Documentation/lessons/flex/solid_and_soft.md)
@@ -150,7 +160,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
-## 8. Audio
+## 9. Audio
 
 1. [Overview](Documentation/lessons/audio/overview.md)
 2. [Initialize audio and play .wav files](Documentation/lessons/audio/initialize_audio.md)
@@ -160,17 +170,17 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 6. [`PyImpact` (advanced API)](Documentation/lessons/audio/py_impact_advanced.md)
 7. [Audio perception](Documentation/lessons/audio/audio_perception.md)
 
-## 9. Video Recording
+## 10. Video Recording
 
 1. [Overview](Documentation/lessons/video/overview.md)
 2. [Image-only video](Documentation/lessons/video/images.md)
 3. [Video with audio](Documentation/lessons/video/audio.md)
 
-## 10. Agents
+## 11. Agents
 
 [**Overview**](Documentation/lessons/agents/overview.md)
 
-### 10.1 Robots
+### 11.1 Robots
 
 1. [Overview](Documentation/lessons/robots/overview.md)
 2. [The `Robot` add-on](Documentation/lessons/robots/robot_add_on.md)
@@ -181,53 +191,53 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 7. [Robotics API (low-level)](Documentation/lessons/robots/custom_robots.md)
 8. [Add a camera to a robot](Documentation/lessons/robots/add_camera.md)
 
-### 10.2 Magnebots
+### 11.2 Magnebots
 
 1. [Magnebot API (external repo)](https://github.com/alters-mit/magnebot)
 
-### 10.3 Virtual Reality (VR)
+### 11.3 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
 
-### 10.4 Keyboard and Mouse
+### 11.4 Keyboard and Mouse
 
 1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
 2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
 3. [The `FirstPersonAvatar`](Documentation/lessons/keyboard_and_mouse/first_person_avatar.md)
 4. [Keyboard input](Documentation/lessons/keyboard_and_mouse/keyboard.md)
 
-### 10.5 Embodied avatars
+### 11.5 Embodied avatars
 
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
 
-## 11. Multi-agent simulations
+## 12. Multi-agent simulations
 
 1. [Overview](Documentation/lessons/multi_agent/overview.md)
 2. [Custom agent classes](Documentation/lessons/multi_agent/custom_agent_classes.md)
 
-## 12. Navigation
+## 13. Navigation
 
 1. [Overview](Documentation/lessons/navigation/overview.md)
 2. [NavMesh pathfinding](Documentation/lessons/navigation/nav_mesh.md)
 3. [Occupancy maps](Documentation/lessons/navigation/occupancy_maps.md)
 
-## 13. Non-physics objects
+## 14. Non-physics objects
 
 1. [Overview](Documentation/lessons/non_physics/overview.md)
 2. [Position markers](Documentation/lessons/non_physics/position_markers.md)
-2. [Line renderers](Documentation/lessons/non_physics/line_renderers.md)
-3. [Textured quads](Documentation/lessons/non_physics/textured_quads.md)
-3. [User Interface (the `UI` add-on)](Documentation/lessons/non_physics/ui.md)
-3. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
-4. [Non-physics humanoids](Documentation/lessons/non_physics/humanoids.md)
+3. [Line renderers](Documentation/lessons/non_physics/line_renderers.md)
+4. [Textured quads](Documentation/lessons/non_physics/textured_quads.md)
+5. [User Interface (the `UI` add-on)](Documentation/lessons/non_physics/ui.md)
+6. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
+7. [Non-physics humanoids](Documentation/lessons/non_physics/humanoids.md)
 
-## 14. Misc. remote server topics
+## 15. Misc. remote server topics
 
 1. [Launch a TDW build on a remote server from a personal computer](Documentation/lessons/remote/launch_build.md)
 2. [Remote rendering with xpra](Documentation/lessons/remote/xpra.md)
 
-## 15. Misc. other topics
+## 16. Misc. other topics
 
 1. [C# source code](Documentation/lessons/misc/c_sharp_sources.md)
 2. [Freezing your code](Documentation/lessons/misc/freeze.md)

@@ -530,7 +530,7 @@ if __name__ == "__main__":
 
 ***
 
-**Next: [The `Logger` add-on](logger.md)**
+**This is the last document in the "Troubleshooting" guide.**
 
 [Return to the README](../../../README.md)
 

@@ -61,6 +61,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
   - Added constructor parameters: `static` (of type `RobotStatic`)
 - Modified `RobotStatic` fields:
   - Added: `robot_index`
+- Fixed: `TDWUtils.array_to_vector4(arr)` doesn't convert numpy float32 to pure-Python float.
 
 ### Example Controllers
 

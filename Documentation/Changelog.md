@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.10.3
+
+### Build
+
+- Fixed: `rotate_object_by` doesn't work as expected when `use_centroid == True`.
+
 ## v1.10.2
 
 ### Command API

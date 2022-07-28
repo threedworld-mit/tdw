@@ -155,7 +155,7 @@ print(data)
 c.communicate({"$type": "terminate"})
 ```
 
-To encode hidden fields, first set `Encoder.INCLUDE_HIDDEN_FIELDS = True` and then call `encoder.encoder(o)`.
+To encode hidden fields, first set `Encoder.INCLUDE_HIDDEN_FIELDS = True` and then call `encoder.encode(o)` (where `o` is an arbitrary object).
 
 ## When to use `JsonWriter`
 

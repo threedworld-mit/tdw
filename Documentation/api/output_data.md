@@ -60,6 +60,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [DynamicCompositeObjects](#DynamicCompositeObjects) | Dynamic data for composite objects. | `dcom` |
+| [DynamicRobots](#DynamicRobots) | Dynamic robot output data. | `drob` |
 | [EmptyObjects](#EmptyObjects) | The position of each empty object in the scene. | `empt` |
 | [EnvironmentColliderIntersection](#EnvironmentColliderIntersection) | Data for an whose colliders are intersecting with an environment collider such as a wall. | `enci` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
@@ -285,6 +286,24 @@ Dynamic data for composite objects.
 | `get_light_parent_id(index)` | The ID of the light parent. | `int` |
 | `get_light_id(index)` | The ID of the light. | `int` |
 | `get_light_is_on(index)` | The on of the light is. | `bool` |
+
+## DynamicRobots
+
+`d = DynamicRobots(byte_array)`
+
+**Identifier:** `drob`
+
+Dynamic robot output data.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_immovable(index)` | An array indicating whether the root object of each robot is immovable. | `bool` |
+| `get_robot_position(index)` | The position of the robot. | `np.array` |
+| `get_robot_rotation(index)` | The rotation of the robot. | `np.array` |
+| `get_robot_forward(index)` | The forward of the robot. | `np.array` |
+| `get_joint_position(index)` | The position of the joint. | `np.array` |
+| `get_joint_angles(index)` | The angles of the joint. | `np.array` |
+| `get_joint_sleeping(index)` | The sleeping of the joint. | `bool` |
 
 ## EmptyObjects
 
@@ -900,6 +919,8 @@ Static data for a robot in the scene.
 | `get_non_moving_id(index)` | The ID of the non moving. | `int` |
 | `get_non_moving_name(index)` | The name of the non moving. | `str` |
 | `get_non_moving_segmentation_color(index)` | The color of the non moving segmentation. | `Tuple[float, float, float]` |
+| `get_joint_indices()` | The joint IDs and their indices in the static data. | `np.array` |
+| `get_robot_index()` | The index of the robot. | `int` |
 
 ## Substructure
 

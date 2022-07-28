@@ -5,7 +5,6 @@
 It is often very easy to serialize TDW data into a JSON dictionary (for more explanation, [read this](custom_writers.md)). TDW includes the option to serialize arbitrary data objects to JSON files by adding the [`JsonWriter`](../../python/add_ons/json_writer.md) add-on to a controller:
 
 ```python
-import json
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.robot import Robot
@@ -65,7 +64,6 @@ By default, `include_hidden_fields` is set to False. Many TDW data classes hold 
 Deserialize data by calling `read(path)` or `read(value)`:
 
 ```python
-import json
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.robot import Robot
@@ -73,8 +71,6 @@ from tdw.add_ons.json_writer import JsonWriter
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("encode_json")
-if not output_directory.exists():
-    output_directory.mkdir(parents=True)
 print(f"Data will be saved to: {output_directory}")
 c = Controller()
 # Add a robot.
@@ -158,6 +154,8 @@ print(data)
 # End the simulation.
 c.communicate({"$type": "terminate"})
 ```
+
+To encode hidden fields, first set `Encoder.INCLUDE_HIDDEN_FIELDS = True` and then call `encoder.encoder(o)`.
 
 ## When to use `JsonWriter`
 

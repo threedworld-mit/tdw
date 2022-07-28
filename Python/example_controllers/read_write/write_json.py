@@ -1,4 +1,3 @@
-import json
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.robot import Robot
@@ -10,8 +9,6 @@ Write TDW data class objects as JSON data and then read them.
 """
 
 output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("encode_json")
-if not output_directory.exists():
-    output_directory.mkdir(parents=True)
 print(f"Data will be saved to: {output_directory}")
 c = Controller()
 # Add a robot.

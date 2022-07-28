@@ -70,13 +70,13 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 4. [Add your own models to TDW](Documentation/lessons/3d_models/custom_models.md)
 5. [Add ShapeNet models to TDW](Documentation/lessons/3d_models/shapenet.md)
 
-## 3. Write data to disk
+## 3. Read/Write to Disk
 
-1. [Overview](Documentation/lessons/write_data/overview.md)
-2. [The `Logger` add-on](Documentation/lessons/write_data/logger.md)
-3. [The `JsonWriter` add-on](Documentation/lessons/write_data/json.md)
-4. [The `OutputDataWriter` add-on](Documentation/lessons/write_data/output_data_writer.md)
-5. [Create a custom data writer](Documentation/lessons/write_data/custom_writers.md)
+1. [Overview](Documentation/lessons/read_write/overview.md)
+2. [The `Logger` add-on](Documentation/lessons/read_write/logger.md)
+3. [The `JsonWriter` add-on](Documentation/lessons/read_write/json.md)
+4. [The `OutputDataWriter` add-on](Documentation/lessons/read_write/output_data_writer.md)
+5. [Create a custom data writer](Documentation/lessons/read_write/custom_writers.md)
 6. [Images](#Core Concepts)
 7. [Audio](#9. Audio)
 8. [Video](#10. Video Recording)

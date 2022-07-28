@@ -1,4 +1,4 @@
-##### Write Data
+##### Read/Write to Disk
 
 # Create a custom data writer
 
@@ -244,7 +244,7 @@ If you are writing lots of files, you can use threading to asynchronously save d
 
 Example controllers:
 
-- [object_data_json.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/write_data/object_data_json.py) Write object positions and rotations to JSON files using a custom sub-class of `ObjectManager`.
+- [object_data_json.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/read_write/object_data_json.py) Write object positions and rotations to JSON files using a custom sub-class of `ObjectManager`.
 
 Python API:
 

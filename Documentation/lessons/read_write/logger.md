@@ -1,8 +1,8 @@
-##### Write Data
+##### Read/Write to Disk
 
 # The `Logger` add-on
 
-The [`Logger`](../../python/add_ons/logger.md) add-on will log every command sent to the build to a text file. It can later read that text file and send those commands to the build. The `Logger` can be very useful when debugging code because it will allow you to capture and replay behavior without needing to use any particular controller.
+The [`Logger`](../../python/add_ons/logger.md) add-on will log every command sent to the build to a text file per `communicate()` call. It can later read that text file and send those commands to the build. The `Logger` can be very useful when debugging code because it will allow you to capture and replay behavior without needing to use any particular controller.
 
 Add a `Logger` just like you'd add any other add-on:
 

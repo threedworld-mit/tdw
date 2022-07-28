@@ -1,4 +1,4 @@
-##### Write Data
+##### Read/Write to Disk
 
 # The `JsonWriter` add-on
 
@@ -178,8 +178,8 @@ c.communicate({"$type": "terminate"})
 
 Example controllers:
 
-- [write_json.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/write_data/write_json.py) Write TDW data class objects as JSON data and then read them.
-- [write_multi_agent_json.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/write_data/write_multi_agent_json.py) An example of multi-agent JSON serialization.
+- [write_json.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/read_write/write_json.py) Write TDW data class objects as JSON data and then read them.
+- [write_multi_agent_json.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/read_write/write_multi_agent_json.py) An example of multi-agent JSON serialization.
 
 Python API:
 

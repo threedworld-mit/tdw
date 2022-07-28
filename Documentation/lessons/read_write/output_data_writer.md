@@ -1,8 +1,8 @@
-##### Write Data
+##### Read/Write to Disk
 
 # The `OutputDataWriter` add-on
 
-The [`OutputDataWriter`](../../python/add_ons/output_data_writer.md) add-on will write the raw list of bytes returned by the build to disk per-frame.
+The [`OutputDataWriter`](../../python/add_ons/output_data_writer.md) add-on will write the raw list of bytes returned by the build to disk per `communicate()` call. This is best used as a debugging tool.
 
 The raw response is usually written as `resp` in our example controllers:
 
@@ -197,7 +197,7 @@ While this can be useful (again, it's probably most useful as a debug tool), thi
 
 Example controllers:
 
-- [write_output_data.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/write_data/write_output_data.py) Write raw output data per frame from the build.
+- [write_output_data.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/read_write/write_output_data.py) Write raw output data per frame from the build.
 
 Python API:
 

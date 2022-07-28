@@ -65,10 +65,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 ### Example Controllers
 
 - Updated `robots/robot_arm.py` to use new `DynamicRobots` output data.
-- Added: `write_data/object_data_json.py`
-- Added: `write_data/write_json.py`
-- Added: `write_data/write_multi_agent_json.py`
-- Added: `write_data/write_output_data.py`
+- Added: `read_write/object_data_json.py`
+- Added: `read_write/write_json.py`
+- Added: `read_write/write_multi_agent_json.py`
+- Added: `read_write/write_output_data.py`
 
 ### Documentation
 
@@ -76,10 +76,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 | Document                                   | Description                               |
 | ------------------------------------------ | ----------------------------------------- |
-| `lessons/write_data/custom_writers.md`     | Tips for custom data writers.             |
-| `lessons/write_data/json.md`               | How to use `JsonWriter`.                  |
-| `lessons/write_data/output_data_writer.md` | How to use `OutputDataWriter`.            |
-| `lessons/write_data/overview.md`           | Overview of how to write data to disk.    |
+| `lessons/read_write/custom_writers.md`     | Tips for custom data writers.             |
+| `lessons/read_write/json.md`               | How to use `JsonWriter`.                  |
+| `lessons/read_write/output_data_writer.md` | How to use `OutputDataWriter`.            |
+| `lessons/read_write/overview.md`           | Overview of how to write data to disk.    |
 | `python/add_ons/json_writer.md`            | API documentation for `JsonWriter`.       |
 | `python/add_ons/output_data_writer.md`     | API documentation for `OutputDataWriter`. |
 | `python/add_ons/writer.md`                 | API documentation for `Writer`.           |
@@ -91,7 +91,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | Document                            | Modification                                                 |
 | ----------------------------------- | ------------------------------------------------------------ |
 | `lessons/robots/low_level_api.md`   | Updated descriptions and example code to use `DynamicRobots` instead of `Robot`. |
-| `lessons/troubleshooting/logger.md` | Moved to `lessons/write_data/logger.md`                      |
+| `lessons/troubleshooting/logger.md` | Moved to `lessons/read_write/logger.md`                      |
 
 ## v1.10.1
 

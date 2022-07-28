@@ -118,7 +118,7 @@ class LISDF(AddOn):
         dst_str = dst_str.replace("\\", "/")
         src_str = src_str.replace("\\", "/")
         # Generate asset bundles if needed.
-        args = [f'-path="{src_str}"',
+        args = [f'-source="{src_str}"',
                 f'-output_directory="{dst_str}"']
         if overwrite:
             args.append("-overwrite")

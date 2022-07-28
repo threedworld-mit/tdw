@@ -239,7 +239,7 @@ If you are writing lots of files, you can use threading to asynchronously save d
 
 **Disadvantages:**
 
-- Threads are very hard to use correctly. You will have to deal with the usually problems with asynchronous programming. For example, if you use threading to save images, you will need find a way to name each image uniquely; a frame counter won't work because two different threads might read the counter at the same time, causing the image data of one thread to overwrite the other.
+- Threads are very hard to use correctly. You will have to deal with the usually problems with asynchronous programming. For example, if you use threading to save images, you will need to find a way to name each image uniquely; a frame counter won't work because two different threads might read the counter at the same time, causing the image data of one thread to overwrite the other.
 
 ***
 

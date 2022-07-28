@@ -18,7 +18,7 @@ class RobotCreator(AssetBundleCreatorBase):
     """
     TEMP_ROOT: Path = AssetBundleCreatorBase.PROJECT_PATH.joinpath("temp_robots")
 
-    def source_url_to_asset_bundles(self, urdf_url: str, output_directory: Union[str, Path], root_meshes_folder: str,
+    def source_url_to_asset_bundles(self, urdf_url: str, output_directory: Union[str, Path],
                                     required_repo_urls: Dict[str, str] = None,
                                     xacro_args: Dict[str, str] = None, immovable: bool = True,
                                     description_infix: str = None, branch: str = None,
@@ -63,7 +63,6 @@ class RobotCreator(AssetBundleCreatorBase):
 
         :param urdf_url: The URL of a .urdf or a .xacro file.
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
-        :param root_meshes_folder: The name of the folder used in the .urdf file for mesh file paths. For example, in the UR5 file, this is `ur_description`.
         :param required_repo_urls: A dictionary of description folder names and repo URLs outside of the robot's repo that are required to create the robot. This is only required for .xacro files that reference outside repos. For example, the Sawyer robot requires this to add the gripper: `{"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"}`
         :param xacro_args: Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file). For example, the Sawyer robot requires this to add the gripper: `{"electric_gripper": "true"}`
         :param immovable: If True, the base of the robot is immovable.
@@ -99,14 +98,13 @@ class RobotCreator(AssetBundleCreatorBase):
             urdf_path = self.xacro_to_urdf(xacro_path=urdf_path, repo_paths=repo_paths, args=xacro_args)
             assert urdf_path.exists(), f"Not found: {urdf_path.resolve()}"
         self.source_file_to_asset_bundles(source_file=urdf_path, output_directory=output_directory,
-                                          root_meshes_folder=root_meshes_folder, immovable=immovable,
-                                          library_path=library_path, library_description=library_description,
+                                          immovable=immovable, library_path=library_path,
+                                          library_description=library_description,
                                           source_description=source_description)
 
     def source_file_to_asset_bundles(self, source_file: Union[str, Path], output_directory: Union[str, Path],
-                                     root_meshes_folder: str, immovable: bool = True,
-                                     library_path: Union[str, Path] = None, library_description: str = None,
-                                     source_description: str = None) -> None:
+                                     immovable: bool = True, library_path: Union[str, Path] = None,
+                                     library_description: str = None, source_description: str = None) -> None:
         """
         Given a .urdf file plus its meshes, create asset bundles of the robot.
 
@@ -135,7 +133,6 @@ class RobotCreator(AssetBundleCreatorBase):
         ```
 
         - The directory structure must match that of the [source repo](https://github.com/ros-industrial/robot_movement_interface).
-        - The `root_meshes_folder` refers to the root directory used within the .urdf file to find the meshes. In this case, it is `ur_description`.
         - Collision meshes are ignored; they will be generated when creating the prefab.
 
         Example `output_directory`:
@@ -160,7 +157,6 @@ class RobotCreator(AssetBundleCreatorBase):
 
         :param source_file: The path to the source .fbx or .obj file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
-        :param root_meshes_folder: The name of the folder used in the .urdf file for mesh file paths. For example, in the UR5 file, this is `ur_description`.
         :param immovable: If True, the base of the robot is immovable.
         :param library_path: If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`.
         :param library_description: A description of the library. Ignored if `library_path` is None.
@@ -174,7 +170,6 @@ class RobotCreator(AssetBundleCreatorBase):
             args.append("-immovable")
         if source_description is not None:
             args.append(f'-source_description="{source_description}"')
-        args.append(f'-root_meshes_folder="{root_meshes_folder}"')
         args = AssetBundleCreatorBase._add_library_args(args=args,
                                                         library_path=library_path,
                                                         library_description=library_description)
@@ -302,8 +297,7 @@ class RobotCreator(AssetBundleCreatorBase):
         assert urdf_path.exists(), f"Not found: {urdf_path.resolve()}"
         return urdf_path.resolve()
 
-    def urdf_to_prefab(self, urdf_path: Union[str, Path], output_directory: Union[str, Path], root_meshes_folder: str,
-                       immovable: bool = True) -> None:
+    def urdf_to_prefab(self, urdf_path: Union[str, Path], output_directory: Union[str, Path], immovable: bool = True) -> None:
         """
         Convert a .urdf file to Unity prefab.
 
@@ -311,7 +305,6 @@ class RobotCreator(AssetBundleCreatorBase):
 
         :param urdf_path: The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
-        :param root_meshes_folder: The name of the folder used in the .urdf file for mesh file paths. For example, in the UR5 file, this is `ur_description`.
         :param immovable: If True, the base of the robot will be immovable by default (see the `set_immovable` command).
         """
 
@@ -320,7 +313,6 @@ class RobotCreator(AssetBundleCreatorBase):
                                                  destination=output_directory)
         if immovable:
             args.append("-immovable")
-        args.append(f'-root_meshes_folder="{root_meshes_folder}"')
         self.call_unity(method="SourceFileToPrefab",
                         args=args)
         self._print_log(output_directory=output_directory)

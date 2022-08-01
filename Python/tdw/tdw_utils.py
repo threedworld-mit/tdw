@@ -21,7 +21,6 @@ from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
 import base64
-import screeninfo
 
 
 class TDWUtils:
@@ -975,7 +974,7 @@ class TDWUtils:
         When the TDW build launches, it usually appears at the center of the primary monitor. The expected position of the top-left corner of the build window is therefore:
 
         ```
-        {"x": monitor.width / 2 - window_width / 2, "y": monitor.height / 2 - (window_height - title_bar_height) / 2}
+        {"x": monitor.width / 2 - window_width / 2, "y": monitor.height / 2 - window_height / 2 + title_bar_height}
         ```
 
         Where `monitor` is the primary monitor.
@@ -987,6 +986,9 @@ class TDWUtils:
         :return: The expected position of the top-left corner of the build window.
         """
 
+        # This function is a late addition to TDW.
+        # The import statement is here to prevent every single controller from breaking if screeninfo isn't installed.
+        import screeninfo
         monitors = screeninfo.get_monitors()
         if len(monitors) == 0:
             raise Exception("No monitors found!")
@@ -1007,8 +1009,8 @@ class TDWUtils:
             elif s == "Darwin":
                 title_bar_height = 25
             elif s == "Linux":
-                title_bar_height = 25
+                title_bar_height = 48
             else:
                 raise Exception(s)
         return {"x": monitor.width // 2 - window_width // 2,
-                "y": monitor.height // 2 - (window_height - title_bar_height) // 2}
+                "y": monitor.height // 2 - window_height // 2 + title_bar_height}

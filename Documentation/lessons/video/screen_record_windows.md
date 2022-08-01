@@ -86,13 +86,17 @@ The `position` parameter of `start_video_capture_windows` sets the top-left corn
 
 Usually, the build simulation window will appear in the center of the primary monitor. To get its expected position, call `TDWUtils.get_expected_window_position(window_width, window_height)`.
 
-There is an optional parameter, `title_bar_height`, which sets the expected height of the window's title bar. This parameter defaults to None, in which case `TDWUtils` will set it to a platform-specific value; in the case of Windows, the default title bar height is 25 pixels, but it can be up to 50 pixels depending on your display settings:
+If you get an error about `screeninfo` not being installed, run `pip3 install screeninfo` and try again.
+
+There is an optional parameter, `title_bar_height`, which sets the expected height of the window's title bar:
 
 ```python
 from tdw.tdw_utils import TDWUtils
 
 position = TDWUtils.get_expected_window_position(window_width=256, window_height=256, title_bar_height=25)
 ```
+
+This parameter defaults to None, in which case `TDWUtils` will set it to a platform-specific value; in the case of Windows, the default title bar height is 25 pixels, but it can be up to 50 pixels depending on your display settings.
 
 *Note: It is technically possible in Windows for ffmpeg to capture a  window rather than a screen region; however, when we tested this, we found that window capture had many problems. In particular, if the video is a .mp4 value, a window capture will be a totally black screen.*
 

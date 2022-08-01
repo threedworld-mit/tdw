@@ -18,8 +18,7 @@ A minimal example of an audio-visual screen recorder for Linux.
 
 # The target framerate.
 framerate = 60
-# Launch the build with -popupwindow
-c = Controller(launch_build=False)
+c = Controller()
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            look_at={"x": 0, "y": 0, "z": 0},
@@ -93,11 +92,17 @@ The `position` parameter of `start_video_capture_linux` sets the top-left corner
 
 Usually, the build simulation window will appear in the center of the primary monitor. To get its expected position, call `TDWUtils.get_expected_window_position(window_width, window_height)`.
 
-Note that this won't compensate for the title bar of the window. For ease of use, it is possible to remove the title bar when recording video:
+If you get an error about `screeninfo` not being installed, run `pip3 install screeninfo` and try again.
 
-1. [Set `launch_build=False` in your controller.](../core_concepts/launch_build.md)
-2. Launch the build with an extra command-line argument: `cd ~/tdw_build/TDW.x86_64 && ./TDW.exe -popupwindow`
-3. Launch the controller.
+There is an optional parameter, `title_bar_height`, which sets the expected height of the window's title bar:
+
+```python
+from tdw.tdw_utils import TDWUtils
+
+position = TDWUtils.get_expected_window_position(window_width=256, window_height=256, title_bar_height=48)
+```
+
+This parameter defaults to None, in which case `TDWUtils` will set it to a platform-specific value. In the case of Linux, this can vary quite a bit, but in Ubuntu 20 the default title bar height is 48 pixels.
 
 ## The `audio_device` parameter
 

@@ -17,10 +17,9 @@ class PhotorealVRay(Controller):
     """
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        # Dictionary of model names by ID
         # Dictionary of object ID,,list of matrices. Used to store physics movement data, before we download
         # the V-Ray models and transform them.
-        # Dictionary of model names by ID
-        self.object_names: Dict[int, str] = dict()
         self.matrix_list: Dict(str, List(np.ndarray)) = dict()
         self.id_list = []
         self.frame_range = 100

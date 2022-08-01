@@ -20,7 +20,7 @@ class matrix_data_struct(NamedTuple):
 class VRayExport(AddOn):
 
     def __init__(self, image_width: int, image_height: int, scene_name: str, output_path: str, 
-                 animate_camera: bool = False, animate_objects: bool = False, frame_range: int = 0):
+                 animate: bool = False, local_render: bool = True):
         super().__init__()
         self.output_path = output_path
         if not os.path.exists(self.output_path):
@@ -31,10 +31,9 @@ class VRayExport(AddOn):
             self.VRAY_EXPORT_RESOURCES_PATH.mkdir(parents=True)
         self.image_width: int = image_width
         self.image_height: int = image_height
-        self.animate_camera = animate_camera
-        self.animate_objects = animate_objects
+        self.animate = animate
         self.scene_name = scene_name
-        self.frame_range = frame_range
+        self.local_render = local_render
         # Conversion matrix from Y-up to Z-up, and left-hand to right-hand.
         self.handedness = np.array([[-1, 0, 0, 0],
                                     [0, 0, 1, 0],
@@ -55,6 +54,9 @@ class VRayExport(AddOn):
         self.model_ids: Dict[str, int] = dict()
         # Dictionary of node IDs by model name
         self.node_ids: Dict[str, str] = dict()
+        # The current frame count.
+        self.frame_count: int = 0
+        self.downloaded_data = False;
 
 
     def get_initialization_commands(self) -> List[dict]:
@@ -88,19 +90,26 @@ class VRayExport(AddOn):
         Perform all export processes except for initiating render. 
         Downloads master scene file, all object models, and exports all necessary data.
         """
-        self.rebuild_object_list(resp=resp)
+        #Download the scene file and model files if we have not done so already.
+        if not self.downloaded_data:
+            self.downloaded_data = True;
+            self.rebuild_object_list(resp=resp)       
+            # Download and unzip scene file -- this will be the "master" file, that all model .vrscene files will be appended to.
+            self.download_scene()
+            # Download and unzip all object models in the scene.
+            for model_name in self.object_names.values():
+                self.download_model(model_name)
+            # Update model files to reflect initial scene object transforms.
+            self.export_static_node_data(resp=resp)
+            # Update V-Ray camera to reflect TDW camera position and orientation.
+            self.export_static_camera_view_data(resp=resp)
+        # Process object or camera movement.
+        if self.animate:
+            self.export_animation(resp=resp)
+        # Launch the Vantage render job.
+        #if self.local_render:
+            #self.launch_render()
         
-        # Download and unzip scene file -- this will be the "master" file, that all model .vrscene files will be appended to.
-        self.download_scene()
-        # Download and unzip all object models in the scene.
-        self.download_scene_models()
-        # Update model files to reflect initial scene object transforms.
-        self.export_static_node_data(resp=resp)
-        # Update V-Ray camera to reflect TDW camera position and orientation.
-        self.export_static_camera_view_data(resp=resp)
-        if self.animate_objects:
-        
-
     def get_scene_file_path(self) -> str:
         """
         Return the path to the downloaded master scene file.
@@ -133,14 +142,6 @@ class VRayExport(AddOn):
             # Cache the node ID string.
             node_id = self.get_node_id_string(model_name)
             self.node_ids[model_name] = node_id
-
-    def download_scene_models(self):
-        """
-        Download all models in the scene.
-        """
-        for model_name in self.object_names.values():
-            self.download_model(model_name)
-        self.pre_rotate_models()
 
     def download_scene(self):
         """
@@ -353,7 +354,7 @@ class VRayExport(AddOn):
                                         column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(matrix[1][2]), 
                                         column_three = str(matrix[2][0]) + "," + str(matrix[2][1]) + "," + str(matrix[2][2]),  
                                         column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
-        # get node ID from cached dictionary.
+        # Get node ID from cached dictionary.
         node_id_string = self.node_ids[model_name]
         # Form interpolation string.
         node_string = ("\n" + node_id_string + 
@@ -383,7 +384,6 @@ class VRayExport(AddOn):
                     avatar_id = avatar_transform_matrices.get_id(j)
                     avatar_matrix = avatar_transform_matrices.get_avatar_matrix(j)
                     sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
-                    #print(str(sensor_matrix))
                     # Get the matrix and convert it.
                     # Equivalent to: handedness * object_matrix * handedness.
                     pos_matrix = np.matmul(self.camera_handedness, np.matmul(avatar_matrix, self.camera_handedness))
@@ -462,28 +462,34 @@ class VRayExport(AddOn):
             f.write(out_string)
 
 
-    def animate_camera(self):
-        # Open the master scene file, so we can output the dynamic data for any moving objects, affected by applying the force.
+    def export_animation(self, resp: List[bytes]):
+        """
+        
+        """
+        # Open the master scene file, so we can output the dynamic data for any moving objects and/or a moving camera.
         path = self.get_scene_file_path()      
-        with open(path, "a") as f:        
-            frame_count = 0
-            for i in range(self.frame_range):
-                # Randomely reposition camera.
-                resp = self.communicate({"$type": "teleport_avatar_to", "position": {"x": uniform(-3, -2), "y": uniform(0.5, 1.5), "z": uniform(-2, 2)}, "avatar_id": "a"})
-                for i in range(len(resp) - 1):
-                    r_id = OutputData.get_data_type_id(resp[i])
-                    if r_id == "atrm":
-                        avatar_transform_matrices = AvatarTransformMatrices(resp[i])
-                        for j in range(avatar_transform_matrices.get_num()):
-                            avatar_id = avatar_transform_matrices.get_id(j)
-                            avatar_matrix = avatar_transform_matrices.get_avatar_matrix(j)
-                            sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
-                            # Convert matrices to V-Ray format and output to master scene file as frame-by-frame interpolations.
-                            node_data_string = self.get_dynamic_camera_data(avatar_matrix, sensor_matrix, frame_count)
-                            f.write(node_data_string)
-                frame_count = frame_count + 1
-            # Write out to the master scene file the final frame_count as the end of the animation sequence.
-            self.export_animation_settings(frame_count)
+        with open(path, "a") as f:                
+            for i in range(len(resp) - 1):
+                r_id = OutputData.get_data_type_id(resp[i])
+                if r_id == "atrm":
+                    avatar_transform_matrices = AvatarTransformMatrices(resp[i])
+                    for j in range(avatar_transform_matrices.get_num()):
+                        avatar_id = avatar_transform_matrices.get_id(j)
+                        avatar_matrix = avatar_transform_matrices.get_avatar_matrix(j)
+                        sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
+                        # Convert matrices to V-Ray format and output to master scene file as frame-by-frame interpolations.
+                        node_data_string = self.get_dynamic_camera_data(avatar_matrix, sensor_matrix, self.frame_count)
+                        f.write(node_data_string)
+                if r_id == "trma":
+                    transform_matrices = TransformMatrices(resp[i])
+                    # Iterate through the objects.
+                    for j in range(transform_matrices.get_num()):
+                        # Get the object ID.
+                        object_id = transform_matrices.get_id(j)
+                        mat = transform_matrices.get_matrix(j)
+                        node_data_string = self.get_dynamic_node_data(mat, self.object_names[object_id], self.frame_count)
+                        f.write(node_data_string)
+            self.frame_count += 1
 
 
     def assemble_render_file(self):
@@ -500,53 +506,28 @@ class VRayExport(AddOn):
             if os.path.exists("lights.vrscene"):
                 f.write("#include lights.vrscene\n")
 
-    def launch_render(self, start_frame=0, end_frame=0):
+    def launch_render(self):
         """
         Launch Vantage in headless mode and render scene file, updating for animation if necessary.
         """
+        # Open the master scene file.
         scene_path = self.get_scene_file_path()
         output_path = str(self.output_path) + self.scene_name + ".png"
         #os.chmod("C://Program Files//Chaos Group//Vantage//vantage_console.exe", 0o777)
-        if end_frame > 0:
+        if self.frame_count > 0:
             # Write out to the master scene file the final frame_count as the end of the animation sequence.
-            self.export_animation_settings(end_frame)
+            self.export_animation_settings(self.frame_count)
             # Launch vantage in appropriate mode.
             subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage.exe", 
                         "-sceneFile=" + scene_path, 
                         "-outputFile=" + output_path,  
                         "-outputWidth=" + str(self.image_width), 
                         "-outputHeight=" + str(self.image_height),
-                        "-frames=" + str(start_frame) + "-" + str(end_frame),
+                        "-frames=0" + "-" + str(self.frame_count),
                         "-quiet",
                         "-autoClose=true"])
         else:
             subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage.exe", 
-                        "-sceneFile=" + scene_path, 
-                        "-outputFile=" + output_path,  
-                        "-outputWidth=" + str(self.image_width), 
-                        "-outputHeight=" + str(self.image_height),
-                        "-quiet",
-                        "-autoClose=true"])
-
-    def launch_vantage_render(self, start_frame=0, end_frame=0):
-        """
-        Launch Vantage in headless mode and render scene file, updating for animation if necessary.
-        """
-        scene_path = self.get_scene_file_path()
-        output_path = str(self.output_path) + self.scene_name + ".png"
-        os.chmod("C://Program Files//Chaos Group//Vantage//vantage_console.exe", 0o777)
-        if end_frame > 0:
-            # Launch vantage in appropriate mode.
-            subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe", 
-                        "-sceneFile=" + scene_path, 
-                        "-outputFile=" + output_path,  
-                        "-outputWidth=" + str(self.image_width), 
-                        "-outputHeight=" + str(self.image_height),
-                        "-frames=" + str(start_frame) + "-" + str(end_frame),
-                        "-quiet",
-                        "-autoClose=true"])
-        else:
-            subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe", 
                         "-sceneFile=" + scene_path, 
                         "-outputFile=" + output_path,  
                         "-outputWidth=" + str(self.image_width), 

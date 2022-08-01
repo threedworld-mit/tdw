@@ -3891,8 +3891,8 @@ Rotate an object by a given angle around a given axis.
 | --- | --- | --- | --- |
 | `"axis"` | Axis | The axis of rotation. | "yaw" |
 | `"angle"` | float | The angle of rotation in degrees. | |
-| `"is_world"` | bool | If true, the object will rotate via "global" directions and angles. If false, the object will rotate locally. | True |
-| `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). This overrides is_world | False |
+| `"is_world"` | bool | If True, the object will rotate around global axes. If False, the object will around local axes. Ignored if use_centroid == False. | True |
+| `"use_centroid"` | bool | If True, rotate around the object's centroid. If False, rotate around the bottom-center position of the object. | False |
 | `"id"` | int | The unique object ID. | |
 
 #### Axis

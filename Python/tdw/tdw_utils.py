@@ -970,18 +970,19 @@ class TDWUtils:
         raise Exception(corner, wall)
 
     @staticmethod
-    def get_expected_window_position(window_width: int = 256, window_height: int = 256) -> Dict[str, float]:
+    def get_expected_window_position(window_width: int = 256, window_height: int = 256, title_bar_height: int = None) -> Dict[str, float]:
         """
         When the TDW build launches, it usually appears at the center of the primary monitor. The expected position of the top-left corner of the build window is therefore:
 
         ```
-        {"x": monitor.width // 2 - window_width // 2, "y": monitor.height // 2 - window_height // 2}
+        {"x": monitor.width / 2 - window_width / 2, "y": monitor.height / 2 - (window_height + title_bar_height) / 2}
         ```
 
         Where `monitor` is the primary monitor.
 
         :param window_width: The width of the TDW build's window.
         :param window_height: The height of the TDW build's window.
+        :param title_bar_height: The height of the window title bar in pixels. If None, this method will use a default value based on the operating system.
 
         :return: The expected position of the top-left corner of the build window.
         """
@@ -999,5 +1000,15 @@ class TDWUtils:
             # We couldn't find a primary monitor for some reason.
             else:
                 monitor = monitors[0]
+        if title_bar_height is None:
+            s = system()
+            if s == "Windows":
+                title_bar_height = 25
+            elif s == "Darwin":
+                title_bar_height = 25
+            elif s == "Linux":
+                title_bar_height = 25
+            else:
+                raise Exception(s)
         return {"x": monitor.width // 2 - window_width // 2,
-                "y": monitor.height // 2 - window_height // 2}
+                "y": monitor.height // 2 - (window_height + title_bar_height) // 2}

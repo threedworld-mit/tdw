@@ -93,10 +93,10 @@ There is an optional parameter, `title_bar_height`, which sets the expected heig
 ```python
 from tdw.tdw_utils import TDWUtils
 
-position = TDWUtils.get_expected_window_position(window_width=256, window_height=256, title_bar_height=12)
+position = TDWUtils.get_expected_window_position(window_width=256, window_height=256, title_bar_height=25)
 ```
 
-This parameter defaults to None, in which case `TDWUtils` will set it to a platform-specific value. In the case of Windows, the default value of `title_bar_height` is 12. This is half of the actual title bar height (25 pixels), which should be correct under default appearance settings.
+This parameter defaults to None, in which case `TDWUtils` will set it to a platform-specific value. In the case of Windows, the default value of `title_bar_height` is 25. If you have appearance setting (in Control Panel) set to a value other than 100%, then the actually title bar height will be different and you will need to manually set the `title_bar_height` parameter.
 
 *Note: It is technically possible in Windows for ffmpeg to capture a  window rather than a screen region; however, when we tested this, we found that window capture had many problems. In particular, if the video is a .mp4 value, a window capture will be a totally black screen.*
 

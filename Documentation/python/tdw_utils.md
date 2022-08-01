@@ -704,3 +704,28 @@ Given an corner an a wall, get the direction that a lateral arrangement will run
 
 _Returns:_  Tuple: direction, wall
 
+#### get_expected_window_position
+
+**`TDWUtils.get_expected_window_position()`**
+
+**`TDWUtils.get_expected_window_position(window_width=256, window_height=256, title_bar_height=None)`**
+
+_(Static)_
+
+When the TDW build launches, it usually appears at the center of the primary monitor. The expected position of the top-left corner of the build window is therefore:
+
+```
+{"x": monitor.width / 2 - window_width / 2, "y": monitor.height / 2 - (window_height - title_bar_height) / 2}
+```
+
+Where `monitor` is the primary monitor.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| window_width |  int  | 256 | The width of the TDW build's window. |
+| window_height |  int  | 256 | The height of the TDW build's window. |
+| title_bar_height |  int  | None | The height of the window title bar in pixels. If None, this method will use a default value based on the operating system. |
+
+_Returns:_  The expected position of the top-left corner of the build window.
+

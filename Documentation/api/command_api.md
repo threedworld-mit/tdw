@@ -8713,13 +8713,11 @@ Start video capture using ffmpeg. This command can only be used on Windows.
 ```
 
 ```python
-{"$type": "start_video_capture_windows", "output_path": "string", "window_capture": True, "window_title": "TDW", "audio_device": "", "audio_buffer_size": 5, "draw_mouse": False, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
+{"$type": "start_video_capture_windows", "output_path": "string", "audio_device": "", "audio_buffer_size": 5, "draw_mouse": False, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"window_capture"` | bool | If True, capture a window rather than a screen region. | True |
-| `"window_title"` | string | If window_capture == True, this is the name of the window that will be recorded. This can be fussy to use: for example, if you have a folder called TDW open in Explorer, ffmpeg may choose to record that window instead. | "TDW" |
 | `"audio_device"` | string | The name of the audio device. Ignored if audio == False. To get a list of devices: ffmpeg -list_devices true -f dshow -i dummy | "" |
 | `"audio_buffer_size"` | int | The audio buffer size in ms. This should always be greater than 0. Adjust this if the audio doesn't sync with the video. See: <ulink url="https://ffmpeg.org/ffmpeg-devices.html">https://ffmpeg.org/ffmpeg-devices.html</ulink> (search for audio_buffer_size). | 5 |
 | `"draw_mouse"` | bool | If True, show the mouse in the video. | False |

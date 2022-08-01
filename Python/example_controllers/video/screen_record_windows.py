@@ -11,8 +11,7 @@ A minimal example of an audio-visual screen recorder for Windows.
 
 # The target framerate.
 framerate = 60
-# Launch the build with -popupwindow
-c = Controller(launch_build=False)
+c = Controller()
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            look_at={"x": 0, "y": 0, "z": 0},

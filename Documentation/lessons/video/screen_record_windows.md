@@ -18,8 +18,7 @@ A minimal example of an audio-visual screen recorder for Windows.
 
 # The target framerate.
 framerate = 60
-# Launch the build with -popupwindow
-c = Controller(launch_build=False)
+c = Controller()
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            look_at={"x": 0, "y": 0, "z": 0},
@@ -87,11 +86,13 @@ The `position` parameter of `start_video_capture_windows` sets the top-left corn
 
 Usually, the build simulation window will appear in the center of the primary monitor. To get its expected position, call `TDWUtils.get_expected_window_position(window_width, window_height)`.
 
-Note that this won't compensate for the title bar of the window. For ease of use, it is possible to remove the title bar when recording video:
+There is an optional parameter, `title_bar_height`, which sets the expected height of the window's title bar. This parameter defaults to None, in which case `TDWUtils` will set it to a platform-specific value; in the case of Windows, the default title bar height is 25 pixels, but it can be up to 50 pixels depending on your display settings:
 
-1. [Set `launch_build=False` in your controller.](../core_concepts/launch_build.md)
-2. Launch the build with an extra command-line argument: `cd ~/tdw_build/TDW ; ./TDW.exe -popupwindow`
-3. Launch the controller.
+```python
+from tdw.tdw_utils import TDWUtils
+
+position = TDWUtils.get_expected_window_position(window_width=256, window_height=256, title_bar_height=25)
+```
 
 *Note: It is technically possible in Windows for ffmpeg to capture a  window rather than a screen region; however, when we tested this, we found that window capture had many problems. In particular, if the video is a .mp4 value, a window capture will be a totally black screen.*
 

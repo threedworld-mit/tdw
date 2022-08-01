@@ -26,8 +26,37 @@ class StaticRobot(object):
         return 0
 
     # StaticRobot
-    def Joints(self, j):
+    def Index(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+    # StaticRobot
+    def JointIndices(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # StaticRobot
+    def JointIndicesAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
+        return 0
+
+    # StaticRobot
+    def JointIndicesLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # StaticRobot
+    def Joints(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             x = self._tab.Vector(o)
             x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 4
@@ -40,14 +69,14 @@ class StaticRobot(object):
 
     # StaticRobot
     def JointsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # StaticRobot
     def NonMoving(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             x = self._tab.Vector(o)
             x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 4
@@ -60,15 +89,18 @@ class StaticRobot(object):
 
     # StaticRobot
     def NonMovingLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def StaticRobotStart(builder): builder.StartObject(3)
+def StaticRobotStart(builder): builder.StartObject(5)
 def StaticRobotAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
-def StaticRobotAddJoints(builder, joints): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(joints), 0)
+def StaticRobotAddIndex(builder, index): builder.PrependInt32Slot(1, index, 0)
+def StaticRobotAddJointIndices(builder, jointIndices): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(jointIndices), 0)
+def StaticRobotStartJointIndicesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StaticRobotAddJoints(builder, joints): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(joints), 0)
 def StaticRobotStartJointsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StaticRobotAddNonMoving(builder, nonMoving): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(nonMoving), 0)
+def StaticRobotAddNonMoving(builder, nonMoving): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(nonMoving), 0)
 def StaticRobotStartNonMovingVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def StaticRobotEnd(builder): return builder.EndObject()

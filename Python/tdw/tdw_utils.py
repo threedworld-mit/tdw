@@ -88,7 +88,7 @@ class TDWUtils:
         :return A Vector4, e.g. `{"x": 0, "y": 0, "z": 0, "w": 0}`
         """
 
-        return {"x": arr[0], "y": arr[1], "z": arr[2], "w": arr[3]}
+        return {"x": float(arr[0]), "y": float(arr[1]), "z": float(arr[2]), "w": float(arr[3])}
 
     @staticmethod
     def color_to_array(color: Dict[str, float]) -> np.array:

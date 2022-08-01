@@ -1,18 +1,14 @@
-# CompositeObjectManager
+# Writer
 
-`from tdw.add_ons.composite_object_manager import CompositeObjectManager`
+`from tdw.add_ons.writer import Writer`
 
-Manager add-on for static and dynamic composite object data.
-
-Note that some useful information, such as the positions, rotations, names, of the objects, is not included here. See: [`ObjectManager`](object_manager.md).
+Abstract base class for per-frame data writers.
 
 ***
 
 ## Fields
 
-- `static` A dictionary of [`CompositeObjectStatic`](../object_data/composite_object/composite_object_static.md) data that is set when this add-on intializes. Key = The object ID.
-
-- `dynamic` A dictionary of [`CompositeObjectDynamic`](../object_data/composite_object/composite_object_dynamic.md) data that is set per-frame. Key = The object ID.
+- `output_directory` The root output directory as a [`Path`](https://docs.python.org/3/library/pathlib.html). If this doesn't exist, it will be created.
 
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 
@@ -24,9 +20,14 @@ Note that some useful information, such as the positions, rotations, names, of t
 
 #### \_\_init\_\_
 
-**`CompositeObjectManager()`**
+**`Writer(output_directory)`**
 
-(no parameters)
+**`Writer(output_directory, zero_padding=8)`**
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this doesn't exist, it will be created. |
+| zero_padding |  int  | 8 | How many zeros to append to the file name. By default, the name of the file of the first frame will be `00000000.txt`. |
 
 #### get_initialization_commands
 
@@ -59,23 +60,21 @@ This is called within `Controller.communicate(commands)` before sending commands
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
-#### is_open
-
-**`self.is_open(object_id, sub_object_id)`**
-
-**`self.is_open(object_id, sub_object_id, open_at=30)`**
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the root object. |
-| sub_object_id |  int |  | The ID of one of the root object's hinges, motors, or springs. |
-| open_at |  float  | 30 | A threshold of 'openness' in degrees. If the sub-object's angle is greater than or equal to this, it is considered 'open'. |
-
-_Returns:_  True if the hinge, motor, or spring is open.
-
 #### reset
 
 **`self.reset()`**
 
-Reset this add-on. Call this when resetting the scene.
+This will reset the frame count.
+
+#### read
+
+**`self.read(path)`**
+
+Read saved ouput data.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| path |  Union[str, Path, int] |  | The path to the frame file. This can be a string or [`Path`](https://docs.python.org/3/library/pathlib.html) file path or an integer. If this is an integer, it represents the frame number; the file is assumed to be in `self.output_directory`. |
+
+_Returns:_  Deserialized data.

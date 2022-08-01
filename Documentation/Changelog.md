@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
-## v1.10.2
+## v1.10.4
 
 ### Command API
 
@@ -15,11 +15,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `start_video_capture_linux`   | Start video capture using ffmpeg. This command can only be used on Linux. |
 | `start_video_capture_osx`     | Start video capture using ffmpeg. This command can only be used on OS X. |
 | `start_video_capture_windows` | Start video capture using ffmpeg. This command can only be used on Windows. |
-| `stop_video_capture`          | Stop ongoing video capture.                                  |
-
-### `tdw` module
-
-- Added `screeninfo` as a required module. To install: `pip3 install screeninfo`.
+| `stop_video_capture`          | Stop ongoing video capture.     |
 
 ### Docker
 
@@ -41,6 +37,106 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `lessons/video/images.md`   | Removed sections regarding ffmpeg and OBS.                   |
 | `lessons/video/overview.md` | Added a section about installing ffmpeg.                     |
 
+### `tdw` module
+
+- Added `screeninfo` as a required module. To install: `pip3 install screeninfo`.
+
+## v1.10.3
+
+### Build
+
+- Fixed: `rotate_object_by` doesn't work as expected when `use_centroid == True`.
+
+## v1.10.2
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `set_revolute_angle`     | Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot. |
+| `set_prismatic_position` | Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot. |
+| `set_spherical_angles`   | Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot. |
+| `set_robot_joint_id` | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. |
+| `send_dynamic_robots` | Send dynamic robot data. |
+
+#### Deprecated Commands
+
+| Command       | Reason                              |
+| ------------- | ----------------------------------- |
+| `send_robots` | Replaced with `send_dynamic_robots` |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data     | Description                |
+| --------------- | -------------------------- |
+| `DynamicRobots` | Dynamic robot output data. |
+
+#### Modified Output Data
+
+| Output Data   | Modification                                               |
+| ------------- | ---------------------------------------------------------- |
+| `StaticRobot` | Added: `get_joint_indices()`<br>Added: `get_robot_index()` |
+
+#### Deprecated Output Data
+
+| Output Data | Reason                        |
+| ----------- | ----------------------------- |
+| `Robot`     | Replaced with `DynamicRobots` |
+
+### `tdw` module
+
+- Added: `JsonWriter` an add-on that serializes JSON data per-frame.
+- Added: `OutputDataWriter` an add-on that dumps raw output data per-frame.
+- Added: `Writer` abstract base class for per-frame writer add-ons.
+- Modified `JointDynamic` constructor parameters:
+  - Removed constructor parameters: `robot` and `joint_index`.
+  - Added constructor parameters: `joint_id`, `position`, `angles`, and `moving`.
+- Modified `JointStatic` constructor parameters and fields:
+  - Removed constructor parameter: `joint_index`
+  - Added constructor parameters: `static_index` and `dynamic_index`
+  - Added fields: `num_dof` and `dynamic_index`
+- Modified `RobotDynamic` constructor parameters:
+  - Removed constructor parameters: `robot_id`, `body_parts`, and `previous`.
+  - Added constructor parameters: `static` (of type `RobotStatic`)
+- Modified `RobotStatic` fields:
+  - Added: `robot_index`
+- Fixed: `TDWUtils.array_to_vector4(arr)` doesn't convert numpy float32 to pure-Python float.
+
+### Example Controllers
+
+- Updated `robots/robot_arm.py` to use new `DynamicRobots` output data.
+- Added: `read_write/object_data_json.py`
+- Added: `read_write/write_json.py`
+- Added: `read_write/write_multi_agent_json.py`
+- Added: `read_write/write_output_data.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                   | Description                               |
+| ------------------------------------------ | ----------------------------------------- |
+| `lessons/read_write/custom_writers.md`     | Tips for custom data writers.             |
+| `lessons/read_write/json.md`               | How to use `JsonWriter`.                  |
+| `lessons/read_write/output_data_writer.md` | How to use `OutputDataWriter`.            |
+| `lessons/read_write/overview.md`           | Overview of how to write data to disk.    |
+| `python/add_ons/json_writer.md`            | API documentation for `JsonWriter`.       |
+| `python/add_ons/output_data_writer.md`     | API documentation for `OutputDataWriter`. |
+| `python/add_ons/writer.md`                 | API documentation for `Writer`.           |
+
+#### Modified Documentation
+
+- Clarified in all of the API documents for `AddOn` subclasses how and when `on_send(resp)` gets called.
+
+| Document                            | Modification                                                 |
+| ----------------------------------- | ------------------------------------------------------------ |
+| `lessons/robots/low_level_api.md`   | Updated descriptions and example code to use `DynamicRobots` instead of `Robot`. |
+| `lessons/troubleshooting/logger.md` | Moved to `lessons/read_write/logger.md`                      |
+
 ## v1.10.1
 
 ### Command API
@@ -59,9 +155,21 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | ------------- | ------------------------------------------ |
 | `FieldOfView` | The camera field of view and focal length. |
 
+### `tdw` module
+
+- Added optional parameter `device_name` to `PhysicsAudioRecorder.start()`.
+- Fixed: `AudioUtils.stop()` doesn't work on OS X.
+  - Replaced `AudioUtils.RECORDER_PID` with `AudioUtils.RECORDER_PROCESS`.
+  - `AudioUtils.DEVICE` is now an integer (was a string).
+
+
 ### Model Library
 
 - Flagged b04_wallmounted_soap_dispenser_composite as do_not_use (missing asset bundles)
+
+### Example Controllers
+
+- Fixed audio example controllers that use `PhysicsAudioRecorder` and had `while record.done:` instead of `while not recorder.done:`
 
 ## v1.10.0
 

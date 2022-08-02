@@ -969,18 +969,20 @@ class TDWUtils:
         raise Exception(corner, wall)
 
     @staticmethod
-    def get_expected_window_position(window_width: int = 256, window_height: int = 256, title_bar_height: int = None) -> Dict[str, float]:
+    def get_expected_window_position(window_width: int = 256, window_height: int = 256, monitor_index: int = 0, title_bar_height: int = None) -> Dict[str, float]:
         """
         When the TDW build launches, it usually appears at the center of the primary monitor. The expected position of the top-left corner of the build window is therefore:
 
         ```
-        {"x": monitor.width / 2 - window_width / 2, "y": monitor.height / 2 - window_height / 2 + title_bar_height}
+        {"x": monitor.x + monitor.width / 2 - window_width / 2,
+         "y": monitor.y + monitor.height / 2 - window_height / 2 + title_bar_height}
         ```
 
-        Where `monitor` is the primary monitor.
+        Where `monitor` is the monitor corresponding to `monitor_index`.
 
         :param window_width: The width of the TDW build's window.
         :param window_height: The height of the TDW build's window.
+        :param monitor_index: The index of the monitor. Usually, 0 is the index of the primary monitor.
         :param title_bar_height: The height of the window title bar in pixels. If None, this method will use a default value based on the operating system.
 
         :return: The expected position of the top-left corner of the build window.
@@ -989,19 +991,8 @@ class TDWUtils:
         # This function is a late addition to TDW.
         # The import statement is here to prevent every single controller from breaking if screeninfo isn't installed.
         import screeninfo
-        monitors = screeninfo.get_monitors()
-        if len(monitors) == 0:
-            raise Exception("No monitors found!")
-        elif len(monitors) == 1:
-            monitor = monitors[0]
-        else:
-            primary_monitors = [m for m in monitors if m.is_primary is not None and m.is_primary]
-            # Get the primary monitor.
-            if len(primary_monitors) > 0:
-                monitor = primary_monitors[0]
-            # We couldn't find a primary monitor for some reason.
-            else:
-                monitor = monitors[0]
+        monitor = screeninfo.get_monitors()[monitor_index]
+        print(monitor)
         if title_bar_height is None:
             s = system()
             if s == "Windows":
@@ -1012,5 +1003,5 @@ class TDWUtils:
                 title_bar_height = 48
             else:
                 raise Exception(s)
-        return {"x": monitor.width // 2 - window_width // 2,
-                "y": monitor.height // 2 - window_height // 2 + title_bar_height}
+        return {"x": monitor.x + monitor.width // 2 - window_width // 2,
+                "y": monitor.y + monitor.height // 2 - window_height // 2 + title_bar_height}

@@ -84,9 +84,13 @@ The value of `framerate` and the simulation target render framerate should alway
 
 The `position` parameter of `start_video_capture_windows` sets the top-left corner of the capture region. ffmpeg captures a region of the screen rather than a specific window.
 
-Usually, the build simulation window will appear in the center of the primary monitor. To get its expected position, call `TDWUtils.get_expected_window_position(window_width, window_height)`.
+Usually, the build simulation window will appear in the center of the monitor. To get its expected position, call `TDWUtils.get_expected_window_position(window_width, window_height)`.
 
 If you get an error about `screeninfo` not being installed, run `pip3 install screeninfo` and try again.
+
+*Note: It is technically possible in Windows for ffmpeg to capture a  window rather than a screen region; however, when we tested this, we found that window capture had many problems. In particular, if the video is a .mp4 value, a window capture will be a totally black screen.*
+
+### Title bar height
 
 There is an optional parameter, `title_bar_height`, which sets the expected height of the window's title bar:
 
@@ -96,9 +100,28 @@ from tdw.tdw_utils import TDWUtils
 position = TDWUtils.get_expected_window_position(window_width=256, window_height=256, title_bar_height=25)
 ```
 
-This parameter defaults to None, in which case `TDWUtils` will set it to a platform-specific value. In the case of Windows, the default value of `title_bar_height` is 25. If you have appearance setting (in Control Panel) set to a value other than 100%, then the actually title bar height will be different and you will need to manually set the `title_bar_height` parameter.
+This parameter defaults to None, in which case `TDWUtils` will set it to a platform-specific value. In the case of Windows, the default value of `title_bar_height` is 25 pixels.
 
-*Note: It is technically possible in Windows for ffmpeg to capture a  window rather than a screen region; however, when we tested this, we found that window capture had many problems. In particular, if the video is a .mp4 value, a window capture will be a totally black screen.*
+### Monitor index
+
+If you have multiple monitors, you may need to set the optional `monitor_index` parameter. To get a list of your monitors and their indices:
+
+```python
+import screeninfo
+
+monitors = screeninfo.get_monitors()
+for i, monitor in enumerate(monitors):
+    print(i, monitor)
+```
+
+Then, set `monitor_index` accordingly:
+
+```python
+from tdw.tdw_utils import TDWUtils
+
+position = TDWUtils.get_expected_window_position(window_width=256, window_height=256, title_bar_height=25, monitor_index=0)
+```
+
 
 ## The `audio_device` parameter
 

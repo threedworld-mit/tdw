@@ -96,7 +96,7 @@ from tdw.tdw_utils import TDWUtils
 position = TDWUtils.get_expected_window_position(window_width=256, window_height=256, title_bar_height=12)
 ```
 
-This parameter defaults to None, in which case `TDWUtils` will set it to a platform-specific value. In the case of Windows, the default title bar height is 25 pixels, but it can be up to 50 pixels depending on your display settings. The default value in `get_expected_window_position()` is 12 (half of 25), which should be correct under default appearance settings.
+This parameter defaults to None, in which case `TDWUtils` will set it to a platform-specific value. In the case of Windows, the default value of `title_bar_height` is 12. This is half of the actual title bar height (25 pixels), which should be correct under default appearance settings.
 
 *Note: It is technically possible in Windows for ffmpeg to capture a  window rather than a screen region; however, when we tested this, we found that window capture had many problems. In particular, if the video is a .mp4 value, a window capture will be a totally black screen.*
 

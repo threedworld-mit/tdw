@@ -8681,13 +8681,15 @@ Start video capture using ffmpeg. This command can only be used on OS X.
 ```
 
 ```python
-{"$type": "start_video_capture_osx", "output_path": "string", "screen_device": 0, "audio_device": 0, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
+{"$type": "start_video_capture_osx", "output_path": "string", "video_device": 1, "audio_device": 0, "size_scale_factor": 2, "position_scale_factor": 2, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"screen_device"` | int | The screen device index. Ignored if audio == False. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 0 |
+| `"video_device"` | int | The video device index. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 1 |
 | `"audio_device"` | int | The audio device index. Ignored if audio == False. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 0 |
+| `"size_scale_factor"` | int | On retina screens, the actual window size is scaled. Set this scale factor to scale the video capture size. | 2 |
+| `"position_scale_factor"` | int | On retina screens, the actual window size is scaled. Set this scale factor to scale the video capture position. | 2 |
 | `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
 | `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
 | `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |

@@ -9,15 +9,16 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 A minimal example of an audio-visual screen recorder for OS X.
 """
 
-# Launch the build with -popupwindow
-c = Controller(launch_build=False)
+# The target framerate.
+framerate = 60
+c = Controller()
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            look_at={"x": 0, "y": 0, "z": 0},
                            avatar_id="a")
 # Initialize audio.
 audio_initializer = AudioInitializer(avatar_id="a",
-                                     framerate=60)
+                                     framerate=framerate)
 # Add PyImpact.
 py_impact = PyImpact()
 c.add_ons.extend([camera, audio_initializer, py_impact])
@@ -26,6 +27,7 @@ path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.
 print(f"Video will be saved to: {path}")
 
 # Assume that the window will appear in the middle of the screen.
+# This might not be true on your computer! You might need to set `position` manually.
 screen_width = 256
 screen_height = 256
 position = TDWUtils.get_expected_window_position(window_width=screen_width, window_height=screen_height)
@@ -35,15 +37,13 @@ audio_device = 0
 
 # Initialize the scene.
 commands = [TDWUtils.create_empty_room(12, 12),
-            {"$type": "set_target_framerate",
-             "framerate": 60},
             {"$type": "set_screen_size",
              "width": screen_width,
              "height": screen_height},
             {"$type": "start_video_capture_osx",
              "output_path": str(path.resolve()),
+             "framerate": framerate,
              "position": position,
-             "log_args": True,
              "audio_device": audio_device}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   position={"x": 0, "y": 1.5, "z": 0},

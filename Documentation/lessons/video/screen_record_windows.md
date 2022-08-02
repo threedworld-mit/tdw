@@ -122,7 +122,6 @@ from tdw.tdw_utils import TDWUtils
 position = TDWUtils.get_expected_window_position(window_width=256, window_height=256, title_bar_height=25, monitor_index=0)
 ```
 
-
 ## The `audio_device` parameter
 
 The `audio_device` parameter of `start_video_capture_windows`  is the name of the audio capture device. To get a list of device names:
@@ -140,6 +139,23 @@ For more information regarding the other optional parameters, read the API docum
 ## Stop video capture
 
 To stop video capture, send [`stop_video_capture`](../../api/command_api.md#stop_video_capture) or kill the TDW build process by sending [`terminate`](../../api/command_api.md#terminate).
+
+## What to do if there is no video
+
+- [Check the player log.](https://docs.unity3d.com/Manual/LogFiles.html) It will usually tell you what the error was.
+- Set the optional `log_args` parameter to `True` to log the ffmpeg args. This can allow you to replicate the exact ffmpeg call:
+
+```
+{"$type": "start_video_capture_windows",
+ "output_path": str(path.resolve()),
+ "log_args": True}
+```
+
+## What to do if the video doesn't open
+
+Open the video in VLC. 
+
+If the video file size is very low (e.g. 48 bytes or 0 bytes), there was an error in video capture; see above for how to troubleshoot.
 
 ***
 

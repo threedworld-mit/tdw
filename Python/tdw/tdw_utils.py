@@ -980,6 +980,13 @@ class TDWUtils:
 
         Where `monitor` is the monitor corresponding to `monitor_index`.
 
+        To get a list of monitors:
+
+        ```python
+        import screeninfo
+        print(screeninfo.get_monitors())
+        ```
+
         :param window_width: The width of the TDW build's window.
         :param window_height: The height of the TDW build's window.
         :param monitor_index: The index of the monitor. Usually, 0 is the index of the primary monitor.

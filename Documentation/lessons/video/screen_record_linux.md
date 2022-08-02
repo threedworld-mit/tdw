@@ -144,7 +144,24 @@ For more information regarding the other optional parameters, read the API docum
 
 To stop video capture, send [`stop_video_capture`](../../api/command_api.md#stop_video_capture) or kill the TDW build process by sending [`terminate`](../../api/command_api.md#terminate).
 
-## Linux server
+## What to do if there is no video
+
+- [Check the player log.](https://docs.unity3d.com/Manual/LogFiles.html) It will usually tell you what the error was.
+- Set the optional `log_args` parameter to `True` to log the ffmpeg args. This can allow you to replicate the exact ffmpeg call:
+
+```
+{"$type": "start_video_capture_osx",
+ "output_path": str(path.resolve()),
+ "log_args": True}
+```
+
+## What to do if the video doesn't open
+
+Open the video in VLC. 
+
+If the video file size is very low (e.g. 48 bytes or 0 bytes), there was an error in video capture; see above for how to troubleshoot.
+
+## Video capture on a Linux server
 
 1. See [install guide](../setup/install.md) for Docker requirements.
 2. [Build this container.](https://github.com/threedworld-mit/tdw/blob/master/Docker/Dockerfile_audio)

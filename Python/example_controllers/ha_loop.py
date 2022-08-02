@@ -15,7 +15,7 @@ a randomly-positioned object multiple times.
 
 class HumanoidAnimation(Controller):
     def run(self):
-        walk_record = HumanoidAnimationLibrarian().get_record("walking_2")
+        walk_record = HumanoidAnimationLibrarian().get_record("wading_through_water")
 
         h_id = self.get_unique_id()
         t_id = self.get_unique_id()
@@ -47,9 +47,6 @@ class HumanoidAnimation(Controller):
                            "url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
                            "id": h_id},
                          self.get_add_humanoid_animation(humanoid_animation_name=walk_record.name)[0],
-                           {"$type": "play_humanoid_animation",
-                             "name": walk_record.name,
-                             "id": h_id},
                           {"$type": "send_humanoids",
                            "ids": [h_id],
                            "frequency": "always"},
@@ -59,13 +56,17 @@ class HumanoidAnimation(Controller):
 
         self.communicate(TDWUtils.create_avatar(position={"x": -4.42, "y": 1.5, "z": 5.95}, look_at={"x": 0, "y": 1.0, "z": -3}))
         if walk_record.loop:
-            num_loops = 4
-        frame = 0
-        num_frames = walk_record.get_num_frames()
-        print("Number of frames = " + str(num_frames))
-        while frame < num_frames:
+            num_loops = 8
+        for i in range(num_loops):
             self.communicate([])
-            frame += 1
+            self.communicate({"$type": "play_humanoid_animation",
+                              "name": walk_record.name,
+                              "id": h_id})
+            frame = 0
+            num_frames = walk_record.get_num_frames()
+            while frame < num_frames:
+                self.communicate([])
+                frame += 1
 
 if __name__ == "__main__":
     HumanoidAnimation(launch_build=False).run()

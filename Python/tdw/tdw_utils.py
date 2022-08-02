@@ -938,7 +938,7 @@ class TDWUtils:
     @staticmethod
     def get_direction_from_corner(corner: OrdinalDirection, wall: CardinalDirection) -> CardinalDirection:
         """
-        Given an corner an a wall, get the direction that a lateral arrangement will run along.
+        Given a corner and a wall, get the direction that a lateral arrangement will run along.
 
         :param corner: The corner as an [`OrdinalDirection`](ordinal_direction.md).
         :param wall: The wall as a [`CardinalDirection`](cardinal_direction.md).

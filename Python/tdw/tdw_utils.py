@@ -992,7 +992,6 @@ class TDWUtils:
         # The import statement is here to prevent every single controller from breaking if screeninfo isn't installed.
         import screeninfo
         monitor = screeninfo.get_monitors()[monitor_index]
-        print(monitor)
         if title_bar_height is None:
             s = system()
             if s == "Windows":

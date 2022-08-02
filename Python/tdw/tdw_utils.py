@@ -1005,7 +1005,7 @@ class TDWUtils:
         if title_bar_height is None:
             s = system()
             if s == "Windows":
-                title_bar_height = 25
+                title_bar_height = 12
             elif s == "Darwin":
                 title_bar_height = 25
             elif s == "Linux":

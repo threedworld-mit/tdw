@@ -715,7 +715,7 @@ _(Static)_
 When the TDW build launches, it usually appears at the center of the primary monitor. The expected position of the top-left corner of the build window is therefore:
 
 ```
-{"x": monitor.width / 2 - window_width / 2, "y": monitor.height / 2 - (window_height - title_bar_height) / 2}
+{"x": monitor.width / 2 - window_width / 2, "y": monitor.height / 2 - window_height / 2 + title_bar_height}
 ```
 
 Where `monitor` is the primary monitor.

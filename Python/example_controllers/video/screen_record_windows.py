@@ -9,16 +9,13 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 A minimal example of an audio-visual screen recorder for Windows.
 """
 
-# The target framerate.
-framerate = 60
 c = Controller()
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            look_at={"x": 0, "y": 0, "z": 0},
                            avatar_id="a")
 # Initialize audio.
-audio_initializer = AudioInitializer(avatar_id="a",
-                                     framerate=framerate)
+audio_initializer = AudioInitializer(avatar_id="a")
 # Add PyImpact.
 py_impact = PyImpact()
 c.add_ons.extend([camera, audio_initializer, py_impact])
@@ -41,7 +38,6 @@ commands = [TDWUtils.create_empty_room(12, 12),
              "height": screen_height},
             {"$type": "start_video_capture_windows",
              "output_path": str(path.resolve()),
-             "framerate": framerate,
              "position": position,
              "audio_device": audio_device}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",

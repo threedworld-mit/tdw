@@ -9,16 +9,13 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 A minimal example of an audio-visual screen recorder for Linux.
 """
 
-# The target framerate.
-framerate = 60
 c = Controller()
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            look_at={"x": 0, "y": 0, "z": 0},
                            avatar_id="a")
 # Initialize audio.
-audio_initializer = AudioInitializer(avatar_id="a",
-                                     framerate=framerate)
+audio_initializer = AudioInitializer(avatar_id="a")
 # Add PyImpact.
 py_impact = PyImpact()
 c.add_ons.extend([camera, audio_initializer, py_impact])
@@ -31,9 +28,6 @@ screen_width = 256
 screen_height = 256
 position = TDWUtils.get_expected_window_position(window_width=screen_width, window_height=screen_height)
 
-# This audio device may be incorrect, or might not exist; see `Documentation/lessons/video/screen_record_linux.md`.
-audio_device = "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor"
-
 # Initialize the scene.
 commands = [TDWUtils.create_empty_room(12, 12),
             {"$type": "set_screen_size",
@@ -41,11 +35,7 @@ commands = [TDWUtils.create_empty_room(12, 12),
              "height": screen_height},
             {"$type": "start_video_capture_linux",
              "output_path": str(path.resolve()),
-             "framerate": framerate,
-             "display": 0,
-             "screen": 0,
-             "position": position,
-             "audio_device": audio_device}]
+             "position": position}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   position={"x": 0, "y": 1.5, "z": 0},
                                                   object_id=Controller.get_unique_id()))

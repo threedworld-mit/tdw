@@ -16,16 +16,13 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 A minimal example of an audio-visual screen recorder for Windows.
 """
 
-# The target framerate.
-framerate = 60
 c = Controller()
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            look_at={"x": 0, "y": 0, "z": 0},
                            avatar_id="a")
 # Initialize audio.
-audio_initializer = AudioInitializer(avatar_id="a",
-                                     framerate=framerate)
+audio_initializer = AudioInitializer(avatar_id="a")
 # Add PyImpact.
 py_impact = PyImpact()
 c.add_ons.extend([camera, audio_initializer, py_impact])
@@ -48,7 +45,6 @@ commands = [TDWUtils.create_empty_room(12, 12),
              "height": screen_height},
             {"$type": "start_video_capture_windows",
              "output_path": str(path.resolve()),
-             "framerate": framerate,
              "position": position,
              "audio_device": audio_device}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
@@ -76,9 +72,26 @@ The `output_path` parameter of `start_video_capture_windows` is the path to the 
 
 ## The `framerate` parameter
 
-The `framerate` parameter of `start_video_capture_windows` sets the framerate of the video. It does *not* set the simulation target render framerate; to do this, send  [`set_target_framerate`](../../api/command_api.md#set_target_framerate). `AudioInitializer` will automatically send `set_target_framerate` (see its `framerate` parameter).
+The `framerate` parameter of `start_video_capture_windows` is *optional* and defaults to 60 frames per second.
 
-The value of `framerate` and the simulation target render framerate should always be the same.
+If you want to set the framerate, make sure that the framerate is set in `AudioInitializer` (this will automatically send the command [`set_target_framerate`](../../api/command_api.md#set_target_framerate)):
+
+```
+audio_initializer = AudioInitializer(avatar_id="a", framerate=30)
+```
+
+...as well as in the `start_video_capture_windows` command:
+
+```
+commands = [TDWUtils.create_empty_room(12, 12),
+            {"$type": "set_screen_size",
+             "width": screen_width,
+             "height": screen_height},
+            {"$type": "start_video_capture_windows",
+             "output_path": str(path.resolve()),
+             "framerate": 30,
+             "audio_device": audio_device}]
+```
 
 ## The `position` parameter
 

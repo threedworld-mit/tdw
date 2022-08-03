@@ -77,9 +77,9 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 3. [The `JsonWriter` add-on](Documentation/lessons/read_write/json.md)
 4. [The `OutputDataWriter` add-on](Documentation/lessons/read_write/output_data_writer.md)
 5. [Create a custom data writer](Documentation/lessons/read_write/custom_writers.md)
-6. [Images](#Core Concepts)
-7. [Audio](#9. Audio)
-8. [Video](#10. Video Recording)
+6. [Images](Documentation/lessons/core_concepts/images.md) (Cross-referenced with "Core Concepts")
+7. [Audio](Documentation/lessons/audio/overview.md) (Cross-referenced with "Audio")
+8. [Video](Documentation/lessons/video/overview.md) (Cross-referenced with "Video Recording")
 
 ## 4. Semantic States
 

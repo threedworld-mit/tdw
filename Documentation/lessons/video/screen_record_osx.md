@@ -20,15 +20,13 @@ A minimal example of an audio-visual screen recorder for OS X.
 """
 
 # The target framerate.
-framerate = 60
 c = Controller()
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            look_at={"x": 0, "y": 0, "z": 0},
                            avatar_id="a")
 # Initialize audio.
-audio_initializer = AudioInitializer(avatar_id="a",
-                                     framerate=framerate)
+audio_initializer = AudioInitializer(avatar_id="a")
 # Add PyImpact.
 py_impact = PyImpact()
 c.add_ons.extend([camera, audio_initializer, py_impact])
@@ -37,6 +35,7 @@ path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.
 print(f"Video will be saved to: {path}")
 
 # Assume that the window will appear in the middle of the screen.
+# This might not be true on your computer! You might need to set `position` manually.
 screen_width = 256
 screen_height = 256
 position = TDWUtils.get_expected_window_position(window_width=screen_width, window_height=screen_height)
@@ -51,7 +50,6 @@ commands = [TDWUtils.create_empty_room(12, 12),
              "height": screen_height},
             {"$type": "start_video_capture_osx",
              "output_path": str(path.resolve()),
-             "framerate": framerate,
              "position": position,
              "audio_device": audio_device}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
@@ -79,9 +77,26 @@ The `output_path` parameter of `start_video_capture_osx` is the path to the vide
 
 ## The `framerate` parameter
 
-The `framerate` parameter of `start_video_capture_osx` sets the framerate of the video. It does *not* set the simulation target render framerate; to do this, send  [`set_target_framerate`](../../api/command_api.md#set_target_framerate). `AudioInitializer` will automatically send `set_target_framerate` (see its `framerate` parameter).
+The `framerate` parameter of `start_video_capture_windows` is *optional* and defaults to 60 frames per second.
 
-The value of `framerate` and the simulation target render framerate should always be the same.
+If you want to set the framerate, make sure that the framerate is set in `AudioInitializer` (this will automatically send the command [`set_target_framerate`](../../api/command_api.md#set_target_framerate)):
+
+```
+audio_initializer = AudioInitializer(avatar_id="a", framerate=30)
+```
+
+...as well as in the `start_video_capture_windows` command:
+
+```
+commands = [TDWUtils.create_empty_room(12, 12),
+            {"$type": "set_screen_size",
+             "width": screen_width,
+             "height": screen_height},
+            {"$type": "start_video_capture_osx",
+             "output_path": str(path.resolve()),
+             "framerate": 30,
+             "audio_device": audio_device}]
+```
 
 ## The `position` parameter
 
@@ -113,7 +128,7 @@ The `audio_device` parameter of `start_video_capture_osx`  is the *index* of the
 ffmpeg -f avfoundation -list_devices true -i ""
 ```
 
-**Initially, you might not have a valid audio capture device.** [Read this for more information, under "OS X".](../audio/record_audio.md) 
+**Initially, you might not have a valid audio capture device.** Download [iShowU Audio Capture](https://support.shinywhitebox.com) or [BlackHole](https://github.com/ExistentialAudio/BlackHole) and follow instructions for setting up an audio capture device.
 
 ## The `size_scale_factor` and `position_scale_factor` parameters
 

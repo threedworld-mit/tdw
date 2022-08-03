@@ -16,16 +16,13 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 A minimal example of an audio-visual screen recorder for Linux.
 """
 
-# The target framerate.
-framerate = 60
 c = Controller()
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            look_at={"x": 0, "y": 0, "z": 0},
                            avatar_id="a")
 # Initialize audio.
-audio_initializer = AudioInitializer(avatar_id="a",
-                                     framerate=framerate)
+audio_initializer = AudioInitializer(avatar_id="a")
 # Add PyImpact.
 py_impact = PyImpact()
 c.add_ons.extend([camera, audio_initializer, py_impact])
@@ -38,9 +35,6 @@ screen_width = 256
 screen_height = 256
 position = TDWUtils.get_expected_window_position(window_width=screen_width, window_height=screen_height)
 
-# This audio device may be incorrect, or might not exist; see `Documentation/lessons/video/screen_record_linux.md`.
-audio_device = "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor"
-
 # Initialize the scene.
 commands = [TDWUtils.create_empty_room(12, 12),
             {"$type": "set_screen_size",
@@ -48,11 +42,7 @@ commands = [TDWUtils.create_empty_room(12, 12),
              "height": screen_height},
             {"$type": "start_video_capture_linux",
              "output_path": str(path.resolve()),
-             "framerate": framerate,
-             "display": 0,
-             "screen": 0,
-             "position": position,
-             "audio_device": audio_device}]
+             "position": position}]
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   position={"x": 0, "y": 1.5, "z": 0},
                                                   object_id=Controller.get_unique_id()))
@@ -78,13 +68,46 @@ The `output_path` parameter of `start_video_capture_linux` is the path to the vi
 
 ## The `framerate` parameter
 
-The `framerate` parameter of `start_video_capture_linux` sets the framerate of the video. It does *not* set the simulation target render framerate; to do this, send  [`set_target_framerate`](../../api/command_api.md#set_target_framerate). `AudioInitializer` will automatically send `set_target_framerate` (see its `framerate` parameter).
+The `framerate` parameter of `start_video_capture_windows` is *optional* and defaults to 60 frames per second.
 
-The value of `framerate` and the simulation target render framerate should always be the same.
+If you want to set the framerate, make sure that the framerate is set in `AudioInitializer` (this will automatically send the command [`set_target_framerate`](../../api/command_api.md#set_target_framerate)):
+
+```
+audio_initializer = AudioInitializer(avatar_id="a", framerate=30)
+```
+
+...as well as in the `start_video_capture_windows` command:
+
+```
+commands = [TDWUtils.create_empty_room(12, 12),
+            {"$type": "set_screen_size",
+             "width": screen_width,
+             "height": screen_height},
+            {"$type": "start_video_capture_linux",
+             "output_path": str(path.resolve()),
+             "framerate": 30,
+             "audio_device": audio_device}]
+```
 
 ## The `display` and `screen` parameters
 
-The `display` and `screen` parameters of  `start_video_capture_linux` are X11 indices; they should match the display and screen that the TDW build is running on. [Read this for more information.](https://github.com/threedworld-mit/tdw/blob/master/Documentation/lessons/setup/install.md)
+The `display` and `screen` parameters of  `start_video_capture_linux` are *optional*  and set X11 indices. By default, both indices are 0. These parameters should match the display and screen that the TDW build is running on:
+
+```
+commands = [TDWUtils.create_empty_room(12, 12),
+            {"$type": "set_screen_size",
+             "width": screen_width,
+             "height": screen_height},
+            {"$type": "start_video_capture_linux",
+             "output_path": str(path.resolve()),
+             "display": 1,
+             "screen": 0,
+             "position": position}]
+```
+
+To get a list of displays and screens, run `xrandr`.
+
+ [Read this for more information.](https://github.com/threedworld-mit/tdw/blob/master/Documentation/lessons/setup/install.md)
 
 ## The `position` parameter
 
@@ -128,13 +151,26 @@ position = TDWUtils.get_expected_window_position(window_width=256, window_height
 
 ## The `audio_device` parameter
 
-The `audio_device` parameter of `start_video_capture_linux` is the name of the audio capture device. To get a list of device names:
+The `audio_device` parameter of `start_video_capture_linux` is *optional* and is the name of the audio capture device. 
+
+By default, the capture device is `"alsa_output.pci-0000_00_1f.3.analog-stereo.monitor"`, which is correct for most Ubuntu installs:
+
+```
+commands = [TDWUtils.create_empty_room(12, 12),
+            {"$type": "set_screen_size",
+             "width": screen_width,
+             "height": screen_height},
+            {"$type": "start_video_capture_linux",
+             "output_path": str(path.resolve()),
+             "position": position,
+             "audio_device": "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor"}]
+```
+
+To get a list of device names:
 
 ```bash
 pactl list sources | grep output
 ```
-
-The exact name of the audio device may vary between computers but the name usually starts with `alsa_output`.
 
 ## Other parameters
 

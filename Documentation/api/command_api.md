@@ -8648,26 +8648,24 @@ Start video capture using ffmpeg. This command can only be used on Linux.
 ```
 
 ```python
-{"$type": "start_video_capture_linux", "output_path": "string", "display": 0, "screen": 0, "audio_device": "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor", "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "libx265", "preset": "ultrafast", "qp": 0, "probe_size": 10, "analyze_duration": 10, "log_args": False, "override_args": ""}
+{"$type": "start_video_capture_linux", "output_path": "string", "display": 0, "screen": 0, "audio_device": "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor", "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"display"` | int | The X11 display index. To get a list of displays and screens, run: xrandr. | 0 |
-| `"screen"` | int | The X11 screen index. To get a list of displays and screens, run: xrandr. | 0 |
-| `"audio_device"` | string | The pulseaudio device name. Ignored if audio == False. To get a list of devices run: pactl list sources | grep output | "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor" |
-| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mp4 | |
+| `"display"` | int | The X11 display index. To review your X11 setup: cat /etc/X11/xorg.conf | 0 |
+| `"screen"` | int | The X11 screen index. To review your X11 setup: cat /etc/X11/xorg.conf | 0 |
+| `"audio_device"` | string | The pulseaudio device name. Ignored if audio == False. To get a list of devices: pactl list sources | grep output | "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor" |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
 | `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
 | `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
 | `"framerate"` | int | The framerate of the output video. | 60 |
-| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. | {"x": 0, "y": 0} |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
 | `"audio"` | bool | If True, audio will be captured. | True |
 | `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
-| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "libx265" |
-| `"preset"` | string | H.264 and H.265 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
-| `"qp"` | int | H.264 and H.265 video encoding only. This controls the video quality. 0 is lossless. | 0 |
-| `"probe_size"` | int | The probe size in megabytes. This helps ffmpeg sync video and audio. You should almost always leave this value as-is. For more information, read this: <ulink url="https://journal.code4lib.org/articles/9856">https://journal.code4lib.org/articles/9856</ulink> | 10 |
-| `"analyze_duration"` | int | The analyze duration in megabytes. This helps ffmpeg sync video and audio. You should almost always leave this value as-is. For more information, read this: <ulink url="https://journal.code4lib.org/articles/9856">https://journal.code4lib.org/articles/9856</ulink> | 10 |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
 | `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
 | `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
 
@@ -8683,27 +8681,25 @@ Start video capture using ffmpeg. This command can only be used on OS X.
 ```
 
 ```python
-{"$type": "start_video_capture_osx", "output_path": "string", "video_device": 1, "audio_device": 0, "size_scale_factor": 2, "position_scale_factor": 2, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "libx265", "preset": "ultrafast", "qp": 0, "probe_size": 10, "analyze_duration": 10, "log_args": False, "override_args": ""}
+{"$type": "start_video_capture_osx", "output_path": "string", "video_device": 1, "audio_device": 0, "size_scale_factor": 2, "position_scale_factor": 2, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"video_device"` | int | The video device index. To get a list of devices run: ffmpeg -f avfoundation -list_devices true -i "" | 1 |
-| `"audio_device"` | int | The audio device index. Ignored if audio == False. To get a list of devices run: ffmpeg -f avfoundation -list_devices true -i "" | 0 |
+| `"video_device"` | int | The video device index. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 1 |
+| `"audio_device"` | int | The audio device index. Ignored if audio == False. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 0 |
 | `"size_scale_factor"` | int | On retina screens, the actual window size is scaled. Set this scale factor to scale the video capture size. | 2 |
 | `"position_scale_factor"` | int | On retina screens, the actual window size is scaled. Set this scale factor to scale the video capture position. | 2 |
-| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mp4 | |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
 | `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
 | `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
 | `"framerate"` | int | The framerate of the output video. | 60 |
-| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. | {"x": 0, "y": 0} |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
 | `"audio"` | bool | If True, audio will be captured. | True |
 | `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
-| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "libx265" |
-| `"preset"` | string | H.264 and H.265 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
-| `"qp"` | int | H.264 and H.265 video encoding only. This controls the video quality. 0 is lossless. | 0 |
-| `"probe_size"` | int | The probe size in megabytes. This helps ffmpeg sync video and audio. You should almost always leave this value as-is. For more information, read this: <ulink url="https://journal.code4lib.org/articles/9856">https://journal.code4lib.org/articles/9856</ulink> | 10 |
-| `"analyze_duration"` | int | The analyze duration in megabytes. This helps ffmpeg sync video and audio. You should almost always leave this value as-is. For more information, read this: <ulink url="https://journal.code4lib.org/articles/9856">https://journal.code4lib.org/articles/9856</ulink> | 10 |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
 | `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
 | `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
 
@@ -8719,26 +8715,24 @@ Start video capture using ffmpeg. This command can only be used on Windows.
 ```
 
 ```python
-{"$type": "start_video_capture_windows", "output_path": "string", "audio_device": "", "audio_buffer_size": 5, "draw_mouse": False, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "libx265", "preset": "ultrafast", "qp": 0, "probe_size": 10, "analyze_duration": 10, "log_args": False, "override_args": ""}
+{"$type": "start_video_capture_windows", "output_path": "string", "audio_device": "", "audio_buffer_size": 5, "draw_mouse": False, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"audio_device"` | string | The name of the audio device. Ignored if audio == False. To get a list of devices run: ffmpeg -list_devices true -f dshow -i dummy | "" |
+| `"audio_device"` | string | The name of the audio device. Ignored if audio == False. To get a list of devices: ffmpeg -list_devices true -f dshow -i dummy | "" |
 | `"audio_buffer_size"` | int | The audio buffer size in ms. This should always be greater than 0. Adjust this if the audio doesn't sync with the video. See: <ulink url="https://ffmpeg.org/ffmpeg-devices.html">https://ffmpeg.org/ffmpeg-devices.html</ulink> (search for audio_buffer_size). | 5 |
 | `"draw_mouse"` | bool | If True, show the mouse in the video. | False |
-| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mp4 | |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
 | `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
 | `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
 | `"framerate"` | int | The framerate of the output video. | 60 |
-| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. | {"x": 0, "y": 0} |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
 | `"audio"` | bool | If True, audio will be captured. | True |
 | `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
-| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "libx265" |
-| `"preset"` | string | H.264 and H.265 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
-| `"qp"` | int | H.264 and H.265 video encoding only. This controls the video quality. 0 is lossless. | 0 |
-| `"probe_size"` | int | The probe size in megabytes. This helps ffmpeg sync video and audio. You should almost always leave this value as-is. For more information, read this: <ulink url="https://journal.code4lib.org/articles/9856">https://journal.code4lib.org/articles/9856</ulink> | 10 |
-| `"analyze_duration"` | int | The analyze duration in megabytes. This helps ffmpeg sync video and audio. You should almost always leave this value as-is. For more information, read this: <ulink url="https://journal.code4lib.org/articles/9856">https://journal.code4lib.org/articles/9856</ulink> | 10 |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
 | `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
 | `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
 

@@ -938,7 +938,7 @@ class TDWUtils:
     @staticmethod
     def get_direction_from_corner(corner: OrdinalDirection, wall: CardinalDirection) -> CardinalDirection:
         """
-        Given an corner an a wall, get the direction that a lateral arrangement will run along.
+        Given a corner and a wall, get the direction that a lateral arrangement will run along.
 
         :param corner: The corner as an [`OrdinalDirection`](ordinal_direction.md).
         :param wall: The wall as a [`CardinalDirection`](cardinal_direction.md).
@@ -967,3 +967,47 @@ class TDWUtils:
             elif wall == CardinalDirection.east:
                 return CardinalDirection.north
         raise Exception(corner, wall)
+
+    @staticmethod
+    def get_expected_window_position(window_width: int = 256, window_height: int = 256, monitor_index: int = 0, title_bar_height: int = None) -> Dict[str, float]:
+        """
+        When the TDW build launches, it usually appears at the center of the primary monitor. The expected position of the top-left corner of the build window is therefore:
+
+        ```
+        {"x": monitor.x + monitor.width / 2 - window_width / 2,
+         "y": monitor.y + monitor.height / 2 - window_height / 2 + title_bar_height}
+        ```
+
+        Where `monitor` is the monitor corresponding to `monitor_index`.
+
+        To get a list of monitors:
+
+        ```python
+        import screeninfo
+        print(screeninfo.get_monitors())
+        ```
+
+        :param window_width: The width of the TDW build's window.
+        :param window_height: The height of the TDW build's window.
+        :param monitor_index: The index of the monitor. Usually, 0 is the index of the primary monitor.
+        :param title_bar_height: The height of the window title bar in pixels. If None, this method will use a default value based on the operating system.
+
+        :return: The expected position of the top-left corner of the build window.
+        """
+
+        # This function is a late addition to TDW.
+        # The import statement is here to prevent every single controller from breaking if screeninfo isn't installed.
+        import screeninfo
+        monitor = screeninfo.get_monitors()[monitor_index]
+        if title_bar_height is None:
+            s = system()
+            if s == "Windows":
+                title_bar_height = 25
+            elif s == "Darwin":
+                title_bar_height = 25
+            elif s == "Linux":
+                title_bar_height = 48
+            else:
+                raise Exception(s)
+        return {"x": monitor.x + monitor.width // 2 - window_width // 2,
+                "y": monitor.y + monitor.height // 2 - window_height // 2 + title_bar_height}

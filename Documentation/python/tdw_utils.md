@@ -694,7 +694,7 @@ _Returns:_  The corners of the wall as a 2-element list of [`OrdinalDirection`](
 
 _(Static)_
 
-Given an corner an a wall, get the direction that a lateral arrangement will run along.
+Given a corner and a wall, get the direction that a lateral arrangement will run along.
 
 
 | Parameter | Type | Default | Description |
@@ -703,4 +703,38 @@ Given an corner an a wall, get the direction that a lateral arrangement will run
 | wall |  CardinalDirection |  | The wall as a [`CardinalDirection`](cardinal_direction.md). |
 
 _Returns:_  Tuple: direction, wall
+
+#### get_expected_window_position
+
+**`TDWUtils.get_expected_window_position()`**
+
+**`TDWUtils.get_expected_window_position(window_width=256, window_height=256, monitor_index=0, title_bar_height=None)`**
+
+_(Static)_
+
+When the TDW build launches, it usually appears at the center of the primary monitor. The expected position of the top-left corner of the build window is therefore:
+
+```
+{"x": monitor.x + monitor.width / 2 - window_width / 2,
+"y": monitor.y + monitor.height / 2 - window_height / 2 + title_bar_height}
+```
+
+Where `monitor` is the monitor corresponding to `monitor_index`.
+
+To get a list of monitors:
+
+```python
+import screeninfo
+print(screeninfo.get_monitors())
+```
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| window_width |  int  | 256 | The width of the TDW build's window. |
+| window_height |  int  | 256 | The height of the TDW build's window. |
+| monitor_index |  int  | 0 | The index of the monitor. Usually, 0 is the index of the primary monitor. |
+| title_bar_height |  int  | None | The height of the window title bar in pixels. If None, this method will use a default value based on the operating system. |
+
+_Returns:_  The expected position of the top-left corner of the build window.
 

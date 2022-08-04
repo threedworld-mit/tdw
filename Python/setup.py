@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from pathlib import Path
 import re
 
-__version__ = "1.10.3.0"
+__version__ = "1.10.4.0"
 readme_path = Path('../README.md')
 if readme_path.exists():
     long_description = readme_path.read_text(encoding='utf-8')
@@ -39,5 +39,5 @@ setup(
     include_package_data=True,
     keywords='unity simulation ml machine-learning',
     install_requires=['pyzmq', 'numpy', 'scipy', 'pillow', 'tqdm', 'psutil', 'boto3', 'botocore', 'requests',
-                      'pyinstaller', 'overrides', 'packaging', 'pydub', 'ikpy==3.1']
+                      'pyinstaller', 'overrides', 'packaging', 'pydub', 'ikpy==3.1', 'screeninfo']
 )

@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 import platform
-from typing import List, Union
-from subprocess import call, check_output, CalledProcessError
+from typing import List, Union, Optional
+from subprocess import call, check_output, CalledProcessError, Popen
 import os
 import re
 from overrides import final
@@ -104,13 +104,16 @@ class AssetBundleCreatorBase(ABC):
                 "-batchmode"]
 
     @final
-    def call_unity(self, method: str, args: List[str], class_name: str = None) -> None:
+    def call_unity(self, method: str, args: List[str], class_name: str = None, is_call: bool = True) -> Optional[Popen]:
         """
         Execute a call to Unity Editor.
 
         :param method: The name of the method.
         :param args: Arguments to send to Unity Editor in addition to those send via `self.get_base_unity_call()` and `-executeMethod`.
         :param class_name: The name of the Unity C# class. If None, a default class name will be used. See: `self.get_creator_class_name()`.
+        :param is_call: If True, run `subprocess.call()` and return None. If False, run `subprocess.Popen()` and return the process.
+
+        :return If `is_call == True`, returns None. If `is_call == False`, returns the process.
         """
 
         # Clone the repo.
@@ -129,7 +132,12 @@ class AssetBundleCreatorBase(ABC):
         # Add additional arguments.
         unity_call.extend(args)
         # Call Unity Editor.
-        call(unity_call, env=self._env)
+        if is_call:
+            call(unity_call, env=self._env)
+            return None
+        else:
+            p = Popen(unity_call, env=self._env, shell=True)
+            return p
 
     @final
     def prefab_to_asset_bundles(self, name: str, output_directory: Union[str, Path]) -> None:

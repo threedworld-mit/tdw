@@ -1,7 +1,8 @@
 from pathlib import Path
 from typing import Union
-from tdw.librarian import ModelRecord, ModelLibrarian
+from time import sleep
 import json
+from tdw.librarian import ModelRecord, ModelLibrarian
 from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
 from tdw.add_ons.model_verifier.model_verifier import ModelVerifier
 from tdw.controller import Controller
@@ -114,7 +115,9 @@ class AssetBundleCreator(AssetBundleCreatorBase):
 
     def source_directory_to_asset_bundles(self, source_directory: Union[str, Path],
                                           output_directory: Union[str, Path], library_description: str = None,
-                                          vhacd_resolution: int = 800000, internal_materials: bool = False) -> None:
+                                          vhacd_resolution: int = 800000, internal_materials: bool = False,
+                                          overwrite: bool = False, continue_on_error: bool = True,
+                                          search_pattern: str = None) -> None:
         """
         Convert a directory of source .fbx and/or .obj models to asset bundles.
 
@@ -169,6 +172,9 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param library_description: An optional description of the `ModelLibrarian` that will be included in the `library.json` file.
         :param vhacd_resolution: The default resolution of VHACD. A lower value will make VHACD run faster but will create simpler collider mesh shapes.
         :param internal_materials: If True, the visual materials of the models are located within the source file. If False, the materials are located in `Materials/` directory next to each source file.
+        :param overwrite: If True, overwrite existing asset bundles. If this is set to False (the default value), you can stop/resume the processing of a directory's contents.
+        :param continue_on_error: If True, continue generating asset bundles even if there is a problem with one model. If False, stop the process if there's an error.
+        :param search_pattern: A search pattern for files, for example `"*.obj"`. All subdirectories will be recursively searched.
         """
 
         args = [f'-source_directory="{AssetBundleCreatorBase._get_string_path(source_directory)}"',
@@ -176,10 +182,31 @@ class AssetBundleCreator(AssetBundleCreatorBase):
                 f'-vhacd_resolution={vhacd_resolution}']
         if library_description is not None:
             args.append(f'-library_description="{library_description}"')
+        if search_pattern is not None:
+            args.append(f'-search_pattern="{search_pattern}"')
         if internal_materials:
             args.append("-internal_materials")
-        # Execute the call.
-        self.call_unity(method="SourceDirectoryToAssetBundles", args=args)
+        if overwrite:
+            args.append("-overwrite")
+        if continue_on_error:
+            args.append("-continue_on_error")
+        # Start to execute the call.
+        if self._quiet:
+            # Do this all in one go.
+            self.call_unity(method="SourceDirectoryToAssetBundles", args=args)
+        # Print progress.
+        else:
+            process = self.call_unity(method="SourceDirectoryToAssetBundles", args=args, is_call=False)
+            progress_path = output_directory.joinpath("progress.txt")
+            previous_progress = ""
+            while process.poll() is None:
+                if progress_path.exists():
+                    progress_raw = progress_path.read_text(encoding="utf-8").split("\n")
+                    progress = f"{progress_raw[0]}/{progress_raw[1]}: {progress_raw[2]}"
+                    if previous_progress != progress:
+                        print(progress)
+                        previous_progress = progress
+                sleep(10)
 
     def source_file_to_prefab(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
                               vhacd_resolution: int = None, internal_materials: bool = False) -> None:

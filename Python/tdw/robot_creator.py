@@ -18,7 +18,7 @@ class RobotCreator(AssetBundleCreatorBase):
     """
     TEMP_ROOT: Path = AssetBundleCreatorBase.PROJECT_PATH.joinpath("temp_robots")
 
-    def source_url_to_asset_bundles(self, urdf_url: str, output_directory: Union[str, Path],
+    def source_url_to_asset_bundles(self, url: str, output_directory: Union[str, Path],
                                     required_repo_urls: Dict[str, str] = None,
                                     xacro_args: Dict[str, str] = None, immovable: bool = True,
                                     description_infix: str = None, branch: str = None,
@@ -61,7 +61,7 @@ class RobotCreator(AssetBundleCreatorBase):
         - `record.json` is a serialized `RobotRecord`.
         - `library.json` is a serialized `RobotLibrarian`. It will only be added/set if the optional `library_path` is set.
 
-        :param urdf_url: The URL of a .urdf or a .xacro file.
+        :param url: The URL of a .urdf or a .xacro file.
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
         :param required_repo_urls: A dictionary of description folder names and repo URLs outside of the robot's repo that are required to create the robot. This is only required for .xacro files that reference outside repos. For example, the Sawyer robot requires this to add the gripper: `{"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"}`
         :param xacro_args: Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file). For example, the Sawyer robot requires this to add the gripper: `{"electric_gripper": "true"}`
@@ -77,24 +77,19 @@ class RobotCreator(AssetBundleCreatorBase):
             required_repo_urls = list()
         # Clone the repo.
         repo_paths: Dict[str, Path] = dict()
-        local_repo_path = self.clone_repo(url=urdf_url)
+        local_repo_path = self.clone_repo(url=url)
         if description_infix is None:
-            description_infix = RobotCreator._get_description_infix(url=urdf_url)
+            description_infix = RobotCreator._get_description_infix(url=url)
         repo_paths[description_infix] = local_repo_path
         # Clone the required repos.
         for description in required_repo_urls:
             required_repo_url = required_repo_urls[description]
             required_local_repo_path = self.clone_repo(url=required_repo_url)
             repo_paths[description] = required_local_repo_path
-        # Get the page URL.
-        page_url = self._raw_to_page(url=urdf_url)
-        if branch is None:
-            branch = "master"
-        # Get the repo path.
-        repo_path = re.search(r"(.*)/blob/" + branch + r"/(.*)", page_url).group(2)
-        urdf_path = local_repo_path.joinpath(repo_path)
+        urdf_path = self.get_urdf_path_from_local_repo(local_repo_path=local_repo_path,
+                                                       url=url)
         # Convert the .xacro file to a .urdf file.
-        if Path(urdf_url).suffix == ".xacro":
+        if Path(url).suffix == ".xacro":
             urdf_path = self.xacro_to_urdf(xacro_path=urdf_path, repo_paths=repo_paths, args=xacro_args)
             assert urdf_path.exists(), f"Not found: {urdf_path.resolve()}"
         self.source_file_to_asset_bundles(source_file=urdf_path, output_directory=output_directory,
@@ -212,6 +207,23 @@ class RobotCreator(AssetBundleCreatorBase):
         if not self._quiet:
             print("...Done!")
         return local_repo_path
+
+    def get_urdf_path_from_local_repo(self, url: str, local_repo_path: Path, branch: str = None) -> Path:
+        """
+        :param url: The URL to a .urdf file.
+        :param local_repo_path: The path to a local repo.
+        :param branch: The branch. If None, defaults to `"master"`.
+
+        :return: The path to the local .urdf file.
+        """
+
+        # Get the page URL.
+        page_url = self._raw_to_page(url=url)
+        if branch is None:
+            branch = "master"
+        # Get the repo path.
+        repo_path = re.search(r"(.*)/blob/" + branch + r"/(.*)", page_url).group(2)
+        return local_repo_path.joinpath(repo_path)
 
     def xacro_to_urdf(self, xacro_path: Path, repo_paths: Dict[str, Path], args: Dict[str, str] = None) -> Path:
         """
@@ -383,7 +395,7 @@ class RobotCreator(AssetBundleCreatorBase):
 
         return re.search(r'<robot(.*?)name="(.*?)"',
                          AssetBundleCreatorBase._get_path(urdf_path).read_text(encoding="utf-8"),
-                         flags=re.MULTILINE).group(1).strip()
+                         flags=re.MULTILINE).group(2).strip()
 
     def get_creator_class_name(self) -> str:
         return "RobotCreatorLauncher"

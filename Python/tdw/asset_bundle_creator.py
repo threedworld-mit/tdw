@@ -235,7 +235,6 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         ........source_files/
         ............name/
         ................name.obj
-        ................Materials/
         ```
 
         :param name: The name of the model. This can be the same as the source file name minus the extension. This will be the name of the .prefab file.

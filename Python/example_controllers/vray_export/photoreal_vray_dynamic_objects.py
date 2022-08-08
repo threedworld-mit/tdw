@@ -22,7 +22,12 @@ class PhotorealVRay(Controller):
                                    position={"x": -3, "y": 1, "z": 0},
                                    look_at={"x": 0, "y": 1, "z": 0},
                                    field_of_view=55)
-        export = VRayExport(image_width=1280, image_height=720, scene_name="tdw_room", output_path="D:/VE2020_output/", animate=True)
+        export = VRayExport(image_width=1280, 
+                            image_height=720, 
+                            scene_name="tdw_room", 
+                            output_path="D:/VE2020_output/", 
+                            animate=True,
+                            local_render=False)
         self.add_ons.extend([camera, export])
         # Set the resolution to 720p.
         # Set render quality to maximum.
@@ -79,8 +84,6 @@ class PhotorealVRay(Controller):
                            "force": {"x": 0, "y": 0.5, "z": -10}})
         for step in range(self.frame_range):
             resp = self.communicate([])
-        # Launch Vantage render with our final scene file.
-        export.launch_render(start_frame=0, end_frame=self.frame_range)
         
 
 if __name__ == "__main__":

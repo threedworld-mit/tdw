@@ -36,7 +36,7 @@ class VRayExport(AddOn):
         self.local_render = local_render
         # Conversion matrix from Y-up to Z-up, and left-hand to right-hand.
         self.handedness = np.array([[-1, 0, 0, 0],
-                                    [0, 0, 1, 0],
+                                    [0, 0, -1, 0],
                                     [0, -1, 0, 0],
                                     [0, 0, 0, 1]])
         # Conversion matrix for camera.
@@ -93,12 +93,13 @@ class VRayExport(AddOn):
         #Download the scene file and model files if we have not done so already.
         if not self.downloaded_data:
             self.downloaded_data = True;
-            self.rebuild_object_list(resp=resp)       
+            self.rebuild_object_list(resp=resp)
             # Download and unzip scene file -- this will be the "master" file, that all model .vrscene files will be appended to.
             self.download_scene()
             # Download and unzip all object models in the scene.
             for model_name in self.object_names.values():
                 self.download_model(model_name)
+        #self.pre_rotate_models()
             # Update model files to reflect initial scene object transforms.
             self.export_static_node_data(resp=resp)
             # Update V-Ray camera to reflect TDW camera position and orientation.
@@ -106,9 +107,10 @@ class VRayExport(AddOn):
         # Process object or camera movement.
         if self.animate:
             self.export_animation(resp=resp)
+            self.export_animation_settings()
         # Launch the Vantage render job.
-        #if self.local_render:
-            #self.launch_render()
+        if self.local_render:
+            self.launch_render()
         
     def get_scene_file_path(self) -> str:
         """
@@ -293,7 +295,8 @@ class VRayExport(AddOn):
 
     def pre_rotate_models(self):
         for object_id in self.object_names:
-            self.commands.append({"$type": "rotate_object_by", "angle": 180.0, "id": int(object_id), "axis": "pitch", "is_world": False, "use_centroid": False})
+            self.commands.extend([{"$type": "rotate_object_by", "angle": 90.0, "id": int(object_id), "axis": "roll", "is_world": False, "use_centroid": False},
+                                  {"$type": "rotate_object_by", "angle": 90.0, "id": int(object_id), "axis": "pitch", "is_world": False, "use_centroid": False}])
 
     def pre_rotate_model(self, object_name):
         object_id = self.model_ids[object_name]
@@ -439,7 +442,7 @@ class VRayExport(AddOn):
                       ");\n}\n")
         return node_string
    
-    def export_animation_settings(self, end_frame: int):
+    def export_animation_settings(self):
         """
         Write out the output settings with the end frame of any animation in the scene.
         """
@@ -452,11 +455,11 @@ class VRayExport(AddOn):
                          "img_file_needFrameNumber=1;\n" + 
                          "img_clearMode=0;\n" + 
                          "anim_start=0;\n" + 
-                         "anim_end=" + str(end_frame) + ";\n" + 
+                         "anim_end=" + str(self.frame_count) + ";\n" + 
                          "frame_start=0;\n" +
                          "frames_per_second=1;\n" +
                          "frames=List(\n" + 
-                         "List(0, " + str(end_frame) + ")\n" + 
+                         "List(0, " + str(self.frame_count) + ")\n" + 
                          ");\n" + 
                          "}\n")
             f.write(out_string)

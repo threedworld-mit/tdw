@@ -24,9 +24,11 @@ class Photoreal(Controller):
         path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("photoreal")
         print(f"Image will be saved to: {path}")
         table_id = self.get_unique_id()
+        statue_id = self.get_unique_id()
+        lamp_id = self.get_unique_id()
         capture = ImageCapture(avatar_ids=["a"], path=path)
         self.add_ons.extend([camera, capture])
-        export = VRayExport(image_width=1920, image_height=1080, scene_name="tdw_room", output_path="D:/VE2020_output/")
+        export = VRayExport(image_width=1920, image_height=1080, scene_name="tdw_room", output_path="D:/VE2020_output/", local_render=False)
         self.add_ons.append(export)
         # Set the resolution to 1080p.
         # Set render quality to maximum.
@@ -36,7 +38,7 @@ class Photoreal(Controller):
         # Also adjust the ambient occlusion parameters for realistic shadowing in corners and under furniture objects.
         # Set shadow strength to near-full.
         # Immediately end the simulation.
-        self.communicate([{"$type": "set_screen_size",
+        commands =[{"$type": "set_screen_size",
                            "width": 1920,
                            "height": 1080},
                           {"$type": "set_render_quality",
@@ -47,11 +49,11 @@ class Photoreal(Controller):
                                               position={"x": 1.80, "y": 0, "z": 0},
                                               rotation={"x": 0, "y": 0, "z": 0}),
                          self.get_add_object(model_name="buddah",
-                                              object_id=self.get_unique_id(),
+                                              object_id=statue_id,
                                               position={"x": 2.35, "y": 0, "z": 2},
-                                              rotation={"x": 0, "y": 0, "z": 0}),
+                                              rotation={"x": 0, "y": 0, "z": 45}),
                          self.get_add_object(model_name="bastone_floor_lamp",
-                                              object_id=self.get_unique_id(),
+                                              object_id=lamp_id,
                                               position={"x": 2.0, "y": 0, "z": -1.5},
                                               rotation={"x": 0, "y": 0, "z": 0}),
                           {"$type": "set_aperture",
@@ -65,8 +67,10 @@ class Photoreal(Controller):
                           {"$type": "set_ambient_occlusion_thickness_modifier",
                            "thickness": 3.5},
                           {"$type": "set_shadow_strength",
-                           "strength": 0.85}])
-        self.communicate({"$type": "terminate"})
+                           "strength": 0.85}]
+        self.communicate(commands)
+        self.communicate([])
+        #self.communicate({"$type": "terminate"})
         
 
 if __name__ == "__main__":

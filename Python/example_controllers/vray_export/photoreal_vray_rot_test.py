@@ -51,7 +51,7 @@ class Photoreal(Controller):
                          self.get_add_object(model_name="buddah",
                                               object_id=statue_id,
                                               position={"x": 2.35, "y": 0, "z": 2},
-                                              rotation={"x": 0, "y": 0, "z": 45}),
+                                              rotation={"x": 0, "y": 90, "z": 0}),
                          self.get_add_object(model_name="bastone_floor_lamp",
                                               object_id=lamp_id,
                                               position={"x": 2.0, "y": 0, "z": -1.5},

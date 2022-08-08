@@ -1,7 +1,8 @@
 from typing import List, Dict, NamedTuple, Union
 from tdw.add_ons.add_on import AddOn
+from tdw.tdw_utils import TDWUtils
 from pathlib import Path
-from tdw.output_data import OutputData, TransformMatrices, SegmentationColors, AvatarTransformMatrices, FieldOfView
+from tdw.output_data import OutputData, TransformMatrices, SegmentationColors, AvatarTransformMatrices, FieldOfView, Transforms
 from requests import get
 import os
 import re
@@ -68,6 +69,8 @@ class VRayExport(AddOn):
                        "frequency": "always"},
                     {"$type": "send_avatar_transform_matrices",
                       "frequency": "always"},
+                    {"$type": "send_transforms",
+                      "frequency": "always"},
                     {"$type": "send_field_of_view",
                        "frequency": "always"}]
         return commands
@@ -99,7 +102,6 @@ class VRayExport(AddOn):
             # Download and unzip all object models in the scene.
             for model_name in self.object_names.values():
                 self.download_model(model_name)
-        #self.pre_rotate_models()
             # Update model files to reflect initial scene object transforms.
             self.export_static_node_data(resp=resp)
             # Update V-Ray camera to reflect TDW camera position and orientation.
@@ -293,15 +295,6 @@ class VRayExport(AddOn):
         with open(path, 'w', encoding="utf-8") as out_file:
            out_file.writelines(data)
 
-    def pre_rotate_models(self):
-        for object_id in self.object_names:
-            self.commands.extend([{"$type": "rotate_object_by", "angle": 90.0, "id": int(object_id), "axis": "roll", "is_world": False, "use_centroid": False},
-                                  {"$type": "rotate_object_by", "angle": 90.0, "id": int(object_id), "axis": "pitch", "is_world": False, "use_centroid": False}])
-
-    def pre_rotate_model(self, object_name):
-        object_id = self.model_ids[object_name]
-        self.commands.append({"$type": "rotate_object_by", "angle": 180.0, "id": int(object_id), "axis": "pitch", "is_world": False, "use_centroid": False})
-
     def export_static_node_data(self, resp: List[bytes]):
         """
         For each model in the scene, export the position and orientation data to the model's .vrscene file as Node data.
@@ -325,9 +318,9 @@ class VRayExport(AddOn):
                         pos_x = (matrix[3][0] * 100)
                         pos_y = (matrix[3][1] * 100)
                         pos_z = -(matrix[3][2] * 100)
-                        mat_struct = matrix_data_struct(column_one = str(matrix[0][0]) + "," + str(matrix[0][1]) + "," + str(matrix[0][2]), 
-                                                        column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(matrix[1][2]), 
-                                                        column_three = str(matrix[2][0]) + "," + str(matrix[2][1]) + "," + str(matrix[2][2]),  
+                        mat_struct = matrix_data_struct(column_one = str(matrix[0][0]) + "," + str(-matrix[0][1]) + "," + str(matrix[0][2]), 
+                                                        column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(-matrix[1][2]), 
+                                                        column_three = str(-matrix[2][0]) + "," + str(-matrix[2][1]) + "," + str(matrix[2][2]),  
                                                         column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
                         # Get the model name for this ID
                         model_name = self.object_names[object_id]

@@ -6,6 +6,7 @@ from subprocess import call, check_output, CalledProcessError, Popen
 import os
 import re
 from overrides import final
+from tdw.backend.platforms import SYSTEM_TO_UNITY
 
 
 class AssetBundleCreatorBase(ABC):
@@ -201,6 +202,21 @@ class AssetBundleCreatorBase(ABC):
         """
 
         raise Exception()
+
+    @staticmethod
+    def asset_bundles_exist(name: str, output_directory: Union[str, Path]) -> bool:
+        """
+        :param name: The name of the asset bundle (the filename).
+        :param output_directory: The *root* output directory of *all* of the platform-specific asset bundles as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If an asset bundle is located in `/home/user/output_directory/Windows/asset_bundle`, set this to `"/home/user/output_directory"`.
+
+        :return: True if asset bundles for all three platforms exist in `output_directory`.
+        """
+
+        d = AssetBundleCreatorBase._get_path(output_directory)
+        for p in SYSTEM_TO_UNITY:
+            if not d.joinpath(p).joinpath(name).exists():
+                return False
+        return True
 
     @final
     def _print_log(self, output_directory: Union[str, Path]) -> None:

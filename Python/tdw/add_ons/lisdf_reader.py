@@ -5,7 +5,7 @@ from tdw.add_ons.add_on import AddOn
 from tdw.asset_bundle_creator import AssetBundleCreator
 
 
-class LISDF(AddOn):
+class LisdfReader(AddOn):
     """
     Parse an [.lisdf file](https://learning-and-intelligent-systems.github.io/kitchen-worlds/tut-lisdf/).
 

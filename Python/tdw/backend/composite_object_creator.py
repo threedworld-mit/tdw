@@ -45,10 +45,12 @@ class CompositeObjectCreator(AssetBundleCreatorBase):
         ....Windows/
         ........mobility
         ....log.txt
+        ....model.json
         ```
 
         - `Darwin/mobility`, `Linux/mobility` and `Windows/mobility` are the platform-specific asset bundles.
         - `log.txt` is a log from the `asset_bundle_creator` Unity Editor project.
+        - `model.json` is a JSON dump of the converted URDF data and mesh paths.
 
         :param name: The name of the model. This can be the same as the source file name minus the extension.
         :param source_file: The path to the source .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).

@@ -51,14 +51,16 @@ class RobotCreator(AssetBundleCreatorBase):
         ........robot
         ....Windows/
         ........robot
-        ....record.json
         ....log.txt
-        library.json
+        ....record.json
+        ....model.json
+        ....library.json
         ```
 
         - `Darwin/robot`, `Linux/robot` and `Windows/robot` are the platform-specific asset bundles.
         - `log.txt` is a log from the `asset_bundle_creator` Unity Editor project.
         - `record.json` is a serialized `RobotRecord`.
+        - `model.json` is a JSON dump of the converted .urdf file and mesh paths.
         - `library.json` is a serialized `RobotLibrarian`. It will only be added/set if the optional `library_path` is set.
 
         :param url: The URL of a .urdf or a .xacro file.
@@ -87,7 +89,7 @@ class RobotCreator(AssetBundleCreatorBase):
             required_local_repo_path = self.clone_repo(url=required_repo_url)
             repo_paths[description] = required_local_repo_path
         urdf_path = self.get_urdf_path_from_local_repo(local_repo_path=local_repo_path,
-                                                       url=url)
+                                                       url=url, branch=branch)
         # Convert the .xacro file to a .urdf file.
         if Path(url).suffix == ".xacro":
             urdf_path = self.xacro_to_urdf(xacro_path=urdf_path, repo_paths=repo_paths, args=xacro_args)
@@ -140,14 +142,16 @@ class RobotCreator(AssetBundleCreatorBase):
         ........robot
         ....Windows/
         ........robot
-        ....record.json
         ....log.txt
-        library.json
+        ....record.json
+        ....model.json
+        ....library.json
         ```
 
         - `Darwin/robot`, `Linux/robot` and `Windows/robot` are the platform-specific asset bundles.
         - `log.txt` is a log from the `asset_bundle_creator` Unity Editor project.
         - `record.json` is a serialized `RobotRecord`.
+        - `model.json` is a JSON dump of the converted .urdf file and mesh paths.
         - `library.json` is a serialized `RobotLibrarian`. It will only be added/set if the optional `library_path` is set.
 
         :param source_file: The path to the source .fbx or .obj file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).

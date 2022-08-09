@@ -201,12 +201,15 @@ class AssetBundleCreator(AssetBundleCreatorBase):
             previous_progress = ""
             while process.poll() is None:
                 if progress_path.exists():
-                    progress_raw = progress_path.read_text(encoding="utf-8").split("\n")
-                    progress = f"{progress_raw[0]}/{progress_raw[1]}: {progress_raw[2]}"
-                    if previous_progress != progress:
-                        print(progress)
-                        previous_progress = progress
-                sleep(10)
+                    try:
+                        progress_raw = progress_path.read_text(encoding="utf-8").split("\n")
+                        progress = f"{progress_raw[0]}/{progress_raw[1]}: {progress_raw[2]}"
+                        if previous_progress != progress:
+                            print(progress)
+                            previous_progress = progress
+                    except PermissionError:
+                        pass
+                sleep(1)
 
     def source_file_to_prefab(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
                               vhacd_resolution: int = None, internal_materials: bool = False) -> None:

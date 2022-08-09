@@ -1,3 +1,4 @@
+from time import sleep
 from typing import List, Union
 from json import loads
 from pathlib import Path
@@ -145,9 +146,30 @@ class LisdfReader(AddOn):
         if len(ignore_includes) > 0:
             args.append('-ignore_includes="' + ",".join(ignore_includes) + '"')
         a = AssetBundleCreator(quiet=quiet, display=display, unity_editor_path=unity_editor_path)
-        a.call_unity(class_name="LisdfReader",
-                     method="Read",
-                     args=args)
+        if quiet:
+            a.call_unity(class_name="LisdfReader",
+                         method="Read",
+                         args=args)
+        else:
+            previous_log_text = ""
+            process = a.call_unity(class_name="LisdfReader",
+                                   method="Read",
+                                   args=args,
+                                   is_call=False)
+            log_path = dst_path.joinpath("log.txt")
+            while process.poll() is None:
+                if log_path.exists():
+                    try:
+                        log_text = log_path.read_text(encoding="utf-8")
+                        # Only show the new text.
+                        show_text = log_text.replace(previous_log_text, "")
+                        if len(show_text) > 0:
+                            print(show_text)
+                            # Hide the text for next time.
+                            previous_log_text = log_text[:]
+                    except PermissionError:
+                        pass
+                sleep(1)
         # Print the log.
         if not quiet:
             log_path = dst_path.joinpath("log.txt")

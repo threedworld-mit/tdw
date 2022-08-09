@@ -55,6 +55,7 @@ class LisdfReader(AddOn):
         ```
         output_directory/
         ....counter_0/
+        ........model.json
         ........Darwin/
         ............counter_0
         ........Linux/
@@ -62,10 +63,13 @@ class LisdfReader(AddOn):
         ........Windows/
         ............counter_0
         ....commands.json
+        ....log.txt
         ```
 
+        - `model.json` is a JSON representation of the model structure. This can be useful for debugging.
         - `Darwin/counter_0`, `Linux/counter_0` and `Windows/counter_0` are the platform-specific asset bundles.
         - `commands.json` is the list of commands that can be sent to the build. They will be sent automatically if the `send_commands=True`.
+        - `log.txt` is a log of all events while creating asset bundles, including errors.
 
         :param lisdf_path: The path to the .lisdf file as either a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
         :param output_directory: The directory of the object asset bundles as either a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If it doesn't exist, it will be created while the .lisdf models are being converted.

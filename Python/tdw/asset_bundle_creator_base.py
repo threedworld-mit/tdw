@@ -263,6 +263,8 @@ class AssetBundleCreatorBase(ABC):
                 print(show_text)
                 # Hide the text for next time.
                 return log_text[:]
+            else:
+                return previous_log_text
         # We might have to wait because Unity is writing to the file.
         except PermissionError:
             return previous_log_text

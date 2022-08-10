@@ -172,10 +172,9 @@ class RobotCreator(AssetBundleCreatorBase):
         args = AssetBundleCreatorBase._add_library_args(args=args,
                                                         library_path=library_path,
                                                         library_description=library_description)
-        self.call_unity(method="SourceFileToAssetBundles", args=args)
-        self._print_log(output_directory=output_directory)
-        if not self._quiet:
-            print("DONE!")
+        self.call_unity(method="SourceFileToAssetBundles",
+                        args=args,
+                        log_path=AssetBundleCreatorBase._get_path(output_directory))
 
     def clone_repo(self, url: str) -> Path:
         """
@@ -201,14 +200,14 @@ class RobotCreator(AssetBundleCreatorBase):
         # Change directory.
         cwd = getcwd()
         chdir(str(RobotCreator.TEMP_ROOT.resolve()))
-        if not self._quiet:
+        if not self.quiet:
             print(f"Cloning: {repo_url}")
         # Clone the repo.
         call(["git", "clone", repo_url],
              stderr=open(devnull, "wb"))
         chdir(cwd)
         assert local_repo_path.exists(), f"Can't find: {local_repo_path.resolve()}"
-        if not self._quiet:
+        if not self.quiet:
             print("...Done!")
         return local_repo_path
 
@@ -283,7 +282,7 @@ class RobotCreator(AssetBundleCreatorBase):
                                 copyfile(src=str(src.resolve()), dst=str(dst.resolve()))
                             if src not in xacros and src not in checked:
                                 xacros.append(src)
-        if not self._quiet:
+        if not self.quiet:
             print("Copied all required xacro files to a temp directory.")
         # "Repair" all of the required .xacro files.
         for f in xacro_dir.iterdir():
@@ -304,7 +303,7 @@ class RobotCreator(AssetBundleCreatorBase):
         if urdf_path.exists():
             urdf_path.unlink()
         move(src=str(x.parent.joinpath(urdf_name).resolve()), dst=str(urdf_path.resolve()))
-        if not self._quiet:
+        if not self.quiet:
             print(f"Created {str(urdf_path.resolve())}")
         urdf_path = Path(str(urdf_path.resolve()))
         chdir(cwd)
@@ -330,8 +329,8 @@ class RobotCreator(AssetBundleCreatorBase):
         if immovable:
             args.append("-immovable")
         self.call_unity(method="SourceFileToPrefab",
-                        args=args)
-        self._print_log(output_directory=output_directory)
+                        args=args,
+                        log_path=AssetBundleCreatorBase._get_path(output_directory))
 
     def create_record(self, urdf_path: Union[str, Path], output_directory: Union[str, Path],
                       library_path: Union[str, Path] = None, library_description: str = None,
@@ -386,8 +385,9 @@ class RobotCreator(AssetBundleCreatorBase):
         args = AssetBundleCreatorBase._add_library_args(args=args,
                                                         library_path=library_path,
                                                         library_description=library_description)
-        self.call_unity(method="CreateRecord", args=args)
-        self._print_log(output_directory=output_directory)
+        self.call_unity(method="CreateRecord",
+                        args=args,
+                        log_path=AssetBundleCreatorBase._get_path(output_directory))
 
     @staticmethod
     def get_name(urdf_path: Union[str, Path]) -> str:

@@ -1,6 +1,5 @@
 from pathlib import Path
 from typing import Union
-from time import sleep
 import json
 from tdw.librarian import ModelRecord, ModelLibrarian
 from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
@@ -99,8 +98,9 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         for value, flag in zip([internal_materials, cleanup], ["-internal_materials", "-cleanup"]):
             if value:
                 args.append(flag)
-        self.call_unity(method="SourceFileToAssetBundles", args=args)
-        self._print_log(output_directory=output_directory)
+        self.call_unity(method="SourceFileToAssetBundles",
+                        args=args,
+                        log_path=AssetBundleCreatorBase._get_path(output_directory).joinpath("log.txt"))
         # Write physics quality.
         if isinstance(output_directory, str):
             record_path = Path(output_directory).joinpath("record.json")
@@ -190,26 +190,9 @@ class AssetBundleCreator(AssetBundleCreatorBase):
             args.append("-overwrite")
         if continue_on_error:
             args.append("-continue_on_error")
-        # Start to execute the call.
-        if self._quiet:
-            # Do this all in one go.
-            self.call_unity(method="SourceDirectoryToAssetBundles", args=args)
-        # Print progress.
-        else:
-            process = self.call_unity(method="SourceDirectoryToAssetBundles", args=args, is_call=False)
-            progress_path = output_directory.joinpath("progress.txt")
-            previous_progress = ""
-            while process.poll() is None:
-                if progress_path.exists():
-                    try:
-                        progress_raw = progress_path.read_text(encoding="utf-8").split("\n")
-                        progress = f"{progress_raw[0]}/{progress_raw[1]}: {progress_raw[2]}"
-                        if previous_progress != progress:
-                            print(progress)
-                            previous_progress = progress
-                    except PermissionError:
-                        pass
-                sleep(1)
+        self.call_unity(method="SourceDirectoryToAssetBundles",
+                        args=args,
+                        log_path=AssetBundleCreatorBase._get_path(output_directory).joinpath("progress.txt"))
 
     def source_file_to_prefab(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
                               vhacd_resolution: int = None, internal_materials: bool = False) -> None:
@@ -253,8 +236,9 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         if internal_materials:
             args.append("-internal_materials")
         # Execute the call.
-        self.call_unity(method="SourceFileToPrefab", args=args)
-        self._print_log(output_directory=output_directory)
+        self.call_unity(method="SourceFileToPrefab",
+                        args=args,
+                        log_path=AssetBundleCreatorBase._get_path(output_directory))
 
     def create_record(self, name: str, output_directory: Union[str, Path],
                       wnid: str = None, wcategory: str = None, scale_factor: float = 1,
@@ -309,8 +293,9 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         args = AssetBundleCreatorBase._add_library_args(args=args, library_path=library_path,
                                                         library_description=library_description)
         # Execute the call.
-        self.call_unity(method="CreateRecord", args=args)
-        self._print_log(output_directory=output_directory)
+        self.call_unity(method="CreateRecord",
+                        args=args,
+                        log_path=AssetBundleCreatorBase._get_path(output_directory))
 
     def write_physics_quality(self, name: str, record_path: Union[str, Path] = None,
                               library_path: Union[str, Path] = None) -> None:
@@ -324,7 +309,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         """
 
         # Get the record.
-        if not self._quiet:
+        if not self.quiet:
             print("Writing physics quality...")
         record: ModelRecord = AssetBundleCreator._get_record(name=name, record_path=record_path,
                                                              library_path=library_path)
@@ -340,7 +325,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         c.socket.close()
         # Write the physics quality.
         record.physics_quality = float(v.reports[0])
-        if not self._quiet:
+        if not self.quiet:
             print(f"Physics quality: {record.physics_quality}")
         self._set_record(record=record, record_path=record_path, library_path=library_path)
 
@@ -353,7 +338,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param library_path: If not None, this is the path to an existing `ModelLibrarian` .json file, which will be updated.
         """
 
-        if not self._quiet:
+        if not self.quiet:
             print("Validating asset bundle...")
         record: ModelRecord = AssetBundleCreator._get_record(name=name, record_path=record_path,
                                                              library_path=library_path)
@@ -370,12 +355,12 @@ class AssetBundleCreator(AssetBundleCreatorBase):
             output = "There are problems with the asset bundle!"
             for problem in v.reports:
                 output += "\n\t" + problem
-            if not self._quiet:
+            if not self.quiet:
                 print(output)
             record.do_not_use = True
             record.do_not_use_reason = "\n".join(v.reports)
         else:
-            if not self._quiet:
+            if not self.quiet:
                 print("OK!")
         self._set_record(record=record, record_path=record_path, library_path=library_path)
 
@@ -417,12 +402,12 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         # Update the record.
         if record_path is not None:
             AssetBundleCreatorBase._get_path(record_path).write_text(json.dumps(record.__dict__, indent=2), encoding="utf-8")
-            if not self._quiet:
+            if not self.quiet:
                 print(f"Updated {record_path}")
         # Update the librarian.
         if library_path is not None:
             model_librarian = ModelLibrarian(AssetBundleCreatorBase._get_string_path(library_path))
             overwrite = model_librarian.get_record(record.name) is not None
             model_librarian.add_or_update_record(record=record, overwrite=overwrite, write=True)
-            if not self._quiet:
+            if not self.quiet:
                 print(f"Updated {library_path}")

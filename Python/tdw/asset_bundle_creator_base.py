@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 import platform
-from typing import List, Union, Optional
+from typing import List, Union
 from subprocess import call, check_output, CalledProcessError, Popen
 import os
 import re
+from time import sleep
 from overrides import final
 from tdw.backend.platforms import SYSTEM_TO_UNITY
 
@@ -42,7 +43,10 @@ class AssetBundleCreatorBase(ABC):
                 raise Exception(f"{e}\n\nRun: sudo apt install libgconf-2-4")
             # Set the display for Linux.
             self._env["DISPLAY"] = display
-        self._quiet: bool = quiet
+        """:field
+        If True, don't print any messages to console.
+        """
+        self.quiet: bool = quiet
         # Get the Unity path.
         if unity_editor_path is None:
             system = platform.system()
@@ -105,16 +109,14 @@ class AssetBundleCreatorBase(ABC):
                 "-batchmode"]
 
     @final
-    def call_unity(self, method: str, args: List[str], class_name: str = None, is_call: bool = True) -> Optional[Popen]:
+    def call_unity(self, method: str, args: List[str], log_path: Union[str, Path], class_name: str = None) -> None:
         """
-        Execute a call to Unity Editor.
+        Execute a call to Unity Editor. If `self.quiet == False` this will continuously print the log file.
 
         :param method: The name of the method.
         :param args: Arguments to send to Unity Editor in addition to those send via `self.get_base_unity_call()` and `-executeMethod`.
+        :param log_path:  The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
         :param class_name: The name of the Unity C# class. If None, a default class name will be used. See: `self.get_creator_class_name()`.
-        :param is_call: If True, run `subprocess.call()` and return None. If False, run `subprocess.Popen()` and return the process.
-
-        :return If `is_call == True`, returns None. If `is_call == False`, returns the process.
         """
 
         # Clone the repo.
@@ -133,12 +135,11 @@ class AssetBundleCreatorBase(ABC):
         # Add additional arguments.
         unity_call.extend(args)
         # Call Unity Editor.
-        if is_call:
+        if self.quiet:
             call(unity_call, env=self._env)
-            return None
         else:
-            p = Popen(unity_call, env=self._env, shell=True)
-            return p
+            self.run_process_and_print_log(process=Popen(unity_call, env=self._env, shell=True),
+                                           log_path=log_path)
 
     @final
     def prefab_to_asset_bundles(self, name: str, output_directory: Union[str, Path]) -> None:
@@ -172,17 +173,18 @@ class AssetBundleCreatorBase(ABC):
         ........name
         ....Windows/
         ........name
+        ....log.txt
         ```
 
         :param name: The name of the model (the name of the .prefab file, minus the extension).
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
         """
 
-        dst = AssetBundleCreatorBase._get_string_path(output_directory)
-        self.call_unity(method="PrefabToAssetBundles", args=[f'-name="{name}"',
-                                                             "-source=temp",
-                                                             f'-output_directory="{dst}"'])
-        self._print_log(output_directory=output_directory)
+        self.call_unity(method="PrefabToAssetBundles",
+                        args=[f'-name="{name}"',
+                              "-source=temp",
+                              f'-output_directory="{AssetBundleCreatorBase._get_string_path(output_directory)}"'],
+                        log_path=AssetBundleCreatorBase._get_path(output_directory).joinpath("log.txt"))
 
     @final
     def cleanup(self) -> None:
@@ -190,10 +192,12 @@ class AssetBundleCreatorBase(ABC):
         Delete any intermediary files in the `asset_bundle_creator` Unity Editor project such as .prefab files.
         """
 
-        self.call_unity(method="Cleanup", args=["-name=temp",
-                                                "-source=temp",
-                                                "-output_directory=temp",
-                                                "-cleanup"])
+        self.call_unity(method="Cleanup",
+                        args=["-name=temp",
+                              "-source=temp",
+                              "-output_directory=temp",
+                              "-cleanup"],
+                        log_path="")
 
     @abstractmethod
     def get_creator_class_name(self) -> str:
@@ -218,21 +222,31 @@ class AssetBundleCreatorBase(ABC):
                 return False
         return True
 
-    @final
-    def _print_log(self, output_directory: Union[str, Path]) -> None:
+    @staticmethod
+    def run_process_and_print_log(process: Popen, log_path: Union[str, Path], sleep_time: float = 1) -> None:
         """
-        Print the log file generated by the `asset_bundle_creator` Unity Editor project.
+        Poll a process to check if it is completed. If not, try to read a log file. Print the new text of the log file.
 
-        :param output_directory: The directory where we expect the log to be.
+        :param process: The process.
+        :param log_path: The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
+        :param sleep_time: The time in seconds to wait between process polling.
         """
 
-        if self._quiet:
-            return
-        f = AssetBundleCreatorBase._get_path(output_directory).joinpath("log.txt")
-        if not f.exists():
-            print(f"Log file doesn't exist: {f}")
-            return
-        print(f.read_text(encoding="utf-8"))
+        path = AssetBundleCreatorBase._get_path(log_path)
+        previous_log_text = ""
+        while process.poll() is None:
+            if path.exists():
+                try:
+                    log_text = path.read_text(encoding="utf-8")
+                    # Only show the new text.
+                    show_text = log_text.replace(previous_log_text, "")
+                    if len(show_text) > 0:
+                        print(show_text)
+                        # Hide the text for next time.
+                        previous_log_text = log_text[:]
+                except PermissionError:
+                    pass
+            sleep(sleep_time)
 
     @staticmethod
     def _add_library_args(args: List[str], library_path: Union[str, Path] = None, library_description: str = None) -> List[str]:

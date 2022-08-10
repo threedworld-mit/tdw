@@ -68,8 +68,9 @@ class CompositeObjectCreator(AssetBundleCreatorBase):
                 args.append(f'-{flag}="{value}"')
         if cleanup:
             args.append("-cleanup")
-        self.call_unity(method="SourceFileToAssetBundles", args=args)
-        self._print_log(output_directory=output_directory)
+        self.call_unity(method="SourceFileToAssetBundles",
+                        args=args,
+                        log_path=AssetBundleCreatorBase._get_path(output_directory).joinpath("log.txt"))
 
     def source_file_to_prefab(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
                               vhacd_resolution: int = None) -> None:
@@ -112,8 +113,9 @@ class CompositeObjectCreator(AssetBundleCreatorBase):
         if vhacd_resolution is not None:
             args.append(f"-vhacd_resolution={vhacd_resolution}")
         # Execute the call.
-        self.call_unity(method="SourceFileToPrefab", args=args)
-        self._print_log(output_directory=output_directory)
+        self.call_unity(method="SourceFileToPrefab",
+                        args=args,
+                        log_path=AssetBundleCreatorBase._get_path(output_directory).joinpath("log.txt"))
 
     def get_creator_class_name(self) -> str:
         return "CompositeObjectCreatorLauncher"

@@ -235,18 +235,37 @@ class AssetBundleCreatorBase(ABC):
         path = AssetBundleCreatorBase._get_path(log_path)
         previous_log_text = ""
         while process.poll() is None:
-            if path.exists():
-                try:
-                    log_text = path.read_text(encoding="utf-8")
-                    # Only show the new text.
-                    show_text = log_text.replace(previous_log_text, "")
-                    if len(show_text) > 0:
-                        print(show_text)
-                        # Hide the text for next time.
-                        previous_log_text = log_text[:]
-                except PermissionError:
-                    pass
+            # Update the log text.
+            previous_log_text = AssetBundleCreatorBase._read_log_text(previous_log_text=previous_log_text, log_path=path)
             sleep(sleep_time)
+        # Finish reading the log.
+        AssetBundleCreatorBase._read_log_text(previous_log_text=previous_log_text, log_path=path)
+
+    @staticmethod
+    def _read_log_text(previous_log_text: str, log_path: Path) -> str:
+        """
+        Read the log and show only the text that we haven't seen yet.
+
+        :param previous_log_text: The text that we've seen so far.
+        :param log_path: The path to the log file.
+
+        :return: The updated text that we've seen so far.
+        """
+
+        # Wait until the log exists.
+        if not log_path.exists():
+            return previous_log_text
+        try:
+            log_text = log_path.read_text(encoding="utf-8")
+            # Only show the new text.
+            show_text = log_text.replace(previous_log_text, "")
+            if len(show_text) > 0:
+                print(show_text)
+                # Hide the text for next time.
+                return log_text[:]
+        # We might have to wait because Unity is writing to the file.
+        except PermissionError:
+            return previous_log_text
 
     @staticmethod
     def _add_library_args(args: List[str], library_path: Union[str, Path] = None, library_description: str = None) -> List[str]:

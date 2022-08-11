@@ -100,7 +100,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
                 args.append(flag)
         self.call_unity(method="SourceFileToAssetBundles",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_path(output_directory).joinpath("log.txt"))
+                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
         # Write physics quality.
         if isinstance(output_directory, str):
             record_path = Path(output_directory).joinpath("record.json")
@@ -238,7 +238,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         # Execute the call.
         self.call_unity(method="SourceFileToPrefab",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_path(output_directory))
+                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
 
     def create_record(self, name: str, output_directory: Union[str, Path],
                       wnid: str = None, wcategory: str = None, scale_factor: float = 1,
@@ -295,7 +295,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         # Execute the call.
         self.call_unity(method="CreateRecord",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_path(output_directory))
+                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
 
     def write_physics_quality(self, name: str, record_path: Union[str, Path] = None,
                               library_path: Union[str, Path] = None) -> None:

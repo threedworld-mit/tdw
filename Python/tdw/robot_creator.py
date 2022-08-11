@@ -174,7 +174,7 @@ class RobotCreator(AssetBundleCreatorBase):
                                                         library_description=library_description)
         self.call_unity(method="SourceFileToAssetBundles",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_path(output_directory))
+                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
 
     def clone_repo(self, url: str) -> Path:
         """
@@ -330,7 +330,7 @@ class RobotCreator(AssetBundleCreatorBase):
             args.append("-immovable")
         self.call_unity(method="SourceFileToPrefab",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_path(output_directory))
+                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
 
     def create_record(self, urdf_path: Union[str, Path], output_directory: Union[str, Path],
                       library_path: Union[str, Path] = None, library_description: str = None,
@@ -387,7 +387,7 @@ class RobotCreator(AssetBundleCreatorBase):
                                                         library_description=library_description)
         self.call_unity(method="CreateRecord",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_path(output_directory))
+                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
 
     @staticmethod
     def get_name(urdf_path: Union[str, Path]) -> str:

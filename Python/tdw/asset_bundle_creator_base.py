@@ -333,3 +333,13 @@ class AssetBundleCreatorBase(ABC):
         else:
             raise Exception(path)
         return p.replace("\\", "/")
+
+    @staticmethod
+    def _get_log_path(output_directory: Union[str, Path]) -> Path:
+        """
+        :param output_directory: The output directory.
+
+        :return: The expected path to the log file: `output_directory/log.txt`.
+        """
+
+        return AssetBundleCreatorBase._get_path(output_directory).joinpath("log.txt")

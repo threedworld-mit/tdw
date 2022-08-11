@@ -9,31 +9,13 @@ class OccupancyMap(AddOn):
     """
     An occupancy map is a numpy array that divides a TDW into a grid. Each cell is free (no objects), non-free (has objects), or is outside of the environment.
 
-    Generating an occupancy map requires multiple frames: one frame when the scene is first initialized, and one frame per subsequent `generate()` call:
+    Each element in the occupancy map can be one of three values:
 
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.occupancy_map import OccupancyMap
-
-    c = Controller(launch_build=False)
-    o = OccupancyMap(cell_size=0.5)
-    c.add_ons.append(o)
-    c.communicate(TDWUtils.create_empty_room(12, 12))
-    o.generate()
-    c.communicate([])
-    print(o.occupancy_map)
-    c.communicate({"$type": "terminate"})
-    ```
-
-    For a more complete example, see `tdw/Python/example_controllers/occupancy_mapper.py`
-
-    ## Limitations
-
-    - `o.generate()` prepares to send commands to the build but doesn't actually send commands to the build (only a controller can do that). You always need to send `o.generate()` then `c.communicate(commands)`.
-    - Occupancy maps are static. If an object in the scene moves, `o.occupancy_map` won't update until you call `o.generate()` again.
-    - Generating an occupancy map can slow down the build. We recommend generating occupancy maps only as needed (not per-frame).
-    - The occupancy map doesn't differentiate between big objects and small objects. A small object on the floor will make that cell "non-free". You can ignore specific objects via the generate() function: `o.generate(ignore_objects=[id0, id1])`.
+    | Value | Meaning                                                      |
+    | ----- | ------------------------------------------------------------ |
+    | -1    | The cell is out of bounds (there is no floor).               |
+    | 1     | The cell is occupied by at least one object, occupied by an environment object (such as a wall), or otherwise not navigable (blocked by other objects). |
+    | 0     | The cell is unoccupied.                                      |
     """
 
     # The height from which rays will be cast.
@@ -47,11 +29,6 @@ class OccupancyMap(AddOn):
         super().__init__()
         """:field
         A 2-dimensional numpy array of the occupancy map. Each row corresponds to a worldspace x value and each column corresponds to a worldspace z value (see `get_occupancy_position(idx, idy)` below).
-        Each element in the occupancy map can be one of three values:
-        
-        - **-1:** The cell is out of bounds of the scene (there is no floor or roof beneath this position)
-        - **0:** The cell is unoccupied; there is a floor at this position but there are no objects.
-        - **1:** The cell is occupied by at least one object.
         """
         self.occupancy_map: Optional[np.array] = None
         """:field
@@ -257,4 +234,19 @@ class OccupancyMap(AddOn):
                                   "shape": "square"})
 
     def hide(self) -> None:
+        """
+        Remove all positions markers (the blue squares created by `self.show()`).
+        """
+
         self.commands.append({"$type": "remove_position_markers"})
+
+    def reset(self) -> None:
+        """
+        Reset the occupancy map. Call this when resetting a scene.
+        """
+
+        self.initialized = False
+        self.occupancy_map = None
+        self.scene_bounds = None
+        self._occupancy_map_size = (0, 0)
+        self._ignore_objects.clear()

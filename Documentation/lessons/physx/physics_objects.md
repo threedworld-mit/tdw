@@ -34,18 +34,7 @@ The object's kinematic state determines whether it will respond to physics. Othe
 
 ## Default physics values and `get_add_physics_object()`
 
-TDW includes default physics values for some, but not all, models. We are continuously assigning default physics values for additional models.
-
-The `Controller` class has a dictionary called `DEFAULT_PHYSICS_VALUES` which stores all default physics values. They keys of the dictionary are model names:
-
-```python
-from tdw.controller import Controller
-
-model_name = "iron_box"
-print(model_name in Controller.DEFAULT_PHYSICS_VALUES) # True
-```
-
-To apply these physics values, the `Controller` class includes a wrapper function: [`get_add_physics_object()`](../.../python/controller.md). This is similar to `Controller.get_add_object()` but there is a key difference: This controller returns a *list* of commands rather than a *single* command. Note that in this example we're using *extend* instead of *append* to add a list to another list:
+To apply default physics values to objects, the `Controller` class includes a wrapper function: [`get_add_physics_object()`](../../python/controller.md). This is similar to `Controller.get_add_object()` but there is a key difference: This controller returns a *list* of commands rather than a *single* command. **You must add this list of commands to an existing list via *extend* rather than *append*:**
 
 ```python
 from tdw.controller import Controller
@@ -96,14 +85,27 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                 "id": object_id}])
 ```
 
+**Note all objects in TDW have default physics values.** We are continuously assigning default physics values for additional models.
+
+Default physics values and audio values are stored in `DEFAULT_OBJECT_AUDIO_STATIC_DATA`. The keys of the dictionary are model names:
+
+```python
+from tdw.physics_audio.object_audio_static import DEFAULT_OBJECT_AUDIO_STATIC_DATA
+
+model_name = "iron_box"
+print(model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA) # True
+```
+
+If the model name is not included in `DEFAULT_OBJECT_AUDIO_STATIC_DATA`, the `get_add_physics_object()` function will derive the values by averaging out values from similar objects.
+
 ## Non-default physics values and `get_add_physics_object()`
 
 You might want to set non-default physics values for an object for many reasons, including:
 
 - You want to vary the object's behavior per trial
-- The object doesn't have default physics values
+- The object doesn't have explicitly defined default physics values
 
-`Controller.get_add_physics_object()` has optional parameters that can be set. If `default_physics_values` is False, then the function will read the non-default values:
+`Controller.get_add_physics_object()` has optional parameters that can be set. If `default_physics_values=False`, then the function will read the non-default values:
 
 ```python
 from tdw.controller import Controller
@@ -214,8 +216,8 @@ Example controllers:
 
 Python API:
 
-- [`Controller.get_add_object`](../../api/python/controller.md)
-- [`Controller.get_add_physics_object`](../../api/python/controller.md)
+- [`Controller.get_add_object()`](../../python/controller.md)
+- [`Controller.get_add_physics_object()`](../../python/controller.md)
 - [`ObjectManager`](../../python/add_ons/object_manager.md)
 
 Command API:

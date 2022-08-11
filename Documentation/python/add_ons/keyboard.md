@@ -4,8 +4,6 @@
 
 Add keyboard controls to a TDW scene.
 
-For example implementation, see: `tdw/Python/example_controllers/keyboard_controls.py`
-
 ***
 
 ## Fields
@@ -20,16 +18,9 @@ For example implementation, see: `tdw/Python/example_controllers/keyboard_contro
 
 #### \_\_init\_\_
 
-**`Keyboard(key, commands, function, events)`**
+\_\_init\_\_
 
-Listen for when a key is pressed and send commands.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| key |  |  | The keyboard key. |
-| commands |  |  | Commands to be sent when the key is pressed. |
-| function |  |  | Function to invoke when the key is pressed. |
-| events |  |  | Listen to these keyboard events for this `key`. Options: `"press"`, `"hold"`, `"release"`. If None, this defaults to `["press"]`. |
+**`Keyboard()`**
 
 #### get_initialization_commands
 
@@ -41,16 +32,26 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
-**`self.on_send(key, commands, function, events)`**
+**`self.on_send(resp)`**
 
-Listen for when a key is pressed and send commands.
+This is called within `Controller.communicate(commands)` after commands are sent to the build and a response is received.
+
+Use this function to send commands to the build on the next `Controller.communicate(commands)` call, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the *next* `Controller.communicate(commands)` call.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| key |  |  | The keyboard key. |
-| commands |  |  | Commands to be sent when the key is pressed. |
-| function |  |  | Function to invoke when the key is pressed. |
-| events |  |  | Listen to these keyboard events for this `key`. Options: `"press"`, `"hold"`, `"release"`. If None, this defaults to `["press"]`. |
+| resp |  List[bytes] |  | The response from the build. |
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
 #### listen
 
@@ -66,29 +67,3 @@ Listen for when a key is pressed and send commands.
 | commands |  Union[dict, List[dict] |  | Commands to be sent when the key is pressed. |
 | function |  Callable  | None | Function to invoke when the key is pressed. |
 | events |  List[str] | None | Listen to these keyboard events for this `key`. Options: `"press"`, `"hold"`, `"release"`. If None, this defaults to `["press"]`. |
-
-#### on_send
-
-**`self.on_send(resp)`**
-
-This is called after commands are sent to the build and a response is received.
-
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build. |
-
-#### before_send
-
-**`self.before_send(commands)`**
-
-This is called before sending commands to the build. By default, this function doesn't do anything.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-
-

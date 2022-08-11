@@ -1,6 +1,6 @@
 # Model Librarian
 
-A **Model Librarian** is a [Librarian](librarian.md) wrapper class for a model records database. 
+A **Model Librarian** is a model records database. 
 
 ```python
 from tdw.librarian import ModelLibrarian
@@ -36,11 +36,11 @@ If you don't provided a value for `library`, the default is `models_core.json`.
 | Library               | Description                                                  | Free? |
 | --------------------- | ------------------------------------------------------------ | ----- |
 | `models_core.json`    | Approximately 200 high-quality models.                       | ✓     |
-| `models_full.json`    | Approximately 2000 high-quality models + all models from `models_core.json`. For more info, read [this](../../misc_frontend/models_full.md). | ✕     |
+| `models_full.json`    | Approximately 2000 high-quality models + all models from `models_core.json`. | ✕     |
 | `models_special.json` | Primitives and specialized models.                           | ✓     |
-| `models_flex.json`    | Primitives that have been optimized for [Flex](../../misc_frontend/flex.md) deformation. | ✓     |
+| `models_flex.json`    | Primitives that have been optimized for Flex deformation.    | ✓     |
 
-<img src="../../images/librarian/model_libraries.png" style="zoom:50%;" />
+<img src="images/model_libraries.png" style="zoom:50%;" />
 
 ## Command API
 
@@ -93,7 +93,7 @@ record = ModelRecord(data=data) # Creates a record from JSON data.
 | `wnid`               | str                         | The WordNet/ImageNet semantic category ID of the model.      |
 | `wcategory`          | str                         | The category description associated with the wnid. Required for the `_category` image pass to work correctly. |
 | `scale_factor`       | float                       | When the model is first loaded into the build, it will be scaled from its default size by this factor. |
-| `flex`               | bool                        | If true, this model is [Flex-compatible](../../misc_frontend/flex.md). |
+| `flex`               | bool                        | If true, this model is Flex-compatible.                      |
 | `do_not_use`         | bool                        | If true, there is something wrong with this model (we're working on it!). The build will still load the model if prompted; this is just a warning for you. |
 | `do_not_use_reason`  | str                         | If `do_not_use == True`, this is a brief reason why.         |
 | `substructure`       | List[dict]                  | A list of all sub-objects in the model and their visual materials. Use this with the `set_visual_material` command.<br> Each element is a dictionary structured as: `{"name": "sub-object", "materials": ["material", "material", "etc."]}` |
@@ -101,7 +101,9 @@ record = ModelRecord(data=data) # Creates a record from JSON data.
 | `canonical_rotation` | Dict[str, float]            | The Vector3 Euler angles that the object should face if an avatar is loaded into the scene (and the avatar isn't rotated). |
 | `physics_quality`    | float                       | The percentage of the object's mesh covered by colliders.    |
 | `asset_bundle_sizes` | Dict[str, int]              | A dictionary of asset bundle sizes. Key=Platform. Value=The size of the binary in bytes. |
-| `composite_object`   | bool                        | If true, this model is a [composite object](../../composite_objects/composite_objects.md). |
+| `composite_object`   | bool                        | If true, this model is a composite object.                   |
+| `volume`             | float                       | The volume of the object in cubic meters.                    |
+| `container_shapes`   | List[ContainerShape]        | A list of [`ContainerShape`](../container_data/container_shape.md) data. This data is used by the [`ContainerManager`](../add_ons/container_manager.md) add-on. |
 
 ### Functions
 

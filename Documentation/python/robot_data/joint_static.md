@@ -1,30 +1,8 @@
 # JointStatic
 
-`from robot_data.joint_static import JointStatic`
+`from tdw.robot_data.joint_static import JointStatic`
 
 Static robot joint data.
-
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.robot import Robot
-
-c = Controller()
-# Add a robot.
-robot = Robot(name="ur5",
-              position={"x": -1, "y": 0, "z": 0.5},
-              robot_id=0)
-c.add_ons.append(robot)
-# Initialize the scene.
-c.communicate([{"$type": "load_scene",
-                "scene_name": "ProcGenScene"},
-               TDWUtils.create_empty_room(12, 12)])
-# Print the ID and segmentation color of each joint.
-for joint_id in robot.static.joints:
-    print(joint_id, robot.static.joints[joint_id].segmentation_color)
-c.communicate({"$type": "terminate"})
-```
 
 ***
 
@@ -48,16 +26,21 @@ c.communicate({"$type": "terminate"})
 
 - `drives` A dictionary of [Drive data](drive.md) for each of the robot's joints. Key = The drive axis (`"x"`, `"y"`, or `"z"`).
 
+- `num_dof` The number of degrees of freedom. This is equivalent to len(self.drives).
+
+- `dynamic_index` The index in the overall list of joints in `DynamicRobots` output data. This is used internally; you almost always want `self.joint_id`.
+
 ***
 
 ## Functions
 
 #### \_\_init\_\_
 
-**`JointStatic(static_robot, joint_index)`**
+**`JointStatic(static_robot, static_index, dynamic_index)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | static_robot |  StaticRobot |  | Static robot output data from the build. |
-| joint_index |  int |  | The index of this joint in the list of joints. |
+| static_index |  int |  | The index of this joint in the list of joints. |
+| dynamic_index |  int |  | The index in the overall list of joints in `DynamicRobots` output data. |
 

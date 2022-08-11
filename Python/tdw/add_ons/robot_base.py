@@ -64,7 +64,7 @@ class RobotBase(AddOn, ABC):
         return [self._get_add_robot_command(),
                 {"$type": "send_static_robots",
                  "frequency": "once"},
-                {"$type": "send_robots",
+                {"$type": "send_dynamic_robots",
                  "frequency": "always"}]
 
     def joints_are_moving(self, joint_ids: List[int] = None) -> bool:
@@ -80,6 +80,23 @@ class RobotBase(AddOn, ABC):
             if self.dynamic.joints[joint_id].moving:
                 return True
         return False
+
+    def reset(self, position: Dict[str, float] = None, rotation: Dict[str, float] = None) -> None:
+        """
+        Reset the robot.
+
+        :param position: The position of the robot.
+        :param rotation: The rotation of the robot.
+        """
+
+        self.initialized = False
+        self.static = None
+        self.dynamic = None
+        self.commands.clear()
+        if position is not None:
+            self.initial_position = position
+        if rotation is not None:
+            self.initial_rotation = rotation
 
     def on_send(self, resp: List[bytes]) -> None:
         """

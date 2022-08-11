@@ -120,7 +120,7 @@ for record in librarian.records:
 
 ### Images of each scene
 
-**TODO**
+**[Images of each scene can be found here.](https://github.com/threedworld-mit/tdw/tree/master/Documentation/lessons/core_concepts/images/scenes)**
 
 ## Option C: Other options for creating a scene
 

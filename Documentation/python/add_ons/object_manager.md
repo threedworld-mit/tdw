@@ -56,10 +56,6 @@ c.communicate({"$type": "terminate"})
 
 ## Fields
 
-- `commands` These commands will be appended to the commands of the next `communicate()` call.
-
-- `initialized` If True, this module has been initialized.
-
 - `objects_static` [The static object data.](../object_data/object_static.md) Key = The ID of the object.
 
 - `categories` The segmentation color per category as use in the _category image pass. Key = The category. Value = The color as an `[r, g, b]` numpy array.
@@ -69,6 +65,10 @@ c.communicate({"$type": "terminate"})
 - `rigidbodies` The [rigidbody data](../object_data/rigidbody.md) for each rigidbody object on the scene on this frame. Key = The object ID. If `rigidbodies=False` in the constructor, this dictionary will be empty.
 
 - `bounds` The [bounds data](../object_data/bound.md) for each object on the scene on this frame. Key = The object ID. If `bounds=False` in the constructor, this dictionary will be empty.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -96,24 +96,12 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
-**`self.on_send()`**
-
-Reset the cached static data. Call this when resetting the scene.
-
-#### reset
-
-**`self.reset()`**
-
-Reset the cached static data. Call this when resetting the scene.
-
-#### on_send
-
 **`self.on_send(resp)`**
 
-This is called after commands are sent to the build and a response is received.
+This is called within `Controller.communicate(commands)` after commands are sent to the build and a response is received.
 
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
+Use this function to send commands to the build on the next `Controller.communicate(commands)` call, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the *next* `Controller.communicate(commands)` call.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -123,11 +111,14 @@ Any commands in the `self.commands` list will be sent on the next frame.
 
 **`self.before_send(commands)`**
 
-This is called before sending commands to the build. By default, this function doesn't do anything.
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
+#### reset
 
+**`self.reset()`**
 
+Reset the cached static data. Call this when resetting the scene.

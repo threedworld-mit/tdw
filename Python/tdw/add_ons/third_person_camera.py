@@ -71,26 +71,22 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
     """
 
     def __init__(self, avatar_id: str = None, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 fov: int = None, framerate: int = None, look_at: Union[int, Dict[str, float]] = None,
+                 field_of_view: int = None, look_at: Union[int, Dict[str, float]] = None,
                  follow_object: int = None, follow_rotate: bool = False):
         """
         :param avatar_id: The ID of the avatar (camera). If None, a random ID is generated.
         :param position: The initial position of the object.If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The initial rotation of the camera. Can be Euler angles (keys are `(x, y, z)`) or a quaternion (keys are `(x, y, z, w)`). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param look_at: If not None, rotate look at this target every frame. Overrides `rotation`. Can be an int (an object ID) or an `(x, y, z)` dictionary (a position).
-        :param fov: If not None, this is the initial field of view. Otherwise, defaults to 35.
+        :param field_of_view: If not None, set the field of view.
         :param follow_object: If not None, follow an object per frame. The `position` parameter will be treated as a relative value from the target object rather than worldspace coordinates.
         :param follow_rotate: If True, match the rotation of the object. Ignored if `follow_object` is None.
-        :param framerate: If not None, sets the target framerate.
         """
 
-        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, fov=fov, framerate=framerate)
+        super().__init__(avatar_id=avatar_id, position=position, rotation=rotation, field_of_view=field_of_view)
 
-        """:field
-        The target object or position that the camera will look at. Can be None (the camera won't look at a target).
-        """
-        self.look_at_target: Optional[Union[int, Dict[str, float]]] = look_at
-        self._init_commands.extend(self._get_look_at_commands())
+        # The target object or position that the camera will look at. Can be None (the camera won't look at a target).
+        self._look_at: Optional[Union[int, Dict[str, float]]] = look_at
         """:field
         The ID of the object the camera will try to follow. Can be None (the camera won't follow an object).
         """
@@ -100,15 +96,20 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
         """
         self.follow_rotate: bool = follow_rotate
 
+    def get_initialization_commands(self) -> List[dict]:
+        commands = super().get_initialization_commands()
+        commands.extend(self._get_look_at_commands())
+        return commands
+
     def on_send(self, resp: List[bytes]) -> None:
         # Look at and focus on a target object or position.
-        if self.look_at_target is not None:
+        if self._look_at is not None:
             self.commands.extend(self._get_look_at_commands())
         # Follow a target object.
-        if self.follow_object is not None and self.initial_position is not None:
+        if self.follow_object is not None and self.position is not None:
             self.commands.append({"$type": "follow_object",
                                   "object_id": self.follow_object,
-                                  "position": self.initial_position,
+                                  "position": self.position,
                                   "rotation": self.follow_rotate,
                                   "avatar_id": self.avatar_id})
 
@@ -120,14 +121,14 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
         :param absolute: If True, `position` is absolute worldspace coordinates. If False, `position` is relative to the avatar's current position.
         """
 
-        if absolute or self.initial_position is None:
-            self.initial_position: Dict[str, float] = position
+        if absolute or self.position is None:
+            self.position = position
         else:
-            self.initial_position: Dict[str, float] = {"x": self.initial_position["x"] + position["x"],
-                                                       "y": self.initial_position["y"] + position["y"],
-                                                       "z": self.initial_position["z"] + position["z"]}
+            self.position = {"x": self.position["x"] + position["x"],
+                             "y": self.position["y"] + position["y"],
+                             "z": self.position["z"] + position["z"]}
         self.commands.append({"$type": "teleport_avatar_to",
-                              "position": self.initial_position,
+                              "position": self.position,
                               "avatar_id": self.avatar_id})
 
     def rotate(self, rotation: Dict[str, float]) -> None:
@@ -143,28 +144,38 @@ class ThirdPersonCamera(ThirdPersonCameraBase):
                                   "angle": rotation[q],
                                   "avatar_id": self.avatar_id})
 
+    def look_at(self, target: Union[int, Dict[str, float]] = None) -> None:
+        """
+        Look at a target position or object. The camera will continue to look at the target until you call `camera.look_at(None)`.
+
+        :param target: The look at target. Can be an int (an object ID), an `(x, y, z)` dictionary (a position), or None (stop looking at a target).
+        """
+
+        self._look_at = target
+        self.commands.extend(self._get_look_at_commands())
+
     def _get_look_at_commands(self) -> List[dict]:
         """
         :return: A command for looking at a target.
         """
 
         commands = []
-        if self.look_at_target is None:
+        if self._look_at is None:
             return commands
         # Look at and focus on the object.
-        elif isinstance(self.look_at_target, int):
+        elif isinstance(self._look_at, int):
             commands.extend([{"$type": "look_at",
-                              "object_id": self.look_at_target,
+                              "object_id": self._look_at,
                               "use_centroid": True,
                               "avatar_id": self.avatar_id},
                              {"$type": "focus_on_object",
-                              "object_id": self.look_at_target,
+                              "object_id": self._look_at,
                               "use_centroid": True,
                               "avatar_id": self.avatar_id}])
-        elif isinstance(self.look_at_target, dict):
+        elif isinstance(self._look_at, dict):
             commands.append({"$type": "look_at_position",
-                             "position": self.look_at_target,
+                             "position": self._look_at,
                              "avatar_id": self.avatar_id})
         else:
-            raise TypeError(f"Invalid look-at target: {self.look_at_target}")
+            raise TypeError(f"Invalid look-at target: {self._look_at}")
         return commands

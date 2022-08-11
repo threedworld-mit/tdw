@@ -8,9 +8,9 @@ Abstract base class for robots.
 
 ## Class Variables
 
-| Variable | Type | Description |
-| --- | --- | --- |
-| `NON_MOVING` | float | If a joint has moved less than this many degrees (revolute or spherical) or meters (prismatic) since the previous frame, it is considered to be not moving for the purposes of determining which joints are moving. |
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `NON_MOVING` | float | If a joint has moved less than this many degrees (revolute or spherical) or meters (prismatic) since the previous frame, it is considered to be not moving for the purposes of determining which joints are moving. | `0.001` |
 
 ***
 
@@ -25,6 +25,10 @@ Abstract base class for robots.
 - `static` Static robot data.
 
 - `dynamic` Dynamic robot data.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -50,19 +54,6 @@ This function gets called exactly once per add-on. To re-initialize, set `self.i
 
 _Returns:_  A list of commands that will initialize this add-on.
 
-#### joints_are_moving
-
-**`self.joints_are_moving()`**
-
-**`self.joints_are_moving(joint_ids=None)`**
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| joint_ids |  List[int] | None | A list of joint IDs to check for movement. If `None`, check all joints for movement. |
-
-_Returns:_  True if the joints are moving.
-
 #### on_send
 
 **`self.on_send(resp)`**
@@ -86,3 +77,28 @@ This is called before sending commands to the build. By default, this function d
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
+#### joints_are_moving
+
+**`self.joints_are_moving()`**
+
+**`self.joints_are_moving(joint_ids=None)`**
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| joint_ids |  List[int] | None | A list of joint IDs to check for movement. If `None`, check all joints for movement. |
+
+_Returns:_  True if the joints are moving.
+
+#### reset
+
+**`self.reset()`**
+
+**`self.reset(position=None, rotation=None)`**
+
+Reset the robot.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| position |  Dict[str, float] | None | The position of the robot. |
+| rotation |  Dict[str, float] | None | The rotation of the robot. |

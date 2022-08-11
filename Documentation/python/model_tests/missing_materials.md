@@ -1,10 +1,12 @@
 # MissingMaterials
 
-`from model_tests.missing_materials import MissingMaterials`
+`from tdw.add_ons.model_verifier.model_tests.missing_materials import MissingMaterials`
 
 Check if any materials are missing.
 
 ***
+
+## Functions
 
 #### start
 

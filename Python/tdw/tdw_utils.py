@@ -1,25 +1,25 @@
+from json import loads
+from pkg_resources import resource_filename
 import numpy as np
 import random
 import math
-import zmq
-import time
+from platform import system
+from requests import get
+from tqdm import tqdm
 from scipy.spatial import distance
 from tdw.output_data import IsOnNavMesh, Images, Bounds
 from PIL import Image
 import io
 import os
-from threading import Thread
 from tdw.controller import Controller
 from typing import List, Tuple, Dict, Optional, Union
-import socket
-from contextlib import closing
-from tdw.librarian import ModelRecord
+from tdw.librarian import ModelRecord, ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
+    RobotLibrarian, HumanoidLibrarian, HumanoidAnimationLibrarian
+from tdw.cardinal_direction import CardinalDirection
+from tdw.ordinal_direction import OrdinalDirection
 from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
-from subprocess import check_output, Popen, call
-import re
-from psutil import pid_exists
 import base64
 
 
@@ -87,7 +87,7 @@ class TDWUtils:
         :return A Vector4, e.g. `{"x": 0, "y": 0, "z": 0, "w": 0}`
         """
 
-        return {"x": arr[0], "y": arr[1], "z": arr[2], "w": arr[3]}
+        return {"x": float(arr[0]), "y": float(arr[1]), "z": float(arr[2]), "w": float(arr[3])}
 
     @staticmethod
     def color_to_array(color: Dict[str, float]) -> np.array:
@@ -332,7 +332,22 @@ class TDWUtils:
         :return A PIL image.
         """
 
-        return Image.open(io.BytesIO(images.get_image(index)))
+        pass_mask = images.get_pass_mask(index)
+        if pass_mask == "_depth" or pass_mask == "_depth_simple":
+            return Image.fromarray(TDWUtils.get_shaped_depth_pass(images=images, index=index))
+        else:
+            return Image.open(io.BytesIO(images.get_image(index)))
+
+    @staticmethod
+    def get_segmentation_colors(id_pass: np.array) -> np.array:
+        """
+        :param id_pass: The ID pass image as a numpy array.
+
+        :return: A list of unique colors in the ID pass.
+        """
+
+        # Source: https://stackoverflow.com/a/48904991
+        return np.unique(id_pass.reshape(-1, id_pass.shape[2]), axis=0)
 
     @staticmethod
     def get_random_position_on_nav_mesh(c: Controller, width: float, length: float, x_e=0, z_e=0, bake=True, rng=random.uniform) -> Tuple[float, float, float]:
@@ -518,125 +533,6 @@ class TDWUtils:
         return commands
 
     @staticmethod
-    def _send_start_build(socket, controller_address: str) -> dict:
-        """
-        This sends a command to the launch_binaries daemon running on a remote node
-        to start a binary connected to the given controller address.
-
-        :param socket: The zmq socket.
-        :param controller_address: The host name or ip address of node running the controller.
-
-        :return Build info dictionary containing build port.
-        """
-        request = {"type": "start_build",
-                   "controller_address": controller_address}
-        socket.send_json(request)
-        build_info = socket.recv_json()
-        return build_info
-
-    @staticmethod
-    def _send_keep_alive(socket, build_info: dict) -> dict:
-        """
-        This sends a command to the launch_binaries daemon running on a remote node
-        to mark a given binary as still alive, preventing garbage collection.
-
-        :param socket: The zmq socket.
-        :param build_info: A diciontary containing the build_port.
-
-        :return a heartbeat indicating build is still alive.
-        """
-
-        build_port = build_info["build_port"]
-        request = {"type": "keep_alive", "build_port": build_port}
-        socket.send_json(request)
-        heartbeat = socket.recv_json()
-        return heartbeat
-
-    @staticmethod
-    def _send_kill_build(socket, build_info: dict) -> dict:
-        """
-        This sends a command to the launch_binaries daemon running on a remote node to terminate a given binary.
-
-        :param socket: The zmq socket.
-        :param build_info: A diciontary containing the build_port.
-
-        :return A kill_status indicating build has been succesfully terminated.
-        """
-
-        build_port = build_info["build_port"]
-        request = {"type": "kill_build", "build_port": build_port}
-        socket.send_json(request)
-        kill_status = socket.recv_json()
-        return kill_status
-
-    @staticmethod
-    def _keep_alive_thread(socket, build_info: dict) -> None:
-        """
-        This is a wrapper around the keep alive command to be executed in a separate thread.
-
-        :param socket: The zmq socket.
-        :param build_info: A diciontary containing the build_port.
-        """
-        while True:
-            TDWUtils._send_keep_alive(socket, build_info)
-            time.sleep(60)
-
-    @staticmethod
-    def launch_build(listener_port: int, build_address: str, controller_address: str) -> dict:
-        """
-        Connect to a remote binary_manager daemon and launch an instance of a TDW build.
-
-        Returns the necessary information for a local controller to connect.
-        Use this function to automatically launching binaries on remote (or local) nodes, and to
-        automatically shut down the build after controller is finished. Call in the constructor
-        of a controller and pass the build_port returned in build_info to the parent Controller class.
-
-        :param listener_port: The port launch_binaries is listening on.
-        :param build_address: Remote IP or hostname of node running launch_binaries.
-        :param controller_address: IP or hostname of node running controller.
-
-        :return The build_info dictionary containing build_port.
-        """
-
-        context = zmq.Context()
-        socket = context.socket(zmq.REQ)
-        socket.connect("tcp://" + build_address + ":%s" % listener_port)
-        build_info = TDWUtils._send_start_build(socket, controller_address)
-        thread = Thread(target=TDWUtils._keep_alive_thread,
-                        args=(socket, build_info))
-        thread.setDaemon(True)
-        thread.start()
-        return build_info
-
-    @staticmethod
-    def get_unity_args(arg_dict: dict) -> List[str]:
-        """
-        :param arg_dict: A dictionary of arguments. Key=The argument prefix (e.g. port) Value=Argument value.
-
-        :return The formatted command line string that is accepted by unity arg parser.
-        """
-
-        formatted_args = []
-        for key, value in arg_dict.items():
-            prefix = "-" + key + "="
-            if type(value) == list:
-                prefix += ",".join([str(v) for v in value])
-            else:
-                prefix += str(value)
-            formatted_args += [prefix]
-        return formatted_args
-
-    @staticmethod
-    def find_free_port() -> int:
-        """
-        :return a free port.
-        """
-
-        with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
-            s.bind(("", 0))
-            return int(s.getsockname()[1])
-
-    @staticmethod
     def get_unit_scale(record: ModelRecord) -> float:
         """
         :param record: The model record.
@@ -734,17 +630,24 @@ class TDWUtils:
                 "center": np.array(bounds.get_center(index))}
 
     @staticmethod
-    def get_bounds_extents(bounds: Bounds, index: int) -> np.array:
+    def get_bounds_extents(bounds: Union[Bounds, Dict[str, Dict[str, float]]], index: int = 0) -> np.array:
         """
-        :param bounds: Bounds output data.
-        :param index: The index in `bounds` of the target object.
+        :param bounds: Bounds output data or cached bounds data from a record (`record.bounds`).
+        :param index: The index in `bounds` of the target object. Ignored if `bounds` is a dictionary.
 
-        :return: The width (left to right), length (front to back), and height (top to bottom) of the bounds as a numpy array.
+        :return: The width (left to right), height (top to bottom), and length (front to back), of the bounds as a numpy array.
         """
 
-        return np.array([np.linalg.norm(np.array(bounds.get_left(index)) - np.array(bounds.get_right(index))),
-                         np.linalg.norm(np.array(bounds.get_front(index)) - np.array(bounds.get_back(index))),
-                         np.linalg.norm(np.array(bounds.get_top(index)) - np.array(bounds.get_bottom(index)))])
+        if isinstance(bounds, Bounds):
+            return np.array([np.linalg.norm(np.array(bounds.get_left(index)) - np.array(bounds.get_right(index))),
+                             np.linalg.norm(np.array(bounds.get_top(index)) - np.array(bounds.get_bottom(index))),
+                             np.linalg.norm(np.array(bounds.get_front(index)) - np.array(bounds.get_back(index)))])
+        elif isinstance(bounds, dict):
+            return np.array([np.linalg.norm(TDWUtils.vector3_to_array(bounds["left"]) - TDWUtils.vector3_to_array(bounds["right"])),
+                             np.linalg.norm(TDWUtils.vector3_to_array(bounds["top"]) - TDWUtils.vector3_to_array(bounds["bottom"])),
+                             np.linalg.norm(TDWUtils.vector3_to_array(bounds["front"]) - TDWUtils.vector3_to_array(bounds["back"]))])
+        else:
+            raise Exception(f"Invalid bounds data: {bounds}")
 
     @staticmethod
     def get_closest_position_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array:
@@ -845,295 +748,266 @@ class TDWUtils:
         # Source: https://github.com/Unity-Technologies/URDF-Importer/blob/c41208565419b04907496baa93ad1b675d41dc20/com.unity.robotics.urdf-importer/Runtime/Extensions/TransformExtensions.cs#L85-L92
         return np.radians(np.array([-euler_angles[2], euler_angles[0], -euler_angles[1]]))
 
+    @staticmethod
+    def bytes_to_megabytes(b: int) -> float:
+        """
+        :param b: A quantity of bytes.
 
-class AudioUtils:
-    """
-    Utility class for recording audio in TDW using [fmedia](https://stsaz.github.io/fmedia/).
+        :return: A quantity of megabytes.
+        """
 
-    Usage:
-
-    ```python
-    from tdw.tdw_utils import AudioUtils
-    from tdw.controller import Controller
-
-    c = Controller()
-
-    initialize_trial()  # Your code here.
-
-    # Begin recording audio. Automatically stop recording at 10 seconds.
-    AudioUtils.start(output_path="path/to/file.wav", until=(0, 10))
-
-    do_trial()  # Your code here.
-
-    # Stop recording.
-    AudioUtils.stop()
-    ```
-    """
-
-    # The process ID of the audio recorder.
-    RECORDER_PID: Optional[int] = None
-    # The audio capture device.
-    DEVICE: Optional[str] = None
+        return b / (1 << 20)
 
     @staticmethod
-    def get_system_audio_device() -> str:
+    def get_circle_mask(shape: Tuple[int, int], row: int, column: int, radius: int) -> np.array:
         """
-        :return: The audio device that can be used to capture system audio.
+        Get elements in an array within a circle.
+
+        :param shape: The shape of the source array as (rows, columns).
+        :param row: The row (axis 0) of the center of the circle.
+        :param column: The column (axis 1) of the circle.
+        :param radius: The radius of the circle in indices.
+
+        :return: A boolean array with shape `shape`. Elements that are True are within the circle.
         """
 
-        devices = check_output(["fmedia", "--list-dev"]).decode("utf-8").split("Capture:")[1]
-        dev_search = re.search("device #(.*): Stereo Mix", devices, flags=re.MULTILINE)
-        assert dev_search is not None, "No suitable audio capture device found:\n" + devices
-        return dev_search.group(1)
+        # Source: https://www.semicolonworld.com/question/44279/how-to-apply-a-disc-shaped-mask-to-a-numpy-array
+        nx, ny = shape
+        oy, ox = np.ogrid[-row:nx - row, -column:ny - column]
+        return ox * ox + oy * oy <= radius * radius
 
     @staticmethod
-    def start(output_path: Union[str, Path], until: Optional[Tuple[int, int]] = None) -> None:
+    def download_asset_bundles(path: Union[str, Path], models: Dict[str, List[str]] = None, scenes: Dict[str, List[str]] = None,
+                               materials: Dict[str, List[str]] = None, hdri_skyboxes: Dict[str, List[str]] = None,
+                               robots: Dict[str, List[str]] = None, humanoids: Dict[str, List[str]] = None,
+                               humanoid_animations: Dict[str, List[str]] = None) -> None:
         """
-        Start recording audio.
+        Download asset bundles from TDW's remote S3 server. Create local librarian .json files for each type (models, scenes, etc.).
+        This can be useful to speed up the process of scene creation; it is always faster to load local asset bundles though it still takes time to load them into memory.
 
-        :param output_path: The path to the output file.
-        :param until: If not None, fmedia will record until `minutes:seconds`. The value must be a tuple of 2 integers. If None, fmedia will record until you send `AudioUtils.stop()`.
+        Note that if you wish to download asset bundles from tdw-private (`models_full.json`) you need valid S3 credentials.
+
+        For each parameter (`models`, `scenes`, etc.), if the value is `None`, no asset bundles will be downloaded.
+
+        Asset bundles will only be downloaded for your operating system. For example, if you want Linux asset bundles, call this function on Linux.
+
+        :param path: The root directory of all of the asset bundles and librarian files.
+        :param models: A dictionary of models. Key = The model library, for example `"models_core.json"`. Value = A list of model names.
+        :param scenes: A dictionary of scenes. Key = The model library, for example `"scenes.json"`. Value = A list of scene names.
+        :param materials: A dictionary of materials. Key = The material library, for example `"materials_med.json"`. Value = A list of material names.
+        :param hdri_skyboxes: A dictionary of HDRI skyboxes. Key = The HDRI skybox library, for example `"hdri_skyboxes.json"`. Value = A list of HDRI skybox names.
+        :param robots: A dictionary of robots. Key = The robot library, for example `"robots.json"`. Value = A list of robot names.
+        :param humanoids: A dictionary of humanoids. Key = The model library, for example `"humanoids.json"`. Value = A list of humanoid names.
+        :param humanoid_animations: A dictionary of humanoid animations. Key = The model library, for example `"humanoid_animations.json"`. Value = A list of humanoid animation names.
         """
 
-        if isinstance(output_path, str):
-            p = Path(output_path).resolve()
+        if isinstance(path, str):
+            output_directory = Path(path)
         else:
-            p = output_path
-
-        # Create the directory.
-        if not p.parent.exists():
-            p.parent.mkdir(parents=True)
-
-        # Set the capture device.
-        if AudioUtils.DEVICE is None:
-            AudioUtils.DEVICE = AudioUtils.get_system_audio_device()
-        fmedia_call = ["fmedia",
-                       "--record",
-                       f"--dev-capture={AudioUtils.DEVICE}",
-                       f"--out={str(p.resolve())}",
-                       "--globcmd=listen"]
-        # Automatically stop recording.
-        if until is not None:
-            fmedia_call.append(f"--until={TDWUtils.zero_padding(until[0], 2)}:{TDWUtils.zero_padding(until[1], 2)}")
-        with open(os.devnull, "w+") as f:
-            AudioUtils.RECORDER_PID = Popen(fmedia_call,
-                                            stderr=f).pid
-
-    @staticmethod
-    def stop() -> None:
-        """
-        Stop recording audio (if any fmedia process is running).
-        """
-
-        if AudioUtils.RECORDER_PID is not None:
-            with open(os.devnull, "w+") as f:
-                call(['fmedia', '--globcmd=quit'], stderr=f, stdout=f)
-            AudioUtils.RECORDER_PID = None
-
-    @staticmethod
-    def is_recording() -> bool:
-        """
-        :return: True if the fmedia recording process still exists.
-        """
-
-        return AudioUtils.RECORDER_PID is not None and pid_exists(AudioUtils.RECORDER_PID)
-
-
-class QuaternionUtils:
-    """
-    Helper functions for using quaternions.
-
-    Quaternions are always numpy arrays in the following order: `[x, y, z, w]`.
-    This is the order returned in all Output Data objects.
-
-    Vectors are always numpy arrays in the following order: `[x, y, z]`.
-    """
-
-    """:class_var
-    The global up directional vector.
-    """
-    UP = np.array([0, 1, 0])
-    """:class_var
-    The global forward directional vector.
-    """
-    FORWARD: np.array = np.array([0, 0, 1])
-    """:class_var
-    The quaternion identity rotation.
-    """
-    IDENTITY = np.array([0, 0, 0, 1])
-
-    @staticmethod
-    def get_inverse(q: np.array) -> np.array:
-        """
-        Source: https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Quaternion.cs
-
-        :param q: The quaternion.
-
-        :return: The inverse of the quaternion.
-        """
-
-        x = q[0]
-        y = q[1]
-        z = q[2]
-        w = q[3]
-
-        ls = x * x + y * y + z * z + w * w
-        inv = 1.0 / ls
-
-        return np.array([-x * inv, -y * inv, -z * inv, w * inv])
+            output_directory = path
+        if not output_directory.exists():
+            output_directory.mkdir(parents=True)
+        private_bucket_prefix: str = "https://tdw-private.s3.amazonaws.com/"
+        validated_s3: bool = False
+        for asset_bundles, librarian_type, filename in zip([models, scenes, materials, hdri_skyboxes, robots,
+                                                            humanoids, humanoid_animations],
+                                                           [ModelLibrarian, SceneLibrarian, MaterialLibrarian,
+                                                            HDRISkyboxLibrarian, RobotLibrarian, HumanoidLibrarian,
+                                                            HumanoidAnimationLibrarian],
+                                                           ["models", "scenes", "materials", "hdri_skyboxes",
+                                                            "robots", "humanoids", "humanoid_animations"]):
+            if asset_bundles is None:
+                continue
+            num_total = 0
+            for remote_librarian_key in asset_bundles:
+                num_total += len(asset_bundles[remote_librarian_key])
+            if num_total == 0:
+                continue
+            pbar = tqdm(total=num_total)
+            librarian_path = output_directory.joinpath(filename + ".json")
+            # Create the library.
+            if not librarian_path.exists():
+                librarian_type.create_library(description=filename, path=str(librarian_path.resolve()))
+            # Load the local librarian.
+            local_librarian = librarian_type(str(librarian_path.resolve()))
+            # Create the  asset bundles directory.
+            asset_bundles_directory = output_directory.joinpath(filename)
+            if not asset_bundles_directory.exists():
+                asset_bundles_directory.mkdir(parents=True)
+            # Load each remote librarian.
+            for remote_librarian_key in asset_bundles:
+                remote_librarian = librarian_type(remote_librarian_key)
+                # Download each asset bundle.
+                for asset_bundle_name in asset_bundles[remote_librarian_key]:
+                    remote_record = remote_librarian.get_record(asset_bundle_name)
+                    asset_bundle_path = asset_bundles_directory.joinpath(asset_bundle_name)
+                    # This asset bundle already exists.
+                    if asset_bundle_path.exists():
+                        pbar.update(1)
+                        continue
+                    pbar.set_description(asset_bundle_name)
+                    url = remote_record.urls[system()]
+                    if private_bucket_prefix in url:
+                        # Make sure we can download from tdw-private.
+                        if not validated_s3:
+                            if not TDWUtils.validate_amazon_s3():
+                                print(asset_bundle_name, remote_librarian_key)
+                                return
+                            validated_s3 = True
+                        s3_key = url.split(private_bucket_prefix)[1]
+                        session = boto3.Session(profile_name="tdw")
+                        s3 = session.resource("s3")
+                        resp = s3.meta.client.get_object(Bucket='tdw-private', Key=s3_key)
+                        status_code = resp["ResponseMetadata"]["HTTPStatusCode"]
+                        assert status_code == 200, (url, status_code)
+                        # Save the asset bundle.
+                        asset_bundle_path.write_bytes(resp["Body"].read())
+                    else:
+                        resp = get(url)
+                        assert resp.status_code == 200, (url, resp.status_code)
+                        # Save the asset bundle.
+                        asset_bundle_path.write_bytes(resp.content)
+                    pbar.update(1)
+                    # Update and write the record.
+                    remote_record.urls = {system(): "file:///" + str(asset_bundle_path.resolve()).replace("\\", "/")}
+                    local_record = local_librarian.get_record(asset_bundle_name)
+                    local_librarian.add_or_update_record(remote_record, overwrite=local_record is not None, write=True)
+            pbar.close()
 
     @staticmethod
-    def multiply(q1: np.array, q2: np.array) -> np.array:
+    def set_default_libraries(model_library: Union[str, Path] = None, scene_library: Union[str, Path] = None,
+                              material_library: Union[str, Path] = None, hdri_skybox_library: Union[str, Path] = None,
+                              robot_library: Union[str, Path] = None, humanoid_library: Union[str, Path] = None,
+                              humanoid_animation_library: Union[str, Path] = None) -> None:
         """
-        Multiply two quaternions.
-        Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
+        Set the path to the default libraries.
 
-        :param q1: The first quaternion.
-        :param q2: The second quaternion.
-        :return: The multiplied quaternion: `q1 * q2`
+        If any of the parameters of this function are left as `None`, the default remote S3 librarian will be used.
+
+        :param model_library: The absolute path to a local model library file.
+        :param scene_library: The absolute path to a local scene library file.
+        :param material_library: The absolute path to a local material library file.
+        :param hdri_skybox_library: The absolute path to a local HDRI skybox library file.
+        :param robot_library: The absolute path to a local robot library file.
+        :param humanoid_library: The absolute path to a local humanoid library file.
+        :param humanoid_animation_library: The absolute path to a local humanoid animation library file.
         """
 
-        x1 = q1[0]
-        y1 = q1[1]
-        z1 = q1[2]
-        w1 = q1[3]
-
-        x2 = q2[0]
-        y2 = q2[1]
-        z2 = q2[2]
-        w2 = q2[3]
-
-        w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
-        x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
-        y = w1 * y2 + y1 * w2 + z1 * x2 - x1 * z2
-        z = w1 * z2 + z1 * w2 + x1 * y2 - y1 * x2
-        return np.array([x, y, z, w])
+        for library_path, librarian_type, library_dictionary in zip([model_library, scene_library, material_library,
+                                                                     hdri_skybox_library, robot_library,
+                                                                     humanoid_library, humanoid_animation_library],
+                                                                    [ModelLibrarian, SceneLibrarian, MaterialLibrarian,
+                                                                     HDRISkyboxLibrarian, RobotLibrarian,
+                                                                     HumanoidLibrarian, HumanoidAnimationLibrarian],
+                                                                    [Controller.MODEL_LIBRARIANS,
+                                                                     Controller.SCENE_LIBRARIANS,
+                                                                     Controller.MATERIAL_LIBRARIANS,
+                                                                     Controller.HDRI_SKYBOX_LIBRARIANS,
+                                                                     Controller.ROBOT_LIBRARIANS,
+                                                                     Controller.HUMANOID_LIBRARIANS,
+                                                                     Controller.HUMANOID_ANIMATION_LIBRARIANS]):
+            if library_path is None:
+                continue
+            # Get the path.
+            if isinstance(library_path, Path):
+                path = str(library_path.resolve())
+            elif isinstance(library_path, str):
+                path = str(Path(library_path).resolve())
+            else:
+                raise Exception(library_path)
+            library = librarian_type(path)
+            library_dictionary[library.get_default_library()] = library
 
     @staticmethod
-    def get_conjugate(q: np.array) -> np.array:
+    def get_corners_from_wall(wall: CardinalDirection) -> List[OrdinalDirection]:
         """
-        Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
+        :param wall: The wall as a [`CardinalDirection`](cardinal_direction.md).
 
-        :param q: The quaternion.
-
-        :return: The conjugate of the quaternion: `[-x, -y, -z, w]`
+        :return: The corners of the wall as a 2-element list of [`OrdinalDirection`](ordinal_direction.md).
         """
 
-        x = q[0]
-        y = q[1]
-        z = q[2]
-        w = q[3]
-
-        return np.array([-x, -y, -z, w])
+        if wall == CardinalDirection.north:
+            return [OrdinalDirection.northwest, OrdinalDirection.northeast]
+        elif wall == CardinalDirection.south:
+            return [OrdinalDirection.southwest, OrdinalDirection.southeast]
+        elif wall == CardinalDirection.west:
+            return [OrdinalDirection.northwest, OrdinalDirection.southwest]
+        elif wall == CardinalDirection.east:
+            return [OrdinalDirection.northeast, OrdinalDirection.southeast]
 
     @staticmethod
-    def multiply_by_vector(q: np.array, v: np.array) -> np.array:
+    def get_direction_from_corner(corner: OrdinalDirection, wall: CardinalDirection) -> CardinalDirection:
         """
-        Multiply a quaternion by a vector.
-        Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
+        Given a corner and a wall, get the direction that a lateral arrangement will run along.
 
-        :param q: The quaternion.
-        :param v: The vector.
+        :param corner: The corner as an [`OrdinalDirection`](ordinal_direction.md).
+        :param wall: The wall as a [`CardinalDirection`](cardinal_direction.md).
 
-        :return: A directional vector calculated from: `q * v`
+        :return: Tuple: direction, wall
         """
 
-        q2 = (v[0], v[1], v[2], 0.0)
-        return QuaternionUtils.multiply(QuaternionUtils.multiply(q, q2), QuaternionUtils.get_conjugate(q))[:-1]
+        if corner == OrdinalDirection.northwest:
+            if wall == CardinalDirection.north:
+                return CardinalDirection.east
+            elif wall == CardinalDirection.west:
+                return CardinalDirection.south
+        elif corner == OrdinalDirection.northeast:
+            if wall == CardinalDirection.north:
+                return CardinalDirection.west
+            elif wall == CardinalDirection.east:
+                return CardinalDirection.south
+        elif corner == OrdinalDirection.southwest:
+            if wall == CardinalDirection.south:
+                return CardinalDirection.east
+            elif wall == CardinalDirection.west:
+                return CardinalDirection.north
+        elif corner == OrdinalDirection.southeast:
+            if wall == CardinalDirection.south:
+                return CardinalDirection.west
+            elif wall == CardinalDirection.east:
+                return CardinalDirection.north
+        raise Exception(corner, wall)
 
     @staticmethod
-    def world_to_local_vector(position: np.array, origin: np.array, rotation: np.array) -> np.array:
+    def get_expected_window_position(window_width: int = 256, window_height: int = 256, monitor_index: int = 0, title_bar_height: int = None) -> Dict[str, float]:
         """
-        Convert a vector position in absolute world coordinates to relative local coordinates.
-        Source: https://answers.unity.com/questions/601062/what-inversetransformpoint-does-need-explanation-p.html
+        When the TDW build launches, it usually appears at the center of the primary monitor. The expected position of the top-left corner of the build window is therefore:
 
-        :param position: The position vector in world coordinates.
-        :param origin: The origin vector of the local space in world coordinates.
-        :param rotation: The rotation quaternion of the local coordinate space.
+        ```
+        {"x": monitor.x + monitor.width / 2 - window_width / 2,
+         "y": monitor.y + monitor.height / 2 - window_height / 2 + title_bar_height}
+        ```
 
-        :return: `position` in local coordinates.
-        """
+        Where `monitor` is the monitor corresponding to `monitor_index`.
 
-        return QuaternionUtils.multiply_by_vector(q=QuaternionUtils.get_inverse(q=rotation), v=position - origin)
+        To get a list of monitors:
 
-    @staticmethod
-    def get_up_direction(q: np.array) -> np.array:
-        """
-        :param q: The rotation as a quaternion.
+        ```python
+        import screeninfo
+        print(screeninfo.get_monitors())
+        ```
 
-        :return: A directional vector corresponding to the "up" direction from the quaternion.
-        """
+        :param window_width: The width of the TDW build's window.
+        :param window_height: The height of the TDW build's window.
+        :param monitor_index: The index of the monitor. Usually, 0 is the index of the primary monitor.
+        :param title_bar_height: The height of the window title bar in pixels. If None, this method will use a default value based on the operating system.
 
-        return QuaternionUtils.multiply_by_vector(q, QuaternionUtils.UP)
-
-    @staticmethod
-    def euler_angles_to_quaternion(euler: np.array) -> np.array:
-        """
-        Convert Euler angles to a quaternion.
-
-        :param euler: The Euler angles vector.
-
-        :return: The quaternion representation of the Euler angles.
+        :return: The expected position of the top-left corner of the build window.
         """
 
-        roll = euler[0]
-        pitch = euler[1]
-        yaw = euler[2]
-        cy = np.cos(yaw * 0.5)
-        sy = np.sin(yaw * 0.5)
-        cp = np.cos(pitch * 0.5)
-        sp = np.sin(pitch * 0.5)
-        cr = np.cos(roll * 0.5)
-        sr = np.sin(roll * 0.5)
-
-        w = cy * cp * cr + sy * sp * sr
-        x = cy * cp * sr - sy * sp * cr
-        y = sy * cp * sr + cy * sp * cr
-        z = sy * cp * cr - cy * sp * sr
-        return np.array([x, y, z, w])
-
-    @staticmethod
-    def quaternion_to_euler_angles(quaternion: np.array) -> np.array:
-        """
-        Convert a quaternion to Euler angles.
-
-        :param quaternion: A quaternion as a nump array.
-
-        :return: The Euler angles representation of the quaternion.
-        """
-
-        x = quaternion[0]
-        y = quaternion[1]
-        z = quaternion[2]
-        w = quaternion[3]
-        ysqr = y * y
-
-        t0 = +2.0 * (w * x + y * z)
-        t1 = +1.0 - 2.0 * (x * x + ysqr)
-        ex = np.degrees(np.arctan2(t0, t1))
-
-        t2 = +2.0 * (w * y - z * x)
-        t2 = np.where(t2 > +1.0, +1.0, t2)
-
-        t2 = np.where(t2 < -1.0, -1.0, t2)
-        ey = np.degrees(np.arcsin(t2))
-
-        t3 = +2.0 * (w * z + x * y)
-        t4 = +1.0 - 2.0 * (ysqr + z * z)
-        ez = np.degrees(np.arctan2(t3, t4))
-
-        return np.array([ex, ey, ez])
-
-    @staticmethod
-    def get_y_angle(q1: np.array, q2: np.array) -> float:
-        """
-        Source: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
-
-        :param q1: The first quaternion.
-        :param q2: The second quaternion.
-
-        :return: The angle between the two quaternions in degrees around the y axis.
-        """
-
-        qd = QuaternionUtils.multiply(QuaternionUtils.get_conjugate(q1), q2)
-        return np.rad2deg(2 * np.arcsin(np.clip(qd[1], -1, 1)))
+        # This function is a late addition to TDW.
+        # The import statement is here to prevent every single controller from breaking if screeninfo isn't installed.
+        import screeninfo
+        monitor = screeninfo.get_monitors()[monitor_index]
+        if title_bar_height is None:
+            s = system()
+            if s == "Windows":
+                title_bar_height = 25
+            elif s == "Darwin":
+                title_bar_height = 25
+            elif s == "Linux":
+                title_bar_height = 48
+            else:
+                raise Exception(s)
+        return {"x": monitor.x + monitor.width // 2 - window_width // 2,
+                "y": monitor.y + monitor.height // 2 - window_height // 2 + title_bar_height}

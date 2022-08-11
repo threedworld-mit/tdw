@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 import platform
-from typing import List
-from subprocess import call, check_output, CalledProcessError
+from typing import List, Union
+from subprocess import check_output, CalledProcessError
 import os
-import pkg_resources
 import re
 
 
@@ -13,18 +12,22 @@ class AssetBundleCreatorBase(ABC):
     Base class for creating asset bundles.
     """
 
-    UNITY_VERSION = "2020.2"
+    """:class_var
+    Use this version of Unity Editor to launch the asset bundle creator.
+    """
+    UNITY_VERSION: str = "2020.3"
 
-    def __init__(self, quiet: bool = False, display: str = ":0"):
+    def __init__(self, quiet: bool = False, display: str = ":0", unity_editor_path: Union[Path, str] = None):
         """
-        :param quiet: If true, don't print any messages to console.
+        :param quiet: If True, don't print any messages to console.
         :param display: The display to launch Unity Editor on. Ignored if this isn't Linux.
+        :param unity_editor_path: The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically.
         """
 
         # Get the binaries path and verify that AssetBundleCreator will work on this platform.
         system = platform.system()
 
-        self.env = os.environ.copy()
+        self._env = os.environ.copy()
 
         # libgconf needs to be installed the Editor to work.
         if system == "Linux":
@@ -33,28 +36,36 @@ class AssetBundleCreatorBase(ABC):
             except CalledProcessError as e:
                 raise Exception(f"{e}\n\nRun: sudo apt install libgconf-2-4")
             # Set the display for Linux.
-            self.env["DISPLAY"] = display
-
-        self.quiet = quiet
-
-        self.project_path = self.get_unity_project()
-        assert self.project_path.exists(), self.project_path
-
-        self.unity_call = self.get_base_unity_call()
+            self._env["DISPLAY"] = display
+        self._quiet: bool = quiet
+        # Get the Unity path.
+        if unity_editor_path is None:
+            self._unity_editor_path: Path = AssetBundleCreatorBase._get_editor_path()
+        else:
+            if isinstance(unity_editor_path, Path):
+                self._unity_editor_path = unity_editor_path
+            elif isinstance(unity_editor_path, str):
+                self._unity_editor_path = Path(unity_editor_path)
+            else:
+                raise Exception(f"Invalid Unity editor path: {self._unity_editor_path}")
+            assert self._unity_editor_path.exists(), "Unity Editor not found: " + str(self._unity_editor_path.resolve())
+        self._project_path: Path = self.get_unity_project()
+        assert self._project_path.exists(), self._project_path
+        self._unity_call: List[str] = self.get_base_unity_call()
 
     def get_base_unity_call(self) -> List[str]:
         """
         :return The call to launch Unity Editor silently in batchmode, execute something, and then quit.
         """
 
-        return [str(AssetBundleCreatorBase.get_editor_path().resolve()),
+        return [str(self._unity_editor_path.resolve()),
                 "-projectpath",
-                str(self.project_path.resolve()),
+                str(self._project_path.resolve()),
                 "-quit",
                 "-batchmode"]
 
     @staticmethod
-    def get_editor_path() -> Path:
+    def _get_editor_path() -> Path:
         system = platform.system()
 
         # Get the path to the Editor executable.

@@ -6,8 +6,8 @@
 
 Unlike most simulation platforms, TDW has a very loose definition for "agent". Some examples of what *might* be, but doesn't *have* to be, an agent:
 
-- [Avatars](../core_concepts/avatars.md) have image sensors but typically are not embodied.
-- [Objects](../core_concepts.md) don't have image sensors but [it is possible to directly apply forces to objects](../physx/forces.md) and thereby make them act as if they are embodied agents.
+- [Avatars](../core_concepts/avatars.md) have image sensors but are often not embodied.
+- [Objects](../core_concepts/objects.md) don't have image sensors but [it is possible to directly apply forces to objects](../physx/forces.md) and thereby make them act as if they are embodied agents.
 - [Robots](../robots/overview.md) can act as agents but don't have image sensors by default.
 
 TDW includes higher-level add-ons to effectively "create" agents from lower-level functionality. The [`Robot` add-on](../../python/add_ons/robot.md), for example, is a robotics wrapper class that has been designed assuming that the user wants to use robots as agents.
@@ -42,32 +42,23 @@ c.move_by(2)
 
 ![](images/reach_high.gif)
 
-### Human
+### [Virtual reality (VR)](../vr/overview.md)
 
-Human users can directly control TDW. A human can move an agent using keyboard controls. A human can also directly control an embodied virtual reality agent.
+A human agent can directly control an embodied virtual reality agent.
 
-**Trade-offs:** The VR agent can't walk around large spaces without instantaneous teleport actions and doesn't have colliders except on its hands.
+**Trade-offs:** You must have VR hardware in order to use VR in TDW. There are fairly high system requirements. Only one human agent may use VR in any given simulation.
 
-### Replicant
+### [Keyboard and mouse input](../keyboard_and_mouse/overview.md)
 
-Replicants are human-like, or "humanoid" agents. They are embodied and physically response to the environment. They have far more sophisticated motion planning than robots or Magnebots and can have specialized animation routines for specific actions.
+A human can move an agent using keyboard and mouse input, including standard video game first-person controls.
 
-**Trade-offs:** Unlike robots or Magnebots, replicant joints aren't motorized. If a replicant tries to pick up a large object, it might act *as if* the object is too heavy to lift but the physics engine alone won't determine the outcome of the action.
+**Trade-offs:** In order to use keyboard and mouse controls, the TDW build window must be focused (i.e. be the selected window). This means that keyboard controls will only work on personal computers. There is also no built-in way to "pick up" or "put down" objects.
 
-### Embodied avatar
+### [Embodied avatar](../embodied_avatars/embodied_avatar.md)
 
 Embodied avatars are simple geometric shapes with image sensors. They can be useful for prototyping.
 
 **Trade-offs:** Embodied avatars are simple. They can't interact with objects except by running into them.
-
-***
-
-## Additional tutorials for special topics
-
-| Tutorial                | Summary                                                      |
-| ----------------------- | ------------------------------------------------------------ |
-| Navigation              | Built-in navigation aids such as pathfinding and occupancy maps. |
-| Multi-agent simulations | How to enable and organize multi-agent simulations.          |
 
 ***
 

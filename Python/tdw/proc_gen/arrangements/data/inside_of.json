@@ -1,0 +1,25 @@
+{
+  "basket": [
+    "coin",
+    "cork",
+    "fork",
+    "knife",
+    "pen",
+    "scissors",
+    "spoon"
+  ],
+  "sink": [
+    "bowl",
+    "cup",
+    "fork",
+    "jar",
+    "knife",
+    "ladle",
+    "pan",
+    "plate",
+    "pot",
+    "spatula",
+    "spoon",
+    "whisk"
+  ]
+}

@@ -179,7 +179,7 @@ c.communicate({"$type": "terminate"})
 TDW includes a convenient [`CollisionManager` add-on](../../python/add_ons/collision_manager.md) for handling collision data. The `CollisionManager` will automatically send `send_collisions` when it is initialized.
 
 - While the output data returns velocities, contact normals, and so on as (x, y, z) tuples, this data is converted to numpy arrays by the `CollisionManager`.
-- `CollisionManager.obj_collisions` is a dictionary where each key is an [`IntPair`](../../api/int_pair.md) of object IDs.
+- `CollisionManager.obj_collisions` is a dictionary where each key is an [`IntPair`](../../python/int_pair.md) of object IDs.
 - `CollisionManager.env_collisions` is a dictionary where each key is an object ID.
 
 The following example does the same thing as the previous example but uses a `CollisionManager`:
@@ -225,7 +225,7 @@ c.communicate({"$type": "terminate"})
 
 ## Resetting a scene
 
-When you want to [reset a scene](../objects_and_scenes/reset_scene.md), be aware that you'll need to re-send `send_collisions` again.
+When you want to [reset a scene](../scene_setup_high_level/reset_scene.md), be aware that you'll need to re-send `send_collisions` again.
 
 If you're using a `CollisionManager`, set `collision_mananger.initialized = False` , which will make the manager re-initialize on the next frame.
 
@@ -244,7 +244,7 @@ Example controllers:
 Python API:
 
 - [`CollisionManager`](../../python/add_ons/collision_manager.md)
-- [`IntPair`](../../api/int_pair.md)
+- [`IntPair`](../../python/int_pair.md)
 
 Command API:
 

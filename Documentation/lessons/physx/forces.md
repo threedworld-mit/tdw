@@ -212,7 +212,7 @@ Result:
 
 ***
 
-**Next: [Composite objects (objects with affordances)](composite_objects.md)**
+**Next: [Skip physics frames](step_physics.md)**
 
 [Return to the README](../../../README.md)
 
@@ -221,7 +221,7 @@ Result:
 Example controllers:
 
 - [ball_bounce.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/ball_bounce.py) Bounce a ball on a table.
-- [collision_and_friction.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/collision_and_friction.py) Collide an object with another with varying physics values.
+- [collisions_and_friction.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/collisions_and_friction.py) Collide an object with another with varying physics values.
 - [forcefield.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/forcefield.py) Simulate a "forcefield" that objects will bounce off of.
 
 Python API

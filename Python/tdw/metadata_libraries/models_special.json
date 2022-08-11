@@ -1,6 +1,192 @@
 {
     "description": "Free primitive and special-purpose models.",
     "records": {
+        "b04_db_apps_tech_08_03_counter_top": {
+            "asset_bundle_sizes": {
+                "Darwin": 438344,
+                "Linux": 674828,
+                "Windows": 429107
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.4606601,
+                    "z": -0.3258934
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.4606601,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.4606601,
+                    "z": 0.3258934
+                },
+                "left": {
+                    "x": -0.2995402,
+                    "y": 0.4606601,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.2995402,
+                    "y": 0.4606601,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.9213202,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [
+                {
+                    "half_extents": {
+                        "x": 0.2995402,
+                        "y": 0.01,
+                        "z": 0.3258934
+                    },
+                    "position": {
+                        "x": 0,
+                        "y": 0.9713115,
+                        "z": 0
+                    },
+                    "rotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                }
+            ],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_db_apps_tech_08_03_counter_top",
+            "physics_quality": 0.5648129399552467,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_grey_dark"
+                    ],
+                    "name": "b04_db_apps_tech_08_03_counter_top"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b04_db_apps_tech_08_03_counter_top",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b04_db_apps_tech_08_03_counter_top",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b04_db_apps_tech_08_03_counter_top"
+            },
+            "volume": 0.01498418,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "b05_db_apps_tech_08_09_counter_top": {
+            "asset_bundle_sizes": {
+                "Darwin": 437882,
+                "Linux": 675002,
+                "Windows": 428574
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.4606604,
+                    "z": -0.32599
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0.02112603
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.4606604,
+                    "z": 0.02112603
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.4606604,
+                    "z": 0.3682421
+                },
+                "left": {
+                    "x": -0.3071053,
+                    "y": 0.4606604,
+                    "z": 0.02112603
+                },
+                "right": {
+                    "x": 0.3071053,
+                    "y": 0.4606604,
+                    "z": 0.02112603
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.9213207,
+                    "z": 0.02112603
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [
+                {
+                    "half_extents": {
+                        "x": 0.3071053,
+                        "y": 0.01,
+                        "z": 0.34711605
+                    },
+                    "position": {
+                        "x": 0,
+                        "y": 0.9713115,
+                        "z": 0
+                    },
+                    "rotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                }
+            ],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b05_db_apps_tech_08_09_counter_top",
+            "physics_quality": 0.5635531896376197,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_grey_dark"
+                    ],
+                    "name": "b05_db_apps_tech_08_09_counter_top"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b05_db_apps_tech_08_09_counter_top",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b05_db_apps_tech_08_09_counter_top",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b05_db_apps_tech_08_09_counter_top"
+            },
+            "volume": 0.01627459,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "cloth_1meter_square": {
             "asset_bundle_sizes": {
                 "Darwin": 16423490,
@@ -50,6 +236,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": true,
@@ -121,6 +308,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": true,
@@ -142,6 +330,192 @@
             },
             "wcategory": "flex_primitive",
             "wnid": "n09999990"
+        },
+        "dishwasher_4_counter_top": {
+            "asset_bundle_sizes": {
+                "Darwin": 438397,
+                "Linux": 674798,
+                "Windows": 429914
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.4606598,
+                    "z": -0.3206144
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -5.960464e-08
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.4606598,
+                    "z": -5.960464e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.4606598,
+                    "z": 0.3206143
+                },
+                "left": {
+                    "x": -0.3275375,
+                    "y": 0.4606598,
+                    "z": -5.960464e-08
+                },
+                "right": {
+                    "x": 0.3275375,
+                    "y": 0.4606598,
+                    "z": -5.960464e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.9213195,
+                    "z": -5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [
+                {
+                    "half_extents": {
+                        "x": 0.3275375,
+                        "y": 0.01,
+                        "z": 0.3206143
+                    },
+                    "position": {
+                        "x": 0,
+                        "y": 0.9713115,
+                        "z": 0
+                    },
+                    "rotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                }
+            ],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "dishwasher_4_counter_top",
+            "physics_quality": 0.5680550766426401,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_grey_dark"
+                    ],
+                    "name": "dishwasher_4_counter_top"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/dishwasher_4_counter_top",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/dishwasher_4_counter_top",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/dishwasher_4_counter_top"
+            },
+            "volume": 0.01643472,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "floating_counter_top_counter_top": {
+            "asset_bundle_sizes": {
+                "Darwin": 438217,
+                "Linux": 674613,
+                "Windows": 429045
+            },
+            "bounds": {
+                "back": {
+                    "x": 2.980232e-08,
+                    "y": 0.4606557,
+                    "z": -0.3242055
+                },
+                "bottom": {
+                    "x": 2.980232e-08,
+                    "y": 0,
+                    "z": -0.01940551
+                },
+                "center": {
+                    "x": 2.980232e-08,
+                    "y": 0.4606557,
+                    "z": -0.01940551
+                },
+                "front": {
+                    "x": 2.980232e-08,
+                    "y": 0.4606557,
+                    "z": 0.2853945
+                },
+                "left": {
+                    "x": -0.3048,
+                    "y": 0.4606557,
+                    "z": -0.01940551
+                },
+                "right": {
+                    "x": 0.3048,
+                    "y": 0.4606557,
+                    "z": -0.01940551
+                },
+                "top": {
+                    "x": 2.980232e-08,
+                    "y": 0.9213115,
+                    "z": -0.01940551
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [
+                {
+                    "half_extents": {
+                        "x": 0.3048,
+                        "y": 0.01,
+                        "z": 0.2853945
+                    },
+                    "position": {
+                        "x": 0,
+                        "y": 0.9713115,
+                        "z": 0
+                    },
+                    "rotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                }
+            ],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "floating_counter_top_counter_top",
+            "physics_quality": 0.5616745922419789,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_grey_dark"
+                    ],
+                    "name": "floating_counter_top_counter_top"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/floating_counter_top_counter_top",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/floating_counter_top_counter_top",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/floating_counter_top_counter_top"
+            },
+            "volume": 0.0144116,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
         },
         "fluid_receptacle1m_round": {
             "asset_bundle_sizes": {
@@ -192,6 +566,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Bad colliders",
             "flex": true,
@@ -263,6 +638,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": true,
@@ -282,6 +658,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fluid_receptacle1x1",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fluid_receptacle1x1"
             },
+            "volume": 0.08799998462200165,
             "wcategory": "tub",
             "wnid": "n02808440"
         },
@@ -334,6 +711,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": true,
@@ -353,6 +731,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fluid_receptacle1x2",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fluid_receptacle1x2"
             },
+            "volume": 0.15799996256828308,
             "wcategory": "tub",
             "wnid": "n02808440"
         },
@@ -405,6 +784,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": false,
@@ -530,6 +910,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": true,
@@ -601,8 +982,9 @@
                 "z": 0
             },
             "composite_object": false,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "container_shapes": [],
+            "do_not_use": true,
+            "do_not_use_reason": "Some MeshColliders have non-readable meshes.",
             "flex": true,
             "name": "prim_cone",
             "physics_quality": 0.9974026751263176,
@@ -620,6 +1002,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/prim_cone",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/prim_cone"
             },
+            "volume": 1.0095432996749878,
             "wcategory": "flex_primitive",
             "wnid": "n09999990"
         },
@@ -672,6 +1055,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": true,
@@ -743,6 +1127,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": true,
@@ -814,6 +1199,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": true,
@@ -833,6 +1219,7 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2017//prim_sphere",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2017//prim_sphere"
             },
+            "volume": 1.0,
             "wcategory": "flex_primitive",
             "wnid": "n09999990"
         },
@@ -885,6 +1272,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": false,
@@ -1016,8 +1404,9 @@
                 "z": 0
             },
             "composite_object": false,
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "container_shapes": [],
+            "do_not_use": true,
+            "do_not_use_reason": "Some MeshColliders have non-readable meshes.",
             "flex": true,
             "name": "ramp_with_platform",
             "physics_quality": 1.0,
@@ -1035,8 +1424,155 @@
                 "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/ramp_with_platform",
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/ramp_with_platform"
             },
+            "volume": 3.503831148147583,
             "wcategory": "incline",
             "wnid": "n09999999"
+        },
+        "stairs_one": {
+            "asset_bundle_sizes": {
+                "Darwin": 1582800,
+                "Linux": 1797521,
+                "Windows": 1553239
+            },
+            "bounds": {
+                "back": {
+                    "x": -1,
+                    "y": 1.1,
+                    "z": -4.590001
+                },
+                "bottom": {
+                    "x": -1,
+                    "y": 0,
+                    "z": -2.295
+                },
+                "center": {
+                    "x": -1,
+                    "y": 1.1,
+                    "z": -2.295
+                },
+                "front": {
+                    "x": -1,
+                    "y": 1.1,
+                    "z": 0
+                },
+                "left": {
+                    "x": -2,
+                    "y": 1.1,
+                    "z": -2.295
+                },
+                "right": {
+                    "x": 0,
+                    "y": 1.1,
+                    "z": -2.295
+                },
+                "top": {
+                    "x": -1,
+                    "y": 2.2,
+                    "z": -2.295
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "stairs_one",
+            "physics_quality": 0.9363156063435834,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_white"
+                    ],
+                    "name": "stairs_one"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/stairs_one",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/stairs_one",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/stairs_one"
+            },
+            "volume": 11.11837,
+            "wcategory": "ramp",
+            "wnid": "n04051549"
+        },
+        "stairs_two": {
+            "asset_bundle_sizes": {
+                "Darwin": 1582548,
+                "Linux": 1798799,
+                "Windows": 1552938
+            },
+            "bounds": {
+                "back": {
+                    "x": -1,
+                    "y": 1.65,
+                    "z": -3.5
+                },
+                "bottom": {
+                    "x": -1,
+                    "y": 0,
+                    "z": -1.75
+                },
+                "center": {
+                    "x": -1,
+                    "y": 1.65,
+                    "z": -1.75
+                },
+                "front": {
+                    "x": -1,
+                    "y": 1.65,
+                    "z": 0
+                },
+                "left": {
+                    "x": -2,
+                    "y": 1.65,
+                    "z": -1.75
+                },
+                "right": {
+                    "x": 0,
+                    "y": 1.65,
+                    "z": -1.75
+                },
+                "top": {
+                    "x": -1,
+                    "y": 3.3,
+                    "z": -1.75
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "stairs_two",
+            "physics_quality": 0.8871752788630848,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_white"
+                    ],
+                    "name": "stairs_two"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/stairs_two",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/stairs_two",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/stairs_two"
+            },
+            "volume": 12.85068,
+            "wcategory": "ramp",
+            "wnid": "n04051549"
         }
     }
 }

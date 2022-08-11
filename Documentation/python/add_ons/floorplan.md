@@ -35,6 +35,37 @@ c.communicate([])
 
 (no parameters)
 
+#### get_initialization_commands
+
+**`self.get_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
+#### on_send
+
+**`self.on_send(resp)`**
+
+This is called within `Controller.communicate(commands)` after commands are sent to the build and a response is received.
+
+Use this function to send commands to the build on the next `Controller.communicate(commands)` call, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the *next* `Controller.communicate(commands)` call.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| resp |  List[bytes] |  | The response from the build. |
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
+
 #### init_scene
 
 **`self.init_scene(scene, layout)`**
@@ -56,41 +87,3 @@ Where `1a` is the scene number (1) and visual variant (a).
 | --- | --- | --- | --- |
 | scene |  str |  | The name of the floorplan scene to load. Can be just the suffix of the scene to load (such as `"1a"`) or the full name of the scene (such as `"floorplan_1a"`). |
 | layout |  int |  | The layout index. |
-
-#### get_initialization_commands
-
-**`self.get_initialization_commands()`**
-
-This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
-
-_Returns:_  A list of commands that will initialize this add-on.
-
-#### on_send
-
-**`self.on_send()`**
-
-#### on_send
-
-**`self.on_send(resp)`**
-
-This is called after commands are sent to the build and a response is received.
-
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build. |
-
-#### before_send
-
-**`self.before_send(commands)`**
-
-This is called before sending commands to the build. By default, this function doesn't do anything.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-
-

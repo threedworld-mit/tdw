@@ -1,37 +1,30 @@
-# Object Data
+# Object data
 
-Collecting object data in TDW is _very_ fast. These benchmarks measure the performance of each standard type of object data.
+Collecting object data in TDW is _very_ fast. This benchmark measures the performance of each standard type of object data.
 
-For more information on what sort of data is returned by each data type, read the [Output Data API](../api/output_data.md).
+See [the Benchmark document](benchmark.md) for the test machine's system info.
 
-#### Arguments
+In each test, there are 100 objects in the scene. There is no camera or image data.
 
-| Argument        | Description                                        |
-| --------------- | -------------------------------------------------- |
-| `--boxes`       | Add 100 cube primitives to the scene.              |
-| `--transforms`  | Send `Transforms` data (position, rotation, etc.). |
-| `--rigidbodies` | Send `Rigidbodies` data (velocity, mass, etc.).    |
-| `--collisions`  | Send `Collisions` data.                            |
-| `--bounds`      | Send `Bounds` data.                                |
+| Transforms | Rigidbodies | Bounds | Collisions | FPS  |
+| ---------- | ----------- | ------ | ---------- | ---- |
+| True       | False       | False  | False      | 644  |
+| False      | True        | False  | False      | 613  |
+| False      | False       | True   | False      | 392  |
+| False      | False       | False  | True       | 525  |
+| True       | True        | True   | True       | 311  |
 
-#### Results
+## How to run TDW's image capture performance benchmarks
 
-| Test                                                       | FPS  |
-| ---------------------------------------------------------- | ---- |
-| `--boxes --transforms`                                     | 599  |
-| `--boxes --rigidbodies`                                    | 642  |
-| `--boxes --collisions`                                     | 654  |
-| `--boxes --bounds`                                         | 396  |
-| `--boxes --transforms --rigidbodies --collisions --bounds` | 308  |
+1. [Follow instructions in the Benchmark document for cloning the repo, downloading the build, etc.](benchmark.md)
+2. `cd path/to/tdw/Python/benchmarking` (replace `path/to` with the actual path)
+3. `python3 object_data.py`
+4. Run the build
+5. Wait for the performance benchmark to complete (this might take up to five minutes).
+6. Compare your results to those listed above
 
-### How to run this test
+***
 
-```bash
-cd <root>/Python/benchmarking
-python3 object_data.py
-```
+**Next: [Command deserialization](command_deserialization.md)**
 
-```bash
-<run build>
-```
-
+[Return to the README](../../../README.md)

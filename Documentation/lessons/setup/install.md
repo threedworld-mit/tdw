@@ -14,8 +14,8 @@ This document will explain how to install both the build executable and the Pyth
 - Windows, OS X, or Linux (we've tested TDW on Ubuntu 16, 18, and 20)
 - Python 3.6+
 - A GPU, the faster the better, with up-to-date drivers. It is possible to run TDW without a GPU but you will lose some speed and photorealism.
-- For [audio/video recording](misc_frontend/video.md), you will need an audio driver.
-- [Flex](misc_frontend/flex.md) has complicated requirements; please refer to the linked document.
+- For [audio simulations](../audio/overview.md), you will need an audio driver.
+- [Flex](../flex/flex.md) has complicated requirements; please refer to the linked document.
 - **Additional Linux server requirements:**
   - An active X server
   - nvidia graphics card

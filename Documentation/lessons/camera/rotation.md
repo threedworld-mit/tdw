@@ -191,7 +191,7 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 c.communicate({"$type": "terminate"})
 ```
 
-The `ThirdPersonCamera` wraps both of these commands (`look_at` and `look_at_position` in a single field: `look_at_position`:
+The `ThirdPersonCamera` wraps both of these commands (`look_at` and `look_at_position` in a function: `camera.look_at(target)`. It will continue to look at the target every frame until you call `camera.look_at(None)`.
 
 ```python
 from tdw.controller import Controller
@@ -209,10 +209,10 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                                 position={"x": 1, "y": 0, "z": -0.5},
                                 object_id=object_id)])
 # Look at the object.
-cam.look_at_target = object_id
+cam.look_at(object_id)
 c.communicate([])
 # Look at a position.
-cam.look_at_target = {"x": -2, "y": 0.5, "z": 0}
+cam.look_at({"x": -2, "y": 0.5, "z": 0})
 c.communicate([])
 c.communicate({"$type": "terminate"})
 ```

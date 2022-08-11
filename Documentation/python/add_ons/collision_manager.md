@@ -8,15 +8,13 @@ Manager add-on for all collisions on this frame.
 
 ## Fields
 
+- `obj_collisions` All collisions between two objects that occurred on the frame.
+
+- `env_collisions` All collisions between an object and the environment that occurred on the frame.
+
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 
 - `initialized` If True, this module has been initialized.
-
-- `obj_collisions` All collisions between two objects that occurred on the frame.
-Key = An `IntPair` (a pair of object IDs). Value = [The collision.](../collision_data/collision_obj_obj.md)
-
-- `env_collisions` All collisions between an object and the environment that occurred on the frame.
-Key = the object ID. Value = [The collision.](../collision_data/collision_obj_env.md)
 
 ***
 
@@ -46,16 +44,12 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 #### on_send
 
-**`self.on_send()`**
-
-#### on_send
-
 **`self.on_send(resp)`**
 
-This is called after commands are sent to the build and a response is received.
+This is called within `Controller.communicate(commands)` after commands are sent to the build and a response is received.
 
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
+Use this function to send commands to the build on the next `Controller.communicate(commands)` call, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the *next* `Controller.communicate(commands)` call.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -65,11 +59,8 @@ Any commands in the `self.commands` list will be sent on the next frame.
 
 **`self.before_send(commands)`**
 
-This is called before sending commands to the build. By default, this function doesn't do anything.
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-
-

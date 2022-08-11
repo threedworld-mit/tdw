@@ -1,14 +1,1254 @@
 # CHANGELOG
 
+# v1.10.x
+
+To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
+
+## v1.10.4
+
+### Command API
+
+#### New Commands
+
+| Command                       | Description                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| `start_video_capture_linux`   | Start video capture using ffmpeg. This command can only be used on Linux. |
+| `start_video_capture_osx`     | Start video capture using ffmpeg. This command can only be used on OS X. |
+| `start_video_capture_windows` | Start video capture using ffmpeg. This command can only be used on Windows. |
+| `stop_video_capture`          | Stop ongoing video capture.     |
+
+### Docker
+
+- Removed `record_audio_video.sh` and `start_container_audio_video.sh` (no longer needed)
+
+### Documentation
+
+### New Documentation
+
+| Document                                                     | Description                               |
+| ------------------------------------------------------------ | ----------------------------------------- |
+| `lessons/video/screen_record_linux.md`<br>`lessons/video/screen_record_osx.md`<br>`lessons/video/screen_record_windows.md` | How to record audio and video on each OS. |
+
+#### Modified Documentation
+
+| Document                    | Modification                                                 |
+| --------------------------- | ------------------------------------------------------------ |
+| `lessons/video/audio.md`    | Removed most text; this is now an overview document for recording using ffmpeg. Added a section about OBS. |
+| `lessons/video/images.md`   | Removed sections regarding ffmpeg and OBS.                   |
+| `lessons/video/overview.md` | Added a section about installing ffmpeg.                     |
+
+### `tdw` module
+
+- Added `screeninfo` as a required module. To install: `pip3 install screeninfo`.
+
+## v1.10.3
+
+### Build
+
+- Fixed: `rotate_object_by` doesn't work as expected when `use_centroid == True`.
+
+## v1.10.2
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `set_revolute_angle`     | Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot. |
+| `set_prismatic_position` | Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot. |
+| `set_spherical_angles`   | Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot. |
+| `set_robot_joint_id` | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. |
+| `send_dynamic_robots` | Send dynamic robot data. |
+
+#### Deprecated Commands
+
+| Command       | Reason                              |
+| ------------- | ----------------------------------- |
+| `send_robots` | Replaced with `send_dynamic_robots` |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data     | Description                |
+| --------------- | -------------------------- |
+| `DynamicRobots` | Dynamic robot output data. |
+
+#### Modified Output Data
+
+| Output Data   | Modification                                               |
+| ------------- | ---------------------------------------------------------- |
+| `StaticRobot` | Added: `get_joint_indices()`<br>Added: `get_robot_index()` |
+
+#### Deprecated Output Data
+
+| Output Data | Reason                        |
+| ----------- | ----------------------------- |
+| `Robot`     | Replaced with `DynamicRobots` |
+
+### `tdw` module
+
+- Added: `JsonWriter` an add-on that serializes JSON data per-frame.
+- Added: `OutputDataWriter` an add-on that dumps raw output data per-frame.
+- Added: `Writer` abstract base class for per-frame writer add-ons.
+- Modified `JointDynamic` constructor parameters:
+  - Removed constructor parameters: `robot` and `joint_index`.
+  - Added constructor parameters: `joint_id`, `position`, `angles`, and `moving`.
+- Modified `JointStatic` constructor parameters and fields:
+  - Removed constructor parameter: `joint_index`
+  - Added constructor parameters: `static_index` and `dynamic_index`
+  - Added fields: `num_dof` and `dynamic_index`
+- Modified `RobotDynamic` constructor parameters:
+  - Removed constructor parameters: `robot_id`, `body_parts`, and `previous`.
+  - Added constructor parameters: `static` (of type `RobotStatic`)
+- Modified `RobotStatic` fields:
+  - Added: `robot_index`
+- Fixed: `TDWUtils.array_to_vector4(arr)` doesn't convert numpy float32 to pure-Python float.
+
+### Example Controllers
+
+- Updated `robots/robot_arm.py` to use new `DynamicRobots` output data.
+- Added: `read_write/object_data_json.py`
+- Added: `read_write/write_json.py`
+- Added: `read_write/write_multi_agent_json.py`
+- Added: `read_write/write_output_data.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                   | Description                               |
+| ------------------------------------------ | ----------------------------------------- |
+| `lessons/read_write/custom_writers.md`     | Tips for custom data writers.             |
+| `lessons/read_write/json.md`               | How to use `JsonWriter`.                  |
+| `lessons/read_write/output_data_writer.md` | How to use `OutputDataWriter`.            |
+| `lessons/read_write/overview.md`           | Overview of how to write data to disk.    |
+| `python/add_ons/json_writer.md`            | API documentation for `JsonWriter`.       |
+| `python/add_ons/output_data_writer.md`     | API documentation for `OutputDataWriter`. |
+| `python/add_ons/writer.md`                 | API documentation for `Writer`.           |
+
+#### Modified Documentation
+
+- Clarified in all of the API documents for `AddOn` subclasses how and when `on_send(resp)` gets called.
+
+| Document                            | Modification                                                 |
+| ----------------------------------- | ------------------------------------------------------------ |
+| `lessons/robots/low_level_api.md`   | Updated descriptions and example code to use `DynamicRobots` instead of `Robot`. |
+| `lessons/troubleshooting/logger.md` | Moved to `lessons/read_write/logger.md`                      |
+
+## v1.10.1
+
+### Command API
+
+#### New Commands
+
+| Command              | Description                                     |
+| -------------------- | ----------------------------------------------- |
+| `send_field_of_view` | Send the camera field of view and focal length. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data   | Description                                |
+| ------------- | ------------------------------------------ |
+| `FieldOfView` | The camera field of view and focal length. |
+
+### `tdw` module
+
+- Added optional parameter `device_name` to `PhysicsAudioRecorder.start()`.
+- Fixed: `AudioUtils.stop()` doesn't work on OS X.
+  - Replaced `AudioUtils.RECORDER_PID` with `AudioUtils.RECORDER_PROCESS`.
+  - `AudioUtils.DEVICE` is now an integer (was a string).
+
+
+### Model Library
+
+- Flagged b04_wallmounted_soap_dispenser_composite as do_not_use (missing asset bundles)
+
+### Example Controllers
+
+- Fixed audio example controllers that use `PhysicsAudioRecorder` and had `while record.done:` instead of `while not recorder.done:`
+
+## v1.10.0
+
+### New Features
+
+- **Added `ProcGenKitchen`.** This add-on procedurally generates kitchen environments.
+
+### Command API
+
+#### New Commands
+
+| Command                          | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `add_box_container`              | Add a box container shape to an object.                      |
+| `add_cylinder_container`         | Add a cylindrical container shape to an object.              |
+| `add_sphere_container`           | Add a spherical container shape to an object.                |
+| `send_containment`               | Send `Overlap` output data from every container shape.       |
+| `set_sub_object_id`              | Set the ID of a composite sub-object.                        |
+| `set_first_person_avatar`        | Set the parameters of an A_First_Person avatar.              |
+| `send_mouse_raycast`             | Raycast from a camera through the mouse screen position.     |
+| `send_mouse`                     | Send mouse output data.                                      |
+| `set_cursor`                     | Set cursor parameters                                        |
+| `set_visual_material_smoothness` | Set the smoothness (glossiness) of an object's visual material. |
+
+### Modified Commands
+
+| Command                                               | Modification                                                 |
+| ----------------------------------------------------- | ------------------------------------------------------------ |
+| `create_avatar`                                       | Removed: `A_Img_Caps`, `A_StickyMitten_Baby`, `A_StickyMitten_Adult`, `A_Nav_Mesh`<br>Added: `A_First_Person` |
+| `send_boxcast`<br>`send_raycast`<br>`send_spherecast` | `origin` and `destination` parameters now default to `{"x": 0, "y": 0, "z": 0}`. |
+| `add_ui_image`<br>`add_ui_text`                       | Added optional parameter `raycast_target`.                   |
+
+#### Removed Commands
+
+| Command                                                      | Reason                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `set_proc_gen_floor_color`                                   | Deprecated in v1.9; use `set_floor_color` instead.           |
+| `set_proc_gen_floor_texture_scale`                           | Deprecated in v1.9; use `set_floor_texture_scale` instead.   |
+| `set_proc_gen_floor_material`                                | Deprecated in v1.9; use `set_floor_material` instead.        |
+| `send_composite_objects`                                     | Deprecated in v1.9; use `send_static_composite_objects` and `send_dynamic_composite_objects` instead. |
+| `set_nav_mesh_avatar`<br>`set_nav_mesh_avatar_destination`   | Removed `A_Nav_Mesh`                                         |
+| `set_avatar_rigidbody_constraints`<br>`rotate_head_by`<br>`rotate_waist`<br>`set_sticky_mitten_profile`<br>`stop_arm_joint`<br>`bend_arm_joint_by`<br>`bend_arm_joint_to`<br>`adjust_joint_angular_drag_by`<br>`set_joint_angular_drag`<br>`adjust_joint_damper_by`<br>`adjust_joint_force_by`<br>`set_joint_damper`<br>`set_joint_force`<br>`put_down`<br>`set_stickiness`<br>`pick_up`<br>`pick_up_proximity` | Removed `A_StickyMitten_Baby` and `A_StickyMitten_Adult`     |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description                        |
+| ----------- | ---------------------------------- |
+| `Mouse`     | Data for mouse input and movement. |
+
+#### Modified Output Data
+
+| Output Data                | Modification                                                 |
+| -------------------------- | ------------------------------------------------------------ |
+| `Transforms`               | Significant speed improvement.<br>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
+| `Rigidbodies`              | Significant speed improvement.<br/>`get_velocity(index)` and `get_angular_velocity(index)` return a numpy arrays instead of tuples. |
+| `StaticRigidbodies`        | Significant speed improvement.                               |
+| `Bounds`                   | Significant speed improvement.<br>`get_front(index)`, `get_back(index)`, etc. return numpy arrays instead of tuples. |
+| `SegmentationColors`       | `get_object_color(index)` returns a numpy array instead of a tuple. |
+| `Volumes`                  | Significant speed improvement.                               |
+| `LocalTransforms`          | Significant speed improvement.<br/>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
+| `DynamicCompositeObjects`  | Significant speed improvement.<br>Restructured how hinge and light data is stored and returned. |
+| `IdPassSegmentationColors` | Moderate (approximately 25%) speed improvement.<br>Removed `get_sensor_name()`. |
+
+#### Removed Output Data
+
+| Output Data                                                  | Reason                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `CompositeObjects`                                           | Deprecated in v1.9; use `StaticCompositeObjects` and `DynamicCompositeObjects` instead. |
+| `ArrivedAtNavMeshDestination`                                | Removed `A_Nav_Mesh`                                         |
+| `AvatarStickyMitten`<br>`AvatarStickyMittenSegmentationColors` | Removed `A_StickyMitten_Baby` and `A_StickyMitten_Adult`     |
+
+### `tdw` module
+
+- **Added `ProcGenKitchen`.** Procedurally generate a kitchen in a new scene or an existing scene.
+- Added procedural generation "arrangement" data classes:
+  - `Arrangement` Abstract base class for procedurally-generated spatial arrangements of objects.
+  - `ArrangementAlongWall` Abstract class procedurally-generated spatial arrangements of objects that are positioned alongside a wall as part of a lateral arrangement.
+  - `ArrangementWithRootObject` Abstract class for procedurally-generated spatial arrangements of objects with a single root object.
+  - `Basket` A basket with random objects.
+  - `CupAndCoaster` A cup, which sometimes has a coaster underneath it.
+  - `Dishwasher` A dishwasher with a kitchen counter top with objects on it.
+  - `KitchenCabinet` Abstract class for kitchen counters, wall cabinets, and sinks. These all shared the same canonical rotation and height.
+  - `KitchenCounter` A kitchen counter can have objects on it and inside it.
+  - `KitchenCounterTop` A floating kitchen counter top along a wall.
+  - `KitchenTable` A kitchen table has chairs and table settings.
+  - `Microwave` A microwave can have objects on top of it and inside of it.
+  - `Painting` A painting hanging on the wall.
+  - `Plate` A kitchen plate that may have food on it.
+  - `Radiator` A radiator.
+  - `Refrigerator` A refrigerator.
+  - `Shelf` Shelving with objects on the shelves.
+  - `SideTable` A small side table with objects on it.
+  - `Sink` A sink can have objects on it and inside it.
+  - `StackOfPlates` A stack of plates.
+  - `Stool` A stool placed along a wall.
+  - `Stove` A stove with oven doors.
+  - `Suitcase` A suitcase placed along a wall.
+  - `TableAndChairs` Abstract base class for a table with chairs around it.
+  - `TableSetting` A table setting includes a plate, fork, knife, spoon, and sometimes a cup.
+  - `Void` An empty space along a wall.
+  - `WallCabinet` A wall cabinet hangs on the wall above a kitchen counter. It can have objects inside it.
+- Added procedural generation cabinetry data classes:
+  - `Cabinetry` A set of cabinetry models.
+  - `CabinetryType` Enum values describing a set of cabinetry.
+- Added scene data classes:
+  - `InteriorRegion` An interior region has bounds data and cached data regarding continuous walls and walls with windows.
+  - `Room` A room in an interior environment.
+- Adjusted existing scene data classes:
+  - New constructor parameters for `RegionBounds`
+  - Renamed `scene_bounds.rooms` to `scene_bounds.regions`
+- Added: `CardinalDirection` Enum for cardinal directions.
+- Added: `OrdinalDirection` Enum for ordinal directions.
+- Added: `TDWUtils.get_corners_from_wall(wall)` Returns the corners of the wall as a 2-element list of `OrdinalDirection`.
+- Added: `TDWUtils.get_direction_from_corner(corner, wall)` Given an corner an a wall, get the direction that a lateral arrangement will run along. 
+- `ContainerManager` now uses "container shapes" instead of trigger colliders. Trigger colliders are a built-in feature of Unity that detect non-physics collisions. They generate lots of event data, causing `ContainerManager` to be very slow in complex scenes. Now, `ContainerManager` sends "container shape" commands such as `add_box_container`, which define a 3D space without a trigger collider. Per-frame, container shapes will send `Overlap` data instead of `TriggerCollision` data. The result is that `ContainerManager` is much faster now.
+  - `ContainerManager` sends container shape commands (see above) per object and then sends `send_containment` to request `Overlap` data per frame.
+  - `ContainerManager` is no longer a subclass of `TriggerCollisionManager`, meaning that it no longer has the following fields: `trigger_ids` and `collisions`.
+  - Added: `ContainerManager.container_shapes` A dictionary of container IDs to parent object IDs.
+  - Renamed `ContainerManager._tags` to `ContainerManager.tags`
+  - Replaced `ContainerManager.add_box_collider(object_id, position, scale, rotation, trigger_id, tag)` with `ContainerManager.add_box(object_id, position, tag, half_extents, rotation)`
+  - Replaced `ContainerManager.add_cylinder_collider(object_id, position, scale, rotation, trigger_id, tag)` with `ContainerManager.add_cylinder(object_id, position, tag, radius, height, rotation)`
+  - Replaced `ContainerManager.add_sphere_collider(object_id, position, diameter, trigger_id, tag)` with `ContainerManager.add_sphere(object_id, position, tag, radius)`
+- Refactored the following containment data classes:
+  - Replaced `ContainerBoxTriggerCollider` with `BoxContainer`
+  - Replaced `ContainerCylinderTriggerCollider` with `CylinderContainer`
+  - Replaced `ContainerSphereTriggerCollider` with `SphereContainer`
+  - Renamed `ContainerColliderTag` to `ContainerTag`
+  - Replaced `ModelRecord.container_colliders` with `ModelRecord.container_shapes`
+  - Replaced `ContainmentEvent.object_id` (the ID of the contained object) with `ContainmentEvent.object_ids` (a numpy array of all contained objects)
+- The data classes used in `DynamicCompositeObjects` (`CompositeObjectDynamic`, `HingeDynamic`, `LightDynamic`, and `SubObjectDynamic`) all take different constructor parameters. They are otherwise unchanged. The API for `CompositeObjectManager` is the same as before.
+- **Added: `FirstPersonAvatar` add-on.** This avatar can be controlled using standard video game first-person keyboard and mouse controls.
+- Added: `Mouse` add-on. Listen for mouse input and movement.
+- Renamed `ThirdPersonCameraBase._RENDER_ORDER` to `ThirdPersonCameraBase.RENDER_ORDER`
+- Renamed `PhysicsAudioRecorder.recording` to `PhysicsAudioRecorder.done`
+- Added optional parameter `record_audio` to the `PhysicsAudioRecorder` constructor.
+- Parameter `path` in `PhysicsAudioRecorder.start(path)` is now optional (defaults to None).
+
+### Build
+
+- Fixed: `add_line_renderer` doesn't correctly add line points.
+
+### Example Controllers
+
+- Split `objects_and_scenes/` controllers into `scene_setup_high_level/` and `scene_setup_low_level/`
+- Removed: `objects_and_scenes/proc_gen_objects.py` (obsolete)
+- Removed: `keyboard/keyboard_controls.py` (obsolete)
+- Added: `scene_setup_high_level/cup_and_coaster.py`
+- Added: `scene_setup_high_level/kitchen_counter.py`
+- Added: `scene_setup_high_level/microwave.py`
+- Added: `scene_setup_high_level/plate.py`
+- Added: `scene_setup_high_level/proc_gen_kitchen_lighting.py`
+- Added: `scene_setup_high_level/proc_gen_kitchen_minimal.py`
+- Added: `scene_setup_high_level/proc_gen_kitchen_rng.py`
+- Added: `keyboard_and_mouse/first_person_controls.py`
+- Added: `keyboard_and_mouse/mouse_controls.py`
+
+### Model Library
+
+- Added to `models_special.json`: b04_db_apps_tech_08_03_counter_top, b05_db_apps_tech_08_09_counter_top, dishwasher_4_counter_top, floating_counter_top_counter_top
+
+### Scene Library
+
+- Added: `SceneRecord.rooms` Cached `Room` data per scene.
+
+### Benchmark
+
+- Added kitchen benchmark to `PerformanceBenchmarkController` and `main.py`
+- Removed agent and flex benchmarks from `PerformanceBenchmarkController` and `main.py` because they are obsolete.
+- Updated Object Data benchmarks.
+
+### Documentation
+
+- The "Objects and Scenes" lesson has been split into two sections: "Scene Setup (High-Level APIs)" and "Scene Setup (Low-Level APIs)"
+- The "Keyboard" lesson has been renamed to "Keyboard and Mouse"
+
+#### New Documentation
+
+| Document                                                     | Description                                               |
+| ------------------------------------------------------------ | --------------------------------------------------------- |
+| `upgrade_guides/v1.9_to_v1.10.md`                            | Upgrade guide.                                            |
+| `scene_setup/overview.md`                                    | Overview of scene setups.                                 |
+| `scene_setup_high_level/overview.md`                         | Overview of TDW's high-level scene setup APIs.            |
+| `scene_setup_high_level/arrangements.md`                     | How `Arrangement` and its sub-classes work.               |
+| `scene_setup_high_level/proc_gen_kitchen.md`                 | Lesson document for the `ProcGenKitchen` add-on.          |
+| `scene_setup_high_level/rooms.md`                            | How room data works.                                      |
+| `scene_setup_low_level/overview.md`                          | Overview of TDW's lower-level scene setup APIs.           |
+| `keyboard_and_mouse/first_person_avatar.md`                  | Lesson document for the `FirstPersonAvatar` add-on.       |
+| `keyboard_and_mouse/mouse.md`                                | Lesson document for the `Mouse` add-on.                   |
+| `keyboard_and_mouse/overview.md`                             | Overview of keyboard and mouse input.                     |
+| `python/add_ons/proc_gen_kitchen.md`                         | API documentation for `ProcGenKitchen`                    |
+| `python/proc_gen/arrangements/cabinetry/cabinetry.md`<br>`python/proc_gen/arrangements/cabinetry/cabinetry_type.md` | API documentation for cabinetry.                          |
+| `python/proc_gen/arrangements/arrangement.md`<br/>`python/proc_gen/arrangements/arrangement_along_wall.md`<br/>`python/proc_gen/arrangements/arrangement_with_root_object.md`<br/>`python/proc_gen/arrangements/basket.md`<br/>`python/proc_gen/arrangements/cup_and_coaster.md`<br/>`python/proc_gen/arrangements/dishwasher.md`<br/>`python/proc_gen/arrangements/kitchen_cabinet.md`<br/>`python/proc_gen/arrangements/kitchen_counter.md`<br/>`python/proc_gen/arrangements/kitchen_counter_top.md`<br/>`python/proc_gen/arrangements/kitchen_table.md`<br/>`python/proc_gen/arrangements/microwave.md`<br/>`python/proc_gen/arrangements/painting.md`<br/>`python/proc_gen/arrangements/plate.md`<br/>`python/proc_gen/arrangements/radiator.md`<br/>`python/proc_gen/arrangements/refrigerator.md`<br/>`python/proc_gen/arrangements/shelf.md`<br/>`python/proc_gen/arrangements/side_table.md`<br/>`python/proc_gen/arrangements/sink.md`<br/>`python/proc_gen/arrangements/stack_of_plates.md`<br/>`python/proc_gen/arrangements/stool.md`<br/>`python/proc_gen/arrangements/stove.md`<br/>`python/proc_gen/arrangements/suitcase.md`<br/>`python/proc_gen/arrangements/table_and_chairs.md`<br/>`python/proc_gen/arrangements/table_setting.md`<br/>`python/proc_gen/arrangements/void.md`<br/>`python/proc_gen/arrangements/wall_cabinet.md` | API documentation for `Arrangement` and its data classes. |
+| `python/cardinal_direction.md`                               | API documentation for `CardinalDirection`.                |
+| `python/ordinal_direction.md`                                | API documentation for `OrdinalDirection`.                 |
+| `python/add_ons/mouse.md`                                    | API documentation for `Mouse`.                            |
+| `python/add_ons/first_person_avatar.md`                      | API documentation for `FirstPersonAvatar`.                |
+
+#### Modified Documentation
+
+| Document                                                     | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/semantic_states/containment.md`                     | Rewrote most of the document and replaced some images in order to describe container shapes. |
+| `python/container_data/`                                     | Removed old API documents (e.g. `container_collider_tag.md`) and added new API documents (e.g. `container_tag.md`). |
+| `benchmark/benchmark.md`                                     | Added explanation and FPS of kitchen benchmark.              |
+| `objects_and_scenes/floorplans.md`<br>`objects_and_scenes/reset_scene.md` | Moved to `scene_setup_high_level/`                           |
+| `objects_and_scenes/bounds.md`<br>`objects_and_scenes/materials_textures_colors.md`<br>`objects_and_scenes/proc_gen_room.md`<br>`objects_and_scenes/units.md` | Moved to `scene_setup_low_level/`                            |
+
+### Removed Documentation
+
+| Document                                 | Reason    |
+| ---------------------------------------- | --------- |
+| `objects_and_scenes/proc_gen_objects.md` | Obsolete. |
+
 # v1.9.x
 
-To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides/v1.8_to_v1.9).
+To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).
+
+## v1.9.17
+
+### `tdw` module
+
+- Added: `OculusTouch.vr_node_ids` Objects IDs of the VR nodes (body and hands).
+
+### Build
+
+- Replaced the head following logic of the Oculus Touch rigs. Previously, the head was a Rigidbody object that responded to physics. This could result in crashes to desktop due to invalid velocities, especially if the framerate was slow. Now, the head is a non-physics object.
+
+## v1.9.16
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `Collision` | Added: `get_impulse()` The total impulse applied to the pair of objects to resolve the collision. |
+
+### Build
+
+- Fixed: `teleport_vr_rig` doesn't teleport all sub-objects of the rig correctly.
+
+### `tdw` module
+
+- Added field `impulse` to `CollisionObjObj`
+- Added optional field `plane_distance` to `ui.attach_canvas_to_avatar()` and `ui.attach_canvas_to_vr_rig()`. 
+- The default `plane_distance` value for `ui.attach_canvas_to_vr_rig(plane_distance)` is 0.25 (was 1)
+- Added `ui.add_loading_screen(text, text_size)` A macro function for loading screens.
+- Added optional parameters `position` (an x, y, z dictionary) and `rotation` to the constructor of `VRRig`, `vr.reset()`, the constructor of `OculusTouch`, and `oculus_touch.reset()`. This fixes a "bug" in which it wasn't possible to set the position of a VR rig on the same frame as when it is spawned.
+
+### Model Library
+
+- Added to `models_core.json`: b01_trumpet, b03_trumpet_vray, b03_piccolo_trumpet_vray, b04_b200003_01, b04_baterijska_busilica, dewalt_compact_drill_vray, b03_hair_comb_2010, b04_baseball_bat, b05_racket, dumb-bell_2010, 12_06_001, b04_faucet1, b04_p22732_cc_cp_2013, b04_p25050_slc_ad_2013, b05_p24409_00_cp_2013, brizo_solna, kitchen_faucet, pixamoon_free_test_faucet_001_publish
+- , Removed from `models_core.json` and `models_full.json`: b03_12_06_027_composite (asset bundle doesn't exist).
+- Flagged b03_headphone__max2014 in `models_full.json` as do_not_use (bad mesh geometry causes the model to bounce rapidly).
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                                                 |
+| ---------------------------- | ------------------------------------------------------------ |
+| `lessons/vr/oculus_touch.md` | Added documentation for `position` and `rotation` parameters. |
+
+## v1.9.15
+
+### New Features
+
+- **Added Obi Cloth.**
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `set_obi_solver_scale`    | Set an Obi solver's scale. This will uniformly scale the physical size of the simulation, without affecting its behavior. |
+| `create_obi_cloth_sheet`  | Create an Obi cloth sheet object.                            |
+| `create_obi_cloth_volume` | Create an Obi cloth volume object.                           |
+| `apply_force_to_obi_cloth` | Apply a uniform force to an Obi cloth actor. |
+| `apply_torque_to_obi_cloth` | Apply a uniform torque to an Obi cloth actor. |
+| `parent_textured_quad_to_object` | Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object. |
+| `unparent_textured_quad`         | Unparent a textured quad from an object.                     |
+
+#### Deprecated Commands
+
+| Command                | Reason                 |
+| ---------------------- | ---------------------- |
+| `set_flex_cloth_actor` | Use Obi cloth instead. |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data          | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `OculusTouchButtons` | Added: `get_left_axis()` and `get_right_axis()` to listen for control stick input. |
+
+### Build
+
+- Fixed: Freeze when sending `set_vr_obi_collision_material` or `create_vr_obi_colliders`
+- Fixed: `add_ui_image` often creates images with badly-stretched borders.
+
+### `tdw` module
+
+- Fixed: Crash in `ObiActor` in certain cases if particle output data is enabled.
+- Added functions to `Obi` add-on:
+  - `create_cloth_sheet()`  Create a cloth sheet object.
+  - `create_cloth_volume()` Create a cloth volume object.
+  - `set_solver()` Set solver parameters.
+  - `untether_cloth_sheet()` Untether a cloth sheet.
+  - `apply_force_to_cloth()` Apply a force and/or torque to a cloth actor.
+- Added data classes for Obi cloth in `tdw.obi_data.cloth`:
+  - `ClothMaterial` 
+  - `SheetType`
+  - `TetherParticleGroup`
+  - `VolumeType`
+  - `TetherType`
+  - `ForceMode`
+- Added to `OculusTouch` add on: `self.listen_to_axis(is_left, delta)` Listen to control stick movement. 
+- Fixed: `OculusTouch` doesn't set non-kinematic non-graspable objects to `discrete` collision detection mode.
+
+### Model Library
+
+- Added models to `models_core.json` and `models_full.json`: b03_12_06_027_composite, b04_wallmounted_soap_dispenser_composite, vray_077_composite, vray_083_composite, vray_084_composite, vray_085_composite
+- Added models to `models_special.json`: stairs_one, stairs_two
+
+### Example Controllers
+
+- Added: `vr/oculus_touch_axis_listener.py`
+- Added Obi cloth example controllers in `obi/`:
+  - `cloth_sheet.py`
+  - `cloth_volume.py`
+  - `custom_cloth.py`
+  - `sheet_types.py`
+  - `tether_self.py`
+  - `untether.py`
+  - `tether_object.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Modification                                  |
+| ------------------------------------------------------------ | --------------------------------------------- |
+| `lessons/obi/cloth.md`                                       | Documentation for Obi cloth.                  |
+| `python/obi_data/cloth/cloth_material.md`<br>`python/obi_data/cloth/sheet_type.md`<br>`python/obi_data/cloth/tether_particle_group.md`<br>`python/obi_data/cloth/volume_type.md` | API documentation for Obi cloth data classes. |
+
+#### Modified Documentation
+
+| Document                      | Modification                                    |
+| ----------------------------- | ----------------------------------------------- |
+| `lessons/obi/solvers.md`      | Added an example of how to scale a cloth sheet. |
+| `lessons/obi/obi_and_flex.md` | Added cloth benchmarks.                         |
+| `lessons/vr/oculus_touch.md` | Added a section for control stick input. |
+| `lessons/non_physics/textured_quads.md` | Clarified  that only textured quad commands work with textured quads. |
+
+## v1.9.14
+
+### Command API
+
+#### New Commands
+
+| Command                      | Description                                                  |
+| ---------------------------- | ------------------------------------------------------------ |
+| `add_ui_canvas`              | Add a UI canvas to the scene. By default, the canvas will be an "overlay" and won't appear in image output data. |
+| `attach_ui_canvas_to_avatar` | Attach a UI canvas to an avatar. This allows the UI to appear in image output data. |
+| `attach_ui_canvas_to_vr_rig` | Attach a UI canvas to the head camera of a VR rig.           |
+| `destroy_ui_canvas`          | Destroy a UI canvas and all of its UI elements.              |
+| `add_ui_image`               | Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image. |
+| `add_ui_text`                | Add UI text to the scene.                                    |
+| `destroy_ui_element`         | Destroy a UI element in the scene.                           |
+| `set_ui_element_size`        | Set the size of a UI element.                                |
+| `set_ui_text`                | Set the text of a Text object that is already on the screen. |
+
+### `tdw` module
+
+- Added `UI` add-on.
+
+### Documentation
+
+#### New Documentation
+
+| Document                    | Description                            |
+| --------------------------- | -------------------------------------- |
+| `lessons/non_physics/ui.md` | User documentation to the `UI` add-on. |
+| `python/add_ons/ui.md`      | API documentation for the `UI` add-on. |
+
+#### Modified Documentation
+
+| Document                          | Modification                                                 |
+| --------------------------------- | ------------------------------------------------------------ |
+| `lessons/misc/c_sharp_sources.md` | Replaced the document with a single paragraph explaining the reasons the C# code is closed-source. |
+
+## v1.9.13
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                          |
+| ------------------------- | ------------------------------------ |
+| `rotate_textured_quad_to` | Set the rotation of a textured quad. |
+
+## v1.9.12
+
+### New Features
+
+- **Added Obi fluids to TDW.** This is a particle-based fluid simulator that in most respects is superior to the existing Flex fluid simulator.
+
+### Command API
+
+#### New Commands
+
+| Command                            | Description                                             |
+| ---------------------------------- | ------------------------------------------------------- |
+| `create_floor_obi_colliders`       | Create Obi colliders for the floor if there aren't any. |
+| `set_floor_obi_collision_material` | Set the Obi collision material of the floor.            |
+| `create_obi_fluid`                 | Create an Obi fluid.                                    |
+| `create_obi_solver`                | Create an Obi solver.                                   |
+| `destroy_obi_solver`               | Destroy an Obi solver.                                  |
+| `set_obi_solver_substeps`          | Set an Obi solver's number of substeps.                 |
+| `create_obi_colliders`             | Create Obi colliders for an object if there aren't any. |
+| `set_obi_collision_material`       | Set the Obi collision material of an object.            |
+| `set_obi_fluid_emission_speed`     | Set the emission speed of a fluid emitter.              |
+| `create_robot_obi_colliders`       | Create Obi colliders for a robot if there aren't any.   |
+| `set_robot_obi_collision_material` | Set the Obi collision material of a robot.              |
+| `send_obi_particles`               | Send particle data for all Obi actors in the scene.     |
+| `create_vr_obi_colliders`          | Create Obi colliders for a VR rig if there aren't any.  |
+| `set_vr_obi_collision_material`    | Set the Obi collision material of the VR rig.           |
+
+#### Deprecated Commands
+
+| Command                                                      | Reason                                                   |
+| ------------------------------------------------------------ | -------------------------------------------------------- |
+| `set_flex_fluid_actor`<br>`set_flex_fluid_source_actor`<br>`load_flex_fluid_from_resources`<br>`load_flex_fluid_source_from_resources` | Flex fluids have been deprecated in favor of Obi fluids. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data    | Description        |
+| -------------- | ------------------ |
+| `ObiParticles` | Obi particle data. |
+
+### `tdw` module
+
+- Added `Obi` add-on. This add-on handles most aspects of an Obi physics simulation, including initialization, actor creation, and particle output data.
+- Added Obi data classes for usage within the `Obi` add-on:
+  - `ObiActor` Handles particle data per Obi actor.
+  - Fluids:
+    - `FluidBase` Abstract base class for fluids.
+    - `Fluid` Includes a dictionary of presets: `from tdw.obi_data.fluids.fluid import FLUIDS`
+    - `GranularFluid` Includes a dictionary of presets: `from tdw.obi_data.fluids.granular_fluid import GRANULAR_FLUIDS`
+  - Emitter shapes:
+    - `EmitterShape` Abstract base class for emitter shapes.
+    - `CubeEmitter`
+    - `DiskEmitter`
+    - `EdgeEmitter`
+    - `SphereEmitter`
+    - `EmitterSamplingMethod` Enum values for the emitter sampling method.
+  - Collision materials:
+    - `CollisionMaterial`
+    - `MaterialCombineMode`
+- Fixed: `AssetBundleCreator` fails because the `asset_bundle_creator/` Unity project doesn't include Newtonsoft.JSON
+- By default, the `OculusTouch` add-on will set the rig's hands and all graspable objects to the "discrete" collision detection mode.
+
+### Model Library
+
+- Marked models as do_not_use: 03_106, 07_01_001, 11_02_003, 11_02_046, 2012-2, adirondack_chair, animal_dog_rtstand_1281, apple04(8_vray), apple07(8_vray), b03_bosch_cbg675bs1b_2013__vray_composite, b03_calligraphybrush_circle, b03_fire_hydrant_los_angeles(1), b05_025_vray, b05_clochild4, banana, bananas(8_vray), billiardtable, brush_circle, cgaxis_models_88_21_vray, coca-cola_can_001, db_apps_tech_08_10, de_dietrich_dop7350w, elva_camod_5691_141x51xh87, fire_hydrant, giraffe_mesh, golf_cart, hair_comb_2010, holo3d-mesh-snake, honey_jar_max_2011, prim_cone, ramp_with_platform, snek_new, whirlpool_akzm7630ix
+
+### Example Controllers
+
+- Added: `obi/custom_fluid.py`, `obi/milk.py` `obi/obi_minimal.py`, `obi/obi_robot.py`, `obi/strawberry_jam.py`, `obi/water.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/obi/overview.md`<br>`lessons/obi/fluids.md`<br>`lessons/obi/obi_particles.md`<br>`lessons/obi/colliders_and_collision_materials.md`<br>`lessons/obi/solvers.md`<br>`lessons/obi/robots.md`<br>`lessons/obi/obi_and_flex.md` | Tutorial documentation for Obi in TDW.                       |
+| `python/add_ons/obi.md`<br>`python/obi_data/collision_materials/collision_material.md`<br>`python/obi_data/collision_materials/material_combine_mode.md`<br>`python/obi_data/fluids/cube_emitter.md`<br>`python/obi_data/fluids/disk_emitter.md`<br>`python/obi_data/fluids/edge_emitter.md`<br>`python/obi_data/fluids/emitter_sampling_method.md`<br>`python/obi_data/fluids/emitter_shape.md`<br>`python/obi_data/fluids/fluid.md`<br>`python/obi_data/fluids/fluid_base.md`<br>`python/obi_data/fluids/granular_fluid.md`<br>`python/obi_data/fluids/sphere_emitter.md`<br>`python/obi_data/obi_actor.md` | API documentation for the `Obi` add-on and associated data classes. |
+
+#### Modified Documentation
+
+| Document                           | Modification                                   |
+| ---------------------------------- | ---------------------------------------------- |
+| `lessons/flex/fluid_and_source.md` | Added deprecation notice.                      |
+| `lessons/physx/overview.md`        | Updated comparison section to include Obi.     |
+| `lessons/vr/oculus_touch.md`       | Added a section regarding physics glitchiness. |
+
+### Benchmarking
+
+- Added: `flex_fluid.py`, `obi.py`, and `obi_fluid.py`
+- Added Obi benchmark to `performance_benchmark_controller.py
+
+## v1.9.11
+
+### Command API
+
+#### New Commands
+
+| Command                       | Description                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| `set_floor_color`             | Set the albedo color of the floor.                           |
+| `set_floor_material`          | Set the material of the floor.                               |
+| `set_floor_texture_scale`     | Set the scale of the tiling of the floor material's main texture. |
+| `set_floor_physic_material`   | Set the physic material of the floor.                        |
+| `send_collider_intersections` | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider. |
+
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `send_model_report` | Added a test for whether each MeshCollider has a mesh.<br>Added a test for whether each MeshCollider's mesh is readable. |
+
+#### Deprecated Commands
+
+| Command                            | Reason                                   |
+| ---------------------------------- | ---------------------------------------- |
+| `set_proc_gen_floor_color`         | Replaced with `set_floor_color`.         |
+| `set_proc_gen_floor_material`      | Replaced with `set_floor_material`.      |
+| `set_proc_gen_floor_texture_scale` | Replaced with `set_floor_texture_scale`. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data                       | Description                                                  |
+| --------------------------------- | ------------------------------------------------------------ |
+| `EnvironmentColliderIntersection` | Data for an whose colliders are intersecting with an environment collider such as a wall. |
+| `ObjectColliderIntersection`      | Data for two objects whose colliders are intersecting.       |
+
+### Example Controllers
+
+- Updated `objects_and_scenes/proc_gen_room.py` to use the new floor commands.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                      | Modification                                         |
+| --------------------------------------------- | ---------------------------------------------------- |
+| `lessons/objects_and_scenes/proc_gen_room.md` | Replaced old floor commands with new floor commands. |
+
+## v1.9.10
+
+### Build
+
+- Fixed: The OS X build doesn't use OpenGL rendering, causing _depth and _depth_simple passes to render as _img passes. (There were probably other OpenGL-related issues as well).
+
+### Model Library
+
+- Fixed: Removed cabinet_24_two_drawer_wood_beech_honey_composite record from the model librarian because the asset bundles don't exist.
+
+## v1.9.9
+
+### Command API
+
+#### Modified Commands
+
+| Command                 | Modification                            |
+| ----------------------- | --------------------------------------- |
+| `create_flex_container` | Added optional parameter `restitution`. |
+
+### `tdw` module
+
+- Added optional parameter `device_name` to `AudioUtils.start()` and `AudioUtils. get_system_audio_device()` to specify the capture device (such as a headset microphone).
+- Added: `Logger.reset(path)` Reset the Logger add-on.
+- Fixed: `Logger` add-on doesn't create directories for the log if the directories don't exist.
+- Added optional parameter `scale_mass` to `Controller.get_add_physics_object()`. If False, scale an object without adjusting its mass.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                           | Modification                                                 |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `lessons/audio/record_audio.md`    | Added a section for how to record from a microphone.         |
+
+## v1.9.8
+
+### Command API
+
+#### New Commands
+
+| Command                 | Description                                                  |
+| ----------------------- | ------------------------------------------------------------ |
+| `scale_object_and_mass` | Scale the object by a factor from its current scale. Scale its mass proportionally. This command assumes that a canonical mass has already been set. |
+
+### Build
+
+- Removed warning in `scale_object` about Flex objects because `set_flex_scale` isn't a command.
+
+### `tdw` module
+
+- `Controller.get_add_physics_object()` will dynamically scale the "canonical" mass of the object if a value for the `scale_factor` parameter is provided.
+
+### Model Library
+
+- Added models `models_core.json` and `models_full.json`:  b03_cooking_pot_01_composite, fridge_large_composite (including container collider data)
+
+### Documentation
+
+#### Modified Documentation
+
+- **Fixed: Missing information in various Python API documents.**
+
+| Document                           | Modification                                                 |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `lessons/flex/fluid_and_source.md` | Clarified that a receptacle is not needed.                   |
+| `python/controller.md`             | Clarified how the wrapper functions that return commands work. |
+
+## v1.9.7
+
+### Command API
+
+#### Modified Commands
+
+| Command                | Modification                              |
+| ---------------------- | ----------------------------------------- |
+| `add_trigger_collider` | Added trigger collider shape `"cylinder"` |
+
+### Build
+
+- Fixed: DllNotFoundException in TDW.app (OS X) due to missing AudioPluginOculusSpatializer.bundle
+- Fixed: Potential memory leak with audio commands
+
+### `tdw` module
+
+- Fixed: `struct.error` in `CompositeObjectManager` when deserializing static spring data.
+- Added `TriggerCollisionManager` add-on. Manager per-frame trigger collision data.
+- Added the following trigger collider/collision data classes:
+  - `TriggerColliderShape` Enum describing the shape of the collider.
+  - `TriggerCollisionEvent` Wrapper for trigger collision data.
+- Added `ContainerManager` add-on. Manager per-frame containment data. This is a subclass of `TriggerCollisionManager`.
+- Added the following container trigger collider/collision data classes:
+  - `ContainerBoxTriggerCollider` Data for a box-shaped container trigger collider.
+  - `ContainerColliderTag` Enum of semantic tags for container trigger colliders.
+  - `ContainerCylinderTriggerCollider` Data for a cylinder-shaped container trigger collider.
+  - `ContainerNonUniformScaleTriggerCollider` Abstract class for container trigger colliders with non-uniform scales.
+  - `ContainerSphereTriggerCollider` Data for a sphere-shaped container trigger collider.
+  - `ContainerTriggerCollider` Abstract base class for container trigger collider data.
+  - `ContainmentEvent` Wrapper for containment trigger collision data.
+- Fixed: AssertionError `AssetBundleCreator` and `RobotCreator` if `unity_editor_path` is set in the constructor but `asset_bundle_creator/` project path doesn't yet exist.
+
+### Model Library
+
+- Added cached trigger collision data to model records. Not all records have container trigger colliders; see `model_record.trigger_colliders`.
+  - (Backend) Added: `tdw.librarian._Encoder` JSONEncoder extension that is used within `_Librarian` classes. For now, this just handles container collider data.
+- Added models `models_core.json` and `models_full.json`: cabinet_36_two_door_wood_oak_white_composite, cabinet_36_two_door_wood_beech_honey_composite, cabinet_24_wall_wood_beech_honey_composite, cabinet_24_wall_wood_oak_white_composite, cabinet_36_wall_wood_beech_honey_composite, cabinet_36_wall_wood_oak_white_composite, appliance-ge-profile-microwave3_composite, appliance-ge-profile-microwave_composite, microwave_composite
+
+### Example Controllers
+
+- Moved composite object controllers from `physx/` to `semantic_states/`
+- Moved overlap and raycast controllers from `objects_and_scenes/` to `semantic_states/`
+- Added: `semantic_states/containment.py`
+- Added: `semantic_states/trigger_collisions.py`
+- Fixed: `objects_and_scenes/floorplan.py` doesn't hide the roof.
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                                 |
+| ------------------------------------------------------------ | ----------------------------------------------------------- |
+| `lessons/semantic_states/containment.md`                     | Documentation for how to use the `ContainerManager`.        |
+| `lessons/semantic_state/grasped.md`                          | Overview of "grasped" semantic states with various agents.  |
+| `lessons/semantic_states/overview.md`                        | Overview of semantic states.                                |
+| `lessons/semantic_states/trigger_collisions.md`              | Documentation for how to use the `TriggerCollisionManager`. |
+| `python/add_ons/container_manager.md`                        | API documentation for `ContainerManager`.                   |
+| `python/add_ons/trigger_collision_manager.md`                | API documentation for `TriggerCollisionManager`.            |
+| `python/collision_data/trigger_collider_shape.md`<br>`python/collision_data/trigger_collision_event.md` | API documentation for trigger collision data classes.       |
+| `python/container_data/container_box_trigger_collider.md`<br>`python/container_data/container_collider_tag.md`<br>`python/container_data/container_cylinder_trigger_collider.md`<br>`python/container_data/container_non_uniform_scale_trigger_collider.md`<br>`python/container_data/container_sphere_trigger_collider.md`<br>`python/container_data/container_trigger_collider.md`<br>`python/container_data/containment_event.md` | API documentation for containment data classes.             |
+
+
+#### Modified Documentation
+
+| Document                                | Modification                                             |
+| --------------------------------------- | -------------------------------------------------------- |
+| `lessons/objects_and_scenes/raycast.md` | Moved to: `lessons/semantic_states/raycast.md`           |
+| `lessons/objects_and_scenes/overlap.md` | Moved to: `lessons/semantic_states/overlap.md`           |
+| `lessons/physx/composite_objects.md`    | Moved to: `lessons/semantic_states/composite_objects.md` |
+
+## v1.9.6
+
+### Command API
+
+#### Modified Commands
+
+| Command              | Modification                                                 |
+| -------------------- | ------------------------------------------------------------ |
+| `send_audio_sources` | Removed optional parameter `ids` because it was non-functional. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data       | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `AudioSourceDone` | Output data that announces that an audio source is done playing. |
+
+### `tdw` module
+
+- Fixed: Error when initializing `PyImpact` if there isn't a VR rig in the scene.
+- Fixed: `send_audio_sources` checks for object IDs instead of audio source IDs and therefore doesn't work.
+- Fixed: `PyImpact` doesn't play valid impact audio events. Now, it uses `AudioSourceDone` output data to check the time between impact events.
+  - Added optional parameter `min_time_between_audio_events` to the constructor.
+- Fixed: `PyImpact` doesn't calculate `size` values accurately. Added `PyImpact.get_size(model)`.
+
+### Example Controllers
+
+- Fixed: TypeError in `fluid.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                              | Modification                                               |
+| ------------------------------------- | ---------------------------------------------------------- |
+| `lessons/audio/py_impact.md`          | Added a section regarding `min_time_between_impact_events` |
+| `lessons/audio/py_impact_advanced.md` | Added better guidance for how to set `size` values.        |
+
+## v1.9.5
+
+### New Features
+
+- **Added support for the Oculus Quest 2 with Touch controllers.**
+
+### Command API
+
+#### New Commands
+
+| Command                          | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `send_static_composite_objects`  | Send static data for every composite object in the scene.    |
+| `send_dynamic_composite_objects` | Send dynamic data for every composite object in the scene.   |
+| `rotate_vr_rig`                  | Rotate the VR rig by an angle.                               |
+| `set_vr_resolution_scale`        | Controls the actual size of eye textures as a multiplier of the device's default resolution. |
+| `send_oculus_touch_buttons`      | Send data for buttons pressed on Oculus Touch controllers.   |
+| `send_static_oculus_touch`       | Send static data for the Oculus Touch rig.                   |
+
+#### Modified Commands
+
+| Command         | Modification                                                 |
+| --------------- | ------------------------------------------------------------ |
+| `create_vr_rig` | Added parameter `rig_type`: The type of VR rig to instantiate.<br>Added parameter `sync_timestep_with_vr`: Whether to sync Time.fixedDeltaTime with the VR device refresh rate. Doing this improves physics behavior in VR; this parameter should almost always be True. |
+| `set_graspable` | Renamed to `set_vr_graspable`<br>Added parameter `joint_break_force`: The joint break force for this graspable object. Lower values mean it's easier to break the joint. |
+
+#### Deprecated Commands 
+
+| Command                  | Reason                                                       | 
+| ------------------------ | ------------------------------------------------------------ | 
+| `send_composite_objects` | Replaced with `send_static_composite_objects` and `send_dynamic_composite_objects` | 
+
+### Output Data 
+
+#### New Output Data 
+
+| Output Data               | Description                                              |
+| ------------------------- | -------------------------------------------------------- |
+| `CompositeObjectsStatic`  | Static composite object data.                            |
+| `CompositeObjectsDynamic` | Dynamic composite object data.                           |
+| `OculusTouchButtons`      | Which Oculus Touch controller buttons have been pressed. |
+| `StaticOculusTouch`       | Static data for the Oculus Touch rig.                    |
+
+#### Modified Output Data
+
+| Output Data | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `VRRig`     | Added: `get_held_left()` Returns the IDs of the objects held by the left hand.<br>Added: `get_held_right()` Returns the IDs of the objects held by the right hand. |
+
+#### Deprecated Output Data 
+
+| Output Data        | Reason                                                       | 
+| ------------------ | ------------------------------------------------------------ | 
+| `CompositeObjects` | Replaced with `CompositeObjectsStatic` and `CompositeObjectsDynamic` | 
+
+### `tdw` module
+
+- Added: `OculusTouch` an add-on for the Oculus Touch VR rig.
+  - Added abstract base class `VR`
+- Added the following VR data classes:
+  - `OculusTouchButton` Enum values for Oculus Touch buttons.
+  - `RigType` Enum values for VR rigs.
+- Added: `CompositeObjectManager` an add-on for managing composite object data. 
+- Added the following composite object data classes: 
+  - `CompositeObjectStatic` Static data for a composite object and its sub-objects. 
+    - `LightStatic` Static data for a light sub-object of a composite object. 
+    - `MotorStatic` Static data for a motor sub-object of a composite object. 
+    - `SpringStatic` Static data for a spring sub-object of a composite object. 
+    - `HingeStatic` Static data for a hinge sub-object of a composite object. 
+    - `PrismaticJointStatic` Static data for a prismatic joint sub-object of a composite object. 
+    - `NonMachineStatic` Static data for a non-machine sub-object of a composite object. 
+  - `CompositeObjectDynamic` Dynamic data for a composite object and its sub-objects. 
+    - `LightDynamic` Dynamic data for a light sub-object of a composite object. 
+    - `HingeDynamic` Dynamic data for a hinge, motor, or spring sub-object of a composite object. 
+- `PyImpact` will create impact sounds for VR nodes (e.g. hands).
+  - Added: `VR_HUMAN_MATERIAL` and `VR_HUMAN_BOUNCINESS`
+- Fixed some bad-sound scrape materials in `PyImpact`: `sandpaper`, `vinyl`, and `poplar_wood`
+- Fixed: `InteriorSceneLighting` sets the random number generator incorrectly such that all other attempts to create a numpy RandomState fail.
+- Fixed: `TDWUtils.set_default_libraries()` raises an exception if `model_library` isn't set and one of the set paths is a string.
+- Fixed: `AssetBundleCreator.write_physics_quality()` resets remote URLs for Windows asset bundles.
+
+### Model library
+
+- Added models `models_core.json` and `models_full.json`: b03\_aluminum\_pan\_composite, b03\_ka90ivi20r\_2013\_\_vray\_composite, b04\_db\_apps\_tech\_08\_03\_composite, cabinet\_24\_single\_door\_wood\_beech\_honey\_composite, cabinet\_24\_single\_door\_wood\_oak\_white\_composite, cabinet\_24\_two\_door\_wood\_beech\_honey\_composite, cabinet\_24\_two\_door\_wood\_oak\_white\_composite, cabinet\_full\_height\_wood\_beech\_honey\_composite, cabinet\_full\_height\_wood\_oak\_white\_composite, db\_apps\_tech\_08\_10\_composite, dishwasher\_4\_composite, gas\_stove\_composite, kenmore\_refr\_74049\_composite, pot\_composite, sink\_cabinet\_unit\_wood\_beech\_honey\_chrome\_composite, sink\_cabinet\_unit\_wood\_beech\_honey\_porcelain\_composite, sink\_cabinet\_unit\_wood\_oak\_white\_chrome\_composite, sink\_cabinet\_unit\_wood\_oak\_white\_porcelain\_composite, vm\_v5\_070\_composite, vray\_062\_composite
+
+### Build
+
+- Dropped support for Flex in VR (this never worked very well).
+
+### Example Controllers
+
+- Edited `physx/composite_object.py` to use the `CompositeObjectManager`
+- Removed `physx/kinematic_composite_object.py`
+- Added `physx/composite_object_open.py`
+- Added `physx/composite_object_torque.py`
+- Moved `humans/keyboard_controls.py` to `keyboard/keyboard_controls.py`
+- Moved `humans/keyboard_minimal.py` to `keyboard/keyboard_minimal.py`
+- Removed `humans/vr_minimal.py` 
+- Removed `humans/vr_observed_objects.py`
+- Added `vr/oculus_touch_button_listener.py`
+- Added `vr/oculus_touch_composite_object.py`
+- Added `vr/oculus_touch_image_capture.py`
+- Added `vr/oculus_touch_minimal.py` 
+- Added `vr/oculus_touch_output_data.py`
+- Added `vr/oculus_touch_py_impact.py`
+
+### Documentation 
+
+#### New Documentation 
+
+| Document                                                     | Description                                                |
+| ------------------------------------------------------------ | ---------------------------------------------------------- |
+| `python/add_ons/composite_object_manager.md`                 | API document for `CompositeObjectManager`                  |
+| `python/object_data/composite_object/composite_object_static.md`<br>`python/object_data/composite_object/composite_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/sub_object_static.md`<br>`python/object_data/composite_object/sub_object/light_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static_base.md`<br>`python/object_data/composite_object/sub_object/motor_static.md`<br>`python/object_data/composite_object/sub_object/spring_static.md`<br>`python/object_data/composite_object/sub_object/hinge_static.md`<br>`python/object_data/composite_object/sub_object/prismatic_joint_static.md`<br>`python/object_data/composite_object/sub_object/non_machine_static.md`<br>`python/object_data/composite_object/sub_object/sub_object_dynamic.md`<br>`python/object_data/composite_object/sub_object/light_dynamic.md`<br>`python/object_data/composite_object/sub_object/hinge_dynamic.md` | API documents for composite object data classes.           |
+| `lessons/vr/overview.md`                                     | Overview of VR.                                            |
+| `lessons/vr/oculus_touch.md`                                 | Tutorial on the Oculus Touch rig and `OculusTouch` add-on. |
+| `python/add_ons/oculus_touch.md`                             | API document for `OculusTouch` add-on.                     |
+| `python/add_ons/vr.md`                                       | API document for `VR` abstract class.                      |
+| `python/vr_data/oculus_touch_button`<br>`python/vr_data/rig_type.md` | API documents for VR data classes.                         |
+
+#### Modified Documentation 
+
+| Document                             | Modification                                                 |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md` | Rewrote most of the document to explain how to use the `CompositeObjectManager`.<br>Added a section explaining how to determine if an object is "open".<br>Clarified the difference between sub-meshes and sub-objects.<br>Added more example code. |
+| `lessons/agents/overview.md`         | Split "Humans" section into "Keyboard controls" and "VR".    |
+| `lessons/humans/keyboard.md`         | Moved to: `lessons/keyboard/keyboard.md`                     |
+
+#### Removed Documentation
+
+| Document               | Reason                                          |
+| ---------------------- | ----------------------------------------------- |
+| `lessons/humans/vr.md` | Replaced with new VR documentation (see above). |
+
+## v1.9.4
+
+### Command API
+
+#### New Commands
+
+| Command                      | Description                          |
+| ---------------------------- | ------------------------------------ |
+| `set_spring_target_position` | Set the target position of a spring. |
+| `set_spring_damper`          | Set the damper value of a spring.    |
+| `set_spring_force`           | Set the force of a spring.           |
+| `set_motor_target_velocity`  | Set the target velocity of a motor.  |
+| `set_motor_force`            | Set the force of a motor.            |
+
+#### Removed Commands
+
+| Command      | Reason                                                       |
+| ------------ | ------------------------------------------------------------ |
+| `set_spring` | Replaced with `set_spring_target_position`                   |
+| `set_motor`  | Replaced with `set_motor_target_velocity` and `set_motor_force` |
+
+### `tdw` module
+
+- Fixed: Can't override the visual materials of scrape surfaces in `PyImpact`
+- Added: `TDWUtils.get_segmentation_colors(id_pass)`. Returns a list of unique colors in the ID pass. 
+- Added: `TDWUtils.download_asset_bundles(path, models, scenes, materials, hdri_skyboxes, robots, humanoids, humanoid_animations)` 
+- Added: `TDWUtils.set_default_libraries(model_library=None, scene_library=None, material_library=None, hdri_skybox_library=None, robot_library=None, humanoid_library=None, humanoid_animation_library=None)` Set the path to the default libraries.
+
+### Model library
+
+- Flagged models as do_not_use in `models_core.json` and `models_full.json`:  b03_object05, b03_pot, b05_ikea_nutid_side_by_side_refrigerator
+
+### Documentation
+
+#### New Documentation
+
+| Document                                 | Description                            |
+| ---------------------------------------- | -------------------------------------- |
+| `lessons/misc/download_asset_bundles.md` | How and why to download asset bundles. |
+
+## v1.9.3
+
+### Command API
+
+#### New Commands
+
+| Command                                | Description                                                  |
+| -------------------------------------- | ------------------------------------------------------------ |
+| `set_composite_object_kinematic_state` | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
+| `add_compass_rose`                     | Add a visual compass rose to the scene. It will show which way is north, south, etc. as well as positive X, negative X, etc. |
+| `destroy_compass_rose`                 | Destroy a compass rose in the scene.                         |
+| `add_line_renderer`                    | Add a 3D line to the scene.                                  |
+| `add_points_to_line_renderer`          | Add points to an existing line in the scene.                 |
+| `destroy_line_renderer`                | Destroy an existing line in the scene from the scene.        |
+| `remove_points_from_line_renderer`     | Remove points from an existing line in the scene.            |
+| `simplify_line_renderer`               | Simplify a 3D line to the scene by removing intermediate points. |
+
+#### Modified Commands
+
+| Command               | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| `set_kinematic_state` | For composite objects, this sets the state only for the top-level object (previous,  it set the state for all sub-objects as well). See: `set_composite_object_kinematic_state` |
+
+### `tdw` module
+
+- Added: `OccupancyMap.reset()` Reset the occupancy map. Call this when resetting a scene.
+- Replaced `ThirdPersonCamera.look_at_target` with  `ThirdPersonCamera.look_at(target)` in order to allow the camera to look at a target on the next `communicate()` call.
+- Improved how cross-fading works in `PyImpact` between audio chunks during a scrape.
+- Added: `InteriorSceneLighting` Add an HDRI skybox to the scene from a curated list of skyboxes and set post-processing values.
+- Fixed: `AudioUtils` (and, by extension, `PhysicsAudioRecorder`) doesn't work on OS X.
+
+### Model library
+
+- Flagged models as do_not_use in `models_full.json`: b03_radiator_old, b05_ikea_nutid_side_by_side_refrigerator
+- Added to `models_core.json`:  b03_radiator_alum_12, b05_castironradiator, radiator_pub_2015, fredericia_spine_stool_1, mater_high_stool_al_69, tolix_bar_stool
+
+### Example controllers
+
+- Added: `non_physics/compass_rose.py`
+- Added: `non_physics/line_renderer.py`
+
+### Documentation
+
+#### New Documentation
+
+| Documentation                               | Description                                                  |
+| ------------------------------------------- | ------------------------------------------------------------ |
+| `lessons/non_physics/compass_rose.md`       | Tutorial document explaining the compass rose.               |
+| `lessons/non_physics/line_renderers.md`     | Tutorial document explaining line renderers.                 |
+| `lessons/photorealism/interior_lighting.md` | Tutorial document explaining how to use the new `InteriorSceneLighting` add-on. |
+| `python/add_ons/interior_scene_lighting.md` | API document for `InteriorSceneLighting`.                    |
+
+#### Modified Documentation
+
+| Document                                                  | Modification                                                 |
+| --------------------------------------------------------- | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md`                      | Clarified how to use various means to set kinematic states of sub-objects. |
+| `lessons/navigation/occupancy_maps.md`                    | Added a section for resetting a scene.                       |
+| `lessons/photorealism/lighting.md`                        | Added an example of how to convert the HDRI skybox library data to a .csv file. |
+| `lessons/objects_and_scenes/materials_textures_colors.md` | Added a missing line of code in one of the examples.         |
+| `lessons/audio/recording_audio.md`                        | Added instructions for installing fmedia on all platforms (including OS X) |
+| `lessons/troubleshooting/common_errors.md`                | Added a section for low render quality.                      |
+
+## v1.9.2
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `parent_object_to_object` | Parent an object to an object. In a non-physics simulation or on the frame that the two objects are first created, rotating or moving the parent object will rotate or move the child object. In subsequent physics steps, the child will move independently of the parent object (like any object). |
+| `set_hinge_limits` | Set the angle limits of a hinge joint. This will work with hinges, motors, and springs. |
+| `set_object_physics_solver_iterations` | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. |
+
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `send_model_report` | Added tests for prismatic joint mechanisms (ConfigureableJoint components) |
+
+### `tdw` module
+
+- Added optional parameter `unity_editor_path` to the `AssetBundleCreator`constructor to optionally explicitly set the path to the Unity Editor executable.
+- Added: `AssetBundleCreator.cleanup()` Clean up intermediary files.
+- Added optional parameter `unity_editor_path` to the `RobotCreator`constructor to optionally explicitly set the path to the Unity Editor executable.
+- Changed the names of all undocumented fields in `AssetBundleCreator` and `RobotCreator` to private (added an `_` to the start of the variable names).
+- Added optional parameters `description_infix` and `branch` to `RobotCreator.create_asset_bundles()` to handle unexpected .urdf URLs.
+
+### Build
+
+- Added new composite object mechanism type: `prismatic_joint`
+
+### Model Library
+
+- Added to `models_core.json`: large_mesh_basket, trashbin, b04_11_02_041, b04_kevin_reilly_pattern_floor_lamp, duncan_floor_lamp_crate_and_barrel, b03_restoration_hardware_pedestal_salvaged_round_tables, b04_03_077, gas_stove
+
+### Robot Library
+
+- Fixed various issues with fetch robot's wheels:
+  - Added four revolute joints for the non-motorized wheels: non_motorized_wheel_front_left, non_motorized_wheel_front_right, non_motorized_wheel_back_left, non_motorized_wheel_back_right.
+  - Removed bellows_link_2 as a joint (it was causing fetch to turn and was otherwise non-functional) but kept the visual mesh.
+  - Removed estop_link as a joint (it didn't do anything) but kept the visual mesh.
+  - Removed laser_link fixed joint and visual mesh (it didn't do anything).
+
+### Example Controllers
+
+- Added: `physx/kinematic_composite_object.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                             | Modification                                                 |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `lessons/physx/composite_objects.md` | Added example code for setting kinematic states of sub-objects. |
+| `lessons/3d_models/custom_models.md` | Added a section regarding .fbx unit scales; .fbx files must be in meters.<br>Added a section explaining how to manually set the Unity Editor path. |
+| `lessons/robots/custom_robots.md`    | Added a section explaining how to manually set the Unity Editor path. |
+
+#### Removed Documentation
+
+| Document                                         | Reason                                                       |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| `composite_objects/creating_composite_object.md` | This is not a feature we expect most users to be able to do because it requires Unity Editor experience. This document has been edited and moved to the private TDWBase repo. |
+
+## v1.9.1
+
+### Command API
+
+#### New Commands
+
+| Command          | Description             |
+| ---------------- | ----------------------- |
+| `stop_all_audio` | Stop all ongoing audio. |
+| `rotate_object_around` | Rotate an object by an angle and axis around a position. |
+
+#### Modified Commands
+
+| Command                       | Modification                                                 |
+| ----------------------------- | ------------------------------------------------------------ |
+| `rotate_directional_light_by` | The directional light rotates within the local coordinate space (not the world coordinate space). |
+
+### `tdw` module
+
+- Fixed: `PyImpact` seems to be "missing" impact sounds because roll sounds haven't been implemented yet. Now, all "roll" events are handled as "impact events".
+- Fixed: `PyImpact.reset()` doesn't stop ongoing audio.
+- Fixed: `PyImpact` scrape sounds are often rougher-sounding than they should be (`PyImpact` now uses smoother-sounding scrape materials).
+- Replaced `resonance` parameter in all `PyImpact` functions with `primary_resonance` and `secondary_resonance` parameters.
+- Adjusted some default static object audio values.
+- Added: `TDWUtils.bytes_to_megabytes(b)` Convert a quantity of bytes to a quantity of megabytes.
+- Added: `TDWUtils.get_circle_mask(arr, row, column, radius)`. Get elements in an array within a circle.
+- Added: `QuaternionUtils.is_left_of(origin, target, forward)` Returns True if `target` is to the left of `origin` otherwise returns False.
+- Modifed `TDWUtils.get_bounds_extents`:
+  - The function now accepts either `Bounds` output data or a cached bounds dictionary from `record.bounds` (in which case the `index` parameter is ignored).
+  - The order of the returned array is: width, height, length (was width, length, height).
+- Fixed: `TDWUtils.get_pil_images()` doesn't work for `_depth` or `_depth_simple`.
+
+
+### Model library
+
+- Added to `models_core.json`: apple, b03_banana_01_high, b04_banana, banana_fix2, cgaxis_models_65_06_vray, cgaxis_models_65_14_vray, b04_bottle-2014-2018, b04_bottle_2_max, int_kitchen_accessories_le_creuset_bowl_30cm, b03_loafbread, bread, b03_iron_candle_vray, b04_candle_holder_metal, b05_candles_max_vray2, b05_candlestick_with_candles002_max2017_vray, b05_cgaxis_models_37_17_vray, candles_max_vray, cgaxis_models_20_05_vray, cgaxis_models_37_15_vray, lantern_2010, chair_thonet_marshall, b05_snickers, chocolate_bar001, b05_coffee_grinder, cafe_2010, cgaxis_models_61_17_vray, coffee_grinder, kitchen_aid_coffee_grinder, b06_circle, ripple, coffeecup004_fix, cup, b03_db_apps_tech_08_04_composite, b03_db_apps_tech_08_07_composite, b03_db_apps_tech_08_08_composite, b04_db_apps_tech_08_03, b05_db_apps_tech_08_09, b05_db_apps_tech_08_09_composite, vray_032, pcylinder222, vk0010_dinner_fork_subd0, vk0011_dessert_fork_subd0, vk0056_tablefork, vk0067_fishfork, cgaxis_models_50_12_vray, cgaxis_models_50_24_vray, b04_3d_jar_180_gr_01, b04_honey_jar, b04_honey_jar_max_2014, b05_sugerjar_a001_2015, b03_pot, b04_low, stelton_emma_tea_vacuum_jug, vk0007_steak_knife, vk0014_dinner_knife_subd2, vk0055_tableknife, b03_bosch_cbg675bs1b_2013\_\_vray_composite, b05_whirlpool_microwave_wmc30516as_v-ray, cgaxis_models_10_11_vray, vm_v5_070, vray_062, b04_orange_00, orange, b03_696615_object001, b03_object05, int_kitchen_accessories_le_creuset_frying_pan_28cm, measuring_pan, object05, pan01, pan02, pan03, pan04, pan05, b03_pen, b05_ball-point_pen-obj, cylinder01, wooden_pepper_mill, plate05, plate06, plate07, b03_aluminum_pan, b03_cooking_pot_01, pan1, pan3, b03_ka90ivi20r_2013\_\_vray, b05_db_apps_tech_06_02_2, b05_ikea_nutid_side_by_side_refrigerator, b05_cylinder001, b03_burger, b04_scissors_2013, b05_bathroom_dispenser, b05_gold_glass_soap_dispenser(max), blue_edition_liquid_soap02, filler_2010, kosmos_black_soap_dispenser, soap_dispenser_01, b01_spatula, vk0002_teaspoon, vk0054_teaspoon, vk0058_tablespoon, vk0060_dessertspoon, vk0078_fruitspoon, vk0080_soupspoon, b05_beko_oie_22500x_2013\_\_corona, b05_dacor_double_wall_oven, b05_max2013vray_oven_by_whirlpool_akzm8910ixl, duhovka, vraymax2013_oven_akzm6610ixl_by_whirlpool, metal_lab_table, teatray, kettle_2, tea_kettle_model, teakettle_01, v3_tf_04_01, vray_041, vray_044, b05_delonghi_icona_toaster, b06_21_dualit_original_toaster_4x, russell_hobbs_2013\_\_vray, vray_077, vray_083, vray_084, vray_085, amphora_jar_vase, b04_new, vase_laura_deko_vase_set, b04_cantate_crystal_wine_glass, b04_wineglass
+- Flagged models as do_not_use in `models_core.json`: coffeecup004, mug, salt
+- Flagged models as do_not_use in `models_full.json`: coffeecup004, mug, salt, b03_closed_soda_can, b04_chocolate, b04_coffee_grinder_sunbeam_em0700, b04_glass, b04_whyskeyglass, b05_beko_oie_22500x_2013_corona, croissant, jar, peppermill, pineapple_juice, pineapple_juice_carton, spagheti-server, b03_can-opened,  b03_db_apps_tech_08_01
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                             | Modification                                                 |
+| ------------------------------------ | ------------------------------------------------------------ |
+| `lessons/3d_models/custom_models.md` | Fixed: Two of the example controllers don't work because they try to load JSON from the file path rather than the file text. |
 
 ## v1.9.0
 
 ### New Features
 
 - **Added add-ons.** These objects can be appended to `Controller.add_ons` to inject commands per `communicate()` call. They've been designed to simplify common tasks in TDW such as capturing images per frame or logging commands per frame.
+- **Completely rewrite of documentation.** All non-API documentation has been completely rewritten. Documentation is now divided into "lessons" for specified subjects such as robotics or visual perception. You can find the complete table of contents on the README. **Even if you are an experienced TDW user, we recommend you read our new documentation.** You might learn new techniques!
+- **PyImpact is now an add-on and has scrape sounds.** [Read this for more information.](lessons/audio/py_impact.md)
+- (External repo) **[Magnebot](https://github.com/alters-mit/magnebot) has been upgraded to version 2.0.** Magnebot can now be used as an add-on, meaning that it can be added to any TDW controller.
 
 ### Command API
 
@@ -23,20 +1263,43 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 | `rotate_sensor_container_towards_position` | Rotate the sensor container towards a position at a given angular speed per frame. |
 | `rotate_sensor_container_towards_rotation` | Rotate the sensor container towards a target rotation.       |
 | `send_static_rigidbodies`                  | Request static rigidbody data (mass, kinematic state, etc.)  |
+| `parent_audio_source_to_object`            | Parent an audio source to an object. When the object moves, the audio source will move with it. |
+| `send_robot_joint_velocities`              | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. |
 | `attach_empty_object`                      | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. |
 | `send_empty_objects`                       | Send data each empty object in the scene.                    |
 
-### Renamed Commands
+#### Modified Commands
 
-| Command             | New name             |
-| ------------------- | -------------------- |
-| `send_environments` | `send_scene_regions` |
+| Command                                                | Modification                                                 |
+| ------------------------------------------------------ | ------------------------------------------------------------ |
+| `play_audio_data`<br>`play_point_source_data`          | Parameter ID now refers to a unique ID for the audio source (not an object ID).<br>Added parameter `position`. |
+| `set_reverb_space_expert`<br>`set_reverb_space_simple` | Renamed parameter `env_id` to `region_id`                    |
+| `play_humanoid_animation`                              | Added optional parameter `framerate`                         |
+| `send_model_report`                                    | Added parameter `flex`. If True, this model is expected to be Flex-compatible. |
+
+#### Renamed Commands
+
+| Command                          | New name                |
+| -------------------------------- | ----------------------- |
+| `send_environments`              | `send_scene_regions`    |
+| `create_flex_fluid_object`       | `set_flex_fluid_actor`  |
+| `create_flex_fluid_source_actor` | `set_flex_source_actor` |
+| `create_painting`                 | `create_textured_quad`                       |
+| `destroy_painting`                | `destroy_textured_quad`                      |
+| `rotate_painting_by`              | `rotate_textured_quad_by`                    |
+| `scale_painting`                  | `scale_textured_quad`                        |
+| `set_painting_texture`            | `set_textured_quad`                          |
+| `show_painting`                   | `show_textured_quad`                         |
+| `teleport_painting`               | `teleport_textured_quad`                     |
 
 #### Removed Commands
 
-| Command                         | Reason                                                      |
-| ------------------------------- | ----------------------------------------------------------- |
-| `set_proc_gen_reflection_probe` | Deprecated in v1.8; use `enable_reflection_probes` instead. |
+| Command                                                      | Reason                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `set_proc_gen_reflection_probe`                              | Deprecated in v1.8; use `enable_reflection_probes` instead.  |
+| `rotate_flex_object_by`<br>`rotate_flex_object_by_quaternion`<br>`teleport_and_rotate_flex_object`<br>`teleport_flex_object` | Flex objects should be teleported and rotated prior to enabling them for Flex. |
+| `rotate_painting_to_euler_angles`                            | Redundant and can gimbal lock.                               |
+| `hide_painting`                                              | Replaced with `show_textured_quad` (set `"show"` to False)   |
 
 ### Output Data
 
@@ -44,8 +1307,8 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 
 | Output Data            | Description                                         |
 | ---------------------- | --------------------------------------------------- |
-| `CameraMotionComplete` | Announce that a camera motion has been completed.   |
 | `StaticRigidbodies`    | Static rigidbody data (mass, kinematic state, etc.) |
+| `RobotJointVelocities` | Velocity for a robot in the scene.                  |
 | `EmptyObjects`         | The position of each empty object in the scene.     |
 
 #### Renamed Output Data
@@ -67,26 +1330,41 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
   - Fixed: Avatar bodies are centered on the avatar's pivot as opposed to halfway above it (i.e. making the pivot of the avatar the bottom-center), thus causing the avatar to "pop" out of the ground when it is first created.
   - Fixed: The cube avatar requires much more torque to turn. Its box collider has been replaced with a cube collider.
 - Fixed: Warnings when repeatedly sending `send_model_report` without first unloading the scene.
+- Fixed: Asset bundle commands (`add_object`, `add_material`, etc.) log an error when the connection times out, causing the build to quit. Now, they log a warning, allowing the build to continue.
+- Fixed: Asset bundle commands (`add_object`, `add_material`, etc.) log an error on a status code 429 (too many requests). Now, they try to wait for approximately 60 seconds before retrying the connection.
+- Updated Unity Engine from 2020.2.7f1 to 2020.3.24f1.
 
 ### `tdw` module
 
 - **Added the following add-ons:**
+  - `AudioInitializer` Initialize standard (Unity) audio. 
   - `Benchmark` Benchmark the FPS over a given number of frames.
-  - `CinematicCamera` Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. **towards** a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but **not** for most actual experiments.
+  - `CinematicCamera` Wrapper class for third-person camera controls in TDW. These controls are "cinematic" in the sense that the camera will move, rotate, etc. towards a target at a set speed per frame. The `CinematicCamera` class is suitable for demo videos of TDW, but not for most actual experiments.
   - `CollisionManager` Manager add-on for all collisions on this frame.
-  - `Debug` Record and playback every command sent to the build.
   - `EmbodiedAvatar` Wrapper add-on for the `A_Simple_Body` avatar.
   - `Floorplan` Initialize a scene populated by objects in pre-scripted layouts.
   - `ImageCapture` Request image data and save the images to disk.
   - `Keyboard` Add keyboard controls to a TDW scene.
+  - `Logger` Record and playback every command sent to the build.
   - `ObjectManager` A simple manager class for objects in the scene. This add-on can cache static object data (name, ID, etc.) and record dynamic data (position, velocity, etc.) per frame.
   - `OccupancyMap` Generate an occupancy map of the scene at runtime.
   - `PhysicsAudioRecorder` Record audio generated by physics events.
+  - `PyImpact` Generate physics-based audio at runtime. 
+  - `ResonanceAudioInitializer` Initialize Resonance Audio. 
   - `Robot` Control the joints of a robot.
   - `RobotArm` Control a robot with inverse kinematics (IK).
   - `StepPhysics` Step n+1 physics frames per communicate() call.
   - `ThirdPersonCamera` Add a third-person camera to the scene.
 - Removed: `TransformInitData`, `RigidbodyInitData`, and `AudioInitData`.
+- Added audio classes: 
+  - `CollisionAudioEvent` Data for a collision audio event. 
+  - `CollisionAudioInfo` Class containing information about collisions required by PyImpact to determine the volume of impact sounds. 
+  - `CollisionAudioType` The "type" of a collision, defined by the motion of the object. 
+  - `ScrapeMaterial` The scrape material type. 
+  - `ScrapeModel` Data for a 3D model being used as a PyImpact scrape surface. 
+  - `ScrapeSubObject` Data for a sub-object of a model being used as a scrape surface. 
+  - Moved audio classes `AudioMaterial`, `Base64Sound` and `Modes` from `tdw.py_impact` to `tdw.physics_audio.audio_material`, `tdw.physics_audio.base64_sound`, and `tdw.physics_audio.modes` 
+  - Renamed `ObjectInfo` to `ObjectAudioStatic` and moved it from `tdw.py_impact` to `tdw.physics_audio.object_audio_static` 
 - Added backend object data classes:
   - `Transform` Transform data (position, forward, rotation).
   - `Rigidbody` Dynamic rigidbody data (velocity, angular velocity, sleeping).
@@ -100,16 +1378,23 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
   - `RobotDynamic` Dynamic data for a robot.
   - `RobotStatic` Static data for a robot.
   - `JointType` The type of joint, e.g. `revolute`.
-- Removed `DebugController` (replaced with `Debug` add-on)
+- Removed `DebugController` (replaced with `Logger` add-on)
 - Removed `KeyboardController` (replaced with `Keyboard` add-on)
 - Removed `FloorplanController` (replaced with `Floorplan` add-on)
 - Moved `CollisionObjObj` and `CollisionObjEnv` from `tdw.collision` to `tdw.collision_data`
   - Removed `collisons.py`
 - Made more objects in the floorplan layouts kinematic.
+- Moved `AudioUtils` from `tdw.tdw_utils` to `tdw.audio_utils` 
+- Added: `AudioConstants` Various audio constants. 
+- Added: `RemoteBuildLauncher`
 - (Backend) Added `ModelVerifier` add-on plus the following `ModelTest` classes:
   - `ModelReport`
   - `PhysicsQuality`
   - `MissingMaterials`
+- Moved `tdw.flex.fluid_types.FluidType` to `tdw.flex_data.fluid_type.FluidType`
+- Removed `tdw.flex.fluid_types.FluidTypes` Default fluid type data is now stored in a dictionary: `tdw.flex_data.fluid_type.FLUID_TYPES`
+- Updated `asset_bundle_creator`. To upgrade: Delete `~/asset_bundle_creator` (assuming that it exists). It will be re-created next time you create a model asset bundle.
+- Updated `robot_creator`. To upgrade: Delete `~/robot_creator` (assuming that it exists). It will be re-created next time you create a robot asset bundle.
 
 #### `Controller`
 
@@ -129,6 +1414,10 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 
 #### `PyImpact`
 
+- **Complete refactor of PyImpact** 
+  - PyImpact is now an add-on 
+  - Small improvements to impact event detection 
+  - Added scrape sounds 
 - Added: `STATIC_FRICTION` and `DYNAMIC_FRICTION`. Dictionaries of friction coefficients per audio material.
 
 #### `paths` (backend)
@@ -146,17 +1435,26 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](Documentation/upgrade_guides
 - Renamed `RoomBounds` to `RegionBounds`
 - Moved `scene_bounds.py` and `room_bounds.py` from `scene/` to `scene_data/`.
 
+### Model Library 
+
+- Added `volume` field to each model record. 
+- Copied models from models_full.json to models_core.json: bench, toy_monkey_medium, wood_board, metal_lab_shelf, skateboard_1, tray_02, b05_table_new, enzo_industrial_loft_pine_metal_round_dining_table,quatre_dining_table 
+- Fixed: Some models that have ``flex` set to True in their records are not Flex-compatible. These models now have `flex` set to False.
+
 ### Use Cases
 
 - Removed `single_object.py` and `multi_env.py`; they have been replaced with [`tdw_image_dataset`](https://github.com/alters-mit/tdw_image_dataset), a separate repo.
+- Removed IntPhys demo.
 
 ### Benchmark
 
 - Use the new `Benchmark` add-on for all benchmark controllers.
+- Updated performance benchmarks. Removed obsolete tests.
+- Added: `tdw.backend.performance_benchmark_controller.PerformanceBenchmarkController`
 
 # v1.8.x
 
-To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides/v1.7_to_v1.8).
+To upgrade from TDW v1.7 to v1.8, read [this guide](upgrade_guides/v1.7_to_v1.8.md).
 
 ## v1.8.29
 
@@ -216,7 +1514,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 | Command | Description |
 | --- | --- |
-| `add_smpl_humanoid` | Add a parameterized humanoid to the scene using [SMPL](https://smpl.is.tue.mpg.de/en). Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters. |
+| `add_smpl_humanoid` | Add a parameterized humanoid to the scene using [SMPL](https://smpl.is.tue.mpg.de). Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters. |
 
 ### Humanoid libraries
 
@@ -233,7 +1531,7 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### Example Controllers
 
-- Added: `smpl_humanoid.py` Add a [SMPL humanoid](https://smpl.is.tue.mpg.de/en) to the scene. Set its body parameters and play an animation.
+- Added: `smpl_humanoid.py` Add a [SMPL humanoid](https://smpl.is.tue.mpg.de) to the scene. Set its body parameters and play an animation.
 
 ### Documentation
 
@@ -1019,9 +2317,9 @@ To upgrade from TDW v1.7 to v1.8, read [this guide](Documentation/upgrade_guides
 
 ### New Features
 
-- Added a [robotics API](misc_frontend/robots.md) to TDW. For now, the total number of robots is small, but we'll add more over time.
-  - Added the [Magnebot](misc_frontend/magnebot.md) to TDW.
-  - Deprecated the Sticky Mitten Avatar (see [upgrade guide](Documentation/upgrade_guides/v1.7_to_v1.8)).
+- Added a robotics API to TDW. For now, the total number of robots is small, but we'll add more over time.
+  - Added the Magnebot to TDW.
+  - Deprecated the Sticky Mitten Avatar (see [upgrade guide](upgrade_guides/v1.7_to_v1.8.md)).
 - Significant graphics improvements in certain scenes because many models didn't cast shadows or reflect light correctly.
 - Updated Unity Engine from 2019.4 to 2020.2
 - Fixed: OS X and Linux builds don't have executable flags. In order to preserve permissions, they are now stored online as .tar.gz files instead of .zip files.
@@ -1181,7 +2479,7 @@ It's currently not possible to draw Flex particles (`"draw_particles"` in the Co
 
 # v1.7.x
 
-To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/upgrade_guides/v1.6_to_v1.7).
+To upgrade from TDW v1.6 to v1.7, read [this guide](upgrade_guides/v1.6_to_v1.7.md).
 
 ## v1.7.16
 
@@ -2162,7 +3460,7 @@ To upgrade from TDW v1.6 to v1.7, read [this guide](Documentation/upgrade_guides
 - **The build will automatically launch when you launch a controller.** 
 - When you launch a controller, it will automatically check to make sure that your local TDW install it is up-to-date and, if not, offer suggestions for how to upgrade.
 
-For more information, please read [Getting Started](getting_started.md).
+For more information, please read Getting Started.
 
 ### `tdw` module
 

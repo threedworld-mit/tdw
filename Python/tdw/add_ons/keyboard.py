@@ -7,8 +7,6 @@ from tdw.add_ons.add_on import AddOn
 class Keyboard(AddOn):
     """
     Add keyboard controls to a TDW scene.
-
-    For example implementation, see: `tdw/Python/example_controllers/keyboard_controls.py`
     """
 
     def __init__(self):

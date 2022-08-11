@@ -11,10 +11,12 @@ from tdw.release.build import Build
 from tdw.release.pypi import PyPi
 from tdw.version import __version__
 from tdw.add_ons.add_on import AddOn
-from tdw.py_impact import PyImpact, ObjectInfo, STATIC_FRICTION, DYNAMIC_FRICTION
+from tdw.physics_audio.object_audio_static import DEFAULT_OBJECT_AUDIO_STATIC_DATA
+from tdw.physics_audio.audio_material import AudioMaterial
+from tdw.physics_audio.audio_material_constants import STATIC_FRICTION, DYNAMIC_FRICTION, DENSITIES
 
 
-class Controller(object):
+class Controller:
     """
     Base class for all controllers.
 
@@ -26,7 +28,6 @@ class Controller(object):
     ```
     """
 
-    DEFAULT_PHYSICS_VALUES: Dict[str, ObjectInfo] = PyImpact.get_object_info()
     MODEL_LIBRARIANS: Dict[str, ModelLibrarian] = dict()
     SCENE_LIBRARIANS: Dict[str, SceneLibrarian] = dict()
     MATERIAL_LIBRARIANS: Dict[str, MaterialLibrarian] = dict()
@@ -56,7 +57,7 @@ class Controller(object):
         if launch_build:
             Controller.launch_build(port=port)
         context = zmq.Context()
-
+        # noinspection PyUnresolvedReferences
         self.socket = context.socket(zmq.REP)
         self.socket.bind('tcp://*:' + str(port))
 
@@ -164,7 +165,7 @@ class Controller(object):
         :param library: The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`.
         :param object_id: The ID of the new object.
 
-        :return An add_object command that the controller can then send.
+        :return An add_object command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -183,7 +184,7 @@ class Controller(object):
                 "id": object_id}
 
     @staticmethod
-    def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]:
+    def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7, scale_mass: bool = True) -> List[dict]:
         """
         Add an object to the scene with physics values (mass, friction coefficients, etc.).
 
@@ -195,13 +196,14 @@ class Controller(object):
         :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
         :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
-        :param default_physics_values: If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in Controller.DEFAULT_PHYSICS_VALUES`.
+        :param default_physics_values: If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA`.
         :param mass: The mass of the object. Ignored if `default_physics_values == True`.
         :param dynamic_friction: The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
         :param static_friction: The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
         :param bounciness: The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param scale_mass: If True, the mass of the object will be scaled proportionally to the spatial scale.
 
-        :return: A list of commands to add the object and apply physics values.
+        :return: A **list** of commands to add the object and apply physics values that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -211,6 +213,8 @@ class Controller(object):
         if position is None:
             position = {"x": 0, "y": 0, "z": 0}
         record = Controller.MODEL_LIBRARIANS[library].get_record(model_name)
+        if position is None:
+            position = {"x": 0, "y": 0, "z": 0}
         commands = [{"$type": "add_object",
                      "name": record.name,
                      "url": record.get_url(),
@@ -229,10 +233,6 @@ class Controller(object):
                 commands.append({"$type": "rotate_object_to_euler_angles",
                                  "euler_angles": rotation,
                                  "id": object_id})
-        if scale_factor is not None:
-            commands.append({"$type": "scale_object",
-                             "scale_factor": scale_factor,
-                             "id": object_id})
         commands.append({"$type": "set_kinematic_state",
                          "id": object_id,
                          "is_kinematic": kinematic,
@@ -244,13 +244,44 @@ class Controller(object):
                              "mode": "continuous_speculative"})
 
         if default_physics_values:
+            # Use default physics values.
+            if model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA:
+                mass = DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].mass
+                bounciness = DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].bounciness
+                material = DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].material
+            # Fallback: Try to derive physics values from existing data.
+            else:
+                if "models_full.json" not in Controller.MODEL_LIBRARIANS:
+                    Controller.MODEL_LIBRARIANS["models_full.json"] = ModelLibrarian("models_full.json")
+                # Get all models in the same category that have default physics values.
+                records = Controller.MODEL_LIBRARIANS["models_full.json"].get_all_models_in_wnid(record.wnid)
+                records = [r for r in records if not r.do_not_use and r.name != record.name and r.name in
+                           DEFAULT_OBJECT_AUDIO_STATIC_DATA]
+                # Fallback: Find objects with similar volume.
+                if len(records) == 0:
+                    records = [r for r in Controller.MODEL_LIBRARIANS["models_full.json"].records if r.name in
+                               DEFAULT_OBJECT_AUDIO_STATIC_DATA and not r.do_not_use and r.name != record.name and
+                               0.8 <= abs(r.volume / record.volume) <= 1.2]
+                # Fallback: Select a default material and bounciness.
+                if len(records) == 0:
+                    material: AudioMaterial = AudioMaterial.plastic_hard
+                    # Select a default bounciness.
+                    bounciness: float = 0
+                # Select the most common material and bounciness.
+                else:
+                    materials: List[AudioMaterial] = [DEFAULT_OBJECT_AUDIO_STATIC_DATA[r.name].material for r in records]
+                    material: AudioMaterial = max(set(materials), key=materials.count)
+                    bouncinesses = [DEFAULT_OBJECT_AUDIO_STATIC_DATA[r.name].bounciness for r in records]
+                    bounciness = round(sum(bouncinesses) / len(bouncinesses), 3)
+                # Derive the mass.
+                mass = DENSITIES[material] * record.volume
             commands.extend([{"$type": "set_mass",
-                              "mass": Controller.DEFAULT_PHYSICS_VALUES[model_name].mass,
+                              "mass": mass,
                               "id": object_id},
                              {"$type": "set_physic_material",
-                              "dynamic_friction": DYNAMIC_FRICTION[Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
-                              "static_friction": STATIC_FRICTION[Controller.DEFAULT_PHYSICS_VALUES[model_name].material],
-                              "bounciness": Controller.DEFAULT_PHYSICS_VALUES[model_name].bounciness,
+                              "dynamic_friction": DYNAMIC_FRICTION[material],
+                              "static_friction": STATIC_FRICTION[material],
+                              "bounciness": bounciness,
                               "id": object_id}])
         else:
             commands.extend([{"$type": "set_mass",
@@ -261,6 +292,15 @@ class Controller(object):
                               "static_friction": static_friction,
                               "bounciness": bounciness,
                               "id": object_id}])
+        if scale_factor is not None:
+            if scale_mass:
+                commands.append({"$type": "scale_object_and_mass",
+                                 "scale_factor": scale_factor,
+                                 "id": object_id})
+            else:
+                commands.append({"$type": "scale_object",
+                                 "scale_factor": scale_factor,
+                                 "id": object_id})
         return commands
 
     @staticmethod
@@ -271,7 +311,7 @@ class Controller(object):
         :param material_name: The name of the material.
         :param library: The path to the records file. If left empty, the default library will be selected. See `MaterialLibrarian.get_library_filenames()` and `MaterialLibrarian.get_default_library()`.
 
-        :return An add_material command that the controller can then send.
+        :return An add_material command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -291,7 +331,7 @@ class Controller(object):
         :param scene_name: The name of the scene.
         :param library: The path to the records file. If left empty, the default library will be selected. See `SceneLibrarian.get_library_filenames()` and `SceneLibrarian.get_default_library()`.
 
-        :return An add_scene command that the controller can then send.
+        :return An add_scene command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -311,7 +351,7 @@ class Controller(object):
         :param skybox_name: The name of the skybox.
         :param library: The path to the records file. If left empty, the default library will be selected. See `HDRISkyboxLibrarian.get_library_filenames()` and `HDRISkyboxLibrarian.get_default_library()`.
 
-        :return An add_hdri_skybox command that the controller can then send.
+        :return An add_hdri_skybox command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -329,7 +369,7 @@ class Controller(object):
                 "sun_intensity": record.sun_intensity}
 
     @staticmethod
-    def get_add_humanoid(humanoid_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0}, library: str ="") -> dict:
+    def get_add_humanoid(humanoid_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
         """
         Returns a valid add_humanoid command.
 
@@ -339,8 +379,13 @@ class Controller(object):
         :param library: The path to the records file. If left empty, the default library will be selected. See `HumanoidLibrarian.get_library_filenames()` and `HumanoidLibrarian.get_default_library()`.
         :param object_id: The ID of the new object.
 
-        :return An add_humanoid command that the controller can then send.
+        :return An add_humanoid command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
+
+        if position is None:
+            position = {"x": 0, "y": 0, "z": 0}
+        if rotation is None:
+            rotation = {"x": 0, "y": 0, "z": 0}
 
         if library == "":
             library = "humanoids.json"
@@ -362,7 +407,7 @@ class Controller(object):
         :param humanoid_animation_name: The name of the animation.
         :param library: The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`.
 
-        :return An add_humanoid_animation command that the controller can then send.
+        :return An add_humanoid_animation command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
@@ -385,7 +430,7 @@ class Controller(object):
         :param rotation: The initial rotation of the robot in Euler angles.
         :param library: The path to the records file. If left empty, the default library will be selected. See `RobotLibrarian.get_library_filenames()` and `RobotLibrarian.get_default_library()`.
 
-        :return An `add_robot` command that the controller can then send.
+        :return An `add_robot` command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":

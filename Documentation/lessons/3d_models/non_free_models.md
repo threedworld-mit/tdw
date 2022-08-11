@@ -20,8 +20,8 @@ Output:
 
 ```
 models_core.json
-Number of models: 376
-Number of semantic categories: 89
+Number of models: 513
+Number of semantic categories: 106
 
 models_full.json
 Number of models: 2399
@@ -139,6 +139,6 @@ You can run [`screenshotter.py --type models_full`](../core_concepts/objects.md)
 
 Python API:
 
-- [`ModelLibrarian`](../../librarian/model_librarian.md)
+- [`ModelLibrarian`](../../python/librarian/model_librarian.md)
 - [`TDWUtils.validate_amazon_s3()](../../python/tdw_utils.md)
 

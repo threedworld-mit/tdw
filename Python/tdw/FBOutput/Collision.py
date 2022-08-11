@@ -44,15 +44,26 @@ class Collision(object):
         return None
 
     # Collision
-    def State(self):
+    def Impulse(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            x = o + self._tab.Pos
+            from .Vector3 import Vector3
+            obj = Vector3()
+            obj.Init(self._tab.Bytes, x)
+            return obj
+        return None
+
+    # Collision
+    def State(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
         return 1
 
     # Collision
     def Contacts(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             x = self._tab.Vector(o)
             x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 24
@@ -64,16 +75,17 @@ class Collision(object):
 
     # Collision
     def ContactsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def CollisionStart(builder): builder.StartObject(5)
+def CollisionStart(builder): builder.StartObject(6)
 def CollisionAddColliderId(builder, colliderId): builder.PrependInt32Slot(0, colliderId, 0)
 def CollisionAddCollideeId(builder, collideeId): builder.PrependInt32Slot(1, collideeId, 0)
 def CollisionAddRelativeVelocity(builder, relativeVelocity): builder.PrependStructSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(relativeVelocity), 0)
-def CollisionAddState(builder, state): builder.PrependUint8Slot(3, state, 1)
-def CollisionAddContacts(builder, contacts): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(contacts), 0)
+def CollisionAddImpulse(builder, impulse): builder.PrependStructSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(impulse), 0)
+def CollisionAddState(builder, state): builder.PrependUint8Slot(4, state, 1)
+def CollisionAddContacts(builder, contacts): builder.PrependUOffsetTRelativeSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(contacts), 0)
 def CollisionStartContactsVector(builder, numElems): return builder.StartVector(24, numElems, 4)
 def CollisionEnd(builder): return builder.EndObject()

@@ -1,6 +1,6 @@
 # ModelTest
 
-`from model_tests.model_test import ModelTest`
+`from tdw.add_ons.model_verifier.model_tests.model_test import ModelTest`
 
 Run a test on a model.
 

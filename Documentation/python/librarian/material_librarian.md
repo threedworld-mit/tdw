@@ -1,6 +1,6 @@
 # Material Librarian
 
-A **Material Librarian** is a [Librarian](librarian.md) wrapper class for a [material](../../misc_frontend/materials_textures_colors.md) records database. 
+A **Material Librarian** is a [material](../../lessons/scene_setup_low_level/materials_textures_colors.md) records database. 
 
 ```python
 from tdw.librarian import MaterialLibrarian

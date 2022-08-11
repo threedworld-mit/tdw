@@ -1,0 +1,489 @@
+{
+  "5ft_wood_shelving": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "shelf01"
+      },
+      {
+        "material_index": 0,
+        "name": "shelf02"
+      },
+      {
+        "material_index": 0,
+        "name": "shelf03"
+      },
+      {
+        "material_index": 0,
+        "name": "shelf04"
+      }
+    ],
+    "visual_material": "wood_beech_natural"
+  },
+  "6ft_wood_shelving": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "shelf01"
+      },
+      {
+        "material_index": 0,
+        "name": "shelf02"
+      },
+      {
+        "material_index": 0,
+        "name": "shelf03"
+      },
+      {
+        "material_index": 0,
+        "name": "shelf04"
+      },
+      {
+        "material_index": 0,
+        "name": "shelf05"
+      }
+    ],
+    "visual_material": "wood_beech_natural"
+  },
+  "b05_table_new": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Rectangle002"
+      }
+    ],
+    "visual_material": "plastic_vinyl_glossy_white"
+  },
+  "baking_sheet01": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "baking_sheet01"
+      }
+    ],
+    "visual_material": "aluminium_brushed"
+  },
+  "baking_sheet02": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "baking_sheet02"
+      }
+    ],
+    "visual_material": "aluminium_brushed"
+  },
+  "baking_sheet03": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "baking_sheet03"
+      }
+    ],
+    "visual_material": "aluminium_brushed"
+  },
+  "baking_sheet04": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "baking_sheet04"
+      }
+    ],
+    "visual_material": "aluminium_brushed"
+  },
+  "baking_sheet05": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "baking_sheet05"
+      }
+    ],
+    "visual_material": "aluminium_brushed"
+  },
+  "baking_sheet06": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "baking_sheet06"
+      }
+    ],
+    "visual_material": "aluminium_brushed"
+  },
+  "baking_sheet07": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "baking_sheet07"
+      }
+    ],
+    "visual_material": "aluminium_brushed"
+  },
+  "baking_sheet08": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "baking_sheet08"
+      }
+    ],
+    "visual_material": "aluminium_brushed"
+  },
+  "baking_sheet09": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "baking_sheet09"
+      }
+    ],
+    "visual_material": "aluminium_brushed"
+  },
+  "baking_sheet10": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "baking_sheet10"
+      }
+    ],
+    "visual_material": "aluminium_brushed"
+  },
+  "baleri_italia_folded_black_table": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "baleri_italia_folded_black_table"
+      }
+    ],
+    "visual_material": "plastic_vinyl_glossy_black"
+  },
+  "bench": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Bench"
+      }
+    ],
+    "visual_material": "wood_beech_honey"
+  },
+  "box_18inx18inx12in_cardboard": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "box_18inx18inx12in_cardboard"
+      }
+    ],
+    "visual_material": "cardboard_corrugated"
+  },
+  "cabinet_24_two_drawer_white_wood": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "countertop_027"
+      }
+    ],
+    "visual_material": "granite_beige_french"
+  },
+  "cabinet_24_two_drawer_wood_beach_honey": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "countertop_027"
+      }
+    ],
+    "visual_material": "granite_black"
+  },
+  "cabinet_24_white_wood": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "countertop_24"
+      }
+    ],
+    "visual_material": "granite_beige_french"
+  },
+  "cabinet_24_wood_beach_honey": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "countertop_24"
+      }
+    ],
+    "visual_material": "granite_black"
+  },
+  "cabinet_36_white_wood": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "countertop"
+      }
+    ],
+    "visual_material": "granite_beige_french"
+  },
+  "cabinet_36_wood_beach_honey": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "countertop"
+      }
+    ],
+    "visual_material": "granite_black"
+  },
+  "camera_box": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "foto"
+      }
+    ],
+    "visual_material": "cardboard_corrugated"
+  },
+  "coffee_table_glass_round": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Arch43_110_obj_01"
+      }
+    ],
+    "visual_material": "glass_clear"
+  },
+  "enzo_industrial_loft_pine_metal_round_dining_table": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Enzo_Industrial_Loft_Pine_Metal_Round_Dining_Table_554"
+      }
+    ],
+    "visual_material": "wood_black_walnut_striped"
+  },
+  "glass_coffee_table_long": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Object004"
+      }
+    ],
+    "visual_material": "glass_clear"
+  },
+  "glass_table": {
+    "sub_objects": [
+      {
+        "material_index": 1,
+        "name": "bebitalia_the_table_tbt200_10"
+      }
+    ],
+    "visual_material": "glass_clear"
+  },
+  "glass_table_round": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Arch43_100_obj_02"
+      }
+    ],
+    "visual_material": "glass_clear"
+  },
+  "iron_box": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "ir"
+      }
+    ],
+    "visual_material": "cardboard_corrugated"
+  },
+  "live_edge_coffee_table": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Object003"
+      }
+    ],
+    "visual_material": "wood_teak"
+  },
+  "marble_table": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Poliform_Mondrian_Rectangular_mat(2)"
+      }
+    ],
+    "visual_material": "marble_portoro_gold_clean"
+  },
+  "marble_table_white": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Poliform_Mondrian_Rectangular_mat(1)"
+      }
+    ],
+    "visual_material": "marble_white"
+  },
+  "metal_lab_shelf": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "wall_shelf_unit"
+      }
+    ],
+    "visual_material": "chrome"
+  },
+  "quatre_dining_table": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Quatre_Dining_Table_47"
+      }
+    ],
+    "visual_material": "wood_beech_honey"
+  },
+  "round_coaster_cherry": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "round_coaster_cherry"
+      }
+    ],
+    "visual_material": "wood_american_cherry"
+  },
+  "round_coaster_stone": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "round_coaster_stone"
+      }
+    ],
+    "visual_material": "granite_beige_french"
+  },
+  "round_coaster_stone_dark": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "round_coaster_stone_dark"
+      }
+    ],
+    "visual_material": "marble_new_emperador_dark"
+  },
+  "shoebox_fused": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "shoebox_fused"
+      }
+    ],
+    "visual_material": "cardboard_corrugated"
+  },
+  "side_table_wood": {
+    "sub_objects": [
+      {
+        "material_index": 1,
+        "name": "Arch43_109_obj_01"
+      }
+    ],
+    "visual_material": "marble_new_emperador_dark"
+  },
+  "sink_base_white_wood": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "countertop001"
+      }
+    ],
+    "visual_material": "granite_beige_french"
+  },
+  "sink_base_wood_beach_honey": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "countertop001"
+      }
+    ],
+    "visual_material": "granite_black"
+  },
+  "skateboard_1": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Shape1"
+      }
+    ],
+    "visual_material": "wood_beech_honey"
+  },
+  "sm_table_white": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Object007"
+      }
+    ],
+    "visual_material": "plastic_vinyl_glossy_white"
+  },
+  "small_table_green_marble": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Object008"
+      }
+    ],
+    "visual_material": "marble_green"
+  },
+  "square_coaster_001_marble": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "square_coaster_001_marble"
+      }
+    ],
+    "visual_material": "marble_green"
+  },
+  "square_coaster_stone": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "square_coaster_stone"
+      }
+    ],
+    "visual_material": "granite_beige_french"
+  },
+  "square_coaster_wood": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "square_coaster_wood"
+      }
+    ],
+    "visual_material": "wood_black_walnut_striped"
+  },
+  "trapezoidal_table": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "trapezoidal_table"
+      }
+    ],
+    "visual_material": "wood_american_cherry"
+  },
+  "tray_02": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "Tray_02"
+      }
+    ],
+    "visual_material": "chrome2"
+  },
+  "willisau_varion_w3_table": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "willisau_Varion_W3_table"
+      }
+    ],
+    "visual_material": "wood_beech_honey"
+  },
+  "wood_board": {
+    "sub_objects": [
+      {
+        "material_index": 0,
+        "name": "wood_board"
+      }
+    ],
+    "visual_material": "wood_beech_honey"
+  }
+}

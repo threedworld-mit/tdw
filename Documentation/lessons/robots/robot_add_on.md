@@ -151,7 +151,7 @@ c.communicate({"$type": "terminate"})
 
 ### Static data for non-moving body parts
 
-A robot might have non-moving body parts in addition to joints. Static data for these body parts is stored in `RobotStatic.non_moving`. Key = body part ID. Value = [`NonMoving`](../.../python/robot_data/non_moving.md) data (name, ID, and segmentation color). Note that `NonMoving` objects *do* have segmentation colors, but they're massless.
+A robot might have non-moving body parts in addition to joints. Static data for these body parts is stored in `RobotStatic.non_moving`. Key = body part ID. Value = [`NonMoving`](../../python/robot_data/non_moving.md) data (name, ID, and segmentation color). Note that `NonMoving` objects *do* have segmentation colors, but they're massless.
 
 To get a flat list of all body part and joint IDs in a robot, read `RobotStatic.body_parts` (a list of IDs).
 

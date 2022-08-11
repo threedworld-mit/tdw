@@ -66,7 +66,7 @@ class WalkMotion(Action, ABC):
         :return: True if the Replicant didn't collide with something that should make it stop.
         """
 
-        # Stop if the Magnebot is colliding with something.
+        # Stop if the Replicant is colliding with something.
         if self._is_collision(dynamic=dynamic):
             self.status = ActionStatus.collision
             return False
@@ -78,7 +78,7 @@ class WalkMotion(Action, ABC):
         """
         :param replicant_id: The ID of this Replicant
 
-        :return: True if there was a collision that according to the current detection rules means that the Magnebot needs to stop moving.
+        :return: True if there was a collision that according to the current detection rules means that the Replicant needs to stop moving.
         """
 
         # Check environment collisions.

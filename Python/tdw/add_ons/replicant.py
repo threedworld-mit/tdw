@@ -81,7 +81,7 @@ class Replicant(AddOn):
                        "id": self.replicant_id},
                     self.get_add_humanoid_animation(humanoid_animation_name=self.walk_record.name)[0],
                     {"$type": "send_humanoids",
-                           "ids": [self.replicant_id,
+                           "ids": [self.replicant_id],
                            "frequency": "always"},
                     {"$type": "send_transforms",
                            "frequency": "always"}]

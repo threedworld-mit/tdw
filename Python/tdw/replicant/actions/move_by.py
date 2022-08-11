@@ -47,6 +47,8 @@ class MoveBy(WalkMotion):
             self.remainder = self.num_frames - (self.walk_cycle_num_frames * self.num_loops)
         # Running loop count.
         self.loop_count: int = 0
+        # Flag for remainder handling.
+        self.processing_remainder: bool = False
 
     def _get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         # We've arrived at the target.
@@ -57,16 +59,36 @@ class MoveBy(WalkMotion):
             return []
         else:
             # We are still walking.
-            if self.loop_count < self.num_loops:
-                if self.frame_count < self.walk_cycle_num_frames:
+            if self.processing_remainder:
+                if self.frame_count < self.remainder:
                     self.frame_count += 1 
                     self.total_frame_count += 1
                     return []
                 else:
-                # Start a new loop.
-                self.loop_count += 1
-                self.frame_count = 0
-                commands.extend(self._get_walk_commands(dynamic=dynamic))
+                    return []
+            else:
+                if self.loop_count < self.num_loops:
+                    if self.frame_count < self.walk_cycle_num_frames:
+                        self.frame_count += 1 
+                        self.total_frame_count += 1
+                        return []
+                    else:
+                        # Start a new loop.
+                        commands = []
+                        self.loop_count += 1
+                        self.frame_count = 0
+                        commands.extend(self._get_walk_commands(dynamic=dynamic))
+                        return commands
+                else:
+                    # We have performed the required number of loop cycles. 
+                    # Now set up to process any remainder frames.
+                    if self.remainder > 0:
+                        commands = []
+                        self.frame_count = 0
+                        commands.extend(self._get_walk_commands(dynamic=dynamic))
+                        self.processing_remainder = True
+                        return commands
+                
 
     def _previous_was_same(self, previous: Action) -> bool:
         if isinstance(previous, MoveBy):

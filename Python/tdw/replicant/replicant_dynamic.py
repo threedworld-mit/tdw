@@ -1,6 +1,8 @@
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional, Tuple, Union
 import numpy as np
-from tdw.output_data import OutputData, replicant, Collision, EnvironmentCollision
+from pathlib import Path
+from PIL import Image
+from tdw.output_data import OutputData, Collision, EnvironmentCollision
 from tdw.object_data.transform import Transform
 from tdw.collision_data.collision_obj_obj import CollisionObjObj
 from tdw.collision_data.collision_obj_env import CollisionObjEnv
@@ -32,7 +34,7 @@ class ReplicantDynamic:
     ```
     """
 
-    def __init__(self, replicant_id: int, resp: List[bytes],  body_parts: List[int], , frame_count: int, previous=None):
+    def __init__(self, replicant_id: int, resp: List[bytes],  body_parts: List[int], frame_count: int, previous=None):
         """
         :param resp: The response from the build, which we assume contains `replicant` output data.
         :param replicant_id: The ID of this replicant.
@@ -94,7 +96,7 @@ class ReplicantDynamic:
         """
         self.frame_count: int = frame_count
 
- got_magnebot_images = False
+        got_magnebot_images = False
         avatar_id = str(robot_id)
         for i in range(0, len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])

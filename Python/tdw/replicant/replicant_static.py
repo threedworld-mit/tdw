@@ -54,4 +54,4 @@ class ReplicantStatic():
         """
         self.avatar_id: str = str(replicant_id)
 
-        self.body_parts: List[int] = list(self.joints.keys())
+        #self.body_parts: List[int] = list(self.joints.keys())

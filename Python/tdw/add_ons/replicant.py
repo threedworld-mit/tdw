@@ -11,12 +11,14 @@ import numpy as np
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.replicant_utils import ReplicantUtils
+from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.actions.action import Action
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.actions.turn_by import TurnBy
 from tdw.replicant.actions.turn_to import TurnTo
 from tdw.replicant.actions.move_by import MoveBy
 from tdw.replicant.actions.move_to import MoveTo
+from tdw.replicant.image_frequency import ImageFrequency
 
 class Replicant(AddOn):
 
@@ -29,7 +31,6 @@ class Replicant(AddOn):
         :param image_frequency: [The frequency of image capture.](image_frequency.md)
 
         """
-
         super().__init__()
         self.walk_record = HumanoidAnimationLibrarian().get_record("walking_2")
         if position is None:
@@ -46,6 +47,10 @@ class Replicant(AddOn):
             self.initial_rotation: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
         else:
             self.initial_rotation: Dict[str, float] = rotation
+
+        self.static: ReplicantStatic = None
+        self.dynamic: ReplicantDynamic = None
+
         """:field
         The ID of this replicant.
         """
@@ -75,16 +80,16 @@ class Replicant(AddOn):
         commands = [{"$type": "set_target_framerate", "framerate": self.walk_record.framerate},
                     {"$type": "add_humanoid",
                       "name": "ha_proto_v1a",
-                       "position": self.initial_position,
-                       "rotation": self.initial_rotation,
-                       "url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
-                       "id": self.replicant_id},
-                    self.get_add_humanoid_animation(humanoid_animation_name=self.walk_record.name)[0],
+                      "position": self.initial_position,
+                      "rotation": self.initial_rotation,
+                      "url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
+                      "id": self.replicant_id},
+                    {"$type": "add_humanoid_animation", "name": self.walk_record.name, "url": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/walking_2"},
                     {"$type": "send_humanoids",
-                           "ids": [self.replicant_id],
-                           "frequency": "always"},
+                     "ids": [self.replicant_id],
+                     "frequency": "always"},
                     {"$type": "send_transforms",
-                           "frequency": "always"}]
+                     "frequency": "always"}]
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -95,8 +100,11 @@ class Replicant(AddOn):
 
         :param resp: The response from the build.
         """
+        if self.static is None:
+            self._cache_static_data(resp=resp)
+        if self.dynamic is None:
+            self._set_dynamic_data(resp=resp)
 
-        super().on_send(resp=resp)
         self._previous_resp = resp
         if self.action is None or self.action.done:
             return
@@ -192,4 +200,45 @@ class Replicant(AddOn):
                              arrived_offset=arrived_offset, previous=self._previous_action)
 
 
-        
+    def _cache_static_data(self, resp: List[bytes]) -> None:
+        """
+        Cache static output data.
+
+        :param resp: The response from the build.
+        """
+
+        self.static = ReplicantStatic(replicant_id=self.replicant_id, resp=resp)
+        # Set action to be an idle.
+        #self.action = Wait()
+        """
+        # Add an avatar and set up its camera.
+        self.commands.extend([{"$type": "create_avatar",
+                               "type": "A_Img_Caps_Kinematic",
+                               "id": self.static.avatar_id},
+                              {"$type": "set_pass_masks",
+                               "pass_masks": ["_img", "_id", "_depth"],
+                               "avatar_id": self.static.avatar_id},
+                              {"$type": "parent_avatar_to_robot",
+                               "position": {"x": 0, "y": 0.053, "z": 0.1838},
+                               "body_part_id": self.static.arm_joints[ArmJoint.torso],
+                               "avatar_id": self.static.avatar_id,
+                               "id": self.static.robot_id},
+                              {"$type": "enable_image_sensor",
+                               "enable": False,
+                               "avatar_id": self.static.avatar_id},
+                              {"$type": "set_img_pass_encoding",
+                               "value": False}])
+        """
+
+    def _set_dynamic_data(self, resp: List[bytes]) -> None:
+        """
+        Set dynamic data.
+
+        :param resp: The response from the build.
+        """
+        if self.dynamic is None:
+            frame_count = 0
+        else:
+            frame_count = self.dynamic.frame_count
+        self.dynamic = ReplicantDynamic(resp=resp, replicant_id=self.replicant_id, body_parts=[],
+                                            frame_count=frame_count, previous=self._previous_action)

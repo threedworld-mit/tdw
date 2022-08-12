@@ -28,8 +28,9 @@ class WalkMotion(Action, ABC):
         self._resetting: bool = False
         self.meters_per_frame = 0.04911
         self.walk_cycle_num_frames = 69
+
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
-        elif self._collision_detection.previous_was_same and previous is not None and \
+        if self._collision_detection.previous_was_same and previous is not None and \
                 previous.status != ActionStatus.success and previous.status != ActionStatus.ongoing and \
                 self._previous_was_same(previous=previous):
             if previous.status == ActionStatus.collision:
@@ -129,16 +130,4 @@ class WalkMotion(Action, ABC):
 
         raise Exception()
 
-    @abstractmethod
-    def _get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        """
-        Get ongoing commands assuming that the body isn't being reset.
-
-        :param resp: The response from the build.
-        :param static: [The static Magnebot data.](../magnebot_static.md)
-        :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
-
-        :return: A list of ongoing commands.
-        """
-
-        raise Exception()
+    

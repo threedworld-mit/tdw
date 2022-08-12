@@ -7,6 +7,7 @@ from tdw.quaternion_utils import QuaternionUtils
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.action_status import ActionStatus
+from tdw.replicant.image_frequency import ImageFrequency
 
 
 

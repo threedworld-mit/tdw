@@ -3,9 +3,13 @@ import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import Transforms
 from tdw.replicant.replicant_utils import ReplicantUtils
-from tdw.replicant.action import Action
+from tdw.replicant.actions.action import Action
 from tdw.replicant.actions.turn_to import TurnTo
 from tdw.replicant.actions.move_by import MoveBy
+from tdw.replicant.replicant_static import ReplicantStatic
+from tdw.replicant.replicant_dynamic import ReplicantDynamic
+from tdw.replicant.collision_detection import CollisionDetection
+from tdw.replicant.image_frequency import ImageFrequency
 
 
 class MoveTo(Action):
@@ -15,7 +19,7 @@ class MoveTo(Action):
     This action has two "sub-actions": A [`TurnTo`](turn_by.md) and a [`MoveBy`](move_by.md).
     """
 
-    def __init__(self, target: Union[int, Dict[str, float]], resp: List[bytes], dynamic: MagnebotDynamic,
+    def __init__(self, target: Union[int, Dict[str, float]], resp: List[bytes], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, arrived_at: float = 0.1, aligned_at: float = 1,
                  arrived_offset: float = 0, previous: Action = None):
         """
@@ -40,13 +44,13 @@ class MoveTo(Action):
         self.__arrived_offset: float = arrived_offset
         self._move_by: Optional[MoveBy] = None
 
-    def get_initialization_commands(self, resp: List[bytes], static: MagnebotStatic, dynamic: MagnebotDynamic,
+    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         # Remember the image frequency for the move action.
         self.__image_frequency: ImageFrequency = image_frequency
-        return self._turn_to.get_initialization_commands(resp=resp, static=static, dynamic=dynamic
+        return self._turn_to.get_initialization_commands(resp=resp, static=static, dynamic=dynamic)
 
-    def get_ongoing_commands(self, resp: List[bytes], static: MagnebotStatic, dynamic: MagnebotDynamic) -> List[dict]:
+    def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         commands = []
         object_position = {"x": 0,"y": 0,"z": 0}
         # Set the target position.
@@ -58,7 +62,7 @@ class MoveTo(Action):
         else:
            raise Exception(f"Invalid target: {target}")
         # Compute distance from Replicant current location to object.
-        distance = self._get_distance(resp=resp, object_position) 
+        distance = ReplicantUtils.get_distance(resp=resp, replicant_id=dynamic.replicant_id, pos=object_position) 
         self._move_by = MoveBy(distance=distance, arrived_at=self.__arrived_at, dynamic=dynamic,
                                collision_detection=self.__collision_detection, previous=self._turn_to)
         self._move_by.initialized = True

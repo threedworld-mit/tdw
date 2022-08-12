@@ -2,39 +2,20 @@ from typing import List, Dict, Optional, Tuple, Union
 import numpy as np
 from pathlib import Path
 from PIL import Image
-from tdw.output_data import OutputData, Collision, EnvironmentCollision
+from tdw.output_data import OutputData, Transforms, Collision, EnvironmentCollision
 from tdw.object_data.transform import Transform
 from tdw.collision_data.collision_obj_obj import CollisionObjObj
 from tdw.collision_data.collision_obj_env import CollisionObjEnv
+from tdw.replicant.arm import Arm
 
 
 class ReplicantDynamic:
     """
     Dynamic data for a replicant that can change per frame (such as the position of the replicant)
 
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from tdw.add_ons.replicant import replicant
-
-    c = Controller()
-    # Add a replicant.
-    replicant = replicant(name="ur5",
-                  position={"x": -1, "y": 0, "z": 0.5},
-                  replicant_id=0)
-    c.add_ons.append(replicant)
-    # Initialize the scene.
-    c.communicate([{"$type": "load_scene",
-                    "scene_name": "ProcGenScene"},
-                   TDWUtils.create_empty_room(12, 12)])
-
-    # Do something....
-
-    c.communicate({"$type": "terminate"})
-    ```
     """
 
-    def __init__(self, replicant_id: int, resp: List[bytes],  body_parts: List[int], frame_count: int, previous=None):
+    def __init__(self, resp: List[bytes], replicant_id: int, body_parts: List[int], frame_count: int, previous=None):
         """
         :param resp: The response from the build, which we assume contains `replicant` output data.
         :param replicant_id: The ID of this replicant.
@@ -46,9 +27,13 @@ class ReplicantDynamic:
         """
         self.replicant_id = replicant_id
         """:field
-        The Transform data for this replicant.
+        The current position of this replicant.
         """
-        self.transform: Optional[Transform] = None
+        self.position = {"x": 0, "y": 0, "z": 0}
+        """:field
+        The current orientation of this replicant.
+        """
+        self.rotation = {"x": 0, "y": 0, "z": 0}
         """:field
         A dictionary of collisions between one of this replicant's [body parts (joints or non-moving)](replicant_static.md) and another object.
         Key = A tuple where the first element is the body part ID and the second element is the object ID.
@@ -69,8 +54,7 @@ class ReplicantDynamic:
         """:field
         A dictionary of object IDs currently held by the Replicant. Key = The arm. Value = a numpy array of object IDs.
         """
-        self.held: Dict[Arm, np.array] = {Arm.left: np.array([]),
-                                          Arm.right: np.array([])}
+        self.held: Dict[Arm, np.array] = {Arm.left: np.array([]), Arm.right: np.array([])}
 
         """:field
         The images rendered by the robot as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
@@ -95,17 +79,30 @@ class ReplicantDynamic:
         The current frame count. This is used for image filenames.
         """
         self.frame_count: int = frame_count
+        # File extensions per pass.
+        self.__image_extensions: Dict[str, str] = dict()
+        self.collisions_with_environment: Dict[int, List[CollisionObjEnv]] = dict()
 
-        got_magnebot_images = False
-        avatar_id = str(robot_id)
+        got_replicant_images = False
+        avatar_id = str(replicant_id)
+        print("Got to here")
         for i in range(0, len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
+            # Get the transform data for the replicant.
+            if r_id == "tran":
+                print("Got to here 2")
+                print(str(resp))
+                transforms = Transforms(resp[i])
+                for j in range(transforms.get_num()):
+                    if transforms.get_id(j) == replicant_id:
+                        self.position = TDWUtils.array_to_vector3(transforms.get_position(j))
+                        self.rotation = TDWUtils.array_to_vector3(transforms.get_rotation(j))
             # Get the images captured by the avatar's camera.
-            if r_id == "imag":
+            elif r_id == "imag":
                 images = Images(resp[i])
                 # Get this robot's avatar and save the images.
                 if images.get_avatar_id() == avatar_id:
-                    got_magnebot_images = True
+                    got_replicant_images = True
                     for j in range(images.get_num_passes()):
                         image_data = images.get_image(j)
                         pass_mask = images.get_pass_mask(j)
@@ -123,31 +120,6 @@ class ReplicantDynamic:
                 if camera_matrices.get_avatar_id() == avatar_id:
                     self.projection_matrix = camera_matrices.get_projection_matrix()
                     self.camera_matrix = camera_matrices.get_camera_matrix()
-            # Get data for this Magnebot.
-            elif r_id == "magn":
-                magnebot = Magnebot(resp[i])
-                if magnebot.get_id() == robot_id:
-                    self.held[Arm.left] = magnebot.get_held_left()
-                    self.held[Arm.right] = magnebot.get_held_right()
-                    self.top = np.array(magnebot.get_top())
-        # Update the frame count.
-        if got_magnebot_images:
-            self.frame_count += 1
-
-        # File extensions per pass.
-        self.__image_extensions: Dict[str, str] = dict()
-        self.collisions_with_environment: Dict[int, List[CollisionObjEnv]] = dict()
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "tran":
-                transforms = Transforms(resp[i])
-                for j in range(transforms.get_num()):
-                    if transforms.get_id(j) == replicant_id:
-                        self.transform = Transform(position=np.array(transforms.get_position()),
-                                                   rotation=np.array(transforms.get_rotation()),
-                                                   forward=np.array(transforms.get_forward()))
-
-
             # Record collisions between myself and my joints or with another object.
             elif r_id == "coll":
                 collision = Collision(resp[i])
@@ -184,6 +156,9 @@ class ReplicantDynamic:
                         self.collisions_with_environment[object_id] = [c]
                     else:
                         self.collisions_with_environment[object_id].append(c)
+        # Update the frame count.
+        if got_replicant_images:
+            self.frame_count += 1
 
     def save_images(self, output_directory: Union[str, Path]) -> None:
         """

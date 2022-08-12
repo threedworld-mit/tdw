@@ -4,8 +4,10 @@ from tdw.tdw_utils import TDWUtils
 from tdw.output_data import Transforms
 from tdw.replicant.replicant_utils import ReplicantUtils
 from tdw.replicant.actions.walk_motion import WalkMotion
+from tdw.replicant.actions.action import Action
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
+from tdw.replicant.collision_detection import CollisionDetection
 
 
 class MoveBy(WalkMotion):
@@ -29,7 +31,7 @@ class MoveBy(WalkMotion):
         self._arrived_at: float = arrived_at
         super().__init__(dynamic=dynamic, collision_detection=collision_detection, previous=previous)
         # Get the initial state.
-        self._initial_position_v3: Dict[str, float] = ReplicantUtils.get_replicant_position(replicant_id)
+        self._initial_position_v3: Dict[str, float] = ReplicantUtils.get_replicant_position(dynamic.replicant_id)
         self._target_position_arr: np.array = dynamic.transform.position + (dynamic.transform.forward * distance)
         self._target_position_v3: Dict[str, float] = TDWUtils.array_to_vector3(self._target_position_arr)
         # Total number of frames needed to cover distance.
@@ -50,7 +52,7 @@ class MoveBy(WalkMotion):
         # Flag for remainder handling.
         self.processing_remainder: bool = False
 
-    def _get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+    def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         # We've arrived at the target.
         if self.total_frame_count >= self.num_frames:
             self.status = ActionStatus.success
@@ -83,10 +85,10 @@ class MoveBy(WalkMotion):
                     # We have performed the required number of loop cycles. 
                     # Now set up to process any remainder frames.
                     if self.remainder > 0:
+                        self.processing_remainder = True
                         commands = []
                         self.frame_count = 0
                         commands.extend(self._get_walk_commands(dynamic=dynamic))
-                        self.processing_remainder = True
                         return commands
                 
 
@@ -96,28 +98,3 @@ class MoveBy(WalkMotion):
         else:
             return False
 
-
-
-
-        commands = []
-        
-            commands.append({"$type": "play_humanoid_animation",
-                             "name": "walking_2",
-                             "id": h_id})
-
-            for i in range(num_loops):
-                self.communicate({"$type": "play_humanoid_animation",
-                                  "name": "walking_2",
-                                  "id": h_id})
-                frame = 0
-                while frame < walk_record.get_num_frames():
-                    self.communicate([])
-                    frame += 1
-            remainder = num_frames - (walk_record.get_num_frames() * num_loops)
-            self.communicate({"$type": "play_humanoid_animation",
-                              "name": "walking_2",
-                              "id": h_id})
-            frame = 0
-            while frame < remainder:
-                self.communicate([])
-                frame += 1

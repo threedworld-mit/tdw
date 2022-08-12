@@ -1,5 +1,5 @@
-from typing import List, Union
-from json import loads
+from typing import List, Union, Dict
+from json import loads, dumps
 from pathlib import Path
 import xml.etree.ElementTree as ElementTree
 from tdw.add_ons.add_on import AddOn
@@ -103,20 +103,10 @@ class LisdfReader(AddOn):
         # Fix Windows paths.
         dst_str = dst_str.replace("\\", "/")
         src_str = src_str.replace("\\", "/")
-        ignore_includes = []
-        # Generate robot asset bundles.
+        # A dictionary of robot names and .urdf paths.
+        robots: Dict[str, str] = dict()
         if robot_metadata is not None:
             for rm in robot_metadata:
-                # Ignore the robot.
-                ignore_includes.append(rm.name)
-                robot_output_directory = dst_path.joinpath(rm.name)
-                # The asset bundles exist.
-                if not overwrite and AssetBundleCreator.asset_bundles_exist(name=rm.name,
-                                                                            output_directory=robot_output_directory):
-                    if not quiet:
-                        print(f"Found asset bundles for robot: {rm.name}. These will be used and not overwritten.")
-                    continue
-                r = RobotCreator(quiet=quiet, display=display, unity_editor_path=unity_editor_path)
                 element_tree = ElementTree.parse(src_str)
                 includes = element_tree.getroot().find("world").findall("include")
                 includes = [e for e in includes if e.attrib["name"] == rm.name]
@@ -126,15 +116,8 @@ class LisdfReader(AddOn):
                 urdf_path = RobotCreator.fix_urdf(urdf_path=urdf_path,
                                                   link_name_excludes_regex=rm.link_name_excludes_regex,
                                                   link_exclude_types=rm.link_exclude_types)
-                r.source_file_to_asset_bundles(source_file=urdf_path, output_directory=robot_output_directory)
-                if not quiet:
-                    robot_log_path = robot_output_directory.joinpath("log.txt")
-                    if robot_log_path.exists():
-                        print(robot_log_path.read_text(encoding="utf-8"))
-                    else:
-                        print(f"Error! Log not found: {robot_log_path}")
-                assert AssetBundleCreator.asset_bundles_exist(name=rm.name, output_directory=robot_output_directory),\
-                    f"Failed to create asset bundles from: {urdf_path}"
+                # Add the robot path.
+                robots[rm.name] = str(urdf_path.resolve()).replace("\\", "/")
         # Generate asset bundles if needed.
         args = [f'-source="{src_str}"',
                 f'-output_directory="{dst_str}"']
@@ -142,8 +125,9 @@ class LisdfReader(AddOn):
             args.append("-overwrite")
         if cleanup:
             args.append("-cleanup")
-        if len(ignore_includes) > 0:
-            args.append('-ignore_includes="' + ",".join(ignore_includes) + '"')
+        # Mark these files as robots.
+        if len(robots) > 0:
+            args.append('-robots="' + dumps(robots).replace('"', "'") + '"')
         a = AssetBundleCreator(quiet=quiet, display=display, unity_editor_path=unity_editor_path)
         a.call_unity(class_name="LisdfReader",
                      method="Read",

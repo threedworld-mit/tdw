@@ -704,6 +704,38 @@ Given a corner and a wall, get the direction that a lateral arrangement will run
 
 _Returns:_  Tuple: direction, wall
 
+#### ros_position_to_vector3
+
+**`TDWUtils.ros_position_to_vector3(arr)`**
+
+_(Static)_
+
+Convert a ROS position to a TDW Vector3 dictionary position.
+Source: https://github.com/Unity-Technologies/URDF-Importer/blob/main/com.unity.robotics.urdf-importer/Runtime/Extensions/BuiltInExtensions.cs
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| arr |  List[float] |  | The ROS position. |
+
+_Returns:_  A TDW Vector3 dictionary.
+
+#### ros_rpy_to_vector3
+
+**`TDWUtils.ros_rpy_to_vector3(arr)`**
+
+_(Static)_
+
+Convert ROS RPY angles to a TDW Vector3 dictionary of Euler angles.
+Source: https://github.com/Unity-Technologies/URDF-Importer/blob/main/com.unity.robotics.urdf-importer/Runtime/Extensions/BuiltInExtensions.cs
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| arr |  List[float] |  | The ROS RPY angles. |
+
+_Returns:_  A TDW Vector3 dictionary.
+
 #### get_expected_window_position
 
 **`TDWUtils.get_expected_window_position()`**

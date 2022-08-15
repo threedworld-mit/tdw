@@ -1,26 +1,14 @@
-# Logger
+# LogPlayback
 
-`from tdw.add_ons.logger import Logger`
+`from tdw.add_ons.log_playback import LogPlayback`
 
-Log every command sent to the build.
-
-```python
-from tdw.controller import Controller
-from tdw.add_ons.logger import Logger
-
-c = Controller()
-logger = Logger(path="log.txt")
-c.add_ons.append(logger)
-# The logger add-on will log this command.
-c.communicate({"$type": "do_nothing"})
-c.communicate({"$type": "terminate"})
-```
-
-The log file can be automatically re-loaded into another controller using the [`LogPlayback`](log_playback.md) add-on.
+Load and play back commands that were logged by a [`Logger`](logger.md) add-on.
 
 ***
 
 ## Fields
+
+- `playback` A list of lists of commands. Each list of commands is from a `communicate()` call from a prior controller, and will be sent per `communicate()` call to the current controller.
 
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 
@@ -32,15 +20,9 @@ The log file can be automatically re-loaded into another controller using the [`
 
 #### \_\_init\_\_
 
-**`Logger(path)`**
+**`LogPlayback()`**
 
-**`Logger(path, overwrite=True, log_commands_in_build=False)`**
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| path |  Union[str, Path] |  | The path to either save the record to or load the record from. |
-| overwrite |  bool  | True | If True and a log file already exists at `path`, overwrite the file. |
-| log_commands_in_build |  bool  | False | If True, the build will log every message received and every command executed in the [Player log](https://docs.unity3d.com/Manual/LogFiles.html). |
+A list of lists of commands. Each list of commands is from a `communicate()` call from a prior controller, and will be sent per `communicate()` call to the current controller.
 
 #### get_initialization_commands
 
@@ -73,15 +55,12 @@ This is called within `Controller.communicate(commands)` before sending commands
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
-#### reset
+#### load
 
-**`self.reset(path)`**
+**`self.load(path)`**
 
-**`self.reset(path, overwrite=True)`**
-
-Reset the logger.
+Load a log file. This will deserialize all of the commands in the log file and add each list of commands to `self.record`. Per `communicate()` call (i.e. when `on_send(resp)` is invoked), this add-on will pop the first list of commands and add it to `self.commands`; in other words, it will send each list of commands exactly as they were sent when they were logged.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | The path to either save the record to or load the record from. |
-| overwrite |  bool  | True | If True, overwrite the log if it exists. |
+| path |  Union[str, Path] |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |

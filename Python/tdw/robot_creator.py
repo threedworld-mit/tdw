@@ -402,7 +402,7 @@ class RobotCreator(AssetBundleCreatorBase):
                          flags=re.MULTILINE).group(2).strip()
 
     def get_creator_class_name(self) -> str:
-        return "RobotCreatorLauncher"
+        return "RobotCreator"
 
     @staticmethod
     def fix_urdf(urdf_path: Union[str, Path], remove_gazebo: bool = True, simplify_namespaces: bool = True,

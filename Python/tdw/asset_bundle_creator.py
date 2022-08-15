@@ -365,7 +365,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         self._set_record(record=record, record_path=record_path, library_path=library_path)
 
     def get_creator_class_name(self) -> str:
-        return "ModelCreatorLauncher"
+        return "ModelCreator"
 
     @staticmethod
     def _get_record(name: str, record_path: Union[str, Path] = None,

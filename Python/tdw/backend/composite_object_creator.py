@@ -118,4 +118,4 @@ class CompositeObjectCreator(AssetBundleCreatorBase):
                         log_path=AssetBundleCreatorBase._get_log_path(output_directory))
 
     def get_creator_class_name(self) -> str:
-        return "CompositeObjectCreatorLauncher"
+        return "CompositeObjectCreator"

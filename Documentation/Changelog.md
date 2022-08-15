@@ -17,6 +17,14 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `start_video_capture_windows` | Start video capture using ffmpeg. This command can only be used on Windows. |
 | `stop_video_capture`          | Stop ongoing video capture.     |
 
+### `tdw` module
+
+- Added `screeninfo` as a required module. To install: `pip3 install screeninfo`.
+- Refactored `Logger`: 
+  - Removed the `record` parameter and the `save()` function. The `Logger` add-on doesn't handle playback anymore.
+  - `Logger` automatically saves lists of commands per `communicate()` call rather than writing all of them to disk at once using `save()`.
+- Added `LogPlayback` option to play back logs of commands.
+
 ### Docker
 
 - Removed `record_audio_video.sh` and `start_container_audio_video.sh` (no longer needed)
@@ -31,15 +39,12 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 #### Modified Documentation
 
-| Document                    | Modification                                                 |
-| --------------------------- | ------------------------------------------------------------ |
-| `lessons/video/audio.md`    | Removed most text; this is now an overview document for recording using ffmpeg. Added a section about OBS. |
-| `lessons/video/images.md`   | Removed sections regarding ffmpeg and OBS.                   |
-| `lessons/video/overview.md` | Added a section about installing ffmpeg.                     |
-
-### `tdw` module
-
-- Added `screeninfo` as a required module. To install: `pip3 install screeninfo`.
+| Document                       | Modification                                                 |
+| ------------------------------ | ------------------------------------------------------------ |
+| `lessons/video/audio.md`       | Removed most text; this is now an overview document for recording using ffmpeg. Added a section about OBS. |
+| `lessons/video/images.md`      | Removed sections regarding ffmpeg and OBS.                   |
+| `lessons/video/overview.md`    | Added a section about installing ffmpeg.                     |
+| `lessons/read_write/logger.md` | Updated for the removal of `Logger`'s playback functionality, and for the inclusion of the `LogPlayback` option. |
 
 ## v1.10.3
 

@@ -82,4 +82,3 @@ Note that we are calling `c.communicate([])`, supplying an empty list. You shoul
 Python API:
 
 - [`Logger`](../../python/add_ons/logger.md)
-- [`LogPlayback`](../../python/add_ons/log_playback.md)

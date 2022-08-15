@@ -26,7 +26,7 @@ class Logger(AddOn):
 
     def __init__(self, path: Union[str, Path], overwrite: bool = True, log_commands_in_build: bool = False):
         """
-        :param path: The path to either save the record to or load the record from.
+        :param path: The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
         :param overwrite: If True and a log file already exists at `path`, overwrite the file.
         :param log_commands_in_build: If True, the build will log every message received and every command executed in the [Player log](https://docs.unity3d.com/Manual/LogFiles.html).
         """
@@ -69,8 +69,8 @@ class Logger(AddOn):
         """
         Reset the logger.
 
-        :param path: The path to either save the record to or load the record from.
-        :param overwrite: If True, overwrite the log if it exists.
+        :param path: The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
+        :param overwrite: If True and a log file already exists at `path`, overwrite the file.
         """
 
         self.initialized = False

@@ -1,6 +1,7 @@
 from typing import List, Dict, Optional, Tuple, Union
 import numpy as np
 from pathlib import Path
+from tdw.tdw_utils import TDWUtils
 from PIL import Image
 from tdw.output_data import OutputData, Transforms, Collision, EnvironmentCollision
 from tdw.object_data.transform import Transform
@@ -85,18 +86,16 @@ class ReplicantDynamic:
 
         got_replicant_images = False
         avatar_id = str(replicant_id)
-        print("Got to here")
         for i in range(0, len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Get the transform data for the replicant.
             if r_id == "tran":
-                print("Got to here 2")
-                print(str(resp))
                 transforms = Transforms(resp[i])
                 for j in range(transforms.get_num()):
                     if transforms.get_id(j) == replicant_id:
-                        self.position = TDWUtils.array_to_vector3(transforms.get_position(j))
-                        self.rotation = TDWUtils.array_to_vector3(transforms.get_rotation(j))
+                        self.position = transforms.get_position(j)
+                        self.rotation = transforms.get_rotation(j)
+                        self.forward = transforms.get_forward(j)
             # Get the images captured by the avatar's camera.
             elif r_id == "imag":
                 images = Images(resp[i])
@@ -122,6 +121,7 @@ class ReplicantDynamic:
                     self.camera_matrix = camera_matrices.get_camera_matrix()
             # Record collisions between myself and my joints or with another object.
             elif r_id == "coll":
+                print("registered collision")
                 collision = Collision(resp[i])
                 collider_id: int = collision.get_collider_id()
                 collidee_id: int = collision.get_collidee_id()

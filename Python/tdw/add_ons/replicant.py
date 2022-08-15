@@ -1,4 +1,6 @@
 from typing import List, Union, Dict
+from typing import List, Optional, Dict, Union
+from copy import deepcopy
 from pathlib import Path
 from tdw.add_ons.add_on import AddOn
 from tdw.tdw_utils import TDWUtils
@@ -89,7 +91,12 @@ class Replicant(AddOn):
                      "ids": [self.replicant_id],
                      "frequency": "always"},
                     {"$type": "send_transforms",
-                     "frequency": "always"}]
+                     "frequency": "always"},
+                    {"$type": "send_collisions",
+                              "enter": True,
+                              "stay": False,
+                              "exit": True,
+                              "collision_types": ["obj", "env"]}]
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -159,7 +166,7 @@ class Replicant(AddOn):
         self.action = TurnBy(angle=angle, aligned_at=aligned_at, collision_detection=self.collision_detection,
                              previous=self._previous_action, dynamic=self.dynamic)
 
-    def turn_to(self, target: Union[int, Dict[str, float], np.ndarray], aligned_at: float = 1) -> None:
+    def turn_to(self, target: Union[int, Dict[str, float]]) -> None:
         """
         Turn the Magnebot to face a target object or position.
 
@@ -169,9 +176,8 @@ class Replicant(AddOn):
         :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
         """
 
-        self.action = TurnTo(target=target, resp=self._previous_resp, aligned_at=aligned_at,
-                             collision_detection=self.collision_detection, previous=self._previous_action,
-                             dynamic=self.dynamic)
+        self.action = TurnTo(target=target, resp=self._previous_resp, collision_detection=self.collision_detection,
+                             previous=self._previous_action, dynamic=self.dynamic)
 
     def move_by(self, distance: float, arrived_at: float = 0.1) -> None:
         """
@@ -184,7 +190,7 @@ class Replicant(AddOn):
         self.action = MoveBy(distance=distance, arrived_at=arrived_at, collision_detection=self.collision_detection,
                              previous=self._previous_action, dynamic=self.dynamic)
 
-    def move_to(self, target: Union[int, Dict[str, float], np.ndarray], arrived_at: float = 0.1, aligned_at: float = 1,
+    def move_to(self, target: Union[int, Dict[str, float]], arrived_at: float = 0.1, aligned_at: float = 1,
                 arrived_offset: float = 0) -> None:
         """
         Move to a target object or position. This combines turn_to() followed by move_by().
@@ -210,7 +216,7 @@ class Replicant(AddOn):
         self.static = ReplicantStatic(replicant_id=self.replicant_id, resp=resp)
         # Set action to be an idle.
         #self.action = Wait()
-        """
+        
         # Add an avatar and set up its camera.
         self.commands.extend([{"$type": "create_avatar",
                                "type": "A_Img_Caps_Kinematic",
@@ -218,17 +224,16 @@ class Replicant(AddOn):
                               {"$type": "set_pass_masks",
                                "pass_masks": ["_img", "_id", "_depth"],
                                "avatar_id": self.static.avatar_id},
-                              {"$type": "parent_avatar_to_robot",
+                              {"$type": "parent_avatar_to_replicant",
                                "position": {"x": 0, "y": 0.053, "z": 0.1838},
-                               "body_part_id": self.static.arm_joints[ArmJoint.torso],
                                "avatar_id": self.static.avatar_id,
-                               "id": self.static.robot_id},
+                               "id": self.replicant_id},
                               {"$type": "enable_image_sensor",
                                "enable": False,
                                "avatar_id": self.static.avatar_id},
                               {"$type": "set_img_pass_encoding",
                                "value": False}])
-        """
+        
 
     def _set_dynamic_data(self, resp: List[bytes]) -> None:
         """

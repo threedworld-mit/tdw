@@ -4,6 +4,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.output_data import Transforms
 from tdw.replicant.replicant_utils import ReplicantUtils
 from tdw.replicant.actions.action import Action
+from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection

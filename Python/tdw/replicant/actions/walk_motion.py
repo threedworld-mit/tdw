@@ -36,7 +36,7 @@ class WalkMotion(Action, ABC):
             if previous.status == ActionStatus.collision:
                 self.status = ActionStatus.collision
 
-    def get_initialization_commands(self, resp: List[bytes], dynamic: ReplicantDynamic,
+    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         """
         :param resp: The response from the build.
@@ -46,13 +46,12 @@ class WalkMotion(Action, ABC):
         :return: A list of commands to initialize this action.
         """
 
-        commands: List[dict] = super().get_initialization_commands(resp=resp, image_frequency=image_frequency,
-                                                                   dynamic=dynamic)
+        commands: List[dict] = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
         commands.extend(self._get_walk_commands(dynamic=dynamic))
         return commands
 
 
-    def get_walk_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
+    def _get_walk_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
         commands = []
         commands.append({"$type": "play_humanoid_animation",
                                   "name": "walking_2",
@@ -69,6 +68,7 @@ class WalkMotion(Action, ABC):
 
         # Stop if the Replicant is colliding with something.
         if self._is_collision(dynamic=dynamic):
+            print("Collided")
             self.status = ActionStatus.collision
             return False
         else:

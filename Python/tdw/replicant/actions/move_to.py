@@ -4,6 +4,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.output_data import Transforms
 from tdw.replicant.replicant_utils import ReplicantUtils
 from tdw.replicant.actions.action import Action
+from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.actions.turn_to import TurnTo
 from tdw.replicant.actions.move_by import MoveBy
 from tdw.replicant.replicant_static import ReplicantStatic
@@ -35,7 +36,7 @@ class MoveTo(Action):
 
         super().__init__()
         self._turn_to: TurnTo = TurnTo(target=target, resp=resp, dynamic=dynamic,
-                                       collision_detection=collision_detection, aligned_at=aligned_at,
+                                       collision_detection=collision_detection,
                                        previous=previous)
         self.__image_frequency: ImageFrequency = ImageFrequency.once
         # Cache these in order to initialize the MoveBy action later.
@@ -43,35 +44,61 @@ class MoveTo(Action):
         self.__arrived_at: float = arrived_at
         self.__arrived_offset: float = arrived_offset
         self._move_by: Optional[MoveBy] = None
+        target_position = {"x": 0,"y": 0,"z": 0}
+        # Set the target position.
+        if isinstance(target, int):
+            # Get the position of the object.
+            target_position = ReplicantUtils.get_object_position(resp=resp, object_id=target)
+        elif isinstance(target, dict):
+            target_position = target
+        else:
+           raise Exception(f"Invalid target: {target}")
+        # Compute distance from Replicant current location to object.
+        self.distance = TDWUtils.get_distance(TDWUtils.array_to_vector3(dynamic.position), target_position) 
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         # Remember the image frequency for the move action.
         self.__image_frequency: ImageFrequency = image_frequency
-        return self._turn_to.get_initialization_commands(resp=resp, static=static, dynamic=dynamic)
+        return self._turn_to.get_initialization_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         commands = []
-        object_position = {"x": 0,"y": 0,"z": 0}
-        # Set the target position.
-        if isinstance(target, int):
-            # Get the position of the object.
-            object_position = self._get_object_position(target)
-        elif isinstance(target, dict):
-            object_position = target
+        # We haven't started moving yet (we are turning).
+        if self._move_by is None:
+            # The turn immediately failed.
+            if self._turn_to.status != ActionStatus.ongoing and self._turn_to.status != ActionStatus.success:
+                self.status = self._turn_to.status
+                return self._turn_to.get_end_commands(resp=resp, static=static, dynamic=dynamic,
+                                                      image_frequency=self.__image_frequency)
+            commands.extend(self._turn_to.get_ongoing_commands(resp=resp, static=static, dynamic=dynamic))
+            # Continue turning.
+            if self._turn_to.status == ActionStatus.ongoing:
+                return commands
+            # The turn failed.
+            elif self._turn_to.status != ActionStatus.success:
+                # Stop turning.
+                self.status = self._turn_to.status
+                return self._turn_to.get_end_commands(resp=resp, static=static, dynamic=dynamic,
+                                                      image_frequency=self.__image_frequency)
+            # The turn succeeded. Start the move action.
+            #distance = np.linalg.norm(self._turn_to.target_arr - dynamic.transform.position) - self.__arrived_offset
+            self._move_by = MoveBy(distance= self.distance, arrived_at=self.__arrived_at, dynamic=dynamic,
+                                   collision_detection=self.__collision_detection, previous=self._turn_to)
+            self._move_by.initialized = True
+            # Initialize the move_by action.
+            commands.extend(self._move_by.get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
+                                                                      image_frequency=self.__image_frequency))
+            # The move immediately ended.
+            if self._move_by.status != ActionStatus.ongoing:
+                self.status = self._move_by.status
+                return []
+            else:
+                return commands
+        # Continue moving.
         else:
-           raise Exception(f"Invalid target: {target}")
-        # Compute distance from Replicant current location to object.
-        distance = ReplicantUtils.get_distance(resp=resp, replicant_id=dynamic.replicant_id, pos=object_position) 
-        self._move_by = MoveBy(distance=distance, arrived_at=self.__arrived_at, dynamic=dynamic,
-                               collision_detection=self.__collision_detection, previous=self._turn_to)
-        self._move_by.initialized = True
-        # Initialize the move_by action.
-        commands.extend(self._move_by.get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
-                                                                  image_frequency=self.__image_frequency))
-        # The move immediately ended.
-        if self._move_by.status != ActionStatus.ongoing:
-            self.status = self._move_by.status
-            return []
-        else:
+            commands.extend(self._move_by.get_ongoing_commands(resp=resp, static=static, dynamic=dynamic))
+            # The move ended.
+            if self._move_by.status != ActionStatus.ongoing:
+                self.status = self._move_by.status
             return commands

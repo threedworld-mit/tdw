@@ -2,8 +2,10 @@ from typing import Union, Dict, List
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import Transforms
+from tdw.quaternion_utils import QuaternionUtils
 from tdw.replicant.replicant_utils import ReplicantUtils
 from tdw.replicant.actions.action import Action
+from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
@@ -15,7 +17,7 @@ class TurnTo(Action):
     """
 
     def __init__(self, target: Union[int, Dict[str, float]], resp: List[bytes], dynamic: ReplicantDynamic,
-                 collision_detection: CollisionDetection, aligned_at: float = 1, previous: Action = None):
+                 collision_detection: CollisionDetection, previous: Action = None):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param resp: The response from the build.
@@ -24,19 +26,20 @@ class TurnTo(Action):
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """
-        self._angle = self._get_angle(dynamic=dynamic)
-        self.object_position = {"x": 0,"y": 0,"z": 0}
+        self.target_position = {"x": 0,"y": 0,"z": 0}
         # Set the target position.
         if isinstance(target, int):
             # Get the position of the object.
-            self.object_position = ReplicantUtils.get_object_position(target)
+            self.target_position = ReplicantUtils.get_object_position(resp=resp, object_id=target)
         elif isinstance(target, dict):
-            self.target_arr: np.array = TDWUtils.vector3_to_array(target)
-            self.object_position = target
+            self.target_position = target
         else:
             raise Exception(f"Invalid target: {target}")
-        super().__init__(aligned_at=aligned_at, dynamic=dynamic, collision_detection=collision_detection,
-                         previous=previous)
+        self._initial_rotation = dynamic.rotation
+        self.target_arr = TDWUtils.vector3_to_array(self.target_position)
+        self._angle = self._get_angle(dynamic=dynamic)
+        self.turned = False
+        super().__init__()
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -47,21 +50,24 @@ class TurnTo(Action):
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        if np.abs(self._angle - theta) < self._aligned_at:
+        if self.turned:
             self.status = ActionStatus.success
             return []
-        elif not self._is_valid_ongoing(dynamic=dynamic):
-            return []
         else:
-            return self._get_turn_command(dynamic=dynamic)
+            commands = []
+            commands.extend(self._get_turn_command(dynamic=dynamic))
+            self.turned = True
+            return commands
 
     def _get_turn_command(self, dynamic: ReplicantDynamic) -> dict:
-            # Turn to face position.     
-            return({"$type": "humanoid_look_at_position", 
-                                  "position": self.object_position, 
-                                  "id": dynamic.replicant_id})
+        # Turn to face position. 
+        commands = []    
+        commands.append({"$type": "humanoid_look_at_position", 
+                         "position": self.target_position, 
+                         "id": dynamic.replicant_id})
+        return commands
 
     def _get_angle(self, dynamic: ReplicantDynamic) -> float:
-        return TDWUtils.get_angle_between(v1=dynamic.transform.forward,
-                                          v2=self.target_arr - dynamic.transform.position)
+        return TDWUtils.get_angle_between(v1=dynamic.forward,
+                                          v2=self.target_arr - dynamic.position)
 

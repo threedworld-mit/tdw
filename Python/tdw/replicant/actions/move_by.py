@@ -5,6 +5,7 @@ from tdw.output_data import Transforms
 from tdw.replicant.replicant_utils import ReplicantUtils
 from tdw.replicant.actions.walk_motion import WalkMotion
 from tdw.replicant.actions.action import Action
+from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
@@ -31,8 +32,8 @@ class MoveBy(WalkMotion):
         self._arrived_at: float = arrived_at
         super().__init__(dynamic=dynamic, collision_detection=collision_detection, previous=previous)
         # Get the initial state.
-        self._initial_position_v3: Dict[str, float] = ReplicantUtils.get_replicant_position(dynamic.replicant_id)
-        self._target_position_arr: np.array = dynamic.transform.position + (dynamic.transform.forward * distance)
+        self._initial_position_v3: Dict[str, float] = TDWUtils.array_to_vector3(dynamic.position)
+        self._target_position_arr: np.array = dynamic.position + (dynamic.forward * distance)
         self._target_position_v3: Dict[str, float] = TDWUtils.array_to_vector3(self._target_position_arr)
         # Total number of frames needed to cover distance.
         self.num_frames = int(distance / self.meters_per_frame)

@@ -22,7 +22,7 @@ Load and play back commands that were logged by a [`Logger`](logger.md) add-on.
 
 **`LogPlayback()`**
 
-A list of lists of commands. Each list of commands is from a `communicate()` call from a prior controller, and will be sent per `communicate()` call to the current controller.
+(no arguments)
 
 #### get_initialization_commands
 

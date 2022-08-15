@@ -10,6 +10,10 @@ class LogPlayback(AddOn):
     """
 
     def __init__(self):
+        """
+        (no arguments)
+        """
+        
         super().__init__()
         self.initialized = True
         """:field

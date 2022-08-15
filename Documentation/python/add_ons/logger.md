@@ -38,7 +38,7 @@ The log file can be automatically re-loaded into another controller using the [`
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | The path to either save the record to or load the record from. |
+| path |  Union[str, Path] |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 | overwrite |  bool  | True | If True and a log file already exists at `path`, overwrite the file. |
 | log_commands_in_build |  bool  | False | If True, the build will log every message received and every command executed in the [Player log](https://docs.unity3d.com/Manual/LogFiles.html). |
 
@@ -83,5 +83,5 @@ Reset the logger.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | The path to either save the record to or load the record from. |
-| overwrite |  bool  | True | If True, overwrite the log if it exists. |
+| path |  Union[str, Path] |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| overwrite |  bool  | True | If True and a log file already exists at `path`, overwrite the file. |

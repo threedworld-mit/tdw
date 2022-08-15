@@ -36,6 +36,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | Document                                                     | Description                               |
 | ------------------------------------------------------------ | ----------------------------------------- |
 | `lessons/video/screen_record_linux.md`<br>`lessons/video/screen_record_osx.md`<br>`lessons/video/screen_record_windows.md` | How to record audio and video on each OS. |
+| `python/add_ons/log_playback.md`                             | API document for `LogPlayback`.           |
 
 #### Modified Documentation
 

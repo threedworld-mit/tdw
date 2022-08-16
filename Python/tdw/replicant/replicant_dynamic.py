@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
 from tdw.tdw_utils import TDWUtils
 from PIL import Image
-from tdw.output_data import OutputData, Transforms, Collision, EnvironmentCollision
+from tdw.output_data import OutputData, Transforms, Collision, EnvironmentCollision, Images, CameraMatrices
 from tdw.object_data.transform import Transform
 from tdw.collision_data.collision_obj_obj import CollisionObjObj
 from tdw.collision_data.collision_obj_env import CollisionObjEnv

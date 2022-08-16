@@ -20,7 +20,9 @@ from tdw.replicant.actions.turn_by import TurnBy
 from tdw.replicant.actions.turn_to import TurnTo
 from tdw.replicant.actions.move_by import MoveBy
 from tdw.replicant.actions.move_to import MoveTo
+from tdw.replicant.actions.reach_for import ReachFor
 from tdw.replicant.image_frequency import ImageFrequency
+from tdw.replicant.arm import Arm
 
 class Replicant(AddOn):
 
@@ -50,8 +52,8 @@ class Replicant(AddOn):
         else:
             self.initial_rotation: Dict[str, float] = rotation
 
-        self.static: ReplicantStatic = None
-        self.dynamic: ReplicantDynamic = None
+        self.static: Optional[ReplicantStatic] = None
+        self.dynamic: Optional[ReplicantDynamic] = None
 
         """:field
         The ID of this replicant.
@@ -109,8 +111,7 @@ class Replicant(AddOn):
         """
         if self.static is None:
             self._cache_static_data(resp=resp)
-        if self.dynamic is None:
-            self._set_dynamic_data(resp=resp)
+        self._set_dynamic_data(resp=resp)
 
         self._previous_resp = resp
         if self.action is None or self.action.done:
@@ -205,6 +206,18 @@ class Replicant(AddOn):
                              collision_detection=self.collision_detection, arrived_at=arrived_at, aligned_at=aligned_at,
                              arrived_offset=arrived_offset, previous=self._previous_action)
 
+    def reach_for(self, target: Union[int, np.ndarray, Dict[str,  float]], arm: Arm, hand_position: np.ndarray) -> None:
+        """
+        Move to a target object or position. This combines turn_to() followed by move_by().
+
+        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param arm: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
+        :param hand_position: If the difference between the current angle and the target angle is less than this value, then the action is successful.
+        """
+
+        self.action = ReachFor(target=target, resp=self._previous_resp, arm=arm, dynamic=self.dynamic, hand_position=hand_position,
+                               collision_detection=self.collision_detection, previous=self._previous_action)
+
 
     def _cache_static_data(self, resp: List[bytes]) -> None:
         """
@@ -244,6 +257,9 @@ class Replicant(AddOn):
         if self.dynamic is None:
             frame_count = 0
         else:
+            self.dynamic: ReplicantDynamic
             frame_count = self.dynamic.frame_count
-        self.dynamic = ReplicantDynamic(resp=resp, replicant_id=self.replicant_id, body_parts=[],
+        dynamic = ReplicantDynamic(resp=resp, replicant_id=self.replicant_id, body_parts=[],
                                             frame_count=frame_count, previous=self._previous_action)
+        self.dynamic = dynamic
+

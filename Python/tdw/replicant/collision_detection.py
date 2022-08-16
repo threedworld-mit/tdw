@@ -27,7 +27,7 @@ class CollisionDetection:
         """
         self.floor: bool = floor
         """:field
-        If True, the Replicant will stop when it collides collides with an object with a mass greater than the `mass` value unless the object is in the `exclude_objects`.
+        If True, the Replicant will stop when it collides with an object with a mass greater than the `mass` value unless the object is in the `exclude_objects`.
         """
         self.objects: bool = objects
         if include_objects is None:

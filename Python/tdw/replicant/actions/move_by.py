@@ -54,10 +54,14 @@ class MoveBy(WalkMotion):
         self.processing_remainder: bool = False
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+        p1 = dynamic.position
+        d = np.linalg.norm(p1 - self._target_position_arr)
         # We've arrived at the target.
-        if self.total_frame_count >= self.num_frames:
+        if d < self._arrived_at:
             self.status = ActionStatus.success
-            return []
+            commands = []
+            commands.extend(self._get_stop_commands(dynamic=dynamic))
+            return commands
         elif not self._is_valid_ongoing(dynamic=dynamic):
             return []
         else:

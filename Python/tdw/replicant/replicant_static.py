@@ -42,6 +42,10 @@ class ReplicantStatic():
         """
         self.replicant_id: int = replicant_id
         """:field
+        A dictionary of body parts. Key = The part ID. Value = The name of the part.
+        """
+        self.joints: Dict[int,str] = dict()
+        """:field
         The name and ID of each arm joint. Key = The [`ArmJoint` enum value](arm_joint.md). Value = The object ID.
         """
         self.arm_joints: Dict[ArmJoint, int] = dict()
@@ -54,4 +58,4 @@ class ReplicantStatic():
         """
         self.avatar_id: str = str(replicant_id)
 
-        #self.body_parts: List[int] = list(self.joints.keys())
+        self.body_parts: List[int] = list(self.joints.keys())

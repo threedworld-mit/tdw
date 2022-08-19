@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 from abc import ABC, abstractmethod
 from overrides import final
 from tdw.replicant.action_status import ActionStatus
@@ -15,7 +15,7 @@ class ArmMotion(Action, ABC):
     Abstract base class for actions related to Replicant arm motion.
     """
 
-    def __init__(self, dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
+    def __init__(self, dynamic: ReplicantDynamic, arm: Arm, collision_detection: CollisionDetection, previous: Action = None):
         """
         :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
@@ -26,6 +26,9 @@ class ArmMotion(Action, ABC):
         # My collision detection rules.
         self._collision_detection: CollisionDetection = collision_detection
         self._resetting: bool = False
+        self.reach_action_length=30
+        self.reset_action_length=20
+        self.reach_arm = arm
 
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
         if self._collision_detection.previous_was_same and previous is not None and \
@@ -45,9 +48,23 @@ class ArmMotion(Action, ABC):
         """
 
         commands: List[dict] = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
-        #commands.extend(self._get_walk_commands(dynamic=dynamic))
+        # Request EmptyObjects and Bounds data.
+        commands.extend([{"$type": "send_empty_objects",
+                         "frequency": "always"},
+                         {"$type": "send_bounds",
+                          "frequency": "always"}])
         return commands
 
+
+    def _get_reach_commands(self, dynamic: ReplicantDynamic, target_position: Dict[str, float]) -> List[dict]:
+        commands=[]
+        # Reach for IK target, at affordance position. 
+        commands.append({"$type": "humanoid_reach_for_position", 
+                          "position": target_position, 
+                          "id": dynamic.replicant_id, 
+                          "length": self.reach_action_length, 
+                          "arm": self.reach_arm})
+        return commands
 
     @final
     def _is_valid_ongoing(self, dynamic: ReplicantDynamic) -> bool:

@@ -30,66 +30,22 @@ class ReachFor(ArmMotion):
 
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], resp: List[bytes], arm: Arm, hand_position: np.ndarray, 
                  dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
-        super().__init__(dynamic=dynamic, collision_detection=collision_detection, previous=previous)
-        self.reach_action_length=30
-        self.reset_action_length=20
+        super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
         self.affordance_id = 0
-        self.reach_arm = "left"
+        self.hand_position = hand_position
         self.frame_count = 0
+        self.target = target
         self.target_position = {"x": 0,"y": 0,"z": 0}
-
-        AffordancePoints.EMPTY_OBJECT_IDS.clear()
+        self.initialized_reach = False
+        self.initialized_affordances = False
         # Convert from a numpy array to a dictionary.
         if isinstance(target, np.ndarray):
             self.target_position = TDWUtils.array_to_vector3(target)
         # The target is a vector3 position.
         elif isinstance(target, dict):
             self.target_position = target
-        # The target is an object ID.
-        elif isinstance(target, int):
-            # Get the nearest affordance position.
-            nearest_distance = np.inf
-            nearest_position = np.array([0, 0, 0])
-            got_affordance_position = False
-            for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i])
-                if r_id == "empt":
-                    empt = EmptyObjects(resp[i])
-                    for j in range(empt.get_num()):
-                        # Get the ID of the affordance point.
-                        empty_object_id = empt.get_id(j)
-                        self.affordance_id = empty_object_id
-                        # Get the parent object ID.
-                        object_id = AffordancePoints.EMPTY_OBJECT_IDS[empty_object_id]["object_id"]
-                        # Found the target object.
-                        if object_id == target:
-                            got_affordance_position = True
-                            # Get the position of the empty object.
-                            empty_object_position = empt.get_position(j)
-                            # Get the nearest affordance position.
-                            distance = np.linalg.norm(hand_position - empty_object_position)
-                            if distance < nearest_distance:
-                                nearest_distance = distance
-                                nearest_position = empty_object_position
-            # The target position is the nearest affordance point.
-            if got_affordance_position:
-                self.target_position = TDWUtils.array_to_vector3(nearest_position)
-            # If the object doesn't have empty game objects, aim for the center and hope for the best.
-            else:
-                got_center = False
-                for i in range(len(resp) - 1):
-                    r_id = OutputData.get_data_type_id(resp[i])
-                    if r_id == "boun":
-                        bounds = Bounds(resp[i])
-                        for j in range(bounds.get_num()):
-                            if bounds.get_id(j) == target:
-                                self.target_position = TDWUtils.array_to_vector3(bounds.get_center(j))
-                                got_center = True
-                                break
-                if not got_center:
-                    raise Exception("Couldn't get the centroid of the target object.")
-        else:
-            raise Exception(f"Invalid target: {target}")
+
+            
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -97,21 +53,22 @@ class ReachFor(ArmMotion):
                                                        image_frequency=image_frequency)
         # Remember the image frequency for the action.
         self.__image_frequency: ImageFrequency = image_frequency
-        # Reach for IK target, at affordance position. 
-        # Request EmptyObjects and Bounds data.
-        commands.extend([{"$type": "humanoid_reach_for_position", 
-                          "position": self.target_position, 
-                          "id": dynamic.replicant_id, 
-                          "length": self.reach_action_length, 
-                          "arm": self.reach_arm},
-                         {"$type": "send_empty_objects",
-                         "frequency": "always"},
-                         {"$type": "send_bounds",
-                          "frequency": "always"}])
         return commands
 
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+        # Test we have initialized for when the target is an object ID.
+        # We need to do this AFTER get_initialization_commands() has run, 
+        #  as we need the empty objects and bounds output data.
+        if isinstance(self.target, int):
+            if not self.initialized_affordances:
+                self._initialize_affordances(resp=resp)
+                self.initialized_affordances = True
+        if not self.initialized_reach:
+            commands = []
+            commands.extend(self._get_reach_commands(dynamic=dynamic, target_position=self.target_position))
+            self.initialized_reach = True
+            return commands
         # We've arrived at the target.
         if self.frame_count >= self.reach_action_length:
             self.status = ActionStatus.success
@@ -122,6 +79,49 @@ class ReachFor(ArmMotion):
             while self.frame_count < self.reach_action_length:
                 self.frame_count += 1 
                 return []
+
+    def _initialize_affordances(self, resp: List[bytes]):
+        # Get the nearest affordance position.
+        nearest_distance = np.inf
+        nearest_position = np.array([0, 0, 0])
+        got_affordance_position = False
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "empt":
+                empt = EmptyObjects(resp[i])
+                for j in range(empt.get_num()):
+                    # Get the ID of the affordance point.
+                    empty_object_id = empt.get_id(j)
+                    self.affordance_id = empty_object_id
+                    # Get the parent object ID.
+                    object_id = AffordancePoints.EMPTY_OBJECT_IDS[empty_object_id]["object_id"]
+                    # Found the target object.
+                    if object_id == self.target:
+                        got_affordance_position = True
+                        # Get the position of the empty object.
+                        empty_object_position = empt.get_position(j)
+                        # Get the nearest affordance position.
+                        distance = np.linalg.norm(self.hand_position - empty_object_position)
+                        if distance < nearest_distance:
+                            nearest_distance = distance
+                            nearest_position = empty_object_position
+        # The target position is the nearest affordance point.
+        if got_affordance_position:
+            self.target_position = TDWUtils.array_to_vector3(nearest_position)
+        # If the object doesn't have empty game objects, aim for the center and hope for the best.
+        else:
+            got_center = False
+            for i in range(len(resp) - 1):
+                r_id = OutputData.get_data_type_id(resp[i])
+                if r_id == "boun":
+                    bounds = Bounds(resp[i])
+                    for j in range(bounds.get_num()):
+                        if bounds.get_id(j) == target:
+                            self.target_position = TDWUtils.array_to_vector3(bounds.get_center(j))
+                            got_center = True
+                            break
+            if not got_center:
+                raise Exception("Couldn't get the centroid of the target object.")
 
     def _previous_was_same(self, previous: Action) -> bool:
         if isinstance(previous, MoveBy):

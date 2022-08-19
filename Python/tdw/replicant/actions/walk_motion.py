@@ -27,6 +27,7 @@ class WalkMotion(Action, ABC):
         self._resetting: bool = False
         self.meters_per_frame = 0.04911
         self.walk_cycle_num_frames = 69
+        self.playing = False
 
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
         if self._collision_detection.previous_was_same and previous is not None and \
@@ -44,7 +45,6 @@ class WalkMotion(Action, ABC):
 
         :return: A list of commands to initialize this action.
         """
-
         commands: List[dict] = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
         commands.extend(self._get_walk_commands(dynamic=dynamic))
         return commands
@@ -52,15 +52,19 @@ class WalkMotion(Action, ABC):
 
     def _get_walk_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
         commands = []
+        #print("Starting play")
         commands.append({"$type": "play_humanoid_animation",
-                                  "name": "walking_2",
-                                  "id": dynamic.replicant_id})
+                         "name": "walking_2",
+                         "id": dynamic.replicant_id})
+        self.playing = True
         return commands
 
     def _get_stop_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
         commands = []
+        #print("Stopping play")
+        self.playing = False
         commands.append({"$type": "stop_humanoid_animation",
-                                  "id": dynamic.replicant_id})
+                         "id": dynamic.replicant_id})
         return commands
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
@@ -73,8 +77,9 @@ class WalkMotion(Action, ABC):
 
         :return: A list of commands that must be sent to end any action.
         """
-        command = []
-        commands.extend(_get_stop_commands(static=static, dynamic=dynamic))
+        #print("Ending")
+        commands = []
+        commands.extend(self._get_stop_commands(dynamic=dynamic))
         commands.extend(super().get_end_commands(resp=resp, static=static, dynamic=dynamic,
                                                  image_frequency=image_frequency))
         return commands

@@ -1,0 +1,81 @@
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.add_ons.logger import Logger
+from tdw.replicant.action_status import ActionStatus
+from tdw.replicant.arm import Arm
+from tdw.replicant.affordance_points import AffordancePoints
+import numpy as np
+
+"""
+Create a humanoid that walks across the room, knocks over a chair and reaches for 
+a randomly-positioned object multiple times.
+"""
+
+# A dictionary of affordance points per model. This could be saved to a json file.
+AffordancePoints.AFFORDANCE_POINTS = {"basket_18inx18inx12iin_wicker": [{'x': -0.2285, 'y': 0.305, 'z': 0.0},
+                                                           {'x': 0.2285, 'y': 0.305, 'z': 0.0},
+                                                           {'x': 0, 'y': 0.305, 'z': 0.2285},
+                                                           {'x': 0, 'y': 0.305, 'z': -0.2285}],
+                                      "basket_18inx18inx12iin_bamboo": [{'x': -0.2285, 'y': 0.305, 'z': 0.0},
+                                                           {'x': 0.2285, 'y': 0.305, 'z': 0.0},
+                                                           {'x': 0, 'y': 0.305, 'z': 0.2285},
+                                                           {'x': 0, 'y': 0.305, 'z': -0.2285}]}
+
+c = Controller(launch_build=False)
+
+logger = Logger(record=True, path="log.json")
+c.add_ons.append(logger)
+c.communicate([])
+c.communicate(TDWUtils.create_empty_room(12, 12))
+c.communicate(TDWUtils.create_avatar(position={"x": 2, "y": 1.5, "z": 4}, look_at={"x": 2.05, "y": 1, "z": 2.05}))
+
+replicant_id=c.get_unique_id()
+basket_id = c.get_unique_id()
+table_id = c.get_unique_id()
+ball_id = c.get_unique_id()
+affordance_id = 0
+reach_arm = "left"
+
+replicant = Replicant(replicant_id=replicant_id, position={"x": 0.2, "y": 0.2, "z": -0.7})
+c.add_ons.append(replicant)
+commands=[]
+commands.extend(c.get_add_physics_object(model_name="prim_sphere",
+                               object_id=ball_id,
+                               position={"x": 2, "y": 0, "z": 2},
+                               rotation={"x": 0, "y": 0, "z": 0},
+                               scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
+                               kinematic=True,
+                               gravity=False,
+                               library="models_special.json"))
+commands.append(c.get_add_object(model_name="live_edge_coffee_table",
+                                             object_id=table_id,
+                                             position={"x": 0, "y": 0, "z": 0},
+                                             rotation={"x": 0, "y": 20, "z": 0},
+                                             library="models_core.json"))
+
+commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_name="basket_18inx18inx12iin_wicker",
+                                                                       object_id=basket_id,
+                                                                       position={"x": 0, "y": 0.35, "z": 0},
+                                                                       rotation={"x": 0, "y": 0, "z": 0}))
+
+c.communicate(commands)
+
+#replicant.turn_to(target=chair_id)
+#while replicant.action.status == ActionStatus.ongoing:
+    #c.communicate([])
+#replicant.move_to(target={"x": 3, "y": 0, "z": -1.5})
+
+"""
+replicant.move_to(target=table_id, arrived_offset=0.5)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+"""
+replicant.reach_for(target=basket_id, arm="left", hand_position=np.array([0, 0, 0]))
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+
+logger.save()
+
+#c.communicate({"$type": "terminate"})
+

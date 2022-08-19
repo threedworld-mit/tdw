@@ -43,7 +43,7 @@ class MoveBy(WalkMotion):
         self.frame_count: int = 0
         # Determine number of walk loops needed to cover distance.
         if self.num_frames <= self.walk_cycle_num_frames:
-            self.num_loops = 1
+            self.num_loops = 0
             self.remainder = 0
         else:
             self.num_loops = int(self.num_frames / self.walk_cycle_num_frames)
@@ -60,41 +60,46 @@ class MoveBy(WalkMotion):
         if d < self._arrived_at:
             self.status = ActionStatus.success
             commands = []
-            commands.extend(self._get_stop_commands(dynamic=dynamic))
+            commands.extend(self.get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=None))
             return commands
         elif not self._is_valid_ongoing(dynamic=dynamic):
             return []
-        else:
+        elif self.status == ActionStatus.ongoing:
             # We are still walking.
             if self.processing_remainder:
+                #print("Processing remainder: " + str(self.frame_count))
                 if self.frame_count < self.remainder:
                     self.frame_count += 1 
                     self.total_frame_count += 1
                     return []
                 else:
+                    self.processing_remainder = False
                     return []
             else:
                 if self.loop_count < self.num_loops:
                     if self.frame_count < self.walk_cycle_num_frames:
+                        #print("Processing frame: " + str(self.frame_count))
                         self.frame_count += 1 
                         self.total_frame_count += 1
                         return []
-                    else:
+                    elif (self.num_frames - self.total_frame_count) > self.remainder:
                         # Start a new loop.
+                        #print("Starting new loop")
                         commands = []
                         self.loop_count += 1
                         self.frame_count = 0
                         commands.extend(self._get_walk_commands(dynamic=dynamic))
                         return commands
-                else:
-                    # We have performed the required number of loop cycles. 
-                    # Now set up to process any remainder frames.
-                    if self.remainder > 0:
-                        self.processing_remainder = True
-                        commands = []
-                        self.frame_count = 0
-                        commands.extend(self._get_walk_commands(dynamic=dynamic))
-                        return commands
+                    else:
+                        # We have performed the required number of loop cycles. 
+                        # Now set up to process any remainder frames.
+                        if self.remainder > 0:
+                            #print("Setting up remainder")
+                            self.processing_remainder = True
+                            commands = []
+                            self.frame_count = 0
+                            commands.extend(self._get_walk_commands(dynamic=dynamic))
+                            return commands
                 
 
     def _previous_was_same(self, previous: Action) -> bool:

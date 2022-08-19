@@ -54,7 +54,7 @@ class MoveTo(Action):
         else:
            raise Exception(f"Invalid target: {target}")
         # Compute distance from Replicant current location to object.
-        self.distance = TDWUtils.get_distance(TDWUtils.array_to_vector3(dynamic.position), target_position) 
+        self.distance = TDWUtils.get_distance(TDWUtils.array_to_vector3(dynamic.position), target_position) - self.__arrived_offset
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -66,23 +66,11 @@ class MoveTo(Action):
         commands = []
         # We haven't started moving yet (we are turning).
         if self._move_by is None:
-            # The turn immediately failed.
-            if self._turn_to.status != ActionStatus.ongoing and self._turn_to.status != ActionStatus.success:
-                self.status = self._turn_to.status
-                return self._turn_to.get_end_commands(resp=resp, static=static, dynamic=dynamic,
-                                                      image_frequency=self.__image_frequency)
             commands.extend(self._turn_to.get_ongoing_commands(resp=resp, static=static, dynamic=dynamic))
             # Continue turning.
             if self._turn_to.status == ActionStatus.ongoing:
                 return commands
-            # The turn failed.
-            elif self._turn_to.status != ActionStatus.success:
-                # Stop turning.
-                self.status = self._turn_to.status
-                return self._turn_to.get_end_commands(resp=resp, static=static, dynamic=dynamic,
-                                                      image_frequency=self.__image_frequency)
             # The turn succeeded. Start the move action.
-            #distance = np.linalg.norm(self._turn_to.target_arr - dynamic.transform.position) - self.__arrived_offset
             self._move_by = MoveBy(distance= self.distance, arrived_at=self.__arrived_at, dynamic=dynamic,
                                    collision_detection=self.__collision_detection, previous=self._turn_to)
             self._move_by.initialized = True

@@ -59,17 +59,20 @@ c.communicate(commands)
 replicant.move_to(target=ball_id1)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-"""
+
 replicant.move_to(target=ball_id2)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+
 replicant.move_to(target=ball_id3)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+
 replicant.reach_for(target={"x": 2, "y": 1.75, "z": 1.75}, arm=Arm.left, hand_position=np.array([0, 0, 0]))
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-"""
+
+logger.save()
 
 #c.communicate({"$type": "terminate"})
 

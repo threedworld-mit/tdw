@@ -37,7 +37,7 @@ ball_id = c.get_unique_id()
 affordance_id = 0
 reach_arm = "left"
 
-replicant = Replicant(replicant_id=replicant_id, position={"x": 0.2, "y": 0.2, "z": -0.7})
+replicant = Replicant(replicant_id=replicant_id, position={"x": 0.2, "y": 0.2, "z": -4})
 c.add_ons.append(replicant)
 commands=[]
 commands.extend(c.get_add_physics_object(model_name="prim_sphere",
@@ -61,17 +61,23 @@ commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_nam
 
 c.communicate(commands)
 
-#replicant.turn_to(target=chair_id)
-#while replicant.action.status == ActionStatus.ongoing:
-    #c.communicate([])
-#replicant.move_to(target={"x": 3, "y": 0, "z": -1.5})
-
+"""
+replicant.turn_to(target=table_id)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+replicant.move_by(distance=3.5097961468992818)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
 """
 replicant.move_to(target=table_id, arrived_offset=0.5)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-"""
+
 replicant.reach_for(target=basket_id, arm="left", hand_position=np.array([0, 0, 0]))
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+
+replicant.grasp(target=basket_id, arm="left")
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 

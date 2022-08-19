@@ -66,6 +66,38 @@ class ArmMotion(Action, ABC):
                           "arm": self.reach_arm})
         return commands
 
+    def _get_hold_object_commands(self, dynamic: ReplicantDynamic, target_position: Dict[str, float], object_id: int, affordance_id: int) -> List[dict]:
+        commands=[]
+        # Move the arm holding the object to a reasonable carrying position.     
+        commands.extend([{"$type": "humanoid_reach_for_position", 
+                                   "position": {"x": target_position["x"], "y": target_position["y"] + 0.5, "z": target_position["z"]}, 
+                                   "target":object_id, 
+                                   "affordance_id": affordance_id, 
+                                   "id": dynamic.replicant_id,
+                                   "length": self.reset_action_length, 
+                                   "arm": self.reach_arm},
+                          {"$type": "humanoid_reset_held_object_rotation", 
+                               "target": object_id, 
+                               "affordance_id": affordance_id, 
+                               "id": dynamic.replicant_id,
+                               "length": self.reset_action_length, 
+                               "arm": self.reach_arm}])
+        return commands
+
+    def _get_drop_commands(self, dynamic: ReplicantDynamic, target_position: Dict[str, float]) -> List[dict]:
+        commands=[]
+        commands.extend([{"$type": "humanoid_drop_object",
+                          "target": object_id,
+                          "id": dynamic.replicant_id,
+                          "arm": self.reach_arm},
+                         {"$type": "translate_object_by", 
+                         "position": {"x": -offset["z"], "y": -offset["y"], "z": -offset["x"]},
+                         "absolute": False,
+                         "id": object_id},
+                        {"$type": "rotate_object_to", 
+                         "rotation": {"w": 1.0, "x": 0, "y": 0, "z": 0}, "id": object_id}])
+        return commands
+
     @final
     def _is_valid_ongoing(self, dynamic: ReplicantDynamic) -> bool:
         """

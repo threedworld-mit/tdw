@@ -57,5 +57,9 @@ class ReplicantStatic():
         The ID of the Magnebot's avatar (camera). This is used internally for API calls.
         """
         self.avatar_id: str = str(replicant_id)
+        """:field
+        The current affordance ID the replicant is reaching for/grasping.
+        """
+        self.target_affordance_id: int = 0
 
         self.body_parts: List[int] = list(self.joints.keys())

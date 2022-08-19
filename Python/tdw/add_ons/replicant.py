@@ -21,6 +21,7 @@ from tdw.replicant.actions.turn_to import TurnTo
 from tdw.replicant.actions.move_by import MoveBy
 from tdw.replicant.actions.move_to import MoveTo
 from tdw.replicant.actions.reach_for import ReachFor
+from tdw.replicant.actions.grasp import Grasp
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.arm import Arm
 
@@ -208,16 +209,27 @@ class Replicant(AddOn):
 
     def reach_for(self, target: Union[int, np.ndarray, Dict[str,  float]], arm: Arm, hand_position: np.ndarray) -> None:
         """
-        Move to a target object or position. This combines turn_to() followed by move_by().
+        Reach for a target object or position.
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param arm: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param hand_position: If the difference between the current angle and the target angle is less than this value, then the action is successful.
         """
 
-        self.action = ReachFor(target=target, resp=self._previous_resp, arm=arm, dynamic=self.dynamic, hand_position=hand_position,
+        self.action = ReachFor(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic, hand_position=hand_position,
                                collision_detection=self.collision_detection, previous=self._previous_action)
 
+    def grasp(self, target: Union[int, np.ndarray, Dict[str,  float]], arm: Arm) -> None:
+        """
+       Grasp a target object or position.
+
+        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param arm: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
+        :param hand_position: If the difference between the current angle and the target angle is less than this value, then the action is successful.
+        """
+
+        self.action = Grasp(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
+                               collision_detection=self.collision_detection, previous=self._previous_action)
 
     def _cache_static_data(self, resp: List[bytes]) -> None:
         """

@@ -71,7 +71,7 @@ class MoveTo(Action):
             if self._turn_to.status == ActionStatus.ongoing:
                 return commands
             # The turn succeeded. Start the move action.
-            self._move_by = MoveBy(distance= self.distance, arrived_at=self.__arrived_at, dynamic=dynamic,
+            self._move_by = MoveBy(distance=self.distance, arrived_at=self.__arrived_at, dynamic=dynamic,
                                    collision_detection=self.__collision_detection, previous=self._turn_to)
             self._move_by.initialized = True
             # Initialize the move_by action.
@@ -80,13 +80,13 @@ class MoveTo(Action):
             # The move immediately ended.
             if self._move_by.status != ActionStatus.ongoing:
                 self.status = self._move_by.status
-                return []
-            else:
-                return commands
+            return commands
         # Continue moving.
         else:
-            commands.extend(self._move_by.get_ongoing_commands(resp=resp, static=static, dynamic=dynamic))
             # The move ended.
             if self._move_by.status != ActionStatus.ongoing:
                 self.status = self._move_by.status
-            return commands
+                return []
+            else:
+                commands.extend(self._move_by.get_ongoing_commands(resp=resp, static=static, dynamic=dynamic))
+                return commands

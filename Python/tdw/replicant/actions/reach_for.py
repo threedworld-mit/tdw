@@ -29,8 +29,9 @@ class ReachFor(ArmMotion):
     """
 
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], resp: List[bytes], arm: Arm, hand_position: np.ndarray, 
-                 dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
+                 static: ReplicantStatic, dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
         super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
+        self.static = static
         self.affordance_id = 0
         self.hand_position = hand_position
         self.frame_count = 0
@@ -108,6 +109,7 @@ class ReachFor(ArmMotion):
         # The target position is the nearest affordance point.
         if got_affordance_position:
             self.target_position = TDWUtils.array_to_vector3(nearest_position)
+            self.static.target_affordance_id = self.affordance_id
         # If the object doesn't have empty game objects, aim for the center and hope for the best.
         else:
             got_center = False

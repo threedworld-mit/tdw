@@ -21,25 +21,15 @@ class Drop(ArmMotion):
     Drop a grasped target object.
     """
 
-    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], resp: List[bytes], arm: Arm, hand_position: np.ndarray, 
-                 dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
+    def __init__(self, target: int, resp: List[bytes], arm: Arm, static: ReplicantStatic, dynamic: ReplicantDynamic, 
+                 collision_detection: CollisionDetection, previous: Action = None):
         super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
-        self.affordance_id = 0
-        self.hand_position = hand_position
         self.frame_count = 0
+        self.static=static
+        self.dynamic=dynamic
         self.target = target
-        self.target_position = {"x": 0,"y": 0,"z": 0}
-        self.initialized_reach = False
-        self.initialized_affordances = False
-        # Convert from a numpy array to a dictionary.
-        if isinstance(target, np.ndarray):
-            self.target_position = TDWUtils.array_to_vector3(target)
-        # The target is a vector3 position.
-        elif isinstance(target, dict):
-            self.target_position = target
-        self.offset = AffordancePoints.AFFORDANCE_POINTS_BY_OBJECT_ID[object_id][empty_object_id]
-
-
+        self.initialized_drop = False
+        self.offset = AffordancePoints.AFFORDANCE_POINTS_BY_OBJECT_ID[self.target][self.static.target_affordance_id]
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -50,17 +40,32 @@ class Drop(ArmMotion):
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+        if not self.initialized_drop:
+            commands = []
+            commands.extend(self._get_drop_commands(dynamic=self.dynamic,
+                                                    object_id=self.target, 
+                                                    offset=self.offset))
+            self.initialized_drop = True
+            return commands
         # We've completed the drop.
         if self.frame_count >= self.reset_action_length:
             self.status = ActionStatus.success
-            return []
-        elif not self._is_valid_ongoing(dynamic=dynamic):
+            commands = []
+            commands.extend(AffordancePoints.reset_affordance_points(self.target))
+            return commands
+        elif not self._is_valid_ongoing(dynamic=self.dynamic):
             return []
         else:
             while self.frame_count < self.reset_action_length:
                 self.frame_count += 1 
                 return []
 
+    def _previous_was_same(self, previous: Action) -> bool:
+        if isinstance(previous, MoveBy):
+            return (previous.distance > 0 and self.distance > 0) or (previous.distance < 0 and self.distance < 0)
+        else:
+            return False
+
         
         
-        commands.extend(ReachForAffordancePoint._reset_affordance_points(self.t_id))
+        

@@ -16,3 +16,4 @@ class Arm(Enum):
 
     left = 0  # The left arm.
     right = 1  # The right arm.
+    both = 2  # Both arms.

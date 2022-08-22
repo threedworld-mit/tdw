@@ -84,7 +84,7 @@ class ArmMotion(Action, ABC):
                                "arm": self.reach_arm}])
         return commands
 
-    def _get_drop_commands(self, dynamic: ReplicantDynamic, target_position: Dict[str, float]) -> List[dict]:
+    def _get_drop_commands(self, dynamic: ReplicantDynamic, object_id: int, offset: Dict[str, float]) -> List[dict]:
         commands=[]
         commands.extend([{"$type": "humanoid_drop_object",
                           "target": object_id,

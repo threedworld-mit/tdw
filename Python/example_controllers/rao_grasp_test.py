@@ -42,7 +42,7 @@ c.add_ons.append(replicant)
 commands=[]
 commands.extend(c.get_add_physics_object(model_name="prim_sphere",
                                object_id=ball_id,
-                               position={"x": 2, "y": 0, "z": 2},
+                               position={"x": 3, "y": 0, "z": -3},
                                rotation={"x": 0, "y": 0, "z": 0},
                                scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
                                kinematic=True,
@@ -78,6 +78,14 @@ while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
 replicant.grasp(target=basket_id, arm="left")
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+
+replicant.move_to(target=ball_id, arrived_offset=0.25)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+
+replicant.drop(target=basket_id, arm="left")
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 

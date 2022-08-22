@@ -6,6 +6,14 @@ An abstract base class for third-person camera controller add-ons.
 
 ***
 
+## Class Variables
+
+| Variable | Type | Description | Value |
+| --- | --- | --- | --- |
+| `RENDER_ORDER` | int | The render order. Third person cameras will always render "on top" of any other cameras. | `100` |
+
+***
+
 ## Fields
 
 - `avatar_id` The ID of the avatar that (this camera).

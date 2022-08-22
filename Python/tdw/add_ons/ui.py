@@ -1,6 +1,8 @@
+from io import BytesIO
 from base64 import b64encode
 from typing import Tuple, List, Dict, Union
 from pathlib import Path
+from PIL import Image
 from tdw.controller import Controller
 from tdw.add_ons.add_on import AddOn
 
@@ -119,27 +121,31 @@ class UI(AddOn):
                               "canvas_id": self._canvas_id,
                               "size": size})
 
-    def attach_canvas_to_avatar(self, avatar_id: str = "a", focus_distance: float = 2.5) -> None:
+    def attach_canvas_to_avatar(self, avatar_id: str = "a", focus_distance: float = 2.5, plane_distance: float = 0.101) -> None:
         """
         Attach the UI canvas to an avatar. This allows the UI to appear in image output data.
 
         :param avatar_id: The avatar ID.
         :param focus_distance: The focus distance. If the focus distance is less than the default value (2.5), the UI will appear blurry unless post-processing is disabled.
+        :param plane_distance: The distance from the camera to the UI canvas. This should be slightly further than the near clipping plane.
         """
 
         self.commands.extend([{"$type": "set_focus_distance",
                                "focus_distance": focus_distance},
                               {"$type": "attach_ui_canvas_to_avatar",
                                "avatar_id": avatar_id,
-                               "canvas_id": self._canvas_id}])
+                               "canvas_id": self._canvas_id,
+                               "plane_distance": plane_distance}])
 
-    def attach_canvas_to_vr_rig(self) -> None:
+    def attach_canvas_to_vr_rig(self, plane_distance: float = 0.25) -> None:
         """
         Attach the UI canvas to a VR rig.
+
+        :param plane_distance: The distance from the camera to the UI canvas.
         """
 
         self.commands.append({"$type": "attach_ui_canvas_to_vr_rig",
-                              "plane_distance": 1})
+                              "plane_distance": plane_distance})
 
     def destroy(self, ui_id: int) -> None:
         """
@@ -168,6 +174,31 @@ class UI(AddOn):
                                       "id": ui_id,
                                       "canvas_id": self._canvas_id})
         self._ui_ids.clear()
+
+    def add_loading_screen(self, text: str = "Loading...", text_size: int = 64) -> Tuple[int, int]:
+        """
+        A macro for adding a simple load screen. Combines `self.add_image()` (adds a black background) and `self.add_text()` (adds a loading message).
+
+        :param text: The loading message text.
+        :param text_size: The font size of the loading message text.
+
+        :return: Tuple: The ID of the background image, the ID of the text.
+        """
+
+        # Add an empty black image. Source: https://stackoverflow.com/a/38626806
+        with BytesIO() as output:
+            Image.new(mode="RGB", size=(16, 16)).save(output, "PNG")
+            image = output.getvalue()
+        background_id = self.add_image(image,
+                                       position={"x": 0, "y": 0},
+                                       size={"x": 16, "y": 16},
+                                       rgba=False,
+                                       scale_factor={"x": 2000, "y": 2000})
+        # Add text.
+        text_id = self.add_text(text=text,
+                                font_size=text_size,
+                                position={"x": 0, "y": 0})
+        return background_id, text_id
 
     def _get_add_element(self, command_type: str, position: Dict[str, int], anchor: Tuple[float, float] = None,
                          pivot: Dict[str, float] = None, color: Dict[str, float] = None) -> Tuple[dict, int]:

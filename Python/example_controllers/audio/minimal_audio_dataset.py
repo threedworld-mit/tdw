@@ -79,7 +79,7 @@ class MinimalAudioDataset(Controller):
         self.recorder.start(path=self.output_directory.joinpath(str(self.trial_num) + ".wav"))
 
         # Let the object fall. Stop when either the simulation is done or there are too many frames.
-        while self.recorder.recording:
+        while not self.recorder.done:
             self.communicate([])
         # Increment the trial counter.
         self.trial_num += 1

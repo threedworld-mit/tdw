@@ -19,25 +19,52 @@ class Bounds(object):
         self._tab = tdw.flatbuffers.table.Table(buf, pos)
 
     # Bounds
-    def Objects(self, j):
+    def Ids(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
-            x = self._tab.Vector(o)
-            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 88
-            from .BoundsData import BoundsData
-            obj = BoundsData()
-            obj.Init(self._tab.Bytes, x)
-            return obj
-        return None
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
 
     # Bounds
-    def ObjectsLength(self):
+    def IdsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
+        return 0
+
+    # Bounds
+    def IdsLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def BoundsStart(builder): builder.StartObject(1)
-def BoundsAddObjects(builder, objects): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(objects), 0)
-def BoundsStartObjectsVector(builder, numElems): return builder.StartVector(88, numElems, 4)
+    # Bounds
+    def BoundPositions(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # Bounds
+    def BoundPositionsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
+        return 0
+
+    # Bounds
+    def BoundPositionsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def BoundsStart(builder): builder.StartObject(2)
+def BoundsAddIds(builder, ids): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(ids), 0)
+def BoundsStartIdsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def BoundsAddBoundPositions(builder, boundPositions): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(boundPositions), 0)
+def BoundsStartBoundPositionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def BoundsEnd(builder): return builder.EndObject()

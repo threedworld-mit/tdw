@@ -2,7 +2,7 @@
 
 # Textured quads
 
-**Textured quads** are simple rectangular objects that exist in 3D space and be set to any given [texture](../objects_and_scenes/materials_textures_colors.md). These 3D "quads" can be positioned and set to an image located on your computer. 
+**Textured quads** are simple rectangular objects that exist in 3D space and be set to any given [texture](../scene_setup_low_level/materials_textures_colors.md). These 3D "quads" can be positioned and set to an image located on your computer. 
 
 Textured quads can be used to visualize areas in a scene, add paintings to walls, increase overall scene variability, and so on.
 
@@ -98,12 +98,14 @@ Result:
 | [`show_textured_quad`](../../api/command_api.md#show_textured_quad) | Show or hide a textured quad.                                |
 | [`teleport_textured_quad`](../../api/command_api.md#teleport_textured_quad) | Set the position of a textured quad.                         |
 | [`rotate_textured_quad_to`](../../api/command_api.md#rotate_textured_quad_to) | Set the rotation of a textured quad.                         |
+| [`parent_textured_quad_to_object`](../../api/command_api.md#parent_textured_quad_to_object) | Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object. |
+| [`unparent_textured_quad`](../../api/command_api.md#unparent_textured_quad) | Unparent a textured quad from an object.                     |
 
 ## Command API and output data
 
-In the Unity Engine, textured quads are effectively the same thing as any other non-physics object: They are a game object with a simple mesh (a "quad") and a material, which has an albedo image texture. 
+Textured quad commands aren't [TDW objects](../core_concepts/objects.md). None of the object commands such as `teleport_object` or `rotate_object_by` will work with textured quads. Only the textured quad commands, listed above, will work with textured quads.
 
-However, in TDW, textured quads are treated very differently than standard [objects](../core_concepts/objects.md). They won't appear in *any* output data except `Images` (and only in the `_img` pass).
+Likewise, textured quads won't appear in any output data except in the `_img` pass of `Images`.
 
 ***
 
@@ -127,3 +129,5 @@ Command API:
 - [`show_textured_quad`](../../api/command_api.md#show_textured_quad)
 - [`teleport_textured_quad`](../../api/command_api.md#teleport_textured_quad)
 - [`rotate_textured_quad_to`](../../api/command_api.md#rotate_textured_quad_to)
+- [`parent_textured_quad_to_object`](../../api/command_api.md#parent_textured_quad_to_object)
+- [`unparent_textured_quad`](../../api/command_api.md#unparent_textured_quad)

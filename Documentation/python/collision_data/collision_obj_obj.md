@@ -10,6 +10,8 @@ A collision between two objects.
 
 - `relative_velocity` The relative velocity of the objects.
 
+- `impulse` The total impulse applied to the pair of objects to resolve the collision.
+
 - `points` The contact point positions.
 
 - `normals` The contact point normals.

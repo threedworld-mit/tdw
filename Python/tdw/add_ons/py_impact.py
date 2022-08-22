@@ -389,9 +389,8 @@ class PyImpact(CollisionManager):
             if r_id == "rigi":
                 rigidbodies = Rigidbodies(resp[i])
                 for j in range(rigidbodies.get_num()):
-                    rigidbody_data[rigidbodies.get_id(j)] = Rigidbody(velocity=np.array(rigidbodies.get_velocity(j)),
-                                                                      angular_velocity=np.array(
-                                                                          rigidbodies.get_angular_velocity(j)),
+                    rigidbody_data[rigidbodies.get_id(j)] = Rigidbody(velocity=rigidbodies.get_velocity(j),
+                                                                      angular_velocity=rigidbodies.get_angular_velocity(j),
                                                                       sleeping=rigidbodies.get_sleeping(j))
             # Get robot joint velocity data.
             elif r_id == "rojv":

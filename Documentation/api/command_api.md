@@ -24,6 +24,7 @@
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
 | [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
+| [`set_cursor`](#set_cursor) | Set cursor parameters. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
 | [`set_error_handling`](#set_error_handling) | Set whether TDW will quit when it logs different types of messages.  |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
@@ -122,71 +123,13 @@
 
 | Command | Description |
 | --- | --- |
-| [`set_avatar_rigidbody_constraints`](#set_avatar_rigidbody_constraints) | Set the rigidbody constraints of a Sticky Mitten Avatar.  |
-
-**Nav Mesh Avatar Command**
-
-| Command | Description |
-| --- | --- |
-| [`set_nav_mesh_avatar`](#set_nav_mesh_avatar) | Set the pathfinding parameters of a NavMeshAvatar. You should send this command before beginning navigation, but it can also be adjusted on-the-fly. |
-| [`set_nav_mesh_avatar_destination`](#set_nav_mesh_avatar_destination) | Set the target destination of a NavMeshAvatar. |
+| [`set_first_person_avatar`](#set_first_person_avatar) | Set the parameters of an A_First_Person avatar. |
 
 **Simple Body Command**
 
 | Command | Description |
 | --- | --- |
 | [`change_avatar_body`](#change_avatar_body) | Change the body of a SimpleBodyAvatar. |
-
-**Sticky Mitten Avatar Command**
-
-| Command | Description |
-| --- | --- |
-| [`rotate_head_by`](#rotate_head_by) | Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85.  |
-| [`rotate_waist`](#rotate_waist) | Rotate the waist of a StickyMittenAvatar.  |
-| [`set_sticky_mitten_profile`](#set_sticky_mitten_profile) | Set the parameters of the avatar, arms, and mittens.  |
-
-**Arm Joint Command**
-
-| Command | Description |
-| --- | --- |
-| [`stop_arm_joint`](#stop_arm_joint) | Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself.  |
-
-**Bend Arm Joint Command**
-
-| Command | Description |
-| --- | --- |
-| [`bend_arm_joint_by`](#bend_arm_joint_by) | Bend the arm joint by an angle. The angle is added to the current joint angle.  |
-| [`bend_arm_joint_to`](#bend_arm_joint_to) | Bend the arm joint to the target angle.  |
-
-**Joint Angular Drag Command**
-
-| Command | Description |
-| --- | --- |
-| [`adjust_joint_angular_drag_by`](#adjust_joint_angular_drag_by) | Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower.  |
-| [`set_joint_angular_drag`](#set_joint_angular_drag) | Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower.  |
-
-**Joint Spring Command**
-
-| Command | Description |
-| --- | --- |
-| [`adjust_joint_damper_by`](#adjust_joint_damper_by) | Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster.  |
-| [`adjust_joint_force_by`](#adjust_joint_force_by) | Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta.  |
-| [`set_joint_damper`](#set_joint_damper) | Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster.  |
-| [`set_joint_force`](#set_joint_force) | Set the force of a joint of a Sticky Mitten Avatar.  |
-
-**Use Mitten Command**
-
-| Command | Description |
-| --- | --- |
-| [`put_down`](#put_down) | Put down all objects held by the mitten.  |
-| [`set_stickiness`](#set_stickiness) | Set the stickiness of one sub-mitten of the mitten.  |
-
-**Pick Up Command**
-
-| Command | Description |
-| --- | --- |
-| [`pick_up`](#pick_up) | Pick up all objects that any sticky side of the mitten is touching.  |
-| [`pick_up_proximity`](#pick_up_proximity) | Pick up all objects within an emitted volume defined by a radius and a distance. See Sticky Mitten Avatar documentation for more information.  |
 
 **Move Avatar Towards**
 
@@ -308,10 +251,23 @@
 
 | Command | Description |
 | --- | --- |
-| [`create_obi_fluid`](#create_obi_fluid) | Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, and the shape of the emitter.  |
 | [`create_obi_solver`](#create_obi_solver) | Create an Obi Solver. The solver has a unique ID that is generated sequentially: The first solver's ID is 0, the second solver's ID is 1, and so on.  |
 | [`destroy_obi_solver`](#destroy_obi_solver) | Destroy an Obi solver. |
+| [`set_obi_solver_scale`](#set_obi_solver_scale) | Set an Obi solver's scale. This will uniformly scale the physical size of the simulation, without affecting its behavior.  |
 | [`set_obi_solver_substeps`](#set_obi_solver_substeps) | Set an Obi solver's number of substeps. Performing more substeps will greatly improve the accuracy/convergence speed of the simulation at the cost of speed.  |
+
+**Create Obi Actor Command**
+
+| Command | Description |
+| --- | --- |
+| [`create_obi_fluid`](#create_obi_fluid) | Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, and the shape of the emitter.  |
+
+**Create Obi Cloth Command**
+
+| Command | Description |
+| --- | --- |
+| [`create_obi_cloth_sheet`](#create_obi_cloth_sheet) | Create an Obi cloth sheet object.  |
+| [`create_obi_cloth_volume`](#create_obi_cloth_volume) | Create an Obi cloth volume object.  |
 
 **Object Command**
 
@@ -337,7 +293,15 @@
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
 | [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
-| [`unparent_object`](#unparent_object) | Unparent an object from its current parent (an avatar, an avatar's camera, etc.). If the object doesn't have a parent, this command doesn't do anything. |
+| [`unparent_object`](#unparent_object) | Unparent an object from an object. If the textured quad doesn't have a parent, this command doesn't do anything. |
+
+**Add Container Shape Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_box_container`](#add_box_container) | Add a box container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
+| [`add_cylinder_container`](#add_cylinder_container) | Add a cylindrical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
+| [`add_sphere_container`](#add_sphere_container) | Add a spherical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
 
 **Flex Object Command**
 
@@ -359,7 +323,9 @@
 | [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint. |
 | [`apply_force_at_position`](#apply_force_at_position) | Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large. |
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
+| [`apply_force_to_obi_cloth`](#apply_force_to_obi_cloth) | Apply a uniform force to an Obi cloth actor.  |
 | [`apply_force_to_object`](#apply_force_to_object) | Applies a directional force to the object's rigidbody. |
+| [`apply_torque_to_obi_cloth`](#apply_torque_to_obi_cloth) | Apply a uniform torque to an Obi cloth actor.  |
 | [`apply_torque_to_object`](#apply_torque_to_object) | Apply a torque to the object's rigidbody. |
 | [`scale_object_and_mass`](#scale_object_and_mass) | Scale the object by a factor from its current scale. Scale its mass proportionally. This command assumes that a canonical mass has already been set. |
 | [`set_color_in_substructure`](#set_color_in_substructure) | Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API. |
@@ -372,7 +338,9 @@
 | [`set_object_physics_solver_iterations`](#set_object_physics_solver_iterations) | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: [set_physics_solver_iterations](#set_physics_solver_iterations) which sets the global default number of solver iterations. |
 | [`set_primitive_visual_material`](#set_primitive_visual_material) | Set the material of an object created via load_primitive_from_resources  |
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
+| [`set_sub_object_id`](#set_sub_object_id) | Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique. |
 | [`show_collider_hulls`](#show_collider_hulls) | Show the collider hulls of the object.  |
+| [`untether_obi_cloth_sheet`](#untether_obi_cloth_sheet) | Untether a cloth sheet at a specified position.  |
 
 **Humanoid Command**
 
@@ -400,6 +368,7 @@
 | --- | --- |
 | [`set_texture_scale`](#set_texture_scale) | Set the scale of the tiling of the material's main texture. |
 | [`set_visual_material`](#set_visual_material) | Set a visual material of an object or one of its sub-objects.  |
+| [`set_visual_material_smoothness`](#set_visual_material_smoothness) | Set the smoothness (glossiness) of an object's visual material. |
 
 **Set Flex Actor**
 
@@ -468,17 +437,11 @@
 
 **Proc Gen Floor Command**
 
-| Command | Description |
-| --- | --- |
-| [`set_proc_gen_floor_color`](#set_proc_gen_floor_color) | Set the albedo RGBA color of the floor.  |
-| [`set_proc_gen_floor_texture_scale`](#set_proc_gen_floor_texture_scale) | Set the scale of the tiling of the floor material's main texture.  |
-
 **Proc Gen Material Command**
 
 | Command | Description |
 | --- | --- |
 | [`set_proc_gen_ceiling_material`](#set_proc_gen_ceiling_material) | Set the material of a procedurally-generated ceiling.  |
-| [`set_proc_gen_floor_material`](#set_proc_gen_floor_material) | Set the material of a procedurally-generated floor.  |
 | [`set_proc_gen_walls_material`](#set_proc_gen_walls_material) | Set the material of all procedurally-generated walls.  |
 
 **Proc Gen Walls Command**
@@ -499,6 +462,7 @@
 | [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
 | [`remove_robot_nav_mesh_obstacle`](#remove_robot_nav_mesh_obstacle) | Remove a NavMesh obstacle from a robot (see make_robot_nav_mesh_obstacle).  |
 | [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
+| [`set_robot_joint_id`](#set_robot_joint_id) | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique. |
 | [`set_robot_obi_collision_material`](#set_robot_obi_collision_material) | Set the Obi collision material of a robot.  |
 | [`teleport_robot`](#teleport_robot) | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
 
@@ -542,6 +506,14 @@
 | [`set_revolute_target`](#set_revolute_target) | Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle. |
 | [`set_spherical_target`](#set_spherical_target) | Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles. |
 
+**Set Robot Joint Position Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_prismatic_position`](#set_prismatic_position) | Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot.  |
+| [`set_revolute_angle`](#set_revolute_angle) | Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot.  |
+| [`set_spherical_angles`](#set_spherical_angles) | Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot.  |
+
 **Send Multiple Data Once Command**
 
 **Send Overlap Command**
@@ -557,6 +529,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_boxcast`](#send_boxcast) | Cast a box along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
+| [`send_mouse_raycast`](#send_mouse_raycast) | Raycast from a camera through the mouse screen position.  |
 | [`send_raycast`](#send_raycast) | Cast a ray from the origin to the destination.  |
 | [`send_spherecast`](#send_spherecast) | Cast a sphere along a direction and return the results. The can be multiple hits, each of which will be sent to the controller as Raycast data.  |
 
@@ -572,9 +545,10 @@
 | Command | Description |
 | --- | --- |
 | [`send_collider_intersections`](#send_collider_intersections) | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider.  |
+| [`send_containment`](#send_containment) | Send containment data using container shapes. See: <computeroutput>add_box_container</computeroutput>, <computeroutput>add_cylinder_container</computeroutput>, and <computeroutput>add_sphere_container</computeroutput>. Container shapes will check for overlaps with other objects.  |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
 | [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
-| [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations.  |
+| [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from DynamicRobots output data for the sake of speed in certain simulations.  |
 | [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 | [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
@@ -586,6 +560,7 @@
 | [`send_avatars`](#send_avatars) | Send data for avatars in the scene.  |
 | [`send_avatar_segmentation_colors`](#send_avatar_segmentation_colors) | Send avatar segmentation color data.  |
 | [`send_camera_matrices`](#send_camera_matrices) | Send camera matrix data for each camera.  |
+| [`send_field_of_view`](#send_field_of_view) | Send field of view for each camera.  |
 | [`send_id_pass_grayscale`](#send_id_pass_grayscale) | Send the average grayscale value of an _id pass.  |
 | [`send_id_pass_segmentation_colors`](#send_id_pass_segmentation_colors) | Send all unique colors in an _id pass.  |
 | [`send_images`](#send_images) | Send images and metadata.  |
@@ -599,13 +574,14 @@
 | --- | --- |
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
-| [`send_composite_objects`](#send_composite_objects) | Send data for every composite object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
+| [`send_dynamic_robots`](#send_dynamic_robots) | Send dynamic robot data for each robot in the scene.  |
 | [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
+| [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
@@ -643,12 +619,14 @@
 
 | Command | Description |
 | --- | --- |
+| [`parent_textured_quad_to_object`](#parent_textured_quad_to_object) | Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object. |
 | [`rotate_textured_quad_by`](#rotate_textured_quad_by) | Rotate a textured quad by a given angle around a given axis. |
 | [`rotate_textured_quad_to`](#rotate_textured_quad_to) | Set the rotation of a textured quad. |
 | [`scale_textured_quad`](#scale_textured_quad) | Scale a textured quad by a factor. |
 | [`set_textured_quad`](#set_textured_quad) | Apply a texture to a pre-existing quad.  |
 | [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
 | [`teleport_textured_quad`](#teleport_textured_quad) | Teleport a textured quad to a new position. |
+| [`unparent_textured_quad`](#unparent_textured_quad) | Unparent a textured quad from a parent object. If the textured quad doesn't have a parent object, this command doesn't do anything. |
 
 **Ui Command**
 
@@ -675,6 +653,20 @@
 | [`destroy_ui_element`](#destroy_ui_element) | Destroy a UI element in the scene. |
 | [`set_ui_element_size`](#set_ui_element_size) | Set the size of a UI element. |
 | [`set_ui_text`](#set_ui_text) | Set the text of a Text object that is already on the screen. |
+
+**Video Capture Command**
+
+| Command | Description |
+| --- | --- |
+| [`stop_video_capture`](#stop_video_capture) | Stop ongoing video capture. |
+
+**Start Video Capture Command**
+
+| Command | Description |
+| --- | --- |
+| [`start_video_capture_linux`](#start_video_capture_linux) | Start video capture using ffmpeg. This command can only be used on Linux. |
+| [`start_video_capture_osx`](#start_video_capture_osx) | Start video capture using ffmpeg. This command can only be used on OS X. |
+| [`start_video_capture_windows`](#start_video_capture_windows) | Start video capture using ffmpeg. This command can only be used on Windows. |
 
 **Vr Command**
 
@@ -753,11 +745,11 @@ Create an avatar (agent).
 
 
 ```python
-{"$type": "create_avatar", "type": "A_Img_Caps"}
+{"$type": "create_avatar", "type": "A_Simple_Body"}
 ```
 
 ```python
-{"$type": "create_avatar", "type": "A_Img_Caps", "id": "a"}
+{"$type": "create_avatar", "type": "A_Simple_Body", "id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -771,12 +763,9 @@ A type of avatar that can be created in TDW.
 
 | Value | Description |
 | --- | --- |
-| `"A_Img_Caps"` | An avatar with a capsule body. |
-| `"A_StickyMitten_Baby"` | Baby avatar with arms and sticky mittens. See: Documentation/misc_frontend/sticky_mitten_avatar.md |
-| `"A_StickyMitten_Adult"` | Adult avatar with arms and sticky mittens. See: Documentation/misc_frontend/sticky_mitten_avatar.md |
 | `"A_Simple_Body"` | An avatar that can toggle between multiple simply body types. See: change_avatar_body in the Command API. |
 | `"A_Img_Caps_Kinematic"` | An avatar without a body; a "floating camera". |
-| `"A_Nav_Mesh"` | A NavMeshAvatar, which can respond to Unity's built in pathfinding system. See "Nav Mesh Commands" in the Command API. |
+| `"A_First_Person"` | An avatar with first-person keyboard and mouse controls. |
 
 ***
 
@@ -1016,6 +1005,26 @@ Set how much the ambient light fom the source affects the scene. Low values will
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"intensity"` | float | The intensity of the ambient lighting in the scene. | 1.0 |
+
+***
+
+## **`set_cursor`**
+
+Set cursor parameters.
+
+
+```python
+{"$type": "set_cursor"}
+```
+
+```python
+{"$type": "set_cursor", "visible": True, "locked": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"visible"` | bool | If True, the cursor is visible. | True |
+| `"locked"` | bool | If True, the cursor is locked to the center of the screen. | False |
 
 ***
 
@@ -2202,71 +2211,29 @@ These commands work only for the specified avatar subclass.
 
 ***
 
-## **`set_avatar_rigidbody_constraints`**
+## **`set_first_person_avatar`**
 
-Set the rigidbody constraints of a Sticky Mitten Avatar. 
+Set the parameters of an A_First_Person avatar.
 
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
-{"$type": "set_avatar_rigidbody_constraints"}
+{"$type": "set_first_person_avatar"}
 ```
 
 ```python
-{"$type": "set_avatar_rigidbody_constraints", "rotate": True, "translate": True, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rotate"` | bool | If true, let the avatar rotate. | True |
-| `"translate"` | bool | If true, let the avatar translate. | True |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-# NavMeshAvatarCommand
-
-These commands allow a NavMeshAvatar to utilize Unity's built-in pathfinding system (see "Nav Mesh Command").
-
-***
-
-## **`set_nav_mesh_avatar`**
-
-Set the pathfinding parameters of a NavMeshAvatar. You should send this command before beginning navigation, but it can also be adjusted on-the-fly.
-
-
-```python
-{"$type": "set_nav_mesh_avatar"}
-```
-
-```python
-{"$type": "set_nav_mesh_avatar", "speed": 3.5, "angular_speed": 120, "acceleration": 8, "stopping_distance": 0.1, "avatar_id": "a"}
+{"$type": "set_first_person_avatar", "height": 1.6, "camera_height": 1.4, "radius": 0.5, "slope_limit": 15, "detect_collisions": True, "move_speed": 1.5, "look_speed": 50, "look_x_limit": 45, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"speed"` | float | The maximum speed of the avatar. | 3.5 |
-| `"angular_speed"` | float | The maximum angular speed of the avatar. | 120 |
-| `"acceleration"` | float | The maximum acceleration of the avatar. | 8 |
-| `"stopping_distance"` | float | At this distance or less from the destination, the avatar has "arrived". | 0.1 |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
-## **`set_nav_mesh_avatar_destination`**
-
-Set the target destination of a NavMeshAvatar.
-
-
-```python
-{"$type": "set_nav_mesh_avatar_destination", "destination": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "set_nav_mesh_avatar_destination", "destination": {"x": 1.1, "y": 0.0, "z": 0}, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"destination"` | Vector3 | The destination position. Must be within the NavMesh. | |
+| `"height"` | float | The height of the avatar. | 1.6 |
+| `"camera_height"` | float | The height of the camera. | 1.4 |
+| `"radius"` | float | The radius of the avatar. | 0.5 |
+| `"slope_limit"` | float | The avatar can only climb slopes up to this many degrees. | 15 |
+| `"detect_collisions"` | bool | If True, the avatar will collide with other objects. | True |
+| `"move_speed"` | float | The move speed in meters per second. | 1.5 |
+| `"look_speed"` | float | The camera rotation speed in degrees per second. | 50 |
+| `"look_x_limit"` | float | The camera rotation limit around the x axis in degrees. | 45 |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 # SimpleBodyCommand
@@ -2303,625 +2270,6 @@ Enum of body types for a SimpleBodyAvatar.
 | `"Capsule"` |  |
 | `"Cylinder"` |  |
 | `"Sphere"` |  |
-
-# StickyMittenAvatarCommand
-
-These commands are only valid for a StickyMittenAvatar.
-
-***
-
-## **`rotate_head_by`**
-
-Rotate the head by a given axis of rotation by a given angle. The angle is clamped as follows: pitch: -55 to 55. roll: -55 to 55. yaw: -85 to 85. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "rotate_head_by", "axis": "pitch", "angle": 0.125}
-```
-
-```python
-{"$type": "rotate_head_by", "axis": "pitch", "angle": 0.125, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"axis"` | Axis | The axis of rotation. | |
-| `"angle"` | float | The angle of rotation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-***
-
-## **`rotate_waist`**
-
-Rotate the waist of a StickyMittenAvatar. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "rotate_waist", "rotation": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "rotate_waist", "rotation": {"x": 1.1, "y": 0.0, "z": 0}, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rotation"` | Vector3 | The rotation in Euler angles. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
-## **`set_sticky_mitten_profile`**
-
-Set the parameters of the avatar, arms, and mittens. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_sticky_mitten_profile", "profile": {"mass": 80.0, "arm_left": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}, "arm_right": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}}}
-```
-
-```python
-{"$type": "set_sticky_mitten_profile", "profile": {"mass": 80.0, "arm_left": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}, "arm_right": {"shoulder_pitch": {"mass": 20.0, "damper": 200.0, "force": 10.0, "angular_drag": 5}, "shoulder_yaw": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "shoulder_roll": {"mass": 1.0, "damper": 20.0, "force": 50.0, "angular_drag": 5}, "elbow": {"mass": 1.0, "damper": 10.0, "force": 50.0, "angular_drag": 5}, "wrist_roll": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}, "wrist_pitch": {"mass": 1.0, "damper": 10.0, "force": 35.0, "angular_drag": 5}}}, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"profile"` | StickyMittenProfile | The profile. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-# ArmJointCommand
-
-These commands affect a single joint, around a single rotational axis, of a Sticky Mitten Avatar.
-
-***
-
-## **`stop_arm_joint`**
-
-Set the target angle of a joint to the current angle, stopping rotation. If the arm can't support the mass of the object(s) it's holding, this command won't override the overall "strength" of the arm; the arm will still fall until it can support itself. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "stop_arm_joint", "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "stop_arm_joint", "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-# BendArmJointCommand
-
-These commands bend arm joints of a Sticky Mitten Avatar.
-
-***
-
-## **`bend_arm_joint_by`**
-
-Bend the arm joint by an angle. The angle is added to the current joint angle. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "bend_arm_joint_by", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "bend_arm_joint_by", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"angle"` | float | The target angle. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-***
-
-## **`bend_arm_joint_to`**
-
-Bend the arm joint to the target angle. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "bend_arm_joint_to", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "bend_arm_joint_to", "angle": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"angle"` | float | The target angle. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-# JointAngularDragCommand
-
-Set the angular drag of a joint of a Sticky Mitten Avatar.
-
-***
-
-## **`adjust_joint_angular_drag_by`**
-
-Adjust the angular drag of a joint of a Sticky Mitten Avatar by a delta. A higher angular drag will cause the joint to bend slower. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "adjust_joint_angular_drag_by", "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "adjust_joint_angular_drag_by", "joint": "shoulder_left", "axis": "pitch", "delta": 0, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"delta"` | float | Adjust the current angular drag of the joint by this delta. By default, the angular joints of all joints is 0. | 0 |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-***
-
-## **`set_joint_angular_drag`**
-
-Set the angular drag of a joint of a Sticky Mitten Avatar. A higher angular drag will cause the joint to bend slower. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_joint_angular_drag", "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "set_joint_angular_drag", "joint": "shoulder_left", "axis": "pitch", "angular_drag": 0, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"angular_drag"` | float | The angular drag for the joint. | 0 |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-# JointSpringCommand
-
-These commands adjust the values of the joint spring (force and damper).
-
-***
-
-## **`adjust_joint_damper_by`**
-
-Adjust the current damper of a joint of a Sticky Mitten Avatar by a given delta. A higher damper value will cause the joint to slow down faster. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "adjust_joint_damper_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "adjust_joint_damper_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"delta"` | float | Adjust the current damper of the joint by this delta. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-***
-
-## **`adjust_joint_force_by`**
-
-Adjust the current force of a joint of a Sticky Mitten Avatar by a given delta. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "adjust_joint_force_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "adjust_joint_force_by", "delta": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"delta"` | float | Adjust the current force of the joint by this delta. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-***
-
-## **`set_joint_damper`**
-
-Set the damper of a joint of a Sticky Mitten Avatar. A higher damper value will cause the joint to slow down faster. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_joint_damper", "damper": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "set_joint_damper", "damper": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"damper"` | float | The new damper value. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-***
-
-## **`set_joint_force`**
-
-Set the force of a joint of a Sticky Mitten Avatar. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_joint_force", "force": 0.125, "joint": "shoulder_left", "axis": "pitch"}
-```
-
-```python
-{"$type": "set_joint_force", "force": 0.125, "joint": "shoulder_left", "axis": "pitch", "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"force"` | float | The new force. | |
-| `"joint"` | StickyMittenAvatarJoint | The type of joint. This will be parsed into an enum. | |
-| `"axis"` | Axis | The axis of rotation. Must be valid; see Sticky Mitten Avatar documentation. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-#### StickyMittenAvatarJoint
-
-A joint in a Stick Mitten Avatar.
-
-| Value | Description |
-| --- | --- |
-| `"shoulder_left"` | Valid axes: pitch, yaw. |
-| `"elbow_left"` | Valid axis: pitch. |
-| `"wrist_left"` | Valid axis: pitch. |
-| `"shoulder_right"` | Valid axes: pitch, yaw. |
-| `"elbow_right"` | Valid axis: pitch. |
-| `"wrist_right"` | Valid axis: pitch. |
-
-# UseMittenCommand
-
-These commands utilize a StickyMitten.
-
-***
-
-## **`put_down`**
-
-Put down all objects held by the mitten. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "put_down", "is_left": True}
-```
-
-```python
-{"$type": "put_down", "is_left": True, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
-## **`set_stickiness`**
-
-Set the stickiness of one sub-mitten of the mitten. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_stickiness", "sub_mitten": "palm", "sticky": True, "is_left": True}
-```
-
-```python
-{"$type": "set_stickiness", "sub_mitten": "palm", "sticky": True, "is_left": True, "show": True, "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"sub_mitten"` | StickySubMittenType | The sub-mitten of the mitten. | |
-| `"sticky"` | bool | If true, the sub-mitten will be sticky. | |
-| `"show"` | bool | If true, colorize the sides of the mitten that are sticky. | True |
-| `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-#### StickySubMittenType
-
-Types of sub-mittens.
-
-| Value | Description |
-| --- | --- |
-| `"palm"` | The palm of the mitten. Default sticky = true |
-| `"back"` | The backhand of the mitten. Default sticky = false |
-| `"side"` | The sides of the mitten. Default sticky = false |
-
-# PickUpCommand
-
-These commands involve picking something up with a StickyMitten. Any objects that are part of an arm, or that are already being picked up, are ignored.
-
-***
-
-## **`pick_up`**
-
-Pick up all objects that any sticky side of the mitten is touching. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "pick_up", "grip": 0.125, "is_left": True}
-```
-
-```python
-{"$type": "pick_up", "grip": 0.125, "is_left": True, "object_ids": [], "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"grip"` | float | Define the mitten's "grip" on an object. The greater the grip, the more force is needed to break the connection between the mitten and the object(s). | |
-| `"object_ids"` | int[] | The ID of the target object(s). If this an empty list, all objects in range will be picked up. Otherwise, only these objects will be picked up (if in range). | [] |
-| `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
-
-***
-
-## **`pick_up_proximity`**
-
-Pick up all objects within an emitted volume defined by a radius and a distance. See Sticky Mitten Avatar documentation for more information. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "pick_up_proximity", "distance": 0.125, "grip": 0.125, "is_left": True}
-```
-
-```python
-{"$type": "pick_up_proximity", "distance": 0.125, "grip": 0.125, "is_left": True, "radius": 0.125, "object_ids": [], "avatar_id": "a"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"radius"` | float | The radius of the zone of detection. | 0.125 |
-| `"distance"` | float | The desired object must be within this distance of the mitten. | |
-| `"grip"` | float | Define the mitten's "grip" on an object. The greater the grip, the more force is needed to break the connection between the mitten and the object(s). | |
-| `"object_ids"` | int[] | The ID of the target object(s). If this an empty list, all objects in range will be picked up. Otherwise, only these objects will be picked up (if in range). | [] |
-| `"is_left"` | bool | If true, use the left mitten. If false, use the right mitten. | |
-| `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 # MoveAvatarTowards
 
@@ -4104,34 +3452,6 @@ These commands are used for aspects of an Obi simulation. There are other Obi-re
 
 ***
 
-## **`create_obi_fluid`**
-
-Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, and the shape of the emitter. 
-
-- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
-
-```python
-{"$type": "create_obi_fluid", "fluid": {'$type': 'fluid', 'capacity': 1500, 'resolution': 1.0, 'color': {'a': 0.5, 'b': 0.15, 'g': 0.986, 'r': 1.0}, 'rest_density': 1000.0, 'radius_scale': 2.0, 'random_velocity': 0.15, 'smoothing': 3.0, 'surface_tension': 1.0, 'viscosity': 1.5, 'vorticity': 0.7, 'reflection': 0.2, 'transparency': 0.875, 'refraction': 0.0, 'buoyancy': -1, 'diffusion': 0, 'diffusion_data': {'w': 0, 'x': 0, 'y': 0, 'z': 0}, 'atmospheric_drag': 0, 'atmospheric_pressure': 0, 'particle_z_write': False, 'thickness_cutoff': 1.2, 'thickness_downsample': 2, 'blur_radius': 0.02, 'surface_downsample': 1, 'render_smoothness': 0.8, 'metalness': 0, 'ambient_multiplier': 1, 'absorption': 5, 'refraction_downsample': 1, 'foam_downsample': 1}, "shape": {'$type': 'cube_emitter', 'size': {'x': 0.1, 'y': 0.1, 'z': 0.1}, 'sampling_method': 'volume'}}
-```
-
-```python
-{"$type": "create_obi_fluid", "fluid": {'$type': 'fluid', 'capacity': 1500, 'resolution': 1.0, 'color': {'a': 0.5, 'b': 0.15, 'g': 0.986, 'r': 1.0}, 'rest_density': 1000.0, 'radius_scale': 2.0, 'random_velocity': 0.15, 'smoothing': 3.0, 'surface_tension': 1.0, 'viscosity': 1.5, 'vorticity': 0.7, 'reflection': 0.2, 'transparency': 0.875, 'refraction': 0.0, 'buoyancy': -1, 'diffusion': 0, 'diffusion_data': {'w': 0, 'x': 0, 'y': 0, 'z': 0}, 'atmospheric_drag': 0, 'atmospheric_pressure': 0, 'particle_z_write': False, 'thickness_cutoff': 1.2, 'thickness_downsample': 2, 'blur_radius': 0.02, 'surface_downsample': 1, 'render_smoothness': 0.8, 'metalness': 0, 'ambient_multiplier': 1, 'absorption': 5, 'refraction_downsample': 1, 'foam_downsample': 1}, "shape": {'$type': 'cube_emitter', 'size': {'x': 0.1, 'y': 0.1, 'z': 0.1}, 'sampling_method': 'volume'}, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "lifespan": 4, "minimum_pool_size": 0.5, "id": 0, "solver_id": 0, "speed": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The position of the emitter object. | {"x": 0, "y": 0, "z": 0} |
-| `"rotation"` | Vector3 | The rotation of the emitter object, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
-| `"fluid"` | FluidBase | A ../python/obi_data/fluid.md "`Fluid`" or ../python/obi_data/granular_fluid.md "`GranularFluid`" | |
-| `"shape"` | EmitterShapeBase | A ../python/obi_data/emitter_shape/cube_emitter.md "`CubeEmitter`", ../python/obi_data/emitter_shape/disk_emitter.md "`DiskEmitter`", ../python/obi_data/emitter_shape/edge_emitter.md "`EdgeEmitter`", or ../python/obi_data/emitter_shape/sphere_emitter.md "`SphereEmitter`". | |
-| `"lifespan"` | float | The particle lifespan in seconds. | 4 |
-| `"minimum_pool_size"` | float | The minimum amount of inactive particles available before the emitter is allowed to resume emission. | 0.5 |
-| `"id"` | int | The unique ID of the emitter. | 0 |
-| `"solver_id"` | int | The ID of the Obi solver. | 0 |
-| `"speed"` | float | The speed of the fluid emission. If 0, there is no emission. | 0 |
-
-***
-
 ## **`create_obi_solver`**
 
 Create an Obi Solver. The solver has a unique ID that is generated sequentially: The first solver's ID is 0, the second solver's ID is 1, and so on. 
@@ -4163,6 +3483,27 @@ Destroy an Obi solver.
 
 ***
 
+## **`set_obi_solver_scale`**
+
+Set an Obi solver's scale. This will uniformly scale the physical size of the simulation, without affecting its behavior. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_solver_scale"}
+```
+
+```python
+{"$type": "set_obi_solver_scale", "solver_id": 0, "scale_factor": 1.0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"solver_id"` | int | The solver ID. | 0 |
+| `"scale_factor"` | float | The factor to scale XYZ by. | 1.0 |
+
+***
+
 ## **`set_obi_solver_substeps`**
 
 Set an Obi solver's number of substeps. Performing more substeps will greatly improve the accuracy/convergence speed of the simulation at the cost of speed. 
@@ -4181,6 +3522,116 @@ Set an Obi solver's number of substeps. Performing more substeps will greatly im
 | --- | --- | --- | --- |
 | `"solver_id"` | int | The solver ID. | 0 |
 | `"substeps"` | int | The number of substeps. | 1 |
+
+# CreateObiActorCommand
+
+These commands add Obi actor objects to the scene.
+
+***
+
+## **`create_obi_fluid`**
+
+Create an Obi fluid. Obi fluids have three components: The emitter, the fluid, and the shape of the emitter. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "create_obi_fluid", "fluid": {'$type': 'fluid', 'capacity': 1500, 'resolution': 1.0, 'color': {'a': 0.5, 'b': 0.15, 'g': 0.986, 'r': 1.0}, 'rest_density': 1000.0, 'radius_scale': 2.0, 'random_velocity': 0.15, 'smoothing': 3.0, 'surface_tension': 1.0, 'viscosity': 1.5, 'vorticity': 0.7, 'reflection': 0.2, 'transparency': 0.875, 'refraction': 0.0, 'buoyancy': -1, 'diffusion': 0, 'diffusion_data': {'w': 0, 'x': 0, 'y': 0, 'z': 0}, 'atmospheric_drag': 0, 'atmospheric_pressure': 0, 'particle_z_write': False, 'thickness_cutoff': 1.2, 'thickness_downsample': 2, 'blur_radius': 0.02, 'surface_downsample': 1, 'render_smoothness': 0.8, 'metalness': 0, 'ambient_multiplier': 1, 'absorption': 5, 'refraction_downsample': 1, 'foam_downsample': 1}, "shape": {'$type': 'cube_emitter', 'size': {'x': 0.1, 'y': 0.1, 'z': 0.1}, 'sampling_method': 'volume'}}
+```
+
+```python
+{"$type": "create_obi_fluid", "fluid": {'$type': 'fluid', 'capacity': 1500, 'resolution': 1.0, 'color': {'a': 0.5, 'b': 0.15, 'g': 0.986, 'r': 1.0}, 'rest_density': 1000.0, 'radius_scale': 2.0, 'random_velocity': 0.15, 'smoothing': 3.0, 'surface_tension': 1.0, 'viscosity': 1.5, 'vorticity': 0.7, 'reflection': 0.2, 'transparency': 0.875, 'refraction': 0.0, 'buoyancy': -1, 'diffusion': 0, 'diffusion_data': {'w': 0, 'x': 0, 'y': 0, 'z': 0}, 'atmospheric_drag': 0, 'atmospheric_pressure': 0, 'particle_z_write': False, 'thickness_cutoff': 1.2, 'thickness_downsample': 2, 'blur_radius': 0.02, 'surface_downsample': 1, 'render_smoothness': 0.8, 'metalness': 0, 'ambient_multiplier': 1, 'absorption': 5, 'refraction_downsample': 1, 'foam_downsample': 1}, "shape": {'$type': 'cube_emitter', 'size': {'x': 0.1, 'y': 0.1, 'z': 0.1}, 'sampling_method': 'volume'}, "lifespan": 4, "minimum_pool_size": 0.5, "speed": 0, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "id": 0, "solver_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"fluid"` | FluidBase | A ../python/obi_data/fluid.md "`Fluid`" or ../python/obi_data/granular_fluid.md "`GranularFluid`" | |
+| `"shape"` | EmitterShapeBase | A ../python/obi_data/emitter_shape/cube_emitter.md "`CubeEmitter`", ../python/obi_data/emitter_shape/disk_emitter.md "`DiskEmitter`", ../python/obi_data/emitter_shape/edge_emitter.md "`EdgeEmitter`", or ../python/obi_data/emitter_shape/sphere_emitter.md "`SphereEmitter`". | |
+| `"lifespan"` | float | The particle lifespan in seconds. | 4 |
+| `"minimum_pool_size"` | float | The minimum amount of inactive particles available before the emitter is allowed to resume emission. | 0.5 |
+| `"speed"` | float | The speed of the fluid emission. If 0, there is no emission. | 0 |
+| `"position"` | Vector3 | The position of the Obi actor. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the Obi actor in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique ID of the emitter. | 0 |
+| `"solver_id"` | int | The ID of the Obi solver. | 0 |
+
+# CreateObiClothCommand
+
+These commands add cloth objects to the scene.
+
+***
+
+## **`create_obi_cloth_sheet`**
+
+Create an Obi cloth sheet object. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+
+```python
+{"$type": "create_obi_cloth_sheet", "sheet_type": "cloth", "cloth_material": {'$type': 'cloth_material', 'visual_material': 'cotton_canvas_washed_out', 'texture_scale': {'x': 4, 'y': 4}, 'visual_smoothness': 0, 'stretching_scale': 1.0, 'stretch_compliance': 0, 'max_compression': 0, 'max_bending': 0.04, 'bend_compliance': 0, 'drag': 0.0, 'lift': 0.0, 'tether_compliance': 0, 'tether_scale': 1.0}}
+```
+
+```python
+{"$type": "create_obi_cloth_sheet", "sheet_type": "cloth", "cloth_material": {'$type': 'cloth_material', 'visual_material': 'cotton_canvas_washed_out', 'texture_scale': {'x': 4, 'y': 4}, 'visual_smoothness': 0, 'stretching_scale': 1.0, 'stretch_compliance': 0, 'max_compression': 0, 'max_bending': 0.04, 'bend_compliance': 0, 'drag': 0.0, 'lift': 0.0, 'tether_compliance': 0, 'tether_scale': 1.0}, "tether_positions": {TetherParticleGroup.four_corners: {"object_id": 0, "is_static": True}}, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "id": 0, "solver_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"sheet_type"` | ObiClothSheetType | The type of cloth sheet to create. | |
+| `"tether_positions"` | Dictionary< TetherParticleGroup, TetherType > | An dictionary of tether positions. Key = The particle group. Value = The tether position. | {TetherParticleGroup.four_corners: {"object_id": 0, "is_static": True}} |
+| `"cloth_material"` | ClothMaterial | The type of cloth "material", as defined by constraint settings. | |
+| `"position"` | Vector3 | The position of the Obi actor. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the Obi actor in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique ID of the emitter. | 0 |
+| `"solver_id"` | int | The ID of the Obi solver. | 0 |
+
+#### ObiClothSheetType
+
+The type of Obi cloth sheet to add to the scene.
+
+| Value | Description |
+| --- | --- |
+| `"cloth"` | A low-resolution cloth sheet. |
+| `"cloth_hd"` | A medium-resolution cloth sheet. |
+| `"cloth_vhd"` | A high-resolution cloth sheet. |
+
+***
+
+## **`create_obi_cloth_volume`**
+
+Create an Obi cloth volume object. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+
+```python
+{"$type": "create_obi_cloth_volume", "volume_type": "sphere", "cloth_material": {'$type': 'cloth_material', 'visual_material': 'cotton_canvas_washed_out', 'texture_scale': {'x': 4, 'y': 4}, 'visual_smoothness': 0, 'stretching_scale': 1.0, 'stretch_compliance': 0, 'max_compression': 0, 'max_bending': 0.04, 'bend_compliance': 0, 'drag': 0.0, 'lift': 0.0, 'tether_compliance': 0, 'tether_scale': 1.0}}
+```
+
+```python
+{"$type": "create_obi_cloth_volume", "volume_type": "sphere", "cloth_material": {'$type': 'cloth_material', 'visual_material': 'cotton_canvas_washed_out', 'texture_scale': {'x': 4, 'y': 4}, 'visual_smoothness': 0, 'stretching_scale': 1.0, 'stretch_compliance': 0, 'max_compression': 0, 'max_bending': 0.04, 'bend_compliance': 0, 'drag': 0.0, 'lift': 0.0, 'tether_compliance': 0, 'tether_scale': 1.0}, "scale_factor": {"x": 0, "y": 0, "z": 0}, "pressure": 0.5, "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "id": 0, "solver_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale_factor"` | Vector3 | The scale factor of the cloth object. | {"x": 0, "y": 0, "z": 0} |
+| `"volume_type"` | ObiClothVolumeType | The type of cloth sheet to create. | |
+| `"pressure"` | float | The amount of "inflation" of this cloth volume. | 0.5 |
+| `"cloth_material"` | ClothMaterial | The type of cloth "material", as defined by constraint settings. | |
+| `"position"` | Vector3 | The position of the Obi actor. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the Obi actor in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique ID of the emitter. | 0 |
+| `"solver_id"` | int | The ID of the Obi solver. | 0 |
+
+#### ObiClothVolumeType
+
+The type of Obi cloth volume to add to the scene.
+
+| Value | Description |
+| --- | --- |
+| `"sphere"` |  |
+| `"cube"` |  |
 
 # ObjectCommand
 
@@ -4454,8 +3905,8 @@ Rotate an object by a given angle around a given axis.
 | --- | --- | --- | --- |
 | `"axis"` | Axis | The axis of rotation. | "yaw" |
 | `"angle"` | float | The angle of rotation in degrees. | |
-| `"is_world"` | bool | If true, the object will rotate via "global" directions and angles. If false, the object will rotate locally. | True |
-| `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). This overrides is_world | False |
+| `"is_world"` | bool | If True, the object will rotate around global axes. If False, the object will around local axes. Ignored if use_centroid == False. | True |
+| `"use_centroid"` | bool | If True, rotate around the object's centroid. If False, rotate around the bottom-center position of the object. | False |
 | `"id"` | int | The unique object ID. | |
 
 #### Axis
@@ -4650,7 +4101,7 @@ Teleport an object to a new position.
 
 ## **`unparent_object`**
 
-Unparent an object from its current parent (an avatar, an avatar's camera, etc.). If the object doesn't have a parent, this command doesn't do anything.
+Unparent an object from an object. If the textured quad doesn't have a parent, this command doesn't do anything.
 
 
 ```python
@@ -4659,6 +4110,88 @@ Unparent an object from its current parent (an avatar, an avatar's camera, etc.)
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+
+# AddContainerShapeCommand
+
+These commands add container shapes to an object. Container shapes will check each frame for whether their container shapes overlap with other objects and send output data accordingly.
+
+***
+
+## **`add_box_container`**
+
+Add a box container shape to an object. The object will send output data whenever other objects overlap with this volume. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "add_box_container", "id": 1}
+```
+
+```python
+{"$type": "add_box_container", "id": 1, "half_extents": {"x": 1, "y": 1, "z": 1}, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"half_extents"` | Vector3 | The half extents of the box. | {"x": 1, "y": 1, "z": 1} |
+| `"rotation"` | Vector3 | The rotation of the box in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
+| `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`add_cylinder_container`**
+
+Add a cylindrical container shape to an object. The object will send output data whenever other objects overlap with this volume. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "add_cylinder_container", "id": 1}
+```
+
+```python
+{"$type": "add_cylinder_container", "id": 1, "radius": 0.5, "height": 1, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"radius"` | float | The radius of the cylinder. | 0.5 |
+| `"height"` | float | The height of the cylinder. | 1 |
+| `"rotation"` | Vector3 | The rotation of the cylinder in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
+| `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`add_sphere_container`**
+
+Add a spherical container shape to an object. The object will send output data whenever other objects overlap with this volume. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "add_sphere_container", "id": 1}
+```
+
+```python
+{"$type": "add_sphere_container", "id": 1, "radius": 0.5, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"radius"` | float | The radius of the sphere. | 0.5 |
+| `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
+| `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
 | `"id"` | int | The unique object ID. | |
 
 # FlexObjectCommand
@@ -4886,6 +4419,39 @@ Apply a force of a given magnitude along the forward directional vector of the o
 
 ***
 
+## **`apply_force_to_obi_cloth`**
+
+Apply a uniform force to an Obi cloth actor. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "apply_force_to_obi_cloth", "id": 1}
+```
+
+```python
+{"$type": "apply_force_to_obi_cloth", "id": 1, "force": {"x": 0, "y": 0, "z": 0}, "force_mode": "impulse"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | Vector3 | The force. | {"x": 0, "y": 0, "z": 0} |
+| `"force_mode"` | ForceMode | The force mode. | "impulse" |
+| `"id"` | int | The unique object ID. | |
+
+#### ForceMode
+
+Force modes for Obi actors.
+
+| Value | Description |
+| --- | --- |
+| `"force"` | Add a continuous force to the object, using its mass. |
+| `"impulse"` | Add an instant force impulse to the object, using its mass. |
+| `"velocity"` | Add an instant velocity change to the object, ignoring its mass. |
+| `"acceleration"` | Add a continuous acceleration to the object, ignoring its mass. |
+
+***
+
 ## **`apply_force_to_object`**
 
 Applies a directional force to the object's rigidbody.
@@ -4903,6 +4469,39 @@ Applies a directional force to the object's rigidbody.
 | --- | --- | --- | --- |
 | `"force"` | Vector3 | The directional force. | {"x": 0, "y": 0, "z": 1} |
 | `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_torque_to_obi_cloth`**
+
+Apply a uniform torque to an Obi cloth actor. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "apply_torque_to_obi_cloth", "id": 1}
+```
+
+```python
+{"$type": "apply_torque_to_obi_cloth", "id": 1, "torque": {"x": 0, "y": 0, "z": 0}, "force_mode": "impulse"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"torque"` | Vector3 | The torque. | {"x": 0, "y": 0, "z": 0} |
+| `"force_mode"` | ForceMode | The force mode. | "impulse" |
+| `"id"` | int | The unique object ID. | |
+
+#### ForceMode
+
+Force modes for Obi actors.
+
+| Value | Description |
+| --- | --- |
+| `"force"` | Add a continuous force to the object, using its mass. |
+| `"impulse"` | Add an instant force impulse to the object, using its mass. |
+| `"velocity"` | Add an instant velocity change to the object, ignoring its mass. |
+| `"acceleration"` | Add a continuous acceleration to the object, ignoring its mass. |
 
 ***
 
@@ -5170,6 +4769,23 @@ An enum value representation of a semantic material category.
 
 ***
 
+## **`set_sub_object_id`**
+
+Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique.
+
+
+```python
+{"$type": "set_sub_object_id", "sub_object_name": "string", "sub_object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"sub_object_name"` | string | The expected name of the sub-object. | |
+| `"sub_object_id"` | int | The new ID of the sub-object. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`show_collider_hulls`**
 
 Show the collider hulls of the object. 
@@ -5183,6 +4799,40 @@ Show the collider hulls of the object.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
+
+***
+
+## **`untether_obi_cloth_sheet`**
+
+Untether a cloth sheet at a specified position. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "untether_obi_cloth_sheet", "tether_position": "four_corners", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"tether_position"` | TetherParticleGroup | The position that will be un-tethered. | |
+| `"id"` | int | The unique object ID. | |
+
+#### TetherParticleGroup
+
+A group of particles from which an Obi cloth sheet can be tethered to another object. All directions are from the vantage point of looking down at a sheet spread out on the floor.
+
+| Value | Description |
+| --- | --- |
+| `"four_corners"` |  |
+| `"north_corners"` |  |
+| `"south_corners"` |  |
+| `"east_corners"` |  |
+| `"west_corners"` |  |
+| `"north_edge"` |  |
+| `"south_edge"` |  |
+| `"east_edge"` |  |
+| `"west_edge"` |  |
+| `"center"` |  |
 
 # HumanoidCommand
 
@@ -5426,6 +5076,28 @@ Set a visual material of an object or one of its sub-objects.
 | `"object_name"` | string | The name of the sub-object. | |
 | `"id"` | int | The unique object ID. | |
 
+***
+
+## **`set_visual_material_smoothness`**
+
+Set the smoothness (glossiness) of an object's visual material.
+
+
+```python
+{"$type": "set_visual_material_smoothness", "object_name": "string", "id": 1}
+```
+
+```python
+{"$type": "set_visual_material_smoothness", "object_name": "string", "id": 1, "smoothness": 0, "material_index": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"smoothness"` | float | The material smoothness. Must be between 0 and 1. | 0 |
+| `"material_index"` | int | The index of the material in the sub-object's list of materials. | 0 |
+| `"object_name"` | string | The name of the sub-object. | |
+| `"id"` | int | The unique object ID. | |
+
 # SetFlexActor
 
 These commands create a new FlexActor of type T with a FlexAsset of type U, or to modify an object that already has a component of type T. This command must be sent before applying any other Flex commands to an object. You probably will want to send set_kinematic_state prior to sending this command.
@@ -5438,6 +5110,7 @@ Create or adjust a FlexClothActor for the object.
 
 - <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 - <font style="color:blue">**NVIDIA Flex**: This command initializes Flex, or requires Flex to be initialized. See: [Flex documentation](../lessons/flex/flex.md)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_flex_cloth_actor", "id": 1}
@@ -6051,42 +5724,6 @@ Destroy ceiling tiles from a procedurally-created ceiling.
 
 These commands modify the floor of a procedurally-generated room.
 
-***
-
-## **`set_proc_gen_floor_color`**
-
-Set the albedo RGBA color of the floor. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"color"` | Color | The new albedo RGBA color of the floor. | |
-
-***
-
-## **`set_proc_gen_floor_texture_scale`**
-
-Set the scale of the tiling of the floor material's main texture. 
-
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_texture_scale"}
-```
-
-```python
-{"$type": "set_proc_gen_floor_texture_scale", "scale": {"x": 1, "y": 1}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale"` | Vector2 | The tiling scale of the material. Generally (but by no means always), the default tiling scale of a texture is {"x": 1, "y": 1} | {"x": 1, "y": 1} |
-
 # ProcGenMaterialCommand
 
 These commands add a material to part of the proc-gen room.
@@ -6101,23 +5738,6 @@ Set the material of a procedurally-generated ceiling.
 
 ```python
 {"$type": "set_proc_gen_ceiling_material", "name": "string"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"name"` | string | The name of the material. The material must already be loaded in memory. | |
-
-***
-
-## **`set_proc_gen_floor_material`**
-
-Set the material of a procedurally-generated floor. 
-
-- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
-
-```python
-{"$type": "set_proc_gen_floor_material", "name": "string"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6341,6 +5961,27 @@ Set whether or not the root object of the robot is immovable. Its joints will st
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"immovable"` | bool | If true, the root object of the robot is immovable. | True |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_robot_joint_id`**
+
+Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique.
+
+
+```python
+{"$type": "set_robot_joint_id", "joint_name": "string", "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_id", "joint_name": "string", "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"joint_name"` | string | The exected name of the joint. | |
+| `"joint_id"` | int | The new ID of the joint. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
 ***
@@ -6806,6 +6447,82 @@ Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint
 | `"joint_id"` | int | The ID of the joint. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
+# SetRobotJointPositionCommand
+
+These commands instantaneously set the robot joint angles and positions. These commands SHOULD NOT be used in place of physics-based motion. Unity will interpret these commands as a VERY fast motion. These commands should only be used when a robot is first created in order to set an initial pose.
+
+***
+
+## **`set_prismatic_position`**
+
+Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_prismatic_target`</font>
+
+```python
+{"$type": "set_prismatic_position", "position": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_prismatic_position", "position": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | float | The position in meters. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_revolute_angle`**
+
+Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_revolute_target`</font>
+
+```python
+{"$type": "set_revolute_angle", "angle": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_revolute_angle", "angle": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The angle in degrees. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_spherical_angles`**
+
+Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_spherical_target`</font>
+
+```python
+{"$type": "set_spherical_angles", "angles": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1}
+```
+
+```python
+{"$type": "set_spherical_angles", "angles": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angles"` | Vector3 | The angles in degrees. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
 # SendMultipleDataOnceCommand
 
 These commands send data exactly once to the controller (not per-frame). Unlike most output data such as Tranforms, there can be more than one output data object of this type in the build's response. For example, the build can send multiple Raycast objects in the same list.
@@ -6911,18 +6628,45 @@ Cast a box along a direction and return the results. The can be multiple hits, e
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
 ```python
-{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}}
 ```
 
 ```python
-{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+{"$type": "send_boxcast", "half_extents": {"x": 1.1, "y": 0.0, "z": 0}, "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"half_extents"` | Vector3 | The half-extents of the box. | |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
+
+***
+
+## **`send_mouse_raycast`**
+
+Raycast from a camera through the mouse screen position. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
+
+```python
+{"$type": "send_mouse_raycast"}
+```
+
+```python
+{"$type": "send_mouse_raycast", "avatar_id": "a", "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar of the rendering camera. | "a" |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 ***
@@ -6938,17 +6682,17 @@ Cast a ray from the origin to the destination.
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
 ```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "send_raycast"}
 ```
 
 ```python
-{"$type": "send_raycast", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+{"$type": "send_raycast", "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 ***
@@ -6964,18 +6708,18 @@ Cast a sphere along a direction and return the results. The can be multiple hits
     - <font style="color:green">**Type:** [`Raycast`](output_data.md#Raycast)</font>
 
 ```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+{"$type": "send_spherecast", "radius": 0.125}
 ```
 
 ```python
-{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+{"$type": "send_spherecast", "radius": 0.125, "origin": {"x": 0, "y": 0, "z": 0}, "destination": {"x": 1, "y": 1, "z": 1}, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"radius"` | float | The radius of the sphere. | |
-| `"origin"` | Vector3 | The origin of the raycast. | |
-| `"destination"` | Vector3 | The destination of the raycast. | |
+| `"origin"` | Vector3 | The origin of the raycast. | {"x": 0, "y": 0, "z": 0} |
+| `"destination"` | Vector3 | The destination of the raycast. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 # SingletonSubscriberCommand
@@ -7062,6 +6806,38 @@ Options for when to send data.
 
 ***
 
+## **`send_containment`**
+
+Send containment data using container shapes. See: <computeroutput>add_box_container</computeroutput>, <computeroutput>add_cylinder_container</computeroutput>, and <computeroutput>add_sphere_container</computeroutput>. Container shapes will check for overlaps with other objects. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+
+```python
+{"$type": "send_containment"}
+```
+
+```python
+{"$type": "send_containment", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_magnebots`**
 
 Send data for each Magnebot in the scene. 
@@ -7102,6 +6878,7 @@ Send dynamic data of each robot and each robot's body parts in the scene. See al
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`Robot`](output_data.md#Robot)</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "send_robots"}
@@ -7129,14 +6906,14 @@ Options for when to send data.
 
 ## **`send_robot_joint_velocities`**
 
-Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. 
+Send velocity data for each joint of each robot in the scene. This is separate from DynamicRobots output data for the sake of speed in certain simulations. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`RobotJointVelocities`](output_data.md#RobotJointVelocities)</font>
 - <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
 
-    - <font style="color:red">**Use this command instead:** `send_robots`</font>
+    - <font style="color:red">**Use this command instead:** `send_dynamic_robots`</font>
 
 ```python
 {"$type": "send_robot_joint_velocities"}
@@ -7272,7 +7049,7 @@ Send data for avatars in the scene.
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`AvatarKinematic`](output_data.md#AvatarKinematic), [`AvatarNonKinematic`](output_data.md#AvatarNonKinematic), [`AvatarSimpleBody`](output_data.md#AvatarSimpleBody), [`AvatarStickyMitten`](output_data.md#AvatarStickyMitten)</font>
+    - <font style="color:green">**Type:** [`AvatarKinematic`](output_data.md#AvatarKinematic), [`AvatarSimpleBody`](output_data.md#AvatarSimpleBody)</font>
 
 ```python
 {"$type": "send_avatars"}
@@ -7346,6 +7123,39 @@ Send camera matrix data for each camera.
 
 ```python
 {"$type": "send_camera_matrices", "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_field_of_view`**
+
+Send field of view for each camera. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`FieldOfView`](output_data.md#FieldOfView)</font>
+
+```python
+{"$type": "send_field_of_view"}
+```
+
+```python
+{"$type": "send_field_of_view", "ids": [], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7634,21 +7444,20 @@ Options for when to send data.
 
 ***
 
-## **`send_composite_objects`**
+## **`send_dynamic_composite_objects`**
 
-Send data for every composite object in the scene. 
+Send dynamic data for every composite object in the scene. 
 
-- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`CompositeObjects`](output_data.md#CompositeObjects)</font>
+    - <font style="color:green">**Type:** [`DynamicCompositeObjects`](output_data.md#DynamicCompositeObjects)</font>
 
 ```python
-{"$type": "send_composite_objects"}
+{"$type": "send_dynamic_composite_objects"}
 ```
 
 ```python
-{"$type": "send_composite_objects", "frequency": "once"}
+{"$type": "send_dynamic_composite_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7667,20 +7476,20 @@ Options for when to send data.
 
 ***
 
-## **`send_dynamic_composite_objects`**
+## **`send_dynamic_robots`**
 
-Send dynamic data for every composite object in the scene. 
+Send dynamic robot data for each robot in the scene. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`DynamicCompositeObjects`](output_data.md#DynamicCompositeObjects)</font>
+    - <font style="color:green">**Type:** [`DynamicRobots`](output_data.md#DynamicRobots)</font>
 
 ```python
-{"$type": "send_dynamic_composite_objects"}
+{"$type": "send_dynamic_robots"}
 ```
 
 ```python
-{"$type": "send_dynamic_composite_objects", "frequency": "once"}
+{"$type": "send_dynamic_robots", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7740,16 +7549,16 @@ Send transform (position, rotation, etc.) data for humanoids in the scene.
     - <font style="color:green">**Type:** [`Transforms`](output_data.md#Transforms)</font>
 
 ```python
-{"$type": "send_humanoids", "ids": [1, 2, 3]}
+{"$type": "send_humanoids", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_humanoids", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_humanoids", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the humanoids. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the humanoids. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -7844,6 +7653,38 @@ Send data for each directional light and point light in the scene.
 
 ```python
 {"$type": "send_lights", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_mouse`**
+
+Send mouse output data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Mouse`](output_data.md#Mouse)</font>
+
+```python
+{"$type": "send_mouse"}
+```
+
+```python
+{"$type": "send_mouse", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8142,16 +7983,16 @@ Send rotated bounds data of objects in the scene.
     - <font style="color:green">**Type:** [`Bounds`](output_data.md#Bounds)</font>
 
 ```python
-{"$type": "send_bounds", "ids": [1, 2, 3]}
+{"$type": "send_bounds", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_bounds", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_bounds", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8178,16 +8019,16 @@ Send Transform (position and rotation) data of objects in the scene relative to 
     - <font style="color:red">**Use this command instead:** `send_transforms`</font>
 
 ```python
-{"$type": "send_local_transforms", "ids": [1, 2, 3]}
+{"$type": "send_local_transforms", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_local_transforms", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_local_transforms", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8211,16 +8052,16 @@ Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.
     - <font style="color:green">**Type:** [`Rigidbodies`](output_data.md#Rigidbodies)</font>
 
 ```python
-{"$type": "send_rigidbodies", "ids": [1, 2, 3]}
+{"$type": "send_rigidbodies", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_rigidbodies", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_rigidbodies", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8242,18 +8083,19 @@ Send segmentation color data for objects in the scene.
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`SegmentationColors`](output_data.md#SegmentationColors)</font>
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 
 ```python
-{"$type": "send_segmentation_colors", "ids": [1, 2, 3]}
+{"$type": "send_segmentation_colors", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_segmentation_colors", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_segmentation_colors", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8277,16 +8119,16 @@ Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene
     - <font style="color:green">**Type:** [`StaticRigidbodies`](output_data.md#StaticRigidbodies)</font>
 
 ```python
-{"$type": "send_static_rigidbodies", "ids": [1, 2, 3]}
+{"$type": "send_static_rigidbodies", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_static_rigidbodies", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_static_rigidbodies", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8310,16 +8152,16 @@ Send Transform (position and rotation) data of objects in the scene.
     - <font style="color:green">**Type:** [`Transforms`](output_data.md#Transforms)</font>
 
 ```python
-{"$type": "send_transforms", "ids": [1, 2, 3]}
+{"$type": "send_transforms", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_transforms", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_transforms", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8345,16 +8187,16 @@ Send spatial volume data of objects in the scene. Volume is calculated from the 
 - <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
 
 ```python
-{"$type": "send_volumes", "ids": [1, 2, 3]}
+{"$type": "send_volumes", "ids": [0, 1, 2]}
 ```
 
 ```python
-{"$type": "send_volumes", "ids": [1, 2, 3], "frequency": "once"}
+{"$type": "send_volumes", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"ids"` | int[] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -8407,6 +8249,22 @@ Destroy an existing textured quad.
 # AdjustTexturedQuadCommand
 
 These commands adjust an existing textured quad.
+
+***
+
+## **`parent_textured_quad_to_object`**
+
+Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object.
+
+
+```python
+{"$type": "parent_textured_quad_to_object", "object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the parent object in the scene. | |
+| `"id"` | int | The unique ID of this textured quad. | |
 
 ***
 
@@ -8530,6 +8388,21 @@ Teleport a textured quad to a new position.
 | `"position"` | Vector3 | New position of the quad. | |
 | `"id"` | int | The unique ID of this textured quad. | |
 
+***
+
+## **`unparent_textured_quad`**
+
+Unparent a textured quad from a parent object. If the textured quad doesn't have a parent object, this command doesn't do anything.
+
+
+```python
+{"$type": "unparent_textured_quad", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of this textured quad. | |
+
 # UiCommand
 
 These commands adjust the UI.
@@ -8634,7 +8507,7 @@ Add a UI image to the scene. Note that the size parameter must match the actual 
 ```
 
 ```python
-{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "canvas_id": 0}
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8647,6 +8520,7 @@ Add a UI image to the scene. Note that the size parameter must match the actual 
 | `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
 | `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
 | `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
@@ -8662,7 +8536,7 @@ Add UI text to the scene.
 ```
 
 ```python
-{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "canvas_id": 0}
+{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8673,6 +8547,7 @@ Add UI text to the scene.
 | `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
 | `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
 | `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
+| `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
@@ -8741,6 +8616,125 @@ Set the text of a Text object that is already on the screen.
 | `"text"` | string | The new text. | |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+# VideoCaptureCommand
+
+These commands start and stop audio-visual capture using ffmpeg. These commands assume that you've already installed ffmpeg on your computer.
+
+***
+
+## **`stop_video_capture`**
+
+Stop ongoing video capture.
+
+
+```python
+{"$type": "stop_video_capture"}
+```
+
+# StartVideoCaptureCommand
+
+These commands start video capture using ffmpeg. Because ffmpeg arguments are platform-specific, you must use the platform-specific command, e.g. start_video_capture_windows
+
+***
+
+## **`start_video_capture_linux`**
+
+Start video capture using ffmpeg. This command can only be used on Linux.
+
+
+```python
+{"$type": "start_video_capture_linux", "output_path": "string"}
+```
+
+```python
+{"$type": "start_video_capture_linux", "output_path": "string", "display": 0, "screen": 0, "audio_device": "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor", "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"display"` | int | The X11 display index. To review your X11 setup: cat /etc/X11/xorg.conf | 0 |
+| `"screen"` | int | The X11 screen index. To review your X11 setup: cat /etc/X11/xorg.conf | 0 |
+| `"audio_device"` | string | The pulseaudio device name. Ignored if audio == False. To get a list of devices: pactl list sources | grep output | "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor" |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
+| `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
+| `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
+| `"framerate"` | int | The framerate of the output video. | 60 |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
+| `"audio"` | bool | If True, audio will be captured. | True |
+| `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
+| `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
+| `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
+
+***
+
+## **`start_video_capture_osx`**
+
+Start video capture using ffmpeg. This command can only be used on OS X.
+
+
+```python
+{"$type": "start_video_capture_osx", "output_path": "string"}
+```
+
+```python
+{"$type": "start_video_capture_osx", "output_path": "string", "video_device": 1, "audio_device": 0, "size_scale_factor": 2, "position_scale_factor": 2, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"video_device"` | int | The video device index. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 1 |
+| `"audio_device"` | int | The audio device index. Ignored if audio == False. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 0 |
+| `"size_scale_factor"` | int | On retina screens, the actual window size is scaled. Set this scale factor to scale the video capture size. | 2 |
+| `"position_scale_factor"` | int | On retina screens, the actual window size is scaled. Set this scale factor to scale the video capture position. | 2 |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
+| `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
+| `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
+| `"framerate"` | int | The framerate of the output video. | 60 |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
+| `"audio"` | bool | If True, audio will be captured. | True |
+| `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
+| `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
+| `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
+
+***
+
+## **`start_video_capture_windows`**
+
+Start video capture using ffmpeg. This command can only be used on Windows.
+
+
+```python
+{"$type": "start_video_capture_windows", "output_path": "string"}
+```
+
+```python
+{"$type": "start_video_capture_windows", "output_path": "string", "audio_device": "", "audio_buffer_size": 5, "draw_mouse": False, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"audio_device"` | string | The name of the audio device. Ignored if audio == False. To get a list of devices: ffmpeg -list_devices true -f dshow -i dummy | "" |
+| `"audio_buffer_size"` | int | The audio buffer size in ms. This should always be greater than 0. Adjust this if the audio doesn't sync with the video. See: <ulink url="https://ffmpeg.org/ffmpeg-devices.html">https://ffmpeg.org/ffmpeg-devices.html</ulink> (search for audio_buffer_size). | 5 |
+| `"draw_mouse"` | bool | If True, show the mouse in the video. | False |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
+| `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
+| `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
+| `"framerate"` | int | The framerate of the output video. | 60 |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
+| `"audio"` | bool | If True, audio will be captured. | True |
+| `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
+| `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
+| `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
 
 # VrCommand
 

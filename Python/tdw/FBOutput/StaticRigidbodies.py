@@ -19,25 +19,76 @@ class StaticRigidbodies(object):
         self._tab = tdw.flatbuffers.table.Table(buf, pos)
 
     # StaticRigidbodies
-    def Objects(self, j):
+    def Ids(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
-            x = self._tab.Vector(o)
-            x += tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j) * 24
-            from .StaticRigidbodyData import StaticRigidbodyData
-            obj = StaticRigidbodyData()
-            obj.Init(self._tab.Bytes, x)
-            return obj
-        return None
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
 
     # StaticRigidbodies
-    def ObjectsLength(self):
+    def IdsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
+        return 0
+
+    # StaticRigidbodies
+    def IdsLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def StaticRigidbodiesStart(builder): builder.StartObject(1)
-def StaticRigidbodiesAddObjects(builder, objects): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(objects), 0)
-def StaticRigidbodiesStartObjectsVector(builder, numElems): return builder.StartVector(24, numElems, 4)
+    # StaticRigidbodies
+    def PhysicsValues(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # StaticRigidbodies
+    def PhysicsValuesAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
+        return 0
+
+    # StaticRigidbodies
+    def PhysicsValuesLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # StaticRigidbodies
+    def Kinematic(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
+
+    # StaticRigidbodies
+    def KinematicAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.BoolFlags, o)
+        return 0
+
+    # StaticRigidbodies
+    def KinematicLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def StaticRigidbodiesStart(builder): builder.StartObject(3)
+def StaticRigidbodiesAddIds(builder, ids): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(ids), 0)
+def StaticRigidbodiesStartIdsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StaticRigidbodiesAddPhysicsValues(builder, physicsValues): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(physicsValues), 0)
+def StaticRigidbodiesStartPhysicsValuesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StaticRigidbodiesAddKinematic(builder, kinematic): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(kinematic), 0)
+def StaticRigidbodiesStartKinematicVector(builder, numElems): return builder.StartVector(1, numElems, 1)
 def StaticRigidbodiesEnd(builder): return builder.EndObject()

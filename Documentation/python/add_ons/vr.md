@@ -44,12 +44,14 @@ Note that this is an abstract class. Different types of VR rigs use different su
 
 **`VR(rig_type)`**
 
-**`VR(rig_type, output_data=True, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0)`**
+**`VR(rig_type, output_data=True, position=None, rotation=0, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | rig_type |  RigType |  | The [`RigType`](../vr_data/rig_type.md). |
 | output_data |  bool  | True | If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame. |
+| position |  Dict[str, float] | None | The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}` |
+| rotation |  float  | 0 | The initial rotation of the VR rig in degrees. |
 | attach_avatar |  bool  | False | If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`. |
 | avatar_camera_width |  int  | 512 | The width of the avatar's camera in pixels. *This is not the same as the VR headset's screen resolution!* This only affects the avatar that is created if `attach_avatar` is `True`. Generally, you will want this to lower than the headset's actual pixel width, otherwise the framerate will be too slow. |
 | headset_aspect_ratio |  float  | 0.9 | The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices. |
@@ -80,7 +82,7 @@ Any commands in the `self.commands` list will be sent on the next frame.
 
 **`self.before_send(commands)`**
 
-This is called before sending commands to the build. By default, this function doesn't do anything.
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -110,4 +112,11 @@ Rotate the VR rig by an angle.
 
 **`self.reset()`**
 
+**`self.reset(position=None, rotation=0)`**
+
 Reset the VR rig. Call this whenever a scene is reset.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| position |  Dict[str, float] | None | The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}` |
+| rotation |  float  | 0 | The initial rotation of the VR rig in degrees. |

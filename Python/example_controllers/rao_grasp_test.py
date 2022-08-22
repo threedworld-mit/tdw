@@ -27,8 +27,8 @@ c = Controller(launch_build=False)
 logger = Logger(record=True, path="log.json")
 c.add_ons.append(logger)
 c.communicate([])
-c.communicate(TDWUtils.create_empty_room(12, 12))
-c.communicate(TDWUtils.create_avatar(position={"x": 2, "y": 1.5, "z": 4}, look_at={"x": 2.05, "y": 1, "z": 2.05}))
+c.communicate(TDWUtils.create_empty_room(12, 20))
+c.communicate(TDWUtils.create_avatar(position={"x": 0, "y": 1.5, "z": 4}, look_at={"x": 0, "y": 1, "z": 0}))
 
 replicant_id=c.get_unique_id()
 basket_id = c.get_unique_id()
@@ -37,7 +37,7 @@ ball_id = c.get_unique_id()
 affordance_id = 0
 reach_arm = "left"
 
-replicant = Replicant(replicant_id=replicant_id, position={"x": 0.2, "y": 0.2, "z": -4})
+replicant = Replicant(replicant_id=replicant_id, position={"x": 0.2, "y": 0.2, "z": -8})
 c.add_ons.append(replicant)
 commands=[]
 commands.extend(c.get_add_physics_object(model_name="prim_sphere",
@@ -87,6 +87,9 @@ while replicant.action.status == ActionStatus.ongoing:
 
 replicant.drop(target=basket_id, arm="left")
 while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+
+for i in range(200):
     c.communicate([])
 
 logger.save()

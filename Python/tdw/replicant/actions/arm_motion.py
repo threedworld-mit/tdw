@@ -1,6 +1,7 @@
 from typing import Dict, List, Tuple
 from abc import ABC, abstractmethod
 from overrides import final
+from tdw.tdw_utils import TDWUtils
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.actions.action import Action
 from tdw.replicant.image_frequency import ImageFrequency
@@ -28,6 +29,7 @@ class ArmMotion(Action, ABC):
         self._resetting: bool = False
         self.reach_action_length=30
         self.reset_action_length=20
+        self.drop_length=5
         self.reach_arm = arm
 
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
@@ -55,7 +57,6 @@ class ArmMotion(Action, ABC):
                           "frequency": "always"}])
         return commands
 
-
     def _get_reach_commands(self, dynamic: ReplicantDynamic, target_position: Dict[str, float]) -> List[dict]:
         commands=[]
         # Reach for IK target, at affordance position. 
@@ -66,11 +67,14 @@ class ArmMotion(Action, ABC):
                           "arm": self.reach_arm})
         return commands
 
+
     def _get_hold_object_commands(self, dynamic: ReplicantDynamic, target_position: Dict[str, float], object_id: int, affordance_id: int) -> List[dict]:
         commands=[]
-        # Move the arm holding the object to a reasonable carrying position.     
+        # Move the arm holding the object to a reasonable carrying position. 
+        pos = TDWUtils.array_to_vector3(dynamic.position)
+        hold_pos = TDWUtils.array_to_vector3(dynamic.position + dynamic.forward)
         commands.extend([{"$type": "humanoid_reach_for_position", 
-                                   "position": {"x": target_position["x"], "y": target_position["y"] + 0.5, "z": target_position["z"]}, 
+                                   "position": {"x": hold_pos["x"] * 0.5, "y": pos["y"] + 1.0, "z":hold_pos["z"] * 0.5}, 
                                    "target":object_id, 
                                    "affordance_id": affordance_id, 
                                    "id": dynamic.replicant_id,
@@ -83,7 +87,7 @@ class ArmMotion(Action, ABC):
                                "length": self.reset_action_length, 
                                "arm": self.reach_arm}])
         return commands
-
+   
     def _get_drop_commands(self, dynamic: ReplicantDynamic, object_id: int, offset: Dict[str, float]) -> List[dict]:
         commands=[]
         commands.extend([{"$type": "humanoid_drop_object",

@@ -48,7 +48,7 @@ class Drop(ArmMotion):
             self.initialized_drop = True
             return commands
         # We've completed the drop.
-        if self.frame_count >= self.reset_action_length:
+        if self.frame_count >= self.drop_length:
             self.status = ActionStatus.success
             commands = []
             commands.extend(AffordancePoints.reset_affordance_points(self.target))
@@ -56,7 +56,7 @@ class Drop(ArmMotion):
         elif not self._is_valid_ongoing(dynamic=self.dynamic):
             return []
         else:
-            while self.frame_count < self.reset_action_length:
+            while self.frame_count < self.drop_length:
                 self.frame_count += 1 
                 return []
 

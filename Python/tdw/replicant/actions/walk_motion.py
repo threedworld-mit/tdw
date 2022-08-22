@@ -26,7 +26,7 @@ class WalkMotion(Action, ABC):
         self._collision_detection: CollisionDetection = collision_detection
         self._resetting: bool = False
         self.meters_per_frame = 0.04911
-        self.walk_cycle_num_frames = 69
+        self.walk_cycle_num_frames = 68
         self.playing = False
 
         # Immediately end the action if the previous action was the same motion and it ended with a collision.

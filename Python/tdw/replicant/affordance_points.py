@@ -20,7 +20,8 @@ class AffordancePoints():
                                               gravity: bool = True,
                                               default_physics_values: bool = True, mass: float = 1,
                                               dynamic_friction: float = 0.3,
-                                              static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]:
+                                              static_friction: float = 0.3, bounciness: float = 0.7,
+                                              show_markers: bool = False) -> List[dict]:
         # Add the object with physics parameters.
         commands = Controller.get_add_physics_object(model_name=model_name, object_id=object_id, position=position,
                                                      rotation=rotation, library=library, scale_factor=scale_factor,
@@ -38,15 +39,16 @@ class AffordancePoints():
                 AffordancePoints.EMPTY_OBJECT_IDS[empty_object_id] = {"object_id": object_id,
                                                                       "position": affordance_position}
                 # Add a command to attach an empty object.
-                commands.extend([{"$type": "attach_empty_object",
+                commands.append({"$type": "attach_empty_object",
                                  "id": object_id,
                                  "empty_object_id": empty_object_id,
-                                 "position": affordance_position},
-                                 {"$type": "add_position_marker", 
+                                 "position": affordance_position})
+                if show_markers:
+                    commands.append({"$type": "add_position_marker", 
                                   "position":  {'x': affordance_position['x'], 'y': affordance_position['y'] + 0.35, 'z': affordance_position['z']}, 
                                   "scale": 0.05, 
                                   "color": {"r": 1, "g": 0, "b": 0, "a": 1},
-                                  "shape": "sphere"}])
+                                  "shape": "sphere"})
                 # Remember the position.
                 AffordancePoints.AFFORDANCE_POINTS_BY_OBJECT_ID[object_id][empty_object_id] = affordance_position
         return commands

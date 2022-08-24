@@ -42,6 +42,11 @@ reach_arm = "left"
 replicant = Replicant(replicant_id=replicant_id, position={"x": 0, "y": 0, "z": -8}, image_frequency=ImageFrequency.never)
 c.add_ons.append(replicant)
 commands=[]
+commands.extend([{"$type": "set_screen_size",
+                           "width": 1920,
+                           "height": 1080},
+                          {"$type": "set_render_quality",
+                           "render_quality": 5}])
 commands.extend(c.get_add_physics_object(model_name="prim_sphere",
                                object_id=ball_id,
                                position={"x": 3.5, "y": 0, "z": -3.5},

@@ -29,7 +29,7 @@ logger = Logger(record=True, path="log.json")
 c.add_ons.append(logger)
 c.communicate([])
 c.communicate(TDWUtils.create_empty_room(12, 20))
-c.communicate(TDWUtils.create_avatar(position={"x": 0, "y": 1.5, "z": 4}, look_at={"x": 0, "y": 1, "z": 0}))
+c.communicate(TDWUtils.create_avatar(position={"x": 1, "y": 1.175, "z": 5}, look_at={"x": 0, "y": 1, "z": 0}))
 
 replicant_id=c.get_unique_id()
 basket_id = c.get_unique_id()
@@ -38,12 +38,12 @@ ball_id = c.get_unique_id()
 affordance_id = 0
 reach_arm = "left"
 
-replicant = Replicant(replicant_id=replicant_id, position={"x": 0.2, "y": 0.2, "z": -8}, image_frequency=ImageFrequency.never)
+replicant = Replicant(replicant_id=replicant_id, position={"x": 0, "y": 0, "z": -8}, image_frequency=ImageFrequency.never)
 c.add_ons.append(replicant)
 commands=[]
 commands.extend(c.get_add_physics_object(model_name="prim_sphere",
                                object_id=ball_id,
-                               position={"x": 3, "y": 0, "z": -3},
+                               position={"x": 3.5, "y": 0, "z": -3.5},
                                rotation={"x": 0, "y": 0, "z": 0},
                                scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
                                kinematic=True,
@@ -51,13 +51,13 @@ commands.extend(c.get_add_physics_object(model_name="prim_sphere",
                                library="models_special.json"))
 commands.append(c.get_add_object(model_name="live_edge_coffee_table",
                                              object_id=table_id,
-                                             position={"x": 0, "y": 0, "z": 0},
+                                             position={"x": -1, "y": 0, "z": 2},
                                              rotation={"x": 0, "y": 20, "z": 0},
                                              library="models_core.json"))
 
 commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_name="basket_18inx18inx12iin_wicker",
                                                                        object_id=basket_id,
-                                                                       position={"x": 0, "y": 0.35, "z": 0},
+                                                                       position={"x": -1, "y": 0.35, "z": 2},
                                                                        rotation={"x": 0, "y": 0, "z": 0}))
 
 c.communicate(commands)

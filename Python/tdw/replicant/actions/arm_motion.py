@@ -9,6 +9,7 @@ from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.arm import Arm
+import numpy as np
 
 
 class ArmMotion(Action, ABC):
@@ -72,9 +73,9 @@ class ArmMotion(Action, ABC):
         commands=[]
         # Move the arm holding the object to a reasonable carrying position. 
         pos = TDWUtils.array_to_vector3(dynamic.position)
-        hold_pos = TDWUtils.array_to_vector3(dynamic.position + dynamic.forward)
+        hold_dist = np.linalg.norm(dynamic.position + dynamic.forward) * 0.1
         commands.extend([{"$type": "humanoid_reach_for_position", 
-                                   "position": {"x": hold_pos["x"] * 0.5, "y": pos["y"] + 1.0, "z":hold_pos["z"] * 0.5}, 
+                                   "position": {"x": target_position["x"] + hold_dist, "y": pos["y"] + 1.25, "z":target_position["z"] + hold_dist}, 
                                    "target":object_id, 
                                    "affordance_id": affordance_id, 
                                    "id": dynamic.replicant_id,
@@ -90,16 +91,10 @@ class ArmMotion(Action, ABC):
    
     def _get_drop_commands(self, dynamic: ReplicantDynamic, object_id: int, offset: Dict[str, float]) -> List[dict]:
         commands=[]
-        commands.extend([{"$type": "humanoid_drop_object",
+        commands.append({"$type": "humanoid_drop_object",
                           "target": object_id,
                           "id": dynamic.replicant_id,
-                          "arm": self.reach_arm},
-                         {"$type": "translate_object_by", 
-                         "position": {"x": -offset["z"], "y": -offset["y"], "z": -offset["x"]},
-                         "absolute": False,
-                         "id": object_id},
-                        {"$type": "rotate_object_to", 
-                         "rotation": {"w": 1.0, "x": 0, "y": 0, "z": 0}, "id": object_id}])
+                          "arm": self.reach_arm})
         return commands
 
     @final

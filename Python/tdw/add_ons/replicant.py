@@ -88,7 +88,7 @@ class Replicant(AddOn):
                       "name": "ha_proto_v1a",
                       "position": self.initial_position,
                       "rotation": self.initial_rotation,
-                      "url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
+                      "url": "file:///" + "D://TDW_Strategic_Plan_2021//HumanoidAgent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
                       #"url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//replicant",
                       "id": self.replicant_id},
                     {"$type": "add_humanoid_animation", "name": self.walk_record.name, "url": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/walking_2"},

@@ -30,11 +30,15 @@ class ReplicantDynamic:
         """:field
         The current position of this replicant.
         """
-        self.position = {"x": 0, "y": 0, "z": 0}
+        self.position: np.array = [0, 0, 0]
         """:field
         The current orientation of this replicant.
         """
-        self.rotation = {"x": 0, "y": 0, "z": 0}
+        self.rotation: np.array = [0, 0, 0]
+        """:field
+        The current forward direction vector of this replicant.
+        """
+        self.forward: np.array = [0, 0, 0]
         """:field
         A dictionary of collisions between one of this replicant's [body parts (joints or non-moving)](replicant_static.md) and another object.
         Key = A tuple where the first element is the body part ID and the second element is the object ID.

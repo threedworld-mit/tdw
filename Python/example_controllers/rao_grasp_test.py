@@ -5,6 +5,7 @@ from tdw.add_ons.logger import Logger
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.arm import Arm
 from tdw.replicant.affordance_points import AffordancePoints
+from tdw.replicant.image_frequency import ImageFrequency
 import numpy as np
 
 """
@@ -37,7 +38,7 @@ ball_id = c.get_unique_id()
 affordance_id = 0
 reach_arm = "left"
 
-replicant = Replicant(replicant_id=replicant_id, position={"x": 0.2, "y": 0.2, "z": -8})
+replicant = Replicant(replicant_id=replicant_id, position={"x": 0.2, "y": 0.2, "z": -8}, image_frequency=ImageFrequency.never)
 c.add_ons.append(replicant)
 commands=[]
 commands.extend(c.get_add_physics_object(model_name="prim_sphere",

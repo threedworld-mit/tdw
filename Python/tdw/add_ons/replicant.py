@@ -23,6 +23,7 @@ from tdw.replicant.actions.move_to import MoveTo
 from tdw.replicant.actions.reach_for import ReachFor
 from tdw.replicant.actions.grasp import Grasp
 from tdw.replicant.actions.drop import Drop
+from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.arm import Arm
 
@@ -243,6 +244,18 @@ class Replicant(AddOn):
         """
 
         self.action = Drop(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
+                               collision_detection=self.collision_detection, previous=self._previous_action)
+
+    def reset_arm(self, arm: Arm) -> None:
+        """
+        Reset arm to rest position, after performing an action.
+
+        :param target: The target object ID. 
+        :param arm: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
+        :param hand_position: If the difference between the current angle and the target angle is less than this value, then the action is successful.
+        """
+
+        self.action = ResetArm(resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
                                collision_detection=self.collision_detection, previous=self._previous_action)
 
     def _cache_static_data(self, resp: List[bytes]) -> None:

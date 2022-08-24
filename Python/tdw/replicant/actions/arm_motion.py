@@ -97,6 +97,13 @@ class ArmMotion(Action, ABC):
                           "arm": self.reach_arm})
         return commands
 
+    def _get_reset_arm_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
+        commands=[]
+        commands.append({"$type": "humanoid_reset_arm",
+                          "id": dynamic.replicant_id,
+                          "arm": self.reach_arm})
+        return commands
+
     @final
     def _is_valid_ongoing(self, dynamic: ReplicantDynamic) -> bool:
         """

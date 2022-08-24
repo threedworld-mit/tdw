@@ -29,12 +29,13 @@ logger = Logger(record=True, path="log.json")
 c.add_ons.append(logger)
 c.communicate([])
 c.communicate(TDWUtils.create_empty_room(12, 20))
-c.communicate(TDWUtils.create_avatar(position={"x": 1, "y": 1.175, "z": 5}, look_at={"x": 0, "y": 1, "z": 0}))
+c.communicate(TDWUtils.create_avatar(position={"x": -0.5, "y": 1.175, "z": 6}, look_at={"x": 0.5, "y": 1, "z": 0}))
 
 replicant_id=c.get_unique_id()
 basket_id = c.get_unique_id()
 table_id = c.get_unique_id()
 ball_id = c.get_unique_id()
+ball_id2 = c.get_unique_id()
 affordance_id = 0
 reach_arm = "left"
 
@@ -44,6 +45,14 @@ commands=[]
 commands.extend(c.get_add_physics_object(model_name="prim_sphere",
                                object_id=ball_id,
                                position={"x": 3.5, "y": 0, "z": -3.5},
+                               rotation={"x": 0, "y": 0, "z": 0},
+                               scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
+                               kinematic=True,
+                               gravity=False,
+                               library="models_special.json"))
+commands.extend(c.get_add_physics_object(model_name="prim_sphere",
+                               object_id=ball_id2,
+                               position={"x": -1, "y": 0, "z": -7.5},
                                rotation={"x": 0, "y": 0, "z": 0},
                                scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
                                kinematic=True,
@@ -90,7 +99,12 @@ replicant.drop(target=basket_id, arm="left")
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
-for i in range(200):
+replicant.reset_arm(arm="left")
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+
+replicant.move_to(target=ball_id2, arrived_offset=0.25)
+while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
 logger.save()

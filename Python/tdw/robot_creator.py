@@ -332,7 +332,7 @@ class RobotCreator(AssetBundleCreatorBase):
                         args=args,
                         log_path=AssetBundleCreatorBase._get_log_path(output_directory))
 
-    def create_record(self, urdf_path: Union[str, Path], output_directory: Union[str, Path],
+    def create_record(self, name: str, output_directory: Union[str, Path],
                       library_path: Union[str, Path] = None, library_description: str = None,
                       source_description: str = None, immovable: bool = True) -> None:
         """
@@ -367,7 +367,7 @@ class RobotCreator(AssetBundleCreatorBase):
         - `record.json` is a serialized `RobotRecord`.
         - `library.json` is a serialized `RobotLibrarian`. It will only be added/set if the optional `library_path` is set.
 
-        :param urdf_path: The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
+        :param name: The name of the robot.
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
         :param library_path: If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`.
         :param library_description: A description of the library. Ignored if `library_path` is None.
@@ -375,8 +375,8 @@ class RobotCreator(AssetBundleCreatorBase):
         :param immovable: If True, the base of the robot is immovable.
         """
 
-        args = self._get_source_destination_args(name=RobotCreator.get_name(urdf_path),
-                                                 source=urdf_path,
+        args = self._get_source_destination_args(name=name,
+                                                 source="dummy",
                                                  destination=output_directory)
         if source_description is not None:
             args.append(f'-source_description="{source_description}"')

@@ -7,6 +7,7 @@ import os
 import re
 from time import sleep
 from overrides import final
+from requests import get
 from tdw.backend.platforms import SYSTEM_TO_UNITY
 
 
@@ -23,14 +24,28 @@ class AssetBundleCreatorBase(ABC):
     The path to the `asset_bundle_creator` Unity project.
     """
     PROJECT_PATH: Path = Path.home().joinpath("asset_bundle_creator")
+    _BUNDLE_VERSION_REGEX: str = "bundleVersion: (.*)"
 
-    def __init__(self, quiet: bool = False, display: str = ":0", unity_editor_path: Union[Path, str] = None):
+    def __init__(self, quiet: bool = False, display: str = ":0", unity_editor_path: Union[Path, str] = None,
+                 check_version: bool = True):
         """
         :param quiet: If True, don't print any messages to console.
         :param display: The display to launch Unity Editor on. Ignored if this isn't Linux.
         :param unity_editor_path: The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically.
+        :param check_version: If True, check if there is an update to the Unity Editor project.
         """
 
+        if check_version:
+            resp = get("https://raw.githubusercontent.com/alters-mit/asset_bundle_creator/main/ProjectSettings/ProjectSettings.asset").text
+            remote_version = re.search(AssetBundleCreatorBase._BUNDLE_VERSION_REGEX,
+                                       resp,
+                                       flags=re.MULTILINE).group(1)
+            local_version = re.search(AssetBundleCreatorBase._BUNDLE_VERSION_REGEX,
+                                      AssetBundleCreatorBase.PROJECT_PATH.joinpath("ProjectSettings/ProjectSettings.asset").resolve().read_text(),
+                                      flags=re.MULTILINE).group(1)
+            if remote_version != local_version:
+                print(f"You are using version {local_version} but version {remote_version} is available. To update:\n" +
+                      "cd asset_bundle_creator\ngit pull")
         # Get the binaries path and verify that AssetBundleCreator will work on this platform.
         system = platform.system()
         # Copy environment variables.
@@ -53,7 +68,6 @@ class AssetBundleCreatorBase(ABC):
             # Get the path to the Editor executable.
             if system == "Windows":
                 editor_path = Path('C:/Program Files/Unity/Hub/Editor/')
-
                 # Sometimes Unity Hub is installed here instead.
                 if not editor_path.exists():
                     editor_path = Path('C:/Program Files/Unity Hub/')

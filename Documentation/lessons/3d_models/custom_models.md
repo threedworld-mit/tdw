@@ -16,16 +16,26 @@ It is possible to add any 3D model to TDW. However, the underlying Unity engine 
   - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `AssetBundleCreator` constructor (see below).
 - A .fbx or .obj+.mtl model
 
-## The `AssetBundleCreator`
+## The Asset Bundle Creator Unity project
+
+To convert mesh files into asset bundles, TDW uses [Asset Bundle Creator](https://github.com/alters-mit/asset_bundle_creator), a Unity Editor project. It is possible to run the Unity project without any Python wrapper classes but there is usually no reason to do so.
+
+Asset Bundle Creator will be  downloaded automatically the first time you use the Python wrapper class (see below).
+
+## The `AssetBundleCreator` Python class
 
 The [`AssetBundleCreator`](../../python/asset_bundle_creator.md) Python class will convert an .fbx or .obj file into an asset bundle and generate physics colliders. Depending on the complexity of the base mesh, this can be a lengthy process, especially when generating physics colliders.
 
 ```python
+from pathlib import Path
 from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
-a = AssetBundleCreator()
-model_path = "test.fbx" # Change this to the actual path.
-asset_bundle_paths, record_path = a.create_asset_bundle(model_path=model_path, cleanup=True)
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
+print(f"Asset bundles will be saved to: {output_directory}")
+AssetBundleCreator().source_file_to_asset_bundles(name="cube",
+                                                  source_file=Path("cube.fbx").resolve(),
+                                                  output_directory=output_directory)
 ```
 
 `asset_bundle_paths` is a list of [Paths](https://docs.python.org/3/library/pathlib.html) to the generated asset bundles for Windows, OS X and Linux. `record_path` is the path to a json file containing the [model metadata](../../python/librarian/model_librarian.md).

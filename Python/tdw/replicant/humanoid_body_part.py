@@ -3,7 +3,7 @@ from enum import Enum
 
 class HumanoidBodyPart(Enum):
     """
-    The name of a Replicant body part that includes a collider
+    The name of a Replicant body part that includes a collider.
     """
 
     spine_01 = 0

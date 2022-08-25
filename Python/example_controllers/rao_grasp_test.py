@@ -76,14 +76,6 @@ commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_nam
 
 c.communicate(commands)
 
-"""
-replicant.turn_to(target=table_id)
-while replicant.action.status == ActionStatus.ongoing:
-    c.communicate([])
-replicant.move_by(distance=3.5097961468992818)
-while replicant.action.status == ActionStatus.ongoing:
-    c.communicate([])
-"""
 replicant.move_to(target=table_id, arrived_offset=0.5)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])

@@ -11,23 +11,7 @@ class AddOn(ABC):
 
     We recommend that new TDW users use add-ons in their controllers, while more experienced users might prefer to have more fine-grained control. Add-ons are a new feature in TDW as of v1.9.0 and we're still in the process of updating our example controllers.
 
-    ## Usage
-
-    To attach an add-on, append it to the `add_ons` list.
-    Every time `Controller.communicate(commands)` is called, the add-on will evaluate the response from the build via `on_send(resp)`. The add-on can send additional commands to the build on the next frame or do something within its own state (such as update an ongoing log):
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.add_ons.logger import Logger
-
-    c = Controller(launch_build=False)
-    logger = Logger(record=True, path="log.json")
-    c.add_ons.append(logger)
-    # The logger add-on will log this command.
-    c.communicate({"$type": "do_nothing"})
-    # The logger add-on will log this command and generate a log.json file.
-    c.communicate({"$type": "terminate"})
-    ```
+    To attach an add-on, append it to the `add_ons` list. Every time `Controller.communicate(commands)` is called, the add-on will evaluate the response from the build via `on_send(resp)`.
     """
 
     def __init__(self):

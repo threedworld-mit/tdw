@@ -15,6 +15,7 @@ class LogPlayback(AddOn):
         """
         
         super().__init__()
+        # We don't want to wait a frame to start sending commands, so this is always initialized.
         self.initialized = True
         """:field
         A list of lists of commands. Each list of commands is from a `communicate()` call from a prior controller, and will be sent per `communicate()` call to the current controller.

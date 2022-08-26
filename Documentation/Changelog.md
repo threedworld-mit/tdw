@@ -26,6 +26,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 - Added `LogPlayback` option to play back logs of commands.
 - Fixed: `ContainerShape` classes don't sanitize numpy types e.g. converting `numpy.float32` to `float`.
 
+### Humanoid animation library
+
+- Added: idle_251087, idle_251105, kitchen_bendoverandopendrawer_f, kitchen_cooking_f, kitchen_microwave_m, kitchen_refrigerator_f
+
 ### Docker
 
 - Removed `record_audio_video.sh` and `start_container_audio_video.sh` (no longer needed)

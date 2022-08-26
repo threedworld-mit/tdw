@@ -8,6 +8,8 @@ from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
+from tdw.replicant.animation_manager import AnimationManager
+from tdw.replicant.image_frequency import ImageFrequency
 
 
 class PerformActionSequence(Action):
@@ -15,24 +17,28 @@ class PerformActionSequence(Action):
     Perform a sequence chain of motion capture animations.
     """
 
-    def __init__(self, animation_list: List[str], dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
+    def __init__(self, animation_list: List[str], resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic, 
+                 collision_detection: CollisionDetection, previous: Action = None):
         """
         :param animation_list: The list of animation names in the sequence we want to play.
         :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """
-        super().__init__(dynamic=dynamic, collision_detection=collision_detection, previous=previous)
+        super().__init__()
+        self._collision_detection: CollisionDetection = collision_detection
         self.animation_list = animation_list
-        # Running frame count.
-        self.total_frame_count: int = 0
+        self.animation_manager = AnimationManager(self.animation_list)
+        self.current_anim_name: str = ""
         # Per-animation frame count.
         self.frame_count: int = 0
-        self.current_anim_length: int= 0
-        # Total number of animations.
-        self.num_anims: int = 0
-        # Running count of animations.
-        self.anim_count: int = 0
+        # Number of frames in current animation.
+        self.current_anim_length: int = 0
+        # Running count of played animations.
+        self.played_anim_count: int = 0
+        # Running count of played animations.
+        self.anim_index: int = 0
+        self._initialized = False
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -40,42 +46,121 @@ class PerformActionSequence(Action):
                                                        image_frequency=image_frequency)
         # Remember the image frequency for the action.
         self.__image_frequency: ImageFrequency = image_frequency
-        # Download all of the animations in the list.
-        for anim_name in self.animation_list:
-            commands.append({"$type": "add_humanoid_animation", 
-                             "name": anim_name, 
-                             "url": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/" + anim_name})
+        commands.extend(self.animation_manager.download_animations())
         return commands
 
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        p1 = dynamic.position
-        d = np.linalg.norm(p1 - self._target_position_arr)
-        # We've played all of the animations.
-        if self.anim_count >= self.num_anims:
-            self.status = ActionStatus.success
+        """
+        if not self._initialized:
+            # Set up the first animation in the sequence
+            print("Starting first anim")
             commands = []
-            commands.extend(self.get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=None))
+            self.current_anim_name = self.animation_list[0]
+            self.current_anim_length = self.animation_manager.ANIMATION_DATA_LIST[self.current_anim_name].get_num_frames()
+            commands.extend(self._get_play_anim_commands(anim_name=self.current_anim_name, 
+                                                         framerate=self.animation_manager.ANIMATION_DATA_LIST[self.current_anim_name].framerate,
+                                                         dynamic=dynamic))
+            self._initialized = True
             return commands
-        elif not self._is_valid_ongoing(dynamic=dynamic):
+        """
+        if not self._is_valid_ongoing(dynamic=dynamic):
             return []
         elif self.status == ActionStatus.ongoing:
-            # We still have animations to play.
-            if self.anim_count < self.num_anims
-                # Still playing back current animation.
-                if self.frame_count < self.current_anim_length
-                    self.frame_count += 1 
-                    return []
+            # Still playing back current animation.
+            if self.frame_count < self.current_anim_length:
+                self.frame_count += 1 
+                return []
+            else:
+                self.played_anim_count += 1
+                print("Count = " + str(self.played_anim_count))
+                # We've played all of the animations.
+                if self.played_anim_count > len(self.animation_list):
+                    self.status = ActionStatus.success
+                    commands = []
+                    #commands.extend(self.get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=None))
+                    return commands
                 else:
                     # Start the next animation in the sequence.
-                    #print("Starting new anim")
                     commands = []
-                    self.anim_count += 1
-                    self.frame_count = 0
-                    commands.extend(self._get_walk_commands(dynamic=dynamic))
+                    # Fetch next animation in the sequence.
+                    self.current_anim_name = self.animation_list[self.anim_index]
+                    print("Starting " + self.current_anim_name)
+                    self.current_anim_length = self.animation_manager.ANIMATION_DATA_LIST[self.current_anim_name].get_num_frames()
+                    commands.extend(self._get_play_anim_commands(anim_name=self.current_anim_name, 
+                                                                     framerate=self.animation_manager.ANIMATION_DATA_LIST[self.current_anim_name].framerate,
+                                                                     dynamic=dynamic))
+                    self.anim_index += 1
                     return commands
                 
-                
+    def _get_play_anim_commands(self, anim_name: str, framerate: int, dynamic: ReplicantDynamic) -> List[dict]:
+        self.frame_count = 0
+        commands = []
+        commands.extend([{"$type": "set_target_framerate", 
+                          "framerate": framerate},
+                         {"$type": "play_humanoid_animation",
+                          "name": anim_name,
+                          "id": dynamic.replicant_id}])
+        self.playing = True
+        return commands  
+
+
+    def _is_valid_ongoing(self, dynamic: ReplicantDynamic) -> bool:
+        """
+        :param replicant_id: The ID of this Replicant
+
+        :return: True if the Replicant didn't collide with something that should make it stop.
+        """
+        # Stop if the Replicant is colliding with something.
+        if self._is_collision(dynamic=dynamic):
+            print("Collided")
+            self.status = ActionStatus.collision
+            return False
+        else:
+            return True
+
+    def _is_collision(self, dynamic: ReplicantDynamic) -> bool:
+        """
+        :param replicant_id: The ID of this Replicant
+
+        :return: True if there was a collision that according to the current detection rules means that the Replicant needs to stop moving.
+        """
+        # Check environment collisions.
+        if self._collision_detection.floor or self._collision_detection.walls:
+            enters: List[int] = list()
+            exits: List[int] = list()
+            for object_id in dynamic.collisions_with_environment:
+                for collision in dynamic.collisions_with_environment[object_id]:
+                    if (self._collision_detection.floor and collision.floor) or \
+                            (self._collision_detection.walls and not collision.floor):
+                        if collision.state == "enter":
+                            enters.append(object_id)
+                        elif collision.state == "exit":
+                            exits.append(object_id)
+            # Ignore exit events.
+            enters = [e for e in enters if e not in exits]
+            if len(enters) > 0:
+                return True
+        # Check object collisions.
+        if self._collision_detection.objects or len(self._collision_detection.include_objects) > 0:
+            enters: List[Tuple[int, int]] = list()
+            exits: List[Tuple[int, int]] = list()
+            for object_ids in dynamic.collisions_with_objects:
+                for collision in dynamic.collisions_with_objects[object_ids]:
+                    object_id = object_ids[1]
+                    # Accept the collision if the object is in the includes list or if it's not in the excludes list.
+                    if object_id in self._collision_detection.include_objects or \
+                            (self._collision_detection.objects and object_id not in
+                             self._collision_detection.exclude_objects):
+                        if collision.state == "enter":
+                            enters.append(object_ids)
+                        elif collision.state == "exit":
+                            exits.append(object_ids)
+            # Ignore exit events.
+            enters: List[Tuple[int, int]] = [e for e in enters if e not in exits]
+            if len(enters) > 0:
+                return True
+        return False          
 
     def _previous_was_same(self, previous: Action) -> bool:
         if isinstance(previous, MoveBy):

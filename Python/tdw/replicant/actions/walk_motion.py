@@ -53,9 +53,11 @@ class WalkMotion(Action, ABC):
     def _get_walk_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
         commands = []
         #print("Starting play")
-        commands.append({"$type": "play_humanoid_animation",
-                         "name": "walking_2",
-                         "id": dynamic.replicant_id})
+        commands.extend([{"$type": "set_target_framerate", 
+                          "framerate": self.walk_record.framerate},
+                         {"$type": "play_humanoid_animation",
+                          "name": "walking_2",
+                          "id": dynamic.replicant_id}])
         self.playing = True
         return commands
 

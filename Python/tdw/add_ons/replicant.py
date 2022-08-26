@@ -24,6 +24,7 @@ from tdw.replicant.actions.reach_for import ReachFor
 from tdw.replicant.actions.grasp import Grasp
 from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.reset_arm import ResetArm
+from tdw.replicant.actions.perform_action_sequence import PerformActionSequence
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.arm import Arm
 
@@ -89,7 +90,7 @@ class Replicant(AddOn):
                       "name": "ha_proto_v1a",
                       "position": self.initial_position,
                       "rotation": self.initial_rotation,
-                      "url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
+                      "url": "file:///" + "D://TDW_Strategic_Plan_2021//HumanoidAgent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
                       #"url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//replicant",
                       "id": self.replicant_id},
                     {"$type": "add_humanoid_animation", "name": self.walk_record.name, "url": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/walking_2"},
@@ -244,6 +245,18 @@ class Replicant(AddOn):
         """
 
         self.action = Drop(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
+                               collision_detection=self.collision_detection, previous=self._previous_action)
+
+    def perform_action_sequence(self, animation_list: List[str]) -> None:
+        """
+        Perform a list of motion capture animations in sequence.
+
+        :param target: The target object ID. 
+        :param arm: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
+        :param hand_position: If the difference between the current angle and the target angle is less than this value, then the action is successful.
+        """
+
+        self.action = PerformActionSequence(animation_list=animation_list, resp=self._previous_resp, static=self.static, dynamic=self.dynamic,
                                collision_detection=self.collision_detection, previous=self._previous_action)
 
     def reset_arm(self, arm: Arm) -> None:

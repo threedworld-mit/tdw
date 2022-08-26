@@ -21,12 +21,12 @@ class CylinderContainer(ContainerShape):
         """:field
         The radius of the cylinder.
         """
-        self.radius: float = radius
+        self.radius: float = float(radius)
         """:field
         The height of the cylinder.
         """
-        self.height: float = height
+        self.height: float = float(height)
         """:field
         The rotation of the cylinder relative to the parent object in Euler angles.
         """
-        self.rotation: Dict[str, float] = rotation
+        self.rotation: Dict[str, float] = {k: float(v) for k, v in rotation.items()}

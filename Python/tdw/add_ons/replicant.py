@@ -4,7 +4,6 @@ from copy import deepcopy
 from pathlib import Path
 from tdw.add_ons.add_on import AddOn
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import HumanoidAnimationLibrarian, HumanoidLibrarian
 from tdw.output_data import OutputData, Transforms
 from random import uniform
 import os
@@ -40,7 +39,6 @@ class Replicant(AddOn):
 
         """
         super().__init__()
-        self.walk_record = HumanoidAnimationLibrarian().get_record("walking_2")
         if position is None:
             """:field
             The initial position of the replicant.
@@ -85,15 +83,13 @@ class Replicant(AddOn):
 
     # **<Probably add send_collisions here also>**
     def get_initialization_commands(self) -> List[dict]:
-        commands = [{"$type": "set_target_framerate", "framerate": self.walk_record.framerate},
-                    {"$type": "add_humanoid",
+        commands = [{"$type": "add_humanoid",
                       "name": "ha_proto_v1a",
                       "position": self.initial_position,
                       "rotation": self.initial_rotation,
                       "url": "file:///" + "D://TDW_Strategic_Plan_2021//HumanoidAgent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
                       #"url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//replicant",
                       "id": self.replicant_id},
-                    {"$type": "add_humanoid_animation", "name": self.walk_record.name, "url": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/walking_2"},
                     {"$type": "send_humanoids",
                      "ids": [self.replicant_id],
                      "frequency": "always"},

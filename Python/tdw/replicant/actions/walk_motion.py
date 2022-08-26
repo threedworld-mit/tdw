@@ -7,6 +7,7 @@ from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
+from tdw.librarian import HumanoidAnimationLibrarian, HumanoidLibrarian
 
 
 class WalkMotion(Action, ABC):
@@ -28,6 +29,7 @@ class WalkMotion(Action, ABC):
         self.meters_per_frame = 0.04911
         self.walk_cycle_num_frames = 68
         self.playing = False
+        self.walk_record = HumanoidAnimationLibrarian().get_record("walking_2")
 
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
         if self._collision_detection.previous_was_same and previous is not None and \
@@ -46,6 +48,10 @@ class WalkMotion(Action, ABC):
         :return: A list of commands to initialize this action.
         """
         commands: List[dict] = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        url = self.walk_record.get_url()
+        commands.append({"$type": "add_humanoid_animation", 
+                         "name": self.walk_record.name, 
+                         "url": url})
         commands.extend(self._get_walk_commands(dynamic=dynamic))
         return commands
 

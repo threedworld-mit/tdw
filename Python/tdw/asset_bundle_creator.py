@@ -329,7 +329,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
             print(f"Physics quality: {record.physics_quality}")
         self._set_record(record=record, record_path=record_path, library_path=library_path)
 
-    def validate(self, name: str, record_path: Path, library_path: Path) -> None:
+    def validate(self, name: str, record_path: Path = None, library_path: Path = None) -> None:
         """
         Validate the asset bundle.
 

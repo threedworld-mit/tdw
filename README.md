@@ -73,7 +73,7 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 ## 3. Read/Write to Disk
 
 1. [Overview](Documentation/lessons/read_write/overview.md)
-2. [The `Logger` add-on](Documentation/lessons/read_write/logger.md)
+2. [The `Logger` and `LogPlayback` add-ons](Documentation/lessons/read_write/logger.md)
 3. [The `JsonWriter` add-on](Documentation/lessons/read_write/json.md)
 4. [The `OutputDataWriter` add-on](Documentation/lessons/read_write/output_data_writer.md)
 5. [Create a custom data writer](Documentation/lessons/read_write/custom_writers.md)
@@ -290,6 +290,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [JsonWriter](Documentation/python/add_ons/json_writer.md)
 - [Keyboard](Documentation/python/add_ons/keyboard.md)
 - [Logger](Documentation/python/add_ons/logger.md)
+- [LogPlayback](Documentation/python/add_ons/log_playback.md)
 - [ModelVerifier](Documentation/python/add_ons/model_verifier.md)
 - [Mouse](Documentation/python/add_ons/mouse.md)
 - [Obi](Documentation/python/add_ons/obi.md)

@@ -60,6 +60,6 @@ class ReplicantStatic():
         """:field
         The current affordance ID the replicant is reaching for/grasping.
         """
-        self.target_affordance_id: int = 0
+        self.target_affordance_id: int = -1
 
         self.body_parts: List[int] = list(self.joints.keys())

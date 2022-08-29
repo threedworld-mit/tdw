@@ -86,7 +86,8 @@ class ArmMotion(Action, ABC):
                                "affordance_id": affordance_id, 
                                "id": dynamic.replicant_id,
                                "length": self.reset_action_length, 
-                               "arm": self.reach_arm}])
+                               "arm": self.reach_arm}
+                        ])
         return commands
    
     def _get_drop_commands(self, dynamic: ReplicantDynamic, object_id: int, offset: Dict[str, float]) -> List[dict]:

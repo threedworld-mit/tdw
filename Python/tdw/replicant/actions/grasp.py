@@ -25,7 +25,7 @@ class Grasp(ArmMotion):
                  collision_detection: CollisionDetection, previous: Action = None):
         super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
         self.static=static
-        self.affordance_id = 0
+        self.affordance_id = -1
         self.frame_count = 0
         self._target = target
         self.initialized_grasp = False

@@ -21,7 +21,11 @@ AffordancePoints.AFFORDANCE_POINTS = {"basket_18inx18inx12iin_wicker": [{'x': -0
                                       "basket_18inx18inx12iin_bamboo": [{'x': -0.2285, 'y': 0.305, 'z': 0.0},
                                                            {'x': 0.2285, 'y': 0.305, 'z': 0.0},
                                                            {'x': 0, 'y': 0.305, 'z': 0.2285},
-                                                           {'x': 0, 'y': 0.305, 'z': -0.2285}]}
+                                                           {'x': 0, 'y': 0.305, 'z': -0.2285}],
+                                     "minotti_helion_3_seater_sofa": [{'x': -1, 'y': 0.66, 'z': 0.425},
+                                                           {'x': 1, 'y': 0.66, 'z': 0.425},
+                                                           {'x': 1, 'y': 0.66, 'z': -0.425},
+                                                           {'x': -1, 'y': 0.66, 'z': -0.425}]}
 
 c = Controller(launch_build=False)
 
@@ -39,7 +43,7 @@ ball_id2 = c.get_unique_id()
 affordance_id = 0
 reach_arm = "left"
 
-replicant = Replicant(replicant_id=replicant_id, position={"x": 0, "y": 0, "z": -8}, image_frequency=ImageFrequency.never)
+replicant = Replicant(replicant_id=replicant_id, position={"x": 5, "y": 0, "z": 1}, image_frequency=ImageFrequency.never)
 c.add_ons.append(replicant)
 commands=[]
 commands.extend([{"$type": "set_screen_size",
@@ -63,35 +67,31 @@ commands.extend(c.get_add_physics_object(model_name="prim_sphere",
                                kinematic=True,
                                gravity=False,
                                library="models_special.json"))
-commands.extend(c.get_add_physics_object(model_name="live_edge_coffee_table",
+commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_name="minotti_helion_3_seater_sofa",
                                          object_id=table_id,
-                                         position={"x": -1, "y": 0, "z": 2},
-                                         rotation={"x": 0, "y": 20, "z": 0},
-                                         library="models_core.json"))
+                                         position={"x": 0, "y": 0, "z": 0},
+                                         rotation={"x": 0, "y": 0, "z": 0},
+                                         library="models_core.json",
+                                         show_markers=True))
 commands.extend(c.get_add_physics_object(model_name="zenblocks",
                                          object_id=c.get_unique_id(),
-                                         position={"x": -1, "y": 0.65, "z": 2},
-                                         scale_factor={"x": 0.5, "y": 0.5, "z": 0.5},
-                                         mass=0.1,
+                                         position={"x": 0, "y": 0.65, "z": 0},
+                                         scale_factor={"x": 0.5, "y": 0.5, "z": -1},
                                          rotation={"x": 0, "y": 0, "z": 0}))
 
-commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_name="basket_18inx18inx12iin_wicker",
-                                                                       object_id=basket_id,
-                                                                       mass=2,
-                                                                       position={"x": -1, "y": 0.35, "z": 2},
-                                                                       rotation={"x": 0, "y": 0, "z": 0}))
+
 
 c.communicate(commands)
 
-replicant.move_to(target=table_id, arrived_offset=0.5)
+replicant.move_to(target=table_id, arrived_offset=1.5)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
-replicant.reach_for(target=basket_id, arm="left", hand_position=np.array([0, 0, 0]))
+replicant.reach_for(target=table_id, arm="left", hand_position=np.array([0, 0, 0]))
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
-replicant.grasp(target=basket_id, arm="left")
+replicant.grasp(target=table_id, arm="left")
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
@@ -112,6 +112,7 @@ while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
 logger.save()
+
 
 #c.communicate({"$type": "terminate"})
 

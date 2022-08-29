@@ -45,7 +45,7 @@ class AffordancePoints():
                                  "position": affordance_position})
                 if show_markers:
                     commands.append({"$type": "add_position_marker", 
-                                  "position":  {'x': affordance_position['x'], 'y': affordance_position['y'] + 0.35, 'z': affordance_position['z']}, 
+                                  "position":  {'x': affordance_position['x'], 'y': affordance_position['y'], 'z': affordance_position['z']}, 
                                   "scale": 0.05, 
                                   "color": {"r": 1, "g": 0, "b": 0, "a": 1},
                                   "shape": "sphere"})

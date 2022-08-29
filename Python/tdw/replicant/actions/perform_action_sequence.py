@@ -51,19 +51,6 @@ class PerformActionSequence(Action):
 
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        """
-        if not self._initialized:
-            # Set up the first animation in the sequence
-            print("Starting first anim")
-            commands = []
-            self.current_anim_name = self.animation_list[0]
-            self.current_anim_length = self.animation_manager.ANIMATION_DATA_LIST[self.current_anim_name].get_num_frames()
-            commands.extend(self._get_play_anim_commands(anim_name=self.current_anim_name, 
-                                                         framerate=self.animation_manager.ANIMATION_DATA_LIST[self.current_anim_name].framerate,
-                                                         dynamic=dynamic))
-            self._initialized = True
-            return commands
-        """
         if not self._is_valid_ongoing(dynamic=dynamic):
             return []
         elif self.status == ActionStatus.ongoing:
@@ -73,7 +60,6 @@ class PerformActionSequence(Action):
                 return []
             else:
                 self.played_anim_count += 1
-                print("Count = " + str(self.played_anim_count))
                 # We've played all of the animations.
                 if self.played_anim_count > len(self.animation_list):
                     self.status = ActionStatus.success
@@ -85,7 +71,6 @@ class PerformActionSequence(Action):
                     commands = []
                     # Fetch next animation in the sequence.
                     self.current_anim_name = self.animation_list[self.anim_index]
-                    print("Starting " + self.current_anim_name)
                     self.current_anim_length = self.animation_manager.ANIMATION_DATA_LIST[self.current_anim_name].get_num_frames()
                     commands.extend(self._get_play_anim_commands(anim_name=self.current_anim_name, 
                                                                      framerate=self.animation_manager.ANIMATION_DATA_LIST[self.current_anim_name].framerate,

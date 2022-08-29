@@ -22,7 +22,7 @@ c.communicate(TDWUtils.create_avatar(position={"x": -0.5, "y": 1.175, "z": 6}, l
 
 replicant_id=c.get_unique_id()
 
-replicant = Replicant(replicant_id=replicant_id, position={"x": 0, "y": 0, "z": -8}, image_frequency=ImageFrequency.never)
+replicant = Replicant(replicant_id=replicant_id, position={"x": 0, "y": 0, "z": 0}, image_frequency=ImageFrequency.never)
 c.add_ons.append(replicant)
 commands=[]
 commands.extend([{"$type": "set_screen_size",
@@ -33,7 +33,11 @@ commands.extend([{"$type": "set_screen_size",
 
 c.communicate(commands)
 
-anim_list = ["mop_floor", "open_can_drink", "hammering", "clean_windows", "brushing_off_dust"]
+anim_list = ["clean_windows", "smoke_cigarette_1", "smoke_cigarette_2", "open_can_drink", "hammering", "brushing_off_dust"]
+
+replicant.move_to(target={"x": 1, "y": 0, "z": -6.5}, arrived_offset=0.25)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
 
 replicant.perform_action_sequence(animation_list=anim_list)
 while replicant.action.status == ActionStatus.ongoing:

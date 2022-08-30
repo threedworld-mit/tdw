@@ -104,6 +104,8 @@ class ReachFor(ArmMotion):
                         empty_object_position = empt.get_position(j)
                         # Get the nearest affordance position.
                         #distance = np.linalg.norm(self.hand_position - empty_object_position)
+                        # CHANGE THIS BACK TO USING HAND POSITION WHEN WE HAVE THAT DATA PRE-FRAME; WILL NEED
+                        #  FOR TWO-HANDED GRASP.
                         distance = np.linalg.norm(self.dynamic.position - empty_object_position)
                         if distance < nearest_distance:
                             nearest_distance = distance

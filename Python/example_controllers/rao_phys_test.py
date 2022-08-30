@@ -99,7 +99,7 @@ replicant.move_to(target=ball_id, arrived_offset=0.25)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
-replicant.drop(target=basket_id, arm="left")
+replicant.drop(target=table_id, arm="left")
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 

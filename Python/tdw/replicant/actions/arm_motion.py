@@ -74,6 +74,7 @@ class ArmMotion(Action, ABC):
         # Move the arm holding the object to a reasonable carrying position. 
         pos = TDWUtils.array_to_vector3(dynamic.position)
         hold_dist = np.linalg.norm(dynamic.position + dynamic.forward) * 0.1
+        print(hold_dist)
         commands.extend([{"$type": "humanoid_reach_for_position", 
                                    "position": {"x": target_position["x"] + hold_dist, "y": pos["y"] + 1.25, "z":target_position["z"] + hold_dist}, 
                                    "target":object_id, 

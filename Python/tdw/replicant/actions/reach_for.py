@@ -32,6 +32,7 @@ class ReachFor(ArmMotion):
                  static: ReplicantStatic, dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
         super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
         self.static = static
+        self.dynamic = dynamic
         self.affordance_id = -1
         self.hand_position = hand_position
         self.frame_count = 0
@@ -102,14 +103,14 @@ class ReachFor(ArmMotion):
                         # Get the position of the empty object.
                         empty_object_position = empt.get_position(j)
                         # Get the nearest affordance position.
-                        distance = np.linalg.norm(self.hand_position - empty_object_position)
+                        #distance = np.linalg.norm(self.hand_position - empty_object_position)
+                        distance = np.linalg.norm(self.dynamic.position - empty_object_position)
                         if distance < nearest_distance:
                             nearest_distance = distance
                             nearest_position = empty_object_position
         # The target position is the nearest affordance point.
         if got_affordance_position:
             self.target_position = TDWUtils.array_to_vector3(nearest_position)
-            print(self.target_position)
             self.static.target_affordance_id = self.affordance_id
         # If the object doesn't have empty game objects, aim for the center and hope for the best.
         else:

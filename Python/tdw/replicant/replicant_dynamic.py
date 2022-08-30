@@ -124,7 +124,7 @@ class ReplicantDynamic:
                     self.camera_matrix = camera_matrices.get_camera_matrix()
             # Record collisions between myself and my joints or with another object.
             elif r_id == "coll":
-                print("registered collision")
+                #print("registered collision")
                 collision = Collision(resp[i])
                 collider_id: int = collision.get_collider_id()
                 collidee_id: int = collision.get_collidee_id()

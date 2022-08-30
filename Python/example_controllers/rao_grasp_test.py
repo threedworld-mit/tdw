@@ -39,7 +39,7 @@ ball_id2 = c.get_unique_id()
 affordance_id = 0
 reach_arm = "left"
 
-replicant = Replicant(replicant_id=replicant_id, position={"x": 0, "y": 0, "z": -8}, image_frequency=ImageFrequency.never)
+replicant = Replicant(replicant_id=replicant_id, position={"x": 4, "y": 0, "z": 8}, image_frequency=ImageFrequency.never)
 c.add_ons.append(replicant)
 commands=[]
 commands.extend([{"$type": "set_screen_size",
@@ -83,7 +83,7 @@ commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_nam
 
 c.communicate(commands)
 
-replicant.move_to(target=table_id, arrived_offset=0.5)
+replicant.move_to(target=table_id, arrived_offset=0.75)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 

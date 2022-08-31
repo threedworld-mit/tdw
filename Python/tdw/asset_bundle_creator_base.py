@@ -36,16 +36,19 @@ class AssetBundleCreatorBase(ABC):
         """
 
         if check_version:
-            resp = get("https://raw.githubusercontent.com/alters-mit/asset_bundle_creator/main/ProjectSettings/ProjectSettings.asset").text
-            remote_version = re.search(AssetBundleCreatorBase._BUNDLE_VERSION_REGEX,
-                                       resp,
-                                       flags=re.MULTILINE).group(1)
-            local_version = re.search(AssetBundleCreatorBase._BUNDLE_VERSION_REGEX,
-                                      AssetBundleCreatorBase.PROJECT_PATH.joinpath("ProjectSettings/ProjectSettings.asset").resolve().read_text(),
-                                      flags=re.MULTILINE).group(1)
-            if remote_version != local_version:
-                print(f"You are using version {local_version} but version {remote_version} is available. To update:\n" +
-                      "cd asset_bundle_creator\ngit pull")
+            resp = get("https://raw.githubusercontent.com/alters-mit/asset_bundle_creator/main/ProjectSettings/ProjectSettings.asset")
+            if resp.status_code == 200:
+                remote_version = re.search(AssetBundleCreatorBase._BUNDLE_VERSION_REGEX,
+                                           resp,
+                                           flags=re.MULTILINE).group(1)
+                local_version = re.search(AssetBundleCreatorBase._BUNDLE_VERSION_REGEX,
+                                          AssetBundleCreatorBase.PROJECT_PATH.joinpath("ProjectSettings/ProjectSettings.asset").resolve().read_text(),
+                                          flags=re.MULTILINE).group(1)
+                if remote_version != local_version:
+                    print(f"You are using version {local_version} but version {remote_version} is available. To update:\n" +
+                          "cd asset_bundle_creator\ngit pull")
+            else:
+                print("Failed to check version for the Asset Bundle Creator Unity project. Check your Internet connection.")
         # Get the binaries path and verify that AssetBundleCreator will work on this platform.
         system = platform.system()
         # Copy environment variables.

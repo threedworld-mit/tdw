@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.10.5
+
+### Build
+
+- Fixed: AttributeError if `set_robot_joint_id` is sent and the new joint ID is the same as the old joint ID.
+
 ## v1.10.4
 
 ### Command API

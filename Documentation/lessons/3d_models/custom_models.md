@@ -38,35 +38,45 @@ AssetBundleCreator().source_file_to_asset_bundles(name="cube",
                                                   output_directory=output_directory)
 ```
 
-`asset_bundle_paths` is a list of [Paths](https://docs.python.org/3/library/pathlib.html) to the generated asset bundles for Windows, OS X and Linux. `record_path` is the path to a json file containing the [model metadata](../../python/librarian/model_librarian.md).
+Output:
 
-The `cleanup` parameter determines whether the `AssetBundleCreator` will remove intermediate files after creating the asset bundles.
-
-There are optional parameters for `wnid` and `wcategory` which will set the semantic category for the object. You can usually guess what the category should be by comparing it to existing categories. For example, if you have a `chair.fbx` file, this how you'd get the the `wnid` and `wcategory`:
-
-```python
-from tdw.asset_bundle_creator import AssetBundleCreator
-from tdw.librarian import ModelLibrarian
-
-model_path = "chair.fbx"
-wnid = -1
-wcategory = "chair"
-
-librarian = ModelLibrarian("models_full.json")
-wnids_and_wcategories = librarian.get_model_wnids_and_wcategories()
-for w in wnids_and_wcategories:
-    if wnids_and_wcategories[w] == "chair":
-        # Convert to an integer. In this case, "n03001627" to 3001627.
-        wnid = int(w[1:])
-        break
-a = AssetBundleCreator()
-asset_bundle_paths, record_path = a.create_asset_bundle(model_path=model_path, 
-                                                        cleanup=True,
-                                                        wnid=wnid,
-                                                        wcategory=wcategory)
+```
+~/tdw_example_controller_output/local_object/
+....Darwin/
+........cube
+....Linux/
+........cube
+....Windows/
+........cube
 ```
 
-There is one other optional parameter, `scale`, which should usually be set to 1 (the default value). Setting it to another value will scale the model by this factor whenever it is instantiated in TDW.
+`Darwin/cube`, `Linux/cube`, and `Windows/cube` are platform-specific asset bundles.
+
+There are optional parameters for setting the semantic category of the model, for controlling whether intermediary mesh files and prefabs are saved or deleted, and so on. [Read the API document for more information.](../../python/asset_bundle_creator.md)
+
+This example includes all optional parameters:
+
+```python
+from pathlib import Path
+from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
+print(f"Asset bundles will be saved to: {output_directory}")
+AssetBundleCreator().source_file_to_asset_bundles(name="cube",
+                                                  source_file=Path("cube.fbx").resolve(),
+                                                  output_directory=output_directory,
+                                                  vhacd_resolution=800000,
+                                                  internal_materials=True,
+                                                  wnid="n02942699",
+                                                  wcategory="camera",
+                                                  scale_factor=1,
+                                                  library_path="library.json",
+                                                  library_description="My custom library",
+                                                  cleanup=True,
+                                                  write_physics_quality=False,
+                                                  validate=False)
+```
 
 ### Unity Editor path
 
@@ -89,99 +99,67 @@ Sometimes, it's useful to convert a 3D model to a [prefab](https://docs.unity3d.
 ```python
 from pathlib import Path
 from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 model_name = "chair"
 model_path = Path(model_name + ".fbx")
 a = AssetBundleCreator()
-obj_path, is_new = a.fbx_to_obj(model_path)
-wrl_path = a.obj_to_wrl(obj_path)
-obj_colliders_path = a.wrl_to_obj(wrl_path, model_name)
-copied_file_paths = a.move_files_to_unity_project(obj_colliders_path, model_path)
-prefab_path, report_path = a.create_prefab(f"{model_name}_colliders.obj", model_name, model_path.suffix)
-
-# Save the prefab path for later.
-Path("prefab_path.txt").write_text(str(prefab_path.resolve()))
+a.source_file_to_prefab(name=model_name, 
+                        source_file=model_path,
+                        output_directory=EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("source_file_to_prefab"))
 ```
 
-Then adjust the prefab in Unity Editor.
+Then adjust the prefab in Unity Editor. It will be located at: `~/asset_bundle_creator/Assets/prefabs/chair/chair.prefab`.
 
 Then do this:
 
 ```python
-from pathlib import Path
 from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
-wcategory = "chair"
-wnid = 3001627
-prefab_path = Path(Path("prefab_path.txt").read_text())
 model_name = "chair"
-model_path = Path(model_name + ".fbx")
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("prefab_to_asset_bundles")
 a = AssetBundleCreator()
-asset_bundle_paths = a.prefab_to_asset_bundle(prefab_path=prefab_path, model_name=model_name)
-urls = a.get_local_urls(asset_bundle_paths=asset_bundle_paths)
-record_path = a.create_record(model_name=model_name, scale=1, wnid=wnid, wcategory=wcategory, urls=urls)
+a.prefab_to_asset_bundles(name=model_name, 
+                         output_directory=output_directory)
 ```
 
 ## Add a custom model to a TDW simulation
 
 You can load a model saved on a local machine with the [`add_object` command](../../api/command_api.md#add_object) just like a model from one of TDW's model library.
 
-There are two ways to do this. First, you can just manually set the URL of the asset bundle. Be aware that you need to select the asset bundle for your operating system and you need to add `file:///` to the start of the URL.
-
-Suppose the directory structure looks like this:
-
-```
-/home
-....tdw_asset_bundles/
-........chair/
-............record.json
-............StandaloneWindows64/
-................chair
-............StandaloneOSX/
-................chair
-............StandaloneLinux64/
-................chair
-```
-
-`StandaloneWindows64`, `StandaloneOSX`, and `StandaloneLinux64` are descriptors generated by Unity Engine. TDW includes a convenient way to convert from these to "system" descriptions:
+There are two ways to do this. First, you can just manually set the URL of the asset bundle. Be aware that you need to select the asset bundle for your operating system and you need to add `file:///` to the start of the URL:
 
 ```python
 from platform import system
-from tdw.backend.platforms import SYSTEM_TO_UNITY
-
-print(SYSTEM_TO_UNITY[system()])
-```
-
-So we can find the correct asset bundle like this:
-
-```python
-from pathlib import Path
-from platform import system
-from tdw.backend.platforms import SYSTEM_TO_UNITY
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 model_name = "chair"
-path = Path.home().joinpath("tdw_asset_bundles/" + model_name + "/" + SYSTEM_TO_UNITY[system()] + model_name)
-path = "file:///" + str(path.resolve())
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("prefab_to_asset_bundles")
+asset_bundle_path = output_directory.joinpath(system()).joinpath(model_name)
+asset_bundle_url = "file:///" + str(asset_bundle_path.resolve()).replace("\\", "/")
 ```
+
+The `system()` call will return your OS as a string, for example `Windows`.
 
 And then we can create an object instance of the model with the `add_object` command:
 
 ```python
-from pathlib import Path
 from platform import system
-from tdw.backend.platforms import SYSTEM_TO_UNITY
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 model_name = "chair"
-path = Path.home().joinpath("tdw_asset_bundles/" + model_name + "/" + SYSTEM_TO_UNITY[system()] + model_name)
-path = "file:///" + str(path.resolve())
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("prefab_to_asset_bundles")
+asset_bundle_path = output_directory.joinpath(system()).joinpath(model_name)
+asset_bundle_url = "file:///" + str(asset_bundle_path.resolve()).replace("\\", "/")
 
 c = Controller()
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "add_object",
                 "name": model_name,
-                "url": path,
+                "url": asset_bundle_url,
                 "scale_factor": 1,
                 "position": {"x": 0, "y": 0, "z": 0},
                 "rotation": {"x": 0, "y": 0, "z": 0},
@@ -192,24 +170,16 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 Or, you can use the record data generated by the `AssetBundleCreator`. `ModelRecord.get_url()` returns the URL for your operating system:
 
 ```python
-from pathlib import Path
 from json import loads
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.librarian import ModelRecord
 
 model_name = "chair"
-model_record = ModelRecord(loads(Path.home().joinpath("tdw_asset_bundles/chair/record.json").read_text()))
-c = Controller()
-c.communicate([TDWUtils.create_empty_room(12, 12),
-               {"$type": "add_object",
-                "name": model_name,
-                "url": model_record.get_url(),
-                "scale_factor": model_record.scale_factor,
-                "position": {"x": 0, "y": 0, "z": 0},
-                "rotation": {"x": 0, "y": 0, "z": 0},
-                "category": model_record.wcategory,
-                "id": c.get_unique_id()}])
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("prefab_to_asset_bundles")
+record_path = output_directory.joinpath("record.json")
+record_data = loads(record_path.read_text())
+record = ModelRecord(record_data)
+print(record.get_url())
 ```
 
 ##  Create a custom model library

@@ -83,15 +83,19 @@ commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_nam
 
 c.communicate(commands)
 
+# Print the static replicant data.
+for body_part in replicant.static.body_parts:
+    print(body_part, replicant.static.body_parts[body_part])
+
 replicant.move_to(target=table_id, arrived_offset=0.5)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
-replicant.reach_for(target=basket_id, arm="left", hand_position=np.array([0, 0, 0]))
+replicant.reach_for(target=basket_id, arm=reach_arm, hand_position=np.array([0, 0, 0]))
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
-replicant.grasp(target=basket_id, arm="left")
+replicant.grasp(target=basket_id, arm=reach_arm)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
@@ -99,11 +103,11 @@ replicant.move_to(target=ball_id, arrived_offset=0.25)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
-replicant.drop(target=basket_id, arm="left")
+replicant.drop(target=basket_id, arm=reach_arm)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
-replicant.reset_arm(arm="left")
+replicant.reset_arm(arm=reach_arm)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 

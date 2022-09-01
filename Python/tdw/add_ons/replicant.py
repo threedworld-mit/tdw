@@ -5,6 +5,7 @@ from pathlib import Path
 from tdw.add_ons.add_on import AddOn
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Transforms
+from tdw.add_ons.container_manager import ContainerManager
 from random import uniform
 import os
 from math import ceil
@@ -62,7 +63,7 @@ class Replicant(AddOn):
         """
         self.replicant_id: int = replicant_id
         """:field
-        The Magnebot's current [action](actions/action.md). Can be None (no ongoing action).
+        The Replicant's current [action](actions/action.md). Can be None (no ongoing action).
         """
         self.action: Optional[Action] = None
         """:field
@@ -79,19 +80,19 @@ class Replicant(AddOn):
         self.camera_rpy: np.array = np.array([0, 0, 0])
         self._previous_resp: List[bytes] = list()
         self._previous_action: Optional[Action] = None
+        # Create a container manager.
+        self.container_manager = ContainerManager()
 
 
-    # **<Probably add send_collisions here also>**
     def get_initialization_commands(self) -> List[dict]:
-        commands = [{"$type": "add_humanoid",
-                      "name": "ha_proto_v1a",
+        commands = [{"$type": "add_replicant",
+                      "name": "replicant",
                       "position": self.initial_position,
                       "rotation": self.initial_rotation,
-                      "url": "file:///" + "D://TDW_Strategic_Plan_2021//HumanoidAgent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
+                      "url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
                       #"url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//replicant",
                       "id": self.replicant_id},
-                    {"$type": "send_humanoids",
-                     "ids": [self.replicant_id],
+                    {"$type": "send_replicants",
                      "frequency": "always"},
                     {"$type": "send_transforms",
                      "frequency": "always"},
@@ -100,6 +101,10 @@ class Replicant(AddOn):
                               "stay": False,
                               "exit": True,
                               "collision_types": ["obj", "env"]}]
+        # Add the container manager's initialization commands.
+        commands.extend(self.container_manager.get_initialization_commands())
+        # Mark the container manager as initialized.
+        self.container_manager.initialized = True
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -110,6 +115,7 @@ class Replicant(AddOn):
 
         :param resp: The response from the build.
         """
+        self.container_manager.on_send(resp=resp)
         if self.static is None:
             self._cache_static_data(resp=resp)
         self._set_dynamic_data(resp=resp)
@@ -153,13 +159,15 @@ class Replicant(AddOn):
                 self.action.done = True
                 # Remember the previous action.
                 self._previous_action = deepcopy(self.action)
+        # Append the container manager's commands.
+        self.commands.extend(self.container_manager.commands)
+        self.container_manager.commands.clear()
+        print(self.container_manager.commands)
 
 
     def turn_by(self, angle: float, aligned_at: float = 1) -> None:
         """
-        Turn the Magnebot by an angle.
-
-        While turning, the left wheels will turn one way and the right wheels in the opposite way, allowing the Magnebot to turn in place.
+        Turn the Replicant by an angle.
 
         :param angle: The target angle in degrees. Positive value = clockwise turn.
         :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
@@ -170,9 +178,7 @@ class Replicant(AddOn):
 
     def turn_to(self, target: Union[int, Dict[str, float]]) -> None:
         """
-        Turn the Magnebot to face a target object or position.
-
-        While turning, the left wheels will turn one way and the right wheels in the opposite way, allowing the Magnebot to turn in place.
+        Turn the Replicant to face a target object or position.
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
@@ -183,9 +189,9 @@ class Replicant(AddOn):
 
     def move_by(self, distance: float, arrived_at: float = 0.1) -> None:
         """
-        Move the Magnebot forward or backward by a given distance.
+        Move the Replicant forward by a given distance.
 
-        :param distance: The target distance. If less than zero, the Magnebot will move backwards.
+        :param distance: The target distance. 
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         """
 
@@ -200,7 +206,7 @@ class Replicant(AddOn):
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
-        :param arrived_offset: Offset the arrival position by this value. This can be useful if the Magnebot needs to move to an object but shouldn't try to move to the object's centroid. This is distinct from `arrived_at` because it won't affect the Magnebot's braking solution.
+        :param arrived_offset: Offset the arrival position by this value. This can be useful if the Replicant needs to move to an object but shouldn't try to move to the object's centroid. This is distinct from `arrived_at` because it won't affect the Magnebot's braking solution.
         """
 
         self.action = MoveTo(target=target, resp=self._previous_resp, dynamic=self.dynamic,
@@ -212,8 +218,8 @@ class Replicant(AddOn):
         Reach for a target object or position.
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
-        :param arm: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param hand_position: If the difference between the current angle and the target angle is less than this value, then the action is successful.
+        :param arm: Which arm the Replicant is reachiing with -- left, right or both.
+        :param hand_position: The location of the reaching hand in 3D space.
         """
 
         self.action = ReachFor(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic, hand_position=hand_position,
@@ -224,8 +230,8 @@ class Replicant(AddOn):
         Grasp a target object.
 
         :param target: The target. 
-        :param arm: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param hand_position: If the difference between the current angle and the target angle is less than this value, then the action is successful.
+        :param arm: Which arm the Replicant is reachiing with -- left, right or both.
+        :param hand_position: The location of the reaching hand in 3D space.
         """
 
         self.action = Grasp(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
@@ -236,8 +242,8 @@ class Replicant(AddOn):
         Drop a held target object.
 
         :param target: The target object ID. 
-        :param arm: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param hand_position: If the difference between the current angle and the target angle is less than this value, then the action is successful.
+        :param arm: Which arm the Replicant is reachiing with -- left, right or both.
+        :param hand_position: The location of the reaching hand in 3D space.
         """
 
         self.action = Drop(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
@@ -248,8 +254,8 @@ class Replicant(AddOn):
         Perform a list of motion capture animations in sequence.
 
         :param target: The target object ID. 
-        :param arm: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param hand_position: If the difference between the current angle and the target angle is less than this value, then the action is successful.
+        :param arm: Which arm the Replicant is reachiing with -- left, right or both.
+        :param hand_position: The location of the reaching hand in 3D space.
         """
 
         self.action = PerformActionSequence(animation_list=animation_list, resp=self._previous_resp, static=self.static, dynamic=self.dynamic,
@@ -258,10 +264,10 @@ class Replicant(AddOn):
     def reset_arm(self, arm: Arm) -> None:
         """
         Reset arm to rest position, after performing an action.
-
+       
         :param target: The target object ID. 
-        :param arm: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param hand_position: If the difference between the current angle and the target angle is less than this value, then the action is successful.
+        :param arm: Which arm the Replicant is reachiing with -- left, right or both.
+        :param hand_position: The location of the reaching hand in 3D space.
         """
 
         self.action = ResetArm(resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
@@ -274,7 +280,7 @@ class Replicant(AddOn):
         :param resp: The response from the build.
         """
 
-        self.static = ReplicantStatic(replicant_id=self.replicant_id, resp=resp)
+        self.static = ReplicantStatic(replicant_id=self.replicant_id, container_manager=self.container_manager, resp=resp)
         # Set action to be an idle.
         #self.action = Wait()
         

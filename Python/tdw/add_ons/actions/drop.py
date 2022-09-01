@@ -29,7 +29,7 @@ class Drop(ArmMotion):
         self.dynamic=dynamic
         self.target = target
         self.initialized_drop = False
-        self.offset = AffordancePoints.AFFORDANCE_POINTS_BY_OBJECT_ID[self.target][self.static.primary_target_affordance_id]
+        self.offset = AffordancePoints.AFFORDANCE_POINTS_BY_OBJECT_ID[self.target][self.static.target_affordance_id]
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:

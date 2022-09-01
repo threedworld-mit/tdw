@@ -28,9 +28,9 @@ class ArmMotion(Action, ABC):
         # My collision detection rules.
         self._collision_detection: CollisionDetection = collision_detection
         self._resetting: bool = False
-        self.reach_action_length = 30
-        self.reset_action_length = 20
-        self.drop_length = 5
+        self.reach_action_length=30
+        self.reset_action_length=20
+        self.drop_length=5
         self.reach_arm = arm
 
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
@@ -44,7 +44,7 @@ class ArmMotion(Action, ABC):
                                     image_frequency: ImageFrequency) -> List[dict]:
         """
         :param resp: The response from the build.
-        :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
+        :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
         :param image_frequency: [How image data will be captured during the image.](../image_frequency.md)
 
         :return: A list of commands to initialize this action.
@@ -69,23 +69,22 @@ class ArmMotion(Action, ABC):
         return commands
 
 
-    def _get_hold_object_commands(self,  static: ReplicantStatic, dynamic: ReplicantDynamic, target_position: Dict[str, float], object_id: int) -> List[dict]:
+    def _get_hold_object_commands(self, dynamic: ReplicantDynamic, target_position: Dict[str, float], object_id: int, affordance_id: int) -> List[dict]:
         commands=[]
         # Move the arm holding the object to a reasonable carrying position. 
         pos = TDWUtils.array_to_vector3(dynamic.position)
         hold_dist = np.linalg.norm(dynamic.position + dynamic.forward) * 0.1
+        print(hold_dist)
         commands.extend([{"$type": "humanoid_reach_for_position", 
                                    "position": {"x": target_position["x"] + hold_dist, "y": pos["y"] + 1.25, "z":target_position["z"] + hold_dist}, 
                                    "target":object_id, 
-                                   "primary_affordance_id": static.primary_target_affordance_id,
-                                   "secondary_affordance_id": static.secondary_target_affordance_id,  
+                                   "affordance_id": affordance_id, 
                                    "id": dynamic.replicant_id,
                                    "length": self.reset_action_length, 
                                    "arm": self.reach_arm},
                           {"$type": "humanoid_reset_held_object_rotation", 
                                "target": object_id, 
-                               "primary_affordance_id": static.primary_target_affordance_id,
-                               "secondary_affordance_id": static.secondary_target_affordance_id,   
+                               "affordance_id": affordance_id, 
                                "id": dynamic.replicant_id,
                                "length": self.reset_action_length, 
                                "arm": self.reach_arm}

@@ -113,7 +113,7 @@ class ReachFor(ArmMotion):
         # The target position is the nearest affordance point.
         if got_affordance_position:
             self.target_position = TDWUtils.array_to_vector3(nearest_position)
-            self.static.primary_target_affordance_id = self.affordance_id
+            self.static.target_affordance_id = self.affordance_id
         # If the object doesn't have empty game objects, aim for the center and hope for the best.
         else:
             got_center = False

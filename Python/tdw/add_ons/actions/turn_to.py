@@ -26,9 +26,6 @@ class TurnTo(Action):
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """
-        """:field
-            The target position as a dictionary.
-            """
         self.target_position = {"x": 0,"y": 0,"z": 0}
         # Set the target position.
         if isinstance(target, int):

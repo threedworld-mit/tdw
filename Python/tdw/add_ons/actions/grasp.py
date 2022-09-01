@@ -1,5 +1,4 @@
 from tdw.librarian import HumanoidAnimationLibrarian, HumanoidLibrarian
-from tdw.container_data.container_tag import ContainerTag
 from typing import List, Dict, Union
 from tdw.output_data import OutputData, Transforms, LocalTransforms, EmptyObjects, Bounds
 import numpy as np
@@ -41,35 +40,20 @@ class Grasp(ArmMotion):
                                                        image_frequency=image_frequency)
         # Remember the image frequency for the action.
         self.__image_frequency: ImageFrequency = image_frequency
-        # First include any objects contained by the target object.
-        for container_shape_id in self.static.container_manager.events:
-            event = self.static.container_manager.events[container_shape_id]
-            object_id = self.static.container_manager.container_shapes[container_shape_id]
-            tag = self.static.container_manager.tags[container_shape_id]
-            if object_id == self._target and tag == ContainerTag.inside:
-                for ob_id in event.object_ids:
-                    commands.extend([{"$type": "parent_object_to_object", 
-                                      "parent_id": self._target, 
-                                      "id": int(ob_id)},
-                                     {"$type": "set_kinematic_state", 
-                                      "id": int(ob_id), 
-                                      "is_kinematic": True, 
-                                      "use_gravity": False}])
+        commands.append({"$type": "humanoid_grasp_object", 
+                          "target": self._target, 
+                          "affordance_id": self.static.target_affordance_id, 
+                          "id": dynamic.replicant_id, 
+                          "arm": self.reach_arm})
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         if not self.initialized_grasp:
             commands = []
-            commands.append({"$type": "humanoid_grasp_object", 
-                            "target": self._target, 
-                            "primary_affordance_id": self.static.primary_target_affordance_id,
-                            "secondary_affordance_id": self.static.secondary_target_affordance_id,  
-                            "id": dynamic.replicant_id, 
-                            "arm": self.reach_arm})
-            commands.extend(self._get_hold_object_commands(static=static,
-                                                           dynamic=dynamic,
+            commands.extend(self._get_hold_object_commands(dynamic=dynamic,
                                                            target_position = ReplicantUtils.get_object_position(resp=resp, object_id=self._target), 
-                                                           object_id=self._target))
+                                                           object_id=self._target, 
+                                                           affordance_id=self.static.target_affordance_id))
             self.initialized_grasp = True
             return commands
         # We've completed the grasping sequence.

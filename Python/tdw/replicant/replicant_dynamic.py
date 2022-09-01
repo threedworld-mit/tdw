@@ -85,11 +85,14 @@ class ReplicantDynamic:
         self.frame_count: int = frame_count
         # File extensions per pass.
         self.__image_extensions: Dict[str, str] = dict()
-        self.collisions_with_environment: Dict[int, List[CollisionObjEnv]] = dict()
-
         got_replicant_images = False
         avatar_id = str(replicant_id)
-        for i in range(0, len(resp) - 1):
+        # Transform data for each body part.
+        self.body_part_transforms: Dict[int, Transform] = dict()
+        # A dictionary of collisions. Key = Body part ID. Value = Collision data.
+        self.collisions: Dict[int, List[Union[Collision, EnvironmentCollision]]] = dict()
+        got_data = False
+        for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Get the transform data for the replicant.
             if r_id == "tran":
@@ -99,6 +102,56 @@ class ReplicantDynamic:
                         self.position = transforms.get_position(j)
                         self.rotation = transforms.get_rotation(j)
                         self.forward = transforms.get_forward(j)
+            # Get replicant's data.
+            elif r_id == "repl":
+                replicants = Replicants(resp[i])
+                for j in range(replicants.get_num()):
+                    object_id = replicants.get_id(j)
+                    # We found the ID of this replicant.
+                    if object_id == replicant_id:
+                        # The order of the data is always:
+                        # [replicant_0, replicant_0_hand_l, replicant_0_hand_r, ... ,replicant_1, replicant_1_hand_l, ... ]
+                        # So, having found the ID of this replicant, we know that the next IDs are those of its body parts.
+                        for k in range(len(BODY_PARTS)):
+                            body_part_index = j + k + 1
+                            body_part_transform = Transform(position=replicants.get_position(body_part_index),
+                                                            forward=replicants.get_forward(body_part_index),
+                                                            rotation=replicants.get_rotation(body_part_index))
+                            # Cache the transform.
+                            self.body_part_transforms[replicants.get_id(body_part_index)] = body_part_transform
+                        # Stop reading output data. We have what we need.
+                        got_data = True
+                        break
+            if got_data:
+                break
+        # Now that we have the body part IDs, iterate through the output data a second time to get collisions.
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            # This is a collision.
+            if r_id == "coll":
+                collision = Collision(resp[i])
+                collider_id = collision.get_collider_id()
+                collidee_id = collision.get_collidee_id()
+                # This collision included body parts.
+                if collider_id in self.body_part_transforms:
+                    body_part_id = collider_id
+                elif collidee_id in self.body_part_transforms:
+                    body_part_id = collidee_id
+                else:
+                    body_part_id = None
+                if body_part_id is not None:
+                    if body_part_id not in self.collisions:
+                        self.collisions[body_part_id] = list()
+                    # Record the collision.
+                    self.collisions[body_part_id].append(collision)
+            # This is an environment collision.
+            elif r_id == "enco":
+                collision = EnvironmentCollision(resp[i])
+                collider_id = collision.get_object_id()
+                if collider_id not in self.collisions:
+                    self.collisions[collider_id] = list()
+                # Record the collision.
+                self.collisions[collider_id].append(collision)
             # Get the images captured by the avatar's camera.
             elif r_id == "imag":
                 images = Images(resp[i])
@@ -122,43 +175,6 @@ class ReplicantDynamic:
                 if camera_matrices.get_avatar_id() == avatar_id:
                     self.projection_matrix = camera_matrices.get_projection_matrix()
                     self.camera_matrix = camera_matrices.get_camera_matrix()
-            # Record collisions between myself and my joints or with another object.
-            elif r_id == "coll":
-                #print("registered collision")
-                collision = Collision(resp[i])
-                collider_id: int = collision.get_collider_id()
-                collidee_id: int = collision.get_collidee_id()
-                # Record collisions between one of my body parts and another of my body parts.
-                if collider_id in body_parts and collidee_id in body_parts:
-                    key: Tuple[int, int] = (collider_id, collidee_id)
-                    c = CollisionObjObj(collision)
-                    # Record this collision.
-                    if key not in self.collisions_with_self:
-                        self.collisions_with_self[key] = [c]
-                    else:
-                        self.collisions_with_self[key].append(c)
-                # Record collisions between one of my body parts and another object.
-                elif collider_id in body_parts or collidee_id in body_parts:
-                    # The body part is the first element in the tuple.
-                    if collider_id in body_parts:
-                        key: Tuple[int, int] = (collider_id, collidee_id)
-                    else:
-                        key: Tuple[int, int] = (collidee_id, collider_id)
-                    # Record this collision.
-                    c = CollisionObjObj(collision)
-                    if key not in self.collisions_with_self:
-                        self.collisions_with_objects[key] = [c]
-                    else:
-                        self.collisions_with_objects[key].append(c)
-            elif r_id == "enco":
-                collision = EnvironmentCollision(resp[i])
-                object_id = collision.get_object_id()
-                if object_id in body_parts:
-                    c = CollisionObjEnv(collision)
-                    if object_id not in self.collisions_with_environment:
-                        self.collisions_with_environment[object_id] = [c]
-                    else:
-                        self.collisions_with_environment[object_id].append(c)
         # Update the frame count.
         if got_replicant_images:
             self.frame_count += 1

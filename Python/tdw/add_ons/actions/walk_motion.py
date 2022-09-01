@@ -1,23 +1,21 @@
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 from abc import ABC, abstractmethod
 from overrides import final
-from tdw.tdw_utils import TDWUtils
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.actions.action import Action
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
-from tdw.replicant.arm import Arm
-import numpy as np
+from tdw.librarian import HumanoidAnimationLibrarian, HumanoidLibrarian
 
 
-class ArmMotion(Action, ABC):
+class WalkMotion(Action, ABC):
     """
-    Abstract base class for actions related to Replicant arm motion.
+    Abstract base class for a Replicant walking action.
     """
 
-    def __init__(self, dynamic: ReplicantDynamic, arm: Arm, collision_detection: CollisionDetection, previous: Action = None):
+    def __init__(self, dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
         """
         :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
@@ -28,10 +26,10 @@ class ArmMotion(Action, ABC):
         # My collision detection rules.
         self._collision_detection: CollisionDetection = collision_detection
         self._resetting: bool = False
-        self.reach_action_length = 30
-        self.reset_action_length = 20
-        self.drop_length = 5
-        self.reach_arm = arm
+        self.meters_per_frame = 0.04911
+        self.walk_cycle_num_frames = 68
+        self.playing = False
+        self.walk_record = HumanoidAnimationLibrarian().get_record("walking_2")
 
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
         if self._collision_detection.previous_was_same and previous is not None and \
@@ -44,67 +42,54 @@ class ArmMotion(Action, ABC):
                                     image_frequency: ImageFrequency) -> List[dict]:
         """
         :param resp: The response from the build.
-        :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
+        :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
         :param image_frequency: [How image data will be captured during the image.](../image_frequency.md)
 
         :return: A list of commands to initialize this action.
         """
-
         commands: List[dict] = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
-        # Request EmptyObjects and Bounds data.
-        commands.extend([{"$type": "send_empty_objects",
-                         "frequency": "always"},
-                         {"$type": "send_bounds",
-                          "frequency": "always"}])
-        return commands
-
-    def _get_reach_commands(self, dynamic: ReplicantDynamic, target_position: Dict[str, float]) -> List[dict]:
-        commands=[]
-        # Reach for IK target, at affordance position. 
-        commands.append({"$type": "humanoid_reach_for_position", 
-                          "position": target_position, 
-                          "id": dynamic.replicant_id, 
-                          "length": self.reach_action_length, 
-                          "arm": self.reach_arm})
+        url = self.walk_record.get_url()
+        commands.append({"$type": "add_humanoid_animation", 
+                         "name": self.walk_record.name, 
+                         "url": url})
+        commands.extend(self._get_walk_commands(dynamic=dynamic))
         return commands
 
 
-    def _get_hold_object_commands(self,  static: ReplicantStatic, dynamic: ReplicantDynamic, target_position: Dict[str, float], object_id: int) -> List[dict]:
-        commands=[]
-        # Move the arm holding the object to a reasonable carrying position. 
-        pos = TDWUtils.array_to_vector3(dynamic.position)
-        hold_dist = np.linalg.norm(dynamic.position + dynamic.forward) * 0.1
-        commands.extend([{"$type": "humanoid_reach_for_position", 
-                                   "position": {"x": target_position["x"] + hold_dist, "y": pos["y"] + 1.25, "z":target_position["z"] + hold_dist}, 
-                                   "target":object_id, 
-                                   "primary_affordance_id": static.primary_target_affordance_id,
-                                   "secondary_affordance_id": static.secondary_target_affordance_id,  
-                                   "id": dynamic.replicant_id,
-                                   "length": self.reset_action_length, 
-                                   "arm": self.reach_arm},
-                          {"$type": "humanoid_reset_held_object_rotation", 
-                               "target": object_id, 
-                               "primary_affordance_id": static.primary_target_affordance_id,
-                               "secondary_affordance_id": static.secondary_target_affordance_id,   
-                               "id": dynamic.replicant_id,
-                               "length": self.reset_action_length, 
-                               "arm": self.reach_arm}
-                        ])
-        return commands
-   
-    def _get_drop_commands(self, dynamic: ReplicantDynamic, object_id: int, offset: Dict[str, float]) -> List[dict]:
-        commands=[]
-        commands.append({"$type": "humanoid_drop_object",
-                          "target": object_id,
-                          "id": dynamic.replicant_id,
-                          "arm": self.reach_arm})
+    def _get_walk_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
+        commands = []
+        #print("Starting play")
+        commands.extend([{"$type": "set_target_framerate", 
+                          "framerate": self.walk_record.framerate},
+                         {"$type": "play_humanoid_animation",
+                          "name": "walking_2",
+                          "id": dynamic.replicant_id}])
+        self.playing = True
         return commands
 
-    def _get_reset_arm_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
-        commands=[]
-        commands.append({"$type": "humanoid_reset_arm",
-                          "id": dynamic.replicant_id,
-                          "arm": self.reach_arm})
+    def _get_stop_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
+        commands = []
+        #print("Stopping play")
+        self.playing = False
+        commands.append({"$type": "stop_humanoid_animation",
+                         "id": dynamic.replicant_id})
+        return commands
+
+    def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
+                         image_frequency: ImageFrequency) -> List[dict]:
+        """
+        :param resp: The response from the build.
+        :param static: [The static Magnebot data.](../magnebot_static.md)
+        :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
+        :param image_frequency: [How image data will be captured during the image.](../image_frequency.md)
+
+        :return: A list of commands that must be sent to end any action.
+        """
+        #print("Ending")
+        commands = []
+        commands.extend(self._get_stop_commands(dynamic=dynamic))
+        commands.extend(super().get_end_commands(resp=resp, static=static, dynamic=dynamic,
+                                                 image_frequency=image_frequency))
         return commands
 
     @final

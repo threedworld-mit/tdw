@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.10.6
+
+### Build
+
+- Fixed: NullReferenceException when requesting `Rigidbodies` output data if a Magnebot is grasping an object.
+
 ## v1.10.5
 
 ### Build

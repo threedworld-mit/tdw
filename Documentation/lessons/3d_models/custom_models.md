@@ -48,9 +48,13 @@ Output:
 ........cube
 ....Windows/
 ........cube
+....record.json
+....log.txt
 ```
 
-`Darwin/cube`, `Linux/cube`, and `Windows/cube` are platform-specific asset bundles.
+- `Darwin/cube`, `Linux/cube`, and `Windows/cube` are platform-specific asset bundles.
+- `record.json` is a serialized ModelRecord.
+- `log.txt` is a log of the creation process.
 
 There are optional parameters for setting the semantic category of the model, for controlling whether intermediary mesh files and prefabs are saved or deleted, and so on. [Read the API document for more information.](../../python/asset_bundle_creator.md)
 
@@ -78,7 +82,15 @@ AssetBundleCreator().source_file_to_asset_bundles(name="cube",
                                                   validate=False)
 ```
 
-### Unity Editor path
+### Constructor parameters
+
+`AssetBundleCreator` has several optional constructor parameters:
+
+#### 1. `quiet`
+
+If True, suppress output messages.
+
+### 2. `unity_editor_path`
 
 If you installed Unity Editor via Unity Hub, `AssetBundleCreator` should be able to automatically find the Unity Editor executable.
 
@@ -89,6 +101,14 @@ from tdw.asset_bundle_creator import AssetBundleCreator
 
 a = AssetBundleCreator(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
 ```
+
+#### 3. `check_version`
+
+When you create a new `AssetBundleCreator` Python object, it automatically compares the version of your local Unity project to the one stored on GitHub. This requires an Internet connection and might not be desirable in all cases, especially on servers. To prevent the version check, set `check_version=False` in the constructor.
+
+#### 4. `display`
+
+This must be set on Linux machines, especially headless servers, and must match a valid X display.
 
 ### Intermediate API calls
 
@@ -123,6 +143,75 @@ a = AssetBundleCreator()
 a.prefab_to_asset_bundles(name=model_name, 
                          output_directory=output_directory)
 ```
+
+You can also call `create_record()` to create a new metadata record .json file.
+
+###  Create a custom model library
+
+If you want to create many asset bundles, it's usually convenient to create your own `ModelLibrarian` and store it as a local json file. This `ModelLibrarian` can contain any model records including models from other model libraries.
+
+To do this, set the `library_path` and, optionally, `library_description` parameters in either `source_file_to_asset_bundles()` or `create_record()`:
+
+```python
+from pathlib import Path
+from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
+print(f"Asset bundles will be saved to: {output_directory}")
+AssetBundleCreator().source_file_to_asset_bundles(name="cube",
+                                                  source_file=Path("cube.fbx").resolve(),
+                                                  output_directory=output_directory.joinpath("cube"),
+                                                  library_path=output_directory.joinpath("library.json"),
+                                                  library_description="My custom library")
+```
+
+Output:
+
+```
+~/tdw_example_controller_output/local_object/
+....cube/
+........Darwin/
+............cube
+........Linux/
+............cube
+........Windows/
+............cube
+........record.json
+........log.txt
+....library.json
+```
+
+Note that we set `output_directory` to be a subdirectory ending in `cube/`. This is because we might want to create multiple asset bundles and store all of their metadata in a shared `library.json` file.
+
+You can load the custom library by setting the `library` parameter in ModelLibrarian:
+
+```python
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.librarian import ModelLibrarian
+
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
+librarian = ModelLibrarian(library=str(output_directory.joinpath("library.json").resolve()))
+```
+
+### Create asset bundles from a source directory
+
+You can feasibly create asset bundles for multiple models by calling `source_file_to_asset_bundles()` in a loop. **This is not a good idea.** Repeatedly calling Unity from a Python script is actually very slow. (It also appears to slow down over many consecutive calls).
+
+Instead, call `source_directory_to_asset_bundles()`:
+
+```python
+from pathlib import Path
+from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
+a = AssetBundleCreator()
+a.source_directory_to_asset_bundles(source_directory=Path.home().joinpath("tdw_asset_bundles"),
+                                    output_directory=output_directory)
+```
+
+There are many optional parameters not shown in this example. [Read the API document for more information.](../../python/asset_bundle_creator.md)
 
 ## Add a custom model to a TDW simulation
 
@@ -182,57 +271,13 @@ record = ModelRecord(record_data)
 print(record.get_url())
 ```
 
-##  Create a custom model library
+## Tips for creating custom models
 
-If you want to create many asset bundles, it's usually convenient to create your own `ModelLibrarian` and store it as a local json file. This `ModelLibrarian` can contain any model records including models from other model libraries.
-
-First, create the librarian json file by calling `ModelLibrarian.create_library()`:
-
-```python
-from tdw.librarian import ModelLibrarian
-
-ModelLibrarian.create_library(description="Custom model librarian",
-                              path="models_custom.json")
-```
-
-Then, load the librarian and add your model:
-
-```python
-from pathlib import Path
-from json import loads
-from tdw.librarian import ModelLibrarian, ModelRecord
-
-# Convert from a relative to absolute path to load the librarian.
-librarian = ModelLibrarian(library=str(Path("models_custom.json").resolve()))
-
-record = ModelRecord(loads(Path.home().joinpath("tdw_asset_bundles/chair/record.json").read_text()))
-
-librarian.add_or_update_record(record=record, overwrite=False, write=True)
-```
-
-You can add a record from another model library in nearly the same way:
-
-```python
-from pathlib import Path
-from tdw.librarian import ModelLibrarian
-
-custom_librarian = ModelLibrarian(library=str(Path("models_custom.json").resolve()))
-core_librarian = ModelLibrarian("models_core.json")
-record = core_librarian.get_record("rh10")
-custom_librarian.add_or_update_record(record=record, overwrite=False, write=True)
-```
-
-## Creating Many Asset Bundles
-
-You could convert many models to asset bundles by creating a loop that repeatedly calls `AssetBundleCreator.create_asset_bundles()`. **This is not a good idea.** Repeatedly calling Unity from a Python script is actually very slow. (It also appears to slow down over many consecutive calls).
-
-Instead, consider using `create_many_asset_bundles(library_path)` for large numbers of models. This function will walk through `asset_bundle_creator/Assets/Resources/models/` searching for .obj and .fbx models. It will convert these models to asset bundles.
-
-## .fbx unit scale
+### .fbx unit scale
 
 The unit scale of the exported .fbx file must be meters. If not, the physics colliders will likely be at the wrong scale.
 
-## Export .fbx files from Blender 2.8
+### Export .fbx files from Blender 2.8
 
 Blender can be fussy when exporting to Unity. If you export a .obj, you shouldn't have any problems. If you export a .fbx, there may be problems with the model's scale, as well as the collider's scale.
 
@@ -247,11 +292,10 @@ To set correct .fbx model scaling in Blender:
 
 <img src="images/custom_models/1_export.png" style="zoom:50%;" />
 
- ## Troubleshooting
+## Troubleshooting
 
-- Make sure that Unity Editor and Visual Studio are _closed_ when running `AssetBundleCreator`.
-- Make sure that you have installed the Editor _via Unity Hub_; the Python script assumes this when trying to find the editor .exe
-- If `AssetBundleCreator` is crashing with errors, please let us know; copy+paste the error when you do.
+- Make sure that Unity Editor is _closed_ when running `AssetBundleCreator`.
+- If AssetBundleCreator can't find Unity Editor, set `unity_editor_path` in the constructor.
 - If you get this warning in the Editor log: `[warn] kq_init: detected broken kqueue; not using.: Undefined error: 0` it means that there's a problem with your Unity license. Make sure you have valid and active Unity credentials.
 
 ***

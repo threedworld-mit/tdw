@@ -55,6 +55,7 @@ from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
+from tdw.FBOutput import Replicants as Repl
 import numpy as np
 from typing import Tuple, Optional, List
 
@@ -1479,3 +1480,30 @@ class FieldOfView(OutputData):
 
     def get_focal_length(self) -> float:
         return self.data.FocalLength()
+
+
+class Replicants(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._positions = self.data.PositionsAsNumpy().reshape(-1, 3)
+        self._rotations = self.data.RotationsAsNumpy().reshape(-1, 4)
+        self._forwards = self.data.ForwardsAsNumpy().reshape(-1, 3)
+
+    def get_data(self) -> Repl.Replicants:
+        return Repl.Replicants.GetRootAsReplicants(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
+    def get_position(self, index: int) -> np.array:
+        return self._positions[index]
+
+    def get_forward(self, index: int) -> np.array:
+        return self._forwards[index]
+
+    def get_rotation(self, index: int) -> np.array:
+        return self._rotations[index]

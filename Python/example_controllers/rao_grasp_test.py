@@ -37,7 +37,7 @@ table_id = c.get_unique_id()
 ball_id = c.get_unique_id()
 ball_id2 = c.get_unique_id()
 affordance_id = 0
-reach_arm = "left"
+reach_arm = "both"
 
 replicant = Replicant(replicant_id=replicant_id, position={"x": -4, "y": 0, "z": 8}, image_frequency=ImageFrequency.never)
 c.add_ons.append(replicant)
@@ -79,19 +79,15 @@ commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_nam
                                                                        object_id=basket_id,
                                                                        mass=2,
                                                                        position={"x": -1, "y": 0.35, "z": 2},
-                                                                       rotation={"x": 0, "y": 0, "z": 0}))
+                                                                       rotation={"x": 0, "y": 90, "z": 0}))
 
 c.communicate(commands)
-
-# Print the static replicant data.
-for body_part in replicant.static.body_parts:
-    print(body_part, replicant.static.body_parts[body_part])
 
 replicant.move_to(target=table_id, arrived_offset=0.5)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
-replicant.reach_for(target=basket_id, arm=reach_arm, hand_position=np.array([0, 0, 0]))
+replicant.reach_for(target=basket_id, arm=reach_arm)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 

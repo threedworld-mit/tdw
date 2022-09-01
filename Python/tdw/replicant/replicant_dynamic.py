@@ -3,11 +3,12 @@ import numpy as np
 from pathlib import Path
 from tdw.tdw_utils import TDWUtils
 from PIL import Image
-from tdw.output_data import OutputData, Transforms, Collision, EnvironmentCollision, Images, CameraMatrices
+from tdw.output_data import OutputData, Transforms, Collision, EnvironmentCollision, Images, CameraMatrices, Replicants
 from tdw.object_data.transform import Transform
 from tdw.collision_data.collision_obj_obj import CollisionObjObj
 from tdw.collision_data.collision_obj_env import CollisionObjEnv
 from tdw.replicant.arm import Arm
+from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 
 
 class ReplicantDynamic:
@@ -94,16 +95,8 @@ class ReplicantDynamic:
         got_data = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
-            # Get the transform data for the replicant.
-            if r_id == "tran":
-                transforms = Transforms(resp[i])
-                for j in range(transforms.get_num()):
-                    if transforms.get_id(j) == replicant_id:
-                        self.position = transforms.get_position(j)
-                        self.rotation = transforms.get_rotation(j)
-                        self.forward = transforms.get_forward(j)
             # Get replicant's data.
-            elif r_id == "repl":
+            if r_id == "repl":
                 replicants = Replicants(resp[i])
                 for j in range(replicants.get_num()):
                     object_id = replicants.get_id(j)
@@ -120,6 +113,11 @@ class ReplicantDynamic:
                             # Cache the transform.
                             self.body_part_transforms[replicants.get_id(body_part_index)] = body_part_transform
                         # Stop reading output data. We have what we need.
+                        print(replicants.get_position(1))
+                        print(replicants.get_position(2))
+                        self.position=replicants.get_position(0)
+                        self.forward=replicants.get_forward(0)
+                        self.rotation=replicants.get_rotation(0)
                         got_data = True
                         break
             if got_data:

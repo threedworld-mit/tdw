@@ -162,7 +162,6 @@ class Replicant(AddOn):
         # Append the container manager's commands.
         self.commands.extend(self.container_manager.commands)
         self.container_manager.commands.clear()
-        print(self.container_manager.commands)
 
 
     def turn_by(self, angle: float, aligned_at: float = 1) -> None:
@@ -213,7 +212,7 @@ class Replicant(AddOn):
                              collision_detection=self.collision_detection, arrived_at=arrived_at, aligned_at=aligned_at,
                              arrived_offset=arrived_offset, previous=self._previous_action)
 
-    def reach_for(self, target: Union[int, np.ndarray, Dict[str,  float]], arm: Arm, hand_position: np.ndarray) -> None:
+    def reach_for(self, target: Union[int, np.ndarray, Dict[str,  float]], arm: Arm) -> None:
         """
         Reach for a target object or position.
 
@@ -222,7 +221,7 @@ class Replicant(AddOn):
         :param hand_position: The location of the reaching hand in 3D space.
         """
 
-        self.action = ReachFor(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic, hand_position=hand_position,
+        self.action = ReachFor(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
                                collision_detection=self.collision_detection, previous=self._previous_action)
 
     def grasp(self, target: int, arm: Arm) -> None:

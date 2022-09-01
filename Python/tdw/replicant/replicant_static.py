@@ -1,41 +1,13 @@
 from typing import Dict, List
 from tdw.add_ons.container_manager import ContainerManager
-from tdw.output_data import OutputData
+from tdw.output_data import OutputData, Replicants
+from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 
 
 class ReplicantStatic():
     """
     Static data for the Magnebot.
 
-    With a [`Magnebot` agent](magnebot.md):
-
-    ```python
-    from tdw.controller import Controller
-    from tdw.tdw_utils import TDWUtils
-    from magnebot.magnebot import Magnebot
-
-    m = Magnebot(robot_id=0, position={"x": 0.5, "y": 0, "z": -1})
-    c = Controller()
-    c.add_ons.append(m)
-    c.communicate(TDWUtils.create_empty_room(12, 12))
-    for magnet in m.static.magnets:
-        magnet_id = m.static.magnets[magnet]
-        print(magnet, magnet_id)
-    c.communicate({"$type": "terminate"})
-    ```
-
-    With a single-agent [`MagnebotController`](magnebot_controller.md):
-
-    ```python
-    from magnebot import MagnebotController
-
-    m = MagnebotController()
-    m.init_scene()
-    for magnet in m.magnebot.static.magnets:
-        magnet_id = m.magnebot.static.magnets[magnet]
-        print(magnet, magnet_id)
-    m.end()
-    ```
     """
 
     def __init__(self, replicant_id: int, container_manager: ContainerManager, resp: List[bytes]):
@@ -71,6 +43,7 @@ class ReplicantStatic():
         Body parts by name. Key = The name. Value = Object ID.
         """
         self.body_parts: Dict[ReplicantBodyPart, int] = dict()
+
         got_data = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])

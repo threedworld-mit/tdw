@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List
 
 
 class ReplicantBodyPart(Enum):
@@ -21,5 +22,5 @@ class ReplicantBodyPart(Enum):
     upperleg_l = 12
     upperleg_r = 13
 
-# The body part enum values in a list. Put this in the same file as ReplicantBodyPart
+# The body part enum values in a list.
 BODY_PARTS: List[ReplicantBodyPart] = [r for r in ReplicantBodyPart]

@@ -99,7 +99,7 @@ class WalkMotion(Action, ABC):
 
         :return: True if the Replicant didn't collide with something that should make it stop.
         """
-
+        """
         # Stop if the Replicant is colliding with something.
         if self._is_collision(dynamic=dynamic):
             print("Collided")
@@ -107,6 +107,8 @@ class WalkMotion(Action, ABC):
             return False
         else:
             return True
+        """
+        return True
 
     @final
     def _is_collision(self, dynamic: ReplicantDynamic) -> bool:

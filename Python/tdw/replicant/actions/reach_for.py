@@ -14,6 +14,7 @@ from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.affordance_points import AffordancePoints
 from tdw.replicant.actions.arm_motion import ArmMotion
 from tdw.replicant.arm import Arm
+from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 
 
 
@@ -28,13 +29,12 @@ class ReachFor(ArmMotion):
     Reach for a target object or position.
     """
 
-    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], resp: List[bytes], arm: Arm, hand_position: np.ndarray, 
-                 static: ReplicantStatic, dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
+    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], resp: List[bytes], arm: Arm, static: ReplicantStatic, 
+                 dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
         super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
         self.static = static
         self.dynamic = dynamic
         self.affordance_id = -1
-        self.hand_position = hand_position
         self.frame_count = 0
         self.target = target
         self.target_position = {"x": 0,"y": 0,"z": 0}
@@ -46,8 +46,10 @@ class ReachFor(ArmMotion):
         # The target is a vector3 position.
         elif isinstance(target, dict):
             self.target_position = target
-
-            
+        self._reach_body_part: ReplicantBodyPart = ReplicantBodyPart.hand_l
+        print(arm)
+        print(self.reach_arm)
+      
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -64,7 +66,13 @@ class ReachFor(ArmMotion):
         #  as we need the empty objects and bounds output data.
         if isinstance(self.target, int):
             if not self.initialized_affordances:
-                self._initialize_affordances(resp=resp)
+                if self.reach_arm == "left":
+                   static.primary_target_affordance_id = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_l, resp=resp)
+                elif self.reach_arm == "right":
+                    static.primary_target_affordance_id = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_r, resp=resp)
+                elif self.reach_arm == "both":
+                    static.primary_target_affordance_id = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_l, resp=resp)
+                    static.secondary_target_affordance_id = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_r, resp=resp)
                 self.initialized_affordances = True
         if not self.initialized_reach:
             commands = []
@@ -82,7 +90,7 @@ class ReachFor(ArmMotion):
                 self.frame_count += 1 
                 return []
 
-    def _initialize_affordances(self, resp: List[bytes]):
+    def _initialize_affordances(self, resp: List[bytes], reach_body_part: ReplicantBodyPart) -> int:
         # Get the nearest affordance position.
         nearest_distance = np.inf
         nearest_position = np.array([0, 0, 0])
@@ -103,31 +111,31 @@ class ReachFor(ArmMotion):
                         # Get the position of the empty object.
                         empty_object_position = empt.get_position(j)
                         # Get the nearest affordance position.
-                        #distance = np.linalg.norm(self.hand_position - empty_object_position)
-                        # CHANGE THIS BACK TO USING HAND POSITION WHEN WE HAVE THAT DATA PRE-FRAME; WILL NEED
-                        #  FOR TWO-HANDED GRASP.
-                        distance = np.linalg.norm(self.dynamic.position - empty_object_position)
+                        distance = np.linalg.norm(self.dynamic.body_part_transforms[self.static.body_parts[reach_body_part]].position - empty_object_position)
                         if distance < nearest_distance:
                             nearest_distance = distance
                             nearest_position = empty_object_position
         # The target position is the nearest affordance point.
         if got_affordance_position:
             self.target_position = TDWUtils.array_to_vector3(nearest_position)
-            self.static.primary_target_affordance_id = self.affordance_id
-        # If the object doesn't have empty game objects, aim for the center and hope for the best.
+            return self.affordance_id
         else:
-            got_center = False
-            for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i])
-                if r_id == "boun":
-                    bounds = Bounds(resp[i])
-                    for j in range(bounds.get_num()):
-                        if bounds.get_id(j) == self.target:
-                            self.target_position = TDWUtils.array_to_vector3(bounds.get_center(j))
-                            got_center = True
-                            break
-            if not got_center:
-                raise Exception("Couldn't get the centroid of the target object.")
+            return -1
+
+    def find_object_center(self, resp: List[bytes]):
+        # If the object doesn't have empty game objects, aim for the center and hope for the best.
+        got_center = False
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "boun":
+                bounds = Bounds(resp[i])
+                for j in range(bounds.get_num()):
+                    if bounds.get_id(j) == self.target:
+                        self.target_position = TDWUtils.array_to_vector3(bounds.get_center(j))
+                        got_center = True
+                        break
+        if not got_center:
+            raise Exception("Couldn't get the centroid of the target object.")
 
     def _previous_was_same(self, previous: Action) -> bool:
         if isinstance(previous, MoveBy):

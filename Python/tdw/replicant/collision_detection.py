@@ -6,7 +6,7 @@ class CollisionDetection:
     Parameters for how a Replicant handles collision detection.
     """
 
-    def __init__(self, walls: bool = True, floor: bool = False, objects: bool = True,
+    def __init__(self, walls: bool = False, floor: bool = False, objects: bool = False,
                  include_objects: List[int] = None, exclude_objects: List[int] = None,
                  previous_was_same: bool = True):
         """

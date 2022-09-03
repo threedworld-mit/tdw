@@ -34,6 +34,8 @@ class TurnTo(Action):
         if isinstance(target, int):
             # Get the position of the object.
             self.target_position = ReplicantUtils.get_object_position(resp=resp, object_id=target)
+            # We want the Replicant to stay on the floor, if the object is on a table for example.
+            self.target_position["y"] = 0
         elif isinstance(target, dict):
             self.target_position = target
         else:

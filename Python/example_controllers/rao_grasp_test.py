@@ -14,8 +14,9 @@ a randomly-positioned object multiple times.
 """
 
 # A dictionary of affordance points per model. This could be saved to a json file.
-AffordancePoints.AFFORDANCE_POINTS = {"basket_18inx18inx12iin_wicker": [{'x': -0.2285, 'y': 0.305, 'z': 0.0},
-                                                           {'x': 0.2285, 'y': 0.305, 'z': 0.0},
+AffordancePoints.AFFORDANCE_POINTS = {"basket_18inx18inx12iin_wicker": [
+                                                           #{'x': -0.2285, 'y': 0.305, 'z': 0.0},
+                                                           #{'x': 0.2285, 'y': 0.305, 'z': 0.0},
                                                            {'x': 0, 'y': 0.305, 'z': 0.2285},
                                                            {'x': 0, 'y': 0.305, 'z': -0.2285}],
                                       "basket_18inx18inx12iin_bamboo": [{'x': -0.2285, 'y': 0.305, 'z': 0.0},
@@ -37,7 +38,7 @@ table_id = c.get_unique_id()
 ball_id = c.get_unique_id()
 ball_id2 = c.get_unique_id()
 affordance_id = 0
-reach_arm = "both"
+reach_arm = "left"
 
 replicant = Replicant(replicant_id=replicant_id, position={"x": -4, "y": 0, "z": 8}, image_frequency=ImageFrequency.never)
 c.add_ons.append(replicant)
@@ -70,7 +71,7 @@ commands.extend(c.get_add_physics_object(model_name="live_edge_coffee_table",
                                          library="models_core.json"))
 commands.extend(c.get_add_physics_object(model_name="zenblocks",
                                          object_id=c.get_unique_id(),
-                                         position={"x": -1, "y": 0.65, "z": 2},
+                                         position={"x": -1.2, "y": 0.65, "z": 2},
                                          scale_factor={"x": 0.5, "y": 0.5, "z": 0.5},
                                          mass=0.1,
                                          rotation={"x": 0, "y": 0, "z": 0}))
@@ -78,12 +79,12 @@ commands.extend(c.get_add_physics_object(model_name="zenblocks",
 commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_name="basket_18inx18inx12iin_wicker",
                                                                        object_id=basket_id,
                                                                        mass=2,
-                                                                       position={"x": -1, "y": 0.35, "z": 2},
+                                                                       position={"x": -1.2, "y": 0.35, "z": 2},
                                                                        rotation={"x": 0, "y": 90, "z": 0}))
 
 c.communicate(commands)
 
-replicant.move_to(target=table_id, arrived_offset=0.5)
+replicant.move_to(target=basket_id, arrived_offset=0.35)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 

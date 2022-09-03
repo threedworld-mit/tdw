@@ -37,18 +37,17 @@ class ReachFor(ArmMotion):
         self.affordance_id = -1
         self.frame_count = 0
         self.target = target
-        self.target_position = {"x": 0,"y": 0,"z": 0}
+        self.primary_target_position = {"x": 0,"y": 0,"z": 0}
+        self.secondary_target_position = None
         self.initialized_reach = False
         self.initialized_affordances = False
         # Convert from a numpy array to a dictionary.
         if isinstance(target, np.ndarray):
-            self.target_position = TDWUtils.array_to_vector3(target)
+            self.primary_target_position = TDWUtils.array_to_vector3(target)
         # The target is a vector3 position.
         elif isinstance(target, dict):
-            self.target_position = target
+            self.primary_target_position = target
         self._reach_body_part: ReplicantBodyPart = ReplicantBodyPart.hand_l
-        print(arm)
-        print(self.reach_arm)
       
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
@@ -67,16 +66,18 @@ class ReachFor(ArmMotion):
         if isinstance(self.target, int):
             if not self.initialized_affordances:
                 if self.reach_arm == "left":
-                   static.primary_target_affordance_id = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_l, resp=resp)
+                   static.primary_target_affordance_id, self.primary_target_position = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_l, resp=resp)
                 elif self.reach_arm == "right":
-                    static.primary_target_affordance_id = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_r, resp=resp)
+                    static.primary_target_affordance_id, self.primary_target_position = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_r, resp=resp)
                 elif self.reach_arm == "both":
-                    static.primary_target_affordance_id = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_l, resp=resp)
-                    static.secondary_target_affordance_id = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_r, resp=resp)
+                    static.primary_target_affordance_id, self.primary_target_position = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_l, resp=resp)
+                    static.secondary_target_affordance_id, self.secondary_target_position = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_r, resp=resp)
                 self.initialized_affordances = True
         if not self.initialized_reach:
             commands = []
-            commands.extend(self._get_reach_commands(dynamic=dynamic, target_position=self.target_position))
+            commands.extend(self._get_reach_commands(dynamic=dynamic, 
+                                                     primary_target_position=self.primary_target_position,
+                                                     secondary_target_position=self.secondary_target_position))
             self.initialized_reach = True
             return commands
         # We've arrived at the target.
@@ -90,10 +91,11 @@ class ReachFor(ArmMotion):
                 self.frame_count += 1 
                 return []
 
-    def _initialize_affordances(self, resp: List[bytes], reach_body_part: ReplicantBodyPart) -> int:
+    def _initialize_affordances(self, resp: List[bytes], reach_body_part: ReplicantBodyPart):
         # Get the nearest affordance position.
         nearest_distance = np.inf
         nearest_position = np.array([0, 0, 0])
+        self.affordance_id = 0
         got_affordance_position = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -102,12 +104,12 @@ class ReachFor(ArmMotion):
                 for j in range(empt.get_num()):
                     # Get the ID of the affordance point.
                     empty_object_id = empt.get_id(j)
-                    self.affordance_id = empty_object_id
                     # Get the parent object ID.
                     object_id = AffordancePoints.EMPTY_OBJECT_IDS[empty_object_id]["object_id"]
                     # Found the target object.
                     if object_id == self.target:
                         got_affordance_position = True
+
                         # Get the position of the empty object.
                         empty_object_position = empt.get_position(j)
                         # Get the nearest affordance position.
@@ -115,12 +117,12 @@ class ReachFor(ArmMotion):
                         if distance < nearest_distance:
                             nearest_distance = distance
                             nearest_position = empty_object_position
+                            self.affordance_id = empty_object_id
         # The target position is the nearest affordance point.
         if got_affordance_position:
-            self.target_position = TDWUtils.array_to_vector3(nearest_position)
-            return self.affordance_id
+            return self.affordance_id, TDWUtils.array_to_vector3(nearest_position)
         else:
-            return -1
+            return -1, None
 
     def find_object_center(self, resp: List[bytes]):
         # If the object doesn't have empty game objects, aim for the center and hope for the best.
@@ -131,7 +133,7 @@ class ReachFor(ArmMotion):
                 bounds = Bounds(resp[i])
                 for j in range(bounds.get_num()):
                     if bounds.get_id(j) == self.target:
-                        self.target_position = TDWUtils.array_to_vector3(bounds.get_center(j))
+                        self.primary_target_position = TDWUtils.array_to_vector3(bounds.get_center(j))
                         got_center = True
                         break
         if not got_center:

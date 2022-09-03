@@ -29,7 +29,7 @@ class Drop(ArmMotion):
         self.dynamic=dynamic
         self.target = target
         self.initialized_drop = False
-        self.offset = AffordancePoints.AFFORDANCE_POINTS_BY_OBJECT_ID[self.target][self.static.primary_target_affordance_id]
+        #self.offset = AffordancePoints.AFFORDANCE_POINTS_BY_OBJECT_ID[self.target][self.static.primary_target_affordance_id]
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -43,8 +43,7 @@ class Drop(ArmMotion):
         if not self.initialized_drop:
             commands = []
             commands.extend(self._get_drop_commands(dynamic=self.dynamic,
-                                                    object_id=self.target, 
-                                                    offset=self.offset))
+                                                    object_id=self.target))
             self.initialized_drop = True
             return commands
         # We've completed the drop.
@@ -61,11 +60,11 @@ class Drop(ArmMotion):
                 return []
 
     def _previous_was_same(self, previous: Action) -> bool:
-        if isinstance(previous, MoveBy):
-            return (previous.distance > 0 and self.distance > 0) or (previous.distance < 0 and self.distance < 0)
-        else:
-            return False
-
+        #if isinstance(previous, MoveBy):
+            #return (previous.distance > 0 and self.distance > 0) or (previous.distance < 0 and self.distance < 0)
+        #else:
+            #return False
+        return False
         
         
         

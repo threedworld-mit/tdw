@@ -8,6 +8,8 @@ from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
+from tdw.output_data import OutputData, Collision, EnvironmentCollision
+from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 from tdw.replicant.arm import Arm
 import numpy as np
 
@@ -58,25 +60,37 @@ class ArmMotion(Action, ABC):
                           "frequency": "always"}])
         return commands
 
-    def _get_reach_commands(self, dynamic: ReplicantDynamic, target_position: Dict[str, float]) -> List[dict]:
+    def _get_reach_commands(self, dynamic: ReplicantDynamic, primary_target_position: Dict[str, float],
+                            secondary_target_position: Dict[str, float]) -> List[dict]:
         commands=[]
-        # Reach for IK target, at affordance position. 
-        commands.append({"$type": "humanoid_reach_for_position", 
-                          "position": target_position, 
+        # Reach for IK target, at affordance position.
+        if secondary_target_position != None:
+            commands.append({"$type": "humanoid_reach_for_position", 
+                          "primary_target_position": primary_target_position, 
+                          "secondary_target_position": secondary_target_position, 
+                          "id": dynamic.replicant_id, 
+                          "length": self.reach_action_length, 
+                          "arm": self.reach_arm})
+        else:
+            commands.append({"$type": "humanoid_reach_for_position", 
+                          "primary_target_position": primary_target_position, 
                           "id": dynamic.replicant_id, 
                           "length": self.reach_action_length, 
                           "arm": self.reach_arm})
         return commands
 
 
-    def _get_hold_object_commands(self,  static: ReplicantStatic, dynamic: ReplicantDynamic, target_position: Dict[str, float], object_id: int) -> List[dict]:
+    def _get_hold_object_commands(self,  static: ReplicantStatic, dynamic: ReplicantDynamic, object_id: int) -> List[dict]:
         commands=[]
         # Move the arm holding the object to a reasonable carrying position. 
         pos = TDWUtils.array_to_vector3(dynamic.position)
+        l_hand_pos = TDWUtils.array_to_vector3(dynamic.body_part_transforms[static.body_parts[ReplicantBodyPart.hand_l]].position)
+        r_hand_pos = TDWUtils.array_to_vector3(dynamic.body_part_transforms[static.body_parts[ReplicantBodyPart.hand_r]].position)
+        fwd = TDWUtils.array_to_vector3(dynamic.forward)
         hold_dist = np.linalg.norm(dynamic.position + dynamic.forward) * 0.1
         commands.extend([{"$type": "humanoid_reach_for_position", 
-                                   "position": {"x": target_position["x"] + hold_dist, "y": pos["y"] + 1.25, "z":target_position["z"] + hold_dist}, 
-                                   "target":object_id, 
+                                   "primary_target_position": {"x": l_hand_pos["x"] + (fwd["x"] * 0.5), "y": l_hand_pos["y"] + 0.25, "z": l_hand_pos["z"] + (fwd["z"] * 0.5)},
+                                   "secondary_target_position": {"x": r_hand_pos["x"] + (fwd["x"] * 0.5), "y": r_hand_pos["y"] + 0.25, "z": r_hand_pos["z"]  + (fwd["z"] * 0.5)},   
                                    "primary_affordance_id": static.primary_target_affordance_id,
                                    "secondary_affordance_id": static.secondary_target_affordance_id,  
                                    "id": dynamic.replicant_id,
@@ -92,7 +106,7 @@ class ArmMotion(Action, ABC):
                         ])
         return commands
    
-    def _get_drop_commands(self, dynamic: ReplicantDynamic, object_id: int, offset: Dict[str, float]) -> List[dict]:
+    def _get_drop_commands(self, dynamic: ReplicantDynamic, object_id: int) -> List[dict]:
         commands=[]
         commands.append({"$type": "humanoid_drop_object",
                           "target": object_id,
@@ -115,15 +129,15 @@ class ArmMotion(Action, ABC):
         :return: True if the Replicant didn't collide with something that should make it stop.
         """
 
-        """
+        
         # Stop if the Replicant is colliding with something.
         if self._is_collision(dynamic=dynamic):
-            print("Collided")
+            print("Collided - arm motion")
             self.status = ActionStatus.collision
             return False
         else:
             return True
-        """
+       
         return True
 
     @final
@@ -133,19 +147,23 @@ class ArmMotion(Action, ABC):
 
         :return: True if there was a collision that according to the current detection rules means that the Replicant needs to stop moving.
         """
-
+        
         # Check environment collisions.
         if self._collision_detection.floor or self._collision_detection.walls:
             enters: List[int] = list()
             exits: List[int] = list()
-            for object_id in dynamic.collisions_with_environment:
-                for collision in dynamic.collisions_with_environment[object_id]:
-                    if (self._collision_detection.floor and collision.floor) or \
-                            (self._collision_detection.walls and not collision.floor):
-                        if collision.state == "enter":
-                            enters.append(object_id)
-                        elif collision.state == "exit":
-                            exits.append(object_id)
+            for body_part_id in dynamic.collisions:
+                for collision in dynamic.collisions[body_part_id]:
+                    if isinstance(collision, EnvironmentCollision):
+                        collider_id = collision.get_object_id()
+                        state = collision.get_state()
+                        print("Arm: environment_collision:", collider_id, state)
+                        if (self._collision_detection.floor and collision.get_floor()) or \
+                                (self._collision_detection.walls and not collision.get_floor()):
+                            if collision.get_state() == "enter":
+                                enters.append(body_part_id)
+                            elif collision.get_state() == "exit":
+                                exits.append(body_part_id)
             # Ignore exit events.
             enters = [e for e in enters if e not in exits]
             if len(enters) > 0:
@@ -154,17 +172,22 @@ class ArmMotion(Action, ABC):
         if self._collision_detection.objects or len(self._collision_detection.include_objects) > 0:
             enters: List[Tuple[int, int]] = list()
             exits: List[Tuple[int, int]] = list()
-            for object_ids in dynamic.collisions_with_objects:
-                for collision in dynamic.collisions_with_objects[object_ids]:
-                    object_id = object_ids[1]
-                    # Accept the collision if the object is in the includes list or if it's not in the excludes list.
-                    if object_id in self._collision_detection.include_objects or \
-                            (self._collision_detection.objects and object_id not in
-                             self._collision_detection.exclude_objects):
-                        if collision.state == "enter":
-                            enters.append(object_ids)
-                        elif collision.state == "exit":
-                            exits.append(object_ids)
+            for body_part_id in dynamic.collisions:
+                for collision in dynamic.collisions[body_part_id]:
+                    if isinstance(collision, Collision):
+                        collider_id = collision.get_collider_id()
+                        collidee_id = collision.get_collidee_id()
+                        state = collision.get_state()
+                        print("Arm: object collision:", collider_id, collidee_id, state)
+                        object_id = object_ids[1]
+                        # Accept the collision if the object is in the includes list or if it's not in the excludes list.
+                        if object_id in self._collision_detection.include_objects or \
+                                (self._collision_detection.objects and object_id not in
+                                 self._collision_detection.exclude_objects):
+                            if collision.get_state() == "enter":
+                                enters.append(object_ids)
+                            elif collision.get_state() == "exit":
+                                exits.append(object_ids)
             # Ignore exit events.
             enters: List[Tuple[int, int]] = [e for e in enters if e not in exits]
             if len(enters) > 0:

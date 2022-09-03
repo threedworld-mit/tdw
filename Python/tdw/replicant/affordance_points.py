@@ -21,7 +21,7 @@ class AffordancePoints():
                                               default_physics_values: bool = True, mass: float = 1,
                                               dynamic_friction: float = 0.3,
                                               static_friction: float = 0.3, bounciness: float = 0.7,
-                                              show_markers: bool = False) -> List[dict]:
+                                              show_markers: bool = True) -> List[dict]:
         # Add the object with physics parameters.
         commands = Controller.get_add_physics_object(model_name=model_name, object_id=object_id, position=position,
                                                      rotation=rotation, library=library, scale_factor=scale_factor,

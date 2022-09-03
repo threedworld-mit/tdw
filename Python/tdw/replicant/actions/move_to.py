@@ -49,12 +49,15 @@ class MoveTo(Action):
         if isinstance(target, int):
             # Get the position of the object.
             target_position = ReplicantUtils.get_object_position(resp=resp, object_id=target)
+            # We want the Replicant to stay on the floor, if the object is on a table for example.
+            target_position["y"] = 0
         elif isinstance(target, dict):
             target_position = target
         else:
            raise Exception(f"Invalid target: {target}")
         # Compute distance from Replicant current location to object.
         self.distance = TDWUtils.get_distance(TDWUtils.array_to_vector3(dynamic.position), target_position) - self.__arrived_offset
+        print(target_position)
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:

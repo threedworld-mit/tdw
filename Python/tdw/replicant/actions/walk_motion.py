@@ -8,6 +8,7 @@ from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.librarian import HumanoidAnimationLibrarian, HumanoidLibrarian
+from tdw.output_data import OutputData, Collision, EnvironmentCollision
 
 
 class WalkMotion(Action, ABC):
@@ -99,15 +100,15 @@ class WalkMotion(Action, ABC):
 
         :return: True if the Replicant didn't collide with something that should make it stop.
         """
-        """
+        
         # Stop if the Replicant is colliding with something.
         if self._is_collision(dynamic=dynamic):
-            print("Collided")
+            print("Collided -- walking")
             self.status = ActionStatus.collision
             return False
         else:
             return True
-        """
+        
         return True
 
     @final
@@ -122,14 +123,18 @@ class WalkMotion(Action, ABC):
         if self._collision_detection.floor or self._collision_detection.walls:
             enters: List[int] = list()
             exits: List[int] = list()
-            for object_id in dynamic.collisions_with_environment:
-                for collision in dynamic.collisions_with_environment[object_id]:
-                    if (self._collision_detection.floor and collision.floor) or \
-                            (self._collision_detection.walls and not collision.floor):
-                        if collision.state == "enter":
-                            enters.append(object_id)
-                        elif collision.state == "exit":
-                            exits.append(object_id)
+            for body_part_id in dynamic.collisions:
+                for collision in dynamic.collisions[body_part_id]:
+                    if isinstance(collision, EnvironmentCollision):
+                        collider_id = collision.get_object_id()
+                        state = collision.get_state()
+                        print("Walk: environment_collision:", collider_id, state)
+                        if (self._collision_detection.floor and collision.get_floor()) or \
+                                (self._collision_detection.walls and not collision.get_floor()):
+                            if collision.get_state() == "enter":
+                                enters.append(body_part_id)
+                            elif collision.get_state() == "exit":
+                                exits.append(body_part_id)
             # Ignore exit events.
             enters = [e for e in enters if e not in exits]
             if len(enters) > 0:
@@ -138,17 +143,22 @@ class WalkMotion(Action, ABC):
         if self._collision_detection.objects or len(self._collision_detection.include_objects) > 0:
             enters: List[Tuple[int, int]] = list()
             exits: List[Tuple[int, int]] = list()
-            for object_ids in dynamic.collisions_with_objects:
-                for collision in dynamic.collisions_with_objects[object_ids]:
-                    object_id = object_ids[1]
-                    # Accept the collision if the object is in the includes list or if it's not in the excludes list.
-                    if object_id in self._collision_detection.include_objects or \
-                            (self._collision_detection.objects and object_id not in
-                             self._collision_detection.exclude_objects):
-                        if collision.state == "enter":
-                            enters.append(object_ids)
-                        elif collision.state == "exit":
-                            exits.append(object_ids)
+            for body_part_id in dynamic.collisions:
+                for collision in dynamic.collisions[body_part_id]:
+                    if isinstance(collision, Collision):
+                        collider_id = collision.get_collider_id()
+                        collidee_id = collision.get_collidee_id()
+                        state = collision.get_state()
+                        print("Walk: object collision:", collider_id, collidee_id, state)
+                        object_id = object_ids[1]
+                        # Accept the collision if the object is in the includes list or if it's not in the excludes list.
+                        if object_id in self._collision_detection.include_objects or \
+                                (self._collision_detection.objects and object_id not in
+                                 self._collision_detection.exclude_objects):
+                            if collision.get_state() == "enter":
+                                enters.append(object_ids)
+                            elif collision.get_state() == "exit":
+                                exits.append(object_ids)
             # Ignore exit events.
             enters: List[Tuple[int, int]] = [e for e in enters if e not in exits]
             if len(enters) > 0:

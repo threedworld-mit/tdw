@@ -62,13 +62,12 @@ class Grasp(ArmMotion):
             commands = []
             commands.append({"$type": "humanoid_grasp_object", 
                             "target": self._target, 
-                            "primary_affordance_id": self.static.primary_target_affordance_id,
-                            "secondary_affordance_id": self.static.secondary_target_affordance_id,  
+                            "primary_affordance_id": static.primary_target_affordance_id,
+                            "secondary_affordance_id": static.secondary_target_affordance_id,  
                             "id": dynamic.replicant_id, 
                             "arm": self.reach_arm})
             commands.extend(self._get_hold_object_commands(static=static,
-                                                           dynamic=dynamic,
-                                                           target_position = ReplicantUtils.get_object_position(resp=resp, object_id=self._target), 
+                                                           dynamic=dynamic, 
                                                            object_id=self._target))
             self.initialized_grasp = True
             return commands

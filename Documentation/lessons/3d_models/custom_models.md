@@ -198,7 +198,11 @@ librarian = ModelLibrarian(library=str(output_directory.joinpath("library.json")
 
 You can feasibly create asset bundles for multiple models by calling `source_file_to_asset_bundles()` in a loop. **This is not a good idea.** Repeatedly calling Unity from a Python script is actually very slow. (It also appears to slow down over many consecutive calls).
 
-Instead, call `source_directory_to_asset_bundles()`:
+There are two ways to generate asset bundles for multiple source files:
+
+#### Option 1: `source_directory_to_asset_bundles()`
+
+This will read a source directory and convert every mesh file within it into asset bundles.
 
 ```python
 from pathlib import Path
@@ -212,6 +216,35 @@ a.source_directory_to_asset_bundles(source_directory=Path.home().joinpath("tdw_a
 ```
 
 There are many optional parameters not shown in this example. [Read the API document for more information.](../../python/asset_bundle_creator.md)
+
+#### Option 2: `metadata_file_to_asset_bundles()`
+
+This will read a metadata.csv file and convert every mesh file listed into asset bundles:
+
+```python
+from pathlib import Path
+from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
+a = AssetBundleCreator()
+a.metadata_file_to_asset_bundles(metadata_path=Path.home().joinpath("tdw_asset_bundles/metadata.csv"),
+                                 output_directory=output_directory)
+```
+
+There are many optional parameters not shown in this example. [Read the API document for more information.](../../python/asset_bundle_creator.md)
+
+This is an example metadata file:
+
+```
+name,wnid,wcategory,scale_factor,path
+model_0,n04148054,scissors,1,source_directory/model_0/model_0.obj
+model_1,n03056701,coaster,1,source_directory/model_1/model_1.obj
+```
+
+The *disadvantage* to using this function is that you need to prep the .csv file manually, as opposed to `source_directory_to_asset_bundles()`, which requires no manual prep (other than placing the target source files in the directory).
+
+The *advantage* to using this function is that you can specify metadata such as the `wnid` per model; this data will be included in the `record.json` and `library.json` files.
 
 ## Add a custom model to a TDW simulation
 

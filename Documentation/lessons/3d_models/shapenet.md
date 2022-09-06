@@ -22,24 +22,33 @@ ShapeNet is a huge repository of semantically tagged obj files available to user
 
 That said, you can generate your own ShapeNet asset bundles and host them locally.
 
-## Requirements
+## Setup
 
-1. You must download and extract the relevant ShapeNet zip files into the following directory structure:
+### ShapeNetCore
 
-  - ShapeNet Core v2: Just unzip and you're all set.
-  - ShapeNet SEM: Download models, textures, and metadata.csv. They must all be in the same directory:
+1. Clone the `tdw` repo in order to use `shapenet.py`.
+2. See [the requirements for using the `AssetBundleCreator`](custom_models.md).
+3. Download and extract `ShapeNetCore.v2.zip`.
+
+### ShapeNet SEM
+
+1. Clone the `tdw` repo in order to use `shapenet.py`.
+2. See [the requirements for using the `AssetBundleCreator`](custom_models.md).
+3. Create a root directory, for example `D:/shapenet_sem/`
+4. Download and extract `models-OBJ.zip` into the root directory.
+5. Download and extract `models-textures.zip` into the root directory.
+6. Move every file in `textures/` into `models/`.
+7. Download `metadata.csv` to the root directory.
+
+Result:
 
 ```
-<root>
+D:/shapenet_sem/
 ....models/
-....textures/
 ....metadata.csv
 ```
 
-2. Clone the `tdw` repo.
-3. See [the requirements for using the `AssetBundleCreator`](custom_models.md).
-
-## Usage
+## Usge
 
 1. `cd tdw/Python/shapenet`
 2. `python3 shapenet.py [ARGUMENTS]`
@@ -49,23 +58,12 @@ That said, you can generate your own ShapeNet asset bundles and host them locall
 | `--src`              | str  | The absolute path to the root source directory.              | `"D:/ShapeNetCore.v2"`   |
 | `--dest`             | str  | The absolute path to the root destination directory.         | `"D:/tdw_shapenet_core"` |
 | `--set`              | str  | Which ShapeNet set this is.<br>_Choices:_ `"core"` or `"sem"` | `"core"`                 |
-| `--batch_size`       | int  | The number of models per batch.                              | 1000                     |
 | `--vhacd_resolution` | int  | Higher value=better-fitting colliders and slower build process. | 8000000                  |
-| `--first_batch_only` | N/A  | Output only the first batch. Useful for testing purposes.    | N/A                      |
 
 ## What the script will do
 
-1. Create a [model librarian file](../../python/librarian/model_librarian.md) of all of the models. (Some of the metadata fields such as `bounds` will require Unity further down the creation pipeline.)
-2. (ShapeNet SEM only): Move all images in the `textures/` folder to `models/`
-3. Move _batches_ of .obj models, .mtl files, etc. to the asset_bundle_creator project. Default batch size is 1000.
-4. Create collider .objs for each model .obj (unless one already exists).
-5. Create prefabs.
-6. Create asset bundles from the prefabs.
-7. Update the database file with accurate metadata.
-8. Move the asset bundles to a destination directory.
-9. Remove all asset files (models, images, etc.) used to create the asset bundles.
-
-For ShapeNet Core v2, every time a model is added to the _batch_, the Python script will make a few changes to the files. These changes are harmless, unless you're using these models for unrelated research.
+1. Convert ShapeNet metadata into a new metadata.csv file: `output_directory/metadata.csv`.
+2. Run `AssetBundleCreator.metadata_file_to_asset_bundles()`. This will generate asset bundles and metadata records.
 
 ## Time required
 
@@ -80,17 +78,17 @@ To speed up the process, set `--vhacd_resolution` to a low value (e.g. 1000). Th
 Once you've created the asset bundles, you can add them to TDW like any other asset bundles:
 
 ```python
-from tdw.librarian import ModelLibrarian
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
 shapenet_library_path = "path/to/shapenet/records.json"
 
 c = Controller()
-c.model_librarian = ModelLibrarian(library=shapenet_library_path)
-c.communicate([TDWUtils.create_empty_room(12, 12,),
-               c.get_add_object(model_name=c.model_librarian.records[0].name,
-                                object_id=c.get_unique_id())])
+model_librarian = ModelLibrarian(library=shapenet_library_path)
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name=model_librarian.records[0].name,
+                                object_id=c.get_unique_id(),
+                                library=shapenet_library_path)])
 ```
 
 ***

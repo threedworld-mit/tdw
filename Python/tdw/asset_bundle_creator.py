@@ -113,11 +113,11 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         if validate:
             self.validate(name=name, record_path=record_path, library_path=library_path)
 
-    def source_directory_to_asset_bundles(self, source_directory: Union[str, Path],
-                                          output_directory: Union[str, Path], library_description: str = None,
-                                          vhacd_resolution: int = 800000, internal_materials: bool = False,
-                                          overwrite: bool = False, continue_on_error: bool = True,
-                                          search_pattern: str = None) -> None:
+    def source_directory_to_asset_bundles(self, source_directory: Union[str, Path],  output_directory: Union[str, Path],
+                                          library_description: str = None,  vhacd_resolution: int = 800000,
+                                          internal_materials: bool = False, overwrite: bool = False,
+                                          continue_on_error: bool = True, search_pattern: str = None,
+                                          cleanup: bool = True) -> None:
         """
         Convert a directory of source .fbx and/or .obj models to asset bundles.
 
@@ -175,10 +175,11 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         :param overwrite: If True, overwrite existing asset bundles. If this is set to False (the default value), you can stop/resume the processing of a directory's contents.
         :param continue_on_error: If True, continue generating asset bundles even if there is a problem with one model. If False, stop the process if there's an error.
         :param search_pattern: A search pattern for files, for example `"*.obj"`. All subdirectories will be recursively searched.
+        :param cleanup: If True, delete intermediary files such as the prefabs in the `asset_bundle_creator` Unity Editor project.
         """
 
-        args = [f'-source_directory="{AssetBundleCreatorBase._get_string_path(source_directory)}"',
-                f'-output_directory="{AssetBundleCreatorBase._get_string_path(output_directory)}"',
+        args = [f'-source_directory="{AssetBundleCreatorBase.get_string_path(source_directory)}"',
+                f'-output_directory="{AssetBundleCreatorBase.get_string_path(output_directory)}"',
                 f'-vhacd_resolution={vhacd_resolution}']
         if library_description is not None:
             args.append(f'-library_description="{library_description}"')
@@ -190,9 +191,87 @@ class AssetBundleCreator(AssetBundleCreatorBase):
             args.append("-overwrite")
         if continue_on_error:
             args.append("-continue_on_error")
+        if cleanup:
+            args.append("-cleanup")
         self.call_unity(method="SourceDirectoryToAssetBundles",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_path(output_directory).joinpath("progress.txt"))
+                        log_path=AssetBundleCreatorBase.get_path(output_directory).joinpath("progress.txt"))
+
+    def metadata_file_to_asset_bundles(self, metadata_path: Union[str, Path], output_directory: Union[str, Path],
+                                       library_description: str = None, vhacd_resolution: int = 800000,
+                                       internal_materials: bool = False, overwrite: bool = False,
+                                       continue_on_error: bool = True, cleanup: bool = True) -> None:
+        """
+        Given a metadata .csv file within an output directory, generate asset bundles.
+
+        This is similar to `self.source_directory_to_asset_bundles()` but it reads a single .csv file instead of a directory structure, which allows you to specify record data per source file.
+
+        Calling this is *significantly* faster than calling `self.source_file_to_asset_bundles()` multiple times.
+
+        Example metadata .csv file:
+
+        ```
+        name,wnid,wcategory,scale_factor,path
+        model_0,n04148054,scissors,1,source_directory/model_0/model_0.obj
+        model_1,n03056701,coaster,1,source_directory/model_1/model_1.obj
+        ```
+
+        Example `output_directory`:
+
+        ```
+        output_directory/
+        ....model_0/
+        ........Darwin/
+        ............model_0
+        ........Linux/
+        ............model_0
+        ........Windows/
+        ............model_0
+        ........record.json
+        ........log.txt
+        ....model_1/
+        ........Darwin/
+        ............model_1
+        ........Linux/
+        ............model_1
+        ........Windows/
+        ............model_1
+        ........record.json
+        ........log.txt
+        ```
+
+        - `Darwin/model_0`, `Linux/model_0`, etc. are the platform-specific asset bundles.
+        - `record.json` is a JSON dictionary of the `ModelRecord`.
+        - `log.txt` is a log from the `asset_bundle_creator` Unity Editor project.
+
+        Note: This method does *not* call `self.write_physics_quality()` or `self.validate()`.
+
+        :param metadata_path: The path to the metadata file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
+        :param output_directory: The root directory of the output files as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
+        :param library_description: An optional description of the `ModelLibrarian` that will be included in the `library.json` file.
+        :param vhacd_resolution: The default resolution of VHACD. A lower value will make VHACD run faster but will create simpler collider mesh shapes.
+        :param internal_materials: If True, the visual materials of the models are located within the source file. If False, the materials are located in `Materials/` directory next to each source file.
+        :param overwrite: If True, overwrite existing asset bundles. If this is set to False (the default value), you can stop/resume the processing of a directory's contents.
+        :param continue_on_error: If True, continue generating asset bundles even if there is a problem with one model. If False, stop the process if there's an error.
+        :param cleanup: If True, delete intermediary files such as the prefabs in the `asset_bundle_creator` Unity Editor project.
+        """
+
+        args = [f'-metadata_path={AssetBundleCreatorBase.get_string_path(metadata_path)}',
+                f'-output_directory="{AssetBundleCreatorBase.get_string_path(output_directory)}"',
+                f'-vhacd_resolution={vhacd_resolution}']
+        if library_description is not None:
+            args.append(f'-library_description="{library_description}"')
+        if internal_materials:
+            args.append("-internal_materials")
+        if overwrite:
+            args.append("-overwrite")
+        if continue_on_error:
+            args.append("-continue_on_error")
+        if cleanup:
+            args.append("-cleanup")
+        self.call_unity(method="MetadataFileToAssetBundles",
+                        args=args,
+                        log_path=AssetBundleCreatorBase.get_path(output_directory).joinpath("progress.txt"))
 
     def source_file_to_prefab(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
                               vhacd_resolution: int = None, internal_materials: bool = False) -> None:
@@ -286,7 +365,7 @@ class AssetBundleCreator(AssetBundleCreatorBase):
 
         args = [f'-name="{name}"',
                 f"-source=temp",
-                f'-output_directory="{AssetBundleCreatorBase._get_string_path(output_directory)}"']
+                f'-output_directory="{AssetBundleCreatorBase.get_string_path(output_directory)}"']
         for value, flag in zip([wnid, wcategory, scale_factor], ["wnid", "wcategory", "scale_factor"]):
             if value is not None:
                 args.append(f'-{flag}="{value}"')
@@ -379,9 +458,9 @@ class AssetBundleCreator(AssetBundleCreatorBase):
         """
 
         if record_path is not None:
-            return ModelRecord(json.loads(AssetBundleCreatorBase._get_path(record_path).read_text(encoding="utf-8")))
+            return ModelRecord(json.loads(AssetBundleCreatorBase.get_path(record_path).read_text(encoding="utf-8")))
         elif library_path is not None:
-            model_librarian = ModelLibrarian(AssetBundleCreatorBase._get_string_path(library_path))
+            model_librarian = ModelLibrarian(AssetBundleCreatorBase.get_string_path(library_path))
             record = model_librarian.get_record(name)
             if record is None:
                 raise Exception(f"Failed to get record named {name} from {library_path}")
@@ -401,12 +480,12 @@ class AssetBundleCreator(AssetBundleCreatorBase):
 
         # Update the record.
         if record_path is not None:
-            AssetBundleCreatorBase._get_path(record_path).write_text(json.dumps(record.__dict__, indent=2), encoding="utf-8")
+            AssetBundleCreatorBase.get_path(record_path).write_text(json.dumps(record.__dict__, indent=2), encoding="utf-8")
             if not self.quiet:
                 print(f"Updated {record_path}")
         # Update the librarian.
         if library_path is not None:
-            model_librarian = ModelLibrarian(AssetBundleCreatorBase._get_string_path(library_path))
+            model_librarian = ModelLibrarian(AssetBundleCreatorBase.get_string_path(library_path))
             overwrite = model_librarian.get_record(record.name) is not None
             model_librarian.add_or_update_record(record=record, overwrite=overwrite, write=True)
             if not self.quiet:

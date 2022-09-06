@@ -100,8 +100,8 @@ class AnimationCreator(AssetBundleCreatorBase):
         :param search_pattern: A search pattern for files, for example `"*.obj"`. All subdirectories will be recursively searched.
         """
 
-        args = [f'-source_directory="{AssetBundleCreatorBase._get_string_path(source_directory)}"',
-                f'-output_directory="{AssetBundleCreatorBase._get_string_path(output_directory)}"']
+        args = [f'-source_directory="{AssetBundleCreatorBase.get_string_path(source_directory)}"',
+                f'-output_directory="{AssetBundleCreatorBase.get_string_path(output_directory)}"']
         if search_pattern is not None:
             args.append(f'-search_pattern="{search_pattern}"')
         if overwrite:
@@ -110,4 +110,4 @@ class AnimationCreator(AssetBundleCreatorBase):
             args.append("-continue_on_error")
         self.call_unity(method="SourceDirectoryToAssetBundles",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_path(output_directory).joinpath("progress.txt"))
+                        log_path=AssetBundleCreatorBase.get_path(output_directory).joinpath("progress.txt"))

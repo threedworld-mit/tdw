@@ -204,8 +204,8 @@ class AssetBundleCreatorBase(ABC):
         self.call_unity(method="PrefabToAssetBundles",
                         args=[f'-name="{name}"',
                               "-source=temp",
-                              f'-output_directory="{AssetBundleCreatorBase._get_string_path(output_directory)}"'],
-                        log_path=AssetBundleCreatorBase._get_path(output_directory).joinpath("log.txt"))
+                              f'-output_directory="{AssetBundleCreatorBase.get_string_path(output_directory)}"'],
+                        log_path=AssetBundleCreatorBase.get_path(output_directory).joinpath("log.txt"))
 
     @final
     def cleanup(self) -> None:
@@ -237,7 +237,7 @@ class AssetBundleCreatorBase(ABC):
         :return: True if asset bundles for all three platforms exist in `output_directory`.
         """
 
-        d = AssetBundleCreatorBase._get_path(output_directory)
+        d = AssetBundleCreatorBase.get_path(output_directory)
         for p in SYSTEM_TO_UNITY:
             if not d.joinpath(p).joinpath(name).exists():
                 return False
@@ -253,7 +253,7 @@ class AssetBundleCreatorBase(ABC):
         :param sleep_time: The time in seconds to wait between process polling.
         """
 
-        path = AssetBundleCreatorBase._get_path(log_path)
+        path = AssetBundleCreatorBase.get_path(log_path)
         previous_log_text = ""
         while process.poll() is None:
             # Update the log text.
@@ -303,7 +303,7 @@ class AssetBundleCreatorBase(ABC):
         """
 
         if library_path is not None:
-            args.append(f'-library_path="{AssetBundleCreatorBase._get_string_path(library_path)}"')
+            args.append(f'-library_path="{AssetBundleCreatorBase.get_string_path(library_path)}"')
         if library_description is not None:
             args.append(f'-library_description="{library_description}"')
         return args
@@ -321,11 +321,11 @@ class AssetBundleCreatorBase(ABC):
         """
 
         return [f'-name="{name}"',
-                f'-source="{AssetBundleCreatorBase._get_string_path(source)}"',
-                f'-output_directory="{AssetBundleCreatorBase._get_string_path(destination)}"']
+                f'-source="{AssetBundleCreatorBase.get_string_path(source)}"',
+                f'-output_directory="{AssetBundleCreatorBase.get_string_path(destination)}"']
 
     @staticmethod
-    def _get_path(path: Union[str, Path]) -> Path:
+    def get_path(path: Union[str, Path]) -> Path:
         """
         :param path: A path as either a string or a `Path`.
 
@@ -340,7 +340,7 @@ class AssetBundleCreatorBase(ABC):
             raise Exception(path)
 
     @staticmethod
-    def _get_string_path(path: Union[str, Path]) -> str:
+    def get_string_path(path: Union[str, Path]) -> str:
         """
         :param path: A path as either a string or a `Path`.
 
@@ -363,4 +363,4 @@ class AssetBundleCreatorBase(ABC):
         :return: The expected path to the log file: `output_directory/log.txt`.
         """
 
-        return AssetBundleCreatorBase._get_path(output_directory).joinpath("log.txt")
+        return AssetBundleCreatorBase.get_path(output_directory).joinpath("log.txt")

@@ -398,7 +398,7 @@ class RobotCreator(AssetBundleCreatorBase):
         """
 
         return re.search(r'<robot(.*?)name="(.*?)"',
-                         AssetBundleCreatorBase._get_path(urdf_path).read_text(encoding="utf-8"),
+                         AssetBundleCreatorBase.get_path(urdf_path).read_text(encoding="utf-8"),
                          flags=re.MULTILINE).group(2).strip()
 
     def get_creator_class_name(self) -> str:
@@ -424,7 +424,7 @@ class RobotCreator(AssetBundleCreatorBase):
         :return: The path to the "fixed" .urdf file.
         """
 
-        path = AssetBundleCreatorBase._get_path(urdf_path)
+        path = AssetBundleCreatorBase.get_path(urdf_path)
         text = path.read_text(encoding="utf-8")
         # Remove gazebo elements.
         if remove_gazebo:

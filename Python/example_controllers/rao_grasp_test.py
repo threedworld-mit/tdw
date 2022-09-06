@@ -38,9 +38,9 @@ table_id = c.get_unique_id()
 ball_id = c.get_unique_id()
 ball_id2 = c.get_unique_id()
 affordance_id = 0
-reach_arm = "left"
+reach_arm = "both"
 
-replicant = Replicant(replicant_id=replicant_id, position={"x": -4, "y": 0, "z": 8}, image_frequency=ImageFrequency.never)
+replicant = Replicant(replicant_id=replicant_id, position={"x": 4, "y": 0, "z": 8}, image_frequency=ImageFrequency.never)
 c.add_ons.append(replicant)
 commands=[]
 commands.extend([{"$type": "set_screen_size",
@@ -71,7 +71,7 @@ commands.extend(c.get_add_physics_object(model_name="live_edge_coffee_table",
                                          library="models_core.json"))
 commands.extend(c.get_add_physics_object(model_name="zenblocks",
                                          object_id=c.get_unique_id(),
-                                         position={"x": -1.2, "y": 0.65, "z": 2},
+                                         position={"x": -0.8, "y": 0.65, "z": 2},
                                          scale_factor={"x": 0.5, "y": 0.5, "z": 0.5},
                                          mass=0.1,
                                          rotation={"x": 0, "y": 0, "z": 0}))
@@ -79,18 +79,20 @@ commands.extend(c.get_add_physics_object(model_name="zenblocks",
 commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_name="basket_18inx18inx12iin_wicker",
                                                                        object_id=basket_id,
                                                                        mass=2,
-                                                                       position={"x": -1.2, "y": 0.35, "z": 2},
+                                                                       position={"x": -0.8, "y": 0.35, "z": 2},
                                                                        rotation={"x": 0, "y": 90, "z": 0}))
 
 c.communicate(commands)
 
-replicant.move_to(target=basket_id, arrived_offset=0.35)
+replicant.move_to(target=table_id, arrived_offset=0.5)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
 replicant.reach_for(target=basket_id, arm=reach_arm)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+
+print("Forward = " + str(TDWUtils.array_to_vector3(replicant.dynamic.forward)))
 
 replicant.grasp(target=basket_id, arm=reach_arm)
 while replicant.action.status == ActionStatus.ongoing:

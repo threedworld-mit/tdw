@@ -9,11 +9,14 @@ The `RobotCreator` can download a .urdf or .xacro file plus all relevant texture
 ## Requirements
 
 - Windows 10, OS X, or Linux
-  - On a remote Linux server, you'll need a valid virtual display (see the `display` parameter of the constructor)
+- (Windows only) Visual C++ 2012 Redistributable
+- The `tdw` module
+- Python 3.6+
+- Unity Hub
 - Unity Editor 2020.3.24f1
-  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `RobotCreator` constructor (see below).
+  - Build options must enabled for Windows, OS X, and Linux (these can  be set when installing Unity).
+  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `AssetBundleCreator` constructor (see below).
 
-- Python3 and the `tdw` module
 - git
 
 ### ROS and .xacro file requirements
@@ -43,6 +46,11 @@ If you want to use a .xacro file, `RobotCreator` can convert it to a usable .urd
 
 ROS isn't well-supported on OS X. You can try following installation instructions [here](http://wiki.ros.org/Installation/).
 
+## The Asset Bundle Creator Unity project
+
+To convert mesh files into asset bundles, TDW uses [Asset Bundle Creator](https://github.com/alters-mit/asset_bundle_creator), a Unity Editor project. It is possible to run the Unity project without any Python wrapper classes but there is usually no reason to do so.
+
+Asset Bundle Creator will be  downloaded automatically the first time you use the Python wrapper class (see below).
 
 ## Usage
 
@@ -50,32 +58,44 @@ To create an asset bundle of the UR5 robot:
 
 ```python
 from tdw.robot_creator import RobotCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("ur5_asset_bundles")
+print(f"Asset bundles will be saved to: {output_directory}")
 r = RobotCreator()
-record = r.create_asset_bundles(
-urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf",
-xacro_args=None,
-required_repo_urls=None,
-immovable=True,
-up="y")
-print(record.name)
-print(record.urls)
+url = "https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf"
+r.source_url_to_asset_bundles(url=url, output_directory=output_directory)
 ```
 
-Most of the parameters are optional, so this can be simplified to:
+Output:
 
-```python
-from tdw.robot_creator import RobotCreator
-
-r = RobotCreator()
-record = r.create_asset_bundles(urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
-print(record.name)
-print(record.urls)
+```
+~/tdw_example_controller_output/ur5_asset_bundles/
+....Darwin/
+........ur5
+....Linux/
+........ur5
+....Windows/
+........ur5
+....record.json
+....log.txt
 ```
 
-The first time that this script is run, it will clone [the robot_creator repo](https://github.com/alters-mit/robot_creator) (a Unity project used for creating robots) to your home directory.
+- `Darwin/ur5`, `Linux/ur5`, and `Windows/ur5` are platform-specific asset bundles.
+- `record.json` is a serialized RobotRecord.
+- `log.txt` is a log of the creation process.
 
-### Unity Editor path
+There are optional parameters for setting the semantic category of the model, for controlling whether the root object is immovable. [Read the API document for more information.](../../python/asset_bundle_creator.md)
+
+### Constructor parameters
+
+`RobotCreator` has several optional constructor parameters:
+
+#### 1. `quiet`
+
+If True, suppress output messages.
+
+### 2. `unity_editor_path`
 
 If you installed Unity Editor via Unity Hub, `RobotCreator` should be able to automatically find the Unity Editor executable.
 
@@ -87,26 +107,68 @@ from tdw.robot_creator import RobotCreator
 a = RobotCreator(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
 ```
 
-## Edit the prefab
+#### 3. `check_version`
 
-`RobotCreator.create_asset_bundles()` creates a .prefab file in the `robot_creator` Unity project. This is an intermediate file that is required for building the asset bundle.
+When you create a new `RobotCreator` Python object, it automatically compares the version of your local Unity project to the one stored on GitHub. This requires an Internet connection and might not be desirable in all cases, especially on servers. To prevent the version check, set `check_version=False` in the constructor.
 
-It's usually worth testing and editing the prefab before finalizing the asset bundle. To do this, first run `RobotCreator` as described above, and then do the following:
+#### 4. `display`
 
-1. Create a prefab of the robot.
-2. Open robot_creator Unity project in Unity 2020.2; the project is located at `~/robot_creator` (where `~` is your home directory).
-3. In the Unity Editor project window, double-click `Scenes -> SampleScene`
-4. In the Unity Editor project window, search for the name of the robot. Click the file and drag it into the scene view.
-5. Press play.
+This must be set on Linux machines, especially headless servers, and must match a valid X display.
 
-### Common problems and solutions during prefab creation
+### Intermediate API calls
+
+It's possible to manually perform any of the operations involved in creating an asset bundle.
+
+#### 1. `clone_repo()`
+
+Clone a robot repo:
+
+```python
+from tdw.robot_creator import RobotCreator
+
+r = RobotCreator()
+url = "https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf"
+repo_path = r.clone_repo(url=url)
+```
+
+#### 2. `get_urdf_path_from_local_repo()`
+
+Find a .urdf file within a local repo:
+
+```python
+from tdw.robot_creator import RobotCreator
+
+r = RobotCreator()
+url = "https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf"
+repo_path = r.clone_repo(url=url)
+urdf_path = r.get_urdf_path_from_local_repo(url=url, local_repo_path=repo_path)
+```
+
+#### 3. `urdf_to_prefab()`
+
+In many cases, a fully automated robot creation process will be faulty; you may need to adjust parameters for joints, or remove some redundant joints, and so on. It's usually worth creating, testing, and editing a prefab before finalizing the asset bundle. To create a prefab, call `urdf_to_prefab()`:
+
+```python
+from tdw.robot_creator import RobotCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("ur5_asset_bundles")
+print(f"Asset bundles will be saved to: {output_directory}")
+r = RobotCreator()
+url = "https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf"
+repo_path = r.clone_repo(url=url)
+urdf_path = r.get_urdf_path_from_local_repo(url=url, local_repo_path=repo_path)
+r.urdf_to_prefab(urdf_path=urdf_path, output_directory=output_directory)
+```
+
+##### Common problems and solutions during prefab creation
 
 | Problem | Solution |
 | --- | --- |
 | Prefab creation seems to hang. | This is because sometimes the physics hull collider meshes are very complicated and require more time to generate. Let the process run. |
 | Got an error during prefab creation: `Root object of the robot doesn't have an ArticulationBody.` | Open the project, double-click the prefab, and add an ArticulationBody to the root object. Adjust the parenting hierarchy of the robot such that the ArticulationBodies beneath the root are direct children. This is bad: `root -> non-articulation -> articulation` and this is good: `root -> articulation` |
 
-### Common problems and solutions while testing a prefab in the Unity Editor project
+##### Common problems and solutions while testing a prefab in the Unity Editor project
 
 | Problem | Solution |
 | --- | --- |
@@ -114,7 +176,33 @@ It's usually worth testing and editing the prefab before finalizing the asset bu
 | Robot falls apart and there are `AABB` errors | You have too many ArticulationBodies. Unity supports a maximum of 65 (1 parent, 64 children). Double-click the prefab and delete any redundant ArticulationBodies. |
 | The base of the robot is below (0, 0, 0) | Double-click the prefab and adjust the y position of the child objects. |
 | Joints snap to a weird angle. | Usually this is because there are overlapping physics colliders. Double-click the prefab and in the Hierarchy panel click the root object. The green wireframe meshes in the Scene View are the physics colliders. Try deleting or disabling colliders near the glitching joint. |
-| The robot tips over. | Set `immovable=True` in `create_asset_bundles()`. If that doesn't work, double-click the prefab. In the Hierarchy panel, click the ArticulationBody that you think is causing the robot to tilt. In the Inspector panel, click "Add Component". Add: `Center Of Mass`. Adjust the center of mass in the Inspector until the robot stops tipping. |
+| The robot tips over. | Set `immovable=True` in your Python script. If that doesn't work, double-click the prefab. In the Hierarchy panel, click the ArticulationBody that you think is causing the robot to tilt. In the Inspector panel, click "Add Component". Add: `Center Of Mass`. Adjust the center of mass in the Inspector until the robot stops tipping. |
+
+#### 4. `prefab_to_asset_bundles()`
+
+Having adjusted a prefab as needed, you can then convert it into asset bundles by calling `prefab_to_asset_bundles()`:
+
+```python
+from tdw.robot_creator import RobotCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("ur5_asset_bundles")
+print(f"Asset bundles will be saved to: {output_directory}")
+r = RobotCreator()
+r.prefab_to_asset_bundles(name="ur5", output_directory=output_directory)
+```
+
+#### 5. `create_record()`
+
+**TODO**
+
+#### 6. `xacro_to_urdf()`
+
+**TODO**
+
+#### 7. `fix_urdf()`
+
+**TODO**
 
 ## Create an asset bundle from a prefab
 

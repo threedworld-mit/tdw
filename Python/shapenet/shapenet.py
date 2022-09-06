@@ -8,6 +8,10 @@ from tdw.asset_bundle_creator import AssetBundleCreator
 
 
 class _ShapeNet(ABC):
+    """
+    Abstract base class for generating ShapeNet asset bundles.
+    """
+
     def __init__(self, source_directory: Union[str, Path], output_directory: Union[str, Path]):
         """
         :param source_directory: The source path or directory.
@@ -22,10 +26,11 @@ class _ShapeNet(ABC):
 
     def run(self, vhacd_resolution: int = 800000) -> None:
         """
+        Create asset bundles from a ShapeNet set.
 
-        :param vhacd_resolution:
-        :return:
+        :param vhacd_resolution: The VHACD voxel resolution.
         """
+
         # Create a metadata file.
         if not self.metadata_path.exists():
             self.metadata_path.write_text("name,wnid,wcategory,scale_factor,path\n" + self.get_csv().strip())
@@ -37,10 +42,17 @@ class _ShapeNet(ABC):
 
     @abstractmethod
     def get_csv(self) -> str:
+        """
+        :return: A string of .csv metadata.
+        """
         raise Exception()
 
     @abstractmethod
     def get_library_description(self) -> str:
+        """
+        :return: A description that will be included in `library.json`.
+        """
+
         raise Exception()
 
 
